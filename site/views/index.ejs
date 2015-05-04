@@ -35,7 +35,7 @@
         <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
     </div>
     <div style="display:none" class="loggedin">
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar navbar-inverse fixed">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -45,16 +45,25 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="#/Dashboard"><img src="/images/logo.png" style="width:40px;padding:8px 0px 0px 5px"></a>
+                    <a href="#/Dashboard"><img src="http://platform.biradix.com/favicon.ico" style="width:40px;padding:8px 0px 0px 5px"></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                    <li ng-class="{active: nav == 'Dashboard'}"><a href="#/">Dashboard</a></li>
+                    <li ng-class="{active: nav == 'Dashboard'}"><a href="#/">My Properties</a></li>
+                    <li ng-class="{active: nav == 'Dashboard'}"><a href="#/">Reporting</a></li>
+                        </ul>
+
+
                     <ul class="nav navbar-nav navbar-right">
                         <!--<li><a href="#">Link</a></li>-->
                         <li ng-class="{dropdown: true, active: nav == 'Profile'}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{$root.me.title + '. ' + $root.me.last}} <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="#/profile">Update Profile</a></li>
+                                <li><a href="#/password">Update Password</a></li>
                                 <li><a href ng-click="logoff()">Log Off</a></li>
                             </ul>
                         </li>
