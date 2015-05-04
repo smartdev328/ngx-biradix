@@ -6,6 +6,7 @@ module.exports = {
     MODE : process.env.mode || 'development',
     PORT : process.env.PORT || 2000,
     SECRET : process.env.secret || 'test',
-    API_PATH : process.env.apipath || '/api/1.0/'
+    API_PATH : process.env.apipath || '/api/1.0/',
+    NEW_RELIC_LICENSE_KEY : process.env.apipath || '5b83e39bf5ec8e9820f059846c157bb5b13b91e5'
 
 }
