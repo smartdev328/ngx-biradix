@@ -7,7 +7,6 @@ var settings = require('./config/settings.js')
  * description of configuration variables and their potential values.
  */
 
-console.log(settings.NEW_RELIC_LICENSE_KEY);
 exports.config = {
   /**
    * Array of application names.
