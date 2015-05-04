@@ -1,0 +1,25 @@
+{
+  "name": "BIRadix",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://Dingo78@bitbucket.org/Dingo78/biradix2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.3.1",
+    "express": "^4.12.3",
+    "mongoose": "^4.0.2"
+  },
+  "private": true,
+  "engines": {
+    "node": "0.10.35",
+    "npm": "1.4.28"
+  }
+}
