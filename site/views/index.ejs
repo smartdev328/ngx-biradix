@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BI:Radix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script type="text/javascript">var version="<%=version%>"</script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="components/angular-toastr/angular-toastr.min.css" rel="stylesheet" type="text/css">
+
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.1/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.1/angular-cookies.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <script src="components/angular-toastr/angular-toastr.tpls.min.js"></script>
+
+    <script data-main="app/main" src="libs/requirejs/require-min.js"></script>
+
+    <meta name="google-signin-client_id" content="775163691928-5rc2dkq82k9ashdfo3bm3s4fb3fe5oj6.apps.googleusercontent.com">
+</head>
+<body ng-controller="rootController">
+    <div class="loading" style="display:block;width:50px;margin:50px auto">
+        <i class="fa fa-spinner fa-spin fa-4x" style="color:#00d4b4"></i>
+    </div>
+    <div style="display:none" class="loggedout">
+        <div class="loggedout-main">
+            <div class="loggedout-container clearfix">
+                <a href="#/login"><img src="/images/logo.png"></a>
+                <br />
+                <div ui-view="loggedOutView"></div>
+            </div>
+        </div>
+        <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
+    </div>
+    <div style="display:none" class="loggedin">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#/Dashboard"><img src="/images/logo.png" style="width:40px;padding:8px 0px 0px 5px"></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <!--<li><a href="#">Link</a></li>-->
+                        <li ng-class="{dropdown: true, active: nav == 'Profile'}">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{$root.me.title + '. ' + $root.me.last}} <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href ng-click="logoff()">Log Off</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <div ui-view="loggedInView"></div>
+        <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
+    </div>
+</body>
+</html>
