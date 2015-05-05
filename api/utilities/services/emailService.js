@@ -1,5 +1,5 @@
 'use strict';
-var settings = require('../../config/settings')
+var settings = require('../../../config/settings')
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
 
