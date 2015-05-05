@@ -10,7 +10,7 @@ routes.get('/readXls', function (req, res) {
 
     var XLS = require('xlsjs');
 
-    var path = __dirname + '../../site/poc/01. Beach House Market Survey 10-30-13.xls';
+    var path = __dirname + '/../site/poc/01. Beach House Market Survey 10-30-13.xls';
     console.log(path);
 
     var workbook = XLS.readFile(path);
