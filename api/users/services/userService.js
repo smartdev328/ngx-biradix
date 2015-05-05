@@ -127,22 +127,6 @@ module.exports = {
         user.password = user.password || '';
         user.emailLower = user.email.toLowerCase();
 
-        if (user.title == '')
-        {
-            modelErrors.push({param: 'title', msg : 'Please enter your title'});
-        }
-
-        switch (user.title) {
-            case 'Mr':
-            case 'Mrs':
-            case 'Ms':
-            case 'Dr':
-                break;
-            default:
-                modelErrors.push({param: 'title', msg : 'Please enter a valid title'});
-                break;
-        }
-
         if (user.first == '')
         {
             modelErrors.push({param: 'first', msg : 'Please enter your first name'});

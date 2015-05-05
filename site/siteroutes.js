@@ -7,7 +7,10 @@ module.exports = (function() {
     var ui = express.Router();
 
     ui.get('/', function (req, res) {
-        res.render('index', {version: packages.version});
+        var subdomain = req.hostname.split('.')[0].toLocaleLowerCase();
+        var logo = 'biradix'
+        console.log(subdomain)
+        res.render('index', {version: packages.version, logo: logo});
     })
 
     return ui;

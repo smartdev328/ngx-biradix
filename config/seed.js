@@ -41,7 +41,6 @@ var AdminCreate = function(callback) {
     user.password = "Testing21!";
     user.first = "Eugene";
     user.last = "Kobrinsky";
-    user.title = "Mr";
 
     UserService.insert(user, function(usr) {
             callback(usr)
@@ -54,9 +53,7 @@ var AdminCreate = function(callback) {
 }
 
 var RolesCreate = function(callback) {
-    var Admin = {name: "Admin", isadmin: true}
-    var Teacher = {name: "Teacher", isadmin: false};
-    var Student = {name: "Student", isadmin: false};
+    var Admin = {name: "Site Admin", isadmin: true}
 
 
     async.parallel([
@@ -65,12 +62,6 @@ var RolesCreate = function(callback) {
                 Admin = admin;
                 callbackp(null)
             });
-        },
-        function(callbackp) {
-            AccessService.createRole(Teacher, function(){callbackp(null)});
-        },
-        function(callbackp) {
-            AccessService.createRole(Student, function(){callbackp(null)});
         },
     ],function(err) {callback(Admin)})
 

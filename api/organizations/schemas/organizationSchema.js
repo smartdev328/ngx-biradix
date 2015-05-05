@@ -3,26 +3,20 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
-    first: {
+var s = new Schema({
+    name: {
         type: String
     },
-    last: {
+    subdomain: {
         type: String
     },
-    email: {
+    logoBig: {
         type: String
     },
-    emailLower: {
-        type: String,
-        unique: true,
-        index: true
-    },
-    hashed_password: {
+    logoSmall: {
         type: String
     },
-    salt: String,
-    date: Date
+    isDefault: Boolean
 });
 
 module.exports = mongoose.model('User', UserSchema);
