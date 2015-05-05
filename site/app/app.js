@@ -39,16 +39,6 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'login/loginController')}}
             })
-            .state('join', {
-                url: "/join",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/join/join.html",
-                        controller : "joinController"
-                    }
-                },
-                resolve: {get : function($q) {return resolve($q, 'join/joinController')}}
-            })
             .state('dashboard', {
                 url: "/dashboard",
                 views: {
