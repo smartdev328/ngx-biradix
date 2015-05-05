@@ -6,7 +6,7 @@ var fs = require('fs')
 module.exports = {
     send: function (email, callback) {
         var newemail = {
-            from: 'support@banneredgemedia.com',
+            from: 'support@biradix.com',
             to: email.to,
             subject: email.subject
         };

@@ -1,11 +1,12 @@
 'use strict';
+var settings = require('../../config/settings')
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
 
 var options = {
     auth: {
-        api_user: process.env.SENDGRID_USERNAME,
-        api_key: process.env.SENDGRID_PASSWORD
+        api_user: settings.SENDGRID_USERNAME,
+        api_key: settings.SENDGRID_PASSWORD
     }
 }
 
