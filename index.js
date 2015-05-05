@@ -17,6 +17,7 @@ conn.once('open', function () {
     require('./config/seed').init();
     require('./config/express').init(app)
 
+    app.use('/poc/', require('./poc/pocGateway'));
     app.use('/', require('./site/siteroutes'));
     app.use(settings.API_PATH + 'access/', require('./api/access/gateways/accessGateway'));
     app.use(settings.API_PATH + 'users/', require('./api/users/gateways/userGateway'));
