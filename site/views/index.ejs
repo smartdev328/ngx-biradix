@@ -17,6 +17,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="components/angular-toastr/angular-toastr.tpls.min.js"></script>
+    <script src="//code.highcharts.com/highcharts.js"></script>
 
     <script data-main="app/main" src="libs/requirejs/require-min.js"></script>
 </head>
@@ -34,7 +35,7 @@
         <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
     </div>
     <div style="display:none" class="loggedin">
-        <nav class="navbar navbar-inverse fixed">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -43,10 +44,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
+                            style="padding: 5px 10px 7px 10px;">
+                        <i class="fa fa-search" style="color:white"></i>
+                    </button>
                     <a href="#/Dashboard"><img src="http://platform.biradix.com/favicon.ico" style="width:40px;padding:8px 0px 0px 5px"></a>
                 </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapsed" id="bs-example-navbar-collapse-2">
+                    <div class="form-group has-feedback" style="margin-top:10px">
+                        <input type="text" class="form-control input-sm"
+                               placeholder="Search Properties"
+                               ng-model="searchText">
+                        <i class="fa fa-search form-control-feedback" style="color:#ccc"></i>
+                    </div>
+                </div>
+
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                     <li ng-class="{active: nav == 'Dashboard'}"><a href="#/">Dashboard</a></li>
@@ -56,7 +69,15 @@
 
 
                     <ul class="nav navbar-nav navbar-right">
-                        <!--<li><a href="#">Link</a></li>-->
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group has-feedback">
+                                <input type="text" class="form-control input-sm"
+                                       placeholder="Search Properties"
+                                       ng-model="searchText">
+                                <i class="fa fa-search form-control-feedback" style="color:#ccc"></i>
+                            </div>
+                        </form>
+
                         <li ng-class="{dropdown: true, active: nav == 'Profile'}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{$root.me.title + '. ' + $root.me.last}} <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
@@ -69,7 +90,7 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        <div ui-view="loggedInView"></div>
+        <div ui-view="loggedInView" style="padding-top:70px"></div>
         <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
     </div>
 </body>

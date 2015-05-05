@@ -1,1 +1,58 @@
-Dashboard...
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">Trends</div>
+            <div class="panel-body">
+                <div id="container" style="width:100%; height:400px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">Widget 2</div>
+            <div class="panel-body" style="height:430px;overflow-y:auto">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a nisi porta libero vestibulum porttitor. Proin mattis elementum eleifend. In eu volutpat diam. Cras a massa ut nunc aliquet scelerisque. Vestibulum elementum rutrum massa non pharetra. Aliquam erat volutpat. Pellentesque fringilla quis est eu efficitur. Suspendisse vel erat commodo, pulvinar orci non, egestas lectus.
+
+                <p>Integer volutpat a nulla eu sagittis. In hac habitasse platea dictumst. Phasellus molestie faucibus dui vel commodo. Nullam consequat bibendum dolor, quis consequat lectus pharetra congue. Sed justo eros, feugiat at venenatis a, tincidunt quis elit. Nulla consequat fermentum sagittis. Mauris imperdiet ipsum sit amet mi placerat euismod. Proin a odio ut dolor imperdiet sodales nec quis odio.
+
+                <p>Quisque vitae lorem metus. Suspendisse turpis purus, eleifend ac metus ac, eleifend scelerisque tortor. Nulla viverra egestas nunc ut pellentesque. Sed vel neque eu augue hendrerit finibus. Quisque fringilla nunc eget placerat condimentum. Morbi luctus cursus suscipit. Vivamus tristique eleifend faucibus. Donec velit turpis, cursus in tortor et, consequat vulputate nulla. Cras eget cursus sapien. Curabitur eu fermentum velit. Praesent at tempus sem, quis pellentesque massa. Curabitur tincidunt ex turpis. Vestibulum aliquet, orci quis interdum ornare, felis arcu ultricies libero, id tempus quam lectus et felis. Integer mollis lobortis accumsan.
+
+                <p>Nunc volutpat nisl augue, ac maximus orci sagittis eget. Pellentesque posuere diam non tempus faucibus. Aenean hendrerit tellus sed tempor efficitur. Suspendisse lobortis, metus vitae molestie tincidunt, tortor lectus sodales sem, nec dignissim nibh massa vel justo. Morbi convallis, velit et interdum blandit, odio orci viverra turpis, at fermentum justo eros in libero. Fusce non pretium nunc. Curabitur euismod metus vel felis finibus, eget pretium sapien tempor. Suspendisse ac tincidunt mi. Nam efficitur felis ac convallis semper. Nam hendrerit commodo vulputate. Nulla porttitor ut dolor sed aliquam. Nam a iaculis eros. Maecenas non mollis justo.
+
+                <p>Nullam ut fringilla eros. Cras condimentum sodales ullamcorper. Suspendisse aliquet felis id semper elementum. Donec porta tempus ipsum porta accumsan. Etiam auctor, libero ut finibus sollicitudin, sapien est elementum odio, et ultrices est magna ac diam. Nam massa nisi, dictum vitae rutrum ultrices, sodales sit amet urna. Fusce interdum vulputate nibh et lobortis. Vestibulum mi est, volutpat vitae commodo a, mattis eget augue. Fusce vitae erat sit amet ligula porttitor volutpat vel vel nisl. Ut dapibus tellus sit amet interdum placerat. Mauris nec diam ac dui faucibus semper. Etiam facilisis nulla ac pretium feugiat.
+                </p>
+            </div>
+    </div>
+
+</div>
+
+
+
+    <Script>
+        $(function () {
+            $('#container').highcharts({
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Fruit Consumption'
+                },
+                xAxis: {
+                    categories: ['Apples', 'Bananas', 'Oranges']
+                },
+                yAxis: {
+                    title: {
+                        text: 'Fruit eaten'
+                    }
+                },
+                series: [{
+                    name: 'Jane',
+                    data: [1, 0, 4]
+                }, {
+                    name: 'John',
+                    data: [5, 7, 3]
+                }]
+            });
+        });
+    </Script>
