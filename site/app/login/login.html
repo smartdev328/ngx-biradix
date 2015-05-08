@@ -1,5 +1,5 @@
 <iframe src="about:blank" name="dummy" style="display: none"></iframe>
-<form role="form" name="myLoginForm" id="myLoginForm" autocomplete="on" method="post" action="" target="dummy" onsubmit="return false" ng-submit="submit()">
+<form ng-init="setRenderable()" role="form" name="myLoginForm" id="myLoginForm" autocomplete="on" method="post" action="" target="dummy" onsubmit="return false" ng-submit="submit()">
     <div class="form-group" ng-class="{'has-error': myForm.email.$dirty && myForm.email.$invalid, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
         <label for="email">Email address</label>
         <input autocomplete="on" type="email" name="email" class="form-control" id="email" placeholder="Enter email" required ng-model="email">

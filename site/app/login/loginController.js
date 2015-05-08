@@ -10,7 +10,9 @@ define([
             $location.path('/dashboard')
         }
 
-        window.renderable = true;
+        $scope.setRenderable = function() {
+            window.renderable = true;
+        }
 
         $scope.submit = function() {
             $scope.localLoading = true;
