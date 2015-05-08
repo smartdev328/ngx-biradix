@@ -9,6 +9,9 @@ define([
         if ($rootScope.loggedIn) {
             $location.path('/dashboard')
         }
+
+        window.renderable = true;
+
         $scope.submit = function() {
             $scope.localLoading = true;
 

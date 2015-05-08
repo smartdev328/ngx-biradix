@@ -3,7 +3,7 @@
 var express = require('express');
 var _ = require('lodash');
 var routes = express.Router();
-
+var UserSchema = require('../api/users/schemas/userSchema')
 
 routes.get('/readXls', function (req, res) {
 
@@ -23,37 +23,25 @@ routes.get('/readXls', function (req, res) {
 })
 
 routes.get('/pdf', function(req, res) {
-    //var path = require('path')
-    //var childProcess = require('child_process')
-    //var phantomjs = require('phantomjs')
-    //var binPath = phantomjs.path
-    //
-    //var childArgs = [
-    //    path.join(__dirname, 'rasterize.js'),
-    //    'some other argument (passed to phantomjs script)'
-    //]
-    //
-    //childProcess.execFile(binPath, childArgs, function(err, stdout, stderr) {
-    //    console.log(stderr);
-    //    console.log(stdout);
-    //    console.log(binPath);
-    //    res.status(200).send('Something Happened');
-    //})
     var phantom = require('phantom-render-stream');
-    var fs = require('fs');
+
 
     var render = phantom({
         pool        : 5,           // Change the pool size. Defaults to 1
         timeout     : 30000,        // Set a render timeout in milliseconds. Defaults to 30 seconds.
         format      : 'pdf',      // The default output format. Defaults to png
         quality     : 100,        // The default image quality. Defaults to 100. Only relevant for jpeg format.
-});
+        userAgent   : req.headers['user-agent']
+    });
 
-// render a website url
+    var url = req.protocol + '://' + req.get('host') + "/#/dashboard";
+    console.log(url);
 
     res.setHeader("content-type", "application/pdf");
     res.setHeader('Content-Disposition', 'attachment; filename=google.pdf');
-    render('http://www.google.com').pipe(res);
+    render(url).pipe(res);
+
+
 
 
 })
