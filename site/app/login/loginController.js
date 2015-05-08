@@ -11,7 +11,9 @@ define([
         }
 
         $scope.setRenderable = function() {
-            window.renderable = true;
+            window.setTimeout(function() {
+                window.renderable = true;
+            },1000)
         }
 
         $scope.submit = function() {
