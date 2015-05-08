@@ -13,7 +13,7 @@ define([
         $scope.setRenderable = function() {
             window.setTimeout(function() {
                 window.renderable = true;
-            },1000)
+            },100)
         }
 
         $scope.submit = function() {

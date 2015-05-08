@@ -8,7 +8,7 @@ define([
             $location.path('/login')
         }
         $scope.hi = "hi";
-        window.renderable = true;
+        //window.renderable = true;
 
 
 
