@@ -3,6 +3,11 @@
 var OrganizationSchema= require('../schemas/organizationSchema')
 
 module.exports = {
+    read: function(callback) {
+        var query = OrganizationSchema.find({})
+        query = query.sort("name")
+        query.exec(callback);
+    },
     create : function(org, callback)  {
         var modelErrors = [];
         org.name = org.name || '';
