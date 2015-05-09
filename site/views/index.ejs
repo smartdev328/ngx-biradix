@@ -34,6 +34,38 @@
             border:0;
         }
 
+        .multi-col-list li {
+            margin-left:-30px;
+            display: block;
+            padding: 3px 3px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .multi-col-list li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .multi-col-list>li>a:hover {
+            color: #262626;
+            text-decoration: none;
+            background-color: #f5f5f5;
+        }
+
+        .multi-col-list>li>a {
+            display: block;
+            padding: 3px 3px;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+        }
+
             @media all and (min-width: 0px) and (max-width: 767px) {
                 .nav-bar-2 {
                     margin-top: 0px
@@ -60,24 +92,42 @@
         <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
     </div>
     <div style="display:none" class="loggedin">
-        <nav class="navbar navbar-inverse  hidden-xs">
+        <nav class="navbar hidden-xs">
             <div class="container-fluid">
-                <div class="navbar-header" style="padding-top:5px">
+                <div class="navbar-header" style="padding:5px 0px 5px 0px">
                     <a href="#/Dashboard"><img src="/images/organizations/biradix.png"></a>
 
                 </div>
 
-                <div class="pull-right" style="padding:15px 0px 0px 0px">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#9d9d9d;text-decoration:none">{{$root.me.title + '. ' + $root.me.last}} <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li style="z-index:10000"><a href="#/profile">Update Profile</a></li>
-                        <li style="z-index:10000"><a href="#/password">Update Password</a></li>
-                        <li style="z-index:10000"><a href ng-click="logoff()">Log Off</a></li>
+                <div class="pull-right" style="padding:15px 15px 0px 0px">
+                    Welcome Site Admin <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#333;text-decoration:none;font-weight:bold">{{$root.me.first + ' ' + $root.me.last}} <span class="caret"></span></a>
+                    <div class="dropdown-menu" role="menu" style="margin:-14px 25px 0px 0px">
+                        <div  style="width:335px">
+                            <div style="float:left;border-right:1px solid #ccc;padding-right:10px">
+                                <b style="margin-left:10px">Account</b>
+                                <ul class="multi-col-list">
+                                    <li><a href="#/profile">Update Profile</a></li>
+                                    <li><a href="#/password">Update Password</a></li>
+                                    <li><a href="#/password">Contact Us</a></li>
+                                    <li><a href ng-click="logoff()">Log Off</a></li>
+                                </ul>
+                            </div>
+                            <div style="float:left;">
+                                <b style="margin-left:10px">Settings</b>
+                                <ul class="multi-col-list">
+                                    <li><a href="#/password">Notifications</a></li>
+                                    <li><a href="#/profile">Manage Users</a></li>
+                                    <li><a href="#/password">Activity History</a></li>
+                                    <li><a href="#/password">Hide Unlinked Floorplans</a></li>
+                                </ul>
+                            </div>
+                            <Br clear="all">
+                        </div>
                     </ul>
                 </div>
             </div><!-- /.container-fluid -->
         </nav>
-        <nav class="navbar navbar-inverse nav-bar-2">
+        <nav class="navbar navbar-default nav-bar-2">
             <div class="container-fluid">
                 <div class="navbar-header">
 
@@ -93,13 +143,37 @@
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" role="button" aria-expanded="false"
                             style="padding: 5px 10px 7px 10px;">
-                        <i class="fa fa-user" style="color:white"></i>
-                        <span class="caret" style="color:white"></span>
+                        <i class="fa fa-user" style="color:#777"></i>
+                        <span class="caret" style="color:#777"></span>
                     </button>
+                    <div class="dropdown-menu pull-right hidden-sm" role="menu">
+                        <div  style="width:335px">
+                            <div style="float:left;border-right:1px solid #ccc;padding-right:10px">
+                                <b style="margin-left:10px">Account</b>
+                                <ul class="multi-col-list">
+                                    <li><a href="#/profile">Update Profile</a></li>
+                                    <li><a href="#/password">Update Password</a></li>
+                                    <li><a href="#/password">Contact Us</a></li>
+                                    <li><a href ng-click="logoff()">Log Off</a></li>
+                                </ul>
+                            </div>
+                            <div style="float:left;">
+                                <b style="margin-left:10px">Settings</b>
+                                <ul class="multi-col-list">
+                                    <li><a href="#/password">Notifications</a></li>
+                                    <li><a href="#/profile">Manage Users</a></li>
+                                    <li><a href="#/password">Activity History</a></li>
+                                    <li><a href="#/password">Hide Unlinked Floorplans</a></li>
+                                </ul>
+                            </div>
+                            <Br clear="all">
+                        </div>
+                        </ul>
+                    </div>
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
-                            style="padding: 5px 10px 7px 10px;">
-                        <i class="fa fa-search" style="color:white"></i>
+                            style="padding: 5px 15px 7px 15px;">
+                        <i class="fa fa-search" style="color:#777"></i>
                     </button>
 
                 </div>
