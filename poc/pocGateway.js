@@ -45,6 +45,30 @@ routes.get('/pdf', function(req, res) {
 
 
 })
+
+routes.get('/pdf/google', function(req, res) {
+    var phantom = require('phantom-render-stream');
+
+
+    var render = phantom({
+        pool        : 5,           // Change the pool size. Defaults to 1
+        timeout     : 30000,        // Set a render timeout in milliseconds. Defaults to 30 seconds.
+        format      : 'pdf',      // The default output format. Defaults to png
+        quality     : 100,        // The default image quality. Defaults to 100. Only relevant for jpeg format.
+        userAgent   : req.headers['user-agent']
+    });
+
+    var url = "http://www.google.com";
+    console.log(url);
+
+    res.setHeader("content-type", "application/pdf");
+    res.setHeader('Content-Disposition', 'attachment; filename=google.pdf');
+    render(url).pipe(res);
+
+
+
+
+})
 module.exports = routes;
 
 //var render = phantom({
