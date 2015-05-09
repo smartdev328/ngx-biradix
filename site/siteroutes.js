@@ -8,9 +8,9 @@ module.exports = (function() {
 
     ui.get('/', function (req, res) {
         var subdomain = req.hostname.split('.')[0].toLocaleLowerCase();
-        var logo = 'biradix'
-        console.log(subdomain)
-        res.render('index', {version: packages.version, logo: logo});
+        var logoBig = 'wood.png'
+        var logoSmall = 'wood-small.png'
+        res.render('index', {version: packages.version, logoBig: logoBig, logoSmall : logoSmall});
     })
 
     return ui;

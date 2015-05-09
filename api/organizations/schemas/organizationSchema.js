@@ -19,4 +19,4 @@ var s = new Schema({
     isDefault: Boolean
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Organization', s);

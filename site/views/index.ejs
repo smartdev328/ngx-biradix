@@ -3,7 +3,7 @@
 <head>
     <title>BI:Radix</title>
     <script type="text/javascript">window.renderable = false</script>
-    <link rel="icon" type="image/png" href="/images/organizations/<%=logo%>-small.png">
+    <link rel="icon" type="image/png" href="/images/organizations/<%=logoSmall%>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script type="text/javascript">var version="<%=version%>"</script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -76,6 +76,76 @@
                 }
             }
 
+
+        .navbar-default {
+            background-color: #3f3f3f;
+            border-color: #696969;
+        }
+        .navbar-default .navbar-brand {
+            color: #ffffff;
+        }
+        .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+            color: #ffffff;
+        }
+        .navbar-default .navbar-text {
+            color: #ffffff;
+        }
+        .navbar-default .navbar-nav > li > a {
+            color: #ffffff;
+        }
+        .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+            color: #ffffff;
+        }
+        .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+            color: #ffffff;
+            background-color: #696969;
+        }
+        .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+            color: #ffffff;
+            background-color: #696969;
+        }
+        .navbar-default .navbar-toggle {
+            border-color: #696969;
+        }
+        .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+            background-color: #696969;
+        }
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: #ffffff;
+        }
+        .navbar-default .navbar-collapse,
+        .navbar-default .navbar-form {
+            border-color: #ffffff;
+        }
+        .navbar-default .navbar-link {
+            color: #ffffff;
+        }
+        .navbar-default .navbar-link:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 767px) {
+            .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+                color: #ffffff;
+            }
+            .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+                color: #ffffff;
+            }
+            .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+                color: #ffffff;
+                background-color: #696969;
+            }
+        }‏
+
+
+
+
+
+
+
+
+
+
     </style>
 </head>
 <body ng-controller="rootController">
@@ -85,7 +155,8 @@
     <div style="display:none" class="loggedout">
         <div class="loggedout-main">
             <div class="loggedout-container clearfix">
-                <a href="#/login"><img src="/images/organizations/<%=logo%>.png"></a><br />
+                <a href="#/login"><img src="/images/organizations/<%=logoBig%>"></a><br />
+                <br>
                 <div ui-view="loggedOutView"></div>
             </div>
         </div>
@@ -94,8 +165,8 @@
     <div style="display:none" class="loggedin">
         <nav class="navbar hidden-xs">
             <div class="container-fluid">
-                <div class="navbar-header" style="padding:5px 0px 5px 0px">
-                    <a href="#/Dashboard"><img src="/images/organizations/biradix.png"></a>
+                <div class="navbar-header" style="padding:5px 0px 10px 0px">
+                    <a href="#/Dashboard"><img src="/images/organizations/<%=logoBig%>"></a>
 
                 </div>
 
@@ -138,7 +209,7 @@
                     </button>
 
                     <div class="pull-left visible-xs-block" style="padding-top:10px">
-                        <a href="#/Dashboard"><img src="/images/organizations/biradix-small.png"></a>
+                        <a href="#/Dashboard"><img src="/images/organizations/<%=logoSmall%>"></a>
                     </div>
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" role="button" aria-expanded="false"

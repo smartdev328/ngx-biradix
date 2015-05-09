@@ -2,6 +2,7 @@ var async = require("async");
 var UserSchema = require('../api/users/schemas/userSchema')
 var AccessService = require('../api/access/services/accessService')
 var UserService = require('../api/users/services/userService')
+var OrgService = require('../api/organizations/services/organizationService')
 
 module.exports = {
     init: function () {
@@ -21,6 +22,11 @@ module.exports = {
                     function(admin, adminRole, callbackw) {
                         AdminMembership(admin,adminRole, function() {
                             callbackw(null,admin, adminRole)
+                        })
+                    },
+                    function(admin, adminRole, callbackw) {
+                        BiradixCreate(function(Biradix) {
+                            callbackw(null,admin, adminRole, Biradix)
                         })
                     }
 
@@ -78,4 +84,46 @@ var AdminMembership = function(AdminUser, AdminRole, callback) {
         }
         callback();
     })
+}
+
+var BiradixCreate = function(callback) {
+    var Biradix = {name: "BI:Radix", subdomain: 'platform', logoBig: 'biradix.png', logoSmall: 'biradix-small.png', isDefault : true}
+    var Demo = {name: "Demo Residential", subdomain: 'demo', logoBig: 'demo.png', logoSmall: 'demo-small.png'}
+    var Greystar = {name: "Greystar", subdomain: 'greystar', logoBig: 'greystar.jpg', logoSmall: 'greystar-small.png'}
+    var Wood = {name: "Wood Residential", subdomain: 'wood', logoBig: 'wood.png', logoSmall: 'wood-small.png'}
+    var Alliance = {name: "Alliance Residential", subdomain: 'alliance', logoBig: 'alliance.png', logoSmall: 'alliance-small.png'}
+
+
+    async.parallel([
+        function(callbackp) {
+            OrgService.create(Biradix, function(err, org){
+                Biradix = org;
+                callbackp(null)
+            });
+        },
+        function(callbackp) {
+            OrgService.create(Alliance, function(err, org){
+                callbackp(null)
+            });
+        },
+        function(callbackp) {
+            OrgService.create(Demo, function(err, org){
+                callbackp(null)
+            });
+        },
+        function(callbackp) {
+            OrgService.create(Wood, function(err, org){
+                callbackp(null)
+            });
+        },
+        function(callbackp) {
+            OrgService.create(Greystar, function(err, org){
+                callbackp(null)
+            });
+        },
+    ],function(err) {
+        callback(Biradix)
+    })
+
+
 }
