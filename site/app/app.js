@@ -11,13 +11,14 @@ function resolve($q, ctrl) {
 }
 
 define([
-
+    '../components/ngProgress/module'
 ], function () {
     var app = angular.module('Team', [
         , 'ui.router'
         , 'ui.bootstrap'
         , 'toastr'
         , 'ngCookies'
+        , 'ngProgress'
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider) {

@@ -4,8 +4,7 @@ define([
     '../services/authService'
 ], function (app) {
 
-    return app
-        .controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService', '$window', function ($scope, $location, $rootScope, $cookies, $authService, $window) {
+    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService', '$window', '$modal', function ($scope, $location, $rootScope, $cookies, $authService, $window, $modal) {
 
             if ($cookies.get('token')) {
                 $rootScope.loggedIn = true;
@@ -79,6 +78,25 @@ define([
                 $cookies.remove('token');
                 $rootScope.swaptoLoggedOut();
                 $location.path("/login")
+            }
+
+            $scope.updateProfile = function() {
+                require([
+                    '/app/updateprofile/updateProfileController.js'
+                ], function () {
+                    var modalInstance = $modal.open({
+                        templateUrl: '/app/updateprofile/updateProfile.html',
+                        controller: 'updateProfileController',
+                        size: "sm",
+                        keyboard: false,
+                        backdrop: 'static',
+                        resolve: {
+                            me: function () {
+                                return $rootScope.me;
+                            }
+                        }
+                    });
+                });
             }
 
         }]);

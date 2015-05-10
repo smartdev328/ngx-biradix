@@ -2,7 +2,7 @@ requirejs.config({
     urlArgs: "bust=" + version,
     map: {
         '*': {
-            'css': '../libs/requirejs/css-min'
+            'css': '/libs/requirejs/css-min.js'
         }
     }
 });

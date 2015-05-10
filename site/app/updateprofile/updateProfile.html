@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">Update Profile</h2>
+</div>
+<div class="modal-body">
+    <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)">
+        <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.FirstName">
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.LastName">
+            </div>
+        </div>
+
+        <div class="form-group " ng-class="{'has-error': myForm.email.$dirty && myForm.email.$invalid, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.EmailAddress" ng-disabled="!canUpdateEmail">
+            </div>
+        </div>
+
+        <div style="margin:0px auto;width:75px">
+            <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
+        </div>
+    </form>
+</div>
