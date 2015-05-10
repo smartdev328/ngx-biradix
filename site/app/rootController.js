@@ -41,6 +41,14 @@ define([
 
                     $('body').css("background-color","#FFF")
                     $('body').css("padding-top","0px")
+
+                    $('.logoBig').each(function(l) {
+                        this.src = "/images/organizations/" + $rootScope.me.org.logoBig
+                    })
+
+                    $('.logoSmall').each(function(l) {
+                        this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
+                    })
                 })
 
 

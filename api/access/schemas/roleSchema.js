@@ -18,6 +18,14 @@ var RoleSchema = new Schema({
     isadmin: {
         type: Boolean,
         default: false
+    },
+    orgid: {
+        type: Schema.Types.ObjectId,
+        index: true
+    },
+    tags: {
+        type: Array,
+        index: true
     }
 });
 

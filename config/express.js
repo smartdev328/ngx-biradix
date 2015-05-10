@@ -39,13 +39,13 @@ module.exports = {
             }));
 
             //Middleware to insure session token is not hi-jacked by looking at user agent
-            app.use(function (req, res, next) {
-                if (req.user && req.user.useragent !== req.headers['user-agent']) {
-                    return res.status(401).json('Unauthorized request');
-                }
-
-                next();
-            });
+            //app.use(function (req, res, next) {
+            //    if (req.user && req.user.useragent !== req.headers['user-agent']) {
+            //        return res.status(401).json('Unauthorized request');
+            //    }
+            //
+            //    next();
+            //});
 
             // Should be placed before express.static
             // To ensure that all assets and data are compressed (utilize bandwidth)

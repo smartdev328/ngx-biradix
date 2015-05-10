@@ -45,6 +45,8 @@
                 newrole.parentid = role.parentid;
                 newrole.upline = upline;
                 newrole.isadmin = role.isadmin;
+                newrole.orgid = role.orgid;
+                newrole.tags = role.tags;
 
                 newrole.save(function (err, newrole2) {
                     if (err) {

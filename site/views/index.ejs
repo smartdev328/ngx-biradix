@@ -29,9 +29,17 @@
             margin-top: -22px
         }
 
-        .navbar-inverse {
+        .navbar {
             border-radius: 0;
             border:0;
+        }
+
+        .fa {
+            color: #1E90FF
+        }
+
+        .navbar-default .navbar-nav>li>a:hover {
+            background-color: #eee;
         }
 
         .multi-col-list li {
@@ -98,12 +106,12 @@
         <nav class="navbar hidden-xs">
             <div class="container-fluid">
                 <div class="navbar-header" style="padding:5px 0px 10px 0px">
-                    <a href="#/Dashboard"><img src="/images/organizations/<%=logoBig%>"></a>
+                    <a href="#/Dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
 
                 </div>
 
                 <div class="pull-right" style="padding:15px 15px 0px 0px">
-                    Welcome Site Admin <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#333;text-decoration:none;font-weight:bold">{{$root.me.first + ' ' + $root.me.last}} <span class="caret"></span></a>
+                    Welcome {{$root.me.roles[0]}} <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#333;text-decoration:none;font-weight:bold">{{$root.me.first + ' ' + $root.me.last}} <span class="caret"></span></a>
                     <div class="dropdown-menu" role="menu" style="margin:-14px 25px 0px 0px" ng-include="'/app/dashboard/userMenu.html'">
 
                     </div>
@@ -121,7 +129,7 @@
                     </button>
 
                     <div class="pull-left visible-xs-block" style="padding-top:10px">
-                        <a href="#/Dashboard"><img src="/images/organizations/<%=logoSmall%>"></a>
+                        <a href="#/Dashboard"><img src="/images/organizations/<%=logoSmall%>" class="logoSmall"></a>
                     </div>
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" role="button" aria-expanded="false"
