@@ -92,7 +92,8 @@ module.exports = {
         }
 
         UserSchema.findOne({
-                emailLower: user.emailLower
+                emailLower: user.emailLower,
+                isSystem: false
             }, function(err, usr) {
 
             if (err) {
@@ -175,6 +176,7 @@ module.exports = {
             newUser.date = Date.now();
             newUser.salt = UtilityService.makeSalt();
             newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
+            newUser.isSystem = user.isSystem || false;
 
             newUser.save(function (err, usr) {
                 if (err) {

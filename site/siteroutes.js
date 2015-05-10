@@ -10,7 +10,6 @@ module.exports = (function() {
     ui.get('/', function (req, res) {
         var subdomain = req.hostname.split('.')[0].toLowerCase();
 
-        subdomain = "greystar";
         OrgService.read(function(err, orgs) {
 
             var org = _.find(orgs, function(org) { return org.subdomain.toLowerCase() == subdomain})

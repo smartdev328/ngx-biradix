@@ -10,23 +10,23 @@ module.exports = {
             if (!usr) {
                 async.waterfall([
                     function(callbackw){
-                        AdminCreate(function(admin) {
-                            callbackw(null,admin)
+                        UsersCreate(function(users) {
+                            callbackw(null,users)
                         });
                     },
-                    function(admin, callbackw) {
-                        CompaniesCreate(function(Biradix, Alliance, Demo, Wood, Greystar) {
-                            callbackw(null,admin, Biradix, Alliance, Demo, Wood, Greystar)
+                    function(users, callbackw) {
+                        CompaniesCreate(function(companies) {
+                            callbackw(null,users, companies)
                         })
                     },
-                    function(admin, Biradix, Alliance, Demo, Wood, Greystar, callbackw) {
-                        RolesCreate(Biradix, Alliance, Demo, Wood, Greystar, function(adminRole) {
-                            callbackw(null,admin, adminRole)
+                    function(users, companies, callbackw) {
+                        RolesCreate(companies, function(roles) {
+                            callbackw(null,users, roles)
                         })
                     },
-                    function(admin, adminRole, callbackw) {
-                        AdminMembership(admin,adminRole, function() {
-                            callbackw(null,admin, adminRole)
+                    function(users, roles, callbackw) {
+                        MembershipsCreate(users,roles, function() {
+                            callbackw(null,users, roles)
                         })
                     },
 
@@ -40,161 +40,233 @@ module.exports = {
 }
 
 
-var AdminCreate = function(callback) {
+var UsersCreate = function(callback) {
 
-    var user =  {};
-    user.email = "eugene@biradix.com";
-    user.password = "Testing21!";
-    user.first = "Eugene";
-    user.last = "Kobrinsky";
+    var System = {email : "admin@biradix.com", password: "$%%##FSDFSD", first : "System", last : "User", isSystem : true};
+    var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K"};
+    var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z"};
+    var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V"};
+    var Michelle = {email : "mbetchner@greystar.com", password: "Betchner321", first : "Michelle", last : "Betchner"};
 
-    UserService.insert(user, function(usr) {
-            callback(usr)
-        },
-        function(errors) {
-            throw("Unable to seed: "+ errors[0].msg);
+
+    async.parallel({
+            System: function(callbackp) {
+                UserService.insert(System, function(usr) {
+                        callbackp(null, usr)
+                    },
+                    function(errors) {
+                        throw("Unable to seed: "+ errors[0].msg);
+                    }
+                );
+            },
+            Alex: function(callbackp) {
+                UserService.insert(Alex, function(usr) {
+                        callbackp(null, usr)
+                    },
+                    function(errors) {
+                        throw("Unable to seed: "+ errors[0].msg);
+                    }
+                );
+            },
+            Eugene: function(callbackp) {
+                UserService.insert(Eugene, function(usr) {
+                        callbackp(null, usr)
+                    },
+                    function(errors) {
+                        throw("Unable to seed: "+ errors[0].msg);
+                    }
+                );
+            },
+            Blerim: function(callbackp) {
+                UserService.insert(Blerim, function(usr) {
+                        callbackp(null, usr)
+                    },
+                    function(errors) {
+                        throw("Unable to seed: "+ errors[0].msg);
+                    }
+                );
+            },
+            Michelle: function(callbackp) {
+                UserService.insert(Michelle, function(usr) {
+                        callbackp(null, usr)
+                    },
+                    function(errors) {
+                        throw("Unable to seed: "+ errors[0].msg);
+                    }
+                );
+            }
+        },function(err, users) {
+            callback(users)
         }
     );
 
+
 }
 
-var RolesCreate = function(Biradix, Alliance, Demo, Wood, Greystar, callback) {
-    var Admin = {name: "Site Admin", isadmin: true, tags: ['Admin'], orgid : Biradix._id}
-    var AllianceCM = {name: "Corporate Manager", tags: ['CM'], orgid : Alliance._id}
-    var AllianceRM = {name: "Regional Manager", tags: ['RM'], orgid : Alliance._id}
-    var AllianceBM = {name: "Business Manager", tags: ['BM'], orgid : Alliance._id}
-    var AlliancePO = {name: "Property Owner", tags: ['PO'], orgid : Alliance._id}
-    var DemoCM = {name: "Corporate Manager", tags: ['CM'], orgid : Demo._id}
-    var DemoRM = {name: "Regional Manager", tags: ['RM'], orgid : Demo._id}
-    var DemoBM = {name: "Business Manager", tags: ['BM'], orgid : Demo._id}
-    var DemoPO = {name: "Property Owner", tags: ['PO'], orgid : Demo._id}
-    var WoodCM = {name: "Corporate Manager", tags: ['CM'], orgid : Wood._id}
-    var WoodRM = {name: "Regional Manager", tags: ['RM'], orgid : Wood._id}
-    var WoodBM = {name: "Business Manager", tags: ['BM'], orgid : Wood._id}
-    var WoodPO = {name: "Property Owner", tags: ['PO'], orgid : Wood._id}
-    var GreystarCM = {name: "Corporate Manager", tags: ['CM'], orgid : Greystar._id}
-    var GreystarRM = {name: "Regional Manager", tags: ['RM'], orgid : Greystar._id}
-    var GreystarBM = {name: "Business Manager", tags: ['BM'], orgid : Greystar._id}
-    var GreystarPO = {name: "Property Owner", tags: ['PO'], orgid : Greystar._id}
+var RolesCreate = function(Orgs, callback) {
+    var Admin = {name: "Site Admin", isadmin: true, tags: ['Admin'], orgid : Orgs.Biradix._id}
+    var AllianceCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Alliance._id}
+    var AllianceRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Alliance._id}
+    var AllianceBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Alliance._id}
+    var AlliancePO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Alliance._id}
+    var DemoCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Demo._id}
+    var DemoRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Demo._id}
+    var DemoBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Demo._id}
+    var DemoPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Demo._id}
+    var WoodCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Wood._id}
+    var WoodRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Wood._id}
+    var WoodBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Wood._id}
+    var WoodPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Wood._id}
+    var GreystarCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Greystar._id}
+    var GreystarRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Greystar._id}
+    var GreystarBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Greystar._id}
+    var GreystarPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Greystar._id}
+
+    async.parallel({
+        Admin: function(callbackp) {
+            AccessService.createRole(Admin, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        AllianceCM: function(callbackp) {
+            AccessService.createRole(AllianceCM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        AllianceRM: function(callbackp) {
+            AccessService.createRole(AllianceRM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        AllianceBM: function(callbackp) {
+            AccessService.createRole(AllianceBM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        AlliancePO: function(callbackp) {
+            AccessService.createRole(AlliancePO, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        DemoCM: function(callbackp) {
+            AccessService.createRole(DemoCM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        DemoRM: function(callbackp) {
+            AccessService.createRole(DemoRM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        DemoBM: function(callbackp) {
+            AccessService.createRole(DemoBM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        DemoPO: function(callbackp) {
+            AccessService.createRole(DemoPO, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        WoodCM: function(callbackp) {
+            AccessService.createRole(WoodCM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        WoodRM: function(callbackp) {
+            AccessService.createRole(WoodRM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        WoodBM: function(callbackp) {
+            AccessService.createRole(WoodBM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        WoodPO: function(callbackp) {
+            AccessService.createRole(WoodPO, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        GreystarCM: function(callbackp) {
+            AccessService.createRole(GreystarCM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        GreystarRM: function(callbackp) {
+            AccessService.createRole(GreystarRM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        GreystarBM: function(callbackp) {
+            AccessService.createRole(GreystarBM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        GreystarPO: function(callbackp) {
+            AccessService.createRole(GreystarPO, function(err, role){
+                callbackp(null, role)
+            });
+        }
+},function(err, roles) {callback(roles)})
+
+
+}
+
+var MembershipsCreate = function(Users, Roles, callback) {
+
+    var System = {userid: Users.System._id, roleid: Roles.Admin._id};
+    var Alex = {userid: Users.Alex._id, roleid: Roles.Admin._id};
+    var Eugene = {userid: Users.Eugene._id, roleid: Roles.Admin._id};
+    var Blerim = {userid: Users.Blerim._id, roleid: Roles.Admin._id};
+    var Michelle = {userid: Users.Michelle._id, roleid: Roles.GreystarCM._id};
 
     async.parallel([
-        function(callbackp) {
-            AccessService.createRole(Admin, function(err, role){
-                Admin = role;
-                callbackp(null)
-            });
+        function (callbackp) {
+            AccessService.assignMembership(System, function(err, obj) {
+                if (err) {
+                    throw("Unable to seed: "+ err[0].msg);
+                }
+                callbackp();
+            })
         },
-        function(callbackp) {
-            AccessService.createRole(AllianceCM, function(err, role){
-                AllianceCM = role;
-                callbackp(null)
-            });
+        function (callbackp) {
+            AccessService.assignMembership(Alex, function(err, obj) {
+                if (err) {
+                    throw("Unable to seed: "+ err[0].msg);
+                }
+                callbackp();
+            })
         },
-        function(callbackp) {
-            AccessService.createRole(AllianceRM, function(err, role){
-                AllianceRM = role;
-                callbackp(null)
-            });
+        function (callbackp) {
+            AccessService.assignMembership(Eugene, function(err, obj) {
+                if (err) {
+                    throw("Unable to seed: "+ err[0].msg);
+                }
+                callbackp();
+            })
         },
-        function(callbackp) {
-            AccessService.createRole(AllianceBM, function(err, role){
-                AllianceBM = role;
-                callbackp(null)
-            });
+        function (callbackp) {
+            AccessService.assignMembership(Blerim, function(err, obj) {
+                if (err) {
+                    throw("Unable to seed: "+ err[0].msg);
+                }
+                callbackp();
+            })
         },
-        function(callbackp) {
-            AccessService.createRole(AlliancePO, function(err, role){
-                AlliancePO = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(DemoCM, function(err, role){
-                DemoCM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(DemoRM, function(err, role){
-                DemoRM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(DemoBM, function(err, role){
-                DemoBM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(DemoPO, function(err, role){
-                DemoPO = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(WoodCM, function(err, role){
-                WoodCM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(WoodRM, function(err, role){
-                WoodRM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(WoodBM, function(err, role){
-                WoodBM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(WoodPO, function(err, role){
-                WoodPO = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(GreystarCM, function(err, role){
-                GreystarCM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(GreystarRM, function(err, role){
-                GreystarRM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(GreystarBM, function(err, role){
-                GreystarBM = role;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            AccessService.createRole(GreystarPO, function(err, role){
-                GreystarPO = role;
-                callbackp(null)
-            });
-        },
-    ],function(err) {callback(Admin)})
-
-
-}
-
-var AdminMembership = function(AdminUser, AdminRole, callback) {
-
-    var member = {userid: AdminUser._id, roleid: AdminRole._id};
-
-    AccessService.assignMembership(member, function(err, obj) {
-        if (err) {
-            throw("Unable to seed: "+ err[0].msg);
+        function (callbackp) {
+            AccessService.assignMembership(Michelle, function(err, obj) {
+                if (err) {
+                    throw("Unable to seed: "+ err[0].msg);
+                }
+                callbackp();
+            })
         }
+    ], function() {
         callback();
     })
+
+
 }
 
 var CompaniesCreate = function(callback) {
@@ -205,43 +277,48 @@ var CompaniesCreate = function(callback) {
     var Alliance = {name: "Alliance Residential", subdomain: 'alliance', logoBig: 'alliance.png', logoSmall: 'alliance-small.png'}
 
 
-    async.parallel([
-        function(callbackp) {
-            OrgService.create(Biradix, function(err, org){
-                Biradix = org;
-                callbackp(null)
-            });
-        },
-        function(callbackp) {
-            OrgService.create(Alliance, function(err, org){
-                Alliance = org
-                callbackp(err)
-            });
-        },
-        function(callbackp) {
-            OrgService.create(Demo, function(err, org){
-                Demo = org;
-                callbackp(err)
-            });
-        },
-        function(callbackp) {
-            OrgService.create(Wood, function(err, org){
-                Wood = org
-                callbackp(err)
-            });
-        },
-        function(callbackp) {
-            OrgService.create(Greystar, function(err, org){
-                Greystar = org
-                callbackp(err)
-            });
-        },
-    ],function(err) {
+    async.parallel({
+        Biradix: function(callbackp)
+    {
+        OrgService.create(Biradix, function (err, org) {
+            callbackp(err, org)
+        });
+    }
+    ,
+        Alliance: function (callbackp) {
+        OrgService.create(Alliance, function (err, org) {
+            callbackp(err, org)
+        });
+    }
+
+    ,
+        Demo: function (callbackp) {
+        OrgService.create(Demo, function (err, org) {
+            callbackp(err, org)
+        });
+    }
+
+    ,
+        Wood: function (callbackp) {
+        OrgService.create(Wood, function (err, org) {
+            callbackp(err, org)
+        });
+    }
+
+    ,
+        Greystar: function (callbackp) {
+        OrgService.create(Greystar, function (err, org) {
+            callbackp(err, org)
+        });
+    }
+
+
+},function(err, orgs) {
         if (err) {
             throw Error(err);
 
         }
-        callback(Biradix, Alliance, Demo, Wood, Greystar)
+        callback(orgs)
     })
 
 

@@ -22,7 +22,8 @@ var UserSchema = new Schema({
         type: String
     },
     salt: String,
-    date: Date
+    date: Date,
+    isSystem: Boolean
 });
 
 module.exports = mongoose.model('User', UserSchema);
