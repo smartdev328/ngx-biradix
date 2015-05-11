@@ -21,11 +21,17 @@ define([
         , 'ngProgress'
     ]);
 
-    app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider) {
+    app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {
         app.controller = $controllerProvider.register;
         app.factory = $provide.factory;
         app.directive = $compileProvider.directive;
         app.filter = $filterProvider.register;
+
+        angular.extend(toastrConfig, {
+            timeOut: 5000,
+            closeButton: true,
+            positionClass: 'toast-top-full-width'
+        });
 
         $urlRouterProvider.otherwise("/dashboard");
 

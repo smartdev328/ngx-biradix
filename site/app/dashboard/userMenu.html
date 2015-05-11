@@ -12,8 +12,8 @@
         <b style="margin-left:10px">Settings</b>
         <ul class="multi-col-list">
             <li><a href="#/password"><i class="fa fa-bell"></i> Notifications</a></li>
-            <li><a href="#/profile"><i class="fa fa-users"></i> Manage Users</a></li>
-            <li><a href="#/password"><i class="fa fa-history"></i> Activity History</a></li>
+            <li ng-show="$root.me.permissions.indexOf('Users') > -1"><a href="#/profile"><i class="fa fa-users"></i> Manage Users</a></li>
+            <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/password"><i class="fa fa-history"></i> Activity History</a></li>
             <li><a href="#/password"><i class="fa fa-chain-broken"></i> Hide Unlinked</a></li>
         </ul>
     </div>

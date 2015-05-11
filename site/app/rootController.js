@@ -96,6 +96,12 @@ define([
                             }
                         }
                     });
+
+                    modalInstance.result.then(function () {
+                        //Save successfully
+                    }, function () {
+                        //Cancel
+                    });
                 });
             }
 

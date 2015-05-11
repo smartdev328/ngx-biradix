@@ -233,5 +233,75 @@ module.exports = {
             });
         });
 
+    },
+    updateMe : function(Operator, user, callback)  {
+        var modelErrors = [];
+        user.email = user.email || '';
+        user.emailLower = user.email.toLowerCase();
+        user.first = user.first || '';
+        user.last = user.last || '';
+
+        if (!Operator._id)
+        {
+            modelErrors.push({msg : 'Invalid user id.'});
+        }
+
+        if (user.first === '')
+        {
+            modelErrors.push({param: 'first', msg : 'First name is required.'});
+        }
+
+        if (user.last === '')
+        {
+            modelErrors.push({param: 'last', msg : 'Last name is required.'});
+        }
+
+        if (!user.email.match(UtilityService.sRegexEmail))
+        {
+            modelErrors.push({param: 'email', msg : 'Invalid email address.'});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        UserSchema.findOne({
+            _id: Operator._id
+        }, function(err, usr) {
+            if (err || !usr) {
+                modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
+                callback(modelErrors,null);
+                return;
+            };
+
+            if (Operator.permissions.indexOf('Users/UpdateEmail') == -1) {
+                user.email = usr.email;
+                user.emailLower = usr.emailLower;
+            }
+
+            UserSchema.findOne({emailLower: user.emailLower, _id: {'$ne': Operator._id }},function(err, dupeuser) {
+                if (dupeuser) {
+                    modelErrors.push({param: 'email', msg : 'Email address already exists.'});
+                    callback(modelErrors,null);
+                    return;
+                }
+                usr.email = user.email;
+                usr.emailLower = user.emailLower;
+                usr.first = user.first;
+                usr.last = user.last;
+
+                usr.save(function (err, usr) {
+                    if (err) {
+                        modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
+                        callback(modelErrors,null);
+                        return;
+                    };
+                    callback(null,usr);
+                });
+
+            })
+
+        });
+
     }
 }

@@ -21,10 +21,7 @@ define([
 
             $authService.login($scope.email, $scope.password).then(function (authinfo) {
                     if (authinfo.data.token == null) {
-                        toastr.error('Your email address / password appear to be incorrect. Please verify them and try logging in again.', {
-                            timeOut: 10000,
-                            closeButton: true
-                        });
+                        toastr.error('Your email address / password appear to be incorrect. Please verify them and try logging in again.');
                         $scope.localLoading = false;
                     }
                     else {
@@ -32,10 +29,7 @@ define([
                     }
             },
             function(errors) {
-                toastr.error('Unable to access the system as this time. Please contact an administrator', {
-                    timeOut: 10000,
-                    closeButton: true
-                });
+                toastr.error('Unable to access the system as this time. Please contact an administrator');
                 $scope.localLoading = false;
             });
         }

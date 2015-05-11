@@ -25,13 +25,9 @@ define(['app'], function (app) {
             });
         }
 
-        fac.create = function (user) {
-            return $http.post('/api/1.0/users/create', user).success(function (response) {
-                if (response.token != null) {
-                    var expireDate = new Date();
-                    expireDate.setDate(expireDate.getDate() + 7);
-                    $cookies.put('token',response.token, {'expires': expireDate})
-                }
+        fac.updateMe = function (account) {
+            return $http.put('/api/1.0/users/me', account, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
                 return response;

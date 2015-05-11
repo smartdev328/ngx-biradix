@@ -3,12 +3,12 @@ define([
     'app',
 ], function (app) {
      app.controller
-        ('updateProfileController', ['$scope', '$modalInstance', 'me', '$authService', 'ngProgress', function ($scope, $modalInstance, me, $authService, ngProgress) {
+        ('updateProfileController', ['$scope', '$modalInstance', 'me', '$authService', 'ngProgress', '$rootScope','toastr', function ($scope, $modalInstance, me, $authService, ngProgress, $rootScope, toastr) {
             $scope.alerts = [];
             
-            $scope.user = { FirstName: me.first, LastName: me.last, EmailAddress: me.email }
+            $scope.user = { first: me.first, last: me.last, email: me.email }
 
-            $scope.canUpdateEmail = true//me.permissions.CanUpdateEmail;
+            $scope.canUpdateEmail = $rootScope.me.permissions.indexOf('Users/UpdateEmail') > -1
             $scope.cancel = function () {
                 $modalInstance.dismiss('cancel');
             };
@@ -17,21 +17,25 @@ define([
                 $scope.alerts = [];
                 $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
-                $authService.updateAccount(user).then(function (resp) {
+                $authService.updateMe(user).then(function (resp) {
                     $('button.contact-submit').prop('disabled', false);
-                    if (resp.data.Errors && resp.data.Errors.length > 0) {
-                        $scope.alerts.push({ type: 'danger', msg: resp.data.Errors.join("<br>") });
+                    ngProgress.reset();
+                    if (resp.data.errors && resp.data.errors.length > 0) {
+                        var errors = _.pluck(resp.data.errors,"msg").join("<br>")
+                        toastr.error(errors);
                     }
                     else {
-                        $scope.alerts.push({ type: 'success', msg: "Account updated successfully." });
-                        me.Last = user.LastName;
-                        me.First = user.FirstName;
-                        me.Email = user.EmailAddress;
+                        toastr.success('Profile updated successfully.');
+                        me.last = user.last;
+                        me.first = user.first;
+                        me.email = user.email;
+                        $modalInstance.close();
                     }
                     
-                    ngProgress.reset();
+
                 }, function (err) {
-                    $scope.alerts.push({ type: 'danger', msg: "Unable to update your account. Please contact the administrator." });
+                    $('button.contact-submit').prop('disabled', false);
+                    toastr.error('Unable to access the system as this time. Please contact an administrator');
                     ngProgress.reset();
                 });
             }

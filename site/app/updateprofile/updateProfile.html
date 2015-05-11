@@ -7,21 +7,21 @@
         <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.FirstName">
+                <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
             </div>
         </div>
 
         <div class="form-group" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.LastName">
+                <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
             </div>
         </div>
 
         <div class="form-group " ng-class="{'has-error': myForm.email.$dirty && myForm.email.$invalid, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-at"></i></div>
-                <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.EmailAddress" ng-disabled="!canUpdateEmail">
+                <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email" ng-disabled="!canUpdateEmail">
             </div>
         </div>
 

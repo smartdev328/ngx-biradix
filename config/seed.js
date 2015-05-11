@@ -25,6 +25,11 @@ module.exports = {
                         })
                     },
                     function(users, roles, callbackw) {
+                        PermissionsCreate(roles,function() {
+                            callbackw(null,users, roles)
+                        })
+                    },
+                    function(users, roles, callbackw) {
                         MembershipsCreate(users,roles, function() {
                             callbackw(null,users, roles)
                         })
@@ -104,7 +109,7 @@ var UsersCreate = function(callback) {
 }
 
 var RolesCreate = function(Orgs, callback) {
-    var Admin = {name: "Site Admin", isadmin: true, tags: ['Admin'], orgid : Orgs.Biradix._id}
+    var BiradixAdmin = {name: "Site Admin", isadmin: true, tags: ['Admin'], orgid : Orgs.Biradix._id}
     var AllianceCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Alliance._id}
     var AllianceRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Alliance._id}
     var AllianceBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Alliance._id}
@@ -123,8 +128,8 @@ var RolesCreate = function(Orgs, callback) {
     var GreystarPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Greystar._id}
 
     async.parallel({
-        Admin: function(callbackp) {
-            AccessService.createRole(Admin, function(err, role){
+        BiradixAdmin: function(callbackp) {
+            AccessService.createRole(BiradixAdmin, function(err, role){
                 callbackp(null, role)
             });
         },
@@ -215,10 +220,10 @@ var RolesCreate = function(Orgs, callback) {
 
 var MembershipsCreate = function(Users, Roles, callback) {
 
-    var System = {userid: Users.System._id, roleid: Roles.Admin._id};
-    var Alex = {userid: Users.Alex._id, roleid: Roles.Admin._id};
-    var Eugene = {userid: Users.Eugene._id, roleid: Roles.Admin._id};
-    var Blerim = {userid: Users.Blerim._id, roleid: Roles.Admin._id};
+    var System = {userid: Users.System._id, roleid: Roles.BiradixAdmin._id};
+    var Alex = {userid: Users.Alex._id, roleid: Roles.BiradixAdmin._id};
+    var Eugene = {userid: Users.Eugene._id, roleid: Roles.BiradixAdmin._id};
+    var Blerim = {userid: Users.Blerim._id, roleid: Roles.BiradixAdmin._id};
     var Michelle = {userid: Users.Michelle._id, roleid: Roles.GreystarCM._id};
 
     async.parallel([
@@ -323,3 +328,87 @@ var CompaniesCreate = function(callback) {
 
 
 }
+
+var PermissionsCreate = function(roles, callback) {
+
+    var permissions = [
+        {executorid: roles.BiradixAdmin._id, resource: "Users/LogInAs", allow: true, type: 'Execute'},
+
+        {executorid: roles.GreystarCM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarRM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarBM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarCM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarRM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarBM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarCM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarRM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarBM._id, resource: "Properties", allow: true, type: 'Execute'},
+
+        {executorid: roles.AllianceCM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceRM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceBM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceCM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceRM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceBM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceCM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceRM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceBM._id, resource: "Properties", allow: true, type: 'Execute'},
+
+        {executorid: roles.WoodCM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.WoodRM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.WoodBM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.WoodCM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.WoodRM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.WoodBM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.WoodCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.WoodRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.WoodBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.WoodCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.WoodRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.WoodCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
+        {executorid: roles.WoodCM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.WoodRM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.WoodBM._id, resource: "Properties", allow: true, type: 'Execute'},
+
+        {executorid: roles.DemoCM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.DemoRM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.DemoBM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.DemoCM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.DemoRM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.DemoBM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.DemoCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.DemoRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.DemoBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.DemoCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.DemoRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.DemoCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
+        {executorid: roles.DemoCM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.DemoRM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.DemoBM._id, resource: "Properties", allow: true, type: 'Execute'},        
+    ];
+
+    async.eachLimit(permissions, 10, function(permission, callbackp){
+        AccessService.createPermission(permission, function (err, perm) {
+            callbackp(err, perm)
+        });
+    }, function(err) {
+        callback();
+    });
+
+
+
+
+}
+

@@ -13,6 +13,17 @@ var async = require('async')
 
 var userRoutes = express.Router();
 
+userRoutes.put('/me', function (req, res) {
+    UserService.updateMe(req.user, req.body, function (err, usr) {
+            if (err) {
+                return res.status(200).json({errors: err, user: null});
+            }
+            res.status(200).json({errors: err, user: UtilityService.getPublicJSON(usr)});
+        }
+    );
+
+})
+
 
 userRoutes.post('/login', function (req, res) {
    var user =  {}
@@ -25,11 +36,6 @@ userRoutes.post('/login', function (req, res) {
                     memberships: function(callbackp) {
                         AccessService.getMemberships(usr._id,function(err,memberships) {
                             callbackp(null, memberships)
-                        });
-                    },
-                    viewpermissions: function(callbackp) {
-                        AccessService.getPermissions(usrobj, ['View'], function(viewpermissions) {
-                            callbackp(null, viewpermissions)
                         });
                     },
                     userroles: function(callbackp) {
@@ -56,23 +62,26 @@ userRoutes.post('/login', function (req, res) {
                     //usrobj.useragent = req.headers['user-agent'];
                     //usrobj.ip = req.connection.remoteAddress;
 
-                    usrobj.viewpermissions = all.viewpermissions;
+                    //permissions need memberships
+                    AccessService.getPermissions(usrobj, ['Execute'], function(permissions) {
+                        usrobj.permissions = permissions;
 
-                    var final = _.filter(all.roles, function(x) {
-                        return all.userroles.indexOf(x._id.toString()) > -1
-                    })
-                    usrobj.roles = _.pluck(final,'name');
-
-                    if (final.length > 0) {
-                        usrobj.org = _.find(all.orgs, function(x) {
-                            return final[0].orgid.toString() == x._id.toString();
+                        var final = _.filter(all.roles, function(x) {
+                            return all.userroles.indexOf(x._id.toString()) > -1
                         })
-                    }
-                    //TODO: Global Path to org images
+                        usrobj.roles = _.pluck(final,'name');
 
-                    var token = jwt.sign(usrobj, settings.SECRET, {expiresInMinutes: 60 * 24 * 7});
+                        if (final.length > 0) {
+                            usrobj.org = _.find(all.orgs, function(x) {
+                                return final[0].orgid.toString() == x._id.toString();
+                            })
+                        }
 
-                    res.status(200).json({token: token});
+                        var token = jwt.sign(usrobj, settings.SECRET, {expiresInMinutes: 60 * 24 * 7});
+
+                        res.status(200).json({token: token});
+
+                    });
                 })
         },
         function(errors) {

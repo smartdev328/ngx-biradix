@@ -163,9 +163,9 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                    <li ng-class="{active: nav == 'Dashboard'}"><a href="#/">Dashboard</a></li>
-                    <li ng-class="{active: nav == 'Dashboard'}"><a href="#/">My Properties</a></li>
-                    <li ng-class="{active: nav == 'Dashboard'}"><a href="#/">Reporting</a></li>
+                    <li ng-class="{active: $root.nav == 'Dashboard'}"><a href="#/">Dashboard</a></li>
+                    <li ng-class="{active: $root.nav == 'Properties'}" ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/">My Properties</a></li>
+                    <li ng-class="{active: $root.nav == 'Reporting'}"><a href="#/">Reporting</a></li>
                         </ul>
 
 
