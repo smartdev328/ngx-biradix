@@ -1,0 +1,49 @@
+<h3>Contact Us</h3>
+
+By Phone: <b>(602) 892-4788</b><br />
+<div style="height: 6px"></div>
+- or -<br />
+<div style="height: 6px"></div>
+By Email: <a href="mailto:support@biradix.com" style="color: #428bca;">support@biradix.com</a><br />
+<div style="height: 6px"></div>
+- or -<br />
+<div style="height: 6px"></div>
+By filling out the form below:<br />
+<br />
+<form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="btnSubmit(myForm,user)">
+    <div class="form-group" ng-class="{'has-success': myForm.name.$dirty && myForm.name.$valid}">
+        <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-user"></i></div>
+            <input autocomplete="off" type="text" name="name" class="form-control" id="name" placeholder="Enter name" required ng-model="user.name">
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': myForm.email.$dirty && myForm.email.$invalid, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
+        <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+            <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email">
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-success': myForm.subject.$dirty && myForm.subject.$valid}">
+        <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-ellipsis-h"></i></div>
+            <input autocomplete="on" type="text" name="subject" class="form-control" id="subject" placeholder="Enter subject" required ng-model="user.subject">
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-success': myForm.message.$dirty && myForm.message.$valid}">
+        <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-edit"></i></div>
+            <textarea autocomplete="on" name="message" class="form-control" id="message" placeholder="Enter message" required ng-model="user.message" style="height: 100px"></textarea>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-large btn-block" type="submit">Send</button>
+</form>
+<br>
+<div style="text-align:center">
+    <small >
+        <A href="#/login"><i class="fa fa-arrow-circle-o-left"></i> Back to Login</A>
+    </small>
+</div>

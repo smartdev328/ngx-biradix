@@ -23,7 +23,10 @@ var UserSchema = new Schema({
     },
     salt: String,
     date: Date,
-    isSystem: Boolean
+    isSystem: Boolean,
+    settings: {
+        hideUnlinked: Boolean
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

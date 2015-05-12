@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">Contact Us</h2>
+</div>
+<div class="modal-body">
+    <div ng-show="done">
+        Thank you for your submission. Someone will contact you shortly.<br />
+        <br />
+        <div style="margin:0px auto;width:75px">
+            <button class="btn btn-success btn-large btn-block" ng-click="cancel()" type="button">Close</button>
+        </div>
+    </div>
+    <div ng-show="!done">
+        By Phone: <b>(602) 892-4788</b><br />
+        <div style="height: 6px"></div>
+        - or -<br />
+        <div style="height: 6px"></div>
+        By Email: <a href="mailto:support@biradix.com" style="color: #428bca;">support@biradix.com</a><br />
+        <div style="height: 6px"></div>
+        - or -<br />
+        <div style="height: 6px"></div>
+        By filling out the form below:<br />
+        <br />
+        <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(msg)">
+
+            <div class="form-group" ng-class="{'has-success': myForm.subject.$dirty && myForm.subject.$valid}">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-ellipsis-h"></i></div>
+                    <input autocomplete="on" type="text" name="subject" class="form-control" id="subject" placeholder="Enter subject" required ng-model="msg.subject">
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-success': myForm.message.$dirty && myForm.message.$valid}">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-edit"></i></div>
+                    <textarea autocomplete="on" name="message" class="form-control" id="message" placeholder="Enter message" required ng-model="msg.message" style="height: 100px"></textarea>
+                </div>
+            </div>
+
+            <div style="margin:0px auto;width:75px">
+                <button class="btn btn-primary btn-large btn-block contact-submit" type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+</div>

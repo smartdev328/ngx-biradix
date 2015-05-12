@@ -4,7 +4,7 @@ define([
     '../../services/authService'
 ], function (app) {
 
-    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService', function ($scope,$rootScope,$location,toastr, $authService) {
+    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window', function ($scope,$rootScope,$location,toastr, $authService,$window) {
 
         if ($rootScope.loggedIn) {
             $location.path('/dashboard')
@@ -25,7 +25,7 @@ define([
                         $scope.localLoading = false;
                     }
                     else {
-                        location.href= '/';
+                         $window.location.href = '/';
                     }
             },
             function(errors) {
@@ -34,9 +34,6 @@ define([
             });
         }
 
-        $scope.join = function() {
-            $location.path('/join')
-        }
 
         }]);
 });

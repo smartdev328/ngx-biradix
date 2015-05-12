@@ -3,8 +3,10 @@ define([
     'app',
 ], function (app) {
      app.controller
-        ('updateProfileController', ['$scope', '$modalInstance', 'me', '$authService', 'ngProgress', '$rootScope','toastr', function ($scope, $modalInstance, me, $authService, ngProgress, $rootScope, toastr) {
-            $scope.alerts = [];
+        ('updateProfileController', ['$scope', '$modalInstance', 'me', '$authService', 'ngProgress', '$rootScope','toastr', '$location', function ($scope, $modalInstance, me, $authService, ngProgress, $rootScope, toastr, $location) {
+            if (!$rootScope.loggedIn) {
+                $location.path('/login')
+            }
             
             $scope.user = { first: me.first, last: me.last, email: me.email }
 
@@ -14,7 +16,6 @@ define([
             };
 
             $scope.submit = function (user) {
-                $scope.alerts = [];
                 $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
                 $authService.updateMe(user).then(function (resp) {
@@ -35,7 +36,7 @@ define([
 
                 }, function (err) {
                     $('button.contact-submit').prop('disabled', false);
-                    toastr.error('Unable to access the system as this time. Please contact an administrator');
+                    toastr.error('Unable to perform action. Please contact an administrator');
                     ngProgress.reset();
                 });
             }

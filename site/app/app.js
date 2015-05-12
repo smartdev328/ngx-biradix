@@ -46,6 +46,34 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'login/loginController')}}
             })
+            .state('contact', {
+                url: "/contact",
+                views: {
+                    "loggedOutView": {
+                        templateUrl: "app/contactOff/contact.html",
+                        controller : "contactOffController"
+                    }
+                },
+                resolve: {get : function($q) {return resolve($q, 'contactOff/contactOffController')}}
+            })
+            .state('contact_thank_you', {
+                url: "/contact/thankyou",
+                views: {
+                    "loggedOutView": {
+                        templateUrl: "app/contactOff/thankyou.html",
+                    }
+                }
+            })
+            .state('password', {
+                url: "/password",
+                views: {
+                    "loggedOutView": {
+                        templateUrl: "app/passwordOff/password.html",
+                        controller : "passwordOffController"
+                    }
+                },
+                resolve: {get : function($q) {return resolve($q, 'passwordOff/passwordOffController')}}
+            })
             .state('dashboard', {
                 url: "/dashboard",
                 views: {
@@ -56,6 +84,17 @@ define([
 
                 },
                 resolve: {get : function($q) {return resolve($q, 'dashboard/dashboardController')}}
+            })
+            .state('bob', {
+                url: "/bob",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/bob/bob.html" ,
+                        controller : "bobController"
+                    }
+
+                },
+                resolve: {get : function($q) {return resolve($q, 'bob/bobController')}}
             })
     });
 

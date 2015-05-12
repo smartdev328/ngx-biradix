@@ -9,6 +9,11 @@ var LiquidService = require('../../utilities/services/liquidService')
 var settings = require('../../../config/settings')
 
 module.exports = {
+    getUserById: function(id, callback) {
+        UserSchema.findOne({
+            _id: id
+        }, callback)
+    },
     getUserByRecoveryToken: function(token,callback) {
         if (token) {
             jwt.verify(token, settings.SECRET, function(err, decoded) {
@@ -48,7 +53,7 @@ module.exports = {
                     return callback(false);
                 }
 
-                var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresInMinutes: 30 });
+                var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresInSeconds: 30 * 60 });
 
                 fs.readFile(process.cwd() +'/api/business/templates/password.html', 'utf8', function (err,data) {
                     LiquidService.parse(data, {first: usr.first, email: usr.email, link: process.env.baseurl + "/p/" + token },  null, function(result) {
@@ -177,6 +182,9 @@ module.exports = {
             newUser.salt = UtilityService.makeSalt();
             newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
             newUser.isSystem = user.isSystem || false;
+            newUser.settings = {
+                hideUnlinked : false
+            }
 
             newUser.save(function (err, usr) {
                 if (err) {
@@ -231,6 +239,42 @@ module.exports = {
                 };
                 callback(null,newusr);
             });
+        });
+
+    },
+    updateSettings : function(Operator, settings, callback)  {
+        var modelErrors = [];
+
+
+        if (!Operator._id)
+        {
+            modelErrors.push({msg : 'Invalid user id.'});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        UserSchema.findOne({
+            _id: Operator._id
+        }, function(err, usr) {
+            if (err || !usr) {
+                modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
+                callback(modelErrors,null);
+                return;
+            };
+            usr.settings = settings
+
+            usr.save(function (err, usr) {
+                if (err) {
+                    modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
+                    callback(modelErrors,null);
+                    return;
+                };
+                callback(null,usr.settings);
+            });
+
+
         });
 
     },
@@ -303,5 +347,5 @@ module.exports = {
 
         });
 
-    }
+    },
 }

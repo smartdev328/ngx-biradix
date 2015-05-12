@@ -24,6 +24,27 @@ userRoutes.put('/me', function (req, res) {
 
 })
 
+userRoutes.put('/me/settings', function (req, res) {
+    UserService.updateSettings(req.user, req.body, function (err, usr) {
+            if (err) {
+                return res.status(200).json({errors: err, user: null});
+            }
+            res.status(200).json({errors: err, user: UtilityService.getPublicJSON(usr)});
+        }
+    );
+
+})
+
+userRoutes.get('/refreshToken', function (req, res) {
+    UserService.getUserById(req.user._id, function(err, usr) {
+            if (err) {
+                return res.status(200).json(errors);
+            }
+            getToken(usr, res);
+
+        }
+    );
+})
 
 userRoutes.post('/login', function (req, res) {
    var user =  {}
@@ -31,58 +52,8 @@ userRoutes.post('/login', function (req, res) {
     user.password = req.body.password;
 
     UserService.login(user, function(usr) {
-            var usrobj = UtilityService.getPublicJSON(usr);
-            async.parallel({
-                    memberships: function(callbackp) {
-                        AccessService.getMemberships(usr._id,function(err,memberships) {
-                            callbackp(null, memberships)
-                        });
-                    },
-                    userroles: function(callbackp) {
-                        AccessService.getAssignedRoles(usrobj._id, function(err, userroles) {
-                            userroles = JSON.parse(JSON.stringify(userroles))
-                            callbackp(null, userroles)
-                        });
-                    },
-                    roles: function(callbackp) {
-                        AccessService.getRoles(function (err, roles) {
-                            callbackp(null, roles)
-                        });
-                    },
-                    orgs: function(callbackp) {
-                        OrgService.read(function (err, orgs) {
-                            callbackp(null, orgs)
-                        });
-                    }
-                }
-                ,function(err, all) {
-                    delete usrobj.date;
-                    delete usrobj.__v;
-                    usrobj.memberships = all.memberships;
-                    //usrobj.useragent = req.headers['user-agent'];
-                    //usrobj.ip = req.connection.remoteAddress;
+            getToken(usr, res);
 
-                    //permissions need memberships
-                    AccessService.getPermissions(usrobj, ['Execute'], function(permissions) {
-                        usrobj.permissions = permissions;
-
-                        var final = _.filter(all.roles, function(x) {
-                            return all.userroles.indexOf(x._id.toString()) > -1
-                        })
-                        usrobj.roles = _.pluck(final,'name');
-
-                        if (final.length > 0) {
-                            usrobj.org = _.find(all.orgs, function(x) {
-                                return final[0].orgid.toString() == x._id.toString();
-                            })
-                        }
-
-                        var token = jwt.sign(usrobj, settings.SECRET, {expiresInMinutes: 60 * 24 * 7});
-
-                        res.status(200).json({token: token});
-
-                    });
-                })
         },
         function(errors) {
             res.status(200).json(errors);
@@ -110,3 +81,64 @@ userRoutes.post('/create', function (req, res) {
 
 
 module.exports = userRoutes;
+
+
+function getToken(usr, res) {
+    var usrobj = UtilityService.getPublicJSON(usr);
+    async.parallel({
+            memberships: function(callbackp) {
+                AccessService.getMemberships(usr._id,function(err,memberships) {
+                    callbackp(null, memberships)
+                });
+            },
+            userroles: function(callbackp) {
+                AccessService.getAssignedRoles(usrobj._id, function(err, userroles) {
+                    userroles = JSON.parse(JSON.stringify(userroles))
+                    callbackp(null, userroles)
+                });
+            },
+            roles: function(callbackp) {
+                AccessService.getRoles(function (err, roles) {
+                    callbackp(null, roles)
+                });
+            },
+            orgs: function(callbackp) {
+                OrgService.read(function (err, orgs) {
+                    callbackp(null, orgs)
+                });
+            }
+        }
+        ,function(err, all) {
+            delete usrobj.date;
+            delete usrobj.__v;
+            usrobj.memberships = all.memberships;
+            usrobj.settings = usrobj.settings || {}
+            //usrobj.useragent = req.headers['user-agent'];
+            //usrobj.ip = req.connection.remoteAddress;
+
+            //permissions need memberships
+            AccessService.getPermissions(usrobj, ['Execute'], function(permissions) {
+                usrobj.permissions = permissions;
+
+                var final = _.filter(all.roles, function(x) {
+                    return all.userroles.indexOf(x._id.toString()) > -1
+                })
+                usrobj.roles = _.pluck(final,'name');
+
+                if (final.length > 0) {
+                    usrobj.org = _.find(all.orgs, function(x) {
+                        return final[0].orgid.toString() == x._id.toString();
+                    })
+                }
+
+                var token = jwt.sign(usrobj, settings.SECRET, {expiresInSeconds: 60 * 60});
+
+                delete usrobj.memberships;
+                delete usrobj.ip;
+                delete usrobj.useragent;
+
+                res.status(200).json({token: token, user: usrobj});
+
+            });
+        })
+}
