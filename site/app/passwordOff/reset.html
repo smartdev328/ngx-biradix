@@ -1,0 +1,27 @@
+<h3>Reset Password</h3>
+
+Use this section to update your password for <b>{{email}}</b><br />
+</div>
+<br />
+
+<form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="btnSubmit()">
+    <div class="form-group" ng-class="{'has-error': myForm.newpassword.$dirty && myForm.newpassword.$invalid, 'has-success': myForm.newpassword.$dirty && myForm.newpassword.$valid}">
+        <input autocomplete="off" type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New password" ng-model="newpassword" required ng-minlength="8">
+        <div class="text-danger" ng-show="myForm.newpassword.$error.minlength"><small>8 characters minimum</small></div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': myForm.confirmpassword.$dirty && myForm.confirmpassword.$invalid, 'has-success': myForm.confirmpassword.$dirty && myForm.confirmpassword.$valid}">
+        <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="confirmpassword" required ng-minlength="8">
+        <div class="text-danger" ng-show="myForm.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
+    </div>
+    <button class="btn btn-primary btn-large btn-block" type="submit" ng-show="!localLoading">Reset</button>
+    <div style="width:25px;margin:0px auto;padding-top:5px" ng-show="localLoading">
+        <i class="fa fa-spinner fa-spin fa-2x" style="color:#00d4b4"></i>
+    </div>
+</form>
+<br>
+<div style="text-align:center">
+    <small >
+        <A href="#/login"><i class="fa fa-arrow-circle-o-left"></i> Back to Login</A>
+    </small>
+</div>

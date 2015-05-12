@@ -1,17 +1,22 @@
 'use strict';
 
 var express = require('express');
-var jwt = require('jsonwebtoken');
 var _ = require('lodash');
 var UtilityService=  require('../services/utilityService')
 var UserService=  require('../services/userService')
 var AccessService = require('../../access/services/accessService')
-var OrgService = require('../../organizations/services/organizationService')
 var settings = require('../../../config/settings')
-var async = require('async')
 
 
 var userRoutes = express.Router();
+
+userRoutes.post('/resetPassword', function (req, res) {
+    UserService.resetPassword(req.body.email, "http://" + req.headers.host, function(success) {
+            res.status(200).json({ success: success });
+        }
+    );
+
+})
 
 userRoutes.put('/me', function (req, res) {
     UserService.updateMe(req.user, req.body, function (err, usr) {
@@ -78,67 +83,42 @@ userRoutes.post('/create', function (req, res) {
     );
 });
 
+userRoutes.post('/recover', function (req, res) {
+    var token = req.body.token;
 
+    UserService.getUserByRecoveryToken(token, function (usr) {
+        if (usr) {
+            return res.status(200).json({email: usr.email});
+        } else {
+            res.status(200).json({email: null});
+        }
+    })
+
+})
+
+userRoutes.post('/updatePasswordByToken', function (req, res) {
+    var token = req.body.token;
+
+    UserService.getUserByRecoveryToken(token, function (usr) {
+        if (usr) {
+            UserService.updatePassword(usr._id, req.body.password, function(err, newusr) {
+                if (err) {
+                    return res.status(200).json({success: false, errors: err});
+                } else {
+                    return res.status(200).json({success: true});
+                }
+            })
+        } else {
+            res.status(200).json({success: false});
+        }
+    })
+})
 
 module.exports = userRoutes;
 
 
 function getToken(usr, res) {
-    var usrobj = UtilityService.getPublicJSON(usr);
-    async.parallel({
-            memberships: function(callbackp) {
-                AccessService.getMemberships(usr._id,function(err,memberships) {
-                    callbackp(null, memberships)
-                });
-            },
-            userroles: function(callbackp) {
-                AccessService.getAssignedRoles(usrobj._id, function(err, userroles) {
-                    userroles = JSON.parse(JSON.stringify(userroles))
-                    callbackp(null, userroles)
-                });
-            },
-            roles: function(callbackp) {
-                AccessService.getRoles(function (err, roles) {
-                    callbackp(null, roles)
-                });
-            },
-            orgs: function(callbackp) {
-                OrgService.read(function (err, orgs) {
-                    callbackp(null, orgs)
-                });
-            }
-        }
-        ,function(err, all) {
-            delete usrobj.date;
-            delete usrobj.__v;
-            usrobj.memberships = all.memberships;
-            usrobj.settings = usrobj.settings || {}
-            //usrobj.useragent = req.headers['user-agent'];
-            //usrobj.ip = req.connection.remoteAddress;
-
-            //permissions need memberships
-            AccessService.getPermissions(usrobj, ['Execute'], function(permissions) {
-                usrobj.permissions = permissions;
-
-                var final = _.filter(all.roles, function(x) {
-                    return all.userroles.indexOf(x._id.toString()) > -1
-                })
-                usrobj.roles = _.pluck(final,'name');
-
-                if (final.length > 0) {
-                    usrobj.org = _.find(all.orgs, function(x) {
-                        return final[0].orgid.toString() == x._id.toString();
-                    })
-                }
-
-                var token = jwt.sign(usrobj, settings.SECRET, {expiresInSeconds: 60 * 60});
-
-                delete usrobj.memberships;
-                delete usrobj.ip;
-                delete usrobj.useragent;
-
-                res.status(200).json({token: token, user: usrobj});
-
-            });
-        })
+    UserService.getFullUser(usr, function(resp) {
+        res.status(200).json(resp);
+    })
 }

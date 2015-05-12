@@ -1,18 +1,23 @@
 'use strict';
 
 var jwt = require('jsonwebtoken');
-var fs = require('fs')
+var _ = require('lodash');
 var UserSchema= require('../schemas/userSchema')
 var UtilityService = require('./utilityService')
 var EmailService = require('../../business/services/emailService')
-var LiquidService = require('../../utilities/services/liquidService')
 var settings = require('../../../config/settings')
+var async = require('async')
+var OrgService = require('../../organizations/services/organizationService')
+var AccessService = require('../../access/services/accessService')
 
 module.exports = {
     getUserById: function(id, callback) {
         UserSchema.findOne({
             _id: id
         }, callback)
+    },
+    getFullUser: function (usr, callback) {
+        getFullUser(usr, callback);
     },
     getUserByRecoveryToken: function(token,callback) {
         if (token) {
@@ -36,7 +41,7 @@ module.exports = {
             callback(null)
         }
     },
-    resetPassword: function(email,callback) {
+    resetPassword: function(email,base,callback) {
         email = email || '';
 
         if (email === '')
@@ -55,20 +60,20 @@ module.exports = {
 
                 var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresInSeconds: 30 * 60 });
 
-                fs.readFile(process.cwd() +'/api/business/templates/password.html', 'utf8', function (err,data) {
-                    LiquidService.parse(data, {first: usr.first, email: usr.email, link: process.env.baseurl + "/p/" + token },  null, function(result) {
-                        var email = {
-                            to: usr.email,
-                            subject: 'Password recovery',
-                            html: result
-                        };
-                        EmailService.send(email,function(emailError,status) {
-                            return callback(true);
-                        })
+                getFullUser(usr, function(resp) {
+                    var logo = base + "/images/organizations/" + resp.user.org.logoBig;
+                    var email = {
+                        to: usr.email,
+                        subject: 'Password recovery',
+                        logo : logo,
+                        template : 'password.html',
+                        templateData : {first: usr.first, email: usr.email, link: base + "/p/" + token }
+                    };
+
+                    EmailService.send(email,function(emailError,status) {
+                        return callback(true);
                     })
-
-                });
-
+                })
 
 
             }
@@ -150,7 +155,7 @@ module.exports = {
 
         if (!user.password.match(UtilityService.sRegexPassword))
         {
-            modelErrors.push({param: 'password', msg : 'Passwords must be at least 6 characters'});
+            modelErrors.push({param: 'password', msg : 'Passwords must be at least 8 characters'});
         }
 
         if (modelErrors.length > 0) {
@@ -205,7 +210,7 @@ module.exports = {
 
         if (!password.match(UtilityService.sRegexPassword))
         {
-            modelErrors.push({param: 'password', msg : 'Passwords must be at least 8 characters and contain at least: 1 Upper Case, 1 Lower Case, 1 Special Character (!@#$&*), 1 Number'});
+            modelErrors.push({param: 'password', msg : 'Passwords must be at least 8 characters.'});
         }
 
         if (modelErrors.length > 0) {
@@ -347,5 +352,66 @@ module.exports = {
 
         });
 
-    },
+    }
+}
+
+
+function getFullUser(usr, callback) {
+    var usrobj = UtilityService.getPublicJSON(usr);
+    async.parallel({
+            memberships: function(callbackp) {
+                AccessService.getMemberships(usr._id,function(err,memberships) {
+                    callbackp(null, memberships)
+                });
+            },
+            userroles: function(callbackp) {
+                AccessService.getAssignedRoles(usrobj._id, function(err, userroles) {
+                    userroles = JSON.parse(JSON.stringify(userroles))
+                    callbackp(null, userroles)
+                });
+            },
+            roles: function(callbackp) {
+                AccessService.getRoles(function (err, roles) {
+                    callbackp(null, roles)
+                });
+            },
+            orgs: function(callbackp) {
+                OrgService.read(function (err, orgs) {
+                    callbackp(null, orgs)
+                });
+            }
+        }
+        ,function(err, all) {
+            delete usrobj.date;
+            delete usrobj.__v;
+            usrobj.memberships = all.memberships;
+            usrobj.settings = usrobj.settings || {}
+            //usrobj.useragent = req.headers['user-agent'];
+            //usrobj.ip = req.connection.remoteAddress;
+
+            //permissions need memberships
+            AccessService.getPermissions(usrobj, ['Execute'], function(permissions) {
+                usrobj.permissions = permissions;
+
+                var final = _.filter(all.roles, function(x) {
+                    return all.userroles.indexOf(x._id.toString()) > -1
+                })
+                usrobj.roles = _.pluck(final,'name');
+
+                if (final.length > 0) {
+                    usrobj.org = _.find(all.orgs, function(x) {
+                        return final[0].orgid.toString() == x._id.toString();
+                    })
+                }
+
+                var token = jwt.sign(usrobj, settings.SECRET, {expiresInSeconds: 60 * 60});
+
+                delete usrobj.memberships;
+                delete usrobj.ip;
+                delete usrobj.useragent;
+
+                callback({token: token, user: usrobj});
+
+            });
+        })
 }

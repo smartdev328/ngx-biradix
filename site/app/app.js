@@ -75,6 +75,32 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'passwordOff/passwordOffController')}}
             })
+            .state('password_sent', {
+                url: "/password/sent",
+                views: {
+                    "loggedOutView": {
+                        templateUrl: "app/passwordOff/sent.html",
+                    }
+                }
+            })
+            .state('password_invalid', {
+                url: "/password/invalid",
+                views: {
+                    "loggedOutView": {
+                        templateUrl: "app/passwordOff/invalid.html",
+                    }
+                }
+            })
+            .state('password_reset', {
+                url: "/password/reset/:token",
+                views: {
+                    "loggedOutView": {
+                        templateUrl: "app/passwordOff/reset.html",
+                        controller : "resetController"
+                    }
+                },
+                resolve: {get : function($q) {return resolve($q, 'passwordOff/resetController')}}
+            })
             .state('dashboard', {
                 url: "/dashboard",
                 views: {

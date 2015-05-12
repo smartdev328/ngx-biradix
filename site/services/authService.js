@@ -55,6 +55,28 @@ define(['app'], function (app) {
             });
         }
 
+        fac.recoverPassword = function (email) {
+            return $http.post('/api/1.0/users/resetPassword', {email: email}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
+        fac.getEmailByRecoveryToken = function (token) {
+            return $http.post('/api/1.0/users/recover', {token: token}).success(function (response) {
+                return response;
+            }).error(function (response) { return response; });
+        }
+
+        fac.updatePassword = function (token, password) {
+            return $http.post('/api/1.0/users/updatePasswordByToken', { token: token, password: password }).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });
