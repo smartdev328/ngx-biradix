@@ -30,7 +30,8 @@ define([
         angular.extend(toastrConfig, {
             timeOut: 5000,
             closeButton: true,
-            positionClass: 'toast-top-full-width'
+            positionClass: 'toast-top-full-width',
+            allowHtml: true
         });
 
         $urlRouterProvider.otherwise("/dashboard");

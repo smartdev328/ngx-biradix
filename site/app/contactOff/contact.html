@@ -10,7 +10,7 @@ By Email: <a href="mailto:support@biradix.com" style="color: #428bca;">support@b
 <div style="height: 6px"></div>
 By filling out the form below:<br />
 <br />
-<form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="btnSubmit(myForm,user)">
+<form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="btnSubmit()">
     <div class="form-group" ng-class="{'has-success': myForm.name.$dirty && myForm.name.$valid}">
         <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-user"></i></div>
@@ -39,7 +39,10 @@ By filling out the form below:<br />
         </div>
     </div>
 
-    <button class="btn btn-primary btn-large btn-block" type="submit">Send</button>
+    <button class="btn btn-primary btn-large btn-block" type="submit" ng-show="!localLoading">Send</button>
+    <div style="width:25px;margin:0px auto;padding-top:5px" ng-show="localLoading">
+        <i class="fa fa-spinner fa-spin fa-2x" style="color:#00d4b4"></i>
+    </div>
 </form>
 <br>
 <div style="text-align:center">
