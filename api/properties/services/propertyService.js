@@ -19,6 +19,8 @@ module.exports = {
             n.phone = property.phone;
             n.owner = property.owner;
             n.management = property.management;
+            n.yearBuilt = property.yearBuilt;
+
             n.date = Date.now();
 
             n.save(function (err, prop) {
