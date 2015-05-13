@@ -3,6 +3,10 @@ var UserSchema = require('../api/users/schemas/userSchema')
 var AccessService = require('../api/access/services/accessService')
 var UserService = require('../api/users/services/userService')
 var OrgService = require('../api/organizations/services/organizationService')
+var PropertyService = require('./api/properties/services/propertyService')
+//var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome'}
+//
+//PropertyService.create(Aurelian, function() {})
 
 module.exports = {
     init: function () {

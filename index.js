@@ -13,6 +13,7 @@ console.error = function(msg) {
     process.stderr.write(msg);
 };
 
+
 conn.once('open', function () {
     require('./config/seed').init();
     require('./config/express').init(app)
@@ -26,4 +27,5 @@ conn.once('open', function () {
         res.redirect('/#/password/reset/' + req.params.token)
     })
     require('./config/cluster').init(app)
+
 });
