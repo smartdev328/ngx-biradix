@@ -1,10 +1,11 @@
 'use strict';
 define([
     'app',
-    '../services/authService'
+    '../services/authService',
+    '../services/propertyService'
 ], function (app) {
 
-    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService, $window, $modal, toastr,ngProgress,$timeout) {
+    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $modal, toastr,ngProgress,$timeout) {
 
         if ($cookies.get('token')) {
             $rootScope.loggedIn = true;
@@ -227,6 +228,16 @@ define([
                     //Cancel
                 });
             });
+        }
+
+        $scope.getLocation = function (val) {
+            return $propertyService.search({search: val}).then(function (response) {
+                return response.data.properties
+            });
+        };
+
+        $scope.searchSelected = function (item, model, label) {
+            console.log(item)
         }
 
     }]);

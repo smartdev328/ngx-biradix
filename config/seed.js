@@ -20,13 +20,14 @@ module.exports = {
                             callbackw(null,users, companies)
                         })
                     },
+
                     function(users, companies, callbackw) {
-                        PropertiesCreate(function(properties) {
-                            callbackw(null,users, companies, properties)
+                        RolesCreate(companies, function(roles) {
+                            callbackw(null,users, companies, roles)
                         })
                     },
-                    function(users, companies, properties, callbackw) {
-                        RolesCreate(companies, function(roles) {
+                    function(users, companies, roles, callbackw) {
+                        PropertiesCreate(companies,function(properties) {
                             callbackw(null,users, roles, properties)
                         })
                     },
@@ -50,13 +51,13 @@ module.exports = {
     }
 }
 
-var PropertiesCreate = function(callback) {
-    var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome', yearBuilt: 2007}
-    var Augustus = { name: 'Augustus Apartments', address: '7700 E. Roosevelt Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 821-6060', owner: 'Octavian Empire', management: 'Octavian Empire', yearBuilt: 2006}
+var PropertiesCreate = function(companies,callback) {
+    var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome', yearBuilt: 2007, orgid: companies.Demo._id}
+    var Augustus = { name: 'Augustus Apartments', address: '7700 E. Roosevelt Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 821-6060', owner: 'Octavian Empire', management: 'Octavian Empire', yearBuilt: 2006, orgid: companies.Demo._id }
     var Nero = { name: 'Nero Palace', address: '2500 N. Hayden Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 782-6699', owner: 'Nero Residential Capital', management: 'Nero Residential', yearBuilt: 2006}
-    var Marcus = { name: 'Marcus Aurelius Place', address: '7800 E. McDowell Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 786-3323', owner: 'Roman Residential Services', management: 'Roman Residential Services', yearBuilt: 2006}
+    var Marcus = { name: 'Marcus Aurelius Place', address: '7800 E. McDowell Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 786-3323', owner: 'Roman Residential Services', management: 'Roman Residential Services', yearBuilt: 2006, orgid: companies.Greystar._id}
 
-    var Geta = { name: 'Geta Residential', address: '3500 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 840-6655', owner: 'Colosseum Capital', management: 'Colosseum Properties', yearBuilt: 2006}
+    var Geta = { name: 'Geta Residential', address: '3500 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 840-6655', owner: 'Colosseum Capital', management: 'Colosseum Properties', yearBuilt: 2006, orgid: companies.Greystar._id}
     var Titus = { name: 'Titus Place', address: '7700 E. Osborn St.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 276-4310', owner: 'Titus Investments', management: 'Titus Investments', yearBuilt: 2007}
     var Probus = { name: 'Probus Properties', address: '7800 E. Camelback Rd.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 457-8787', owner: 'Rome', management: 'Rome', yearBuilt: 2007}
 
@@ -65,7 +66,7 @@ var PropertiesCreate = function(callback) {
             Aurelian: function (callbackp) {
                 PropertyService.create(Aurelian, function (err, prop) {
                         if (err) {
-                            throw("Unable to seed: " + errors[0].msg);
+                            throw("Unable to seed: " + err[0].msg);
                         }
                         callbackp(null, prop)
                     }
@@ -74,7 +75,7 @@ var PropertiesCreate = function(callback) {
             Augustus: function (callbackp) {
                 PropertyService.create(Augustus, function (err, prop) {
                         if (err) {
-                            throw("Unable to seed: " + errors[0].msg);
+                            throw("Unable to seed: " + err[0].msg);
                         }
                         callbackp(null, prop)
                     }
@@ -83,7 +84,7 @@ var PropertiesCreate = function(callback) {
             Nero: function (callbackp) {
                 PropertyService.create(Nero, function (err, prop) {
                         if (err) {
-                            throw("Unable to seed: " + errors[0].msg);
+                            throw("Unable to seed: " + err[0].msg);
                         }
                         callbackp(null, prop)
                     }
@@ -92,7 +93,7 @@ var PropertiesCreate = function(callback) {
             Marcus: function (callbackp) {
                 PropertyService.create(Marcus, function (err, prop) {
                         if (err) {
-                            throw("Unable to seed: " + errors[0].msg);
+                            throw("Unable to seed: " + err[0].msg);
                         }
                         callbackp(null, prop)
                     }
@@ -101,7 +102,7 @@ var PropertiesCreate = function(callback) {
             Geta: function (callbackp) {
                 PropertyService.create(Geta, function (err, prop) {
                         if (err) {
-                            throw("Unable to seed: " + errors[0].msg);
+                            throw("Unable to seed: " + err[0].msg);
                         }
                         callbackp(null, prop)
                     }
@@ -110,7 +111,7 @@ var PropertiesCreate = function(callback) {
             Titus: function (callbackp) {
                 PropertyService.create(Titus, function (err, prop) {
                         if (err) {
-                            throw("Unable to seed: " + errors[0].msg);
+                            throw("Unable to seed: " + err[0].msg);
                         }
                         callbackp(null, prop)
                     }
@@ -119,7 +120,7 @@ var PropertiesCreate = function(callback) {
             Probus: function (callbackp) {
                 PropertyService.create(Probus, function (err, prop) {
                         if (err) {
-                            throw("Unable to seed: " + errors[0].msg);
+                            throw("Unable to seed: " + err[0].msg);
                         }
                         callbackp(null, prop)
                     }
@@ -484,25 +485,6 @@ var PermissionsCreate = function(roles, properties, callback) {
         {executorid: roles.DemoCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.DemoRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.DemoBM._id, resource: "Properties", allow: true, type: 'Execute'},
-
-        {executorid: roles.DemoCM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertyManage'},
-        {executorid: roles.DemoCM._id, resource: properties.Augustus._id.toString(), allow: true, type: 'PropertyManage'},
-        {executorid: roles.GreystarCM._id, resource: properties.Marcus._id.toString(), allow: true, type: 'PropertyManage'},
-        {executorid: roles.GreystarCM._id, resource: properties.Geta._id.toString(), allow: true, type: 'PropertyManage'},
-
-        {executorid: roles.DemoCM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.DemoRM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.DemoBM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.WoodCM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.WoodRM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.WoodBM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.AllianceCM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.AllianceRM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.AllianceBM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.GreystarCM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.GreystarRM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-        {executorid: roles.GreystarBM._id, resource: properties.Aurelian._id.toString(), allow: true, type: 'PropertySearch'},
-
     ];
 
     async.eachLimit(permissions, 10, function(permission, callbackp){

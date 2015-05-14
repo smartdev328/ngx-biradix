@@ -3,7 +3,7 @@
         <b style="margin-left:10px">Account</b>
         <ul class="multi-col-list">
             <li><a href ng-click="updateProfile()"><i class="fa fa-user"></i> Update Profile</a></li>
-            <li><a href="#/password"><i class="fa fa-key"></i> Update Password</a></li>
+            <li><a href ng-clikc="updatePassword()"><i class="fa fa-key"></i> Update Password</a></li>
             <li><a href ng-click="contact()"><i class="fa fa-envelope"></i> Contact Us</a></li>
             <li><a href ng-click="logoff()"><i class="fa fa-power-off"></i> Log Off</a></li>
         </ul>
@@ -11,10 +11,9 @@
     <div style="float:left;">
         <b style="margin-left:10px">Settings</b>
         <ul class="multi-col-list">
-            <li><a href="#/password"><i class="fa fa-bell"></i> Notifications</a></li>
-            <li ng-show="$root.me.permissions.indexOf('Users') > -1"><a href="#/profile"><i class="fa fa-users"></i> Manage Users</a></li>
+            <li ng-show="$root.me.permissions.indexOf('Users') > -1"><a href="#/manageusers"><i class="fa fa-users"></i> Manage Users</a></li>
             <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/password"><i class="fa fa-history"></i> Activity History</a></li>
-            <li ng-show="!$root.me.settings.hideUnlinked"><a href ng-click="toggleUnlniked()"><i class="fa fa-chain-broken"></i> Hide Unlinked</a></li>
+            <li ng-show="!$root.me.settings.hideUnlinked"><a href ng-click="activityhistory()"><i class="fa fa-chain-broken"></i> Hide Unlinked</a></li>
             <li ng-show="$root.me.settings.hideUnlinked"><a href ng-click="toggleUnlniked()"><i class="fa fa-link"></i> Show Unlinked</a></li>
         </ul>
     </div>
