@@ -19,7 +19,8 @@ module.exports = {
             query = query.sort(criteria.sort || "name");
 
             if (criteria.search != '') {
-                query = query.where("name").regex(new RegExp(criteria.search, "i"));
+                var s = new RegExp(criteria.search, "i")
+                query = query.or([{'name' : s}, {'address' : s}, {'city' : s}, {'state' : s}]);
                 query = query.select(criteria.select || '_id name address city state zip');
             } else {
                 query = query.select(criteria.select || '_id name');
