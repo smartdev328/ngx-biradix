@@ -88,37 +88,35 @@ define([
 
         $rootScope.swaptoLoggedIn = function() {
 
-            $propertyService.search({limit: 1000, permission: 'PropertyManage'}).then(function (response) {
-                $rootScope.myProperties = response.data.properties;
-
                 $rootScope.getMe(function() {
-                    $('.loading').hide();
-                    $('.loggedout').hide();
-                    $('.loggedin').show();
 
-                    $('body').css("background-color","#FFF")
-                    $('body').css("padding-top","0px")
+                    $propertyService.search({limit: 1000, permission: 'PropertyManage'}).then(function (response) {
+                        $rootScope.myProperties = response.data.properties;
+                        $('.loading').hide();
+                        $('.loggedout').hide();
+                        $('.loggedin').show();
 
-                    $('.logoBig').each(function(l) {
-                        this.src = "/images/organizations/" + $rootScope.me.org.logoBig
-                    })
+                        $('body').css("background-color","#FFF")
+                        $('body').css("padding-top","0px")
 
-                    $('.logoSmall').each(function(l) {
-                        this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
-                    })
+                        $('.logoBig').each(function(l) {
+                            this.src = "/images/organizations/" + $rootScope.me.org.logoBig
+                        })
 
-                    $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
-                    $timeout($rootScope.incrementTimeout, 1000);
+                        $('.logoSmall').each(function(l) {
+                            this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
+                        })
 
-                    if ($window.sessionStorage.redirect) {
-                        var x = $window.sessionStorage.redirect;
-                        $window.sessionStorage.removeItem('redirect');
-                        $location.path(x)
-                    }
+                        $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
+                        $timeout($rootScope.incrementTimeout, 1000);
+
+                        if ($window.sessionStorage.redirect) {
+                            var x = $window.sessionStorage.redirect;
+                            $window.sessionStorage.removeItem('redirect');
+                            $location.path(x)
+                        }
+                    });
                 })
-            });
-
-
         }
 
         $rootScope.swaptoLoggedOut = function() {
