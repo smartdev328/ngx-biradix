@@ -1,71 +1,256 @@
+<style>
+    .profiletable TD {
+        padding: 2px 6px 2px 0px
+    }
+
+    address {
+        margin-bottom:5px
+    }
+</style>
 <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-success">
-            <div class="panel-heading">Proof Of Concept</div>
+    <div class="col-sm-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">Property</div>
             <div class="panel-body">
-                Read Alliance Market Survey xls: <A href="/poc/01. Beach House Market Survey 10-30-13.xls">01. Beach House Market Survey 10-30-13.xls</A> <A href="/poc/readXls" style="color:orangered">Run It</A></A><br>
-                Output an xlsx report with borders: <A href="http://biradixsheets.apphb.com/"  style="color:orangered">Download from AppHarbor</A><Br>
-                Take a PDF of dynamic page: <A href="/poc/pdf" style="color:orangered">Pdf</A><Br>
-                Take a PDF of google: <A href="/poc/pdf/google" style="color:orangered">Pdf Google</A><Br>
+                <select class="form-control input-sm">
+                    <option ng-repeat="item in myProperties">{{item.name}}</option>
+                </select><br>
+                <address>
+                    145 Heights Boulevard<br>
+                    Houston, TX  77077 <br>
+                </address>
+                <table cellpadding="2" cellspacing="0" class="profiletable">
+                    <tbody><tr>
+                        <td>
+                            <b>Phone:</b>
+                        </td>
+                        <td>
+                            877-539-0793
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Construction:</b>
+                        </td>
+                        <td>
+                            Midrise
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Year Built:</b>
+                        </td>
+                        <td>
+                            2013
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Owner:</b>
+                        </td>
+                        <td>
+                            Unknown
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Mgmt:</b>
+                        </td>
+                        <td>
+                            Wood Residential
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Total Units:</b>
+                        </td>
+                        <td>
+                            256
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Occupancy:</b>
+                        </td>
+                        <td>
+                            92%
+                        </td>
+                    </tr>
+                    </tbody></table>
+                <div style="width:100px;margin:10px auto 0px auto">
+                    <button class="btn btm-sm btn-primary">View Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Map</div>
+            <div class="panel-body">
+                <div id="map" style="width:100%;height:300px"></div>
+
+
+                <script>
+
+                    var mapOptions = {
+                        zoom: 9,
+                        center: new google.maps.LatLng(33.545973, -111.923647),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var elMap = document.getElementById("map");
+                    var oMap = new google.maps.Map(elMap, mapOptions);
+
+
+                </script>
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-success">
+    <div class="col-sm-8">
+        <div class="panel panel-info">
             <div class="panel-heading">Trends</div>
             <div class="panel-body">
-                <div id="container" style="width:100%; height:400px;"></div>
+                <div id="container" style="width:100%; height:300px;"></div>
+                <div id="container2" style="width:100%; height:300px;"></div>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Competitors</div>
+            <div class="panel-body">
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <th>
+                            Name/Address
+                        </th>
+                        <th>
+                            Units
+                        </th>
+                        <th>
+                            Unit %
+                        </th>
+                        <th>
+                            Sqft
+                        </th>
+                        <th>
+                            Rent
+                        </th>
+                        <th>
+                            Con/12 Mos.
+                        </th>
+                        <th>
+                            Net Eff. Rent
+                        </th>
+                        <th>
+                            NER/Sqft
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            Alta Heights<Br>
+                            145 Heights Boulevard
+                        </td>
+                        <td>
+                            256
+                        </td>
+                        <td>
+                            100%
+                        </td>
+                        <td>
+                            849
+                        </td>
+                        <td>
+                            $1485
+                        </td>
+                        <td>
+                            $0
+                        </td>
+                        <td>
+                            $1485
+                        </td>
+                        <td>
+                            $1.75
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="panel panel-success">
-            <div class="panel-heading">Widget 2</div>
-            <div class="panel-body" style="height:430px;overflow-y:auto">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a nisi porta libero vestibulum porttitor. Proin mattis elementum eleifend. In eu volutpat diam. Cras a massa ut nunc aliquet scelerisque. Vestibulum elementum rutrum massa non pharetra. Aliquam erat volutpat. Pellentesque fringilla quis est eu efficitur. Suspendisse vel erat commodo, pulvinar orci non, egestas lectus.
-
-                <p>Integer volutpat a nulla eu sagittis. In hac habitasse platea dictumst. Phasellus molestie faucibus dui vel commodo. Nullam consequat bibendum dolor, quis consequat lectus pharetra congue. Sed justo eros, feugiat at venenatis a, tincidunt quis elit. Nulla consequat fermentum sagittis. Mauris imperdiet ipsum sit amet mi placerat euismod. Proin a odio ut dolor imperdiet sodales nec quis odio.
-
-                <p>Quisque vitae lorem metus. Suspendisse turpis purus, eleifend ac metus ac, eleifend scelerisque tortor. Nulla viverra egestas nunc ut pellentesque. Sed vel neque eu augue hendrerit finibus. Quisque fringilla nunc eget placerat condimentum. Morbi luctus cursus suscipit. Vivamus tristique eleifend faucibus. Donec velit turpis, cursus in tortor et, consequat vulputate nulla. Cras eget cursus sapien. Curabitur eu fermentum velit. Praesent at tempus sem, quis pellentesque massa. Curabitur tincidunt ex turpis. Vestibulum aliquet, orci quis interdum ornare, felis arcu ultricies libero, id tempus quam lectus et felis. Integer mollis lobortis accumsan.
-
-                <p>Nunc volutpat nisl augue, ac maximus orci sagittis eget. Pellentesque posuere diam non tempus faucibus. Aenean hendrerit tellus sed tempor efficitur. Suspendisse lobortis, metus vitae molestie tincidunt, tortor lectus sodales sem, nec dignissim nibh massa vel justo. Morbi convallis, velit et interdum blandit, odio orci viverra turpis, at fermentum justo eros in libero. Fusce non pretium nunc. Curabitur euismod metus vel felis finibus, eget pretium sapien tempor. Suspendisse ac tincidunt mi. Nam efficitur felis ac convallis semper. Nam hendrerit commodo vulputate. Nulla porttitor ut dolor sed aliquam. Nam a iaculis eros. Maecenas non mollis justo.
-
-                <p>Nullam ut fringilla eros. Cras condimentum sodales ullamcorper. Suspendisse aliquet felis id semper elementum. Donec porta tempus ipsum porta accumsan. Etiam auctor, libero ut finibus sollicitudin, sapien est elementum odio, et ultrices est magna ac diam. Nam massa nisi, dictum vitae rutrum ultrices, sodales sit amet urna. Fusce interdum vulputate nibh et lobortis. Vestibulum mi est, volutpat vitae commodo a, mattis eget augue. Fusce vitae erat sit amet ligula porttitor volutpat vel vel nisl. Ut dapibus tellus sit amet interdum placerat. Mauris nec diam ac dui faucibus semper. Etiam facilisis nulla ac pretium feugiat.
-                </p>
-            </div>
-    </div>
-
 </div>
 
+<!--<div class="row">-->
+    <!--<div class="col-md-12">-->
+        <!--<div class="panel panel-success">-->
+            <!--<div class="panel-heading">Proof Of Concept</div>-->
+            <!--<div class="panel-body">-->
+                <!--Read Alliance Market Survey xls: <A href="/poc/01. Beach House Market Survey 10-30-13.xls">01. Beach House Market Survey 10-30-13.xls</A> <A href="/poc/readXls" style="color:orangered">Run It</A></A><br>-->
+                <!--Output an xlsx report with borders: <A href="http://biradixsheets.apphb.com/"  style="color:orangered">Download from AppHarbor</A><Br>-->
+                <!--Take a PDF of dynamic page: <A href="/poc/pdf" style="color:orangered">Pdf</A><Br>-->
+                <!--Take a PDF of google: <A href="/poc/pdf/google" style="color:orangered">Pdf Google</A><Br>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+    <!--<div class="col-md-6">-->
+        <!--<div class="panel panel-success">-->
+            <!--<div class="panel-heading">Trends</div>-->
+            <!--<div class="panel-body">-->
+                <!--<div id="container" style="width:100%; height:400px;"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="col-md-6">-->
+        <!--<div class="panel panel-success">-->
+            <!--<div class="panel-heading">Widget 2</div>-->
+            <!--<div class="panel-body" style="height:430px;overflow-y:auto">-->
+                <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a nisi porta libero vestibulum porttitor. Proin mattis elementum eleifend. In eu volutpat diam. Cras a massa ut nunc aliquet scelerisque. Vestibulum elementum rutrum massa non pharetra. Aliquam erat volutpat. Pellentesque fringilla quis est eu efficitur. Suspendisse vel erat commodo, pulvinar orci non, egestas lectus.-->
+
+                <!--<p>Integer volutpat a nulla eu sagittis. In hac habitasse platea dictumst. Phasellus molestie faucibus dui vel commodo. Nullam consequat bibendum dolor, quis consequat lectus pharetra congue. Sed justo eros, feugiat at venenatis a, tincidunt quis elit. Nulla consequat fermentum sagittis. Mauris imperdiet ipsum sit amet mi placerat euismod. Proin a odio ut dolor imperdiet sodales nec quis odio.-->
+
+                <!--<p>Quisque vitae lorem metus. Suspendisse turpis purus, eleifend ac metus ac, eleifend scelerisque tortor. Nulla viverra egestas nunc ut pellentesque. Sed vel neque eu augue hendrerit finibus. Quisque fringilla nunc eget placerat condimentum. Morbi luctus cursus suscipit. Vivamus tristique eleifend faucibus. Donec velit turpis, cursus in tortor et, consequat vulputate nulla. Cras eget cursus sapien. Curabitur eu fermentum velit. Praesent at tempus sem, quis pellentesque massa. Curabitur tincidunt ex turpis. Vestibulum aliquet, orci quis interdum ornare, felis arcu ultricies libero, id tempus quam lectus et felis. Integer mollis lobortis accumsan.-->
+
+                <!--<p>Nunc volutpat nisl augue, ac maximus orci sagittis eget. Pellentesque posuere diam non tempus faucibus. Aenean hendrerit tellus sed tempor efficitur. Suspendisse lobortis, metus vitae molestie tincidunt, tortor lectus sodales sem, nec dignissim nibh massa vel justo. Morbi convallis, velit et interdum blandit, odio orci viverra turpis, at fermentum justo eros in libero. Fusce non pretium nunc. Curabitur euismod metus vel felis finibus, eget pretium sapien tempor. Suspendisse ac tincidunt mi. Nam efficitur felis ac convallis semper. Nam hendrerit commodo vulputate. Nulla porttitor ut dolor sed aliquam. Nam a iaculis eros. Maecenas non mollis justo.-->
+
+                <!--<p>Nullam ut fringilla eros. Cras condimentum sodales ullamcorper. Suspendisse aliquet felis id semper elementum. Donec porta tempus ipsum porta accumsan. Etiam auctor, libero ut finibus sollicitudin, sapien est elementum odio, et ultrices est magna ac diam. Nam massa nisi, dictum vitae rutrum ultrices, sodales sit amet urna. Fusce interdum vulputate nibh et lobortis. Vestibulum mi est, volutpat vitae commodo a, mattis eget augue. Fusce vitae erat sit amet ligula porttitor volutpat vel vel nisl. Ut dapibus tellus sit amet interdum placerat. Mauris nec diam ac dui faucibus semper. Etiam facilisis nulla ac pretium feugiat.-->
+                <!--</p>-->
+            <!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->
 
 
-    <Script>
-        $(function () {
-            $('#container').highcharts({
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Fruit Consumption'
-                },
-                xAxis: {
-                    categories: ['Apples', 'Bananas', 'Oranges']
-                },
-                yAxis: {
-                    title: {
-                        text: 'Fruit eaten'
-                    }
-                },
-                series: [{
-                    name: 'Jane',
-                    data: [1, 0, 4]
-                }, {
-                    name: 'John',
-                    data: [5, 7, 3]
-                }]
-            });
-        });
-    </Script>
+
+    <!--<Script>-->
+        <!--$(function () {-->
+            <!--$('#container').highcharts({-->
+                <!--chart: {-->
+                    <!--type: 'bar'-->
+                <!--},-->
+                <!--title: {-->
+                    <!--text: 'Fruit Consumption'-->
+                <!--},-->
+                <!--xAxis: {-->
+                    <!--categories: ['Apples', 'Bananas', 'Oranges']-->
+                <!--},-->
+                <!--yAxis: {-->
+                    <!--title: {-->
+                        <!--text: 'Fruit eaten'-->
+                    <!--}-->
+                <!--},-->
+                <!--series: [{-->
+                    <!--name: 'Jane',-->
+                    <!--data: [1, 0, 4]-->
+                <!--}, {-->
+                    <!--name: 'John',-->
+                    <!--data: [5, 7, 3]-->
+                <!--}]-->
+            <!--});-->
+        <!--});-->
+    <!--</Script>-->

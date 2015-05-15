@@ -88,31 +88,35 @@ define([
 
         $rootScope.swaptoLoggedIn = function() {
 
-            $rootScope.getMe(function() {
-                $('.loading').hide();
-                $('.loggedout').hide();
-                $('.loggedin').show();
+            $propertyService.search({limit: 1000, permission: 'PropertyManage'}).then(function (response) {
+                $rootScope.myProperties = response.data.properties;
 
-                $('body').css("background-color","#FFF")
-                $('body').css("padding-top","0px")
+                $rootScope.getMe(function() {
+                    $('.loading').hide();
+                    $('.loggedout').hide();
+                    $('.loggedin').show();
 
-                $('.logoBig').each(function(l) {
-                    this.src = "/images/organizations/" + $rootScope.me.org.logoBig
+                    $('body').css("background-color","#FFF")
+                    $('body').css("padding-top","0px")
+
+                    $('.logoBig').each(function(l) {
+                        this.src = "/images/organizations/" + $rootScope.me.org.logoBig
+                    })
+
+                    $('.logoSmall').each(function(l) {
+                        this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
+                    })
+
+                    $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
+                    $timeout($rootScope.incrementTimeout, 1000);
+
+                    if ($window.sessionStorage.redirect) {
+                        var x = $window.sessionStorage.redirect;
+                        $window.sessionStorage.removeItem('redirect');
+                        $location.path(x)
+                    }
                 })
-
-                $('.logoSmall').each(function(l) {
-                    this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
-                })
-
-                $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
-                $timeout($rootScope.incrementTimeout, 1000);
-
-                if ($window.sessionStorage.redirect) {
-                    var x = $window.sessionStorage.redirect;
-                    $window.sessionStorage.removeItem('redirect');
-                    $location.path(x)
-                }
-            })
+            });
 
 
         }
@@ -237,6 +241,8 @@ define([
         };
 
         $scope.searchSelected = function (item, model, label) {
+            $scope.search1 = "";
+            $scope.search2 = "";
             console.log(item)
         }
 

@@ -19,11 +19,17 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="components/angular-toastr/angular-toastr.tpls.min.js"></script>
+    <script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <script src="//code.highcharts.com/highcharts.js"></script>
 
     <script data-main="app/main" src="libs/requirejs/require-min.js"></script>
 
     <style>
+        @media (min-width: 768px) {
+            .b-col {
+                float: right;
+            }
+        }
 
         .nav-bar-2 {
             margin-top: -22px
@@ -90,6 +96,10 @@
             }
 
 
+        .search .dropdown-menu>li>a {
+            padding:3px 10px;
+            cursor: pointer
+        }
 
     </style>
 </head>
@@ -153,7 +163,7 @@
                 </div>
 
                 <div class="collapse navbar-collapsed hidden-sm hidden-md hidden-lg" id="bs-example-navbar-collapse-2">
-                    <div class="form-group has-feedback" style="margin-top:10px">
+                    <div class="form-group has-feedback search" style="margin-top:10px">
                         <input type="text" class="form-control input-sm"
                                placeholder="Search Properties"
                                typeahead="props.summary for props in getLocation($viewValue)"
@@ -172,14 +182,15 @@
                         </ul>
 
 
-                    <ul class="nav navbar-nav hidden-xs">
-                        <form class="navbar-form navbar-left" role="search">
-                            <div class="form-group has-feedback">
+                    <ul class="nav navbar-nav hidden-xs pull-right">
+                        <form class="navbar-form navbar-left" role="search" style="padding-right:0px">
+                            <div class="form-group has-feedback search">
                                 <input type="text" class="form-control input-sm"
                                        placeholder="Search Properties"
                                        typeahead="props.summary for props in getLocation($viewValue)"
                                        typeahead-on-select="searchSelected($item, $model, $label)"
                                        ng-model="search1"
+                                       style="width:250px"
                                        >
                                 <i class="fa fa-search form-control-feedback" style="color:#ccc;top:8px"></i>
                             </div>

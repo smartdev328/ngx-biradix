@@ -11,9 +11,25 @@ module.exports = {
 
         criteria.search = (criteria.search || '').trim();
 
-        AccessService.getPermissions(Operator, [criteria.permission], function(permissions) {
+        async.parallel({
+            permissions: function(callbackp) {
+                if (Operator.memberships.isadmin) {
+                    callbackp(null,[]);
+                } else {
+                    AccessService.getPermissions(Operator, [criteria.permission], function(permissions) {
+                        callbackp(null, permissions)
+                    });
+                }
+            }
+        }, function(err, all) {
+            var query;
 
-            var query = PropertySchema.find({'_id': {$in: permissions}});
+            if (Operator.memberships.isadmin) {
+                query = PropertySchema.find();
+            }
+            else {
+                query = PropertySchema.find({'_id': {$in: permissions}});
+            }
 
 
             query = query.sort(criteria.sort || "name");
@@ -33,7 +49,7 @@ module.exports = {
                     if (criteria.search != '') {
                         //calculate summary for autocomplete
                         props.forEach(function(x,i) {
-                            props[i].summary = x.name + " - " + x.address + ", " + x.city + ", " + x.state;
+                                props[i].summary = x.name + "<br><i>" + x.address + ", " + x.city + ", " + x.state + "</i>";
                             }
                         )
 
@@ -49,7 +65,7 @@ module.exports = {
 
                 callback(err,props)
             })
-        });
+        })
     },
     create: function(property, callback) {
         async.parallel({
@@ -75,17 +91,20 @@ module.exports = {
                     //if org of property is provided, assign manage to all CMs for that org
                     CMs = _.filter(all.roles, function(x) {return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1})
 
-                    //and assign view opermissions to all non admins and not POs
-                    viewers = _.filter(all.roles, function(x) {
-                        return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1})
-
                     CMs.forEach(function(x) {
                         permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
                     })
-                    viewers.forEach(function(x) {
-                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
-                    })
+
                 }
+
+                //and assign view opermissions to all non admins and not POs
+                viewers = _.filter(all.roles, function(x) {
+                    return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1})
+
+
+                viewers.forEach(function(x) {
+                    permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
+                })
 
                 var n = new PropertySchema();
 
