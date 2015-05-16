@@ -1,0 +1,54 @@
+<style>
+
+    @media print {
+        @page {
+            margin: 0.1cm;
+        }
+
+        body {
+            width:1210px;
+        }
+
+        .left-print {
+            float:left;
+            width:25%;
+        }
+        .right-print {
+            float:left;
+            width:75%;
+        }
+
+    }
+
+
+
+
+
+</style>
+
+<h3>{{property.name}}</h3>
+<div ng-show="!localLoading" style="display:block;width:50px;margin:50px auto">
+    <i class="fa fa-spinner fa-spin fa-4x" style="color:#00d4b4"></i>
+</div>
+<div class="row" ng-show="localLoading">
+    <div class="col-md-4 col-sm-5 col-lg-3 left-print">
+        <div class="panel panel-info">
+            <div class="panel-heading">Property</div>
+            <div class="panel-body">
+
+                <property-profile property="property"></property-profile>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-7 col-lg-9 right-print">
+        <div class="panel panel-info">
+            <div class="panel-heading">Net Effective Rent</div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

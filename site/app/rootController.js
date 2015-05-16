@@ -239,7 +239,8 @@ define([
         $scope.searchSelected = function (item, model, label) {
             $scope.search1 = "";
             $scope.search2 = "";
-            console.log(item)
+
+            $location.path("/profile/" + item._id);
         }
 
     }]);

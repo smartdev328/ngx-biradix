@@ -34,6 +34,10 @@ define([
 
         })
 
+        $scope.viewProfile = function() {
+            $location.path("/profile/" + $scope.selectedProperty._id);
+        }
+
         $scope.changeProperty = function() {
             $scope.loadProperty($scope.selectedProperty._id);
             $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty._id;

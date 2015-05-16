@@ -112,16 +112,26 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'dashboard/dashboardController')}}
             })
-            .state('bob', {
-                url: "/bob",
+            .state('manageUsers', {
+                url: "/manageusers",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/bob/bob.html" ,
-                        controller : "bobController"
+                        templateUrl: "app/manageUsers/manageUsers.html" ,
+                        controller : "manageUsersController"
                     }
 
                 },
-                resolve: {get : function($q) {return resolve($q, 'bob/bobController')}}
+                resolve: {get : function($q) {return resolve($q, 'manageUsers/manageUsersController')}}
+            })
+            .state('profile', {
+                url: "/profile/:id",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/profile/profile.html",
+                        controller : "profileController"
+                    }
+                },
+                resolve: {get : function($q) {return resolve($q, 'profile/profileController')}}
             })
     });
 
