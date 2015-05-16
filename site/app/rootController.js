@@ -7,6 +7,7 @@ define([
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $modal, toastr,ngProgress,$timeout) {
 
+        //Initialize
         if ($cookies.get('token')) {
             $rootScope.loggedIn = true;
         }
@@ -17,6 +18,7 @@ define([
         $rootScope.refresh = true;
         $rootScope.timeout = 0;
 
+        //Global functions
         $rootScope.resetTimeout = function () {
             $rootScope.timeout = 0;
             $rootScope.refresh = true;
@@ -129,14 +131,7 @@ define([
             })
         }
 
-        if (!$rootScope.loggedIn) {
-            $rootScope.swaptoLoggedOut();
-        }
-        else {
-            $rootScope.swaptoLoggedIn();
-        }
-
-
+        //Local functions
         $scope.logoff = function() {
             $rootScope.loggedIn = false;
             $cookies.remove('token');
@@ -241,6 +236,14 @@ define([
             $scope.search2 = "";
 
             $location.path("/profile/" + item._id);
+        }
+
+        //Decide if logged in or not.
+        if (!$rootScope.loggedIn) {
+            $rootScope.swaptoLoggedOut();
+        }
+        else {
+            $rootScope.swaptoLoggedIn();
         }
 
     }]);

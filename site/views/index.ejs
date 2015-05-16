@@ -38,6 +38,10 @@
         <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
     </div>
     <div style="display:none" class="loggedin">
+        <div class="visible-print-block" style="padding:10px 0px 0px 10px">
+            <a href="#/Dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
+            <hr>
+        </div>
         <nav class="navbar hidden-xs">
             <div class="container-fluid">
                 <div class="navbar-header" style="padding:5px 0px 10px 0px">
@@ -47,7 +51,7 @@
 
                 <div class="pull-right" style="padding:15px 15px 0px 0px">
                     Welcome {{$root.me.roles[0]}} <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#333;text-decoration:none;font-weight:bold">{{$root.me.first + ' ' + $root.me.last}} <span class="caret"></span></a>
-                    <div class="dropdown-menu" role="menu" style="margin:-14px 25px 0px 0px" ng-include="'/app/dashboard/userMenu.html'">
+                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="margin:-14px 25px 0px 0px" ng-include="'/app/userMenu.html'">
 
                     </div>
                 </div>
@@ -72,7 +76,7 @@
                         <i class="fa fa-user" style="color:#777"></i>
                         <span class="caret" style="color:#777"></span>
                     </button>
-                    <div class="dropdown-menu pull-right hidden-sm" role="menu"  ng-include="'/app/dashboard/userMenu.html'">
+                    <div class="dropdown-menu dropdown-menu-right hidden-sm" role="menu"  ng-include="'/app/userMenu.html'">
                     </div>
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"

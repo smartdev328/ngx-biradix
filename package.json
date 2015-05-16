@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "jsonwebtoken": "^5.0.0",
     "liquid-node": "^2.5.0",
     "lodash": "^3.8.0",
+    "moment": "^2.10.3",
     "mongoose": "^4.0.2",
     "newrelic": "^1.18.5",
     "node-geocoder": "^2.20.1",
@@ -33,6 +34,7 @@
     "phantom-render-stream": "^1.7.1",
     "phantomjs": "^1.9.16",
     "raygun": "^0.6.1",
+    "request": "^2.55.0",
     "xlsjs": "^0.7.5"
   },
   "private": true,

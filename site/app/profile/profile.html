@@ -1,32 +1,20 @@
-<style>
+<div class="row" ng-show="localLoading">
+    <div class="col-xs-6">
+        <h3 style="padding-left:5px">{{property.name}}</h3>
+    </div>
+    <div class="col-xs-6 hidden-print">
+        <div class="btn-group pull-right" style="padding-bottom:10px">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-cloud-download" style="color:white"></i> Print/Export <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <li><a href ng-click="print()"><i class="fa fa-print"></i> Print: Property Profile</a></li>
+                <li><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
+            </ul>
+        </div>
+    </div>
 
-    @media print {
-        @page {
-            margin: 0.1cm;
-        }
-
-        body {
-            width:1210px;
-        }
-
-        .left-print {
-            float:left;
-            width:25%;
-        }
-        .right-print {
-            float:left;
-            width:75%;
-        }
-
-    }
-
-
-
-
-
-</style>
-
-<h3>{{property.name}}</h3>
+</div>
 <div ng-show="!localLoading" style="display:block;width:50px;margin:50px auto">
     <i class="fa fa-spinner fa-spin fa-4x" style="color:#00d4b4"></i>
 </div>
@@ -42,6 +30,7 @@
         </div>
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
+
         <div class="panel panel-info">
             <div class="panel-heading">Net Effective Rent</div>
             <div class="panel-body">
