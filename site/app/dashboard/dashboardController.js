@@ -58,7 +58,8 @@ define([
                         zoom : 9,
                         loc: $scope.property.loc,
                         height: "300px",
-                        width: "100%"
+                        width: "100%",
+                        points: [{loc:$scope.property.loc, marker: 'apartment-3', content: $scope.property.name}]
                     }
                     $scope.localLoading = true;
                 });

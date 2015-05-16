@@ -23,11 +23,43 @@ define([
                         $(elMap).width($scope.options.width);
                         $(elMap).height($scope.options.height);
                         $scope.oMap = new google.maps.Map(elMap, mapOptions);
+                        $scope.options.points = $scope.options.points || [];
+                        $scope.aMarkers = [];
+                        $scope.loadMarkers();
+                        $scope.gLoaded = true;
                     }
 
                 });
 
+                $scope.closeAllInfoBoxes = function() {
+                    for (var i = 0; i < $scope.aMarkers.length; i++) {
+                        if ($scope.aMarkers[i] != null) {
+                            $scope.aMarkers[i].info.close();
+                        }
+                    }
+                }
 
+                $scope.loadMarkers = function() {
+                    for (var i = 0; i < $scope.options.points.length; i++) {
+                        var oPoint = $scope.options.points[i];
+                        $scope.aMarkers[i] = new google.maps.Marker({
+                            map: $scope.oMap,
+                            position: new google.maps.LatLng(oPoint.loc[0], oPoint.loc[1]),
+                            icon: "/components/googleMap/markers/" + oPoint.marker + ".png",
+                            clickable: true,
+                            title: oPoint.Name,
+                            info: new google.maps.InfoWindow({
+                                content: oPoint.content
+                            })
+
+                        });
+
+                        google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
+                            $scope.closeAllInfoBoxes();
+                            this.info.open($scope.oMap, this);
+                        });
+                    }
+                }
 
                 $scope.resize = function() {
                     var currCenter = $scope.oMap.getCenter();
