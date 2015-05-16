@@ -1,14 +1,57 @@
 'use strict';
 define([
     'app',
+    '../../components/propertyProfile/module'
 ], function (app) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location', function ($scope,$rootScope,$location) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', function ($scope,$rootScope,$location,$propertyService,$authService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
         $rootScope.nav = 'Dashboard'
         //window.renderable = true;
+
+        $propertyService.search({limit: 1000, permission: 'PropertyManage'}).then(function (response) {
+            $scope.myProperties = response.data.properties;
+
+            var id = $rootScope.me.settings.defaultPropertyId.toString();
+
+
+            if (!$scope.myProperties || $scope.myProperties.length == 0) {
+                id = null;
+            }
+            else if (!id) {
+                $scope.selectedProperty = $scope.myProperties[0];
+            } else {
+                $scope.selectedProperty = _.find($scope.myProperties, function(x) {return x._id.toString() == id})
+            }
+
+            if ($scope.selectedProperty) {
+                $scope.loadProperty($scope.selectedProperty._id)
+            } else {
+                $scope.localLoading = true;
+            }
+
+        })
+
+        $scope.changeProperty = function() {
+            $scope.loadProperty($scope.selectedProperty._id);
+            $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty._id;
+            $authService.updateSettings($rootScope.me.settings).then(function() {
+                $rootScope.refreshToken();
+            });
+
+        }
+        $scope.loadProperty = function(defaultPropertyId) {
+            if (defaultPropertyId) {
+                $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt"
+                }).then(function (response) {
+                    $scope.property = response.data.properties[0];
+                    $scope.localLoading = true;
+                });
+            }
+        };
 
         $scope.$on('$viewContentLoaded', function(){
             //Here your view content is fully loaded !!

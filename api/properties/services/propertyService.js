@@ -31,6 +31,9 @@ module.exports = {
                 query = PropertySchema.find({'_id': {$in: permissions}});
             }
 
+            if (criteria._id) {
+                query = query.where("_id").equals(criteria._id);
+            }
 
             query = query.sort(criteria.sort || "name");
 

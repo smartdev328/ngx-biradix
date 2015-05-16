@@ -1,0 +1,91 @@
+<style>
+    .profiletable TD {
+        padding: 2px 6px 2px 0px
+    }
+</style>
+<address style="margin-bottom:5px">
+    {{property.address}}<br>
+    {{property.city}}, {{property.state}}  {{property.zip}} <br>
+</address>
+<table cellpadding="2" cellspacing="0" class="profiletable">
+    <tbody><tr>
+        <td>
+            <b>Phone:</b>
+        </td>
+        <td>
+            {{property.phone}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Construction:</b>
+        </td>
+        <td>
+            {{property.constructionType}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Year Built:</b>
+        </td>
+        <td>
+            {{property.yearBuilt}}
+        </td>
+    </tr>
+    <tr ng-show="property.yearRenovated">
+        <td>
+            <b>Renovated:</b>
+        </td>
+        <td>
+            {{property.yearRenovated}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Owner:</b>
+        </td>
+        <td>
+            {{property.owner}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Mgmt:</b>
+        </td>
+        <td>
+            {{property.management}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Total Units:</b>
+        </td>
+        <td>
+            {{property.totalUnits || 'N/A'}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Occupancy:</b>
+        </td>
+        <td>
+            {{property.occupancy || 'N/A'}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Traffic/Wk:</b>
+        </td>
+        <td>
+            {{property.weeklyTraffic || 'N/A'}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Leases/Wk:</b>
+        </td>
+        <td>
+            {{property.weeklyLeases || 'N/A'}}
+        </td>
+    </tr>
+    </tbody></table>

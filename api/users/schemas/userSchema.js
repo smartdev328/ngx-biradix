@@ -25,7 +25,8 @@ var UserSchema = new Schema({
     date: Date,
     isSystem: Boolean,
     settings: {
-        hideUnlinked: Boolean
+        hideUnlinked: Boolean,
+        defaultPropertyId: Schema.Types.ObjectId
     }
 });
 
