@@ -9,10 +9,6 @@
             width:1210px;
         }
 
-        .hideonprint {
-            display:none
-        }
-
         .left-print {
             float:left;
             width:25%;
@@ -22,10 +18,9 @@
             width:75%;
         }
 
-        .chart-wrapper svg {
-            width:840px;
-        }
     }
+
+
 
 
 
@@ -48,7 +43,7 @@
                 </select><br>
                 <property-profile property="property"></property-profile>
 
-                <div style="width:100px;margin:10px auto 0px auto" class="hideonprint">
+                <div style="width:100px;margin:10px auto 0px auto" class="hidden-print">
                     <button class="btn btm-sm btn-primary">View Profile</button>
                 </div>
             </div>
@@ -79,8 +74,8 @@
         <div class="panel panel-info">
             <div class="panel-heading">Trends</div>
             <div class="panel-body">
-                <div id="container" style="height:300px;" class="chart-wrapper"></div>
-                <div id="container2" style="height:300px;" class="chart-wrapper"></div>
+                <div id="container" style="height:300px;width:840px;" class="visible-print-block"></div>
+                <div id="container2" style="height:300px;" class="hidden-print"></div>
             </div>
         </div>
 
