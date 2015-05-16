@@ -11,7 +11,8 @@ function resolve($q, ctrl) {
 }
 
 define([
-    '../components/ngProgress/module'
+    '../components/ngProgress/module',
+    'css!global'
 ], function () {
     var app = angular.module('Team', [
         , 'ui.router'

@@ -4,7 +4,7 @@ define([
     '../../components/propertyProfile/module'
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -20,6 +20,7 @@ define([
                 }).then(function (response) {
                     $scope.property = response.data.properties[0];
                     $scope.localLoading = true;
+                    $window.document.title = $scope.property.name;
                 });
             }
         };

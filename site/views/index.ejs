@@ -19,92 +19,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="components/angular-toastr/angular-toastr.tpls.min.js"></script>
-    <script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <script src="//code.highcharts.com/highcharts.js"></script>
 
     <script data-main="app/main" src="libs/requirejs/require-min.js"></script>
-
-    <style>
-
-        h2,h3 {
-            margin-top:0
-        }
-        .nav-bar-2 {
-            margin-top: -22px
-        }
-
-        .navbar {
-            border-radius: 0;
-            border:0;
-        }
-
-        .fa {
-            color: #1E90FF
-        }
-
-        .multi-col-list .fa {
-            width:16px;
-            text-align: center;
-        }
-
-        .navbar-default .navbar-nav>li>a:hover {
-            background-color: #eee;
-        }
-
-        .multi-col-list li {
-            margin-left:-35px;
-            display: block;
-            padding: 3px 3px;
-            clear: both;
-            font-weight: 400;
-            line-height: 1.42857143;
-            color: #333;
-            white-space: nowrap;
-        }
-
-        .multi-col-list li a {
-            text-decoration: none;
-            color: #333;
-        }
-
-        .multi-col-list>li>a:hover {
-            color: #262626;
-            text-decoration: none;
-            background-color: #f5f5f5;
-        }
-
-        .multi-col-list>li>a {
-            display: block;
-            padding: 3px 3px;
-            clear: both;
-            font-weight: 400;
-            line-height: 1.42857143;
-            color: #333;
-            white-space: nowrap;
-        }
-
-            @media all and (min-width: 0px) and (max-width: 767px) {
-                .nav-bar-2 {
-                    margin-top: 0px
-                }
-
-                .nav>li {
-                    float:left
-                }
-            }
-
-
-        .search .dropdown-menu>li>a {
-            padding:3px 10px;
-            cursor: pointer
-        }
-
-        .row {
-            margin-right:-10px;
-            margin-left:-10px
-        }
-
-    </style>
 </head>
 <body ng-controller="rootController" ng-click="resetTimeout()" ng-keypress="resetTimeout()">
     <div class="loading" style="display:block;width:50px;margin:50px auto">

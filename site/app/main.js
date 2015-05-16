@@ -4,6 +4,9 @@ requirejs.config({
         '*': {
             'css': '/libs/requirejs/css-min.js'
         }
+    },
+    paths: {
+        'async': '/libs/requirejs/async'
     }
 });
 
