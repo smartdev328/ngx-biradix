@@ -14,19 +14,30 @@ define([
                 $scope.$watch('options', function(){
 
                     if ($scope.options) {
+
+                        if ($scope.aMarkers) {
+
+                            for (var i = 0; i < $scope.aMarkers.length; i++) {
+                                google.maps.event.removeListener($scope.aMarkers[i].handle);
+                            }
+                        }
+                        $scope.aMarkers = [];
+
                         var mapOptions = {
                             zoom: $scope.options.zoom,
                             center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
                             mapTypeId: google.maps.MapTypeId.ROADMAP
                         }
                         var elMap = $($element).find('div')[0]
-                        $(elMap).width($scope.options.width);
-                        $(elMap).height($scope.options.height);
                         $scope.oMap = new google.maps.Map(elMap, mapOptions);
                         $scope.options.points = $scope.options.points || [];
-                        $scope.aMarkers = [];
                         $scope.loadMarkers();
                         $scope.gLoaded = true;
+
+                        $(elMap).width($scope.options.width);
+                        $(elMap).height($scope.options.height);
+
+                        window.setTimeout(function() {$scope.resize(1)}, 100);
                     }
 
                 });
@@ -54,7 +65,7 @@ define([
 
                         });
 
-                        google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
+                        $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
                             $scope.closeAllInfoBoxes();
                             this.info.open($scope.oMap, this);
                         });

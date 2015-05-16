@@ -60,12 +60,17 @@ define([
                         loc: $scope.property.loc,
                         height: "300px",
                         width: "100%",
-                        points: [{loc:$scope.property.loc, marker: 'apartment-3', content: $scope.property.name}]
+                        points: [{loc:$scope.property.loc, marker: 'apartment-3', content: $scope.makrerContent($scope.property)}]
                     }
                     $scope.localLoading = true;
                 });
             }
         };
+
+        $scope.makrerContent = function(property) {
+
+            return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + $scope.property._id + "'>" + $scope.property.name + "</a><br />" + $scope.property.address + "</div>";
+        }
 
         $scope.$watch('mapOptions', function(){
             if ($scope.mapOptions) {
