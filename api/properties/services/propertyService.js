@@ -121,6 +121,7 @@ module.exports = {
                 n.owner = property.owner;
                 n.management = property.management;
                 n.yearBuilt = property.yearBuilt;
+                n.constructionType = property.constructionType;
 
                 n.date = Date.now();
 

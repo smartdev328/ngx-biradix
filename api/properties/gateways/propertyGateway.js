@@ -27,13 +27,19 @@ Routes.get('/:id/excel', function (req, res) {
         moment().utcOffset(req.query.timezone);
 
         var p = properties[0];
-        var fileName = (p.name + "_").replace(/ /g, " ") + '_and_Comps_';
+        var fileName = p.name.replace(/ /g, " ") + '_and_Comps_';
 
         fileName += moment().format("MM_DD_YYYY");
 
         fileName += ".xlsx";
 
-        request('http://biradixsheets.apphb.com/').pipe(res)
+        request.post('http://biradixsheets.apphb.com/excel', {
+            form: {
+                fileName : fileName,
+                name: p.name
+
+            }
+        }).pipe(res)
 
     })
 
