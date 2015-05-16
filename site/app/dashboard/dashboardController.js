@@ -10,7 +10,8 @@ define([
         $rootScope.nav = 'Dashboard'
         //window.renderable = true;
 
-        $scope.load = function() {
+        $scope.$on('$viewContentLoaded', function(){
+            //Here your view content is fully loaded !!
             window.setTimeout(function () {
                 var currCenter = oMap.getCenter();
                 google.maps.event.trigger(oMap, 'resize');
@@ -115,7 +116,7 @@ define([
                 });
 
             }, 500)
-        }
+        });
 
 
     }]);
