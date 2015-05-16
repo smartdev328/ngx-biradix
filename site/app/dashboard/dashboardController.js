@@ -15,7 +15,8 @@ define([
         $propertyService.search({limit: 1000, permission: 'PropertyManage'}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
-            var id = $rootScope.me.settings.defaultPropertyId.toString();
+
+            var id = $rootScope.me.settings.defaultPropertyId;
 
 
             if (!$scope.myProperties || $scope.myProperties.length == 0) {
