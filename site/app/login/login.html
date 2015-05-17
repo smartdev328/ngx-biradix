@@ -9,16 +9,16 @@
         <input autocomplete="on" type="password" name="password" class="form-control" id="password" placeholder="Password" required ng-model="password">
     </div>
     <button class="btn btn-primary btn-large btn-block" type="submit" ng-show="!localLoading">Sign in</button>
-    <div style="width:25px;margin:0px auto;padding-top:5px" ng-show="localLoading">
-        <i class="fa fa-spinner fa-spin fa-2x" style="color:#00d4b4"></i>
+    <div style="width:40px;margin:0px auto;padding-top:5px" ng-show="localLoading">
+        <img src="/images/squares.gif" style="width:40px">
     </div>
 
     <div style="text-align: center">
         <Br>
-        <small>
-            <a href="#/password"><i class="fa fa-warning" style="color: orange"></i> Forgot Password?</a>
+        <small style="font-size:13px">
+            <a href="#/password"><i class="fa fa-warning" style="color: orange;padding-right:5px"></i>Forgot Password?</a>
             &nbsp;
-            <a href="#/contact"><i class="fa fa-envelope"></i> Contact Us</a>
+            <a href="#/contact"><i class="fa fa-envelope" style="padding-right:5px"></i>Contact Us</a>
         </small>
     </div>
 

@@ -78,7 +78,7 @@ h2,h3 {
 
 @media print {
     @page {
-        margin: 0.1cm 0.1cm 0.1cm 0.1cm;
+
     }
 
     body {
@@ -140,4 +140,121 @@ h2,h3 {
     border-bottom: 6px solid white;
     border-left: 6px solid transparent;
     content: '';
+}
+
+
+.panel, .panel-body {
+    -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
+    box-shadow: 0 0px 0px rgba(0,0,0,0);
+}
+
+.panel-heading {
+    color: #333 !important;
+    font-size : 18px !important;
+    font-weight : bold !important;
+    background-color:white !important;
+    border-bottom:0px !important;
+    padding-left:0 !important;
+}
+
+.panel-info {
+    border: 0px !important;
+}
+
+.panel-body {
+    padding: 0px !important;
+}
+
+
+@media (max-width: 767px) and (min-width: 0px) {
+    .nav-bar-2 {
+        margin-top: -20px;
+    }
+}
+
+@media (min-width: 767px) {
+    .navbar-default {
+        background-color: #3f3f3f;
+        border-color: #696969;
+    }
+
+    .navbar-default .navbar-brand {
+        color: #ffffff;
+    }
+
+    .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+        color: #ffffff;
+    }
+
+    .navbar-default .navbar-text {
+        color: #ffffff;
+    }
+
+    .navbar-default .navbar-nav > li > a {
+        color: #ffffff;
+    }
+
+    .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+        color: #ffffff;
+    }
+
+    .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+        color: #ffffff;
+        background-color: #696969;
+    }
+
+    .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+        color: #ffffff;
+        background-color: #696969;
+    }
+
+    .navbar-default .navbar-toggle {
+        border-color: #696969;
+    }
+
+    .navbar-default .navbar-nav>li>a:hover {
+        background-color:#696969
+    }
+
+    .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+        background-color: #696969;
+    }
+
+    .navbar-default .navbar-toggle .icon-bar {
+        background-color: #ffffff;
+    }
+
+    .navbar-default .navbar-collapse,
+    .navbar-default .navbar-form {
+        border-color: #ffffff;
+    }
+
+    .navbar-default .navbar-link {
+        color: #ffffff;
+    }
+
+    .navbar-default .navbar-link:hover {
+        color: #ffffff;
+    }
+}
+
+
+.btn-primary {
+    background-color: #1E90FF;
+}
+
+.btn-primary:hover {
+    background-color: #4ba6ff;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+.modal-header {
+    padding: 14px 14px 2px 14px;
+    border-bottom:0px
+}
+.modal-body {
+    padding: 14px 14px 14px 20px;
 }

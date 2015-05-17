@@ -11,11 +11,12 @@ define([
         }
 
         $scope.btnSubmit = function() {
+            $scope.alerts = [];
             $scope.localLoading = true;
             $authService.recoverPassword($scope.email).then(function (resp) {
                     $scope.localLoading = false;
                     if (!resp.data.success) {
-                        toastr.error("Unable to locate your account.");
+                        $scope.alerts.push({type: 'danger', msg: "Unable to locate account with that email address."});
                     }
                     else {
                         $location.path('/password/sent')

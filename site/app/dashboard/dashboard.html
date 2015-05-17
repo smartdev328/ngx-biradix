@@ -3,7 +3,7 @@
 
 </div>
 <div ng-show="!localLoading && myProperties.length > 0" style="display:block;width:50px;margin:50px auto">
-    <i class="fa fa-spinner fa-spin fa-4x" style="color:#00d4b4"></i>
+    <img src="/images/squares.gif" style="width:50px">
 </div>
 <div class="row" ng-show="localLoading && myProperties.length > 0">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
@@ -11,9 +11,16 @@
             <div class="panel-heading">Property</div>
             <div class="panel-body">
                 <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
-                <select ng-show="myProperties.length > 1" class="form-control input-sm" ng-change="changeProperty()" ng-model="selectedProperty"
-                        ng-options="item.name for item in myProperties">
-                </select><br>
+                <div class="visible-print"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
+                <select ng-show="myProperties.length > 1"
+                        class="form-control input-sm hidden-print"
+                        ng-change="changeProperty()"
+                        ng-model="selectedProperty"
+                        ng-options="item.name for item in myProperties"
+                        style="font-size:14px"
+                        >
+                </select>
+                <div style="padding-top:8px"></div>
                 <property-profile property="property"></property-profile>
 
                 <div style="width:100px;margin:10px auto 0px auto" class="hidden-print">
@@ -33,7 +40,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Trends</div>
             <div class="panel-body">
-                <div id="container" style="height:300px;width:840px;" class="visible-print-block"></div>
+                <div id="container" style="height:300px;width:820px;" class="visible-print-block"></div>
                 <div id="container2" style="height:300px;" class="hidden-print"></div>
             </div>
         </div>
@@ -137,20 +144,5 @@
     </div>
 
 </div>
-
-<!--<div class="row">-->
-    <!--<div class="col-md-12">-->
-        <!--<div class="panel panel-success">-->
-            <!--<div class="panel-heading">Proof Of Concept</div>-->
-            <!--<div class="panel-body">-->
-                <!--Read Alliance Market Survey xls: <A href="/poc/01. Beach House Market Survey 10-30-13.xls">01. Beach House Market Survey 10-30-13.xls</A> <A href="/poc/readXls" style="color:orangered">Run It</A></A><br>-->
-                <!--Output an xlsx report with borders: <A href="http://biradixsheets.apphb.com/"  style="color:orangered">Download from AppHarbor</A><Br>-->
-                <!--Take a PDF of dynamic page: <A href="/poc/pdf" style="color:orangered">Pdf</A><Br>-->
-                <!--Take a PDF of google: <A href="/poc/pdf/google" style="color:orangered">Pdf Google</A><Br>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-
 
 
