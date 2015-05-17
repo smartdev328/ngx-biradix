@@ -26,6 +26,11 @@ module.exports = {
                             callbackw(null,users, companies, roles)
                         })
                     },
+                    function(users, companies,roles, callbackw) {
+                        RolesAssignPermissionsCreate(roles, function() {
+                            callbackw(null,users, companies, roles)
+                        })
+                    },
                     function(users, companies, roles, callbackw) {
                         PropertiesCreate(companies,function(properties) {
                             callbackw(null,users, roles, properties)
@@ -50,6 +55,65 @@ module.exports = {
 
     }
 }
+
+var RolesAssignPermissionsCreate = function(roles, callback) {
+    var permissions = [
+        {executorid: roles.GreystarCM._id, resource: roles.GreystarCM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarCM._id, resource: roles.GreystarRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarCM._id, resource: roles.GreystarBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarCM._id, resource: roles.GreystarPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarRM._id, resource: roles.GreystarRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarRM._id, resource: roles.GreystarBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarRM._id, resource: roles.GreystarPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarBM._id, resource: roles.GreystarBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarBM._id, resource: roles.GreystarPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.GreystarPO._id, resource: roles.GreystarPO._id.toString(), allow: true, type: 'RoleAssign'},
+
+        {executorid: roles.AllianceCM._id, resource: roles.AllianceCM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceCM._id, resource: roles.AllianceRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceCM._id, resource: roles.AllianceBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceCM._id, resource: roles.AlliancePO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceRM._id, resource: roles.AllianceRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceRM._id, resource: roles.AllianceBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceRM._id, resource: roles.AlliancePO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceBM._id, resource: roles.AllianceBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AllianceBM._id, resource: roles.AlliancePO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.AlliancePO._id, resource: roles.AlliancePO._id.toString(), allow: true, type: 'RoleAssign'},
+
+        {executorid: roles.WoodCM._id, resource: roles.WoodCM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodCM._id, resource: roles.WoodRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodCM._id, resource: roles.WoodBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodCM._id, resource: roles.WoodPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodRM._id, resource: roles.WoodRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodRM._id, resource: roles.WoodBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodRM._id, resource: roles.WoodPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodBM._id, resource: roles.WoodBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodBM._id, resource: roles.WoodPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.WoodPO._id, resource: roles.WoodPO._id.toString(), allow: true, type: 'RoleAssign'},
+
+        {executorid: roles.DemoCM._id, resource: roles.DemoCM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoCM._id, resource: roles.DemoRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoCM._id, resource: roles.DemoBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoCM._id, resource: roles.DemoPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoRM._id, resource: roles.DemoRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoRM._id, resource: roles.DemoBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoRM._id, resource: roles.DemoPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoBM._id, resource: roles.DemoBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoBM._id, resource: roles.DemoPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.DemoPO._id, resource: roles.DemoPO._id.toString(), allow: true, type: 'RoleAssign'},
+
+    ];
+
+    async.eachLimit(permissions, 10, function(permission, callbackp){
+        AccessService.createPermission(permission, function (err, perm) {
+            callbackp(err, perm)
+        });
+    }, function(err) {
+        callback();
+    });
+
+
+};
 
 var PropertiesCreate = function(companies,callback) {
     var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome', yearBuilt: 2007, orgid: companies.Demo._id, constructionType: 'Garden'}
