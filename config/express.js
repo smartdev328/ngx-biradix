@@ -4,12 +4,14 @@ var bodyParser = require('body-parser')
 var expressJwt = require('express-jwt')
 var raygun = require('raygun');
 var raygunClient = new raygun.Client().init({ apiKey: settings.RAYGUN_APIKEY });
-
+var cookieParser = require('cookie-parser')
 
 
 module.exports = {
         init: function (app) {
             app.use(require('express').static(__dirname + '../../site/'));
+
+            app.use(cookieParser())
 
             app.set('view engine', 'ejs');
             app.set('views', __dirname + '../../site/views')
@@ -71,6 +73,11 @@ module.exports = {
             });
 
             app.use(raygunClient.expressHandler);
+
+            app.all("*", function(req, res, next) {
+                //console.log(req.path, req.cookies)
+                next();
+            })
         }
 }
 

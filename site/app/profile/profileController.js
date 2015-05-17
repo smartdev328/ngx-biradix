@@ -12,6 +12,12 @@ define([
         $rootScope.nav = ''
         //window.renderable = true;
 
+        $scope.setRenderable = function() {
+            window.setTimeout(function() {
+                window.renderable = true;
+            },100)
+        }
+
         $scope.propertyId = $stateParams.id;
 
         $scope.loadProperty = function(defaultPropertyId) {
@@ -22,6 +28,7 @@ define([
                     $scope.property = response.data.properties[0];
                     $scope.localLoading = true;
                     $window.document.title = $scope.property.name;
+                    $scope.setRenderable();
                 });
             }
         };
