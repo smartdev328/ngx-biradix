@@ -7,7 +7,7 @@ define([
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $modal, toastr,ngProgress,$timeout) {
 
-        //Initialize
+
         if ($cookies.get('token')) {
             $rootScope.loggedIn = true;
         }
@@ -113,7 +113,6 @@ define([
                         var x = $window.sessionStorage.redirect;
                         $window.sessionStorage.removeItem('redirect');
                         $location.path(x)
-                        return;
                     }
 
                 });

@@ -35,8 +35,9 @@ define([
             allowHtml: true
         });
 
-        //$urlRouterProvider.otherwise("/dashboard");
-
+        if (!window.sessionStorage.redirect) {
+            $urlRouterProvider.otherwise("/dashboard");
+        }
         $stateProvider
              .state('login', {
                 url: "/login",
