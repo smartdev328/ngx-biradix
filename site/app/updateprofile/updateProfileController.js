@@ -20,7 +20,7 @@ define([
                 ngProgress.start();
                 $authService.updateMe(user).then(function (resp) {
                     $('button.contact-submit').prop('disabled', false);
-                    ngProgress.reset();
+                    ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
                         var errors = _.pluck(resp.data.errors,"msg").join("<br>")
                         toastr.error(errors);
@@ -37,7 +37,7 @@ define([
                 }, function (err) {
                     $('button.contact-submit').prop('disabled', false);
                     toastr.error('Unable to perform action. Please contact an administrator');
-                    ngProgress.reset();
+                    ngProgress.complete();
                 });
             }
         }]);

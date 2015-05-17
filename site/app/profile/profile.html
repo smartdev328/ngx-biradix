@@ -1,11 +1,11 @@
 <div class="row" ng-show="localLoading">
-    <div class="col-xs-6">
+    <div class="col-xs-10">
         <h3 style="padding-left:5px">{{property.name}}</h3>
     </div>
-    <div class="col-xs-6 hidden-print">
+    <div class="col-xs-2 hidden-print">
         <div class="btn-group pull-right" style="padding-bottom:10px">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
-                <i class="fa fa-cloud-download" style="color:white"></i> Print/Export <span class="caret"></span>
+                <i class="fa fa-cloud-download" style="color:white"></i> <span class="hidden-xs">Print/Export</span> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a href ng-click="print()"><i class="fa fa-print"></i> Print: Property Profile</a></li>

@@ -21,7 +21,7 @@ define([
                 ngProgress.start();
                 $contactService.send(msg).then(function (resp) {
                     $('button.contact-submit').prop('disabled', false);
-                    ngProgress.reset();
+                    ngProgress.complete();
 
                         if (resp.data.errors) {
                             var errors = _.pluck(resp.data.errors,"msg").join("<br>")
@@ -35,7 +35,7 @@ define([
                     function(errors) {
                         toastr.error('Unable to access the system at this time. Please contact an administrator');
                         $('button.contact-submit').prop('disabled', false);
-                        ngProgress.reset();
+                        ngProgress.complete();
                     });
             }
         }]);

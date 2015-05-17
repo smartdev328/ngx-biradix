@@ -145,7 +145,7 @@ define([
 
             ngProgress.start();
             $authService.updateSettings($rootScope.me.settings).then(function (resp) {
-                ngProgress.reset();
+                ngProgress.complete();
                 if (resp.data.errors && resp.data.errors.length > 0) {
                     var errors = _.pluck(resp.data.errors,"msg").join("<br>")
                     toastr.error(errors);
@@ -166,7 +166,7 @@ define([
             }, function (err) {
                 $rootScope.me.settings.hideUnlinked = !$rootScope.me.settings.hideUnlinked;
                 toastr.error('Unable to perform action. Please contact an administrator');
-                ngProgress.reset();
+                ngProgress.complete();
             });
 
 

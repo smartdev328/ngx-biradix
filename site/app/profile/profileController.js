@@ -44,7 +44,7 @@ define([
             $progressService.isComplete($scope.progressId, function(isComplete) {
 
                 if (isComplete) {
-                    ngProgress.reset();
+                    ngProgress.complete();
                     $('#export').prop('disabled', false);
                 }
                 else {
