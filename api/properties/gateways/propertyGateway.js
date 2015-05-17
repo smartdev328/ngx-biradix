@@ -6,6 +6,7 @@ var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
 var moment = require('moment')
 var request = require('request')
+var phantom = require('phantom-render-stream');
 
 var Routes = express.Router();
 
@@ -28,7 +29,7 @@ Routes.get('/:id/excel', function (req, res) {
         moment().utcOffset(req.query.timezone);
 
         var p = properties[0];
-        var fileName = p.name.replace(/ /g, " ") + '_and_Comps_';
+        var fileName = p.name.replace(/ /g, "_") + '_and_Comps_';
 
         fileName += moment().format("MM_DD_YYYY");
 
@@ -54,4 +55,40 @@ Routes.get('/:id/excel', function (req, res) {
 
 });
 
+Routes.get('/:id/pdf', function (req, res) {
+    PropertyService.search(req.user, {_id: req.params.id}, function(err, properties) {
+
+        moment().utcOffset(req.query.timezone);
+
+        var p = properties[0];
+        var fileName = p.name.replace(/ /g, "_") + '_and_Comps_';
+
+        fileName += moment().format("MM_DD_YYYY");
+
+        fileName += ".pdf";
+
+        var render = phantom({
+            pool        : 5,           // Change the pool size. Defaults to 1
+            timeout     : 30000,        // Set a render timeout in milliseconds. Defaults to 30 seconds.
+            format      : 'pdf',      // The default output format. Defaults to png
+            quality     : 100,        // The default image quality. Defaults to 100. Only relevant for jpeg format.
+            userAgent   : req.headers['user-agent']
+        });
+
+        var url = req.protocol + '://' + req.get('host') + "/#/profile/" + p._id;
+
+        res.setHeader("content-type", "application/pdf");
+        res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+        var r = render(url).pipe(res);
+
+        r.on('finish', function () {
+            if (req.query.progressId) {
+                ProgressService.setComplete(req.query.progressId)
+            }
+        })
+
+
+    })
+
+});
 module.exports = Routes;

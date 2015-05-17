@@ -66,5 +66,24 @@ define([
 
         }
 
+        $scope.pdf = function() {
+
+            ngProgress.start();
+
+            $('#export').prop('disabled', true);
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            var url = '/api/1.0/properties/' + $scope.property._id + '/pdf?'
+            url += "token=" + $cookies.get('token')
+            url += "&timezone=" + moment().utcOffset()
+            url += "&progressId=" + $scope.progressId
+
+            $window.setTimeout($scope.checkProgress, 500);
+
+            location.href = url;
+
+        }
+
     }]);
 });
