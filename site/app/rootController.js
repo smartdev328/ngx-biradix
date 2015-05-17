@@ -113,6 +113,7 @@ define([
                         var x = $window.sessionStorage.redirect;
                         $window.sessionStorage.removeItem('redirect');
                         $location.path(x)
+                        return;
                     }
 
                 });

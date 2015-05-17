@@ -3,6 +3,7 @@
 var express = require('express');
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
+var ProgressService = require('../../progress/services/progressService')
 var moment = require('moment')
 var request = require('request')
 
@@ -33,13 +34,20 @@ Routes.get('/:id/excel', function (req, res) {
 
         fileName += ".xlsx";
 
-        request.post('http://biradixsheets.apphb.com/excel', {
+        var r = request.post('http://biradixsheets.apphb.com/excel', {
             form: {
                 fileName : fileName,
                 name: p.name
 
             }
         }).pipe(res)
+
+        r.on('finish', function () {
+            if (req.query.progressId) {
+                ProgressService.setComplete(req.query.progressId)
+            }
+        })
+
 
     })
 

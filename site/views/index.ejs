@@ -39,13 +39,13 @@
     </div>
     <div style="display:none" class="loggedin">
         <div class="visible-print-block" style="padding:10px 0px 0px 10px">
-            <a href="#/Dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
+            <a href="#/dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
             <hr>
         </div>
         <nav class="navbar hidden-xs">
             <div class="container-fluid">
                 <div class="navbar-header" style="padding:5px 0px 10px 0px">
-                    <a href="#/Dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
+                    <a href="#/dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
 
                 </div>
 
@@ -68,7 +68,7 @@
                     </button>
 
                     <div class="pull-left visible-xs-block" style="padding-top:10px">
-                        <a href="#/Dashboard"><img src="/images/organizations/<%=logoSmall%>" class="logoSmall"></a>
+                        <a href="#/dashboard"><img src="/images/organizations/<%=logoSmall%>" class="logoSmall"></a>
                     </div>
 
                     <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" role="button" aria-expanded="false"
@@ -100,9 +100,9 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                    <li ng-class="{active: $root.nav == 'Dashboard'}"><a href="#/">Dashboard</a></li>
-                    <li ng-class="{active: $root.nav == 'Properties'}" ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/">My Properties</a></li>
-                    <li ng-class="{active: $root.nav == 'Reporting'}"><a href="#/">Reporting</a></li>
+                    <li ng-class="{active: $root.nav == 'Dashboard'}"><a href="#/dashboard">Dashboard</a></li>
+                    <li ng-class="{active: $root.nav == 'Properties'}" ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/proeprties">My Properties</a></li>
+                    <li ng-class="{active: $root.nav == 'Reporting'}"><a href="#/reporting">Reporting</a></li>
                         </ul>
 
 

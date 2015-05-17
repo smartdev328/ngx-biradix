@@ -35,10 +35,10 @@ define([
             allowHtml: true
         });
 
-        $urlRouterProvider.otherwise("/dashboard");
+        //$urlRouterProvider.otherwise("/dashboard");
 
         $stateProvider
-            .state('login', {
+             .state('login', {
                 url: "/login",
                 views: {
                     "loggedOutView": {

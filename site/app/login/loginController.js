@@ -25,7 +25,7 @@ define([
                         $scope.localLoading = false;
                     }
                     else {
-                         $window.location.href = '/';
+                        $window.location.href = '/';
                     }
             },
             function(errors) {
