@@ -125,6 +125,17 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'manageUsers/manageUsersController')}}
             })
+            .state('preferences', {
+                url: "/preferences",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/preferences/preferences.html" ,
+                        controller : "preferencesController"
+                    }
+
+                },
+                resolve: {get : function($q) {return resolve($q, 'preferences/preferencesController')}}
+            })
             .state('profile', {
                 url: "/profile/:id",
                 views: {

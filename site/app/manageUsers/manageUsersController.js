@@ -10,5 +10,9 @@ define([
 
         $rootScope.nav = "";
 
+        $rootScope.sideMenu = [];
+        $rootScope.sideMenu.push({ label: "Manage Users", href: '#/manageusers', active: true });
+        $rootScope.sideMenu.push({ label: "Preferences", href: '#/preferences', active: false });
+
     }]);
 });

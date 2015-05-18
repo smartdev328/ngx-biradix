@@ -10,6 +10,7 @@ define([
             $location.path('/login')
         }
         $rootScope.nav = 'Dashboard'
+        $rootScope.sideMenu = [];
         //window.renderable = true;
 
         $propertyService.search({limit: 1000, permission: 'PropertyManage'}).then(function (response) {
