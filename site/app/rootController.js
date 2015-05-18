@@ -246,5 +246,30 @@ define([
             $rootScope.swaptoLoggedIn();
         }
 
+        //make sure in full screen right nav is always shown
+        var w = angular.element($window);
+
+        w.bind('resize', function () {
+            if (w.width() > 767) {
+                $('#wrapper').removeClass('toggled');
+                $('#sidenavHandle').addClass('fa-arrow-circle-right');
+                $('#sidenavHandle').removeClass('fa-arrow-circle-left');
+            }
+        });
+
+        $scope.toggleLeftNav = function() {
+            $('#wrapper').toggleClass('toggled');
+
+            if ($('#wrapper').hasClass('toggled'))
+            {
+                $('#sidenavHandle').addClass('fa-arrow-circle-left');
+                $('#sidenavHandle').removeClass('fa-arrow-circle-right');
+            } else {
+                $('#sidenavHandle').addClass('fa-arrow-circle-right');
+                $('#sidenavHandle').removeClass('fa-arrow-circle-left');
+            }
+
+        }
+
     }]);
 });
