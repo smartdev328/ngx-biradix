@@ -10,21 +10,20 @@ module.exports = {
         UserSchema.findOne({},function(err, usr) {
             if (!usr) {
                 async.waterfall([
-                    function(callbackw){
-                        UsersCreate(function(users) {
-                            callbackw(null,users)
-                        });
-                    },
-                    function(users, callbackw) {
+                    function(callbackw) {
                         CompaniesCreate(function(companies) {
-                            callbackw(null,users, companies)
+                            callbackw(null, companies)
                         })
                     },
-
-                    function(users, companies, callbackw) {
+                    function(companies, callbackw) {
                         RolesCreate(companies, function(roles) {
-                            callbackw(null,users, companies, roles)
+                            callbackw(null,roles, companies)
                         })
+                    },
+                    function(roles, companies, callbackw){
+                        UsersCreate(roles, function(users) {
+                            callbackw(null,users, companies, roles)
+                        });
                     },
                     function(users, companies,roles, callbackw) {
                         RolesAssignPermissionsCreate(roles, function() {
@@ -40,13 +39,7 @@ module.exports = {
                         PermissionsCreate(roles, properties, function() {
                             callbackw(null,users, roles, properties)
                         })
-                    },
-                    function(users, roles,properties,  callbackw) {
-                        MembershipsCreate(users,roles, function() {
-                            callbackw(null,users, roles, properties)
-                        })
-                    },
-
+                    }
                 ], function(err) {
 
                 });
@@ -197,13 +190,13 @@ var PropertiesCreate = function(companies,callback) {
 
 
 }
-var UsersCreate = function(callback) {
+var UsersCreate = function(roles, callback) {
 
-    var System = {email : "admin@biradix.com", password: "$%%##FSDFSD", first : "System", last : "User", isSystem : true};
-    var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K"};
-    var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z"};
-    var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V"};
-    var Michelle = {email : "mbetchner@greystar.com", password: "Betchner321", first : "Michelle", last : "Betchner"};
+    var System = {email : "admin@biradix.com", password: "$%%##FSDFSD", first : "System", last : "User", isSystem : true, roleid: roles.BiradixAdmin._id};
+    var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K", roleid: roles.BiradixAdmin._id};
+    var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z", roleid: roles.BiradixAdmin._id};
+    var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleid: roles.BiradixAdmin._id};
+    var Michelle = {email : "mbetchner@greystar.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleid: roles.GreystarCM._id};
 
 
     async.parallel({
@@ -366,62 +359,6 @@ var RolesCreate = function(Orgs, callback) {
             });
         }
 },function(err, roles) {callback(roles)})
-
-
-}
-
-var MembershipsCreate = function(Users, Roles, callback) {
-
-    var System = {userid: Users.System._id, roleid: Roles.BiradixAdmin._id};
-    var Alex = {userid: Users.Alex._id, roleid: Roles.BiradixAdmin._id};
-    var Eugene = {userid: Users.Eugene._id, roleid: Roles.BiradixAdmin._id};
-    var Blerim = {userid: Users.Blerim._id, roleid: Roles.BiradixAdmin._id};
-    var Michelle = {userid: Users.Michelle._id, roleid: Roles.GreystarCM._id};
-
-    async.parallel([
-        function (callbackp) {
-            AccessService.assignMembership(System, function(err, obj) {
-                if (err) {
-                    throw("Unable to seed: "+ err[0].msg);
-                }
-                callbackp();
-            })
-        },
-        function (callbackp) {
-            AccessService.assignMembership(Alex, function(err, obj) {
-                if (err) {
-                    throw("Unable to seed: "+ err[0].msg);
-                }
-                callbackp();
-            })
-        },
-        function (callbackp) {
-            AccessService.assignMembership(Eugene, function(err, obj) {
-                if (err) {
-                    throw("Unable to seed: "+ err[0].msg);
-                }
-                callbackp();
-            })
-        },
-        function (callbackp) {
-            AccessService.assignMembership(Blerim, function(err, obj) {
-                if (err) {
-                    throw("Unable to seed: "+ err[0].msg);
-                }
-                callbackp();
-            })
-        },
-        function (callbackp) {
-            AccessService.assignMembership(Michelle, function(err, obj) {
-                if (err) {
-                    throw("Unable to seed: "+ err[0].msg);
-                }
-                callbackp();
-            })
-        }
-    ], function() {
-        callback();
-    })
 
 
 }

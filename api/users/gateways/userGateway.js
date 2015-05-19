@@ -114,6 +114,42 @@ userRoutes.post('/updatePasswordByToken', function (req, res) {
     })
 })
 
+userRoutes.post('/', function (req, res) {
+    UserService.search(req.user, req.body, function(err, users) {
+
+        if (err) {
+            res.status(400).send(err)
+        } else {
+            res.status(200).json({users: users})
+        }
+
+    })
+
+});
+
+userRoutes.get('/loginAs/:userid', function (req, res) {
+    AccessService.canAccess(req.user,"Users/LoginAs", function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+        UserService.search(req.user, {}, function (err, users) {
+
+            var user = _.find(users, function (x) {
+                return x._id.toString() == req.params.userid
+            })
+
+            UserService.getUserById(user._id, function (err, usr) {
+                    if (err) {
+                        return res.status(200).json(errors);
+                    }
+                    getToken(usr, res);
+
+                }
+            );
+        })
+    });
+})
+
 module.exports = userRoutes;
 
 

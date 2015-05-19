@@ -88,7 +88,6 @@ module.exports = {
         },  function(err, all)
             {
                 var CMs = [];
-                var viewers = [];
                 var permissions = [];
                 if (property.orgid) {
                     //if org of property is provided, assign manage to all CMs for that org
@@ -101,7 +100,7 @@ module.exports = {
                 }
 
                 //and assign view opermissions to all non admins and not POs
-                viewers = _.filter(all.roles, function(x) {
+                var viewers = _.filter(all.roles, function(x) {
                     return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1})
 
 

@@ -12,8 +12,8 @@
         <b style="margin-left:10px">Settings</b>
         <ul class="multi-col-list">
             <li ng-show="$root.me.permissions.indexOf('Users') > -1"><a href="#/manageusers"><i class="fa fa-users"></i> Manage Users</a></li>
-            <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/password"><i class="fa fa-history"></i> Activity History</a></li>
-            <li ng-show="!$root.me.settings.hideUnlinked"><a href ng-click="activityhistory()"><i class="fa fa-chain-broken"></i> Hide Unlinked</a></li>
+            <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/activityhistory"><i class="fa fa-history"></i> Activity History</a></li>
+            <li ng-show="!$root.me.settings.hideUnlinked"><a href ng-click="toggleUnlniked()"><i class="fa fa-chain-broken"></i> Hide Unlinked</a></li>
             <li ng-show="$root.me.settings.hideUnlinked"><a href ng-click="toggleUnlniked()"><i class="fa fa-link"></i> Show Unlinked</a></li>
         </ul>
     </div>

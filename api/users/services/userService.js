@@ -11,6 +11,81 @@ var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
 
 module.exports = {
+    search: function(Operator,criteria, callback) {
+        async.parallel({
+                permissions: function(callbackp) {
+                    if (Operator.memberships.isadmin) {
+                        callbackp(null,[]);
+                    } else {
+                        AccessService.getPermissions(Operator, ['UserManage'], function(permissions) {
+                            callbackp(null, permissions)
+                        });
+                    }
+                },
+                roles: function (callbackp) {
+                    AccessService.getRoles(function(err, roles) {
+                        callbackp(err, roles)
+                    })
+                },
+                memberships: function (callbackp) {
+                    AccessService.getAllMemberships(function(err, memberships) {
+                        callbackp(err, memberships)
+                    })
+                } ,
+                orgs: function(callbackp) {
+                    OrgService.read(function (err, orgs) {
+                        callbackp(null, orgs)
+                    });
+                }
+            }, function(err, all) {
+
+            var query;
+            if (Operator.memberships.isadmin) {
+                query = UserSchema.find();
+            }
+            else {
+                query = UserSchema.find({'_id': {$in: permissions}});
+            }
+
+            query = query.select('_id first last email active date');
+
+            query = query.sort("-date");
+
+            query.exec(function(err, users) {
+
+                if (users) {
+
+                    users = JSON.parse(JSON.stringify(users));
+                    users.forEach(function(x) {
+                        x.name = x.first + ' ' + x.last;
+                        delete x.first;
+                        delete x.last;
+                        x.role = 'N/A';
+                        x.company= 'N/A';
+
+                        var membership = _.find(all.memberships, function(m) { return m.userid.toString() == x._id.toString()})
+
+                        if (membership) {
+                            var role = _.find(all.roles, function(r) {return r._id.toString() == membership.roleid.toString()})
+                            if (role) {
+                                x.role = role.name;
+                                var company = _.find(all.orgs, function(o) {return o._id.toString() == role.orgid.toString() })
+                                if (company) {
+                                    x.company = company.name;
+                                }
+                            }
+                        }
+
+                        if (x.active !== false) {
+                            x.active = true;
+                        }
+                    })
+                }
+                callback(err,users)
+            })
+
+        });
+    },
     getUserById: function(id, callback) {
         UserSchema.findOne({
             _id: id
@@ -176,30 +251,68 @@ module.exports = {
                 error(modelErrors);
                 return;
             }
-            var newUser = new UserSchema();
 
-            newUser.email = user.email;
-            newUser.emailLower = user.emailLower;
-            newUser.first = user.first;
-            newUser.last = user.last;
-            newUser.title = user.title;
-            newUser.date = Date.now();
-            newUser.salt = UtilityService.makeSalt();
-            newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
-            newUser.isSystem = user.isSystem || false;
-            newUser.settings = {
-                hideUnlinked : false
-            }
+            AccessService.getRoles(function(err, roles) {
+                var CMs = [];
+                var permissions = [];
 
-            newUser.save(function (err, usr) {
-                if (err) {
-                    modelErrors.push({msg : 'Unexpected Error. Unable to create user.'});
-                    error(modelErrors);
-                    return;
-                };
+                var userRole = _.find(roles, function(x) {return x._id.toString() == user.roleid.toString()});
 
-                success(usr);
+                if (userRole && userRole.orgid) {
+                    var orgid = userRole.orgid;
+                    //if org of property is provided, assign manage to all CMs for that org
+                    CMs = _.filter(roles, function(x) {return x.orgid == orgid.toString() && x.tags.indexOf('CM') > -1})
 
+                    CMs.forEach(function(x) {
+                        permissions.push({executorid: x._id.toString(), allow: true, type: 'UserManage'})
+                    })
+                }
+
+                var newUser = new UserSchema();
+
+                newUser.email = user.email;
+                newUser.emailLower = user.emailLower;
+                newUser.first = user.first;
+                newUser.last = user.last;
+                newUser.title = user.title;
+                newUser.date = Date.now();
+                newUser.salt = UtilityService.makeSalt();
+                newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
+                newUser.isSystem = user.isSystem || false;
+                newUser.active = true;
+                newUser.settings = {
+                    hideUnlinked: false
+                }
+
+                newUser.save(function (err, usr) {
+                    if (err) {
+                        modelErrors.push({msg: 'Unexpected Error. Unable to create user.'});
+                        error(modelErrors);
+                        return;
+                    }
+                    ;
+
+                    var membership = {userid: usr._id, roleid: user.roleid}
+
+                    AccessService.assignMembership(membership, function(err, obj) {
+
+                        if (permissions.length > 0 ) {
+                            permissions.forEach(function(x) {
+                                x.resource = usr._id.toString();
+                            })
+                        }
+
+                        async.eachLimit(permissions, 10, function(permission, callbackp){
+                            AccessService.createPermission(permission, function (err, perm) {
+                                callbackp(err, perm)
+                            });
+                        }, function(err) {
+                            success(usr);
+                        });
+                    })
+
+
+                });
             });
         });
 

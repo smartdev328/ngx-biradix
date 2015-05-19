@@ -185,6 +185,18 @@
             })
         },
 
+        getAllMemberships: function(callback) {
+            MemberSchema.find().exec(function(err, obj) {
+                if (err) {
+                    modelErrors.push({msg: 'Unexpected Error. Unable to get memberships: ' + err});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                callback(null, obj);
+            })
+        },
+
         getMemberships: function(userid, callback) {
             //Note: Memberships always include userid, all roles they are assigned to and all child roles
             var isadmin = false;

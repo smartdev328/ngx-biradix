@@ -3,6 +3,20 @@ define(['app'], function (app) {
     app.factory('$authService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+        fac.loginAs = function (userid, callback) {
+            return $http.get('/api/1.0/users/loginAs/' + userid, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                if (response.token != null) {
+                    $cookies.put('token',response.token)
+                    callback(response.user,200);
+                }
+                callback(null,200);
+
+            }).error(function (response,status) {
+                callback(null,status);
+            });
+        }
+
         fac.refreshToken = function (token, callback) {
             return $http.get('/api/1.0/users/refreshToken', {
                 headers: {'Authorization': 'Bearer ' + token }}).success(function (response) {

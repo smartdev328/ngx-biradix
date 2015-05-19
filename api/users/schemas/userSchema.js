@@ -21,6 +21,7 @@ var UserSchema = new Schema({
     hashed_password: {
         type: String
     },
+    active: Boolean,
     salt: String,
     date: Date,
     isSystem: Boolean,

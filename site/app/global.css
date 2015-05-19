@@ -7,6 +7,11 @@ h2,h3 {
     color: #1E90FF
 }
 
+span.success {color:green}
+span.danger {color:pink}
+span.warning {color:orange}
+td.center,th.center {text-align:center}
+
 .row {
     margin-right:-10px;
     margin-left:-10px
@@ -83,6 +88,14 @@ h2,h3 {
     border-bottom: 6px solid white;
     border-left: 6px solid transparent;
     content: '';
+}
+
+.skinny::before {
+   right: 3px;
+}
+
+.skinny::after {
+    right: 4px;
 }
 
 /* nav bar */
