@@ -28,7 +28,7 @@ module.exports = {
                 query = PropertySchema.find();
             }
             else {
-                query = PropertySchema.find({'_id': {$in: permissions}});
+                query = PropertySchema.find({'_id': {$in: all.permissions}});
             }
 
             if (criteria._id) {

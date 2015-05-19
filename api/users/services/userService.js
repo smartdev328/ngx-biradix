@@ -44,7 +44,7 @@ module.exports = {
                 query = UserSchema.find();
             }
             else {
-                query = UserSchema.find({'_id': {$in: permissions}});
+                query = UserSchema.find({'_id': {$in: all.permissions}});
             }
 
             query = query.select('_id first last email active date');
