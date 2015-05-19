@@ -254,6 +254,9 @@ define([
                 $('#wrapper').removeClass('toggled');
                 $('#sidenavHandle').addClass('fa-arrow-circle-right');
                 $('#sidenavHandle').removeClass('fa-arrow-circle-left');
+                $rootScope.$broadcast('size', w.width());
+            } else {
+                $rootScope.$broadcast('size', w.width());
             }
         });
 

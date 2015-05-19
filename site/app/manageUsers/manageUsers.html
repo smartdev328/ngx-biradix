@@ -1,19 +1,62 @@
 <h2 class="hasSidenav">Manage Users</h2>
+<Style>
+
+    @media all and (min-width: 0px) and (max-width: 380px) {
+        .grid-right-nav {
+            margin-top:10px
+        }
+        .grid-limit {
+            float:right  !important;
+        }
+    }
+
+    @media all and (min-width: 0px) and (max-width: 1024px) {
+        .grid-pager {
+            float: left !important;
+        }
+
+        .grid-show {
+            margin-right:50px;
+            margin-bottom:10px
+        }
+    }
+
+    @media all and (min-width: 0px) and (max-width: 767px) {
+
+     .grid-right-nav {
+         float:left;
+     }
+
+        .grid-limit {
+
+        }
+        .grid-right-nav  .has-feedback {
+            margin-left:3px !important;
+            width:120px !important;
+        }
+
+    }
+
+    .grid-right-nav  .has-feedback {
+        margin-left:5px;
+        width: 160px;
+    }
+</Style>
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
-    <div class="row">
-        <div class="col-xs-1">
+
+        <div style="float:left" class="grid-limit">
             <select class="form-control input-sm" ng-model="limit" style="width:75px"
                     ng-change="resetPager()"
                     ng-options="item for item in limits">
             </select>
         </div>
 
-        <div class="col-xs-11">
-            <div class="form-group has-feedback pull-right" style="margin-left:10px">
+        <div style="float:right" class="grid-right-nav">
+            <div class="form-group has-feedback pull-right">
                 <div class="btn-group action_dropdown stay_open_button">
                     <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
                         <span class="fa fa-table"></span> <span class="caret"></span>
@@ -41,7 +84,7 @@
                 </div>
             </div>
 
-            <div class="form-group has-feedback pull-right" style="width:160px;">
+            <div class="form-group has-feedback pull-right">
                 <input type="text" class="form-control input-sm"
                        placeholder="Search Users"
                        ng-model="searchText"
@@ -80,7 +123,7 @@
                 <div class="pull-right" style="width:15px" ng-show="sort.role === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.role === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.company" style="cursor:pointer" ng-click="toggleSort('company')">
+            <th ng-show="show.company" style="cursor:pointer;white-space:nowrap" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>
                 <div class="pull-right" style="width:15px" ng-show="sort.company == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
@@ -128,11 +171,11 @@
 
     </table>
 
-    <div class="pull-left" style="padding-top:5px;">
+    <div class="pull-left grid-show" style="padding-top:5px;">
         Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
         <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
     </div>
-    <div class="pull-right">
+    <div class="pull-right grid-pager">
         <pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit" style="margin-top:0px"></pagination>
     </div>
     <br clear="all" />

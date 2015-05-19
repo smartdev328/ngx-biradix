@@ -16,6 +16,7 @@ define([
         $rootScope.sideMenu.push({ label: "Manage Users", href: '#/manageusers', active: true });
         //$rootScope.sideMenu.push({ label: "Preferences", href: '#/preferences', active: false });
         var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
+        var isTiny = $(window).width() < 500;
 
         //Grid Options
         $scope.data = [];
@@ -32,12 +33,22 @@ define([
             rownumber: siteAdmin,
             date: false,
             name: true,
-            email: true,
+            email: !isTiny,
             role: true,
             company: siteAdmin,
-            active: true,
+            active:  !isTiny,
             tools : true
         }
+
+        $scope.$on('size', function(e,size) {
+            if (size < 500) {
+                $scope.show.email = false;
+                $scope.show.active = false;
+            } else {
+                $scope.show.email = true;
+                $scope.show.active = true;
+            }
+        });
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
