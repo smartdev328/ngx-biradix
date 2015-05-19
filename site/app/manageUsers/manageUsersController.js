@@ -2,7 +2,7 @@
 define([
     'app',
     '../../services/userService',
-    '../../filters/skip/skipFilter'
+    '../../filters/skip/filter'
 ], function (app) {
 
     app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService', function ($scope,$rootScope,$location,$userService,$authService) {
