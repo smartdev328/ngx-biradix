@@ -89,7 +89,7 @@
 
             <div class="form-group has-feedback pull-right">
                 <input type="text" class="form-control input-sm"
-                       placeholder="Search Users"
+                       placeholder="Search Properties"
                        ng-model="searchText"
                        ng-change="resetPager()">
                 <i class="fa fa-search form-control-feedback" style="color:#ccc"></i>
@@ -181,10 +181,8 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <!--<li><a href style="text-decoration:none" ng-click="edit(row.UserId)"><span class="fa fa-edit"></span> Edit User</a></li>-->
-                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && !row.active" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
-                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && row.active" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
-                            <li><a href ng-click="loginAs(row._id)" ng-show="me.permissions.indexOf('Users/LogInAs') > -1 && row.active"><span class="fa fa-key"></span> Login As</a></li>
+                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
+                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
                         </ul>
                     </div>
                 </div>

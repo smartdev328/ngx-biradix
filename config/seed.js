@@ -422,6 +422,7 @@ var PermissionsCreate = function(roles, properties, callback) {
 
     var permissions = [
         {executorid: roles.BiradixAdmin._id, resource: "Users/LogInAs", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "Properties/Deactivate", allow: true, type: 'Execute'},
 
         {executorid: roles.GreystarCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.GreystarRM._id, resource: "Users", allow: true, type: 'Execute'},
