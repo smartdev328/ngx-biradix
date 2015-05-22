@@ -1,4 +1,4 @@
-<h2 class="hasSidenav">Manage Users</h2>
+<h2 class="hasSidenav">My Properties</h2>
 <Style>
 
     @media all and (min-width: 0px) and (max-width: 380px) {
@@ -65,9 +65,12 @@
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rownumber" ng-checked="show.rownumber"> Row Number</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.date" ng-checked="show.date"> Date</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name"> Name</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.email" ng-checked="show.email"> Email</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.role" ng-checked="show.role"> Role</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company"> Company</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.address" ng-checked="show.address"> Address</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.city" ng-checked="show.city"> City</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.state" ng-checked="show.state"> State</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.zip" ng-checked="show.zip"> Zip</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.units" ng-checked="show.units"> Total Units</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy"> Occupancy %</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active"> Active</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools"> Actions</label></div></li>
                     </ul>
@@ -110,23 +113,41 @@
                 <div class="pull-right" style="width:15px" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.email" style="cursor:pointer" ng-click="toggleSort('email')">
-                <div class="pull-left">Email</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.email == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.email === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.email === false"><i class="fa fa-sort-up"></i></div>
+            <th ng-show="show.address" style="cursor:pointer" ng-click="toggleSort('address')">
+                <div class="pull-left">Address</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.address == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.address === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.address === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.role" style="cursor:pointer" ng-click="toggleSort('role')">
-                <div class="pull-left">Role</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.role == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.role === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.role === false"><i class="fa fa-sort-up"></i></div>
+            <th ng-show="show.city" style="cursor:pointer" ng-click="toggleSort('city')">
+                <div class="pull-left">City</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.city == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.city === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.city === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.company" style="cursor:pointer;min-width:100px" ng-click="toggleSort('company')">
-                <div class="pull-left">Company</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
+            <th ng-show="show.state" style="cursor:pointer" ng-click="toggleSort('state')">
+                <div class="pull-left">State</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.state == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.state === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.state === false"><i class="fa fa-sort-up"></i></div>
+            </th>
+            <th ng-show="show.zip" style="cursor:pointer" ng-click="toggleSort('zip')">
+                <div class="pull-left">Zip</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.zip == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.zip === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.zip === false"><i class="fa fa-sort-up"></i></div>
+            </th>
+            <th ng-show="show.units" style="cursor:pointer" ng-click="toggleSort('units')">
+                <div class="pull-left">Units</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.units == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.units === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.units === false"><i class="fa fa-sort-up"></i></div>
+            </th>
+            <th ng-show="show.occupancy" style="cursor:pointer" ng-click="toggleSort('occupancy')">
+                <div class="pull-left">Occ</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.occupancy == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.active" style="cursor:pointer;min-width:70px;width:70px" ng-click="toggleFilter('active')">
                 <div class="pull-left">Active</div>
@@ -143,9 +164,12 @@
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
             <td ng-show="show.name">{{row.name}}</td>
-            <td ng-show="show.email">{{row.email}}</td>
-            <td ng-show="show.role">{{row.role}}</td>
-            <td ng-show="show.company">{{row.company}}</td>
+            <td ng-show="show.address">{{row.address}}</td>
+            <td ng-show="show.city">{{row.city}}</td>
+            <td ng-show="show.state">{{row.state}}</td>
+            <td ng-show="show.zip">{{row.zip}}</td>
+            <td ng-show="show.units" style="text-align:right">{{row.totalUnits || '-'}}</td>
+            <td ng-show="show.occupancy" style="text-align:right">{{row.occupancy || '-'}}</td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x success" ng-show="row.active"></span>
                 <span class="fa fa-times fa-2x danger" ng-show="!row.active"></span>

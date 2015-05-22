@@ -66,6 +66,9 @@ module.exports = {
                 }
 
 
+                props.forEach(function(p) {
+                    p.active = p.active || true;
+                })
                 callback(err,props)
             })
         })
@@ -121,6 +124,7 @@ module.exports = {
                 n.management = property.management;
                 n.yearBuilt = property.yearBuilt;
                 n.constructionType = property.constructionType;
+                n.active = true;
 
                 n.date = Date.now();
 

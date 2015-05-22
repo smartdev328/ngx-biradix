@@ -41,7 +41,8 @@ var s = new Schema({
         type: [Number],  // [<longitude>, <latitude>]
         index: '2d'      // create the geospatial index
     },
-    date: Date
+    date: Date,
+    active: Boolean
 
 });
 
