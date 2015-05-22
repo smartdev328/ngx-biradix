@@ -7,6 +7,10 @@ h2,h3 {
     color: #1E90FF
 }
 
+.btn-primary .fa {
+    color:white
+}
+
 span.success {color:green}
 span.danger {color:pink}
 span.warning {color:orange}
@@ -17,6 +21,12 @@ td.center,th.center {text-align:center}
     margin-left:-10px
 }
 
+.input-sm {
+    border-radius: 2px;
+}
+.dropdown-menu {
+    border-radius: 2px;
+}
 @media print {
     @page {
 
@@ -364,6 +374,10 @@ td.center,th.center {text-align:center}
     background-color: #2288ff !important;
 }
 
+#wrapper .btn-default:focus {
+    background-color:white;
+
+}
 @media(min-width:768px) {
     #wrapper {
         padding-left: 250px;

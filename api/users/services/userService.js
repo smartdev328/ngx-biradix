@@ -199,6 +199,12 @@ module.exports = {
                 return;
             }
 
+            if (!usr.active) {
+                modelErrors.push({msg: 'Your account has been deactivated.'});
+                error(modelErrors);
+                return;
+            }
+
             success(usr);
         });
 
@@ -465,7 +471,40 @@ module.exports = {
 
         });
 
-    }
+    },
+    updateActive : function(user, callback)  {
+        var modelErrors = [];
+
+        if (!user.id)
+        {
+            modelErrors.push({msg : 'Invalid user id.'});
+        }
+
+        if (user.active === null)
+        {
+            modelErrors.push({param: 'active', msg : 'Missing active status.'});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        var query = {_id: user.id};
+        var update = {active: user.active};
+        var options = {new: true};
+
+        UserSchema.findOneAndUpdate(query, update, options, function(err, saved) {
+
+            if (err) {
+                modelErrors.push({msg : 'Unable to update user.'});
+                callback(modelErrors, null);
+                return;
+            }
+
+            return callback(err, saved)
+        })
+
+    },
 }
 
 

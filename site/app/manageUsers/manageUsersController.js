@@ -5,7 +5,7 @@ define([
     '../../filters/skip/filter'
 ], function (app) {
 
-    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService', function ($scope,$rootScope,$location,$userService,$authService) {
+    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress', function ($scope,$rootScope,$location,$userService,$authService,ngProgress) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -219,10 +219,10 @@ define([
                     row.push(r['date'])
                 }
                 if ($scope.show.name) {
-                    row.push(r['email'])
+                    row.push(r['name'])
                 }
                 if ($scope.show.email) {
-                    row.push(r['name'])
+                    row.push(r['email'])
                 }
                 if ($scope.show.role) {
                     row.push(r['role'])
@@ -237,6 +237,35 @@ define([
             })
 
             $scope.streamCsv('users.csv', content)
+
+        }
+
+        $scope.toggleActive = function (user) {
+            $scope.alerts = [];
+
+            ngProgress.start();
+
+            $userService.setActive(!user.active, user._id).then(function (response) {
+
+                    if (response.data.errors) {
+                        $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
+                    }
+                    else {
+                        user.active = !user.active;
+
+                        if (user.active) {
+                            $scope.alerts.push({type: 'success', msg: user.name + " has been activated."});
+                        } else {
+                            $scope.alerts.push({type: 'warning', msg: user.name + " has been de-activated. "});
+                        }
+                    }
+
+                    ngProgress.reset();
+                },
+                function (error) {
+                    $scope.alerts.push({ type: 'danger', msg: "Unable to update your account. Please contact the administrator." });
+                    ngProgress.reset();
+                });
 
         }
 

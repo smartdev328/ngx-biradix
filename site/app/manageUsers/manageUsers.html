@@ -3,7 +3,8 @@
 
     @media all and (min-width: 0px) and (max-width: 380px) {
         .grid-right-nav {
-            margin-top:10px
+            margin-top:10px;
+            padding-left:5px
         }
         .grid-limit {
             float:right  !important;
@@ -47,7 +48,6 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
-
         <div style="float:left" class="grid-limit">
             <select class="form-control input-sm" ng-model="limit" style="width:75px"
                     ng-change="resetPager()"
@@ -74,7 +74,7 @@
                 </div>
                 <div class="btn-group action_dropdown">
                     <button type="button" class="btn btn-default dropdown-toggle btn-sm" tooltip="Download Results" ng-click="download()">
-                        <span class="fa fa-cloud-download"></span>
+                        <span class="fa fa-download"></span>
                     </button>
                 </div>
                 <div class="btn-group action_dropdown">
@@ -94,7 +94,6 @@
         </div>
 
 
-    </div>
     <table class="table table-condensed table-striped" style="margin-bottom:10px">
         <thead>
         <tr>
@@ -111,7 +110,7 @@
                 <div class="pull-right" style="width:15px" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.email" style="cursor:pointer" ng-click="toggleSort('Email')">
+            <th ng-show="show.email" style="cursor:pointer" ng-click="toggleSort('email')">
                 <div class="pull-left">Email</div>
                 <div class="pull-right" style="width:15px" ng-show="sort.email == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.email === true"><i class="fa fa-sort-down"></i></div>
@@ -159,8 +158,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                             <!--<li><a href style="text-decoration:none" ng-click="edit(row.UserId)"><span class="fa fa-edit"></span> Edit User</a></li>-->
-                            <!--<li><a href ng-click="toggleActive(row)" ng-show="me.permissions.CanDeactivate && !row.IsActive" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>-->
-                            <!--<li><a href ng-click="toggleActive(row)" ng-show="me.permissions.CanDeactivate && row.IsActive" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>-->
+                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && !row.active" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
+                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && row.active" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
                             <li><a href ng-click="loginAs(row._id)" ng-show="me.permissions.indexOf('Users/LogInAs') > -1 && row.active"><span class="fa fa-key"></span> Login As</a></li>
                         </ul>
                     </div>
