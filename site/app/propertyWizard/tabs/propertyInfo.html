@@ -1,29 +1,66 @@
-<div class="row">
-    <div class="col-sm-3">
+<style>
+    .property-info .row {
+        margin-left:-15px
+    }
+</style>
+
+
+<div class="property-info">
+    <div class="row">
+    <div class="col-md-3 col-sm-6">
         Property Name<br>
         <input type="text" class="form-control input-sm" ng-model="property.name">
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
         Address<br>
         <input type="text" class="form-control input-sm" ng-model="property.address">
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
         City<br>
         <input type="text" class="form-control input-sm" ng-model="property.city">
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="row">
+            <div class="col-xs-6">
+                State<br>
+                <select class="from-control input-sm">
+                    <option value="AZ">AZ</option>
+                </select>
+            </div>
+            <div class="col-xs-6">
+                Zip<br>
+                <input type="text" class="form-control input-sm" ng-model="property.zip">
+
+            </div>
+        </div>
     </div>
 
 </div>
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
         Contact Name<br>
         <input type="text" class="form-control input-sm" ng-model="property.contactname">
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
         Contact Email<br>
         <input type="text" class="form-control input-sm" ng-model="property.email">
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
         Contact Phone<br>
         <input type="text" class="form-control input-sm" ng-model="property.phone">
     </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="row">
+            <div class="col-xs-6">
+                Yr. Built<br>
+                <input type="text" class="form-control input-sm" ng-model="property.yearRenovated">
+            </div>
+            <div class="col-xs-6">
+                Renovated<br>
+                <input type="text" class="form-control input-sm" ng-model="property.yearRenovated">
+
+            </div>
+        </div>
+    </div>
+</div>
 </div>

@@ -7,7 +7,7 @@
         <li ng-repeat="step in steps" ng-class="{'active':$index == stepIndex}"><a href ng-click="changeStep($index)">{{step.label}}</a></li>
     </ul>
 </div>
-<div class="modal-body">
+<div class="modal-body container-fluid">
     <div ng-include="stepTemplate"></div>
 </div>
 <div class="modal-footer" style="text-align: left">
