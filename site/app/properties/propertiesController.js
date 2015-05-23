@@ -247,11 +247,32 @@ define([
 
         }
 
-        $scope.toggleActive = function (user) {
+        $scope.toggleActive = function (property) {
             $scope.alerts = [];
 
-            $scope.alerts.push({ type: 'danger', msg: 'Not yet available'});
+            ngProgress.start();
 
+            $propertyService.setActive(!property.active, property._id).then(function (response) {
+
+                    if (response.data.errors) {
+                        $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
+                    }
+                    else {
+                        property.active = !property.active;
+
+                        if (property.active) {
+                            $scope.alerts.push({type: 'success', msg: property.name + " has been activated."});
+                        } else {
+                            $scope.alerts.push({type: 'warning', msg: property.name + " has been de-activated. "});
+                        }
+                    }
+
+                    ngProgress.reset();
+                },
+                function (error) {
+                    $scope.alerts.push({ type: 'danger', msg: "Unable to update property. Please contact the administrator." });
+                    ngProgress.reset();
+                });
         }
 
 

@@ -13,7 +13,14 @@ define(['app'], function (app) {
             });
         }
 
-
+        fac.setActive = function (active, userId) {
+            return $http.put('/api/1.0/properties/' + userId + '/active', { active: active}, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
 
         return fac;
     }]);

@@ -66,9 +66,6 @@ module.exports = {
                 }
 
 
-                props.forEach(function(p) {
-                    p.active = p.active || true;
-                })
                 callback(err,props)
             })
         })
@@ -158,5 +155,38 @@ module.exports = {
 
 
 
-    }
+    },
+    updateActive : function(property, callback)  {
+        var modelErrors = [];
+
+        if (!property.id)
+        {
+            modelErrors.push({msg : 'Invalid property id.'});
+        }
+
+        if (property.active === null)
+        {
+            modelErrors.push({param: 'active', msg : 'Missing active status.'});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        var query = {_id: property.id};
+        var update = {active: property.active};
+        var options = {new: true};
+
+        PropertySchema.findOneAndUpdate(query, update, options, function(err, saved) {
+
+            if (err) {
+                modelErrors.push({msg : 'Unable to update property.'});
+                callback(modelErrors, null);
+                return;
+            }
+
+            return callback(err, saved)
+        })
+
+    },
 }
