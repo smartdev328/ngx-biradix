@@ -1,11 +1,10 @@
 'use strict';
 define([
     'app',
-    '../../services/userService',
     '../../filters/skip/filter'
 ], function (app) {
 
-    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress', function ($scope,$rootScope,$location,$propertyService,ngProgress) {
+    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -274,6 +273,33 @@ define([
                 });
         }
 
+        $scope.edit = function (id, isComp) {
+            require([
+                '/app/propertyWizard/propertyWizardController.js'
+            ], function () {
+                var modalInstance = $modal.open({
+                    templateUrl: '/app/propertyWizard/propertyWizard.html',
+                    controller: 'propertyWizardController',
+                    size: "lg",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        id: function () {
+                            return id;
+                        },
+                        isComp: function() {
+                            return isComp;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    //Send successfully
+                }, function () {
+                    //Cancel
+                });
+            });
+        }
 
     }]);
 });

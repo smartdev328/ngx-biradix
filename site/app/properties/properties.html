@@ -82,7 +82,7 @@
                     </button>
                 </div>
                 <div class="btn-group action_dropdown">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" tooltip="Add Property" ng-click="edit(0)">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" tooltip="Add Property" ng-click="edit(null,false)">
                         <span class="fa fa-plus"></span>
                     </button>
                 </div>
@@ -189,6 +189,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                            <li><a href style="text-decoration:none" ng-click="edit(row._id, false)"><span class="fa fa-edit"></span> Edit Property</a></li>
                             <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
                             <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
                         </ul>

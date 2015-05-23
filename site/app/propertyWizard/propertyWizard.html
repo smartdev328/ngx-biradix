@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">{{title}}</h2>
+</div>
+<div class="container" style="padding-top:5px">
+    <ul class="nav nav-pills" role="tablist">
+        <li ng-repeat="step in steps" ng-class="{'active':$index == stepIndex}"><a href ng-click="changeStep($index)">{{step.label}}</a></li>
+    </ul>
+</div>
+<div class="modal-body">
+    <div ng-include="stepTemplate"></div>
+</div>
+<div class="modal-footer" style="text-align: left">
+    <button class="btn btn-default" ng-click="changeStep(stepIndex - 1)" ng-disabled="stepIndex == 0">Previous</button>
+    <button class="btn btn-primary" ng-click="changeStep(stepIndex + 1)"  ng-disabled="stepIndex == steps.length - 1">Next</button>
+    <button class="btn btn-warning pull-right">Save</button>
+</div>
