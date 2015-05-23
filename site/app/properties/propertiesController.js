@@ -28,8 +28,6 @@ define([
         $scope.searchable = ['name', 'address', 'city', 'state', 'zip'];
         $scope.search['active'] = true;
 
-
-
         $scope.adjustToSize = function(size) {
             var isTiny = size < 967;
             var isMedium  = size < 1167;
@@ -44,6 +42,7 @@ define([
                 active:  !isTiny,
                 units: true,
                 occupancy: true,
+                ner: !isMedium,
                 tools : true
             }
         }
@@ -55,7 +54,7 @@ define([
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
-            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy"}).then(function (response) {
+            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner"}).then(function (response) {
                 $scope.data = response.data.properties;
                 $scope.localLoading = true;
             })

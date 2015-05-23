@@ -71,6 +71,7 @@
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.zip" ng-checked="show.zip"> Zip</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.units" ng-checked="show.units"> Total Units</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy"> Occupancy %</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner"> Net Eff. Rent</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active"> Active</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools"> Actions</label></div></li>
                     </ul>
@@ -149,6 +150,12 @@
                 <div class="pull-right" style="width:15px" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
             </th>
+            <th ng-show="show.ner" style="cursor:pointer" ng-click="toggleSort('ner')">
+                <div class="pull-left">NER</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.ner == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
+            </th>
             <th ng-show="show.active" style="cursor:pointer;min-width:70px;width:70px" ng-click="toggleFilter('active')">
                 <div class="pull-left">Active</div>
                 <div class="pull-right" style="width:15px" ng-show="filters.active == null"><i class="fa fa-filter" style="color:#E0E0E0"></i></div>
@@ -170,6 +177,7 @@
             <td ng-show="show.zip">{{row.zip}}</td>
             <td ng-show="show.units" style="text-align:right">{{row.totalUnits || '-'}}</td>
             <td ng-show="show.occupancy" style="text-align:right">{{row.occupancy || '-'}}</td>
+            <td ng-show="show.ner" style="text-align:right">{{row.ner || '-'}}</td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x success" ng-show="row.active"></span>
                 <span class="fa fa-times fa-2x danger" ng-show="!row.active"></span>
