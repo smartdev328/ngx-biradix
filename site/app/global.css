@@ -7,6 +7,10 @@ h2,h3 {
     color: #1E90FF
 }
 
+.nav-pills>li.active>a {
+    background-color: #1E90FF !important;
+}
+
 .btn-primary .fa {
     color:white
 }
@@ -21,12 +25,10 @@ td.center,th.center {text-align:center}
     margin-left:-10px
 }
 
-.input-sm {
-    border-radius: 2px;
+.input-sm, .dropdown-menu, .btn, .nav-pills>li>a, .modal-content  {
+    border-radius: 2px !important;
 }
-.dropdown-menu {
-    border-radius: 2px;
-}
+
 @media print {
     @page {
 
