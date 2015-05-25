@@ -276,10 +276,12 @@ define([
                 );
 
                 google.maps.event.addListener(autocomplete2, 'place_changed', function () {
-                    var place = autocomplete.getPlace();
+                    var place = autocomplete2.getPlace();
 
 
-                    $scope.property.phone = place.formatted_phone_number;
+                    if (place.formatted_phone_number) {
+                        $scope.property.phone = place.formatted_phone_number;
+                    }
 
                     place.address_components.forEach(function(c) {
                         switch(c.types[0]) {
@@ -334,7 +336,10 @@ define([
                     })
 
                     $scope.property.name=place.name;
-                    $scope.property.phone = place.formatted_phone_number;
+
+                    if (place.formatted_phone_number) {
+                        $scope.property.phone = place.formatted_phone_number;
+                    }
 
                     place.address_components.forEach(function(c) {
                         switch(c.types[0]) {
