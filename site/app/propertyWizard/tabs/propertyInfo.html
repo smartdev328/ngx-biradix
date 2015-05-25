@@ -8,7 +8,7 @@
         margin-bottom:5px
     }
 
-    .pac-container { z-index: 1051 !important; }
+    .pac-container { z-index: 1051 !important;width:360px !important; }
 
     .pac-icon {
         display:none !important;
@@ -22,11 +22,11 @@
     <div class="row">
     <div class="col-md-3 col-sm-6">
         Property Name<br>
-        <input type="text" class="form-control input-sm" ng-model="property.name" id="autocomplete">
+        <input type="text" class="form-control input-sm" ng-model="property.name" id="autocomplete" placeholder="Enter property name">
     </div>
     <div class="col-md-3 col-sm-6">
         Address<br>
-        <input type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2">
+        <input type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2" placeholder="Enter address">
     </div>
     <div class="col-md-3 col-sm-6">
         City<br>
