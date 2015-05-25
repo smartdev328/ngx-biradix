@@ -165,5 +165,14 @@ define([
         }
     }]);
 
+    app.run([
+        '$rootScope', '$modalStack',
+        function($rootScope, $modalStack) {
+            $rootScope.$on('$stateChangeStart', function() {
+                $modalStack.dismissAll('cancel');
+            });
+        }
+    ]);
+
     return app;
 });

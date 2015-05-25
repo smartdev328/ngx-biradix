@@ -270,12 +270,72 @@ define([
 
             window.setTimeout( function() {
                 var autocomplete = new google.maps.places.Autocomplete(
-                    (document.getElementById('autocomplete'))
+                    (document.getElementById('autocomplete2'))
+                    ,{ types: ['geocode'], componentRestrictions: {country:'us'} }
                 );
 
                 google.maps.event.addListener(autocomplete, 'place_changed', function () {
                     var place = autocomplete.getPlace();
-                    $scope.property.name = place.name;
+
+
+                    $scope.property.phone = place.formatted_phone_number;
+
+                    place.address_components.forEach(function(c) {
+                        switch(c.types[0]) {
+                            case "street_number":
+                                $scope.property.address = c.short_name;
+                                break;
+                            case "route":
+                                $scope.property.address += " " + c.long_name;
+                                break;
+                            case "postal_code":
+                                $scope.property.zip = c.short_name;
+                                break;
+                            case "locality":
+                                $scope.property.city = c.long_name;
+                                break;
+                            case "administrative_area_level_1":
+                                $scope.property.state = c.short_name;
+                                break;
+                        }
+                    })
+
+                    $scope.states.forEach(function(s) {
+                        if (s.abbreviation == $scope.property.state) {
+                            $scope.property.state = s;
+                        }
+                    })
+
+                    var address = _.cloneDeep($scope.property.address);
+
+                    $('#autocomplete2').off("blur");
+                    $('#autocomplete2').on("blur", function() {
+                        window.setTimeout(function() {
+                            $('#autocomplete2').val(address)
+                        }, 100)
+
+                    })
+                });
+            }, 400);
+
+            window.setTimeout( function() {
+                var autocomplete = new google.maps.places.Autocomplete(
+                    (document.getElementById('autocomplete'))
+                    ,{ componentRestrictions: {country:'us'} }
+                );
+
+                google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                    var place = autocomplete.getPlace();
+
+                    $('#autocomplete').off("blur");
+                    $('#autocomplete').on("blur", function() {
+                        window.setTimeout(function() {
+                            $('#autocomplete').val(place.name)
+                        }, 100)
+
+                    })
+
+                    $scope.property.name=place.name;
                     $scope.property.phone = place.formatted_phone_number;
 
                     place.address_components.forEach(function(c) {
@@ -304,7 +364,7 @@ define([
                         }
                     })
                 });
-            }, 500);
+            }, 400);
         }]);
 
 });
