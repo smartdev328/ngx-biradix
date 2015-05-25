@@ -7,6 +7,10 @@ h2,h3 {
     color: #1E90FF
 }
 
+.fa-2x {
+    font-size:1.5em
+}
+
 .nav-pills>li.active>a {
     background-color: #1E90FF !important;
 }
