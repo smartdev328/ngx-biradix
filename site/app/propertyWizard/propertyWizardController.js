@@ -35,7 +35,7 @@ define([
                 {label:'Property Info', template: 'propertyInfo.html'},
                 {label:'Property Amenities', template: 'amenities.html'},
                 {label:'Fees & Deposits', template: 'feesDeposits.html'},
-                {label:'Floor Plans', template: 'floorPlans.html'},
+                {label:'Floor Plans', template: 'floorplans.html'},
                 {label:'Notes', template: 'notes.html'},
             ]
 
@@ -283,25 +283,27 @@ define([
                         $scope.property.phone = place.formatted_phone_number;
                     }
 
-                    place.address_components.forEach(function(c) {
-                        switch(c.types[0]) {
-                            case "street_number":
-                                $scope.property.address = c.short_name;
-                                break;
-                            case "route":
-                                $scope.property.address += " " + c.long_name;
-                                break;
-                            case "postal_code":
-                                $scope.property.zip = c.short_name;
-                                break;
-                            case "locality":
-                                $scope.property.city = c.long_name;
-                                break;
-                            case "administrative_area_level_1":
-                                $scope.property.state = c.short_name;
-                                break;
-                        }
-                    })
+                    if (place.address_components) {
+                        place.address_components.forEach(function (c) {
+                            switch (c.types[0]) {
+                                case "street_number":
+                                    $scope.property.address = c.short_name;
+                                    break;
+                                case "route":
+                                    $scope.property.address += " " + c.long_name;
+                                    break;
+                                case "postal_code":
+                                    $scope.property.zip = c.short_name;
+                                    break;
+                                case "locality":
+                                    $scope.property.city = c.long_name;
+                                    break;
+                                case "administrative_area_level_1":
+                                    $scope.property.state = c.short_name;
+                                    break;
+                            }
+                        })
+                    }
 
                     $scope.states.forEach(function(s) {
                         if (s.abbreviation == $scope.property.state) {
@@ -312,10 +314,10 @@ define([
                     var address = _.cloneDeep($scope.property.address);
 
                     $('#autocomplete2').on("blur", function() {
+                        $('#autocomplete2').off("blur");
                         window.setTimeout(function() {
                             $('#autocomplete2').val(address)
-                        }, 100)
-                        $('#autocomplete2').off("blur");
+                        }, 200)
                     })
                 });
 
@@ -329,10 +331,10 @@ define([
 
 
                     $('#autocomplete').on("blur", function() {
+                        $('#autocomplete').off("blur");
                         window.setTimeout(function() {
                             $('#autocomplete').val(place.name)
-                        }, 100)
-                        $('#autocomplete').off("blur");
+                        }, 200)
                     })
 
                     $scope.property.name=place.name;
@@ -341,25 +343,27 @@ define([
                         $scope.property.phone = place.formatted_phone_number;
                     }
 
-                    place.address_components.forEach(function(c) {
-                        switch(c.types[0]) {
-                            case "street_number":
-                                $scope.property.address = c.short_name;
-                                break;
-                            case "route":
-                                $scope.property.address += " " + c.long_name;
-                                break;
-                            case "postal_code":
-                                $scope.property.zip = c.short_name;
-                                break;
-                            case "locality":
-                                $scope.property.city = c.long_name;
-                                break;
-                            case "administrative_area_level_1":
-                                $scope.property.state = c.short_name;
-                                break;
-                        }
-                    })
+                    if (place.address_components) {
+                        place.address_components.forEach(function (c) {
+                            switch (c.types[0]) {
+                                case "street_number":
+                                    $scope.property.address = c.short_name;
+                                    break;
+                                case "route":
+                                    $scope.property.address += " " + c.long_name;
+                                    break;
+                                case "postal_code":
+                                    $scope.property.zip = c.short_name;
+                                    break;
+                                case "locality":
+                                    $scope.property.city = c.long_name;
+                                    break;
+                                case "administrative_area_level_1":
+                                    $scope.property.state = c.short_name;
+                                    break;
+                            }
+                        })
+                    }
 
                     $scope.states.forEach(function(s) {
                         if (s.abbreviation == $scope.property.state) {
