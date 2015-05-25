@@ -268,13 +268,14 @@ define([
                 }
             ];
 
-            window.setTimeout( function() {
-                var autocomplete = new google.maps.places.Autocomplete(
+
+            $scope.load = function() {
+                var autocomplete2 = new google.maps.places.Autocomplete(
                     (document.getElementById('autocomplete2'))
                     ,{ types: ['geocode'], componentRestrictions: {country:'us'} }
                 );
 
-                google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                google.maps.event.addListener(autocomplete2, 'place_changed', function () {
                     var place = autocomplete.getPlace();
 
 
@@ -308,17 +309,14 @@ define([
 
                     var address = _.cloneDeep($scope.property.address);
 
-                    $('#autocomplete2').off("blur");
                     $('#autocomplete2').on("blur", function() {
                         window.setTimeout(function() {
                             $('#autocomplete2').val(address)
                         }, 100)
-
+                        $('#autocomplete2').off("blur");
                     })
                 });
-            }, 400);
 
-            window.setTimeout( function() {
                 var autocomplete = new google.maps.places.Autocomplete(
                     (document.getElementById('autocomplete'))
                     ,{ componentRestrictions: {country:'us'} }
@@ -327,12 +325,12 @@ define([
                 google.maps.event.addListener(autocomplete, 'place_changed', function () {
                     var place = autocomplete.getPlace();
 
-                    $('#autocomplete').off("blur");
+
                     $('#autocomplete').on("blur", function() {
                         window.setTimeout(function() {
                             $('#autocomplete').val(place.name)
                         }, 100)
-
+                        $('#autocomplete').off("blur");
                     })
 
                     $scope.property.name=place.name;
@@ -364,7 +362,7 @@ define([
                         }
                     })
                 });
-            }, 400);
+            }
         }]);
 
 });
