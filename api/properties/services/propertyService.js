@@ -6,6 +6,16 @@ var async = require("async");
 var _ = require("lodash")
 
 module.exports = {
+    fees: {
+        application_fee : 'Application fee',
+        lease_terms: 'Lease terms',
+        short_term_premium: 'Short term premium',
+        refundable_security_deposit: 'Refundable security deposit',
+        administrative_fee: 'Administrative fee',
+        non_refundable_pet_deposit: 'Non refundable pet deposit',
+        pet_deposit: 'Pet deposit',
+        pet_rent: 'Pet rent'
+    },
     search: function(Operator, criteria, callback) {
         criteria.permission = criteria.permission || 'PropertyView';
 

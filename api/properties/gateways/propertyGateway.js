@@ -11,6 +11,11 @@ var phantom = require('phantom-render-stream');
 
 var Routes = express.Router();
 
+Routes.get('/lookups', function (req, res) {
+    res.status(200).json({fees: PropertyService.fees})
+
+});
+
 Routes.post('/', function (req, res) {
     PropertyService.search(req.user, req.body, function(err, properties) {
 

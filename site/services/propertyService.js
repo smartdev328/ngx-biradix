@@ -22,6 +22,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.lookups = function () {
+            return $http.get('/api/1.0/properties/lookups', {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });

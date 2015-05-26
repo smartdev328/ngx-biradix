@@ -1,7 +1,9 @@
 'use strict';
 define([
     'app',
-    '../../components/propertyProfile/module',
+    '../../components/propertyProfile/about',
+    '../../components/propertyProfile/profile',
+    '../../components/propertyProfile/fees',
     '../../services/progressService'
 ], function (app) {
 
@@ -23,7 +25,7 @@ define([
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt phone contactName contactEmail notes"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt phone contactName contactEmail notes fees"
                 }).then(function (response) {
                     $scope.property = response.data.properties[0];
                     $scope.localLoading = true;
@@ -35,11 +37,24 @@ define([
                     $scope.property.hasNotes = $scope.property.notes && $scope.property.notes.length > 0;
                     $scope.property.hasContact = $scope.property.hasName || $scope.property.hasEmail;
                     $scope.property.notes = $scope.property.notes.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+                    $scope.property.hasFees = false;
+                    if ($scope.property.fees) {
+                        for (var fee in $scope.property.fees) {
+                            if ($scope.property.fees[fee].length > 0) {
+                                $scope.property.hasFees = true;
+                            }
+                        }
+                    }
                 });
             }
         };
 
-        $scope.loadProperty($scope.propertyId)
+        $propertyService.lookups().then(function (response) {
+            $scope.lookups = response.data;
+            $scope.loadProperty($scope.propertyId)
+        });
+
 
         $scope.print = function() {
             $window.print();

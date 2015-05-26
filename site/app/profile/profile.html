@@ -1,3 +1,8 @@
+<style>
+  .profile-list {
+    padding-left:20px !important;
+  }
+</style>
 <div class="row" ng-show="localLoading">
     <div class="col-xs-10">
         <h3 style="padding-left:5px">{{property.name}}</h3>
@@ -24,9 +29,14 @@
         <div class="panel panel-info">
             <div class="panel-heading">Property Info</div>
             <div class="panel-body">
-
                 <property-profile property="property"></property-profile>
+            </div>
+        </div>
 
+        <div class="panel panel-info" ng-show="property.hasFees">
+            <div class="panel-heading">Fees, Deposits, Lease Terms</div>
+            <div class="panel-body">
+                <property-fees property="property" lookups="lookups.fees"></property-fees>
             </div>
         </div>
     </div>

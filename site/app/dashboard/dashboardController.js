@@ -1,7 +1,7 @@
 'use strict';
 define([
     'app',
-    '../../components/propertyProfile/module',
+    '../../components/propertyProfile/profile',
     '../../components/googleMap/module'
 ], function (app) {
 
