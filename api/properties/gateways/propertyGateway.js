@@ -8,11 +8,29 @@ var UserService = require('../../users/services/userService')
 var moment = require('moment')
 var request = require('request')
 var phantom = require('phantom-render-stream');
+var OrgService = require('../../organizations/services/organizationService')
+var async = require("async");
 
 var Routes = express.Router();
 
 Routes.get('/lookups', function (req, res) {
-    res.status(200).json({fees: PropertyService.fees})
+    async.parallel({
+        orgs: function (callbackp) {
+            AccessService.canAccess(req.user,"Org/Assign", function(canAccess) {
+                if (!canAccess) {
+                    callbackp(null, [req.user.org])
+                }
+                else {
+                    OrgService.read(function (err, orgs) {
+                        callbackp(null, orgs)
+                    });
+                }
+            });
+        }
+    }, function(err, all) {
+        res.status(200).json({fees: PropertyService.fees, orgs: all.orgs})
+    });
+
 
 });
 

@@ -24,7 +24,7 @@ define([
         $scope.search = {}
         $scope.filters = {active:true}
         $scope.defaultSort = "-name";
-        $scope.searchable = ['name', 'address', 'city', 'state', 'zip'];
+        $scope.searchable = ['name', 'address', 'city', 'state', 'zip', 'company'];
         $scope.search['active'] = true;
 
         $scope.adjustToSize = function(size) {
@@ -42,6 +42,7 @@ define([
                 units: true,
                 occupancy: true,
                 ner: !isMedium,
+                company: false,
                 tools : true
             }
         }

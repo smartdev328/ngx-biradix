@@ -289,5 +289,12 @@
             })
 
 
+        },
+
+        getAllResourcesByType: function(type, callback) {
+
+            var query = PermissionsSchema.find({'type': type});
+
+            query.exec(callback);
         }
     }

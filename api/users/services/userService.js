@@ -75,10 +75,6 @@ module.exports = {
                                 }
                             }
                         }
-
-                        if (x.active !== false) {
-                            x.active = true;
-                        }
                     })
                 }
                 callback(err,users)

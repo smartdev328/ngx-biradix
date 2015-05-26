@@ -15,12 +15,21 @@ define([
                 $modalInstance.dismiss('cancel');
             };
 
+
+            $scope.id = id;
+
             $scope.getTitle = function() {
                 var title = "";
                 if (!id && isComp) {
                     title = "Create Comp"
-                } else {
+                } else if (!id && !isComp) {
                     title = "Create Property"
+                }
+                else
+                if (id && isComp) {
+                    title = "Edit Comp"
+                } else if (id && !isComp) {
+                    title = "Edit Property"
                 }
 
                 if ($scope.property.name) {
@@ -54,7 +63,7 @@ define([
             }
 
             $scope.changeStep(0);
-            $scope.property = { }
+            $scope.property = {fees: {} }
 
             $scope.constructionTypes = ['Garden','Highrise','Midrise','Platform','Wrap']
             $scope.states = [
@@ -268,8 +277,99 @@ define([
                 }
             ];
 
+            $scope.getSelectedState = function(abbr) {
+                var resp;
+                $scope.states.forEach(function (s) {
+                    if (s.abbreviation === abbr) {
+                        resp = s;
+                    }
+                })
 
-            $scope.load = function() {
+                return resp;
+            }
+
+            $scope.getSelectedOrg = function(id) {
+                var resp;
+
+                if (id) {
+                    $scope.lookups.orgs.forEach(function (s) {
+                        if (s._id && s._id.toString() === id.toString()) {
+                            resp = s;
+                        }
+                    })
+                }
+
+                if (!resp) {
+                    resp = $scope.lookups.orgs[0]
+                }
+
+                return resp;
+            }
+
+            $propertyService.lookups().then(function (response) {
+                $scope.lookups = response.data;
+
+                $scope.lookups.orgs.unshift({id: null, name: 'None'})
+
+                if (id) {
+                    $propertyService.search({limit: 1, permission: 'PropertyManage', _id: id
+                        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees"
+                    }).then(function (response) {
+                        $scope.property = response.data.properties[0];
+                        $scope.localLoading = true;
+
+                        $scope.property.state = $scope.getSelectedState($scope.property.state)
+
+                        $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
+
+                    });
+                }
+                else {
+                    $scope.localLoading = true;
+                }
+            });
+
+            $scope.placeToAddress = function(place) {
+                if (place.formatted_phone_number) {
+                    $scope.property.phone = place.formatted_phone_number;
+                }
+
+                if (place.address_components) {
+                    place.address_components.forEach(function (c) {
+                        switch (c.types[0]) {
+                            case "street_number":
+                                $scope.property.address = c.short_name;
+                                break;
+                            case "route":
+                                $scope.property.address += " " + c.long_name;
+                                break;
+                            case "postal_code":
+                                $scope.property.zip = c.short_name;
+                                break;
+                            case "locality":
+                                $scope.property.city = c.long_name;
+                                break;
+                            case "administrative_area_level_1":
+                                $scope.property.state = c.short_name;
+                                break;
+                        }
+                    })
+                }
+
+
+                $scope.property.state = $scope.getSelectedState($scope.property.state)
+            }
+
+            $scope.googleBlur = function(id, value) {
+                $(id).on("blur", function() {
+                    $(id).off("blur");
+                    window.setTimeout(function() {
+                        $(id).val(value)
+                    }, 200)
+                })
+            }
+
+            $scope.initAutocomplete = function() {
                 var autocomplete2 = new google.maps.places.Autocomplete(
                     (document.getElementById('autocomplete2'))
                     ,{ types: ['geocode'], componentRestrictions: {country:'us'} }
@@ -277,48 +377,9 @@ define([
 
                 google.maps.event.addListener(autocomplete2, 'place_changed', function () {
                     var place = autocomplete2.getPlace();
-
-
-                    if (place.formatted_phone_number) {
-                        $scope.property.phone = place.formatted_phone_number;
-                    }
-
-                    if (place.address_components) {
-                        place.address_components.forEach(function (c) {
-                            switch (c.types[0]) {
-                                case "street_number":
-                                    $scope.property.address = c.short_name;
-                                    break;
-                                case "route":
-                                    $scope.property.address += " " + c.long_name;
-                                    break;
-                                case "postal_code":
-                                    $scope.property.zip = c.short_name;
-                                    break;
-                                case "locality":
-                                    $scope.property.city = c.long_name;
-                                    break;
-                                case "administrative_area_level_1":
-                                    $scope.property.state = c.short_name;
-                                    break;
-                            }
-                        })
-                    }
-
-                    $scope.states.forEach(function(s) {
-                        if (s.abbreviation == $scope.property.state) {
-                            $scope.property.state = s;
-                        }
-                    })
-
+                    $scope.placeToAddress(place);
                     var address = _.cloneDeep($scope.property.address);
-
-                    $('#autocomplete2').on("blur", function() {
-                        $('#autocomplete2').off("blur");
-                        window.setTimeout(function() {
-                            $('#autocomplete2').val(address)
-                        }, 200)
-                    })
+                    $scope.googleBlur('#autocomplete2',address)
                 });
 
                 var autocomplete = new google.maps.places.Autocomplete(
@@ -328,48 +389,9 @@ define([
 
                 google.maps.event.addListener(autocomplete, 'place_changed', function () {
                     var place = autocomplete.getPlace();
-
-
-                    $('#autocomplete').on("blur", function() {
-                        $('#autocomplete').off("blur");
-                        window.setTimeout(function() {
-                            $('#autocomplete').val(place.name)
-                        }, 200)
-                    })
-
+                    $scope.googleBlur('#autocomplete',place.name)
                     $scope.property.name=place.name;
-
-                    if (place.formatted_phone_number) {
-                        $scope.property.phone = place.formatted_phone_number;
-                    }
-
-                    if (place.address_components) {
-                        place.address_components.forEach(function (c) {
-                            switch (c.types[0]) {
-                                case "street_number":
-                                    $scope.property.address = c.short_name;
-                                    break;
-                                case "route":
-                                    $scope.property.address += " " + c.long_name;
-                                    break;
-                                case "postal_code":
-                                    $scope.property.zip = c.short_name;
-                                    break;
-                                case "locality":
-                                    $scope.property.city = c.long_name;
-                                    break;
-                                case "administrative_area_level_1":
-                                    $scope.property.state = c.short_name;
-                                    break;
-                            }
-                        })
-                    }
-
-                    $scope.states.forEach(function(s) {
-                        if (s.abbreviation == $scope.property.state) {
-                            $scope.property.state = s;
-                        }
-                    })
+                    $scope.placeToAddress(place);
                 });
             }
         }]);

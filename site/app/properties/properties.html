@@ -73,6 +73,7 @@
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy"> Occupancy %</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner"> Net Eff. Rent</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active"> Active</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company"> Company</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools"> Actions</label></div></li>
                     </ul>
                 </div>
@@ -161,7 +162,12 @@
                 <div class="pull-right" style="width:15px" ng-show="filters.active == null"><i class="fa fa-filter" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="filters.active === true"><i class="fa fa-toggle-on"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="filters.active === false"><i class="fa fa-toggle-off"></i></div>
-
+            </th>
+            <th ng-show="show.company" style="cursor:pointer" ng-click="toggleSort('company')">
+                <div class="pull-left">Company</div>
+                <div class="pull-right" style="width:15px" ng-show="sort.company == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" style="width:15px" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.tools" class="center"></th>
         </tr>
@@ -182,6 +188,7 @@
                 <span class="fa fa-check fa-2x success" ng-show="row.active"></span>
                 <span class="fa fa-times fa-2x danger" ng-show="!row.active"></span>
             </td>
+            <td ng-show="show.company">{{row.company || '-'}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-show="row._id != me._id">
                     <div class="btn-group action_dropdown">

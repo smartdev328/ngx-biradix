@@ -53,7 +53,7 @@ define([
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt loc"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc"
                 }).then(function (response) {
                     $scope.property = response.data.properties[0];
                     $scope.mapOptions = {

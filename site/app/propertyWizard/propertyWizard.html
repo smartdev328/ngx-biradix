@@ -1,27 +1,42 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-    <h2 class="modal-title">{{getTitle()}}</h2>
-</div>
-<div class="container" style="padding-top:5px">
-    <ul class="nav nav-pills" role="tablist">
-        <li ng-repeat="step in steps" ng-class="{'active':$index == stepIndex}"><a href ng-click="changeStep($index)">{{step.label}}</a></li>
-    </ul>
-</div>
-<div class="modal-body container-fluid">
-    <div ng-include="stepTemplate"></div>
-</div>
-<div class="modal-footer" style="text-align: left">
-    <div class="row">
-        <div class="col-sm-2">
+<style>
+    .property-info .row {
+        margin-left:-15px;
+        margin-right:-15px;
+    }
 
-        </div>
-        <div class="col-xs-10 col-sm-8" style="text-align: center">
-            <button class="btn btn-default" ng-click="changeStep(stepIndex - 1)" ng-disabled="stepIndex == 0">Previous</button>
-            <button class="btn btn-primary" ng-click="changeStep(stepIndex + 1)"  ng-disabled="stepIndex == steps.length - 1">Next</button>
-        </div>
-        <div class="col-xs-2 col-sm-2">
-            <button class="btn btn-warning pull-right">{{!id ? 'Create' : 'Save'}}</button>
-        </div>
+    .property-info .col-md-3, .property-info .col-sm-5, .property-info .col-md-4 {
+        margin-bottom:5px !important;
+    }
+</style>
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">{{getTitle()}}</h2>
     </div>
+    <div class="container" style="padding-top:5px">
+        <ul class="nav nav-pills" role="tablist">
+            <li ng-repeat="step in steps" ng-class="{'active':$index == stepIndex}"><a href ng-click="changeStep($index)">{{step.label}}</a></li>
+        </ul>
+    </div>
+    <div class="modal-body container-fluid">
+        <div ng-include="stepTemplate"></div>
+    </div>
+    <div class="modal-footer" style="text-align: left">
+        <div class="row">
+            <div class="col-sm-2">
 
- </div>
+            </div>
+            <div class="col-xs-10 col-sm-8" style="text-align: center">
+                <button class="btn btn-default" ng-click="changeStep(stepIndex - 1)" ng-disabled="stepIndex == 0">Previous</button>
+                <button class="btn btn-primary" ng-click="changeStep(stepIndex + 1)"  ng-disabled="stepIndex == steps.length - 1">Next</button>
+            </div>
+            <div class="col-xs-2 col-sm-2">
+                <button class="btn btn-warning pull-right">{{!id ? 'Create' : 'Save'}}</button>
+            </div>
+        </div>
+
+     </div>
+</div>

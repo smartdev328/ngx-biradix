@@ -4,6 +4,7 @@ var GeocodeService = require('../../utilities/services/geocodeService')
 var AccessService = require('../../access/services/accessService')
 var async = require("async");
 var _ = require("lodash")
+var OrgService = require('../../organizations/services/organizationService')
 
 module.exports = {
     fees: {
@@ -30,7 +31,22 @@ module.exports = {
                         callbackp(null, permissions)
                     });
                 }
-            }
+            },
+            roles: function (callbackp) {
+                AccessService.getRoles(function(err, roles) {
+                    callbackp(err, roles)
+                })
+            },
+            orgs: function(callbackp) {
+                OrgService.read(function (err, orgs) {
+                    callbackp(null, orgs)
+                });
+            },
+            resources: function (callbackp) {
+                AccessService.getAllResourcesByType('PropertyManage', function(err, resources) {
+                    callbackp(err, resources)
+                })
+            },
         }, function(err, all) {
             var query;
 
@@ -76,6 +92,42 @@ module.exports = {
                     }
 
                     props = _.take(props, criteria.limit || 10)
+                }
+
+
+                if (props && props.length > 0) {
+                    props.forEach(function(x) {
+                        x.company= '';
+
+                        // Get every role and user (executor) to which this resource is assigned to PropertyManage
+                        var executors = _.filter(all.resources, function(r) {
+                            return r.resource.toString() == x._id.toString();
+                        })
+
+                        if (executors.length > 0) {
+
+                            //find a CM with in those executors, his company is the company of the org
+                            var role = _.find(all.roles, function (r) {
+                                return _.find(executors, function(e) {
+                                    return r._id.toString() == e.executorid.toString() && r.tags.indexOf('CM') > -1
+                                })
+
+                            })
+
+                            if (role) {
+                                //Lookup the full company of the CM
+                                var company = _.find(all.orgs, function (o) {
+                                    return o._id.toString() == role.orgid.toString()
+                                })
+                                if (company) {
+                                    x.company = company.name;
+                                    x.orgid = company._id;
+                                }
+
+                            }
+
+                        }
+                    })
                 }
 
 
@@ -131,8 +183,11 @@ module.exports = {
                 n.zip = property.zip;
                 n.phone = property.phone;
                 n.owner = property.owner;
+                n.contactEmail = property.contactEmail;
+                n.contactName = property.contactName;
                 n.management = property.management;
                 n.yearBuilt = property.yearBuilt;
+                n.yearRenovated = property.yearRenovated
                 n.constructionType = property.constructionType;
                 n.notes = property.notes;
                 n.fees = property.fees;
