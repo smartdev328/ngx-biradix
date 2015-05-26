@@ -189,9 +189,11 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <li><a href style="text-decoration:none" ng-click="edit(row._id, false)"><span class="fa fa-edit"></span> Edit Property</a></li>
+                            <li><a href style="text-decoration:none" ng-click="edit(row._id, false)"><span class="fa fa-building"></span> Edit Property</a></li>
                             <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
                             <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
+                            <li><a href="#/profile/{{row._id}}"><span class="fa fa-external-link"></span> View Profile</a></li>
+                            <li><a href ng-click="dashboard(row._id)" ><span class="fa fa-list"></span> View Dashboard</a></li>
                         </ul>
                     </div>
                 </div>

@@ -13,4 +13,17 @@ define([
             templateUrl: '/components/propertyProfile/propertyProfile.html'
         };
     })
+
+    app.directive('propertyAbout', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                property: '=',
+            },
+            controller: function ($scope) {
+
+            },
+            templateUrl: '/components/propertyProfile/propertyAbout.html'
+        };
+    })
 })

@@ -226,7 +226,7 @@ define([
         }
 
         $scope.getLocation = function (val) {
-            return $propertyService.search({search: val}).then(function (response) {
+            return $propertyService.search({search: val, active: true}).then(function (response) {
                 return response.data.properties
             });
         };

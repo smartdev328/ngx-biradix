@@ -23,12 +23,18 @@ define([
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt phone"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt phone contactName contactEmail notes"
                 }).then(function (response) {
                     $scope.property = response.data.properties[0];
                     $scope.localLoading = true;
                     $window.document.title = $scope.property.name;
                     $scope.setRenderable();
+
+                    $scope.property.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
+                    $scope.property.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
+                    $scope.property.hasNotes = $scope.property.notes && $scope.property.notes.length > 0;
+                    $scope.property.hasContact = $scope.property.hasName || $scope.property.hasEmail;
+                    $scope.property.notes = $scope.property.notes.replace(/(?:\r\n|\r|\n)/g, '<br />');
                 });
             }
         };

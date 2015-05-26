@@ -13,7 +13,7 @@ define([
         $rootScope.sideMenu = [];
         //window.renderable = true;
 
-        $propertyService.search({limit: 1000, permission: 'PropertyManage'}).then(function (response) {
+        $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
 

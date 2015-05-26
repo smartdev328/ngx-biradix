@@ -4,7 +4,7 @@ define([
     '../../filters/skip/filter'
 ], function (app) {
 
-    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal) {
+    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal','$authService', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal,$authService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -299,6 +299,14 @@ define([
                     //Cancel
                 });
             });
+        }
+
+        $scope.dashboard = function(id) {
+            $rootScope.me.settings.defaultPropertyId = id;
+            $authService.updateSettings($rootScope.me.settings).then(function() {
+                $rootScope.refreshToken();
+            });
+            $location.path('/dashboard')
         }
 
     }]);

@@ -35,6 +35,9 @@ module.exports = {
                 query = query.where("_id").equals(criteria._id);
             }
 
+            if (criteria.active != null) {
+                query = query.where("active").equals(criteria.active);
+            }
             query = query.sort(criteria.sort || "name");
 
             if (criteria.search != '') {
@@ -121,6 +124,8 @@ module.exports = {
                 n.management = property.management;
                 n.yearBuilt = property.yearBuilt;
                 n.constructionType = property.constructionType;
+                n.notes = property.notes;
+                n.fees = property.fees;
                 n.active = true;
 
                 n.date = Date.now();

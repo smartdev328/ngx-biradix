@@ -22,6 +22,12 @@ var s = new Schema({
     phone: {
         type: String
     },
+    contactName: {
+        type: String
+    },
+    contactEmail: {
+        type: String
+    },
     yearBuilt: {
         type: Number
     },
@@ -42,7 +48,9 @@ var s = new Schema({
         index: '2d'      // create the geospatial index
     },
     date: Date,
-    active: Boolean
+    active: Boolean,
+    notes: String,
+    fees: {}
 
 });
 

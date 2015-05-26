@@ -22,7 +22,7 @@
 <div class="row" ng-show="localLoading">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading">Property</div>
+            <div class="panel-heading">Property Info</div>
             <div class="panel-body">
 
                 <property-profile property="property"></property-profile>
@@ -31,6 +31,13 @@
         </div>
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
+
+        <div class="panel panel-info" ng-show="property.hasContact || property.hasNotes">
+            <div class="panel-heading">About Property</div>
+            <div class="panel-body">
+                <property-about property="property"></property-about>
+            </div>
+        </div>
 
         <div class="panel panel-info">
             <div class="panel-heading">Net Effective Rent</div>
