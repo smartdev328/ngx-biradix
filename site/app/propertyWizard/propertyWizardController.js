@@ -63,7 +63,7 @@ define([
             }
 
             $scope.changeStep(0);
-            $scope.property = {fees: {} }
+            $scope.property = {fees: {}, floorplans: [] }
 
             $scope.constructionTypes = ['Garden','Highrise','Midrise','Platform','Wrap']
             $scope.states = [
@@ -313,7 +313,7 @@ define([
 
                 if (id) {
                     $propertyService.search({limit: 1, permission: 'PropertyManage', _id: id
-                        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees"
+                        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees orgid floorplans totalUnits"
                     }).then(function (response) {
                         $scope.property = response.data.properties[0];
                         $scope.localLoading = true;
@@ -321,6 +321,17 @@ define([
                         $scope.property.state = $scope.getSelectedState($scope.property.state)
 
                         $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
+
+                        $scope.property.floorplans = $scope.property.floorplans || [];
+
+                        $scope.property.averageSqft = 0
+                        if ($scope.property.floorplans.length > 0) {
+                            $scope.property.floorplans.forEach(function (fp) {
+                                $scope.property.averageSqft += fp.sqft;
+                            })
+
+                            $scope.property.averageSqft /= $scope.property.floorplans.length;
+                        }
 
                     });
                 }

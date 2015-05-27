@@ -39,7 +39,7 @@ define([
                 state: !isMedium,
                 zip: !isMedium,
                 active:  !isTiny,
-                units: true,
+                totalUnits: true,
                 occupancy: true,
                 ner: !isMedium,
                 company: false,
@@ -54,7 +54,7 @@ define([
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
-            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner"}).then(function (response) {
+            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner orgid"}).then(function (response) {
                 $scope.data = response.data.properties;
                 $scope.localLoading = true;
             })
@@ -161,7 +161,7 @@ define([
                 var value = content[i];
 
                 for (var j = 0; j < value.length; j++) {
-                    var innerValue = value[j];
+                    var innerValue = value[j].toString();
                     var result = innerValue.replace(/"/g, '""');
                     if (result.search(/("|,|\n)/g) >= 0)
                         result = '"' + result + '"';
@@ -200,14 +200,20 @@ define([
             if ($scope.show.zip) {
                 header.push('Zip')
             }
-            if ($scope.show.active) {
-                header.push('Active')
-            }
-            if ($scope.show.units) {
+            if ($scope.show.totalUnits) {
                 header.push('Units')
             }
             if ($scope.show.occupancy) {
                 header.push('Occupancy')
+            }
+            if ($scope.show.ner) {
+                header.push('Net Effective Rent')
+            }
+            if ($scope.show.active) {
+                header.push('Active')
+            }
+            if ($scope.show.company) {
+                header.push('Company')
             }
             content.push(header);
             $scope.filtered.forEach(function (r) {
@@ -230,14 +236,20 @@ define([
                 if ($scope.show.zip) {
                     row.push(r['zip'])
                 }
-                if ($scope.show.units) {
-                    row.push(r['units'] || '')
+                if ($scope.show.totalUnits) {
+                    row.push(r['totalUnits'] || '')
                 }
                 if ($scope.show.occupancy) {
                     row.push(r['occupancy'] || '')
                 }
+                if ($scope.show.ner) {
+                    row.push(r['ner'] || '')
+                }
                 if ($scope.show.active) {
                     row.push(r['active'] ? 'Yes' : 'No')
+                }
+                if ($scope.show.company) {
+                    row.push(r['company'] || '')
                 }
                 content.push(row);
             })

@@ -118,7 +118,13 @@ var PropertiesCreate = function(companies,callback) {
         non_refundable_pet_deposit: '$150',
         pet_deposit: '$150',
         pet_rent: '$25'
-    }}
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: 'Fireplace', units: 96, sqft: 749},
+        {bedrooms:1, bathrooms: '1', description: 'Fireplace', units: 22, sqft: 791},
+        {bedrooms:2, bathrooms: '2', description: '', units: 60, sqft: 1053},
+        {bedrooms:2, bathrooms: '2', description: '', units: 88, sqft: 1077},
+        {bedrooms:3, bathrooms: '2', description: '', units: 48, sqft: 1250},
+    ]}
     var Augustus = { name: 'Augustus Apartments', address: '7700 E. Roosevelt Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 821-6060', owner: 'Octavian Empire', management: 'Octavian Empire', yearBuilt: 2006, orgid: companies.Demo._id, constructionType: 'Garden', notes: 'Concessions: Complimentary Carpet Cleaning for renewals.\r\n\r\n Notes: Complimentary Carpet Cleaning for renewals', fees: {
         application_fee : '$49',
         lease_terms: '6-13 months',
@@ -128,7 +134,16 @@ var PropertiesCreate = function(companies,callback) {
         non_refundable_pet_deposit: '$150',
         pet_deposit: '$175',
         pet_rent: '$25'
-    }}
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: 'Fireplace', units: 72, sqft: 808},
+        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 935},
+        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 982},
+        {bedrooms:1, bathrooms: '1', description: 'Den', units: 60, sqft: 1058},
+        {bedrooms:2, bathrooms: '1', description: '', units: 88, sqft: 1040},
+        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1151},
+        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1171},
+        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1414},
+    ]}
     var Nero = { name: 'Nero Palace', address: '2500 N. Hayden Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 782-6699', owner: 'Nero Residential Capital', management: 'Nero Residential', yearBuilt: 2006, constructionType: 'Garden', notes: 'Concessions: Complimentary Carpet Cleaning for renewals.\r\n\r\n Notes: Deposit $500 or $87.50, Application $50, Admin $150', fees: {
         application_fee : '50',
         lease_terms: '6-13 months',
@@ -138,7 +153,16 @@ var PropertiesCreate = function(companies,callback) {
         non_refundable_pet_deposit: '$150',
         pet_deposit: '$175',
         pet_rent: '$25'
-    }}
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 60, sqft: 719},
+        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 827},
+        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 851},
+        {bedrooms:1, bathrooms: '1', description: 'Den', units: 24, sqft: 975},
+        {bedrooms:2, bathrooms: '1', description: '', units: 30, sqft: 970},
+        {bedrooms:2, bathrooms: '2', description: '', units: 30, sqft: 1060},
+        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1085},
+        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1322},
+    ]}
     var Marcus = { name: 'Marcus Aurelius Place', address: '7800 E. McDowell Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 786-3323', owner: 'Roman Residential Services', management: 'Roman Residential Services', yearBuilt: 2006, orgid: companies.Greystar._id, constructionType: 'Garden', notes: 'Owners Of Community Refuse to provied Occupancy and Traffic Information', fees: {
         application_fee : '$40',
         lease_terms: '6-14 months',
@@ -148,7 +172,13 @@ var PropertiesCreate = function(companies,callback) {
         non_refundable_pet_deposit: '$200',
         pet_deposit: '$200',
         pet_rent: '$15'
-    }}
+    }, floorplans: [
+        {bedrooms:0, bathrooms: '1', description: '', units: 12, sqft: 649},
+        {bedrooms:0, bathrooms: '1', description: '', units: 12, sqft: 661},
+        {bedrooms:1, bathrooms: '1', description: '', units: 120, sqft: 880},
+        {bedrooms:2, bathrooms: '2', description: '', units: 70, sqft: 1150},
+        {bedrooms:2, bathrooms: '2', description: '', units: 70, sqft: 1187},
+    ]}
     var Geta = { name: 'Geta Residential', address: '3500 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 840-6655', owner: 'Colosseum Capital', management: 'Colosseum Properties', yearBuilt: 2006, orgid: companies.Greystar._id, constructionType: 'Garden', notes:'Concessions: $500 Off Move-In on a 12 month lease. Comments: Deposit wavied OAC', fees: {
         application_fee : '$50',
             lease_terms: '6-14 months',
@@ -158,7 +188,11 @@ var PropertiesCreate = function(companies,callback) {
             non_refundable_pet_deposit: '$152',
             pet_deposit: '$300',
             pet_rent: '$25'
-    }}
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 156, sqft: 854},
+        {bedrooms:2, bathrooms: '2', description: '', units: 120, sqft: 1215},
+        {bedrooms:3, bathrooms: '3', description: '', units: 36, sqft: 1394},
+    ]}
     var Titus = { name: 'Titus Place', address: '7700 E. Osborn St.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 276-4310', owner: 'Titus Investments', management: 'Titus Investments', yearBuilt: 2007, constructionType: 'Garden', notes: 'LRO', fees: {
         application_fee : '$50',
         lease_terms: '6-12 months',
@@ -168,7 +202,16 @@ var PropertiesCreate = function(companies,callback) {
         non_refundable_pet_deposit: '$175',
         pet_deposit: '$175',
         pet_rent: '$25'
-    }}
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 56, sqft: 745},
+        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 820},
+        {bedrooms:1, bathrooms: '1', description: '', units: 16, sqft: 955},
+        {bedrooms:1, bathrooms: '1', description: 'Den', units: 24, sqft: 970},
+        {bedrooms:2, bathrooms: '1', description: '', units: 28, sqft: 1025},
+        {bedrooms:2, bathrooms: '2', description: '', units: 28, sqft: 1085},
+        {bedrooms:2, bathrooms: '2', description: '', units: 44, sqft: 1135},
+        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1355},
+    ]}
     var Probus = { name: 'Probus Properties', address: '7800 E. Camelback Rd.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 457-8787', owner: 'Rome', management: 'Rome', yearBuilt: 2007, constructionType: 'Garden', notes: 'Comments: Deposit: $95 non-refundable fee OR $135 non-refundable fee plus $200 refundable.', fees: {
         application_fee : '$45',
         lease_terms: '2-12 months',
@@ -178,7 +221,16 @@ var PropertiesCreate = function(companies,callback) {
         non_refundable_pet_deposit: '$150',
         pet_deposit: '$150',
         pet_rent: '$25'
-    }}
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 48, sqft: 745},
+        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 820},
+        {bedrooms:1, bathrooms: '1', description: '', units: 16, sqft: 955},
+        {bedrooms:1, bathrooms: '1.5', description: 'Den', units: 24, sqft: 970},
+        {bedrooms:2, bathrooms: '1', description: '', units: 20, sqft: 1025},
+        {bedrooms:2, bathrooms: '2', description: '', units: 20, sqft: 1085},
+        {bedrooms:2, bathrooms: '2', description: '', units: 36, sqft: 1135},
+        {bedrooms:3, bathrooms: '2', description: '', units: 8, sqft: 1355},
+    ]}
 
     async.parallel({
             Aurelian: function (callbackp) {

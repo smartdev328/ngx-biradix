@@ -5,6 +5,7 @@ var AccessService = require('../../access/services/accessService')
 var async = require("async");
 var _ = require("lodash")
 var OrgService = require('../../organizations/services/organizationService')
+var uuid = require('node-uuid');
 
 module.exports = {
     fees: {
@@ -32,20 +33,10 @@ module.exports = {
                     });
                 }
             },
-            roles: function (callbackp) {
-                AccessService.getRoles(function(err, roles) {
-                    callbackp(err, roles)
-                })
-            },
             orgs: function(callbackp) {
                 OrgService.read(function (err, orgs) {
                     callbackp(null, orgs)
                 });
-            },
-            resources: function (callbackp) {
-                AccessService.getAllResourcesByType('PropertyManage', function(err, resources) {
-                    callbackp(err, resources)
-                })
             },
         }, function(err, all) {
             var query;
@@ -97,33 +88,14 @@ module.exports = {
 
                 if (props && props.length > 0) {
                     props.forEach(function(x) {
-                        x.company= '';
 
-                        // Get every role and user (executor) to which this resource is assigned to PropertyManage
-                        var executors = _.filter(all.resources, function(r) {
-                            return r.resource.toString() == x._id.toString();
-                        })
-
-                        if (executors.length > 0) {
-
-                            //find a CM with in those executors, his company is the company of the org
-                            var role = _.find(all.roles, function (r) {
-                                return _.find(executors, function(e) {
-                                    return r._id.toString() == e.executorid.toString() && r.tags.indexOf('CM') > -1
-                                })
-
+                        if (x.orgid) {
+                            x.company = '';
+                            var company = _.find(all.orgs, function (o) {
+                                return o._id.toString() == x.orgid.toString()
                             })
-
-                            if (role) {
-                                //Lookup the full company of the CM
-                                var company = _.find(all.orgs, function (o) {
-                                    return o._id.toString() == role.orgid.toString()
-                                })
-                                if (company) {
-                                    x.company = company.name;
-                                    x.orgid = company._id;
-                                }
-
+                            if (company) {
+                                x.company = company.name;
                             }
 
                         }
@@ -173,6 +145,19 @@ module.exports = {
                     permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
                 })
 
+                var totalUnits = 0;
+
+                property.floorplans = property.floorplans || [];
+
+                property.floorplans.forEach(function(fp) {
+                    totalUnits += (fp.units || 0);
+
+                    if (!fp.id) {
+                        fp.id = uuid.v1();
+                    }
+                })
+
+
                 var n = new PropertySchema();
 
                 n.loc = [all.geo.latitude, all.geo.longitude]
@@ -192,6 +177,9 @@ module.exports = {
                 n.notes = property.notes;
                 n.fees = property.fees;
                 n.active = true;
+                n.orgid = property.orgid;
+                n.floorplans = property.floorplans;
+                n.totalUnits = totalUnits;
 
                 n.date = Date.now();
 

@@ -16,7 +16,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">{{getTitle()}}</h2>
     </div>
-    <div class="container" style="padding-top:5px">
+    <div class="container" style="padding-top:5px;border-bottom:1px solid #e5e5e5;width:100%">
         <ul class="nav nav-pills" role="tablist">
             <li ng-repeat="step in steps" ng-class="{'active':$index == stepIndex}"><a href ng-click="changeStep($index)">{{step.label}}</a></li>
         </ul>

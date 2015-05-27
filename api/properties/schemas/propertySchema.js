@@ -50,7 +50,12 @@ var s = new Schema({
     date: Date,
     active: Boolean,
     notes: String,
-    fees: {}
+    fees: {},
+    orgid: {
+        type: Schema.Types.ObjectId,
+    },
+    floorplans: Array,
+    totalUnits: Number
 
 });
 

@@ -1,1 +1,51 @@
-Floor Plans
+<div class="alert alert-info" role="alert">
+    <i class="fa fa-lightbulb-o fa-2x" style="color:orange"></i> <b>Tip: Provide all the different floor-plans at the property, including any floor-plan descriptions...</b>
+    <a href
+       popover-trigger="mouseenter"
+       popover-placement="bottom"
+       popover-title="Tip: Provide all the different floor-plans at the property, including any floor-plan descriptions."
+       popover="This will help you understand and enable you to analyze each floor-plan when necessary. Ex: if Property A has an exact floor-plan, but portion of which is renovated and another portion that is not, then list as two separate floor-plans. This allows tracking and comparing more easily.">read more</a>
+</div>
+
+<div class="alert alert-warning" role="alert" ng-show="property.floorplans.length == 0">
+There are currently no floor plans set up for this property.
+</div>
+
+<table class="table table-condensed table-striped" style="margin-bottom:10px" ng-show="property.floorplans.length > 0">
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>Desc.</th>
+        <th style="text-align: center">Units</th>
+        <th style="text-align: center">Unit %</th>
+        <th style="text-align: center">Sqft</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="row in property.floorplans">
+        <td>
+            {{row.bedrooms}}x{{row.bathrooms}}
+        </td>
+        <td>
+            {{row.description}}
+        </td>
+        <td style="text-align: center">
+            {{row.units}}
+        </td>
+        <td style="text-align: center">
+            {{row.units / property.totalUnits * 100 | number : 1}}%
+        </td>
+        <td style="text-align: center">
+            {{row.sqft}}
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr class="info" style="font-weight:bold">
+        <td colspan="2">Totals/Averages</td>
+        <td style="text-align: center">{{property.totalUnits}}</td>
+        <td style="text-align: center">100%</td>
+        <td style="text-align: center">{{property.averageSqft | number: 0}}</td>
+    </tr>
+    </tfoot>
+</table>
