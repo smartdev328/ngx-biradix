@@ -62,14 +62,14 @@
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rownumber" ng-checked="show.rownumber"> Row Number</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.date" ng-checked="show.date"> Date</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name"> Name</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.email" ng-checked="show.email"> Email</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.role" ng-checked="show.role"> Role</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company"> Company</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active"> Active</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools"> Actions</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rownumber" ng-checked="show.rownumber" ng-click="columnsChanged=true"> Row Number</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.date" ng-checked="show.date" ng-click="columnsChanged=true"> Date</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name" ng-click="columnsChanged=true"> Name</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.email" ng-checked="show.email" ng-click="columnsChanged=true"> Email</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.role" ng-checked="show.role" ng-click="columnsChanged=true"> Role</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools" ng-click="columnsChanged=true"> Actions</label></div></li>
                     </ul>
                 </div>
                 <div class="btn-group action_dropdown">

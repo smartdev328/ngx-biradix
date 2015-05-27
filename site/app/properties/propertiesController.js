@@ -48,8 +48,11 @@ define([
         }
 
         $scope.adjustToSize($(window).width());
+
         $scope.$on('size', function(e,size) {
-            $scope.adjustToSize(size);
+            if (!$scope.columnsChanged) {
+                $scope.adjustToSize(size);
+            }
         });
         /////////////////////////////
         $scope.reload = function () {

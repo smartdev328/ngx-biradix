@@ -29,26 +29,29 @@ define([
         $scope.searchable = ['name', 'email', 'role', 'company'];
         $scope.search['active'] = true;
 
-        $scope.show = {
-            rownumber: siteAdmin,
-            date: false,
-            name: true,
-            email: !isTiny,
-            role: true,
-            company: siteAdmin,
-            active:  !isTiny,
-            tools : true
+        $scope.adjustToSize = function(size) {
+            var isTiny = size < 967;
+            var isMedium = size < 1167;
+            $scope.show = {
+                rownumber: siteAdmin,
+                date: false,
+                name: true,
+                email: !isTiny,
+                role: true,
+                company: siteAdmin,
+                active: !isTiny,
+                tools: true
+            }
         }
 
+        $scope.adjustToSize($(window).width());
+
         $scope.$on('size', function(e,size) {
-            if (size < 500) {
-                $scope.show.email = false;
-                $scope.show.active = false;
-            } else {
-                $scope.show.email = true;
-                $scope.show.active = true;
+            if (!$scope.columnsChanged) {
+                $scope.adjustToSize(size);
             }
         });
+
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
