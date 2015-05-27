@@ -24,6 +24,10 @@ span.danger {color:pink}
 span.warning {color:orange}
 td.center,th.center {text-align:center}
 
+.table-hover>tbody>tr:hover {
+    background-color:#fcf8e3
+}
+
 .row {
     margin-right:-10px;
     margin-left:-10px
@@ -312,7 +316,7 @@ td.center,th.center {text-align:center}
 
 #sidebar-wrapper {
     z-index: 1000;
-    position: fixed;
+    position: absolute;
     left: 250px;
     width: 0;
     height: 100%;
