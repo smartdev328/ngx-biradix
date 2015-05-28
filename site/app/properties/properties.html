@@ -127,7 +127,7 @@
                 <div class="pull-right" style="width:15px" ng-show="sort.city === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.city === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.state" style="cursor:pointer" ng-click="toggleSort('state')">
+            <th ng-show="show.state" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('state')">
                 <div class="pull-left">State</div>
                 <div class="pull-right" style="width:15px" ng-show="sort.state == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.state === true"><i class="fa fa-sort-down"></i></div>
@@ -139,19 +139,19 @@
                 <div class="pull-right" style="width:15px" ng-show="sort.zip === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.zip === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.totalUnits" style="cursor:pointer" ng-click="toggleSort('totalUnits')">
+            <th ng-show="show.totalUnits" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('totalUnits')">
                 <div class="pull-left">Units</div>
                 <div class="pull-right" style="width:15px" ng-show="sort.totalUnits == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.totalUnits === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.totalUnits === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.occupancy" style="cursor:pointer" ng-click="toggleSort('occupancy')">
+            <th ng-show="show.occupancy" style="cursor:pointer;min-width:58px;width:58px" ng-click="toggleSort('occupancy')">
                 <div class="pull-left">Occ</div>
                 <div class="pull-right" style="width:15px" ng-show="sort.occupancy == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.ner" style="cursor:pointer" ng-click="toggleSort('ner')">
+            <th ng-show="show.ner" style="cursor:pointer;min-width:60px;width:60px" ng-click="toggleSort('ner')">
                 <div class="pull-left">NER</div>
                 <div class="pull-right" style="width:15px" ng-show="sort.ner == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
@@ -163,7 +163,7 @@
                 <div class="pull-right" style="width:15px" ng-show="filters.active === true"><i class="fa fa-toggle-on"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="filters.active === false"><i class="fa fa-toggle-off"></i></div>
             </th>
-            <th ng-show="show.company" style="cursor:pointer" ng-click="toggleSort('company')">
+            <th ng-show="show.company" style="cursor:pointer;min-width:92px;width:120px" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>
                 <div class="pull-right" style="width:15px" ng-show="sort.company == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
                 <div class="pull-right" style="width:15px" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
@@ -173,7 +173,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in filtered = (data | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit | orderBy : orderBy">
+        <tr ng-repeat="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
             <td ng-show="show.name">{{row.name}}</td>

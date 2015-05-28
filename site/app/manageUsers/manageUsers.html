@@ -139,7 +139,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in filtered = (data | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit | orderBy : orderBy">
+        <tr ng-repeat="row in filtered = (data  | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
             <td ng-show="show.name">{{row.name}}</td>

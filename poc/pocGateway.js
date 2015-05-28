@@ -3,7 +3,49 @@
 var express = require('express');
 var _ = require('lodash');
 var routes = express.Router();
-var UserSchema = require('../api/users/schemas/userSchema')
+var async = require("async");
+var request = require('request')
+var OrgService = require('../api/organizations/services/organizationService')
+var PropertyService = require('../api/properties/services/propertyService')
+
+routes.get('/import', function(req, res) {
+
+    async.parallel({
+        props: function(callbackp) {
+            request('http://platform.biradix.com/seed/props?secret=alex', function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+
+                    var props = JSON.parse(body)
+                    callbackp(null,props)
+                } else {
+                    callbackp(error, null);
+                }
+            })
+        },
+        orgs: function(callbackp) {
+            OrgService.read(function (err, orgs) {
+                callbackp(null, orgs)
+            });
+        }
+    },function(err, all) {
+        all.props.forEach(function(p) {
+            p.orgid = _.find(all.orgs, function(o) {return o.subdomain == p.company})._id;
+        })
+
+        async.eachLimit(all.props, 10, function(prop, callbackp){
+            PropertyService.create(prop, function (err, newprop) {
+                prop._id = newprop._id;
+                callbackp(err, newprop)
+            });
+        }, function(err) {
+            res.status(200).send('Done');
+        });
+
+
+    });
+
+
+})
 
 routes.get('/readXls', function (req, res) {
 

@@ -18,7 +18,7 @@ define([
 
         //Grid Options
         $scope.data = [];
-        $scope.limits = [1,5,10,50,100,500]
+        $scope.limits = [10,50,100,500]
         $scope.limit = 50;
         $scope.sort = {}
         $scope.search = {}
@@ -99,7 +99,7 @@ define([
 
             var ret = false;
             $scope.searchable.forEach(function (x) {
-                if (re.test(obj[x].toString())) {
+                if (re.test((obj[x] || '').toString())) {
                     ret = true;
                 }
             })
