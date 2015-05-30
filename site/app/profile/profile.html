@@ -32,11 +32,28 @@
                 <property-profile property="property"></property-profile>
             </div>
         </div>
-
+        <div class="panel panel-info" ng-show="property.community_am.length > 0">
+            <div class="panel-heading">Community Amenities</div>
+            <div class="panel-body">
+                <property-amenities amenities="property.community_am"></property-amenities>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-show="property.location_am.length > 0">
+            <div class="panel-heading">Location Amenities</div>
+            <div class="panel-body">
+                <property-amenities amenities="property.location_am"></property-amenities>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-show="property.floorplan_am.length > 0">
+            <div class="panel-heading">Unit Amenities</div>
+            <div class="panel-body">
+                <property-amenities amenities="property.floorplan_am"></property-amenities>
+            </div>
+        </div>
         <div class="panel panel-info" ng-show="property.hasFees">
             <div class="panel-heading">Fees, Deposits, Lease Terms</div>
             <div class="panel-body">
-                <property-fees property="property" lookups="lookups.fees"></property-fees>
+                <property-fees fees="property.fees" lookups="lookups.fees"></property-fees>
             </div>
         </div>
     </div>

@@ -9,6 +9,7 @@ var moment = require('moment')
 var request = require('request')
 var phantom = require('phantom-render-stream');
 var OrgService = require('../../organizations/services/organizationService')
+var AmenityService = require('../../amenities/services/amenityService')
 var async = require("async");
 
 var Routes = express.Router();
@@ -26,9 +27,14 @@ Routes.get('/lookups', function (req, res) {
                     });
                 }
             });
+        },
+        amenities: function(callbackp) {
+            AmenityService.search(function(err, amenities) {
+                callbackp(err, amenities)
+            })
         }
     }, function(err, all) {
-        res.status(200).json({fees: PropertyService.fees, orgs: all.orgs})
+        res.status(200).json({fees: PropertyService.fees, orgs: all.orgs, amenities: all.amenities})
     });
 
 

@@ -2,17 +2,16 @@
 define([
     'app',
 ], function (app) {
-    app.directive('propertyFees', function () {
+    app.directive('propertyAmenities', function () {
         return {
             restrict: 'E',
             scope: {
-                fees: '=',
-                lookups: '='
+                amenities: '=',
             },
             controller: function ($scope) {
 
             },
-            templateUrl: '/components/propertyProfile/propertyFees.html'
+            templateUrl: '/components/propertyProfile/propertyAmenities.html'
         };
     })
 })

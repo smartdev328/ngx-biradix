@@ -4,6 +4,7 @@ define([
     '../../components/propertyProfile/about',
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/fees',
+    '../../components/propertyProfile/amenities',
     '../../services/progressService'
 ], function (app) {
 
@@ -25,7 +26,7 @@ define([
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits location_amenities community_amenities floorplans"
                 }).then(function (response) {
                     $scope.property = response.data.properties[0];
                     $scope.localLoading = true;
@@ -46,6 +47,34 @@ define([
                             }
                         }
                     }
+
+                    $scope.property.location_am = [];
+                    $scope.property.location_amenities.forEach(function(la) {
+                        var am = _.find($scope.lookups.amenities, function(a) {return a._id.toString() == la.toString()})
+                        if (am) {
+                            $scope.property.location_am.push(am.name)
+                        }
+                    })
+
+                    $scope.property.community_am = [];
+                    $scope.property.community_amenities.forEach(function(la) {
+                        var am = _.find($scope.lookups.amenities, function(a) {return a._id.toString() == la.toString()})
+                        if (am) {
+                            $scope.property.community_am.push(am.name)
+                        }
+                    })
+
+                    $scope.property.floorplan_am = [];
+                    $scope.property.floorplans.forEach(function(fp) {
+                        fp.amenities.forEach(function(la) {
+                            var am = _.find($scope.lookups.amenities, function(a) {return a._id.toString() == la.toString()})
+                            if (am) {
+                                if ($scope.property.floorplan_am.indexOf(am.name) == -1)
+                                    $scope.property.floorplan_am.push(am.name)
+                            }
+                        })
+                    })
+
                 });
             }
         };
