@@ -5,6 +5,7 @@ var AccessService = require('../../access/services/accessService')
 var async = require("async");
 var _ = require("lodash")
 var OrgService = require('../../organizations/services/organizationService')
+var AmenityService = require('../../amenities/services/amenityService')
 var uuid = require('node-uuid');
 
 module.exports = {
@@ -121,9 +122,35 @@ module.exports = {
                     callbackp(err, roles)
                 })
 
+            },
+            amenities: function (callbackp) {
+                AmenityService.search(function(err, amenities) {
+                    callbackp(err, amenities)
+                })
+
             }
+
         },  function(err, all)
             {
+
+                //find all amenities by name and conver to id;
+                var community_amenities = [];
+                (property.community_amenities || []).forEach(function(pa) {
+                    var am = _.find(all.amenities, function(a) {return pa == a.name && a.type == 'Community'})
+                    if (am) {
+                        community_amenities.push(am._id);
+                    }
+                })
+
+                var location_amenities = [];
+                (property.location_amenities || []).forEach(function(pa) {
+                    var am = _.find(all.amenities, function(a) { return pa == a.name && a.type == 'Location'})
+                    if (am) {
+                        location_amenities.push(am._id);
+                    }
+                })
+
+                //////////////////
                 var CMs = [];
                 var permissions = [];
                 if (property.orgid) {
@@ -155,6 +182,16 @@ module.exports = {
                     if (!fp.id) {
                         fp.id = uuid.v1();
                     }
+
+                    var amenities = [];
+                    (fp.amenities || []).forEach(function(pa) {
+                        var am = _.find(all.amenities, function(a) { return pa == a.name && a.type == 'Unit'})
+                        if (am) {
+                            amenities.push(am._id);
+                        }
+                    })
+                    fp.amenities = amenities;
+
                 })
 
 
@@ -180,6 +217,9 @@ module.exports = {
                 n.orgid = property.orgid;
                 n.floorplans = property.floorplans;
                 n.totalUnits = totalUnits;
+                n.location_amenities = location_amenities;
+                n.community_amenities = community_amenities;
+
 
                 n.date = Date.now();
 

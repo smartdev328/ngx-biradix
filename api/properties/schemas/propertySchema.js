@@ -52,10 +52,12 @@ var s = new Schema({
     notes: String,
     fees: {},
     orgid: {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId
     },
     floorplans: Array,
-    totalUnits: Number
+    totalUnits: Number,
+    location_amenities: Array,
+    community_amenities: Array
 
 });
 
