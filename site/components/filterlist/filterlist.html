@@ -1,0 +1,52 @@
+﻿<div class="filter-list">
+    <table cellpadding="0" cellspacing="0" style="margin-top:5px">
+        <tr>
+            <td>
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control input-sm"
+                           placeholder="Search {{options.labelAvailable}}"
+                           ng-model="lstfilter.name"
+                           style="border-color:#BDE3FD"
+                           ng-change="resetPager()">
+                    <i class="fa fa-search form-control-feedback" style="color:#BDE3FD"></i>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{options.labelAvailable}}<br />
+                <select ng-model="ogItems" multiple
+                        ng-dblclick="dbl(ogItems, true)"
+                        ng-options="item.name group by item.group for item in filtered = (items | filter : lstfilter ) | filter: {selected: false}"></select><br />
+
+            </td>
+            <td class="filter-buttons">
+                <br />
+                <div class="btn-group">
+                    <button tooltip="Add Selected" tooltip-placement="left" type="button" ng-click="dbl(ogItems, true)" class="btn btn-default btn-sm"><i class="fa fa-angle-right" style="font-size:20px;font-weight:bold"></i></button>
+                </div>
+                <br />
+                <div class="btn-group action_dropdown" style="margin-top:10px">
+                    <button tooltip="Remove Selected" tooltip-placement="left"  type="button" ng-click="dbl(selectedItems, false)" class="btn btn-default btn-sm"><i class="fa fa-angle-left" style="font-size:20px;font-weight:bold"></i></button>
+                </div>
+                <br />
+                <div class="btn-group action_dropdown" style="margin-top:10px">
+                    <button tooltip="Add All" tooltip-placement="left" type="button" ng-click="all(true)" class="btn btn-default btn-sm"><i class="fa fa-angle-double-right" style="font-size:20px;font-weight:bold"></i></button>
+                </div>
+                <br />
+                <div class="btn-group action_dropdown" style="margin-top:10px">
+                    <button tooltip="Remove All" tooltip-placement="left" type="button" ng-click="all(false)" class="btn btn-default btn-sm"><i class="fa fa-angle-double-left" style="font-size:20px;font-weight:bold"></i></button>
+                </div>
+
+            </td>
+            <td>
+                {{options.labelSelected}}<br />
+                <select ng-model="selectedItems" multiple
+                        ng-dblclick="dbl(selectedItems, false)"
+                        ng-options="item.name group by item.group for item in items | filter: {selected: true}"></select><br />
+
+            </td>
+        </tr>
+    </table>
+</div>

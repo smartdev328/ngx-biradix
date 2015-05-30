@@ -2,6 +2,7 @@
 define([
     'app',
     '../../components/inputmask/module.js',
+    '../../components/filterlist/module.js',
     'async!//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places'
 ], function (app) {
      app.controller
@@ -306,14 +307,43 @@ define([
                 return resp;
             }
 
+            $scope.amenityOptions = { labelAvailable: "Available Amenities", labelSelected: "Selected Amenities" }
+
             $propertyService.lookups().then(function (response) {
                 $scope.lookups = response.data;
 
                 $scope.lookups.orgs.unshift({id: null, name: 'None'})
 
+                $scope.communityItems = [];
+                $scope.locationItems = [];
+                $scope.unitItems = [];
+                $scope.lookups.amenities.forEach(function(a) {
+                    var ar = a.name.split(' - ');
+                    var am;
+                    if (ar && ar.length == 2 ) {
+                        am = {id: a._id, name: ar[1], group: ar[0], selected: false};
+                    } else {
+                        am = {id: a._id, name: a.name, selected: false};
+                    }
+
+
+                    switch(a.type) {
+                        case 'Community':
+                            $scope.communityItems.push(am);
+                            break;
+                        case 'Location':
+                            $scope.locationItems.push(am);
+                            break;
+                        case 'Unit':
+                            $scope.unitItems.push(am);
+                            break;
+
+                    }
+                })
+
                 if (id) {
                     $propertyService.search({limit: 1, permission: 'PropertyManage', _id: id
-                        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees orgid floorplans totalUnits"
+                        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees orgid floorplans totalUnits community_amenities location_amenities"
                     }).then(function (response) {
                         $scope.property = response.data.properties[0];
                         $scope.localLoading = true;
@@ -332,6 +362,22 @@ define([
 
                             $scope.property.averageSqft /= $scope.property.floorplans.length;
                         }
+
+                        ($scope.property.community_amenities || []).forEach(function(pa) {
+                            var am = _.find($scope.communityItems, function(a) {
+                                return a.id.toString() == pa.toString()});
+                            if (am) {
+                                am.selected = true;
+                            }
+                        })
+
+                        ($scope.property.location_amenities || []).forEach(function(pa) {
+                            var am = _.find($scope.locationItems, function(a) {
+                                return a.id.toString() == pa.toString()});
+                            if (am) {
+                                am.selected = true;
+                            }
+                        })
 
                     });
                 }

@@ -154,15 +154,18 @@ var PropertiesCreate = function(companies,callback) {
         pet_deposit: '$175',
         pet_rent: '$25'
     }, floorplans: [
-        {bedrooms:1, bathrooms: '1', description: 'Fireplace', units: 72, sqft: 808},
-        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 935},
-        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 982},
-        {bedrooms:1, bathrooms: '1', description: 'Den', units: 60, sqft: 1058},
-        {bedrooms:2, bathrooms: '1', description: '', units: 88, sqft: 1040},
-        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1151},
-        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1171},
-        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1414},
-    ]}
+        {bedrooms:1, bathrooms: '1', description: 'Fireplace', units: 72, sqft: 808, amenities: ["Fireplace - Gas", "Kitchen - Granite Countertops","Appliances - Stainless Steel Appliances", "Appliances - Stove Hood", "Bath - Separate Shower", "Features - Balcony", "Features - Wood Blinds", "Kitchen - Kitchen Island", "Laundry - Washer/Dryer in Unit", "Layout - Open Floor-plan", "Parking - Attached Garage (to Unit)", "Tech - Cable TV (Avail.)", "Tech - Wireless Internet (Avail.)"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 935, amenities: ["Appliances-Stainless Steel Appliances", "Ceilings - Vaulted Ceilings", "Kitchen - Granite Countertops", "Bath - Dual Vanity", "Bath - Separate Shower", "Ceilings - Ceiling Fan", "Features - Air Conditioning", "Features - Balcony", "Features - Storage Room", "Features - Wood Blinds", "Flooring - Wood Flooring", "Kitchen - Kitchen Island", "Laundry - Washer/Dryer in Unit", "Layout - Open Floor-plan", "Parking - Carport (per Unit)", "Tech - Cable TV (Avail.)", "Tech - Wireless Internet (Avail.)", "Views - Pool View"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 982, amenities: ["Appliances - Stainless Steel Appliances", "Bath - Dual Vanity", "Bath - Roman/Garden Tub", "Ceilings - Ceiling Fan", "Features - Air Conditioning", "Features - Balcony", "Features - Wood Blinds", "Fireplace - Gas", "Flooring - Wood Flooring", "Kitchen - Kitchen Island", "Laundry - Washer/Dryer in Unit", "Parking - Carport (per Unit)", "Tech - Cable TV (Avail.)", "Views - Courtyard View"]},
+        {bedrooms:1, bathrooms: '1', description: 'Den', units: 60, sqft: 1058, amenities: ["Appliances-Stainless Steel Appliances", "Ceilings - Vaulted Ceilings", "Kitchen - Granite Countertops", "Fireplace - Gas", "Bath - Roman/Garden Tub", "Bath - Separate Shower", "Ceilings - Ceiling Fan", "Features - Air Conditioning", "Features - Balcony", "Features - Wood Blinds", "Flooring - Wood Flooring", "Kitchen - Kitchen Island", "Laundry - Washer/Dryer in Unit", "Layout - Den", "Layout - Large Windows", "Tech - Cable TV (Avail.)", "Views - Pool View"]},
+        {bedrooms:2, bathrooms: '1', description: '', units: 88, sqft: 1040, amenities: ["Appliances-Stainless Steel Appliances", "Kitchen - Granite Countertops", "Appliances - Microwave", "Bath - Roman/Garden Tub", "Ceilings - Ceiling Fan", "Features - Air Conditioning", "Features - Balcony", "Features - Built-In Bookshelves", "Features - Storage Room", "Features - Wood Blinds", "Fireplace - Gas", "Flooring - Wood Flooring", "Kitchen - Kitchen Island", "Kitchen - Pantry", "Layout - Open Floor-plan", "Parking - Carport (per Unit)", "Tech - Cable TV (Avail.)"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1151, amenities: ["Appliances - Stainless Steel Appliances", "Bath - Dual Vanity", "Bath - Roman/Garden Tub", "Bath - Separate Shower", "Ceilings - Ceiling Fan", "Features - Air Conditioning", "Features - Balcony", "Features - Computer Desk", "Features - Wood Blinds", "Fireplace - Gas", "Flooring - Wood Flooring", "Kitchen - Kitchen Island", "Laundry - Washer/Dryer in Unit", "Layout - Open Floor-plan", "Parking - Carport (per Unit)", "Security - Alarm System (Pre-Wired)", "Tech - Cable TV (Avail.)", "Tech - Wireless Internet (Avail.)", "Views - Pool View"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1171, amenities: ["Appliances - Stainless Steel Appliances", "Bath - Dual Vanity", "Bath - Roman/Garden Tub", "Ceilings - Vaulted Ceilings", "Features - Balcony", "Features - Decor Shelving", "Features - Storage Room", "Features - Wood Blinds", "Flooring - Wood Flooring", "Kitchen - Breakfast Nook", "Kitchen - Kitchen Island", "Laundry - Washer/Dryer in Unit", "Parking - Detached Garage (Free)", "Tech - Cable TV (Avail.)", "Views - Courtyard View"]},
+        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1414, amenities: ["Appliances-Stainless Steel Appliances", "Kitchen - Granite Countertops", "Fireplace - Gas", "Bath - Roman/Garden Tub", "Ceilings - Ceiling Fan", "Features - Air Conditioning", "Features - Balcony", "Features - Computer Desk", "Features - Wood Blinds", "Flooring - Wood Flooring", "Laundry - Laundry Room in Unit", "Laundry - Washer/Dryer in Unit", "Layout - Open Floor-plan", "Parking - Carport (per Unit)", "Tech - Cable TV (Avail.)"]},
+    ]
+        , community_amenities: ["Business Center - Free Wi-Fi", "Clubhouse - Resident Lounge", "Comm Parking - Carport/Covered", "Comm Parking - Detached Garage (Add Fee)", "Fitness Center - Treadmills", "Misc - Barbecue (BBQ) Grills", "Misc - Concierge Services", "Pool - Heated Pool"]
+        , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
+    }
     var Nero = { name: 'Nero Palace', address: '2500 N. Hayden Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 782-6699', owner: 'Nero Residential Capital', management: 'Nero Residential', yearBuilt: 2006, constructionType: 'Garden', notes: 'Concessions: Complimentary Carpet Cleaning for renewals.\r\n\r\n Notes: Deposit $500 or $87.50, Application $50, Admin $150', fees: {
         application_fee : '50',
         lease_terms: '6-13 months',
@@ -173,15 +176,18 @@ var PropertiesCreate = function(companies,callback) {
         pet_deposit: '$175',
         pet_rent: '$25'
     }, floorplans: [
-        {bedrooms:1, bathrooms: '1', description: '', units: 60, sqft: 719},
-        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 827},
-        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 851},
-        {bedrooms:1, bathrooms: '1', description: 'Den', units: 24, sqft: 975},
-        {bedrooms:2, bathrooms: '1', description: '', units: 30, sqft: 970},
-        {bedrooms:2, bathrooms: '2', description: '', units: 30, sqft: 1060},
-        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1085},
-        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1322},
-    ]}
+        {bedrooms:1, bathrooms: '1', description: '', units: 60, sqft: 719, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 827, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 36, sqft: 851, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+        {bedrooms:1, bathrooms: '1', description: 'Den', units: 24, sqft: 975, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+        {bedrooms:2, bathrooms: '1', description: '', units: 30, sqft: 970, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 30, sqft: 1060, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 48, sqft: 1085, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1322, amenities: ["Kitchen - Granite Countertops", "Tech - Sound System", "Appliances - Stainless Steel Appliances", "Flooring - Wood Flooring"]},
+    ]
+        , community_amenities: ["Business Center - Conference Room", "Business Center - Free Wi-Fi", "Clubhouse - Resident Lounge", "Comm Parking - Carport/Covered", "Comm Parking - Detached Garage (Add Fee)", "Fitness Center - Treadmills", "Misc - Barbecue (BBQ) Grills", "Misc - Concierge Services", "Pool - Heated Pool", "Misc - Outdoor Fireplace"]
+        , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
+    }
     var Marcus = { name: 'Marcus Aurelius Place', address: '7800 E. McDowell Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 786-3323', owner: 'Roman Residential Services', management: 'Roman Residential Services', yearBuilt: 2006, orgid: companies.Greystar._id, constructionType: 'Garden', notes: 'Owners Of Community Refuse to provied Occupancy and Traffic Information', fees: {
         application_fee : '$40',
         lease_terms: '6-14 months',
@@ -192,12 +198,15 @@ var PropertiesCreate = function(companies,callback) {
         pet_deposit: '$200',
         pet_rent: '$15'
     }, floorplans: [
-        {bedrooms:0, bathrooms: '1', description: '', units: 12, sqft: 649},
-        {bedrooms:0, bathrooms: '1', description: '', units: 12, sqft: 661},
-        {bedrooms:1, bathrooms: '1', description: '', units: 120, sqft: 880},
-        {bedrooms:2, bathrooms: '2', description: '', units: 70, sqft: 1150},
-        {bedrooms:2, bathrooms: '2', description: '', units: 70, sqft: 1187},
-    ]}
+        {bedrooms:0, bathrooms: '1', description: '', units: 12, sqft: 649, amenities: ["Fireplace - Wood"]},
+        {bedrooms:0, bathrooms: '1', description: '', units: 12, sqft: 661, amenities: ["Fireplace - Wood"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 120, sqft: 880, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 70, sqft: 1150, amenities: ["Fireplace - Wood"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 70, sqft: 1187, amenities: []},
+    ]
+        , community_amenities: ["Security - Controlled Access", "Business Center - Free Wi-Fi", "Clubhouse - Resident Lounge", "Comm Parking - Carport/Covered", "Comm Parking - Detached Garage (Add Fee)", "Fitness Center - Treadmills", "Misc - Barbecue (BBQ) Grills", "Clubhouse - Movie Theater", "Pool - Heated Pool", "Clubhouse - Billiards/Pool Table"]
+        , location_amenities: ["Near Retail", "Near Golf Course", "Access to Parks"]
+    }
     var Geta = { name: 'Geta Residential', address: '3500 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 840-6655', owner: 'Colosseum Capital', management: 'Colosseum Properties', yearBuilt: 2006, orgid: companies.Greystar._id, constructionType: 'Garden', notes:'Concessions: $500 Off Move-In on a 12 month lease. Comments: Deposit wavied OAC', fees: {
         application_fee : '$50',
             lease_terms: '6-14 months',
@@ -208,10 +217,13 @@ var PropertiesCreate = function(companies,callback) {
             pet_deposit: '$300',
             pet_rent: '$25'
     }, floorplans: [
-        {bedrooms:1, bathrooms: '1', description: '', units: 156, sqft: 854},
-        {bedrooms:2, bathrooms: '2', description: '', units: 120, sqft: 1215},
-        {bedrooms:3, bathrooms: '3', description: '', units: 36, sqft: 1394},
-    ]}
+        {bedrooms:1, bathrooms: '1', description: '', units: 156, sqft: 854, amenities: ["Appliances - Black Appliances", "Features - Two Inch Blinds", "Flooring - Laminate", "Kitchen - Granite Countertops", "Tech - Sound System"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 120, sqft: 1215, amenities: ["Appliances - Black Appliances", "Features - Two Inch Blinds", "Flooring - Laminate", "Kitchen - Granite Countertops", "Tech - Sound System"]},
+        {bedrooms:3, bathrooms: '3', description: '', units: 36, sqft: 1394, amenities: ["Appliances - Black Appliances", "Features - Two Inch Blinds", "Flooring - Laminate", "Kitchen - Granite Countertops", "Tech - Sound System"]},
+    ]
+        , community_amenities: ["Business Center - Conference Room", "Security - Controlled Access", "Business Center - Free Wi-Fi", "Clubhouse - Resident Lounge", "Comm Parking - Carport/Covered", "Fitness Center - Treadmills", "Misc - Barbecue (BBQ) Grills", "Recreation - Volleyball Court", "Pool - Heated Pool", "Clubhouse - Billiards/Pool Table", "Clubhouse - Rentable DVDs/Movies"]
+        , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
+    }
     var Titus = { name: 'Titus Place', address: '7700 E. Osborn St.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 276-4310', owner: 'Titus Investments', management: 'Titus Investments', yearBuilt: 2007, constructionType: 'Garden', notes: 'LRO', fees: {
         application_fee : '$50',
         lease_terms: '6-12 months',
@@ -222,15 +234,18 @@ var PropertiesCreate = function(companies,callback) {
         pet_deposit: '$175',
         pet_rent: '$25'
     }, floorplans: [
-        {bedrooms:1, bathrooms: '1', description: '', units: 56, sqft: 745},
-        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 820},
-        {bedrooms:1, bathrooms: '1', description: '', units: 16, sqft: 955},
-        {bedrooms:1, bathrooms: '1', description: 'Den', units: 24, sqft: 970},
-        {bedrooms:2, bathrooms: '1', description: '', units: 28, sqft: 1025},
-        {bedrooms:2, bathrooms: '2', description: '', units: 28, sqft: 1085},
-        {bedrooms:2, bathrooms: '2', description: '', units: 44, sqft: 1135},
-        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1355},
-    ]}
+        {bedrooms:1, bathrooms: '1', description: '', units: 56, sqft: 745, amenities: ["Appliances - Black Appliances", "Flooring - Tile"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 820, amenities: ["Appliances - Black Appliances", "Flooring - Tile"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 16, sqft: 955, amenities: ["Appliances - Black Appliances", "Flooring - Tile"]},
+        {bedrooms:1, bathrooms: '1', description: 'Den', units: 24, sqft: 970, amenities: ["Appliances - Black Appliances", "Flooring - Tile", "Layout - Den"]},
+        {bedrooms:2, bathrooms: '1', description: '', units: 28, sqft: 1025, amenities: ["Appliances - Black Appliances", "Flooring - Tile"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 28, sqft: 1085, amenities: ["Appliances - Black Appliances", "Flooring - Tile", "Features - Patio"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 44, sqft: 1135, amenities: ["Appliances - Black Appliances", "Flooring - Tile", "Features - Patio"]},
+        {bedrooms:3, bathrooms: '2', description: '', units: 12, sqft: 1355, amenities: ["Appliances - Black Appliances", "Flooring - Tile"]},
+    ]
+        , community_amenities: ["Business Center - Conference Room","Business Center - Free Wi-Fi","Clubhouse - Resident Lounge","Comm Parking - Carport/Covered","Comm Parking - Detached Garage (Add Fee)","Fitness Center - Treadmills","Misc - Barbecue (BBQ) Grills","Pool - Heated Pool"]
+        , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
+    }
     var Probus = { name: 'Probus Properties', address: '7800 E. Camelback Rd.', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(180) 457-8787', owner: 'Rome', management: 'Rome', yearBuilt: 2007, constructionType: 'Garden', notes: 'Comments: Deposit: $95 non-refundable fee OR $135 non-refundable fee plus $200 refundable.', fees: {
         application_fee : '$45',
         lease_terms: '2-12 months',
@@ -241,15 +256,18 @@ var PropertiesCreate = function(companies,callback) {
         pet_deposit: '$150',
         pet_rent: '$25'
     }, floorplans: [
-        {bedrooms:1, bathrooms: '1', description: '', units: 48, sqft: 745},
-        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 820},
-        {bedrooms:1, bathrooms: '1', description: '', units: 16, sqft: 955},
-        {bedrooms:1, bathrooms: '1.5', description: 'Den', units: 24, sqft: 970},
-        {bedrooms:2, bathrooms: '1', description: '', units: 20, sqft: 1025},
-        {bedrooms:2, bathrooms: '2', description: '', units: 20, sqft: 1085},
-        {bedrooms:2, bathrooms: '2', description: '', units: 36, sqft: 1135},
-        {bedrooms:3, bathrooms: '2', description: '', units: 8, sqft: 1355},
-    ]}
+        {bedrooms:1, bathrooms: '1', description: '', units: 48, sqft: 745, amenities: ["Kitchen - Granite Countertops"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 24, sqft: 820, amenities: ["Kitchen - Granite Countertops"]},
+        {bedrooms:1, bathrooms: '1', description: '', units: 16, sqft: 955, amenities: ["Kitchen - Granite Countertops"]},
+        {bedrooms:1, bathrooms: '1.5', description: 'Den', units: 24, sqft: 970, amenities: ["Kitchen - Granite Countertops"]},
+        {bedrooms:2, bathrooms: '1', description: '', units: 20, sqft: 1025, amenities: ["Kitchen - Granite Countertops"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 20, sqft: 1085, amenities: ["Kitchen - Granite Countertops"]},
+        {bedrooms:2, bathrooms: '2', description: '', units: 36, sqft: 1135, amenities: ["Kitchen - Granite Countertops"]},
+        {bedrooms:3, bathrooms: '2', description: '', units: 8, sqft: 1355, amenities: ["Kitchen - Granite Countertops"]},
+    ]
+        , community_amenities: ["Business Center - Free Wi-Fi", "Misc - Barbecue (BBQ) Grills", "Misc - Playground", "Pool - Jaccuzi/Hot Tub/Spa", "Pool - Heated Pool"]
+        , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
+    }
 
     async.parallel({
             Aurelian: function (callbackp) {

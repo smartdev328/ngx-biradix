@@ -32,7 +32,8 @@ routes.get('/import', function(req, res) {
             p.orgid = _.find(all.orgs, function(o) {return o.subdomain == p.company})._id;
         })
 
-        async.eachLimit(all.props, 10, function(prop, callbackp){
+        async.eachLimit(all.props, 20, function(prop, callbackp){
+            console.log(prop.name);
             PropertyService.create(prop, function (err, newprop) {
                 prop._id = newprop._id;
                 callbackp(err, newprop)
