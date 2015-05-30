@@ -33,8 +33,12 @@ td.center,th.center {text-align:center}
     margin-left:-10px
 }
 
-.input-sm, .dropdown-menu, .btn, .nav-pills>li>a, .modal-content  {
+.input-sm, .dropdown-menu, .btn, .modal-content  {
     border-radius: 2px !important;
+}
+
+.nav-pills>li>a {
+    border-radius: 0px !important;
 }
 
 .input-sm {

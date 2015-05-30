@@ -14,3 +14,9 @@
     width:36px !important;
     margin:0px 5px 0px 5px !important;
 }
+
+@media(max-width:550px) {
+    .filter-list {
+        width:100%;overflow-y:scroll
+    }
+}

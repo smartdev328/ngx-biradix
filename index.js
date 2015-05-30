@@ -33,4 +33,8 @@ conn.once('open', function () {
     //var PropertyService = require('./api/properties/services/propertyService')
     //var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome', yearBuilt: 2007, orgid: '5552eae4684d5af41a0400e0'}
     //PropertyService.create(Aurelian, function() {});
+    //
+    //var PropertyService = require('./api/properties/services/propertyService')
+    ////var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome', yearBuilt: 2007, orgid: '5552eae4684d5af41a0400e0'}
+    //PropertyService.linkComp("55693a70b0ce54e009970dd4","55693a70b0ce54e009970dd4", function() {});
 });

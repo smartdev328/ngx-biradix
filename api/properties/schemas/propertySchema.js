@@ -57,7 +57,8 @@ var s = new Schema({
     floorplans: Array,
     totalUnits: Number,
     location_amenities: Array,
-    community_amenities: Array
+    community_amenities: Array,
+    comps: Array
 
 });
 

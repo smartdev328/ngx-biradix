@@ -19,6 +19,9 @@ module.exports = {
         pet_deposit: 'Pet deposit',
         pet_rent: 'Pet rent'
     },
+    linkComp:function(subjectid, compid, callback) {
+        linkComp(subjectid,compid,callback);
+    },
     search: function(Operator, criteria, callback) {
         criteria.permission = criteria.permission || 'PropertyView';
 
@@ -219,7 +222,7 @@ module.exports = {
                 n.totalUnits = totalUnits;
                 n.location_amenities = location_amenities;
                 n.community_amenities = community_amenities;
-
+                n.comps = [];
 
                 n.date = Date.now();
 
@@ -240,18 +243,15 @@ module.exports = {
                             callbackp(err, perm)
                         });
                     }, function(err) {
-                        callback(err, prop);
+                        //link to yourself
+                        linkComp(prop._id, prop._id,function() {
+                            callback(err, prop);
+                        })
                     });
-
-
-
                 });
 
             }
         );
-
-
-
 
     },
     updateActive : function(property, callback)  {
@@ -287,4 +287,22 @@ module.exports = {
         })
 
     },
+}
+
+
+function linkComp (subjectid, compid, callback) {
+    PropertySchema.findOne({_id:compid}, function(err, comp) {
+        if (err) {
+            callback (err, null)
+        } else {
+            var link = {id: compid, floorplans: _.pluck(comp.floorplans,"id")}
+            var query = {_id: subjectid};
+            var update = {$addToSet: {comps: link}};
+            var options = {new: true};
+
+            PropertySchema.findOneAndUpdate(query, update, options, function(err, saved) {
+                return callback(err, saved)
+            })
+        }
+    })
 }

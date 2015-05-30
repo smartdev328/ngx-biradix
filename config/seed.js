@@ -334,7 +334,25 @@ var PropertiesCreate = function(companies,callback) {
                 );
             }
         },function(err, props) {
-            callback(props)
+            var links = [];
+            for (var prop in props) {
+                for (var prop2 in props) {
+                    if (props[prop]._id.toString() != props[prop2]._id.toString() ) {
+                        links.push({subjectid: props[prop]._id, compid: props[prop2]._id})
+                    }
+                }
+
+            }
+
+            async.eachLimit(links, 10, function(link, callbackp){
+                PropertyService.linkComp(link.subjectid, link.compid, function (err, l) {
+                    callbackp(err, l)
+                });
+            }, function(err) {
+                callback(props)
+            });
+
+
         }
     );
 
