@@ -54,10 +54,29 @@ define([
                 $scope.adjustToSize(size);
             }
         });
+
+        $scope.toggleOpen = function(row) {
+            row.open = !(row.open || false);
+
+            if (row.open) {
+                row.fullcomps = [];
+
+                row.compsLoaded = false;
+
+                var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
+
+                $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits occupancy ner orgid comps", ids: compids}).then(function (response) {
+                    row.fullcomps = response.data.properties;
+                    row.compsLoaded = true;
+                })
+
+            }
+
+        }
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
-            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner orgid"}).then(function (response) {
+            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner orgid comps"}).then(function (response) {
                 $scope.data = response.data.properties;
                 $scope.localLoading = true;
             })

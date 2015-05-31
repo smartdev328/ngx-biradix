@@ -102,6 +102,7 @@
     <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
         <thead>
         <tr>
+            <th></th>
             <th ng-show="show.rownumber">#</th>
             <th ng-show="show.date" style="cursor:pointer" ng-click="toggleSort('date')">
                 <div class="pull-left">Date</div>
@@ -173,7 +174,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
+        <tr ng-repeat-start="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
+            <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-chevron-right': !row.open, 'fa-chevron-down' : row.open}" style="cursor:pointer" ng-click="toggleOpen(row)"></i></td>
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
             <td ng-show="show.name">{{row.name}}</td>
@@ -190,15 +192,15 @@
             </td>
             <td ng-show="show.company">{{row.company || '-'}}</td>
             <td ng-show="show.tools" class="center">
-                <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-show="row._id != me._id">
+                <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">
                         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                             <li><a href style="text-decoration:none" ng-click="edit(row._id, false)"><span class="fa fa-building"></span> Edit Property</a></li>
-                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
-                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
+                            <li ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
+                            <li ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
                             <li><a href="#/profile/{{row._id}}"><span class="fa fa-external-link"></span> View Profile</a></li>
                             <li><a href ng-click="dashboard(row._id)" ><span class="fa fa-list"></span> View Dashboard</a></li>
                         </ul>
@@ -206,6 +208,44 @@
                 </div>
             </td>
         </tr>
+        <tr ng-if="row.open && !row.compsLoaded">
+            <td colspan="100%">
+                <div style="display:block;width:40px;margin:20px auto">
+                    <img src="/images/squares.gif" style="width:40px">
+                </div>
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-if="row.open && row.compsLoaded" ng-repeat="comp in row.fullcomps">
+            <td></td>
+            <td ng-show="show.rownumber"></td>
+            <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
+            <td ng-show="show.name">Comp: {{comp.name}}</td>
+            <td ng-show="show.address">{{comp.address}}</td>
+            <td ng-show="show.city">{{comp.city}}</td>
+            <td ng-show="show.state">{{comp.state}}</td>
+            <td ng-show="show.zip">{{comp.zip}}</td>
+            <td ng-show="show.totalUnits" style="text-align:center">{{comp.totalUnits || '-'}}</td>
+            <td ng-show="show.occupancy" style="text-align:right">{{comp.occupancy || '-'}}</td>
+            <td ng-show="show.ner" style="text-align:right">{{comp.ner || '-'}}</td>
+            <td ng-show="show.active" class="center">
+                <span class="fa fa-check fa-2x success" ng-show="comp.active"></span>
+                <span class="fa fa-times fa-2x danger" ng-show="!comp.active"></span>
+            </td>
+            <td ng-show="show.company">{{comp.company || '-'}}</td>
+            <td ng-show="show.tools" class="center">
+                <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
+                    <div class="btn-group action_dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
         </tbody>
 
     </table>
