@@ -56,6 +56,10 @@ module.exports = {
                 query = query.where("_id").equals(criteria._id);
             }
 
+            if (criteria.ids) {
+                query = query.where("_id").in(criteria.ids);
+            }
+
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
             }

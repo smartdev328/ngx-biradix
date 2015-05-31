@@ -78,43 +78,13 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
+                    <tr ng-repeat="comp in comps">
                         <td>
-                            Alta Heights<Br>
-                            145 Heights Boulevard
+                            {{comp.name}}<Br>
+                            {{comp.address}}
                         </td>
                         <td>
-                            256
-                        </td>
-                        <td>
-                            100%
-                        </td>
-                        <td>
-                            849
-                        </td>
-                        <td>
-                            $1485
-                        </td>
-                        <td>
-                            $0
-                        </td>
-                        <td>
-                            $1485
-                        </td>
-                        <td>
-                            $1.75
-                        </td>
-                        <td>
-                            <i class="fa fa-edit"></i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Alta Heights<Br>
-                            145 Heights Boulevard
-                        </td>
-                        <td>
-                            256
+                            {{comp.totalUnits}}
                         </td>
                         <td>
                             100%

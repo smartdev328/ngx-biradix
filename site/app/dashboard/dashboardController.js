@@ -53,24 +53,61 @@ define([
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits comps"
                 }).then(function (response) {
                     $scope.property = response.data.properties[0];
-                    $scope.mapOptions = {
-                        zoom : 9,
-                        loc: $scope.property.loc,
-                        height: "300px",
-                        width: "100%",
-                        points: [{loc:$scope.property.loc, marker: 'apartment-3', content: $scope.makrerContent($scope.property)}]
-                    }
-                    $scope.localLoading = true;
+
+                    var compids = _.pluck($scope.property.comps, "id");
+
+                    $propertyService.search({
+                        limit: 20,
+                        permission: 'PropertyView',
+                        ids: compids
+                        ,
+                        select: "_id name address city state zip loc totalUnits"
+                    }).then(function (response) {
+
+                        $scope.comps = response.data.properties;
+
+                        $scope.mapOptions = {
+                            zoom: 9,
+                            loc: $scope.property.loc,
+                            height: "300px",
+                            width: "100%",
+                            points: [{
+                                loc: $scope.property.loc,
+                                marker: 'apartment-3',
+                                content: $scope.makrerContent($scope.property)
+                            }]
+                        }
+
+                        $scope.comps = _.sortBy($scope.comps, function(n) {
+
+                            if (n._id.toString() == $scope.property._id.toString()) {
+                                return "-1";
+                            }
+                            return n.name;
+                        })
+
+                        $scope.comps.forEach(function(c, i) {
+                            if (c._id.toString() != $scope.property._id.toString()) {
+                                $scope.mapOptions.points.push({
+                                    loc: c.loc,
+                                    marker: 'number_' + i ,
+                                    content: $scope.makrerContent(c)
+                                })
+                            }
+                        })
+
+                        $scope.localLoading = true;
+                    });
                 });
             }
         };
 
         $scope.makrerContent = function(property) {
 
-            return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + $scope.property._id + "'>" + $scope.property.name + "</a><br />" + $scope.property.address + "</div>";
+            return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
 
         $scope.$watch('mapOptions', function(){
