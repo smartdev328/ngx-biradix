@@ -70,7 +70,6 @@ define([
                         $scope.comps = response.data.properties;
 
                         $scope.mapOptions = {
-                            zoom: 9,
                             loc: $scope.property.loc,
                             height: "300px",
                             width: "100%",

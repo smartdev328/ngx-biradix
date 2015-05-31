@@ -50,6 +50,9 @@
             <div class="panel-body" style="overflow-x:auto">
                 <table class="table table-condensed table-striped table-hover" style="font-size:8pt">
                     <tr>
+                        <th style="text-align:center">
+                            #
+                        </th>
                         <th>
                             Name/Address
                         </th>
@@ -79,6 +82,9 @@
                         </th>
                     </tr>
                     <tr ng-repeat="comp in comps">
+                        <td  style="text-align:center">
+                            <img ng-src="/components/googleMap/markers/{{$index == 0 ? 'apartment-3' : 'number_' + $index}}.png">
+                        </td>
                         <td>
                             {{comp.name}}<Br>
                             {{comp.address}}
@@ -90,19 +96,19 @@
                             100%
                         </td>
                         <td>
-                            849
+                            -
                         </td>
                         <td>
-                            $1485
+                            -
                         </td>
                         <td>
-                            $0
+                            -
                         </td>
                         <td>
-                            $1485
+                            -
                         </td>
                         <td>
-                            $1.75
+                            -
                         </td>
                         <td>
                             <i class="fa fa-edit"></i>
