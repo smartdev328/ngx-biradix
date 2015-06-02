@@ -41,12 +41,12 @@ Routes.get('/lookups', function (req, res) {
 });
 
 Routes.post('/', function (req, res) {
-    PropertyService.search(req.user, req.body, function(err, properties) {
+    PropertyService.search(req.user, req.body, function(err, properties, lookups) {
 
         if (err) {
             res.status(400).send(err)
         } else {
-            res.status(200).json({properties: properties})
+            res.status(200).json({properties: properties, lookups: lookups})
         }
 
     })

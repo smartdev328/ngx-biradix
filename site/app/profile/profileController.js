@@ -28,6 +28,7 @@ define([
                 $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits location_amenities community_amenities floorplans"
                 }).then(function (response) {
+                    $scope.lookups = response.data.lookups;
                     $scope.property = response.data.properties[0];
                     $scope.localLoading = true;
                     $window.document.title = $scope.property.name;
@@ -79,10 +80,7 @@ define([
             }
         };
 
-        $propertyService.lookups().then(function (response) {
-            $scope.lookups = response.data;
-            $scope.loadProperty($scope.propertyId)
-        });
+        $scope.loadProperty($scope.propertyId)
 
 
         $scope.print = function() {

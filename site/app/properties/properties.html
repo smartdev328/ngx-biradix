@@ -215,11 +215,11 @@
                 </div>
             </td>
         </tr>
-        <tr ng-repeat-end ng-if="row.open && row.compsLoaded" ng-repeat="comp in row.fullcomps">
+        <tr ng-repeat-end ng-if="row.open && row.compsLoaded" ng-repeat="comp in row.fullcomps | orderBy : orderBy">
             <td></td>
             <td ng-show="show.rownumber"></td>
             <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name">Comp: {{comp.name}}</td>
+            <td ng-show="show.name"><i class="fa fa-building-o"></i> {{comp.name}}</td>
             <td ng-show="show.address">{{comp.address}}</td>
             <td ng-show="show.city">{{comp.city}}</td>
             <td ng-show="show.state">{{comp.state}}</td>

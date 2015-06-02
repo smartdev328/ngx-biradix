@@ -8,17 +8,19 @@ var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
 var uuid = require('node-uuid');
 
+var fees  = {
+    application_fee : 'Application fee',
+    lease_terms: 'Lease terms',
+    short_term_premium: 'Short term premium',
+    refundable_security_deposit: 'Refundable security deposit',
+    administrative_fee: 'Administrative fee',
+    non_refundable_pet_deposit: 'Non refundable pet deposit',
+    pet_deposit: 'Pet deposit',
+    pet_rent: 'Pet rent'
+}
+
 module.exports = {
-    fees: {
-        application_fee : 'Application fee',
-        lease_terms: 'Lease terms',
-        short_term_premium: 'Short term premium',
-        refundable_security_deposit: 'Refundable security deposit',
-        administrative_fee: 'Administrative fee',
-        non_refundable_pet_deposit: 'Non refundable pet deposit',
-        pet_deposit: 'Pet deposit',
-        pet_rent: 'Pet rent'
-    },
+    fees: fees,
     linkComp:function(subjectid, compid, callback) {
         linkComp(subjectid,compid,callback);
     },
@@ -42,6 +44,12 @@ module.exports = {
                     callbackp(null, orgs)
                 });
             },
+
+            amenities: function(callbackp) {
+                AmenityService.search(function(err, amenities) {
+                    callbackp(err, amenities)
+                })
+        }
         }, function(err, all) {
             var query;
 
@@ -93,6 +101,7 @@ module.exports = {
                     props = _.take(props, criteria.limit || 10)
                 }
 
+                var lookups = {fees: fees, amenities: []};
 
                 if (props && props.length > 0) {
                     props.forEach(function(x) {
@@ -107,11 +116,45 @@ module.exports = {
                             }
 
                         }
+
+                        if (x.community_amenities) {
+                            x.community_amenities.forEach(function(x) {
+                                var am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
+                                if (am) {
+                                    lookups.amenities.push({_id: am._id, name: am.name})
+                                }
+                            })
+                        }
+
+                        if (x.location_amenities) {
+                            x.location_amenities.forEach(function(x) {
+                                var am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
+                                if (am) {
+                                    lookups.amenities.push({_id: am._id, name: am.name})
+                                }
+                            })
+                        }
+
+                        if (x.floorplans) {
+                            x.floorplans.forEach(function(fp) {
+                                fp.amenities.forEach(function(x) {
+                                    var am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
+                                    if (am) {
+                                        if (!_.find(lookups.amenities, function(l) {return l._id.toString() == am._id.toString()})) {
+                                            lookups.amenities.push({_id: am._id, name: am.name})
+                                        }
+                                    }
+                                })
+                            })
+                        }
+
                     })
                 }
 
 
-                callback(err,props)
+
+
+                callback(err,props, lookups)
             })
         })
     },
