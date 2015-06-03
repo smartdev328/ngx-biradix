@@ -10,10 +10,16 @@ define([
                 options: '=',
                 items:'='
             },
-            controller: function ($scope) {
+            controller: function ($scope, $filter) {
 
-                $scope.search = function() {
+                $scope.search = function(s) {
+                    if (s) {
+                        var filtered = $filter('filter')($scope.items, s.lstfilter)
+                        $scope.groups = _.groupBy(filtered, function(i) {return i['group']})
+                        return;
+                    }
                     $scope.groups = _.groupBy($scope.items, function(i) {return i['group']})
+
                 }
 
                 $scope.search();

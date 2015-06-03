@@ -1,6 +1,13 @@
 ﻿<div class="filter-list">
     <div ng-if="small">
-        <div class="panel-heading">{{options.searchLabel}}</div>
+        <div class="form-group has-feedback">
+            <input type="text" class="form-control input-sm"
+                   placeholder="Search {{options.searchLabel}}"
+                   ng-model="lstfilter"
+                   style="border-color:#BDE3FD"
+                   ng-change="search(this)">
+            <i class="fa fa-search form-control-feedback" style="color:#BDE3FD"></i>
+        </div>
         <div style="max-height:200px;overflow-y:auto">
             <div ng-repeat="(key, value) in groups">
                 <b ng-if="key != 'undefined'">{{key}}</b>
@@ -10,7 +17,7 @@
             </div>
         </div>
     </div>
-    <table cellpadding="0" cellspacing="0" style="margin-top:5px" ng-if="!small">
+    <table cellpadding="0" cellspacing="0" style="margin-top:5px;width:460px;margin:0px auto" ng-if="!small">
         <tr>
             <td colspan="100%">
                 <div class="form-group has-feedback">
