@@ -33,7 +33,7 @@
         </tr>
         <tr>
             <td>
-                {{options.labelAvailable}}<br />
+                Available<br />
                 <select ng-model="ogItems" multiple
                         ng-dblclick="dbl(ogItems, true)"
                         ng-options="item.name group by item.group for item in filtered = (items | filter : lstfilter ) | filter: {selected: false}"></select><br />
@@ -59,7 +59,7 @@
 
             </td>
             <td>
-                {{options.labelSelected}}<br />
+                Selected<br />
                 <select ng-model="selectedItems" multiple
                         ng-dblclick="dbl(selectedItems, false)"
                         ng-options="item.name group by item.group for item in items | filter: {selected: true}"></select><br />
