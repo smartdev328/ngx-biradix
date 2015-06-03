@@ -1,1 +1,22 @@
-<textarea class="form-control  input-sm" ng-model="property.notes" style="height:150px"></textarea>
+<b class="panel-heading">Conact Information</b><Br>
+<div class="row">
+    <div class="col-md-3 col-sm-6">
+        Contact Name<br>
+        <input type="text" class="form-control input-sm" ng-model="property.contactName">
+    </div>
+    <div class="col-md-3 col-sm-6">
+        Contact Email<br>
+        <input type="text" class="form-control input-sm" ng-model="property.contactEmail">
+    </div>
+    <div class="col-md-3 col-sm-6">
+        Contact Phone<br>
+        <input type="text" class="form-control input-sm" ng-model="property.phone" input-mask="(999) 999-9999">
+    </div>
+</div>
+<Br>
+<b class="panel-heading">Notes</b><Br>
+<div class="row">
+    <div class="col-sm-12">
+        <textarea class="form-control  input-sm" ng-model="property.notes" style="height:150px"></textarea>
+    </div>
+</div>

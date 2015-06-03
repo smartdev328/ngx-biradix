@@ -315,7 +315,7 @@ define([
                 var modalInstance = $modal.open({
                     templateUrl: '/app/propertyWizard/propertyWizard.html',
                     controller: 'propertyWizardController',
-                    size: "lg",
+                    size: "md",
                     keyboard: false,
                     backdrop: 'static',
                     resolve: {

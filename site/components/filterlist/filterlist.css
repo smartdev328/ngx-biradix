@@ -10,13 +10,14 @@
 }
 
 .filter-buttons button {
-    border-radius:18px !important;font-weight:bold !important;
+    border-radius:1px !important;font-weight:bold !important;
     width:36px !important;
     margin:0px 5px 0px 5px !important;
 }
+.checkbox-row label {
+    font-weight:normal
+}
 
-@media(max-width:550px) {
-    .filter-list {
-        width:100%;overflow-y:scroll
-    }
+.checkbox-row  {
+    padding-left:10px
 }

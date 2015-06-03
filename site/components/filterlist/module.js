@@ -11,6 +11,13 @@ define([
                 items:'='
             },
             controller: function ($scope) {
+
+                $scope.search = function() {
+                    $scope.groups = _.groupBy($scope.items, function(i) {return i['group']})
+                }
+
+                $scope.search();
+
                 $scope.dbl = function (rows, state) {
                     if (!rows || rows.length == 0) {
                         return;
@@ -63,6 +70,13 @@ define([
                     return sel.length + " selected";
 
                 }
+
+                $scope.small = $(window).width() <= 550;
+
+                $scope.$on('size', function(e,size) {
+                    $scope.small = size <= 550;
+
+                });
             },
             templateUrl: '/components/filterlist/filterlist.html'
         };

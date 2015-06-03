@@ -11,77 +11,73 @@
 
 <div class="property-info" ng-init="initAutocomplete()">
     <div class="row">
-    <div class="col-md-3 col-sm-6">
-        Property Name<br>
-        <input type="text" class="form-control input-sm" ng-model="property.name" id="autocomplete" placeholder="Enter property name">
-    </div>
-    <div class="col-md-3 col-sm-6">
-        Address<br>
-        <input type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2" placeholder="Enter address">
-    </div>
-    <div class="col-md-3 col-sm-6">
-        City<br>
-        <input type="text" class="form-control input-sm" ng-model="property.city">
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="row">
-            <div class="col-xs-6">
-                State<br>
-                <select class="form-control input-sm" ng-options="state.abbreviation for state in states" ng-model="property.state">
-
-                </select>
-            </div>
-            <div class="col-xs-6">
-                Zip<br>
-                <input type="text" class="form-control input-sm" ng-model="property.zip" input-mask="99999">
-
-            </div>
+        <div class="col-sm-6">
+            Property Name<br>
+            <input type="text" class="form-control input-sm" ng-model="property.name" id="autocomplete" placeholder="Enter property name">
+        </div>
+        <div class="col-sm-6">
+            Address<br>
+            <input type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2" placeholder="Enter address">
         </div>
     </div>
 
-</div>
-<div class="row">
-    <div class="col-md-3 col-sm-6">
-        Owner<br>
-        <input type="text" class="form-control input-sm" ng-model="property.owner">
-    </div>
-    <div class="col-md-3 col-sm-6">
-        Management<br>
-        <input type="text" class="form-control input-sm" ng-model="property.management">
-    </div>
-    <div class="col-md-3 col-sm-6">
-        Construction Type<br>
-        <select class="form-control input-sm"  ng-options="type for type in constructionTypes" ng-model="property.constructionType">
-        </select>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="row">
-            <div class="col-xs-6">
-                Yr. Built<br>
-                <input type="text" class="form-control input-sm" ng-model="property.yearBuilt" input-mask="9999">
-            </div>
-            <div class="col-xs-6">
-                Renovated<br>
-                <input type="text" class="form-control input-sm" ng-model="property.yearRenovated" input-mask="9999">
-
-            </div>
-        </div>
-    </div>
-</div>
     <div class="row">
-        <div class="col-md-3 col-sm-6">
-            Contact Name<br>
-            <input type="text" class="form-control input-sm" ng-model="property.contactName">
+        <div class="col-sm-6">
+            City<br>
+            <input type="text" class="form-control input-sm" ng-model="property.city">
         </div>
-        <div class="col-md-3 col-sm-6">
-            Contact Email<br>
-            <input type="text" class="form-control input-sm" ng-model="property.contactEmail">
+
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-xs-6">
+                    State<br>
+                    <select class="form-control input-sm" ng-options="state.abbreviation for state in states" ng-model="property.state">
+
+                    </select>
+                </div>
+                <div class="col-xs-6">
+                    Zip<br>
+                    <input type="text" class="form-control input-sm" ng-model="property.zip" input-mask="99999">
+                </div>
+            </div>
         </div>
-        <div class="col-md-3 col-sm-6">
-            Contact Phone<br>
-            <input type="text" class="form-control input-sm" ng-model="property.phone" input-mask="(999) 999-9999">
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            Construction Type<br>
+            <select class="form-control input-sm"  ng-options="type for type in constructionTypes" ng-model="property.constructionType">
+            </select>
         </div>
-        <div class="col-md-3 col-sm-6" ng-show="$root.me.permissions.indexOf('Org/Assign') > -1">
+
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-xs-6">
+                    Yr. Built<br>
+                    <input type="text" class="form-control input-sm" ng-model="property.yearBuilt" input-mask="9999">
+                </div>
+                <div class="col-xs-6">
+                    Renovated<br>
+                    <input type="text" class="form-control input-sm" ng-model="property.yearRenovated" input-mask="9999">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            Owner<br>
+            <input type="text" class="form-control input-sm" ng-model="property.owner">
+        </div>
+        <div class="col-sm-6">
+            Management<br>
+            <input type="text" class="form-control input-sm" ng-model="property.management">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6" ng-show="$root.me.permissions.indexOf('Org/Assign') > -1">
             Company<br>
             <select class="form-control input-sm"  ng-options="company.name for company in lookups.orgs" ng-model="property.orgid">
             </select>

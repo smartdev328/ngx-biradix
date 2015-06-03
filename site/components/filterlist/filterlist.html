@@ -1,11 +1,22 @@
 ﻿<div class="filter-list">
-    <table cellpadding="0" cellspacing="0" style="margin-top:5px">
+    <div ng-if="small">
+        <div class="panel-heading">{{options.searchLabel}}</div>
+        <div style="max-height:200px;overflow-y:auto">
+            <div ng-repeat="(key, value) in groups">
+                <b ng-if="key != 'undefined'">{{key}}</b>
+                <div ng-repeat="item in value" class="checkbox-row">
+                    <label><input type="checkbox" ng-model="item.selected"> {{item.name}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table cellpadding="0" cellspacing="0" style="margin-top:5px" ng-if="!small">
         <tr>
-            <td>
+            <td colspan="100%">
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control input-sm"
-                           placeholder="Search {{options.labelAvailable}}"
-                           ng-model="lstfilter.name"
+                           placeholder="Search {{options.searchLabel}}"
+                           ng-model="lstfilter"
                            style="border-color:#BDE3FD"
                            ng-change="resetPager()">
                     <i class="fa fa-search form-control-feedback" style="color:#BDE3FD"></i>
@@ -49,4 +60,5 @@
             </td>
         </tr>
     </table>
+</div>
 </div>

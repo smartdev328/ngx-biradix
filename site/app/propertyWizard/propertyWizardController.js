@@ -43,10 +43,10 @@ define([
 
             $scope.steps = [
                 {label:'Property Info', template: 'propertyInfo.html'},
-                {label:'Property Amenities', template: 'amenities.html'},
-                {label:'Fees & Deposits', template: 'feesDeposits.html'},
+                {label:'Amenities', template: 'amenities.html'},
+                {label:'Fees/Deposits', template: 'feesDeposits.html'},
                 {label:'Floor Plans', template: 'floorplans.html'},
-                {label:'Notes', template: 'notes.html'},
+                {label:'Contact/Notes', template: 'notes.html'},
             ]
 
 
@@ -307,7 +307,8 @@ define([
                 return resp;
             }
 
-            $scope.amenityOptions = { labelAvailable: "Available Amenities", labelSelected: "Selected Amenities" }
+            $scope.locationAmenityOptions = { labelAvailable: "Available Amenities", labelSelected: "Selected Amenities", searchLabel: "Location Amenities" }
+            $scope.communityAmenityOptions = { labelAvailable: "Available Amenities", labelSelected: "Selected Amenities", searchLabel: "Community Amenities" }
 
             $propertyService.lookups().then(function (response) {
                 $scope.lookups = response.data;
