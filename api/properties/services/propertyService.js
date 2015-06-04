@@ -58,7 +58,7 @@ module.exports = {
                 var time = new Date();
                 AmenityService.search(function(err, amenities) {
                     var time2 = new Date();
-                    console.log("Amenities: " + (time2.getTime() - time.getTime()));
+                    //console.log("Amenities: " + (time2.getTime() - time.getTime()));
                     callbackp(err, amenities)
                 })
         }
@@ -164,10 +164,8 @@ module.exports = {
                     })
                 }
 
-
-
                 var time2 = new Date();
-                console.log("After DB: " + (time2.getTime() - time.getTime()));
+                //console.log("After DB: " + (time2.getTime() - time.getTime()));
 
                 callback(err,props, lookups)
             })
