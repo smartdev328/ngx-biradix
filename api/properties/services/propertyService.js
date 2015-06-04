@@ -55,7 +55,10 @@ module.exports = {
             },
 
             amenities: function(callbackp) {
+                var time = new Date();
                 AmenityService.search(function(err, amenities) {
+                    var time2 = new Date();
+                    console.log("Amenities: " + (time2.getTime() - time.getTime()));
                     callbackp(err, amenities)
                 })
         }
@@ -91,6 +94,7 @@ module.exports = {
             }
 
             query.exec(function(err, props) {
+                var time = new Date();
                 if (props && props.length > 0) {
 
                     props = JSON.parse(JSON.stringify(props))
@@ -162,6 +166,8 @@ module.exports = {
 
 
 
+                var time2 = new Date();
+                console.log("After DB: " + (time2.getTime() - time.getTime()));
 
                 callback(err,props, lookups)
             })
