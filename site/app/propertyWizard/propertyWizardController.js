@@ -364,7 +364,8 @@ define([
                             $scope.property.averageSqft /= $scope.property.floorplans.length;
                         }
 
-                        ($scope.property.community_amenities || []).forEach(function(pa) {
+
+                        $scope.property.community_amenities.forEach(function(pa) {
                             var am = _.find($scope.communityItems, function(a) {
                                 return a.id.toString() == pa.toString()});
                             if (am) {
@@ -372,7 +373,7 @@ define([
                             }
                         })
 
-                        ($scope.property.location_amenities || []).forEach(function(pa) {
+                        $scope.property.location_amenities.forEach(function(pa) {
                             var am = _.find($scope.locationItems, function(a) {
                                 return a.id.toString() == pa.toString()});
                             if (am) {

@@ -231,6 +231,36 @@
             })
         },
 
+        canAccessResource: function(user, resource, type, callback) {
+            if (!user.memberships) {
+                callback(false);
+                return;
+            }
+
+            if (user.memberships && user.memberships.isadmin === true) {
+                callback(true);
+                return;
+            }
+
+            PermissionsSchema.find({'executorid': {$in: user.memberships.memberships}, resource:resource, type:type },function(err,permissions) {
+                //console.log(permissions);
+                //Get a list of negated permission ids
+                var neg = _.where(permissions, { 'allow': false });
+                neg = _.pluck(neg,'_id');
+
+                //Remove any negated permissions from list
+                _.remove(permissions, function(x) {return neg.indexOf(x._id) > -1;})
+
+                if(permissions.length > 0) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+
+            })
+
+
+        },
         canAccess: function(user, resource, callback) {
             if (!user.memberships) {
                 callback(false);

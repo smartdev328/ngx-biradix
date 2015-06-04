@@ -2,10 +2,11 @@
 define([
     'app',
     '../../services/userService',
-    '../../filters/skip/filter'
+    '../../filters/skip/filter',
+    '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress', function ($scope,$rootScope,$location,$userService,$authService,ngProgress) {
+    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -244,6 +245,7 @@ define([
         }
 
         $scope.toggleActive = function (user) {
+            $dialog.confirm('Are you sure you want to set "' + user.name + '" as ' + (!user.active ? "active" : "inactive") + '?', function() {
             $scope.alerts = [];
 
             ngProgress.start();
@@ -269,7 +271,7 @@ define([
                     $scope.alerts.push({ type: 'danger', msg: "Unable to update your account. Please contact the administrator." });
                     ngProgress.reset();
                 });
-
+            }, function() {})
         }
 
 

@@ -1,10 +1,11 @@
 'use strict';
 define([
     'app',
-    '../../filters/skip/filter'
+    '../../filters/skip/filter',
+    '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal','$authService', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal,$authService) {
+    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal','$authService','$dialog', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal,$authService,$dialog) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -31,7 +32,7 @@ define([
             var isTiny = size < 967;
             var isMedium  = size < 1167;
             $scope.show = {
-                rownumber: siteAdmin,
+                rownumber: false,
                 date: false,
                 name: true,
                 address: !isTiny,
@@ -280,32 +281,65 @@ define([
 
         }
 
-        $scope.toggleActive = function (property) {
-            $scope.alerts = [];
+        $scope.unlinkComp = function (property, comp) {
 
-            ngProgress.start();
+            $dialog.confirm('Are you sure you want to unlink Comp "' + comp.name + '" from Subject "' + property.name + '"?', function() {
+                $scope.alerts = [];
 
-            $propertyService.setActive(!property.active, property._id).then(function (response) {
+                ngProgress.start();
 
-                    if (response.data.errors) {
-                        $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
-                    }
-                    else {
-                        property.active = !property.active;
+                $propertyService.unlinkComp(property._id, comp._id).then(function (response) {
 
-                        if (property.active) {
-                            $scope.alerts.push({type: 'success', msg: property.name + " has been activated."});
-                        } else {
-                            $scope.alerts.push({type: 'warning', msg: property.name + " has been de-activated. "});
+                        if (response.data.errors) {
+                            $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
                         }
-                    }
+                        else {
+                            _.remove(property.comps, function(c) {return c.id.toString() == comp._id.toString() })
+                            _.remove(property.fullcomps, function(c) {return c._id.toString() == comp._id.toString() })
 
-                    ngProgress.reset();
-                },
-                function (error) {
-                    $scope.alerts.push({ type: 'danger', msg: "Unable to update property. Please contact the administrator." });
-                    ngProgress.reset();
-                });
+                            $scope.alerts.push({type: 'warning', msg: 'Comp "' + comp.name + '" unlinked from Subject "' + property.name + '" successfully.'});
+                        }
+
+                        ngProgress.reset();
+                    },
+                    function (error) {
+                        $scope.alerts.push({ type: 'danger', msg: "Unable to update property. Please contact the administrator." });
+                        ngProgress.reset();
+                    });
+
+            }, function() {})
+        }
+
+        $scope.toggleActive = function (property) {
+
+            $dialog.confirm('Are you sure you want to set "' + property.name + '" as ' + (!property.active ? "active" : "inactive") + '?', function() {
+                $scope.alerts = [];
+
+                ngProgress.start();
+
+                $propertyService.setActive(!property.active, property._id).then(function (response) {
+
+                        if (response.data.errors) {
+                            $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
+                        }
+                        else {
+                            property.active = !property.active;
+
+                            if (property.active) {
+                                $scope.alerts.push({type: 'success', msg: property.name + " has been activated."});
+                            } else {
+                                $scope.alerts.push({type: 'warning', msg: property.name + " has been de-activated. "});
+                            }
+                        }
+
+                        ngProgress.reset();
+                    },
+                    function (error) {
+                        $scope.alerts.push({ type: 'danger', msg: "Unable to update property. Please contact the administrator." });
+                        ngProgress.reset();
+                    });
+
+            }, function() {})
         }
 
         $scope.edit = function (id, isComp) {

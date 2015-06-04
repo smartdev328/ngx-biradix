@@ -31,6 +31,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.unlinkComp = function (propertyid, compid) {
+            return $http.delete('/api/1.0/properties/' + propertyid + '/comps/' + compid, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });

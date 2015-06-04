@@ -26,6 +26,17 @@ routes.get('/import', function(req, res) {
             OrgService.read(function (err, orgs) {
                 callbackp(null, orgs)
             });
+        },
+        links: function(callbackp) {
+            request('http://platform.biradix.com/seed/comps?secret=alex', function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+
+                    var links = JSON.parse(body)
+                    callbackp(null,links)
+                } else {
+                    callbackp(error, null);
+                }
+            })
         }
     },function(err, all) {
         all.props.forEach(function(p) {
@@ -39,7 +50,23 @@ routes.get('/import', function(req, res) {
                 callbackp(err, newprop)
             });
         }, function(err) {
-            res.status(200).send('Done');
+
+            async.eachLimit(all.links, 20, function(link, callbackp){
+                var subj = _.find(all.props, function(p) {return p.id.toString() == link.subj.toString()});
+                if (!subj) {
+                    throw Error("Unable to find link subject: " + link.subj.toString())
+                }
+                var comp = _.find(all.props, function(p) {return p.id.toString() == link.comp.toString()});
+                if (!comp) {
+                    throw Error("Unable to find link subject: " + link.comp.toString())
+                }
+                PropertyService.linkComp(subj._id, comp._id, function(err, newprop) {
+                    callbackp(err, newprop)
+                })
+            }, function(err) {
+
+                res.status(200).send('Done');
+            });
         });
 
 
