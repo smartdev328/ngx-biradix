@@ -342,6 +342,34 @@ define([
             }, function() {})
         }
 
+        $scope.editLink = function (subject, comp) {
+            require([
+                '/app/floorplanLinks/floorplanLinksController.js'
+            ], function () {
+                var modalInstance = $modal.open({
+                    templateUrl: '/app/floorplanLinks/floorplanLinks.html',
+                    controller: 'floorplanLinksController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        id: function () {
+                            return subject._id;
+                        },
+                        compid: function() {
+                            return comp._id;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    //Send successfully
+                }, function () {
+                    //Cancel
+                });
+            });
+        }
+
         $scope.edit = function (id, isComp) {
             require([
                 '/app/propertyWizard/propertyWizardController.js'

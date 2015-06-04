@@ -40,6 +40,21 @@ define(['app'], function (app) {
             });
         }
 
+        fac.floorplanName = function(fp) {
+            var name = fp.bedrooms + "x" + fp.bathrooms;
+
+            if (fp.description && fp.description != "") {
+                name += " " + fp.description;
+            } else {
+                name += " - ";
+            }
+
+            name += " " + fp.sqft + " Sqft";
+            name += ", " + fp.units + " Units";
+
+            return name
+        }
+
         return fac;
     }]);
 });

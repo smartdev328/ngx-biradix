@@ -114,9 +114,12 @@ module.exports = {
                     props = _.take(props, criteria.limit || 10)
                 }
 
-                var lookups = {fees: fees, amenities: []};
+                var lookups = {fees: {}, amenities: []};
 
                 if (props && props.length > 0) {
+                    if (criteria.select && criteria.select.indexOf('fees') > -1) {
+                        lookups.fees = fees;
+                    }
                     props.forEach(function(x) {
 
                         if (x.orgid) {

@@ -175,10 +175,10 @@
         </thead>
         <tbody>
         <tr ng-repeat-start="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
-            <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer" ng-click="toggleOpen(row)"></i></td>
+            <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name">{{row.name}}</td>
+            <td ng-show="show.name" ng-click="toggleOpen(row)" style="cursor:pointer">{{row.name}}</td>
             <td ng-show="show.address">{{row.address}}</td>
             <td ng-show="show.city">{{row.city}}</td>
             <td ng-show="show.state">{{row.state}}</td>
@@ -203,6 +203,7 @@
                             <li ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
                             <li><a href="#/profile/{{row._id}}"><span class="fa fa-external-link"></span> View Profile</a></li>
                             <li><a href ng-click="dashboard(row._id)" ><span class="fa fa-list"></span> View Dashboard</a></li>
+                            <li><a href ng-click="editLink(row, row)"><span class="fa fa-chain"></span> Linked Floor Plans</a></li>
                         </ul>
                     </div>
                 </div>
@@ -245,6 +246,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                             <li><a href ng-click="edit(comp._id, true)"><span class="fa fa-building"></span> Edit Comp</a></li>
+                            <li><a href ng-click="editLink(row, comp)"><span class="fa fa-chain"></span> Linked Floor Plans</a></li>
                             <li><a href ng-click="unlinkComp(row, comp)"><span class="fa fa-times"></span> Unlink Comp</a></li>
                         </ul>
                     </div>

@@ -118,7 +118,7 @@ define([
                         $(elMap).width($scope.options.width);
                         $(elMap).height($scope.options.height);
 
-                        window.setTimeout(function() {$scope.resize(1)}, 100);
+                        //window.setTimeout(function() {$scope.resize(1)}, 100);
                     }
 
                 });
@@ -153,11 +153,11 @@ define([
                     }
                 }
 
-                $scope.resize = function() {
-                    var currCenter = $scope.oMap.getCenter();
-                    google.maps.event.trigger($scope.oMap, 'resize');
-                    $scope.oMap.setCenter(currCenter);
-                }
+                //$scope.resize = function() {
+                //    var currCenter = $scope.oMap.getCenter();
+                //    google.maps.event.trigger($scope.oMap, 'resize');
+                //    $scope.oMap.setCenter(currCenter);
+                //}
 
 
             },
