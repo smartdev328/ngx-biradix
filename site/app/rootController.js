@@ -274,5 +274,30 @@ define([
 
         }
 
+        $rootScope.marketSurvey = function (id) {
+            require([
+                '/app/marketSurvey/marketSurveyController.js'
+            ], function () {
+                var modalInstance = $modal.open({
+                    templateUrl: '/app/marketSurvey/marketSurvey.html',
+                    controller: 'marketSurveyController',
+                    size: "lg",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        id: function () {
+                            return id;
+                        },
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    //Send successfully
+                }, function () {
+                    //Cancel
+                });
+            });
+        }
+
     }]);
 });
