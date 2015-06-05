@@ -14,6 +14,23 @@ var async = require("async");
 
 var Routes = express.Router();
 
+Routes.put('/:id/comps/:compid', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyService.linkComp(req.params.id, req.params.compid, function (err, newusr) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true});
+            }
+        });
+    })
+})
+
 Routes.get('/lookups', function (req, res) {
     async.parallel({
         orgs: function (callbackp) {
@@ -176,7 +193,7 @@ Routes.delete('/:id/comps/:compid', function (req, res) {
     })
 })
 
-Routes.put('/:id/comps/:compid', function (req, res) {
+Routes.post('/:id/comps/:compid', function (req, res) {
     AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
         if (!canAccess) {
             return res.status(401).json("Unauthorized request");
@@ -192,5 +209,7 @@ Routes.put('/:id/comps/:compid', function (req, res) {
         });
     })
 })
+
+
 
 module.exports = Routes;

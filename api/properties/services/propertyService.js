@@ -89,6 +89,10 @@ module.exports = {
                 query = query.where("_id").in(criteria.ids);
             }
 
+            if (criteria.exclude) {
+                query = query.where("_id").nin(criteria.exclude);
+            }
+
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
             }
@@ -367,7 +371,8 @@ function linkComp (subjectid, compid, callback) {
         if (err) {
             callback (err, null)
         } else {
-            var link = {id: compid, floorplans: _.pluck(comp.floorplans,"id")}
+            var ObjectId = require('mongoose').Types.ObjectId;
+            var link = {id: new ObjectId(compid), floorplans: _.pluck(comp.floorplans,"id")}
             var query = {_id: subjectid};
             var update = {$addToSet: {comps: link}};
             var options = {new: true};

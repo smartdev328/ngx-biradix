@@ -1,0 +1,52 @@
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Add Comp</h2>
+    </div>
+    <div class="modal-body">
+        Subject Property: <b>{{subject.name}}</b><Br>
+        <Br>
+        Please enter full or partial proprty name or address of your comp to see if the property already exists in our system. If a property exists you may simple link it as a comp.<Br>
+        <Br>
+
+        <div style="width:250px;margin:0px auto">
+            <div class="form-group has-feedback search">
+                <input type="text" class="form-control input-sm"
+                       placeholder="Search Existing Properties"
+                       ng-model="findComp",
+                       ng-change="autoComplete()"
+                        >
+                <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
+            </div>
+        </div>
+        <div ng-show="findComp && findComp.length > 1 && properties.length == 0" class="alert alert-warning" role="alert">No properties found. Use the option below to create a new comp property.</div>
+
+        <table class="table table-condensed table-striped table-hover" style="margin-top:10px" ng-show="findComp && findComp.length > 1 && properties.length > 0">
+            <thead>
+            <tr>
+                <th>Property</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in properties">
+                <td>
+                    <div ng-bind-html="row.summary | sanitize">
+                </td>
+                <td>
+                    <button class="btn btn-primary" ng-click="link(row)">Link Comp</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div style="text-align: center">
+            OR<Br>
+            <Br>
+            <button class="btn btn-warning" ng-click="create()">Create New Comp</button>
+        </div>
+    </div>
+</div>

@@ -198,7 +198,8 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <li><a href style="text-decoration:none" ng-click="edit(row._id, false)"><span class="fa fa-building"></span> Edit Property</a></li>
+                            <li><a href ng-click="edit(row._id, false)"><span class="fa fa-building"></span> Edit Property</a></li>
+                            <li><a href ng-click="addComp(row)"><span class="fa fa-plus-circle"></span> Add Comp</a></li>
                             <li ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
                             <li ng-show="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
                             <li><a href="#/profile/{{row._id}}"><span class="fa fa-external-link"></span> View Profile</a></li>
@@ -218,7 +219,10 @@
         </tr>
         <tr ng-if="row.open && row.compsLoaded && row.fullcomps.length == 0">
             <td colspan="100%">
-                <Br><div class="alert alert-warning" role="alert">There are currently no comps linked with this property.</div>
+                <Br><div class="alert alert-warning" role="alert">There are currently no comps linked with this property.
+                    <a href ng-click="addComp(row)"><span class="fa fa-plus-circle"></span> Add Comp</a>
+
+                </div>
             </td>
         </tr>
         <tr ng-repeat-end ng-if="row.open && row.compsLoaded && row.fullcomps.length > 0" ng-repeat="comp in row.fullcomps | orderBy : orderBy">

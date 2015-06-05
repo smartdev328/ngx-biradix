@@ -406,5 +406,45 @@ define([
             $location.path('/dashboard')
         }
 
+        $scope.addComp = function(subject) {
+            if (!subject.open) {
+                $scope.toggleOpen(subject);
+            }
+
+            require([
+                '/app/findComp/findCompController.js'
+            ], function () {
+                var modalInstance = $modal.open({
+                    templateUrl: '/app/findComp/findComp.html',
+                    controller: 'findCompController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        id: function () {
+                            return subject._id;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (comp) {
+                    //Send successfully
+                    subject.comps.push({id: comp._id});
+
+                    if (subject.open) {
+                        $scope.toggleOpen(subject);
+                    }
+                    $scope.toggleOpen(subject);
+                    $scope.alerts = [];
+                    $scope.alerts.push({type: 'success', msg: comp.name + " has been added as a Comp for " + subject.name + "."});
+                }, function (from) {
+                    //Cancel
+                    if (from == "create") {
+                        $scope.edit(null, true)
+                    }
+                });
+            });
+        }
+
     }]);
 });
