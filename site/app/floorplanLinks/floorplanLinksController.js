@@ -52,6 +52,30 @@ define([
                 }
             }
 
+            $scope.save = function() {
+                var floorplans = _.pluck(_.filter($scope.items, function(i) {return i.selected == true}),"id");
+                $('button.contact-submit').prop('disabled', true);
+                ngProgress.start();
+                $propertyService.saveCompLink(id, compid, floorplans).then(function (resp) {
+                    $('button.contact-submit').prop('disabled', false);
+                    ngProgress.complete();
+                    if (resp.data.errors && resp.data.errors.length > 0) {
+                        var errors = _.pluck(resp.data.errors,"msg").join("<br>")
+                        toastr.error(errors);
+                    }
+                    else {
+                        toastr.success('Link updated successfully.');
+                        $modalInstance.close();                    }
+
+
+                }, function (err) {
+                    $('button.contact-submit').prop('disabled', false);
+                    toastr.error('Unable to perform action. Please contact an administrator');
+                    ngProgress.complete();
+                });
+
+            }
+
 }]);
 
 });

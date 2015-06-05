@@ -40,6 +40,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.saveCompLink = function (propertyid, compid, floorplans) {
+            return $http.put('/api/1.0/properties/' + propertyid + '/comps/' + compid, floorplans, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.floorplanName = function(fp) {
             var name = fp.bedrooms + "x" + fp.bathrooms;
 
