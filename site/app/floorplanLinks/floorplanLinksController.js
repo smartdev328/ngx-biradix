@@ -22,13 +22,19 @@ define([
             }).then(function (response) {
                 $scope.subject = _.find(response.data.properties, function(p) {return p._id.toString() == id})
                 $scope.comp = _.find(response.data.properties, function(p) {return p._id.toString() == compid})
+                var linkedfloorplans = _.find($scope.subject.comps, function(cm) {return cm.id == $scope.comp._id.toString()}).floorplans;
 
                 $scope.items = [];
-                $scope.options = {searchLabel: 'Floor Plans'}
+                $scope.options = {searchLabel: 'Floor Plans', availableLabel: "Unlinked Floor Plans", selectedLabel : "Linked Floor Plans"}
 
                 $scope.comp.floorplans.forEach(function(fp) {
                     var link = {id: fp.id, name: $propertyService.floorplanName(fp), group: $scope.floorplanGroup(fp), selected: false}
 
+                    var exists = _.find(linkedfloorplans, function(lfp) {return lfp.toString() == fp.id.toString()})
+
+                    if (exists) {
+                        link.selected = true;
+                    }
                     $scope.items.push(link);
                 })
 

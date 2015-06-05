@@ -394,6 +394,7 @@ define([
                 }
 
                 if (place.address_components) {
+                    var state = "";
                     place.address_components.forEach(function (c) {
                         switch (c.types[0]) {
                             case "street_number":
@@ -409,14 +410,18 @@ define([
                                 $scope.property.city = c.long_name;
                                 break;
                             case "administrative_area_level_1":
-                                $scope.property.state = c.short_name;
+                                state = c.short_name;
                                 break;
                         }
                     })
+
+                    if (state != "") {
+                        $scope.property.state = $scope.getSelectedState(state)
+                    }
                 }
 
 
-                $scope.property.state = $scope.getSelectedState($scope.property.state)
+
             }
 
             $scope.googleBlur = function(id, value) {
