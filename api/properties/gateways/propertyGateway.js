@@ -11,6 +11,7 @@ var phantom = require('phantom-render-stream');
 var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
 var async = require("async");
+var _ = require("lodash")
 
 var Routes = express.Router();
 
@@ -54,6 +55,38 @@ Routes.get('/lookups', function (req, res) {
         res.status(200).json({fees: PropertyService.fees, orgs: all.orgs, amenities: all.amenities})
     });
 
+
+});
+
+Routes.get('/:id/dashboard', function (req, res) {
+
+    PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
+        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits comps"
+    }, function(err, property) {
+
+        if (err) {
+            res.status(400).send(err)
+        } else {
+            var compids = _.pluck(property[0].comps, "id");
+            delete property[0].compids;
+
+            PropertyService.search(req.user, {
+                limit: 20,
+                permission: 'PropertyView',
+                ids: compids
+                ,
+                select: "_id name address city state zip loc totalUnits"
+            }, function(err, comps) {
+
+                if (err) {
+                    res.status(400).send(err)
+                } else {
+                    res.status(200).json({property: property[0], comps: comps})
+                }
+            });
+        }
+
+    })
 
 });
 

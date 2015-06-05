@@ -3,6 +3,14 @@ define(['app'], function (app) {
     app.factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+        fac.dashboard = function (id) {
+            return $http.get('/api/1.0/properties/' + id + '/dashboard', {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
 
         fac.search = function (criteria) {
             return $http.post('/api/1.0/properties', criteria, {

@@ -5,7 +5,7 @@ var expressJwt = require('express-jwt')
 var raygun = require('raygun');
 var raygunClient = new raygun.Client().init({ apiKey: settings.RAYGUN_APIKEY });
 var cookieParser = require('cookie-parser')
-
+var compression = require('compression')
 
 module.exports = {
         init: function (app) {
@@ -50,11 +50,11 @@ module.exports = {
 
             // Should be placed before express.static
             // To ensure that all assets and data are compressed (utilize bandwidth)
-            //app.use(compression({
-            //    // Levels are specified in a range of 0 to 9, where-as 0 is
-            //    // no compression and 9 is best compression, but slowest
-            //    level: 9
-            //}));
+            app.use(compression({
+                // Levels are specified in a range of 0 to 9, where-as 0 is
+                // no compression and 9 is best compression, but slowest
+                level: 9
+            }));
 
             //Parse body into req for form submission
             app.use(bodyParser.json({limit:'50mb'}));
