@@ -367,19 +367,26 @@ module.exports = {
 
 
 function linkComp (subjectid, compid, callback) {
-    PropertySchema.findOne({_id:compid}, function(err, comp) {
-        if (err) {
-            callback (err, null)
-        } else {
-            var ObjectId = require('mongoose').Types.ObjectId;
-            var link = {id: new ObjectId(compid), floorplans: _.pluck(comp.floorplans,"id")}
-            var query = {_id: subjectid};
-            var update = {$addToSet: {comps: link}};
-            var options = {new: true};
-
-            PropertySchema.findOneAndUpdate(query, update, options, function(err, saved) {
-                return callback(err, saved)
-            })
+    PropertySchema.findOne({_id:subjectid}, function(err, subj) {
+        if (_.find(subj.comps, function(c) {return c.id.toString() == compid.toString()})) {
+            return callback("Comp already exists", null);
         }
+
+        PropertySchema.findOne({_id: compid}, function (err, comp) {
+            if (err) {
+                callback(err, null)
+            } else {
+
+                var ObjectId = require('mongoose').Types.ObjectId;
+                var link = {id: new ObjectId(compid), floorplans: _.pluck(comp.floorplans, "id")}
+                var query = {_id: subjectid};
+                var update = {$addToSet: {comps: link}};
+                var options = {new: true};
+
+                PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                    return callback(err, saved)
+                })
+            }
+        })
     })
 }

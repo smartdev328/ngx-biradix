@@ -43,7 +43,7 @@ define([
                 $propertyService.linkComp(id, comp._id).then(function (resp) {
                     ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
-                        var errors = _.pluck(resp.data.errors,"msg").join("<br>")
+                        var errors = resp.data.errors
                         toastr.error(errors);
                     }
                     else {
