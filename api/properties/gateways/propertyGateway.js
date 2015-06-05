@@ -58,6 +58,31 @@ Routes.get('/lookups', function (req, res) {
 
 });
 
+Routes.get('/:id/profile', function (req, res) {
+    async.parallel({
+        view: function (callbackp) {
+            PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: req.params.id
+                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits location_amenities community_amenities floorplans"
+            }, function(err, property, lookups) {
+                callbackp(err, {p: property, l: lookups})
+            })
+        },
+        modify: function(callbackp) {
+            PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
+                , select: "_id"
+            }, function(err, property) {
+                callbackp(err, property)
+            })
+        }
+    }, function(err, all) {
+        if (err) {
+            res.status(400).send(err)
+        }
+        res.status(200).json({canManage: all.modify.length == 1, properties: all.view.p, lookups: all.view.l})
+    });
+
+});
+
 Routes.get('/:id/dashboard', function (req, res) {
 
     PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id

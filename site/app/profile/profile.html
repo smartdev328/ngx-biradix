@@ -4,12 +4,12 @@
   }
 </style>
 <div class="row" ng-show="localLoading">
-    <div class="col-xs-10">
+    <div class="col-xs-9 col-sm-7">
         <h3 style="padding-left:5px">{{property.name}}</h3>
     </div>
-    <div class="col-xs-2 hidden-print">
+    <div class="col-xs-3 col-sm-5 hidden-print">
         <div class="btn-group pull-right" style="padding-bottom:10px">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
+            <button tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -18,6 +18,9 @@
                 <li><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
             </ul>
         </div>
+        <button tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
+            <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Market Survey</span>
+        </button>
     </div>
 
 </div>

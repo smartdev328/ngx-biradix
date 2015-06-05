@@ -25,11 +25,16 @@ define([
 
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
-                $propertyService.search({limit: 1, permission: 'PropertyManage', _id: defaultPropertyId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits location_amenities community_amenities floorplans"
-                }).then(function (response) {
+                $propertyService.profile(defaultPropertyId).then(function (response) {
                     $scope.lookups = response.data.lookups;
-                    $scope.property = response.data.properties[0];
+
+
+                    if (!response.data.properties) {
+                        $location.path('/dashboard')
+                        return;
+                    } else {
+                        $scope.property = response.data.properties[0];
+                    }
                     $scope.localLoading = true;
                     $window.document.title = $scope.property.name;
                     $scope.setRenderable();
