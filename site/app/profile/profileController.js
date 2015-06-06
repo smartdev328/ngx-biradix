@@ -34,6 +34,7 @@ define([
                         return;
                     } else {
                         $scope.property = response.data.properties[0];
+                        $scope.canManage = response.data.canManage;
                     }
                     $scope.localLoading = true;
                     $window.document.title = $scope.property.name;

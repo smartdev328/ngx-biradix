@@ -18,7 +18,7 @@
                 <li><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
             </ul>
         </div>
-        <button tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
+        <button ng-if="canManage"tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
             <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Market Survey</span>
         </button>
     </div>

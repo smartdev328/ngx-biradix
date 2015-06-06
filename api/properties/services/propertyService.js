@@ -49,7 +49,7 @@ module.exports = {
 
         async.parallel({
             permissions: function(callbackp) {
-                if (Operator.memberships.isadmin) {
+                if (Operator.memberships.isadmin === true) {
                     callbackp(null,[]);
                 } else {
                     AccessService.getPermissions(Operator, [criteria.permission], function(permissions) {
@@ -72,26 +72,35 @@ module.exports = {
                 })
         }
         }, function(err, all) {
-            var query;
+            var query = PropertySchema.find();
+            if (criteria._id) {
+                criteria.ids = criteria.ids || [];
+                criteria.ids.push(criteria._id);
+            }
 
-            if (Operator.memberships.isadmin) {
-                query = PropertySchema.find();
+            if (Operator.memberships.isadmin === true) {
+                if (criteria.ids) {
+                    query = query.where("_id").in(criteria.ids);
+                }
+
+                if (criteria.exclude) {
+                    query = query.where("_id").nin(criteria.exclude);
+                }
             }
             else {
-                query = PropertySchema.find({'_id': {$in: all.permissions}});
+
+                if (criteria.ids) {
+                    all.permissions = _.intersection(all.permissions, criteria.ids);
+                }
+
+                if (criteria.exclude) {
+                    _.remove(all.permissions, function(p) {return criteria.exclude.indexOf(p) > -1})
+                }
+
+                query = query.where('_id').in(all.permissions);
             }
 
-            if (criteria._id) {
-                query = query.where("_id").equals(criteria._id);
-            }
 
-            if (criteria.ids) {
-                query = query.where("_id").in(criteria.ids);
-            }
-
-            if (criteria.exclude) {
-                query = query.where("_id").nin(criteria.exclude);
-            }
 
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
