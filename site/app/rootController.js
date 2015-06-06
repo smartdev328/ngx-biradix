@@ -281,7 +281,7 @@ define([
                 var modalInstance = $modal.open({
                     templateUrl: '/app/marketSurvey/marketSurvey.html',
                     controller: 'marketSurveyController',
-                    size: "lg",
+                    size: "md",
                     keyboard: false,
                     backdrop: 'static',
                     resolve: {

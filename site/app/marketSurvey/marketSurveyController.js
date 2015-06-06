@@ -1,6 +1,7 @@
 'use strict';
 define([
-    'app'
+    'app',
+    '../../components/inputmask/module.js',
 ], function (app) {
      app.controller
         ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService) {

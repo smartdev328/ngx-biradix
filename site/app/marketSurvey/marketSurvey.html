@@ -1,3 +1,12 @@
+<Style>
+    @media all and (min-width: 0px) and (max-width: 767px) {
+        .modal-body {
+            padding-left:3px !important;
+            padding-right:3px !important;
+        }
+    }
+
+</Style>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
@@ -6,12 +15,53 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Market Survey Update: {{property.name}}</h2>
     </div>
-    <div class="modal-body">
-        <div class="row" ng-show="hasContact">
+    <div class="modal-body" style="padding:14px">
+        <div class="alert alert-info" ng-show="hasContact">
             <b>Contact: </b>
             <span ng-show="hasName"> {{property.contactName}}</span>
             <span ng-show="hasEmail"> {{property.contactEmail}}</span>
             <span ng-show="hasPhone"> {{property.phone}}</span>
+        </div>
+
+        <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
+            <thead>
+            <tr>
+                <th><span class="hidden-xs">Type</span><span class="visible-xs">F.P.</span></th>
+                <th class="hidden-xs">Desc.</th>
+                <th style="text-align: center">Units</th>
+                <th style="text-align: center">Sqft</th>
+                <th style="white-space: nowrap;">Rent <i class="fa fa-info-circle"></i></th>
+                <th style="white-space: nowrap;" colspan="2">Concess. <i class="fa fa-info-circle"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in property.floorplans">
+                <td>
+                    {{row.bedrooms}}x{{row.bathrooms}}
+                </td>
+                <td class="hidden-xs">
+                    {{row.description}}
+                </td>
+                <td style="text-align: center">
+                    {{row.units}}
+                </td>
+                <td style="text-align: center">
+                    {{row.sqft}}
+                </td>
+                <td style="white-space: nowrap;">
+                    $<input type="text" class="form-control input-sm" value="0" style="width:45px;height:25px;display: inline;padding-left:2px;padding-right:2px;text-align:right" input-mask="9{1,5}">
+                </td>
+                <td style="white-space: nowrap;">
+                    $<input type="text" class="form-control input-sm" value="0" style="width:45px;height:25px;display: inline;padding-left:2px;padding-right:2px;text-align:right" input-mask="9{1,5}">
+                </td>
+                <td>
+                    <a href>Update</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="text-align: center">
+        <button class="btn btn-warning" ng-click="create()">Save Changes</button>
         </div>
 
     </div>
