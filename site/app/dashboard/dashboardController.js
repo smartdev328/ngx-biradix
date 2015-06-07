@@ -50,6 +50,10 @@ define([
 
         }
 
+        $scope.$on('data.reload', function(event, args) {
+            $scope.changeProperty();
+        });
+
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $propertyService.dashboard(defaultPropertyId).then(function (response) {

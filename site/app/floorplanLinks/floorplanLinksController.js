@@ -65,7 +65,8 @@ define([
                     }
                     else {
                         toastr.success('Link updated successfully.');
-                        $modalInstance.close();                    }
+                        $modalInstance.close();
+                    }
 
 
                 }, function (err) {

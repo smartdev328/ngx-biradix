@@ -88,6 +88,9 @@ define([
 
         $scope.loadProperty($scope.propertyId)
 
+        $scope.$on('data.reload', function(event, args) {
+            $scope.loadProperty($scope.propertyId)
+        });
 
         $scope.print = function() {
             $window.print();

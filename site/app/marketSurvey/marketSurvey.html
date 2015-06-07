@@ -48,7 +48,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="row in property.floorplans">
+            <tr ng-repeat="row in survey.floorplans">
                 <td>
                     {{row.bedrooms}}x{{row.bathrooms}}
                 </td>
@@ -70,7 +70,7 @@
                     <span ng-if="row.updated">${{row.concessions}}</span>
                 </td>
                 <td>
-                    <a href ng-click="update(row)" ng-if="!row.updated">Update</a>
+                    <a href ng-click="next(row,'concessions-' + row.id)" ng-if="!row.updated">Update</a>
                     <a href ng-click="undo(row)" ng-if="row.updated">Undo</a>
                 </td>
             </tr>
@@ -90,7 +90,7 @@
                     <span ng-if="survey.occupancyupdated">{{survey.occupancy}}%</span>
                 </td>
                 <td>
-                    <a href ng-click="update('occupancy')" ng-if="!survey.occupancyupdated">Update</a>
+                    <a href ng-click="next('occupancy', 'occupancy')" ng-if="!survey.occupancyupdated">Update</a>
                     <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated">Undo</a>
                 </td>
             </tr>
@@ -110,7 +110,7 @@
                     <span ng-if="survey.trafficupdated">{{survey.weeklytraffic}}</span>
                 </td>
                 <td>
-                    <a href ng-click="update('traffic')" ng-if="!survey.trafficupdated">Update</a>
+                    <a href ng-click="next('traffic','traffic')" ng-if="!survey.trafficupdated">Update</a>
                     <a href ng-click="undo('traffic')" ng-if="survey.trafficupdated">Undo</a>
                 </td>
             </tr>
@@ -130,7 +130,7 @@
                     <span ng-if="survey.leasesupdated">{{survey.weeklyleases}}</span>
                 </td>
                 <td>
-                    <a href ng-click="update('leases')" ng-if="!survey.leasesupdated">Update</a>
+                    <a href ng-click="next('leases','leases')" ng-if="!survey.leasesupdated">Update</a>
                     <a href ng-click="undo('leases')" ng-if="survey.leasesupdated">Undo</a>
                 </td>
             </tr>

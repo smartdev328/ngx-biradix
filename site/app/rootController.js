@@ -158,7 +158,7 @@ define([
                         toastr.success('Unlinked floor plans will now be shown in all your data results.')
                     }
 
-                    $rootScope.$broadcast('settings.hideUnlinked', $rootScope.me.settings.hideUnlinked);
+                    $rootScope.$broadcast('data.reload');
                     $rootScope.refreshToken();
                 }
 

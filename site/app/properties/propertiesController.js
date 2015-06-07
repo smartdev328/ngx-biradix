@@ -85,6 +85,11 @@ define([
 
         $scope.reload();
 
+
+        $scope.$on('data.reload', function(event, args) {
+            $scope.reload();
+        });
+
         $scope.resetPager = function () {
             $scope.currentPage = 1;
         }
