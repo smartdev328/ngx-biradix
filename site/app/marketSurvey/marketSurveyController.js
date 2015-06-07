@@ -204,7 +204,7 @@ define([
             }
 
             $scope.success = function() {
-                $scope.$broadcast('data.reload');
+                $rootScope.$broadcast('data.reload');
                 toastr.success('Market Survey Updated Sucessfully.');
                 $modalInstance.close();
             }

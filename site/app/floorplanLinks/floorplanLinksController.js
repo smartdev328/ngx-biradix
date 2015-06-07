@@ -70,7 +70,7 @@ define([
                     }
                     else {
                         toastr.success('Link updated successfully.');
-                        $rootScope.$broadcast('data.reload');
+                        $rootScope.$broadcast('properties.excluded',id,compid, excluded);
                         $modalInstance.close();
                     }
 

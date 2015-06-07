@@ -86,8 +86,14 @@ define([
         $scope.reload();
 
 
-        $scope.$on('data.reload', function(event, args) {
+        $scope.$on('data.reload', function(event) {
             $scope.reload();
+        });
+
+        $scope.$on('properties.excluded', function(event, id, compid, excluded) {
+            var prop = _.find($scope.data, function(p) {return p._id == id.toString()});
+            var comp = _.find(prop.comps, function(c) {return c.id.toString() == compid.toString()})
+            comp.excluded = excluded;
         });
 
         $scope.resetPager = function () {
