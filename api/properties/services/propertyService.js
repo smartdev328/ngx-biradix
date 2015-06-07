@@ -24,10 +24,10 @@ module.exports = {
     linkComp:function(subjectid, compid, callback) {
         linkComp(subjectid,compid,callback);
     },
-    saveCompLink:function(subjectid, compid, floorplans, callback) {
+    saveCompLink:function(subjectid, compid, floorplans, excluded, callback) {
         var ObjectId = require('mongoose').Types.ObjectId;
         var query = {_id: new ObjectId(subjectid), 'comps.id': new ObjectId(compid)};
-        var update = {$set: {'comps.$.floorplans': floorplans}};
+        var update = {$set: {'comps.$.floorplans': floorplans, 'comps.$.excluded': excluded}};
 
         PropertySchema.update(query, update, function(err, saved) {
             return callback(err, saved)

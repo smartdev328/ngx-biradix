@@ -257,7 +257,7 @@ Routes.post('/:id/comps/:compid', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyService.saveCompLink(req.params.id, req.params.compid, req.body, function (err, newusr) {
+        PropertyService.saveCompLink(req.params.id, req.params.compid, req.body.floorplans, req.body.excluded, function (err, newusr) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

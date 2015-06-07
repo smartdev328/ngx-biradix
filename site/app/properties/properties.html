@@ -1,4 +1,4 @@
-<h2 class="hasSidenav">My Properties</h2>
+<h2 class="hasSidenav">Manage Properties</h2>
 <Style>
 
     @media all and (min-width: 0px) and (max-width: 380px) {
@@ -178,7 +178,16 @@
             <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name" ng-click="toggleOpen(row)" style="cursor:pointer">{{row.name}}</td>
+            <td ng-show="show.name" ng-click="toggleOpen(row)" style="cursor:pointer">{{row.name}}
+                <i class="fa fa-exclamation-triangle"
+                   style="color:orange;cursor:pointer"
+                   ng-if="hasExcluded(row,row)"
+                   ng-click="editLink(row, row)"
+                   onclick="event.stopPropagation()"
+                   popover-trigger="mouseenter"
+                   popover-placement="top"
+                   popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                        ></i></td>
             <td ng-show="show.address">{{row.address}}</td>
             <td ng-show="show.city">{{row.city}}</td>
             <td ng-show="show.state">{{row.state}}</td>
@@ -229,7 +238,16 @@
             <td></td>
             <td ng-show="show.rownumber"></td>
             <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name"><i class="fa fa-building-o" style="padding-right:3px"></i> {{comp.name}}</td>
+            <td ng-show="show.name"><i class="fa fa-building-o" style="padding-right:3px"></i> {{comp.name}}
+                <i class="fa fa-exclamation-triangle"
+                   style="color:orange;cursor:pointer"
+                   ng-if="hasExcluded(row,comp)"
+                   ng-click="editLink(row, comp)"
+                   onclick="event.stopPropagation()"
+                   popover-trigger="mouseenter"
+                   popover-placement="top"
+                   popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                        ></i></td>
             <td ng-show="show.address">{{comp.address}}</td>
             <td ng-show="show.city">{{comp.city}}</td>
             <td ng-show="show.state">{{comp.state}}</td>

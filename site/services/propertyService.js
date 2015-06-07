@@ -57,8 +57,8 @@ define(['app'], function (app) {
             });
         }
 
-        fac.saveCompLink = function (propertyid, compid, floorplans) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/comps/' + compid, floorplans, {
+        fac.saveCompLink = function (propertyid, compid, floorplans, excluded) {
+            return $http.post('/api/1.0/properties/' + propertyid + '/comps/' + compid, {floorplans: floorplans, excluded : excluded}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

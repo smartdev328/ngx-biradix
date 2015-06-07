@@ -10,10 +10,10 @@ define([
             $location.path('/login')
         }
 
-        $rootScope.nav = "Properties";
+        $rootScope.nav = "";
 
         $rootScope.sideMenu = [];
-        $rootScope.sideMenu.push({ label: "My Properties", href: '#/properties', active: true });
+        $rootScope.sideMenu.push({ label: "Manage Properties", href: '#/properties', active: true });
         //$rootScope.sideMenu.push({ label: "Preferences", href: '#/preferences', active: false });
         var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
@@ -77,7 +77,7 @@ define([
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
-            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner orgid comps.id"}).then(function (response) {
+            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner orgid comps.id comps.excluded"}).then(function (response) {
                 $scope.data = response.data.properties;
                 $scope.localLoading = true;
             })
@@ -411,6 +411,11 @@ define([
             $location.path('/dashboard')
         }
 
+        $scope.hasExcluded = function(subj, comp) {
+            var c = _.find(subj.comps, function(cm) {return cm.id.toString() == comp._id.toString()});
+            return c.excluded || false;
+        }
+
         $scope.addComp = function(subject) {
             if (!subject.open) {
                 $scope.toggleOpen(subject);
@@ -449,6 +454,7 @@ define([
                     }
                 });
             });
+
         }
 
     }]);

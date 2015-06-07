@@ -54,9 +54,14 @@ define([
 
             $scope.save = function() {
                 var floorplans = _.pluck(_.filter($scope.items, function(i) {return i.selected == true}),"id");
+                var excluded = false;
+
+                if (_.find($scope.items, function(i) {return i.selected == false})) {
+                    excluded = true;
+                }
                 $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
-                $propertyService.saveCompLink(id, compid, floorplans).then(function (resp) {
+                $propertyService.saveCompLink(id, compid, floorplans, excluded).then(function (resp) {
                     $('button.contact-submit').prop('disabled', false);
                     ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
@@ -65,6 +70,7 @@ define([
                     }
                     else {
                         toastr.success('Link updated successfully.');
+                        $rootScope.$broadcast('data.reload');
                         $modalInstance.close();
                     }
 
