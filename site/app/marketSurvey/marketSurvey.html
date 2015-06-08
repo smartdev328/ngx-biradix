@@ -65,13 +65,13 @@
                 <td style="text-align: center">
                     {{row.sqft}}
                 </td>
-                <td style="white-space: nowrap;text-align:right">
+                <td style="white-space: nowrap;text-align:right;">
                     <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()"></span>
-                    <span ng-if="row.updated">${{row.rent}}</span>
+                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.rent}}</div>
                 </td>
                 <td style="white-space: nowrap;text-align:right">
                     <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()"></span>
-                    <span ng-if="row.updated">${{row.concessions}}</span>
+                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions}}</div>
                 </td>
                 <td>
                     <a href ng-click="next(row,'concessions-' + row.id)" ng-if="!row.updated">Update</a>
@@ -90,8 +90,8 @@
                     Occupancy
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.occupancyupdated">%<input type="number" class="form-control input-sm survey-value" ng-model="survey.occupancy"  input-mask="9{1,3}.9{0,2}"  ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()"></span>
-                    <span ng-if="survey.occupancyupdated">{{survey.occupancy}}%</span>
+                    <span ng-if="!survey.occupancyupdated">%<input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()"></span>
+                    <div ng-if="survey.occupancyupdated" style="width:58px;text-align:right">{{survey.occupancy}}%</div>
                 </td>
                 <td>
                     <a href ng-click="next('occupancy', 'occupancy')" ng-if="!survey.occupancyupdated">Update</a>
@@ -111,7 +111,7 @@
                 </td>
                 <td style="text-align: right">
                     <span ng-if="!survey.trafficupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic"  input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()"></span>
-                    <span ng-if="survey.trafficupdated">{{survey.weeklytraffic}}</span>
+                    <div ng-if="survey.trafficupdated" style="width:58px;text-align:right">{{survey.weeklytraffic}}</div>
                 </td>
                 <td>
                     <a href ng-click="next('traffic','traffic')" ng-if="!survey.trafficupdated">Update</a>
@@ -131,7 +131,7 @@
                 </td>
                 <td style="text-align: right">
                     <span ng-if="!survey.leasesupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()"></span>
-                    <span ng-if="survey.leasesupdated">{{survey.weeklyleases}}</span>
+                    <div ng-if="survey.leasesupdated" style="width:58px;text-align:right;">{{survey.weeklyleases}}</div>
                 </td>
                 <td>
                     <a href ng-click="next('leases','leases')" ng-if="!survey.leasesupdated">Update</a>

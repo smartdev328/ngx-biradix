@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../components/inputmask/module.js',
     '../../components/ngEnter/module.js',
     '../../components/dialog/module.js'
 ], function (app) {
@@ -54,7 +53,6 @@ define([
                 if (typeof fp == 'string') {
                     switch(fp) {
                         case "occupancy":
-                            $scope.survey.occupancyupdated = state;
                             if (!state) {
                                 $scope.survey.occupancy = $scope.originalSurvey.occupancy;
                                 window.setTimeout(function() {
@@ -62,6 +60,25 @@ define([
                                     $('#occupancy')[0].select();
                                 }, 300);
                             } else {
+
+                                var er = "";
+                                if (isNaN($scope.survey.occupancy)) {
+                                    er = '<b>Warning:</b> Occupancy must be a positive number';
+                                }
+                                else
+                                if ($scope.survey.occupancy > 100) {
+                                    er = '<b>Warning:</b> Occupancy cannot exceed 100%';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function() {
+                                        $('#occupancy')[0].focus();
+                                        $('#occupancy')[0].select();
+                                    }, 300);
+                                    return;
+                                }
+
                                 if ($scope.originalSurvey.occupancy > 0) {
                                     var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
                                     if (percent >= 10) {
@@ -69,33 +86,64 @@ define([
                                     }
                                 }
                             }
+                            $scope.survey.occupancyupdated = state;
                             break;
                         case "traffic":
-                            $scope.survey.trafficupdated = state;
+
                             if (!state) {
                                 $scope.survey.weeklytraffic = $scope.originalSurvey.weeklytraffic;
                                 window.setTimeout(function() {
                                     $('#traffic')[0].focus();
                                     $('#traffic')[0].select();
                                 }, 300);
+                            } else {
+                                var er = "";
+                                if (isNaN($scope.survey.weeklytraffic)) {
+                                    er = '<b>Warning:</b> Traffic/Week must be a positive number';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function() {
+                                        $('#traffic')[0].focus();
+                                        $('#traffic')[0].select();
+                                    }, 300);
+                                    return;
+                                }
                             }
+
+                            $scope.survey.trafficupdated = state;
                             break;
                         case "leases":
-                            $scope.survey.leasesupdated = state;
+
                             if (!state) {
                                 $scope.survey.weeklyleases = $scope.originalSurvey.weeklyleases;
                                 window.setTimeout(function() {
                                     $('#leases')[0].focus();
                                     $('#leases')[0].select();
                                 }, 300);
+                            } else {
+                                var er = "";
+                                if (isNaN($scope.survey.weeklyleases)) {
+                                    er = '<b>Warning:</b> Leases/Week must be a positive number';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function() {
+                                        $('#leases')[0].focus();
+                                        $('#leases')[0].select();
+                                    }, 300);
+                                    return;
+                                }
                             }
+
+                            $scope.survey.leasesupdated = state;
                             break;
 
                     }
                 }
                 else {
-                    fp.updated = state;
-
                     if (!state) {
                         var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
                         fp.rent = old.rent;
@@ -105,7 +153,36 @@ define([
                             $('#rent-' + fp.id)[0].focus();
                             $('#rent-' + fp.id)[0].select();
                         }, 300);
+                    } else {
+                        var er = "";
+                        if (isNaN(fp.rent)) {
+                            er = '<b>Warning:</b> Rent must be a positive number';
+                        }
+
+                        if (er.length > 0) {
+                            toastr.warning(er);
+                            window.setTimeout(function() {
+                                $('#rent-' + fp.id)[0].focus();
+                                $('#rent-' + fp.id)[0].select();
+                            }, 300);
+                            return;
+                        }
+
+                        if (isNaN(fp.concessions)) {
+                            er = '<b>Warning:</b> Concessions must be a positive number';
+                        }
+
+                        if (er.length > 0) {
+                            toastr.warning(er);
+                            window.setTimeout(function() {
+                                $('#concessions-' + fp.id)[0].focus();
+                                $('#concessions-' + fp.id)[0].select();
+                            }, 300);
+                            return;
+                        }
                     }
+
+                    fp.updated = state;
                 }
 
             }

@@ -77,7 +77,7 @@
             <b>Traffic/Wk:</b>
         </td>
         <td>
-            {{property.survey.weeklytraffic || 'N/A'}}
+            {{property.survey.weeklytraffic == null ? "N/A" : property.survey.weeklytraffic.toString()}}
         </td>
     </tr>
     <tr>
@@ -85,7 +85,7 @@
             <b>Leases/Wk:</b>
         </td>
         <td>
-            {{property.survey.weeklyleases || 'N/A'}}
+            {{property.survey.weeklyleases == null ? "N/A" : property.survey.weeklyleases.toString()}}
         </td>
     </tr>
     </tbody></table>

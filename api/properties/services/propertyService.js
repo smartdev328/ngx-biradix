@@ -387,16 +387,30 @@ module.exports = {
 
         n.save(function (err, created) {
             var totUnits = _.sum(survey.floorplans, function(fp) {return fp.units});
-            var ner = Math.round(_.sum(survey.floorplans, function(fp) {return (fp.rent - fp.concessions / 12) * fp.units}) / totUnits);
 
-            var s = {id: created._id, occupancy: n.occupancy, ner: ner, weeklyleases: n.weeklyleases, weeklytraffic: n.weeklytraffic}
-            var query = {_id: id};
-            var update = {survey: s};
-            var options = {new: true};
+            if (totUnits > 0) {
+                var ner = Math.round(_.sum(survey.floorplans, function (fp) {
+                        return (fp.rent - fp.concessions / 12) * fp.units
+                    }) / totUnits);
 
-            PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                var s = {
+                    id: created._id,
+                    occupancy: n.occupancy,
+                    ner: ner,
+                    weeklyleases: n.weeklyleases,
+                    weeklytraffic: n.weeklytraffic
+                }
+                var query = {_id: id};
+                var update = {survey: s};
+                var options = {new: true};
+
+                PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                    callback(err, created)
+                })
+            }
+            else {
                 callback(err, created)
-            })
+            }
 
         });
 
