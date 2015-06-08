@@ -21,7 +21,12 @@ define([
 
                 }
 
-                $scope.search();
+                $scope.$watch('items', function() {
+
+                    if ($scope.options) {
+                        $scope.search();
+                    }
+                });
 
                 $scope.dbl = function (rows, state) {
                     if (!rows || rows.length == 0) {

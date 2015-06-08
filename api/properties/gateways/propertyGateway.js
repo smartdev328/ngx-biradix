@@ -62,7 +62,7 @@ Routes.get('/:id/profile', function (req, res) {
     async.parallel({
         view: function (callbackp) {
             PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: req.params.id
-                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits location_amenities community_amenities floorplans"
+                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans"
             }, function(err, property, lookups) {
                 callbackp(err, {p: property, l: lookups})
             })
@@ -86,7 +86,7 @@ Routes.get('/:id/profile', function (req, res) {
 Routes.get('/:id/dashboard', function (req, res) {
 
     PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
-        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits comps"
+        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
     }, function(err, property) {
 
         if (err) {
@@ -269,5 +269,21 @@ Routes.post('/:id/comps/:compid', function (req, res) {
 })
 
 
+Routes.post('/:id/survey', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyService.createSurvey(req.params.id, req.body, function (err, newusr) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true});
+            }
+        });
+    })
+})
 
 module.exports = Routes;

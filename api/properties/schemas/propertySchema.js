@@ -58,7 +58,8 @@ var s = new Schema({
     totalUnits: Number,
     location_amenities: Array,
     community_amenities: Array,
-    comps: Array
+    comps: Array,
+    survey: {}
 
 });
 

@@ -13,8 +13,15 @@ define([
         $rootScope.nav = "";
 
         $rootScope.sideMenu = [];
-        $rootScope.sideMenu.push({ label: "Manage Properties", href: '#/properties', active: true });
-        //$rootScope.sideMenu.push({ label: "Preferences", href: '#/preferences', active: false });
+
+        if ($rootScope.me.permissions.indexOf('Users') > -1) {
+            $rootScope.sideMenu.push({label: "Manage Users", href: '#/manageusers', active: false});
+        }
+
+        if ($rootScope.me.permissions.indexOf('Properties') > -1) {
+            $rootScope.sideMenu.push({label: "Manage Properties", href: '#/properties', active: true});
+        }
+
         var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
         //Grid Options
@@ -66,7 +73,7 @@ define([
 
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
-                $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits occupancy ner orgid", ids: compids}).then(function (response) {
+                $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid", ids: compids}).then(function (response) {
                     row.fullcomps = response.data.properties;
                     row.compsLoaded = true;
                 })
@@ -77,18 +84,13 @@ define([
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
-            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits occupancy ner orgid comps.id comps.excluded"}).then(function (response) {
+            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded"}).then(function (response) {
                 $scope.data = response.data.properties;
                 $scope.localLoading = true;
             })
         }
 
         $scope.reload();
-
-
-        $scope.$on('data.reload', function(event) {
-            $scope.reload();
-        });
 
         $scope.$on('properties.excluded', function(event, id, compid, excluded) {
             var prop = _.find($scope.data, function(p) {return p._id == id.toString()});
@@ -274,10 +276,10 @@ define([
                     row.push(r['totalUnits'] || '')
                 }
                 if ($scope.show.occupancy) {
-                    row.push(r['occupancy'] || '')
+                    row.push(r['survey.occupancy'] || '')
                 }
                 if ($scope.show.ner) {
-                    row.push(r['ner'] || '')
+                    row.push(r['survey.ner'] || '')
                 }
                 if ($scope.show.active) {
                     row.push(r['active'] ? 'Yes' : 'No')

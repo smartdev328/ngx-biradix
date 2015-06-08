@@ -20,7 +20,7 @@ define([
                 limit: 1,
                 permission: 'PropertyManage',
                 ids: [id],
-                select: "_id name floorplans contactName contactEmail phone"
+                select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities"
             }).then(function (response) {
                 $scope.property = response.data.properties[0]
                 $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
@@ -28,7 +28,7 @@ define([
                 $scope.hasPhone = $scope.property.phone && $scope.property.phone.length > 0;
                 $scope.hasContact = $scope.hasName || $scope.hasEmail || $scope.hasPhone;
 
-                $scope.survey = {floorplans: $scope.property.floorplans}
+                $scope.survey = {floorplans: $scope.property.floorplans, location_amenities: $scope.property.location_amenities, community_amenities: $scope.property.community_amenities}
 
                 $scope.survey.floorplans.forEach(function(fp) {
                     fp.rent = fp.rent || 0;
@@ -184,9 +184,11 @@ define([
 
                 if (isSuccess) {
 
-                    var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
-                    if (percent >= 10) {
-                        tenpercent = true;
+                    if ($scope.originalSurvey.occupancy > 0) {
+                        var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
+                        if (percent >= 10) {
+                            tenpercent = true;
+                        }
                     }
 
                     if (tenpercent) {
@@ -204,9 +206,29 @@ define([
             }
 
             $scope.success = function() {
-                $rootScope.$broadcast('data.reload');
-                toastr.success('Market Survey Updated Sucessfully.');
-                $modalInstance.close();
+
+                $('button.contact-submit').prop('disabled', true);
+                ngProgress.start();
+                $propertyService.createSurvey(id, $scope.survey).then(function (resp) {
+                    $('button.contact-submit').prop('disabled', false);
+                    ngProgress.complete();
+                    if (resp.data.errors && resp.data.errors.length > 0) {
+                        var errors = _.pluck(resp.data.errors,"msg").join("<br>")
+                        toastr.error(errors);
+                    }
+                    else {
+                        $rootScope.$broadcast('data.reload');
+                        toastr.success('Market Survey Updated Sucessfully.');
+                        $modalInstance.close();
+                    }
+
+                }, function (err) {
+                    $('button.contact-submit').prop('disabled', false);
+                    toastr.error('Unable to perform action. Please contact an administrator');
+                    ngProgress.complete();
+                });
+
+
             }
 
     }]);

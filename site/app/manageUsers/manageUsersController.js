@@ -14,8 +14,14 @@ define([
         $rootScope.nav = "";
 
         $rootScope.sideMenu = [];
-        $rootScope.sideMenu.push({ label: "Manage Users", href: '#/manageusers', active: true });
-        //$rootScope.sideMenu.push({ label: "Preferences", href: '#/preferences', active: false });
+        if ($rootScope.me.permissions.indexOf('Users') > -1) {
+            $rootScope.sideMenu.push({label: "Manage Users", href: '#/manageusers', active: true});
+        }
+
+        if ($rootScope.me.permissions.indexOf('Properties') > -1) {
+            $rootScope.sideMenu.push({label: "Manage Properties", href: '#/properties', active: false});
+        }
+
         var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
         var isTiny = $(window).width() < 500;
 

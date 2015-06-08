@@ -75,6 +75,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.createSurvey = function (propertyid, survey) {
+            return $http.post('/api/1.0/properties/' + propertyid + '/survey', survey, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.floorplanName = function(fp) {
             var name = fp.bedrooms + "x" + fp.bathrooms;
 

@@ -1,5 +1,6 @@
 'use strict';
 var PropertySchema= require('../schemas/propertySchema')
+var SurveySchema= require('../schemas/surveySchema')
 var GeocodeService = require('../../utilities/services/geocodeService')
 var AccessService = require('../../access/services/accessService')
 var async = require("async");
@@ -372,6 +373,34 @@ module.exports = {
         })
 
     },
+    createSurvey: function(id, survey, callback) {
+        var n = new SurveySchema();
+
+        n.floorplans = survey.floorplans;
+        n.location_amenities = survey.location_amenities;
+        n.community_amenities = survey.community_amenities;
+        n.propertyid = id;
+        n.occupancy = survey.occupancy;
+        n.weeklyleases = survey.weeklyleases;
+        n.weeklytraffic = survey.weeklytraffic;
+        n.date = Date.now();
+
+        n.save(function (err, created) {
+            var totUnits = _.sum(survey.floorplans, function(fp) {return fp.units});
+            var ner = Math.round(_.sum(survey.floorplans, function(fp) {return (fp.rent - fp.concessions / 12) * fp.units}) / totUnits);
+
+            var s = {id: created._id, occupancy: n.occupancy, ner: ner, weeklyleases: n.weeklyleases, weeklytraffic: n.weeklytraffic}
+            var query = {_id: id};
+            var update = {survey: s};
+            var options = {new: true};
+
+            PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                callback(err, created)
+            })
+
+        });
+
+    }
 }
 
 
@@ -398,4 +427,5 @@ function linkComp (subjectid, compid, callback) {
             }
         })
     })
+
 }
