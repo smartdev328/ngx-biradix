@@ -52,6 +52,7 @@
             </tr>
             </thead>
             <tbody>
+
             <tr ng-repeat="row in survey.floorplans">
                 <td>
                     {{row.bedrooms}}x{{row.bathrooms}}
@@ -87,7 +88,7 @@
                 </td>
 
                 <td colspan="3">
-                    Occupancy %
+                    <b>Occupancy %</b>
                 </td>
                 <td style="text-align: right">
                     <span ng-if="!survey.occupancyupdated"><input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()"></span>
@@ -107,7 +108,7 @@
                 </td>
 
                 <td colspan="3">
-                    Traffic/Week
+                    <b>Traffic/Week</b>
                 </td>
                 <td style="text-align: right">
                     <span ng-if="!survey.trafficupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic"  input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()"></span>
@@ -127,7 +128,7 @@
                 </td>
 
                 <td colspan="3">
-                    Leases/Week
+                    <b>Leases/Week</b>
                 </td>
                 <td style="text-align: right">
                     <span ng-if="!survey.leasesupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()"></span>

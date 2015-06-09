@@ -286,4 +286,21 @@ Routes.post('/:id/survey', function (req, res) {
     })
 })
 
+Routes.get('/:id/survey/:surveyid', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyService.getSurvey({ids: [req.params.surveyid]}, function (err, survey) {
+            if (err) {
+                return res.status(400).json({errors: err});
+            }
+            else {
+                return res.status(200).json({survey: survey});
+            }
+        });
+    })
+})
+
 module.exports = Routes;

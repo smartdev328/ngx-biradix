@@ -43,6 +43,27 @@ module.exports = {
             return callback(err, saved)
         })
     },
+    getSurvey: function(criteria, callback) {
+        if (!criteria.ids || criteria.ids.length == 0) {
+            return callback('Error', null);
+        }
+        var query = SurveySchema.find();
+        query = query.where('_id').in(criteria.ids);
+
+        query.exec(function(err, surveys) {
+            surveys = JSON.parse(JSON.stringify(surveys))
+            surveys.forEach(function(s,i) {
+                delete surveys[i].propertyid;
+                delete surveys[i].location_amenities;
+                delete surveys[i].community_amenities;
+                delete surveys[i].exclusions;
+                surveys[i].floorplans.forEach(function(fp,j) {
+                    delete surveys[i].floorplans[j].amenities;
+                })
+            })
+            callback(err,surveys)
+        })
+    },
     search: function(Operator, criteria, callback) {
         criteria.permission = criteria.permission || 'PropertyView';
 

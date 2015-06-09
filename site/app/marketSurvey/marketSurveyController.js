@@ -19,7 +19,7 @@ define([
                 limit: 1,
                 permission: 'PropertyManage',
                 ids: [id],
-                select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities"
+                select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id"
             }).then(function (response) {
                 $scope.property = response.data.properties[0]
                 $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
@@ -37,6 +37,35 @@ define([
                 $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || 0;
                 $scope.survey.weeklyleases = $scope.survey.weeklyleases || 0;
 
+                if ($scope.property.survey && $scope.property.survey.id) {
+                    $propertyService.getSurvey(id,$scope.property.survey.id).then(function(response) {
+                        var s= response.data.survey;
+                        if (s && s.length > 0) {
+                            s = s[0];
+                            $scope.survey.occupancy = s.occupancy;
+                            $scope.survey.weeklytraffic = s.weeklytraffic
+                            $scope.survey.weeklyleases = s.weeklyleases
+
+                            $scope.survey.floorplans.forEach(function(fp) {
+                                var old = _.find(s.floorplans, function(ofp) {return ofp.id.toString() == fp.id.toString()})
+
+                                if (old) {
+                                    fp.rent = old.rent;
+                                    fp.concessions = old.concessions;
+                                }
+                            })
+                        }
+
+                        $scope.doneLoading();
+                    })
+                } else {
+                    $scope.doneLoading();
+                }
+
+
+            });
+
+            $scope.doneLoading = function() {
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
                 $scope.localLoading = true;
@@ -45,8 +74,7 @@ define([
                     first.focus();
                     first.select();
                 }, 300);
-
-            });
+            }
 
             $scope.updateDone = function(fp, state) {
 
@@ -144,8 +172,9 @@ define([
                     }
                 }
                 else {
+                    var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
+
                     if (!state) {
-                        var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
                         fp.rent = old.rent;
                         fp.concessions = old.concessions;
 
@@ -179,6 +208,13 @@ define([
                                 $('#concessions-' + fp.id)[0].select();
                             }, 300);
                             return;
+                        }
+
+                        if (old.rent > 0) {
+                            var percent = Math.abs((parseInt(fp.rent) - parseInt(old.rent)) / parseInt(old.rent) * 100);
+                            if (percent >= 10) {
+                                toastr.warning('<b>Warning:</b> The updated value has changed by over 10%');
+                            }
                         }
                     }
 
