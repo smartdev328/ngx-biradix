@@ -74,8 +74,8 @@
                     <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions}}</div>
                 </td>
                 <td>
-                    <a href ng-click="next(row,'concessions-' + row.id)" ng-if="!row.updated">Update</a>
-                    <a href ng-click="undo(row)" ng-if="row.updated">Undo</a>
+                    <div style="width:46px"><a href ng-click="next(row,'concessions-' + row.id)" ng-if="!row.updated">Update</a></div>
+                    <div style="width:46px"><a href ng-click="undo(row)" ng-if="row.updated">Undo</a></div>
                 </td>
             </tr>
             <tr>
@@ -87,10 +87,10 @@
                 </td>
 
                 <td colspan="3">
-                    Occupancy
+                    Occupancy %
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.occupancyupdated">%<input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()"></span>
+                    <span ng-if="!survey.occupancyupdated"><input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()"></span>
                     <div ng-if="survey.occupancyupdated" style="width:58px;text-align:right">{{survey.occupancy}}%</div>
                 </td>
                 <td>

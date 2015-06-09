@@ -192,9 +192,9 @@
             <td ng-show="show.city">{{row.city}}</td>
             <td ng-show="show.state">{{row.state}}</td>
             <td ng-show="show.zip">{{row.zip}}</td>
-            <td ng-show="show.totalUnits" style="text-align:center">{{row.totalUnits || '-'}}</td>
-            <td ng-show="show.occupancy" style="text-align:right">{{row.survey.occupancy ? row.survey.occupancy + '%'  : '-'}}</td>
-            <td ng-show="show.ner" style="text-align:right">{{row.survey.ner ? '$' + row.survey.ner  : '-'}}</td>
+            <td ng-show="show.totalUnits" style="text-align:center">{{row.totalUnits == null ? '-' : row.totalUnits}}</td>
+            <td ng-show="show.occupancy" style="text-align:right">{{row.survey.occupancy == null ? '-' :  row.survey.occupancy + '%'}}</td>
+            <td ng-show="show.ner" style="text-align:right">{{row.survey.ner == null ? '-' : '$' + row.survey.ner }}</td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x success" ng-show="row.active"></span>
                 <span class="fa fa-times fa-2x danger" ng-show="!row.active"></span>
@@ -252,9 +252,9 @@
             <td ng-show="show.city">{{comp.city}}</td>
             <td ng-show="show.state">{{comp.state}}</td>
             <td ng-show="show.zip">{{comp.zip}}</td>
-            <td ng-show="show.totalUnits" style="text-align:center">{{comp.totalUnits || '-'}}</td>
-            <td ng-show="show.occupancy" style="text-align:right">{{comp.survey.occupancy ? comp.survey.occupancy + '%'  : '-'}}</td>
-            <td ng-show="show.ner" style="text-align:right">{{comp.survey.ner ? '$' + comp.survey.ner : '-'}}</td>
+            <td ng-show="show.totalUnits" style="text-align:center">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</td>
+            <td ng-show="show.occupancy" style="text-align:right">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</td>
+            <td ng-show="show.ner" style="text-align:right">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x success" ng-show="comp.active"></span>
                 <span class="fa fa-times fa-2x danger" ng-show="!comp.active"></span>

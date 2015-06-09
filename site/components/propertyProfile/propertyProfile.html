@@ -69,7 +69,7 @@
             <b>Occupancy:</b>
         </td>
         <td>
-            {{property.survey.occupancy ? property.survey.occupancy + '%' : 'N/A'}}
+            {{property.survey.occupancy == null ? "N/A" : property.survey.occupancy + '%'}}
         </td>
     </tr>
     <tr>
