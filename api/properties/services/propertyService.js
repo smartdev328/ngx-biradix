@@ -395,50 +395,84 @@ module.exports = {
 
     },
     createSurvey: function(id, survey, callback) {
-        var n = new SurveySchema();
 
-        n.floorplans = survey.floorplans;
-        n.location_amenities = survey.location_amenities;
-        n.community_amenities = survey.community_amenities;
-        n.propertyid = id;
-        n.occupancy = survey.occupancy;
-        n.weeklyleases = survey.weeklyleases;
-        n.weeklytraffic = survey.weeklytraffic;
-        n.date = Date.now();
+        var compFloorplans = _.pluck(survey.floorplans,"id");
 
-        n.save(function (err, created) {
-            var totUnits = _.sum(survey.floorplans, function(fp) {return fp.units});
+        getSubjectExclusions(id, compFloorplans, function(exclusions) {
+            var n = new SurveySchema();
 
-            if (totUnits > 0) {
-                var ner = Math.round(_.sum(survey.floorplans, function (fp) {
-                        return (fp.rent - fp.concessions / 12) * fp.units
-                    }) / totUnits);
+            n.floorplans = survey.floorplans;
+            n.location_amenities = survey.location_amenities;
+            n.community_amenities = survey.community_amenities;
+            n.propertyid = id;
+            n.occupancy = survey.occupancy;
+            n.weeklyleases = survey.weeklyleases;
+            n.weeklytraffic = survey.weeklytraffic;
+            n.date = survey.date || Date.now();
+            n.exclusions = exclusions;
 
-                var s = {
-                    id: created._id,
-                    occupancy: n.occupancy,
-                    ner: ner,
-                    weeklyleases: n.weeklyleases,
-                    weeklytraffic: n.weeklytraffic
+            n.save(function (err, created) {
+                var totUnits = _.sum(survey.floorplans, function (fp) {
+                    return fp.units
+                });
+
+                if (totUnits > 0) {
+                    var ner = Math.round(_.sum(survey.floorplans, function (fp) {
+                            return (fp.rent - fp.concessions / 12) * fp.units
+                        }) / totUnits);
+
+                    var s = {
+                        id: created._id,
+                        occupancy: n.occupancy,
+                        ner: ner,
+                        weeklyleases: n.weeklyleases,
+                        weeklytraffic: n.weeklytraffic
+                    }
+                    var query = {_id: id};
+                    var update = {survey: s};
+                    var options = {new: true};
+
+                    PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                        callback(err, created)
+                    })
                 }
-                var query = {_id: id};
-                var update = {survey: s};
-                var options = {new: true};
-
-                PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                else {
                     callback(err, created)
-                })
-            }
-            else {
-                callback(err, created)
-            }
+                }
 
+            });
         });
 
+    },
+    getSubjects: function(compid, criteria, callback) {
+        getSubjects(compid, criteria, callback)
     }
 }
 
+function getSubjects(compid, criteria, callback) {
 
+    var ObjectId = require('mongoose').Types.ObjectId;
+    var query = PropertySchema.find({'comps.id': new ObjectId(compid)});
+    query.select(criteria.select);
+    query.exec(callback);
+
+}
+
+function getSubjectExclusions (compid, compFloorplans, callback) {
+    getSubjects(compid,{select:"_id name comps"}, function(err, obj) {
+        var exclusions = [];
+
+        obj.forEach(function(p) {
+            var comp = _.find(p.comps, function(c) {return c.id.toString() == compid})
+            if (comp.excluded) {
+                exclusions.push({subjectid: p._id, floorplans: _.difference(compFloorplans, comp.floorplans)});
+            }
+        })
+
+        callback(exclusions);
+    });
+
+}
 function linkComp (subjectid, compid, callback) {
     PropertySchema.findOne({_id:subjectid}, function(err, subj) {
         if (_.find(subj.comps, function(c) {return c.id.toString() == compid.toString()})) {
