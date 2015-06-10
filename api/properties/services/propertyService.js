@@ -402,8 +402,8 @@ module.exports = {
             var n = new SurveySchema();
 
             n.floorplans = survey.floorplans;
-            n.location_amenities = survey.location_amenities;
-            n.community_amenities = survey.community_amenities;
+            n.location_amenities = survey.location_amenities || [];
+            n.community_amenities = survey.community_amenities || [];
             n.propertyid = id;
             n.occupancy = survey.occupancy;
             n.weeklyleases = survey.weeklyleases;

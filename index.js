@@ -56,4 +56,20 @@ conn.once('open', function () {
     //
     //    console.log(exclusions);
     //});
+
+    //var date= '/Date(1352703600000)/';
+    //console.log(new Date(parseInt(date.match(/([0-9])+/g)[0])));
+    //var request = require('request')
+    //request('http://platform.biradix.com/seed/surveys?secret=alex', function (error, response, body) {
+    //        var surveys = JSON.parse(body);
+    //    surveys.for
+    //    console.log(surveys[0]);
+    //})
+
+    //var AmenityService = require('./api/amenities/services/amenityService');
+    //var ams = [];
+    //AmenityService.search(function(err, amenities) {
+    //    console.log(amenities)
+    //    console.log(_.pluck(_.filter(amenities, function(am) { return ams.indexOf(am.name) > -1 }),"_id"))
+    //})
 });

@@ -7,6 +7,7 @@ var async = require("async");
 var request = require('request')
 var OrgService = require('../api/organizations/services/organizationService')
 var PropertyService = require('../api/properties/services/propertyService')
+var AmenityService = require('../api/amenities/services/amenityService')
 
 routes.get('/import', function(req, res) {
 
@@ -36,6 +37,23 @@ routes.get('/import', function(req, res) {
                 } else {
                     callbackp(error, null);
                 }
+            })
+        },
+        surveys: function(callbackp) {
+            request('http://platform.biradix.com/seed/surveys?secret=alex', function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+
+                    var surveys = JSON.parse(body)
+                    callbackp(null,surveys)
+                } else {
+                    callbackp(error, null);
+                }
+            })
+        },
+        amenities: function(callbackp) {
+            var time = new Date();
+            AmenityService.search(function (err, amenities) {
+                callbackp(err, amenities)
             })
         }
     },function(err, all) {
@@ -69,7 +87,24 @@ routes.get('/import', function(req, res) {
                 })
             }, function(err) {
 
-                res.status(200).send('Done');
+                async.eachLimit(all.surveys, 20, function(survey, callbackp){
+                    survey.date = new Date(parseInt(survey.date.match(/([0-9])+/g)[0]))
+                    survey.community_amenities = _.pluck(_.filter(all.amenities, function(am) { return survey.community_amenities.indexOf(am.name) > -1}),"_id")
+
+                    survey.floorplans.forEach(function(fp) {
+                        fp.amenities = _.pluck(_.filter(all.amenities, function(am) { return fp.amenities.indexOf(am.name) > -1}),"_id")
+                    })
+                    var subj = _.find(all.props, function(p) {return p.id.toString() == survey.propertyid});
+                    if (!subj) {
+                        throw Error("Unable to find link subject: " + link.subj.toString())
+                    }
+                    PropertyService.createSurvey(subj._id, survey, function(err, newsurvey) {
+                        callbackp(err, newsurvey)
+                    })
+                }, function(err) {
+
+                    res.status(200).send('Done');
+                });
             });
         });
 
