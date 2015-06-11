@@ -460,7 +460,7 @@ module.exports = {
                     var s = _.find(surveys, function (x) {
                         return x._id == comp.survey.id
                     });
-                    delete comps.survey.id;
+                    delete comp.survey.id;
                     comp.survey.date = s.date;
                     var daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
                     if (daysSince >= 15) {

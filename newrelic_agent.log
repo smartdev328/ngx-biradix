@@ -3522,3 +3522,7 @@
 {"v":0,"level":40,"name":"newrelic","hostname":"Alex-Surface","pid":5092,"time":"2015-06-11T04:37:36.172Z","msg":"Unrecognized version NaN of Express detected; not instrumenting","component":"express"}
 {"v":0,"level":30,"name":"newrelic","hostname":"Alex-Surface","pid":5092,"time":"2015-06-11T04:37:37.922Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/977847/applications/6438949","component":"new_relic_response"}
 {"v":0,"level":30,"name":"newrelic","hostname":"Alex-Surface","pid":5092,"time":"2015-06-11T04:37:37.923Z","msg":"Connected to collector-106.newrelic.com:443 with agent run ID 27655085557056617.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Alex-Surface","pid":8004,"time":"2015-06-11T05:33:22.948Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":40,"name":"newrelic","hostname":"Alex-Surface","pid":8004,"time":"2015-06-11T05:33:25.556Z","msg":"Unrecognized version NaN of Express detected; not instrumenting","component":"express"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Alex-Surface","pid":8004,"time":"2015-06-11T05:33:26.342Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/977847/applications/6438949","component":"new_relic_response"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Alex-Surface","pid":8004,"time":"2015-06-11T05:33:26.342Z","msg":"Connected to collector-106.newrelic.com:443 with agent run ID 27655085557171000.","component":"collector_api"}
