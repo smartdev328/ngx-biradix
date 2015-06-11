@@ -468,6 +468,23 @@ module.exports = {
                     } else if (daysSince >= 8) {
                         comp.survey.tier = "warning";
                     }
+
+                    var totUnits = _.sum(s.floorplans, function (fp) {
+                        return fp.units
+                    });
+                    if (totUnits > 0) {
+                       comp.survey.sqft = Math.round(_.sum(s.floorplans, function (fp) {
+                                return (fp.sqft) * fp.units
+                            }) / totUnits);
+                        comp.survey.rent = Math.round(_.sum(s.floorplans, function (fp) {
+                                return (fp.rent) * fp.units
+                            }) / totUnits);
+                        comp.survey.concessions = Math.round(_.sum(s.floorplans, function (fp) {
+                                return (fp.concessions) * fp.units
+                            }) / totUnits);
+                        comp.survey.ner = Math.round(comp.survey.rent - (comp.survey.concessions / 12))
+                        comp.survey.nersqft = Math.round(comp.survey.ner / comp.survey.sqft * 100) / 100
+                    }
                 }
             });
             return callback();

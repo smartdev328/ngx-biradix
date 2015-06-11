@@ -9,25 +9,25 @@
         <th>
             Name/Address
         </th>
-        <th>
+        <th style="text-align: right">
             Units
         </th>
-        <th>
+        <th style="text-align: right">
             Unit %
         </th>
-        <th>
+        <th style="text-align: right">
             Sqft
         </th>
-        <th>
+        <th style="text-align: right">
             Rent
         </th>
-        <th>
+        <th style="text-align: right">
             Con/12 Mos.
         </th>
-        <th>
+        <th style="text-align: right">
             Net Eff. Rent
         </th>
-        <th>
+        <th style="text-align: right">
             NER/Sqft
         </th>
         <th>
@@ -38,32 +38,32 @@
         <td  style="text-align:center">
             <img ng-src="/components/googleMap/markers/{{$index == 0 ? 'apartment-3' : 'number_' + $index}}.png">
         </td>
-        <td aclass="{{comp.survey.tier}}">
+        <td class="{{comp.survey.tier}}">
             <A href="#/profile/{{comp._id}}">{{comp.name}}</A><Br>
             {{comp.address}}
         </td>
-        <td>
+        <td style="text-align: right">
             {{comp.totalUnits}}
         </td>
-        <td>
+        <td style="text-align: right">
             100%
         </td>
-        <td>
-            -
+        <td style="text-align: right">
+            {{comp.survey.sqft == null ? "-" : comp.survey.sqft}}
         </td>
-        <td>
-            -
+        <td style="text-align: right">
+            {{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}
         </td>
-        <td>
-            -
+        <td style="text-align: right">
+            {{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}
         </td>
-        <td>
-            -
+        <td style="text-align: right">
+            {{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}
         </td>
-        <td>
-            -
+        <td style="text-align: right">
+            {{comp.survey.nersqft == null ? "-" : "$" + comp.survey.nersqft}}
         </td>
-        <td>
+        <td style="text-align:center">
             <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          popover-trigger="mouseenter"
                                                          popover-placement="left"
