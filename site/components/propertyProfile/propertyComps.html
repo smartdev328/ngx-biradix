@@ -1,0 +1,76 @@
+<div class="pull-right" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-danger" style="border-radius: 2px;background-color: #f2dede">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 15+ days</span></div>
+<div class="pull-right" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-warning" style="border-radius: 2px;background-color: #fcf8e3">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 8+ days</span></div>
+
+<table class="table table-condensed table-striped table-hover" style="font-size:9pt">
+    <tr>
+        <th style="text-align:center">
+            #
+        </th>
+        <th>
+            Name/Address
+        </th>
+        <th>
+            Units
+        </th>
+        <th>
+            Unit %
+        </th>
+        <th>
+            Sqft
+        </th>
+        <th>
+            Rent
+        </th>
+        <th>
+            Con/12 Mos.
+        </th>
+        <th>
+            Net Eff. Rent
+        </th>
+        <th>
+            NER/Sqft
+        </th>
+        <th>
+            &nbsp;
+        </th>
+    </tr>
+    <tr ng-repeat="comp in comps">
+        <td  style="text-align:center">
+            <img ng-src="/components/googleMap/markers/{{$index == 0 ? 'apartment-3' : 'number_' + $index}}.png">
+        </td>
+        <td aclass="{{comp.survey.tier}}">
+            <A href="#/profile/{{comp._id}}">{{comp.name}}</A><Br>
+            {{comp.address}}
+        </td>
+        <td>
+            {{comp.totalUnits}}
+        </td>
+        <td>
+            100%
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            -
+        </td>
+        <td>
+            <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
+                                                         popover-trigger="mouseenter"
+                                                         popover-placement="left"
+                                                         popover-title="New Market Survey"
+                                                         popover="{{surveyTooltip(comp)}}"
+
+                    ></i></a>
+        </td>
+    </tr>
+</table>

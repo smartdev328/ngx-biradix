@@ -2,6 +2,7 @@
 define([
     'app',
     '../../components/propertyProfile/profile',
+    '../../components/propertyProfile/comps',
     '../../components/googleMap/module'
 ], function (app) {
 
@@ -12,6 +13,8 @@ define([
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = [];
         //window.renderable = true;
+
+        $scope.localLoading = false;
 
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
             $scope.myProperties = response.data.properties;
@@ -56,6 +59,7 @@ define([
 
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
+                $scope.localLoading = false;
                 $propertyService.dashboard(defaultPropertyId).then(function (response) {
                     $scope.property = response.data.property;
                     $scope.comps = response.data.comps;

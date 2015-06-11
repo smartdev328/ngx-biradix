@@ -446,6 +446,32 @@ module.exports = {
     },
     getSubjects: function(compid, criteria, callback) {
         getSubjects(compid, criteria, callback)
+    },
+    getLastSurveyStats: function(subject, comps, callback) {
+        //console.log(subject.comps, comps);
+        var surveyids = _.pluck(comps,"survey.id");
+        if (!surveyids || surveyids.length == 0) {
+            return callback();
+        }
+
+        SurveySchema.find().where("_id").in(surveyids).exec(function(err, surveys) {
+            comps.forEach(function(comp) {
+                if (comp.survey) {
+                    var s = _.find(surveys, function (x) {
+                        return x._id == comp.survey.id
+                    });
+                    delete comps.survey.id;
+                    comp.survey.date = s.date;
+                    var daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
+                    if (daysSince >= 15) {
+                        comp.survey.tier = "danger";
+                    } else if (daysSince >= 8) {
+                        comp.survey.tier = "warning";
+                    }
+                }
+            });
+            return callback();
+        })
     }
 }
 

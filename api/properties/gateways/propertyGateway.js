@@ -100,13 +100,16 @@ Routes.get('/:id/dashboard', function (req, res) {
                 permission: 'PropertyView',
                 ids: compids
                 ,
-                select: "_id name address city state zip loc totalUnits"
+                select: "_id name address city state zip loc totalUnits survey.id"
             }, function(err, comps) {
 
                 if (err) {
                     res.status(400).send(err)
                 } else {
-                    res.status(200).json({property: property[0], comps: comps})
+                    PropertyService.getLastSurveyStats(property[0], comps, function() {
+                        res.status(200).json({property: property[0], comps: comps})
+                    })
+
                 }
             });
         }
