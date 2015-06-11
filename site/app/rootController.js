@@ -158,8 +158,10 @@ define([
                         toastr.success('Unlinked floor plans will now be shown in all your data results.')
                     }
 
-                    $rootScope.$broadcast('data.reload');
-                    $rootScope.refreshToken();
+
+                    $rootScope.refreshToken(function() {
+                        $rootScope.$broadcast('data.reload');
+                    });
                 }
 
 

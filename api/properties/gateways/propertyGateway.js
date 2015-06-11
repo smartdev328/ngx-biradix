@@ -106,7 +106,7 @@ Routes.get('/:id/dashboard', function (req, res) {
                 if (err) {
                     res.status(400).send(err)
                 } else {
-                    PropertyService.getLastSurveyStats(property[0], comps, function() {
+                    PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, property[0], comps, function() {
                         res.status(200).json({property: property[0], comps: comps})
                     })
 

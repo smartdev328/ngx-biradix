@@ -22,13 +22,13 @@
             Rent
         </th>
         <th style="text-align: right">
-            Con/12 Mos.
+            Concess/<br>12 Mos.
         </th>
         <th style="text-align: right">
-            Net Eff. Rent
+            Net Eff.<Br> Rent
         </th>
         <th style="text-align: right">
-            NER/Sqft
+            NER/<br>Sqft
         </th>
         <th>
             &nbsp;
@@ -39,7 +39,15 @@
             <img ng-src="/components/googleMap/markers/{{$index == 0 ? 'apartment-3' : 'number_' + $index}}.png">
         </td>
         <td class="{{comp.survey.tier}}">
-            <A href="#/profile/{{comp._id}}">{{comp.name}}</A><Br>
+            <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
+            <i class="fa fa-exclamation-triangle"
+               style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+               ng-if="comp.survey.excluded"
+               popover-trigger="mouseenter"
+               popover-placement="right"
+               popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                    ></i>
+            <Br>
             {{comp.address}}
         </td>
         <td style="text-align: right">
@@ -49,19 +57,19 @@
             100%
         </td>
         <td style="text-align: right">
-            {{comp.survey.sqft == null ? "-" : comp.survey.sqft}}
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>
         </td>
         <td style="text-align: right">
-            {{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}</span>
         </td>
         <td style="text-align: right">
-            {{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}</span>
         </td>
         <td style="text-align: right">
-            {{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}</span>
         </td>
         <td style="text-align: right">
-            {{comp.survey.nersqft == null ? "-" : "$" + comp.survey.nersqft}}
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + comp.survey.nersqft}}</span>
         </td>
         <td style="text-align:center">
             <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"

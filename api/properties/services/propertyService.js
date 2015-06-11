@@ -447,7 +447,7 @@ module.exports = {
     getSubjects: function(compid, criteria, callback) {
         getSubjects(compid, criteria, callback)
     },
-    getLastSurveyStats: function(subject, comps, callback) {
+    getLastSurveyStats: function(hide,subject, comps, callback) {
         //console.log(subject.comps, comps);
         var surveyids = _.pluck(comps,"survey.id");
         if (!surveyids || surveyids.length == 0) {
@@ -457,9 +457,20 @@ module.exports = {
         SurveySchema.find().where("_id").in(surveyids).exec(function(err, surveys) {
             comps.forEach(function(comp) {
                 if (comp.survey) {
+                    var links = _.find(subject.comps, function(x) {return x.id == comp._id})
+
                     var s = _.find(surveys, function (x) {
                         return x._id == comp.survey.id
                     });
+
+                    if (links.excluded === true && hide) {
+                        links.floorplans = links.floorplans.map(function(x) {return x.toString()})
+                        comp.survey.excluded = true;
+
+                        s.floorplans = _.filter(s.floorplans, function(x) {
+                            return links.floorplans.indexOf(x.id.toString()) > -1})
+                    }
+
                     delete comp.survey.id;
                     comp.survey.date = s.date;
                     var daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
