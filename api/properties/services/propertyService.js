@@ -463,14 +463,6 @@ module.exports = {
                         return x._id == comp.survey.id
                     });
 
-                    if (links.excluded === true && hide) {
-                        links.floorplans = links.floorplans.map(function(x) {return x.toString()})
-                        comp.survey.excluded = true;
-
-                        s.floorplans = _.filter(s.floorplans, function(x) {
-                            return links.floorplans.indexOf(x.id.toString()) > -1})
-                    }
-
                     delete comp.survey.id;
                     comp.survey.date = s.date;
                     var daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
@@ -480,22 +472,36 @@ module.exports = {
                         comp.survey.tier = "warning";
                     }
 
-                    var totUnits = _.sum(s.floorplans, function (fp) {
-                        return fp.units
-                    });
-                    if (totUnits > 0) {
-                       comp.survey.sqft = Math.round(_.sum(s.floorplans, function (fp) {
-                                return (fp.sqft) * fp.units
-                            }) / totUnits);
-                        comp.survey.rent = Math.round(_.sum(s.floorplans, function (fp) {
-                                return (fp.rent) * fp.units
-                            }) / totUnits);
-                        comp.survey.concessions = Math.round(_.sum(s.floorplans, function (fp) {
-                                return (fp.concessions) * fp.units
-                            }) / totUnits);
-                        comp.survey.ner = Math.round(comp.survey.rent - (comp.survey.concessions / 12))
-                        comp.survey.nersqft = Math.round(comp.survey.ner / comp.survey.sqft * 100) / 100
+                    getSurveyStats(s.floorplans, comp.survey, links, hide);
+
+                    comp.survey.bedorooms = {};
+
+                    for (var i = 0; i < 7; i++) {
+                        var temp = _.filter(s.floorplans, function (x) {
+                            return x.bedrooms == i
+                        });
+
+                        if (temp.length > 0) {
+                            comp.survey.bedorooms[i] = {};
+                            getSurveyStats(temp, comp.survey.bedorooms[i], links, hide);
+                        }
                     }
+
+                    comp.survey.floorplans = s.floorplans;
+
+                    comp.survey.floorplans.forEach(function(fp) {
+                        delete fp.amenities;
+                        fp.ner = Math.round(fp.rent - (fp.concessions / 12))
+                        fp.nersqft = Math.round(fp.ner / fp.sqft * 100) / 100
+                        if (links.excluded === true && hide) {
+                            links.floorplans = links.floorplans.map(function(x) {return x.toString()})
+
+                            if (links.floorplans.indexOf(fp.id) > -1) {
+                                fp.exlclued = true;
+                            }
+                        }
+                    })
+
                 }
             });
             return callback();
@@ -503,6 +509,41 @@ module.exports = {
     }
 }
 
+function getSurveyStats(floorplans, survey, links, hide) {
+
+    var fps = _.cloneDeep(floorplans);
+
+    var totUnits = _.sum(fps, function (fp) {
+        return fp.units
+    });
+    survey.totUnits = totUnits;
+
+    if (links.excluded === true && hide) {
+        links.floorplans = links.floorplans.map(function(x) {return x.toString()})
+        survey.excluded = true;
+
+        fps = _.filter(fps, function(x) {
+            return links.floorplans.indexOf(x.id.toString()) > -1})
+    }
+
+    totUnits = _.sum(fps, function (fp) {
+        return fp.units
+    });
+
+    if (totUnits > 0) {
+        survey.sqft = Math.round(_.sum(fps, function (fp) {
+                return (fp.sqft) * fp.units
+            }) / totUnits);
+        survey.rent = Math.round(_.sum(fps, function (fp) {
+                return (fp.rent) * fp.units
+            }) / totUnits);
+        survey.concessions = Math.round(_.sum(fps, function (fp) {
+                return (fp.concessions) * fp.units
+            }) / totUnits);
+        survey.ner = Math.round(survey.rent - (survey.concessions / 12))
+        survey.nersqft = Math.round(survey.ner / survey.sqft * 100) / 100
+    }
+}
 function getSubjects(compid, criteria, callback) {
 
     var ObjectId = require('mongoose').Types.ObjectId;
