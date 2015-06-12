@@ -496,8 +496,14 @@ module.exports = {
                         if (links.excluded === true && hide) {
                             links.floorplans = links.floorplans.map(function(x) {return x.toString()})
 
-                            if (links.floorplans.indexOf(fp.id) == -1) {
+                            console.log(links.floorplans, fp.id)
+                            if (links.floorplans.indexOf(fp.id.toString()) == -1) {
                                 fp.excluded = true;
+                                delete fp.rent;
+                                delete fp.concessions;
+                                delete fp.sqft;
+                                delete fp.ner;
+                                delete fp.nersqft;
                             }
                         }
                     })
