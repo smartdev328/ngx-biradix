@@ -22,8 +22,9 @@ define([
                 }
 
                 $scope.bedroomsLabel = function(i) {
-                    switch (i) {
-                        case parseInt(0):
+
+                    switch (parseInt(i)) {
+                        case 0:
                             return "Studios";
                         default:
                             return i + " Bedrooms";

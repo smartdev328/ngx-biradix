@@ -62,8 +62,11 @@ Routes.get('/:id/profile', function (req, res) {
     async.parallel({
         view: function (callbackp) {
             PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: req.params.id
-                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans"
+                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps"
             }, function(err, property, lookups) {
+                if (property && property.length > 0) {
+                    property[0].comps = _.filter(property[0].comps, function(x) {return x.id == property[0]._id});
+                }
                 callbackp(err, {p: property, l: lookups})
             })
         },
@@ -75,10 +78,32 @@ Routes.get('/:id/profile', function (req, res) {
             })
         }
     }, function(err, all) {
+
         if (err) {
             res.status(400).send(err)
+        } else {
+            var compids = _.pluck(all.view.p[0].comps, "id");
+            delete all.view.p[0].compids;
+
+            PropertyService.search(req.user, {
+                limit: 1,
+                permission: 'PropertyView',
+                ids: compids
+                ,
+                select: "_id name address city state zip loc totalUnits survey.id"
+            }, function(err, comps) {
+                PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.view.p[0], comps, function () {
+                    res.status(200).json({
+                        canManage: all.modify.length == 1,
+                        properties: all.view.p,
+                        lookups: all.view.l,
+                        comps: comps
+                    })
+                })
+            })
+
         }
-        res.status(200).json({canManage: all.modify.length == 1, properties: all.view.p, lookups: all.view.l})
+
     });
 
 });

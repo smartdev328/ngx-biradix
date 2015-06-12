@@ -73,7 +73,7 @@
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}</span>
         </td>
         <td style="text-align: right">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + comp.survey.nersqft}}</span>
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
         <td style="text-align:center">
             <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
@@ -85,10 +85,10 @@
                     ></i></a>
         </td>
     </tr>
-    <tr ng-repeat-end ng-if="comp.open" ng-repeat="(i,row) in comp.survey.bedrooms">
+    <tr ng-if="comp.open" ng-repeat-start="(i,row) in comp.survey.bedrooms">
         <td style="text-align: center"></td>
         <td  style="text-align:center; width:32px">
-
+            <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(row)"></i>
         </td>
         <td>
             {{bedroomsLabel(i)}}
@@ -119,10 +119,51 @@
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.ner == null ? "-" : "$" + row.ner}}</span>
         </td>
         <td style="text-align: right">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + row.nersqft}}</span>
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
         </td>
         <td style="text-align:center">
 
         </td>
     </tr>
+    <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | filter : {bedrooms : i}">
+        <td style="text-align: center"></td>
+        <td  style="text-align:center; width:32px">
+
+        </td>
+        <td>
+            {{fp.bedrooms}}x{{fp.bathrooms}} {{fp.description}}
+            <i class="fa fa-exclamation-triangle"
+               style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+               ng-if="fp.excluded"
+               popover-trigger="mouseenter"
+               popover-placement="right"
+               popover="This floor plan has been manually excluded from reporting and dashboard calculations."
+                    ></i>
+        </td>
+        <td style="text-align: right">
+            {{fp.units}}
+        </td>
+        <td style="text-align: right">
+            {{fp.units / comp.totalUnits * 100 | number : 1 }}%
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.rent == null ? "-" : "$" + fp.rent}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.ner == null ? "-" : "$" + fp.ner}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
+        </td>
+        <td style="text-align:center">
+
+        </td>
+    </tr>
+    <tr ng-repeat-end></tr>
 </table>

@@ -496,11 +496,12 @@ module.exports = {
                         if (links.excluded === true && hide) {
                             links.floorplans = links.floorplans.map(function(x) {return x.toString()})
 
-                            if (links.floorplans.indexOf(fp.id) > -1) {
-                                fp.exlclued = true;
+                            if (links.floorplans.indexOf(fp.id) == -1) {
+                                fp.excluded = true;
                             }
                         }
                     })
+
 
                 }
             });
@@ -513,6 +514,8 @@ function getSurveyStats(floorplans, survey, links, hide) {
 
     var fps = _.cloneDeep(floorplans);
 
+    var fpids = _.pluck(floorplans, "id").map(function(x) {return x.toString()})
+
     var totUnits = _.sum(fps, function (fp) {
         return fp.units
     });
@@ -520,10 +523,16 @@ function getSurveyStats(floorplans, survey, links, hide) {
 
     if (links.excluded === true && hide) {
         links.floorplans = links.floorplans.map(function(x) {return x.toString()})
-        survey.excluded = true;
 
         fps = _.filter(fps, function(x) {
             return links.floorplans.indexOf(x.id.toString()) > -1})
+
+        var excluded = _.find(fpids, function(x) {
+            return links.floorplans.indexOf(x.toString()) == -1})
+
+        if (excluded) {
+            survey.excluded = true;
+        }
     }
 
     totUnits = _.sum(fps, function (fp) {

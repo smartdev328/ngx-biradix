@@ -5,6 +5,7 @@ define([
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/fees',
     '../../components/propertyProfile/amenities',
+    '../../components/propertyProfile/floorplans',
     '../../services/progressService'
 ], function (app) {
 
@@ -35,6 +36,7 @@ define([
                     } else {
                         $scope.property = response.data.properties[0];
                         $scope.canManage = response.data.canManage;
+                        $scope.comp = response.data.comps[0];
                     }
                     $scope.localLoading = true;
                     $window.document.title = $scope.property.name;
