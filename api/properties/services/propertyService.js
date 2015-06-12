@@ -474,7 +474,7 @@ module.exports = {
 
                     getSurveyStats(s.floorplans, comp.survey, links, hide);
 
-                    comp.survey.bedorooms = {};
+                    comp.survey.bedrooms = {};
 
                     for (var i = 0; i < 7; i++) {
                         var temp = _.filter(s.floorplans, function (x) {
@@ -482,8 +482,8 @@ module.exports = {
                         });
 
                         if (temp.length > 0) {
-                            comp.survey.bedorooms[i] = {};
-                            getSurveyStats(temp, comp.survey.bedorooms[i], links, hide);
+                            comp.survey.bedrooms[i] = {};
+                            getSurveyStats(temp, comp.survey.bedrooms[i], links, hide);
                         }
                     }
 

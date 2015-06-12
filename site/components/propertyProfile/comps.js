@@ -16,6 +16,19 @@ define([
                 $scope.marketSurvey = function (compid) {
                     $scope.$root.marketSurvey(compid)
                 }
+
+                $scope.toggleOpen = function(comp) {
+                    comp.open = !comp.open;
+                }
+
+                $scope.bedroomsLabel = function(i) {
+                    switch (i) {
+                        case parseInt(0):
+                            return "Studios";
+                        default:
+                            return i + " Bedrooms";
+                    }
+                }
             },
             templateUrl: '/components/propertyProfile/propertyComps.html'
         };

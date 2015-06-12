@@ -3,6 +3,9 @@
 
 <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
     <tr>
+        <th style="width:25px">
+
+        </th>
         <th style="text-align:center">
             #
         </th>
@@ -34,9 +37,10 @@
             &nbsp;
         </th>
     </tr>
-    <tr ng-repeat="comp in comps">
-        <td  style="text-align:center">
-            <img ng-src="/components/googleMap/markers/{{$index == 0 ? 'apartment-3' : 'number_' + $index}}.png">
+    <tr ng-repeat-start="comp in comps">
+        <td style="text-align: center"><i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(comp)"></i></td>
+        <td  style="text-align:center; width:32px">
+            <img ng-src="/components/googleMap/markers/{{$index == 0 ? 'apartment-3' : 'number_' + $index}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;">
         </td>
         <td class="{{comp.survey.tier}}">
             <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
@@ -79,6 +83,46 @@
                                                          popover="{{surveyTooltip(comp)}}"
 
                     ></i></a>
+        </td>
+    </tr>
+    <tr ng-repeat-end ng-if="comp.open" ng-repeat="(i,row) in comp.survey.bedrooms">
+        <td style="text-align: center"></td>
+        <td  style="text-align:center; width:32px">
+
+        </td>
+        <td>
+            {{bedroomsLabel(i)}}
+            <i class="fa fa-exclamation-triangle"
+               style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+               ng-if="row.excluded"
+               popover-trigger="mouseenter"
+               popover-placement="right"
+               popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
+                    ></i>
+        </td>
+        <td style="text-align: right">
+            {{row.totUnits}}
+        </td>
+        <td style="text-align: right">
+            {{row.totUnits / comp.totalUnits * 100 | number : 1 }}%
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.sqft == null ? "-" : row.sqft}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.rent == null ? "-" : "$" + row.rent}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.concessions == null ? "-" : "$" + row.concessions}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.ner == null ? "-" : "$" + row.ner}}</span>
+        </td>
+        <td style="text-align: right">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + row.nersqft}}</span>
+        </td>
+        <td style="text-align:center">
+
         </td>
     </tr>
 </table>
