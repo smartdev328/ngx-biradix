@@ -1,5 +1,5 @@
 <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
-    <thead>
+    <tbody>
     <tr>
         <th style="text-align:center">
             Type
@@ -29,9 +29,8 @@
             NER/<br>Sqft
         </th>
     </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat-start="(i, bedroom) in comp.survey.bedrooms">
+
+        <tr ng-repeat-start="(i, bedroom) in comp.survey.bedrooms" ng-if="false">
 
         </tr>
 
@@ -104,7 +103,7 @@
                 <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.nersqft == null ? "-" : "$" + (bedroom.nersqft | number : 2)}}</span>
             </td>
         </tr>
-        <tr ng-repeat-end>
+        <tr ng-repeat-end ng-if="false">
 
         </tr>
     </tbody>
