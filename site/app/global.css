@@ -430,6 +430,6 @@ td.center,th.center {text-align:center}
 }
 @media(max-width:768px) {
     .hasSidenav {
-        margin-left: 20px !important;
+        margin-left: 37px !important;
     }
 }
