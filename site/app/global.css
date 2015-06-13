@@ -33,6 +33,11 @@ td.center,th.center {text-align:center}
     margin-left:-10px
 }
 
+#page-content-wrapper > .container-fluid > .row {
+    margin-right:-25px;
+    margin-left:-25px
+}
+
 .input-sm, .dropdown-menu, .btn, .modal-content  {
     border-radius: 2px !important;
 }

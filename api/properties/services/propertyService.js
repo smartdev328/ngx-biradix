@@ -496,7 +496,7 @@ module.exports = {
                         if (links.excluded === true && hide) {
                             links.floorplans = links.floorplans.map(function(x) {return x.toString()})
 
-                            console.log(links.floorplans, fp.id)
+                            //console.log(links.floorplans, fp.id)
                             if (links.floorplans.indexOf(fp.id.toString()) == -1) {
                                 fp.excluded = true;
                                 delete fp.rent;

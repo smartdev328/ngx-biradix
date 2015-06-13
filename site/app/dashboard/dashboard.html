@@ -40,6 +40,17 @@
         <div class="panel panel-info">
             <div class="panel-heading">Trends</div>
             <div class="panel-body">
+                <div style="float:right;padding-bottom:10px;">
+                    <span class="hidden-xs hidden-sm">Show: </span><select class="input-sm form-control" style="display:inline;width:100px"><option>All</option></select>
+                    &nbsp;&nbsp;
+                    <span class="hidden-xs hidden-sm">Comp Averages:</span>
+                    <span class="visible-xs-inline visible-sm-inline">Avgs:</span>
+                    <toggle-switch checked="true"></toggle-switch>
+                    &nbsp;&nbsp;
+                    <daterange-picker daterange="daterange"></daterange-picker>
+                    &nbsp;&nbsp;
+                </div>
+                <Br clear="all">
                 <div id="container" style="height:300px;width:820px;" class="visible-print-block"></div>
                 <div id="container2" style="height:300px;" class="hidden-print"></div>
             </div>

@@ -3,7 +3,9 @@ define([
     'app',
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/comps',
-    '../../components/googleMap/module'
+    '../../components/googleMap/module',
+    '../../components/toggle/module',
+    '../../components/daterangepicker/module'
 ], function (app) {
 
     app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', function ($scope,$rootScope,$location,$propertyService,$authService) {
@@ -16,6 +18,17 @@ define([
 
         $scope.localLoading = false;
 
+        $scope.daterange={
+            Ranges : {
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'Last 90 Days': [moment().subtract(89, 'days'), moment()],
+                'Last Year': [moment().subtract(1, 'year'), moment()],
+                'Lifetime': [moment().subtract(30, 'year'), moment()],
+            },
+            selectedRange : "Last 90 Days",
+            selectedStartDate : null,
+            selectedEndDate : null
+        }
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
