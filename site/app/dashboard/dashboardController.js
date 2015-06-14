@@ -5,10 +5,11 @@ define([
     '../../components/propertyProfile/comps',
     '../../components/googleMap/module',
     '../../components/toggle/module',
-    '../../components/daterangepicker/module'
+    '../../components/daterangepicker/module',
+    '../../services/cookieSettingsService'
 ], function (app) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', function ($scope,$rootScope,$location,$propertyService,$authService) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -18,17 +19,18 @@ define([
 
         $scope.localLoading = false;
 
-        $scope.daterange={
-            Ranges : {
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'Last 90 Days': [moment().subtract(89, 'days'), moment()],
-                'Last Year': [moment().subtract(1, 'year'), moment()],
-                'Lifetime': [moment().subtract(30, 'year'), moment()],
-            },
-            selectedRange : "Last 90 Days",
-            selectedStartDate : null,
-            selectedEndDate : null
-        }
+        $scope.daterange=$cookieSettingsService.getDaterange();
+
+        $scope.summary = $cookieSettingsService.getSummary();
+
+        $scope.$watch('daterange', function() {
+            $cookieSettingsService.saveDaterange($scope.daterange)
+        }, true);
+
+        $scope.$watch('summary', function() {
+            $cookieSettingsService.saveSummary($scope.summary)
+        }, true);
+
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
