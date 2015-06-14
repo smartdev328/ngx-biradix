@@ -14,11 +14,11 @@ define([
 
                 $scope.populate = function() {
                     if ($scope.daterange.selectedRange == "Custom Range") {
-                        $scope.value = $scope.daterange.selectedStartDate.format('MM/DD/YYYY') + ' - ' + $scope.daterange.selectedEndDate.format('MM/DD/YYYY')
+                        $scope.value = $scope.daterange.selectedStartDate.format('MM/DD/YY') + ' - ' + $scope.daterange.selectedEndDate.format('MM/DD/YY')
                     }
                     else {
                         if (!$scope.daterange.Ranges[$scope.daterange.selectedRange]) {
-                            $scope.daterange.selectedRange = "Last 90 Days"
+                            $scope.daterange.selectedRange = $scope.daterange.Ranges[0]
                         }
                         $scope.daterange.selectedStartDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][0];
                         $scope.daterange.selectedEndDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][1];
