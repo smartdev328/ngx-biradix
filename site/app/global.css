@@ -34,8 +34,8 @@ td.center,th.center {text-align:center}
 }
 
 #page-content-wrapper > .container-fluid > .row {
-    margin-right:-25px;
-    margin-left:-25px
+    margin-right:-15px;
+    margin-left:-15px
 }
 
 .input-sm, .dropdown-menu, .btn, .modal-content  {
