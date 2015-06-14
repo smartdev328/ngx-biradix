@@ -2,7 +2,7 @@
     <div class="alert alert-warning" role="alert"><b>There are no properties assigned to your account</b></div>
 
 </div>
-<div ng-show="!localLoading && myProperties.length > 0" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div class="row" ng-show="localLoading && myProperties.length > 0">
@@ -41,7 +41,13 @@
             <div class="panel-heading">Trends</div>
             <div class="panel-body">
                 <div style="float:right;padding-bottom:10px;">
-                    Show: <select class="input-sm form-control" style="display:inline;width:100px"><option>All</option></select>
+                    Show: <select
+                        class="input-sm form-control"
+                        style="display:inline;width:100px"
+                        ng-options="bedroom.text for bedroom in bedrooms"
+                        ng-model="bedroom"
+                        ng-change="refreshGraphs()"
+                        ></select>
                     &nbsp;&nbsp;
                     <span class="hidden-xs hidden-sm">Comp Averages:</span>
                     <span class="visible-xs-inline visible-sm-inline">Avgs:</span>
@@ -49,6 +55,7 @@
                     <toggle-switch checked="summary"></toggle-switch>
                     &nbsp;&nbsp;
                     <div class="visible-xs" style="padding-top:10px"></div>
+                    <span class="visible-xs-inline visible-sm-inline">Dates:</span>
                     <daterange-picker daterange="daterange"></daterange-picker>
                     &nbsp;&nbsp;
                 </div>

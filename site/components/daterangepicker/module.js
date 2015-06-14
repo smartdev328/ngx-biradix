@@ -17,21 +17,21 @@ define([
                         $scope.value = $scope.daterange.selectedStartDate.format('MM/DD/YY') + ' - ' + $scope.daterange.selectedEndDate.format('MM/DD/YY')
                     }
                     else {
-                        if (!$scope.daterange.Ranges[$scope.daterange.selectedRange]) {
-                            $scope.daterange.selectedRange = $scope.daterange.Ranges[0]
-                        }
-                        $scope.daterange.selectedStartDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][0];
-                        $scope.daterange.selectedEndDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][1];
                         $scope.value = $scope.daterange.selectedRange;
                     }
                 }
 
-                //$scope.$watch('daterange', function() {
-                //
-                //    if ($scope.daterange) {
-                        $scope.populate();
-                //    }
-                //});
+                if ($scope.daterange.selectedRange == "Custom Range") {
+                }
+                else {
+                    if (!$scope.daterange.Ranges[$scope.daterange.selectedRange]) {
+                        $scope.daterange.selectedRange = $scope.daterange.Ranges[0]
+                    }
+                    $scope.daterange.selectedStartDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][0];
+                    $scope.daterange.selectedEndDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][1];
+                }
+
+                $scope.populate();
 
                 $($element.find('span')).daterangepicker({
                     format: 'MM/DD/YYYY',

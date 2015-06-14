@@ -23,13 +23,24 @@ define([
 
         $scope.summary = $cookieSettingsService.getSummary();
 
-        $scope.$watch('daterange', function() {
+        $scope.selectedBedroom = -1;
+        $scope.bedrooms = [{value: -1, text: 'All'}]
+
+        $scope.$watch('daterange', function(d) {
+            if (!$scope.localLoading) return;
             $cookieSettingsService.saveDaterange($scope.daterange)
+            $scope.refreshGraphs();
         }, true);
 
         $scope.$watch('summary', function() {
+            if (!$scope.localLoading) return;
             $cookieSettingsService.saveSummary($scope.summary)
+            $scope.refreshGraphs();
         }, true);
+
+        $scope.refreshGraphs = function() {
+            $scope.historicalData = [];
+        }
 
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
             $scope.myProperties = response.data.properties;
@@ -79,6 +90,8 @@ define([
                     $scope.property = response.data.property;
                     $scope.comps = response.data.comps;
 
+                    $scope.historicalData = [];
+
                     $scope.mapOptions = {
                         loc: $scope.property.loc,
                         height: "300px",
@@ -108,17 +121,46 @@ define([
                         }
                     })
 
+                    var includedFps = _.filter($scope.comps[0].survey.floorplans, function(x) {return !x.excluded});
+
+                    var bedrooms = _.groupBy(includedFps,function(x) {return x.bedrooms});
+
+                    $scope.bedrooms = [{value: -1, text: 'All'}]
+
+                    for (var b in bedrooms) {
+                        switch(b) {
+                            case 0:
+                                $scope.bedrooms.push({value: 0, text: 'Studios'})
+                                break;
+                            default:
+                                $scope.bedrooms.push({value: b, text: b + ' Bdrs.'})
+                                break;
+                        }
+                    }
+
+                    _.sortBy($scope.bedrooms, function(x) {return x.value})
+
+                    $scope.selectBedroom();
+
                     $scope.localLoading = true;
                 });
             }
         };
+
+        $scope.selectBedroom = function() {
+            $scope.bedroom = _.find($scope.bedrooms, function(x) {return x.value == $scope.selectedBedroom});
+
+            if (!$scope.bedroom) {
+                $scope.bedroom = $scope.bedrooms[0];
+            }
+        }
 
         $scope.makrerContent = function(property) {
 
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
 
-        $scope.$watch('mapOptions', function(){
+        $scope.$watch('historicalData', function(){
             if ($scope.mapOptions) {
                 window.setTimeout(function () {
                     $(function () {
