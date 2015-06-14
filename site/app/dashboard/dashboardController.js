@@ -120,25 +120,32 @@ define([
                             })
                         }
                     })
-
-                    var includedFps = _.filter($scope.comps[0].survey.floorplans, function(x) {return !x.excluded});
-
-                    var bedrooms = _.groupBy(includedFps,function(x) {return x.bedrooms});
-
                     $scope.bedrooms = [{value: -1, text: 'All'}]
 
-                    for (var b in bedrooms) {
-                        switch(b) {
-                            case 0:
-                                $scope.bedrooms.push({value: 0, text: 'Studios'})
-                                break;
-                            default:
-                                $scope.bedrooms.push({value: b, text: b + ' Bdrs.'})
-                                break;
-                        }
-                    }
+                    if ($scope.comps[0].survey && $scope.comps[0].survey.floorplans) {
+                        var includedFps = _.filter($scope.comps[0].survey.floorplans, function (x) {
+                            return !x.excluded
+                        });
 
-                    _.sortBy($scope.bedrooms, function(x) {return x.value})
+                        var bedrooms = _.groupBy(includedFps, function (x) {
+                            return x.bedrooms
+                        });
+
+                        for (var b in bedrooms) {
+                            switch (b) {
+                                case 0:
+                                    $scope.bedrooms.push({value: 0, text: 'Studios'})
+                                    break;
+                                default:
+                                    $scope.bedrooms.push({value: b, text: b + ' Bdrs.'})
+                                    break;
+                            }
+                        }
+
+                        _.sortBy($scope.bedrooms, function (x) {
+                            return x.value
+                        })
+                    }
 
                     $scope.selectBedroom();
 
