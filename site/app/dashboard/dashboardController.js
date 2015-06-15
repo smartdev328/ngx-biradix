@@ -39,6 +39,7 @@ define([
         }, true);
 
         $scope.refreshGraphs = function() {
+            $scope.selectedBedroom = $scope.bedroom.value;
             $scope.historicalData = [];
         }
 
@@ -86,7 +87,11 @@ define([
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $scope.localLoading = false;
-                $propertyService.dashboard(defaultPropertyId).then(function (response) {
+                $propertyService.dashboard(
+                    defaultPropertyId
+                    , $scope.summary
+                    , $scope.selectedBedroom
+                    , {daterange: $scope.daterange.selectedRange, start: $scope.daterange.selectedStartDate, end: $scope.daterange.selectedRange}).then(function (response) {
                     $scope.property = response.data.property;
                     $scope.comps = response.data.comps;
 

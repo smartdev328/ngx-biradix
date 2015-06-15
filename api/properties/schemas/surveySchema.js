@@ -4,7 +4,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var s = new Schema({
-    date: Date,
+    date: {
+        type: Date,
+        index: true
+    },
     occupancy: Number,
     weeklytraffic: Number,
     weeklyleases: Number,

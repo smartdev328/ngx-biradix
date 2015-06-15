@@ -8,6 +8,7 @@ var _ = require("lodash")
 var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
 var uuid = require('node-uuid');
+var moment = require('moment');
 
 var fees  = {
     application_fee : 'Application fee',
@@ -447,6 +448,28 @@ module.exports = {
     getSubjects: function(compid, criteria, callback) {
         getSubjects(compid, criteria, callback)
     },
+    getPoints: function(hide,subject,comps,summary,bedrooms,daterange,callback) {
+        var propertyids = _.pluck(comps,"_id");
+        if (!propertyids || propertyids.length == 0) {
+            return callback([]);
+        }
+
+        var dr = getDateRange(daterange);
+
+        var query = SurveySchema.find();
+
+        query = query.where("propertyid").in(propertyids);
+
+        query = query.where("date").gte(dr.start).lte(dr.end);
+
+        query = query.select("date occupancy weeklytraffic weeklyleases propertyid exclusions floorplans.id floorplans.rent floorplans.concessions")
+
+        query.exec(function(err, surveys) {
+                //console.log(surveys[0])
+                console.log(surveys.length)
+                callback();
+        });
+    },
     getLastSurveyStats: function(hide,subject, comps, callback) {
         //console.log(subject.comps, comps);
         var surveyids = _.pluck(comps,"survey.id");
@@ -607,4 +630,17 @@ function linkComp (subjectid, compid, callback) {
         })
     })
 
+}
+
+function getDateRange(daterange) {
+    switch (daterange.daterange) {
+        case "Last 90 Days":
+            return {start: moment().add(-90, "day").format(), end: moment().format()}
+        case "Last 30 Days":
+            return {start: moment().add(-30, "day").format(), end: moment().format()}
+        case "Last Year":
+            return {start: moment().add(-1, "year").format(), end: moment().format()}
+        default:
+            return {start: daterange.start, end: daterange.end}
+    }
 }

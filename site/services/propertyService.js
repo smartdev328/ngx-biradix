@@ -21,8 +21,12 @@ define(['app'], function (app) {
             });
         }
 
-        fac.dashboard = function (id) {
-            return $http.get('/api/1.0/properties/' + id + '/dashboard', {
+        fac.dashboard = function (id,summary,bedrooms,daterange) {
+            return $http.post('/api/1.0/properties/' + id + '/dashboard', {
+                summary: summary,
+                bedrooms: bedrooms,
+                daterange:daterange
+            }, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

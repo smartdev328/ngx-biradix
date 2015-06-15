@@ -108,7 +108,7 @@ Routes.get('/:id/profile', function (req, res) {
 
 });
 
-Routes.get('/:id/dashboard', function (req, res) {
+Routes.post('/:id/dashboard', function (req, res) {
 
     PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
         , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
@@ -131,9 +131,25 @@ Routes.get('/:id/dashboard', function (req, res) {
                 if (err) {
                     res.status(400).send(err)
                 } else {
-                    PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, property[0], comps, function() {
-                        res.status(200).json({property: property[0], comps: comps})
-                    })
+                    async.parallel({
+                        comps: function (callbackp) {
+                            PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, property[0], comps, function() {
+                                callbackp(null, comps)
+                            })
+                        },
+                        points: function(callbackp) {
+                            PropertyService.getPoints(req.user.settings.hideUnlinked, property[0], comps,
+                                req.body.summary,
+                                req.body.bedrooms,
+                                req.body.daterange,
+                                function(points) {
+                                callbackp(null, points)
+                            })
+                        }
+                    }, function(err, all) {
+                        res.status(200).json({property: property[0], comps: all.comps, points: all.points})
+                    });
+
 
                 }
             });
