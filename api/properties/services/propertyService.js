@@ -451,7 +451,7 @@ module.exports = {
     getPoints: function(hide,subject,comps,summary,bedrooms,daterange,callback) {
         var propertyids = _.pluck(comps,"_id");
         if (!propertyids || propertyids.length == 0) {
-            return callback([]);
+            return callback({});
         }
 
         var dr = getDateRange(daterange);
@@ -464,10 +464,24 @@ module.exports = {
 
         query = query.select("date occupancy weeklytraffic weeklyleases propertyid exclusions floorplans.id floorplans.rent floorplans.concessions")
 
+        query = query.sort("date");
+
         query.exec(function(err, surveys) {
-                //console.log(surveys[0])
-                console.log(surveys.length)
-                callback();
+
+            var points = {};
+            surveys.forEach(function(s) {
+                points[s.propertyid] = points[s.propertyid] || {};
+                points[s.propertyid].occupancy = points[s.propertyid].occupancy || [];
+                points[s.propertyid].occupancy.push({d: s.date, v: s.occupancy});
+
+                points[s.propertyid].leases = points[s.propertyid].leases || [];
+                points[s.propertyid].leases.push({d: s.date, v: s.weeklyleases});
+
+                points[s.propertyid].traffic = points[s.propertyid].traffic || [];
+                points[s.propertyid].traffic.push({d: s.date, v: s.weeklytraffic});
+            })
+
+            callback(points);
         });
     },
     getLastSurveyStats: function(hide,subject, comps, callback) {
