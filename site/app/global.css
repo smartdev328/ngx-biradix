@@ -70,6 +70,9 @@ td.center,th.center {text-align:center}
 }
 /* Drodpwn */
 
+.search p {
+    margin:0px !important;
+}
 .search .dropdown-menu>li>a {
     padding:3px 10px;
     cursor: pointer

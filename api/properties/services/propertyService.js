@@ -144,9 +144,19 @@ module.exports = {
 
                     props = JSON.parse(JSON.stringify(props))
                     if (criteria.search != '') {
+                        var isBr = criteria.search.toLowerCase() == "b" || criteria.search.toLowerCase() == "br";
+                        var isI = criteria.search.toLowerCase() == "i";
                         //calculate summary for autocomplete
                         props.forEach(function(x,i) {
-                                props[i].summary = x.name + "<br><i>" + x.address + ", " + x.city + ", " + x.state + "</i>";
+                                if (isBr) {
+                                    props[i].summary = x.name + "<p><i>" + x.address + ", " + x.city + ", " + x.state + "</i></p>";
+                                } else if (isI) {
+                                    props[i].summary = x.name + "<br><em>" + x.address + ", " + x.city + ", " + x.state + "</em>";
+
+                                } else {
+                                    props[i].summary = x.name + "<br><i>" + x.address + ", " + x.city + ", " + x.state + "</i>";
+                                }
+
                             }
                         )
 
