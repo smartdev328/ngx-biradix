@@ -470,7 +470,6 @@ module.exports = {
 
         query.exec(function(err, surveys) {
             if (err) {
-                console.log(err, dr);
                 return callback({});
             }
             var points = {};

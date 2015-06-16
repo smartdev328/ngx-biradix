@@ -114,7 +114,9 @@ define([
                     defaultPropertyId
                     , $scope.summary
                     , $scope.selectedBedroom
-                    , {daterange: $scope.daterange.selectedRange, start: $scope.daterange.selectedStartDate, end: $scope.daterange.selectedRange}).then(function (response) {
+                    , {daterange: $scope.daterange.selectedRange,
+                        start: $scope.daterange.selectedStartDate,
+                        end: $scope.daterange.selectedEndDate}).then(function (response) {
                     $scope.property = response.data.property;
                     $scope.comps = response.data.comps;
 
