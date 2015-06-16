@@ -88,21 +88,21 @@ define([
 
         $scope.extractSeries = function(p, k) {
             var series = [];
-            for(var prop in p) {
-                var s = {data:[]};
-
-                var comp = _.find($scope.comps, function(x) {return x._id == prop})
-                s.name = comp.name;
-
-                var data = p[prop][k];
-
-                data.forEach(function(point) {
-                    s.data.push([point.d, point.v])
-                })
 
 
+            $scope.comps.forEach(function(c) {
+                var s = {data:[], name: c.name};
+
+                if (p[c._id] && p[c._id][k]) {
+                    var data = p[c._id][k];
+
+                    data.forEach(function (point) {
+                        s.data.push([point.d, point.v])
+                    })
+                }
                 series.push(s)
-            }
+
+            })
 
             return series;
         }
@@ -120,8 +120,8 @@ define([
                     $scope.property = response.data.property;
                     $scope.comps = response.data.comps;
 
-                    $scope.nerData = {title: 'Rent $', data: $scope.extractSeries(response.data.points, 'leases'), min: 0};
-                    $scope.occData = {title: 'Occupancy %', data: $scope.extractSeries(response.data.points, 'occupancy'), min: 80};
+                    $scope.nerData = {title: 'Rent $', data: $scope.extractSeries(response.data.points, 'leases'), min: 0, max: 20};
+                    $scope.occData = {title: 'Occupancy %', data: $scope.extractSeries(response.data.points, 'occupancy'), min: 80, max: 100};
 
                     $scope.mapOptions = {
                         loc: $scope.property.loc,

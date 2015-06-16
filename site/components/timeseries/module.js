@@ -20,7 +20,8 @@ define([
 
                             var data = {
                                 chart: {
-                                    type: 'spline'
+                                    type: 'spline',
+                                    ignoreHiddenSeries : false
                                 },
                                 title: {
                                     text: '',
@@ -32,15 +33,11 @@ define([
                                     title: {
                                         text: $scope.options.title
                                     },
-                                    plotLines: [{
-                                        value: 0,
-                                        width: 1,
-                                        color: '#808080'
-                                    }],
-                                    min: $scope.options.min
+                                    min: $scope.options.min,
+                                    max: $scope.options.max
                                 },
                                 tooltip: {
-                                    shared: true
+                                    shared: true,
                                 },
                                 credits: {
                                     enabled: false
