@@ -43,7 +43,7 @@ userRoutes.put('/me/settings', function (req, res) {
 userRoutes.get('/refreshToken', function (req, res) {
     UserService.getUserById(req.user._id, function(err, usr) {
             if (err) {
-                return res.status(200).json(errors);
+                return res.status(200).json(err);
             }
             getToken(usr, res);
 

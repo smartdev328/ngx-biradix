@@ -25,7 +25,8 @@ define(['app'], function (app) {
             return $http.post('/api/1.0/properties/' + id + '/dashboard', {
                 summary: summary,
                 bedrooms: bedrooms,
-                daterange:daterange
+                daterange:daterange,
+                offset: moment().utcOffset()
             }, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;

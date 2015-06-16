@@ -142,6 +142,7 @@ Routes.post('/:id/dashboard', function (req, res) {
                                 req.body.summary,
                                 req.body.bedrooms,
                                 req.body.daterange,
+                                req.body.offset,
                                 function(points) {
                                 callbackp(null, points)
                             })

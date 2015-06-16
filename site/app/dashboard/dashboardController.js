@@ -6,6 +6,7 @@ define([
     '../../components/googleMap/module',
     '../../components/toggle/module',
     '../../components/daterangepicker/module',
+    '../../components/timeseries/module',
     '../../services/cookieSettingsService'
 ], function (app) {
 
@@ -40,7 +41,8 @@ define([
 
         $scope.refreshGraphs = function() {
             $scope.selectedBedroom = $scope.bedroom.value;
-            $scope.historicalData = [];
+            //$scope.nerData = {data: []};
+            //$scope.occData = {data: []};
         }
 
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
@@ -84,6 +86,27 @@ define([
             $scope.changeProperty();
         });
 
+        $scope.extractSeries = function(p, k) {
+            var series = [];
+            for(var prop in p) {
+                var s = {data:[]};
+
+                var comp = _.find($scope.comps, function(x) {return x._id == prop})
+                s.name = comp.name;
+
+                var data = p[prop][k];
+
+                data.forEach(function(point) {
+                    s.data.push([point.d, point.v])
+                })
+
+
+                series.push(s)
+            }
+
+            return series;
+        }
+
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $scope.localLoading = false;
@@ -95,7 +118,8 @@ define([
                     $scope.property = response.data.property;
                     $scope.comps = response.data.comps;
 
-                    $scope.historicalData = [];
+                    $scope.nerData = {title: 'Rent $', data: $scope.extractSeries(response.data.points, 'leases'), min: 0};
+                    $scope.occData = {title: 'Occupancy %', data: $scope.extractSeries(response.data.points, 'occupancy'), min: 80};
 
                     $scope.mapOptions = {
                         loc: $scope.property.loc,
@@ -171,112 +195,6 @@ define([
 
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
-
-        $scope.$watch('historicalData', function(){
-            if ($scope.mapOptions) {
-                window.setTimeout(function () {
-                    $(function () {
-                        $('#container').highcharts({
-                            title: {
-                                text: 'Monthly Average Temperature',
-                                x: -20 //center
-                            },
-                            subtitle: {
-                                text: 'Source: WorldClimate.com',
-                                x: -20
-                            },
-                            xAxis: {
-                                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                            },
-                            yAxis: {
-                                title: {
-                                    text: 'Temperature (°C)'
-                                },
-                                plotLines: [{
-                                    value: 0,
-                                    width: 1,
-                                    color: '#808080'
-                                }]
-                            },
-                            tooltip: {
-                                valueSuffix: '°C'
-                            },
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'left',
-                                verticalAlign: 'bottom',
-                                borderWidth: 0
-                            },
-                            series: [{
-                                name: 'Tokyo',
-                                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                            }, {
-                                name: 'New York',
-                                data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                            }, {
-                                name: 'Berlin',
-                                data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-                            }, {
-                                name: 'London',
-                                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-                            }]
-                        });
-                    });
-
-                    $(function () {
-                        $('#container2').highcharts({
-                            title: {
-                                text: 'Monthly Average Temperature',
-                                x: -20 //center
-                            },
-                            subtitle: {
-                                text: 'Source: WorldClimate.com',
-                                x: -20
-                            },
-                            xAxis: {
-                                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                            },
-                            yAxis: {
-                                title: {
-                                    text: 'Temperature (°C)'
-                                },
-                                plotLines: [{
-                                    value: 0,
-                                    width: 1,
-                                    color: '#808080'
-                                }]
-                            },
-                            tooltip: {
-                                valueSuffix: '°C'
-                            },
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'left',
-                                verticalAlign: 'bottom',
-                                borderWidth: 0
-                            },
-                            series: [{
-                                name: 'Tokyo',
-                                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                            }, {
-                                name: 'New York',
-                                data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                            }, {
-                                name: 'Berlin',
-                                data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-                            }, {
-                                name: 'London',
-                                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-                            }]
-                        });
-                    });
-
-                }, 500)
-            }
-        });
-
 
     }]);
 });
