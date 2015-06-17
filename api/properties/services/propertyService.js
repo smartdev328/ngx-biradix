@@ -484,16 +484,33 @@ module.exports = {
             }
             var points = {};
             surveys.forEach(function(s) {
+
+                var dateKey = parseInt(moment.utc(s.date).add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'));
+                //if (s.propertyid == "5577c0f1541b40040baaa5eb") {
+                //    console.log(s.date, dateKey, s.occupancy, moment.utc(s.date).add(offset,"minute").startOf("day").subtract(offset,"minute").format())
+                //}
                 points[s.propertyid] = points[s.propertyid] || {};
-                points[s.propertyid].occupancy = points[s.propertyid].occupancy || [];
-                points[s.propertyid].occupancy.push({d: s.date.getTime(), v: s.occupancy});
+                points[s.propertyid].occupancy = points[s.propertyid].occupancy || {};
+                points[s.propertyid].occupancy[dateKey] = s.occupancy;
 
-                points[s.propertyid].leases = points[s.propertyid].leases || [];
-                points[s.propertyid].leases.push({d: s.date.getTime(), v: s.weeklyleases});
+                points[s.propertyid].leases = points[s.propertyid].leases || {};
+                points[s.propertyid].leases[dateKey] = s.weeklyleases;
 
-                points[s.propertyid].traffic = points[s.propertyid].traffic || [];
-                points[s.propertyid].traffic.push({d: s.date.getTime(), v: s.weeklytraffic});
+                points[s.propertyid].traffic = points[s.propertyid].traffic || {};
+                points[s.propertyid].traffic[dateKey] = s.weeklytraffic;
+
             })
+
+            //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
+            for (var prop in points) {
+                points[prop].occupancy = normailizePoints(points[prop].occupancy, offset);
+                points[prop].traffic = normailizePoints(points[prop].traffic, offset);
+                points[prop].leases = normailizePoints(points[prop].leases, offset);
+
+                points[prop].occupancy = objectToArray(points[prop].occupancy);
+                points[prop].traffic = objectToArray(points[prop].traffic);
+                points[prop].leases = objectToArray(points[prop].leases);
+            }
 
             callback(points);
         });
@@ -565,6 +582,57 @@ module.exports = {
             return callback();
         })
     }
+}
+
+function objectToArray(obj) {
+    var ar = [];
+
+    for (var k in obj) {
+        ar.push({d:parseInt(k), v:obj[k]});
+    }
+
+    ar = _.sortBy(ar, function(x) {return x.d});
+
+    return ar;
+}
+
+function normailizePoints(points, offset) {
+    if (points == {}) {
+        return {}
+    }
+
+    var monday = parseInt(moment.utc().add(offset,"minute").day("Monday").startOf("day").subtract(offset,"minute").format('x'))
+    var nextMonday =  monday + 7 * 24 * 60 * 60 * 1000;
+
+    var minDate;
+
+    for (minDate in points) break;
+
+    var ret = {};
+
+    while (parseInt(minDate) < nextMonday) {
+        var rangePoints = [];
+
+        for (var d in points) {
+            if (parseInt(d) >= monday && parseInt(d) < nextMonday) {
+                rangePoints.push(points[d])
+            }
+        }
+
+        if (rangePoints.length > 0) {
+            //console.log(rangePoints)
+            ret[monday] = _.sum(rangePoints) / rangePoints.length;
+        }
+
+
+        monday =  monday - 7 * 24 * 60 * 60 * 1000;
+        nextMonday =  nextMonday - 7 * 24 * 60 * 60 * 1000;
+    }
+
+
+
+
+    return ret;
 }
 
 function getSurveyStats(floorplans, survey, links, hide) {
