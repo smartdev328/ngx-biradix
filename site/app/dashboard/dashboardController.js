@@ -89,7 +89,13 @@ define([
             var series = [];
             var hasPoints = false;
 
-            $scope.comps.forEach(function(c) {
+            var comps = $scope.comps;
+            if ($scope.summary) {
+                comps = _.take($scope.comps,1);
+                comps.push({_id: "averages", name: "Comp Averages"})
+            }
+
+            comps.forEach(function(c) {
                 var s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
 
                 if (p[c._id] && p[c._id][k]) {
@@ -125,7 +131,7 @@ define([
                 })
 
                 series.forEach(function (x, i) {
-                    x.name = (i + 1) + " " + x.name
+                    x.name = (i + 1) + ". " + x.name
                 })
 
                 var min = _.min(series, function (x) {
@@ -227,7 +233,7 @@ define([
                         var occ = $scope.extractSeries(response.data.points, 'occupancy',80,100,1);
 
                         $scope.nerData = {height:300, printWidth:820, title: 'Rent $', data: ner.data, min: ner.min, max: ner.max};
-                        $scope.occData = {height:300, printWidth:820, title: 'Occupancy %', data: occ.data, min: 80, max: 100};
+                        $scope.occData = {height:300, printWidth:820, title: 'Occupancy %', data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
 
 
                     $scope.localLoading = true;

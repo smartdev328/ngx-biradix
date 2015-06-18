@@ -470,11 +470,12 @@ module.exports = {
         var query = SurveySchema.find();
 
         query = query.where("propertyid").in(propertyids);
+        var dr = getDateRange(daterange);
 
         if (daterange.daterange != "Lifetime") {
-            var dr = getDateRange(daterange);
             query = query.where("date").gte(dr.start).lte(dr.end);
         }
+
 
         query = query.select("date occupancy weeklytraffic weeklyleases propertyid exclusions floorplans.id floorplans.rent floorplans.concessions")
 
@@ -505,9 +506,9 @@ module.exports = {
 
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
             for (var prop in points) {
-                points[prop].occupancy = normailizePoints(points[prop].occupancy, offset);
-                points[prop].traffic = normailizePoints(points[prop].traffic, offset);
-                points[prop].leases = normailizePoints(points[prop].leases, offset);
+                points[prop].occupancy = normailizePoints(points[prop].occupancy, offset, dr);
+                points[prop].traffic = normailizePoints(points[prop].traffic, offset, dr);
+                points[prop].leases = normailizePoints(points[prop].leases, offset, dr);
 
                 points[prop].occupancy = objectToArray(points[prop].occupancy);
                 points[prop].traffic = objectToArray(points[prop].traffic);
@@ -516,6 +517,15 @@ module.exports = {
                 points[prop].occupancy = extrapolateMissingPoints(points[prop].occupancy);
                 points[prop].traffic = extrapolateMissingPoints(points[prop].traffic);
                 points[prop].leases = extrapolateMissingPoints(points[prop].leases);
+
+            }
+
+            if (summary) {
+                var newpoints = {averages:{}}
+                getSummary(points, subject._id, newpoints, 'occupancy');
+                getSummary(points, subject._id, newpoints, 'traffic');
+                getSummary(points, subject._id, newpoints, 'leases');
+                points = newpoints;
 
             }
 
@@ -591,6 +601,24 @@ module.exports = {
     }
 }
 
+function getSummary(points, subjectid, newpoints, dimension) {
+    newpoints['averages'][dimension] = [];
+    for (var prop in points) {
+        if (prop == subjectid) {
+            newpoints[prop] = points[prop];
+        } else {
+            newpoints['averages'][dimension] = newpoints['averages'][dimension].concat(points[prop][dimension]);
+        }
+    }
+
+    var g = _.chain(newpoints['averages'][dimension]).groupBy("d").map(function(v, k) {
+        return {
+            d: parseInt(k),
+            v: _.sum(v, function(x) {return x.v }) / v.length
+        } }).value();
+
+    newpoints['averages'][dimension] = g;
+}
 function extrapolateMissingPoints (pts) {
 
     var Count = pts.length;
@@ -643,7 +671,7 @@ function objectToArray(obj) {
     return ar;
 }
 
-function normailizePoints(points, offset) {
+function normailizePoints(points, offset, dr) {
     if (points == {}) {
         return {}
     }
@@ -682,7 +710,7 @@ function normailizePoints(points, offset) {
         nextMonday =  nextMonday - WEEK;
     }
 
-    var today = parseInt(moment.utc().add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'))
+    var today = parseInt(moment.utc(dr.end).add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'))
 
     ret[today] = first;
 
@@ -790,6 +818,8 @@ function getDateRange(daterange) {
             return {start: moment().add(-30, "day").format(), end: moment().format()}
         case "Last Year":
             return {start: moment().add(-1, "year").format(), end: moment().format()}
+        case "Lifetime":
+            return {start: moment().add(-10, "year").format(), end: moment().startOf("day").format()}
         default:
             return {start: daterange.start, end: daterange.end}
     }
