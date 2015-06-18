@@ -60,8 +60,13 @@
                     &nbsp;&nbsp;
                 </div>
                 <Br clear="all">
+                <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
+                    <img src="/images/squares.gif" style="width:100px">
+                </div>
+                <div ng-show="trendsLoading">
                 <time-series options="nerData"></time-series>
                 <time-series options="occData"></time-series>
+                </div>
             </div>
         </div>
 

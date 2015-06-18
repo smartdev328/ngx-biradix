@@ -41,8 +41,7 @@ define([
 
         $scope.refreshGraphs = function() {
             $scope.selectedBedroom = $scope.bedroom.value;
-            //$scope.nerData = {data: []};
-            //$scope.occData = {data: []};
+            $scope.loadProperty($rootScope.me.settings.defaultPropertyId, true);
         }
 
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
@@ -146,9 +145,13 @@ define([
             return {data: series, min: min, max: max};
         }
 
-        $scope.loadProperty = function(defaultPropertyId) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
             if (defaultPropertyId) {
-                $scope.localLoading = false;
+                if (!trendsOnly) {
+                    $scope.localLoading = false;
+                } else {
+                    $scope.trendsLoading = false;
+                }
                 $propertyService.dashboard(
                     defaultPropertyId
                     , $scope.summary
@@ -156,73 +159,79 @@ define([
                     , {daterange: $scope.daterange.selectedRange,
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate}).then(function (response) {
-                    $scope.property = response.data.property;
-                    $scope.comps = response.data.comps;
 
-                    var ner = $scope.extractSeries(response.data.points, 'leases',0,10,0);
-                    var occ = $scope.extractSeries(response.data.points, 'occupancy',80,100,1);
+                        if (!trendsOnly) {
+                            $scope.property = response.data.property;
+                            $scope.comps = response.data.comps;
 
-                    $scope.nerData = {title: 'Rent $', data: ner.data, min: ner.min, max: ner.max};
-                    $scope.occData = {title: 'Occupancy %', data: occ.data, min: 80, max: 100};
 
-                    $scope.mapOptions = {
-                        loc: $scope.property.loc,
-                        height: "300px",
-                        width: "100%",
-                        points: [{
-                            loc: $scope.property.loc,
-                            marker: 'apartment-3',
-                            content: $scope.makrerContent($scope.property)
-                        }]
-                    }
-
-                    $scope.comps = _.sortBy($scope.comps, function(n) {
-
-                        if (n._id.toString() == $scope.property._id.toString()) {
-                            return "-1";
-                        }
-                        return n.name;
-                    })
-
-                    $scope.comps.forEach(function(c, i) {
-                        if (c._id.toString() != $scope.property._id.toString()) {
-                            $scope.mapOptions.points.push({
-                                loc: c.loc,
-                                marker: 'number_' + i ,
-                                content: $scope.makrerContent(c)
-                            })
-                        }
-                    })
-                    $scope.bedrooms = [{value: -1, text: 'All'}]
-
-                    if ($scope.comps[0].survey && $scope.comps[0].survey.floorplans) {
-                        var includedFps = _.filter($scope.comps[0].survey.floorplans, function (x) {
-                            return !x.excluded
-                        });
-
-                        var bedrooms = _.groupBy(includedFps, function (x) {
-                            return x.bedrooms
-                        });
-
-                        for (var b in bedrooms) {
-                            switch (b) {
-                                case 0:
-                                    $scope.bedrooms.push({value: 0, text: 'Studios'})
-                                    break;
-                                default:
-                                    $scope.bedrooms.push({value: b, text: b + ' Bdrs.'})
-                                    break;
+                            $scope.mapOptions = {
+                                loc: $scope.property.loc,
+                                height: "300px",
+                                width: "100%",
+                                points: [{
+                                    loc: $scope.property.loc,
+                                    marker: 'apartment-3',
+                                    content: $scope.makrerContent($scope.property)
+                                }]
                             }
+
+                            $scope.comps = _.sortBy($scope.comps, function (n) {
+
+                                if (n._id.toString() == $scope.property._id.toString()) {
+                                    return "-1";
+                                }
+                                return n.name;
+                            })
+
+                            $scope.comps.forEach(function (c, i) {
+                                if (c._id.toString() != $scope.property._id.toString()) {
+                                    $scope.mapOptions.points.push({
+                                        loc: c.loc,
+                                        marker: 'number_' + i,
+                                        content: $scope.makrerContent(c)
+                                    })
+                                }
+                            })
+                            $scope.bedrooms = [{value: -1, text: 'All'}]
+
+                            if ($scope.comps[0].survey && $scope.comps[0].survey.floorplans) {
+                                var includedFps = _.filter($scope.comps[0].survey.floorplans, function (x) {
+                                    return !x.excluded
+                                });
+
+                                var bedrooms = _.groupBy(includedFps, function (x) {
+                                    return x.bedrooms
+                                });
+
+                                for (var b in bedrooms) {
+                                    switch (b) {
+                                        case 0:
+                                            $scope.bedrooms.push({value: 0, text: 'Studios'})
+                                            break;
+                                        default:
+                                            $scope.bedrooms.push({value: b, text: b + ' Bdrs.'})
+                                            break;
+                                    }
+                                }
+
+                                _.sortBy($scope.bedrooms, function (x) {
+                                    return x.value
+                                })
+                            }
+
+                            $scope.selectBedroom();
                         }
 
-                        _.sortBy($scope.bedrooms, function (x) {
-                            return x.value
-                        })
-                    }
+                        var ner = $scope.extractSeries(response.data.points, 'leases',0,10,0);
+                        var occ = $scope.extractSeries(response.data.points, 'occupancy',80,100,1);
 
-                    $scope.selectBedroom();
+                        $scope.nerData = {height:300, printWidth:820, title: 'Rent $', data: ner.data, min: ner.min, max: ner.max};
+                        $scope.occData = {height:300, printWidth:820, title: 'Occupancy %', data: occ.data, min: 80, max: 100};
+
 
                     $scope.localLoading = true;
+                    $scope.trendsLoading = true;
                 });
             }
         };
