@@ -10,6 +10,8 @@ var AmenityService = require('../../amenities/services/amenityService')
 var uuid = require('node-uuid');
 var moment = require('moment');
 
+var WEEK = 7 * 24 * 60 * 60 * 1000;
+
 var fees  = {
     application_fee : 'Application fee',
     lease_terms: 'Lease terms',
@@ -510,6 +512,11 @@ module.exports = {
                 points[prop].occupancy = objectToArray(points[prop].occupancy);
                 points[prop].traffic = objectToArray(points[prop].traffic);
                 points[prop].leases = objectToArray(points[prop].leases);
+
+                points[prop].occupancy = extrapolateMissingPoints(points[prop].occupancy);
+                points[prop].traffic = extrapolateMissingPoints(points[prop].traffic);
+                points[prop].leases = extrapolateMissingPoints(points[prop].leases);
+
             }
 
             callback(points);
@@ -584,11 +591,51 @@ module.exports = {
     }
 }
 
+function extrapolateMissingPoints (pts) {
+
+    var Count = pts.length;
+
+    if (Count < 2)
+    {
+        return pts;
+    }
+
+    var i = 0;
+    var Current;
+    var Last = null;
+    var Delta = 0;
+
+    while (i < Count)
+    {
+        Current = pts[i];
+        if (Last != null && Current.d - Last.d > WEEK)
+        {
+            Delta = (Current.v - Last.v) / (Current.d - Last.d) * WEEK;
+            Current =
+            {
+                d: Last.d + WEEK,
+                v: Last.v + Delta,
+                f: true
+            };
+
+            pts.splice(i, 0, Current);
+
+            i--;
+            Count++;
+        }
+
+        Last = Current;
+        i++;
+    }
+
+    return pts;
+}
+
 function objectToArray(obj) {
     var ar = [];
 
     for (var k in obj) {
-        ar.push({d:parseInt(k), v:obj[k]});
+        ar.push({d: parseInt(k), v:obj[k] } );
     }
 
     ar = _.sortBy(ar, function(x) {return x.d});
@@ -602,13 +649,15 @@ function normailizePoints(points, offset) {
     }
 
     var monday = parseInt(moment.utc().add(offset,"minute").day("Monday").startOf("day").subtract(offset,"minute").format('x'))
-    var nextMonday =  monday + 7 * 24 * 60 * 60 * 1000;
+    var nextMonday =  monday + WEEK;
 
     var minDate;
 
     for (minDate in points) break;
 
     var ret = {};
+
+    var first = null;
 
     while (parseInt(minDate) < nextMonday) {
         var rangePoints = [];
@@ -622,15 +671,20 @@ function normailizePoints(points, offset) {
         if (rangePoints.length > 0) {
             //console.log(rangePoints)
             ret[monday] = _.sum(rangePoints) / rangePoints.length;
+
+            if (first == null) {
+                first = ret[monday];
+            }
         }
 
 
-        monday =  monday - 7 * 24 * 60 * 60 * 1000;
-        nextMonday =  nextMonday - 7 * 24 * 60 * 60 * 1000;
+        monday =  monday - WEEK;
+        nextMonday =  nextMonday - WEEK;
     }
 
+    var today = parseInt(moment.utc().add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'))
 
-
+    ret[today] = first;
 
     return ret;
 }

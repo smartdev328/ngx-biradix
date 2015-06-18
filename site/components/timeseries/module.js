@@ -38,7 +38,7 @@ define([
                                 },
                                 tooltip: {
                                     shared: true,
-                                    xDateFormat: "%a, %b %d, %y"
+                                    xDateFormat: "%b %d, %Y"
                                 },
                                 credits: {
                                     enabled: false
