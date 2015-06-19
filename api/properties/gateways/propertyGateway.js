@@ -58,7 +58,7 @@ Routes.get('/lookups', function (req, res) {
 
 });
 
-Routes.get('/:id/profile', function (req, res) {
+Routes.post('/:id/profile', function (req, res) {
     async.parallel({
         view: function (callbackp) {
             PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: req.params.id
@@ -90,16 +90,40 @@ Routes.get('/:id/profile', function (req, res) {
                 permission: 'PropertyView',
                 ids: compids
                 ,
-                select: "_id name address city state zip loc totalUnits survey.id"
+                select: "_id name address city state zip loc totalUnits survey.id floorplans"
             }, function(err, comps) {
-                PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.view.p[0], comps, function () {
-                    res.status(200).json({
-                        canManage: all.modify.length == 1,
-                        properties: all.view.p,
-                        lookups: all.view.l,
-                        comps: comps
+                //PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.view.p[0], comps, function () {
+                //    res.status(200).json({
+                //        canManage: all.modify.length == 1,
+                //        properties: all.view.p,
+                //        lookups: all.view.l,
+                //        comps: comps
+                //    })
+                //})
+
+                async.parallel({
+                    comps: function (callbackp) {
+                        PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.view.p[0], comps, function() {
+                            callbackp(null, comps)
+                        })
+                    },
+                    points: function(callbackp) {
+                        PropertyService.getPoints(req.user.settings.hideUnlinked, all.view.p[0], comps,
+                            false,
+                            -1,
+                            req.body.daterange,
+                            req.body.offset,
+                            req.body.show,
+                            function(points) {
+                                callbackp(null, points)
+                            })
+                    }
+                }, function(err, all2) {
+                    all2.comps.forEach(function(c) {
+                        delete c.floorplans;
                     })
-                })
+                    res.status(200).json({properties: all.view.p, comps: all2.comps, lookups: all.view.l, points: all2.points, canManage: all.modify.length == 1})
+                });
             })
 
         }

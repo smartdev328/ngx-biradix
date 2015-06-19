@@ -72,7 +72,40 @@
         <div class="panel panel-info">
             <div class="panel-heading">Net Effective Rent</div>
             <div class="panel-body">
+                <div style="float:right;padding-bottom:10px;">
+                    Graphs:
+                    <toggle-switch checked="graphs"></toggle-switch>
+                    &nbsp;&nbsp;
+                    Dates:
+                    <daterange-picker daterange="daterange"></daterange-picker>
+                    &nbsp;&nbsp;
+                </div>
+                <Br clear="all">
+                <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
+                    <img src="/images/squares.gif" style="width:100px">
+                </div>
+                <div ng-show="trendsLoading">
+                    <time-series options="nerData"></time-series>
+                </div>
+            </div>
+        </div>
 
+        <div class="panel panel-info">
+            <div class="panel-heading">Occupancy, Traffic, & Leases</div>
+            <div class="panel-body">
+                <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
+                    <img src="/images/squares.gif" style="width:100px">
+                </div>
+                <div ng-show="trendsLoading">
+                    <div class="row" style="margin-left:-15px">
+                        <div class="col-sm-6">
+                            <time-series options="occData"></time-series>
+                        </div>
+                        <div class="col-sm-6">
+                            <time-series options="otherData"></time-series>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

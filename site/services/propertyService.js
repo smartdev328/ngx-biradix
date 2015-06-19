@@ -3,8 +3,12 @@ define(['app'], function (app) {
     app.factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
-        fac.profile = function (id) {
-            return $http.get('/api/1.0/properties/' + id + '/profile', {
+        fac.profile = function (id,daterange,show) {
+            return $http.post('/api/1.0/properties/' + id + '/profile', {
+                daterange:daterange,
+                offset: moment().utcOffset(),
+                show: show
+            },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -112,6 +116,75 @@ define(['app'], function (app) {
             name += ", " + fp.units + " Units";
 
             return name
+        }
+
+        fac.extractSeries = function(p, k, defaultMin, defaultMax, decinalPlaces, allComps, summary) {
+            var series = [];
+            var hasPoints = false;
+
+            var comps = allComps;
+            if (summary) {
+                comps = _.take(allComps,1);
+                comps.push({_id: "averages", name: "Comp Averages"})
+            }
+
+            comps.forEach(function(c) {
+                var s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
+
+                if (p[c._id] && p[c._id][k]) {
+                    var data = p[c._id][k];
+
+                    data.forEach(function(point) {
+                        var v = point.v;
+                        v = Math.round(v * Math.pow(10,decinalPlaces)) / Math.pow(10,decinalPlaces)
+                        if (s._max < v) {
+                            s._max = v;
+                        }
+
+                        if (s._min > v) {
+                            s._min = v;
+                        }
+
+                        hasPoints = true;
+
+                        s._last = v;
+
+                        s.data.push([point.d, v])
+                    });
+
+                }
+                series.push(s)
+
+            })
+
+
+            if (hasPoints) {
+
+                if (!summary) {
+                    series = _.sortBy(series, function (x) {
+                        return -x._last
+                    })
+
+                    series.forEach(function (x, i) {
+                        x.name = (i + 1) + ". " + x.name
+                    })
+                }
+
+                var min = _.min(series, function (x) {
+                    return x._min
+                })._min;
+                var max = _.max(series, function (x) {
+                    return x._max
+                })._max;
+
+            }
+            else
+            {
+                min = defaultMin;
+                max = defaultMax;
+            }
+
+            return {data: series, min: min, max: max};
         }
 
         return fac;

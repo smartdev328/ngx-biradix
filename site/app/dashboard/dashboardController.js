@@ -85,75 +85,6 @@ define([
             $scope.changeProperty();
         });
 
-        $scope.extractSeries = function(p, k, defaultMin, defaultMax, decinalPlaces) {
-            var series = [];
-            var hasPoints = false;
-
-            var comps = $scope.comps;
-            if ($scope.summary) {
-                comps = _.take($scope.comps,1);
-                comps.push({_id: "averages", name: "Comp Averages"})
-            }
-
-            comps.forEach(function(c) {
-                var s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
-
-                if (p[c._id] && p[c._id][k]) {
-                    var data = p[c._id][k];
-
-                    data.forEach(function(point) {
-                        var v = point.v;
-                        v = Math.round(v * Math.pow(10,decinalPlaces)) / Math.pow(10,decinalPlaces)
-                        if (s._max < v) {
-                            s._max = v;
-                        }
-
-                        if (s._min > v) {
-                            s._min = v;
-                        }
-
-                        hasPoints = true;
-
-                        s._last = v;
-
-                        s.data.push([point.d, v])
-                    });
-
-                }
-                series.push(s)
-
-            })
-
-
-            if (hasPoints) {
-
-                if (!$scope.summary) {
-                    series = _.sortBy(series, function (x) {
-                        return -x._last
-                    })
-
-                    series.forEach(function (x, i) {
-                        x.name = (i + 1) + ". " + x.name
-                    })
-                }
-
-                var min = _.min(series, function (x) {
-                    return x._min
-                })._min;
-                var max = _.max(series, function (x) {
-                    return x._max
-                })._max;
-
-            }
-            else
-            {
-                min = defaultMin;
-                max = defaultMax;
-            }
-
-            return {data: series, min: min, max: max};
-        }
-
         $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
             if (defaultPropertyId) {
                 if (!trendsOnly) {
@@ -237,8 +168,8 @@ define([
                         }
 
                         $scope.points = {excluded: response.data.points.excluded};
-                        var ner = $scope.extractSeries(response.data.points, 'ner',0,1000,0);
-                        var occ = $scope.extractSeries(response.data.points, 'occupancy',80,100,1);
+                        var ner = $propertyService.extractSeries(response.data.points, 'ner',0,1000,0, $scope.comps, $scope.summary);
+                        var occ = $propertyService.extractSeries(response.data.points, 'occupancy',80,100,1, $scope.comps, $scope.summary);
 
                         $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
                         $scope.occData = {height:300, printWidth:820, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
