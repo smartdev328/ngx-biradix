@@ -460,7 +460,7 @@ module.exports = {
     getSubjects: function(compid, criteria, callback) {
         getSubjects(compid, criteria, callback)
     },
-    getPoints: function(hide,subject,comps,summary,bedrooms,daterange,offset,callback) {
+    getPoints: function(hide,subject,comps,summary,bedrooms,daterange,offset,show,callback) {
 
         var propertyids = _.pluck(comps,"_id");
         if (!propertyids || propertyids.length == 0) {
@@ -476,8 +476,25 @@ module.exports = {
             query = query.where("date").gte(dr.start).lte(dr.end);
         }
 
+        var select = "date propertyid";
 
-        query = query.select("date occupancy weeklytraffic weeklyleases propertyid exclusions floorplans.id floorplans.rent floorplans.concessions")
+        if (show.occupancy) {
+            select += "  occupancy"
+        }
+
+        if (show.leases) {
+            select += "  weeklyleases"
+        }
+
+        if (show.traffic) {
+            select += "  weeklytraffic"
+        }
+
+        if (show.ner) {
+            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.bedrooms floorplans.bathrooms floorplans.units"
+        }
+
+        query = query.select(select)
 
         query = query.sort("date");
 
@@ -486,49 +503,105 @@ module.exports = {
                 return callback({});
             }
             var points = {};
+            var excluded = false;
             surveys.forEach(function(s) {
 
                 var dateKey = parseInt(moment.utc(s.date).add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'));
-                //if (s.propertyid == "5577c0f1541b40040baaa5eb") {
-                //    console.log(s.date, dateKey, s.occupancy, moment.utc(s.date).add(offset,"minute").startOf("day").subtract(offset,"minute").format())
-                //}
+
                 points[s.propertyid] = points[s.propertyid] || {};
-                points[s.propertyid].occupancy = points[s.propertyid].occupancy || {};
-                points[s.propertyid].occupancy[dateKey] = s.occupancy;
 
-                points[s.propertyid].leases = points[s.propertyid].leases || {};
-                points[s.propertyid].leases[dateKey] = s.weeklyleases;
+                if (show.occupancy) {
+                    points[s.propertyid].occupancy = points[s.propertyid].occupancy || {};
+                    points[s.propertyid].occupancy[dateKey] = s.occupancy;
+                }
+                if (show.leases) {
+                    points[s.propertyid].leases = points[s.propertyid].leases || {};
+                    points[s.propertyid].leases[dateKey] = s.weeklyleases;
+                }
 
-                points[s.propertyid].traffic = points[s.propertyid].traffic || {};
-                points[s.propertyid].traffic[dateKey] = s.weeklytraffic;
+                if (show.traffic) {
+                    points[s.propertyid].traffic = points[s.propertyid].traffic || {};
+                    points[s.propertyid].traffic[dateKey] = s.weeklytraffic;
+                }
+
+                if (show.ner) {
+                    points[s.propertyid].ner = points[s.propertyid].ner || {};
+
+                    var nerPoint = getNerPoint(s, bedrooms, hide, subject);
+                    points[s.propertyid].ner[dateKey] = nerPoint.value;
+                    excluded = nerPoint.excluded;
+                }
 
             })
 
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
             for (var prop in points) {
-                points[prop].occupancy = normailizePoints(points[prop].occupancy, offset, dr);
-                points[prop].traffic = normailizePoints(points[prop].traffic, offset, dr);
-                points[prop].leases = normailizePoints(points[prop].leases, offset, dr);
+                if (show.occupancy) {
+                    points[prop].occupancy = normailizePoints(points[prop].occupancy, offset, dr);
+                }
+                if (show.traffic) {
+                    points[prop].traffic = normailizePoints(points[prop].traffic, offset, dr);
+                }
+                if (show.leases) {
+                    points[prop].leases = normailizePoints(points[prop].leases, offset, dr);
+                }
 
-                points[prop].occupancy = objectToArray(points[prop].occupancy);
-                points[prop].traffic = objectToArray(points[prop].traffic);
-                points[prop].leases = objectToArray(points[prop].leases);
+                if (show.ner) {
+                    points[prop].ner = normailizePoints(points[prop].ner, offset, dr);
+                }
 
-                points[prop].occupancy = extrapolateMissingPoints(points[prop].occupancy);
-                points[prop].traffic = extrapolateMissingPoints(points[prop].traffic);
-                points[prop].leases = extrapolateMissingPoints(points[prop].leases);
+                if (show.occupancy) {
+                    points[prop].occupancy = objectToArray(points[prop].occupancy);
+                }
+                if (show.traffic) {
+                    points[prop].traffic = objectToArray(points[prop].traffic);
+                }
+                if (show.leases) {
+                    points[prop].leases = objectToArray(points[prop].leases);
+                }
+                if (show.ner) {
+                    points[prop].ner = objectToArray(points[prop].ner);
+                }
+
+                if (show.occupancy) {
+                    points[prop].occupancy = extrapolateMissingPoints(points[prop].occupancy);
+                }
+                if (show.traffic) {
+                    points[prop].traffic = extrapolateMissingPoints(points[prop].traffic);
+                }
+                if (show.leases) {
+                    points[prop].leases = extrapolateMissingPoints(points[prop].leases);
+                }
+
+                if (show.ner) {
+                    points[prop].ner = extrapolateMissingPoints(points[prop].ner);
+                }
 
             }
 
             if (summary) {
                 var newpoints = {averages:{}}
-                getSummary(points, subject._id, newpoints, 'occupancy');
-                getSummary(points, subject._id, newpoints, 'traffic');
-                getSummary(points, subject._id, newpoints, 'leases');
-                points = newpoints;
+                if (show.occupancy) {
+                    getSummary(points, subject._id, newpoints, 'occupancy');
+                }
 
+                if (show.traffic) {
+                    getSummary(points, subject._id, newpoints, 'traffic');
+                }
+
+                if (show.leases) {
+                    getSummary(points, subject._id, newpoints, 'leases');
+                }
+
+                if (show.ner) {
+                    getSummary(points, subject._id, newpoints, 'ner');
+                }
+
+                points = newpoints;
             }
 
+
+            points.excluded = excluded;
             callback(points);
         });
     },
@@ -601,6 +674,48 @@ module.exports = {
     }
 }
 
+function getNerPoint(s, bedrooms, hide, subject) {
+    var fps = _.flatten(s.floorplans);
+
+    if (bedrooms > -1) {
+        fps = _.filter(fps, function(x) {return x.bedrooms == bedrooms})
+    }
+
+    var excluded = false;
+    if (hide) {
+        var excfps = [];
+        if (s.exclusions && s.exclusions.length > 0) {
+            var exc = _.find(s.exclusions, function(x) {return x.subjectid == subject._id});
+
+            if (exc) {
+                excfps = excfps.concat(exc.floorplans.map(function(x) {return x.toString()}));
+            }
+        }
+
+        if (excfps.length > 0) {
+            var removed = _.remove(fps, function(x) {return excfps.indexOf(x.id.toString()) > -1});
+            if (removed && removed.length > 0) {
+                excluded = true;
+            }
+        }
+
+        var incfps = _.find(subject.comps, function(x) {return x.id == s.propertyid}).floorplans.map(function(x) {return x.toString()});
+
+        var removed = _.remove(fps, function(x) {return incfps.indexOf(x.id.toString()) == -1});
+
+        if (removed && removed.length > 0) {
+            excluded = true;
+        }
+
+    }
+
+    var tot = _.sum(fps, function(x) {return x.units});
+    var ret = _.sum(fps, function(x) {return (x.rent - x.concessions / 12) * x.units / tot})
+
+
+
+    return {value: ret, excluded : excluded};
+}
 function getSummary(points, subjectid, newpoints, dimension) {
     newpoints['averages'][dimension] = [];
     for (var prop in points) {

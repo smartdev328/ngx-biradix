@@ -23,6 +23,13 @@ define([
                                     type: 'spline',
                                     ignoreHiddenSeries : false
                                 },
+                                plotOptions: {
+                                    spline: {
+                                        marker: {
+                                            enabled: $scope.options.marker
+                                        }
+                                    }
+                                },
                                 title: {
                                     text: '',
                                 },
@@ -38,7 +45,10 @@ define([
                                 },
                                 tooltip: {
                                     shared: true,
-                                    xDateFormat: "%b %d, %Y"
+                                    xDateFormat: "%b %d, %Y",
+                                    pointFormatter: function() {
+                                        return '<span style="color:' + this.series.color + ';">\u25CF</span> ' + this.series.name + ': <b>' + $scope.options.prefix + this.y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                    }
                                 },
                                 credits: {
                                     enabled: false

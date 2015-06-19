@@ -126,13 +126,16 @@ define([
 
 
             if (hasPoints) {
-                series = _.sortBy(series, function (x) {
-                    return -x._last
-                })
 
-                series.forEach(function (x, i) {
-                    x.name = (i + 1) + ". " + x.name
-                })
+                if (!$scope.summary) {
+                    series = _.sortBy(series, function (x) {
+                        return -x._last
+                    })
+
+                    series.forEach(function (x, i) {
+                        x.name = (i + 1) + ". " + x.name
+                    })
+                }
 
                 var min = _.min(series, function (x) {
                     return x._min
@@ -162,9 +165,13 @@ define([
                     defaultPropertyId
                     , $scope.summary
                     , $scope.selectedBedroom
-                    , {daterange: $scope.daterange.selectedRange,
+                    , {
+                        daterange: $scope.daterange.selectedRange,
                         start: $scope.daterange.selectedStartDate,
-                        end: $scope.daterange.selectedEndDate}).then(function (response) {
+                        end: $scope.daterange.selectedEndDate
+                        }
+                    ,{ner: true, occupancy: true}
+                ).then(function (response) {
 
                         if (!trendsOnly) {
                             $scope.property = response.data.property;
@@ -229,11 +236,12 @@ define([
                             $scope.selectBedroom();
                         }
 
-                        var ner = $scope.extractSeries(response.data.points, 'leases',0,10,0);
+                        $scope.points = {excluded: response.data.points.excluded};
+                        var ner = $scope.extractSeries(response.data.points, 'ner',0,1000,0);
                         var occ = $scope.extractSeries(response.data.points, 'occupancy',80,100,1);
 
-                        $scope.nerData = {height:300, printWidth:820, title: 'Rent $', data: ner.data, min: ner.min, max: ner.max};
-                        $scope.occData = {height:300, printWidth:820, title: 'Occupancy %', data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
+                        $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
+                        $scope.occData = {height:300, printWidth:820, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
 
 
                     $scope.localLoading = true;

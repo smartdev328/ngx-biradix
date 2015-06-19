@@ -21,12 +21,13 @@ define(['app'], function (app) {
             });
         }
 
-        fac.dashboard = function (id,summary,bedrooms,daterange) {
+        fac.dashboard = function (id,summary,bedrooms,daterange, show) {
             return $http.post('/api/1.0/properties/' + id + '/dashboard', {
                 summary: summary,
                 bedrooms: bedrooms,
                 daterange:daterange,
-                offset: moment().utcOffset()
+                offset: moment().utcOffset(),
+                show: show
             }, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
