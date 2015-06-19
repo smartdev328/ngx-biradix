@@ -125,7 +125,7 @@ Routes.post('/:id/dashboard', function (req, res) {
                 permission: 'PropertyView',
                 ids: compids
                 ,
-                select: "_id name address city state zip loc totalUnits survey.id"
+                select: "_id name address city state zip loc totalUnits survey.id floorplans"
             }, function(err, comps) {
 
                 if (err) {
@@ -149,6 +149,9 @@ Routes.post('/:id/dashboard', function (req, res) {
                             })
                         }
                     }, function(err, all) {
+                        all.comps.forEach(function(c) {
+                            delete c.floorplans;
+                        })
                         res.status(200).json({property: property[0], comps: all.comps, points: all.points})
                     });
 

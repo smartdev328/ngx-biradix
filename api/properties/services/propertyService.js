@@ -527,9 +527,13 @@ module.exports = {
                 if (show.ner) {
                     points[s.propertyid].ner = points[s.propertyid].ner || {};
 
-                    var nerPoint = getNerPoint(s, bedrooms, hide, subject);
+                    var nerPoint = getNerPoint(s, bedrooms, hide, subject, comps);
                     points[s.propertyid].ner[dateKey] = nerPoint.value;
-                    excluded = nerPoint.excluded;
+
+                    if (nerPoint.excluded) {
+                        excluded = true;
+                    }
+
                 }
 
             })
@@ -674,7 +678,7 @@ module.exports = {
     }
 }
 
-function getNerPoint(s, bedrooms, hide, subject) {
+function getNerPoint(s, bedrooms, hide, subject, comps) {
     var fps = _.flatten(s.floorplans);
 
     if (bedrooms > -1) {
@@ -684,6 +688,8 @@ function getNerPoint(s, bedrooms, hide, subject) {
     var excluded = false;
     if (hide) {
         var excfps = [];
+
+        //remove any historical exclusions saved in each survey
         if (s.exclusions && s.exclusions.length > 0) {
             var exc = _.find(s.exclusions, function(x) {return x.subjectid == subject._id});
 
@@ -692,21 +698,19 @@ function getNerPoint(s, bedrooms, hide, subject) {
             }
         }
 
+        //compare current floorplan to current exclusions to get a current exclusion list
+        var currentfps = _.pluck(_.find(comps, function(x) {return x._id == s.propertyid}).floorplans,"id").map(function(x) {return x.toString()});
+
+        var incfps = _.find(subject.comps, function(x) {return x.id == s.propertyid}).floorplans.map(function(x) {return x.toString()});
+
+        excfps = excfps.concat(_.difference(currentfps,incfps))
+
         if (excfps.length > 0) {
             var removed = _.remove(fps, function(x) {return excfps.indexOf(x.id.toString()) > -1});
             if (removed && removed.length > 0) {
                 excluded = true;
             }
         }
-
-        var incfps = _.find(subject.comps, function(x) {return x.id == s.propertyid}).floorplans.map(function(x) {return x.toString()});
-
-        var removed = _.remove(fps, function(x) {return incfps.indexOf(x.id.toString()) == -1});
-
-        if (removed && removed.length > 0) {
-            excluded = true;
-        }
-
     }
 
     var tot = _.sum(fps, function(x) {return x.units});
