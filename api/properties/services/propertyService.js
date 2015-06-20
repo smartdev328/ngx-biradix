@@ -502,8 +502,24 @@ module.exports = {
             if (err) {
                 return callback({});
             }
+
+            var bedroomBeakdown = [];
+
             var points = {};
             var excluded = false;
+
+            if (show.bedrooms){
+                var includedFps = _.filter(comps[0].survey.floorplans, function (x) {
+                    if (x.excluded) {
+                        excluded = true;
+                    }
+                    return !hide || !x.excluded
+                });
+
+                bedroomBeakdown =  _.uniq(_.pluck(includedFps, 'bedrooms'));
+            }
+
+
             surveys.forEach(function(s) {
 
                 var dateKey = parseInt(moment.utc(s.date).add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'));
@@ -534,6 +550,14 @@ module.exports = {
                         excluded = true;
                     }
 
+                    bedroomBeakdown.forEach(function(b) {
+                        points[s.propertyid][b] = points[s.propertyid][b] || {};
+                        points[s.propertyid][b][dateKey] = points[s.propertyid][b][dateKey] || {};
+
+                        nerPoint = getNerPoint(s, b, hide, subject, comps);
+                        points[s.propertyid][b][dateKey] = nerPoint.value;
+                    })
+
                 }
 
             })
@@ -552,6 +576,10 @@ module.exports = {
 
                 if (show.ner) {
                     points[prop].ner = normailizePoints(points[prop].ner, offset, dr);
+
+                    bedroomBeakdown.forEach(function(b) {
+                        points[prop][b] = normailizePoints(points[prop][b], offset, dr);
+                    })
                 }
 
                 if (show.occupancy) {
@@ -565,6 +593,9 @@ module.exports = {
                 }
                 if (show.ner) {
                     points[prop].ner = objectToArray(points[prop].ner);
+                    bedroomBeakdown.forEach(function(b) {
+                        points[prop][b] = objectToArray(points[prop][b]);
+                    })
                 }
 
                 if (show.occupancy) {
@@ -579,6 +610,9 @@ module.exports = {
 
                 if (show.ner) {
                     points[prop].ner = extrapolateMissingPoints(points[prop].ner);
+                    bedroomBeakdown.forEach(function(b) {
+                        points[prop][b] = extrapolateMissingPoints(points[prop][b]);
+                    })
                 }
 
             }
@@ -603,7 +637,6 @@ module.exports = {
 
                 points = newpoints;
             }
-
 
             points.excluded = excluded;
             callback(points);

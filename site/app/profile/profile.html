@@ -70,7 +70,15 @@
         </div>
 
         <div class="panel panel-info">
-            <div class="panel-heading">Net Effective Rent</div>
+            <div class="panel-heading">Net Effective Rent
+                <i class="fa fa-exclamation-triangle"
+                   style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+                   ng-if="points.excluded"
+                   popover-trigger="mouseenter"
+                   popover-placement="right"
+                   popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                        ></i>
+            </div>
             <div class="panel-body">
                 <div style="float:right;padding-bottom:10px;" class="hidden-print">
                     Graphs:

@@ -118,25 +118,44 @@ define(['app'], function (app) {
             return name
         }
 
-        fac.extractSeries = function(p, k, defaultMin, defaultMax, decinalPlaces, allComps, summary) {
+        fac.extractSeries = function(p, ks, ls, defaultMin, defaultMax, decinalPlaces, allComps, summary) {
             var series = [];
             var hasPoints = false;
-
             var comps = allComps;
+
+
+            var lines = [];
+            //summary, show first prop then averages series
             if (summary) {
-                comps = _.take(allComps,1);
-                comps.push({_id: "averages", name: "Comp Averages"})
+                lines.push({key: ks[0], name: comps[0].name, prop: comps[0]._id})
+                lines.push({key: ks[0], name: "Comp Averages", prop: 'averages'})
+            }
+            else
+            //multiple series on 1 chart for subject
+            if (ls.length > 0) {
+                ks.forEach(function(k,i) {
+                    lines.push({key: k, name: ls[i], prop: comps[0]._id})
+                });
+            }
+            //compare to other props
+            else {
+                comps.forEach(function(c) {
+                    lines.push({key: ks[0], name: c.name, prop: c._id})
+                })
             }
 
-            comps.forEach(function(c) {
+            lines.forEach(function(c) {
                 var s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
 
-                if (p[c._id] && p[c._id][k]) {
-                    var data = p[c._id][k];
+                var data = [];
+                if (p[c.prop] && p[c.prop][c.key]) {
+                    data = p[c.prop][c.key];
+                }
 
-                    data.forEach(function(point) {
+                if (data) {
+                    data.forEach(function (point) {
                         var v = point.v;
-                        v = Math.round(v * Math.pow(10,decinalPlaces)) / Math.pow(10,decinalPlaces)
+                        v = Math.round(v * Math.pow(10, decinalPlaces)) / Math.pow(10, decinalPlaces)
                         if (s._max < v) {
                             s._max = v;
                         }
@@ -151,8 +170,8 @@ define(['app'], function (app) {
 
                         s.data.push([point.d, v])
                     });
-
                 }
+
                 series.push(s)
 
             })
@@ -160,7 +179,7 @@ define(['app'], function (app) {
 
             if (hasPoints) {
 
-                if (!summary) {
+                if (!summary && ls.length == 0 && series.length > 1) {
                     series = _.sortBy(series, function (x) {
                         return -x._last
                     })

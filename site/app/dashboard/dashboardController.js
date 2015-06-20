@@ -168,8 +168,8 @@ define([
                         }
 
                         $scope.points = {excluded: response.data.points.excluded};
-                        var ner = $propertyService.extractSeries(response.data.points, 'ner',0,1000,0, $scope.comps, $scope.summary);
-                        var occ = $propertyService.extractSeries(response.data.points, 'occupancy',80,100,1, $scope.comps, $scope.summary);
+                        var ner = $propertyService.extractSeries(response.data.points, ['ner'],[],0,1000,0, $scope.comps, $scope.summary);
+                        var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],[],80,100,1, $scope.comps, $scope.summary);
 
                         $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
                         $scope.occData = {height:300, printWidth:820, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};

@@ -57,7 +57,7 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true}
                 ).then(function (response) {
                         if (!trendsOnly) {
                             $scope.lookups = response.data.lookups;
@@ -125,9 +125,24 @@ define([
                         }
 
                         $scope.points = {excluded: response.data.points.excluded};
-                        var ner = $propertyService.extractSeries(response.data.points, 'ner',0,1000,0, [$scope.property], false);
-                        var occ = $propertyService.extractSeries(response.data.points, 'occupancy',80,100,1, [$scope.property], false);
-                        var other = $propertyService.extractSeries(response.data.points, 'traffic',0,10,0, [$scope.property], false);
+
+                        var keys = ['ner'];
+                        var labels = ['Entire Property'];
+
+                        var pts = response.data.points[$scope.propertyId];
+
+                        if (pts) {
+                            for (var p in pts) {
+                                if (!isNaN(p)) {
+                                    keys.push(p)
+                                    labels.push(p + ' Bedrooms')
+                                }
+                            }
+                        }
+
+                        var ner = $propertyService.extractSeries(response.data.points, keys,labels,0,1000,0, [$scope.property], false);
+                        var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],[],80,100,1, [$scope.property], false);
+                        var other = $propertyService.extractSeries(response.data.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [$scope.property], false);
 
                         $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
                         $scope.occData = {height:250, printWidth:400, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
