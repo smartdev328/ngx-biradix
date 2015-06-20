@@ -4,7 +4,7 @@ define(['app'], function (app) {
         var fac = {};
 
         fac.getSummary = function () {
-            return JSON.parse($cookies.get('Summary') || "true")
+            return JSON.parse($cookies.get('Summary') || "false")
         }
 
         fac.saveSummary = function(summary) {
@@ -14,7 +14,7 @@ define(['app'], function (app) {
         }
 
         fac.getGraphs = function () {
-            return JSON.parse($cookies.get('Graphs') || "false")
+            return JSON.parse($cookies.get('Graphs') || "true")
         }
 
         fac.saveGraphs = function(graphs) {
