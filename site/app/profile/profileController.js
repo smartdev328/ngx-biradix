@@ -34,6 +34,14 @@ define([
             $scope.refreshGraphs();
         }, true);
 
+        $scope.graphs = $cookieSettingsService.getGraphs();
+
+        $scope.$watch('graphs', function() {
+            if (!$scope.localLoading) return;
+            $cookieSettingsService.saveGraphs($scope.graphs)
+            $scope.refreshGraphs();
+        }, true);
+
         $scope.propertyId = $stateParams.id;
 
         $scope.refreshGraphs = function() {
@@ -57,7 +65,7 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs}
                 ).then(function (response) {
                         if (!trendsOnly) {
                             $scope.lookups = response.data.lookups;
@@ -141,7 +149,7 @@ define([
                         }
 
                         var ner = $propertyService.extractSeries(response.data.points, keys,labels,0,1000,0, [$scope.property], false);
-                        var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],[],80,100,1, [$scope.property], false);
+                        var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],['Occupancy %'],80,100,1, [$scope.property], false);
                         var other = $propertyService.extractSeries(response.data.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [$scope.property], false);
 
                         $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};

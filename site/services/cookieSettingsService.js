@@ -4,13 +4,23 @@ define(['app'], function (app) {
         var fac = {};
 
         fac.getSummary = function () {
-            return JSON.parse($cookies.get('Summary') || "false")
+            return JSON.parse($cookies.get('Summary') || "true")
         }
 
         fac.saveSummary = function(summary) {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
             $cookies.put('Summary', summary, {expires : expireDate})
+        }
+
+        fac.getGraphs = function () {
+            return JSON.parse($cookies.get('Graphs') || "false")
+        }
+
+        fac.saveGraphs = function(graphs) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('Graphs', graphs, {expires : expireDate})
         }
 
         fac.getDaterange = function () {

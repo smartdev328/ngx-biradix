@@ -476,7 +476,7 @@ module.exports = {
             query = query.where("date").gte(dr.start).lte(dr.end);
         }
 
-        var select = "date propertyid";
+        var select = "_id date propertyid";
 
         if (show.occupancy) {
             select += "  occupancy"
@@ -526,6 +526,11 @@ module.exports = {
 
                 points[s.propertyid] = points[s.propertyid] || {};
 
+                if (show.graphs !==  true) {
+                    points[s.propertyid].surveys = points[s.propertyid].surveys || {};
+                    points[s.propertyid].surveys[dateKey] = s._id;
+                }
+
                 if (show.occupancy) {
                     points[s.propertyid].occupancy = points[s.propertyid].occupancy || {};
                     points[s.propertyid].occupancy[dateKey] = s.occupancy;
@@ -564,22 +569,25 @@ module.exports = {
 
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
             for (var prop in points) {
-                if (show.occupancy) {
-                    points[prop].occupancy = normailizePoints(points[prop].occupancy, offset, dr);
-                }
-                if (show.traffic) {
-                    points[prop].traffic = normailizePoints(points[prop].traffic, offset, dr);
-                }
-                if (show.leases) {
-                    points[prop].leases = normailizePoints(points[prop].leases, offset, dr);
-                }
 
-                if (show.ner) {
-                    points[prop].ner = normailizePoints(points[prop].ner, offset, dr);
+                if (show.graphs !== true) {
+                    if (show.occupancy) {
+                        points[prop].occupancy = normailizePoints(points[prop].occupancy, offset, dr);
+                    }
+                    if (show.traffic) {
+                        points[prop].traffic = normailizePoints(points[prop].traffic, offset, dr);
+                    }
+                    if (show.leases) {
+                        points[prop].leases = normailizePoints(points[prop].leases, offset, dr);
+                    }
 
-                    bedroomBeakdown.forEach(function(b) {
-                        points[prop][b] = normailizePoints(points[prop][b], offset, dr);
-                    })
+                    if (show.ner) {
+                        points[prop].ner = normailizePoints(points[prop].ner, offset, dr);
+
+                        bedroomBeakdown.forEach(function (b) {
+                            points[prop][b] = normailizePoints(points[prop][b], offset, dr);
+                        })
+                    }
                 }
 
                 if (show.occupancy) {
