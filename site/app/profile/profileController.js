@@ -57,7 +57,7 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true}
                 ).then(function (response) {
                         if (!trendsOnly) {
                             $scope.lookups = response.data.lookups;
@@ -126,10 +126,12 @@ define([
 
                         $scope.points = {excluded: response.data.points.excluded};
                         var ner = $propertyService.extractSeries(response.data.points, 'ner',0,1000,0, [$scope.property], false);
-                        var occ = $propertyService.extractSeries(response.data.points, 'occupancy',80,100,1, [$scope.property], $scope.summary);
+                        var occ = $propertyService.extractSeries(response.data.points, 'occupancy',80,100,1, [$scope.property], false);
+                        var other = $propertyService.extractSeries(response.data.points, 'traffic',0,10,0, [$scope.property], false);
 
                         $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
-                        $scope.occData = {height:300, printWidth:820, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
+                        $scope.occData = {height:250, printWidth:400, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
+                        $scope.otherData = {height:250, printWidth:400, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
 
 
                         $scope.localLoading = true;

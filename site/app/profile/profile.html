@@ -72,7 +72,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Net Effective Rent</div>
             <div class="panel-body">
-                <div style="float:right;padding-bottom:10px;">
+                <div style="float:right;padding-bottom:10px;" class="hidden-print">
                     Graphs:
                     <toggle-switch checked="graphs"></toggle-switch>
                     &nbsp;&nbsp;
@@ -98,10 +98,10 @@
                 </div>
                 <div ng-show="trendsLoading">
                     <div class="row" style="margin-left:-15px">
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <time-series options="occData"></time-series>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <time-series options="otherData"></time-series>
                         </div>
                     </div>
