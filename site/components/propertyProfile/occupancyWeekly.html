@@ -1,0 +1,35 @@
+<table class="table table-condensed table-striped table-hover" style="font-size:9pt">
+    <thead>
+    <tr>
+        <th style="text-align: right">
+            Date
+        </th>
+        <th class="center">
+            Occupancy
+        </th>
+        <th class="center">
+            Traffic / Week
+        </th>
+
+        <th class="center">
+            Leases / Week
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in data">
+        <td style="text-align: right">
+          {{item.d | date: 'MM/dd/yyyy'}}
+        </td>
+        <td class="center">
+            {{item.occ| number : 1}}%
+        </td>
+        <td class="center">
+            {{item.traffic| number : 0}}
+        </td>
+        <td class="center">
+            {{item.leases| number : 0}}
+        </td>
+    </tr>
+    </tbody>
+</table>

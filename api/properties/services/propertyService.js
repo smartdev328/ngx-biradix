@@ -570,7 +570,7 @@ module.exports = {
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
             for (var prop in points) {
 
-                if (show.graphs !== true) {
+                if (show.graphs === true) {
                     if (show.occupancy) {
                         points[prop].occupancy = normailizePoints(points[prop].occupancy, offset, dr);
                     }

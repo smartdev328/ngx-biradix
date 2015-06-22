@@ -93,7 +93,9 @@
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <time-series options="nerData"></time-series>
+                    <div  ng-if="graphs">
+                        <time-series options="nerData"></time-series>
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,13 +107,16 @@
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <div class="row" style="margin-left:-15px">
-                        <div class="col-md-6">
+                    <div class="row" style="margin-left:-15px" ng-if="graphs">
+                        <div class="col-sm-6">
                             <time-series options="occData"></time-series>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-sm-6">
                             <time-series options="otherData"></time-series>
                         </div>
+                    </div>
+                    <div ng-if="!graphs">
+                        <occupancy-weekly data="otherTable"></occupancy-weekly>
                     </div>
                 </div>
             </div>

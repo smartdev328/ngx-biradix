@@ -108,7 +108,6 @@ define([
                             $scope.property = response.data.property;
                             $scope.comps = response.data.comps;
 
-
                             $scope.mapOptions = {
                                 loc: $scope.property.loc,
                                 height: "300px",
@@ -171,8 +170,8 @@ define([
                         var ner = $propertyService.extractSeries(response.data.points, ['ner'],[],0,1000,0, $scope.comps, $scope.summary);
                         var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],[],80,100,1, $scope.comps, $scope.summary);
 
-                        $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
-                        $scope.occData = {height:300, printWidth:820, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
+                        $scope.nerData = {height:300, printWidth:860, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
+                        $scope.occData = {height:300, printWidth:860, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
 
 
                     $scope.localLoading = true;

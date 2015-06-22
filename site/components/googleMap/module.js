@@ -95,7 +95,6 @@ define([
                 $scope.$watch('options', function(){
 
                     if ($scope.options) {
-
                         if ($scope.aMarkers) {
 
                             for (var i = 0; i < $scope.aMarkers.length; i++) {

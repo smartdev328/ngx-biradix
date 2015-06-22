@@ -6,6 +6,7 @@ define([
     '../../components/propertyProfile/fees',
     '../../components/propertyProfile/amenities',
     '../../components/propertyProfile/floorplans',
+    '../../components/propertyProfile/occupancyWeekly',
     '../../services/progressService',
     '../../components/toggle/module',
     '../../components/daterangepicker/module',
@@ -81,7 +82,6 @@ define([
                             }
                             $scope.localLoading = true;
                             $window.document.title = $scope.property.name;
-                            $scope.setRenderable();
 
                             $scope.property.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
                             $scope.property.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
@@ -146,24 +146,51 @@ define([
                                     labels.push(p + ' Bedrooms')
                                 }
                             }
+
+                            $scope.surveyData = pts.surveys;
                         }
+
 
                         var ner = $propertyService.extractSeries(response.data.points, keys,labels,0,1000,0, [$scope.property], false);
                         var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],['Occupancy %'],80,100,1, [$scope.property], false);
                         var other = $propertyService.extractSeries(response.data.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [$scope.property], false);
 
-                        $scope.nerData = {height:300, printWidth:820, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
-                        $scope.occData = {height:250, printWidth:400, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
-                        $scope.otherData = {height:250, printWidth:400, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
+
+
+                        $scope.nerData = {height:300, printWidth:860, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
+                        $scope.occData = {height:250, printWidth:420, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
+                        $scope.otherData = {height:250, printWidth:420, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
 
 
                         $scope.localLoading = true;
                         $scope.trendsLoading = true;
 
+                        if (pts && !$scope.graphs) {
+                            $scope.otherTable = $scope.extractTableViews($scope.surveyData, $scope.occData, pts['traffic'], pts['leases']);
+                        }
+
+                        $scope.setRenderable();
+
 
                 });
             }
         };
+
+        $scope.extractTableViews = function(surveys, occupancy, traffic, leases) {
+            var table = [];
+
+            occupancy.data[0].data.forEach(function(o) {
+
+                var tr = _.find(traffic, function(x) {return x.d == o[0]})
+                var ls = _.find(leases, function(x) {return x.d == o[0]})
+                table.push({d: o[0], occ: o[1], traffic: tr.v, leases: ls.v});
+            } )
+
+            table = _.sortBy(table, function(x) {return -x.d})
+
+            return table;
+
+        }
 
         $scope.loadProperty($scope.propertyId)
 

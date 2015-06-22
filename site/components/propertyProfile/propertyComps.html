@@ -1,5 +1,5 @@
-<div class="pull-right" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-danger" style="border-radius: 2px;background-color: #f2dede">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 15+ days</span></div>
-<div class="pull-right" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-warning" style="border-radius: 2px;background-color: #fcf8e3">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 8+ days</span></div>
+<div class="pull-right hidden-print" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-danger" style="border-radius: 2px;background-color: #f2dede">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 15+ days</span></div>
+<div class="pull-right hidden-print" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-warning" style="border-radius: 2px;background-color: #fcf8e3">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 8+ days</span></div>
 
 <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
     <tr>
@@ -76,7 +76,7 @@
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
         <td style="text-align:center">
-            <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
+            <a href ng-click="marketSurvey(comp._id)" class="hidden-print"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          popover-trigger="mouseenter"
                                                          popover-placement="left"
                                                          popover-title="New Market Survey"
