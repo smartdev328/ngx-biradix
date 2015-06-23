@@ -23,6 +23,11 @@ define([
                                     type: 'spline',
                                     ignoreHiddenSeries : false
                                 },
+                                plotOptions: {
+                                    series: {
+                                        animation: false
+                                    }
+                                },
                                 //plotOptions: {
                                 //    spline: {
                                 //        marker: {
@@ -63,7 +68,7 @@ define([
                             };
                             el.highcharts(data);
                             el2.highcharts(data);
-                        }, 500);
+                        }, 200);
 
                     }
 
