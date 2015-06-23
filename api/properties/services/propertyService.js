@@ -675,6 +675,8 @@ module.exports = {
                         comp.survey.tier = "warning";
                     }
 
+                    comp.survey.days = daysSince;
+
                     getSurveyStats(s.floorplans, comp.survey, links, hide);
 
                     comp.survey.bedrooms = {};

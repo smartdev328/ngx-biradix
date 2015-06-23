@@ -121,7 +121,14 @@ Routes.post('/:id/profile', function (req, res) {
                 }, function(err, all2) {
                     all2.comps.forEach(function(c) {
                         delete c.floorplans;
+                        var daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
+                        if (daysSince >= 15) {
+                            c.survey.tier = "danger";
+                        } else if (daysSince >= 8) {
+                            c.survey.tier = "warning";
+                        }
                     })
+
                     res.status(200).json({properties: all.view.p, comps: all2.comps, lookups: all.view.l, points: all2.points, canManage: all.modify.length == 1})
                 });
             })
@@ -255,14 +262,51 @@ Routes.get('/:id/pdf', function (req, res) {
             var url = req.protocol + '://' + req.get('host') + "/#/profile/" + p._id;
 
             var cookies = [{
-                'name'     : 'token',   /* required property */
-                'value'    : full.token,  /* required property */
-                'domain'   : req.hostname,
-                'path'     : '/',                /* required property */
-                'httponly' : false,
-                'secure'   : false,
-                'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
-            }];
+                    'name'     : 'token',   /* required property */
+                    'value'    : full.token,  /* required property */
+                    'domain'   : req.hostname,
+                    'path'     : '/',                /* required property */
+                    'httponly' : false,
+                    'secure'   : false,
+                    'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+                },
+                {
+                    'name'     : 'Graphs',   /* required property */
+                    'value'    : req.query.Graphs,  /* required property */
+                    'domain'   : req.hostname,
+                    'path'     : '/',                /* required property */
+                    'httponly' : false,
+                    'secure'   : false,
+                    'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+                },
+                {
+                    'name'     : 'selectedStartDate',   /* required property */
+                    'value'    : req.query.selectedStartDate,  /* required property */
+                    'domain'   : req.hostname,
+                    'path'     : '/',                /* required property */
+                    'httponly' : false,
+                    'secure'   : false,
+                    'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+                },
+                {
+                    'name'     : 'selectedEndDate',   /* required property */
+                    'value'    : req.query.selectedEndDate,  /* required property */
+                    'domain'   : req.hostname,
+                    'path'     : '/',                /* required property */
+                    'httponly' : false,
+                    'secure'   : false,
+                    'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+                },
+                {
+                    'name'     : 'selectedRange',   /* required property */
+                    'value'    : req.query.selectedRange,  /* required property */
+                    'domain'   : req.hostname,
+                    'path'     : '/',                /* required property */
+                    'httponly' : false,
+                    'secure'   : false,
+                    'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+                }
+            ];
 
             //console.log('Pdf: ' + url);
             //console.log(cookies);

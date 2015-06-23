@@ -1,0 +1,54 @@
+<div class="alert alert-warning" role="alert" ng-if="!data || data.length == 0">
+    There is currently no data avaiable.
+</div>
+
+<table class="table table-condensed table-striped table-hover" style="font-size:9pt" ng-if="data && data.length > 0">
+    <thead>
+    <tr>
+        <th class="center">
+            Date
+        </th>
+        <th class="center" ng-if="columns.indexOf('occupancy') > -1">
+            Occupancy
+        </th>
+        <th class="center" ng-if="columns.indexOf('traffic') > -1">
+            Traffic / Week
+        </th>
+
+        <th class="center" ng-if="columns.indexOf('leases') > -1">
+            Leases / Week
+        </th>
+
+        <th class="center" ng-if="columns.indexOf('ner') > -1">
+            Entire Property
+        </th>
+
+        <th class="center" ng-repeat="b in bedrooms">
+            {{b}} Bedrooms
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in data">
+        <td class="center">
+          {{item.d | date: 'MM/dd/yyyy'}}
+        </td>
+        <td class="center" ng-if="columns.indexOf('occupancy') > -1">
+            {{item.occ| number : 1}}%
+        </td>
+        <td class="center" ng-if="columns.indexOf('traffic') > -1">
+            {{item.traffic| number : 0}}
+        </td>
+        <td class="center" ng-if="columns.indexOf('leases') > -1">
+            {{item.leases| number : 0}}
+        </td>
+        <td class="center" ng-if="columns.indexOf('ner') > -1">
+            ${{item.ner | number : 0}}
+        </td>
+
+        <td class="center" ng-repeat="b in bedrooms">
+            ${{item[b] | number : 0}}
+        </td>
+    </tr>
+    </tbody>
+</table>

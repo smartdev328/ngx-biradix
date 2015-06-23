@@ -101,7 +101,7 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                         }
-                    ,{ner: true, occupancy: true}
+                    ,{ner: true, occupancy: true, graphs: true}
                 ).then(function (response) {
 
                         if (!trendsOnly) {

@@ -6,7 +6,7 @@ define([
     '../../components/propertyProfile/fees',
     '../../components/propertyProfile/amenities',
     '../../components/propertyProfile/floorplans',
-    '../../components/propertyProfile/occupancyWeekly',
+    '../../components/propertyProfile/tableView',
     '../../services/progressService',
     '../../components/toggle/module',
     '../../components/daterangepicker/module',
@@ -166,7 +166,8 @@ define([
                         $scope.trendsLoading = true;
 
                         if (pts && !$scope.graphs) {
-                            $scope.otherTable = $scope.extractTableViews($scope.surveyData, $scope.occData, pts['traffic'], pts['leases']);
+                            $scope.nerKeys = keys;
+                            $scope.otherTable = $scope.extractTableViews($scope.surveyData, $scope.occData, pts, keys);
                         }
 
                         $scope.setRenderable();
@@ -176,14 +177,24 @@ define([
             }
         };
 
-        $scope.extractTableViews = function(surveys, occupancy, traffic, leases) {
+        $scope.extractTableViews = function(surveys, occupancy, pts, nerColumns) {
             var table = [];
 
             occupancy.data[0].data.forEach(function(o) {
 
-                var tr = _.find(traffic, function(x) {return x.d == o[0]})
-                var ls = _.find(leases, function(x) {return x.d == o[0]})
-                table.push({d: o[0], occ: o[1], traffic: tr.v, leases: ls.v});
+                var tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
+                var ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
+
+                var row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v}
+
+                nerColumns.forEach(function(k) {
+                    var n = _.find(pts[k], function(x) {return x.d == o[0]})
+
+                    row[k] = n.v
+                })
+
+
+                table.push(row);
             } )
 
             table = _.sortBy(table, function(x) {return -x.d})
@@ -246,8 +257,13 @@ define([
 
             var url = '/api/1.0/properties/' + $scope.property._id + '/pdf?'
             url += "token=" + $cookies.get('token')
+            url += "&Graphs=" + $scope.graphs
+            url += "&selectedStartDate=" + $scope.daterange.selectedStartDate.format()
+            url += "&selectedEndDate=" + $scope.daterange.selectedEndDate.format()
+            url += "&selectedRange=" + $scope.daterange.selectedRange
             url += "&timezone=" + moment().utcOffset()
             url += "&progressId=" + $scope.progressId
+
 
             $window.setTimeout($scope.checkProgress, 500);
 
