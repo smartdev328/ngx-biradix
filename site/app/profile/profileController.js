@@ -177,6 +177,11 @@ define([
             }
         };
 
+        $scope.width = function() {
+
+            return $(window).width()
+        }
+
         $scope.extractTableViews = function(surveys, occupancy, pts, nerColumns) {
             var table = [];
 
@@ -247,7 +252,7 @@ define([
 
         }
 
-        $scope.pdf = function() {
+        $scope.pdf = function(full) {
 
             ngProgress.start();
 
@@ -263,12 +268,17 @@ define([
             url += "&selectedRange=" + $scope.daterange.selectedRange
             url += "&timezone=" + moment().utcOffset()
             url += "&progressId=" + $scope.progressId
+            url += "&full=" + full
 
 
             $window.setTimeout($scope.checkProgress, 500);
 
             location.href = url;
 
+        }
+
+        $scope.printFull = function() {
+            window.open('/#/full/' + $scope.property._id, 'print', 'height:300,width:300');
         }
 
     }]);

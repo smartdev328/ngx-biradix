@@ -25,6 +25,21 @@ define(['app'], function (app) {
             });
         }
 
+        fac.full = function (id,summary,bedrooms,daterange, show) {
+            return $http.post('/api/1.0/properties/' + id + '/full', {
+                summary: summary,
+                bedrooms: bedrooms,
+                daterange:daterange,
+                offset: moment().utcOffset(),
+                show: show
+            }, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.dashboard = function (id,summary,bedrooms,daterange, show) {
             return $http.post('/api/1.0/properties/' + id + '/dashboard', {
                 summary: summary,
@@ -204,6 +219,90 @@ define(['app'], function (app) {
             }
 
             return {data: series, min: min, max: max};
+        }
+
+
+        var markerContent = function(property) {
+            return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
+        }
+
+        fac.parseDashboard = function(dashboard, summary) {
+
+            var resp = {};
+
+            resp.property = dashboard.property;
+            resp.comps = dashboard.comps;
+
+            resp.mapOptions = {
+                loc: resp.property.loc,
+                height: "300px",
+                width: "100%",
+                points: [{
+                    loc: resp.property.loc,
+                    marker: 'apartment-3',
+                    content: markerContent(resp.property)
+                }]
+            }
+
+            resp.comps = _.sortBy(resp.comps, function (n) {
+
+                if (n._id.toString() == resp.property._id.toString()) {
+                    return "-1";
+                }
+                return n.name;
+            })
+
+            resp.comps.forEach(function (c, i) {
+                if (c._id.toString() != resp.property._id.toString()) {
+                    resp.mapOptions.points.push({
+                        loc: c.loc,
+                        marker: 'number_' + i,
+                        content: markerContent(c)
+                    })
+                }
+            })
+
+            resp.bedrooms = [{value: -1, text: 'All'}]
+
+            if (resp.comps[0].survey && resp.comps[0].survey.floorplans) {
+                var includedFps = _.filter(resp.comps[0].survey.floorplans, function (x) {
+                    return !x.excluded
+                });
+
+                var bedrooms = _.groupBy(includedFps, function (x) {
+                    return x.bedrooms
+                });
+
+                for (var b in bedrooms) {
+                    switch (b) {
+                        case 0:
+                            resp.bedrooms.push({value: 0, text: 'Studios'})
+                            break;
+                        default:
+                            resp.bedrooms.push({value: b, text: b + ' Bdrs.'})
+                            break;
+                    }
+                }
+
+                _.sortBy(resp.bedrooms, function (x) {
+                    return x.value
+                })
+            }
+
+            resp.bedroom = _.find(resp.bedrooms, function(x) {return x.value == resp.selectedBedroom});
+
+            if (!resp.bedroom) {
+                resp.bedroom = resp.bedrooms[0];
+            }
+
+            resp.points = {excluded: dashboard.points.excluded};
+            var ner = fac.extractSeries(dashboard.points, ['ner'],[],0,1000,0, resp.comps, summary);
+            var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],80,100,1, resp.comps, summary);
+
+            resp.nerData = {height:300, printWidth:860, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
+            resp.occData = {height:300, printWidth:860, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
+
+            return resp;
         }
 
         return fac;

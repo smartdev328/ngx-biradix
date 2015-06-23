@@ -118,6 +118,7 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'dashboard/dashboardController')}}
             })
+
             .state('manageUsers', {
                 url: "/manageusers",
                 views: {
@@ -160,6 +161,16 @@ define([
                     }
                 },
                 resolve: {get : function($q) {return resolve($q, 'profile/profileController')}}
+            })
+            .state('full', {
+                url: "/full/:id",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/full/full.html",
+                        controller : "fullController"
+                    }
+                },
+                resolve: {get : function($q) {return resolve($q, 'full/fullController')}}
             })
     });
 

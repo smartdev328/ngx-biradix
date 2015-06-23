@@ -104,75 +104,20 @@ define([
                     ,{ner: true, occupancy: true, graphs: true}
                 ).then(function (response) {
 
-                        if (!trendsOnly) {
-                            $scope.property = response.data.property;
-                            $scope.comps = response.data.comps;
+                    var resp = $propertyService.parseDashboard(response.data,$scope.summary);
 
-                            $scope.mapOptions = {
-                                loc: $scope.property.loc,
-                                height: "300px",
-                                width: "100%",
-                                points: [{
-                                    loc: $scope.property.loc,
-                                    marker: 'apartment-3',
-                                    content: $scope.makrerContent($scope.property)
-                                }]
-                            }
+                    if (!trendsOnly) {
+                        $scope.property = resp.property;
+                        $scope.comps = resp.comps;
 
-                            $scope.comps = _.sortBy($scope.comps, function (n) {
+                        $scope.mapOptions = resp.mapOptions;
+                        $scope.bedrooms = resp.bedrooms;
+                        $scope.bedroom = resp.bedroom;;
+                    }
 
-                                if (n._id.toString() == $scope.property._id.toString()) {
-                                    return "-1";
-                                }
-                                return n.name;
-                            })
-
-                            $scope.comps.forEach(function (c, i) {
-                                if (c._id.toString() != $scope.property._id.toString()) {
-                                    $scope.mapOptions.points.push({
-                                        loc: c.loc,
-                                        marker: 'number_' + i,
-                                        content: $scope.makrerContent(c)
-                                    })
-                                }
-                            })
-                            $scope.bedrooms = [{value: -1, text: 'All'}]
-
-                            if ($scope.comps[0].survey && $scope.comps[0].survey.floorplans) {
-                                var includedFps = _.filter($scope.comps[0].survey.floorplans, function (x) {
-                                    return !x.excluded
-                                });
-
-                                var bedrooms = _.groupBy(includedFps, function (x) {
-                                    return x.bedrooms
-                                });
-
-                                for (var b in bedrooms) {
-                                    switch (b) {
-                                        case 0:
-                                            $scope.bedrooms.push({value: 0, text: 'Studios'})
-                                            break;
-                                        default:
-                                            $scope.bedrooms.push({value: b, text: b + ' Bdrs.'})
-                                            break;
-                                    }
-                                }
-
-                                _.sortBy($scope.bedrooms, function (x) {
-                                    return x.value
-                                })
-                            }
-
-                            $scope.selectBedroom();
-                        }
-
-                        $scope.points = {excluded: response.data.points.excluded};
-                        var ner = $propertyService.extractSeries(response.data.points, ['ner'],[],0,1000,0, $scope.comps, $scope.summary);
-                        var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],[],80,100,1, $scope.comps, $scope.summary);
-
-                        $scope.nerData = {height:300, printWidth:860, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
-                        $scope.occData = {height:300, printWidth:860, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
-
+                    $scope.points = resp.points;
+                    $scope.nerData = resp.nerData;
+                    $scope.occData = resp.occData;
 
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
@@ -180,18 +125,6 @@ define([
             }
         };
 
-        $scope.selectBedroom = function() {
-            $scope.bedroom = _.find($scope.bedrooms, function(x) {return x.value == $scope.selectedBedroom});
-
-            if (!$scope.bedroom) {
-                $scope.bedroom = $scope.bedrooms[0];
-            }
-        }
-
-        $scope.makrerContent = function(property) {
-
-            return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
-        }
 
     }]);
 });

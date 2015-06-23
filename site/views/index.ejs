@@ -60,8 +60,8 @@
                 </div>
             </div><!-- /.container-fluid -->
         </nav>
-        <br clear="all">
-        <nav class="navbar navbar-default nav-bar-2">
+        <br clear="all" class="hidden-print">
+        <nav class="navbar navbar-default nav-bar-2 hidden-print">
             <div class="container-fluid">
                 <div class="navbar-header">
 
@@ -152,7 +152,7 @@
 
                                 <div ui-view="loggedInView"></div>
 
-                                <div class="small" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
+                                <div class="small hidden-print" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
                             </div>
                         </div>
                     </div>

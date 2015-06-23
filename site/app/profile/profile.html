@@ -5,7 +5,7 @@
 </style>
 <div class="row" ng-show="localLoading">
     <div class="col-xs-7 col-sm-7">
-        <h3 style="padding-left:5px">{{property.name}}</h3>
+        <h3 style="magin-left:-5px">{{property.name}}</h3>
     </div>
     <div class="col-xs-5 col-sm-5 hidden-print">
         <div class="btn-group pull-right" style="padding-bottom:10px">
@@ -14,7 +14,9 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a href ng-click="print()"><i class="fa fa-print"></i> Print: Property Profile</a></li>
-                <li><a href ng-click="pdf()"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile</a></li>
+                <li><a href ng-click="printFull()"><i class="fa fa-print"></i> Print: Property Profile + Comps</a></li>
+                <li><a href ng-click="pdf(false)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile</a></li>
+                <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile + Comps</a></li>
                 <li><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
             </ul>
         </div>
@@ -29,7 +31,7 @@
 </div>
 <div class="row" ng-show="localLoading">
 
-    <div class="alert alert-{{comp.survey.tier}}" role="alert" ng-if="comp.survey.tier">
+    <div class="hidden-print alert alert-{{comp.survey.tier}}" role="alert" ng-if="comp.survey.tier">
         Property has not been updated in {{comp.survey.days | number : 0}} days.
     </div>
 
