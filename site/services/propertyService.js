@@ -235,8 +235,9 @@ define(['app'], function (app) {
 
             resp.mapOptions = {
                 loc: resp.property.loc,
-                height: "300px",
+                height: "300",
                 width: "100%",
+                printWidth: "300",
                 points: [{
                     loc: resp.property.loc,
                     marker: 'apartment-3',

@@ -1,4 +1,5 @@
-<div ng-show="gLoaded"></div>
+<div ng-show="gLoaded" ng-if="!phantom"></div>
+<img ng-show="gLoaded" ng-if="phantom" width="{{options.printWidth}}" height="{{options.height}}" ng-src="{{staticUrl}}">
 <div ng-show="!gLoaded" style="display:block;width:40px;margin:50px auto">
     <img src="/images/squares.gif" style="width:40px">
 </div>

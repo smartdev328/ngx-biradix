@@ -18,9 +18,10 @@ module.exports = (function() {
                 org = _.find(orgs, function(org) { return org.isDefault === true })
             }
 
-            var local = (subdomain == 'localhost' || req.headers['user-agent'].indexOf('PhantomJS') > -1);
+            var phantom = req.headers['user-agent'].indexOf('PhantomJS') > -1;
+            var local = (subdomain == 'localhost' || phantom);
 
-            res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local});
+            res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom});
 
         })
 

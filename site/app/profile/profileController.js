@@ -24,7 +24,7 @@ define([
         $scope.setRenderable = function() {
             window.setTimeout(function() {
                 window.renderable = true;
-            },600)
+            },500)
         }
 
         $scope.daterange=$cookieSettingsService.getDaterange();

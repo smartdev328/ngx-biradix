@@ -25,7 +25,7 @@ define([
                                 },
                                 plotOptions: {
                                     series: {
-                                        animation: false
+                                        animation: !phantom
                                     }
                                 },
                                 //plotOptions: {
