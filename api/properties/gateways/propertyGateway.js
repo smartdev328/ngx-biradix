@@ -276,7 +276,7 @@ Routes.get('/:id/pdf', function (req, res) {
                 paperFormat : 'Letter',        // Defaults to A4. Also supported: 'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
                 orientation : 'portrait',  // Defaults to portrait. 'landscape' is also valid
                 margin      : '0.1in',       // Defaults to 0cm. Supported dimension units are: 'mm', 'cm', 'in', 'px'. No unit means 'px'.
-                userAgent   : '',          // No default.
+                userAgent   : 'PhantomJS',          // No default.
                 headers     : {}, // Additional headers to send with each upstream HTTP request
                 paperSize   : null,        // Defaults to the paper format, orientation, and margin.
                 crop        : false,       // Defaults to false. Set to true or {top:5, left:5} to add margin

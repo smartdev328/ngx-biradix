@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "async": "^0.9.0",
     "bluebird": "^2.9.25",
     "body-parser": "^1.12.3",
+    "bower": "^1.4.1",
     "compression": "^1.4.4",
     "cookie-parser": "^1.3.4",
     "ejs": "^2.3.1",
@@ -44,5 +45,8 @@
   "engines": {
     "node": "0.10.35",
     "npm": "1.4.28"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
   }
 }

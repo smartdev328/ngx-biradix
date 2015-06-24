@@ -10,6 +10,7 @@ var compression = require('compression')
 module.exports = {
         init: function (app) {
             app.use(require('express').static(__dirname + '../../site/'));
+            app.use('/bower_components',  require('express').static(__dirname + '../../bower_components/'));
 
             app.use(cookieParser())
 
