@@ -1,7 +1,7 @@
 'use strict';
 define([
     'app',
-    '//code.highcharts.com/highcharts.js'
+    'highcharts'
 ], function (app) {
     app.directive('timeSeries', function () {
         return {

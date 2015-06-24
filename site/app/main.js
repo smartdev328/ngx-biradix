@@ -6,7 +6,8 @@ requirejs.config({
         }
     },
     paths: {
-        'async': '/libs/requirejs/async'
+        'async': '/libs/requirejs/async',
+        'highcharts': local ? '/bower_components/highcharts-release/highcharts' : '//code.highcharts.com/highcharts'
     }
 });
 
