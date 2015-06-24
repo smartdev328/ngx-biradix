@@ -1,0 +1,17 @@
+{
+  "name": "biradix2",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "alex"
+  ],
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "3.3.4",
+    "jquery": "2.1.4"
+  }
+}
