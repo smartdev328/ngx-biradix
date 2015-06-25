@@ -226,6 +226,129 @@ define(['app'], function (app) {
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
 
+        var extractTableViews = function(surveys, occupancy, pts, nerColumns) {
+            var table = [];
+
+            occupancy.data[0].data.forEach(function(o) {
+
+                var tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
+                var ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
+
+                var row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v}
+
+                nerColumns.forEach(function(k) {
+                    var n = _.find(pts[k], function(x) {return x.d == o[0]})
+
+                    row[k] = n.v
+                })
+
+
+                table.push(row);
+            } )
+
+            table = _.sortBy(table, function(x) {return -x.d})
+
+            return table;
+
+        }
+        fac.parseProfile = function(profile, graphs) {
+
+            var resp = {};
+            resp.lookups = profile.lookups;
+
+            if (!profile.property) {
+                return null;
+            } else {
+                resp.property = profile.property;
+                resp.canManage = profile.canManage;
+                resp.comp = profile.comps[0];
+            }
+
+            resp.property.hasName = resp.property.contactName && resp.property.contactName.length > 0;
+            resp.property.hasEmail = resp.property.contactEmail && resp.property.contactEmail.length > 0;
+            resp.property.hasNotes = resp.property.notes && resp.property.notes.length > 0;
+            resp.property.hasContact = resp.property.hasName || resp.property.hasEmail;
+            resp.property.notes = resp.property.notes.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+            resp.property.hasFees = false;
+            if (resp.property.fees) {
+                for (var fee in resp.property.fees) {
+                    if (resp.property.fees[fee].length > 0) {
+                        resp.property.hasFees = true;
+                    }
+                }
+            }
+
+            resp.property.location_am = [];
+            resp.property.location_amenities.forEach(function (la) {
+                var am = _.find(resp.lookups.amenities, function (a) {
+                    return a._id.toString() == la.toString()
+                })
+                if (am) {
+                    resp.property.location_am.push(am.name)
+                }
+            })
+
+            resp.property.community_am = [];
+            resp.property.community_amenities.forEach(function (la) {
+                var am = _.find(resp.lookups.amenities, function (a) {
+                    return a._id.toString() == la.toString()
+                })
+                if (am) {
+                    resp.property.community_am.push(am.name)
+                }
+            })
+
+            resp.property.floorplan_am = [];
+            resp.property.floorplans.forEach(function (fp) {
+                fp.amenities.forEach(function (la) {
+                    var am = _.find(resp.lookups.amenities, function (a) {
+                        return a._id.toString() == la.toString()
+                    })
+                    if (am) {
+                        if (resp.property.floorplan_am.indexOf(am.name) == -1)
+                            resp.property.floorplan_am.push(am.name)
+                    }
+                })
+            })
+
+            resp.points = {excluded: profile.points.excluded};
+
+            var keys = ['ner'];
+            var labels = ['Entire Property'];
+
+            var pts = profile.points[resp.property._id];
+
+            if (pts) {
+                for (var p in pts) {
+                    if (!isNaN(p)) {
+                        keys.push(p)
+                        labels.push(p + ' Bedrooms')
+                    }
+                }
+
+                resp.surveyData = pts.surveys;
+            }
+
+
+            var ner = fac.extractSeries(profile.points, keys,labels,0,1000,0, [resp.property], false);
+            var occ = fac.extractSeries(profile.points, ['occupancy'],['Occupancy %'],80,100,1, [resp.property], false);
+            var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
+
+            resp.nerData = {height:300, printWidth:860, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
+            resp.occData = {height:250, printWidth:420, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : 80), max: (resp.summary ? occ.max : 100)};
+            resp.otherData = {height:250, printWidth:420, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
+
+            if (pts && !graphs) {
+                resp.nerKeys = keys;
+                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys);
+            }
+
+            return resp;
+        }
+
+
+
         fac.parseDashboard = function(dashboard, summary) {
 
             var resp = {};

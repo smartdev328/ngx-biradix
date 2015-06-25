@@ -59,22 +59,71 @@ Routes.get('/lookups', function (req, res) {
 });
 
 Routes.post('/:id/profile', function (req, res) {
+    getProfile(req,res, true, req.params.id, req.params.id, function(o) {
+        res.status(200).json({profile: o});
+    })
+});
+
+Routes.post('/:id/dashboard', function (req, res) {
+
+    getDashboard(req,res, function(o) {
+        res.status(200).json(o);
+    })
+
+});
+
+Routes.post('/:id/full', function (req, res) {
+
+    var graphs = req.body.show.graphs;
+    var profiles = [];
+    req.body.show.graphs = true;
+    req.body.show.selectedBedroom = -1;
+    req.body.show.ner = true;
+    req.body.show.occupancy = true;
+    getDashboard(req,res, function(dashboard) {
+        async.eachLimit(dashboard.comps, 10, function(comp, callbackp){
+            req.body.show.graphs = graphs;
+            req.body.show.traffic = true;
+            req.body.show.leases = true;
+            req.body.show.bedrooms = true;
+
+            getProfile(req,res, false, dashboard.property._id, comp._id, function(profile) {
+                profiles.push(profile)
+                callbackp();
+            })
+        }, function(err) {
+            res.status(200).json({dashboard: dashboard, profiles: profiles});
+        });
+
+    })
+
+});
+
+var getProfile = function(req,res,checkManaged, subjectId, compId, callback) {
     async.parallel({
-        view: function (callbackp) {
-            PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: req.params.id
+        subject: function (callbackp) {
+            PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: subjectId
                 , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps"
+            }, function(err, property) {
+                callbackp(err, property[0])
+            })
+        },
+        comp: function (callbackp) {
+            PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: compId
+                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans"
             }, function(err, property, lookups) {
-                if (property && property.length > 0) {
-                    property[0].comps = _.filter(property[0].comps, function(x) {return x.id == property[0]._id});
-                }
-                callbackp(err, {p: property, l: lookups})
+                callbackp(err, {p: property[0], l: lookups})
             })
         },
         modify: function(callbackp) {
+
+            if (!checkManaged) {
+                return callbackp(null,false);
+            }
             PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
                 , select: "_id"
             }, function(err, property) {
-                callbackp(err, property)
+                callbackp(err, property.length == 1)
             })
         }
     }, function(err, all) {
@@ -82,33 +131,22 @@ Routes.post('/:id/profile', function (req, res) {
         if (err) {
             res.status(400).send(err)
         } else {
-            var compids = _.pluck(all.view.p[0].comps, "id");
-            delete all.view.p[0].compids;
 
             PropertyService.search(req.user, {
                 limit: 1,
                 permission: 'PropertyView',
-                ids: compids
+                ids: [compId]
                 ,
                 select: "_id name address city state zip loc totalUnits survey.id floorplans"
             }, function(err, comps) {
-                //PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.view.p[0], comps, function () {
-                //    res.status(200).json({
-                //        canManage: all.modify.length == 1,
-                //        properties: all.view.p,
-                //        lookups: all.view.l,
-                //        comps: comps
-                //    })
-                //})
-
                 async.parallel({
                     comps: function (callbackp) {
-                        PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.view.p[0], comps, function() {
+                        PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.subject, comps, function() {
                             callbackp(null, comps)
                         })
                     },
                     points: function(callbackp) {
-                        PropertyService.getPoints(req.user.settings.hideUnlinked, all.view.p[0], comps,
+                        PropertyService.getPoints(req.user.settings.hideUnlinked, all.subject, comps,
                             false,
                             -1,
                             req.body.daterange,
@@ -129,7 +167,7 @@ Routes.post('/:id/profile', function (req, res) {
                         }
                     })
 
-                    res.status(200).json({properties: all.view.p, comps: all2.comps, lookups: all.view.l, points: all2.points, canManage: all.modify.length == 1})
+                    callback({property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
                 });
             })
 
@@ -137,23 +175,7 @@ Routes.post('/:id/profile', function (req, res) {
 
     });
 
-});
-
-Routes.post('/:id/dashboard', function (req, res) {
-
-    getDashboard(req,res, function(o) {
-        res.status(200).json(o);
-    })
-
-});
-
-Routes.post('/:id/full', function (req, res) {
-
-    getDashboard(req,res, function(o) {
-        res.status(200).json({dashboard: o});
-    })
-
-});
+}
 
 var getDashboard = function(req,res,callback) {
     PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
@@ -260,9 +282,13 @@ Routes.get('/:id/pdf', function (req, res) {
             moment().utcOffset(req.query.timezone);
 
             var p = properties[0];
-            var fileName = p.name.replace(/ /g, "_") + '_and_Comps_';
+            var fileName = p.name.replace(/ /g, "_");
 
-            fileName += moment().format("MM_DD_YYYY");
+            if (req.query.full == "true") {
+                fileName += '_and_Comps';
+            }
+
+            fileName += "_" + moment().format("MM_DD_YYYY");
 
             fileName += ".pdf";
 
@@ -290,7 +316,7 @@ Routes.get('/:id/pdf', function (req, res) {
 
             var render = phantom(options);
 
-            var url = req.protocol + '://' + req.get('host') + "/#/" + (req.query.full ? "full" : "profile") + "/" + p._id;
+            var url = req.protocol + '://' + req.get('host') + "/#/" + (req.query.full == "true" ? "full" : "profile") + "/" + p._id;
 
             var cookies = [{
                     'name'     : 'token',   /* required property */

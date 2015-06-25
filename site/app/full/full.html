@@ -52,4 +52,93 @@
 
 </div>
 
+<div class="row" ng-show="localLoading" ng-repeat="profile in profiles" style="page-break-before: always;">
+    <div class="col-md-4 col-sm-5 col-lg-3 left-print">
+        <div class="panel panel-info">
+            <div class="panel-heading">{{profile.property.name}}</div>
+            <div class="panel-body">
+                <property-profile property="profile.property"></property-profile>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-show="profile.property.community_am.length > 0">
+            <div class="panel-heading">Community Amenities</div>
+            <div class="panel-body">
+                <property-amenities amenities="profile.property.community_am"></property-amenities>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-show="profile.property.location_am.length > 0">
+            <div class="panel-heading">Location Amenities</div>
+            <div class="panel-body">
+                <property-amenities amenities="profile.property.location_am"></property-amenities>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-show="profile.property.floorplan_am.length > 0">
+            <div class="panel-heading">Unit Amenities</div>
+            <div class="panel-body">
+                <property-amenities amenities="profile.property.floorplan_am"></property-amenities>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-show="profile.property.hasFees">
+            <div class="panel-heading">Fees, Deposits, Lease Terms</div>
+            <div class="panel-body">
+                <property-fees fees="profile.property.fees" lookups="profile.lookups.fees"></property-fees>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-7 col-lg-9 right-print">
 
+        <div class="panel panel-info" ng-show="profile.property.hasContact || profile.property.hasNotes">
+            <div class="panel-heading">About Property</div>
+            <div class="panel-body">
+                <property-about property="profile.property"></property-about>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Net Effective Rent
+                <i class="fa fa-exclamation-triangle"
+                   style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+                   ng-if="points.excluded"
+                   popover-trigger="mouseenter"
+                   popover-placement="right"
+                   popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                        ></i>
+            </div>
+            <div class="panel-body">
+                <div  ng-if="graphs">
+                    <time-series options="profile.nerData"></time-series>
+                </div>
+
+                <div ng-if="!graphs">
+                    <table-view data="profile.otherTable" columns="profile.nerKeys"></table-view>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Occupancy, Traffic, & Leases</div>
+            <div class="panel-body">
+                <div class="row" style="margin-left:-15px" ng-if="graphs">
+                    <div class="col-sm-6">
+                        <time-series options="profile.occData"></time-series>
+                    </div>
+                    <div class="col-sm-6">
+                        <time-series options="profile.otherData"></time-series>
+                    </div>
+                </div>
+                <div ng-if="!graphs">
+                    <table-view data="profile.otherTable" columns="['occupancy', 'leases', 'traffic']"></table-view>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Floor Plans</div>
+            <div class="panel-body"  style="overflow-x:auto">
+                <property-floorplans comp="profile.comp"></property-floorplans>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -3,9 +3,12 @@ define([
     'app',
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/comps',
+    '../../components/propertyProfile/about',
+    '../../components/propertyProfile/fees',
+    '../../components/propertyProfile/amenities',
+    '../../components/propertyProfile/floorplans',
+    '../../components/propertyProfile/tableView',
     '../../components/googleMap/module',
-    '../../components/toggle/module',
-    '../../components/daterangepicker/module',
     '../../components/timeseries/module',
     '../../services/cookieSettingsService'
 ], function (app) {
@@ -24,6 +27,8 @@ define([
 
         $scope.summary = $cookieSettingsService.getSummary();
 
+        $scope.graphs = $cookieSettingsService.getGraphs();
+
 
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
@@ -38,7 +43,7 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                         }
-                    ,{ner: true, occupancy: true, graphs: true}
+                    ,{graphs: $scope.graphs }
                 ).then(function (response) {
                     var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary);
 
@@ -56,7 +61,26 @@ define([
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
 
-                        $scope.setRenderable();
+                        $scope.profiles = [];
+
+                    response.data.profiles.forEach(function(p) {
+                        var resp = $propertyService.parseProfile(p,$scope.graphs);
+
+                        $scope.profiles.push({
+                            lookups : resp.lookups,
+                            property : resp.property,
+                            comp : resp.comp,
+                            points : resp.points,
+                            surveyData : resp.surveyData,
+                            nerData : resp.nerData,
+                            occData : resp.occData,
+                            otherData : resp.otherData,
+                            nerKeys : resp.nerKeys,
+                            otherTable : resp.otherTable
+                        });
+                    })
+
+                    $scope.setRenderable();
                 });
             }
         };
@@ -65,8 +89,11 @@ define([
 
         $scope.setRenderable = function() {
             window.setTimeout(function() {
+                if (!phantom) {
+                    window.print();
+                }
                 window.renderable = true;
-            },500)
+            },1000)
         }
 
     }]);

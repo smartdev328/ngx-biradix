@@ -24,7 +24,7 @@ define([
         $scope.setRenderable = function() {
             window.setTimeout(function() {
                 window.renderable = true;
-            },500)
+            },600)
         }
 
         $scope.daterange=$cookieSettingsService.getDaterange();
@@ -68,107 +68,31 @@ define([
                     }
                     ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs}
                 ).then(function (response) {
+                        var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs);
+
+                        if (!resp) {
+                            $location.path('/dashboard')
+                            return;
+                        }
+
                         if (!trendsOnly) {
-                            $scope.lookups = response.data.lookups;
-
-
-                            if (!response.data.properties) {
-                                $location.path('/dashboard')
-                                return;
-                            } else {
-                                $scope.property = response.data.properties[0];
-                                $scope.canManage = response.data.canManage;
-                                $scope.comp = response.data.comps[0];
-                            }
-                            $scope.localLoading = true;
+                            $scope.lookups = resp.lookups;
+                            $scope.property = resp.property;
+                            $scope.canManage = resp.canManage;
+                            $scope.comp = resp.comp;
                             $window.document.title = $scope.property.name;
-
-                            $scope.property.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
-                            $scope.property.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
-                            $scope.property.hasNotes = $scope.property.notes && $scope.property.notes.length > 0;
-                            $scope.property.hasContact = $scope.property.hasName || $scope.property.hasEmail;
-                            $scope.property.notes = $scope.property.notes.replace(/(?:\r\n|\r|\n)/g, '<br />');
-
-                            $scope.property.hasFees = false;
-                            if ($scope.property.fees) {
-                                for (var fee in $scope.property.fees) {
-                                    if ($scope.property.fees[fee].length > 0) {
-                                        $scope.property.hasFees = true;
-                                    }
-                                }
-                            }
-
-                            $scope.property.location_am = [];
-                            $scope.property.location_amenities.forEach(function (la) {
-                                var am = _.find($scope.lookups.amenities, function (a) {
-                                    return a._id.toString() == la.toString()
-                                })
-                                if (am) {
-                                    $scope.property.location_am.push(am.name)
-                                }
-                            })
-
-                            $scope.property.community_am = [];
-                            $scope.property.community_amenities.forEach(function (la) {
-                                var am = _.find($scope.lookups.amenities, function (a) {
-                                    return a._id.toString() == la.toString()
-                                })
-                                if (am) {
-                                    $scope.property.community_am.push(am.name)
-                                }
-                            })
-
-                            $scope.property.floorplan_am = [];
-                            $scope.property.floorplans.forEach(function (fp) {
-                                fp.amenities.forEach(function (la) {
-                                    var am = _.find($scope.lookups.amenities, function (a) {
-                                        return a._id.toString() == la.toString()
-                                    })
-                                    if (am) {
-                                        if ($scope.property.floorplan_am.indexOf(am.name) == -1)
-                                            $scope.property.floorplan_am.push(am.name)
-                                    }
-                                })
-                            })
                         }
 
-                        $scope.points = {excluded: response.data.points.excluded};
-
-                        var keys = ['ner'];
-                        var labels = ['Entire Property'];
-
-                        var pts = response.data.points[$scope.propertyId];
-
-                        if (pts) {
-                            for (var p in pts) {
-                                if (!isNaN(p)) {
-                                    keys.push(p)
-                                    labels.push(p + ' Bedrooms')
-                                }
-                            }
-
-                            $scope.surveyData = pts.surveys;
-                        }
-
-
-                        var ner = $propertyService.extractSeries(response.data.points, keys,labels,0,1000,0, [$scope.property], false);
-                        var occ = $propertyService.extractSeries(response.data.points, ['occupancy'],['Occupancy %'],80,100,1, [$scope.property], false);
-                        var other = $propertyService.extractSeries(response.data.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [$scope.property], false);
-
-
-
-                        $scope.nerData = {height:300, printWidth:860, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
-                        $scope.occData = {height:250, printWidth:420, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: ($scope.summary ? occ.min : 80), max: ($scope.summary ? occ.max : 100)};
-                        $scope.otherData = {height:250, printWidth:420, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
-
+                        $scope.points = resp.points;
+                        $scope.surveyData = resp.surveyData;
+                        $scope.nerData = resp.nerData
+                        $scope.occData = resp.occData;
+                        $scope.otherData = resp.otherData;
+                        $scope.nerKeys = resp.nerKeys;
+                        $scope.otherTable = resp.otherTable
 
                         $scope.localLoading = true;
                         $scope.trendsLoading = true;
-
-                        if (pts && !$scope.graphs) {
-                            $scope.nerKeys = keys;
-                            $scope.otherTable = $scope.extractTableViews($scope.surveyData, $scope.occData, pts, keys);
-                        }
 
                         $scope.setRenderable();
 
@@ -180,32 +104,6 @@ define([
         $scope.width = function() {
 
             return $(window).width()
-        }
-
-        $scope.extractTableViews = function(surveys, occupancy, pts, nerColumns) {
-            var table = [];
-
-            occupancy.data[0].data.forEach(function(o) {
-
-                var tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
-                var ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
-
-                var row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v}
-
-                nerColumns.forEach(function(k) {
-                    var n = _.find(pts[k], function(x) {return x.d == o[0]})
-
-                    row[k] = n.v
-                })
-
-
-                table.push(row);
-            } )
-
-            table = _.sortBy(table, function(x) {return -x.d})
-
-            return table;
-
         }
 
         $scope.loadProperty($scope.propertyId)
