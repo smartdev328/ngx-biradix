@@ -88,12 +88,14 @@ define([
         $scope.loadProperty($stateParams.id);
 
         $scope.setRenderable = function() {
-            window.setTimeout(function() {
-                if (!phantom) {
-                    window.print();
-                }
-                window.renderable = true;
-            },1000)
+            if (!phantom) {
+                window.print();
+            }
+            else {
+                window.setTimeout(function () {
+                    window.renderable = true;
+                }, 1000)
+            }
         }
 
     }]);
