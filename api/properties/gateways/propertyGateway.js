@@ -12,6 +12,7 @@ var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
 var async = require("async");
 var _ = require("lodash")
+var settings = require("../../../config/settings")
 
 var Routes = express.Router();
 
@@ -245,31 +246,59 @@ Routes.post('/', function (req, res) {
 });
 
 Routes.get('/:id/excel', function (req, res) {
-    PropertyService.search(req.user, {_id: req.params.id}, function(err, properties) {
 
-        moment().utcOffset(req.query.timezone);
+    var profiles = [];
+    req.body.show = {};
+    req.body.show.graphs = false;
+    req.body.show.selectedBedroom = -1;
+    req.body.show.ner = true;
+    req.body.show.occupancy = true;
+    req.body.daterange =
+    {
+        daterange: req.body.selectedRange,
+            start: req.body.selectedStartDate,
+        end: req.body.selectedEndDate
+    }
 
-        var p = properties[0];
-        var fileName = p.name.replace(/ /g, "_") + '_and_Comps_';
+    getDashboard(req,res, function(dashboard) {
+        async.eachLimit(dashboard.comps, 10, function(comp, callbackp){
+            req.body.show.traffic = true;
+            req.body.show.leases = true;
+            req.body.show.bedrooms = true;
 
-        fileName += moment().format("MM_DD_YYYY");
+            getProfile(req,res, false, dashboard.property._id, comp._id, function(profile) {
+                profiles.push(profile)
+                callbackp();
+            })
+        }, function(err) {
 
-        fileName += ".xlsx";
+            moment().utcOffset(req.query.timezone);
 
-        var r = request.post('http://biradixsheets.apphb.com/excel', {
-            form: {
-                fileName : fileName,
-                name: p.name
+            var p = dashboard.property;
+            var fileName = p.name.replace(/ /g, "_") + '_and_Comps_';
 
-            }
-        }).pipe(res)
+            fileName += moment().format("MM_DD_YYYY");
 
-        r.on('finish', function () {
-            if (req.query.progressId) {
-                ProgressService.setComplete(req.query.progressId)
-            }
-        })
+            fileName += ".xlsx";
 
+            profiles = _.sortBy(profiles, function (n) {
+
+                if (n.property._id.toString() == dashboard.property._id.toString()) {
+                    return "-1";
+                }
+                return n.property.name;
+            })
+
+            var r = request.post(settings.EXCEL_URL, {
+                json: {fileName: fileName,dashboard: dashboard, profiles: profiles}
+            }).pipe(res)
+
+            r.on('finish', function () {
+                if (req.query.progressId) {
+                    ProgressService.setComplete(req.query.progressId)
+                }
+            })
+        });
 
     })
 

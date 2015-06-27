@@ -142,6 +142,9 @@ define([
             var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
             url += "token=" + $cookies.get('token')
             url += "&timezone=" + moment().utcOffset()
+            url += "&selectedStartDate=" + $scope.daterange.selectedStartDate.format()
+            url += "&selectedEndDate=" + $scope.daterange.selectedEndDate.format()
+            url += "&selectedRange=" + $scope.daterange.selectedRange
             url += "&progressId=" + $scope.progressId
 
             $window.setTimeout($scope.checkProgress, 500);
