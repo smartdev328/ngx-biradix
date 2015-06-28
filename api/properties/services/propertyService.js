@@ -706,7 +706,6 @@ module.exports = {
                                 fp.excluded = true;
                                 delete fp.rent;
                                 delete fp.concessions;
-                                delete fp.sqft;
                                 delete fp.ner;
                                 delete fp.nersqft;
                             }
