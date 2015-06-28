@@ -255,9 +255,9 @@ Routes.get('/:id/excel', function (req, res) {
     req.body.show.occupancy = true;
     req.body.daterange =
     {
-        daterange: req.body.selectedRange,
-            start: req.body.selectedStartDate,
-        end: req.body.selectedEndDate
+        daterange: req.query.selectedRange,
+            start: req.query.selectedStartDate,
+        end: req.query.selectedEndDate
     }
 
     getDashboard(req,res, function(dashboard) {
@@ -290,7 +290,7 @@ Routes.get('/:id/excel', function (req, res) {
             })
 
             var r = request.post(settings.EXCEL_URL, {
-                json: {fileName: fileName,dashboard: dashboard, profiles: profiles}
+                json: {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone}
             }).pipe(res)
 
             r.on('finish', function () {
