@@ -13,6 +13,7 @@ var AmenityService = require('../../amenities/services/amenityService')
 var async = require("async");
 var _ = require("lodash")
 var settings = require("../../../config/settings")
+var emailService = require('../../utilities/services/emailService')
 
 var Routes = express.Router();
 
@@ -289,15 +290,27 @@ Routes.get('/:id/excel', function (req, res) {
                 return n.property.name;
             })
 
-            var r = request.post(settings.EXCEL_URL, {
-                json: {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone}
-            }).pipe(res)
+            var email = {
+                from: 'support@biradix.com',
+                to: 'alex@viderman.com',
+                subject: 'Json',
+                html: JSON.stringify({fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone})
+            };
 
-            r.on('finish', function () {
-                if (req.query.progressId) {
-                    ProgressService.setComplete(req.query.progressId)
-                }
-            })
+            emailService.send(email, function(err, status) {
+                console.log(err, status)
+                var r = request.post(settings.EXCEL_URL, {
+                    json: {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone}
+                }).pipe(res)
+
+                r.on('finish', function () {
+                    if (req.query.progressId) {
+                        ProgressService.setComplete(req.query.progressId)
+                    }
+                })
+            });
+
+
         });
 
     })
