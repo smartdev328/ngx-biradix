@@ -22,3 +22,31 @@
 .checkbox-row  {
     padding-left:10px
 }
+
+
+.stay_open_button .btn-default {
+    text-align:left
+}
+
+.stay_open_button .caret {
+    margin-top: 6px
+}
+
+.stay_open_button {width:100%}
+
+.stay_open_button .btn-default.active,
+.stay_open_button .btn-default.focus,
+.stay_open_button .btn-default:active,
+.stay_open_button .btn-default:focus,
+.stay_open_button .btn-default:hover,
+.stay_open_button .btn-default.dropdown-toggle.active,
+.stay_open_button .btn-default.dropdown-toggle.focus,
+.stay_open_button .btn-default.dropdown-toggle:active,
+.stay_open_button .btn-default.dropdown-toggle:focus,
+.stay_open_button .btn-default.dropdown-toggle:hover,
+.stay_open_button .btn-default.dropdown-toggle
+
+{
+    background-color: #ffffff;
+
+}

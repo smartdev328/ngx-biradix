@@ -1,0 +1,55 @@
+<h2>Reporting</h2>
+
+<div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
+    <div class="alert alert-warning" role="alert"><b>There are no properties assigned to your account</b></div>
+
+</div>
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div class="row" ng-show="localLoading && myProperties.length > 0">
+    <div class="panel panel-info">
+        <div class="panel-heading">Criteria</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    Subject:<Br>
+                    <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
+                    <div class="visible-print"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
+                    <select ng-show="myProperties.length > 1"
+                            class="form-control input-sm hidden-print"
+                            ng-change="changeProperty()"
+                            ng-model="selectedProperty"
+                            ng-options="item.name for item in myProperties"
+                            style="font-size:14px"
+                            >
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    Comps:<Br>
+                    <div ng-if="items.length == 0" style="text-align:center">
+                        <div class="alert alert-warning" role="alert"><b>There are no comps assigned to this property</b></div>
+                    </div>
+
+                    <div ng-if="items.length > 0">
+                        <filter-list options="options" items="items"></filter-list>
+                    </div>
+                </div>
+
+                <div class="col-sm-4" ng-if="items.length > 0">
+                    Reports:<Br>
+                    <div ng-if="items.length > 0">
+                        <filter-list options="reportOptions" items="reportItems"></filter-list>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="width:100px;margin:10px auto 0px auto" class="hidden-print" ng-if="items.length > 0">
+            <button class="btn btm-sm btn-primary" ng-click="viewProfile()">Run Report</button>
+        </div>
+    </div>
+</div>
+
+

@@ -172,6 +172,17 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'full/fullController')}}
             })
+            .state('reporting', {
+                url: "/reporting",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/reporting/reporting.html" ,
+                        controller : "reportingController"
+                    }
+
+                },
+                resolve: {get : function($q) {return resolve($q, 'reporting/reportingController')}}
+            })
     });
 
     app.filter("sanitize", ['$sce', function ($sce) {
