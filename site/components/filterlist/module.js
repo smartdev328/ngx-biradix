@@ -8,9 +8,9 @@ define([
             restrict: 'E',
             scope: {
                 options: '=',
-                items:'=',
+                items:'='
             },
-            controller: function ($scope, $filter) {
+            controller: function ($scope, $filter, $element) {
                 $scope.search = function(s) {
                     if (s) {
                         var filtered = $filter('filter')($scope.items, s.lstfilter)
@@ -52,9 +52,15 @@ define([
 
                 $scope.all = function (state) {
 
+                    var elSearch = $($element).find('.search');
+                    var search = '';
+                    if (elSearch) {
+                        search = elSearch.val();
+                    }
+
                     var list;
                     if (state) {
-                        list = $scope.$$childTail.filtered; //hack cant figure out how to get child scope
+                        list = $filter('filter')($scope.items, search)
                     } else {
                         list = $scope.items;
                     }

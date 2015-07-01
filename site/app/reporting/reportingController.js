@@ -13,13 +13,13 @@ define([
 
         $rootScope.sideMenu = []
 
-        $scope.options = { dropdown: true, labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
-        $scope.reportOptions = { dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
+        $scope.options = { hideSearch: true, dropdown: true, labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
+        $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({_id: "community_amenities", name: "Community Amenities", selected:true});
-        $scope.reportItems.push({_id: "location_amenities", name: "Location Amenities", selected:true});
-        $scope.reportItems.push({_id: "fees_deposits", name: "Fees & Deposits", selected:true});
+        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false});
+        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false});
+        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
 
 
 
@@ -64,6 +64,14 @@ define([
         $scope.changeProperty = function() {
             $scope.localLoading = false;
             $scope.loadComps(_.pluck($scope.selectedProperty.comps,"id"), $scope.selectedProperty._id);
+        }
+
+        $scope.run = function() {
+            $propertyService.reports(
+                _.pluck($scope.selectedProperty.comps,"id")
+                , $scope.selectedProperty._id
+                ,_.pluck(_.filter($scope.reportItems.comps,function(x) {return x.selcted == true}),"id")
+            );
         }
 
 

@@ -24,27 +24,27 @@
 }
 
 
-.stay_open_button .btn-default {
+.filter-dropdown > .btn-default {
     text-align:left
 }
 
-.stay_open_button .caret {
+.filter-dropdown .caret {
     margin-top: 6px
 }
 
-.stay_open_button {width:100%}
+.filter-dropdown {width:100%}
 
-.stay_open_button .btn-default.active,
-.stay_open_button .btn-default.focus,
-.stay_open_button .btn-default:active,
-.stay_open_button .btn-default:focus,
-.stay_open_button .btn-default:hover,
-.stay_open_button .btn-default.dropdown-toggle.active,
-.stay_open_button .btn-default.dropdown-toggle.focus,
-.stay_open_button .btn-default.dropdown-toggle:active,
-.stay_open_button .btn-default.dropdown-toggle:focus,
-.stay_open_button .btn-default.dropdown-toggle:hover,
-.stay_open_button .btn-default.dropdown-toggle
+.filter-dropdown .btn-default.active,
+.filter-dropdown .btn-default.focus,
+.filter-dropdown .btn-default:active,
+.filter-dropdown .btn-default:focus,
+.filter-dropdown .btn-default:hover,
+.filter-dropdown .btn-default.dropdown-toggle.active,
+.filter-dropdown .btn-default.dropdown-toggle.focus,
+.filter-dropdown .btn-default.dropdown-toggle:active,
+.filter-dropdown .btn-default.dropdown-toggle:focus,
+.filter-dropdown .btn-default.dropdown-toggle:hover,
+.filter-dropdown .btn-default.dropdown-toggle
 
 {
     background-color: #ffffff;
