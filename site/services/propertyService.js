@@ -429,6 +429,18 @@ define(['app'], function (app) {
             return resp;
         }
 
+        fac.reports = function(compids, subjectid, reports) {
+            return $http.post('/api/1.0/properties/' + subjectid + '/reports', {
+                compids: compids,
+                reports: reports,
+            }, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });

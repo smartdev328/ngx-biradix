@@ -74,6 +74,32 @@ Routes.post('/:id/dashboard', function (req, res) {
 
 });
 
+Routes.post('/:id/reports', function (req, res) {
+
+    var columns = "";
+    if (req.body.reports.indexOf('community_amenities' > -1)) {
+        columns += " community_amenities";
+    }
+
+    PropertyService.search(req.user, {
+        limit: 100,
+        permission: 'PropertyView',
+        ids: (req.body.compids || []).concat([req.params.id])
+        ,
+        select: "_id name" + columns
+    }, function(err, comps, lookups) {
+        var results = {};
+
+        console.log(comps)
+        console.log(lookups)
+        if (req.body.reports.indexOf('community_amenities' > -1)) {
+
+        }
+        res.status(200).json(results);
+    });
+
+});
+
 Routes.post('/:id/full', function (req, res) {
 
     var graphs = req.body.show.graphs;
