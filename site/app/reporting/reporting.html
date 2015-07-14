@@ -8,7 +8,7 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div class="row" ng-show="localLoading && myProperties.length > 0">
-    <div class="panel panel-info">
+    <div class="panel panel-info hidden-print">
         <div class="panel-heading">Criteria</div>
         <div class="panel-body">
             <div class="row">
@@ -49,17 +49,23 @@
                 <button class="btn btm-sm btn-primary" ng-click="run()">Run Report</button>
             </div>
         </div>
+    </div>
 
 
-        <div class="panel panel-info" ng-if="items.length > 0">
+    <div class="panel panel-info" ng-if="items.length > 0">
             <div class="panel-heading">Results</div>
             <div class="panel-body">
-                <div class="alert alert-warning" role="alert"><b>Please select your Criteria and hit 'Run Report'</b></div>
+                <div ng-show="reportLoading" style="display:block;width:40px;margin:50px auto">
+                    <img src="/images/squares.gif" style="width:100px">
+                </div>
+                <div class="alert alert-warning" role="alert" ng-if="!reports && !noReports && !reportLoading"><b>Please select your Criteria and hit 'Run Report'</b></div>
+                <div class="alert alert-danger" role="alert" ng-if="noReports"><b>Please select at least 1 report and hit 'Run Report'</b></div>
+
+                <communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selectedProperty" comps="selectedComps"></communityamenities-report>
             </div>
         </div>
 
 
-    </div>
 </div>
 
 

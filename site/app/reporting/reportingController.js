@@ -2,6 +2,7 @@
 define([
     'app',
     '../../components/filterlist/module.js',
+    '../../components/reports/communityAmenities.js',
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService', function ($scope,$rootScope,$location,$propertyService) {
@@ -67,11 +68,29 @@ define([
         }
 
         $scope.run = function() {
+            $scope.reportLoading = true;
+            $scope.noReports = false;
+
+            $scope.selectedComps = _.filter($scope.items,function(x) {return x.selected == true})
+
+            var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
+            var compids =  _.pluck($scope.selectedComps,"id")
+
+            if (reportIds.length == 0) {
+                $scope.noReports = true;
+                $scope.reportLoading = false;
+                return;
+            }
+
             $propertyService.reports(
-                _.pluck($scope.selectedProperty.comps,"id")
+                compids
                 , $scope.selectedProperty._id
-                ,_.pluck(_.filter($scope.reportItems.comps,function(x) {return x.selcted == true}),"id")
-            );
+                ,reportIds
+            ).then(function(response) {
+                    $scope.reportLoading = false;
+                    $scope.reports = response.data;
+
+                });
         }
 
 

@@ -77,7 +77,7 @@ Routes.post('/:id/dashboard', function (req, res) {
 Routes.post('/:id/reports', function (req, res) {
 
     var columns = "";
-    if (req.body.reports.indexOf('community_amenities' > -1)) {
+    if (req.body.reports.indexOf('community_amenities') > -1) {
         columns += " community_amenities";
     }
 
@@ -90,11 +90,23 @@ Routes.post('/:id/reports', function (req, res) {
     }, function(err, comps, lookups) {
         var results = {};
 
-        console.log(comps)
-        console.log(lookups)
-        if (req.body.reports.indexOf('community_amenities' > -1)) {
+        //console.log(lookups)
+        if (req.body.reports.indexOf('community_amenities')  > -1) {
+            var compreport = [];
+            comps.forEach(function(c) {
+
+                c.community_amenities.forEach(function(a) {
+                    var v = _.find(lookups.amenities, function(x) {
+                        //console.log(x);
+                        return x._id.toString() == a}).name;
+                    compreport.push([c.name, v]);
+                })
+            })
+            results.community_amenities = compreport
 
         }
+
+
         res.status(200).json(results);
     });
 

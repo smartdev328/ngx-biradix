@@ -1,0 +1,29 @@
+<table class="table table-condensed table-striped table-hover" style="font-size:9pt">
+    <thead>
+    <tr>
+        <th class="center">
+            Community Amenities
+        </th>
+        <th>
+            {{subject.name}}
+        </th>
+        <th ng-repeat="comp in comps">
+            {{comp.name}}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat-start="amenity in uniqueAmenities">
+            <td>
+                {{amenity}}
+            </td>
+            <td class="center">
+                <span class="fa fa-check fa-2x success" ng-if="hash[subject.name + amenity]"></span>
+            </td>
+            <td ng-repeat="comp in comps" class="center">
+                <span class="fa fa-check fa-2x success" ng-if="hash[comp.name + amenity]"></span>
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-if="false"></tr>
+    </tbody>
+</table>
