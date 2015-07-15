@@ -89,7 +89,9 @@ define([
 
         $scope.setRenderable = function() {
             if (!phantom) {
-                window.print();
+                window.setTimeout(function () {
+                    window.print();
+                }, 500)
             }
             else {
                 window.setTimeout(function () {
