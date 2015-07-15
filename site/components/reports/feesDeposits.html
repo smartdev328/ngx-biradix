@@ -1,0 +1,31 @@
+<h4>Fees & Deposits Report</h4>
+<div class="alert alert-warning" role="alert" ng-if="uniqueAmenities.length == 0"><b>No Data Available</b></div>
+<table class="table table-condensed table-striped table-hover" style="font-size:9pt" ng-if="uniqueAmenities.length > 0">
+    <thead>
+    <tr>
+        <th class="center">
+            Location Amenities
+        </th>
+        <th class="center">
+            {{subject.name}}
+        </th>
+        <th ng-repeat="comp in comps">
+            {{comp.name}}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat-start="amenity in uniqueAmenities">
+            <td>
+                {{amenity}}
+            </td>
+            <td>
+                {{hash[subject.name + amenity]}}
+            </td>
+            <td ng-repeat="comp in comps">
+                {{hash[comp.name + amenity]}}
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-if="false"></tr>
+    </tbody>
+</table>

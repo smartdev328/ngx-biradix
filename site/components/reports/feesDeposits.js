@@ -2,7 +2,7 @@
 define([
     'app',
 ], function (app) {
-    app.directive('communityamenitiesReport', function () {
+    app.directive('feesReport', function () {
         return {
             restrict: 'E',
             scope: {
@@ -17,12 +17,11 @@ define([
                     if ($scope.uniqueAmenities.indexOf(x[1]) == -1) {
                         $scope.uniqueAmenities.push(x[1])
                     }
-                    $scope.hash[x[0] + x[1]] = true;
-                    $scope.hash[x[0] + 'summary'] = ($scope.hash[x[0] + 'summary'] || 0) + 1;
+                    $scope.hash[x[0] + x[1]] = x[2];
                 })
 
             },
-            templateUrl: '/components/reports/communityAmenities.html'
+            templateUrl: '/components/reports/feesDeposits.html'
         };
     })
 

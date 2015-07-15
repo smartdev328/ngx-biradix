@@ -3,6 +3,8 @@ define([
     'app',
     '../../components/filterlist/module.js',
     '../../components/reports/communityAmenities.js',
+    '../../components/reports/locationAmenities.js',
+    '../../components/reports/feesDeposits.js'
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService', function ($scope,$rootScope,$location,$propertyService) {
@@ -18,9 +20,9 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false});
-        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false});
-        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
+        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:true});
+        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:true});
+        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:true});
 
 
 
@@ -49,6 +51,10 @@ define([
         })
 
         $scope.loadComps = function(compids,subjectid) {
+            $scope.reportLoading = false;
+            $scope.noReports = false;
+            delete $scope.reports;
+
             $propertyService.search({limit: 1000, permission: 'PropertyView', active: true, select : "_id name", ids: compids, sort: "name"}).then(function (response) {
                 $scope.items = [];
                 response.data.properties.forEach(function(c) {

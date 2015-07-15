@@ -1,15 +1,15 @@
-<h4>Community Amenities Report</h4>
+<h4>Location Amenities Report</h4>
 <div class="alert alert-warning" role="alert" ng-if="uniqueAmenities.length == 0"><b>No Data Available</b></div>
 <table class="table table-condensed table-striped table-hover" style="font-size:9pt" ng-if="uniqueAmenities.length > 0">
     <thead>
     <tr>
         <th class="center">
-            Community Amenities
+            Location Amenities
         </th>
         <th class="center">
             {{subject.name}}
         </th>
-        <th ng-repeat="comp in comps" class="center">
+        <th ng-repeat="comp in comps">
             {{comp.name}}
         </th>
     </tr>
@@ -29,16 +29,16 @@
         <tr ng-repeat-end ng-if="false"></tr>
     </tbody>
     <tfoot>
-        <tr class="info">
-            <td>
-                Amenities Score
-            </td>
-            <td class="center">
-                {{hash[subject.name + 'summary'] || 0}}
-            </td>
-            <td ng-repeat="comp in comps" class="center">
-                {{hash[comp.name + 'summary'] || 0}}
-            </td>
-        </tr>
+    <tr class="info">
+        <td>
+            Amenities Score
+        </td>
+        <td class="center">
+            {{hash[subject.name + 'summary'] || 0}}
+        </td>
+        <td ng-repeat="comp in comps" class="center">
+            {{hash[comp.name + 'summary'] || 0}}
+        </td>
+    </tr>
     </tfoot>
 </table>

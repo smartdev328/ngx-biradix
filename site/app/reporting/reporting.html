@@ -1,3 +1,13 @@
+<Style>
+    html, body, .row, .panel-info, .panel-body, .container-fluid, #page-content-wrapper, #wrapper { float: none !important; }
+    .break
+    {
+        break-after: always;
+        page-break-after: always;
+        page-break-inside: avoid;
+    }
+</Style>
+
 <h2>Reporting</h2>
 
 <div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
@@ -51,7 +61,6 @@
         </div>
     </div>
 
-
     <div class="panel panel-info" ng-if="items.length > 0">
             <div class="panel-heading">Results</div>
             <div class="panel-body">
@@ -62,6 +71,10 @@
                 <div class="alert alert-danger" role="alert" ng-if="noReports"><b>Please select at least 1 report and hit 'Run Report'</b></div>
 
                 <communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selectedProperty" comps="selectedComps"></communityamenities-report>
+
+                <locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selectedProperty" comps="selectedComps"></locationamenities-report>
+
+                <fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selectedProperty" comps="selectedComps"></fees-report>
             </div>
         </div>
 

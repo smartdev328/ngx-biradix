@@ -2,7 +2,7 @@
 define([
     'app',
 ], function (app) {
-    app.directive('communityamenitiesReport', function () {
+    app.directive('locationamenitiesReport', function () {
         return {
             restrict: 'E',
             scope: {
@@ -22,7 +22,7 @@ define([
                 })
 
             },
-            templateUrl: '/components/reports/communityAmenities.html'
+            templateUrl: '/components/reports/locationAmenities.html'
         };
     })
 

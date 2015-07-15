@@ -81,6 +81,14 @@ Routes.post('/:id/reports', function (req, res) {
         columns += " community_amenities";
     }
 
+    if (req.body.reports.indexOf('location_amenities') > -1) {
+        columns += " location_amenities";
+    }
+
+    if (req.body.reports.indexOf('fees_deposits') > -1) {
+        columns += " fees";
+    }
+
     PropertyService.search(req.user, {
         limit: 100,
         permission: 'PropertyView',
@@ -90,15 +98,12 @@ Routes.post('/:id/reports', function (req, res) {
     }, function(err, comps, lookups) {
         var results = {};
 
-        //console.log(lookups)
         if (req.body.reports.indexOf('community_amenities')  > -1) {
             var compreport = [];
             comps.forEach(function(c) {
 
                 c.community_amenities.forEach(function(a) {
-                    var v = _.find(lookups.amenities, function(x) {
-                        //console.log(x);
-                        return x._id.toString() == a}).name;
+                    var v = _.find(lookups.amenities, function(x) {return x._id.toString() == a}).name;
                     compreport.push([c.name, v]);
                 })
             })
@@ -106,6 +111,28 @@ Routes.post('/:id/reports', function (req, res) {
 
         }
 
+        if (req.body.reports.indexOf('location_amenities')  > -1) {
+            var compreport = [];
+            comps.forEach(function(c) {
+
+                c.location_amenities.forEach(function(a) {
+                    var v = _.find(lookups.amenities, function(x) {return x._id.toString() == a}).name;
+                    compreport.push([c.name, v]);
+                })
+            })
+            results.location_amenities = compreport
+        }
+
+        if (req.body.reports.indexOf('fees_deposits')  > -1) {
+            var compreport = [];
+            comps.forEach(function(c) {
+                for (var f in c.fees) {
+                    compreport.push([c.name, lookups.fees[f], c.fees[f]]);
+                }
+
+            })
+            results.fees_deposits = compreport
+        }
 
         res.status(200).json(results);
     });
