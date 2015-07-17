@@ -25,6 +25,10 @@ var fees  = {
 
 module.exports = {
     fees: fees,
+    flattenAllCompFloorplans: function(comps, subjectid) {
+        var subjcomps = _.find(comps,function(x) {return x._id.toString() == subjectid.toString()}).comps;
+        return _.flatten(_.pluck(_.flatten(subjcomps),"floorplans"));
+    },
     linkComp:function(subjectid, compid, callback) {
         linkComp(subjectid,compid,callback);
     },
@@ -53,10 +57,16 @@ module.exports = {
         var query = SurveySchema.find();
         query = query.where('_id').in(criteria.ids);
 
+        if (criteria.select) {
+            query = query.select(criteria.select);
+        }
+
         query.exec(function(err, surveys) {
             surveys = JSON.parse(JSON.stringify(surveys))
             surveys.forEach(function(s,i) {
-                delete surveys[i].propertyid;
+                if (!criteria.select || criteria.select.indexOf('propertyid') == -1) {
+                    delete surveys[i].propertyid;
+                }
                 delete surveys[i].location_amenities;
                 delete surveys[i].community_amenities;
                 delete surveys[i].exclusions;

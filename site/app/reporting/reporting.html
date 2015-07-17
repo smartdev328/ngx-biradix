@@ -1,16 +1,3 @@
-<Style>
-    html, body, .row, .col-lg-12, .container-fluid, #page-content-wrapper, #wrapper
-    {
-        float: none !important;
-    }
-    .break
-    {
-        break-after: always;
-        page-break-after: always;
-        page-break-inside: avoid;
-    }
-</Style>
-
 <h2>Reporting</h2>
 
 <div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
@@ -75,14 +62,11 @@
 
         </div>
     </div>
-
-
 </div>
 
-<communityamenities-report class="break" ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selectedProperty" comps="selectedComps"></communityamenities-report>
+<communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selectedProperty" comps="selectedComps"></communityamenities-report>
 
-<locationamenities-report class="break" ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selectedProperty" comps="selectedComps"></locationamenities-report>
+<locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selectedProperty" comps="selectedComps"></locationamenities-report>
 
-<fees-report class="break" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selectedProperty" comps="selectedComps"></fees-report>
-
+<fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selectedProperty" comps="selectedComps"></fees-report>
 

@@ -89,6 +89,10 @@ Routes.post('/:id/reports', function (req, res) {
         columns += " fees";
     }
 
+    if (req.body.reports.indexOf('property_rankings') > -1) {
+        columns += " survey.id comps.floorplans";
+    }
+
     PropertyService.search(req.user, {
         limit: 100,
         permission: 'PropertyView',
@@ -97,6 +101,7 @@ Routes.post('/:id/reports', function (req, res) {
         select: "_id name" + columns
     }, function(err, comps, lookups) {
         var results = {};
+
 
         if (req.body.reports.indexOf('community_amenities')  > -1) {
             var compreport = [];
@@ -134,7 +139,51 @@ Routes.post('/:id/reports', function (req, res) {
             results.fees_deposits = compreport
         }
 
-        res.status(200).json(results);
+        async.parallel({
+            property_rankings: function (callbackp) {
+                var surveyids = _.pluck(comps,"survey.id");
+                if (!surveyids || surveyids.length == 0) {
+                    callbackp(null, null)
+                } else {
+                    PropertyService.getSurvey({ids: surveyids,select: "propertyid floorplans"}, function(err, surveys) {
+                        var property_rankings = [];
+
+                        var allIncludedFloorplans = PropertyService.flattenAllCompFloorplans(comps, req.params.id);
+                        surveys.forEach(function(s) {
+                            s.floorplans.forEach(function(fp) {
+                                var f = {id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft, ner: Math.round((fp.rent - (fp.concessions / 12)) * 100) / 100, nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100};
+
+                                var included = _.find(allIncludedFloorplans, function(x) {return x.toString() == fp.id.toString()})
+
+                                if (!included) {
+                                    f.excluded = true;
+                                }
+                                property_rankings.push(f)
+                            })
+                        })
+
+                        callbackp(null, property_rankings)
+                    });
+                }
+            },
+            market_share: function (callbackp) {
+                callbackp(null, null)
+            }
+        }, function(err, all) {
+
+            if (all.property_rankings) {
+                console.log(all.property_rankings);
+                results.property_rankings = all.property_rankings;
+            }
+
+            if (all.market_share) {
+                results.market_share = all.market_share;
+            }
+
+            res.status(200).json(results);
+        });
+
+
     });
 
 });

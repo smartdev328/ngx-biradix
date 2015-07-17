@@ -20,9 +20,12 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
+        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:true});
+        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:true});
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:true});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:true});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:true});
+
 
 
 
