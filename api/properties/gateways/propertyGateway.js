@@ -89,7 +89,7 @@ Routes.post('/:id/reports', function (req, res) {
         columns += " fees";
     }
 
-    if (req.body.reports.indexOf('property_rankings') > -1) {
+    if (req.body.reports.indexOf('property_rankings') > -1 || req.body.reports.indexOf('market_share') > -1) {
         columns += " survey.id comps.floorplans";
     }
 
@@ -140,7 +140,7 @@ Routes.post('/:id/reports', function (req, res) {
         }
 
         async.parallel({
-            property_rankings: function (callbackp) {
+            floorplans: function (callbackp) {
                 var surveyids = _.pluck(comps,"survey.id");
                 if (!surveyids || surveyids.length == 0) {
                     callbackp(null, null)
@@ -171,13 +171,8 @@ Routes.post('/:id/reports', function (req, res) {
             }
         }, function(err, all) {
 
-            if (all.property_rankings) {
-                //console.log(all.property_rankings);
-                results.property_rankings = all.property_rankings;
-            }
-
-            if (all.market_share) {
-                results.market_share = all.market_share;
+            if (all.floorplans) {
+                results.floorplans = all.floorplans;
             }
 
             res.status(200).json(results);

@@ -1,0 +1,94 @@
+<h4>Market Share Report</h4>
+<table class="table table-condensed table-striped table-hover" style="font-size:9pt">
+    <thead>
+    <tr>
+        <th class="center">
+            Property
+        </th>
+        <th class="center">
+            Market Share
+        </th>
+        <th class="center">
+            Floor Plans
+        </th>
+        <th class="center">
+            Units
+        </th>
+        <th class="center">
+            Unit Sqft
+        </th>
+        <th class="center">
+            <div class="pull-left">Net Eff. Rent
+        </th>
+        <th class="center">
+            NER/Sqft
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat-start="(key,value) in rankings" ng-if="false">
+
+        </tr>
+        <tr>
+            <td colspan="100%" style="background-color: white !important;"><h4>Floorplans: {{key}}
+                <i class="fa fa-exclamation-triangle"
+                   style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+                   ng-if="value.excluded"
+                   popover-trigger="mouseenter"
+                   popover-placement="right"
+                   popover="This report has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                        ></i>
+            </h4></td>
+        </tr>
+        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'units', 'description']" ng-style="{'font-weight':fp.subject ? 'bold' : 'normal'}">
+            <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle">
+                {{fp.name}}
+            </td>
+            <td class="center" ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle">
+                {{value.share[fp.id].units / value.summary.units * 100 | number : 0}}%
+            </td>
+            <td>
+                {{fp.description || '-'}}
+            </td>
+            <td class="center">
+                {{fp.units}}
+            </td>
+            <td class="center">
+                {{fp.sqft}}
+            </td>
+            <td class="center">
+                {{fp.ner | currency : "$" : 0}}
+            </td>
+            <td class="center">
+                {{fp.nersqft | currency}}
+            </td>
+        </tr>
+        <tr style="background-color:#ebf8fe !important;font-weight:Bold">
+            <td>
+                Totals/Averages
+            </td>
+            <td class="center">
+               100%
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td class="center">
+                {{value.summary.units}}
+            </td>
+            <td class="center">
+                {{value.summary.sqft | number : 0}}
+            </td>
+            <td class="center">
+                {{value.summary.ner | currency : "$" : 0}}
+            </td>
+            <td class="center">
+                {{value.summary.ner / value.summary.sqft | currency}}
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-if="false">
+
+        </tr>
+    </tbody>
+
+</table>

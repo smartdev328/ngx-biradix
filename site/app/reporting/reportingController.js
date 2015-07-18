@@ -6,6 +6,7 @@ define([
     '../../components/reports/locationAmenities.js',
     '../../components/reports/feesDeposits.js',
     '../../components/reports/propertyRankings.js',
+    '../../components/reports/marketShare.js'
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService', function ($scope,$rootScope,$location,$propertyService) {
@@ -21,13 +22,11 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:true});
+        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:false});
         $scope.reportItems.push({id: "market_share", name: "Market Share", selected:true});
-        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:true});
-        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:true});
-        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:true});
-
-
+        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false});
+        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false});
+        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
 
 
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true, select : "_id name comps.id"}).then(function (response) {
@@ -91,6 +90,9 @@ define([
                 $scope.reportLoading = false;
                 return;
             }
+
+            $scope.rankings = reportIds.indexOf("property_rankings") > -1;
+            $scope.marketShare = reportIds.indexOf("market_share") > -1;
 
             $propertyService.reports(
                 compids
