@@ -23,7 +23,7 @@ define([
 
         $scope.reportItems = []
         $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:false});
-        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:true});
+        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false});
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
