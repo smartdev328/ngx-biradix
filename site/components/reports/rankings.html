@@ -2,24 +2,41 @@
 <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
     <thead>
     <tr>
-        <th class="center">
-            Property
+        <th class="center" ng-click="toggleSort('name')" style="cursor:pointer">
+            <div class="pull-left">Property</div>
+            <div class="pull-right" style="width:15px" ng-show="sort.name == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
         </th>
-        <th class="center">
-            Floor Plan
+        <th class="center" ng-click="toggleSort('description')" style="cursor:pointer">
+            <div class="pull-left">Floor Plans</div>
+            <div class="pull-right" style="width:15px" ng-show="sort.description == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.description === true"><i class="fa fa-sort-down"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.description === false"><i class="fa fa-sort-up"></i></div>
         </th>
-        <th class="center">
-            Units
+        <th class="center" ng-click="toggleSort('units')" style="cursor:pointer">
+            <div class="pull-left">Units</div>
+            <div class="pull-right" style="width:15px" ng-show="sort.units == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.units === true"><i class="fa fa-sort-down"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.units === false"><i class="fa fa-sort-up"></i></div>
         </th>
-        <th class="center">
-            Unit Sqft
+        <th class="center" ng-click="toggleSort('sqft')" style="cursor:pointer">
+            <div class="pull-left">Unit Sqft</div>
+            <div class="pull-right" style="width:15px" ng-show="sort.sqft == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.sqft === true"><i class="fa fa-sort-down"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.sqft === false"><i class="fa fa-sort-up"></i></div>
         </th>
-        <th class="center">
-            Net Eff. Rent
+        <th class="center" ng-click="toggleSort('ner')" style="cursor:pointer">
+            <div class="pull-left">Net Eff. Rent</div>
+            <div class="pull-right" style="width:15px" ng-show="sort.ner == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
         </th>
-
-        <th class="center">
-            NER/Sqft
+        <th class="center" ng-click="toggleSort('nersqft')" style="cursor:pointer">
+            <div class="pull-left">NER/Sqft</div>
+            <div class="pull-right" style="width:15px" ng-show="sort.nersqft == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.nersqft === true"><i class="fa fa-sort-down"></i></div>
+            <div class="pull-right" style="width:15px" ng-show="sort.nersqft === false"><i class="fa fa-sort-up"></i></div>
         </th>
     </tr>
     </thead>
@@ -28,9 +45,17 @@
 
         </tr>
         <tr>
-            <td colspan="100%" style="background-color: white !important;"><h4>Floorplans: {{key}}</h4></td>
+            <td colspan="100%" style="background-color: white !important;"><h4>Floorplans: {{key}}
+                <i class="fa fa-exclamation-triangle"
+                   style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+                   ng-if="value.excluded"
+                   popover-trigger="mouseenter"
+                   popover-placement="right"
+                   popover="This report has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                        ></i>
+            </h4></td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans">
+        <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-style="{'font-weight':fp.subject ? 'bold' : 'normal'}">
             <td>
                 {{fp.name}}
             </td>
