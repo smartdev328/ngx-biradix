@@ -4,7 +4,8 @@ define([
     '../../components/filterlist/module.js',
     '../../components/reports/communityAmenities.js',
     '../../components/reports/locationAmenities.js',
-    '../../components/reports/feesDeposits.js'
+    '../../components/reports/feesDeposits.js',
+    '../../components/reports/propertyRankings.js',
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService', function ($scope,$rootScope,$location,$propertyService) {

@@ -172,7 +172,7 @@ Routes.post('/:id/reports', function (req, res) {
         }, function(err, all) {
 
             if (all.property_rankings) {
-                console.log(all.property_rankings);
+                //console.log(all.property_rankings);
                 results.property_rankings = all.property_rankings;
             }
 
