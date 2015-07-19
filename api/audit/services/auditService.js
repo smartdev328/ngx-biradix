@@ -15,9 +15,11 @@ module.exports = {
     create: function(audit,callback) {
         var n = new AuditSchema();
 
-        n.operator = {
-            id: audit.operator.id || audit.operator._id,
-            name: audit.operator.name || (audit.operator.first + ' ' + audit.operator.last)
+        if (audit.operator) {
+            n.operator = {
+                id: audit.operator.id || audit.operator._id,
+                name: audit.operator.name || (audit.operator.first + ' ' + audit.operator.last)
+            }
         }
         if (audit.user) {
             n.user = {

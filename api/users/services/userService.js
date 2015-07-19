@@ -170,6 +170,7 @@ module.exports = {
 
         if (modelErrors.length > 0) {
             error(modelErrors);
+            AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
             return;
         }
 
@@ -180,24 +181,28 @@ module.exports = {
 
             if (err) {
                 modelErrors.push({msg: 'Unexpected Error. Unable to login.'});
+                AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
                 error(modelErrors);
                 return;
             }
 
             if (!usr) {
                 modelErrors.push({msg: 'Unable to validate email address / password.'});
+                AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
                 error(modelErrors);
                 return;
             }
 
             if (usr.hashed_password !== UtilityService.hashPassword(user.password, usr.salt)) {
                 modelErrors.push({msg: 'Unable to validate email address / password.'});
+                AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
                 error(modelErrors);
                 return;
             }
 
             if (!usr.active) {
                 modelErrors.push({msg: 'Your account has been deactivated.'});
+                AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
                 error(modelErrors);
                 return;
             }
