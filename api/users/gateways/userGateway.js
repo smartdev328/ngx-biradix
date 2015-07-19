@@ -56,7 +56,7 @@ userRoutes.post('/login', function (req, res) {
     user.email = req.body.email;
     user.password = req.body.password;
 
-    UserService.login(user, function(usr) {
+    UserService.login(user, req.context, function(usr) {
             getToken(usr, res);
 
         },

@@ -41,6 +41,13 @@ module.exports = {
                 ]
             }));
 
+            //Middleware to populate operator context
+            app.use(function (req, res, next) {
+                var context = {ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress, user_agent: req.headers['user-agent']};
+                req.context = context;
+                next();
+            });
+
             //Middleware to insure session token is not hi-jacked by looking at user agent
             app.use(function (req, res, next) {
                 if (req.user && !req.user.active) {

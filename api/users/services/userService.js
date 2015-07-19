@@ -9,6 +9,7 @@ var settings = require('../../../config/settings')
 var async = require('async')
 var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
+var AuditService = require('../../audit/services/auditService')
 
 module.exports = {
     search: function(Operator,criteria, callback) {
@@ -151,7 +152,7 @@ module.exports = {
         )
 
     },
-    login : function(user, success, error) {
+    login : function(user, context, success, error) {
         var modelErrors = [];
         user.email = user.email || '';
         user.password = user.password || '';
@@ -201,6 +202,7 @@ module.exports = {
                 return;
             }
 
+            AuditService.create({type: 'login_succeeded', operator: usr, user: usr, description: usr.email, context: context})
             success(usr);
         });
 
