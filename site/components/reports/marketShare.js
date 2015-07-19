@@ -13,7 +13,7 @@ define([
             },
             controller: function ($scope) {
 
-                $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms', 'id', 'sqft', 'units', 'description'])
+                $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms', 'id', 'sqft', 'fid'])
 
                 $scope.reload = function() {
                     $scope.rankings = {}
@@ -33,6 +33,7 @@ define([
                             $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].units = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].units || 0) + fp.units;
                             $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].count = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].count || 0) + 1;
                             var f = {
+                                fid: fp.fid,
                                 description: fp.description,
                                 units: fp.units,
                                 sqft: fp.sqft,
@@ -41,6 +42,7 @@ define([
                                 first: fp.id != last,
                                 id: fp.id
                             };
+
 
 
                             if ($scope.subject._id == fp.id) {

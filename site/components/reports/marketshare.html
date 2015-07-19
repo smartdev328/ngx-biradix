@@ -40,7 +40,7 @@
                         ></i>
             </h4></td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'units', 'description']" ng-style="{'font-weight':fp.subject ? 'bold' : 'normal'}">
+        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-style="{'font-weight':fp.subject ? 'bold' : 'normal'}">
             <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle">
                 {{fp.name}}
             </td>

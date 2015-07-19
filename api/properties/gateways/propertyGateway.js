@@ -151,7 +151,7 @@ Routes.post('/:id/reports', function (req, res) {
                         var allIncludedFloorplans = PropertyService.flattenAllCompFloorplans(comps, req.params.id);
                         surveys.forEach(function(s) {
                             s.floorplans.forEach(function(fp) {
-                                var f = {id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft, ner: Math.round((fp.rent - (fp.concessions / 12)) * 100) / 100, nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100};
+                                var f = {fid: fp.id, id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft, ner: Math.round((fp.rent - (fp.concessions / 12)) * 100) / 100, nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100};
 
                                 var included = _.find(allIncludedFloorplans, function(x) {return x.toString() == fp.id.toString()})
 
