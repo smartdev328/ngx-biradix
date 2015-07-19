@@ -1,5 +1,5 @@
 'use strict';
-var AuditSchema= require('../schemas/auditSchema')
+var AuditSchema= require('../schema/auditSchema')
 var async = require("async");
 var _ = require("lodash")
 
