@@ -5,6 +5,7 @@ var _ = require('lodash');
 var UtilityService=  require('../services/utilityService')
 var UserService=  require('../services/userService')
 var AccessService = require('../../access/services/accessService')
+var AuditService = require('../../audit/services/auditService')
 var settings = require('../../../config/settings')
 
 
@@ -142,6 +143,8 @@ userRoutes.get('/loginAs/:userid', function (req, res) {
                     if (err) {
                         return res.status(200).json(errors);
                     }
+
+                    AuditService.create({type: 'login_as', operator: req.user, user: usr, description: usr.email, context: req.context})
                     getToken(usr, res);
 
                 }

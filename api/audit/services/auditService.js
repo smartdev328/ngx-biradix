@@ -8,6 +8,7 @@ var WEEK = 7 * 24 * 60 * 60 * 1000;
 var audits  = [
     {key: 'login_failed', value: 'Login Failed'},
     {key: 'login_succeeded', value: 'Login Succeeded'},
+    {key: 'login_as', value: 'Login As'},
 ];
 
 module.exports = {
