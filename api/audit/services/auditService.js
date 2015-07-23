@@ -2,8 +2,7 @@
 var AuditSchema= require('../schema/auditSchema')
 var async = require("async");
 var _ = require("lodash")
-
-var WEEK = 7 * 24 * 60 * 60 * 1000;
+var PaginationService = require('../../utilities/services/paginationService')
 
 var audits  = [
     {key: 'login_failed', value: 'Login Failed'},
@@ -31,8 +30,43 @@ module.exports = {
         n.context = audit.context;
         n.type = audit.type;
         n.description = audit.description;
+        n.date = new Date().toISOString();
 
         n.save(callback);
+    },
+    get: function(criteria, callback) {
+        var query = QueryBuilder(criteria);
+
+        query.count(function(err, obj) {
+
+            if (err) {
+                callback(err,[],0)
+            }
+            else if (obj == 0) {
+                callback(null,[],0)
+            }
+            else {
+                var query = QueryBuilder(criteria).sort("-date").skip(criteria.skip).limit(criteria.limit);
+                if (criteria.select) {
+                    query = query.select(criteria.select);
+                }
+                query.exec(function(err, list) {
+                    callback(err,list,PaginationService.getPager(criteria.skip, criteria.limit, obj))
+                });
+            }
+
+        });
     }
 
+}
+
+function QueryBuilder (criteria) {
+    criteria = criteria || {};
+
+    criteria.skip = criteria.skip || 0;
+    criteria.limit = criteria.limit || 50;
+
+    var query = AuditSchema.find();
+
+    return query;
 }

@@ -141,6 +141,17 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'properties/propertiesController')}}
             })
+            .state('history', {
+                url: "/history",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/history/history.html" ,
+                        controller : "historyController"
+                    }
+
+                },
+                resolve: {get : function($q) {return resolve($q, 'history/historyController')}}
+            })
             .state('preferences', {
                 url: "/preferences",
                 views: {

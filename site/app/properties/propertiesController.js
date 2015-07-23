@@ -22,6 +22,10 @@ define([
             $rootScope.sideMenu.push({label: "Manage Properties", href: '#/properties', active: true});
         }
 
+        if ($rootScope.me.permissions.indexOf('History') > -1) {
+            $rootScope.sideMenu.push({label: "Activity History", href: '#/history', active: false});
+        }
+
         var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
         //Grid Options
