@@ -8,6 +8,7 @@ var audits  = [
     {key: 'login_failed', value: 'Login Failed'},
     {key: 'login_succeeded', value: 'Login Succeeded'},
     {key: 'login_as', value: 'Login As'},
+    {key: 'property_profile', value: 'Profile Viewed'},
 ];
 
 module.exports = {
@@ -25,6 +26,12 @@ module.exports = {
             n.user = {
                 id: audit.user.id || audit.user._id,
                 name: audit.user.name || (audit.user.first + ' ' + audit.user.last)
+            };
+        }
+        if (audit.property) {
+            n.property = {
+                id: audit.property.id || audit.property._id,
+                name: audit.property.name
             };
         }
         n.context = audit.context;

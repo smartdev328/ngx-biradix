@@ -14,6 +14,7 @@ var async = require("async");
 var _ = require("lodash")
 var settings = require("../../../config/settings")
 var emailService = require('../../utilities/services/emailService')
+var AuditService = require('../../audit/services/auditService')
 
 var Routes = express.Router();
 
@@ -62,6 +63,7 @@ Routes.get('/lookups', function (req, res) {
 
 Routes.post('/:id/profile', function (req, res) {
     getProfile(req,res, true, req.params.id, req.params.id, function(o) {
+        AuditService.create({type: 'property_profile', operator: req.user, property: o.property, description: o.property.name, context: req.context})
         res.status(200).json({profile: o});
     })
 });

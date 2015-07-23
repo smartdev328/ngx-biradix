@@ -16,7 +16,7 @@ Routes.post('/', function (req, res) {
                 return res.status(200).json({errors: err});
             }
 
-            return res.status(200).json({errors: null, activity: obj, pager: pager});
+            return res.status(200).json({errors: null, activity: obj, pager: pager, audits: AuditService.audits});
         });
 
     })
