@@ -12,7 +12,7 @@ define([
 
         $rootScope.nav = "";
         $scope.pager = {offset : 0, currentPage: 1, itemsPerPage: 50}
-        $scope.limits = [1,10,50,100,500]
+        $scope.limits = [10,50,100,500]
 
         $rootScope.sideMenu = [];
         if ($rootScope.me.permissions.indexOf('Users') > -1) {
