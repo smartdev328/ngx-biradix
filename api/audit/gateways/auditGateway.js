@@ -22,4 +22,14 @@ Routes.post('/', function (req, res) {
     })
 });
 
+Routes.put('/', function (req, res) {
+    var audit = req.body;
+    audit.operator = req.user;
+    audit.context = req.context;
+    AuditService.create(audit, function() {
+        return res.status(200).json({success:true});
+    })
+
+});
+
 module.exports = Routes;

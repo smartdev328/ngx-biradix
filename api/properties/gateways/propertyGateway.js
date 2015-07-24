@@ -63,7 +63,6 @@ Routes.get('/lookups', function (req, res) {
 
 Routes.post('/:id/profile', function (req, res) {
     getProfile(req,res, true, req.params.id, req.params.id, function(o) {
-        AuditService.create({type: 'property_profile', operator: req.user, property: o.property, description: o.property.name, context: req.context})
         res.status(200).json({profile: o});
     })
 });
@@ -517,6 +516,16 @@ Routes.get('/:id/pdf', function (req, res) {
                     'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
                 }
             ];
+
+            var description = p.name;
+
+            if (req.query.full == "true") {
+                description += ' (with Comps)';
+            }
+
+            description += " - " + req.query.selectedRange;
+
+            AuditService.create({type: 'pdf_profile', operator: req.user, property: p, description: description, context: req.context})
 
             //console.log('Pdf: ' + url);
             //console.log(cookies);

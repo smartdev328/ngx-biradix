@@ -9,6 +9,9 @@ var audits  = [
     {key: 'login_succeeded', value: 'Login Succeeded'},
     {key: 'login_as', value: 'Login As'},
     {key: 'property_profile', value: 'Profile Viewed'},
+    {key: 'pdf_profile', value: 'PDF Profile'},
+    {key: 'print_profile', value: 'Print Profile'},
+    {key: 'excel_profile', value: 'Excel Profile'},
 ];
 
 module.exports = {

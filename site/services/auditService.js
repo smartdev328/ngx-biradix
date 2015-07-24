@@ -14,6 +14,15 @@ define([
             });
         }
 
+        fac.create = function (audit) {
+            return $http.put('/api/1.0/audit', audit, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });

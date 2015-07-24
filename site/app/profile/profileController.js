@@ -11,10 +11,11 @@ define([
     '../../components/toggle/module',
     '../../components/daterangepicker/module',
     '../../components/timeseries/module',
-    '../../services/cookieSettingsService'
+    '../../services/cookieSettingsService',
+    '../../services/auditService'
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -68,6 +69,7 @@ define([
                     }
                     ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs}
                 ).then(function (response) {
+
                         var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs);
 
                         if (!resp) {
@@ -81,6 +83,8 @@ define([
                             $scope.canManage = resp.canManage;
                             $scope.comp = resp.comp;
                             $window.document.title = $scope.property.name;
+
+                            $auditService.create({type: 'property_profile', property: {id: resp.property.id, name: resp.property.name}, description: resp.property.name});
                         }
 
                         $scope.points = resp.points;
@@ -113,6 +117,7 @@ define([
         });
 
         $scope.print = function() {
+            $auditService.create({type: 'print_profile', property: {id: $scope.property.id, name: $scope.property.name}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
             $window.print();
         }
 
@@ -151,6 +156,8 @@ define([
 
             location.href = url;
 
+            $auditService.create({type: 'excel_profile', property: {id: $scope.property.id, name: $scope.property.name}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
+
         }
 
         $scope.pdf = function(full) {
@@ -179,6 +186,7 @@ define([
         }
 
         $scope.printFull = function() {
+            $auditService.create({type: 'print_profile', property: {id: $scope.property.id, name: $scope.property.name}, description: $scope.property.name + ' (with Comps) - ' + $scope.daterange.selectedRange});
             window.open('/#/full/' + $scope.property._id, 'print', 'height:300,width:300');
         }
 
