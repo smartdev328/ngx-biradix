@@ -3,6 +3,8 @@ define([
     'app',
     '../../components/dialog/module',
     '../../services/auditService',
+    '../../components/filterlist/module.js',
+    '../../components/daterangepicker/module',
 ], function (app) {
 
     app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService) {
@@ -13,6 +15,18 @@ define([
         $rootScope.nav = "";
         $scope.pager = {offset : 0, currentPage: 1, itemsPerPage: 50}
         $scope.limits = [10,50,100,500]
+        $scope.typeOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types" }
+        $scope.daterange={
+            Ranges : {
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'Last 90 Days': [moment().subtract(89, 'days'), moment()],
+                'Last Year': [moment().subtract(1, 'year'), moment()],
+                'Lifetime': [moment().subtract(30, 'year'), moment()],
+            },
+            selectedRange : "Last 90 Days",
+            selectedStartDate : null,
+            selectedEndDate : null
+        }
 
         $rootScope.sideMenu = [];
         if ($rootScope.me.permissions.indexOf('Users') > -1) {

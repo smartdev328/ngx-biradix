@@ -48,12 +48,32 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
-    <div style="float:left" class="grid-limit">
-        <select class="form-control input-sm" ng-model="pager.itemsPerPage" style="width:75px"
-                ng-change="resetPager()"
-                ng-options="item for item in limits">
-        </select>
-    </div>
+    <table style="border-spacing: 4px; border-collapse: separate;">
+        <Tr>
+            <Td>
+                Show: <select class="form-control input-sm" ng-model="pager.itemsPerPage" style="width:75px"
+                              ng-change="resetPager()"
+                              ng-options="item for item in limits">
+            </select>
+            </Td>
+            <Td>
+                Types: <filter-list options="typeOptions" items="typeItems"></filter-list>
+            </Td>
+            <Td>
+                Users: <filter-list options="typeOptions" items="typeItems"></filter-list>
+            </Td>
+            <Td>
+                Properties: <filter-list options="typeOptions" items="typeItems"></filter-list>
+            </Td>
+            <Td>
+
+            </Td>
+        </Tr>
+    </table>
+
+    Dates:<div style="height:3px"/> <daterange-picker daterange="daterange"></daterange-picker> <button class="btn btn-primary btn-sm" ng-click="reload()">Filter</button>
+
+
     <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
         <thead>
         <tr>
