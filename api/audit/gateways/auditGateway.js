@@ -3,7 +3,10 @@
 var express = require('express');
 var AuditService = require('../services/auditService')
 var AccessService = require('../../access/services/accessService')
+var UserService = require('../../users/services/userService')
 var Routes = express.Router();
+var async = require('async')
+var _ = require('lodash')
 
 Routes.post('/', function (req, res) {
     AccessService.canAccess(req.user,"History", function(canAccess) {
@@ -11,13 +14,28 @@ Routes.post('/', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        AuditService.get(req.body, function (err, obj, pager) {
-            if (err) {
-                return res.status(200).json({errors: err});
-            }
 
-            return res.status(200).json({errors: null, activity: obj, pager: pager, audits: AuditService.audits});
-        });
+        async.parallel({
+            userids: function(callbackp) {
+                if (req.user.memberships.isadmin === true) {
+                    callbackp(null,[]);
+                } else {
+                    UserService.search(req.user, {}, function(err,users) {
+                        callbackp(null, _.pluck(users,"_id"))
+                    });
+                }
+            },
+        }, function(err, all) {
+            AuditService.get(req.body,all.userids, function (err, obj, pager) {
+                if (err) {
+                    return res.status(200).json({errors: err});
+                }
+
+                return res.status(200).json({errors: null, activity: obj, pager: pager, audits: AuditService.audits});
+            });
+        })
+
+
 
     })
 });

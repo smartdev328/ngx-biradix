@@ -6,10 +6,11 @@ define([
     '../../components/reports/locationAmenities.js',
     '../../components/reports/feesDeposits.js',
     '../../components/reports/propertyRankings.js',
-    '../../components/reports/marketShare.js'
+    '../../components/reports/marketShare.js',
+    '../../services/auditService',
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService', function ($scope,$rootScope,$location,$propertyService) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', function ($scope,$rootScope,$location,$propertyService,$auditService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -85,6 +86,12 @@ define([
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
             var compids =  _.pluck($scope.selectedComps,"id")
 
+            var reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
+            var compNames =  _.pluck($scope.selectedComps,"name")
+            reportNames.forEach(function(x,i) {reportNames[i] = {description: 'Report: ' + x}});
+            compNames.forEach(function(x,i) {compNames[i] = {description: 'Comp: ' + x}});
+
+
             if (reportIds.length == 0) {
                 $scope.noReports = true;
                 $scope.reportLoading = false;
@@ -101,6 +108,10 @@ define([
             ).then(function(response) {
                     $scope.reportLoading = false;
                     $scope.reports = response.data;
+
+                    var description = $scope.selectedProperty.name + ': Website, ' + compids.length + ' Comp(s), ' + reportIds.length + ' Report Type(s)';
+
+                    $auditService.create({type: 'report', property: $scope.selectedProperty, description: description, data: compNames.concat(reportNames)});
 
                 });
         }

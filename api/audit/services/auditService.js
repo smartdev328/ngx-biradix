@@ -12,6 +12,7 @@ var audits  = [
     {key: 'pdf_profile', value: 'PDF Profile'},
     {key: 'print_profile', value: 'Print Profile'},
     {key: 'excel_profile', value: 'Excel Profile'},
+    {key: 'report', value: 'Report'},
 ];
 
 module.exports = {
@@ -37,6 +38,9 @@ module.exports = {
                 name: audit.property.name
             };
         }
+        if (audit.data) {
+            n.data = audit.data;
+        }
         n.context = audit.context;
         n.type = audit.type;
         n.description = audit.description;
@@ -44,7 +48,10 @@ module.exports = {
 
         n.save(callback);
     },
-    get: function(criteria, callback) {
+    get: function(criteria, userids, callback) {
+
+        criteria.operatorids = userids;
+
         var query = QueryBuilder(criteria);
 
         query.count(function(err, obj) {
@@ -77,6 +84,11 @@ function QueryBuilder (criteria) {
     criteria.limit = criteria.limit || 50;
 
     var query = AuditSchema.find();
+
+
+    if (criteria.operatorids.length > 0) {
+        query = query.where("operator.id").in(criteria.operatorids);
+    }
 
     return query;
 }
