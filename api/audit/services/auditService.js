@@ -3,6 +3,7 @@ var AuditSchema= require('../schema/auditSchema')
 var async = require("async");
 var _ = require("lodash")
 var PaginationService = require('../../utilities/services/paginationService')
+var DateService = require('../../utilities/services/dateService')
 
 var audits  = [
     {key: 'login_failed', value: 'Login Failed'},
@@ -57,10 +58,10 @@ module.exports = {
         query.count(function(err, obj) {
 
             if (err) {
-                callback(err,[],0)
+                callback(err,[],PaginationService.getPager(criteria.skip, criteria.limit, 0))
             }
             else if (obj == 0) {
-                callback(null,[],0)
+                callback(null,[],PaginationService.getPager(criteria.skip, criteria.limit, 0))
             }
             else {
                 var query = QueryBuilder(criteria).sort("-date").skip(criteria.skip).limit(criteria.limit);
@@ -87,16 +88,6 @@ function QueryBuilder (criteria) {
 
 
     if (criteria.operatorids.length > 0) {
-
-        //Test.find()
-        //    .and([
-        //        { $or: [{a: 1}, {b: 1}] },
-        //        { $or: [{c: 1}, {d: 1}] }
-        //    ])
-        //    .exec(function (err, results) {
-        //        ...
-        //    });
-
         if (criteria.users && criteria.users.length > 0) {
             query = query.or([
                 {
@@ -123,6 +114,18 @@ function QueryBuilder (criteria) {
 
     if (criteria.types && criteria.types.length > 0) {
         query = query.where("type").in(criteria.types);
+    }
+
+    if (criteria.properties && criteria.properties.length > 0) {
+        query = query.where("property.id").in(criteria.properties);
+    }
+
+    if (criteria.daterange) {
+        var dr = DateService.convertRangeToParts(criteria.daterange);
+        if (criteria.daterange != "Lifetime") {
+            query = query.where("date").gte(dr.start).lte(dr.end);
+        }
+
     }
 
     return query;

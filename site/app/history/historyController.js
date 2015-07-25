@@ -17,14 +17,18 @@ define([
         $scope.limits = [10,50,100,500]
         $scope.typeOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types" }
         $scope.userOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users" }
+        $scope.propertyOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.daterange={
             Ranges : {
+                'Today': [moment().startOf("day"), moment()],
+                'Week to Date': [moment().startOf("week"), moment()],
+                'Month to Date': [moment().startOf("month"), moment()],
                 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'Last 90 Days': [moment().subtract(89, 'days'), moment()],
                 'Last Year': [moment().subtract(1, 'year'), moment()],
                 'Lifetime': [moment().subtract(30, 'year'), moment()],
             },
-            selectedRange : "Last 90 Days",
+            selectedRange : "Last 30 Days",
             selectedStartDate : null,
             selectedEndDate : null
         }
@@ -47,9 +51,19 @@ define([
 
             var types = _.pluck(_.filter($scope.typeItems,function(x) {return x.selected == true}),"id");
             var users = _.pluck(_.filter($scope.userItems,function(x) {return x.selected == true}),"id");
+            var properties = _.pluck(_.filter($scope.propertyItems,function(x) {return x.selected == true}),"id");
 
             $auditService.search({
-                skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage, types: types, users: users
+                skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage
+                , types: types
+                , users: users
+                , properties: properties
+                , daterange :
+                {
+                    daterange: $scope.daterange.selectedRange,
+                        start: $scope.daterange.selectedStartDate,
+                    end: $scope.daterange.selectedEndDate
+                }
             }).then(function (response) {
                     $scope.activity = response.data.activity;
                     $scope.pager = response.data.pager;
@@ -65,12 +79,18 @@ define([
 
                 $scope.typeItems = [];
                 $scope.userItems = [];
+                $scope.propertyItems = [];
+
                 $scope.audits.forEach(function(a) {
                     $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault})
                 })
 
                 response.data.users.forEach(function(a) {
                     $scope.userItems.push({id: a._id, name: a.name, selected: false})
+                })
+
+                response.data.properties.forEach(function(a) {
+                    $scope.propertyItems.push({id: a._id, name: a.name, selected: false})
                 })
 
                 $scope.reload();

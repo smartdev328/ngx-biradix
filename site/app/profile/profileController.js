@@ -84,7 +84,7 @@ define([
                             $scope.comp = resp.comp;
                             $window.document.title = $scope.property.name;
 
-                            $auditService.create({type: 'property_profile', property: {id: resp.property.id, name: resp.property.name}, description: resp.property.name});
+                            $auditService.create({type: 'property_profile', property: {id: resp.property._id, name: resp.property.name}, description: resp.property.name});
                         }
 
                         $scope.points = resp.points;
@@ -117,7 +117,7 @@ define([
         });
 
         $scope.print = function() {
-            $auditService.create({type: 'print_profile', property: {id: $scope.property.id, name: $scope.property.name}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
+            $auditService.create({type: 'print_profile', property: {id: $scope.property._id, name: $scope.property.name}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
             $window.print();
         }
 
@@ -156,7 +156,7 @@ define([
 
             location.href = url;
 
-            $auditService.create({type: 'excel_profile', property: {id: $scope.property.id, name: $scope.property.name}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
+            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
 
         }
 
@@ -186,7 +186,7 @@ define([
         }
 
         $scope.printFull = function() {
-            $auditService.create({type: 'print_profile', property: {id: $scope.property.id, name: $scope.property.name}, description: $scope.property.name + ' (with Comps) - ' + $scope.daterange.selectedRange});
+            $auditService.create({type: 'print_profile', property: {id: $scope.property._id, name: $scope.property.name}, description: $scope.property.name + ' (with Comps) - ' + $scope.daterange.selectedRange});
             window.open('/#/full/' + $scope.property._id, 'print', 'height:300,width:300');
         }
 

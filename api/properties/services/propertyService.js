@@ -2,6 +2,7 @@
 var PropertySchema= require('../schemas/propertySchema')
 var SurveySchema= require('../schemas/surveySchema')
 var GeocodeService = require('../../utilities/services/geocodeService')
+var DateService = require('../../utilities/services/dateService')
 var AccessService = require('../../access/services/accessService')
 var async = require("async");
 var _ = require("lodash")
@@ -480,7 +481,7 @@ module.exports = {
         var query = SurveySchema.find();
 
         query = query.where("propertyid").in(propertyids);
-        var dr = getDateRange(daterange);
+        var dr = DateService.convertRangeToParts(daterange);
 
         if (daterange.daterange != "Lifetime") {
             query = query.where("date").gte(dr.start).lte(dr.end);
@@ -979,19 +980,4 @@ function linkComp (subjectid, compid, callback) {
         })
     })
 
-}
-
-function getDateRange(daterange) {
-    switch (daterange.daterange) {
-        case "Last 90 Days":
-            return {start: moment().add(-90, "day").format(), end: moment().format()}
-        case "Last 30 Days":
-            return {start: moment().add(-30, "day").format(), end: moment().format()}
-        case "Last Year":
-            return {start: moment().add(-1, "year").format(), end: moment().format()}
-        case "Lifetime":
-            return {start: moment().add(-10, "year").format(), end: moment().startOf("day").format()}
-        default:
-            return {start: daterange.start, end: daterange.end}
-    }
 }
