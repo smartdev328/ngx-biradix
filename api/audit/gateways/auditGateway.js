@@ -8,6 +8,20 @@ var Routes = express.Router();
 var async = require('async')
 var _ = require('lodash')
 
+Routes.get('/filters', function (req, res) {
+    async.parallel({
+        users: function(callbackp) {
+                UserService.search(req.user, {}, function(err,users) {
+                    callbackp(null, users)
+                })
+        },
+
+    }, function(err, all) {
+            return res.status(200).json({audits: AuditService.audits, users: all.users});
+    })
+
+});
+
 Routes.post('/', function (req, res) {
     AccessService.canAccess(req.user,"History", function(canAccess) {
         if (!canAccess) {
@@ -31,7 +45,7 @@ Routes.post('/', function (req, res) {
                     return res.status(200).json({errors: err});
                 }
 
-                return res.status(200).json({errors: null, activity: obj, pager: pager, audits: AuditService.audits});
+                return res.status(200).json({errors: null, activity: obj, pager: pager});
             });
         })
 

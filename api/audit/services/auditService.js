@@ -8,7 +8,7 @@ var audits  = [
     {key: 'login_failed', value: 'Login Failed'},
     {key: 'login_succeeded', value: 'Login Succeeded'},
     {key: 'login_as', value: 'Login As'},
-    {key: 'property_profile', value: 'Profile Viewed'},
+    {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true},
     {key: 'pdf_profile', value: 'PDF Profile'},
     {key: 'print_profile', value: 'Print Profile'},
     {key: 'excel_profile', value: 'Excel Profile'},
@@ -88,6 +88,10 @@ function QueryBuilder (criteria) {
 
     if (criteria.operatorids.length > 0) {
         query = query.where("operator.id").in(criteria.operatorids);
+    }
+
+    if (criteria.types && criteria.types.length > 0) {
+        query = query.where("type").in(criteria.types);
     }
 
     return query;

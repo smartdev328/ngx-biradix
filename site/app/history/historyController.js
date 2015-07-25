@@ -43,12 +43,14 @@ define([
 
         $scope.reload = function () {
             $scope.localLoading = false;
+
+            var types = _.pluck(_.filter($scope.typeItems,function(x) {return x.selected == true}),"id");
+
             $auditService.search({
-                skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage
+                skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage, types: types
             }).then(function (response) {
                     $scope.activity = response.data.activity;
                     $scope.pager = response.data.pager;
-                    $scope.audits = response.data.audits;
                     $scope.localLoading = true;
                 },
                 function (error) {
@@ -56,7 +58,20 @@ define([
                 });
         }
 
-        $scope.reload();
+        $auditService.filters().then(function (response) {
+                $scope.audits = response.data.audits;
+
+                $scope.typeItems = [];
+                $scope.audits.forEach(function(a) {
+                    $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault})
+                })
+                $scope.reload();
+            },
+            function (error) {
+                $scope.localLoading = true;
+            });
+
+
 
         $scope.getAudit = function(key) {
             return _.find($scope.audits, function(x) {return x.key == key})
