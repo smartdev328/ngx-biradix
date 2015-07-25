@@ -87,7 +87,38 @@ function QueryBuilder (criteria) {
 
 
     if (criteria.operatorids.length > 0) {
-        query = query.where("operator.id").in(criteria.operatorids);
+
+        //Test.find()
+        //    .and([
+        //        { $or: [{a: 1}, {b: 1}] },
+        //        { $or: [{c: 1}, {d: 1}] }
+        //    ])
+        //    .exec(function (err, results) {
+        //        ...
+        //    });
+
+        if (criteria.users && criteria.users.length > 0) {
+            query = query.or([
+                {
+                    $and: [
+                        {"operator.id": {$in: criteria.operatorids}},
+                        {"user.id": {$in: criteria.users}},
+                    ]
+                },
+                {"operator.id": {$in:  _.intersection(criteria.operatorids, criteria.users)}},
+            ])
+
+        }
+        else {
+            query = query.where("operator.id").in(criteria.operatorids);
+        }
+    } else {
+        if (criteria.users && criteria.users.length > 0) {
+            query = query.or([
+                {"operator.id": {$in : criteria.users}},
+                {"user.id": {$in : criteria.users}},
+                ])
+        }
     }
 
     if (criteria.types && criteria.types.length > 0) {

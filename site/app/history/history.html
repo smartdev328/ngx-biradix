@@ -60,7 +60,7 @@
                 Types: <filter-list options="typeOptions" items="typeItems"></filter-list>
             </Td>
             <Td>
-                Users: <filter-list options="typeOptions" items="typeItems"></filter-list>
+                Users: <filter-list options="userOptions" items="userItems"></filter-list>
             </Td>
             <Td>
                 Properties: <filter-list options="typeOptions" items="typeItems"></filter-list>
@@ -71,10 +71,12 @@
         </Tr>
     </table>
 
-    Dates:<div style="height:3px"/> <daterange-picker daterange="daterange"></daterange-picker> <button class="btn btn-primary btn-sm" ng-click="reload()">Filter</button>
+    Dates:<div style="height:3px"/> <daterange-picker daterange="daterange"></daterange-picker> <button class="btn btn-primary btn-sm" ng-click="reload()">Filter</button><Br>
 
+<Br>
+    <div class="alert alert-warning" role="alert" ng-if="!activity || activity.length == 0"><b>There are no results matching your criteria.</b></div>
 
-    <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
+    <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px" ng-if="activity && activity.length > 0">
         <thead>
         <tr>
             <th style="width:24px"></th>
@@ -109,10 +111,10 @@
         </tbody>
      </table>
 
-    <div class="pull-left grid-show" style="padding-top:5px;">
+    <div class="pull-left grid-show" style="padding-top:5px;" ng-if="activity && activity.length > 0">
         Showing {{pageStart()}} to {{pageEnd()}} of {{pager.count}}
     </div>
-    <div class="pull-right grid-pager">
+    <div class="pull-right grid-pager" ng-if="activity && activity.length > 0">
         <pagination ng-change="pagerChanged()" ng-show="pager.count > pager.itemsPerPage" max-size="5" total-items="pager.count" ng-model="pager.currentPage" class="pagination-sm" items-per-page="pager.itemsPerPage" style="margin-top:0px"></pagination>
     </div>
     <br clear="all" />

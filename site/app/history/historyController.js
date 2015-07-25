@@ -16,6 +16,7 @@ define([
         $scope.pager = {offset : 0, currentPage: 1, itemsPerPage: 50}
         $scope.limits = [10,50,100,500]
         $scope.typeOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types" }
+        $scope.userOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users" }
         $scope.daterange={
             Ranges : {
                 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
@@ -45,9 +46,10 @@ define([
             $scope.localLoading = false;
 
             var types = _.pluck(_.filter($scope.typeItems,function(x) {return x.selected == true}),"id");
+            var users = _.pluck(_.filter($scope.userItems,function(x) {return x.selected == true}),"id");
 
             $auditService.search({
-                skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage, types: types
+                skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage, types: types, users: users
             }).then(function (response) {
                     $scope.activity = response.data.activity;
                     $scope.pager = response.data.pager;
@@ -62,9 +64,15 @@ define([
                 $scope.audits = response.data.audits;
 
                 $scope.typeItems = [];
+                $scope.userItems = [];
                 $scope.audits.forEach(function(a) {
                     $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault})
                 })
+
+                response.data.users.forEach(function(a) {
+                    $scope.userItems.push({id: a._id, name: a.name, selected: false})
+                })
+
                 $scope.reload();
             },
             function (error) {
