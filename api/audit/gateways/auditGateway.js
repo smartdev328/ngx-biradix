@@ -18,13 +18,13 @@ Routes.get('/filters', function (req, res) {
         },
 
         properties: function(callbackp) {
-            PropertyService.search(req.user, {permission: 'PropertyManage', select: '_id name comps.id'}, function(err,properties) {
+            PropertyService.search(req.user, {permission: 'PropertyManage', select: '_id name comps.id', limit: 1000}, function(err,properties) {
 
                 if (req.user.memberships.isadmin === true) {
                     callbackp(null, properties)
                 } else {
                     var subjectandcompids = _.pluck(_.flatten(_.pluck(properties,'comps')),"id").concat(_.pluck(properties, "_id"));
-                    PropertyService.search(req.user, {permission: 'PropertyView', select: '_id name', ids: subjectandcompids}, function(err,properties) {
+                    PropertyService.search(req.user, {permission: 'PropertyView', select: '_id name', ids: subjectandcompids, limit: 1000}, function(err,properties) {
                         callbackp(null, properties)
                     });
                 }
