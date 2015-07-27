@@ -12,7 +12,7 @@ var settings = require('../../../config/settings')
 var userRoutes = express.Router();
 
 userRoutes.post('/resetPassword', function (req, res) {
-    UserService.resetPassword(req.body.email, "http://" + req.headers.host, function(success) {
+    UserService.resetPassword(req.body.email, "http://" + req.headers.host, req.context, function(success) {
             res.status(200).json({ success: success });
         }
     );
@@ -31,7 +31,7 @@ userRoutes.put('/me', function (req, res) {
 })
 
 userRoutes.put('/me/settings', function (req, res) {
-    UserService.updateSettings(req.user, req.body, function (err, usr) {
+    UserService.updateSettings(req.user, req.body, req.context, function (err, usr) {
             if (err) {
                 return res.status(200).json({errors: err, user: null});
             }
@@ -102,7 +102,7 @@ userRoutes.post('/updatePasswordByToken', function (req, res) {
 
     UserService.getUserByRecoveryToken(token, function (usr) {
         if (usr) {
-            UserService.updatePassword(usr._id, req.body.password, function(err, newusr) {
+            UserService.updatePassword(usr._id, req.body.password, req.context, function(err, newusr) {
                 if (err) {
                     return res.status(200).json({success: false, errors: err});
                 } else {

@@ -16,6 +16,9 @@ var audits  = [
     {key: 'report', value: 'Report'},
     {key: 'report_print', value: 'Report Print'},
     {key: 'report_pdf', value: 'Report Pdf'},
+    {key: 'show_unlinked', value: 'Unlinked Setting'},
+    {key: 'password_updated', value: 'Password Updated'},
+    {key: 'reset_password', value: 'Reset Password'},
 ];
 
 module.exports = {

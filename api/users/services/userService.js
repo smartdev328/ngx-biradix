@@ -113,7 +113,7 @@ module.exports = {
             callback(null)
         }
     },
-    resetPassword: function(email,base,callback) {
+    resetPassword: function(email,base,context,callback) {
         email = email || '';
 
         if (email === '')
@@ -127,6 +127,7 @@ module.exports = {
                 emailLower: emailLower
             }, function(err, usr) {
                 if (!usr) {
+                    AuditService.create({type: 'reset_password', description: 'Failed: ' + email, context: context})
                     return callback(false);
                 }
 
@@ -141,6 +142,8 @@ module.exports = {
                         template : 'password.html',
                         templateData : {first: usr.first, email: usr.email, link: base + "/p/" + token }
                     };
+
+                    AuditService.create({type: 'reset_password', user : usr,description: 'Success: ' + usr.email, context: context})
 
                     EmailService.send(email,function(emailError,status) {
                         return callback(true);
@@ -326,7 +329,7 @@ module.exports = {
         });
 
     },
-    updatePassword: function (id, password, callback) {
+    updatePassword: function (id, password, context, callback) {
         var modelErrors = [];
         password = password || '';
 
@@ -364,12 +367,13 @@ module.exports = {
                     callback(modelErrors,null);
                     return;
                 };
+                AuditService.create({operator: usr, user: usr, type: 'password_updated', description: usr.email, context: context})
                 callback(null,newusr);
             });
         });
 
     },
-    updateSettings : function(Operator, settings, callback)  {
+    updateSettings : function(Operator, settings, context, callback)  {
         var modelErrors = [];
 
 
@@ -390,6 +394,9 @@ module.exports = {
                 callback(modelErrors,null);
                 return;
             };
+
+            var bLinkedUpdated = usr.settings.hideUnlinked != settings.hideUnlinked;
+
             usr.settings = settings
 
             usr.save(function (err, usr) {
@@ -398,7 +405,13 @@ module.exports = {
                     callback(modelErrors,null);
                     return;
                 };
+
+                if (bLinkedUpdated) {
+                    AuditService.create({operator: usr, user: usr, type: 'show_unlinked', description: usr.settings.hideUnlinked === true ? 'Hide' : 'Show', context: context})
+                }
                 callback(null,usr.settings);
+
+
             });
 
 
