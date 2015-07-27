@@ -14,6 +14,8 @@ var audits  = [
     {key: 'print_profile', value: 'Print Profile'},
     {key: 'excel_profile', value: 'Excel Profile'},
     {key: 'report', value: 'Report'},
+    {key: 'report_print', value: 'Report Print'},
+    {key: 'report_pdf', value: 'Report Pdf'},
 ];
 
 module.exports = {

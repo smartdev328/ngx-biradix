@@ -86,10 +86,10 @@ define([
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
             var compids =  _.pluck($scope.selectedComps,"id")
 
-            var reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
-            var compNames =  _.pluck($scope.selectedComps,"name")
-            reportNames.forEach(function(x,i) {reportNames[i] = {description: 'Report: ' + x}});
-            compNames.forEach(function(x,i) {compNames[i] = {description: 'Comp: ' + x}});
+            $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
+            $scope.compNames =  _.pluck($scope.selectedComps,"name")
+            $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
+            $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
 
             if (reportIds.length == 0) {
@@ -109,11 +109,25 @@ define([
                     $scope.reportLoading = false;
                     $scope.reports = response.data;
 
-                    var description = $scope.selectedProperty.name + ': Website, ' + compids.length + ' Comp(s), ' + reportIds.length + ' Report Type(s)';
+                    $scope.description = $scope.selectedProperty.name + ': %where%, ' + compids.length + ' Comp(s), ' + reportIds.length + ' Report Type(s)';
 
-                    $auditService.create({type: 'report', property: $scope.selectedProperty, description: description, data: compNames.concat(reportNames)});
+                    $scope.audit('report','Website');
+
 
                 });
+        }
+
+        $scope.print = function() {
+            $scope.audit('report_print','Print');
+            window.print();
+        }
+
+        $scope.pdf = function() {
+            $scope.audit('report_pdf','Pdf');
+        }
+
+        $scope.audit = function(type, where) {
+            $auditService.create({type: 'report', property: $scope.selectedProperty, description: $scope.description.replace('%where%',where), data: $scope.compNames.concat($scope.reportNames)});
         }
 
 
