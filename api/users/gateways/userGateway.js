@@ -162,7 +162,7 @@ userRoutes.put('/:id/active', function (req, res) {
         user.id = req.params.id;
         user.active = req.body.active;
 
-        UserService.updateActive(user, function (err, newusr) {
+        UserService.updateActive(req.user, user, req.context,null, function (err, newusr) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

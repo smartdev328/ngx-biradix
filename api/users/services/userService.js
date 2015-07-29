@@ -488,7 +488,7 @@ module.exports = {
         });
 
     },
-    updateActive : function(user, callback)  {
+    updateActive : function(operator, user, context, revertedFromId, callback)  {
         var modelErrors = [];
 
         if (!user.id)
@@ -509,15 +509,26 @@ module.exports = {
         var update = {active: user.active};
         var options = {new: true};
 
-        UserSchema.findOneAndUpdate(query, update, options, function(err, saved) {
 
-            if (err) {
-                modelErrors.push({msg : 'Unable to update user.'});
+        UserSchema.findOne(query, function(err, old) {
+            if (old.active === user.active) {
+                modelErrors.push({msg : 'User is already ' + (old.active ? 'Active' : 'Inactive')});
                 callback(modelErrors, null);
                 return;
             }
+            UserSchema.findOneAndUpdate(query, update, options, function(err, saved) {
 
-            return callback(err, saved)
+                if (err) {
+                    modelErrors.push({msg : 'Unable to update user.'});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                AuditService.create({operator: operator, user: saved, type: 'user_status', revertedFromId : revertedFromId, description: user.active ? "Inactive => Active" : "Active => Inactive", context: context, data : [{description: "Previous: " + (user.active ? "Inactive" : "Active"), status: !user.active}]})
+
+                return callback(err, saved)
+            })
+
         })
 
     },

@@ -32,6 +32,15 @@ define([
             });
         }
 
+        fac.undo = function (id) {
+            return $http.post('/api/1.0/audit/undo', {id: id}, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });

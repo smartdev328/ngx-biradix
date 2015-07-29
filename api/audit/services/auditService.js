@@ -19,6 +19,7 @@ var audits  = [
     {key: 'show_unlinked', value: 'Unlinked Setting'},
     {key: 'password_updated', value: 'Password Updated'},
     {key: 'reset_password', value: 'Reset Password'},
+    {key: 'user_status', value: 'Updated User Status', undo: true},
 ];
 
 module.exports = {
@@ -52,7 +53,20 @@ module.exports = {
         n.description = audit.description;
         n.date = new Date().toISOString();
 
+        if (audit.revertedFromId) {
+            n.revertedFromId = audit.revertedFromId;
+        }
+
         n.save(callback);
+    },
+    updateReverted: function (id,callback) {
+        var query = {_id: id};
+        var update = {reverted: true};
+        var options = {new: true};
+
+        AuditSchema.findOneAndUpdate(query, update, options, function(err, saved) {
+            return callback(err, saved)
+        })
     },
     get: function(criteria, userids, callback) {
 
@@ -131,6 +145,10 @@ function QueryBuilder (criteria) {
             query = query.where("date").gte(dr.start).lte(dr.end);
         }
 
+    }
+
+    if (criteria.id) {
+        query= query.where("_id").equals(criteria.id);
     }
 
     return query;

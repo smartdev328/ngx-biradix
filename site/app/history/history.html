@@ -88,13 +88,26 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat-start="row in activity">
+        <tr ng-repeat-start="row in activity" ng-style="{'font-weight' : row.revertedFromId ? 'bold' : 'normal', 'color' : row.reverted ? 'silver' : ''}">
             <td style="text-align: center"><i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
             <td>{{row.date | date: 'short'}}</td>
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
             <td>{{row.operator.name}}</td>
-            <td>&nbsp;</td>
+            <td>
+                <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-if="getAudit(row.type).undo">
+                    <div class="btn-group action_dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                            <li ng-if="row.revertedFromId"><a href "style="text-decoration:none"><span class="fa fa-info-circle"></span> Result of an earlier undo</a></li>
+                            <li ng-if="!row.reverted"><a href ng-click="undo(row)"style="text-decoration:none"><span class="fa fa-undo"></span> Undo</a></li>
+                            <li ng-if="row.reverted"><a href style="text-decoration:none"><span class="fa fa-undo" style="color:red"></span> Already undone</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
         </tr>
         <tr ng-if="row.open">
             <td colspan="100%">
