@@ -428,6 +428,96 @@ Routes.get('/:id/excel', function (req, res) {
 
 });
 
+Routes.get('/:id/reportsPdf', function (req, res) {
+    PropertyService.search(req.user, {_id: req.params.id}, function(err, properties) {
+        UserService.getFullUser(req.user, function (full) {
+            moment().utcOffset(req.query.timezone);
+            var p = properties[0];
+            var fileName = p.name.replace(/ /g, "_");
+
+            fileName += "_Report" + moment().format("MM_DD_YYYY");
+
+            fileName += ".pdf";
+
+            var options = {
+                pool: 5,           // Change the pool size. Defaults to 1
+                timeout: 30000,        // Set a render timeout in milliseconds. Defaults to 30 seconds.
+                format: 'pdf',      // The default output format. Defaults to png
+                quality: 100,         // The default image quality. Defaults to 100. Only relevant for jpeg format.
+                width: 1280,        // Changes the width size. Defaults to 1280
+                height: 960,         // Changes the height size. Defaults to 960
+                paperFormat: 'Letter',        // Defaults to A4. Also supported: 'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
+                orientation: 'portrait',  // Defaults to portrait. 'landscape' is also valid
+                margin: '0.1in',       // Defaults to 0cm. Supported dimension units are: 'mm', 'cm', 'in', 'px'. No unit means 'px'.
+                userAgent: '',          // No default.
+                headers: {}, // Additional headers to send with each upstream HTTP request
+                paperSize: null,        // Defaults to the paper format, orientation, and margin.
+                crop: false,       // Defaults to false. Set to true or {top:5, left:5} to add margin
+                printMedia: false,       // Defaults to false. Force the use of a print stylesheet.
+                maxErrors: 3,           // Number errors phantom process is allowed to throw before killing it. Defaults to 3.
+                expects: true, // No default. Do not render until window.renderable is set to 'something'
+                retries: 2,           // How many times to try a render before giving up. Defaults to 1.
+                phantomFlags: [], // Defaults to []. Command line flags passed to phantomjs
+                maxRenders: 20,          // How many renders can a phantom process make before being restarted. Defaults to 20
+            };
+
+            var render = phantom(options);
+
+            var url = req.protocol + '://' + req.get('host') + "/#/reporting";
+
+            var cookies = [{
+                'name': 'token', /* required property */
+                'value': full.token, /* required property */
+                'domain': req.hostname,
+                'path': '/', /* required property */
+                'httponly': false,
+                'secure': false,
+                'expires': (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+            }, {
+                'name': 'compIds', /* required property */
+                'value': req.query.compIds, /* required property */
+                'domain': req.hostname,
+                'path': '/', /* required property */
+                'httponly': false,
+                'secure': false,
+                'expires': (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+            },
+                {
+                    'name': 'reportIds', /* required property */
+                    'value': req.query.reportIds, /* required property */
+                    'domain': req.hostname,
+                    'path': '/', /* required property */
+                    'httponly': false,
+                    'secure': false,
+                    'expires': (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+                },
+                {
+                    'name': 'subjectId', /* required property */
+                    'value': req.params.id, /* required property */
+                    'domain': req.hostname,
+                    'path': '/', /* required property */
+                    'httponly': false,
+                    'secure': false,
+                    'expires': (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+                },
+            ];
+
+            res.setHeader("content-type", "application/pdf");
+            res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+
+            options.cookies = cookies;
+            var r = render(url, options).pipe(res);
+
+            r.on('finish', function () {
+                if (req.query.progressId) {
+                    ProgressService.setComplete(req.query.progressId)
+                }
+            })
+        });
+    });
+
+});
+
 Routes.get('/:id/pdf', function (req, res) {
     PropertyService.search(req.user, {_id: req.params.id}, function(err, properties) {
         UserService.getFullUser(req.user, function(full) {
@@ -471,14 +561,14 @@ Routes.get('/:id/pdf', function (req, res) {
             var url = req.protocol + '://' + req.get('host') + "/#/" + (req.query.full == "true" ? "full" : "profile") + "/" + p._id;
 
             var cookies = [{
-                    'name'     : 'token',   /* required property */
-                    'value'    : full.token,  /* required property */
-                    'domain'   : req.hostname,
-                    'path'     : '/',                /* required property */
-                    'httponly' : false,
-                    'secure'   : false,
-                    'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
-                },
+                'name'     : 'token',   /* required property */
+                'value'    : full.token,  /* required property */
+                'domain'   : req.hostname,
+                'path'     : '/',                /* required property */
+                'httponly' : false,
+                'secure'   : false,
+                'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+            },
                 {
                     'name'     : 'Graphs',   /* required property */
                     'value'    : req.query.Graphs,  /* required property */
@@ -559,7 +649,7 @@ Routes.put('/:id/active', function (req, res) {
         property.id = req.params.id;
         property.active = req.body.active;
 
-        PropertyService.updateActive(property, function (err, newusr) {
+        PropertyService.updateActive(req.user, property, req.context, null, function (err, newusr) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

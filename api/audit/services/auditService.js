@@ -20,6 +20,7 @@ var audits  = [
     {key: 'password_updated', value: 'Password Updated'},
     {key: 'reset_password', value: 'Reset Password'},
     {key: 'user_status', value: 'Updated User Status', undo: true},
+    {key: 'property_status', value: 'Updated Property Status', undo: true},
 ];
 
 module.exports = {

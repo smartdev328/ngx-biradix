@@ -56,7 +56,13 @@ Routes.post('/undo', function (req, res) {
                 function(callbacks){
                     switch (o.type) {
                         case "user_status":
-                            UserService.updateActive(req.user, {id: o.user.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err, newusr) {
+                            UserService.updateActive(req.user, {id: o.user.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err,n) {
+                                errors = err || [];
+                                callbacks(null)
+                            });
+                            break;
+                        case "property_status":
+                            PropertyService.updateActive(req.user, {id: o.property.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err, n) {
                                 errors = err || [];
                                 callbacks(null)
                             });

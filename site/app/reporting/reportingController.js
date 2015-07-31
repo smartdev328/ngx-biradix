@@ -8,9 +8,10 @@ define([
     '../../components/reports/propertyRankings.js',
     '../../components/reports/marketShare.js',
     '../../services/auditService',
+    '../../services/progressService',
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', function ($scope,$rootScope,$location,$propertyService,$auditService) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -35,6 +36,10 @@ define([
 
 
             var id = $rootScope.me.settings.defaultPropertyId;
+
+            if ($cookies.get("subjectId")) {
+                id = $cookies.get("subjectId");
+            }
 
 
             if (!$scope.myProperties || $scope.myProperties.length == 0) {
@@ -68,6 +73,19 @@ define([
                 })
                 $scope.localLoading = true;
 
+                if ($cookies.get("reportIds")) {
+
+                    $scope.reportItems.forEach(function(x,i) {
+                        $scope.reportItems[i].selected = $cookies.get("reportIds").indexOf(x.id) > -1
+                    })
+
+                    $scope.items.forEach(function(x,i) {
+                        $scope.items[i].selected = $cookies.get("compIds").indexOf(x.id) > -1
+                    })
+
+                    $scope.run();
+                }
+
             })
 
         }
@@ -83,8 +101,8 @@ define([
 
             $scope.selectedComps = _.filter($scope.items,function(x) {return x.selected == true})
 
-            var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
-            var compids =  _.pluck($scope.selectedComps,"id")
+            $scope.reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
+            $scope.compIds =  _.pluck($scope.selectedComps,"id")
 
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
             $scope.compNames =  _.pluck($scope.selectedComps,"name")
@@ -92,26 +110,32 @@ define([
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
 
-            if (reportIds.length == 0) {
+            if ($scope.reportIds.length == 0) {
                 $scope.noReports = true;
                 $scope.reportLoading = false;
                 return;
             }
 
-            $scope.rankings = reportIds.indexOf("property_rankings") > -1;
-            $scope.marketShare = reportIds.indexOf("market_share") > -1;
+            $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
+            $scope.marketShare = $scope.reportIds.indexOf("market_share") > -1;
 
             $propertyService.reports(
-                compids
+                $scope.compIds
                 , $scope.selectedProperty._id
-                ,reportIds
+                ,$scope.reportIds
             ).then(function(response) {
                     $scope.reportLoading = false;
                     $scope.reports = response.data;
 
-                    $scope.description = $scope.selectedProperty.name + ': %where%, ' + compids.length + ' Comp(s), ' + reportIds.length + ' Report Type(s)';
+                    $scope.description = $scope.selectedProperty.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
 
-                    $scope.audit('report','Website');
+                    if (!phantom) {
+                        $scope.audit('report', 'Website');
+                    }
+
+                    window.setTimeout(function() {
+                        window.renderable = true;
+                    },600)
 
 
                 });
@@ -124,6 +148,39 @@ define([
 
         $scope.pdf = function() {
             $scope.audit('report_pdf','Pdf');
+
+            ngProgress.start();
+
+            $('#export').prop('disabled', true);
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            var url = '/api/1.0/properties/' + $scope.selectedProperty._id + '/reportsPdf?'
+            url += "token=" + $cookies.get('token')
+            url += "&compIds=" + $scope.compIds
+            url += "&reportIds=" + $scope.reportIds
+            url += "&progressId=" + $scope.progressId
+            url += "&timezone=" + moment().utcOffset()
+
+
+            window.setTimeout($scope.checkProgress, 500);
+
+            location.href = url;
+        }
+
+        $scope.checkProgress = function() {
+
+            $progressService.isComplete($scope.progressId, function(isComplete) {
+
+                if (isComplete) {
+                    ngProgress.complete();
+                    $('#export').prop('disabled', false);
+                }
+                else {
+                    $window.setTimeout($scope.checkProgress, 500);
+                }
+            })
+
         }
 
         $scope.audit = function(type, where) {

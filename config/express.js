@@ -81,10 +81,10 @@ module.exports = {
 
             app.use(raygunClient.expressHandler);
 
-            app.all("*", function(req, res, next) {
-                //console.log(req.path, req.cookies)
-                next();
-            })
+            //app.all("*", function(req, res, next) {
+            //    //console.log(req.path, req.cookies)
+            //    next();
+            //})
         }
 }
 

@@ -10,6 +10,7 @@ var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
 var uuid = require('node-uuid');
 var moment = require('moment');
+var AuditService = require('../../audit/services/auditService')
 
 var WEEK = 7 * 24 * 60 * 60 * 1000;
 
@@ -385,7 +386,7 @@ module.exports = {
         );
 
     },
-    updateActive : function(property, callback)  {
+    updateActive : function(operator, property, context, revertedFromId, callback)  {
         var modelErrors = [];
 
         if (!property.id)
@@ -406,16 +407,25 @@ module.exports = {
         var update = {active: property.active};
         var options = {new: true};
 
-        PropertySchema.findOneAndUpdate(query, update, options, function(err, saved) {
-
-            if (err) {
-                modelErrors.push({msg : 'Unable to update property.'});
+        PropertySchema.findOne(query, function(err, old) {
+            if (old.active === property.active) {
+                modelErrors.push({msg: 'Property is already ' + (old.active ? 'Active' : 'Inactive')});
                 callback(modelErrors, null);
                 return;
             }
+            PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
 
-            return callback(err, saved)
-        })
+                if (err) {
+                    modelErrors.push({msg: 'Unable to update property.'});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                AuditService.create({operator: operator, property: saved, type: 'property_status', revertedFromId : revertedFromId, description: property.active ? "Inactive => Active" : "Active => Inactive", context: context, data : [{description: "Previous: " + (property.active ? "Inactive" : "Active"), status: !property.active}]})
+
+                return callback(err, saved)
+            })
+        });
 
     },
     createSurvey: function(id, survey, callback) {
