@@ -24,7 +24,7 @@ Routes.put('/:id/comps/:compid', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyService.linkComp(req.params.id, req.params.compid, function (err, newusr) {
+        PropertyService.linkComp(req.user, req.context, null, req.params.id, req.params.compid, function (err, newusr) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }
@@ -666,7 +666,7 @@ Routes.delete('/:id/comps/:compid', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyService.unlinkComp(req.params.id, req.params.compid, function (err, newusr) {
+        PropertyService.unlinkComp(req.user, req.context, null, req.params.id, req.params.compid, function (err, newusr) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

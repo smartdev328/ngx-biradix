@@ -82,7 +82,7 @@ define([
                 $scope.propertyItems = [];
 
                 $scope.audits.forEach(function(a) {
-                    $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault})
+                    $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group})
                 })
 
                 response.data.users.forEach(function(a) {

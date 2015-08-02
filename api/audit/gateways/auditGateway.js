@@ -67,6 +67,18 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             });
                             break;
+                        case "comp_unlinked":
+                            PropertyService.linkComp(req.user, req.context, o._id, o.data[0].id, o.data[1].id,  function (err, n) {
+                                errors = err || [];
+                                callbacks(null)
+                            });
+                            break;
+                        case "comp_linked":
+                            PropertyService.unlinkComp(req.user, req.context, o._id, o.data[0].id, o.data[1].id,  function (err, n) {
+                                errors = err || [];
+                                callbacks(null)
+                            });
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);

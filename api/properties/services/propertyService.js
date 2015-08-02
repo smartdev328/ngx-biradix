@@ -31,8 +31,8 @@ module.exports = {
         var subjcomps = _.find(comps,function(x) {return x._id.toString() == subjectid.toString()}).comps;
         return _.flatten(_.pluck(_.flatten(subjcomps),"floorplans"));
     },
-    linkComp:function(subjectid, compid, callback) {
-        linkComp(subjectid,compid,callback);
+    linkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
+        linkComp(operator,context,revertedFromId, true, subjectid,compid,callback);
     },
     saveCompLink:function(subjectid, compid, floorplans, excluded, callback) {
         var ObjectId = require('mongoose').Types.ObjectId;
@@ -43,13 +43,43 @@ module.exports = {
             return callback(err, saved)
         })
     },
-    unlinkComp:function(subjectid, compid, callback) {
+    unlinkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
         var ObjectId = require('mongoose').Types.ObjectId;
         var query = {_id: new ObjectId(subjectid)};
         var update = {$pull: {comps : {id : ObjectId(compid)}}};
 
-        PropertySchema.update(query, update, function(err, saved) {
-            return callback(err, saved)
+        PropertySchema.findOne({_id: compid}, function(err,comp) {
+            if (!comp) {
+                return callback([{msg: 'Unable to find property'}])
+            }
+            PropertySchema.findOne({_id: subjectid}, function (err, subj) {
+                if (!subj) {
+                    return callback([{msg: 'Unable to find property'}])
+                }
+
+                var isLinked = _.find(subj.comps, function (x) {
+                    return x.id == compid
+                })
+
+                if (!isLinked) {
+                    return callback([{msg: 'Unable to unlink comp, it is not currently linked.'}])
+                }
+                PropertySchema.update(query, update, function (err, saved) {
+                    AuditService.create({
+                        operator: operator,
+                        property: subj,
+                        type: 'comp_unlinked',
+                        revertedFromId: revertedFromId,
+                        description: subj.name + " ~ " + comp.name,
+                        context: context,
+                        data: [{
+                            description: "Subject: " + subj.name,
+                            id: subj._id
+                        }, {description: "Comp: " + comp.name, id: comp._id},]
+                    })
+                    return callback(err, saved)
+                })
+            })
         })
     },
     getSurvey: function(criteria, callback) {
@@ -376,7 +406,7 @@ module.exports = {
                         });
                     }, function(err) {
                         //link to yourself
-                        linkComp(prop._id, prop._id,function() {
+                        linkComp(null,null,null,false,prop._id, prop._id,function() {
                             callback(err, prop);
                         })
                     });
@@ -966,7 +996,7 @@ function getSubjectExclusions (compid, compFloorplans, callback) {
     });
 
 }
-function linkComp (subjectid, compid, callback) {
+function linkComp (operator, context, revertedFromId, logHistory, subjectid, compid, callback) {
     PropertySchema.findOne({_id:subjectid}, function(err, subj) {
         if (_.find(subj.comps, function(c) {return c.id.toString() == compid.toString()})) {
             return callback("Comp already exists", null);
@@ -984,6 +1014,21 @@ function linkComp (subjectid, compid, callback) {
                 var options = {new: true};
 
                 PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+                    if (logHistory) {
+                        AuditService.create({
+                            operator: operator,
+                            property: saved,
+                            type: 'comp_linked',
+                            revertedFromId: revertedFromId,
+                            description: subj.name + " + " + comp.name,
+                            context: context,
+                            data: [{
+                                description: "Subject: " + subj.name,
+                                id: subj._id
+                            }, {description: "Comp: " + comp.name, id: comp._id},]
+                        })
+                    }
                     return callback(err, saved)
                 })
             }

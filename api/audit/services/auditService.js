@@ -6,21 +6,23 @@ var PaginationService = require('../../utilities/services/paginationService')
 var DateService = require('../../utilities/services/dateService')
 
 var audits  = [
-    {key: 'login_failed', value: 'Login Failed'},
-    {key: 'login_succeeded', value: 'Login Succeeded'},
-    {key: 'login_as', value: 'Login As'},
-    {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true},
-    {key: 'pdf_profile', value: 'PDF Profile'},
-    {key: 'print_profile', value: 'Print Profile'},
-    {key: 'excel_profile', value: 'Excel Profile'},
-    {key: 'report', value: 'Report'},
-    {key: 'report_print', value: 'Report Print'},
-    {key: 'report_pdf', value: 'Report Pdf'},
-    {key: 'show_unlinked', value: 'Unlinked Setting'},
-    {key: 'password_updated', value: 'Password Updated'},
-    {key: 'reset_password', value: 'Reset Password'},
-    {key: 'user_status', value: 'Updated User Status', undo: true},
-    {key: 'property_status', value: 'Updated Property Status', undo: true},
+    {key: 'login_failed', value: 'Login Failed', group: 'User'},
+    {key: 'login_succeeded', value: 'Login Succeeded', group: 'User'},
+    {key: 'login_as', value: 'Login As', group: 'User'},
+    {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true, group: 'Property'},
+    {key: 'pdf_profile', value: 'PDF Profile', group: 'Reporting'},
+    {key: 'print_profile', value: 'Print Profile', group: 'Reporting'},
+    {key: 'excel_profile', value: 'Excel Profile', group: 'Reporting'},
+    {key: 'report', value: 'Report', group: 'Reporting'},
+    {key: 'report_print', value: 'Report Print', group: 'Reporting'},
+    {key: 'report_pdf', value: 'Report Pdf', group: 'Reporting'},
+    {key: 'show_unlinked', value: 'Unlinked Setting', group: 'Reporting'},
+    {key: 'password_updated', value: 'Password Updated', group: 'User'},
+    {key: 'reset_password', value: 'Reset Password', group: 'User'},
+    {key: 'user_status', value: 'Updated User Status', undo: true, group: 'User'},
+    {key: 'property_status', value: 'Updated Property Status', undo: true, group: 'Property'},
+    {key: 'comp_linked', value: 'Comp Linked', undo: true, group: 'Property'},
+    {key: 'comp_unlinked', value: 'Comp Unlinked', undo: true, group: 'Property'},
 ];
 
 module.exports = {
