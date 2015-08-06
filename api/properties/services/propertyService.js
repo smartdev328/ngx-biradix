@@ -34,13 +34,77 @@ module.exports = {
     linkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
         linkComp(operator,context,revertedFromId, true, subjectid,compid,callback);
     },
-    saveCompLink:function(subjectid, compid, floorplans, excluded, callback) {
+    saveCompLink:function(operator,context,revertedFromId,subjectid, compid, floorplans, callback) {
         var ObjectId = require('mongoose').Types.ObjectId;
         var query = {_id: new ObjectId(subjectid), 'comps.id': new ObjectId(compid)};
-        var update = {$set: {'comps.$.floorplans': floorplans, 'comps.$.excluded': excluded}};
 
-        PropertySchema.update(query, update, function(err, saved) {
-            return callback(err, saved)
+
+        PropertySchema.findOne({_id: compid}, function(err,comp) {
+            if (!comp) {
+                return callback([{msg: 'Unable to find property'}])
+            }
+            PropertySchema.findOne({_id: subjectid}, function (err, subj) {
+                if (!subj) {
+                    return callback([{msg: 'Unable to find property'}])
+                }
+
+                var isLinked = _.find(subj.comps, function (x) {
+                    return x.id.toString() == compid.toString()
+                })
+
+                if (!isLinked) {
+                    return callback([{msg: 'Unable to update comp links, not currently linked.'}])
+                }
+
+                var old = isLinked.floorplans.map(function(x) {return x.toString()})
+                var updated = floorplans.map(function(x) {return x.toString()})
+                var full = _.pluck(comp.floorplans,"id").map(function(x) {return x.toString()})
+
+                var excluded = !_.isEqual(full.sort(), updated.sort())
+
+                var update = {$set: {'comps.$.floorplans': floorplans, 'comps.$.excluded': excluded}};
+
+                if (_.isEqual(old.sort(), updated.sort())) {
+                    return callback([{msg: 'Unable to update comp links, no changes detected'}])
+                }
+
+                var removed = _.difference(old, updated);
+                var added = _.difference(updated, old);
+
+                var addedData = [];
+                var removedData = [];
+
+                if (added && added.length > 0) {
+                    _.filter(comp.floorplans, function(x) {return added.indexOf(x.id.toString()) > -1}).forEach(function(fp) {
+                        addedData.push({type:'added', id: fp.id.toString(), description: 'Added: ' + floorplanName(fp)})
+                    })
+                }
+
+                if (removed && removed.length > 0) {
+                    _.filter(comp.floorplans, function(x) {return removed.indexOf(x.id.toString()) > -1}).forEach(function(fp) {
+                        removedData.push({type:'removed', id: fp.id.toString(), description: 'Removed: ' + floorplanName(fp)})
+                    })
+                }
+
+                PropertySchema.update(query, update, function (err, saved) {
+
+                    AuditService.create({
+                        operator: operator,
+                        property: subj,
+                        type: 'links_updated',
+                        revertedFromId: revertedFromId,
+                        description: subj.name + " + " + comp.name + " (" + added.length + " Added, " + removed.length +" Removed)",
+                        context: context,
+                        data: [{
+                            description: "Subject: " + subj.name,
+                            id: subj._id
+                        }, {description: "Comp: " + comp.name, id: comp._id},].concat(addedData).concat(removedData)
+                    })
+
+
+                    return callback(err, saved)
+                })
+            })
         })
     },
     unlinkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
@@ -1035,4 +1099,18 @@ function linkComp (operator, context, revertedFromId, logHistory, subjectid, com
         })
     })
 
+}
+function floorplanName(fp) {
+    var name = fp.bedrooms + "x" + fp.bathrooms;
+
+    if (fp.description && fp.description != "") {
+        name += " " + fp.description;
+    } else {
+        name += " - ";
+    }
+
+    name += " " + fp.sqft + " Sqft";
+    name += ", " + fp.units + " Units";
+
+    return name
 }

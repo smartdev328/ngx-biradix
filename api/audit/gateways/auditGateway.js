@@ -79,6 +79,12 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             });
                             break;
+                        case "links_updated":
+                            linksUpdated(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);
@@ -143,5 +149,27 @@ function search(req, callback) {
         AuditService.get(req.body,all.userids, function (err, obj, pager) {
             callback(err, obj, pager)
         });
+    })
+}
+
+function linksUpdated(req, o, callback) {
+    var subjectid = o.data[0].id;
+    var compid = o.data[1].id;
+
+    var added = _.pluck(_.filter(o.data, function(x) {return x.type && x.type == 'added'}),"id");
+    var removed = _.pluck(_.filter(o.data, function(x) {return x.type && x.type == 'removed'}),"id");
+    PropertyService.search(req.user,{_id: subjectid, select: 'comps'}, function(er, props) {
+        var comp = _.find(props[0].comps, function(x) {
+            return x.id == compid}).floorplans;
+        //console.log(comp, added, removed);
+        if (added && added.length > 0) {
+            _.remove(comp, function(x) {return added.indexOf(x.toString()) > -1})
+        }
+        if (removed && removed.length > 0) {
+            comp = _.uniq(comp.concat(removed));
+        }
+
+        PropertyService.saveCompLink(req.user,req.context, o._id,subjectid,compid,comp,callback);
+
     })
 }
