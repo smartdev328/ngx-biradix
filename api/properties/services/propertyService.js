@@ -522,11 +522,40 @@ module.exports = {
         });
 
     },
-    createSurvey: function(id, survey, callback) {
+    createSurvey: function(operator,context,revertedFromId, id, survey, callback) {
 
         var compFloorplans = _.pluck(survey.floorplans,"id");
 
-        getSubjectExclusions(id, compFloorplans, function(exclusions) {
+        var subject;
+
+        async.waterfall([
+            function(callbackw){
+                PropertySchema.findOne({_id:id}, function(err, prop) {
+                    subject = prop;
+                    callbackw(null,prop.survey.id)
+                })
+            },
+            function(surveyid, callbackw) {
+                if (surveyid) {
+                    SurveySchema.findOne({_id:surveyid}, function(err, lastsurvey) {
+                        callbackw(null,lastsurvey)
+                    })
+                } else {
+                    callbackw(null,{})
+                }
+            },
+            function(lastsurvey, callbackw) {
+                getSubjectExclusions(id, compFloorplans, function(exclusions) {
+                    callbackw(null,lastsurvey,exclusions)
+                })
+            }
+        ], function(err,lastsurvey, exclusions ) {
+
+            lastsurvey.occupancy = lastsurvey.occupancy || '-';
+            lastsurvey.weeklyleases = lastsurvey.weeklyleases || '-';
+            lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || '-';
+            lastsurvey.floorplans = lastsurvey.floorplans || [];
+
             var n = new SurveySchema();
 
             n.floorplans = survey.floorplans;
@@ -539,7 +568,33 @@ module.exports = {
             n.date = survey.date || Date.now();
             n.exclusions = exclusions;
 
+            var data = [{description: "Date: " + moment(n.date).format("MM/DD/YYYY"), id: n._id}];
+
+            if (lastsurvey.occupancy !== n.occupancy) {
+                data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + n.occupancy + "%"})
+            }
+
+            if (lastsurvey.weeklyleases !== n.weeklyleases) {
+                data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + n.weeklyleases })
+            }
+
+            if (lastsurvey.weeklytraffic !== n.weeklytraffic) {
+                data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + n.weeklytraffic })
+            }
+
+            n.floorplans.forEach(function(fp) {
+                var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
+
+                if (!oldfp) {
+                    data.push({description: floorplanName(fp) + ": " + floorplanRentName(fp) })
+                }
+                else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
+                    data.push({description: floorplanName(oldfp) + ": " + floorplanRentName(oldfp) + " => " + floorplanRentName(fp) })
+                }
+            })
+
             n.save(function (err, created) {
+                data[0].id=created._id;
                 var totUnits = _.sum(survey.floorplans, function (fp) {
                     return fp.units
                 });
@@ -568,8 +623,19 @@ module.exports = {
                     callback(err, created)
                 }
 
+                AuditService.create({
+                    operator: operator,
+                    property: subject,
+                    type: 'survey_created',
+                    revertedFromId: revertedFromId,
+                    description: subject.name + ": " + (data.length -1) + " update(s)",
+                    context: context,
+                    data: data
+                })
             });
         });
+
+
 
     },
     getSubjects: function(compid, criteria, callback) {
@@ -1113,4 +1179,8 @@ function floorplanName(fp) {
     name += ", " + fp.units + " Units";
 
     return name
+}
+
+function floorplanRentName(fp) {
+    return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/12)";
 }

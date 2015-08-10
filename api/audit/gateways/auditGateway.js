@@ -50,7 +50,6 @@ Routes.post('/undo', function (req, res) {
 
             var o = obj[0];
 
-            //TODO: error if no changes
             var errors = [];
             async.waterfall([
                 function(callbacks){

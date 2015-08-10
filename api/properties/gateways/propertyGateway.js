@@ -701,7 +701,7 @@ Routes.post('/:id/survey', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyService.createSurvey(req.params.id, req.body, function (err, newusr) {
+        PropertyService.createSurvey(req.user, req.context, null,req.params.id, req.body, function (err, newusr) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

@@ -24,6 +24,7 @@ var audits  = [
     {key: 'comp_linked', value: 'Comp Linked', undo: true, group: 'Property'},
     {key: 'comp_unlinked', value: 'Comp Unlinked', undo: true, group: 'Property'},
     {key: 'links_updated', value: 'Comp Links Updated', undo: true, group: 'Property'},
+    {key: 'survey_created', value: 'New Market Survey', undo: true, group: 'Market Survey'},
 ];
 
 module.exports = {
