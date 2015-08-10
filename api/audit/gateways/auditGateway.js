@@ -84,6 +84,18 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             })
                             break;
+                        case "survey_created":
+                            PropertyService.deleteSurvey(req.user, req.context, o._id, o.data[0].id,  function (err, n) {
+                                errors = err || [];
+                                callbacks(null)
+                            });
+                            break;
+                        case "survey_deleted":
+                            PropertyService.createSurvey(req.user, req.context, o._id, o.data[0].survey.propertyid, o.data[0].survey,  function (err, n) {
+                                errors = err || [];
+                                callbacks(null)
+                            });
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);

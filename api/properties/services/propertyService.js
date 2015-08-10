@@ -522,6 +522,60 @@ module.exports = {
         });
 
     },
+
+    deleteSurvey: function(operator,context,revertedFromId, id, callback) {
+        async.waterfall([
+            function(callbackw){
+                SurveySchema.findOne({_id:id}, function(err, survey) {
+
+                    if (!survey) {
+                        callbackw([{msg:'Unable to find survey to delete'}])
+                    } else {
+                        callbackw(null,survey)
+                    }
+
+                })
+
+            },
+            function(survey, callbackw) {
+                PropertySchema.findOne({_id:survey.propertyid}, function(err, prop) {
+                    callbackw(null,survey,prop)
+                })
+            }
+        ], function(err,survey, prop ) {
+
+            if (err) {
+                return callback(err);
+            }
+
+            var data = [{description: "Date: " + moment(survey.date).format("MM/DD/YYYY"), survey: survey}];
+
+            SurveySchema.findByIdAndRemove(survey._id, function(err) {
+
+                if (err) {
+                    return callback([{msg:err}]);
+                }
+
+                AuditService.create({
+                    operator: operator,
+                    property: prop,
+                    type: 'survey_deleted',
+                    revertedFromId: revertedFromId,
+                    description: prop.name + ": " + moment(survey.date).format("MM/DD/YYYY"),
+                    context: context,
+                    data: data
+                })
+
+                callback(null);
+
+            })
+
+
+
+
+        });
+
+    },
     createSurvey: function(operator,context,revertedFromId, id, survey, callback) {
 
         var compFloorplans = _.pluck(survey.floorplans,"id");
@@ -558,6 +612,9 @@ module.exports = {
 
             var n = new SurveySchema();
 
+            if (survey._id) {
+                n._id = survey._id
+            }
             n.floorplans = survey.floorplans;
             n.location_amenities = survey.location_amenities || [];
             n.community_amenities = survey.community_amenities || [];
