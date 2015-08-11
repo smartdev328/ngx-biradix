@@ -276,7 +276,7 @@ define([
 
         }
 
-        $rootScope.marketSurvey = function (id) {
+        $rootScope.marketSurvey = function (id, surveyid) {
             require([
                 '/app/marketSurvey/marketSurveyController.js'
             ], function () {
@@ -289,6 +289,9 @@ define([
                     resolve: {
                         id: function () {
                             return id;
+                        },
+                        surveyid: function () {
+                            return surveyid;
                         },
                     }
                 });

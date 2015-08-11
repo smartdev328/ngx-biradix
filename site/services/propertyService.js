@@ -118,6 +118,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.updateSurvey = function (propertyid, surveyid, survey) {
+            return $http.put('/api/1.0/properties/' + propertyid + '/survey/' + surveyid , survey, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.floorplanName = function(fp) {
             var name = fp.bedrooms + "x" + fp.bathrooms;
 
@@ -230,20 +239,25 @@ define(['app'], function (app) {
             var table = [];
 
             occupancy.data[0].data.forEach(function(o) {
-
                 var tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
                 var ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
+                var surveyid = _.find(surveys, function(x,y) {return y == o[0]})
 
-                var row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v}
+                if (!tr.f) {
 
-                nerColumns.forEach(function(k) {
-                    var n = _.find(pts[k], function(x) {return x.d == o[0]})
+                    var row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v, surveyid: surveyid}
 
-                    row[k] = n.v
-                })
+                    nerColumns.forEach(function (k) {
+                        var n = _.find(pts[k], function (x) {
+                            return x.d == o[0]
+                        })
+
+                        row[k] = n.v
+                    })
 
 
-                table.push(row);
+                    table.push(row);
+                }
             } )
 
             table = _.sortBy(table, function(x) {return -x.d})

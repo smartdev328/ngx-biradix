@@ -5,7 +5,9 @@ define([
     '../../components/dialog/module.js'
 ], function (app) {
      app.controller
-        ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog) {
+        ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid) {
+
+            $scope.editableSurveyId = surveyid;
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -37,8 +39,12 @@ define([
                 $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || 0;
                 $scope.survey.weeklyleases = $scope.survey.weeklyleases || 0;
 
-                if ($scope.property.survey && $scope.property.survey.id) {
-                    $propertyService.getSurvey(id,$scope.property.survey.id).then(function(response) {
+                if (!$scope.editableSurveyId) {
+                    $scope.editableSurveyId = $scope.property.survey.id;
+                }
+
+                if ($scope.property.survey && $scope.editableSurveyId) {
+                    $propertyService.getSurvey(id,$scope.editableSurveyId).then(function(response) {
                         var s= response.data.survey;
                         if (s && s.length > 0) {
                             s = s[0];
@@ -54,6 +60,11 @@ define([
                                     fp.concessions = old.concessions;
                                 }
                             })
+
+                            if (surveyid) {
+                                $scope.editMode = true;
+                                $scope.editDate = s.date;
+                            }
                         }
 
                         $scope.doneLoading();
@@ -318,31 +329,42 @@ define([
                 }
             }
 
+            var surveyError = function (err) {
+                $('button.contact-submit').prop('disabled', false);
+                toastr.error('Unable to perform action. Please contact an administrator');
+                ngProgress.complete();
+            };
+
+            var surveySuccess = function(resp) {
+                $('button.contact-submit').prop('disabled', false);
+                ngProgress.complete();
+                if (resp.data.errors && resp.data.errors.length > 0) {
+                    var errors = _.pluck(resp.data.errors,"msg").join("<br>")
+                    toastr.error(errors);
+                }
+                else {
+                    $rootScope.$broadcast('data.reload');
+                    toastr.success('Market Survey Updated Sucessfully.');
+                    $modalInstance.close();
+                }
+            }
+
             $scope.success = function() {
 
                 $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
-                $propertyService.createSurvey(id, $scope.survey).then(function (resp) {
-                    $('button.contact-submit').prop('disabled', false);
-                    ngProgress.complete();
-                    if (resp.data.errors && resp.data.errors.length > 0) {
-                        var errors = _.pluck(resp.data.errors,"msg").join("<br>")
-                        toastr.error(errors);
-                    }
-                    else {
-                        $rootScope.$broadcast('data.reload');
-                        toastr.success('Market Survey Updated Sucessfully.');
-                        $modalInstance.close();
-                    }
 
-                }, function (err) {
-                    $('button.contact-submit').prop('disabled', false);
-                    toastr.error('Unable to perform action. Please contact an administrator');
-                    ngProgress.complete();
-                });
+                if (surveyid) {
+                    $propertyService.updateSurvey(id, surveyid, $scope.survey).then(surveySuccess, surveyError)
+                }
+                else {
+                    $propertyService.createSurvey(id, $scope.survey).then(surveySuccess, surveyError)
+                }
 
 
             }
+
+
 
     }]);
 

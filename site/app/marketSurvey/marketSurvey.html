@@ -35,6 +35,9 @@
             <span ng-show="hasPhone"> {{property.phone}}</span>
         </div>
 
+        <div class="alert alert-warning" ng-if="editMode">
+            <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
+        </div>
 
         <table class="table table-condensed table-striped table-hover survey-values" style="margin-bottom:10px">
             <thead>

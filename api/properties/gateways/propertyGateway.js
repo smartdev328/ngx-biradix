@@ -712,6 +712,23 @@ Routes.post('/:id/survey', function (req, res) {
     })
 })
 
+Routes.put('/:id/survey/:surveyid', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyService.updateSurvey(req.user, req.context, null,req.params.id,req.params.surveyid, req.body, function (err, newusr) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true});
+            }
+        });
+    })
+})
+
 Routes.get('/:id/survey/:surveyid', function (req, res) {
     AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
         if (!canAccess) {

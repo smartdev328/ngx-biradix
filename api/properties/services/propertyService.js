@@ -576,6 +576,51 @@ module.exports = {
         });
 
     },
+    updateSurvey: function(operator,context,revertedFromId, id, surveyid, survey, callback) {
+
+        var compFloorplans = _.pluck(survey.floorplans,"id");
+
+
+        PropertySchema.findOne({_id:id}, function(err, subject) {
+            SurveySchema.findOne({_id: surveyid}, function (err, lastsurvey) {
+
+                lastsurvey.floorplans = survey.floorplans;
+                lastsurvey.occupancy = survey.occupancy;
+                lastsurvey.weeklyleases = survey.weeklyleases;
+                lastsurvey.weeklytraffic = survey.weeklytraffic;
+
+                lastsurvey.save(function (err, created) {
+                    var totUnits = _.sum(survey.floorplans, function (fp) {
+                        return fp.units
+                    });
+
+                    if (totUnits > 0 && subject.survey.id.toString() == surveyid.toString()) {
+                        var ner = Math.round(_.sum(survey.floorplans, function (fp) {
+                                return (fp.rent - fp.concessions / 12) * fp.units
+                            }) / totUnits);
+
+                        var s = {
+                            id: created._id,
+                            occupancy: survey.occupancy,
+                            ner: ner,
+                            weeklyleases: survey.weeklyleases,
+                            weeklytraffic: survey.weeklytraffic
+                        }
+                        var query = {_id: id};
+                        var update = {survey: s};
+                        var options = {new: true};
+
+                        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                            callback(err, created)
+                        })
+                    }
+                    else {
+                        callback(err, created)
+                    }
+                });
+            });
+        });
+    },
     createSurvey: function(operator,context,revertedFromId, id, survey, callback) {
 
         var compFloorplans = _.pluck(survey.floorplans,"id");
