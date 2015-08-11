@@ -580,9 +580,46 @@ module.exports = {
 
         var compFloorplans = _.pluck(survey.floorplans,"id");
 
+        var property;
 
         PropertySchema.findOne({_id:id}, function(err, subject) {
+            property = subject;
             SurveySchema.findOne({_id: surveyid}, function (err, lastsurvey) {
+
+                 var copy = {};
+                copy.propertyid = lastsurvey.propertyid;
+                copy._id = lastsurvey._id;
+                copy.floorplans = lastsurvey.floorplans;
+                copy.occupancy = lastsurvey.occupancy;
+                copy.weeklyleases = lastsurvey.weeklyleases;
+                copy.weeklytraffic = lastsurvey.weeklytraffic;
+
+
+                var data = [{description: "Date: " + moment(lastsurvey.date).format("MM/DD/YYYY"), survey: copy}];
+
+
+                if (lastsurvey.occupancy !== survey.occupancy) {
+                    data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + survey.occupancy + "%"})
+                }
+
+                if (lastsurvey.weeklyleases !== survey.weeklyleases) {
+                    data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + survey.weeklyleases })
+                }
+
+                if (lastsurvey.weeklytraffic !== survey.weeklytraffic) {
+                    data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + survey.weeklytraffic })
+                }
+
+                survey.floorplans.forEach(function(fp) {
+                    var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
+
+                    if (!oldfp) {
+                        data.push({description: floorplanName(fp) + ": " + floorplanRentName(fp) })
+                    }
+                    else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
+                        data.push({description: floorplanName(oldfp) + ": " + floorplanRentName(oldfp) + " => " + floorplanRentName(fp) })
+                    }
+                })
 
                 lastsurvey.floorplans = survey.floorplans;
                 lastsurvey.occupancy = survey.occupancy;
@@ -617,6 +654,16 @@ module.exports = {
                     else {
                         callback(err, created)
                     }
+
+                    AuditService.create({
+                        operator: operator,
+                        property: property,
+                        type: 'survey_updated',
+                        revertedFromId: revertedFromId,
+                        description: property.name + ": " + (data.length -1) + " update(s)",
+                        context: context,
+                        data: data
+                    })
                 });
             });
         });

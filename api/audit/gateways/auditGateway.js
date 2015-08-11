@@ -96,6 +96,12 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             });
                             break;
+                        case "survey_updated":
+                            PropertyService.updateSurvey(req.user, req.context, o._id, o.data[0].survey.propertyid, o.data[0].survey._id, o.data[0].survey,  function (err, n) {
+                                errors = err || [];
+                                callbacks(null)
+                            });
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);

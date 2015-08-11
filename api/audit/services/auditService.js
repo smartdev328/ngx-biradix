@@ -26,6 +26,7 @@ var audits  = [
     {key: 'links_updated', value: 'Comp Links Updated', undo: true, group: 'Property'},
     {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
     {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
+    {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},
 ];
 
 module.exports = {
