@@ -3,10 +3,11 @@ define([
     'app',
     '../../components/inputmask/module.js',
     '../../components/filterlist/module.js',
-    'async!//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places'
+    'async!//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places',
+    '../../components/dialog/module.js'
 ], function (app) {
      app.controller
-        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService) {
+        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -457,6 +458,13 @@ define([
                     $scope.property.name=place.name;
                     $scope.placeToAddress(place);
                 });
+            }
+
+            $scope.removeFloorplan = function(fp) {
+                $dialog.confirm('Are you sure you want to remove the following floor plan: ' + $propertyService.floorplanName(fp) + '?', function() {
+                    var i = $scope.property.floorplans.indexOf(fp);
+                    $scope.property.floorplans.splice(i,1);
+                }, function() {});
             }
         }]);
 

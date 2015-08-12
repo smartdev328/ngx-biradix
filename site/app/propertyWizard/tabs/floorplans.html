@@ -19,6 +19,7 @@ There are currently no floor plans set up for this property.
         <th style="text-align: center">Units</th>
         <th style="text-align: center">Unit %</th>
         <th style="text-align: center">Sqft</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -38,6 +39,18 @@ There are currently no floor plans set up for this property.
         <td style="text-align: center">
             {{row.sqft}}
         </td>
+        <td class="center">
+            <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
+                <div class="btn-group action_dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                        <li><a href ng-click="removeFloorplan(row)"><span class="fa fa-times"></span> Remove Floor Plan</a></li>
+                    </ul>
+                </div>
+            </div>
+        </td>
     </tr>
     </tbody>
     <tfoot>
@@ -46,6 +59,7 @@ There are currently no floor plans set up for this property.
         <td style="text-align: center">{{property.totalUnits}}</td>
         <td style="text-align: center">100%</td>
         <td style="text-align: center">{{property.averageSqft | number: 0}}</td>
+        <td></td>
     </tr>
     </tfoot>
 </table>
