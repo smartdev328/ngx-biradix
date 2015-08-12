@@ -270,12 +270,14 @@ var getProfile = function(req,res,checkManaged, subjectId, compId, callback) {
                     }
                 }, function(err, all2) {
                     all2.comps.forEach(function(c) {
-                        delete c.floorplans;
-                        var daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
-                        if (daysSince >= 15) {
-                            c.survey.tier = "danger";
-                        } else if (daysSince >= 8) {
-                            c.survey.tier = "warning";
+                        if (c.survey) {
+                            delete c.floorplans;
+                            var daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
+                            if (daysSince >= 15) {
+                                c.survey.tier = "danger";
+                            } else if (daysSince >= 8) {
+                                c.survey.tier = "warning";
+                            }
                         }
                     })
 

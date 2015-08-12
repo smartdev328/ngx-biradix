@@ -556,6 +556,10 @@ module.exports = {
                     return callback([{msg:err}]);
                 }
 
+                updateLastSurvey(prop._id, function() {
+                    callback(null)
+                })
+
                 AuditService.create({
                     operator: operator,
                     property: prop,
@@ -565,8 +569,6 @@ module.exports = {
                     context: context,
                     data: data
                 })
-
-                callback(null);
 
             })
 
@@ -627,33 +629,10 @@ module.exports = {
                 lastsurvey.weeklytraffic = survey.weeklytraffic;
 
                 lastsurvey.save(function (err, created) {
-                    var totUnits = _.sum(survey.floorplans, function (fp) {
-                        return fp.units
-                    });
 
-                    if (totUnits > 0 && subject.survey.id.toString() == surveyid.toString()) {
-                        var ner = Math.round(_.sum(survey.floorplans, function (fp) {
-                                return (fp.rent - fp.concessions / 12) * fp.units
-                            }) / totUnits);
-
-                        var s = {
-                            id: created._id,
-                            occupancy: survey.occupancy,
-                            ner: ner,
-                            weeklyleases: survey.weeklyleases,
-                            weeklytraffic: survey.weeklytraffic
-                        }
-                        var query = {_id: id};
-                        var update = {survey: s};
-                        var options = {new: true};
-
-                        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                            callback(err, created)
-                        })
-                    }
-                    else {
+                    updateLastSurvey(property._id, function() {
                         callback(err, created)
-                    }
+                    })
 
                     AuditService.create({
                         operator: operator,
@@ -696,6 +675,10 @@ module.exports = {
                 })
             }
         ], function(err,lastsurvey, exclusions ) {
+
+            if (!lastsurvey) {
+                lastsurvey = {}
+            }
 
             lastsurvey.occupancy = lastsurvey.occupancy || '-';
             lastsurvey.weeklyleases = lastsurvey.weeklyleases || '-';
@@ -744,33 +727,10 @@ module.exports = {
 
             n.save(function (err, created) {
                 data[0].id=created._id;
-                var totUnits = _.sum(survey.floorplans, function (fp) {
-                    return fp.units
-                });
 
-                if (totUnits > 0) {
-                    var ner = Math.round(_.sum(survey.floorplans, function (fp) {
-                            return (fp.rent - fp.concessions / 12) * fp.units
-                        }) / totUnits);
-
-                    var s = {
-                        id: created._id,
-                        occupancy: n.occupancy,
-                        ner: ner,
-                        weeklyleases: n.weeklyleases,
-                        weeklytraffic: n.weeklytraffic
-                    }
-                    var query = {_id: id};
-                    var update = {survey: s};
-                    var options = {new: true};
-
-                    PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                        callback(err, created)
-                    })
-                }
-                else {
+                updateLastSurvey(subject._id, function() {
                     callback(err, created)
-                }
+                })
 
                 AuditService.create({
                     operator: operator,
@@ -838,7 +798,7 @@ module.exports = {
             var points = {};
             var excluded = false;
 
-            if (show.bedrooms){
+            if (show.bedrooms && comps[0].survey){
                 var includedFps = _.filter(comps[0].survey.floorplans, function (x) {
                     if (x.excluded) {
                         excluded = true;
@@ -996,51 +956,55 @@ module.exports = {
                         return x._id == comp.survey.id
                     });
 
-                    delete comp.survey.id;
-                    comp.survey.date = s.date;
-                    var daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
-                    if (daysSince >= 15) {
-                        comp.survey.tier = "danger";
-                    } else if (daysSince >= 8) {
-                        comp.survey.tier = "warning";
-                    }
-
-                    comp.survey.days = daysSince;
-
-                    getSurveyStats(s.floorplans, comp.survey, links, hide);
-
-                    comp.survey.bedrooms = {};
-
-                    for (var i = 0; i < 7; i++) {
-                        var temp = _.filter(s.floorplans, function (x) {
-                            return x.bedrooms == i
-                        });
-
-                        if (temp.length > 0) {
-                            comp.survey.bedrooms[i] = {};
-                            getSurveyStats(temp, comp.survey.bedrooms[i], links, hide);
+                    if (s) {
+                        delete comp.survey.id;
+                        comp.survey.date = s.date;
+                        var daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
+                        if (daysSince >= 15) {
+                            comp.survey.tier = "danger";
+                        } else if (daysSince >= 8) {
+                            comp.survey.tier = "warning";
                         }
-                    }
 
-                    comp.survey.floorplans = s.floorplans;
+                        comp.survey.days = daysSince;
 
-                    comp.survey.floorplans.forEach(function(fp) {
-                        delete fp.amenities;
-                        fp.ner = Math.round(fp.rent - (fp.concessions / 12))
-                        fp.nersqft = Math.round(fp.ner / fp.sqft * 100) / 100
-                        if (links.excluded === true && hide) {
-                            links.floorplans = links.floorplans.map(function(x) {return x.toString()})
+                        getSurveyStats(s.floorplans, comp.survey, links, hide);
 
-                            //console.log(links.floorplans, fp.id)
-                            if (links.floorplans.indexOf(fp.id.toString()) == -1) {
-                                fp.excluded = true;
-                                delete fp.rent;
-                                delete fp.concessions;
-                                delete fp.ner;
-                                delete fp.nersqft;
+                        comp.survey.bedrooms = {};
+
+                        for (var i = 0; i < 7; i++) {
+                            var temp = _.filter(s.floorplans, function (x) {
+                                return x.bedrooms == i
+                            });
+
+                            if (temp.length > 0) {
+                                comp.survey.bedrooms[i] = {};
+                                getSurveyStats(temp, comp.survey.bedrooms[i], links, hide);
                             }
                         }
-                    })
+
+                        comp.survey.floorplans = s.floorplans;
+
+                        comp.survey.floorplans.forEach(function (fp) {
+                            delete fp.amenities;
+                            fp.ner = Math.round(fp.rent - (fp.concessions / 12))
+                            fp.nersqft = Math.round(fp.ner / fp.sqft * 100) / 100
+                            if (links.excluded === true && hide) {
+                                links.floorplans = links.floorplans.map(function (x) {
+                                    return x.toString()
+                                })
+
+                                //console.log(links.floorplans, fp.id)
+                                if (links.floorplans.indexOf(fp.id.toString()) == -1) {
+                                    fp.excluded = true;
+                                    delete fp.rent;
+                                    delete fp.concessions;
+                                    delete fp.ner;
+                                    delete fp.nersqft;
+                                }
+                            }
+                        })
+                    }
 
 
                 }
@@ -1332,4 +1296,63 @@ function floorplanName(fp) {
 
 function floorplanRentName(fp) {
     return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/12)";
+}
+
+function updateLastSurvey(propertyid, callback) {
+    console.log(propertyid);
+    SurveySchema.find({propertyid: propertyid}).sort('-date').limit(1).exec(function(err, surveys) {
+        if (err) {
+            return callback();
+        }
+
+        console.log(surveys)
+        if (!surveys || surveys.length == 0) {
+            var query = {_id: propertyid};
+            var update = {survey: undefined};
+            var options = {new: true};
+
+            PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                callback()
+            })
+        }
+        else {
+            var survey = surveys[0];
+
+            console.log(surveys[0])
+            var totUnits = _.sum(survey.floorplans, function (fp) {
+                return fp.units
+            });
+
+            if (totUnits > 0) {
+                var ner = Math.round(_.sum(survey.floorplans, function (fp) {
+                        return (fp.rent - fp.concessions / 12) * fp.units
+                    }) / totUnits);
+
+                var s = {
+                    id: survey._id,
+                    occupancy: survey.occupancy,
+                    ner: ner,
+                    weeklyleases: survey.weeklyleases,
+                    weeklytraffic: survey.weeklytraffic
+                }
+                var query = {_id: propertyid};
+                var update = {survey: s};
+                var options = {new: true};
+
+                PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                    callback()
+                })
+            }
+            else {
+                var query = {_id: propertyid};
+                var update = {survey: undefined};
+                var options = {new: true};
+
+                PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                    callback()
+                })
+            }
+        }
+
+    })
 }

@@ -17,6 +17,7 @@ define([
                 $modalInstance.dismiss('cancel');
             };
 
+            $scope.values = {};
 
             $scope.id = id;
 
@@ -465,6 +466,10 @@ define([
                     var i = $scope.property.floorplans.indexOf(fp);
                     $scope.property.floorplans.splice(i,1);
                 }, function() {});
+            }
+
+            $scope.addCommunityAmenity = function(a) {
+                console.log($scope.values.newCommunityAmenity)
             }
         }]);
 
