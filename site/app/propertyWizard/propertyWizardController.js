@@ -469,13 +469,12 @@ define([
                 }, function() {});
             }
 
-            $scope.addCommunityAmenity = function() {
-
-                if ($scope.values.newCommunityAmenity) {
-                    var amenity = {type : 'Community', name: $scope.values.newCommunityAmenity};
+            $scope.addAmenity = function(type, list) {
+                if ($scope.values['new' + type + 'Amenity']) {
+                    var amenity = {type : type, name: $scope.values['new' + type + 'Amenity']};
 
                     ngProgress.start();
-                    $('#addCommunityAmenity').prop("disabled",true);
+                    $('#add' + type +'Amenity').prop("disabled",true);
                     $scope.alerts = [];
 
                     $amenityService.create(amenity).then(
@@ -484,28 +483,37 @@ define([
                                 toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
                             }
                             else {
-                                toastr.success($scope.values.newCommunityAmenity + ' added successfully.');
-                                $scope.values.newCommunityAmenity = '';
+                                $scope.values['new' + type + 'Amenity'] = '';
 
                                 var newAm = response.data.amenity;
+                                toastr.success(newAm.name + ' added successfully.');
 
-                                var exists = _.find($scope.communityItems, function(x) {return x.id.toString() == newAm._id.toString() });
+                                var exists = _.find(list, function(x) {return x.id.toString() == newAm._id.toString() });
 
                                 if (exists) {
                                     exists.selected = true;
                                 } else {
-                                    $scope.communityItems.push({id: newAm._id, name: newAm.name, selected: true})
+
+                                    var ar = newAm.name.split(' - ');
+                                    var am;
+                                    if (ar && ar.length == 2 ) {
+                                        am = {id: newAm._id, name: ar[1], group: ar[0], selected: true};
+                                    } else {
+                                        am = {id: newAm._id, name: newAm.name, selected: true};
+                                    }
+
+                                    list.push(am)
                                 }
 
                             }
 
                             ngProgress.complete();
-                            $('#addCommunityAmenity').prop("disabled",false);
+                            $('#add' + type + 'Amenity').prop("disabled",false);
                         }
                         , function(response) {
                             toastr.error('Unable to create amenity. Please contact an administrator');
                             ngProgress.complete();
-                            $('#addCommunityAmenity').prop("disabled",false);
+                            $('#add' + type + 'Amenity').prop("disabled",false);
                         });
                 }
             }
