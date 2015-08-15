@@ -196,7 +196,7 @@ module.exports = {
 
             amenities: function(callbackp) {
                 var time = new Date();
-                AmenityService.search(function(err, amenities) {
+                AmenityService.search({active: true},function(err, amenities) {
                     var time2 = new Date();
                     //console.log("Amenities: " + (time2.getTime() - time.getTime()));
                     callbackp(err, amenities)
@@ -353,7 +353,7 @@ module.exports = {
 
             },
             amenities: function (callbackp) {
-                AmenityService.search(function(err, amenities) {
+                AmenityService.search({active: true},function(err, amenities) {
                     callbackp(err, amenities)
                 })
 

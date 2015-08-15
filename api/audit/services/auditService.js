@@ -27,6 +27,7 @@ var audits  = [
     {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
     {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
     {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},
+    {key: 'amenity_created', value: 'Amenity Created', group: 'Amenity'},
 ];
 
 module.exports = {
@@ -50,6 +51,12 @@ module.exports = {
             n.property = {
                 id: audit.property.id || audit.property._id,
                 name: audit.property.name
+            };
+        }
+        if (audit.amenity) {
+            n.amenity = {
+                id: audit.amenity.id || audit.amenity._id,
+                name: audit.amenity.name
             };
         }
         if (audit.data) {

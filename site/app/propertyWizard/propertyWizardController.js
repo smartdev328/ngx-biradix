@@ -4,10 +4,11 @@ define([
     '../../components/inputmask/module.js',
     '../../components/filterlist/module.js',
     'async!//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places',
-    '../../components/dialog/module.js'
+    '../../components/dialog/module.js',
+    '../../services/amenityService.js'
 ], function (app) {
      app.controller
-        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog) {
+        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -468,8 +469,45 @@ define([
                 }, function() {});
             }
 
-            $scope.addCommunityAmenity = function(a) {
-                console.log($scope.values.newCommunityAmenity)
+            $scope.addCommunityAmenity = function() {
+
+                if ($scope.values.newCommunityAmenity) {
+                    var amenity = {type : 'Community', name: $scope.values.newCommunityAmenity};
+
+                    ngProgress.start();
+                    $('#addCommunityAmenity').prop("disabled",true);
+                    $scope.alerts = [];
+
+                    $amenityService.create(amenity).then(
+                        function(response) {
+                            if (response.data.errors) {
+                                toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                            }
+                            else {
+                                toastr.success($scope.values.newCommunityAmenity + ' added successfully.');
+                                $scope.values.newCommunityAmenity = '';
+
+                                var newAm = response.data.amenity;
+
+                                var exists = _.find($scope.communityItems, function(x) {return x.id.toString() == newAm._id.toString() });
+
+                                if (exists) {
+                                    exists.selected = true;
+                                } else {
+                                    $scope.communityItems.push({id: newAm._id, name: newAm.name, selected: true})
+                                }
+
+                            }
+
+                            ngProgress.complete();
+                            $('#addCommunityAmenity').prop("disabled",false);
+                        }
+                        , function(response) {
+                            toastr.error('Unable to create amenity. Please contact an administrator');
+                            ngProgress.complete();
+                            $('#addCommunityAmenity').prop("disabled",false);
+                        });
+                }
             }
         }]);
 

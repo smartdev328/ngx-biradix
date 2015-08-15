@@ -50,7 +50,7 @@ Routes.get('/lookups', function (req, res) {
             });
         },
         amenities: function(callbackp) {
-            AmenityService.search(function(err, amenities) {
+            AmenityService.search({active: true},function(err, amenities) {
                 callbackp(err, amenities)
             })
         }
