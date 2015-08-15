@@ -574,6 +574,29 @@ define([
                     });
                 });
             }
+
+            $scope.save = function() {
+                if (!id) {
+                    ngProgress.start();
+                    $('#propertySave').prop("disabled",true);
+                    $scope.alerts = [];
+
+                    $propertyService.create($scope.property).then(function(response) {
+
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                        }
+
+                        ngProgress.complete();
+                        $('#propertySave').prop("disabled",false);
+                    }, function(response) {
+                        toastr.error('Unable to create property. Please contact an administrator');
+                        ngProgress.complete();
+                        $('#propertySave').prop("disabled",false);
+
+                    })
+                }
+            }
         }]);
 
 });

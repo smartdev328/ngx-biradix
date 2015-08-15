@@ -34,7 +34,7 @@
                 <button class="btn btn-primary" ng-click="changeStep(stepIndex + 1)"  ng-disabled="stepIndex == steps.length - 1">Next</button>
             </div>
             <div class="col-xs-2 col-sm-2">
-                <button class="btn btn-warning pull-right">{{!id ? 'Create' : 'Save'}}</button>
+                <button class="btn btn-warning pull-right" id="propertySave" ng-click="save()">{{!id ? 'Create' : 'Save'}}</button>
             </div>
         </div>
 

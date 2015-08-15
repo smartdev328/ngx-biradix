@@ -337,7 +337,26 @@ module.exports = {
             })
         })
     },
-    create: function(property, callback) {
+    create: function(operator, context, property, callback) {
+
+        var modelErrors = [];
+        property = property || {};
+        property.name = property.name || '';
+        property.address = property.address || '';
+
+        if (property.name == '') {
+            modelErrors.push({param: 'name', msg : 'Please enter the Property Name'});
+        }
+
+        if (property.address == '') {
+            modelErrors.push({param: 'name', msg : 'Please enter the Property Address'});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+
         async.parallel({
             geo: function (callbackp) {
 
@@ -362,6 +381,9 @@ module.exports = {
         },  function(err, all)
             {
 
+                if (err) {
+                    return callback([{msg:err}],null)
+                }
                 //find all amenities by name and conver to id;
                 var community_amenities = [];
                 (property.community_amenities || []).forEach(function(pa) {
@@ -455,7 +477,7 @@ module.exports = {
                 n.save(function (err, prop) {
 
                     if (err) {
-                        return callback(err, null)
+                        return callback([{msg:err}], null)
                     }
 
                     if (permissions.length > 0 ) {
@@ -471,7 +493,7 @@ module.exports = {
                     }, function(err) {
                         //link to yourself
                         linkComp(null,null,null,false,prop._id, prop._id,function() {
-                            callback(err, prop);
+                            callback([{msg:err}], prop);
                         })
                     });
                 });
