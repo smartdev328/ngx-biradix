@@ -8,7 +8,7 @@ define([
     '../../services/amenityService.js'
 ], function (app) {
      app.controller
-        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService) {
+        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$modal', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$modal) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -312,6 +312,7 @@ define([
 
             $scope.locationAmenityOptions = { labelAvailable: "Available Amenities", labelSelected: "Selected Amenities", searchLabel: "Location Amenities" }
             $scope.communityAmenityOptions = { labelAvailable: "Available Amenities", labelSelected: "Selected Amenities", searchLabel: "Community Amenities" }
+            $scope.unitAmenityOptions = { labelAvailable: "Available Amenities", labelSelected: "Selected Amenities", searchLabel: "Unit Amenities" }
 
             $propertyService.lookups().then(function (response) {
                 $scope.lookups = response.data;
@@ -361,6 +362,7 @@ define([
                         $scope.property.averageSqft = 0
                         if ($scope.property.floorplans.length > 0) {
                             $scope.property.floorplans.forEach(function (fp) {
+                                fp.bathrooms = parseFloat(fp.bathrooms);
                                 $scope.property.averageSqft += fp.sqft;
                             })
 
@@ -516,6 +518,61 @@ define([
                             $('#add' + type + 'Amenity').prop("disabled",false);
                         });
                 }
+            }
+
+            $scope.addFloorplan = function(fp) {
+                require([
+                    '/app/propertyWizard/editFloorplanController.js'
+                ], function () {
+                    var modalInstance = $modal.open({
+                        templateUrl: '/app/propertyWizard/tabs/editFloorplanController.html',
+                        controller: 'editFloorplanController',
+                        size: "md",
+                        keyboard: false,
+                        backdrop: 'static',
+                        resolve: {
+                            //floor plan we are editing or null
+                            fp: function () {
+                                return fp;
+                            },
+                            //select list items for unit amenities
+                            unitItems: function () {
+                                return $scope.unitItems;
+                            } ,
+                            //select list options
+                            unitAmenityOptions: function () {
+                                return $scope.unitAmenityOptions;
+                            },
+                            //values object so we can reuse the add-amenity function
+                            values: function () {
+                                return $scope.values;
+                            },
+                            //global function to manage the complex logic of adding amenities to a list
+                            addAmenityGlobal: function () {
+                                return $scope.addAmenity;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (addedFp) {
+
+                        if (addedFp) {
+                            $scope.property.floorplans.push(addedFp);
+                        }
+
+                        //re-calcualte total units in case we updated unit counts
+                        var newTotal = 0;
+                        $scope.property.floorplans.forEach(function(f) {
+                            newTotal += parseInt(f.units);
+                        })
+
+                        $scope.property.totalUnits = newTotal;
+
+                        toastr.success('Floor Plan ' + (fp == null ? 'created' : 'updated')+  ' successfully.');
+                    }, function () {
+                        //Cancel
+                    });
+                });
             }
         }]);
 

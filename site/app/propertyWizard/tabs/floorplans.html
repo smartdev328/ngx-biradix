@@ -11,6 +11,10 @@
 There are currently no floor plans set up for this property.
 </div>
 
+<button type="button" class="btn btn-default dropdown-toggle btn-sm"  ng-click="addFloorplan(null)">
+    <span class="fa fa-plus"></span> Create Floor Plan
+</button>
+
 <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px" ng-show="property.floorplans.length > 0">
     <thead>
     <tr>
@@ -23,7 +27,7 @@ There are currently no floor plans set up for this property.
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="row in property.floorplans">
+    <tr ng-repeat="row in property.floorplans | orderBy:['bedrooms','bathrooms','sqft','units','description']">
         <td>
             {{row.bedrooms}}x{{row.bathrooms}}
         </td>
@@ -46,6 +50,7 @@ There are currently no floor plans set up for this property.
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                        <li><a href ng-click="addFloorplan(row)"><span class="fa fa-edit"></span> Edit Floor Plan</a></li>
                         <li><a href ng-click="removeFloorplan(row)"><span class="fa fa-times"></span> Remove Floor Plan</a></li>
                     </ul>
                 </div>
