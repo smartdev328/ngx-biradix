@@ -343,13 +343,51 @@ module.exports = {
         property = property || {};
         property.name = property.name || '';
         property.address = property.address || '';
+        property.city = property.city || '';
+        property.state = property.state || '';
+        property.constructionType = property.constructionType || '';
+        property.owner = property.owner || '';
+        property.management = property.management || '';
+        property.yearBuilt = property.yearBuilt || '';
 
         if (property.name == '') {
             modelErrors.push({param: 'name', msg : 'Please enter the Property Name'});
         }
 
         if (property.address == '') {
-            modelErrors.push({param: 'name', msg : 'Please enter the Property Address'});
+            modelErrors.push({param: 'address', msg : 'Please enter the Property Address'});
+        }
+
+        if (property.city == '') {
+            modelErrors.push({param: 'city', msg : 'Please enter the Property City'});
+        }
+
+        if (property.state == '' || property.state.length != 2) {
+            modelErrors.push({param: 'state', msg : 'Please enter the Property State'});
+        }
+
+        if (property.constructionType == '') {
+            modelErrors.push({param: 'constructionType', msg : 'Please enter the Construction Type'});
+        }
+
+        if (property.owner == '') {
+            modelErrors.push({param: 'owner', msg : 'Please enter the Owner'});
+        }
+
+        if (property.management == '') {
+            modelErrors.push({param: 'management', msg : 'Please enter the Management'});
+        }
+
+        if (property.yearBuilt == '') {
+            modelErrors.push({param: 'yearBuilt', msg : 'Please enter the Year Built'});
+        }
+
+        if (isNaN(property.yearBuilt) || parseInt(property.yearBuilt) < 1900 || parseInt(property.yearBuilt) > (new Date()).getFullYear() + 5) {
+            modelErrors.push({param: 'yearBuilt', msg : 'Please enter a valid Year Built'});
+        }
+
+        if (property.yearRenovated && (isNaN(property.yearRenovated) || parseInt(property.yearRenovated) < 1900 || parseInt(property.yearRenovated) > (new Date()).getFullYear() + 5)) {
+            modelErrors.push({param: 'yearRenovated', msg : 'Please enter a valid Year Renovated'});
         }
 
         if (modelErrors.length > 0) {
@@ -477,8 +515,10 @@ module.exports = {
                 n.save(function (err, prop) {
 
                     if (err) {
-                        return callback([{msg:err}], null)
+                        return callback([{msg:"Unable to create property. Please contact the administrator."}], null)
                     }
+
+                    AuditService.create({operator: operator, property: prop, type: 'property_created', description: prop.name, context: context})
 
                     if (permissions.length > 0 ) {
                         permissions.forEach(function(x) {
@@ -493,7 +533,11 @@ module.exports = {
                     }, function(err) {
                         //link to yourself
                         linkComp(null,null,null,false,prop._id, prop._id,function() {
-                            callback([{msg:err}], prop);
+                            if (!err) {
+                                callback(null, prop);
+                            } else {
+                                callback([{msg: err}], prop);
+                            }
                         })
                     });
                 });
@@ -537,7 +581,7 @@ module.exports = {
                     return;
                 }
 
-                AuditService.create({operator: operator, property: saved, type: 'property_status', revertedFromId : revertedFromId, description: property.active ? "Inactive => Active" : "Active => Inactive", context: context, data : [{description: "Previous: " + (property.active ? "Inactive" : "Active"), status: !property.active}]})
+                AuditService.create({operator: operator, property: saved, type: 'property_status', revertedFromId : revertedFromId, description: saved.name + ': ' + (property.active ? "Inactive => Active" : "Active => Inactive"), context: context, data : [{description: "Previous: " + (property.active ? "Inactive" : "Active"), status: !property.active}]})
 
                 return callback(err, saved)
             })

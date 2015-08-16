@@ -12,31 +12,31 @@
 <div class="property-info" ng-init="initAutocomplete()">
     <div class="row">
         <div class="col-sm-6">
-            Property Name<br>
+            Property Name <span class="required">*</span><br>
             <input type="text" class="form-control input-sm" ng-model="property.name" id="autocomplete" placeholder="Enter property name">
         </div>
         <div class="col-sm-6">
-            Address<br>
+            Address <span class="required">*</span><br>
             <input type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2" placeholder="Enter address">
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-6">
-            City<br>
+            City <span class="required">*</span><br>
             <input type="text" class="form-control input-sm" ng-model="property.city">
         </div>
 
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-xs-6">
-                    State<br>
+                    State <span class="required">*</span><br>
                     <select class="form-control input-sm" ng-options="state.abbreviation for state in states" ng-model="property.state">
 
                     </select>
                 </div>
                 <div class="col-xs-6">
-                    Zip<br>
+                    Zip <span class="required">*</span><br>
                     <input type="text" class="form-control input-sm" ng-model="property.zip" input-mask="99999">
                 </div>
             </div>
@@ -45,7 +45,7 @@
 
     <div class="row">
         <div class="col-sm-6">
-            Construction Type<br>
+            Construction Type <span class="required">*</span><br>
             <select class="form-control input-sm"  ng-options="type for type in constructionTypes" ng-model="property.constructionType">
             </select>
         </div>
@@ -53,7 +53,7 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-xs-6">
-                    Yr. Built<br>
+                    Yr. Built <span class="required">*</span><br>
                     <input type="text" class="form-control input-sm" ng-model="property.yearBuilt" input-mask="9999">
                 </div>
                 <div class="col-xs-6">
@@ -67,11 +67,11 @@
 
     <div class="row">
         <div class="col-sm-6">
-            Owner<br>
+            Owner <span class="required">*</span><br>
             <input type="text" class="form-control input-sm" ng-model="property.owner">
         </div>
         <div class="col-sm-6">
-            Management<br>
+            Management <span class="required">*</span><br>
             <input type="text" class="form-control input-sm" ng-model="property.management">
         </div>
     </div>

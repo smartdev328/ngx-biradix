@@ -390,6 +390,7 @@ define([
                 }
                 else {
                     $scope.localLoading = true;
+                    $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
                 }
             });
 
@@ -581,7 +582,7 @@ define([
                     $('#propertySave').prop("disabled",true);
                     $scope.alerts = [];
 
-                    $propertyService.create($scope.property).then(function(response) {
+                    $propertyService.create($scope.getPropertyForSave()).then(function(response) {
 
                         if (response.data.errors) {
                             toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
@@ -596,6 +597,24 @@ define([
 
                     })
                 }
+            }
+
+            //format nicely to save to the service
+            $scope.getPropertyForSave = function() {
+                var prop = _.cloneDeep($scope.property);
+                prop.state = prop.state ? prop.state.abbreviation : '';
+
+                if (prop.orgid) {
+                    if (prop.orgid._id) {
+                        prop.orgid = prop.orgid._id;
+                    } else {
+                        delete prop.orgid;
+                    }
+                } else {
+                    delete prop.orgid;
+                }
+
+                return prop;
             }
         }]);
 

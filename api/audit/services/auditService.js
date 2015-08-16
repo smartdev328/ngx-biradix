@@ -24,6 +24,7 @@ var audits  = [
     {key: 'comp_linked', value: 'Comp Linked', undo: true, group: 'Property'},
     {key: 'comp_unlinked', value: 'Comp Unlinked', undo: true, group: 'Property'},
     {key: 'links_updated', value: 'Comp Links Updated', undo: true, group: 'Property'},
+    {key: 'property_created', value: 'Property Created', group: 'Property'},
     {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
     {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
     {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},
