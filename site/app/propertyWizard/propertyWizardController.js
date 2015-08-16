@@ -587,6 +587,10 @@ define([
                         if (response.data.errors) {
                             toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
                         }
+                        else {
+                            toastr.success($scope.property.name + ' created successfully');
+                            $modalInstance.close();
+                        }
 
                         ngProgress.complete();
                         $('#propertySave').prop("disabled",false);
@@ -613,6 +617,43 @@ define([
                 } else {
                     delete prop.orgid;
                 }
+
+                //extract names for all amenities since the service wants names
+                prop.location_amenities = [];
+                $scope.locationItems.forEach(function(a) {
+                    if (a.selected === true) {
+                        if (a.group) {
+                            prop.location_amenities.push(a.group + " - " + a.name);
+                        } else {
+                            prop.location_amenities.push(a.name);
+                        }
+                    }
+                })
+
+                prop.community_amenities = [];
+                $scope.communityItems.forEach(function(a) {
+                    if (a.selected === true) {
+                        if (a.group) {
+                            prop.community_amenities.push(a.group + " - " + a.name);
+                        } else {
+                            prop.community_amenities.push(a.name);
+                        }
+                    }
+                })
+
+                prop.floorplans.forEach(function(fp) {
+                    var anames = [];
+                    fp.amenities.forEach(function(a){
+                        var ua = _.find($scope.unitItems, function(x) {return x.id == a})
+                        if (ua.group) {
+                            anames.push(ua.group + " - " + ua.name);
+                        } else {
+                            anames.push(ua.name);
+                        }
+                    })
+
+                    fp.amenities = anames;
+                })
 
                 return prop;
             }

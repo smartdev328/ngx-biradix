@@ -349,6 +349,7 @@ module.exports = {
         property.owner = property.owner || '';
         property.management = property.management || '';
         property.yearBuilt = property.yearBuilt || '';
+        property.floorplans = property.floorplans || [];
 
         if (property.name == '') {
             modelErrors.push({param: 'name', msg : 'Please enter the Property Name'});
@@ -389,6 +390,25 @@ module.exports = {
         if (property.yearRenovated && (isNaN(property.yearRenovated) || parseInt(property.yearRenovated) < 1900 || parseInt(property.yearRenovated) > (new Date()).getFullYear() + 5)) {
             modelErrors.push({param: 'yearRenovated', msg : 'Please enter a valid Year Renovated'});
         }
+
+
+        property.floorplans.forEach(function(fp) {
+            if (!fp.bedrooms || isNaN(fp.bedrooms) || parseInt(fp.bedrooms) < 0) {
+                modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of bedrooms'});
+            }
+
+            if (!fp.bathrooms || isNaN(fp.bathrooms) || parseFloat(fp.bathrooms) < 0) {
+                modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of bathrooms'});
+            }
+
+            if (!fp.units || isNaN(fp.units) || parseInt(fp.units) < 0) {
+                modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of units'});
+            }
+
+            if (!fp.sqft || isNaN(fp.sqft) || parseInt(fp.sqft) < 0) {
+                modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of square feet'});
+            }
+        })
 
         if (modelErrors.length > 0) {
             callback(modelErrors, null);
@@ -462,8 +482,6 @@ module.exports = {
                 })
 
                 var totalUnits = 0;
-
-                property.floorplans = property.floorplans || [];
 
                 property.floorplans.forEach(function(fp) {
                     totalUnits += (fp.units || 0);

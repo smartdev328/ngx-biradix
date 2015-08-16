@@ -409,6 +409,7 @@ define([
 
                 modalInstance.result.then(function () {
                     //Send successfully
+                    $scope.reload();
                 }, function () {
                     //Cancel
                 });

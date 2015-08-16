@@ -697,7 +697,15 @@ Routes.post('/:id/comps/:compid', function (req, res) {
 })
 
 Routes.put('/', function(req,res) {
-    AccessService.canAccess(req.user,"Properties/Create", function(canAccess) {
+
+    //allow anyone with access to properties to create comps (no org new props)
+    var permission = "Properties";
+
+    //if orgid is passed restrict to people with create
+    if (req.orgid) {
+        permission = "Properties/Create"
+    }
+    AccessService.canAccess(req.user,permission, function(canAccess) {
         if (!canAccess) {
             return res.status(401).json("Unauthorized request");
         }
