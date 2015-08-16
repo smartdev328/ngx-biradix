@@ -715,7 +715,7 @@ Routes.put('/', function(req,res) {
                 return res.status(200).json({success: false, errors: err});
             }
             else {
-                return res.status(200).json({success: true});
+                return res.status(200).json({success: true, property: newprop});
             }
         });
     })

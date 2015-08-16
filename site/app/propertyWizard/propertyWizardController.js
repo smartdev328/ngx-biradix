@@ -8,7 +8,7 @@ define([
     '../../services/amenityService.js'
 ], function (app) {
      app.controller
-        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$modal', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$modal) {
+        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$modal','subjectid', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$modal,subjectid) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -582,14 +582,34 @@ define([
                     $('#propertySave').prop("disabled",true);
                     $scope.alerts = [];
 
-                    $propertyService.create($scope.getPropertyForSave()).then(function(response) {
+                    var newProp = $scope.getPropertyForSave();
+
+                    $propertyService.create(newProp).then(function(response) {
 
                         if (response.data.errors) {
                             toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
                         }
                         else {
                             toastr.success($scope.property.name + ' created successfully');
-                            $modalInstance.close();
+
+                            //if we're adding a comp, link it to the subject before we return
+                            if (isComp) {
+                                $propertyService.linkComp(subjectid, response.data.property._id).then(
+                                    function(response) {
+
+                                        $modalInstance.close(response.data.property);
+                                    },
+                                    function(response) {
+
+                                        $modalInstance.close(response.data.property);
+                                    }
+                                )
+
+                            }
+                            else {
+                                //not a comp, but a subject being added
+                                $modalInstance.close(response.data.property);
+                            }
                         }
 
                         ngProgress.complete();

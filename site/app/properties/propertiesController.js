@@ -86,11 +86,15 @@ define([
 
         }
         /////////////////////////////
-        $scope.reload = function () {
+        $scope.reload = function (callback) {
             $scope.localLoading = false;
             $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded"}).then(function (response) {
                 $scope.data = response.data.properties;
                 $scope.localLoading = true;
+
+                if (callback) {
+                    callback();
+                }
             })
         }
 
@@ -387,7 +391,8 @@ define([
             });
         }
 
-        $scope.edit = function (id, isComp) {
+        $scope.edit = function (id, isComp, subject) {
+            var subjectid = subject ? subject._id : null;
             require([
                 '/app/propertyWizard/propertyWizardController.js'
             ], function () {
@@ -403,13 +408,30 @@ define([
                         },
                         isComp: function() {
                             return isComp;
+                        },
+                        subjectid: function() {
+                            return subjectid;
                         }
                     }
                 });
 
-                modalInstance.result.then(function () {
+                modalInstance.result.then(function (comp) {
                     //Send successfully
-                    $scope.reload();
+                    $scope.reload(function() {
+                        //after we reload, we need to update the reference to our subject since it got new data from ajax
+
+                        subject = _.find($scope.data, function(x) {
+                            return x._id.toString() == subjectid
+                        });
+
+                        //if we successfully added a comp for a subject, toggle open the comps in the ui for the subject
+                        if (isComp) {
+                            if (subject.open) {
+                                $scope.toggleOpen(subject);
+                            }
+                            $scope.toggleOpen(subject);
+                        }
+                    });
                 }, function () {
                     //Cancel
                 });
@@ -463,7 +485,7 @@ define([
                 }, function (from) {
                     //Cancel
                     if (from == "create") {
-                        $scope.edit(null, true)
+                        $scope.edit(null, true, subject)
                     }
                 });
             });
