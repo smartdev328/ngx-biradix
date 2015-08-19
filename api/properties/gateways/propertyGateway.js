@@ -11,6 +11,7 @@ var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
 /////////////////////
 var PropertyHelperService = require('../services/propertyHelperService')
+var CreateService = require('../services/createService')
 /////////////////////
 var SurveyGateway = require('./surveyGateway')
 var CompsGateway = require('./compsGateway')
@@ -191,6 +192,7 @@ Routes.put('/:id/active', function (req, res) {
     })
 })
 
+//Create Property
 Routes.put('/', function(req,res) {
 
     //allow anyone with access to properties to create comps (no org new props)
@@ -205,7 +207,7 @@ Routes.put('/', function(req,res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyService.create(req.user,  req.context, req.body, function (err, newprop) {
+        CreateService.create(req.user,  req.context, req.body, function (err, newprop) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }
@@ -215,5 +217,22 @@ Routes.put('/', function(req,res) {
         });
     })
 })
+
+Routes.put('/:id', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        CreateService.update(req.user,  req.context, null, req.body, function (err, newprop) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true, property: newprop});
+            }
+        });
+    })
+});
 
 module.exports = Routes;

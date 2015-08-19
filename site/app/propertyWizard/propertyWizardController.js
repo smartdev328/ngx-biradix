@@ -577,13 +577,13 @@ define([
             }
 
             $scope.save = function() {
+                ngProgress.start();
+                $('#propertySave').prop("disabled",true);
+                $scope.alerts = [];
+
+                var newProp = $scope.getPropertyForSave();
+
                 if (!id) {
-                    ngProgress.start();
-                    $('#propertySave').prop("disabled",true);
-                    $scope.alerts = [];
-
-                    var newProp = $scope.getPropertyForSave();
-
                     $propertyService.create(newProp).then(function(response) {
 
                         if (response.data.errors) {
@@ -616,6 +616,27 @@ define([
                         $('#propertySave').prop("disabled",false);
                     }, function(response) {
                         toastr.error('Unable to create property. Please contact an administrator');
+                        ngProgress.complete();
+                        $('#propertySave').prop("disabled",false);
+
+                    })
+                } else {
+                    newProp._id = $scope.property._id;
+                    $propertyService.update(newProp).then(function(response) {
+
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                        }
+                        else {
+                            toastr.success($scope.property.name + ' updated successfully');
+
+                            $modalInstance.close(response.data.property);
+                        }
+
+                        ngProgress.complete();
+                        $('#propertySave').prop("disabled",false);
+                    }, function(response) {
+                        toastr.error('Unable to update property. Please contact an administrator');
                         ngProgress.complete();
                         $('#propertySave').prop("disabled",false);
 

@@ -4,6 +4,7 @@ var AccessService = require('../api/access/services/accessService')
 var UserService = require('../api/users/services/userService')
 var OrgService = require('../api/organizations/services/organizationService')
 var PropertyService = require('../api/properties/services/propertyService')
+var CreateService = require('../api/properties/services/createService')
 var AmenityService = require('../api/amenities/services/amenityService')
 
 module.exports = {
@@ -271,7 +272,7 @@ var PropertiesCreate = function(companies,callback) {
 
     async.parallel({
             Aurelian: function (callbackp) {
-                PropertyService.create(Aurelian, function (err, prop) {
+                CreateService.create(Aurelian, function (err, prop) {
                         if (err) {
                             throw("Unable to seed: " + err[0].msg);
                         }
@@ -280,7 +281,7 @@ var PropertiesCreate = function(companies,callback) {
                 );
             },
             Augustus: function (callbackp) {
-                PropertyService.create(Augustus, function (err, prop) {
+                CreateService.create(Augustus, function (err, prop) {
                         if (err) {
                             throw("Unable to seed: " + err[0].msg);
                         }
@@ -289,7 +290,7 @@ var PropertiesCreate = function(companies,callback) {
                 );
             },
             Nero: function (callbackp) {
-                PropertyService.create(Nero, function (err, prop) {
+                CreateService.create(Nero, function (err, prop) {
                         if (err) {
                             throw("Unable to seed: " + err[0].msg);
                         }
@@ -298,7 +299,7 @@ var PropertiesCreate = function(companies,callback) {
                 );
             },
             Marcus: function (callbackp) {
-                PropertyService.create(Marcus, function (err, prop) {
+                CreateService.create(Marcus, function (err, prop) {
                         if (err) {
                             throw("Unable to seed: " + err[0].msg);
                         }
@@ -307,7 +308,7 @@ var PropertiesCreate = function(companies,callback) {
                 );
             },
             Geta: function (callbackp) {
-                PropertyService.create(Geta, function (err, prop) {
+                CreateService.create(Geta, function (err, prop) {
                         if (err) {
                             throw("Unable to seed: " + err[0].msg);
                         }
@@ -316,7 +317,7 @@ var PropertiesCreate = function(companies,callback) {
                 );
             },
             Titus: function (callbackp) {
-                PropertyService.create(Titus, function (err, prop) {
+                CreateService.create(Titus, function (err, prop) {
                         if (err) {
                             throw("Unable to seed: " + err[0].msg);
                         }
@@ -325,7 +326,7 @@ var PropertiesCreate = function(companies,callback) {
                 );
             },
             Probus: function (callbackp) {
-                PropertyService.create(Probus, function (err, prop) {
+                CreateService.create(Probus, function (err, prop) {
                         if (err) {
                             throw("Unable to seed: " + err[0].msg);
                         }

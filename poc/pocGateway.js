@@ -7,6 +7,7 @@ var async = require("async");
 var request = require('request')
 var OrgService = require('../api/organizations/services/organizationService')
 var PropertyService = require('../api/properties/services/propertyService')
+var CreateService = require('../api/properties/services/createService')
 var AmenityService = require('../api/amenities/services/amenityService')
 
 routes.get('/import', function(req, res) {
@@ -67,7 +68,7 @@ routes.get('/import', function(req, res) {
 
         async.eachLimit(all.props, 20, function(prop, callbackp){
             console.log(prop.name);
-            PropertyService.create(prop, function (err, newprop) {
+            CreateService.create(prop, function (err, newprop) {
                 prop._id = newprop._id;
                 callbackp(err, newprop)
             });
