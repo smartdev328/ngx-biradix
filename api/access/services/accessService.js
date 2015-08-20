@@ -176,6 +176,43 @@
             });
         },
 
+        deletePermission: function(permission, callback) {
+            var modelErrors = [];
+
+            if (!permission.resource) {
+                modelErrors.push({param: 'resource', msg: 'Missing Resource.'});
+            }
+
+            if (!permission.executorid) {
+                modelErrors.push({param: 'executorid', msg: 'Missing ExecutorId.'});
+            }
+
+            if (!permission.type) {
+                modelErrors.push({param: 'type', msg: 'Missing type.'});
+            }
+
+            if (modelErrors.length > 0) {
+                callback(modelErrors, null);
+                return;
+            }
+
+            var newpermission =  new PermissionsSchema();
+            newpermission.resource = permission.resource;
+            newpermission.executorid = permission.executorid;
+            newpermission.allow = permission.allow;
+            newpermission.type = permission.type;
+
+            PermissionsSchema.findOneAndRemove({resource: permission.resource, executorid: permission.executorid, type: permission.type},function (err, obj) {
+                if (err) {
+                    modelErrors.push({msg: 'Unexpected Error. Unable to delete permission: ' + err});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                callback(null, obj);
+            });
+        },
+
         getAssignedRoles: function(userid, callback) {
             MemberSchema.find().where('userid').equals(userid).exec(function (err, roles) {
                 if (roles.length > 0) {

@@ -30,25 +30,71 @@ module.exports = {
 
             populateAmenitiesandFloorplans(property, all);
 
+            var permissions = [];
+            var removePermissions = [];
+
             PropertySchema.findOne({_id:property._id}, function(err, n) {
 
-                if (err || !n) {
-                    return callback([{msg:"Unable to update property. Please contact the administrator."}], null)
-                }
-
-                populateSchema(property, n, all);
-
-                n.save(function (err, prop) {
-
-                    if (err) {
+                    if (err || !n) {
                         return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                     }
 
-                    callback(null, n);
-                });
+                    //Check if we can update orgs
+                    AccessService.canAccess(operator,"Properties/Create", function(canAccess) {
+                        if (canAccess) {
+                            //we have access to update orgs, lets see if the org changed
+                            if ((n.orgid || '').toString() != (property.orgid || '').toString()) {
 
+                                //Remove all implicit (CM) PropertyManage permissions for old org
+                                if (n.orgid) {
+                                    var oldCMs;
+                                    oldCMs = _.filter(all.roles, function(x) {return x.orgid == n.orgid.toString() && x.tags.indexOf('CM') > -1})
+                                    oldCMs.forEach(function(x) {
+                                        removePermissions.push({executorid: x._id.toString(), type: 'PropertyManage', resource : n._id.toString()})
+                                    })
+                                }
 
-            })
+                                //Add all implicit (CM) PropertyManage permission for new org if org is provided
+                                if (property.orgid) {
+                                    var newCMs;
+                                    newCMs = _.filter(all.roles, function(x) {return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1})
+                                    newCMs.forEach(function(x) {
+                                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage', resource : n._id.toString()})
+                                    })
+                                }
+
+                                //update org
+                                n.orgid = property.orgid;
+
+                            }
+                        }
+
+                        populateSchema(property, n, all);
+
+                        n.save(function (err, prop) {
+
+                            if (err) {
+                                return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
+                            }
+
+                            //Add and remove all permissions
+                            async.eachLimit(permissions, 10, function(permission, callbackp){
+                                AccessService.createPermission(permission, function (err, perm) {
+                                    callbackp(err, perm)
+                                });
+                            }, function(err) {
+                                async.eachLimit(removePermissions, 10, function(permission, callbackp){
+                                    AccessService.deletePermission(permission, function (err, perm) {
+                                        callbackp(err, perm)
+                                    });
+                                }, function(err) {
+                                    callback(null, n);
+                                });
+                            });
+
+                        });
+                    });
+             })
         });
 
     },
@@ -72,17 +118,12 @@ module.exports = {
 
                 populateAmenitiesandFloorplans(property, all);
 
-                //////////////////
+                //if org of property is provided, assign manage to all CMs for that org
+                //this is our implict assignment
                 var CMs = [];
-                var permissions = [];
                 if (property.orgid) {
-                    //if org of property is provided, assign manage to all CMs for that org
+
                     CMs = _.filter(all.roles, function(x) {return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1})
-
-                    CMs.forEach(function(x) {
-                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
-                    })
-
                 }
 
                 //and assign view opermissions to all non admins and not POs
@@ -90,10 +131,16 @@ module.exports = {
                     return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1})
 
 
+                /////////////Assign all permisions to viewers and CMS
+                var permissions = [];
                 viewers.forEach(function(x) {
                     permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
                 })
 
+                CMs.forEach(function(x) {
+                    permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
+                })
+                ////////////////
 
                 var n = new PropertySchema();
 
