@@ -43,6 +43,7 @@ module.exports = {
                 }
 
                 var old = isLinked.floorplans.map(function(x) {return x.toString()})
+
                 var updated = floorplans.map(function(x) {return x.toString()})
                 var full = _.pluck(comp.floorplans,"id").map(function(x) {return x.toString()})
 

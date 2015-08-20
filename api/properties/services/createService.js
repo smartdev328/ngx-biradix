@@ -6,6 +6,7 @@ var uuid = require('node-uuid');
 var moment = require('moment');
 var AuditService = require('../../audit/services/auditService')
 var CompsService = require('./compsService')
+var PropertyService = require('./propertyService')
 var GeocodeService = require('../../utilities/services/geocodeService')
 var AccessService = require('../../access/services/accessService')
 var AmenityService = require('../../amenities/services/amenityService')
@@ -77,20 +78,46 @@ module.exports = {
                                 return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                             }
 
-                            //Add and remove all permissions
+                            //find all subjects and their comp links to this comp and update with new floorplans asynchornously
+                            if (property.addedFloorplans.length > 0) {
+                                CompsService.getSubjects(prop._id, {select: "_id name comps"}, function (err, subjects) {
+                                    async.eachLimit(subjects, 10, function(subject, callbackp){
+                                        //find the comp link inside all the subject comps and grab its floorplan links
+                                        var comp = _.find(subject.comps, function(x) {return x.id.toString() == prop._id.toString()});
+
+                                        comp.floorplans = comp.floorplans || [];
+                                        comp.floorplans = comp.floorplans.concat(property.addedFloorplans);
+
+                                        PropertyService.saveCompLink(operator, context, null, subject._id, prop._id, comp.floorplans, function(err, link) {
+                                            callbackp(err, link)
+                                        })
+
+                                    }, function(err) {
+
+                                    });
+                                });
+                            }
+
+                            //Add  all permissions  asynchornously
                             async.eachLimit(permissions, 10, function(permission, callbackp){
                                 AccessService.createPermission(permission, function (err, perm) {
                                     callbackp(err, perm)
                                 });
                             }, function(err) {
-                                async.eachLimit(removePermissions, 10, function(permission, callbackp){
-                                    AccessService.deletePermission(permission, function (err, perm) {
-                                        callbackp(err, perm)
-                                    });
-                                }, function(err) {
-                                    callback(null, n);
-                                });
+
                             });
+
+                            //Remove  all permissions  asynchornously
+                            async.eachLimit(removePermissions, 10, function(permission, callbackp){
+                                AccessService.deletePermission(permission, function (err, perm) {
+                                    callbackp(err, perm)
+                                });
+                            }, function(err) {
+
+                            });
+
+                            callback(null, n);
+
 
                         });
                     });
@@ -309,11 +336,16 @@ var populateAmenitiesandFloorplans = function(property, all) {
 
     property.location_amenities = location_amenities;
 
+    //we need this so we know if we are updaing a property and adding new floorplans that need to be linked to all its subjects
+    property.addedFloorplans = [];
+
     property.floorplans.forEach(function(fp) {
         property.totalUnits += (fp.units || 0);
 
         if (!fp.id) {
             fp.id = uuid.v1();
+
+            property.addedFloorplans.push(fp.id)
         }
 
         var amenities = [];
