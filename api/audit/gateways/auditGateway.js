@@ -5,6 +5,7 @@ var AuditService = require('../services/auditService')
 var AccessService = require('../../access/services/accessService')
 var UserService = require('../../users/services/userService')
 var PropertyService = require('../../properties/services/propertyService')
+var CreateService = require('../../properties/services/createService')
 var Routes = express.Router();
 var async = require('async')
 var _ = require('lodash')
@@ -102,6 +103,13 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             });
                             break;
+                        case "property_profile_updated":
+                        case "property_contact_updated":
+                            propertyUpdateUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);
@@ -189,4 +197,16 @@ function linksUpdated(req, o, callback) {
         PropertyService.saveCompLink(req.user,req.context, o._id,subjectid,compid,comp,callback);
 
     })
+}
+
+function propertyUpdateUndo(req, o, callback) {
+    PropertyService.search(req.user,{_id: o.property.id, select: "*"}, function(er, props) {
+        var property = props[0];
+        o.data.forEach(function (d) {
+            property[d.field] = d.old_value;
+        })
+
+        CreateService.update(req.user,req.context, o._id,property,callback);
+    });
+
 }

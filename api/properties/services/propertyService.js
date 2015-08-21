@@ -225,12 +225,14 @@ module.exports = {
             }
             query = query.sort(criteria.sort || "name");
 
-            if (criteria.search != '') {
-                var s = new RegExp(criteria.search, "i")
-                query = query.or([{'name' : s}, {'address' : s}, {'city' : s}, {'state' : s}]);
-                query = query.select(criteria.select || '_id name address city state zip');
-            } else {
-                query = query.select(criteria.select || '_id name');
+            if (criteria.select !== '*') {
+                if (criteria.search != '') {
+                    var s = new RegExp(criteria.search, "i")
+                    query = query.or([{'name': s}, {'address': s}, {'city': s}, {'state': s}]);
+                    query = query.select(criteria.select || '_id name address city state zip');
+                } else {
+                    query = query.select(criteria.select || '_id name');
+                }
             }
 
             query.exec(function(err, props) {

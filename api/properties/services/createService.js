@@ -10,6 +10,7 @@ var PropertyService = require('./propertyService')
 var GeocodeService = require('../../utilities/services/geocodeService')
 var AccessService = require('../../access/services/accessService')
 var AmenityService = require('../../amenities/services/amenityService')
+var OrganizationService = require('../../organizations/services/organizationService')
 
 module.exports = {
     update: function(operator, context,revertedFromId, property, callback) {
@@ -36,91 +37,119 @@ module.exports = {
 
             PropertySchema.findOne({_id:property._id}, function(err, n) {
 
-                    if (err || !n) {
-                        return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
+                if (err || !n) {
+                    return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
+                }
+
+
+
+                //Check if we can update orgs
+                AccessService.canAccess(operator,"Properties/Create", function(canAccess) {
+
+                    var profileChanges = getProfileChanges(property, n, all);
+                    var contactChanges = getContactChanges(property, n, all);
+
+
+                     if (canAccess) {
+                        //we have access to update orgs, lets see if the org changed
+                        if ((n.orgid || '').toString() != (property.orgid || '').toString()) {
+                            //Remove all implicit (CM) PropertyManage permissions for old org
+                            if (n.orgid) {
+                                var oldCMs;
+                                oldCMs = _.filter(all.roles, function(x) {return x.orgid == n.orgid.toString() && x.tags.indexOf('CM') > -1})
+                                oldCMs.forEach(function(x) {
+                                    removePermissions.push({executorid: x._id.toString(), type: 'PropertyManage', resource : n._id.toString()})
+                                })
+                            }
+
+                            //Add all implicit (CM) PropertyManage permission for new org if org is provided
+                            if (property.orgid) {
+                                var newCMs;
+                                newCMs = _.filter(all.roles, function(x) {return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1})
+                                newCMs.forEach(function(x) {
+                                    permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage', resource : n._id.toString()})
+                                })
+                            }
+
+                            var oldName = "None";
+                            var newName = "None";
+
+                            if (n.orgid) {
+                                oldName = _.find(all.orgs, function(x) {return x._id.toString() == n.orgid.toString()}).name
+                            }
+
+                            if (property.orgid) {
+                                newName = _.find(all.orgs, function(x) {return x._id.toString() == property.orgid.toString()}).name
+                            }
+
+                            profileChanges.push({description:  "Company: " + oldName + " => " + newName, field: "orgid", old_value: n.orgid  });
+
+                            //update org
+                            n.orgid = property.orgid;
+
+                        }
                     }
 
-                    //Check if we can update orgs
-                    AccessService.canAccess(operator,"Properties/Create", function(canAccess) {
-                        if (canAccess) {
-                            //we have access to update orgs, lets see if the org changed
-                            if ((n.orgid || '').toString() != (property.orgid || '').toString()) {
 
-                                //Remove all implicit (CM) PropertyManage permissions for old org
-                                if (n.orgid) {
-                                    var oldCMs;
-                                    oldCMs = _.filter(all.roles, function(x) {return x.orgid == n.orgid.toString() && x.tags.indexOf('CM') > -1})
-                                    oldCMs.forEach(function(x) {
-                                        removePermissions.push({executorid: x._id.toString(), type: 'PropertyManage', resource : n._id.toString()})
-                                    })
-                                }
+                    populateSchema(property, n, all);
 
-                                //Add all implicit (CM) PropertyManage permission for new org if org is provided
-                                if (property.orgid) {
-                                    var newCMs;
-                                    newCMs = _.filter(all.roles, function(x) {return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1})
-                                    newCMs.forEach(function(x) {
-                                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage', resource : n._id.toString()})
-                                    })
-                                }
+                    n.save(function (err, prop) {
 
-                                //update org
-                                n.orgid = property.orgid;
-
-                            }
+                        if (err) {
+                            return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                         }
 
-                        populateSchema(property, n, all);
+                        //find all subjects and their comp links to this comp and update with new floorplans asynchornously
+                        if (property.addedFloorplans.length > 0) {
+                            CompsService.getSubjects(prop._id, {select: "_id name comps"}, function (err, subjects) {
+                                async.eachLimit(subjects, 10, function(subject, callbackp){
+                                    //find the comp link inside all the subject comps and grab its floorplan links
+                                    var comp = _.find(subject.comps, function(x) {return x.id.toString() == prop._id.toString()});
 
-                        n.save(function (err, prop) {
+                                    comp.floorplans = comp.floorplans || [];
+                                    comp.floorplans = comp.floorplans.concat(property.addedFloorplans);
 
-                            if (err) {
-                                return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
-                            }
+                                    PropertyService.saveCompLink(operator, context, null, subject._id, prop._id, comp.floorplans, function(err, link) {
+                                        callbackp(err, link)
+                                    })
 
-                            //find all subjects and their comp links to this comp and update with new floorplans asynchornously
-                            if (property.addedFloorplans.length > 0) {
-                                CompsService.getSubjects(prop._id, {select: "_id name comps"}, function (err, subjects) {
-                                    async.eachLimit(subjects, 10, function(subject, callbackp){
-                                        //find the comp link inside all the subject comps and grab its floorplan links
-                                        var comp = _.find(subject.comps, function(x) {return x.id.toString() == prop._id.toString()});
+                                }, function(err) {
 
-                                        comp.floorplans = comp.floorplans || [];
-                                        comp.floorplans = comp.floorplans.concat(property.addedFloorplans);
-
-                                        PropertyService.saveCompLink(operator, context, null, subject._id, prop._id, comp.floorplans, function(err, link) {
-                                            callbackp(err, link)
-                                        })
-
-                                    }, function(err) {
-
-                                    });
                                 });
-                            }
-
-                            //Add  all permissions  asynchornously
-                            async.eachLimit(permissions, 10, function(permission, callbackp){
-                                AccessService.createPermission(permission, function (err, perm) {
-                                    callbackp(err, perm)
-                                });
-                            }, function(err) {
-
                             });
+                        }
 
-                            //Remove  all permissions  asynchornously
-                            async.eachLimit(removePermissions, 10, function(permission, callbackp){
-                                AccessService.deletePermission(permission, function (err, perm) {
-                                    callbackp(err, perm)
-                                });
-                            }, function(err) {
-
+                        //Add  all permissions  asynchornously
+                        async.eachLimit(permissions, 10, function(permission, callbackp){
+                            AccessService.createPermission(permission, function (err, perm) {
+                                callbackp(err, perm)
                             });
-
-                            callback(null, n);
-
+                        }, function(err) {
 
                         });
+
+                        //Remove  all permissions  asynchornously
+                        async.eachLimit(removePermissions, 10, function(permission, callbackp){
+                            AccessService.deletePermission(permission, function (err, perm) {
+                                callbackp(err, perm)
+                            });
+                        }, function(err) {
+
+                        });
+
+                        if (profileChanges.length > 0) {
+                            AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_profile_updated', description: prop.name + ": " + profileChanges.length  + " update(s)", context: context, data: profileChanges})
+                        }
+
+                        if (contactChanges.length > 0) {
+                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
+                        }
+
+                        callback(null, n);
+
+
                     });
+                });
              })
         });
 
@@ -304,7 +333,11 @@ var getHelpers = function(property, callback) {
             AmenityService.search({active: true},function(err, amenities) {
                 callbackp(err, amenities)
             })
-
+        },
+        orgs: function (callbackp) {
+            OrganizationService.read(function(err, orgs) {
+                callbackp(err, orgs)
+            })
         }
 
     },  function(err, all) {
@@ -381,4 +414,41 @@ function populateSchema(property, n, all) {
     n.totalUnits = property.totalUnits;
     n.location_amenities = property.location_amenities;
     n.community_amenities = property.community_amenities;
+}
+
+function getProfileChanges(property, n, all) {
+    var changes = [];
+
+    checkChange(changes,property,n,"name","Name");
+    checkChange(changes,property,n,"address","Address");
+    checkChange(changes,property,n,"city","City");
+    checkChange(changes,property,n,"state","State");
+    checkChange(changes,property,n,"zip","Zip");
+    checkChange(changes,property,n,"constructionType","Construction Type");
+    checkChange(changes,property,n,"yearBuilt","Year Built");
+    checkChange(changes,property,n,"yearRenovated","Year Renovated");
+    checkChange(changes,property,n,"owner","Owner");
+    checkChange(changes,property,n,"management","Management");
+
+    return changes;
+}
+
+function getContactChanges(property, n, all) {
+    var changes = [];
+
+    checkChange(changes,property,n,"contactName","Contact Name");
+    checkChange(changes,property,n,"contactEmail","Contact Email");
+    checkChange(changes,property,n,"phone","Contact Phone");
+    checkChange(changes,property,n,"notes","Notes", true);
+
+    return changes;
+}
+
+function checkChange(changes, property, n,  field, label, useQoutes) {
+
+    var quotes = useQoutes ? "\"" : "";
+
+    if (n[field] != property[field]) {
+        changes.push({description: label + ": " + quotes + (n[field] || '') + quotes + " => " + quotes + (property[field] || '') + quotes, field: field, old_value: n[field]  });
+    }
 }
