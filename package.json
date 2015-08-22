@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec api/*/tests/*.js",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "npm test && ./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
