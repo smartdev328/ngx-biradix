@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter spec api/*/tests/*.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -46,7 +47,9 @@
     "node": "0.10.35",
     "npm": "1.4.28"
   },
-  "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install"
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5",
+    "mock-require": "^1.1.0"
   }
 }
