@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "mocha --reporter spec api/*/tests/*.js",
+    "test": "mocha --reporter spec api/*/tests/*.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
