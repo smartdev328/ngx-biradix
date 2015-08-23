@@ -7,6 +7,7 @@ var moment = require('moment');
 var AuditService = require('../../audit/services/auditService')
 var CompsService = require('./compsService')
 var PropertyService = require('./propertyService')
+var PropertyHelperService = require('./propertyHelperService')
 var GeocodeService = require('../../utilities/services/geocodeService')
 var AccessService = require('../../access/services/accessService')
 var AmenityService = require('../../amenities/services/amenityService')
@@ -48,6 +49,7 @@ module.exports = {
 
                     var profileChanges = getProfileChanges(property, n, all);
                     var contactChanges = getContactChanges(property, n, all);
+                    var feesChanges = getFeesChanges(property,n, all);
 
 
                      if (canAccess) {
@@ -145,6 +147,9 @@ module.exports = {
                             AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
                         }
 
+                        if (feesChanges.length > 0) {
+                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
+                        }
                         callback(null, n);
 
 
@@ -451,4 +456,27 @@ function checkChange(changes, property, n,  field, label, useQoutes) {
     if (n[field] != property[field]) {
         changes.push({description: label + ": " + quotes + (n[field] || '') + quotes + " => " + quotes + (property[field] || '') + quotes, field: field, old_value: n[field]  });
     }
+}
+
+function getFeesChanges(property, n, all) {
+    var changes = [];
+
+    for (var f in PropertyHelperService.fees) {
+        if (n.fees[f]  != property.fees[f]) {
+            var oldLabel = "";
+            var newLabel = "";
+
+            if (n.fees[f]) {
+                oldLabel = n.fees[f];
+            }
+
+            if (property.fees[f]) {
+                newLabel = property.fees[f];
+            }
+
+            changes.push({description: PropertyHelperService.fees[f] + ": \"" + oldLabel + "\" => \"" + newLabel + "\"", field: f, old_value: n.fees[f]  });
+        }
+    }
+
+    return changes;
 }

@@ -27,6 +27,7 @@ var audits  = [
     {key: 'property_created', value: 'Property Created', group: 'Property'},
     {key: 'property_profile_updated', value: 'Profile Updated', undo: true, group: 'Property'},
     {key: 'property_contact_updated', value: 'Contact/Notes Updated', undo: true, group: 'Property'},
+    {key: 'property_fees_updated', value: 'Fees/Deposits Updated', undo: true, group: 'Property'},
     {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
     {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
     {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},

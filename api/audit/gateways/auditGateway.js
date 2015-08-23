@@ -110,6 +110,12 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             })
                             break;
+                        case "property_fees_updated":
+                            propertyFeesUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);
@@ -204,6 +210,18 @@ function propertyUpdateUndo(req, o, callback) {
         var property = props[0];
         o.data.forEach(function (d) {
             property[d.field] = d.old_value;
+        })
+
+        CreateService.update(req.user,req.context, o._id,property,callback);
+    });
+
+}
+
+function propertyFeesUndo(req, o, callback) {
+    PropertyService.search(req.user,{_id: o.property.id, select: "*"}, function(er, props) {
+        var property = props[0];
+        o.data.forEach(function (d) {
+            property.fees[d.field] = d.old_value;
         })
 
         CreateService.update(req.user,req.context, o._id,property,callback);
