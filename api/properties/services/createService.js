@@ -50,7 +50,8 @@ module.exports = {
                     var profileChanges = getProfileChanges(property, n, all);
                     var contactChanges = getContactChanges(property, n, all);
                     var feesChanges = getFeesChanges(property,n, all);
-
+                    var amenitiesChanges = getAmenitiesChanges(property,n, all,"community_amenities", "Community");
+                    amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
 
                      if (canAccess) {
                         //we have access to update orgs, lets see if the org changed
@@ -149,6 +150,10 @@ module.exports = {
 
                         if (feesChanges.length > 0) {
                             AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
+                        }
+
+                        if (amenitiesChanges.length > 0) {
+                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
                         }
                         callback(null, n);
 
@@ -460,6 +465,8 @@ function checkChange(changes, property, n,  field, label, useQoutes) {
 
 function getFeesChanges(property, n, all) {
     var changes = [];
+    n.fees = n.fees || {};
+    property.fees = property.fees || {};
 
     for (var f in PropertyHelperService.fees) {
         if (n.fees[f]  != property.fees[f]) {
@@ -476,6 +483,36 @@ function getFeesChanges(property, n, all) {
 
             changes.push({description: PropertyHelperService.fees[f] + ": \"" + oldLabel + "\" => \"" + newLabel + "\"", field: f, old_value: n.fees[f]  });
         }
+    }
+
+    return changes;
+}
+
+function getAmenitiesChanges(property, n, all, type, label) {
+    var changes = [];
+
+    n[type] = n[type].map(function (x) {
+        return x.toString()
+    })
+
+    property[type] = property[type].map(function (x) {
+        return x.toString()
+    })
+
+    var removed = _.difference(n[type], property[type]);
+    var added = _.difference(property[type], n[type]);
+
+
+    if (removed && removed.length > 0) {
+        _.filter(all.amenities, function(x) {return removed.indexOf(x.id.toString()) > -1}).forEach(function(am) {
+            changes.push({amenity_type: type, type:'removed', id: am._id.toString(), description: 'Removed > ' + label + ': ' + am.name})
+        })
+    }
+
+    if (added && added.length > 0) {
+        _.filter(all.amenities, function(x) {return added.indexOf(x.id.toString()) > -1}).forEach(function(am) {
+            changes.push({amenity_type: type,type:'added', id: am._id.toString(), description: 'Added > ' + label + ': ' + am.name})
+        })
     }
 
     return changes;

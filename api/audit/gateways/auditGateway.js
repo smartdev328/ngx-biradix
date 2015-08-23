@@ -6,6 +6,7 @@ var AccessService = require('../../access/services/accessService')
 var UserService = require('../../users/services/userService')
 var PropertyService = require('../../properties/services/propertyService')
 var CreateService = require('../../properties/services/createService')
+var AmenitiesService = require('../../amenities/services/amenityService')
 var Routes = express.Router();
 var async = require('async')
 var _ = require('lodash')
@@ -112,6 +113,12 @@ Routes.post('/undo', function (req, res) {
                             break;
                         case "property_fees_updated":
                             propertyFeesUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "property_amenities_updated":
+                            propertyAmenitiesUndo(req,o, function(err) {
                                 errors = err || [];
                                 callbacks(null)
                             })
@@ -226,5 +233,34 @@ function propertyFeesUndo(req, o, callback) {
 
         CreateService.update(req.user,req.context, o._id,property,callback);
     });
+
+}
+
+function propertyAmenitiesUndo(req, o, callback) {
+    AmenitiesService.search({}, function(err, amenities) {
+        PropertyService.search(req.user,{_id: o.property.id, select: "*"}, function(er, props) {
+            var property = props[0];
+
+            o.data.forEach(function (d) {
+
+                if (d.type == 'added') {
+                    _.pull(property[d.amenity_type], d.id);
+                } else {
+                    property[d.amenity_type].push(d.id);
+                }
+
+            })
+
+
+            property.location_amenities = _.uniq(property.location_amenities);
+            property.community_amenities = _.uniq(property.community_amenities);
+
+            //Note: Ameities are submitted by name, not id but stored by id
+            property.location_amenities = _.pluck(_.filter(amenities, function(x) {return property.location_amenities.indexOf(x._id.toString()) > -1}),"name");
+            property.community_amenities = _.pluck(_.filter(amenities, function(x) {return property.community_amenities.indexOf(x._id.toString()) > -1}),"name");
+
+            CreateService.update(req.user,req.context, o._id,property,callback);
+        });
+    })
 
 }
