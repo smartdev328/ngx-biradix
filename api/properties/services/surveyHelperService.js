@@ -4,7 +4,7 @@ var SurveySchema= require('../schemas/surveySchema')
 var async = require("async");
 var _ = require("lodash")
 var moment = require('moment');
-var AuditService = require('../../audit/services/auditService')
+var CompsService = require('./compsService')
 
 module.exports = {
     updateLastSurvey: function(propertyid, callback) {
