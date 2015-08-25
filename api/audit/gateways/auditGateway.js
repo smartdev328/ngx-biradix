@@ -123,6 +123,30 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             })
                             break;
+                        case "property_floorplan_created":
+                            propertyFloorplanCreatedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "property_floorplan_removed":
+                            propertyFloorplanRemovedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "property_floorplan_updated":
+                            propertyFloorplanUpdatedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "property_floorplan_amenities_updated":
+                            propertyFloorplanAmenitiesUpdatedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);
@@ -263,4 +287,86 @@ function propertyAmenitiesUndo(req, o, callback) {
         });
     })
 
+}
+
+function propertyFloorplanCreatedUndo  (req, o, callback) {
+    PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        var property = props[0];
+        _.remove(property.floorplans, function(fp) {return fp.id.toString() == o.data[0].id.toString()});
+        CreateService.update(req.user,req.context, o._id,property,callback);
+    });
+}
+
+function propertyFloorplanRemovedUndo  (req, o, callback) {
+    AmenitiesService.search({}, function(err, amenities) {
+        var amenities2 = amenities;
+        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+            var property = props[0];
+            var oldfp = o.data[0].old_value;
+
+            oldfp.amenities = oldfp.amenities.map(function(x) {return x.toString()})
+
+            var amenities = _.pluck(_.filter(amenities2, function (x) {
+                return oldfp.amenities.indexOf(x._id.toString()) > -1
+            }), "name");
+
+            oldfp.amenities = amenities;
+
+            property.floorplans.push(oldfp);
+
+            CreateService.update(req.user,req.context, o._id,property,callback);
+        });
+    });
+}
+
+function propertyFloorplanUpdatedUndo  (req, o, callback) {
+    PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        var property = props[0];
+
+        var old = o.data[0].old_value;
+
+        property.floorplans.forEach(function(fp,i) {
+            if (fp.id.toString() == old.id.toString()) {
+                property.floorplans[i].bedrooms = old.bedrooms;
+                property.floorplans[i].bathrooms = old.bathrooms;
+                property.floorplans[i].description = old.description;
+                property.floorplans[i].units = old.units;
+                property.floorplans[i].sqft = old.sqft;
+            }
+        })
+
+        CreateService.update(req.user,req.context, o._id,property,callback);
+    });
+}
+
+function propertyFloorplanAmenitiesUpdatedUndo  (req, o, callback) {
+    AmenitiesService.search({}, function(err, amenities) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+            var property = props[0];
+
+
+            property.floorplans.forEach(function (fp, i) {
+                if (fp.id.toString() == o.data[0].fpid.toString()) {
+
+                    o.data.forEach(function (d) {
+                        if (d.type == 'added') {
+                            _.pull(property.floorplans[i].amenities, d.id);
+                        } else {
+                            property.floorplans[i].amenities.push(d.id);
+                        }
+
+                    })
+
+
+                    property.floorplans[i].amenities = _.uniq(property.floorplans[i].amenities);
+
+                }
+
+                property.floorplans[i].amenities = _.pluck(_.filter(amenities, function(x) {return property.floorplans[i].amenities.indexOf(x._id.toString()) > -1}),"name");
+            })
+
+            CreateService.update(req.user,req.context, o._id,property,callback);
+
+        });
+    });
 }

@@ -53,6 +53,11 @@ module.exports = {
                     var amenitiesChanges = getAmenitiesChanges(property,n, all,"community_amenities", "Community");
                     amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
 
+                    var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
+                    var floorplansRemovedChanges = getFloorplansRemovedChanges(property,n, all);
+                    var floorplansUpdatedChanges = getFloorplansUpdatedChanges(property,n, all);
+                    var floorplansAmenitiesUpdatedChanges = getFloorplansAmenitiesUpdatedChanges(property,n, all);
+
                      if (canAccess) {
                         //we have access to update orgs, lets see if the org changed
                         if ((n.orgid || '').toString() != (property.orgid || '').toString()) {
@@ -155,6 +160,23 @@ module.exports = {
                         if (amenitiesChanges.length > 0) {
                             AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
                         }
+
+                        floorplansAddedChanges.forEach(function(change) {
+                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_created', description: prop.name + ": " + change.description, context: context, data: [change]})
+                        })
+
+                        floorplansRemovedChanges.forEach(function(change) {
+                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
+                        })
+
+                        floorplansUpdatedChanges.forEach(function(change) {
+                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_updated', description: prop.name + ": " + change.description, context: context, data: [change]})
+                        })
+
+                        floorplansAmenitiesUpdatedChanges.forEach(function(change) {
+                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
+                        })
+
                         callback(null, n);
 
 
@@ -514,6 +536,98 @@ function getAmenitiesChanges(property, n, all, type, label) {
             changes.push({amenity_type: type,type:'added', id: am._id.toString(), description: 'Added > ' + label + ': ' + am.name})
         })
     }
+
+    return changes;
+}
+
+function getFloorplansAddedChanges(property, n, all) {
+    var changes = [];
+
+    property.floorplans.forEach(function(fp) {
+        if (!_.find(n.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
+            changes.push({id: fp.id.toString(), description: PropertyHelperService.floorplanName(fp)})
+        }
+    })
+
+    return changes;
+}
+
+function getFloorplansRemovedChanges(property, n, all) {
+    var changes = [];
+
+    n.floorplans.forEach(function(fp) {
+        if (!_.find(property.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
+            changes.push({old_value: fp, description: PropertyHelperService.floorplanName(fp)})
+        }
+    })
+
+    return changes;
+}
+
+function getFloorplansUpdatedChanges(property, n, all) {
+    var changes = [];
+
+    n.floorplans.forEach(function(fp) {
+        var nfp = _.find(property.floorplans, function(x) {return x.id.toString() == fp.id.toString()});
+        if (nfp) {
+
+            if (fp.bedrooms != nfp.bedrooms
+                || fp.bathrooms != nfp.bathrooms
+                || fp.description != nfp.description
+                || fp.units != nfp.units
+                || fp.sqft != nfp.sqft
+            ) {
+                changes.push({
+                    old_value: fp,
+                    description: PropertyHelperService.floorplanName(fp) + " => " + PropertyHelperService.floorplanName(nfp)
+                })
+            }
+        }
+    })
+
+    return changes;
+}
+
+function getFloorplansAmenitiesUpdatedChanges(property, n, all) {
+    var changes = [];
+
+    n.floorplans.forEach(function(fp) {
+        var nfp = _.find(property.floorplans, function(x) {return x.id.toString() == fp.id.toString()});
+        if (nfp) {
+            fp.amenities = fp.amenities.map(function (x) {
+                return x.toString()
+            })
+
+            nfp.amenities = nfp.amenities.map(function (x) {
+                return x.toString()
+            })
+
+            var removed = _.difference(fp.amenities, nfp.amenities);
+            var added = _.difference(nfp.amenities, fp.amenities);
+
+
+            if (added.length >0 || removed.length > 0) {
+                var change = {description: PropertyHelperService.floorplanName(fp), data:[]};
+
+                if (removed && removed.length > 0) {
+                    _.filter(all.amenities, function(x) {return removed.indexOf(x.id.toString()) > -1}).forEach(function(am) {
+                        change.data.push({fpid: fp.id.toString() ,type:'removed', id: am._id.toString(), description: 'Removed > ' + am.name})
+                    })
+                }
+
+                if (added && added.length > 0) {
+                    _.filter(all.amenities, function(x) {return added.indexOf(x.id.toString()) > -1}).forEach(function(am) {
+                        change.data.push({fpid: fp.id.toString() ,type:'added', id: am._id.toString(), description: 'Added > ' + am.name})
+                    })
+                }
+
+                changes.push(change);
+            }
+
+
+
+        }
+    })
 
     return changes;
 }
