@@ -1,5 +1,6 @@
 var AccessService = require('../../access/services/accessService')
 var DashboardService = require('../services/dashboardService')
+var async = require("async")
 
 module.exports = {
     init: function(Routes) {

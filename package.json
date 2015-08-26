@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -47,7 +47,7 @@
   },
   "private": true,
   "engines": {
-    "node": "0.10.35",
-    "npm": "1.4.28"
+    "node": "0.12.7",
+    "npm": "2.14.0"
   }
 }
