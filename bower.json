@@ -11,12 +11,12 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "bootstrap": "3.3.4",
+    "bootstrap": "3.3.5",
     "jquery": "2.1.4",
     "font-awesome": "4.2.0",
     "highcharts-release": "~4.1.6",
-    "angular": "1.4.0-rc.2",
-    "angular-cookies": "1.4.0-rc.2",
+    "angular": "1.4.4",
+    "angular-cookies": "1.4.4",
     "angular-ui-router": "~0.2.15",
     "lodash": "3.10.0",
     "moment": "2.9.0"

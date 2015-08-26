@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require("lodash");
+
 var fees  = {
     application_fee : 'Application fee',
     lease_terms: 'Lease terms',
