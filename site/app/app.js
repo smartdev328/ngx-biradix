@@ -1,15 +1,15 @@
 'use strict';
 
 function resolve($q, ctrl) {
-    $('.routeLoading').show();
-    $('.routeContent').hide();
+    //$('.routeLoading').show();
+    //$('.routeContent').hide();
     var deferred = $q.defer();
     require([
         ctrl
     ], function () {
         deferred.resolve();
-        $('.routeLoading').hide();
-        $('.routeContent').show();
+        //$('.routeLoading').hide();
+        //$('.routeContent').show();
     });
     return deferred.promise;
 }
