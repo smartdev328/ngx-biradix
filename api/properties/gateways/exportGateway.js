@@ -9,6 +9,7 @@ var ProgressService = require('../../progress/services/progressService')
 var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
 var DashboardService = require('../services/dashboardService')
+var settings = require("../../../config/settings")
 
 module.exports = {
     init: function(Routes) {
