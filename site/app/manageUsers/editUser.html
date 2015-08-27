@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">{{!userId ? 'Add' : 'Update'}} User</h2>
+    <hr>
+</div>
+
+<div class="modal-body">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
+
+    <div ng-show="loading" style="display:block;width:100px;margin:20px  auto">
+        <img src="/images/squares.gif" style="width:100px">
+    </div>
+    <div ng-show="!loading">
+        <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit()">
+            <h3 style="margin-top:0">User Info</h3>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
+                        <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
+                        <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': myForm.email.$dirty && myForm.email.$invalid, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
+                        <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email">
+                    </div>
+                </div>
+            </div>
+            <h3 style="margin-top:10px">Access</h3>
+
+            <div class="row" ng-show="Companies">
+                <div class="col-md-6">
+                    <select class="form-control input-sm" ng-model="selectedCompany" ng-options="item.Name for item in Companies" ng-change="getDropdowns()"></select>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6" ng-show="Roles">
+                    <select class="form-control input-sm" ng-model="selectedRole" ng-options="item.Name for item in Roles" ng-change="getDropdowns()"></select>
+                </div>
+                <div class="col-md-6" ng-show="Properties && Properties.length > 0">
+                    <filter-list options="options" items="items"></filter-list>
+                </div>
+            </div>
+            <br />
+            <div style="margin:0px auto;width:75px">
+                <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">{{!userId ? 'Create' : 'Save'}}</button>
+            </div>
+        </form>
+    </div>
+</div>

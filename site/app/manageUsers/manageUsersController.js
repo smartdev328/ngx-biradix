@@ -6,7 +6,7 @@ define([
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog) {
+    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$modal', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$modal) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -284,6 +284,38 @@ define([
             }, function() {})
         }
 
+
+        $scope.edit = function (userId) {
+            require([
+                '/app/manageUsers/editUserController.js'
+            ], function () {
+                var modalInstance = $modal.open({
+                    templateUrl: '/app/manageUsers/editUser.html?bust=' + version,
+                    controller: 'editUserController',
+                    size: "sm",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        userId: function () {
+                            return userId;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (newUser) {
+
+                    var action = "updated";
+                    if (!userId) {
+                        action = "created";
+                    }
+                    $scope.alerts = [];
+                    $scope.alerts.push({ type: 'success', msg: newUser.First + " " + newUser.Last + " " + action + " successfully."});
+                    $scope.reload()
+                }, function () {
+
+                });
+            });
+        }
 
     }]);
 });

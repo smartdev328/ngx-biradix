@@ -13,6 +13,9 @@ var AuditService = require('../../audit/services/auditService')
 
 module.exports = {
     search: function(Operator,criteria, callback) {
+
+        //if you pass in fields to select you are overwritting the default
+        criteria.custom = criteria.select != undefined;
         async.parallel({
                 permissions: function(callbackp) {
                     if (Operator.memberships.isadmin) {
@@ -40,39 +43,67 @@ module.exports = {
                 }
             }, function(err, all) {
 
-            var query;
-            if (Operator.memberships.isadmin) {
-                query = UserSchema.find();
-            }
-            else {
-                query = UserSchema.find({'_id': {$in: all.permissions}});
+            var query = UserSchema.find();
+
+            if (criteria._id) {
+                criteria.ids = criteria.ids || [];
+                criteria.ids.push(criteria._id);
             }
 
-            query = query.select('_id first last email active date');
+            if (Operator.memberships.isadmin === true) {
+                if (criteria.ids) {
+                    query = query.where("_id").in(criteria.ids);
+                }
+            }
+            else {
+
+                if (criteria.ids) {
+                    all.permissions = _.intersection(all.permissions, criteria.ids);
+                }
+
+                query = query.where('_id').in(all.permissions);
+            }
+
+
+            if (criteria.custom) {
+                query = query.select(criteria.select);
+            } else {
+                query = query.select('_id first last email active date');
+            }
 
             query = query.sort("-date");
 
             query.exec(function(err, users) {
 
                 if (users) {
-
                     users = JSON.parse(JSON.stringify(users));
                     users.forEach(function(x) {
-                        x.name = x.first + ' ' + x.last;
-                        delete x.first;
-                        delete x.last;
-                        x.role = 'N/A';
-                        x.company= 'N/A';
+                        if (!criteria.custom) {
+                            x.name = x.first + ' ' + x.last;
+                            delete x.first;
+                            delete x.last;
+                            x.role = 'N/A';
+                            x.company = 'N/A';
+                        }
 
                         var membership = _.find(all.memberships, function(m) { return m.userid.toString() == x._id.toString()})
 
                         if (membership) {
                             var role = _.find(all.roles, function(r) {return r._id.toString() == membership.roleid.toString()})
                             if (role) {
-                                x.role = role.name;
+                                if (!criteria.custom) {
+                                    x.role = role.name;
+                                }
+                                else {
+                                    x.roleid = role._id;
+                                }
                                 var company = _.find(all.orgs, function(o) {return o._id.toString() == role.orgid.toString() })
                                 if (company) {
-                                    x.company = company.name;
+                                    if (!criteria.custom) {
+                                        x.company = company.name;
+                                    } else {
+                                        x.orgid = company._id;
+                                    }
                                 }
                             }
                         }
