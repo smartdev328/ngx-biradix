@@ -69,10 +69,18 @@ define([
 
         }
 
+        $scope.first = true;
+
         $rootScope.getMe = function(callback) {
+
             $authService.me($cookies.get('token'), function(usr, status) {
                 if (usr) {
                     $rootScope.me = usr;
+
+                    if ($scope.first && !$rootScope.me.passwordUpdated) {
+                        $scope.first = false;
+                        $scope.updatePassword();
+                    }
 
                     if (callback) {
                         callback();
@@ -174,6 +182,32 @@ define([
 
 
 
+        }
+
+        $scope.updatePassword = function() {
+            require([
+                '/app/updatepassword/updatePasswordController.js'
+            ], function () {
+                var modalInstance = $modal.open({
+                    templateUrl: '/app/updatepassword/updatePassword.html',
+                    controller: 'updatePasswordController',
+                    size: "sm",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        me: function () {
+                            return $rootScope.me;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    //Save successfully
+                    $rootScope.refreshToken();
+                }, function () {
+                    //Cancel
+                });
+            });
         }
 
         $scope.updateProfile = function() {

@@ -81,7 +81,11 @@ userRoutes.post('/create', function (req, res) {
         if (!req.body.roleid || !canAccess) {
             return res.status(401).json("Unauthorized request");
         }
-        UserService.insert(req.user, req.context, req.body, function (errors, usr) {
+
+        //Anyone going through the gateway gets their random password emailed to them
+        req.body.emailPassword = true;
+
+        UserService.insert(req.user, req.context, req.body, "http://" + req.headers.host, function (errors, usr) {
                 if (errors) {
                     res.status(200).json({errors: errors, user: null});
                 }
@@ -106,12 +110,22 @@ userRoutes.post('/recover', function (req, res) {
 
 })
 
+userRoutes.post('/updatePassword', function (req, res) {
+    UserService.updatePassword(req.user._id, req.body.newpassword, req.context, req.body.currentpassword, function(err, newusr) {
+        if (err) {
+            return res.status(200).json({success: false, errors: err});
+        } else {
+            return res.status(200).json({success: true});
+        }
+    })
+})
+
 userRoutes.post('/updatePasswordByToken', function (req, res) {
     var token = req.body.token;
 
     UserService.getUserByRecoveryToken(token, function (usr) {
         if (usr) {
-            UserService.updatePassword(usr._id, req.body.password, req.context, function(err, newusr) {
+            UserService.updatePassword(usr._id, req.body.password, req.context, null, function(err, newusr) {
                 if (err) {
                     return res.status(200).json({success: false, errors: err});
                 } else {

@@ -28,7 +28,8 @@ var UserSchema = new Schema({
     settings: {
         hideUnlinked: Boolean,
         defaultPropertyId: Schema.Types.ObjectId
-    }
+    },
+    passwordUpdated: Boolean
 });
 
 module.exports = mongoose.model('User', UserSchema);

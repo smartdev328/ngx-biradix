@@ -248,7 +248,7 @@ module.exports = {
 
     },
 
-    insert : function(operator,context, user, callback)  {
+    insert : function(operator,context, user, base, callback)  {
         var modelErrors = [];
         user.first = user.first || '';
         user.last = user.last || '';
@@ -256,6 +256,7 @@ module.exports = {
         user.email = user.email || '';
         user.password = user.password || generatePassword(8,false);
         user.emailLower = user.email.toLowerCase();
+        user.emailPassword = user.emailPassword || false;
 
         if (user.first == '')
         {
@@ -320,10 +321,8 @@ module.exports = {
                 var orgid = userRole.orgid.toString();
 
 
-                var rolesToAddPermission = [];
-
                 //All CMs for the org get access to the new user
-                rolesToAddPermission = _.filter(all.roles, function(x) {return x.orgid == orgid && x.tags.indexOf('CM') > -1})
+                var rolesToAddPermission = _.filter(all.roles, function(x) {return x.orgid == orgid && x.tags.indexOf('CM') > -1})
 
                 //All RMs for the org get access to the new user if new user is RM
                 if (userRole.tags.indexOf("RM") > -1) {
@@ -352,7 +351,7 @@ module.exports = {
 
                 userRole = JSON.parse(JSON.stringify(userRole));
 
-                userRole.org = _.find(all.orgs, function(x) {return x._id.toString() == orgid}).name;
+                userRole.org = _.find(all.orgs, function(x) {return x._id.toString() == orgid});
             } else {
                 modelErrors.push({param: 'roleid', msg : 'Please select the role.'});
                 callback(modelErrors,null);
@@ -397,8 +396,29 @@ module.exports = {
                             callbackp(err, perm)
                         });
                     }, function(err) {
-                        var data = [{description: "Email: " + usr.email},{description: "Role: " + userRole.org + ": " + userRole.name}]
+
+                        //Log for Audit async
+                        var data = [{description: "Email: " + usr.email},{description: "Role: " + userRole.org.name + ": " + userRole.name}]
                         AuditService.create({operator: operator, user: usr, type: 'user_created', description: usr.first + ' ' + usr.last, context: context, data: data})
+
+
+                        //Email password async
+                        if (user.emailPassword) {
+                            var logo = base + "/images/organizations/" + userRole.org.logoBig;
+                            var email = {
+                                to: usr.email,
+                                subject: operator.org.name + " has created a new account for you at BI:radix",
+                                logo : logo,
+                                template : 'create.html',
+                                templateData : {first: usr.first, email: usr.email, link: base, password: user.password }
+                            };
+
+
+                            EmailService.send(email,function(emailError,status) {
+                            })
+                        }
+
+                        //Done
                         callback(null,usr);
 
 
@@ -409,7 +429,7 @@ module.exports = {
             });
         });
     },
-    updatePassword: function (id, password, context, callback) {
+    updatePassword: function (id, password, context, oldpassword, callback) {
         var modelErrors = [];
         password = password || '';
 
@@ -438,8 +458,17 @@ module.exports = {
                 return;
             }
 
+            if (oldpassword) {
+                if (usr.hashed_password != UtilityService.hashPassword(oldpassword, usr.salt)) {
+                    modelErrors.push({msg : 'Invalid current password'});
+                    callback(modelErrors,null);
+                    return;
+                }
+            }
+
             usr.salt = UtilityService.makeSalt();
             usr.hashed_password = UtilityService.hashPassword(password, usr.salt);
+            usr.passwordUpdated = true;
 
             usr.save(function (err, newusr) {
                 if (err) {
