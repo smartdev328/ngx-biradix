@@ -68,6 +68,7 @@ var AmenitiesCreate = function(callback) {
 }
 var RolesAssignPermissionsCreate = function(roles, callback) {
     var permissions = [
+        {executorid: roles.BiradixAdmin._id, resource: roles.BiradixAdmin._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.GreystarCM._id, resource: roles.GreystarCM._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.GreystarCM._id, resource: roles.GreystarRM._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.GreystarCM._id, resource: roles.GreystarBM._id.toString(), allow: true, type: 'RoleAssign'},

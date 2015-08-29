@@ -20,6 +20,16 @@ define([
                 $scope.loading = true;
                 $scope.alerts = [];
 
+                $userService.getRolesToAssign().then(function (response) {
+                        $scope.roles = response.data;
+                        $scope.roles.unshift({name: 'Please select a role'})
+                        $scope.selectedRole = $scope.roles[0];
+
+                    },
+                    function (error) {
+                        $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
+                    });
+
 
                 $scope.loading = false;
             };

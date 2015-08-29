@@ -1,110 +1,43 @@
 'use strict';
 var AccessService =  require('../services/accessService')
+var OrgService =  require('../../organizations/services/organizationService')
 var express = require('express');
-var roleRoutes = express.Router();
+var routes = express.Router();
+var async = require("async");
+var _ = require("lodash");
 
-roleRoutes.get("/roles", function(req, res) {
-    AccessService.getRoles(function(err, obj) {
-        if (err) {
-            res.status(400).json(err);
-        } else {
-            res.status(200).json(obj);
+routes.get("/roles", function(req, res) {
+    async.parallel({
+        allowedRoles: function(callbackp) {
+            AccessService.getPermissions(req.user,['RoleAssign'],function(obj) {
+                callbackp(null, obj)
+            })
+        },
+        allRoles: function(callbackp) {
+            AccessService.getRoles(callbackp)
+        },
+        orgs: function(callbackp) {
+            OrgService.read(callbackp)
         }
-    })
-})
-roleRoutes.get("/roles/:userid", function(req, res) {
-    AccessService.canAccess(req.user,"/access/manage", function(canAccess) {
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
-        AccessService.getAssignedRoles(req.params.userid, function (err, obj) {
-            if (err) {
-                res.status(400).json(err);
-            } else {
-                res.status(200).json(obj);
-            }
+    },function(err, all) {
+        var response = [];
+
+        //Get all Allowed Role resource ids
+        // Join on actual role to get name
+        // Join on orgid to get orgname
+        all.allowedRoles.forEach(function(al) {
+            var role = _.find(all.allRoles, function(x) {return x._id.toString() == al.toString()});
+            var org = _.find(all.orgs, function(x) {return x._id.toString() == role.orgid.toString()});
+
+            role = JSON.parse(JSON.stringify(role));
+            role.org = org.name;
+            response.push(role);
         })
+
+        response = _.sortByAll(response, ["org","name"])
+
+        res.status(200).json(response);
     })
-})
-roleRoutes.post('/roles/create', function (req, res) {
-
-    AccessService.canAccess(req.user,"/access/manage", function(canAccess) {
-            if (!canAccess) {
-                return res.status(401).json("Unauthorized request");
-            }
-
-
-            var role = {name: req.body.name, parentid: req.body.parentid, isadmin: req.body.isadmin};
-
-            AccessService.createRole(role,function(err,obj) {
-                if (err) {
-                    res.status(200).json(err);
-                } else {
-                    res.status(201).json(obj);
-                }
-            });
-
-        }
-    )
 
 })
-
-roleRoutes.post('/roles/:id/members/create', function (req, res) {
-    AccessService.canAccess(req.user,"/access/manage", function(canAccess) {
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
-
-        var member = {userid: req.body.userid, roleid: req.params.id};
-
-        AccessService.assignMembership(member, function (err, obj) {
-            if (err) {
-                res.status(200).json(err);
-            } else {
-                res.status(201).json(obj);
-            }
-        });
-    })
-})
-
-roleRoutes.post('/roles/:id/members/revoke', function (req, res) {
-    AccessService.canAccess(req.user,"/access/manage", function(canAccess) {
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
-
-        var member = {userid: req.body.userid, roleid: req.params.id};
-
-        AccessService.revokeMembership(member, function (err, obj) {
-            if (err) {
-                res.status(200).json(err);
-            } else {
-                res.status(201).json(null);
-            }
-        });
-    })
-})
-
-roleRoutes.post('/permissions/:executorid/create', function (req, res) {
-    AccessService.canAccess(req.user,"/access/manage", function(canAccess) {
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
-
-        var permissions = {};
-        permissions.resource = req.body.resource;
-        permissions.action = req.body.action;
-        permissions.executorid = req.params.executorid;
-        permissions.allow = req.body.allow;
-
-        AccessService.createPermission(permissions, function (err, obj) {
-            if (err) {
-                res.status(400).json(err);
-            } else {
-                res.status(201).json(obj);
-            }
-        });
-    })
-})
-
-module.exports = roleRoutes;
+module.exports = routes;

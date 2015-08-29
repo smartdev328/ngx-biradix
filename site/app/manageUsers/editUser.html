@@ -34,19 +34,13 @@
             </div>
             <h3 style="margin-top:10px">Access</h3>
 
-            <div class="row" ng-show="Companies">
-                <div class="col-md-6">
-                    <select class="form-control input-sm" ng-model="selectedCompany" ng-options="item.Name for item in Companies" ng-change="getDropdowns()"></select>
-                </div>
-            </div>
-            <br />
             <div class="row">
-                <div class="col-md-6" ng-show="Roles">
-                    <select class="form-control input-sm" ng-model="selectedRole" ng-options="item.Name for item in Roles" ng-change="getDropdowns()"></select>
+                <div class="col-xs-12">
+                    <select class="form-control input-sm" ng-model="selectedRole" ng-options="(item.org ? (item.org + ': ' +item.name) : item.name) for item in roles"></select>
                 </div>
-                <div class="col-md-6" ng-show="Properties && Properties.length > 0">
-                    <filter-list options="options" items="items"></filter-list>
-                </div>
+                <!--<div class="col-md-6" ng-show="Properties && Properties.length > 0">-->
+                    <!--<filter-list options="options" items="items"></filter-list>-->
+                <!--</div>-->
             </div>
             <br />
             <div style="margin:0px auto;width:75px">
