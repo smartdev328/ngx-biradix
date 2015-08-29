@@ -9,6 +9,11 @@ var audits  = [
     {key: 'login_failed', value: 'Login Failed', group: 'User'},
     {key: 'login_succeeded', value: 'Login Succeeded', group: 'User'},
     {key: 'login_as', value: 'Login As', group: 'User'},
+    {key: 'password_updated', value: 'Password Updated', group: 'User'},
+    {key: 'reset_password', value: 'Reset Password', group: 'User'},
+    {key: 'user_status', value: 'Updated User Status', undo: true, group: 'User'},
+    {key: 'user_created', value: 'Updated Created', group: 'User'},
+
     {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true, group: 'Property'},
     {key: 'pdf_profile', value: 'PDF Profile', group: 'Reporting'},
     {key: 'print_profile', value: 'Print Profile', group: 'Reporting'},
@@ -17,9 +22,8 @@ var audits  = [
     {key: 'report_print', value: 'Report Print', group: 'Reporting'},
     {key: 'report_pdf', value: 'Report Pdf', group: 'Reporting'},
     {key: 'show_unlinked', value: 'Unlinked Setting', group: 'Reporting'},
-    {key: 'password_updated', value: 'Password Updated', group: 'User'},
-    {key: 'reset_password', value: 'Reset Password', group: 'User'},
-    {key: 'user_status', value: 'Updated User Status', undo: true, group: 'User'},
+
+
     {key: 'property_status', value: 'Updated Property Status', undo: true, group: 'Property'},
     {key: 'comp_linked', value: 'Comp Linked', undo: true, group: 'Property'},
     {key: 'comp_unlinked', value: 'Comp Unlinked', undo: true, group: 'Property'},

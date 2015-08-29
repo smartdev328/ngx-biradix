@@ -68,7 +68,7 @@ define([
                 $scope.loading = true;
                 $scope.user.roleid=$scope.selectedRole._id;
 
-                if (!userid) {
+                if (!userId) {
                     $userService.create($scope.user).then(function (response) {
                             if (response.data.errors) {
                                 $scope.alerts.push({

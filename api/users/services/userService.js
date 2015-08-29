@@ -286,85 +286,128 @@ module.exports = {
             callback(modelErrors,null);
             return;
         }
-        UserSchema.findOne({
-            emailLower: user.emailLower
-        }, function(err, usr) {
+
+        async.parallel({
+            dupe : function(callbackp) {
+                UserSchema.findOne({
+                    emailLower: user.emailLower
+                }, callbackp);
+            },
+            roles : function(callbackp) {
+                AccessService.getRoles(callbackp);
+            },
+            orgs: function(callbackp) {
+                OrgService.read(callbackp)
+            }
+        },function(err, all) {
             if (err) {
                 modelErrors.push({msg : 'Unexpected Error. Unable to create user.'});
                 callback(modelErrors,null);
                 return;
             };
 
-            if (usr) {
+            if (all.dupe) {
                 modelErrors.push({param: 'email', msg : 'Email address already exists.'});
                 callback(modelErrors,null);
                 return;
             }
 
-            AccessService.getRoles(function(err, roles) {
-                var CMs = [];
-                var permissions = [];
+            var permissions = [];
 
-                var userRole = _.find(roles, function(x) {return x._id.toString() == user.roleid.toString()});
+            var userRole = _.find(all.roles, function(x) {return x._id.toString() == user.roleid.toString()});
 
-                if (userRole && userRole.orgid) {
-                    var orgid = userRole.orgid;
-                    //if org of property is provided, assign manage to all CMs for that org
-                    CMs = _.filter(roles, function(x) {return x.orgid == orgid.toString() && x.tags.indexOf('CM') > -1})
+            if (userRole && userRole.orgid) {
+                var orgid = userRole.orgid.toString();
 
-                    CMs.forEach(function(x) {
-                        permissions.push({executorid: x._id.toString(), allow: true, type: 'UserManage'})
+
+                var rolesToAddPermission = [];
+
+                //All CMs for the org get access to the new user
+                rolesToAddPermission = _.filter(all.roles, function(x) {return x.orgid == orgid && x.tags.indexOf('CM') > -1})
+
+                //All RMs for the org get access to the new user if new user is RM
+                if (userRole.tags.indexOf("RM") > -1) {
+                    rolesToAddPermission = _.filter(all.roles, function (x) {
+                        return x.orgid == orgid && x.tags.indexOf('RM') > -1
                     })
                 }
 
-                var newUser = new UserSchema();
-
-                newUser.email = user.email;
-                newUser.emailLower = user.emailLower;
-                newUser.first = user.first;
-                newUser.last = user.last;
-                newUser.title = user.title;
-                newUser.date = Date.now();
-                newUser.salt = UtilityService.makeSalt();
-                newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
-                newUser.isSystem = user.isSystem || false;
-                newUser.active = true;
-                newUser.settings = {
-                    hideUnlinked: false
+                //All RMs, BMs for the org get access to the new user if new user is BM
+                if (userRole.tags.indexOf("BM") > -1) {
+                    rolesToAddPermission = _.filter(all.roles, function (x) {
+                        return x.orgid == orgid && (x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1)
+                    })
                 }
 
-                newUser.save(function (err, usr) {
-                    if (err) {
-                        modelErrors.push({msg: 'Unexpected Error. Unable to create user.'});
-                        callback(modelErrors,null);
-                        return;
+                //All RMs, BMs, POs for the org get access to the new user if new user is PO
+                if (userRole.tags.indexOf("PO") > -1) {
+                    rolesToAddPermission = _.filter(all.roles, function (x) {
+                        return x.orgid == orgid && (x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1 || x.tags.indexOf('PO') > -1)
+                    })
+                }
+
+                rolesToAddPermission.forEach(function(x) {
+                    permissions.push({executorid: x._id.toString(), allow: true, type: 'UserManage'})
+                })
+
+                userRole = JSON.parse(JSON.stringify(userRole));
+
+                userRole.org = _.find(all.orgs, function(x) {return x._id.toString() == orgid}).name;
+            } else {
+                modelErrors.push({param: 'roleid', msg : 'Please select the role.'});
+                callback(modelErrors,null);
+            }
+
+            var newUser = new UserSchema();
+
+            newUser.email = user.email;
+            newUser.emailLower = user.emailLower;
+            newUser.first = user.first;
+            newUser.last = user.last;
+            newUser.title = user.title;
+            newUser.date = Date.now();
+            newUser.salt = UtilityService.makeSalt();
+            newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
+            newUser.isSystem = user.isSystem || false;
+            newUser.active = true;
+            newUser.settings = {
+                hideUnlinked: false
+            }
+
+            newUser.save(function (err, usr) {
+                if (err) {
+                    modelErrors.push({msg: 'Unexpected Error. Unable to create user.'});
+                    callback(modelErrors,null);
+                    return;
+                }
+                ;
+
+                var membership = {userid: usr._id, roleid: user.roleid}
+
+                AccessService.assignMembership(membership, function(err, obj) {
+
+                    if (permissions.length > 0 ) {
+                        permissions.forEach(function(x) {
+                            x.resource = usr._id.toString();
+                        })
                     }
-                    ;
 
-                    var membership = {userid: usr._id, roleid: user.roleid}
-
-                    AccessService.assignMembership(membership, function(err, obj) {
-
-                        if (permissions.length > 0 ) {
-                            permissions.forEach(function(x) {
-                                x.resource = usr._id.toString();
-                            })
-                        }
-
-                        async.eachLimit(permissions, 10, function(permission, callbackp){
-                            AccessService.createPermission(permission, function (err, perm) {
-                                callbackp(err, perm)
-                            });
-                        }, function(err) {
-                            callback(null,usr);
+                    async.eachLimit(permissions, 10, function(permission, callbackp){
+                        AccessService.createPermission(permission, function (err, perm) {
+                            callbackp(err, perm)
                         });
-                    })
+                    }, function(err) {
+                        var data = [{description: "Email: " + usr.email},{description: "Role: " + userRole.org + ": " + userRole.name}]
+                        AuditService.create({operator: operator, user: usr, type: 'user_created', description: usr.first + ' ' + usr.last, context: context, data: data})
+                        callback(null,usr);
 
 
-                });
+                    });
+                })
+
+
             });
         });
-
     },
     updatePassword: function (id, password, context, callback) {
         var modelErrors = [];
