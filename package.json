@@ -19,6 +19,7 @@
     "bluebird": "^2.9.25",
     "body-parser": "^1.12.3",
     "bower": "^1.5.2",
+    "chai": "^3.2.0",
     "compression": "^1.4.4",
     "cookie-parser": "^1.3.4",
     "ejs": "^2.3.1",
@@ -28,6 +29,8 @@
     "jsonwebtoken": "^5.0.0",
     "liquid-node": "^2.5.0",
     "lodash": "^3.8.0",
+    "mocha": "^2.2.5",
+    "mock-require": "^1.1.0",
     "moment": "^2.10.3",
     "mongoose": "^4.0.2",
     "newrelic": "^1.18.5",
@@ -36,14 +39,12 @@
     "node-uuid": "^1.4.3",
     "nodemailer": "^1.3.4",
     "nodemailer-sendgrid-transport": "^0.1.0",
+    "password-generator": "^1.0.1",
     "phantom-render-stream": "^1.7.1",
     "phantomjs": "^1.9.16",
     "raygun": "^0.6.1",
     "request": "^2.55.0",
-    "xlsjs": "^0.7.5",
-    "chai": "^3.2.0",
-    "mocha": "^2.2.5",
-    "mock-require": "^1.1.0"
+    "xlsjs": "^0.7.5"
   },
   "private": true,
   "engines": {

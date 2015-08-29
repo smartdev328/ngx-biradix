@@ -32,6 +32,15 @@ define([
             });
         }
 
+        fac.create = function (criteria) {
+            return $http.post('/api/1.0/users/create', criteria, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });

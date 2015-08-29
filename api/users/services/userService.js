@@ -2,11 +2,12 @@
 
 var jwt = require('jsonwebtoken');
 var _ = require('lodash');
+var generatePassword = require('password-generator');
+var async = require('async')
 var UserSchema= require('../schemas/userSchema')
 var UtilityService = require('./utilityService')
 var EmailService = require('../../business/services/emailService')
 var settings = require('../../../config/settings')
-var async = require('async')
 var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
 var AuditService = require('../../audit/services/auditService')
@@ -247,13 +248,13 @@ module.exports = {
 
     },
 
-    insert : function(user, success, error)  {
+    insert : function(operator,context, user, callback)  {
         var modelErrors = [];
         user.first = user.first || '';
         user.last = user.last || '';
         user.title = user.title || '';
         user.email = user.email || '';
-        user.password = user.password || '';
+        user.password = user.password || generatePassword(8,false);
         user.emailLower = user.email.toLowerCase();
 
         if (user.first == '')
@@ -276,8 +277,13 @@ module.exports = {
             modelErrors.push({param: 'password', msg : 'Passwords must be at least 8 characters'});
         }
 
+        if (!user.roleid)
+        {
+            modelErrors.push({param: 'roleid', msg : 'Please select the role.'});
+        }
+
         if (modelErrors.length > 0) {
-            error(modelErrors);
+            callback(modelErrors,null);
             return;
         }
         UserSchema.findOne({
@@ -285,13 +291,13 @@ module.exports = {
         }, function(err, usr) {
             if (err) {
                 modelErrors.push({msg : 'Unexpected Error. Unable to create user.'});
-                error(modelErrors);
+                callback(modelErrors,null);
                 return;
             };
 
             if (usr) {
                 modelErrors.push({param: 'email', msg : 'Email address already exists.'});
-                error(modelErrors);
+                callback(modelErrors,null);
                 return;
             }
 
@@ -330,7 +336,7 @@ module.exports = {
                 newUser.save(function (err, usr) {
                     if (err) {
                         modelErrors.push({msg: 'Unexpected Error. Unable to create user.'});
-                        error(modelErrors);
+                        callback(modelErrors,null);
                         return;
                     }
                     ;
@@ -350,7 +356,7 @@ module.exports = {
                                 callbackp(err, perm)
                             });
                         }, function(err) {
-                            success(usr);
+                            callback(null,usr);
                         });
                     })
 

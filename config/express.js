@@ -42,7 +42,7 @@ module.exports = {
             )
             .unless({path:
                 [settings.API_PATH + 'users/login'
-                    , settings.API_PATH + 'users/create'
+                    //, settings.API_PATH + 'users/create'
                 , settings.API_PATH + 'users/resetPassword'
                 , settings.API_PATH + 'users/recover'
                 , settings.API_PATH + 'users/updatePasswordByToken'

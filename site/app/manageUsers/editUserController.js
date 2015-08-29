@@ -22,8 +22,17 @@ define([
 
                 $userService.getRolesToAssign().then(function (response) {
                         $scope.roles = response.data;
-                        $scope.roles.unshift({name: 'Please select a role'})
-                        $scope.selectedRole = $scope.roles[0];
+                        $scope.roles.unshift({name: 'Please select a role', _id:""})
+
+                        if (userId) {
+                            $scope.selectedRole = _.find($scope.roles, function (x) {
+                                return $scope.user.roleid.toString() == x._id.toString()
+                            })
+                        }
+                        else {
+
+                            $scope.selectedRole = $scope.roles[0];
+                        }
 
                     },
                     function (error) {
@@ -48,6 +57,42 @@ define([
             }
             else {
                 $scope.getDropdowns();
+            }
+
+            $scope.save = function() {
+                $scope.alerts = [];
+                if (!$scope.selectedRole._id) {
+                    return $scope.alerts.push({ type: 'danger', msg: "Please select a role." });
+                }
+
+                $scope.loading = true;
+                $scope.user.roleid=$scope.selectedRole._id;
+
+                if (!userid) {
+                    $userService.create($scope.user).then(function (response) {
+                            if (response.data.errors) {
+                                $scope.alerts.push({
+                                    type: 'danger',
+                                    msg: _.pluck(response.data.errors, 'msg').join("<br>")
+                                });
+                            }
+                            else {
+                                $modalInstance.close(response.data.user);
+                            }
+                        },
+                        function (error) {
+                            $scope.alerts.push({
+                                type: 'danger',
+                                msg: "Unable to create. Please contact the administrator."
+                            });
+                        });
+                }
+                else {
+                    //TODO: Update user
+                }
+
+                $scope.loading = false;
+
             }
 
         }]);

@@ -309,7 +309,7 @@ define([
                         action = "created";
                     }
                     $scope.alerts = [];
-                    $scope.alerts.push({ type: 'success', msg: newUser.First + " " + newUser.Last + " " + action + " successfully."});
+                    $scope.alerts.push({ type: 'success', msg: newUser.first + " " + newUser.last + " " + action + " successfully."});
                     $scope.reload()
                 }, function () {
 

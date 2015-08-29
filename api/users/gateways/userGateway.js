@@ -75,13 +75,22 @@ userRoutes.get('/me', function (req, res) {
 })
 
 userRoutes.post('/create', function (req, res) {
-    UserService.insert(req.body, function (usr) {
-            res.status(201).json({errors: null, user: UtilityService.getPublicJSON(usr)});
-        },
-        function (errors) {
-            res.status(200).json({errors: errors, user: null});
+    //You must have access to the role you are creating a user for.
+    //In the future we need to re-think it if we allow anyone to join
+    AccessService.canAccessResource(req.user,req.body.roleid,'RoleAssign', function(canAccess) {
+        if (!req.body.roleid || !canAccess) {
+            return res.status(401).json("Unauthorized request");
         }
-    );
+        UserService.insert(req.user, req.context, req.body, function (errors, usr) {
+                if (errors) {
+                    res.status(200).json({errors: errors, user: null});
+                }
+                else {
+                    res.status(201).json({errors: null, user: UtilityService.getPublicJSON(usr)});
+                }
+            }
+        );
+    });
 });
 
 userRoutes.post('/recover', function (req, res) {
