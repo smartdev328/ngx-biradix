@@ -32,46 +32,4 @@ conn.once('open', function () {
         res.redirect('/#/password/reset/' + req.params.token)
     })
     require('./config/cluster').init(app)
-
-    //var PropertyService = require('./api/properties/services/propertyService')
-    //var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome', yearBuilt: 2007, orgid: '5552eae4684d5af41a0400e0'}
-    //PropertyService.create(Aurelian, function() {});
-    //
-    //var PropertyService = require('./api/properties/services/propertyService')
-    ////var Aurelian = { name: 'Aurelian Apartments', address: '1418 N. Scottsdale Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 632-2596', owner: 'Rome', management: 'Rome', yearBuilt: 2007, orgid: '5552eae4684d5af41a0400e0'}
-    //PropertyService.linkComp("55693a70b0ce54e009970dd4","55693a70b0ce54e009970dd4", function() {});
-
-    //var PropertyService = require('./api/properties/services/propertyService')
-    //PropertyService.getSubjects("55719b7f68b870b818f3d022",{select:"_id name comps"}, function(err, obj) {
-    //    var exclusions = [];
-    //
-    //    var compFloorplans = [ 2530, 2531, 2532, 2533, 2534, 2535, 2536, 2537, 2538, 2539, 2540 ];
-    //    obj.forEach(function(p) {
-    //        var comp = _.find(p.comps, function(c) {return c.id.toString() == "55719b7f68b870b818f3d022"})
-    //        if (comp.excluded) {
-    //            exclusions.push({subjectid: p._id, floorplans: _.difference(compFloorplans, comp.floorplans)});
-    //            //console.log(p._id);
-    //            //console.log(comp);
-    //            //console.log(_.difference(compFloorplans, comp.floorplans))
-    //        }
-    //    })
-    //
-    //    console.log(exclusions);
-    //});
-
-    //var date= '/Date(1352703600000)/';
-    //console.log(new Date(parseInt(date.match(/([0-9])+/g)[0])));
-    //var request = require('request')
-    //request('http://platform.biradix.com/seed/surveys?secret=alex', function (error, response, body) {
-    //        var surveys = JSON.parse(body);
-    //    surveys.for
-    //    console.log(surveys[0]);
-    //})
-
-    //var AmenityService = require('./api/amenities/services/amenityService');
-    //var ams = [];
-    //AmenityService.search(function(err, amenities) {
-    //    console.log(amenities)
-    //    console.log(_.pluck(_.filter(amenities, function(am) { return ams.indexOf(am.name) > -1 }),"_id"))
-    //})
 });

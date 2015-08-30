@@ -212,10 +212,19 @@ module.exports = {
                 ;
 
                 addUserToRole(usr._id,user.roleid, permissions, function() {
-                    //Log for Audit async
-                    var data = [{description: "Email: " + usr.email},{description: "Role: " + userRole.org.name + ": " + userRole.name}]
-                    AuditService.create({operator: operator, user: usr, type: 'user_created', description: usr.first + ' ' + usr.last, context: context, data: data})
+                    //Log for Audit async if not creating system users
 
+                    if (operator) {
+                        var data = [{description: "Email: " + usr.email}, {description: "Role: " + userRole.org.name + ": " + userRole.name}]
+                        AuditService.create({
+                            operator: operator,
+                            user: usr,
+                            type: 'user_created',
+                            description: usr.first + ' ' + usr.last,
+                            context: context,
+                            data: data
+                        })
+                    }
 
                     //Email password async
                     if (user.emailPassword) {

@@ -83,6 +83,7 @@ userRoutes.post('/create', function (req, res) {
 
         //Anyone going through the gateway gets their random password emailed to them
         req.body.emailPassword = true;
+        req.body.isSystem = false;
 
         userCreateService.insert(req.user, req.context, req.body, "http://" + req.headers.host, function (errors, usr) {
                 if (errors) {
