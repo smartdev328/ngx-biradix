@@ -7,6 +7,8 @@ var PropertyService = require('../api/properties/services/propertyService')
 var CreateService = require('../api/properties/services/createService')
 var AmenityService = require('../api/amenities/services/amenityService')
 
+var context = {ip: '127.0.0.1', user_agent: 'server'}
+
 module.exports = {
     init: function () {
         UserSchema.findOne({},function(err, usr) {

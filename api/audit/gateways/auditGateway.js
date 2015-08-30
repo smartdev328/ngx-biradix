@@ -7,6 +7,8 @@ var UserService = require('../../users/services/userService')
 var PropertyService = require('../../properties/services/propertyService')
 var CreateService = require('../../properties/services/createService')
 var AmenitiesService = require('../../amenities/services/amenityService')
+var UserService = require('../../users/services/userService')
+var UserCreateService = require('../../users/services/userCreateService')
 var Routes = express.Router();
 var async = require('async')
 var _ = require('lodash')
@@ -143,6 +145,12 @@ Routes.post('/undo', function (req, res) {
                             break;
                         case "property_floorplan_amenities_updated":
                             propertyFloorplanAmenitiesUpdatedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "user_updated":
+                            userUpdatedUndo(req,o, function(err) {
                                 errors = err || [];
                                 callbacks(null)
                             })
@@ -368,5 +376,17 @@ function propertyFloorplanAmenitiesUpdatedUndo  (req, o, callback) {
             CreateService.update(req.user,req.context, o._id,property,callback);
 
         });
+    });
+}
+
+function userUpdatedUndo  (req, o, callback) {
+    UserService.search(req.user, {_id: o.user.id, select: "_id first last email"}, function (er, users) {
+        var user = users[0];
+
+        o.data.forEach(function (d) {
+            user[d.field] = d.old_value;
+        })
+
+        UserCreateService.update(req.user, req.context, user, callback);
     });
 }

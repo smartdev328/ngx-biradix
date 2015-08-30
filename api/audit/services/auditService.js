@@ -10,11 +10,12 @@ var audits  = [
     {key: 'login_succeeded', value: 'Login Succeeded', group: 'User'},
     {key: 'login_as', value: 'Login As', group: 'User'},
     {key: 'password_updated', value: 'Password Updated', group: 'User'},
-    {key: 'reset_password', value: 'Reset Password', group: 'User'},
-    {key: 'user_status', value: 'Updated User Status', undo: true, group: 'User'},
-    {key: 'user_created', value: 'Updated Created', group: 'User'},
+    {key: 'reset_password', value: 'Password Reset', group: 'User'},
+    {key: 'user_status', value:  'User Status Updated', undo: true, group: 'User'},
+    {key: 'user_created', value: 'User Created', group: 'User'},
+    {key: 'user_updated', value: 'User Updated', undo: true, group: 'User'},
 
-    {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true, group: 'Property'},
+    {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true, group: 'Reporting'},
     {key: 'pdf_profile', value: 'PDF Profile', group: 'Reporting'},
     {key: 'print_profile', value: 'Print Profile', group: 'Reporting'},
     {key: 'excel_profile', value: 'Excel Profile', group: 'Reporting'},
@@ -37,9 +38,11 @@ var audits  = [
     {key: 'property_floorplan_removed', value: 'Floorplan Removed', undo: true, group: 'Property'},
     {key: 'property_floorplan_updated', value: 'Floorplan Updated', undo: true, group: 'Property'},
     {key: 'property_floorplan_amenities_updated', value: 'Floorplan Amenities Updated', undo: true, group: 'Property'},
+
     {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
     {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
     {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},
+
     {key: 'amenity_created', value: 'Amenity Created', group: 'Amenity'},
 ];
 

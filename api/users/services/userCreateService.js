@@ -32,6 +32,8 @@ module.exports = {
                 return;
             }
 
+            var changes = getChangesForAudit(usr, user);
+
             populateBaseFields(operator, usr, user, true);
 
             usr.save(function (err, usr) {
@@ -40,6 +42,21 @@ module.exports = {
                     callback(modelErrors,null);
                     return;
                 };
+
+                if (changes.length > 0) {
+                    var audit = {
+                        operator: operator,
+                        revertedFromId : null,
+                        user: usr,
+                        type: 'user_updated',
+                        description: usr.first + ' ' + usr.last,
+                        context: context,
+                        data: changes
+                    };
+
+                    AuditService.create(audit, function() {})
+                }
+
                 callback(null,usr);
             });
 
@@ -71,6 +88,8 @@ module.exports = {
                 return;
             }
 
+            var changes = getChangesForAudit(usr, user);
+
             populateBaseFields(operator, usr, user, true);
 
             getHelpers(user.emailLower, function(err, all) {
@@ -93,6 +112,7 @@ module.exports = {
                 if (bRoleChanged) {
                     userRole = updateNewRole(user.roleid, all, permissions);
                     removedRole = removeOldRole(membership.roleid.toString(), all, removePermissions);
+                    changes.push({description: "Role: " + removedRole.org.name + ": " + removedRole.name + " => " + userRole.org.name + ": " + userRole.name, field: 'roleid', old_value: removedRole._id.toString()})
                 }
 
                 usr.save(function (err, usr) {
@@ -102,7 +122,19 @@ module.exports = {
                         return;
                     };
 
-                    //TODO: audit
+                    if (changes.length > 0) {
+                        var audit = {
+                            operator: operator,
+                            revertedFromId : null,
+                            user: usr,
+                            type: 'user_updated',
+                            description: usr.first + ' ' + usr.last,
+                            context: context,
+                            data: changes
+                        };
+
+                        AuditService.create(audit, function() {})
+                    }
 
                     if (bRoleChanged) {
                         removeUserFromRole(usr._id,membership.roleid.toString(), removePermissions, function() {
@@ -375,6 +407,7 @@ function updateNewRole(roleid, all, permissions) {
 function addUserToRole(id, roleid, permissions, callback) {
     var membership = {userid: id, roleid: roleid}
 
+    //You need membership so the user gets access to everything in that role and is associated with that role
     AccessService.assignMembership(membership, function(err, obj) {
 
         if (permissions.length > 0 ) {
@@ -383,6 +416,7 @@ function addUserToRole(id, roleid, permissions, callback) {
             })
         }
 
+        //you need permissions so everyone in the upline has access to modify you.
         async.eachLimit(permissions, 10, function(permission, callbackp){
             AccessService.createPermission(permission, function (err, perm) {
                 callbackp(err, perm)
@@ -413,3 +447,22 @@ function removeUserFromRole(id, roleid, permissions, callback) {
         });
     })
 }
+
+function getChangesForAudit(oldUser, newUser) {
+    var changes = [];
+
+    if (oldUser.first != newUser.first) {
+        changes.push({description: "First Name: " + oldUser.first + " => " + newUser.first, field: 'first', old_value: oldUser.first})
+    }
+
+    if (oldUser.last != newUser.last) {
+        changes.push({description: "Last Name: " + oldUser.last + " => " + newUser.last, field: 'last', old_value: oldUser.last})
+    }
+
+    if (oldUser.email != newUser.email) {
+        changes.push({description: "Email Address: " + oldUser.email + " => " + newUser.email, field: 'email', old_value: oldUser.email})
+    }
+
+    return changes;
+}
+
