@@ -2,12 +2,16 @@
 define([
     'app',
     '../../services/userService.js',
+    '../../services/propertyService.js',
+    '../../components/filterlist/module.js',
 ], function (app) {
      app.controller
-        ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress', function ($scope, $modalInstance, userId, $userService, ngProgress) {
+        ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress','$propertyService', function ($scope, $modalInstance, userId, $userService, ngProgress,$propertyService) {
             $scope.alerts = [];
 
             $scope.user = {};
+            $scope.properties = [];
+            $scope.propertyOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', searchLabel: "Properties" }
 
             $scope.userId = userId;
             $scope.loading = true;
@@ -34,13 +38,16 @@ define([
                             $scope.selectedRole = $scope.roles[0];
                         }
 
+                        $scope.getProps();
+
                     },
                     function (error) {
+                        $scope.loading = false;
                         $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
                     });
 
 
-                $scope.loading = false;
+
             };
 
             if (userId) {
@@ -57,6 +64,30 @@ define([
             }
             else {
                 $scope.getDropdowns();
+            }
+
+
+            $scope.getProps = function() {
+                $scope.loading = true;
+
+                if (!$scope.selectedRole._id || $scope.selectedRole.isadmin || $scope.selectedRole.tags.indexOf('CM') > -1) {
+                    $scope.properties = [];
+                    $scope.loading = false;
+                } else {
+                    $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name orgid", orgid: $scope.selectedRole.orgid, active: true}).then(function (response) {
+                        $scope.properties = [];
+                        response.data.properties.forEach(function(x) {
+                            $scope.properties.push({id: x._id, name: x.name, selected: false});
+                        });
+
+                        $scope.propertyOptions.hideSearch = $scope.properties.length < 10;
+
+                        $scope.loading = false;
+                    })
+
+                }
+
+
             }
 
             $scope.save = function() {

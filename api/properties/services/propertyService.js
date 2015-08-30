@@ -223,6 +223,11 @@ module.exports = {
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
             }
+
+            if (criteria.orgid != null) {
+                query = query.where("orgid").equals(criteria.orgid);
+            }
+
             query = query.sort(criteria.sort || "name");
 
             if (criteria.select !== '*') {
