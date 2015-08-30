@@ -88,7 +88,23 @@ define([
                         });
                 }
                 else {
-                    //TODO: Update user
+                    $userService.update($scope.user).then(function (response) {
+                            if (response.data.errors) {
+                                $scope.alerts.push({
+                                    type: 'danger',
+                                    msg: _.pluck(response.data.errors, 'msg').join("<br>")
+                                });
+                            }
+                            else {
+                                $modalInstance.close(response.data.user);
+                            }
+                        },
+                        function (error) {
+                            $scope.alerts.push({
+                                type: 'danger',
+                                msg: "Unable to update. Please contact the administrator."
+                            });
+                        });
                 }
 
                 $scope.loading = false;

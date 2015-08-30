@@ -1,7 +1,7 @@
 var async = require("async");
 var UserSchema = require('../api/users/schemas/userSchema')
 var AccessService = require('../api/access/services/accessService')
-var UserService = require('../api/users/services/userService')
+var UserCreateService = require('../api/users/services/userCreateService')
 var OrgService = require('../api/organizations/services/organizationService')
 var PropertyService = require('../api/properties/services/propertyService')
 var CreateService = require('../api/properties/services/createService')
@@ -371,7 +371,7 @@ var UsersCreate = function(roles, callback) {
 
     async.parallel({
             System: function(callbackp) {
-                UserService.insert(System, function(usr) {
+                UserCreateService.insert(System, function(usr) {
                         callbackp(null, usr)
                     },
                     function(errors) {
@@ -380,7 +380,7 @@ var UsersCreate = function(roles, callback) {
                 );
             },
             Alex: function(callbackp) {
-                UserService.insert(Alex, function(usr) {
+                UserCreateService.insert(Alex, function(usr) {
                         callbackp(null, usr)
                     },
                     function(errors) {
@@ -389,7 +389,7 @@ var UsersCreate = function(roles, callback) {
                 );
             },
             Eugene: function(callbackp) {
-                UserService.insert(Eugene, function(usr) {
+                UserCreateService.insert(Eugene, function(usr) {
                         callbackp(null, usr)
                     },
                     function(errors) {
@@ -398,7 +398,7 @@ var UsersCreate = function(roles, callback) {
                 );
             },
             Blerim: function(callbackp) {
-                UserService.insert(Blerim, function(usr) {
+                UserCreateService.insert(Blerim, function(usr) {
                         callbackp(null, usr)
                     },
                     function(errors) {
@@ -407,7 +407,7 @@ var UsersCreate = function(roles, callback) {
                 );
             },
             Michelle: function(callbackp) {
-                UserService.insert(Michelle, function(usr) {
+                UserCreateService.insert(Michelle, function(usr) {
                         callbackp(null, usr)
                     },
                     function(errors) {

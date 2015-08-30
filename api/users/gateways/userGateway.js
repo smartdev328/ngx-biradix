@@ -7,8 +7,7 @@ var UserService=  require('../services/userService')
 var AccessService = require('../../access/services/accessService')
 var AuditService = require('../../audit/services/auditService')
 var settings = require('../../../config/settings')
-
-
+var userCreateService = require('../services/userCreateService')
 var userRoutes = express.Router();
 
 userRoutes.post('/resetPassword', function (req, res) {
@@ -20,7 +19,7 @@ userRoutes.post('/resetPassword', function (req, res) {
 })
 
 userRoutes.put('/me', function (req, res) {
-    UserService.updateMe(req.user, req.body, function (err, usr) {
+    userCreateService.updateMe(req.user, req.context, req.body, function (err, usr) {
             if (err) {
                 return res.status(200).json({errors: err, user: null});
             }
@@ -85,7 +84,26 @@ userRoutes.post('/create', function (req, res) {
         //Anyone going through the gateway gets their random password emailed to them
         req.body.emailPassword = true;
 
-        UserService.insert(req.user, req.context, req.body, "http://" + req.headers.host, function (errors, usr) {
+        userCreateService.insert(req.user, req.context, req.body, "http://" + req.headers.host, function (errors, usr) {
+                if (errors) {
+                    res.status(200).json({errors: errors, user: null});
+                }
+                else {
+                    res.status(201).json({errors: null, user: UtilityService.getPublicJSON(usr)});
+                }
+            }
+        );
+    });
+});
+
+userRoutes.put('/:userid', function (req, res) {
+    //You must have access to the role you are updating a user for.
+    AccessService.canAccessResource(req.user,req.body.roleid,'RoleAssign', function(canAccess) {
+        if (!req.body.roleid || !canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        userCreateService.update(req.user, req.context, req.body, function (errors, usr) {
                 if (errors) {
                     res.status(200).json({errors: errors, user: null});
                 }
