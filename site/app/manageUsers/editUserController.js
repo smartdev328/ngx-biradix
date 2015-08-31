@@ -3,10 +3,11 @@ define([
     'app',
     '../../services/userService.js',
     '../../services/propertyService.js',
+    '../../services/propertyUsersService.js',
     '../../components/filterlist/module.js',
 ], function (app) {
      app.controller
-        ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress','$propertyService', function ($scope, $modalInstance, userId, $userService, ngProgress,$propertyService) {
+        ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService', function ($scope, $modalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService) {
             $scope.alerts = [];
 
             $scope.user = {};
@@ -55,7 +56,15 @@ define([
                 $userService.search({_id:userId, select: "_id first last email"}).then(function (response) {
                         $scope.user = response.data.users[0];
 
-                        $scope.getDropdowns();
+                        $propertyUsersService.getUserAssignedProperties(userId).then(function (response) {
+                                $scope.propertyids = response.data.properties;
+
+                                $scope.getDropdowns();
+                            },
+                            function (error) {
+                                $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
+                                $scope.loading = false;
+                            });
                     },
                     function (error) {
                         $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
@@ -77,7 +86,7 @@ define([
                     $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name orgid", orgid: $scope.selectedRole.orgid, active: true}).then(function (response) {
                         $scope.properties = [];
                         response.data.properties.forEach(function(x) {
-                            $scope.properties.push({id: x._id, name: x.name, selected: false});
+                            $scope.properties.push({id: x._id, name: x.name, selected: $scope.propertyids.indexOf(x._id.toString()) > -1 });
                         });
 
                         $scope.propertyOptions.hideSearch = $scope.properties.length < 10;

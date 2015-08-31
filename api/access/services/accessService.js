@@ -329,6 +329,7 @@
 
         },
 
+        //this function assumes you have a user operator and you are trying to get their permissions of a specific type
         getPermissions: function(user, types, callback) {
             if (!user.memberships) {
                 callback([]);
@@ -355,6 +356,20 @@
 
             })
 
+
+        },
+
+        //this is a generic search permissions function. Should not be called through a gateway directly
+        searchPermissions : function( criteria, callback) {
+
+            criteria = criteria || {types : []};
+            var query = PermissionsSchema.find({'type': {$in: criteria.types} });
+
+            if (criteria.executorid) {
+                query = query.where("executorid").equals(criteria.executorid)
+            }
+
+            query.exec(callback);
 
         }
 

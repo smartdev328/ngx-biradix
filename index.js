@@ -24,6 +24,7 @@ conn.once('open', function () {
     app.use(settings.API_PATH + 'access/', require('./api/access/gateways/accessGateway'));
     app.use(settings.API_PATH + 'users/', require('./api/users/gateways/userGateway'));
     app.use(settings.API_PATH + 'properties/', require('./api/properties/gateways/propertyGateway'));
+    app.use(settings.API_PATH + 'propertyusers/', require('./api/propertyusers/gateways/propertyUsersGateway'));
     app.use(settings.API_PATH + 'audit/', require('./api/audit/gateways/auditGateway'));
     app.use(settings.API_PATH + 'amenities/', require('./api/amenities/gateways/amenitiesGateway'));
     app.use('/contact', require('./api/contact/gateways/contactGateway'));
