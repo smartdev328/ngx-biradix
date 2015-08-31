@@ -14,6 +14,15 @@ define([
             });
         }
 
+        fac.setPropertiesForUser = function (userid, properties) {
+            return $http.put('/api/1.0/propertyusers/properties/' + userid, properties, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);
 });

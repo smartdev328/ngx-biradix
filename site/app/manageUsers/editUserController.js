@@ -108,6 +108,12 @@ define([
                 $scope.loading = true;
                 $scope.user.roleid=$scope.selectedRole._id;
 
+                var selectedProperties = [];
+
+                if ($scope.properties) {
+                    selectedProperties = _.pluck(_.filter($scope.properties, function(x) {return x.selected == true}),"id");
+                }
+
                 if (!userId) {
                     $userService.create($scope.user).then(function (response) {
                             if (response.data.errors) {
@@ -117,6 +123,7 @@ define([
                                 });
                             }
                             else {
+                                $scope.saveProperties(response.data.user._id,selectedProperties);
                                 $modalInstance.close(response.data.user);
                             }
                         },
@@ -136,6 +143,7 @@ define([
                                 });
                             }
                             else {
+                                $scope.saveProperties(response.data.user._id,selectedProperties);
                                 $modalInstance.close(response.data.user);
                             }
                         },
@@ -149,6 +157,10 @@ define([
 
                 $scope.loading = false;
 
+            }
+
+            $scope.saveProperties = function(userid, properties) {
+                $propertyUsersService.setPropertiesForUser(userId,properties)
             }
 
         }]);
