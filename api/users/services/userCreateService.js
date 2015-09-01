@@ -378,26 +378,26 @@ function updateNewRole(roleid, all, permissions) {
         //All CMs for the org get access to the new user
         var rolesToAddPermission = _.filter(all.roles, function(x) {return x.orgid == orgid && x.tags.indexOf('CM') > -1})
 
-        //All RMs for the org get access to the new user if new user is RM
-        if (userRole.tags.indexOf("RM") > -1) {
-            rolesToAddPermission = rolesToAddPermission.concat(_.filter(all.roles, function (x) {
-                return x.orgid == orgid && x.tags.indexOf('RM') > -1
-            }))
-        }
-
-        //All RMs, BMs for the org get access to the new user if new user is BM
-        if (userRole.tags.indexOf("BM") > -1) {
-            rolesToAddPermission = rolesToAddPermission.concat(_.filter(all.roles, function (x) {
-                return x.orgid == orgid && (x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1)
-            }))
-        }
-
-        //All RMs, BMs, POs for the org get access to the new user if new user is PO
-        if (userRole.tags.indexOf("PO") > -1) {
-            rolesToAddPermission = rolesToAddPermission.concat(_.filter(all.roles, function (x) {
-                return x.orgid == orgid && (x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1 || x.tags.indexOf('PO') > -1)
-            }))
-        }
+        ////All RMs for the org get access to the new user if new user is RM
+        //if (userRole.tags.indexOf("RM") > -1) {
+        //    rolesToAddPermission = rolesToAddPermission.concat(_.filter(all.roles, function (x) {
+        //        return x.orgid == orgid && x.tags.indexOf('RM') > -1
+        //    }))
+        //}
+        //
+        ////All RMs, BMs for the org get access to the new user if new user is BM
+        //if (userRole.tags.indexOf("BM") > -1) {
+        //    rolesToAddPermission = rolesToAddPermission.concat(_.filter(all.roles, function (x) {
+        //        return x.orgid == orgid && (x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1)
+        //    }))
+        //}
+        //
+        ////All RMs, BMs, POs for the org get access to the new user if new user is PO
+        //if (userRole.tags.indexOf("PO") > -1) {
+        //    rolesToAddPermission = rolesToAddPermission.concat(_.filter(all.roles, function (x) {
+        //        return x.orgid == orgid && (x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1 || x.tags.indexOf('PO') > -1)
+        //    }))
+        //}
 
         rolesToAddPermission.forEach(function(x) {
             permissions.push({executorid: x._id.toString(), allow: true, type: 'UserManage'})

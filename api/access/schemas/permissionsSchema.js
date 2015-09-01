@@ -16,7 +16,8 @@ var s = new Schema({
         type: Boolean,
         default: true
     },
-    type: String
+    type: String,
+    direct : Boolean //direct means not explicit
 });
 
 module.exports = mongoose.model('Permission', s);

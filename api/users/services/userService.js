@@ -97,6 +97,12 @@ module.exports = {
                                 else {
                                     x.roleid = role._id;
                                 }
+
+                                //remove role types after we know what actual role it is
+                                if (criteria.roleTypes && criteria.roleTypes.indexOf(role.tags[0]) == -1) {
+                                    x.deleted = true;
+                                }
+
                                 var company = _.find(all.orgs, function(o) {return o._id.toString() == role.orgid.toString() })
                                 if (company) {
                                     if (!criteria.custom) {
@@ -104,11 +110,21 @@ module.exports = {
                                     } else {
                                         x.orgid = company._id;
                                     }
+
+                                    //remove role orgids if we are asking for an orgid and it doesnt match
+                                    if (criteria.orgid && criteria.orgid.toString() != company._id.toString()) {
+                                        x.deleted = true;
+                                    }
                                 }
+
+
                             }
                         }
                     })
                 }
+
+                _.remove(users, function(x) {return x.deleted})
+
                 callback(err,users)
             })
 

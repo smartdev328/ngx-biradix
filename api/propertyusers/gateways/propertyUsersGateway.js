@@ -40,4 +40,38 @@ routes.put('/properties/:userid', function (req, res) {
     })
 });
 
+routes.get('/users/:propertyid', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.propertyid,'PropertyManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyUsersService.getPropertyAssignedUsers(req.user,  req.params.propertyid, function (err, users) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true, users: users});
+            }
+        });
+    })
+});
+
+routes.put('/users/:propertyid', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.propertyid,'PropertyManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyUsersService.setUsersForProperty(req.user, req.params.propertyid, req.body, function (err) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true});
+            }
+        });
+    })
+});
+
 module.exports = routes;

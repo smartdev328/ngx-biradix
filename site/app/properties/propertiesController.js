@@ -492,5 +492,34 @@ define([
 
         }
 
+
+        $scope.manageUsers = function(property) {
+
+            require([
+                '/app/properties/manageUsersController.js'
+            ], function () {
+                var modalInstance = $modal.open({
+                    templateUrl: '/app/properties/manageUsers.html?bust=' + version,
+                    controller: 'manageUsersController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        property: function () {
+                            return property;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+
+                    $scope.alerts = [];
+                    $scope.alerts.push({type: 'success', msg: "Users updated successfully"});
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
+
     }]);
 });

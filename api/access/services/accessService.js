@@ -164,6 +164,7 @@
             newpermission.executorid = permission.executorid;
             newpermission.allow = permission.allow;
             newpermission.type = permission.type;
+            newpermission.direct = permission.direct;
 
             newpermission.save(function (err, obj) {
                 if (err) {
@@ -369,6 +370,13 @@
                 query = query.where("executorid").equals(criteria.executorid)
             }
 
+            if (criteria.resource) {
+                query = query.where("resource").equals(criteria.resource)
+            }
+
+            if (criteria.direct) {
+                query = query.where("direct").equals(criteria.direct)
+            }
             query.exec(callback);
 
         }
