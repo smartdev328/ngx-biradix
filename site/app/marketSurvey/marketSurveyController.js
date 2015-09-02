@@ -39,7 +39,7 @@ define([
                 $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || 0;
                 $scope.survey.weeklyleases = $scope.survey.weeklyleases || 0;
 
-                if (!$scope.editableSurveyId) {
+                if (!$scope.editableSurveyId && $scope.property.survey) {
                     $scope.editableSurveyId = $scope.property.survey.id;
                 }
 
