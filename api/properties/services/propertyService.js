@@ -507,7 +507,7 @@ module.exports = {
             function(callbackw){
                 PropertySchema.findOne({_id:id}, function(err, prop) {
                     subject = prop;
-                    callbackw(null,prop.survey.id)
+                    callbackw(null,(prop.survey ? prop.survey.id : null))
                 })
             },
             function(surveyid, callbackw) {
