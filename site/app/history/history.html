@@ -114,8 +114,8 @@
                 <h4 ng-if="row.data">Details</h4>
                 <ul ng-if="row.data">
                     <li ng-repeat="subrow in row.data">
-                        <span ng-if="isNaN(Date.parse(subrow.description))">{{subrow.description}}</span>
-                        <span ng-if="!isNaN(Date.parse(subrow.description))">{{subrow.description | date: 'MM/dd/yyyy'}}</span>
+                        <span ng-if="!subrow.date">{{subrow.description}}</span>
+                        <span ng-if="subrow.date">{{subrow.description}} {{subrow.date | date: 'MM/dd/yyyy'}}</span>
                     </li>
                 </ul>
                 <h4>More Info</h4>

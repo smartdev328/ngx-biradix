@@ -398,7 +398,7 @@ module.exports = {
                 return callback(err);
             }
 
-            var data = [{description: survey.date, survey: survey}];
+            var data = [{description: "Survey Date: ", date: survey.date, survey: survey}];
 
             SurveySchema.findByIdAndRemove(survey._id, function(err) {
 
@@ -415,7 +415,7 @@ module.exports = {
                     property: prop,
                     type: 'survey_deleted',
                     revertedFromId: revertedFromId,
-                    description: prop.name + ": " + moment(survey.date).format("MM/DD/YYYY"),
+                    description: prop.name,
                     context: context,
                     data: data
                 })
@@ -447,7 +447,7 @@ module.exports = {
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
 
 
-                var data = [{description: lastsurvey.date, survey: copy}];
+                var data = [{description: "Survey Date: ", date: lastsurvey.date, survey: copy}];
 
 
                 if (lastsurvey.occupancy !== survey.occupancy) {
@@ -550,7 +550,7 @@ module.exports = {
             n.date = survey.date || Date.now();
             n.exclusions = exclusions;
 
-            var data = [{description: n.date, id: n._id}];
+            var data = [{description: "Survey Date: ", date: n.date, id: n._id}];
 
             if (lastsurvey.occupancy !== n.occupancy) {
                 data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + n.occupancy + "%"})
