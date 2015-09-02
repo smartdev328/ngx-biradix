@@ -398,7 +398,7 @@ module.exports = {
                 return callback(err);
             }
 
-            var data = [{description: "Date: " + moment(survey.date).format("MM/DD/YYYY"), survey: survey}];
+            var data = [{description: survey.date, survey: survey}];
 
             SurveySchema.findByIdAndRemove(survey._id, function(err) {
 
@@ -447,7 +447,7 @@ module.exports = {
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
 
 
-                var data = [{description: "Date: " + moment(lastsurvey.date).format("MM/DD/YYYY"), survey: copy}];
+                var data = [{description: lastsurvey.date, survey: copy}];
 
 
                 if (lastsurvey.occupancy !== survey.occupancy) {
@@ -466,7 +466,7 @@ module.exports = {
                     var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
 
                     if (!oldfp) {
-                        data.push({description: PropertyHelperService.floorplanName(fp) + ": " + PropertyHelperService.floorplanRentName(fp) })
+                        data.push({description: PropertyHelperService.floorplanName(fp) + ": (n/a) => " + PropertyHelperService.floorplanRentName(fp) })
                     }
                     else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                         data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp) })
@@ -550,7 +550,7 @@ module.exports = {
             n.date = survey.date || Date.now();
             n.exclusions = exclusions;
 
-            var data = [{description: "Date: " + moment(n.date).format("MM/DD/YYYY"), id: n._id}];
+            var data = [{description: n.date, id: n._id}];
 
             if (lastsurvey.occupancy !== n.occupancy) {
                 data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + n.occupancy + "%"})
@@ -568,7 +568,7 @@ module.exports = {
                 var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
 
                 if (!oldfp) {
-                    data.push({description: PropertyHelperService.floorplanName(fp) + ": " + PropertyHelperService.floorplanRentName(fp) })
+                    data.push({description: PropertyHelperService.floorplanName(fp) + ": (n/a) => " + PropertyHelperService.floorplanRentName(fp) })
                 }
                 else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                     data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp) })
