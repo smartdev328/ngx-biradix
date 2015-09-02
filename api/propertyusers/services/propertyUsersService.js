@@ -20,9 +20,7 @@ module.exports = {
         }, function(err, all) {
 
             async.eachLimit(all.differences.added, 10, function(userid, callbackp){
-                AccessService.createPermission({executorid: userid, resource: propertyid, allow: true, type: 'PropertyManage', direct: true}, function (err, perm) {
-                    callbackp(err, perm)
-                });
+                LinkPropertyWithUser(operator,userid, propertyid, callbackp)
             }, function(err) {
                 async.eachLimit(all.differences.removed, 10, function(userid, callbackp){
                     AccessService.deletePermission({executorid: userid, resource: propertyid, type: 'PropertyManage'}, function (err, perm) {
@@ -47,9 +45,7 @@ module.exports = {
         }, function(err, all) {
 
             async.eachLimit(all.differences.added, 10, function(propertyid, callbackp){
-                AccessService.createPermission({executorid: userid, resource: propertyid, allow: true, type: 'PropertyManage', direct: true}, function (err, perm) {
-                    callbackp(err, perm)
-                });
+                LinkPropertyWithUser(operator,userid, propertyid, callbackp)
             }, function(err) {
                 async.eachLimit(all.differences.removed, 10, function(propertyid, callbackp){
                     AccessService.deletePermission({executorid: userid, resource: propertyid, type: 'PropertyManage'}, function (err, perm) {
@@ -71,6 +67,43 @@ module.exports = {
 
 }
 
+var LinkPropertyWithUser = function(operator,userid, propertyid, callback) {
+    async.parallel({
+        users: function(callbackp) {
+            UserService.search(operator,{select:"_id",ids:[userid.toString()]}, callbackp);
+        }  ,
+        roles: function(callbackp) {
+            AccessService.getRoles({tags:[propertyid.toString()]}, callbackp);
+        }
+    }, function(err, all) {
+        var RMRole = _.find(all.roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
+        var BMRole = _.find(all.roles, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
+        var PORole = _.find(all.roles, function(x) {return x.tags.indexOf('PO_GROUP') > -1});
+
+        var user = all.users[0];
+
+        if (user.roleType=="RM") {
+            AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+            AccessService.assignMembership({userid: user._id, roleid: RMRole._id}, function () {});
+        }
+        else
+        if (user.roleType=="BM") {
+            AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+            AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+            AccessService.assignMembership({userid: user._id, roleid: BMRole._id}, function () {});
+        }
+        else
+        if (user.roleType=="PO") {
+            AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+            AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+            AccessService.createPermission({executorid: PORole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+            AccessService.assignMembership({userid: user._id, roleid: PORole._id}, function () {});
+        }
+        AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
+
+        callback(null)
+    });
+}
 
 var getUserAssignedProperties = function(operator, userid, callback) {
 

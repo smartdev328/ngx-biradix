@@ -27,7 +27,7 @@ module.exports = {
                     }
                 },
                 roles: function (callbackp) {
-                    AccessService.getRoles(function(err, roles) {
+                    AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO']},function(err, roles) {
                         callbackp(err, roles)
                     })
                 },
@@ -96,6 +96,7 @@ module.exports = {
                                 }
                                 else {
                                     x.roleid = role._id;
+                                    x.roleType = role.tags[0];
                                 }
 
                                 //remove role types after we know what actual role it is
@@ -423,7 +424,7 @@ function getFullUser(usr, callback) {
                 });
             },
             roles: function(callbackp) {
-                AccessService.getRoles(function (err, roles) {
+                AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO']},function (err, roles) {
                     callbackp(null, roles)
                 });
             },

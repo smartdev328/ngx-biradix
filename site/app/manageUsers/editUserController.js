@@ -16,6 +16,7 @@ define([
 
             $scope.userId = userId;
             $scope.loading = true;
+            $scope.propertyids = [];
 
             $scope.cancel = function () {
                 $modalInstance.dismiss('cancel');
@@ -160,7 +161,7 @@ define([
             }
 
             $scope.saveProperties = function(userid, properties) {
-                $propertyUsersService.setPropertiesForUser(userId,properties)
+                $propertyUsersService.setPropertiesForUser(userid,properties)
             }
 
         }]);

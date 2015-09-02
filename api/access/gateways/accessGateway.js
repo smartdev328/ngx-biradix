@@ -14,7 +14,7 @@ routes.get("/roles", function(req, res) {
             })
         },
         allRoles: function(callbackp) {
-            AccessService.getRoles(callbackp)
+            AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO']}, callbackp)
         },
         orgs: function(callbackp) {
             OrgService.read(callbackp)

@@ -253,6 +253,10 @@ module.exports = {
                         })
                     }
 
+                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'RM_GROUP']}, function(){});
+                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'BM_GROUP']}, function(){});
+                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'PO_GROUP']}, function(){});
+
                     async.eachLimit(permissions, 10, function(permission, callbackp){
                         AccessService.createPermission(permission, function (err, perm) {
                             callbackp(err, perm)
@@ -356,7 +360,7 @@ var getHelpers = function(property, callback) {
             });
         },
         roles: function (callbackp) {
-            AccessService.getRoles(function(err, roles) {
+            AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO']},function(err, roles) {
                 callbackp(err, roles)
             })
 

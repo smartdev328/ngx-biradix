@@ -5,8 +5,16 @@
     var PermissionsSchema = require('../schemas/permissionsSchema')
 
     module.exports = {
-        getRoles: function(callback) {
-            RoleSchema.find().exec(function(err, obj) {
+        getRoles: function(criteria, callback) {
+            var modelErrors = [];
+            criteria = criteria || {};
+            var query = RoleSchema.find({});
+
+            if (criteria.tags) {
+                query = query.where("tags").in(criteria.tags);
+            }
+
+            query.exec(function(err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to get roles: ' + err});
                     callback(modelErrors, null);
@@ -34,7 +42,7 @@
 
                 var upline = [];
 
-                if (prole) {
+                if (prole && role.parentid) {
                     upline = prole.upline;
                     upline.unshift(prole._id);
                     role.isadmin = false;
