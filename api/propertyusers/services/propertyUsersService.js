@@ -4,10 +4,10 @@ var _ = require("lodash")
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../../properties/services/propertyService')
 var UserService = require('../../users/services/userService')
-
+var AuditService = require('../../audit/services/auditService')
 
 module.exports = {
-    setUsersForProperty : function(operator, propertyid, ids, callback) {
+    setUsersForProperty : function(operator,context,revertedFromId, propertyid, ids, callback) {
 
         async.parallel({
             differences: function(callbackp) {
@@ -20,17 +20,17 @@ module.exports = {
         }, function(err, all) {
 
             async.eachLimit(all.differences.added, 10, function(userid, callbackp){
-                LinkPropertyWithUser(operator,userid, propertyid, callbackp)
+                LinkPropertyWithUser(operator,context,revertedFromId, userid, propertyid, callbackp)
             }, function(err) {
                 async.eachLimit(all.differences.removed, 10, function(userid, callbackp){
-                    unLinkPropertyFromUser(operator,userid, propertyid, callbackp)
+                    unLinkPropertyFromUser(operator,context,revertedFromId,userid, propertyid, callbackp)
                 }, function(err) {
                     callback();
                 });
             });
         });
     },
-    setPropertiesForUser : function(operator, userid, ids, callback) {
+    setPropertiesForUser : function(operator,context,revertedFromId, userid, ids, callback) {
 
         async.parallel({
             differences: function(callbackp) {
@@ -43,10 +43,10 @@ module.exports = {
         }, function(err, all) {
 
             async.eachLimit(all.differences.added, 10, function(propertyid, callbackp){
-                LinkPropertyWithUser(operator,userid, propertyid, callbackp)
+                LinkPropertyWithUser(operator,context,revertedFromId,userid, propertyid, callbackp)
             }, function(err) {
                 async.eachLimit(all.differences.removed, 10, function(propertyid, callbackp){
-                    unLinkPropertyFromUser(operator,userid, propertyid, callbackp)
+                    unLinkPropertyFromUser(operator,context,revertedFromId,userid, propertyid, callbackp)
                 }, function(err) {
                     callback();
                 });
@@ -62,13 +62,18 @@ module.exports = {
     }
 
 }
-var unLinkPropertyFromUser = function(operator,userid, propertyid, callback) {
+var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, propertyid, callback) {
     async.parallel({
         users: function(callbackp) {
-            UserService.search(operator,{select:"_id",ids:[userid.toString()]}, callbackp);
+            UserService.search(operator,{select:"_id first last",ids:[userid.toString()]}, callbackp);
         }  ,
         roles: function(callbackp) {
             AccessService.getRoles({tags:[propertyid.toString()]}, callbackp);
+        },
+        properties: function(callbackp) {
+            PropertyService.search(operator, {select:"_id name", ids:[propertyid.toString()]}, function(err,props,lookups) {
+                callbackp(err,props)
+            })
         }
     }, function(err, all) {
         var RMRole = _.find(all.roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
@@ -76,6 +81,7 @@ var unLinkPropertyFromUser = function(operator,userid, propertyid, callback) {
         var PORole = _.find(all.roles, function(x) {return x.tags.indexOf('PO_GROUP') > -1});
 
         var user = all.users[0];
+        var property = all.properties[0];
 
         AccessService.deletePermission({executorid: RMRole._id , resource: user._id, type: 'UserManage'}, function () {});
         AccessService.deletePermission({executorid: BMRole._id , resource: user._id, type: 'UserManage'}, function () {});
@@ -87,17 +93,24 @@ var unLinkPropertyFromUser = function(operator,userid, propertyid, callback) {
 
         AccessService.deletePermission({executorid: userid, resource: propertyid, type: 'PropertyManage'}, function () {});
 
+        AuditService.create({operator: operator, property: property, user: user, type: 'user_unassigned', revertedFromId : revertedFromId, description: user.first + ' ' + user.last + ' <= ~ => ' + property.name, context: context, data : [{propertyid: propertyid, userid: userid}]})
+
         callback(null)
     });
 }
 
-var LinkPropertyWithUser = function(operator,userid, propertyid, callback) {
+var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, propertyid, callback) {
     async.parallel({
         users: function(callbackp) {
-            UserService.search(operator,{select:"_id",ids:[userid.toString()]}, callbackp);
+            UserService.search(operator,{select:"_id first last",ids:[userid.toString()]}, callbackp);
         }  ,
         roles: function(callbackp) {
             AccessService.getRoles({tags:[propertyid.toString()]}, callbackp);
+        },
+        properties: function(callbackp) {
+            PropertyService.search(operator, {select:"_id name", ids:[propertyid.toString()]}, function(err,props,lookups) {
+                callbackp(err,props)
+            })
         }
     }, function(err, all) {
         var RMRole = _.find(all.roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
@@ -105,6 +118,7 @@ var LinkPropertyWithUser = function(operator,userid, propertyid, callback) {
         var PORole = _.find(all.roles, function(x) {return x.tags.indexOf('PO_GROUP') > -1});
 
         var user = all.users[0];
+        var property = all.properties[0];
 
         if (user.roleType=="RM") {
             AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
@@ -124,6 +138,8 @@ var LinkPropertyWithUser = function(operator,userid, propertyid, callback) {
             AccessService.assignMembership({userid: user._id, roleid: PORole._id}, function () {});
         }
         AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
+
+        AuditService.create({operator: operator, property: property, user: user, type: 'user_assigned', revertedFromId : revertedFromId, description: user.first + ' ' + user.last + ' <= + => ' + property.name, context: context, data : [{propertyid: propertyid, userid: userid}]})
 
         callback(null)
     });

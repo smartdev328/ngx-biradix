@@ -211,7 +211,7 @@ function search(req, callback) {
                 callbackp(null,[]);
             } else {
                 UserService.search(req.user, {}, function(err,users) {
-                    callbackp(null, _.pluck(users,"_id"))
+                    callbackp(null, _.pluck(users,"_id").concat([req.user._id.toString()]))
                 });
             }
         },

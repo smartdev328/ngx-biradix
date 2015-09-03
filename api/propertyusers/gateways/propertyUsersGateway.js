@@ -29,7 +29,7 @@ routes.put('/properties/:userid', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyUsersService.setPropertiesForUser(req.user, req.params.userid, req.body, function (err) {
+        PropertyUsersService.setPropertiesForUser(req.user,req.context, null, req.params.userid, req.body, function (err) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }
@@ -63,7 +63,7 @@ routes.put('/users/:propertyid', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyUsersService.setUsersForProperty(req.user, req.params.propertyid, req.body, function (err) {
+        PropertyUsersService.setUsersForProperty(req.user, req.context, null, req.params.propertyid, req.body, function (err) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

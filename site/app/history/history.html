@@ -59,10 +59,10 @@
             <Td>
                 Types: <filter-list options="typeOptions" items="typeItems"></filter-list>
             </Td>
-            <Td>
+            <Td ng-if="userItems.length > 0">
                 Users: <filter-list options="userOptions" items="userItems"></filter-list>
             </Td>
-            <Td>
+            <Td ng-if="propertyItems.length > 0">
                 Properties: <filter-list options="propertyOptions" items="propertyItems"></filter-list>
             </Td>
             <Td>
@@ -111,9 +111,9 @@
         </tr>
         <tr ng-if="row.open">
             <td colspan="100%">
-                <h4 ng-if="row.data">Details</h4>
+                <h4 ng-if="row.data && (row.data[0].description || row.data.length > 1)">Details</h4>
                 <ul ng-if="row.data">
-                    <li ng-repeat="subrow in row.data">
+                    <li ng-repeat="subrow in row.data" ng-if="subrow.description">
                         <span ng-if="!subrow.date">{{subrow.description}}</span>
                         <span ng-if="subrow.date">{{subrow.description}} {{subrow.date | date: 'MM/dd/yyyy'}}</span>
                     </li>
