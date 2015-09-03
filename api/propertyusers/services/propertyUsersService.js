@@ -23,9 +23,7 @@ module.exports = {
                 LinkPropertyWithUser(operator,userid, propertyid, callbackp)
             }, function(err) {
                 async.eachLimit(all.differences.removed, 10, function(userid, callbackp){
-                    AccessService.deletePermission({executorid: userid, resource: propertyid, type: 'PropertyManage'}, function (err, perm) {
-                        callbackp(err, perm)
-                    });
+                    unLinkPropertyFromUser(operator,userid, propertyid, callbackp)
                 }, function(err) {
                     callback();
                 });
@@ -48,9 +46,7 @@ module.exports = {
                 LinkPropertyWithUser(operator,userid, propertyid, callbackp)
             }, function(err) {
                 async.eachLimit(all.differences.removed, 10, function(propertyid, callbackp){
-                    AccessService.deletePermission({executorid: userid, resource: propertyid, type: 'PropertyManage'}, function (err, perm) {
-                        callbackp(err, perm)
-                    });
+                    unLinkPropertyFromUser(operator,userid, propertyid, callbackp)
                 }, function(err) {
                     callback();
                 });
@@ -65,6 +61,34 @@ module.exports = {
         getPropertyAssignedUsers(operator, propertyid, callback)
     }
 
+}
+var unLinkPropertyFromUser = function(operator,userid, propertyid, callback) {
+    async.parallel({
+        users: function(callbackp) {
+            UserService.search(operator,{select:"_id",ids:[userid.toString()]}, callbackp);
+        }  ,
+        roles: function(callbackp) {
+            AccessService.getRoles({tags:[propertyid.toString()]}, callbackp);
+        }
+    }, function(err, all) {
+        var RMRole = _.find(all.roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
+        var BMRole = _.find(all.roles, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
+        var PORole = _.find(all.roles, function(x) {return x.tags.indexOf('PO_GROUP') > -1});
+
+        var user = all.users[0];
+
+        AccessService.deletePermission({executorid: RMRole._id , resource: user._id, type: 'UserManage'}, function () {});
+        AccessService.deletePermission({executorid: BMRole._id , resource: user._id, type: 'UserManage'}, function () {});
+        AccessService.deletePermission({executorid: PORole._id , resource: user._id, type: 'UserManage'}, function () {});
+
+        AccessService.revokeMembership({userid: user._id, roleid: RMRole._id}, function () {});
+        AccessService.revokeMembership({userid: user._id, roleid: BMRole._id}, function () {});
+        AccessService.revokeMembership({userid: user._id, roleid: PORole._id}, function () {});
+
+        AccessService.deletePermission({executorid: userid, resource: propertyid, type: 'PropertyManage'}, function () {});
+
+        callback(null)
+    });
 }
 
 var LinkPropertyWithUser = function(operator,userid, propertyid, callback) {
@@ -132,6 +156,7 @@ var getUserAssignedProperties = function(operator, userid, callback) {
             })
         }
     },function(err, all) {
+
         if (err) {
             return callback([{msg:"Unable to retrieve properties."}], null)
         }
@@ -178,6 +203,7 @@ var getPropertyAssignedUsers = function(operator, propertyid, callback) {
                 })
             }
         },function(err, all) {
+
             if (err) {
                 return callback([{msg:"Unable to retrieve users."}], null)
             }

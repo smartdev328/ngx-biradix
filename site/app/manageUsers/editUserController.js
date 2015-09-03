@@ -84,10 +84,11 @@ define([
                     $scope.properties = [];
                     $scope.loading = false;
                 } else {
-                    $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name orgid", orgid: $scope.selectedRole.orgid, active: true}).then(function (response) {
+                    $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name orgid", orgid: $scope.selectedRole.orgid, active: true}).then(function (response) {
                         $scope.properties = [];
+
                         response.data.properties.forEach(function(x) {
-                            $scope.properties.push({id: x._id, name: x.name, selected: $scope.propertyids.indexOf(x._id.toString()) > -1 });
+                            $scope.properties.push({id: x._id, name: x.name, selected: $scope.propertyids.indexOf(x._id.toString()) > -1 || (response.data.properties.length == 1 && !userId)});
                         });
 
                         $scope.propertyOptions.hideSearch = $scope.properties.length < 10;
