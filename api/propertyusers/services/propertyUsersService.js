@@ -59,6 +59,34 @@ module.exports = {
 
     getPropertyAssignedUsers : function(operator, propertyid, callback) {
         getPropertyAssignedUsers(operator, propertyid, callback)
+    },
+
+    unlink : function(operator,context,revertedFromId,userid,propertyid,callback) {
+        async.parallel({
+            properties: function(callbackp) {
+                getUserAssignedProperties(operator, userid, callbackp)
+            }  ,
+        }, function(err, all) {
+            if (all.properties.indexOf(propertyid.toString()) > -1) {
+                unLinkPropertyFromUser(operator,context,revertedFromId,userid, propertyid, callback)
+            } else {
+                callback([{msg:"Property and User are not longer assigned to each other"}]);
+            }
+        });
+    },
+
+    link : function(operator,context,revertedFromId,userid,propertyid,callback) {
+        async.parallel({
+            properties: function(callbackp) {
+                getUserAssignedProperties(operator, userid, callbackp)
+            }  ,
+        }, function(err, all) {
+            if (all.properties.indexOf(propertyid.toString()) == -1) {
+                LinkPropertyWithUser(operator,context,revertedFromId,userid, propertyid, callback)
+            } else {
+                callback([{msg:"Property and User are are already assigned to each other"}]);
+            }
+        });
     }
 
 }

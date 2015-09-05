@@ -9,6 +9,7 @@ var CreateService = require('../../properties/services/createService')
 var AmenitiesService = require('../../amenities/services/amenityService')
 var UserService = require('../../users/services/userService')
 var UserCreateService = require('../../users/services/userCreateService')
+var PropertyUserService = require('../../propertyusers/services/propertyUsersService')
 var Routes = express.Router();
 var async = require('async')
 var _ = require('lodash')
@@ -151,6 +152,18 @@ Routes.post('/undo', function (req, res) {
                             break;
                         case "user_updated":
                             userUpdatedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "user_assigned":
+                            userAssignedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "user_unassigned":
+                            userUnAssignedUndo(req,o, function(err) {
                                 errors = err || [];
                                 callbacks(null)
                             })
@@ -387,6 +400,14 @@ function userUpdatedUndo  (req, o, callback) {
             user[d.field] = d.old_value;
         })
 
-        UserCreateService.update(req.user, req.context, user, callback);
+        UserCreateService.update(req.user, req.context, o._id, user, callback);
     });
+}
+
+function userAssignedUndo  (req, o, callback) {
+    PropertyUserService.unlink(req.user,req.context, o._id, o.data[0].userid,o.data[0].propertyid,callback)
+}
+
+function userUnAssignedUndo  (req, o, callback) {
+    PropertyUserService.link(req.user,req.context, o._id, o.data[0].userid,o.data[0].propertyid,callback)
 }

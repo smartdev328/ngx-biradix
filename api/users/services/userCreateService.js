@@ -65,7 +65,7 @@ module.exports = {
 
 
     },
-    update : function(operator,context, user, callback)  {
+    update : function(operator,context, revertedFromId, user, callback)  {
         var modelErrors = [];
 
         initUser(user)
@@ -125,7 +125,7 @@ module.exports = {
                     if (changes.length > 0) {
                         var audit = {
                             operator: operator,
-                            revertedFromId : null,
+                            revertedFromId : revertedFromId,
                             user: usr,
                             type: 'user_updated',
                             description: usr.first + ' ' + usr.last,
