@@ -242,6 +242,10 @@ module.exports = {
                         })
                     }
 
+                    //Give yourself access to manage yourself
+
+                    AccessService.createPermission({executorid: usr._id, resource: usr._id,allow: true,type: 'UserManage',direct: true}, function () {});
+
                     //Done
                     callback(null,usr);
                 })
