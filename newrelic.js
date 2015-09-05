@@ -11,7 +11,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['BI:Radix Dev'],
+  app_name: ['BI:Radix: ' + settings.NEW_RELIC_NAME],
   /**
    * Your New Relic license key.
    */
