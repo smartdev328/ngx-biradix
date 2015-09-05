@@ -17,23 +17,11 @@ var _ = require('lodash')
 Routes.get('/filters', function (req, res) {
     async.parallel({
         users: function(callbackp) {
-                UserService.search(req.user, {}, function(err,users) {
-                    callbackp(null, users)
-                })
+                UserService.search(req.user, {}, callbackp)
         },
 
         properties: function(callbackp) {
-            PropertyService.search(req.user, {permission: 'PropertyManage', select: '_id name comps.id', limit: 1000}, function(err,properties) {
-
-                if (req.user.memberships.isadmin === true) {
-                    callbackp(null, properties)
-                } else {
-                    var subjectandcompids = _.pluck(_.flatten(_.pluck(properties,'comps')),"id").concat(_.pluck(properties, "_id"));
-                    PropertyService.search(req.user, {permission: 'PropertyView', select: '_id name', ids: subjectandcompids, limit: 1000}, function(err,properties) {
-                        callbackp(null, properties)
-                    });
-                }
-            })
+            getPropertiesAndComps(req, callbackp);
         },
 
     }, function(err, all) {
@@ -228,8 +216,17 @@ function search(req, callback) {
                 });
             }
         },
+        propertyids: function(callbackp) {
+            if (req.user.memberships.isadmin === true) {
+                callbackp(null,[]);
+            } else {
+                getPropertiesAndComps(req, function(err,props) {
+                    callbackp(null, _.pluck(props,"_id"))
+                });
+            }
+        },
     }, function(err, all) {
-        AuditService.get(req.body,all.userids, function (err, obj, pager) {
+        AuditService.get(req.body,all.userids,all.propertyids, function (err, obj, pager) {
             callback(err, obj, pager)
         });
     })
@@ -410,4 +407,18 @@ function userAssignedUndo  (req, o, callback) {
 
 function userUnAssignedUndo  (req, o, callback) {
     PropertyUserService.link(req.user,req.context, o._id, o.data[0].userid,o.data[0].propertyid,callback)
+}
+
+function getPropertiesAndComps (req, callback) {
+    PropertyService.search(req.user, {permission: 'PropertyManage', select: '_id name comps.id', limit: 1000}, function(err,properties) {
+
+        if (req.user.memberships.isadmin === true) {
+            callback(null, properties)
+        } else {
+            var subjectandcompids = _.pluck(_.flatten(_.pluck(properties,'comps')),"id").concat(_.pluck(properties, "_id"));
+            PropertyService.search(req.user, {permission: 'PropertyView', select: '_id name', ids: subjectandcompids, limit: 1000}, function(err,properties) {
+                callback(null, properties)
+            });
+        }
+    })
 }

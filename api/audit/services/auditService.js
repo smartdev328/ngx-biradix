@@ -100,10 +100,9 @@ module.exports = {
             return callback(err, saved)
         })
     },
-    get: function(criteria, userids, callback) {
+    get: function(criteria, userids, propertyids, callback) {
 
-        criteria.operatorids = userids;
-        var query = QueryBuilder(criteria);
+        var query = QueryBuilder(criteria, userids, propertyids);
 
         query.count(function(err, obj) {
 
@@ -114,11 +113,19 @@ module.exports = {
                 callback(null,[],PaginationService.getPager(criteria.skip, criteria.limit, 0))
             }
             else {
-                var query = QueryBuilder(criteria).sort("-date").skip(criteria.skip).limit(criteria.limit);
+                var query = QueryBuilder(criteria,userids,propertyids).sort("-date").skip(criteria.skip).limit(criteria.limit);
                 if (criteria.select) {
                     query = query.select(criteria.select);
                 }
                 query.exec(function(err, list) {
+                    if (userids.length > 0) {
+                        list.forEach(function (li) {
+                            if (userids.indexOf(li.operator.id.toString()) == -1) {
+                                li.operator.name = "External User";
+                            }
+
+                        });
+                    }
                     callback(err,list,PaginationService.getPager(criteria.skip, criteria.limit, obj))
                 });
             }
@@ -128,59 +135,84 @@ module.exports = {
 
 }
 
-function QueryBuilder (criteria) {
+function QueryBuilder (criteria, userids, propertyids) {
     criteria = criteria || {};
 
     criteria.skip = criteria.skip || 0;
     criteria.limit = criteria.limit || 50;
+    criteria.users = criteria.users || [];
+    criteria.properties = criteria.properties || [];
 
-    var query = AuditSchema.find();
-
-
-    if (criteria.operatorids.length > 0) {
-        if (criteria.users && criteria.users.length > 0) {
-            query = query.or([
-                {
-                    $and: [
-                        {"operator.id": {$in: criteria.operatorids}},
-                        {"user.id": {$in: criteria.users}},
-                    ]
-                },
-                {"operator.id": {$in:  _.intersection(criteria.operatorids, criteria.users)}},
-            ])
-
-        }
-        else {
-            query = query.where("operator.id").in(criteria.operatorids);
-        }
-    } else {
-        if (criteria.users && criteria.users.length > 0) {
-            query = query.or([
-                {"operator.id": {$in : criteria.users}},
-                {"user.id": {$in : criteria.users}},
-                ])
+    //Remove "Login As" from non admin so it doesnt cause them to freak out
+    if (userids.length > 0 || propertyids.length > 0) {
+        if (criteria.types && criteria.types.length > 0) {
+            _.remove(criteria.types,function(x) {return x.toString() == "login_as"});
         }
     }
+    var query = AuditSchema.find();
 
+    //Everyone can filter on type
     if (criteria.types && criteria.types.length > 0) {
         query = query.where("type").in(criteria.types);
     }
 
-    if (criteria.properties && criteria.properties.length > 0) {
-        query = query.where("property.id").in(criteria.properties);
-    }
-
+    //Everyone can filter on daterange
     if (criteria.daterange) {
         var dr = DateService.convertRangeToParts(criteria.daterange);
         if (criteria.daterange != "Lifetime") {
             query = query.where("date").gte(dr.start).lte(dr.end);
         }
-
     }
 
+    //Everyone can filter on id
     if (criteria.id) {
         query= query.where("_id").equals(criteria.id);
     }
+
+    //If you are limited by users or properties go here:
+    if (userids.length > 0 || propertyids.length > 0) {
+
+        //default search for non admins, allow them to see all users and props they have access to
+        if (criteria.users.length == 0 && criteria.properties.length == 0) {
+            query = query.or([
+                {"operator.id": {$in : userids}},
+                {"user.id": {$in : userids}},
+                {"property.id": {$in : propertyids}},
+                ])
+        }
+        else {
+            //if we got here that means the non admin is filtering by props or users
+            if (criteria.users.length > 0) {
+                query = query.or([
+                    {"operator.id": {$in : _.intersection(userids, criteria.users)}},
+                    {"user.id": {$in : _.intersection(userids, criteria.users)}},
+                ])
+            }
+
+            if (criteria.properties.length > 0) {
+                query = query.and([
+                    {"property.id": {$in : _.intersection(propertyids, criteria.properties)}},
+                ])
+            }
+        }
+    }
+    else {
+        //if we got here then we just need to filter for admins
+        if (criteria.users.length > 0) {
+            query = query.or([
+                {"operator.id": {$in : criteria.users}},
+                {"user.id": {$in : criteria.users}},
+            ])
+        }
+
+        if (criteria.properties.length > 0) {
+            query = query.and([
+                {"property.id": {$in : criteria.properties}},
+            ])
+        }
+    }
+
+
 
     return query;
 }
