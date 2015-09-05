@@ -3,9 +3,22 @@
     var RoleSchema = require('../schemas/roleSchema')
     var MemberSchema = require('../schemas/memberSchema')
     var PermissionsSchema = require('../schemas/permissionsSchema')
+    var localCacheService = require('../../utilities/services/localcacheService')
 
     module.exports = {
         getRoles: function(criteria, callback) {
+            var roles;
+            var key = "roles" + JSON.stringify(criteria.tags);
+
+            if (criteria.cache) {
+                roles = localCacheService.get(key);
+
+                if (roles) {
+                    return callback(null,roles);
+                }
+
+            }
+
             var modelErrors = [];
             criteria = criteria || {};
             var query = RoleSchema.find({});
@@ -21,6 +34,9 @@
                     return;
                 }
 
+                if (criteria.cache) {
+                    localCacheService.set(key, obj, 60)
+                }
                 callback(null, obj);
             })
         },
