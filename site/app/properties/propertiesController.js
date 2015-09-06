@@ -86,8 +86,15 @@ define([
                             if (p.survey.occupancy != null) {
                                 p.occupancy = p.survey.occupancy;
                             }
+                            else {
+                                p.occupancy = -1;
+                            }
+
                             if (p.survey.ner != null) {
                                 p.ner = p.survey.ner;
+                            }
+                            else {
+                                p.ner = -1;
                             }
                         }
                     })
@@ -109,9 +116,14 @@ define([
                     if (p.survey){
                         if (p.survey.occupancy != null) {
                             p.occupancy = p.survey.occupancy;
+                        } else {
+                            p.occupancy = -1;
                         }
+
                         if (p.survey.ner != null) {
                             p.ner = p.survey.ner;
+                        } else {
+                            p.ner = -1;
                         }
                     }
                 })
