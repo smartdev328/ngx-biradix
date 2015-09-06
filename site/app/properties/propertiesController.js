@@ -79,6 +79,19 @@ define([
 
                 $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid", ids: compids}).then(function (response) {
                     row.fullcomps = response.data.properties;
+
+                    row.fullcomps.forEach(function(p) {
+                        //For propert sorting
+                        if (p.survey){
+                            if (p.survey.occupancy != null) {
+                                p.occupancy = p.survey.occupancy;
+                            }
+                            if (p.survey.ner != null) {
+                                p.ner = p.survey.ner;
+                            }
+                        }
+                    })
+
                     row.compsLoaded = true;
                 })
 
@@ -90,6 +103,18 @@ define([
             $scope.localLoading = false;
             $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded"}).then(function (response) {
                 $scope.data = response.data.properties;
+
+                $scope.data.forEach(function(p) {
+                    //For propert sorting
+                    if (p.survey){
+                        if (p.survey.occupancy != null) {
+                            p.occupancy = p.survey.occupancy;
+                        }
+                        if (p.survey.ner != null) {
+                            p.ner = p.survey.ner;
+                        }
+                    }
+                })
                 $scope.localLoading = true;
 
                 if (callback) {
