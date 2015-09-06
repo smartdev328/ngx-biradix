@@ -1,4 +1,3 @@
-require('newrelic')
 var settings = require('./config/settings.js')
 var express = require('express')
 var app = express()
