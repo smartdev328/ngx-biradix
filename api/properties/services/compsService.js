@@ -40,7 +40,7 @@ module.exports = {
 
             var RMRole = _.find(all.subjectgrouprole, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
             var BMRole = _.find(all.subjectgrouprole, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
-            var CMRole = _.find(all.CMroles, function(x) {return x.tags.indexOf('CM') > -1 && x.orgid.toString() == all.subject.orgid.toString()});
+            var CMRole = _.find(all.CMroles, function(x) {return x.tags.indexOf('CM') > -1 && x.orgid.toString() == (all.subject.orgid || '').toString()});
 
             var ObjectId = require('mongoose').Types.ObjectId;
             var link = {id: new ObjectId(compid), floorplans: _.pluck(all.comp.floorplans, "id")}
@@ -50,9 +50,29 @@ module.exports = {
 
             PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
 
-                AccessService.createPermission({executorid: RMRole._id ,resource: new ObjectId(compid),allow: true,type: 'CompManage'}, function () {});
-                AccessService.createPermission({executorid: BMRole._id ,resource: new ObjectId(compid),allow: true,type: 'CompManage'}, function () {});
-                AccessService.createPermission({executorid: CMRole._id ,resource: new ObjectId(compid),allow: true,type: 'CompManage'}, function () {});
+                if (all.subject._id.toString() != all.comp._id.toString() && CMRole) {
+                    AccessService.createPermission({
+                        executorid: RMRole._id,
+                        resource: new ObjectId(compid),
+                        allow: true,
+                        type: 'CompManage'
+                    }, function () {
+                    });
+                    AccessService.createPermission({
+                        executorid: BMRole._id,
+                        resource: new ObjectId(compid),
+                        allow: true,
+                        type: 'CompManage'
+                    }, function () {
+                    });
+                    AccessService.createPermission({
+                        executorid: CMRole._id,
+                        resource: new ObjectId(compid),
+                        allow: true,
+                        type: 'CompManage'
+                    }, function () {
+                    });
+                }
 
                 if (logHistory) {
                     AuditService.create({

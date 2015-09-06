@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "0.16.1",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,6 @@
     "mock-require": "^1.1.0",
     "moment": "^2.10.3",
     "mongoose": "^4.0.2",
-    "newrelic": "^1.18.5",
     "node-geocoder": "^2.20.1",
     "node-mailer": "^0.1.1",
     "node-uuid": "^1.4.3",

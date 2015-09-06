@@ -219,7 +219,7 @@ Routes.put('/', function(req,res) {
 })
 
 Routes.put('/:id', function (req, res) {
-    AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+    AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
         if (!canAccess) {
             return res.status(401).json("Unauthorized request");
         }

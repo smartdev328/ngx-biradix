@@ -19,7 +19,7 @@ define([
 
             $propertyService.search({
                 limit: 1,
-                permission: 'PropertyManage',
+                permission: ['PropertyManage','CompManage'],
                 ids: [id],
                 select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id"
             }).then(function (response) {

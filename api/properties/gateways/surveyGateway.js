@@ -4,7 +4,7 @@ var PropertyService = require('../services/propertyService')
 module.exports = {
     init: function(Routes) {
         Routes.post('/:id/survey', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
@@ -21,7 +21,7 @@ module.exports = {
         })
 
         Routes.put('/:id/survey/:surveyid', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
@@ -38,7 +38,7 @@ module.exports = {
         })
 
         Routes.get('/:id/survey/:surveyid', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }

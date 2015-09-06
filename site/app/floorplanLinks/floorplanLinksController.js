@@ -16,7 +16,7 @@ define([
 
             $propertyService.search({
                 limit: 20,
-                permission: 'PropertyManage',
+                permission: ['PropertyManage','CompManage'],
                 ids: [id, compid],
                 select: "_id name comps floorplans"
             }).then(function (response) {
