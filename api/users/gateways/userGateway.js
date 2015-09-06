@@ -19,7 +19,7 @@ userRoutes.post('/resetPassword', function (req, res) {
 })
 
 userRoutes.put('/me', function (req, res) {
-    userCreateService.updateMe(req.user, req.context, null, req.body, function (err, usr) {
+    userCreateService.updateMe(req.user, req.context, req.body, function (err, usr) {
             if (err) {
                 return res.status(200).json({errors: err, user: null});
             }

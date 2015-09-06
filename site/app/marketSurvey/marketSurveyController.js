@@ -140,6 +140,10 @@ define([
                                 if (isNaN($scope.survey.weeklytraffic) || parseInt($scope.survey.weeklytraffic) < 0) {
                                     er = '<b>Warning:</b> Traffic/Week must be a positive number';
                                 }
+                                else
+                                if ($scope.survey.weeklytraffic.toString().indexOf('.') > -1) {
+                                    er = '<b>Warning:</b> Traffic/Week must not include any decimals';
+                                }
 
                                 if (er.length > 0) {
                                     toastr.warning(er);
@@ -165,6 +169,10 @@ define([
                                 var er = "";
                                 if (isNaN($scope.survey.weeklyleases) || parseInt($scope.survey.weeklyleases) < 0) {
                                     er = '<b>Warning:</b> Leases/Week must be a positive number';
+                                }
+                                else
+                                if ($scope.survey.weeklyleases.toString().indexOf('.') > -1) {
+                                    er = '<b>Warning:</b> Leases/Week must not include any decimals';
                                 }
 
                                 if (er.length > 0) {
@@ -198,6 +206,10 @@ define([
                         if (isNaN(fp.rent) || parseInt(fp.rent) < 0 ) {
                             er = '<b>Warning:</b> Rent must be a positive number';
                         }
+                        else
+                        if (fp.rent.toString().indexOf('.') > -1) {
+                            er = '<b>Warning:</b> Rent must not include any decimals';
+                        }
 
                         if (er.length > 0) {
                             toastr.warning(er);
@@ -210,6 +222,10 @@ define([
 
                         if (isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
                             er = '<b>Warning:</b> Concessions must be a positive number';
+                        }
+                        else
+                        if (fp.concessions.toString().indexOf('.') > -1) {
+                            er = '<b>Warning:</b> Concessions must not include any decimals';
                         }
 
                         if (er.length > 0) {
@@ -363,8 +379,6 @@ define([
 
 
             }
-
-
 
     }]);
 
