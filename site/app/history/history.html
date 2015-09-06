@@ -89,7 +89,9 @@
         </thead>
         <tbody>
         <tr ng-repeat-start="row in activity" ng-style="{'font-weight' : row.revertedFromId ? 'bold' : 'normal', 'color' : row.reverted ? 'silver' : ''}">
-            <td style="text-align: center"><i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
+            <td style="text-align: center"><i
+                    ng-if="me.permissions.indexOf('History/MoreInfo') > -1 || row.data"
+                    ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
             <td>{{row.date | date: 'short'}}</td>
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
@@ -118,9 +120,11 @@
                         <span ng-if="subrow.date">{{subrow.description}} {{subrow.date | date: 'MM/dd/yyyy'}}</span>
                     </li>
                 </ul>
-                <h4>More Info</h4>
-                <input class="form-control input-sm" value="{{row.context.ip}}"><Br>
-                <input class="form-control input-sm" value="{{row.context.user_agent}}"><Br>
+                <div ng-if="me.permissions.indexOf('History/MoreInfo') > -1">
+                    <h4>More Info</h4>
+                    <input class="form-control input-sm" value="{{row.context.ip}}"><Br>
+                    <input class="form-control input-sm" value="{{row.context.user_agent}}"><Br>
+                </div>
             </td>
         </tr>
         <tr ng-if="false" ng-repeat-end></tr>

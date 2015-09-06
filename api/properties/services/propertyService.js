@@ -470,7 +470,7 @@ module.exports = {
                     var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
 
                     if (!oldfp) {
-                        data.push({description: PropertyHelperService.floorplanName(fp) + ": (n/a) => " + PropertyHelperService.floorplanRentName(fp) })
+                        data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp) })
                     }
                     else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                         data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp) })
@@ -534,9 +534,9 @@ module.exports = {
                 lastsurvey = {}
             }
 
-            lastsurvey.occupancy = lastsurvey.occupancy || '-';
-            lastsurvey.weeklyleases = lastsurvey.weeklyleases || '-';
-            lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || '-';
+            lastsurvey.occupancy = lastsurvey.occupancy || 'N/A';
+            lastsurvey.weeklyleases = lastsurvey.weeklyleases || 'N/A';
+            lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || 'N/A';
             lastsurvey.floorplans = lastsurvey.floorplans || [];
 
             var n = new SurveySchema();
@@ -572,7 +572,7 @@ module.exports = {
                 var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
 
                 if (!oldfp) {
-                    data.push({description: PropertyHelperService.floorplanName(fp) + ": (n/a) => " + PropertyHelperService.floorplanRentName(fp) })
+                    data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp) })
                 }
                 else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                     data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp) })
