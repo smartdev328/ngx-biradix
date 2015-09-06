@@ -368,7 +368,6 @@
             }
 
             query.exec(function(err,permissions) {
-                //console.log(permissions);
                 //Get a list of negated permission ids
                 var neg = _.where(permissions, { 'allow': false });
                 neg = _.pluck(neg,'_id');

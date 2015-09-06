@@ -410,15 +410,7 @@ function userUnAssignedUndo  (req, o, callback) {
 }
 
 function getPropertiesAndComps (req, callback) {
-    PropertyService.search(req.user, {permission: 'PropertyManage', select: '_id name comps.id', limit: 1000}, function(err,properties) {
-
-        if (req.user.memberships.isadmin === true) {
-            callback(null, properties)
-        } else {
-            var subjectandcompids = _.pluck(_.flatten(_.pluck(properties,'comps')),"id").concat(_.pluck(properties, "_id"));
-            PropertyService.search(req.user, {permission: 'PropertyView', select: '_id name', ids: subjectandcompids, limit: 1000}, function(err,properties) {
-                callback(null, properties)
-            });
-        }
+    PropertyService.search(req.user, {permission: ['PropertyManage','CompManage'], select: '_id name', limit: 1000}, function(err, properties) {
+        callback(null, properties)
     })
 }

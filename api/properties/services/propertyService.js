@@ -161,7 +161,11 @@ module.exports = {
         })
     },
     search: function(Operator, criteria, callback) {
-        criteria.permission = criteria.permission || 'PropertyView';
+        criteria.permission = criteria.permission || ['PropertyView'];
+
+        if (!criteria.permission.length) {
+            criterma.permission = [criteria.permission];
+        }
 
         criteria.search = (criteria.search || '').trim();
 
@@ -170,7 +174,7 @@ module.exports = {
                 if (Operator.memberships.isadmin === true) {
                     callbackp(null,[]);
                 } else {
-                    AccessService.getPermissions(Operator, [criteria.permission], function(permissions) {
+                    AccessService.getPermissions(Operator, criteria.permission, function(permissions) {
                         callbackp(null, permissions)
                     });
                 }
