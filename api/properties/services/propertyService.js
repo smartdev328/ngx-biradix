@@ -602,17 +602,16 @@ module.exports = {
 
     },
     getLastSurveyStats: function(hide,subject, comps, callback) {
-        //console.log(subject.comps, comps);
         var surveyids = _.pluck(comps,"survey.id");
-        if (!surveyids || surveyids.length == 0) {
-            return callback();
-        }
 
+        //get all surveys of comps at once to be efficient
         SurveySchema.find().where("_id").in(surveyids).exec(function(err, surveys) {
             comps.forEach(function(comp) {
-                if (comp.survey) {
-                    var links = _.find(subject.comps, function(x) {return x.id == comp._id})
+                //match each survey to a comp
+                var links = _.find(subject.comps, function(x) {return x.id == comp._id})
 
+                //if there is a survey go here:
+                if (comp.survey) {
                     var s = _.find(surveys, function (x) {
                         return x._id == comp.survey.id
                     });
@@ -629,45 +628,21 @@ module.exports = {
 
                         comp.survey.days = daysSince;
 
-                        SurveyHelperService.getSurveyStats(s.floorplans, comp.survey, links, hide);
-
-                        comp.survey.bedrooms = {};
-
-                        for (var i = 0; i < 7; i++) {
-                            var temp = _.filter(s.floorplans, function (x) {
-                                return x.bedrooms == i
-                            });
-
-                            if (temp.length > 0) {
-                                comp.survey.bedrooms[i] = {};
-                                SurveyHelperService.getSurveyStats(temp, comp.survey.bedrooms[i], links, hide);
-                            }
-                        }
-
-                        comp.survey.floorplans = s.floorplans;
-
-                        comp.survey.floorplans.forEach(function (fp) {
-                            delete fp.amenities;
-                            fp.ner = Math.round(fp.rent - (fp.concessions / 12))
-                            fp.nersqft = Math.round(fp.ner / fp.sqft * 100) / 100
-                            if (links.excluded === true && hide) {
-                                links.floorplans = links.floorplans.map(function (x) {
-                                    return x.toString()
-                                })
-
-                                //console.log(links.floorplans, fp.id)
-                                if (links.floorplans.indexOf(fp.id.toString()) == -1) {
-                                    fp.excluded = true;
-                                    delete fp.rent;
-                                    delete fp.concessions;
-                                    delete fp.ner;
-                                    delete fp.nersqft;
-                                }
+                        //Inject any actual floorplans into the survey that are not in the last survey
+                        comp.floorplans.forEach(function(cfp) {
+                            if (!_.find(s.floorplans, function(sfp) {return sfp.id.toString() == cfp.id.toString()})) {
+                                s.floorplans.push(cfp);
                             }
                         })
+
+                        SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, hide);
                     }
 
-
+                } else {
+                    //No surveys at all, create a fake survey with current floorplan data but no rent data
+                    comp.survey = {};
+                    comp.survey.tier = "danger";
+                    SurveyHelperService.floorplansToSurvey(comp.survey, comp.floorplans, links, hide);
                 }
             });
             return callback();

@@ -62,55 +62,7 @@ module.exports = {
 
         })
     },
-    getSurveyStats: function(floorplans, survey, links, hide) {
 
-        var fps = _.cloneDeep(floorplans);
-
-        var fpids = _.pluck(floorplans, "id").map(function (x) {
-            return x.toString()
-        })
-
-        var totUnits = _.sum(fps, function (fp) {
-            return fp.units
-        });
-        survey.totUnits = totUnits;
-
-        if (links.excluded === true && hide) {
-            links.floorplans = links.floorplans.map(function (x) {
-                return x.toString()
-            })
-
-            fps = _.filter(fps, function (x) {
-                return links.floorplans.indexOf(x.id.toString()) > -1
-            })
-
-            var excluded = _.find(fpids, function (x) {
-                return links.floorplans.indexOf(x.toString()) == -1
-            })
-
-            if (excluded) {
-                survey.excluded = true;
-            }
-        }
-
-        totUnits = _.sum(fps, function (fp) {
-            return fp.units
-        });
-
-        if (totUnits > 0) {
-            survey.sqft = Math.round(_.sum(fps, function (fp) {
-                    return (fp.sqft) * fp.units
-                }) / totUnits);
-            survey.rent = Math.round(_.sum(fps, function (fp) {
-                    return (fp.rent) * fp.units
-                }) / totUnits);
-            survey.concessions = Math.round(_.sum(fps, function (fp) {
-                    return (fp.concessions) * fp.units
-                }) / totUnits);
-            survey.ner = Math.round(survey.rent - (survey.concessions / 12))
-            survey.nersqft = Math.round(survey.ner / survey.sqft * 100) / 100
-        }
-    },
     getSubjectExclusions: function (compid, compFloorplans, callback) {
         CompsService.getSubjects(compid, {select: "_id name comps"}, function (err, obj) {
             var exclusions = [];
@@ -126,5 +78,93 @@ module.exports = {
 
             callback(exclusions);
         });
+    },
+    floorplansToSurvey : function(survey, floorplans, links, hide) {
+        getSurveyStats(floorplans, survey, links, hide);
+        survey.bedrooms = {};
+
+        for (var i = 0; i < 7; i++) {
+            var temp = _.filter(floorplans, function (x) {
+                return x.bedrooms == i
+            });
+
+            if (temp.length > 0) {
+                survey.bedrooms[i] = {};
+                getSurveyStats(temp, survey.bedrooms[i], links, hide);
+            }
+        }
+
+        survey.floorplans = floorplans;
+
+        survey.floorplans.forEach(function (fp) {
+            delete fp.amenities;
+            fp.ner = Math.round(fp.rent - (fp.concessions / 12))
+            fp.nersqft = Math.round(fp.ner / fp.sqft * 100) / 100
+            if (links.excluded === true && hide) {
+                links.floorplans = links.floorplans.map(function (x) {
+                    return x.toString()
+                })
+
+                //console.log(links.floorplans, fp.id)
+                if (links.floorplans.indexOf(fp.id.toString()) == -1) {
+                    fp.excluded = true;
+                    delete fp.rent;
+                    delete fp.concessions;
+                    delete fp.ner;
+                    delete fp.nersqft;
+                }
+            }
+        })
+    }
+}
+
+
+var  getSurveyStats = function(floorplans, survey, links, hide) {
+
+    var fps = _.cloneDeep(floorplans);
+
+    var fpids = _.pluck(floorplans, "id").map(function (x) {
+        return x.toString()
+    })
+
+    var totUnits = _.sum(fps, function (fp) {
+        return fp.units
+    });
+    survey.totUnits = totUnits;
+
+    if (links.excluded === true && hide) {
+        links.floorplans = links.floorplans.map(function (x) {
+            return x.toString()
+        })
+
+        fps = _.filter(fps, function (x) {
+            return links.floorplans.indexOf(x.id.toString()) > -1
+        })
+
+        var excluded = _.find(fpids, function (x) {
+            return links.floorplans.indexOf(x.toString()) == -1
+        })
+
+        if (excluded) {
+            survey.excluded = true;
+        }
+    }
+
+    totUnits = _.sum(fps, function (fp) {
+        return fp.units
+    });
+
+    if (totUnits > 0) {
+        survey.sqft = Math.round(_.sum(fps, function (fp) {
+                return (fp.sqft) * fp.units
+            }) / totUnits);
+        survey.rent = Math.round(_.sum(fps, function (fp) {
+                return (fp.rent) * fp.units
+            }) / totUnits);
+        survey.concessions = Math.round(_.sum(fps, function (fp) {
+                return (fp.concessions) * fp.units
+            }) / totUnits);
+        survey.ner = Math.round(survey.rent - (survey.concessions / 12))
+        survey.nersqft = Math.round(survey.ner / survey.sqft * 100) / 100
     }
 }
