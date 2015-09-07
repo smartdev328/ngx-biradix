@@ -124,6 +124,12 @@ module.exports = {
                                 li.operator.name = "External User";
                             }
 
+                            if (li.user && li.user.id && userids.indexOf(li.user.id.toString()) == -1) {
+                                li.description = li.description.replace(li.user.name, "External User")
+                                li.user.name = "External User";
+
+                            }
+
                         });
                     }
                     callback(err,list,PaginationService.getPager(criteria.skip, criteria.limit, obj))
