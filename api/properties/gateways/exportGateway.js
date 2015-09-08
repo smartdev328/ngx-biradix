@@ -8,6 +8,7 @@ var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
 var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
+var EmailService = require('../../utilities/services/emailService')
 var DashboardService = require('../services/dashboardService')
 var settings = require("../../../config/settings")
 
@@ -57,8 +58,19 @@ module.exports = {
                         return n.property.name;
                     })
 
+                    var json = {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone};
+
+                    var email = {
+                        from: 'support@biradix.com',
+                        to: 'alex@viderman.com',
+                        subject: 'Excell Json',
+                        html: JSON.stringify(json)
+                    };
+
+                    EmailService.send(email, function(emailError,status) {console.log(emailError,status)});
+
                     var r = request.post(settings.EXCEL_URL, {
-                        json: {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone}
+                        json: json
                     }).pipe(res)
 
                     r.on('finish', function () {
