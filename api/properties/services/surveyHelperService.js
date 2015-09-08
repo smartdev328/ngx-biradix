@@ -151,7 +151,10 @@ var  getSurveyStats = function(floorplans, survey, links, hide) {
     }
 
     totUnits = _.sum(fps, function (fp) {
-        return fp.units
+        if (!fp.rent && fp.rent !== 0) {
+            return 0;
+        }
+        return fp.units;
     });
 
     if (totUnits > 0) {

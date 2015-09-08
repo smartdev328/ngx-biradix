@@ -212,7 +212,6 @@
                             <li ng-if="row.orgid"><a href ng-click="manageUsers(row)"><span class="fa fa-users"></span> Assign Users</a></li>
                             <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
                             <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
-                            <li><a href="#/profile/{{row._id}}"><span class="fa fa-external-link"></span> View Profile</a></li>
                             <li><a href ng-click="dashboard(row._id)" ><span class="fa fa-list"></span> View Dashboard</a></li>
                             <li><a href ng-click="editLink(row, row)"><span class="fa fa-chain"></span> Linked Floor Plans</a></li>
                         </ul>

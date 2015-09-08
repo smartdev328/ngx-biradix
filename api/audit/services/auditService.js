@@ -28,8 +28,8 @@ var audits  = [
 
 
     {key: 'property_status', value: 'Updated Property Status', undo: true, group: 'Property'},
-    {key: 'comp_linked', value: 'Comp Linked', undo: true, group: 'Property'},
-    {key: 'comp_unlinked', value: 'Comp Unlinked', undo: true, group: 'Property'},
+    {key: 'comp_linked', value: 'Comp Added', undo: true, group: 'Property'},
+    {key: 'comp_unlinked', value: 'Comp Removed', undo: true, group: 'Property'},
     {key: 'links_updated', value: 'Comp Links Updated', undo: true, group: 'Property'},
     {key: 'property_created', value: 'Property Created', group: 'Property'},
     {key: 'property_profile_updated', value: 'Profile Updated', undo: true, group: 'Property'},
