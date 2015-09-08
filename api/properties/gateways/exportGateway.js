@@ -60,14 +60,14 @@ module.exports = {
 
                     var json = {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone};
 
-                    var email = {
-                        from: 'support@biradix.com',
-                        to: 'alex@viderman.com',
-                        subject: 'Excell Json',
-                        html: JSON.stringify(json)
-                    };
-
-                    EmailService.send(email, function(emailError,status) {console.log(emailError,status)});
+                    //var email = {
+                    //    from: 'support@biradix.com',
+                    //    to: 'alex@viderman.com',
+                    //    subject: 'Excell Json',
+                    //    html: JSON.stringify(json)
+                    //};
+                    //
+                    //EmailService.send(email, function(emailError,status) {console.log(emailError,status)});
 
                     var r = request.post(settings.EXCEL_URL, {
                         json: json
