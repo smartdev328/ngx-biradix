@@ -116,6 +116,17 @@ var RolesAssignPermissionsCreate = function(roles, callback) {
         {executorid: roles.DemoBM._id, resource: roles.DemoPO._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.DemoPO._id, resource: roles.DemoPO._id.toString(), allow: true, type: 'RoleAssign'},
 
+        {executorid: roles.PeakLivingCM._id, resource: roles.PeakLivingCM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingCM._id, resource: roles.PeakLivingRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingCM._id, resource: roles.PeakLivingBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingCM._id, resource: roles.PeakLivingPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingRM._id, resource: roles.PeakLivingRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingRM._id, resource: roles.PeakLivingBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingRM._id, resource: roles.PeakLivingPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingBM._id, resource: roles.PeakLivingBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingBM._id, resource: roles.PeakLivingPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.PeakLivingPO._id, resource: roles.PeakLivingPO._id.toString(), allow: true, type: 'RoleAssign'},
+        
     ];
 
     async.eachLimit(permissions, 10, function(permission, callbackp){
@@ -445,6 +456,11 @@ var RolesCreate = function(Orgs, callback) {
     var GreystarBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Greystar._id}
     var GreystarPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Greystar._id}
 
+    var PeakLivingCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.PeakLiving._id}
+    var PeakLivingRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.PeakLiving._id}
+    var PeakLivingBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.PeakLiving._id}
+    var PeakLivingPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.PeakLiving._id}    
+
     async.parallel({
         BiradixAdmin: function(callbackp) {
             AccessService.createRole(BiradixAdmin, function(err, role){
@@ -530,7 +546,27 @@ var RolesCreate = function(Orgs, callback) {
             AccessService.createRole(GreystarPO, function(err, role){
                 callbackp(null, role)
             });
-        }
+        },
+        PeakLivingCM: function(callbackp) {
+            AccessService.createRole(PeakLivingCM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        PeakLivingRM: function(callbackp) {
+            AccessService.createRole(PeakLivingRM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        PeakLivingBM: function(callbackp) {
+            AccessService.createRole(PeakLivingBM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        PeakLivingPO: function(callbackp) {
+            AccessService.createRole(PeakLivingPO, function(err, role){
+                callbackp(null, role)
+            });
+        },
 },function(err, roles) {callback(roles)})
 
 
@@ -542,6 +578,7 @@ var CompaniesCreate = function(callback) {
     var Greystar = {name: "Greystar", subdomain: 'greystar', logoBig: 'greystar.jpg', logoSmall: 'greystar-small.png'}
     var Wood = {name: "Wood Residential", subdomain: 'wood', logoBig: 'wood.png', logoSmall: 'wood-small.png'}
     var Alliance = {name: "Alliance Residential", subdomain: 'alliance', logoBig: 'alliance.png', logoSmall: 'alliance-small.png'}
+    var PeakLiving = {name: "Peak Living", subdomain: 'peakliving', logoBig: 'peakliving.png', logoSmall: 'peakliving-small.png'}
 
 
     async.parallel({
@@ -557,7 +594,6 @@ var CompaniesCreate = function(callback) {
             callbackp(err, org)
         });
     }
-
     ,
         Demo: function (callbackp) {
         OrgService.create(Demo, function (err, org) {
@@ -579,6 +615,12 @@ var CompaniesCreate = function(callback) {
         });
     }
 
+        ,
+        PeakLiving: function (callbackp) {
+            OrgService.create(PeakLiving, function (err, org) {
+                callbackp(err, org)
+            });
+        }
 
 },function(err, orgs) {
         if (err) {
@@ -663,6 +705,22 @@ var PermissionsCreate = function(roles, properties, callback) {
         {executorid: roles.DemoCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.DemoRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.DemoBM._id, resource: "Properties", allow: true, type: 'Execute'},
+
+        {executorid: roles.PeakLivingCM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingRM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingBM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingCM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingRM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingBM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingCM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingRM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingBM._id, resource: "Properties", allow: true, type: 'Execute'},        
     ];
 
     async.eachLimit(permissions, 10, function(permission, callbackp){
