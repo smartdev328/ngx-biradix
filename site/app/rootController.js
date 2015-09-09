@@ -161,9 +161,9 @@ define([
                 }
                 else {
                     if ($rootScope.me.settings.hideUnlinked) {
-                        toastr.warning('Unlinked floor plans will now be hidden in all your data results.')
+                        toastr.warning('Excluded comped floor plans will now be hidden in all your data results.')
                     } else {
-                        toastr.success('Unlinked floor plans will now be shown in all your data results.')
+                        toastr.success('Excluded comped floor plans will now be shown in all your data results.')
                     }
 
 

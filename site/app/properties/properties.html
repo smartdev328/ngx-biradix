@@ -213,7 +213,7 @@
                             <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
                             <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
                             <li><a href ng-click="dashboard(row._id)" ><span class="fa fa-list"></span> View Dashboard</a></li>
-                            <li><a href ng-click="editLink(row, row)"><span class="fa fa-chain"></span> Linked Floor Plans</a></li>
+                            <li><a href ng-click="editLink(row, row)"><span class="fa fa-chain"></span> Comped Floor Plans</a></li>
                         </ul>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
         </tr>
         <tr ng-if="row.open && row.compsLoaded && row.fullcomps.length == 0">
             <td colspan="100%">
-                <Br><div class="alert alert-warning" role="alert">There are currently no comps linked with this property.
+                <Br><div class="alert alert-warning" role="alert">There are currently no comps added to this property.
                     <a href ng-click="addComp(row)"><span class="fa fa-plus-circle"></span> Add Comp</a>
 
                 </div>
@@ -268,7 +268,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                             <li><a href ng-click="edit(comp._id, true)"><span class="fa fa-building"></span> Edit Comp</a></li>
-                            <li><a href ng-click="editLink(row, comp)"><span class="fa fa-chain"></span> Linked Floor Plans</a></li>
+                            <li><a href ng-click="editLink(row, comp)"><span class="fa fa-chain"></span> Comped Floor Plans</a></li>
                             <li><a href ng-click="unlinkComp(row, comp)"><span class="fa fa-times"></span> Remove Comp</a></li>
                         </ul>
                     </div>

@@ -15,7 +15,7 @@ module.exports = {
 
             if (!surveys || surveys.length == 0) {
                 var query = {_id: propertyid};
-                var update = {survey: undefined};
+                var update = {survey: {}};
                 var options = {new: true};
 
                 PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {

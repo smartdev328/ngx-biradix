@@ -338,7 +338,7 @@ define([
 
         $scope.unlinkComp = function (property, comp) {
 
-            $dialog.confirm('Are you sure you want to unlink Comp "' + comp.name + '" from Subject "' + property.name + '"?', function() {
+            $dialog.confirm('Are you sure you want to remove Comp "' + comp.name + '" from Subject "' + property.name + '"?', function() {
                 $scope.alerts = [];
 
                 ngProgress.start();
@@ -352,7 +352,7 @@ define([
                             _.remove(property.comps, function(c) {return c.id.toString() == comp._id.toString() })
                             _.remove(property.fullcomps, function(c) {return c._id.toString() == comp._id.toString() })
 
-                            $scope.alerts.push({type: 'warning', msg: 'Comp "' + comp.name + '" unlinked from Subject "' + property.name + '" successfully.'});
+                            $scope.alerts.push({type: 'success', msg: 'Comp "' + comp.name + '" removed from Subject "' + property.name + '" successfully.'});
                         }
 
                         ngProgress.reset();

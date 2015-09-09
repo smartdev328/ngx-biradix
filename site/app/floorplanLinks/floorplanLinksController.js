@@ -25,7 +25,7 @@ define([
                 var linkedfloorplans = _.find($scope.subject.comps, function(cm) {return cm.id == $scope.comp._id.toString()}).floorplans;
 
                 $scope.items = [];
-                $scope.options = {searchLabel: 'Floor Plans', availableLabel: "Unlinked Floor Plans", selectedLabel : "Linked Floor Plans"}
+                $scope.options = {searchLabel: 'Floor Plans', availableLabel: "Excluded Floor Plans", selectedLabel : "Included Floor Plans"}
 
                 $scope.comp.floorplans.forEach(function(fp) {
                     var link = {id: fp.id, name: $propertyService.floorplanName(fp), group: $scope.floorplanGroup(fp), selected: false}
@@ -59,6 +59,12 @@ define([
                 if (_.find($scope.items, function(i) {return i.selected == false})) {
                     excluded = true;
                 }
+
+                if (floorplans.length == 0) {
+                    toastr.error("Please include at least one floor plan for comparing.");
+                    return;
+                }
+
                 $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
                 $propertyService.saveCompLink(id, compid, floorplans, excluded).then(function (resp) {
