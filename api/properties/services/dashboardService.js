@@ -10,14 +10,14 @@ module.exports = {
         async.parallel({
             subject: function (callbackp) {
                 PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: subjectId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property) {
                     callbackp(err, property[0])
                 })
             },
             comp: function (callbackp) {
                 PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: compId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans orgid"
                 }, function(err, property, lookups) {
                     callbackp(err, {p: property[0], l: lookups})
                 })

@@ -23,9 +23,18 @@ Routes.get('/filters', function (req, res) {
         properties: function(callbackp) {
             getPropertiesAndComps(req, callbackp);
         },
+        audits: function(callbackp) {
+            var audits = AuditService.audits;
+
+            if (req.user.memberships.isadmin !== true) {
+                _.remove(audits, function(x) {return x.admin === true})
+            }
+
+            callbackp(null,audits)
+        }
 
     }, function(err, all) {
-            return res.status(200).json({audits: AuditService.audits, users: all.users, properties: all.properties});
+        return res.status(200).json({audits: all.audits, users: all.users, properties: all.properties});
     })
 
 });

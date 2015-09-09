@@ -14,6 +14,7 @@ var s = new Schema({
     },
     property: {
         id : {type: Schema.Types.ObjectId, index:true},
+        orgid : {type: Schema.Types.ObjectId},
         name: String
     },
     amenity: {

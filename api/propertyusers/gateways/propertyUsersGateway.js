@@ -24,10 +24,10 @@ routes.get('/properties/:userid', function (req, res) {
 });
 
 routes.put('/properties/:userid', function (req, res) {
-    AccessService.canAccessResource(req.user,req.params.userid,'UserManage', function(canAccess) {
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
+    //AccessService.canAccessResource(req.user,req.params.userid,'UserManage', function(canAccess) {
+    //    if (!canAccess) {
+    //        return res.status(401).json("Unauthorized request");
+    //    }
 
         PropertyUsersService.setPropertiesForUser(req.user,req.context, null, req.params.userid, req.body, function (err) {
             if (err) {
@@ -37,7 +37,7 @@ routes.put('/properties/:userid', function (req, res) {
                 return res.status(200).json({success: true});
             }
         });
-    })
+    //})
 });
 
 routes.get('/users/:propertyid', function (req, res) {

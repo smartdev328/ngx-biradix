@@ -8,7 +8,7 @@ var DateService = require('../../utilities/services/dateService')
 var audits  = [
     {key: 'login_failed', value: 'Login Failed', group: 'User'},
     {key: 'login_succeeded', value: 'Login Succeeded', group: 'User'},
-    {key: 'login_as', value: 'Login As', group: 'User'},
+    {key: 'login_as', value: 'Login As', group: 'User', admin: true},
     {key: 'password_updated', value: 'Password Updated', group: 'User'},
     {key: 'reset_password', value: 'Password Reset', group: 'User'},
     {key: 'user_status', value:  'User Status Updated', undo: true, group: 'User'},
@@ -24,7 +24,7 @@ var audits  = [
     {key: 'report', value: 'Report', group: 'Reporting'},
     {key: 'report_print', value: 'Report Print', group: 'Reporting'},
     {key: 'report_pdf', value: 'Report Pdf', group: 'Reporting'},
-    {key: 'show_unlinked', value: 'Exclude Setting', group: 'Reporting'},
+    {key: 'show_unlinked', value: 'Exclude Setting', group: 'Reporting', admin: true},
 
 
     {key: 'property_status', value: 'Updated Property Status', undo: true, group: 'Property'},
@@ -68,7 +68,8 @@ module.exports = {
         if (audit.property) {
             n.property = {
                 id: audit.property.id || audit.property._id,
-                name: audit.property.name
+                name: audit.property.name,
+                orgid: audit.property.orgid
             };
         }
         if (audit.amenity) {
@@ -152,7 +153,7 @@ function QueryBuilder (criteria, userids, propertyids) {
     //Remove "Login As" from non admin so it doesnt cause them to freak out
     if (userids.length > 0 || propertyids.length > 0) {
         if (criteria.types && criteria.types.length > 0) {
-            _.remove(criteria.types,function(x) {return x.toString() == "login_as"});
+            _.remove(criteria.types,function(x) {return x == "login_as" || x == "show_unlinked"});
         }
     }
     var query = AuditSchema.find();

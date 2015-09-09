@@ -31,7 +31,7 @@ define([
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
 
 
-        $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true, select : "_id name comps.id"}).then(function (response) {
+        $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true, select : "_id name comps.id orgid"}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
 
