@@ -101,9 +101,9 @@ module.exports = {
             return callback(err, saved)
         })
     },
-    get: function(criteria, userids, propertyids, callback) {
+    get: function(criteria, userids, propertyids, compids, callback) {
 
-        var query = QueryBuilder(criteria, userids, propertyids);
+        var query = QueryBuilder(criteria, userids, propertyids, compids);
 
         query.count(function(err, obj) {
 
@@ -114,7 +114,7 @@ module.exports = {
                 callback(null,[],PaginationService.getPager(criteria.skip, criteria.limit, 0))
             }
             else {
-                var query = QueryBuilder(criteria,userids,propertyids).sort("-date").skip(criteria.skip).limit(criteria.limit);
+                var query = QueryBuilder(criteria,userids,propertyids,compids).sort("-date").skip(criteria.skip).limit(criteria.limit);
                 if (criteria.select) {
                     query = query.select(criteria.select);
                 }
@@ -142,7 +142,7 @@ module.exports = {
 
 }
 
-function QueryBuilder (criteria, userids, propertyids) {
+function QueryBuilder (criteria, userids, propertyids, compids) {
     criteria = criteria || {};
 
     criteria.skip = criteria.skip || 0;
@@ -176,6 +176,7 @@ function QueryBuilder (criteria, userids, propertyids) {
         query= query.where("_id").equals(criteria.id);
     }
 
+    var allowedforComps = ['property_created','property_status','property_profile_updated','property_contact_updated','property_fees_updated','property_amenities_updated','property_floorplan_created','property_floorplan_removed','property_floorplan_updated','property_floorplan_amenities_updated','survey_created','survey_deleted','survey_updated'];
     //If you are limited by users or properties go here:
     if (userids.length > 0 || propertyids.length > 0) {
 
@@ -185,6 +186,7 @@ function QueryBuilder (criteria, userids, propertyids) {
                 {"operator.id": {$in : userids}},
                 {"user.id": {$in : userids}},
                 {"property.id": {$in : propertyids}},
+                {$and : [{"property.id": {$in : compids}},{"type":{$in:allowedforComps}}]},
                 ])
         }
         else {
@@ -197,10 +199,12 @@ function QueryBuilder (criteria, userids, propertyids) {
             }
 
             if (criteria.properties.length > 0) {
-                query = query.and([
+                query = query.or([
                     {"property.id": {$in : _.intersection(propertyids, criteria.properties)}},
+                    {$and : [{"property.id": {$in : _.intersection(compids, criteria.properties)}},{"type":{$in:allowedforComps}}]},
                 ])
             }
+
         }
     }
     else {

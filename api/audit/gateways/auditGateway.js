@@ -21,7 +21,9 @@ Routes.get('/filters', function (req, res) {
         },
 
         properties: function(callbackp) {
-            getPropertiesAndComps(req, callbackp);
+            getPropertiesAndComps(req, function(err,props,comps) {
+                callbackp(null, {subject:props,comps:comps})
+            });
         },
         audits: function(callbackp) {
             var audits = AuditService.audits;
@@ -34,7 +36,7 @@ Routes.get('/filters', function (req, res) {
         }
 
     }, function(err, all) {
-        return res.status(200).json({audits: all.audits, users: all.users, properties: all.properties});
+        return res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps)});
     })
 
 });
@@ -227,15 +229,15 @@ function search(req, callback) {
         },
         propertyids: function(callbackp) {
             if (req.user.memberships.isadmin === true) {
-                callbackp(null,[]);
+                callbackp(null,{subject:[],comps:[]});
             } else {
-                getPropertiesAndComps(req, function(err,props) {
-                    callbackp(null, _.pluck(props,"_id"))
+                getPropertiesAndComps(req, function(err,props,comps) {
+                    callbackp(null, {subject:_.pluck(props,"_id"),comps:_.pluck(comps,"_id")})
                 });
             }
         },
     }, function(err, all) {
-        AuditService.get(req.body,all.userids,all.propertyids, function (err, obj, pager) {
+        AuditService.get(req.body,all.userids,all.propertyids.subject,all.propertyids.comps, function (err, obj, pager) {
             callback(err, obj, pager)
         });
     })
@@ -419,7 +421,26 @@ function userUnAssignedUndo  (req, o, callback) {
 }
 
 function getPropertiesAndComps (req, callback) {
-    PropertyService.search(req.user, {permission: ['PropertyManage','CompManage'], select: '_id name', limit: 1000}, function(err, properties) {
-        callback(null, properties)
+
+    async.parallel({
+        subjects: function(callbackp) {
+            PropertyService.search(req.user, {permission: ['PropertyManage'], select: '_id name', limit: 1000}, function(err, properties) {
+                callbackp(null, properties)
+            })
+        },
+        comps: function(callbackp) {
+            PropertyService.search(req.user, {permission: ['CompManage'], select: '_id name', limit: 1000}, function(err, properties) {
+                callbackp(null, properties)
+            })
+        }
+    }, function(err,all) {
+
+        _.remove(all.comps, function(c) {return _.find(all.subjects, function(s) { return s._id.toString() == c._id.toString()})})
+
+        all.comps.forEach(function(c) {
+            c.name += " (Comp)";
+        })
+        callback(null, all.subjects, all.comps)
     })
+
 }
