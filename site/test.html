@@ -58,21 +58,27 @@
 
 <nav class="navbar visible-xs header-nav navbar-fixed-top">
     <div class="container-fluid">
-        <div class="nav navbar-nav" style="padding:5px 0px 10px 10px;">
+        <div class="nav navbar-nav" style="padding:0px 0px 0px 10px;">
             <a href="#/dashboard"><img src="/images/organizations/biradix-small.png" class="logoSmall" style="max-height:41px"></a>
             <button type="button" style="padding: 5px 10px 7px 10px;margin-right:10px" class="pull-right" onclick="$('#wrapper').toggleClass('toggled');">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-bars"></i>
             </button>
         </div>
 
     </div><!-- /.container-fluid -->
 </nav>
 
-<div id="wrapper" ng-style="{'padding-left' : sideMenu.length == 0 ? '0px' : ''}">
+<div id="wrapper">
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
+            <li class="visible-xs">
+                <a href="#"><i class="fa fa-tachometer"></i> Dashboard</a>
+            </li>
+            <li class="visible-xs">
+                <a href="#"><i class="fa fa-bar-chart"></i> Reporting</a>
+            </li>
             <li>
                 <a href="#"><i class="fa fa-user"></i> My Account</a>
             </li>
