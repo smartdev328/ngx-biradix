@@ -23,7 +23,7 @@ var audits  = [
     {key: 'excel_profile', value: 'Excel Profile', group: 'Reporting'},
     {key: 'report', value: 'Report', group: 'Reporting'},
     {key: 'report_print', value: 'Report Print', group: 'Reporting'},
-    {key: 'report_pdf', value: 'Report Pdf', group: 'Reporting'},
+    {key: 'report_pdf', value: 'Report PDF', group: 'Reporting'},
     {key: 'show_unlinked', value: 'Exclude Setting', group: 'Reporting', admin: true},
 
 

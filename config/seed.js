@@ -380,7 +380,7 @@ var UsersCreate = function(roles, callback) {
     var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K", roleid: roles.BiradixAdmin._id};
     var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z", roleid: roles.BiradixAdmin._id};
     var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleid: roles.BiradixAdmin._id};
-    var Michelle = {email : "mbetchner@greystar.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleid: roles.GreystarCM._id};
+    var Michelle = {email : "cue+michelle@elkconsulting.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleid: roles.GreystarCM._id};
 
 
     UserCreateService.insert(null, null, System, null, function(errors, usr) {
