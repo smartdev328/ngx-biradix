@@ -21,9 +21,13 @@ userRoutes.post('/resetPassword', function (req, res) {
 userRoutes.put('/me', function (req, res) {
     userCreateService.updateMe(req.user, req.context, req.body, function (err, usr) {
             if (err) {
+                usr = null;
                 return res.status(200).json({errors: err, user: null});
             }
-            res.status(200).json({errors: err, user: UtilityService.getPublicJSON(usr)});
+            var user = UtilityService.getPublicJSON(usr);
+            res.status(200).json({errors: err, user: user});
+            user = null;
+            usr = null;
         }
     );
 
@@ -221,5 +225,6 @@ module.exports = userRoutes;
 function getToken(usr, res) {
     UserService.getFullUser(usr, function(resp) {
         res.status(200).json(resp);
+        resp = null;
     })
 }

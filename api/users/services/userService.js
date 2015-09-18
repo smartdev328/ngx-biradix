@@ -127,6 +127,12 @@ module.exports = {
                 _.remove(users, function(x) {return x.deleted})
 
                 callback(err,users)
+
+                for (var s in all) {
+                    all[s] = null;
+                    delete all[s];
+                }
+                all = null;
             })
 
         });
