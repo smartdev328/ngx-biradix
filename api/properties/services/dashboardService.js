@@ -80,6 +80,17 @@ module.exports = {
                         })
 
                         callback({property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
+
+                        for (var s in all) {
+                            all[s] = null;
+                            delete all[s];
+                        }
+                        all = null;
+                        for (var s in all2) {
+                            all2[s] = null;
+                            delete all2[s];
+                        }
+                        all2 = null;
                     });
                 })
 
@@ -133,6 +144,12 @@ module.exports = {
                                 delete c.floorplans;
                             })
                             callback ({property: property[0], comps: all.comps, points: all.points});
+
+                            for (var s in all) {
+                                all[s] = null;
+                                delete all[s];
+                            }
+                            all = null;
                         });
 
 
