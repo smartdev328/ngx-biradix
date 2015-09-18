@@ -4,11 +4,15 @@ var cluster = require('cluster');
 var os = require('os');
 
 module.exports = {
-        init: function (app) {
+        init: function (options,callback) {
 
             if ((cluster.isMaster) && (process.execArgv.indexOf('--debug') < 0) && (settings.MODE === 'production') && (process.execArgv.indexOf('--singleProcess') < 0)) {
                 // Count the machine's CPUs
                 var cpuCount = os.cpus().length;
+
+                if (options.maxThreads && options.maxThreads < cpuCount) {
+                    cpuCount = options.maxThreads;
+                }
 
                 // Create a worker for each CPU
                 for (var i = 0; i < cpuCount; i += 1) {
@@ -32,12 +36,7 @@ module.exports = {
                     workerId = cluster.worker.id;
                 }
 
-                var server = app.listen(settings.PORT, function () {
-
-                    var port = server.address().port;
-                    console.log('WorkerID: %s, Port: %s', workerId, port)
-
-                })
+                callback(workerId);
             }
         }
 }

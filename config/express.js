@@ -1,9 +1,8 @@
 'use strict';
 var settings = require('./settings.js')
+var errors = require('./error')
 var bodyParser = require('body-parser')
 var expressJwt = require('express-jwt')
-var raygun = require('raygun');
-var raygunClient = new raygun.Client().init({ apiKey: settings.RAYGUN_APIKEY });
 var cookieParser = require('cookie-parser')
 var compression = require('compression')
 
@@ -79,7 +78,7 @@ module.exports = {
                 next();
             });
 
-            app.use(raygunClient.expressHandler);
+            app.use(errors.getClient().expressHandler);
 
             //app.all("*", function(req, res, next) {
             //    //console.log(req.path, req.cookies)
