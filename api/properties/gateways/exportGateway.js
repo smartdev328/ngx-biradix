@@ -8,9 +8,9 @@ var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
 var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
-var EmailService = require('../../utilities/services/emailService')
 var DashboardService = require('../services/dashboardService')
 var settings = require("../../../config/settings")
+var queueService = require('../services/queueService');
 
 module.exports = {
     init: function(Routes) {
@@ -29,15 +29,15 @@ module.exports = {
                 end: req.query.selectedEndDate
             }
 
-            DashboardService.getDashboard(req,res, function(dashboard) {
+            queueService.getDashboard(req, function(err,dashboard) {
                 async.eachLimit(dashboard.comps, 10, function(comp, callbackp){
                     req.body.show.traffic = true;
                     req.body.show.leases = true;
                     req.body.show.bedrooms = true;
 
-                    DashboardService.getProfile(req,res, false, dashboard.property._id, comp._id, function(profile) {
+                    queueService.getProfile(req.user,req.body, false, dashboard.property._id, comp._id, function(err,profile) {
                         profiles.push(profile)
-                        callbackp();
+                        callbackp(err);
                     })
                 }, function(err) {
 

@@ -8,3 +8,12 @@ queues.getDashboardQueue().consume(function(data,reply) {
         reply({err: err, dashboard: dashboard});
     })
 });
+
+queues.getProfileQueue().consume(function(data,reply) {
+    console.log(data.compId + " profile started");
+    DashboardService.getProfile(data.user,data.options, data.checkManaged, data.subjectId, data.compId, function(err, profile) {
+        console.log(data.compId + " profile ended");
+        reply({err: err, profile: profile});
+    })
+});
+

@@ -6,17 +6,17 @@ var PropertyService = require('../services/propertyService')
 var DataPointsService = require('../services/dataPointsService')
 
 module.exports = {
-    getProfile: function(req,res,checkManaged, subjectId, compId, callback) {
+    getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
         async.parallel({
             subject: function (callbackp) {
-                PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: subjectId
+                PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property) {
                     callbackp(err, property[0])
                 })
             },
             comp: function (callbackp) {
-                PropertyService.search(req.user, {limit: 1, permission: 'PropertyView', _id: compId
+                PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: compId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans orgid"
                 }, function(err, property, lookups) {
                     callbackp(err, {p: property[0], l: lookups})
@@ -27,7 +27,7 @@ module.exports = {
                 if (!checkManaged) {
                     return callbackp(null,false);
                 }
-                PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
+                PropertyService.search(user, {limit: 1, permission: 'CompManage', _id: compId
                     , select: "_id"
                 }, function(err, property) {
                     callbackp(err, property.length == 1)
@@ -36,10 +36,10 @@ module.exports = {
         }, function(err, all) {
 
             if (err) {
-                res.status(400).send(err)
+                return callback(err,null)
             } else {
 
-                PropertyService.search(req.user, {
+                PropertyService.search(user, {
                     limit: 1,
                     permission: 'PropertyView',
                     ids: [compId]
@@ -48,17 +48,17 @@ module.exports = {
                 }, function(err, comps) {
                     async.parallel({
                         comps: function (callbackp) {
-                            PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, all.subject, comps, function() {
+                            PropertyService.getLastSurveyStats(user.settings.hideUnlinked, all.subject, comps, function() {
                                 callbackp(null, comps)
                             })
                         },
                         points: function(callbackp) {
-                            DataPointsService.getPoints(req.user.settings.hideUnlinked, all.subject, comps,
+                            DataPointsService.getPoints(user.settings.hideUnlinked, all.subject, comps,
                                 false,
                                 -1,
-                                req.body.daterange,
-                                req.body.offset,
-                                req.body.show,
+                                options.daterange,
+                                options.offset,
+                                options.show,
                                 function(points) {
                                     callbackp(null, points)
                                 })
@@ -79,7 +79,7 @@ module.exports = {
                             }
                         })
 
-                        callback({property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
+                        callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
 
                         for (var s in all) {
                             all[s] = null;
