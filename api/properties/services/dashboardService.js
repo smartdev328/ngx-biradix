@@ -100,18 +100,18 @@ module.exports = {
 
     },
 
-    getDashboard: function(req,res,callback) {
-        PropertyService.search(req.user, {limit: 1, permission: 'PropertyManage', _id: req.params.id
+    getDashboard: function(user,id,options,callback) {
+        PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: id
             , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
         }, function(err, property) {
 
             if (err) {
-                res.status(400).send(err)
+                return callback(err,null)
             } else {
                 var compids = _.pluck(property[0].comps, "id");
                 delete property[0].compids;
 
-                PropertyService.search(req.user, {
+                PropertyService.search(user, {
                     limit: 20,
                     permission: 'PropertyView',
                     ids: compids
@@ -120,21 +120,21 @@ module.exports = {
                 }, function(err, comps) {
 
                     if (err) {
-                        res.status(400).send(err)
+                        return callback(err,null)
                     } else {
                         async.parallel({
                             comps: function (callbackp) {
-                                PropertyService.getLastSurveyStats(req.user.settings.hideUnlinked, property[0], comps, function() {
+                                PropertyService.getLastSurveyStats(user.settings.hideUnlinked, property[0], comps, function() {
                                     callbackp(null, comps)
                                 })
                             },
                             points: function(callbackp) {
-                                DataPointsService.getPoints(req.user.settings.hideUnlinked, property[0], comps,
-                                    req.body.summary,
-                                    req.body.bedrooms,
-                                    req.body.daterange,
-                                    req.body.offset,
-                                    req.body.show,
+                                DataPointsService.getPoints(user.settings.hideUnlinked, property[0], comps,
+                                    options.summary,
+                                    options.bedrooms,
+                                    options.daterange,
+                                    options.offset,
+                                    options.show,
                                     function(points) {
                                         callbackp(null, points)
                                     })
@@ -143,7 +143,7 @@ module.exports = {
                             all.comps.forEach(function(c) {
                                 delete c.floorplans;
                             })
-                            callback ({property: property[0], comps: all.comps, points: all.points});
+                            callback (null,{property: property[0], comps: all.comps, points: all.points});
 
                             for (var s in all) {
                                 all[s] = null;
