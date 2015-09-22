@@ -45,6 +45,7 @@ module.exports = {
                     return res.status(400).send(err);
                 }
                 res.status(200).json({profile: o});
+                o = null;
             })
         });
 
@@ -55,6 +56,7 @@ module.exports = {
                     return res.status(400).send(err);
                 }
                 res.status(200).json(dashboard);
+                dashboard = null;
             })
 
 

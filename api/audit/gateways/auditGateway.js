@@ -36,7 +36,8 @@ Routes.get('/filters', function (req, res) {
         }
 
     }, function(err, all) {
-        return res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps)});
+        res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps)});
+        all = null;
     })
 
 });
@@ -193,13 +194,15 @@ Routes.post('/', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-
         search(req, function(err, obj, pager) {
                 if (err) {
-                    return res.status(200).json({errors: err});
+                    res.status(200).json({errors: err});
+                }
+                else {
+                    res.status(200).json({errors: null, activity: obj, pager: pager});
                 }
 
-                return res.status(200).json({errors: null, activity: obj, pager: pager});
+                obj = null;
             });
     })
 });
@@ -239,6 +242,7 @@ function search(req, callback) {
     }, function(err, all) {
         AuditService.get(req.body,all.userids,all.propertyids.subject,all.propertyids.comps, function (err, obj, pager) {
             callback(err, obj, pager)
+            all = null;
         });
     })
 }

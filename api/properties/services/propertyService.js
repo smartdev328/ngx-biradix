@@ -328,9 +328,7 @@ module.exports = {
                     })
                 }
 
-                var time2 = new Date();
-                //console.log("After DB: " + (time2.getTime() - time.getTime()));
-
+                all = null;
                 callback(err,props, lookups)
             })
         })

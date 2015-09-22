@@ -170,6 +170,8 @@ userRoutes.post('/', function (req, res) {
             res.status(200).json({users: users})
         }
 
+        users = null;
+
     })
 
 });
@@ -226,5 +228,6 @@ function getToken(usr, res) {
     UserService.getFullUser(usr, function(resp) {
         res.status(200).json(resp);
         resp = null;
+        usr = null;
     })
 }

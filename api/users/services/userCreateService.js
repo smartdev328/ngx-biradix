@@ -55,6 +55,9 @@ module.exports = {
                     };
 
                     AuditService.create(audit, function() {})
+
+                    audit = null;
+                    changes = null;
                 }
 
                 callback(null,usr);

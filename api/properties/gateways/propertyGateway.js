@@ -45,6 +45,7 @@ Routes.get('/lookups', function (req, res) {
         }
     }, function(err, all) {
         res.status(200).json({fees: PropertyHelperService.fees, orgs: all.orgs, amenities: all.amenities})
+        all= null;
     });
 
 
@@ -152,6 +153,8 @@ Routes.post('/:id/reports', function (req, res) {
             }
 
             res.status(200).json(results);
+            all = null;
+            results = null;
         });
 
 
@@ -167,6 +170,9 @@ Routes.post('/', function (req, res) {
         } else {
             res.status(200).json({properties: properties, lookups: lookups})
         }
+
+        properties = null;
+        lookups = null;
 
     })
 
