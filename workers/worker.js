@@ -4,8 +4,10 @@ var errors = require("../config/error")
 var d= require("domain").create();
 
 d.on("error", function(err) {
-    console.log(err);
-    errors.send(err);
+    console.log(err.stack);
+    if (settings.MODE == "production") {
+        errors.send(err);
+    }
 });
 
 d.run(function() {

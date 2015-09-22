@@ -8,8 +8,13 @@ var DataPointsService = require('../services/dataPointsService')
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
         var timer = new Date().getTime();
+        user.settings = user.settings || {};
         async.parallel({
             subject: function (callbackp) {
+
+                if (subjectId == compId) {
+                    return callbackp();
+                }
                 PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property) {
@@ -19,7 +24,7 @@ module.exports = {
             },
             comp: function (callbackp) {
                 PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: compId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans orgid"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property, lookups) {
                     console.log("Comp DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                     callbackp(err, {p: property[0], l: lookups})
@@ -41,64 +46,60 @@ module.exports = {
             if (err) {
                 return callback(err,null)
             } else {
+                var comps = [_.cloneDeep(all.comp.p)];
+                if (subjectId == compId) {
+                    all.subject = _.cloneDeep(all.comp.p);
+                }
+                delete all.comp.p.comps;
 
-                PropertyService.search(user, {
-                    limit: 1,
-                    permission: 'PropertyView',
-                    ids: [compId]
-                    ,
-                    select: "_id name address city state zip loc totalUnits survey.id floorplans"
-                }, function(err, comps) {
-                    async.parallel({
-                        comps: function (callbackp) {
-                            PropertyService.getLastSurveyStats(user.settings.hideUnlinked, all.subject, comps, function() {
-                                callbackp(null, comps)
+                async.parallel({
+                    comps: function (callbackp) {
+                        PropertyService.getLastSurveyStats(user.settings.hideUnlinked, all.subject, comps, function() {
+                            callbackp(null, comps)
+                        })
+                    },
+                    points: function(callbackp) {
+                        DataPointsService.getPoints(user.settings.hideUnlinked, all.subject, comps,
+                            false,
+                            -1,
+                            options.daterange,
+                            options.offset,
+                            options.show,
+                            function(points) {
+                                callbackp(null, points)
                             })
-                        },
-                        points: function(callbackp) {
-                            DataPointsService.getPoints(user.settings.hideUnlinked, all.subject, comps,
-                                false,
-                                -1,
-                                options.daterange,
-                                options.offset,
-                                options.show,
-                                function(points) {
-                                    callbackp(null, points)
-                                })
-                        }
-                    }, function(err, all2) {
-                        all2.comps.forEach(function(c) {
-                            if (c.survey) {
-                                delete c.floorplans;
+                    }
+                }, function(err, all2) {
+                    all2.comps.forEach(function(c) {
+                        if (c.survey) {
+                            delete c.floorplans;
 
-                                if (c.survey.date) {
-                                    var daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
-                                    if (daysSince >= 15) {
-                                        c.survey.tier = "danger";
-                                    } else if (daysSince >= 8) {
-                                        c.survey.tier = "warning";
-                                    }
+                            if (c.survey.date) {
+                                var daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
+                                if (daysSince >= 15) {
+                                    c.survey.tier = "danger";
+                                } else if (daysSince >= 8) {
+                                    c.survey.tier = "warning";
                                 }
                             }
-                        })
-
-                        console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
-
-                        callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
-
-                        for (var s in all) {
-                            all[s] = null;
-                            delete all[s];
                         }
-                        all = null;
-                        for (var s in all2) {
-                            all2[s] = null;
-                            delete all2[s];
-                        }
-                        all2 = null;
-                    });
-                })
+                    })
 
+                    console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+
+                    callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
+
+                    for (var s in all) {
+                        all[s] = null;
+                        delete all[s];
+                    }
+                    all = null;
+                    for (var s in all2) {
+                        all2[s] = null;
+                        delete all2[s];
+                    }
+                    all2 = null;
+                });
             }
 
         });
