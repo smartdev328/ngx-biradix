@@ -7,6 +7,7 @@ var DataPointsService = require('../services/dataPointsService')
 
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
+        var timer = new Date().getTime();
         async.parallel({
             subject: function (callbackp) {
                 PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: subjectId
@@ -79,6 +80,8 @@ module.exports = {
                             }
                         })
 
+                        console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+
                         callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
 
                         for (var s in all) {
@@ -101,6 +104,7 @@ module.exports = {
     },
 
     getDashboard: function(user,id,options,callback) {
+        var timer = new Date().getTime();
         PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: id
             , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
         }, function(err, property) {
@@ -143,6 +147,9 @@ module.exports = {
                             all.comps.forEach(function(c) {
                                 delete c.floorplans;
                             })
+
+                            console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
+
                             callback (null,{property: property[0], comps: all.comps, points: all.points});
 
                             for (var s in all) {
