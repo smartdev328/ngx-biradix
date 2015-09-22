@@ -13,6 +13,7 @@ module.exports = {
                 PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property) {
+                    console.log("Subject DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                     callbackp(err, property[0])
                 })
             },
@@ -20,6 +21,7 @@ module.exports = {
                 PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: compId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans orgid"
                 }, function(err, property, lookups) {
+                    console.log("Comp DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                     callbackp(err, {p: property[0], l: lookups})
                 })
             },

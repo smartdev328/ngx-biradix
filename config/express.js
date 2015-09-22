@@ -16,8 +16,9 @@ module.exports = {
                 level: 9
             }));
 
-            app.use(require('express').static(__dirname + '../../site/'));
-            app.use('/bower_components',  require('express').static(__dirname + '../../bower_components/'));
+            var cacheTime = 86400000*7;     // 7 days
+            app.use(require('express').static(__dirname + '../../site/',{ maxAge: cacheTime }));
+            app.use('/bower_components',  require('express').static(__dirname + '../../bower_components/',{ maxAge: cacheTime }));
 
             app.use(cookieParser())
 
@@ -77,6 +78,11 @@ module.exports = {
                 }
                 next();
             });
+
+            app.use(function(err,req, res, next) {
+                console.log(req.path)
+                next();
+            })
 
             app.use(errors.getClient().expressHandler);
 
