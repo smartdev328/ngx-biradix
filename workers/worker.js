@@ -5,8 +5,9 @@ var d= require("domain").create();
 
 d.on("error", function(err) {
     console.log(err.stack);
+    console.log(d.context);
     if (settings.MODE == "production") {
-        errors.send(err);
+        errors.send(err.stack,d.context);
     }
 });
 
@@ -37,10 +38,11 @@ d.run(function() {
 
         var clusterConfig = require('../config/cluster')
 
+        require('../api/properties/consumers/dashboardConsumer')
+
         //Initialize CPU clustering
         clusterConfig.init({maxThreads: 1}, function (workerId) {
             console.log('WorkerID: %s', workerId)
-            require('../api/properties/consumers/dashboardConsumer')
         });
 
     }

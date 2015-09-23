@@ -5,10 +5,10 @@ var d= require("domain").create();
 
 d.on("error", function(err) {
     console.log(err.stack);
+    console.log(d.context);
     if (settings.MODE == "production") {
-        errors.send(err);
+        errors.send(err.stack,d.context);
     }
-
 });
 
 d.run(function() {
@@ -39,24 +39,24 @@ d.run(function() {
         }
         require('../config/seed').init();
 
+        require('../config/express').init(app, d)
+        app.use('/poc/', require('../poc/pocGateway'));
+        app.use('/', require('../site/siteroutes'));
+        app.use(settings.API_PATH + 'access/', require('../api/access/gateways/accessGateway'));
+        app.use(settings.API_PATH + 'users/', require('../api/users/gateways/userGateway'));
+        app.use(settings.API_PATH + 'properties/', require('../api/properties/gateways/propertyGateway'));
+        app.use(settings.API_PATH + 'propertyusers/', require('../api/propertyusers/gateways/propertyUsersGateway'));
+        app.use(settings.API_PATH + 'audit/', require('../api/audit/gateways/auditGateway'));
+        app.use(settings.API_PATH + 'amenities/', require('../api/amenities/gateways/amenitiesGateway'));
+        app.use('/contact', require('../api/contact/gateways/contactGateway'));
+        app.use('/progress', require('../api/progress/gateways/progressGateway'));
+        app.get('/p/:token', function (req, res) {
+            res.redirect('/#/password/reset/' + req.params.token)
+        })
+
         require('../config/cluster').init({maxThreads: 2}, function (workerId) {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port)
-
-                require('../config/express').init(app)
-                app.use('/poc/', require('../poc/pocGateway'));
-                app.use('/', require('../site/siteroutes'));
-                app.use(settings.API_PATH + 'access/', require('../api/access/gateways/accessGateway'));
-                app.use(settings.API_PATH + 'users/', require('../api/users/gateways/userGateway'));
-                app.use(settings.API_PATH + 'properties/', require('../api/properties/gateways/propertyGateway'));
-                app.use(settings.API_PATH + 'propertyusers/', require('../api/propertyusers/gateways/propertyUsersGateway'));
-                app.use(settings.API_PATH + 'audit/', require('../api/audit/gateways/auditGateway'));
-                app.use(settings.API_PATH + 'amenities/', require('../api/amenities/gateways/amenitiesGateway'));
-                app.use('/contact', require('../api/contact/gateways/contactGateway'));
-                app.use('/progress', require('../api/progress/gateways/progressGateway'));
-                app.get('/p/:token', function (req, res) {
-                    res.redirect('/#/password/reset/' + req.params.token)
-                })
             })
         });
     };

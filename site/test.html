@@ -87,15 +87,21 @@
 </nav>
 
 <nav class="navbar header-nav navbar-fixed-top" style="margin-top:52px;padding:10px 10px 0px 10px;display:none" id="searchBar">
-    <div class="form-group has-feedback has-feedback-left search">
-        <input type="text" class="form-control input-sm"
-               placeholder="Search Properties"
-               typeahead="props.summary for props in getLocation($viewValue)"
-               typeahead-on-select="searchSelected($item, $model, $label)"
-               ng-model="search1"
-                >
-        <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
+    <div style="float:left;width:90%">
+        <div class="form-group has-feedback has-feedback-left search">
+            <input type="text" class="form-control input-sm"
+                   placeholder="Search Properties"
+                   typeahead="props.summary for props in getLocation($viewValue)"
+                   typeahead-on-select="searchSelected($item, $model, $label)"
+                   ng-model="search1"
+                    >
+            <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
+        </div>
     </div>
+    <div style="float:right;padding:2px 0px 0px 0px">
+        <A href="javascript:toggleSearch()"><i class="fa fa-close fa-2x"></i></A>
+    </div>
+    <br clear="all">
 </nav>
 
 <div id="wrapper">
@@ -188,7 +194,7 @@
     }
 
     function toggleSearch() {
-        $('#searchBar').slideToggle( "fast");
+        $('#searchBar').slideToggle( "slow");
     }
 </script>
 <style>

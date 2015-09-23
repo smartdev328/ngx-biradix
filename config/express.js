@@ -1,13 +1,12 @@
 'use strict';
 var settings = require('./settings.js')
-var errors = require('./error')
 var bodyParser = require('body-parser')
 var expressJwt = require('express-jwt')
 var cookieParser = require('cookie-parser')
 var compression = require('compression')
 
 module.exports = {
-        init: function (app) {
+        init: function (app, domain) {
             // Should be placed before express.static
             // To ensure that all assets and data are compressed (utilize bandwidth)
             app.use(compression({
@@ -79,12 +78,19 @@ module.exports = {
                 next();
             });
 
-            app.use(function(err,req, res, next) {
-                console.log(req.path)
-                next();
-            })
 
-            app.use(errors.getClient().expressHandler);
+            //Add request context to domain for debugging
+            app.use(function (req, res, next) {
+                domain.context = {
+                    url: req.protocol + '://' + req.get('host') + req.originalUrl,
+                    body: req.body,
+                    query: req.query,
+                    headers: req.headers,
+                    user: req.user
+                };
+
+                next();
+            });
 
             //app.all("*", function(req, res, next) {
             //    //console.log(req.path, req.cookies)

@@ -47,7 +47,7 @@ define([
                 url: "/login",
                 views: {
                     "loggedOutView": {
-                        templateUrl: "app/login/login.html",
+                        templateUrl: "app/login/login.html?bust=" + version,
                         controller : "loginController"
                     }
                 },
@@ -57,7 +57,7 @@ define([
                 url: "/contact",
                 views: {
                     "loggedOutView": {
-                        templateUrl: "app/contactOff/contact.html",
+                        templateUrl: "app/contactOff/contact.html?bust=" + version,
                         controller : "contactOffController"
                     }
                 },
@@ -67,7 +67,7 @@ define([
                 url: "/contact/thankyou",
                 views: {
                     "loggedOutView": {
-                        templateUrl: "app/contactOff/thankyou.html",
+                        templateUrl: "app/contactOff/thankyou.html?bust=" + version,
                     }
                 }
             })
@@ -75,7 +75,7 @@ define([
                 url: "/password",
                 views: {
                     "loggedOutView": {
-                        templateUrl: "app/passwordOff/password.html",
+                        templateUrl: "app/passwordOff/password.html?bust=" + version,
                         controller : "passwordOffController"
                     }
                 },
@@ -85,7 +85,7 @@ define([
                 url: "/password/sent",
                 views: {
                     "loggedOutView": {
-                        templateUrl: "app/passwordOff/sent.html",
+                        templateUrl: "app/passwordOff/sent.html?bust=" + version,
                     }
                 }
             })
@@ -93,7 +93,7 @@ define([
                 url: "/password/invalid",
                 views: {
                     "loggedOutView": {
-                        templateUrl: "app/passwordOff/invalid.html",
+                        templateUrl: "app/passwordOff/invalid.html?bust=" + version,
                     }
                 }
             })
@@ -101,7 +101,7 @@ define([
                 url: "/password/reset/:token",
                 views: {
                     "loggedOutView": {
-                        templateUrl: "app/passwordOff/reset.html",
+                        templateUrl: "app/passwordOff/reset.html?bust=" + version,
                         controller : "resetController"
                     }
                 },
@@ -111,7 +111,7 @@ define([
                 url: "/dashboard",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/dashboard/dashboard.html" ,
+                        templateUrl: "app/dashboard/dashboard.html?bust=" + version ,
                         controller : "dashboardController"
                     }
 
@@ -123,7 +123,7 @@ define([
                 url: "/manageusers",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/manageUsers/manageUsers.html" ,
+                        templateUrl: "app/manageUsers/manageUsers.html?bust=" + version ,
                         controller : "manageUsersController"
                     }
 
@@ -134,7 +134,7 @@ define([
                 url: "/properties",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/properties/properties.html" ,
+                        templateUrl: "app/properties/properties.html?bust=" + version ,
                         controller : "propertiesController"
                     }
 
@@ -145,7 +145,7 @@ define([
                 url: "/history",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/history/history.html" ,
+                        templateUrl: "app/history/history.html?bust=" + version ,
                         controller : "historyController"
                     }
 
@@ -156,7 +156,7 @@ define([
                 url: "/preferences",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/preferences/preferences.html" ,
+                        templateUrl: "app/preferences/preferences.html?bust=" + version ,
                         controller : "preferencesController"
                     }
 
@@ -167,7 +167,7 @@ define([
                 url: "/profile/:id",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/profile/profile.html",
+                        templateUrl: "app/profile/profile.html?bust=" + version,
                         controller : "profileController"
                     }
                 },
@@ -177,7 +177,7 @@ define([
                 url: "/full/:id",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/full/full.html",
+                        templateUrl: "app/full/full.html?bust=" + version,
                         controller : "fullController"
                     }
                 },
@@ -187,7 +187,7 @@ define([
                 url: "/reporting",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/reporting/reporting.html" ,
+                        templateUrl: "app/reporting/reporting.html?bust=" + version ,
                         controller : "reportingController"
                     }
 
