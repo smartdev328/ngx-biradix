@@ -51,10 +51,13 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
             options.cookies = cookies;
 
-            var stream = require('stream');
-            var converter = new stream.Writable();
-            converter._write = function (chunk) {
+            var MemoryStream = require('memory-stream');
 
+            var ws = new MemoryStream();
+
+
+            ws.on('finish', function() {
+                var newBuffer = Buffer.concat(ws.buffer);
                 if (data.progressId) {
                     ProgressService.setComplete(data.progressId)
                 }
@@ -62,16 +65,18 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 var JSONB = require('json-buffer')
 
                 console.log(data.id + " pdf ended");
-                reply({stream: JSONB.stringify(chunk), filename: fileName});
+                reply({stream: JSONB.stringify(newBuffer), filename: fileName});
                 full = null;
                 cookies = null;
                 r = null;
                 render = null;
                 options = null;
                 properties = null;
-            };
+                newBuffer = null;
+            });
 
-            var r = render(url, options).pipe(converter);
+            var r = render(url, options).pipe(ws);
+
 
         });
 
