@@ -8,7 +8,6 @@ var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
 var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
-var DashboardService = require('../services/dashboardService')
 var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 
@@ -176,7 +175,25 @@ module.exports = {
                     res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
 
                     options.cookies = cookies;
+
+                    //var stream = require('stream');
+                    //var converter = new stream.Writable();
+                    //converter.data = []; // We'll store all the data inside this array
+                    //converter._write = function (chunk) {
+                    //    this.data.push(chunk);
+                    //};
+                    //
+                    //var r = render(url, options).pipe(converter);
+                    //
+                    //converter.on('finish', function() { // Will be emitted when the input stream has ended, ie. no more data will be provided
+                    //    console.log('done')
+                    //    var b = Buffer.concat(converter.data); // Create a buffer from all the received chunks
+                    //    // Insert your business logic here
+                    //    console.log(b);
+                    //});
+
                     var r = render(url, options).pipe(res);
+
 
                     r.on('finish', function () {
                         if (req.query.progressId) {

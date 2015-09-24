@@ -10,6 +10,9 @@ var PropertyService = require('../api/properties/services/propertyService')
 var CreateService = require('../api/properties/services/createService')
 var AmenityService = require('../api/amenities/services/amenityService')
 
+routes.get('/error', function(req, res) {
+    throw new Error('I am an error');
+});
 routes.get('/import', function(req, res) {
 
     async.parallel({
