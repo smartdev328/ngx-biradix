@@ -22,7 +22,7 @@
 </head>
 <body>
 <nav class="navbar hidden-xs header-nav navbar-fixed-top">
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding-top:5px">
         <div class="navbar-header" style="padding:5px 0px 10px 0px">
             <a href="#/dashboard" class="hidden-sm"><img src="/images/organizations/biradix.png" class="logoBig" style="height:41px"></a>
             <a href="#/dashboard" class="visible-sm"><img src="/images/organizations/biradix-small.png" class="logoSmall" style="height:41px"></a>
@@ -47,7 +47,7 @@
 
 
         <ul class="nav navbar-nav hidden-xs pull-right">
-            <form class="navbar-form navbar-left" role="search" style="padding-right:10px">
+            <form class="navbar-form navbar-left" role="search" style="padding-right:25px;padding-top:3px">
                 <div class="form-group has-feedback has-feedback-left search">
                     <input type="text" class="form-control input-sm"
                            placeholder="Search Properties"
@@ -71,8 +71,8 @@
 
 <nav class="navbar visible-xs header-nav navbar-fixed-top">
     <div class="container-fluid">
-        <div class="nav navbar-nav" style="padding:0px 0px 0px 10px;">
-            <a href="#/dashboard"><img src="/images/organizations/biradix-small.png" class="logoSmall" style="max-height:41px"></a>
+        <div class="nav navbar-nav" style="padding:2px 0px 0px 10px;">
+            <a href="#/dashboard"><img src="/images/organizations/biradix-small.png" class="logoSmall" style="height:41px"></a>
             <button type="button" style="padding: 5px 10px 7px 10px;margin-right:10px" class="pull-right" onclick="toggle()">
                 <i class="fa fa-bars"></i>
             </button>
@@ -119,13 +119,13 @@
                 <a href="#" onclick="turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
             </li>
             <li>
-                <a href="#" class="subnav" onclick="turnOffIfMobile()">Update Profile</a>
+                <a href="#" class="subnav" onclick="turnOffIfMobile()"> - Update Profile</a>
             </li>
             <li>
-                <a href="#" class="subnav" onclick="turnOffIfMobile()">Update Password</a>
+                <a href="#" class="subnav" onclick="turnOffIfMobile()"> - Update Password</a>
             </li>
             <li>
-                <a href="#" class="subnav" onclick="turnOffIfMobile()">Hide Excluded</a>
+                <a href="#" class="subnav" onclick="turnOffIfMobile()"> - Hide Excluded</a>
             </li>
             <li>
                 <a href="#" onclick="turnOffIfMobile()"><i class="fa fa-users"></i> Manage Users</a>
@@ -289,6 +289,8 @@
 
     .sidebar-nav li i {
         text-indent: 0px;
+        text-align: center;
+        margin-right:5px;
     }
 
     .sidebar-nav li .subnav {

@@ -58,8 +58,6 @@ module.exports = {
                         return n.property.name;
                     })
 
-                    var json = {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone};
-
                     //var email = {
                     //    from: 'support@biradix.com',
                     //    to: 'alex@viderman.com',
@@ -77,6 +75,9 @@ module.exports = {
                         if (req.query.progressId) {
                             ProgressService.setComplete(req.query.progressId)
                         }
+                        dashboard = null;
+                        profiles = null;
+                        r = null;
                     })
 
                 });
@@ -119,6 +120,12 @@ module.exports = {
                         if (req.query.progressId) {
                             ProgressService.setComplete(req.query.progressId)
                         }
+                        full = null;
+                        cookies = null;
+                        r = null;
+                        render = null;
+                        properties = null;
+                        console.log(process.memoryUsage());
                     })
                 });
             });
@@ -175,6 +182,13 @@ module.exports = {
                         if (req.query.progressId) {
                             ProgressService.setComplete(req.query.progressId)
                         }
+                        full = null;
+                        cookies = null;
+                        r = null;
+                        render = null;
+                        options = null;
+                        properties = null;
+                        console.log(process.memoryUsage());
                     })
                 });
 
