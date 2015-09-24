@@ -57,6 +57,8 @@ module.exports = {
                         return n.property.name;
                     })
 
+                    var json = {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone};
+
                     //var email = {
                     //    from: 'support@biradix.com',
                     //    to: 'alex@viderman.com',
@@ -77,6 +79,7 @@ module.exports = {
                         dashboard = null;
                         profiles = null;
                         r = null;
+                        json = null;
                     })
 
                 });
