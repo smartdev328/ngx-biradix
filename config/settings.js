@@ -14,5 +14,6 @@ module.exports = {
     CLOUDAMQP_URL : process.env.CLOUDAMQP_URL || 'amqp://bbanyfha:bN4-8vTtTTY6yzGqE7A-_9QY6XYv0Nxi@baboon.rmq.cloudamqp.com/bbanyfha',
     DASHBOARD_QUEUE : "jobs.property.dashboard",
     PROFILE_QUEUE : "jobs.property.profile",
+    PDF_PROFILE_QUEUE : "jobs.property.profile.pdf",
 
 }

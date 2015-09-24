@@ -27,6 +27,7 @@
     "express-jwt": "^3.0.0",
     "ioredis": "^1.2.5",
     "jackrabbit": "^4.0.1",
+    "json-buffer": "^2.0.11",
     "jsonwebtoken": "^5.0.0",
     "liquid-node": "^2.5.0",
     "lodash": "^3.8.0",
