@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/navs.css" rel="stylesheet" type="text/css">
 
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -104,10 +105,10 @@
     <br clear="all">
 </nav>
 
-<div id="wrapper">
+<div id="wrapper" class="nobig">
 
     <!-- Sidebar -->
-    <div id="sidebar-wrapper">
+    <div id="sidebar-wrapper"  class="nobig">
         <ul class="sidebar-nav">
             <li class="visible-xs">
                 <a href="#" onclick="turnOffIfMobile()"><i class="fa fa-tachometer"></i> Dashboard</a>
@@ -198,219 +199,6 @@
     }
 </script>
 <style>
-    body {
-        background-color: #f5f5f5;
-    }
-    .header-nav {
-        background-color: white;
-        border-bottom: 1px solid #ccc;
-        color: #3362aa !important;
-        font-weight:bold !important;
-    }
-
-    .header-nav a {
-        color: #3362aa !important;
-        font-weight:bold !important;
-    }
-
-    .has-feedback-left .form-control-feedback {
-        left: 0;
-    }
-    .has-feedback-left input.form-control {
-        padding-left: 25px; /* @input-height-base; */
-        padding-right: 10px; /* @padding-base-horizontal */
-        border: 1px solid #bbcbe3;
-        font-weight:normal;
-    }
-
-
-    /*side menu*/
-    #wrapper {
-        padding-left: 0;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
-    }
-
-    #wrapper.toggled {
-        padding-left: 250px;
-    }
-
-    #sidebar-wrapper {
-        z-index: 1000;
-        position: fixed;
-        left: 250px;
-        width: 0;
-        height: 100%;
-        margin-left: -250px;
-        overflow-y: auto;
-        background: #4460a9;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
-        border-right:4px solid #7E91C2;
-        overflow-x: hidden;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        width: 250px;
-    }
-
-    #page-content-wrapper {
-        width: 100%;
-        position: absolute;
-        padding: 15px;
-        top:60px;
-    }
-
-    #wrapper.toggled #page-content-wrapper {
-        position: absolute;
-        margin-right: -250px;
-    }
-
-    /* Sidebar Styles */
-
-    .sidebar-nav {
-        position: absolute;
-        top: 60px;
-        width: 250px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    .sidebar-nav li {
-        text-indent: 20px;
-        line-height: 40px;
-        border-bottom:1px solid #7E91C2;
-    }
-
-    .sidebar-nav li i {
-        text-indent: 0px;
-        text-align: center;
-        margin-right:5px;
-    }
-
-    .sidebar-nav li .subnav {
-        text-indent: 40px;
-    }
-
-    .sidebar-nav li a {
-        display: block;
-        text-decoration: none;
-        color: #fff;
-    }
-
-    .sidebar-nav li a:hover {
-        text-decoration: none;
-        color: #4460a9;
-        background: #fff
-    }
-
-    .sidebar-nav li a:active,
-    .sidebar-nav li a:focus {
-        text-decoration: none;
-    }
-
-    .sidebar-nav > .sidebar-brand a:hover {
-        color: #fff;
-        background: none;
-    }
-
-    .sidebar-nav li a.active  {
-        color:white !important;
-        background-color: #2288ff !important;
-    }
-
-    #wrapper .btn-default:focus {
-        background-color:white;
-
-    }
-    @media(max-width:768px) {
-        #wrapper #sidebar-wrapper {
-            border-right: 0;
-        }
-
-        #wrapper.toggled #sidebar-wrapper {
-           border-right:4px solid #7E91C2;
-        }
-    }
-    @media(min-width:768px) {
-        #wrapper {
-            padding-left: 250px;
-        }
-
-        #wrapper.toggled {
-            padding-left: 0;
-        }
-
-        #sidebar-wrapper {
-            width: 250px;
-        }
-
-        #wrapper.toggled #sidebar-wrapper {
-            width: 0;
-        }
-
-        #page-content-wrapper {
-            padding: 20px;
-            position: relative;
-        }
-
-        #wrapper.toggled #page-content-wrapper {
-            position: relative;
-            margin-right: 0;
-        }
-
-    }
-
-
-    .multi-col-list .fa {
-        width:16px;
-        text-align: center;
-    }
-
-
-    .multi-col-list {
-        margin-bottom:0px
-    }
-
-    .multi-col-list li {
-        margin-left:-40px;
-        display: block;
-        padding: 3px 3px;
-        clear: both;
-        font-weight: 400;
-        line-height: 1.42857143;
-        color: #333;
-        white-space: nowrap;
-    }
-
-    .multi-col-list li a {
-        text-decoration: none;
-        color: #1E90FF !important;
-        font-weight:normal !important;
-    }
-
-    .multi-col-list>li>a:hover {
-        color: #262626;
-        text-decoration: none;
-        background-color: #f5f5f5;
-    }
-
-    .multi-col-list>li>a {
-        display: block;
-        padding: 3px 3px;
-        clear: both;
-        font-weight: 400;
-        line-height: 1.42857143;
-        color: #333;
-        white-space: nowrap;
-    }
-
-
     .dropdown-menu-left::before, .search .dropdown-menu::before {
         position: absolute;
         top: -7px;
