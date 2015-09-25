@@ -15,5 +15,6 @@ module.exports = {
     DASHBOARD_QUEUE : "jobs.property.dashboard",
     PROFILE_QUEUE : "jobs.property.profile",
     PDF_PROFILE_QUEUE : "jobs.property.profile.pdf",
+    PDF_REPORTING_QUEUE : "jobs.reporting.pdf",
 
 }

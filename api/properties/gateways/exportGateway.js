@@ -6,11 +6,9 @@ var request = require('request')
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
-var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
 var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
-var pdfService = require('../services/pdfService');
 var queues = require('../../../config/queues')
 var JSONB = require('json-buffer')
 
@@ -93,47 +91,34 @@ module.exports = {
         });
 
         Routes.get('/:id/reportsPdf', function (req, res) {
-            PropertyService.search(req.user, {_id: req.params.id}, function(err, properties) {
-                UserService.getFullUser(req.user, function (full) {
-                    moment().utcOffset(req.query.timezone);
-                    var p = properties[0];
-                    var fileName = p.name.replace(/ /g, "_");
+            var timer = new Date().getTime();
+            queues.getExchange().publish({
+                    user: req.user,
+                    id: req.params.id,
+                    url : req.protocol + '://' + req.get('host'),
+                    timezone : req.query.timezone,
+                    hostname : req.hostname,
+                    progressId : req.query.progressId,
+                    reportIds : req.query.reportIds,
+                    compIds : req.query.compIds
+                },
+                {
+                    key: settings.PDF_REPORTING_QUEUE,
+                    reply: function (data) {
+                        console.log("Pdf Reporting Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                        res.setHeader("content-type", "application/pdf");
+                        res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
 
-                    fileName += "_Report" + moment().format("MM_DD_YYYY");
+                        var stream = require('stream');
+                        var bufferStream = new stream.PassThrough();
+                        bufferStream.end(JSONB.parse(data.stream));
+                        bufferStream.pipe(res)
 
-                    fileName += ".pdf";
+                        data = null;
 
-                    var options = pdfService.getDefaultOptions();
-
-                    var render = phantom(options);
-
-                    var url = req.protocol + '://' + req.get('host') + "/#/reporting";
-
-                    var cookies = [
-                        pdfService.getCookie(req.hostname,"token", full.token),
-                        pdfService.getCookie(req.hostname,"compIds", req.query.compIds),
-                        pdfService.getCookie(req.hostname,"reportIds", req.query.reportIds),
-                        pdfService.getCookie(req.hostname,"subjectId", req.params.id),
-                    ];
-                    res.setHeader("content-type", "application/pdf");
-                    res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
-
-                    options.cookies = cookies;
-                    var r = render(url, options).pipe(res);
-
-                    r.on('finish', function () {
-                        if (req.query.progressId) {
-                            ProgressService.setComplete(req.query.progressId)
-                        }
-                        full = null;
-                        cookies = null;
-                        r = null;
-                        render = null;
-                        properties = null;
-                        console.log(process.memoryUsage());
-                    })
-                });
-            });
+                    }
+                }
+            );
 
         });
 

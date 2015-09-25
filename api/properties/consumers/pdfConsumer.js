@@ -86,3 +86,63 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
     })    
 
 });
+
+
+queues.getPdfReportingQueue().consume(function(data,reply) {
+    console.log(data.id + " reporting pdf started");
+
+    PropertyService.search(data.user, {_id: data.id}, function(err, properties) {
+        UserService.getFullUser(data.user, function (full) {
+            moment().utcOffset(data.timezone);
+            var p = properties[0];
+            var fileName = p.name.replace(/ /g, "_");
+
+            fileName += "_Report" + moment().format("MM_DD_YYYY");
+
+            fileName += ".pdf";
+
+            var options = pdfService.getDefaultOptions();
+
+            var render = phantom(options);
+
+            var url = data.url + "/#/reporting";
+
+            var cookies = [
+                pdfService.getCookie(data.hostname,"token", full.token),
+                pdfService.getCookie(data.hostname,"compIds", data.compIds),
+                pdfService.getCookie(data.hostname,"reportIds", data.reportIds),
+                pdfService.getCookie(data.hostname,"subjectId", data.id),
+            ];
+
+            options.cookies = cookies;
+
+            var MemoryStream = require('memory-stream');
+
+            var ws = new MemoryStream();
+
+
+            ws.on('finish', function() {
+                var newBuffer = Buffer.concat(ws.buffer);
+                if (data.progressId) {
+                    ProgressService.setComplete(data.progressId)
+                }
+
+                var JSONB = require('json-buffer')
+
+                console.log(data.id + " pdf reporting ended");
+                reply({stream: JSONB.stringify(newBuffer), filename: fileName});
+                full = null;
+                cookies = null;
+                r = null;
+                render = null;
+                options = null;
+                properties = null;
+                newBuffer = null;
+            });
+
+            var r = render(url, options).pipe(ws);
+        });
+    });
+
+
+});
