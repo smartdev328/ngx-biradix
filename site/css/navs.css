@@ -219,3 +219,15 @@ body {
     color: #333;
     white-space: nowrap;
 }
+
+@media print {
+    #page-content-wrapper {
+        position: inherit;
+    }
+    .break-after
+    {
+        break-after: always !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+    }
+}
