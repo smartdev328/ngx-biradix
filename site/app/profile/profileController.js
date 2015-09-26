@@ -20,7 +20,7 @@ define([
             $location.path('/login')
         }
         $rootScope.nav = ''
-        $rootScope.sideMenu = [];
+        $rootScope.sideMenu = false;
 
         $scope.setRenderable = function() {
             window.setTimeout(function() {

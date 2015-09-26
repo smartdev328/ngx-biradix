@@ -15,7 +15,7 @@ define([
             $location.path('/login')
         }
         $rootScope.nav = 'Dashboard'
-        $rootScope.sideMenu = [];
+        $rootScope.sideMenu = false;
         //window.renderable = true;
 
         $scope.localLoading = false;

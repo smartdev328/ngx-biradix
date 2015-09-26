@@ -120,8 +120,18 @@ body {
 }
 
 .sidebar-nav li a.active  {
+    color:#4460a9 !important;
+    background-color: white !important;
+}
+
+.sidebar-nav .fa {
     color:white !important;
-    background-color: #2288ff !important;
+}
+
+.sidebar-nav a:hover .fa,
+.sidebar-nav li a.active .fa
+{
+    color:#4460a9 !important;
 }
 
 #wrapper .btn-default:focus {
@@ -176,7 +186,6 @@ body {
 
 }
 
-
 .multi-col-list .fa {
     width:16px;
     text-align: center;
@@ -230,4 +239,12 @@ body {
         page-break-after: always !important;
         page-break-inside: avoid !important;
     }
+}
+
+.search .input-sm {
+    font-size: 12px;
+}
+.search .fa-search {
+    top:7px !important;
+    left:-3px !important;
 }

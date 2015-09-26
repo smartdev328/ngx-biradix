@@ -12,19 +12,8 @@ define([
 
         $rootScope.nav = "";
 
-        $rootScope.sideMenu = [];
-
-        if ($rootScope.me.permissions.indexOf('Users') > -1) {
-            $rootScope.sideMenu.push({label: "Manage Users", href: '#/manageusers', active: false});
-        }
-
-        if ($rootScope.me.permissions.indexOf('Properties') > -1) {
-            $rootScope.sideMenu.push({label: "Manage Properties", href: '#/properties', active: true});
-        }
-
-        if ($rootScope.me.permissions.indexOf('History') > -1) {
-            $rootScope.sideMenu.push({label: "Activity History", href: '#/history', active: false});
-        }
+        $rootScope.sideMenu = true;
+        $rootScope.sideNav = "Properties";
 
         var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 

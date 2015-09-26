@@ -44,124 +44,160 @@
     <div class="loading" style="display:block;width:100px;margin:50px auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
-    <div style="display:none" class="loggedout" ng-include="'/app/loggedout.html?v=<%=version%>'">
+    <div style="display:none" class="loggedout">
+        <div class="loggedout-main">
+            <div class="loggedout-container clearfix">
+                <a href="#/login"><img ng-src="/images/organizations/{{logoBig}}"></a><br />
+                <br>
+                <div style="display:block" class="routeContent">
+                    <div ui-view="loggedOutView"></div>
+                </div>
+            </div>
+        </div>
+        <div class="small" style="width:50px;margin:10px auto" id="version_div">v{{version}}</div>
     </div>
     <div style="display:none" class="loggedin">
         <div class="visible-print-block" style="padding:10px 0px 0px 10px">
-            <a href="#/dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
+            <img src="/images/organizations/<%=logoBig%>" class="logoBig">
             <hr>
         </div>
-        <nav class="navbar hidden-xs">
-            <div class="container-fluid">
+        <nav class="navbar hidden-xs header-nav navbar-fixed-top">
+            <div class="container-fluid" style="padding-top:5px">
                 <div class="navbar-header" style="padding:5px 0px 10px 0px">
-                    <a href="#/dashboard"><img src="/images/organizations/<%=logoBig%>" class="logoBig"></a>
+                    <a href="#/dashboard" class="hidden-sm"><img src="/images/organizations/<%=logoBig%>" class="logoBig" style="height:41px"></a>
+                    <a href="#/dashboard" class="visible-sm"><img src="/images/organizations/<%=logoSmall%>" class="logoSmall" style="height:41px"></a>
                 </div>
 
                 <div class="pull-right" style="padding:15px 15px 0px 0px">
-                    Welcome {{$root.me.roles[0]}} <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#333;text-decoration:none;font-weight:bold">{{$root.me.first + ' ' + $root.me.last}} <span class="caret"></span></a>
-                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="margin:-14px 25px 0px 0px" ng-include="'/app/userMenu.html'">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color:#333;text-decoration:none;font-weight:bold">{{$root.me.first}}<span class="caret"></span></a>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="margin:-14px 25px 0px 0px">
+                        <div style="text-align: center;color:#737373;border-bottom:1px solid #ccc;padding-bottom:5px">{{$root.me.roles[0]}}</div>
 
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </nav>
-        <br clear="all" class="hidden-print">
-        <nav class="navbar navbar-default nav-bar-2 hidden-print">
-            <div class="container-fluid">
-                <div class="navbar-header">
-
-                    <button style="margin-left:10px" type="button" class="navbar-toggle collapsed  pull-left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <div class="pull-left visible-xs-block" style="padding-top:10px">
-                        <a href="#/dashboard"><img src="/images/organizations/<%=logoSmall%>" class="logoSmall"></a>
-                    </div>
-
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" role="button" aria-expanded="false"
-                            style="padding: 5px 10px 7px 10px;">
-                        <i class="fa fa-user" style="color:#777"></i>
-                        <span class="caret" style="color:#777"></span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right hidden-sm" role="menu"  ng-include="'/app/userMenu.html'">
-                    </div>
-
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
-                            style="padding: 5px 15px 7px 15px;">
-                        <i class="fa fa-search" style="color:#777"></i>
-                    </button>
-
-                </div>
-
-                <div class="collapse navbar-collapsed hidden-sm hidden-md hidden-lg" id="bs-example-navbar-collapse-2">
-                    <div class="form-group has-feedback search" style="margin-top:10px">
-                        <input type="text" class="form-control input-sm"
-                               placeholder="Search Properties"
-                               typeahead="props.summary for props in getLocation($viewValue)"
-                               typeahead-on-select="searchSelected($item, $model, $label)"
-                               ng-model="search2"
-                               >
-                        <i class="fa fa-search form-control-feedback" style="color:#ccc;top:8px"></i>
+                        <ul class="multi-col-list">
+                            <li><a href ng-click="updateProfile()"><i class="fa fa-user"></i> My Account</a></li>
+                            <li ng-show="$root.me.permissions.indexOf('Users') > -1"><a href="#/manageusers"><i class="fa fa-users"></i> Manage Users</a></li>
+                            <li ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/properties"><i class="fa fa-building"></i> Manage Properties</a></li>
+                            <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/history"><i class="fa fa-history"></i> Activity History</a></li>
+                            <li ng-show="!$root.me.settings.hideUnlinked"><a href ng-click="toggleUnlniked()"><i class="fa fa-chain-broken"></i> Hide Excluded</a></li>
+                            <li><a href ng-click="contact()"><i class="fa fa-envelope"></i> Contact Us</a></li>
+                            <li><a href ng-click="logoff()"><i class="fa fa-power-off"></i> Log Off</a></li>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
+
+                <ul class="nav navbar-nav hidden-xs pull-right">
+                    <form class="navbar-form navbar-left" role="search" style="padding-right:25px;padding-top:3px">
+                        <div class="form-group has-feedback has-feedback-left search">
+                            <input type="text" class="form-control input-sm"
+                                   placeholder="Search Properties"
+                                   typeahead="props.summary for props in getLocation($viewValue)"
+                                   typeahead-on-select="searchSelected($item, $model, $label)"
+                                   ng-model="search1"
+                                   style="width:150px"
+                                    >
+                            <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
+                        </div>
+                    </form>
+                </ul>
+
+                <ul class="nav navbar-nav pull-right">
                     <li ng-class="{active: $root.nav == 'Dashboard'}"><a href="#/dashboard">Dashboard</a></li>
                     <li ng-class="{active: $root.nav == 'Reporting'}"><a href="#/reporting">Reporting</a></li>
-                        </ul>
+                </ul>
 
-
-                    <ul class="nav navbar-nav hidden-xs pull-right">
-                        <form class="navbar-form navbar-left" role="search" style="padding-right:0px">
-                            <div class="form-group has-feedback search">
-                                <input type="text" class="form-control input-sm"
-                                       placeholder="Search Properties"
-                                       typeahead="props.summary for props in getLocation($viewValue)"
-                                       typeahead-on-select="searchSelected($item, $model, $label)"
-                                       ng-model="search1"
-                                       style="width:250px"
-                                       >
-                                <i class="fa fa-search form-control-feedback" style="color:#ccc;top:8px"></i>
-                            </div>
-                        </form>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        <div style="display:block" class="routeContent">
-            <div id="wrapper" ng-style="{'padding-left' : sideMenu.length == 0 ? '0px' : ''}">
 
-                <!-- Sidebar -->
-                <div id="sidebar-wrapper" ng-show="sideMenu.length > 0">
-                    <ul class="sidebar-nav">
-                        <li ng-repeat="item in sideMenu">
-                            <a href="{{item.href}}" ng-class="{'active': item.active}">{{item.label}}</a>
-                        </li>
-                    </ul>
+        <nav class="navbar visible-xs header-nav navbar-fixed-top hidden-print">
+            <div class="container-fluid">
+                <div class="nav navbar-nav" style="padding:2px 0px 0px 10px;">
+                    <a href="#/dashboard"><img src="/images/organizations/biradix-small.png" class="logoSmall" style="height:41px"></a>
+                    <button type="button" style="padding: 5px 10px 7px 10px;margin-right:10px" class="pull-right" ng-click="toggle()">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <button type="button" class="pull-right" ng-click="toggleSearch()"
+                            style="padding: 5px 10px 7px 10px;margin-right:10px">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
-                <!-- /#sidebar-wrapper -->
 
-                <!-- Page Content -->
-                <div id="page-content-wrapper">
-                    <div class="container-fluid" style="padding:0px">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <a href ng-click="toggleLeftNav()" class="btn btn-default visible-xs" id="menu-toggle"  ng-show="sideMenu.length > 0" style="position:absolute;top:0px;left:-2px"><i class="fa fa-arrow-circle-right" style="color:#888" id="sidenavHandle"></i></a>
+            </div><!-- /.container-fluid -->
+        </nav>
 
-                                <div ui-view="loggedInView"></div>
-
-                                <div class="small hidden-print" style="width:50px;margin:10px auto" id="version_div">v<%=version%></div>
-                            </div>
-                        </div>
-                    </div>
+        <nav class="navbar header-nav navbar-fixed-top hidden-print" style="margin-top:52px;padding:20px 10px 0px 10px;display:none;z-index:1" id="searchBar">
+            <div style="float:left;width:90%">
+                <div class="form-group has-feedback has-feedback-left search">
+                    <input type="text" class="form-control input-sm"
+                           placeholder="Search Properties"
+                           typeahead="props.summary for props in getLocation($viewValue)"
+                           typeahead-on-select="searchSelected($item, $model, $label)"
+                           ng-model="search1"
+                            >
+                    <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
                 </div>
-                <!-- /#page-content-wrapper -->
-
             </div>
-            <!-- /#wrapper -->
+            <div style="float:right;padding:2px 0px 0px 0px">
+                <A href ng-click="toggleSearch()"><i class="fa fa-close fa-2x"></i></A>
+            </div>
+            <br clear="all">
+        </nav>
+
+        <div id="wrapper" ng-class="{'nobig' : !sideMenu}">
+
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper" ng-class="{'nobig' : !sideMenu}">
+                <ul class="sidebar-nav">
+                    <li class="visible-xs">
+                        <a href="#/dashboard" ng-click="turnOffIfMobile()"><i class="fa fa-tachometer"></i> Dashboard</a>
+                    </li>
+                    <li class="visible-xs">
+                        <a href="#/reporting" ng-click="turnOffIfMobile()"><i class="fa fa-bar-chart"></i> Reporting</a>
+                    </li>
+                    <li>
+                        <a href ng-click="updateProfile();turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
+                    </li>
+                    <li>
+                        <a href class="subnav" ng-click="updateProfile();turnOffIfMobile()"> - Update Profile</a>
+                    </li>
+                    <li>
+                        <a href class="subnav" ng-click="updatePassword();turnOffIfMobile()"> - Update Password</a>
+                    </li>
+                    <li ng-show="!$root.me.settings.hideUnlinked">
+                        <a href class="subnav" ng-click="toggleUnlniked();turnOffIfMobile()"> - Hide Excluded</a>
+                    </li>
+                    <li ng-show="$root.me.settings.hideUnlinked">
+                        <a href class="subnav" ng-click="toggleUnlniked();turnOffIfMobile()"> - Show Excluded</a>
+                    </li>
+                    <li ng-if="$root.me.permissions.indexOf('Users') > -1">
+                        <a ng-class="{'active': sideNav == 'Users'}" href="#/manageusers" ng-click="turnOffIfMobile()"><i class="fa fa-users"></i> Manage Users</a>
+                    </li>
+                    <li ng-if="$root.me.permissions.indexOf('Properties') > -1">
+                        <a ng-class="{'active': sideNav == 'Properties'}"  href="#/properties" ng-click="turnOffIfMobile()"><i class="fa fa-building"></i> Manage Properties</a>
+                    </li>
+                    <li ng-if="$root.me.permissions.indexOf('History') > -1">
+                        <a ng-class="{'active': sideNav == 'History'}"  href="#/history" ng-click="turnOffIfMobile()"><i class="fa fa-history"></i> Activity History</a>
+                    </li>
+                    <li>
+                        <a href ng-click="contact();turnOffIfMobile()"><i class="fa fa-envelope"></i> Contact Us</a>
+                    </li>
+                    <li>
+                        <a href ng-click="logoff();turnOffIfMobile()"><i class="fa fa-power-off"></i> Log Off</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div ui-view="loggedInView">
+                </div>
+
+                <div class="small hidden-print" style="width:50px;margin:10px auto" id="version_div">v{{version}}</div>
+            </div>
+            <!-- /#page-content-wrapper -->
+
         </div>
 
 

@@ -1,4 +1,7 @@
 /* General */
+body {
+    background-color:#f5f5f5
+}
 h2,h3 {
     margin-top:0
 }
@@ -33,10 +36,6 @@ td.center,th.center {text-align:center}
     margin-left:-10px
 }
 
-#page-content-wrapper > .container-fluid > .row {
-    margin-right:-15px;
-    margin-left:-15px
-}
 
 .input-sm, .dropdown-menu, .btn, .modal-content  {
     border-radius: 2px !important;
@@ -50,10 +49,6 @@ td.center,th.center {text-align:center}
     font-size:13px
 }
 @media print {
-    @page {
-
-    }
-
     body {
         width:1210px;
     }
@@ -68,16 +63,6 @@ td.center,th.center {text-align:center}
     }
 
 }
-/* Drodpwn */
-
-.search p {
-    margin:0px !important;
-}
-.search .dropdown-menu>li>a {
-    padding:3px 10px;
-    cursor: pointer
-}
-
 
 .dropdown-menu-left::before, .search .dropdown-menu::before {
     position: absolute;
@@ -133,69 +118,6 @@ td.center,th.center {text-align:center}
     right: 4px;
 }
 
-/* nav bar */
-.nav-bar-2 {
-    margin-top: -35px;
-    margin-bottom:0px
-}
-
-.navbar {
-    border-radius: 0;
-    border:0;
-}
-
-.multi-col-list .fa {
-    width:16px;
-    text-align: center;
-}
-
-.navbar-default .navbar-nav>li>a:hover {
-    background-color: #eee;
-}
-
-.multi-col-list li {
-    margin-left:-35px;
-    display: block;
-    padding: 3px 3px;
-    clear: both;
-    font-weight: 400;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-}
-
-.multi-col-list li a {
-    text-decoration: none;
-    color: #333;
-}
-
-.multi-col-list>li>a:hover {
-    color: #262626;
-    text-decoration: none;
-    background-color: #f5f5f5;
-}
-
-.multi-col-list>li>a {
-    display: block;
-    padding: 3px 3px;
-    clear: both;
-    font-weight: 400;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-}
-
-@media all and (min-width: 0px) and (max-width: 767px) {
-    .nav-bar-2 {
-        margin-top: 0px
-    }
-
-    .nav>li {
-        float:left
-    }
-}
-
-
 
 .panel, .panel-body {
     -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
@@ -220,79 +142,6 @@ td.center,th.center {text-align:center}
 }
 
 
-@media (max-width: 767px) and (min-width: 0px) {
-    .nav-bar-2 {
-        margin-top: -20px;
-    }
-}
-
-@media (min-width: 767px) {
-    .navbar-default {
-        background-color: #3f3f3f;
-        border-color: #696969;
-    }
-
-    .navbar-default .navbar-brand {
-        color: #ffffff;
-    }
-
-    .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-        color: #ffffff;
-    }
-
-    .navbar-default .navbar-text {
-        color: #ffffff;
-    }
-
-    .navbar-default .navbar-nav > li > a {
-        color: #ffffff;
-    }
-
-    .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-        color: #ffffff;
-    }
-
-    .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
-        color: #ffffff;
-        background-color: #696969;
-    }
-
-    .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-        color: #ffffff;
-        background-color: #696969;
-    }
-
-    .navbar-default .navbar-toggle {
-        border-color: #696969;
-    }
-
-    .navbar-default .navbar-nav>li>a:hover {
-        background-color:#696969
-    }
-
-    .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-        background-color: #696969;
-    }
-
-    .navbar-default .navbar-toggle .icon-bar {
-        background-color: #ffffff;
-    }
-
-    .navbar-default .navbar-collapse,
-    .navbar-default .navbar-form {
-        border-color: #ffffff;
-    }
-
-    .navbar-default .navbar-link {
-        color: #ffffff;
-    }
-
-    .navbar-default .navbar-link:hover {
-        color: #ffffff;
-    }
-}
-
-
 .btn-primary {
     background-color: #1E90FF;
 }
@@ -311,128 +160,4 @@ td.center,th.center {text-align:center}
 }
 .modal-body {
     padding: 14px 14px 14px 20px;
-}
-
-/*side menu*/
-#wrapper {
-    padding-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
-#wrapper.toggled {
-    padding-left: 250px;
-}
-
-#sidebar-wrapper {
-    z-index: 1000;
-    position: fixed;
-    left: 250px;
-    width: 0;
-    height: 100%;
-    margin-left: -250px;
-    overflow-y: auto;
-    background: whitesmoke;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-    width: 250px;
-}
-
-#page-content-wrapper {
-    width: 100%;
-    position: absolute;
-    padding: 15px;
-}
-
-#wrapper.toggled #page-content-wrapper {
-    position: absolute;
-    margin-right: -250px;
-}
-
-/* Sidebar Styles */
-
-.sidebar-nav {
-    position: absolute;
-    top: 0;
-    width: 250px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
-}
-
-.sidebar-nav li a {
-    display: block;
-    text-decoration: none;
-    color: #333;
-}
-
-.sidebar-nav li a:hover {
-    text-decoration: none;
-    color: #333;
-    background: #ccc
-}
-
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
-    text-decoration: none;
-}
-
-.sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
-    background: none;
-}
-
-.sidebar-nav li a.active  {
-    color:white !important;
-    background-color: #2288ff !important;
-}
-
-#wrapper .btn-default:focus {
-    background-color:white;
-
-}
-@media(min-width:768px) {
-    #wrapper {
-        padding-left: 250px;
-    }
-
-    #wrapper.toggled {
-        padding-left: 0;
-    }
-
-    #sidebar-wrapper {
-        width: 250px;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        width: 0;
-    }
-
-    #page-content-wrapper {
-        padding: 20px;
-        position: relative;
-    }
-
-    #wrapper.toggled #page-content-wrapper {
-        position: relative;
-        margin-right: 0;
-    }
-
-}
-@media(max-width:768px) {
-    .hasSidenav {
-        margin-left: 37px !important;
-    }
 }

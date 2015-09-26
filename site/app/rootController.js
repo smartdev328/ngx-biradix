@@ -99,13 +99,14 @@ define([
         }
 
         $rootScope.swaptoLoggedIn = function() {
-
+            require([
+                'css!/css/navs'
+            ], function () {
                 $rootScope.getMe(function() {
                     $('.loading').hide();
                     $('.loggedout').hide();
                     $('.loggedin').show();
 
-                    $('body').css("background-color","#FFF")
                     $('body').css("padding-top","0px")
 
                     $('.logoBig').each(function(l) {
@@ -126,6 +127,7 @@ define([
                     }
 
                 });
+            })
 
         }
 
@@ -136,7 +138,6 @@ define([
                 $('.loading').hide();
                 $('.loggedout').show();
                 $('.loggedin').hide();
-                $('body').css("background-color","#F2F2F2")
                 $('body').css("padding-top","10px")
             })
         }
@@ -290,26 +291,26 @@ define([
         w.bind('resize', function () {
             if (w.width() > 767) {
                 $('#wrapper').removeClass('toggled');
-                $('#sidenavHandle').addClass('fa-arrow-circle-right');
-                $('#sidenavHandle').removeClass('fa-arrow-circle-left');
+                $('#searchBar').hide();
                 $rootScope.$broadcast('size', w.width());
             } else {
                 $rootScope.$broadcast('size', w.width());
             }
         });
 
-        $scope.toggleLeftNav = function() {
+        $rootScope.toggle = function() {
             $('#wrapper').toggleClass('toggled');
+        }
 
-            if ($('#wrapper').hasClass('toggled'))
+        $rootScope.toggleSearch = function() {
+            $('#searchBar').slideToggle( "slow");
+        }
+
+        $rootScope.turnOffIfMobile = function() {
+            if ($( window ).width() <= 767)
             {
-                $('#sidenavHandle').addClass('fa-arrow-circle-left');
-                $('#sidenavHandle').removeClass('fa-arrow-circle-right');
-            } else {
-                $('#sidenavHandle').addClass('fa-arrow-circle-right');
-                $('#sidenavHandle').removeClass('fa-arrow-circle-left');
+                $('#wrapper').removeClass('toggled');
             }
-
         }
 
         $rootScope.marketSurvey = function (id, surveyid) {
