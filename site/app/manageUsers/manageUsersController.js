@@ -71,6 +71,7 @@ define([
             $authService.loginAs(userid, function (usr, status) {
                 if (usr) {
                     $rootScope.me = usr;
+                    $rootScope.updateLogos();
                     $location.path('/dashboard')
                 }
             })

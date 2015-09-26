@@ -98,6 +98,16 @@ define([
 
         }
 
+        $rootScope.updateLogos = function() {
+            $('.logoBig').each(function(l) {
+                this.src = "/images/organizations/" + $rootScope.me.org.logoBig
+            })
+
+            $('.logoSmall').each(function(l) {
+                this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
+            })
+        }
+
         $rootScope.swaptoLoggedIn = function() {
             require([
                 'css!/css/navs'
@@ -109,13 +119,8 @@ define([
 
                     $('body').css("padding-top","0px")
 
-                    $('.logoBig').each(function(l) {
-                        this.src = "/images/organizations/" + $rootScope.me.org.logoBig
-                    })
+                    $rootScope.updateLogos();
 
-                    $('.logoSmall').each(function(l) {
-                        this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
-                    })
 
                     $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
                     $timeout($rootScope.incrementTimeout, 1000);
@@ -287,6 +292,7 @@ define([
 
         //make sure in full screen right nav is always shown
         var w = angular.element($window);
+        $('#mobile-nav').css("width",w.width() + "px")
 
         w.bind('resize', function () {
             if (w.width() > 767) {
@@ -296,6 +302,8 @@ define([
             } else {
                 $rootScope.$broadcast('size', w.width());
             }
+
+            $('#mobile-nav').css("width",w.width() + "px")
         });
 
         $rootScope.toggle = function() {
