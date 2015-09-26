@@ -7,6 +7,8 @@ define([
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $modal, toastr,ngProgress,$timeout) {
 
+        $rootScope.version = version;
+        $rootScope.logoBig = logoBig;
 
         if ($cookies.get('token')) {
             $rootScope.loggedIn = true;

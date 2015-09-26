@@ -16,5 +16,7 @@ module.exports = {
     PROFILE_QUEUE : "jobs.property.profile",
     PDF_PROFILE_QUEUE : "jobs.property.profile.pdf",
     PDF_REPORTING_QUEUE : "jobs.reporting.pdf",
+    RUN_PHANTOM : process.env.RUN_PHANTOM || "web",
+    RUN_DASHBOARD : process.env.RUN_DASHBOARD || "web"
 
 }

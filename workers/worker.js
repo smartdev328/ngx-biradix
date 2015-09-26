@@ -38,7 +38,13 @@ d.run(function() {
 
         var clusterConfig = require('../config/cluster')
 
-        require('../api/properties/consumers/dashboardConsumer')
+        if (settings.RUN_DASHBOARD == "worker") {
+            require('../api/properties/consumers/dashboardConsumer');
+        }
+
+        if (settings.RUN_PHANTOM == "worker") {
+            require('../api/properties/consumers/pdfConsumer')
+        }
 
         //Initialize CPU clustering
         clusterConfig.init({maxThreads: 1}, function (workerId) {

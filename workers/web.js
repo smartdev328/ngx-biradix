@@ -54,6 +54,14 @@ d.run(function() {
             res.redirect('/#/password/reset/' + req.params.token)
         })
 
+        if (settings.RUN_DASHBOARD == "web") {
+            require('../api/properties/consumers/dashboardConsumer');
+        }
+
+        if (settings.RUN_PHANTOM == "web") {
+            require('../api/properties/consumers/pdfConsumer')
+        }
+
         require('../config/cluster').init({maxThreads: 2}, function (workerId) {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port)
