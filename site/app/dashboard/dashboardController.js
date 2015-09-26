@@ -16,6 +16,7 @@ define([
         }
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
+        $rootScope.sideNav = "Dashboard";
         //window.renderable = true;
 
         $scope.localLoading = false;

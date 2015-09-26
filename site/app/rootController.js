@@ -305,6 +305,7 @@ define([
 
         $rootScope.toggleSearch = function() {
             $('#searchBar').slideToggle( "slow");
+            $('#wrapper').removeClass('toggled');
         }
 
         $rootScope.turnOffSearch = function() {

@@ -125,7 +125,7 @@ td.center,th.center {text-align:center}
 }
 
 .panel-heading {
-    color: #333 !important;
+    color: #4460a9 !important;
     font-size : 18px !important;
     font-weight : bold !important;
     background-color:white !important;
@@ -144,6 +144,17 @@ td.center,th.center {text-align:center}
     padding: 0px !important;
 }
 
+.panel-body hr {
+    margin-top: 2px !important;
+    margin-bottom: 15px !important;
+}
+
+.panel-info .panel-heading {
+    border-left:4px solid #4460a9;
+    margin-left:-16px;
+    margin-top:4px;
+    padding-left:15px !important;
+}
 
 .btn-primary {
     background-color: #1E90FF;

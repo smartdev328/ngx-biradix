@@ -8,8 +8,10 @@
 <div class="row" ng-show="localLoading && myProperties.length > 0">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading">Property</div>
+            <div class="panel-heading">Property
+            </div>
             <div class="panel-body">
+                <hr>
                 <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
                 <div class="visible-print"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
                 <select ng-show="myProperties.length > 1"
@@ -32,6 +34,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Map</div>
             <div class="panel-body">
+                <hr>
                 <google-map options="mapOptions"></google-map>
             </div>
         </div>
@@ -48,6 +51,7 @@
                         ></i>
             </div>
             <div class="panel-body">
+                <hr>
                 <div style="float:right;padding-bottom:10px;" class="hidden-print">
                     Show: <select
                         class="input-sm form-control"
@@ -73,6 +77,8 @@
                 </div>
                 <div ng-show="trendsLoading">
                 <time-series options="nerData"></time-series>
+                <hr>
+                <Br>
                 <time-series options="occData"></time-series>
                 </div>
             </div>
@@ -81,6 +87,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Competitors</div>
             <div class="panel-body" style="overflow-x:auto">
+                <hr>
                 <property-comps comps="comps"></property-comps>
             </div>
         </div>

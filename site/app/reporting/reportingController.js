@@ -19,6 +19,7 @@ define([
         $rootScope.nav = "Reporting";
 
         $rootScope.sideMenu = false;
+        $rootScope.sideNav = "Reporting";
 
         $scope.options = { hideSearch: true, dropdown: true, labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }

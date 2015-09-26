@@ -23,6 +23,20 @@ body {
     font-weight:normal;
 }
 
+.navbar-tabs li.active {
+    background-color: whitesmoke;
+}
+
+.header-nav .search a {
+    color: #333 !important;
+    font-weight: 400 !important;
+}
+
+.header-nav .search a:hover,
+.header-nav .search .dropdown-menu>.active>a
+{
+    background-color:#4ba6ff !important;
+}
 
 /*side menu*/
 #wrapper {

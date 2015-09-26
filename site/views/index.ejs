@@ -94,14 +94,14 @@
                                    typeahead="props.summary for props in getLocation($viewValue)"
                                    typeahead-on-select="searchSelected($item, $model, $label)"
                                    ng-model="search1"
-                                   style="width:150px"
+                                   style="width:200px"
                                     >
                             <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
                         </div>
                     </form>
                 </ul>
 
-                <ul class="nav navbar-nav pull-right">
+                <ul class="nav navbar-nav pull-right navbar-tabs">
                     <li ng-class="{active: $root.nav == 'Dashboard'}"><a href="#/dashboard">Dashboard</a></li>
                     <li ng-class="{active: $root.nav == 'Reporting'}"><a href="#/reporting">Reporting</a></li>
                 </ul>
@@ -113,12 +113,12 @@
             <div class="container-fluid">
                 <div class="nav navbar-nav" style="padding:2px 0px 0px 10px;">
                     <a href="#/dashboard"><img src="/images/organizations/biradix-small.png" class="logoSmall" style="height:41px"></a>
-                    <button type="button" style="padding: 5px 10px 7px 10px;margin-right:10px" class="pull-right" ng-click="toggle()">
+                    <button type="button" style="padding: 5px 10px 7px 10px;margin-right:10px;margin-top:2px" class="pull-right" ng-click="toggle()">
                         <i class="fa fa-bars"></i>
                     </button>
 
                     <button type="button" class="pull-right" ng-click="toggleSearch()"
-                            style="padding: 5px 10px 7px 10px;margin-right:10px">
+                            style="padding: 5px 10px 7px 10px;margin-right:10px;margin-top:2px">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
@@ -150,10 +150,10 @@
             <div id="sidebar-wrapper" ng-class="{'nobig' : !sideMenu}">
                 <ul class="sidebar-nav">
                     <li class="visible-xs">
-                        <a href="#/dashboard" ng-click="turnOffIfMobile()"><i class="fa fa-tachometer"></i> Dashboard</a>
+                        <a ng-class="{'active': sideNav == 'Dashboard'}" href="#/dashboard" ng-click="turnOffIfMobile()"><i class="fa fa-tachometer"></i> Dashboard</a>
                     </li>
                     <li class="visible-xs">
-                        <a href="#/reporting" ng-click="turnOffIfMobile()"><i class="fa fa-bar-chart"></i> Reporting</a>
+                        <a ng-class="{'active': sideNav == 'Reporting'}" href="#/reporting" ng-click="turnOffIfMobile()"><i class="fa fa-bar-chart"></i> Reporting</a>
                     </li>
                     <li>
                         <a href ng-click="updateProfile();turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
