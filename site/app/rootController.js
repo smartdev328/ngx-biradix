@@ -300,16 +300,22 @@ define([
 
         $rootScope.toggle = function() {
             $('#wrapper').toggleClass('toggled');
+            $rootScope.turnOffSearch();
         }
 
         $rootScope.toggleSearch = function() {
             $('#searchBar').slideToggle( "slow");
         }
 
+        $rootScope.turnOffSearch = function() {
+            $('#searchBar').hide();
+        }
+
         $rootScope.turnOffIfMobile = function() {
             if ($( window ).width() <= 767)
             {
                 $('#wrapper').removeClass('toggled');
+                $rootScope.turnOffSearch();
             }
         }
 
