@@ -47,7 +47,7 @@ d.run(function() {
         }
 
         //Initialize CPU clustering
-        clusterConfig.init({maxThreads: 1}, function (workerId) {
+        clusterConfig.init({maxThreads: 0}, function (workerId) {
             console.log('WorkerID: %s', workerId)
         });
 

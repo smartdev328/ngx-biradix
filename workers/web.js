@@ -62,7 +62,7 @@ d.run(function() {
             require('../api/properties/consumers/pdfConsumer')
         }
 
-        require('../config/cluster').init({maxThreads: 2}, function (workerId) {
+        require('../config/cluster').init({maxThreads: 1}, function (workerId) {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port)
             })

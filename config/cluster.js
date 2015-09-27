@@ -10,7 +10,7 @@ module.exports = {
                 // Count the machine's CPUs
                 var cpuCount = os.cpus().length;
 
-                if (options.maxThreads && options.maxThreads < cpuCount) {
+                if ((options.maxThreads || 0) < cpuCount) {
                     cpuCount = options.maxThreads;
                 }
 
