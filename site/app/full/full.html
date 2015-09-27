@@ -6,6 +6,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Property</div>
             <div class="panel-body">
+                <hr>
                 <div ><h4 style="margin:0px">{{property.name}}</h4></div>
                 <div style="padding-top:8px"></div>
                 <property-profile property="property"></property-profile>
@@ -16,6 +17,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Map</div>
             <div class="panel-body">
+                <hr>
                 <google-map options="mapOptions"></google-map>
             </div>
         </div>
@@ -32,6 +34,7 @@
                         ></i>
             </div>
             <div class="panel-body">
+                <hr>
                 <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
@@ -45,6 +48,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Competitors</div>
             <div class="panel-body" style="overflow-x:auto">
+                <hr>
                 <property-comps comps="comps"></property-comps>
             </div>
         </div>
@@ -67,30 +71,35 @@
         <div class="panel panel-info">
             <div class="panel-heading">{{profile.property.name}}</div>
             <div class="panel-body">
+                <hr>
                 <property-profile property="profile.property"></property-profile>
             </div>
         </div>
         <div class="panel panel-info" ng-show="profile.property.community_am.length > 0">
             <div class="panel-heading">Community Amenities</div>
             <div class="panel-body">
+                <hr>
                 <property-amenities amenities="profile.property.community_am"></property-amenities>
             </div>
         </div>
         <div class="panel panel-info" ng-show="profile.property.location_am.length > 0">
             <div class="panel-heading">Location Amenities</div>
             <div class="panel-body">
+                <hr>
                 <property-amenities amenities="profile.property.location_am"></property-amenities>
             </div>
         </div>
         <div class="panel panel-info" ng-show="profile.property.floorplan_am.length > 0">
             <div class="panel-heading">Unit Amenities</div>
             <div class="panel-body">
+                <hr>
                 <property-amenities amenities="profile.property.floorplan_am"></property-amenities>
             </div>
         </div>
         <div class="panel panel-info" ng-show="profile.property.hasFees">
             <div class="panel-heading">Fees, Deposits, Lease Terms</div>
             <div class="panel-body">
+                <hr>
                 <property-fees fees="profile.property.fees" lookups="profile.lookups.fees"></property-fees>
             </div>
         </div>
@@ -100,6 +109,7 @@
         <div class="panel panel-info" ng-show="profile.property.hasContact || profile.property.hasNotes">
             <div class="panel-heading">About Property</div>
             <div class="panel-body">
+                <hr>
                 <property-about property="profile.property"></property-about>
             </div>
         </div>
@@ -115,6 +125,7 @@
                         ></i>
             </div>
             <div class="panel-body">
+                <hr>
                 <div  ng-if="graphs">
                     <time-series options="profile.nerData"></time-series>
                 </div>
@@ -128,6 +139,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Occupancy, Traffic, & Leases</div>
             <div class="panel-body">
+                <hr>
                 <div class="row" style="margin-left:-15px" ng-if="graphs">
                     <div class="col-sm-6">
                         <time-series options="profile.occData"></time-series>
@@ -145,6 +157,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Floor Plans</div>
             <div class="panel-body"  style="overflow-x:auto">
+                <hr>
                 <property-floorplans comp="profile.comp"></property-floorplans>
             </div>
         </div>
