@@ -40,30 +40,35 @@
         <div class="panel panel-info">
             <div class="panel-heading">Property Info</div>
             <div class="panel-body">
+                <hr>
                 <property-profile property="property"></property-profile>
             </div>
         </div>
         <div class="panel panel-info" ng-show="property.community_am.length > 0">
             <div class="panel-heading">Community Amenities</div>
             <div class="panel-body">
+                <hr>
                 <property-amenities amenities="property.community_am"></property-amenities>
             </div>
         </div>
         <div class="panel panel-info" ng-show="property.location_am.length > 0">
             <div class="panel-heading">Location Amenities</div>
             <div class="panel-body">
+                <hr>
                 <property-amenities amenities="property.location_am"></property-amenities>
             </div>
         </div>
         <div class="panel panel-info" ng-show="property.floorplan_am.length > 0">
             <div class="panel-heading">Unit Amenities</div>
             <div class="panel-body">
+                <hr>
                 <property-amenities amenities="property.floorplan_am"></property-amenities>
             </div>
         </div>
         <div class="panel panel-info" ng-show="property.hasFees">
             <div class="panel-heading">Fees, Deposits, Lease Terms</div>
             <div class="panel-body">
+                <hr>
                 <property-fees fees="property.fees" lookups="lookups.fees"></property-fees>
             </div>
         </div>
@@ -73,6 +78,7 @@
         <div class="panel panel-info" ng-show="property.hasContact || property.hasNotes">
             <div class="panel-heading">About Property</div>
             <div class="panel-body">
+                <hr>
                 <property-about property="property"></property-about>
             </div>
         </div>
@@ -88,6 +94,7 @@
                         ></i>
             </div>
             <div class="panel-body">
+                <hr>
                 <div style="float:right;padding-bottom:10px;" class="hidden-print">
                     Graphs:
                     <toggle-switch checked="graphs"></toggle-switch>
@@ -115,6 +122,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Occupancy, Traffic, & Leases</div>
             <div class="panel-body">
+                <hr>
                 <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
@@ -137,6 +145,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Floor Plans</div>
             <div class="panel-body"  style="overflow-x:auto">
+                <hr>
                 <property-floorplans comp="comp"></property-floorplans>
             </div>
         </div>

@@ -15,8 +15,6 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "Properties";
 
-        var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
-
         //Grid Options
         $scope.data = [];
         $scope.limits = [10,50,100,500]

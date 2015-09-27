@@ -16,7 +16,14 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "Users";
 
-        var siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
+        var siteAdmin;
+
+        $rootScope.$watch("me", function(x) {
+            if ($rootScope.me) {
+                siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
+            }
+        })
+
         var isTiny = $(window).width() < 500;
 
         //Grid Options
