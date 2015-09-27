@@ -99,44 +99,41 @@ define([
                     if ($scope.options) {
                         $scope.options.points = $scope.options.points || [];
 
-                        if (!$scope.phantom) {
-                            if ($scope.aMarkers) {
-
-                                for (var i = 0; i < $scope.aMarkers.length; i++) {
-                                    google.maps.event.removeListener($scope.aMarkers[i].handle);
-                                }
-                            }
-                            $scope.aMarkers = [];
-
-                            var mapOptions = {
-                                zoom: $scope.getZoom($scope.options.points),
-                                center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
-                            }
-                            var elMap = $($element).find('div')[0]
-                            $scope.oMap = new google.maps.Map(elMap, mapOptions);
-
-                            $scope.loadMarkers();
-
-
-                            $(elMap).width($scope.options.width);
-                            $(elMap).height($scope.options.height + "px");
-
-                            window.setTimeout(function () {
-                                $scope.resize(1)
-                            }, 100);
-                        }
-                        else {
-
-                            $scope.staticUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" + $scope.options.loc[0]
-                             + "," + $scope.options.loc[1]
-                             + "&zoom=" + $scope.getZoom($scope.options.points)
+                        $scope.staticUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" + $scope.options.loc[0]
+                            + "," + $scope.options.loc[1]
+                            + "&zoom=" + $scope.getZoom($scope.options.points)
                             + "&size=" + $scope.options.printWidth + "x" + $scope.options.height  + "&sensor=false"
 
-                            $scope.options.points.forEach(function(p) {
-                                $scope.staticUrl += "&markers=icon:http://platform.biradix.com/Content/Core/Images/partial/ui/maps/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
-                            })
+                        $scope.options.points.forEach(function(p) {
+                            $scope.staticUrl += "&markers=icon:http://platform.biradix.com/Content/Core/Images/partial/ui/maps/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
+                        })
+
+                        if ($scope.aMarkers) {
+
+                            for (var i = 0; i < $scope.aMarkers.length; i++) {
+                                google.maps.event.removeListener($scope.aMarkers[i].handle);
+                            }
                         }
+                        $scope.aMarkers = [];
+
+                        var mapOptions = {
+                            zoom: $scope.getZoom($scope.options.points),
+                            center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        }
+                        var elMap = $($element).find('div')[0]
+                        $scope.oMap = new google.maps.Map(elMap, mapOptions);
+
+                        $scope.loadMarkers();
+
+
+                        $(elMap).width($scope.options.width);
+                        $(elMap).height($scope.options.height + "px");
+
+                        window.setTimeout(function () {
+                            $scope.resize(1)
+                        }, 100);
+
                         $scope.gLoaded = true;
                     }
 
