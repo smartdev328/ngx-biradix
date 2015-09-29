@@ -12,46 +12,44 @@ d.on("error", function(err) {
 });
 
 d.run(function() {
-    var mongoose = require('mongoose');
-    var queues = require("../config/queues")
+    //Initialize CPU clustering
+    require('../config/cluster').init({maxThreads: 4}, function (workerId) {
+        console.log('WorkerID: %s', workerId)
 
-    var connectedCount = 0;
+        var mongoose = require('mongoose');
+        var queues = require("../config/queues")
 
-    queues.connect(function () {
-        connectedCount++;
-        ready();
-    })
+        var connectedCount = 0;
 
-    mongoose.connect(settings.MONGODB_URI);
-    var conn = mongoose.connection;
-    conn.once('open', function () {
-        console.log({type: 'info', msg: 'connected', service: 'mongodb'});
-        connectedCount++;
-        ready();
-    });
+        queues.connect(function () {
+            connectedCount++;
+            ready();
+        })
 
-
-    function ready() {
-        if (connectedCount < 2) {
-            return;
-        }
-
-        var clusterConfig = require('../config/cluster')
-
-        if (settings.RUN_DASHBOARD == "phantom") {
-            require('../api/properties/consumers/dashboardConsumer');
-        }
-
-        if (settings.RUN_PHANTOM == "phantom") {
-            require('../api/properties/consumers/pdfConsumer')
-        }
-
-        //Initialize CPU clustering
-        clusterConfig.init({maxThreads: 1}, function (workerId) {
-            console.log('WorkerID: %s', workerId)
+        mongoose.connect(settings.MONGODB_URI);
+        var conn = mongoose.connection;
+        conn.once('open', function () {
+            console.log({type: 'info', msg: 'connected', service: 'mongodb'});
+            connectedCount++;
+            ready();
         });
 
-    }
+
+        function ready() {
+            if (connectedCount < 2) {
+                return;
+            }
+
+            if (settings.RUN_DASHBOARD == "phantom") {
+                require('../api/properties/consumers/dashboardConsumer');
+            }
+
+            if (settings.RUN_PHANTOM == "phantom") {
+                require('../api/properties/consumers/pdfConsumer')
+            }
+
+        }
+    });
 });
 
 

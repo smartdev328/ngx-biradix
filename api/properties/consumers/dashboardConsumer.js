@@ -10,9 +10,9 @@ queues.getDashboardQueue().consume(function(data,reply) {
 });
 
 queues.getProfileQueue().consume(function(data,reply) {
-    console.log(data.compId + " profile started");
+    console.log(data.compId + " profile started: " + (new Date()));
     DashboardService.getProfile(data.user,data.options, data.checkManaged, data.subjectId, data.compId, function(err, profile) {
-        console.log(data.compId + " profile ended");
+        console.log(data.compId + " profile ended: " + (new Date()));
         reply({err: err, profile: profile});
     })
 });
