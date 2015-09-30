@@ -28,7 +28,7 @@ define([
 
         //Grid Options
         $scope.data = [];
-        $scope.limits = [10,50,100,500]
+        $scope.limits = [1, 10,50,100,500]
         $scope.limit = 50;
         $scope.sort = {}
         $scope.search = {}

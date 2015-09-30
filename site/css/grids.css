@@ -2,7 +2,8 @@
     border:1px solid #ccc;
     border-bottom:2px solid #ccc;
     background-color: white;
-    padding:5px 20px 20px 20px
+    padding:5px 20px 20px 20px;
+    position: relative
 }
 
 .maingrid > table {
@@ -20,9 +21,7 @@
 .maingrid > table >tbody>tr:nth-of-type(even) {
     background-color: #f9f9f9 !important;
 }
-.mainheader {
-    color: #4460a9;
-}
+
 
 @media all and (min-width: 0px) and (max-width: 530px) {
     .grid-limit {
@@ -31,3 +30,29 @@
     }
 }
 
+.maingrid .header {
+    position:absolute;background-color: #f8f8f8; top:0;height:37px;margin-left:-20px;width:100%;margin-right:-20px;border-bottom:2px solid #ddd;z-index: 1
+}
+
+.maingrid > table {
+    margin-bottom:10px;z-index: 10;position:relative
+}
+
+
+.grid-pager ul {
+    margin-bottom: 0px !important;
+    margin-top: 5px !important;
+}
+
+.maingrid > table th .sortable {
+    cursor: pointer;
+}
+
+.maingrid > table th .pull-right {
+    width:15px;
+}
+
+.maingrid > table th .fa-sort,
+.maingrid > table th .fa-filter{
+    color:#E0E0E0
+}

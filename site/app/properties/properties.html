@@ -1,55 +1,14 @@
-<h2 class="hasSidenav">Manage Properties</h2>
-<Style>
+<h2 class="mainheader">Manage Properties
+    <hr>
+</h2>
 
-    @media all and (min-width: 0px) and (max-width: 380px) {
-        .grid-right-nav {
-            margin-top:10px;
-            padding-left:5px
-        }
-        .grid-limit {
-            float:right  !important;
-        }
-    }
-
-    @media all and (min-width: 0px) and (max-width: 1024px) {
-        .grid-pager {
-            float: left !important;
-        }
-
-        .grid-show {
-            margin-right:50px;
-            margin-bottom:10px
-        }
-    }
-
-    @media all and (min-width: 0px) and (max-width: 767px) {
-
-     .grid-right-nav {
-         float:left;
-     }
-
-        .grid-limit {
-
-        }
-        .grid-right-nav  .has-feedback {
-            margin-left:3px !important;
-            width:120px !important;
-        }
-
-    }
-
-    .grid-right-nav  .has-feedback {
-        margin-left:5px;
-        width: 160px;
-    }
-</Style>
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
         <div style="float:left" class="grid-limit">
-            <select class="form-control input-sm" ng-model="limit" style="width:75px"
+            Show: <select class="form-control input-sm" ng-model="limit" style="width:75px;display:inline-block"
                     ng-change="resetPager()"
                     ng-options="item for item in limits">
             </select>
@@ -89,7 +48,7 @@
                 </div>
             </div>
 
-            <div class="form-group has-feedback pull-right">
+            <div class="form-group has-feedback pull-right" style="margin-right:5px">
                 <input type="text" class="form-control input-sm"
                        placeholder="Search Properties"
                        ng-model="searchText"
@@ -98,77 +57,79 @@
             </div>
         </div>
 
-
-    <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
+    <br clear="all">
+    <div class="maingrid wrapper">
+        <div class="header"></div>
+        <table class="table table-condensed table-striped table-hover">
         <thead>
         <tr>
             <th style="width:24px"></th>
             <th ng-show="show.rownumber">#</th>
-            <th ng-show="show.date" style="cursor:pointer" ng-click="toggleSort('date')">
+            <th ng-show="show.date" class= ng-click="toggleSort('date')">
                 <div class="pull-left">Date</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.date == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.date == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.name" style="cursor:pointer" ng-click="toggleSort('name')">
+            <th ng-show="show.name" class="sortable" ng-click="toggleSort('name')">
                 <div class="pull-left">Name</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.name == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.name == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.address" style="cursor:pointer" ng-click="toggleSort('address')">
+            <th ng-show="show.address" class="sortable" ng-click="toggleSort('address')">
                 <div class="pull-left">Address</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.address == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.address === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.address === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.address == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.address === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.address === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.city" style="cursor:pointer" ng-click="toggleSort('city')">
+            <th ng-show="show.city" class="sortable" ng-click="toggleSort('city')">
                 <div class="pull-left">City</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.city == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.city === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.city === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.city == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.city === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.city === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.state" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('state')">
                 <div class="pull-left">State</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.state == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.state === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.state === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.state == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.state === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.state === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.zip" style="cursor:pointer" ng-click="toggleSort('zip')">
+            <th ng-show="show.zip" class="sortable" ng-click="toggleSort('zip')">
                 <div class="pull-left">Zip</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.zip == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.zip === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.zip === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.zip == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.zip === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.zip === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.totalUnits" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('totalUnits')">
                 <div class="pull-left">Units</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.totalUnits == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.totalUnits === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.totalUnits === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.totalUnits == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.totalUnits === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.totalUnits === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.occupancy" style="cursor:pointer;min-width:58px;width:58px" ng-click="toggleSort('occupancy')">
                 <div class="pull-left">Occ</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.occupancy == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.occupancy == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.ner" style="cursor:pointer;min-width:60px;width:60px" ng-click="toggleSort('ner')">
                 <div class="pull-left">NER</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.ner == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.ner == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.active" style="cursor:pointer;min-width:70px;width:75px" ng-click="toggleFilter('active')">
                 <div class="pull-left">Active</div>
-                <div class="pull-right" style="width:15px" ng-show="filters.active == null"><i class="fa fa-filter" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="filters.active === true"><i class="fa fa-toggle-on"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="filters.active === false"><i class="fa fa-toggle-off"></i></div>
+                <div class="pull-right" ng-show="filters.active == null"><i class="fa fa-filter"></i></div>
+                <div class="pull-right" ng-show="filters.active === true"><i class="fa fa-toggle-on"></i></div>
+                <div class="pull-right" ng-show="filters.active === false"><i class="fa fa-toggle-off"></i></div>
             </th>
             <th ng-show="show.company" style="cursor:pointer;min-width:92px;width:120px" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.tools" class="center"></th>
         </tr>
@@ -196,8 +157,8 @@
             <td ng-show="show.occupancy" style="text-align:right">{{row.survey.occupancy == null ? '-' :  row.survey.occupancy + '%'}}</td>
             <td ng-show="show.ner" style="text-align:right">{{row.survey.ner == null ? '-' : '$' + row.survey.ner }}</td>
             <td ng-show="show.active" class="center">
-                <span class="fa fa-check fa-2x success" ng-show="row.active"></span>
-                <span class="fa fa-times fa-2x danger" ng-show="!row.active"></span>
+                <span class="fa fa-check fa-2x" ng-show="row.active"></span>
+                <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ddd"></span>
             </td>
             <td ng-show="show.company">{{row.company || '-'}}</td>
             <td ng-show="show.tools" class="center">
@@ -256,8 +217,8 @@
             <td ng-show="show.occupancy" style="text-align:right">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</td>
             <td ng-show="show.ner" style="text-align:right">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</td>
             <td ng-show="show.active" class="center">
-                <span class="fa fa-check fa-2x success" ng-show="comp.active"></span>
-                <span class="fa fa-times fa-2x danger" ng-show="!comp.active"></span>
+                <span class="fa fa-check fa-2x" ng-show="comp.active"></span>
+                <span class="fa fa-times fa-2x" ng-show="!comp.active" style="color:#ddd"></span>
             </td>
             <td ng-show="show.company">{{comp.company || '-'}}</td>
             <td ng-show="show.tools" class="center">
@@ -285,8 +246,8 @@
         <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
     </div>
     <div class="pull-right grid-pager">
-        <pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit" style="margin-top:0px"></pagination>
+        <pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></pagination>
     </div>
     <br clear="all" />
-    <br ng-show="filtered.length <= limit" />
+    </div>
 </div>

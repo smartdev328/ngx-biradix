@@ -14,7 +14,7 @@
             </select>
         </div>
 
-        <div style="float:right" >
+        <div style="float:right">
             <div class="form-group has-feedback pull-right">
                 <div class="btn-group action_dropdown stay_open_button">
                     <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
@@ -54,92 +54,90 @@
     <br clear="all">
 
 
-    <div class="maingrid wrapper" style="position: relative">
+    <div class="maingrid wrapper">
         <div class="header"></div>
-    <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px;z-index: 10;position:relative">
-        <thead>
-        <tr>
-            <th ng-show="show.rownumber">#</th>
-            <th ng-show="show.date" style="cursor:pointer" ng-click="toggleSort('date')">
-                <div class="pull-left">Date</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.date == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
-            </th>
-            <th ng-show="show.name" style="cursor:pointer" ng-click="toggleSort('name')">
-                <div class="pull-left">Name</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.name == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
-            </th>
-            <th ng-show="show.email" style="cursor:pointer" ng-click="toggleSort('email')">
-                <div class="pull-left">Email</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.email == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.email === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.email === false"><i class="fa fa-sort-up"></i></div>
-            </th>
-            <th ng-show="show.role" style="cursor:pointer" ng-click="toggleSort('role')">
-                <div class="pull-left">Role</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.role == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.role === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.role === false"><i class="fa fa-sort-up"></i></div>
-            </th>
-            <th ng-show="show.company" style="cursor:pointer;min-width:100px" ng-click="toggleSort('company')">
-                <div class="pull-left">Company</div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company == null"><i class="fa fa-sort" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
-            </th>
-            <th ng-show="show.active" style="cursor:pointer;min-width:70px;width:75px" ng-click="toggleFilter('active')">
-                <div class="pull-left">Active</div>
-                <div class="pull-right" style="width:15px" ng-show="filters.active == null"><i class="fa fa-filter" style="color:#E0E0E0"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="filters.active === true"><i class="fa fa-toggle-on"></i></div>
-                <div class="pull-right" style="width:15px" ng-show="filters.active === false"><i class="fa fa-toggle-off"></i></div>
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th ng-show="show.rownumber">#</th>
+                <th ng-show="show.date" class="sortable" ng-click="toggleSort('date')">
+                    <div class="pull-left">Date</div>
+                    <div class="pull-right" ng-show="sort.date == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
+                </th>
+                <th ng-show="show.name" class="sortable" ng-click="toggleSort('name')">
+                    <div class="pull-left">Name</div>
+                    <div class="pull-right" ng-show="sort.name == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
+                </th>
+                <th ng-show="show.email" class="sortable" ng-click="toggleSort('email')">
+                    <div class="pull-left">Email</div>
+                    <div class="pull-right" ng-show="sort.email == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.email === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.email === false"><i class="fa fa-sort-up"></i></div>
+                </th>
+                <th ng-show="show.role" class="sortable" ng-click="toggleSort('role')">
+                    <div class="pull-left">Role</div>
+                    <div class="pull-right" ng-show="sort.role == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.role === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.role === false"><i class="fa fa-sort-up"></i></div>
+                </th>
+                <th ng-show="show.company" class="sortable" ng-click="toggleSort('company')">
+                    <div class="pull-left">Company</div>
+                    <div class="pull-right" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
+                </th>
+                <th ng-show="show.active" class="sortable" ng-click="toggleFilter('active')">
+                    <div class="pull-left">Active</div>
+                    <div class="pull-right" ng-show="filters.active == null"><i class="fa fa-filter"></i></div>
+                    <div class="pull-right" ng-show="filters.active === true"><i class="fa fa-toggle-on"></i></div>
+                    <div class="pull-right" ng-show="filters.active === false"><i class="fa fa-toggle-off"></i></div>
 
-            </th>
-            <th ng-show="show.tools" class="center"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="row in filtered = (data  | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
-            <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
-            <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name">{{row.name}}</td>
-            <td ng-show="show.email">{{row.email}}</td>
-            <td ng-show="show.role">{{row.role}}</td>
-            <td ng-show="show.company">{{row.company}}</td>
-            <td ng-show="show.active" class="center">
-                <span class="fa fa-check fa-2x" ng-show="row.active"></span>
-                <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ccc"></span>
-            </td>
-            <td ng-show="show.tools" class="center">
-                <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-show="row._id != me._id">
-                    <div class="btn-group action_dropdown">
-                        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <li><a href style="text-decoration:none" ng-click="edit(row._id)"><span class="fa fa-edit"></span> Edit User</a></li>
-                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && !row.active" style="text-decoration:none"><span class="fa fa-check"></span> Activate</a></li>
-                            <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && row.active" style="text-decoration:none"><span class="fa fa-times"></span> De-activate</a></li>
-                            <li><a href ng-click="loginAs(row._id)" ng-show="me.permissions.indexOf('Users/LogInAs') > -1 && row.active"><span class="fa fa-key"></span> Login As</a></li>
-                        </ul>
+                </th>
+                <th ng-show="show.tools"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in filtered = (data  | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
+                <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
+                <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
+                <td ng-show="show.name">{{row.name}}</td>
+                <td ng-show="show.email">{{row.email}}</td>
+                <td ng-show="show.role">{{row.role}}</td>
+                <td ng-show="show.company">{{row.company}}</td>
+                <td ng-show="show.active" class="center">
+                    <span class="fa fa-check fa-2x" ng-show="row.active"></span>
+                    <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ccc"></span>
+                </td>
+                <td ng-show="show.tools" class="center">
+                    <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-show="row._id != me._id">
+                        <div class="btn-group action_dropdown">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                                <li><a href ng-click="edit(row._id)"><span class="fa fa-edit"></span> Edit User</a></li>
+                                <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && !row.active"><span class="fa fa-check"></span> Activate</a></li>
+                                <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && row.active"><span class="fa fa-times"></span> De-activate</a></li>
+                                <li><a href ng-click="loginAs(row._id)" ng-show="me.permissions.indexOf('Users/LogInAs') > -1 && row.active"><span class="fa fa-key"></span> Login As</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
+                </td>
+            </tr>
+            </tbody>
 
-    </table>
-    <div class="pull-left grid-show" style="padding-top:5px;">
-        Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
-        <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
+        </table>
+        <div class="pull-left grid-show" style="padding-top:5px;">
+            Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
+            <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
+        </div>
+        <div class="pull-right grid-pager">
+            <pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></pagination>
+        </div>
+        <br clear="all" />
     </div>
-    <div class="pull-right grid-pager">
-        <pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit" style="margin-top:0px"></pagination>
-    </div>
-    <br clear="all" />
-    </div>
-    <br ng-show="filtered.length <= limit" />
-
 </div>
