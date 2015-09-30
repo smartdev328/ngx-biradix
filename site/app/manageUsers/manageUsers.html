@@ -1,46 +1,42 @@
-<h2 class="hasSidenav">Manage Users</h2>
+<h2 class="mainheader">Manage Users
+    <hr>
+</h2>
+
 <Style>
+    .maingrid.wrapper {
+        border:1px solid #ccc;
+        border-bottom:2px solid #ccc;
+        background-color: white;
+        padding:5px 20px 20px 20px
+    }
 
-    @media all and (min-width: 0px) and (max-width: 380px) {
-        .grid-right-nav {
-            margin-top:10px;
-            padding-left:5px
-        }
+    .mainheader > hr {
+        border-color:#ddd;
+    }
+    .maingrid > table {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .maingrid > table thead {
+        background-color: #f9f9f9;
+    }
+
+    .maingrid > table >tbody>tr:nth-of-type(odd) {
+        background-color: #fff !important;
+    }
+
+    .maingrid > table >tbody>tr:nth-of-type(even) {
+        background-color: #f9f9f9 !important;
+    }
+    .mainheader {
+        color: #4460a9;
+    }
+
+    @media all and (min-width: 0px) and (max-width: 530px) {
         .grid-limit {
-            float:right  !important;
+            float:right !important;
+            margin-bottom:5px;
         }
-    }
-
-    @media all and (min-width: 0px) and (max-width: 1024px) {
-        .grid-pager {
-            float: left !important;
-        }
-
-        .grid-show {
-            margin-right:50px;
-            margin-bottom:10px
-        }
-    }
-
-    @media all and (min-width: 0px) and (max-width: 767px) {
-
-     .grid-right-nav {
-         float:left;
-     }
-
-        .grid-limit {
-
-        }
-        .grid-right-nav  .has-feedback {
-            margin-left:3px !important;
-            width:120px !important;
-        }
-
-    }
-
-    .grid-right-nav  .has-feedback {
-        margin-left:5px;
-        width: 160px;
     }
 </Style>
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
@@ -49,13 +45,13 @@
 </div>
 <div ng-show="localLoading">
         <div style="float:left" class="grid-limit">
-            <select class="form-control input-sm" ng-model="limit" style="width:75px"
+            Show: <select class="form-control input-sm" ng-model="limit" style="width:75px;display: inline"
                     ng-change="resetPager()"
                     ng-options="item for item in limits">
             </select>
         </div>
 
-        <div style="float:right" class="grid-right-nav">
+        <div style="float:right" >
             <div class="form-group has-feedback pull-right">
                 <div class="btn-group action_dropdown stay_open_button">
                     <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
@@ -84,7 +80,7 @@
                 </div>
             </div>
 
-            <div class="form-group has-feedback pull-right">
+            <div class="form-group has-feedback pull-right" style="margin-right:5px">
                 <input type="text" class="form-control input-sm"
                        placeholder="Search Users"
                        ng-model="searchText"
@@ -92,9 +88,12 @@
                 <i class="fa fa-search form-control-feedback" style="color:#ccc"></i>
             </div>
         </div>
+    <br clear="all">
 
 
-    <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
+    <div class="maingrid wrapper" style="position: relative">
+        <div style="position:absolute;background-color: #f8f8f8; top:0;height:37px;margin-left:-20px;width:100%;margin-right:-20px;border-bottom:2px solid #ddd;z-index: 1"></div>
+    <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px;z-index: 10;position:relative">
         <thead>
         <tr>
             <th ng-show="show.rownumber">#</th>
@@ -169,7 +168,6 @@
         </tbody>
 
     </table>
-
     <div class="pull-left grid-show" style="padding-top:5px;">
         Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
         <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
@@ -178,5 +176,7 @@
         <pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit" style="margin-top:0px"></pagination>
     </div>
     <br clear="all" />
+    </div>
     <br ng-show="filtered.length <= limit" />
+
 </div>
