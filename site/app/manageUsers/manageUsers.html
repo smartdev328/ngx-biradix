@@ -2,43 +2,6 @@
     <hr>
 </h2>
 
-<Style>
-    .maingrid.wrapper {
-        border:1px solid #ccc;
-        border-bottom:2px solid #ccc;
-        background-color: white;
-        padding:5px 20px 20px 20px
-    }
-
-    .mainheader > hr {
-        border-color:#ddd;
-    }
-    .maingrid > table {
-        border-bottom: 1px solid #ccc;
-    }
-
-    .maingrid > table thead {
-        background-color: #f9f9f9;
-    }
-
-    .maingrid > table >tbody>tr:nth-of-type(odd) {
-        background-color: #fff !important;
-    }
-
-    .maingrid > table >tbody>tr:nth-of-type(even) {
-        background-color: #f9f9f9 !important;
-    }
-    .mainheader {
-        color: #4460a9;
-    }
-
-    @media all and (min-width: 0px) and (max-width: 530px) {
-        .grid-limit {
-            float:right !important;
-            margin-bottom:5px;
-        }
-    }
-</Style>
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
@@ -92,7 +55,7 @@
 
 
     <div class="maingrid wrapper" style="position: relative">
-        <div style="position:absolute;background-color: #f8f8f8; top:0;height:37px;margin-left:-20px;width:100%;margin-right:-20px;border-bottom:2px solid #ddd;z-index: 1"></div>
+        <div class="header"></div>
     <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px;z-index: 10;position:relative">
         <thead>
         <tr>
@@ -146,8 +109,8 @@
             <td ng-show="show.role">{{row.role}}</td>
             <td ng-show="show.company">{{row.company}}</td>
             <td ng-show="show.active" class="center">
-                <span class="fa fa-check fa-2x success" ng-show="row.active"></span>
-                <span class="fa fa-times fa-2x danger" ng-show="!row.active"></span>
+                <span class="fa fa-check fa-2x" ng-show="row.active"></span>
+                <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ccc"></span>
             </td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-show="row._id != me._id">

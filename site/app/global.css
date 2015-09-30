@@ -175,3 +175,11 @@ td.center,th.center {text-align:center}
 .modal-body {
     padding: 14px 14px 14px 20px;
 }
+
+.maingrid .header {
+    position:absolute;background-color: #f8f8f8; top:0;height:37px;margin-left:-20px;width:100%;margin-right:-20px;border-bottom:2px solid #ddd;z-index: 1
+}
+
+.mainheader > hr {
+    border-color:#ddd;
+}  

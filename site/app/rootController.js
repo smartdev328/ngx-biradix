@@ -110,7 +110,8 @@ define([
 
         $rootScope.swaptoLoggedIn = function() {
             require([
-                'css!/css/navs'
+                'css!/css/navs',
+                'css!/css/grids'
             ], function () {
                 $rootScope.getMe(function() {
                     $('.loading').hide();
