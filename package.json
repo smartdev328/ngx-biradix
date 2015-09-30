@@ -25,6 +25,7 @@
     "ejs": "^2.3.1",
     "express": "^4.12.3",
     "express-jwt": "^3.0.0",
+    "heroku-client": "^2.2.2",
     "ioredis": "^1.2.5",
     "jackrabbit": "^4.0.1",
     "json-buffer": "^2.0.11",

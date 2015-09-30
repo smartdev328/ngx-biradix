@@ -52,6 +52,7 @@ d.run(function() {
             app.use(settings.API_PATH + 'amenities/', require('../api/amenities/gateways/amenitiesGateway'));
             app.use('/contact', require('../api/contact/gateways/contactGateway'));
             app.use('/progress', require('../api/progress/gateways/progressGateway'));
+            app.use('/status', require('../api/status/gateways/statusGateway'));
             app.get('/p/:token', function (req, res) {
                 res.redirect('/#/password/reset/' + req.params.token)
             })

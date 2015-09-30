@@ -10,8 +10,38 @@ var settings = require('../../../config/settings')
 var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
 var AuditService = require('../../audit/services/auditService')
+var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
+    getSystemUser : function(callback) {
+
+        var key = "systemUser";
+
+        var user = localCacheService.get(key);
+
+        if (user) {
+            callback(user);
+            user = null;
+            return;
+        }
+
+        UserSchema.findOne({
+            isSystem: true
+        }, function(err, user) {
+            if (err) {
+                throw new Error(err);
+            }
+            getFullUser(user, function(obj) {
+                obj.user.memberships = {isadmin:true};
+                localCacheService.set(key, obj, 120)
+                callback(obj);
+                obj = null;
+                user = null;
+                return;
+            });
+
+        })
+    },
     search: function(Operator,criteria, callback) {
 
         //if you pass in fields to select you are overwritting the default

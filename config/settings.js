@@ -17,6 +17,8 @@ module.exports = {
     PDF_PROFILE_QUEUE : "jobs.property.profile.pdf",
     PDF_REPORTING_QUEUE : "jobs.reporting.pdf",
     RUN_PHANTOM : process.env.RUN_PHANTOM || "web",
-    RUN_DASHBOARD : process.env.RUN_DASHBOARD || "web"
+    RUN_DASHBOARD : process.env.RUN_DASHBOARD || "web",
+    HEROKU_API_KEY : process.env.HEROKU_API_KEY,
+    HEROKU_APP : process.env.HEROKU_APP || "birdaixplatform-dev"
 
 }
