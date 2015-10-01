@@ -2,11 +2,12 @@
 define([
     'app',
     '../../services/userService',
+    '../../services/gridService',
     '../../filters/skip/filter',
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$modal', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$modal) {
+    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$modal','$gridService', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$modal,$gridService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -28,7 +29,7 @@ define([
 
         //Grid Options
         $scope.data = [];
-        $scope.limits = [1, 10,50,100,500]
+        $scope.limits = [10,50,100,500]
         $scope.limit = 50;
         $scope.sort = {}
         $scope.search = {}
@@ -89,30 +90,6 @@ define([
         $scope.resetPager = function () {
             $scope.currentPage = 1;
         }
-        $scope.toggle = function (obj, v, reset) {
-            var s = obj[v];
-
-            if (reset) {
-                for (var i in obj) {
-                    if (i != v) {
-                        delete obj[i];
-                    }
-                }
-            }
-
-            if (s === true) {
-                obj[v] = false
-                return;
-            }
-
-            if (s === false) {
-                obj[v] = null
-                return;
-            }
-
-            obj[v] = true;
-
-        }
 
         $scope.searchFilter = function (obj) {
             if (!$scope.searchText) return true;
@@ -129,7 +106,7 @@ define([
 
         $scope.toggleFilter = function (v) {
             $scope.resetPager();
-            $scope.toggle($scope.filters, v, false)
+            $gridService.toggle($scope.filters, v, false)
             var s = $scope.filters[v];
 
             $scope.search = $scope.search || {}
@@ -143,7 +120,7 @@ define([
         }
         $scope.toggleSort = function (v) {
             $scope.resetPager();
-            $scope.toggle($scope.sort, v, true)
+            $gridService.toggle($scope.sort, v, true)
 
             var s = $scope.sort[v];
 
@@ -175,32 +152,6 @@ define([
             }
 
             return parseInt(x);
-        }
-
-
-        $scope.streamCsv = function (filename, content) {
-            var finalVal = '';
-
-            for (var i = 0; i < content.length; i++) {
-                var value = content[i];
-
-                for (var j = 0; j < value.length; j++) {
-                    var innerValue = value[j];
-                    var result = innerValue.replace(/"/g, '""');
-                    if (result.search(/("|,|\n)/g) >= 0)
-                        result = '"' + result + '"';
-                    if (j > 0)
-                        finalVal += ',';
-                    finalVal += result;
-                }
-
-                finalVal += '\n';
-            }
-
-            var pom = document.createElement('a');
-            pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(finalVal));
-            pom.setAttribute('download', filename);
-            pom.click();
         }
 
         $scope.download = function () {
@@ -248,7 +199,7 @@ define([
                 content.push(row);
             })
 
-            $scope.streamCsv('users.csv', content)
+            $gridService.streamCsv('users.csv', content)
 
         }
 
