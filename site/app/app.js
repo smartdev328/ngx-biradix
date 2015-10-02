@@ -198,12 +198,12 @@ define([
                 url: "/updateProfile",
                 views: {
                     "loggedInView": {
-                        templateUrl: "app/updateProfile/updateProfile.html?bust=" + version ,
+                        templateUrl: "app/updateprofile/updateProfile.html?bust=" + version ,
                         controller : "updateProfileController"
                     }
 
                 },
-                resolve: {get : function($q) {return resolve($q, 'updateProfile/updateProfileController')}}
+                resolve: {get : function($q) {return resolve($q, 'updateprofile/updateProfileController')}}
             })
     });
 
