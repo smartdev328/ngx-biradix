@@ -194,6 +194,17 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'reporting/reportingController')}}
             })
+            .state('updateProfile', {
+                url: "/updateProfile",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/updateProfile/updateProfile.html?bust=" + version ,
+                        controller : "updateProfileController"
+                    }
+
+                },
+                resolve: {get : function($q) {return resolve($q, 'updateProfile/updateProfileController')}}
+            })
     });
 
     app.filter("sanitize", ['$sce', function ($sce) {

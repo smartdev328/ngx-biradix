@@ -1,8 +1,9 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-    <h2 class="modal-title">Update Profile</h2>
-</div>
-<div class="modal-body">
+<h2 class="mainheader">Update Profile
+    <hr>
+</h2>
+<div class="panel panel-info" style="max-width:500px;margin:0px auto">
+    <Br><Br>
+    <div class="panel-body" style="overflow-x:auto">
     <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)">
         <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
             <div class="input-group">
@@ -29,4 +30,5 @@
             <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
         </div>
     </form>
+    </div>
 </div>

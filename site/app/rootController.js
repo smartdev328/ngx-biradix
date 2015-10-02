@@ -219,32 +219,6 @@ define([
             });
         }
 
-        $scope.updateProfile = function() {
-            require([
-                '/app/updateprofile/updateProfileController.js'
-            ], function () {
-                var modalInstance = $modal.open({
-                    templateUrl: '/app/updateprofile/updateProfile.html',
-                    controller: 'updateProfileController',
-                    size: "sm",
-                    keyboard: false,
-                    backdrop: 'static',
-                    resolve: {
-                        me: function () {
-                            return $rootScope.me;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function () {
-                    //Save successfully
-                    $rootScope.refreshToken();
-                }, function () {
-                    //Cancel
-                });
-            });
-        }
-
         $scope.contact = function () {
             require([
                 '/app/contact/contactController.js'

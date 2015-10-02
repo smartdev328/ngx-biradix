@@ -74,7 +74,7 @@
                         <div style="text-align: center;color:#737373;border-bottom:1px solid #ccc;padding-bottom:5px">{{$root.me.roles[0]}}</div>
 
                         <ul class="multi-col-list">
-                            <li><a href ng-click="updateProfile()"><i class="fa fa-user"></i> My Account</a></li>
+                            <li><a href="#/updateProfile"><i class="fa fa-user"></i> My Account</a></li>
                             <li ng-show="$root.me.permissions.indexOf('Users') > -1"><a href="#/manageusers"><i class="fa fa-users"></i> Manage Users</a></li>
                             <li ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/properties"><i class="fa fa-building"></i> Manage Properties</a></li>
                             <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/history"><i class="fa fa-history"></i> Activity History</a></li>
@@ -156,10 +156,10 @@
                         <a ng-class="{'active': sideNav == 'Reporting'}" href="#/reporting" ng-click="turnOffIfMobile()"><i class="fa fa-bar-chart"></i> Reporting</a>
                     </li>
                     <li>
-                        <a href ng-click="updateProfile();turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
+                        <a href = "#/updateProfile" ng-click="turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
                     </li>
                     <li>
-                        <a href class="subnav" ng-click="updateProfile();turnOffIfMobile()"> - Update Profile</a>
+                        <a href = "#/updateProfile" ng-class="{'active': sideNav == 'UpdateProfile'}"  href class="subnav" ng-click="turnOffIfMobile()"> - Update Profile</a>
                     </li>
                     <li>
                         <a href class="subnav" ng-click="updatePassword();turnOffIfMobile()"> - Update Password</a>

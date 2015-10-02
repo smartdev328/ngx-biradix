@@ -3,17 +3,24 @@ define([
     'app',
 ], function (app) {
      app.controller
-        ('updateProfileController', ['$scope', '$modalInstance', 'me', '$authService', 'ngProgress', '$rootScope','toastr', '$location', function ($scope, $modalInstance, me, $authService, ngProgress, $rootScope, toastr, $location) {
+        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location', function ($scope, $authService, ngProgress, $rootScope, toastr, $location) {
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
             }
-            
-            $scope.user = { first: me.first, last: me.last, email: me.email }
 
-            $scope.canUpdateEmail = $rootScope.me.permissions.indexOf('Users/UpdateEmail') > -1
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
+            $rootScope.nav = "";
+
+            $rootScope.sideMenu = true;
+            $rootScope.sideNav = "UpdateProfile";
+
+
+            $rootScope.$watch("me", function(x) {
+                if ($rootScope.me) {
+                    $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
+
+                    $scope.canUpdateEmail = $rootScope.me.permissions.indexOf('Users/UpdateEmail') > -1
+                }
+            })
 
             $scope.submit = function (user) {
                 $('button.contact-submit').prop('disabled', true);
@@ -27,10 +34,9 @@ define([
                     }
                     else {
                         toastr.success('Profile updated successfully.');
-                        me.last = user.last;
-                        me.first = user.first;
-                        me.email = user.email;
-                        $modalInstance.close();
+                        $rootScope.me.last = user.last;
+                        $rootScope.me.first = user.first;
+                        $rootScope.me.email = user.email;
                     }
                     
 
