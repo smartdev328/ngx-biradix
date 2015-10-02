@@ -1,3 +1,5 @@
+<div class="maingrid wrapper panel" style="overflow-x:auto">
+<div class="header" style="height:46px"></div>
 <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
     <thead>
     <tr>
@@ -22,7 +24,7 @@
         <th style="text-align: right">
             Concess/<br>12 Mos.
         </th>
-        <th style="text-align: right">
+        <th style="text-align: right;min-width:53px">
             Net Eff.<Br> Rent
         </th>
         <th style="text-align: right">
@@ -72,7 +74,7 @@
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
             </td>
         </tr>
-        <tr class="info">
+        <tr class="subtotal">
             <td colspan="2">
                 {{bedroomsLabel(i)}} Weighted Averages
                 <i class="fa fa-exclamation-triangle"
@@ -110,7 +112,7 @@
         </tr>
     </tbody>
     <tfoot>
-    <tr class="warning">
+    <tr>
         <td colspan="2">
             Total Weighted Averages
             <i class="fa fa-exclamation-triangle"
@@ -146,3 +148,4 @@
     </tfoot>
 
 </table>
+</div>

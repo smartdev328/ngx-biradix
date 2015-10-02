@@ -253,7 +253,7 @@ define([
         $scope.searchSelected = function (item, model, label) {
             $scope.search1 = "";
             $scope.search2 = "";
-
+            $rootScope.turnOffSearch();
             $location.path("/profile/" + item._id);
         }
 

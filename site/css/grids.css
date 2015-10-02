@@ -57,7 +57,37 @@
     color:#E0E0E0
 }
 
-@media all and (min-width: 0px) and (max-width: 400px) {
+
+.maingrid.wrapper.panel {
+    border:0 !important;
+    margin:-20px -10px -10px -15px !important;
+    border-top:1px solid #ccc !important;
+
+}
+
+.maingrid.wrapper.panel table {
+    margin-top:-5px;
+    border-bottom : 0;
+}
+
+.maingrid.wrapper.panel .subtotal {
+    color:#4460a9;
+    border-top:2px solid #ccc;
+}
+
+.maingrid.wrapper.panel .subtotal TD {
+    padding-bottom:25px
+}
+
+.maingrid.wrapper.panel .total {
+    font-weight: bold;
+}
+
+.maingrid.wrapper.panel tfoot {
+    border-top: 3px double #ccc;
+}
+
+@media all and (min-width: 0px) and (max-width: 600px) {
     .maingrid.wrapper {
         padding-right: 5px;
         padding-left: 5px
@@ -66,5 +96,9 @@
     .maingrid .header {
         margin-left:-5px;
         margin-right:-5px;
+    }
+
+    .maingrid .wrapper .panel table {
+        margin-left:-15px !important;
     }
 }
