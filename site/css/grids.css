@@ -86,7 +86,9 @@
 .maingrid.wrapper.panel tfoot {
     border-top: 3px double #ccc;
 }
-
+.maingrid.wrapper.panel tfoot td {
+    font-weight: bold !important;
+}
 @media all and (min-width: 0px) and (max-width: 600px) {
     .maingrid.wrapper {
         padding-right: 5px;
