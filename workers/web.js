@@ -57,12 +57,14 @@ d.run(function() {
                 res.redirect('/#/password/reset/' + req.params.token)
             })
 
-            if (settings.RUN_DASHBOARD == "web") {
-                require('../api/properties/consumers/dashboardConsumer');
-            }
+            if (!settings.SKIPRABBIT) {
+                if (settings.RUN_DASHBOARD == "web") {
+                    require('../api/properties/consumers/dashboardConsumer');
+                }
 
-            if (settings.RUN_PHANTOM == "web") {
-                require('../api/properties/consumers/pdfConsumer')
+                if (settings.RUN_PHANTOM == "web") {
+                    require('../api/properties/consumers/pdfConsumer')
+                }
             }
 
             var server = app.listen(settings.PORT, function () {

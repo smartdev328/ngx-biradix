@@ -91,12 +91,12 @@ define([
             if (!phantom) {
                 window.setTimeout(function () {
                     window.print();
-                }, 500)
+                }, 2000)
             }
             else {
                 window.setTimeout(function () {
                     window.renderable = true;
-                }, 1000)
+                }, 2000)
             }
         }
 

@@ -16,6 +16,12 @@ module.exports = {
     getPdfProfileQueue : function() {return pdf_profile_queue},
     getPdfReportingQueue : function() {return pdf_reporting_queue},
     connect : function(callback) {
+
+        if (settings.SKIPRABBIT) {
+            console.log({ type: 'info', msg: 'skipped', service: 'rabbitmq' });
+            callback();
+            return;
+        }
         queue = jackrabbit(settings.CLOUDAMQP_URL).on('connected', function() {
             exchange = queue.default();
             dashboard_queue = exchange.queue({ name: settings.DASHBOARD_QUEUE, prefetch: 1, durable: false });

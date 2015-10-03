@@ -19,6 +19,7 @@ module.exports = {
     RUN_PHANTOM : process.env.RUN_PHANTOM || "web",
     RUN_DASHBOARD : process.env.RUN_DASHBOARD || "web",
     HEROKU_API_KEY : process.env.HEROKU_API_KEY,
-    HEROKU_APP : process.env.HEROKU_APP || "birdaixplatform-dev"
+    HEROKU_APP : process.env.HEROKU_APP || "birdaixplatform-dev",
+    SKIPRABBIT : true
 
 }
