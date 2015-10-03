@@ -9,7 +9,7 @@ module.exports = {
             height      : 960,         // Changes the height size. Defaults to 960
             paperFormat : 'A4',        // Defaults to A4. Also supported: 'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
             orientation : 'portrait',  // Defaults to portrait. 'landscape' is also valid
-            margin      : '0.2in',       // Defaults to 0cm. Supported dimension units are: 'mm', 'cm', 'in', 'px'. No unit means 'px'.
+            margin      : '0.3in',       // Defaults to 0cm. Supported dimension units are: 'mm', 'cm', 'in', 'px'. No unit means 'px'.
             userAgent   : '',          // No default.
             headers     : {}, // Additional headers to send with each upstream HTTP request
             paperSize   : null,        // Defaults to the paper format, orientation, and margin.
