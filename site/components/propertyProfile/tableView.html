@@ -2,9 +2,11 @@
     There is currently no data avaiable.
 </div>
 
-<table class="table table-condensed table-striped table-hover" style="font-size:9pt" ng-if="data && data.length > 0">
+<div class="maingrid wrapper panel" style="overflow-x:auto" ng-if="data && data.length > 0">
+    <div class="header" style="height:47px"></div>
+    <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
     <thead>
-    <tr>
+    <tr style="height:46px">
         <th class="center">
             Date
         </th>
@@ -52,3 +54,4 @@
     </tr>
     </tbody>
 </table>
+</div>

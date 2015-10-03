@@ -1,8 +1,3 @@
-<style>
-  .profile-list {
-    padding-left:20px !important;
-  }
-</style>
 <div class="row" ng-show="localLoading">
     <div class="col-xs-7 col-sm-7">
         <h3 style="magin-left:-5px">{{property.name}}</h3>
@@ -83,8 +78,9 @@
             </div>
         </div>
 
+
         <div class="panel panel-info">
-            <div class="panel-heading">Net Effective Rent
+            <div class="panel-heading">Trends
                 <i class="fa fa-exclamation-triangle"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="points.excluded"
@@ -95,34 +91,31 @@
             </div>
             <div class="panel-body">
                 <hr>
-                <div style="float:right;padding-bottom:10px;" class="hidden-print">
+                <div class="pull-right hidden-print">
                     Graphs:
                     <toggle-switch checked="graphs"></toggle-switch>
                     &nbsp;&nbsp;
                     Dates:
                     <daterange-picker daterange="daterange"></daterange-picker>
-                    &nbsp;&nbsp;
+                    &nbsp;&nbsp;<Br>
+                    <Br>
                 </div>
-                <Br clear="all">
                 <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <div  ng-if="graphs">
+                    <div ng-if="graphs">
                         <time-series options="nerData"></time-series>
+                        <hr style="margin:50px 0px 30px 0px !important;">
                     </div>
 
                     <div ng-if="!graphs">
                         <table-view data="otherTable" columns="nerKeys" survey="canManage" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
+                        <hr style="margin:30px 0px 50px 0px !important;">
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="panel panel-info">
-            <div class="panel-heading">Occupancy, Traffic, & Leases</div>
-            <div class="panel-body">
-                <hr>
+
                 <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
@@ -132,7 +125,7 @@
                             <time-series options="occData"></time-series>
                         </div>
                         <div class="col-xs-6">
-                            <time-series options="otherData"></time-series>-->
+                            <time-series options="otherData"></time-series>
                         </div>
                     </div>
                     <div ng-if="!graphs">
@@ -141,6 +134,7 @@
                 </div>
             </div>
         </div>
+
 
         <div class="panel panel-info">
             <div class="panel-heading">Floor Plans</div>

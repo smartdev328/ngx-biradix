@@ -48,6 +48,11 @@ td.center,th.center {text-align:center}
 .input-sm {
     font-size:13px
 }
+
+.hidden-print-block {
+    display:block;
+}
+
 @media print {
     body {
         width:1210px;
@@ -60,6 +65,14 @@ td.center,th.center {text-align:center}
     .right-print {
         float:left;
         width:75%;
+    }
+    .row {
+        margin-left:-15px !important;
+        margin-right:-15px !important;
+    }
+
+    .hidden-print-block {
+        display:none;
     }
 
 }

@@ -16,7 +16,7 @@ define([
                     if ($scope.options) {
                         window.setTimeout(function() {
                             var el = $($element).find('.visible-print-block')
-                            var el2 = $($element).find('.hidden-print')
+                            var el2 = $($element).find('.hidden-print-block')
 
                             var data = {
                                 chart: {
