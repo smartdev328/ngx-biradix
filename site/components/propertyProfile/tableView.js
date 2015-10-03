@@ -21,7 +21,7 @@ define([
                 })
 
             },
-            templateUrl: '/components/propertyProfile/tableView.html'
+            templateUrl: '/components/propertyProfile/tableView.html?bust=' + version
         };
     })
 })

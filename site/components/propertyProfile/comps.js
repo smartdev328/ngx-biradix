@@ -31,7 +31,7 @@ define([
                     }
                 }
             },
-            templateUrl: '/components/propertyProfile/propertyComps.html'
+            templateUrl: '/components/propertyProfile/propertyComps.html?bust=' + version
         };
     })
 })

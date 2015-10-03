@@ -11,7 +11,7 @@ define([
             controller: function ($scope) {
 
             },
-            templateUrl: '/components/propertyProfile/propertyAbout.html'
+            templateUrl: '/components/propertyProfile/propertyAbout.html?bust=' + version
         };
     })
 })

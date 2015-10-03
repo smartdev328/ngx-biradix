@@ -19,7 +19,7 @@ define([
                     }
                 }
             },
-            templateUrl: '/components/propertyProfile/propertyFloorplans.html'
+            templateUrl: '/components/propertyProfile/propertyFloorplans.html?bust=' + version
         };
     })
 })

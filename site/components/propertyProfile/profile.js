@@ -10,7 +10,7 @@ define([
             },
             controller: function ($scope) {
             },
-            templateUrl: '/components/propertyProfile/propertyProfile.html'
+            templateUrl: '/components/propertyProfile/propertyProfile.html?bust=' + version
         };
     })
 

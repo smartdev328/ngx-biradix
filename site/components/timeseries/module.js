@@ -76,7 +76,7 @@ define([
 
 
             },
-            templateUrl: '/components/timeseries/timeseries.html'
+            templateUrl: '/components/timeseries/timeseries.html?bust=' + version
         };
     })
 })

@@ -12,7 +12,7 @@ define([
             controller: function ($scope) {
 
             },
-            templateUrl: '/components/propertyProfile/propertyFees.html'
+            templateUrl: '/components/propertyProfile/propertyFees.html?bust=' + version
         };
     })
 })
