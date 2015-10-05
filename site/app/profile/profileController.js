@@ -116,11 +116,6 @@ define([
             $scope.loadProperty($scope.propertyId)
         });
 
-        $scope.print = function() {
-            $auditService.create({type: 'print_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
-            $window.print();
-        }
-
         $scope.checkProgress = function() {
 
             $progressService.isComplete($scope.progressId, function(isComplete) {
@@ -168,6 +163,15 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
+            var url = $scope.getPdfUrl(full, true);
+
+            $window.setTimeout($scope.checkProgress, 500);
+
+            location.href = url;
+
+        }
+
+        $scope.getPdfUrl = function(full, showFile) {
             var url = '/api/1.0/properties/' + $scope.property._id + '/pdf?'
             url += "token=" + $cookies.get('token')
             url += "&Graphs=" + $scope.graphs
@@ -177,17 +181,14 @@ define([
             url += "&timezone=" + moment().utcOffset()
             url += "&progressId=" + $scope.progressId
             url += "&full=" + full
+            url += "&showFile=" + showFile
 
-
-            $window.setTimeout($scope.checkProgress, 500);
-
-            location.href = url;
-
+            return url;
         }
 
-        $scope.printFull = function() {
-            $auditService.create({type: 'print_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' (with Comps) - ' + $scope.daterange.selectedRange});
-            window.open('/#/full/' + $scope.property._id, 'print', 'height:300,width:300');
+        $scope.print = function(full) {
+            var url = $scope.getPdfUrl(full, "");
+            window.open(url);
         }
 
     }]);

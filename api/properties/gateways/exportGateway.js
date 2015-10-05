@@ -144,7 +144,10 @@ module.exports = {
                     reply: function (data) {
                         console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
                         res.setHeader("content-type", "application/pdf");
-                        res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
+
+                        if (req.query.showFile) {
+                            res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
+                        }
 
                         var stream = require('stream');
                         var bufferStream = new stream.PassThrough();
