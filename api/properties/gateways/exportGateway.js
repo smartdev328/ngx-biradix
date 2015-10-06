@@ -137,6 +137,7 @@ module.exports = {
                     selectedEndDate : req.query.selectedEndDate,
                     selectedRange : req.query.selectedRange,
                     progressId : req.query.progressId,
+                    orderBy : req.query.orderBy,
 
                 },
                 {

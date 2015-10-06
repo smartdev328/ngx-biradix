@@ -1,34 +1,58 @@
 <div class="maingrid wrapper panel" style="overflow-x:auto">
 <div class="header" style="height:46px"></div>
-<table class="table table-condensed table-striped table-hover" style="font-size:9pt">
+<table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <thead>
     <tr>
-        <th style="text-align:center">
+        <th style="min-width:40px">
             Type
         </th>
-        <th>
+        <th  style="min-width:100px" class="sortable" ng-click="toggleSort('description')">
             Description
+            <i ng-show="sort.description == null" class="fa fa-sort"></i>
+            <i ng-show="sort.description === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.description === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')">
             Units
+            <i ng-show="sort.units == null" class="fa fa-sort"></i>
+            <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')">
             Unit %
+            <i ng-show="sort.unitPercent == null" class="fa fa-sort"></i>
+            <i ng-show="sort.unitPercent === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.unitPercent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')">
             Sqft
+            <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')">
             Rent
+            <i ng-show="sort.rent == null" class="fa fa-sort"></i>
+            <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('concessions')">
             Concess/<br>12 Mos.
+            <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
+            <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right;min-width:53px">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('ner')">
             Net Eff.<Br> Rent
+            <i ng-show="sort.ner == null" class="fa fa-sort"></i>
+            <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')">
             NER/<br>Sqft
+            <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
     </tr>
 
@@ -38,7 +62,7 @@
 
         </tr>
 
-        <tr ng-repeat="fp in comp.survey.floorplans | filter : {bedrooms : i}">
+        <tr ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : i}">
             <td style="text-align:center;">
                 {{fp.bedrooms}}x{{fp.bathrooms}}
             </td>
@@ -56,7 +80,7 @@
                 {{fp.units}}
             </td>
             <td style="text-align: right">
-                {{fp.units / comp.totalUnits * 100 | number : 1 }}%
+                {{fp.unitPercent | number : 1 }}%
             </td>
             <td style="text-align: right">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>

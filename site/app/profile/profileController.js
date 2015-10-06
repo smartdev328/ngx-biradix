@@ -183,6 +183,7 @@ define([
             url += "&progressId=" + $scope.progressId
             url += "&full=" + full
             url += "&showFile=" + showFile
+            url += "&orderBy=" + $scope.orderByFp
 
             return url;
         }

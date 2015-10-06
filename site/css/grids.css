@@ -44,7 +44,7 @@
     margin-top: 5px !important;
 }
 
-.maingrid > table th .sortable {
+.maingrid .sortable {
     cursor: pointer;
 }
 
@@ -103,4 +103,12 @@
     .maingrid .wrapper .panel table {
         margin-left:-15px !important;
     }
+}
+
+.hidden-arrows th i {
+    visibility: hidden;
+}
+
+.hidden-arrows thead:hover th i {
+    visibility:visible;
 }
