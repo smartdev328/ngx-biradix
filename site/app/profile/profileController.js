@@ -44,6 +44,7 @@ define([
             $scope.refreshGraphs();
         }, true);
 
+
         $scope.propertyId = $stateParams.id;
 
         $scope.refreshGraphs = function() {

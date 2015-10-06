@@ -57,7 +57,7 @@ define([
 
                 });
             },
-            templateUrl: '/components/daterangepicker/daterangepicker.html'
+            templateUrl: '/components/daterangepicker/daterangepicker.html?bust' + version
         };
     })
 })
