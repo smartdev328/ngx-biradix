@@ -112,3 +112,7 @@
 .hidden-arrows thead:hover th i {
     visibility:visible;
 }
+
+.hidden-arrows .pad {
+    padding-right:15px
+}
