@@ -13,7 +13,7 @@ define([
     '../../services/cookieSettingsService'
 ], function (app) {
 
-    app.controller('fullController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', '$stateParams', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$stateParams) {
+    app.controller('fullController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', '$stateParams','$cookies', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$stateParams,$cookies) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -28,6 +28,17 @@ define([
         $scope.summary = $cookieSettingsService.getSummary();
 
         $scope.graphs = $cookieSettingsService.getGraphs();
+
+        $scope.orderByFp = "sqft";
+
+        if ($cookies.get("fp.o")) {
+            $scope.orderByFp = $cookies.get("fp.o");
+        }
+
+        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        if ($cookies.get("fp.s")) {
+            $scope.show = JSON.parse($cookies.get("fp.s"));
+        }
 
 
         $scope.loadProperty = function(defaultPropertyId) {
@@ -89,9 +100,9 @@ define([
 
         $scope.setRenderable = function() {
             if (!phantom) {
-                window.setTimeout(function () {
-                    window.print();
-                }, 2000)
+                //window.setTimeout(function () {
+                //    window.print();
+                //}, 2000)
             }
             else {
                 window.setTimeout(function () {
