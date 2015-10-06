@@ -138,6 +138,7 @@ module.exports = {
                     selectedRange : req.query.selectedRange,
                     progressId : req.query.progressId,
                     orderBy : req.query.orderBy,
+                    show : req.query.show,
 
                 },
                 {

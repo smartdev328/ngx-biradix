@@ -22,17 +22,28 @@ define([
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
-        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+
         $scope.orderByFp = "sqft";
 
         if ($cookies.get("fp.o")) {
             $scope.orderByFp = $cookies.get("fp.o");
         }
 
+        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
         if ($cookies.get("fp.s")) {
             $scope.show = JSON.parse($cookies.get("fp.s"));
         }
 
+        $scope.reset = function() {
+            $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true};
+            $scope.saveShow();
+            $scope.orderByFp = "sqft";
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('fp.o', $scope.orderByFp, {expires : expireDate})
+
+
+        }
 
         $scope.setRenderable = function() {
             window.setTimeout(function() {
@@ -202,6 +213,7 @@ define([
             url += "&full=" + full
             url += "&showFile=" + showFile
             url += "&orderBy=" + $scope.orderByFp
+            url += "&show=" + encodeURIComponent (JSON.stringify($scope.show))
 
             return url;
         }

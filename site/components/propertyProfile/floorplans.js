@@ -12,12 +12,16 @@ define([
                 show: '='
             },
             controller: function ($scope, $gridService, $cookies) {
-                $scope.sort = {}
+
                 $scope.defaultSort = "sqft"
 
+                if ($scope.show && typeof $scope.show == "string") {
+                    $scope.show = JSON.parse($scope.show);
+                }
 
                 $scope.$watch("orderBy", function() {
                     if ($scope.orderBy) {
+                        $scope.sort = {}
                          var x = $scope.orderBy.replace("-","");
                         $scope.sort[x] = $scope.orderBy[0] == "-";
                     }
