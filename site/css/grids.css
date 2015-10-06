@@ -105,7 +105,7 @@
     }
 }
 
-.hidden-arrows th i {
+.hidden-arrows th .fa-sort {
     visibility: hidden;
 }
 

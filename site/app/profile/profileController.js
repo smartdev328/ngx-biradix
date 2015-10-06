@@ -22,6 +22,14 @@ define([
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
+        $scope.orderByFp = "sqft";
+
+        if ($cookies.get("orderBy")) {
+            $scope.orderByFp = $cookies.get("orderBy");
+        }
+
+
+
         $scope.setRenderable = function() {
             window.setTimeout(function() {
                 window.renderable = true;

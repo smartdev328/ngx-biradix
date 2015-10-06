@@ -12,7 +12,16 @@ define([
             },
             controller: function ($scope, $gridService) {
                 $scope.sort = {}
-                $scope.defaultSort = "sqft";
+                $scope.defaultSort = "sqft"
+
+
+                $scope.$watch("orderBy", function() {
+                    if ($scope.orderBy) {
+                         var x = $scope.orderBy.replace("-","");
+                        $scope.sort[x] = $scope.orderBy[0] == "-";
+                    }
+                }, true)
+
 
                 $scope.$watch("comp", function() {
                     if ($scope.comp) {
