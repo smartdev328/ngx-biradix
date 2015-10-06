@@ -8,25 +8,24 @@
 <div class="row" ng-show="localLoading && myProperties.length > 0">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading">Property
+            <div class="panel-heading">
+                <span ng-if="myProperties.length == 1">{{selectedProperty.name}}</span>
+
+                <span ng-if="myProperties.length >= 1" class="dropdown">
+                    <A href class="dropdown-toggle" data-toggle="dropdown">{{selectedProperty.name}}<span class="caret"></span></A>
+                    <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:300px;overflow-y:auto">
+                        <ul class="multi-col-list">
+                            <li ng-repeat="property in myProperties"><A href ng-click="setProperty(property)">{{property.name}}</A></li>
+                        </ul>
+                    </div>
+                </span>
             </div>
             <div class="panel-body">
                 <hr>
-                <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
-                <div class="visible-print"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
-                <select ng-show="myProperties.length > 1"
-                        class="form-control input-sm hidden-print"
-                        ng-change="changeProperty()"
-                        ng-model="selectedProperty"
-                        ng-options="item.name for item in myProperties"
-                        style="font-size:14px"
-                        >
-                </select>
-                <div style="padding-top:8px"></div>
                 <property-profile property="property"></property-profile>
 
-                <div style="width:100px;margin:10px auto 0px auto" class="hidden-print">
-                    <button class="btn btm-sm btn-primary" ng-click="viewProfile()">View Profile</button>
+                <div style="width:155px;margin:10px auto 0px auto" class="hidden-print">
+                    <button class="btn btm-sm btn-primary" ng-click="viewProfile()">View Property Profile</button>
                 </div>
             </div>
         </div>
@@ -41,37 +40,66 @@
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
         <div class="panel panel-info">
-            <div class="panel-heading">Trends
-                <i class="fa fa-exclamation-triangle"
-                   style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+            <div class="panel-heading">
+                <span class="pull-left">Trends</span>
+                <span class="dropdown pull-left hidden-print">
+                    <a href class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear" style="color:#777;font-size:24px;padding:1px 0px 0px 7px"></i></a>
+                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px">
+                        <table>
+                            <Tr>
+                                <Td>
+                                    Comp Averages:&nbsp;
+                                </Td>
+                                <td>
+                                    <toggle-switch checked="summary"></toggle-switch>
+                                </td>
+                            </Tr>
+                            <Tr>
+                                <Td>
+                                    Hide Excluded:
+
+                                    <i class="fa fa-info-circle" style="font-size:12px"
+                                       popover-trigger="mouseenter"
+                                       popover-placement="top"
+                                       popover="This option gives you the ability to show excluded floor plans."
+                                            ></i>
+                                </Td>
+                                <td>
+                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>
+                                </td>
+                            </Tr>
+                            <Tr>
+                                <Td>
+                                    Show:
+                                </Td>
+                                <td>
+                                    <select
+                                            class="input-sm form-control"
+                                            style="display:inline;width:100px;font-weight:normal;font-size:13px"
+                                            ng-options="bedroom.text for bedroom in bedrooms"
+                                            ng-model="bedroom"
+                                            ng-change="refreshGraphs()"
+                                            ></select>
+                                </td>
+                            </Tr>
+                        </table>
+                    </div>
+                </span>
+                <i class="fa fa-exclamation-triangle" class="pull-left"
+                   style="color:orange;cursor:pointer;font-size:20px;padding:4px 0px 0px 5px"
                    ng-if="points.excluded"
                    popover-trigger="mouseenter"
                    popover-placement="right"
                    popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i>
+                <daterange-picker daterange="daterange" class="pull-right" style="margin-right:-15px"></daterange-picker>
+                <span class="pull-right hidden-xs" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Date Range: </span>
+                <br clear="all">
+
+
             </div>
             <div class="panel-body">
                 <hr>
-                <div style="float:right;padding-bottom:10px;" class="hidden-print">
-                    Show: <select
-                        class="input-sm form-control"
-                        style="display:inline;width:100px"
-                        ng-options="bedroom.text for bedroom in bedrooms"
-                        ng-model="bedroom"
-                        ng-change="refreshGraphs()"
-                        ></select>
-                    &nbsp;&nbsp;
-                    <span class="hidden-xs hidden-sm">Comp Averages:</span>
-                    <span class="visible-xs-inline visible-sm-inline">Avgs:</span>
-
-                    <toggle-switch checked="summary"></toggle-switch>
-                    &nbsp;&nbsp;
-                    <div class="visible-xs" style="padding-top:10px"></div>
-                    <span class="visible-xs-inline visible-sm-inline">Dates:</span>
-                    <daterange-picker daterange="daterange"></daterange-picker>
-                    &nbsp;&nbsp;
-                </div>
-                <Br clear="all">
                 <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
@@ -85,7 +113,31 @@
         </div>
 
         <div class="panel panel-info">
-            <div class="panel-heading">Competitors</div>
+            <div class="panel-heading">
+                <span class="pull-left">Competitors</span>
+                <span class="dropdown pull-left hidden-print">
+                    <a href class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear" style="color:#777;font-size:24px;padding:1px 0px 0px 7px"></i></a>
+                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px">
+                        <table>
+                            <Tr>
+                                <Td>
+                                    Hide Excluded:
+
+                                    <i class="fa fa-info-circle" style="font-size:12px"
+                                       popover-trigger="mouseenter"
+                                       popover-placement="top"
+                                       popover="This option gives you the ability to show excluded floor plans."
+                                            ></i>
+                                </Td>
+                                <td>
+                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>
+                                </td>
+                            </Tr>
+                        </table>
+                    </div>
+                </span>
+                <Br clear="all">
+            </div>
             <div class="panel-body" style="overflow-x:auto">
                 <hr>
                 <property-comps comps="comps"></property-comps>

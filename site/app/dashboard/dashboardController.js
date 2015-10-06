@@ -82,6 +82,12 @@ define([
 
         }
 
+        $scope.setProperty = function(property) {
+            $scope.selectedProperty = property;
+
+            $scope.changeProperty();
+        }
+
         $scope.$on('data.reload', function(event, args) {
             $scope.changeProperty();
         });
