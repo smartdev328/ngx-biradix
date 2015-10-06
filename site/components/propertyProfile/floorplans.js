@@ -8,9 +8,10 @@ define([
             restrict: 'E',
             scope: {
                 comp: '=',
-                orderBy: '='
+                orderBy: '=',
+                show: '='
             },
-            controller: function ($scope, $gridService) {
+            controller: function ($scope, $gridService, $cookies) {
                 $scope.sort = {}
                 $scope.defaultSort = "sqft"
 
@@ -58,6 +59,10 @@ define([
                     else {
                         $scope.orderBy = v;
                     }
+
+                    var expireDate = new Date();
+                    expireDate.setDate(expireDate.getDate() + 365);
+                    $cookies.put('fp.o', $scope.orderBy, {expires : expireDate})
 
                 }
             },

@@ -36,7 +36,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 pdfService.getCookie(data.hostname,"selectedStartDate", data.selectedStartDate),
                 pdfService.getCookie(data.hostname,"selectedEndDate", data.selectedEndDate),
                 pdfService.getCookie(data.hostname,"selectedRange", data.selectedRange),
-                pdfService.getCookie(data.hostname,"orderBy", data.orderBy),
+                pdfService.getCookie(data.hostname,"fp.o", data.orderBy),
             ];
 
             var description = p.name;

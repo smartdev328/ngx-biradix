@@ -2,53 +2,53 @@
 <div class="header" style="height:46px"></div>
 <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <thead>
-    <tr>
-        <th style="min-width:40px">
+    <tr style="height: 45px">
+        <th style="min-width:40px" class="center">
             Type
         </th>
-        <th  style="min-width:100px" class="sortable" ng-click="toggleSort('description')">
+        <th  style="min-width:100px" class="sortable" ng-click="toggleSort('description')" ng-if="show.description">
             Description
             <i ng-show="sort.description == null" class="fa fa-sort"></i>
             <i ng-show="sort.description === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.description === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
             Units
             <i ng-show="sort.units == null" class="fa fa-sort"></i>
             <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')" ng-if="show.unitPercent">
             Unit %
             <i ng-show="sort.unitPercent == null" class="fa fa-sort"></i>
             <i ng-show="sort.unitPercent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.unitPercent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')">
+        <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')" ng-if="show.sqft">
             Sqft
             <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent">
             Rent
             <i ng-show="sort.rent == null" class="fa fa-sort"></i>
             <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('concessions')">
+        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
             Concess/<br>12 Mos.
             <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
             <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('ner')">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
             Net Eff.<Br> Rent
             <i ng-show="sort.ner == null" class="fa fa-sort"></i>
             <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft">
             NER/<br>Sqft
             <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
@@ -66,7 +66,7 @@
             <td style="text-align:center;">
                 {{fp.bedrooms}}x{{fp.bathrooms}}
             </td>
-            <td>
+            <td ng-if="show.description">
                 {{fp.description}}
                 <i class="fa fa-exclamation-triangle"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
@@ -76,30 +76,30 @@
                    popover="This floor plan has been manually excluded from reporting and dashboard calculations."
                         ></i>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.units">
                 {{fp.units}}
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.unitPercent">
                 {{fp.unitPercent | number : 1 }}%
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.sqft">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.rent">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.rent == null ? "-" : "$" + fp.rent}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.concessions">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.ner">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.ner == null ? "-" : "$" + fp.ner}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.nersqft">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
             </td>
         </tr>
         <tr class="subtotal">
-            <td colspan="2">
+            <td colspan="{{show.description ? '2' : '1'}}">
                 {{bedroomsLabel(i)}}
                 <i class="fa fa-exclamation-triangle"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
@@ -109,25 +109,25 @@
                    popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.units">
                 {{bedroom.totUnits}}
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.unitPercent">
                 {{bedroom.totUnits / comp.totalUnits * 100 | number : 1 }}%
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.sqft">
                 <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.sqft == null ? "-" : bedroom.sqft}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.rent">
                 <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.rent == null ? "-" : "$" + bedroom.rent}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.concessions">
                 <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.concessions == null ? "-" : "$" + bedroom.concessions}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.ner">
                 <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.ner == null ? "-" : "$" + bedroom.ner}}</span>
             </td>
-            <td style="text-align: right" class="pad">
+            <td style="text-align: right" class="pad" ng-if="show.nersqft">
                 <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.nersqft == null ? "-" : "$" + (bedroom.nersqft | number : 2)}}</span>
             </td>
         </tr>
@@ -137,7 +137,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="2">
+        <td colspan="{{show.description ? '2' : '1'}}">
             Totals
             <i class="fa fa-exclamation-triangle"
                style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
@@ -147,25 +147,25 @@
                popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                     ></i>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.units">
             {{comp.totalUnits}}
         </td>
-        <td style="text-align: right" class="pad">
+        <td style="text-align: right" class="pad" ng-if="show.unitPercent">
             100%
         </td>
-        <td style="text-align: right" class="pad">
+        <td style="text-align: right" class="pad" ng-if="show.sqft">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>
         </td>
-        <td style="text-align: right" class="pad">
+        <td style="text-align: right" class="pad" ng-if="show.rent">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}</span>
         </td>
-        <td style="text-align: right" class="pad">
+        <td style="text-align: right" class="pad" ng-if="show.concessions">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}</span>
         </td>
-        <td style="text-align: right" class="pad">
+        <td style="text-align: right" class="pad" ng-if="show.ner">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}</span>
         </td>
-        <td style="text-align: right" class="pad">
+        <td style="text-align: right" class="pad" ng-if="show.nersqft">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft | number : 2)}}</span>
         </td>
     </tr>

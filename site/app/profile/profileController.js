@@ -22,18 +22,28 @@ define([
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
+        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
         $scope.orderByFp = "sqft";
 
-        if ($cookies.get("orderBy")) {
-            $scope.orderByFp = $cookies.get("orderBy");
+        if ($cookies.get("fp.o")) {
+            $scope.orderByFp = $cookies.get("fp.o");
         }
 
+        if ($cookies.get("fp.s")) {
+            $scope.show = JSON.parse($cookies.get("fp.s"));
+        }
 
 
         $scope.setRenderable = function() {
             window.setTimeout(function() {
                 window.renderable = true;
             },600)
+        }
+
+        $scope.saveShow = function() {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('fp.s', JSON.stringify($scope.show), {expires : expireDate})
         }
 
         $scope.daterange=$cookieSettingsService.getDaterange();
