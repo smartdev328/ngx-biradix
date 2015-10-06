@@ -157,7 +157,7 @@ define([
         }
 
         $rootScope.toggleUnlniked = function() {
-            $rootScope.me.settings.hideUnlinked = !$rootScope.me.settings.hideUnlinked;
+            //$rootScope.me.settings.hideUnlinked = !$rootScope.me.settings.hideUnlinked;
             ngProgress.start();
             $authService.updateSettings($rootScope.me.settings).then(function (resp) {
                 ngProgress.complete();

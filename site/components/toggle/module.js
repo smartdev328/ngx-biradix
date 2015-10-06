@@ -19,8 +19,6 @@ define([
                         $scope.clickFn();
                     }
 
-                    //$scope.checked = !$scope.checked;
-
 
                 }
 
