@@ -9,7 +9,7 @@ module.exports = {
     API_PATH : process.env.apipath || '/api/1.0/',
     NEW_RELIC_LICENSE_KEY : process.env.NEW_RELIC_LICENSE_ || '5b83e39bf5ec8e9820f059846c157bb5b13b91e5',
     NEW_RELIC_NAME : process.env.NEW_RELIC_NAME || 'Localhost',
-    REDISCLOUD_URL : process.env.REDISCLOUD_URL || 'redis://rediscloud:jcMohesUWVNr3SeX@pub-redis-10859.us-east-1-4.3.ec2.garantiadata.com:10859',
+    REDIS_URL : process.env.REDIS_URL || 'redis://h:pe10skodtpi8etdlh342ehl7vda@ec2-54-83-32-60.compute-1.amazonaws.com:16239',
     EXCEL_URL : process.env.EXCEL_URL || 'http://localhost:12008/excel',
     CLOUDAMQP_URL : process.env.CLOUDAMQP_URL || 'amqp://bbanyfha:bN4-8vTtTTY6yzGqE7A-_9QY6XYv0Nxi@baboon.rmq.cloudamqp.com/bbanyfha',
     DASHBOARD_QUEUE : "jobs.property.dashboard",

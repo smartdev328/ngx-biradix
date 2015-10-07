@@ -1,6 +1,6 @@
 var settings = require('../../../config/settings.js')
 var Redis = require('ioredis');
-var redis = new Redis(settings.REDISCLOUD_URL);
+var redis = new Redis(settings.REDIS_URL);
 var md5 = require('MD5');
 
 module.exports = {
