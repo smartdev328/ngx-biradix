@@ -40,6 +40,16 @@ define([
             $scope.show = JSON.parse($cookies.get("fp.s"));
         }
 
+        $scope.orderByComp = "number";
+
+        if ($cookies.get("cmp.o")) {
+            $scope.orderByComp = $cookies.get("cmp.o");
+        }
+
+        $scope.showComp = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        if ($cookies.get("cmp.s")) {
+            $scope.showComp = JSON.parse($cookies.get("cmp.s"));
+        }
 
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {

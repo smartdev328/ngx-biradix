@@ -214,7 +214,8 @@ define([
             url += "&showFile=" + showFile
             url += "&orderBy=" + $scope.orderByFp
             url += "&show=" + encodeURIComponent (JSON.stringify($scope.show))
-
+            url += "&orderByC=" + ($cookies.get("cmp.o") || '');
+            url += "&showC=" + encodeURIComponent ($cookies.get("cmp.s") || '')
             return url;
         }
 

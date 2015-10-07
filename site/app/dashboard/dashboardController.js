@@ -10,7 +10,7 @@ define([
     '../../services/cookieSettingsService'
 ], function (app) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -27,6 +27,35 @@ define([
 
         $scope.selectedBedroom = -1;
         $scope.bedrooms = [{value: -1, text: 'All'}]
+
+
+        $scope.orderByComp = "number";
+
+        if ($cookies.get("cmp.o")) {
+            $scope.orderByComp = $cookies.get("cmp.o");
+        }
+
+        $scope.show = {units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        if ($cookies.get("cmp.s")) {
+            $scope.show = JSON.parse($cookies.get("cmp.s"));
+        }
+
+        $scope.reset = function() {
+            $scope.show = {units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true};
+            $scope.saveShow();
+            $scope.orderByComp = "sqft";
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('cmp.o', $scope.orderByComp, {expires : expireDate})
+
+
+        }
+
+        $scope.saveShow = function() {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('cmp.s', JSON.stringify($scope.show), {expires : expireDate})
+        }
 
         $scope.$watch('daterange', function(d) {
             if (!$scope.localLoading) return;

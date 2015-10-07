@@ -139,6 +139,8 @@ module.exports = {
                     progressId : req.query.progressId,
                     orderBy : req.query.orderBy,
                     show : req.query.show,
+                    orderByComp : req.query.orderByC,
+                    showComp : req.query.showC,
 
                 },
                 {

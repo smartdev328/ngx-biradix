@@ -1,46 +1,79 @@
-<div class="pull-right hidden-print" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-danger" style="border-radius: 2px;background-color: #f2dede">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 15+ days</span></div>
-<div class="pull-right hidden-print" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-warning" style="border-radius: 2px;background-color: #fcf8e3">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 8+ days</span></div>
-
-<table class="table table-condensed table-striped table-hover" style="font-size:9pt">
+<!--<div class="pull-right hidden-print" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-danger" style="border-radius: 2px;background-color: #f2dede">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 15+ days</span></div>-->
+<!--<div class="pull-right hidden-print" style="font-size:11px;padding:0px 5px 5px 0px"><span class="label label-warning" style="border-radius: 2px;background-color: #fcf8e3">&nbsp;&nbsp;</span> <span style="vertical-align: middle">No update in 8+ days</span></div>-->
+<div class="maingrid wrapper panel" style="overflow-x:auto">
+    <div class="header" style="height:46px"></div>
+<table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+    <thead>
     <tr>
-        <th style="width:25px">
+        <th style="width:25px" class="hidden-print">
 
         </th>
-        <th style="text-align:center">
+        <th style="min-width:30px;text-align:center"  class="sortable" ng-click="toggleSort('number')">
             #
+            <i ng-show="sort.number == null" class="fa fa-sort"></i>
+            <i ng-show="sort.number === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.number === false" class="fa fa-sort-up"></i>
         </th>
-        <th>
+        <th class="sortable" ng-click="toggleSort('name')">
             Name/Address
+            <i ng-show="sort.name == null" class="fa fa-sort"></i>
+            <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
             Units
+            <i ng-show="sort.units == null" class="fa fa-sort"></i>
+            <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')" ng-if="show.unitPercent">
             Unit %
+            <i ng-show="sort.unitPercent == null" class="fa fa-sort"></i>
+            <i ng-show="sort.unitPercent === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.unitPercent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')" ng-if="show.sqft">
             Sqft
+            <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent">
             Rent
+            <i ng-show="sort.rent == null" class="fa fa-sort"></i>
+            <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
             Concess/<br>12 Mos.
+            <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
+            <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
             Net Eff.<Br> Rent
+            <i ng-show="sort.ner == null" class="fa fa-sort"></i>
+            <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="text-align: right">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft">
             NER/<br>Sqft
+            <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
         <th>
             &nbsp;
         </th>
     </tr>
-    <tr ng-repeat-start="comp in comps">
-        <td style="text-align: center"><i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(comp)"></i></td>
+    </thead>
+    <tbody>
+    <tr ng-repeat-start="comp in comps | orderBy : orderBy">
+        <td style="text-align: center"  class="hidden-print">
+            <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
+        </td>
         <td  style="text-align:center; width:32px">
-            <img ng-src="/components/googleMap/markers/{{$index == 0 ? 'apartment-3' : 'number_' + $index}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;">
+            <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;">
         </td>
         <td class="{{comp.survey.tier}}">
             <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
@@ -54,29 +87,29 @@
             <Br>
             {{comp.address}}
         </td>
-        <td style="text-align: right">
-            {{comp.totalUnits}}
+        <td style="text-align: right" ng-if="show.units" class="pad">
+            {{comp.units}}
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.unitPercent" class="pad">
             100%
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.sqft" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.rent" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.concessions"  class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.ner" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
-        <td style="text-align:center">
-            <a href ng-click="marketSurvey(comp._id)" class="hidden-print"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
+        <td style="text-align:center" class="hidden-print">
+            <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          popover-trigger="mouseenter"
                                                          popover-placement="left"
                                                          popover-title="New Market Survey"
@@ -85,13 +118,13 @@
                     ></i></a>
         </td>
     </tr>
-    <tr ng-if="comp.open" ng-repeat-start="(i,row) in comp.survey.bedrooms">
-        <td style="text-align: center"></td>
+    <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
+        <td style="text-align: center" class="hidden-print"></td>
         <td  style="text-align:center; width:32px">
             <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(row)"></i>
         </td>
         <td>
-            {{bedroomsLabel(i)}}
+            {{row.name}}
             <i class="fa fa-exclamation-triangle"
                style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                ng-if="row.excluded"
@@ -100,38 +133,38 @@
                popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
                     ></i>
         </td>
-        <td style="text-align: right">
-            {{row.totUnits}}
+        <td style="text-align: right" ng-if="show.units" class="pad">
+            {{row.units}}
         </td>
-        <td style="text-align: right">
-            {{row.totUnits / comp.totalUnits * 100 | number : 1 }}%
+        <td style="text-align: right" ng-if="show.unitPercent" class="pad">
+            {{row.unitPercent | number : 1 }}%
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.sqft" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.sqft == null ? "-" : row.sqft}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.rent" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.rent == null ? "-" : "$" + row.rent}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.concessions" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.concessions == null ? "-" : "$" + row.concessions}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.ner" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.ner == null ? "-" : "$" + row.ner}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
         </td>
-        <td style="text-align:center">
+        <td style="text-align:center" class="hidden-print">
 
         </td>
     </tr>
-    <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | filter : {bedrooms : i}">
+    <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : i}">
         <td style="text-align: center"></td>
         <td  style="text-align:center; width:32px">
 
         </td>
         <td>
-            {{fp.bedrooms}}x{{fp.bathrooms}} {{fp.description}}
+            {{fp.name}}
             <i class="fa fa-exclamation-triangle"
                style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                ng-if="fp.excluded"
@@ -140,30 +173,32 @@
                popover="This floor plan has been manually excluded from reporting and dashboard calculations."
                     ></i>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.units" class="pad">
             {{fp.units}}
         </td>
-        <td style="text-align: right">
-            {{fp.units / comp.totalUnits * 100 | number : 1 }}%
+        <td style="text-align: right" ng-if="show.unitPercent" class="pad">
+            {{fp.unitPercent | number : 1 }}%
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.sqft" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.rent" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.rent == null ? "-" : "$" + fp.rent}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.concessions" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.ner" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.ner == null ? "-" : "$" + fp.ner}}</span>
         </td>
-        <td style="text-align: right">
+        <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
         </td>
-        <td style="text-align:center">
+        <td style="text-align:center" class="hidden-print">
 
         </td>
     </tr>
     <tr ng-repeat-end></tr>
+    </tbody>
 </table>
+    </div>

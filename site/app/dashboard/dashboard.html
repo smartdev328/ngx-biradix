@@ -22,7 +22,7 @@
                 <span ng-if="myProperties.length >= 1" class="dropdown">
                     <A href class="dropdown-toggle" data-toggle="dropdown">{{selectedProperty.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
                     <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:300px;overflow-y:auto">
-                        <div style="margin:10px">
+                        <div style="margin:10px" ng-if="myProperties.length > 7">
                         <input type="text" class="form-control input-sm"
                                placeholder="Search Properties"
                                ng-model="searchDashboard"
@@ -60,7 +60,7 @@
                 <span class="pull-left">Trends</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear" style="color:#777;font-size:24px;padding:1px 0px 0px 7px"></i></a>
-                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px">
+                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:200px">
                         <table>
                             <Tr>
                                 <td style="text-align: center">
@@ -154,11 +154,27 @@
                         </table>
                     </div>
                 </span>
+
+                <div class="btn-group action_dropdown pull-right hidden-print" style="margin-right:-15px">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
+                        <span class="fa fa-table"></span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.units" ng-checked="show.units" ng-click="saveShow()"> Units</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.unitPercent" ng-checked="show.unitPercent" ng-click="saveShow()"> Unit %</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.sqft" ng-checked="show.sqft" ng-click="saveShow()"> Sqft</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rent" ng-checked="show.rent" ng-click="saveShow()"> Rent</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.concessions" ng-checked="show.concessions" ng-click="saveShow()"> Concessions / 12 Months</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="saveShow()"> Net Effective Rent</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.nersqft" ng-checked="show.nersqft" ng-click="saveShow()"> Net Effective Rent / Sqft</label></div></li>
+                        <li class="hidden-print"><input type="button" class="btn btn-primary btn-xs" value="Reset" ng-click="reset()"></li>
+                    </ul>
+                </div>
                 <Br clear="all">
             </div>
-            <div class="panel-body" style="overflow-x:auto">
-                <hr>
-                <property-comps comps="comps"></property-comps>
+            <div class="panel-body">
+                <div style="height:25px"></div>
+                <property-comps comps="comps" order-by="orderByComp" show="show"></property-comps>
             </div>
         </div>
     </div>
