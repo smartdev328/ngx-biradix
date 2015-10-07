@@ -74,7 +74,7 @@ define([
 
         $scope.reset = function() {
             $scope.defaultShow();
-            $scope.saveShow();
+            $cookies.put('cmp.s');
             $scope.orderByComp = "number";
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);

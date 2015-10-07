@@ -10,10 +10,10 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a href ng-click="print(false)"><i class="fa fa-print"></i> Print: Property Profile</a></li>
-                <li><a href ng-click="print(true)"><i class="fa fa-print"></i> Print: Property Profile + Comps</a></li>
+                <li ng-if="owner"><a href ng-click="print(true)"><i class="fa fa-print"></i> Print: Property Profile + Comps</a></li>
                 <li><a href ng-click="pdf(false)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile</a></li>
-                <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile + Comps</a></li>
-                <li><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
+                <li ng-if="owner"><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile + Comps</a></li>
+                <li ng-if="owner"><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
             </ul>
         </div>
         <button ng-if="canManage"tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">

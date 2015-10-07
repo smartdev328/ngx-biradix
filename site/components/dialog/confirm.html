@@ -3,7 +3,7 @@
     <h3 class="modal-title"><i class="fa fa-check-square-o fa-2x"></i> Confirm</h3>
 </div>
 <div class="centered modal-body">
-<h4>{{msg}}</h4>
+<h4 ng-bind-html="msg | sanitize"></h4>
 </div>
 <div class="modal-footer">
     <button class="btn btn-success" ng-click="confirm()">Yes</button> <button class="btn btn-warning" ng-click="cancel()">No</button>

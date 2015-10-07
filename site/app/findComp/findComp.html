@@ -16,8 +16,9 @@
                        placeholder="Search Existing Properties"
                        ng-model="findComp",
                        ng-change="autoComplete()"
+                       style="padding-left:25px"
                         >
-                <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
+                <i class="fa fa-search form-control-feedback" style="color:#ccc;top:0px !important;"></i>
             </div>
         </div>
         <div ng-show="findComp && findComp.length > 1 && properties.length == 0" class="alert alert-warning" role="alert">No properties found. Use the option below to create a new comp property.</div>
@@ -35,7 +36,7 @@
                     <div ng-bind-html="row.summary | sanitize">
                 </td>
                 <td>
-                    <button class="btn btn-primary" ng-click="link(row)">Link Comp</button>
+                    <button class="btn btn-primary" ng-click="link(row)">Add Comp</button>
                 </td>
             </tr>
             </tbody>

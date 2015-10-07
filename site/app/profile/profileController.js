@@ -64,7 +64,7 @@ define([
 
         $scope.reset = function() {
             $scope.defaultShow();
-            $scope.saveShow();
+            $cookies.remove('fp.s');
             $scope.orderByFp = "sqft";
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
@@ -141,6 +141,7 @@ define([
                             $scope.lookups = resp.lookups;
                             $scope.property = resp.property;
                             $scope.canManage = resp.canManage;
+                            $scope.owner = resp.owner;
                             $scope.comp = resp.comp;
                             $window.document.title = $scope.property.name;
 

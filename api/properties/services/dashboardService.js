@@ -40,6 +40,17 @@ module.exports = {
                 }, function(err, property) {
                     callbackp(err, property.length == 1)
                 })
+            },
+            owner: function(callbackp) {
+
+                if (!checkManaged) {
+                    return callbackp(null,true);
+                }
+                PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: compId
+                    , select: "_id"
+                }, function(err, property) {
+                    callbackp(err, property.length == 1)
+                })
             }
         }, function(err, all) {
 
@@ -87,7 +98,7 @@ module.exports = {
 
                     console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
 
-                    callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify})
+                    callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner})
 
                     for (var s in all) {
                         all[s] = null;
@@ -115,6 +126,11 @@ module.exports = {
             if (err) {
                 return callback(err,null)
             } else {
+
+                if (property.length == 0) {
+                    return callback("Access Denied",null)
+                }
+
                 var compids = _.pluck(property[0].comps, "id");
                 delete property[0].compids;
 
