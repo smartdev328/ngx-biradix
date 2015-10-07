@@ -91,6 +91,13 @@ define([
                         });
                     })
 
+                    $scope.profiles = _.sortBy($scope.profiles, function (n) {
+                        if (n.property._id.toString() == $stateParams.id.toString()) {
+                            return "-1";
+                        }
+                        return n.property.name;
+                    })
+
                     $scope.setRenderable();
                 });
             }

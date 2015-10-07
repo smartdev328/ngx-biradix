@@ -18,6 +18,14 @@ h2,h3 {
     background-color: #1E90FF !important;
 }
 
+a:hover {
+    text-decoration: none !important;
+}
+
+a:focus {
+    text-decoration: none !important;
+}
+
 .btn-primary .fa {
     color:white
 }

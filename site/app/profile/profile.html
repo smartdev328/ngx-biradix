@@ -90,16 +90,20 @@
                     <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:210px">
                         <table>
                             <Tr>
-                                <Td>
-                                    Graphs:
-                                </Td>
                                 <td>
                                     <toggle-switch checked="graphs"></toggle-switch>
                                 </td>
+                                <Td>
+                                    &nbsp;Graphs
+                                </Td>
+
                             </Tr>
                             <Tr>
+                                <td>
+                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>
+                                </td>
                                 <Td>
-                                    Hide Excluded:
+                                    &nbsp;Hide Excluded
 
                                     <i class="fa fa-info-circle" style="font-size:12px"
                                        popover-trigger="mouseenter"
@@ -107,9 +111,7 @@
                                        popover="This option gives you the ability to show excluded floor plans."
                                             ></i>
                                 </Td>
-                                <td>
-                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>
-                                </td>
+
                             </Tr>
                         </table>
                     </div>
@@ -173,8 +175,11 @@
                     <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:210px">
                         <table>
                             <Tr>
+                                <td>
+                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>
+                                </td>
                                 <Td>
-                                    Hide Excluded:
+                                    &nbsp;Hide Excluded
 
                                     <i class="fa fa-info-circle" style="font-size:12px"
                                        popover-trigger="mouseenter"
@@ -182,9 +187,7 @@
                                        popover="This option gives you the ability to show excluded floor plans."
                                             ></i>
                                 </Td>
-                                <td>
-                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>
-                                </td>
+
                             </Tr>
                         </table>
                     </div>
