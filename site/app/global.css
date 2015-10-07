@@ -18,6 +18,10 @@ h2,h3 {
     background-color: #1E90FF !important;
 }
 
+a {
+    font-size: 14px;
+}
+
 a:hover {
     text-decoration: none !important;
 }
@@ -208,4 +212,8 @@ td.center,th.center {text-align:center}
 
 .mainheader {
     color: #4460a9;
+}
+
+.popover {
+    min-width:200px
 }

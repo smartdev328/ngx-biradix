@@ -3,10 +3,10 @@
 <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <thead>
     <tr>
-        <th style="width:25px" class="hidden-print">
+        <th style="width:25px;" class="hidden-print">
 
         </th>
-        <th style="min-width:30px;text-align:center"  class="sortable" ng-click="toggleSort('number')">
+        <th style="min-width:30px;text-align:center;height:45px"  class="sortable" ng-click="toggleSort('number')">
             #
             <i ng-show="sort.number == null" class="fa fa-sort"></i>
             <i ng-show="sort.number === true" class="fa fa-sort-down"></i>
@@ -43,7 +43,7 @@
             <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
-            Concess/<br>12 Mos.
+            Concess/&nbsp;<br>12 Mos.
             <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
             <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
@@ -55,7 +55,7 @@
             <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft">
-            NER/<br>Sqft
+            NER/&nbsp;&nbsp;<br>Sqft
             <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
@@ -76,21 +76,21 @@
         <td>
             <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
             <i class="fa fa-exclamation-triangle"
-               style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+               style="color:orange;cursor:pointer;font-size:16px;padding-left:1px"
                ng-if="comp.survey.excluded"
                popover-trigger="mouseenter"
                popover-placement="right"
                popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                     ></i>
             <i class="fa fa-clock-o"
-               style="color:red;cursor:pointer;font-size:12px;padding-left:1px"
+               style="color:red;cursor:pointer;font-size:16px;padding-left:1px"
                ng-if="comp.survey.tier == 'danger'"
                popover-trigger="mouseenter"
                popover-placement="right"
                popover="Property has not been updated in 15+ days"
                     ></i>
             <i class="fa fa-clock-o"
-               style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
+               style="color:orange;cursor:pointer;font-size:16px;padding-left:1px"
                ng-if="comp.survey.tier == 'warning'"
                popover-trigger="mouseenter"
                popover-placement="right"

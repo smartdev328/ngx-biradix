@@ -43,7 +43,7 @@ define([
         $scope.reset = function() {
             $scope.show = {units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true};
             $scope.saveShow();
-            $scope.orderByComp = "sqft";
+            $scope.orderByComp = "number";
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
             $cookies.put('cmp.o', $scope.orderByComp, {expires : expireDate})
