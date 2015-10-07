@@ -46,7 +46,7 @@ define([
             $scope.orderByComp = $cookies.get("cmp.o");
         }
 
-        $scope.showComp = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        $scope.showComp = {description:true,units:true,unitPercent:false,occupancy:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
         if ($cookies.get("cmp.s")) {
             $scope.showComp = JSON.parse($cookies.get("cmp.s"));
         }
@@ -67,6 +67,8 @@ define([
                     ,{graphs: $scope.graphs }
                 ).then(function (response) {
                     var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary);
+
+                        window.document.title = resp.property.name + " - Profile + Comps | BI:Radix";
 
                     $scope.property = resp.property;
                     $scope.comps = resp.comps;

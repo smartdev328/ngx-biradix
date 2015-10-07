@@ -10,6 +10,8 @@ define([
             $location.path('/dashboard')
         }
 
+        window.document.title = "Forgot Password | BI:Radix";
+
         $scope.btnSubmit = function() {
             $scope.alerts = [];
             $scope.localLoading = true;

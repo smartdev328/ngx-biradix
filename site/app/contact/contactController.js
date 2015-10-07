@@ -6,6 +6,8 @@ define([
      app.controller
         ('contactController', ['$scope', '$modalInstance', 'me', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', function ($scope, $modalInstance, me, ngProgress, $rootScope, toastr, $location, $contactService) {
 
+            window.document.title = "Contact Us | BI:Radix";
+
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
             }

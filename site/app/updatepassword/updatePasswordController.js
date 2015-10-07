@@ -10,6 +10,8 @@ define([
                 $location.path('/login')
             }
 
+            window.document.title = "Account Profile - Update Password | BI:Radix";
+
             if (!me.passwordUpdated) {
                 $scope.alerts.push({ type: 'warning', msg: 'For security purposes, please update the temporary password assigned to you.'});
             }

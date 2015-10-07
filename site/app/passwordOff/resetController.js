@@ -6,6 +6,8 @@ define([
 
     app.controller('resetController', ['$scope','$rootScope','$location','toastr','$window', '$authService', '$stateParams', function ($scope,$rootScope,$location,toastr,$window,$authService,$stateParams) {
 
+        window.document.title = "Forgot Password | BI:Radix";
+
         if ($rootScope.loggedIn) {
             $location.path('/dashboard')
         }

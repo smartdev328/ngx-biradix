@@ -55,12 +55,14 @@ define([
             if ($scope.selectedProperty) {
                 $scope.loadComps(_.pluck($scope.selectedProperty.comps,"id"), $scope.selectedProperty._id)
             } else {
+                window.document.title = "Reporting | BI:Radix";
                 $scope.localLoading = true;
             }
 
         })
 
         $scope.loadComps = function(compids,subjectid) {
+            window.document.title = $scope.selectedProperty.name + " - Reporting | BI:Radix";
             $scope.reportLoading = false;
             $scope.noReports = false;
             delete $scope.reports;

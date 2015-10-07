@@ -6,6 +6,8 @@ define([
 
     app.controller('contactOffController', ['$scope','$rootScope','$location','toastr','$window','$contactService', function ($scope,$rootScope,$location,toastr,$window,$contactService) {
 
+        window.document.title = "Contact Us | BI:Radix";
+
         if ($rootScope.loggedIn) {
             $location.path('/dashboard')
         }

@@ -29,13 +29,41 @@ define([
             $scope.orderByFp = $cookies.get("fp.o");
         }
 
-        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        $scope.defaultShow = function() {
+            $scope.show = {
+                description: true,
+                units: true,
+                unitPercent: true,
+                sqft: true,
+                rent: true,
+                concessions: true,
+                ner: true,
+                nersqft: true
+            }
+
+            var w = $(window).width();
+
+            if (w < 1024) {
+                $scope.show.rent = false;
+                $scope.show.concessions = false;
+                $scope.show.unitPercent = false;
+            }
+
+            if (w < 500) {
+                $scope.show.ner = false;
+                $scope.show.description = false;
+            }
+
+        }
+
+        $scope.defaultShow();
+
         if ($cookies.get("fp.s")) {
             $scope.show = JSON.parse($cookies.get("fp.s"));
         }
 
         $scope.reset = function() {
-            $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true};
+            $scope.defaultShow();
             $scope.saveShow();
             $scope.orderByFp = "sqft";
             var expireDate = new Date();
@@ -44,6 +72,8 @@ define([
 
 
         }
+
+
 
         $scope.setRenderable = function() {
             window.setTimeout(function() {

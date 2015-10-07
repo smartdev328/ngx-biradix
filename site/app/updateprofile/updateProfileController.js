@@ -8,6 +8,8 @@ define([
                 $location.path('/login')
             }
 
+            window.document.title = "Account Profile - Update Profile | BI:Radix";
+
             $rootScope.nav = "";
 
             $rootScope.sideMenu = true;

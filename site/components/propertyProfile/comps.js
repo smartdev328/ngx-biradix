@@ -27,6 +27,7 @@ define([
                 }, true)
 
 
+                $scope.surveyTooltip = {};
                 $scope.$watch("comps", function() {
                     if ($scope.comps) {
 
@@ -39,6 +40,7 @@ define([
                             comp.concessions = comp.survey.concessions == null ? -1 : comp.survey.concessions;
                             comp.ner = comp.survey.ner == null ? -1 : comp.survey.ner;
                             comp.nersqft = comp.survey.nersqft == null ? -1 : comp.survey.nersqft;
+                            comp.occupancy = comp.survey.occupancy == null ? -1 : comp.survey.occupancy;
 
                             comp.survey.floorplans.forEach(function(fp,i) {
                                 fp.number = i;
@@ -64,7 +66,7 @@ define([
                 }, true)
 
                 $scope.surveyTooltip = function(comp) {
-                    return "Last update: " + (comp && comp.survey && comp.survey.date ? moment(comp.survey.date).format("MM/DD/YYYY") : "Never");
+                    return "New Market Survey (last survey: " + (comp && comp.survey && comp.survey.date ? moment(comp.survey.date).format("MM/DD/YYYY") : "Never") + ")";
                 }
 
                 $scope.marketSurvey = function (compid) {

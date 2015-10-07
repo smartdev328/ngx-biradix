@@ -633,6 +633,7 @@ module.exports = {
                             }
                         })
 
+                        comp.survey.occupancy = s.occupancy;
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, hide);
                     }
 

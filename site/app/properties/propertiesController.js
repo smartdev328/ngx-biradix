@@ -10,6 +10,8 @@ define([
             $location.path('/login')
         }
 
+        window.document.title = "Manage Properties | BI:Radix";
+
         $rootScope.nav = "";
 
         $rootScope.sideMenu = true;

@@ -161,6 +161,7 @@
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy" ng-click="saveShow()"> Occupancy %</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.units" ng-checked="show.units" ng-click="saveShow()"> Units</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.unitPercent" ng-checked="show.unitPercent" ng-click="saveShow()"> Unit %</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.sqft" ng-checked="show.sqft" ng-click="saveShow()"> Sqft</label></div></li>

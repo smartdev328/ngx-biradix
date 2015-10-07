@@ -12,6 +12,8 @@ define([
             $location.path('/login')
         }
 
+        window.document.title = "Activity History | BI:Radix";
+
         $rootScope.nav = "";
         $scope.pager = {offset : 0, currentPage: 1, itemsPerPage: 50}
         $scope.limits = [10,50,100,500]

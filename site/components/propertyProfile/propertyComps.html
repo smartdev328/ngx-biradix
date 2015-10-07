@@ -6,17 +6,20 @@
         <th style="width:25px;" class="hidden-print">
 
         </th>
-        <th style="min-width:30px;text-align:center;height:45px"  class="sortable" ng-click="toggleSort('number')">
-            #
-            <i ng-show="sort.number == null" class="fa fa-sort"></i>
-            <i ng-show="sort.number === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.number === false" class="fa fa-sort-up"></i>
+        <th>
+
         </th>
         <th class="sortable" ng-click="toggleSort('name')">
-            Name/Address
+            &nbsp;&nbsp;Name/<Br>Address
             <i ng-show="sort.name == null" class="fa fa-sort"></i>
             <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
+        </th>
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('occupancy')" ng-if="show.occupancy">
+            Occ. %
+            <i ng-show="sort.occupancy == null" class="fa fa-sort"></i>
+            <i ng-show="sort.occupancy === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.occupancy === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
             Units
@@ -99,6 +102,9 @@
             <Br>
             {{comp.address}}
         </td>
+        <td style="text-align: right" ng-if="show.occupancy" class="pad">
+            {{comp.survey.occupancy == null ? "-" : comp.survey.occupancy + '%'}}
+        </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
             {{comp.units}}
         </td>
@@ -124,7 +130,6 @@
             <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          popover-trigger="mouseenter"
                                                          popover-placement="left"
-                                                         popover-title="New Market Survey"
                                                          popover="{{surveyTooltip(comp)}}"
 
                     ></i></a>
@@ -144,6 +149,9 @@
                popover-placement="right"
                popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
                     ></i>
+        </td>
+        <td style="text-align: right" ng-if="show.occupancy" class="pad">
+            -
         </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
             {{row.units}}
@@ -184,6 +192,9 @@
                popover-placement="right"
                popover="This floor plan has been manually excluded from reporting and dashboard calculations."
                     ></i>
+        </td>
+        <td style="text-align: right" ng-if="show.occupancy" class="pad">
+            -
         </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
             {{fp.units}}

@@ -35,13 +35,45 @@ define([
             $scope.orderByComp = $cookies.get("cmp.o");
         }
 
-        $scope.show = {units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        $scope.defaultShow = function() {
+            $scope.show = {
+                units: true,
+                unitPercent: false,
+                occupancy: true,
+                sqft: true,
+                rent: true,
+                concessions: true,
+                ner: true,
+                nersqft: true
+            }
+
+
+            var w = $(window).width();
+
+            if (w < 1175) {
+                $scope.show.rent = false;
+                $scope.show.concessions = false;
+            }
+
+            if (w < 1000) {
+                $scope.show.ner = false;
+            }
+
+            if (w < 500) {
+                $scope.show.sqft = false;
+                $scope.show.occupancy = false;
+                $scope.show.units = false;
+            }
+        }
+
+        $scope.defaultShow();
+
         if ($cookies.get("cmp.s")) {
             $scope.show = JSON.parse($cookies.get("cmp.s"));
         }
 
         $scope.reset = function() {
-            $scope.show = {units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true};
+            $scope.defaultShow();
             $scope.saveShow();
             $scope.orderByComp = "number";
             var expireDate = new Date();
@@ -148,7 +180,9 @@ define([
 
                         $scope.mapOptions = resp.mapOptions;
                         $scope.bedrooms = resp.bedrooms;
-                        $scope.bedroom = resp.bedroom;;
+                        $scope.bedroom = resp.bedroom;
+
+                        window.document.title = resp.property.name + " - Dashboard | BI:Radix";
                     }
 
                     $scope.points = resp.points;
