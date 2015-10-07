@@ -8,7 +8,7 @@ define([
                 $location.path('/login')
             }
 
-            window.document.title = "Account Profile - Update Profile | BI:Radix";
+            window.document.title = "My Account - Update Profile | BI:Radix";
 
             $rootScope.nav = "";
 
