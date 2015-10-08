@@ -23,11 +23,12 @@ define([
         $scope.limit = 50;
         $scope.sort = {}
         $scope.search = {}
-        $scope.filters = {active:true}
         $scope.defaultSort = "-name";
         $scope.searchable = ['name', 'address', 'city', 'state', 'zip', 'company'];
         $scope.search['active'] = true;
 
+        $scope.showInactive = false;
+        $scope.showActive = true;
         $scope.adjustToSize = function(size) {
             var isTiny = size < 967;
             var isMedium  = size < 1167;
@@ -39,7 +40,7 @@ define([
                 city: !isMedium,
                 state: !isMedium,
                 zip: !isMedium,
-                active:  !isTiny,
+                active:  false,
                 totalUnits: true,
                 occupancy: true,
                 ner: !isMedium,
@@ -56,6 +57,17 @@ define([
             }
         });
 
+        $scope.calcActive = function() {
+            if ($scope.showActive === $scope.showInactive) {
+                delete $scope.search.active;
+            }
+            else
+            {
+                $scope.search.active = $scope.showActive;
+            }
+
+            $scope.resetPager();
+        }
         $scope.toggleOpen = function(row) {
             row.open = !(row.open || false);
 
@@ -170,20 +182,7 @@ define([
             return ret;
         };
 
-        $scope.toggleFilter = function (v) {
-            $scope.resetPager();
-            $scope.toggle($scope.filters, v, false)
-            var s = $scope.filters[v];
 
-            $scope.search = $scope.search || {}
-            if (s == null) {
-                delete $scope.search[v];
-                return;
-            }
-
-            $scope.search[v] = s;
-
-        }
         $scope.toggleSort = function (v) {
             $scope.resetPager();
             $scope.toggle($scope.sort, v, true)

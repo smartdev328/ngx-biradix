@@ -205,6 +205,17 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'updateprofile/updateProfileController')}}
             })
+            .state('contactus', {
+                url: "/contactus",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/contact/contact.html?bust=" + version ,
+                        controller : "contactController"
+                    }
+
+                },
+                resolve: {get : function($q) {return resolve($q, 'contact/contactController')}}
+            })
     });
 
     app.filter("sanitize", ['$sce', function ($sce) {

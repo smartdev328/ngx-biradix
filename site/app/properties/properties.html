@@ -7,55 +7,87 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
-        <div style="float:left" class="grid-limit">
-            Show: <select class="form-control input-sm" ng-model="limit" style="width:75px;display:inline-block"
-                    ng-change="resetPager()"
-                    ng-options="item for item in limits">
-            </select>
-        </div>
+    <div class="btn-group action_dropdown pull=left" ng-if="me.permissions.indexOf('Properties/Create') > -1">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm"ng-click="edit(null,false)">
+            <span class="fa fa-plus"></span> Add Property
+        </button>
+    </div>
 
-        <div style="float:right" class="grid-right-nav">
-            <div class="form-group has-feedback pull-right">
-                <div class="btn-group action_dropdown stay_open_button">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
-                        <span class="fa fa-table"></span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rownumber" ng-checked="show.rownumber" ng-click="columnsChanged=true"> Row Number</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.date" ng-checked="show.date" ng-click="columnsChanged=true"> Date</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name" ng-click="columnsChanged=true"> Name</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.address" ng-checked="show.address" ng-click="columnsChanged=true"> Address</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.city" ng-checked="show.city" ng-click="columnsChanged=true"> City</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.state" ng-checked="show.state" ng-click="columnsChanged=true"> State</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.zip" ng-checked="show.zip" ng-click="columnsChanged=true"> Zip</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.totalUnits" ng-checked="show.totalUnits" ng-click="columnsChanged=true"> Total Units</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy" ng-click="columnsChanged=true"> Occupancy %</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="columnsChanged=true"> Net Eff. Rent</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools" ng-click="columnsChanged=true"> Actions</label></div></li>
-                    </ul>
-                </div>
-                <div class="btn-group action_dropdown">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" tooltip="Download Results" ng-click="download()">
-                        <span class="fa fa-download"></span>
-                    </button>
-                </div>
-                <div class="btn-group action_dropdown" ng-if="me.permissions.indexOf('Properties/Create') > -1">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" tooltip="Add Property" ng-click="edit(null,false)">
-                        <span class="fa fa-plus"></span>
-                    </button>
-                </div>
-            </div>
+    <div class="btn-group action_dropdown pull-right">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" tooltip="Download Results" ng-click="download()">
+            <span class="fa fa-download"></span>
+        </button>
+    </div>
 
-            <div class="form-group has-feedback pull-right" style="margin-right:5px">
-                <input type="text" class="form-control input-sm"
-                       placeholder="Search Properties"
-                       ng-model="searchText"
-                       ng-change="resetPager()">
-                <i class="fa fa-search form-control-feedback" style="color:#ccc"></i>
-            </div>
+
+    <div class="btn-group action_dropdown stay_open_button pull-right" style="margin-right:5px">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Filters">
+            <span class="fa fa-filter"></span> <span class="caret"></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
+            <table>
+                <tr>
+                    <td class="center">
+                        <input type="checkbox" ng-model="showActive" ng-click="calcActive()" id="showActive">
+                    </td>
+                    <Td>
+                        &nbsp;<label for="showActive" style="font-weight: normal">Active</label>
+                    </Td>
+                </tr>
+
+                <tr>
+                    <td class="center">
+                        <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
+                    </td>
+                    <Td>
+                        &nbsp;<label for="showInactive" style="font-weight: normal">Inactive</label>
+                    </Td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:2px !important;font-size:11px;height:25px"
+                        ng-change="resetPager()"
+                        ng-options="item for item in limits">
+                        </select>
+                    </td>
+                    <Td>
+                        &nbsp;# of Rows
+                    </Td>
+                </tr>
+            </table>
         </div>
+    </div>
+
+    <div class="btn-group action_dropdown stay_open_button pull-right" style="margin-right:5px">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
+            <span class="fa fa-table"></span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rownumber" ng-checked="show.rownumber" ng-click="columnsChanged=true"> Row Number</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.date" ng-checked="show.date" ng-click="columnsChanged=true"> Date</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name" ng-click="columnsChanged=true"> Name</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.address" ng-checked="show.address" ng-click="columnsChanged=true"> Address</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.city" ng-checked="show.city" ng-click="columnsChanged=true"> City</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.state" ng-checked="show.state" ng-click="columnsChanged=true"> State</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.zip" ng-checked="show.zip" ng-click="columnsChanged=true"> Zip</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.totalUnits" ng-checked="show.totalUnits" ng-click="columnsChanged=true"> Total Units</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy" ng-click="columnsChanged=true"> Occupancy %</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="columnsChanged=true"> Net Eff. Rent</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools" ng-click="columnsChanged=true"> Actions</label></div></li>
+        </ul>
+    </div>
+
+    <div class="form-group has-feedback pull-right grid-search" style="margin-right:5px">
+        <input type="text" class="form-control input-sm"
+               placeholder="Search Properties"
+               ng-model="searchText"
+               ng-change="resetPager()">
+        <i class="fa fa-search form-control-feedback" style="color:#ccc"></i>
+    </div>
+
 
     <br clear="all">
     <div class="maingrid wrapper">
@@ -119,11 +151,8 @@
                 <div class="pull-right" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.active" style="cursor:pointer;min-width:70px;width:75px" ng-click="toggleFilter('active')">
-                <div class="pull-left">Active</div>
-                <div class="pull-right" ng-show="filters.active == null"><i class="fa fa-filter"></i></div>
-                <div class="pull-right" ng-show="filters.active === true"><i class="fa fa-toggle-on"></i></div>
-                <div class="pull-right" ng-show="filters.active === false"><i class="fa fa-toggle-off"></i></div>
+            <th ng-show="show.active" class="center">
+                Active
             </th>
             <th ng-show="show.company" style="cursor:pointer;min-width:92px;width:120px" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>

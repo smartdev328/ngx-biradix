@@ -4,7 +4,7 @@ define([
     '../../services/contactService.js'
 ], function (app) {
      app.controller
-        ('contactController', ['$scope', '$modalInstance', 'me', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', function ($scope, $modalInstance, me, ngProgress, $rootScope, toastr, $location, $contactService) {
+        ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService) {
 
             window.document.title = "Contact Us | BI:Radix";
 
@@ -12,9 +12,15 @@ define([
                 $location.path('/login')
             }
 
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
+            $rootScope.sideMenu = true;
+            $rootScope.sideNav = "ContactUs";
+
+            var me;
+            $rootScope.$watch("me", function(x) {
+                if ($rootScope.me) {
+                    me = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
+                }
+            })
 
             $scope.submit = function (msg) {
                 $('button.contact-submit').prop('disabled', true);
@@ -30,8 +36,8 @@ define([
                             toastr.error(errors);
                         }
                         else {
-                            toastr.success('Thank you for your submission. Someone will contact you shortly.');
-                            $modalInstance.close();
+                            //toastr.success('Thank you for your submission. Someone will contact you shortly.');
+                            $scope.done = true
                         }
                 },
                     function(errors) {

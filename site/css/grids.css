@@ -36,6 +36,12 @@
         float:right !important;
         margin-bottom:5px;
     }
+
+    .grid-search {
+        clear:both;
+        margin-top:10px;
+        margin-right:0px !important;
+    }
 }
 
 .maingrid .header {

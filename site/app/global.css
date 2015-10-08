@@ -217,3 +217,7 @@ td.center,th.center {text-align:center}
 .popover {
     min-width:200px
 }
+
+.btn .caret {
+    color: #1E90FF !important;
+}

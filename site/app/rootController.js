@@ -217,31 +217,6 @@ define([
             });
         }
 
-        $scope.contact = function () {
-            require([
-                '/app/contact/contactController.js'
-            ], function () {
-                var modalInstance = $modal.open({
-                    templateUrl: '/app/contact/contact.html',
-                    controller: 'contactController',
-                    size: "sm",
-                    keyboard: false,
-                    backdrop: 'static',
-                    resolve: {
-                        me: function () {
-                            return $rootScope.me;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function () {
-                    //Send successfully
-                }, function () {
-                    //Cancel
-                });
-            });
-        }
-
         $scope.getLocation = function (val) {
             return $propertyService.search({search: val, active: true}).then(function (response) {
                 return response.data.properties
