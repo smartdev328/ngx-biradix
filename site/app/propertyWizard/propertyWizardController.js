@@ -62,7 +62,7 @@ define([
                     i = $scope.steps.length - 1;
                 }
                 $scope.stepIndex = i;
-                $scope.stepTemplate = '/app/propertyWizard/tabs/' + $scope.steps[i].template;
+                $scope.stepTemplate = '/app/propertyWizard/tabs/' + $scope.steps[i].template + "?bust=" + version;
 
             }
 
