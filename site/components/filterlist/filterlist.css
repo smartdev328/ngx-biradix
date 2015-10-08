@@ -1,6 +1,6 @@
 ﻿.filter-list select {
     height:200px;
-    width:205px;
+    width:250px;
     border: 1px solid #BDE3FD;
     overflow-x: hidden;
     overflow-y: auto;
@@ -11,9 +11,11 @@
 }
 
 .filter-buttons button {
-    border-radius:1px !important;font-weight:bold !important;
-    width:36px !important;
-    margin:0px 5px 0px 5px !important;
+
+    border-radius: 1px !important;
+    font-weight: bold !important;
+    width: 30px !important;
+    margin: 0px 10px 0px 10px !important;
 }
 .checkbox-row label {
     font-weight:normal

@@ -9,6 +9,7 @@ define([
             restrict: 'E',
             scope: {
                 daterange: '=',
+                width: '='
             },
             controller: function ($scope, $element) {
 

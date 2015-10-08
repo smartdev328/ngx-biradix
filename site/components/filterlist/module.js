@@ -94,7 +94,7 @@ define([
 
                 });
             },
-            templateUrl: '/components/filterlist/filterlist.html'
+            templateUrl: '/components/filterlist/filterlist.html?bust=' + version
         };
     })
 })
