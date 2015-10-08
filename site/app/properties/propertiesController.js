@@ -21,7 +21,7 @@ define([
         $scope.data = [];
         $scope.limits = [10,50,100,500]
         $scope.limit = 50;
-        $scope.sort = {}
+        $scope.sort = {name:true}
         $scope.search = {}
         $scope.defaultSort = "-name";
         $scope.searchable = ['name', 'address', 'city', 'state', 'zip', 'company'];

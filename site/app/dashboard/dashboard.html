@@ -20,7 +20,7 @@
             <div class="panel-heading">
                 <span ng-if="myProperties.length == 1">{{selectedProperty.name}}</span>
 
-                <span ng-if="myProperties.length >= 1" class="dropdown">
+                <span ng-if="myProperties.length > 1" class="dropdown">
                     <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit">{{selectedProperty.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
                     <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:300px;overflow-y:auto">
                         <div style="margin:10px" ng-if="myProperties.length > 7">
