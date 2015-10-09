@@ -35,7 +35,9 @@
         <tr>
             <td>
                 {{options.availableLabel || 'Available'}}<br />
-                <select ng-model="ogItems" multiple
+                <select
+                        ng-style="{width: options.panelWidth ? options.panelWidth + 'px' : 'default'}"
+                        ng-model="ogItems" multiple
                         ng-dblclick="dbl(ogItems, true)"
                         ng-options="item.name group by item.group for item in filtered = (items | filter : lstfilter ) | filter: {selected: false}"></select><br />
 
@@ -62,6 +64,7 @@
             <td>
                 {{options.selectedLabel || 'Selected'}}<br />
                 <select ng-model="selectedItems" multiple
+                        ng-style="{width: options.panelWidth ? options.panelWidth + 'px' : 'default'}"
                         ng-dblclick="dbl(selectedItems, false)"
                         ng-options="item.name group by item.group for item in items | filter: {selected: true}"></select><br />
 

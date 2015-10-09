@@ -24,9 +24,9 @@ define([
         }
 
         fac.print = function (propertyId, full, showFile, daterange, progressId, graphs) {
-            var url = getPdfUrl(full, "",propertyId, graphs, daterange, progressId);
+            var url = getPdfUrl(full, showFile,propertyId, graphs, daterange, progressId);
 
-            if (showFile) {
+            if (showFile === true) {
                 location.href = url;
             }
             else {

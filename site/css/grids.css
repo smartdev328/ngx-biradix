@@ -130,3 +130,7 @@
 .hidden-arrows .pad {
     padding-right:15px
 }
+
+.grid-search input {
+    width:150px
+}

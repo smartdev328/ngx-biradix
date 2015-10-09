@@ -208,10 +208,12 @@ td.center,th.center {text-align:center}
 
 .mainheader > hr {
     border-color:#ddd;
+    margin-top:5px
 }
 
 .mainheader {
     color: #4460a9;
+    margin-bottom: 0px !important;
 }
 
 .popover {
@@ -220,4 +222,16 @@ td.center,th.center {text-align:center}
 
 .btn .caret {
     color: #1E90FF !important;
+}
+
+select {
+    padding-right: 0px !important;
+}
+
+.has-feedback .form-control {
+    padding-right: 25px
+}
+
+.dropdown-menu>li>a {
+    padding: 3px 13px;
 }

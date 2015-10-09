@@ -17,9 +17,9 @@ define([
         $rootScope.nav = "";
         $scope.pager = {offset : 0, currentPage: 1, itemsPerPage: 50}
         $scope.limits = [10,50,100,500]
-        $scope.typeOptions = { minwidth:100, hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types" }
-        $scope.userOptions = { minwidth:100, hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users" }
-        $scope.propertyOptions = { minwidth:100, hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
+        $scope.typeOptions = { panelWidth:210, minwidth:100, hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types" }
+        $scope.userOptions = { panelWidth:210, minwidth:100, hideSearch: false, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users" }
+        $scope.propertyOptions = { panelWidth:210, minwidth:100, hideSearch: false, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.daterange={
             Ranges : {
                 'Today': [moment().startOf("day"), moment()],
