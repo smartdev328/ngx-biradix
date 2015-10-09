@@ -1,3 +1,23 @@
+<div class="row" ng-show="localLoading">
+    <div class="col-xs-7 col-sm-7">
+        <h2 class="mainheader">Dashboard</h2>
+    </div>
+    <div class="col-xs-5 col-sm-5 hidden-print">
+        <div class="btn-group pull-right" style="padding-bottom:10px">
+            <button tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
+                <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <li><a href ng-click="print(false)"><i class="fa fa-print"></i> Print: Property Profile</a></li>
+                <li><a href ng-click="print(true)"><i class="fa fa-print"></i> Print: Property Profile + Comps</a></li>
+                <li><a href ng-click="pdf(false)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile</a></li>
+                <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf: Property Profile + Comps</a></li>
+                <li><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <style>
     @media all and (min-width: 0px) and (max-width: 500px) {
         .bedrooms {

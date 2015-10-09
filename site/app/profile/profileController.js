@@ -12,10 +12,11 @@ define([
     '../../components/daterangepicker/module',
     '../../components/timeseries/module',
     '../../services/cookieSettingsService',
-    '../../services/auditService'
+    '../../services/auditService',
+    '../../services/exportService'
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -224,35 +225,16 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            var url = $scope.getPdfUrl(full, true);
+            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs);
 
             $window.setTimeout($scope.checkProgress, 500);
 
-            location.href = url;
-
         }
 
-        $scope.getPdfUrl = function(full, showFile) {
-            var url = '/api/1.0/properties/' + $scope.property._id + '/pdf?'
-            url += "token=" + $cookies.get('token')
-            url += "&Graphs=" + $scope.graphs
-            url += "&selectedStartDate=" + $scope.daterange.selectedStartDate.format()
-            url += "&selectedEndDate=" + $scope.daterange.selectedEndDate.format()
-            url += "&selectedRange=" + $scope.daterange.selectedRange
-            url += "&timezone=" + moment().utcOffset()
-            url += "&progressId=" + $scope.progressId
-            url += "&full=" + full
-            url += "&showFile=" + showFile
-            url += "&orderBy=" + $scope.orderByFp
-            url += "&show=" + encodeURIComponent (JSON.stringify($scope.show))
-            url += "&orderByC=" + ($cookies.get("cmp.o") || '');
-            url += "&showC=" + encodeURIComponent ($cookies.get("cmp.s") || '')
-            return url;
-        }
 
         $scope.print = function(full) {
-            var url = $scope.getPdfUrl(full, "");
-            window.open(url);
+
+            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs);
         }
 
     }]);

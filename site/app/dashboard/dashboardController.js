@@ -7,10 +7,12 @@ define([
     '../../components/toggle/module',
     '../../components/daterangepicker/module',
     '../../components/timeseries/module',
-    '../../services/cookieSettingsService'
+    '../../services/cookieSettingsService',
+    '../../services/exportService',
+    '../../services/progressService',
 ], function (app) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -195,6 +197,62 @@ define([
             }
         };
 
+        $scope.checkProgress = function() {
+
+            $progressService.isComplete($scope.progressId, function(isComplete) {
+
+                if (isComplete) {
+                    ngProgress.complete();
+                    $('#export').prop('disabled', false);
+                }
+                else {
+                    window.setTimeout($scope.checkProgress, 500);
+                }
+            })
+
+        }
+
+        $scope.pdf = function(full) {
+
+            ngProgress.start();
+
+            $('#export').prop('disabled', true);
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs);
+
+            window.setTimeout($scope.checkProgress, 500);
+
+        }
+
+        $scope.print = function(full) {
+            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs);
+        }
+
+        $scope.excel = function() {
+
+            ngProgress.start();
+
+            $('#export').prop('disabled', true);
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
+            url += "token=" + $cookies.get('token')
+            url += "&timezone=" + moment().utcOffset()
+            url += "&selectedStartDate=" + $scope.daterange.selectedStartDate.format()
+            url += "&selectedEndDate=" + $scope.daterange.selectedEndDate.format()
+            url += "&selectedRange=" + $scope.daterange.selectedRange
+            url += "&progressId=" + $scope.progressId
+
+            $window.setTimeout($scope.checkProgress, 500);
+
+            location.href = url;
+
+            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
+
+        }
 
     }]);
 });

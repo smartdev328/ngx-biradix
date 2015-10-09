@@ -1,12 +1,12 @@
 
 <div class="row" ng-show="localLoading">
     <div class="col-xs-7 col-sm-7">
-        <h2 class="mainheader">{{property.name}}</h2>
+        <h2 class="mainheader">Profile</h2>
     </div>
     <div class="col-xs-5 col-sm-5 hidden-print">
         <div class="btn-group pull-right" style="padding-bottom:10px">
             <button tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
-                <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret"></span>
+                <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a href ng-click="print(false)"><i class="fa fa-print"></i> Print: Property Profile</a></li>
@@ -36,7 +36,7 @@
 
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading">Property Info</div>
+            <div class="panel-heading">{{property.name}}</div>
             <div class="panel-body">
                 <hr>
                 <property-profile property="property"></property-profile>
