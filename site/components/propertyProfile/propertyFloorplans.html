@@ -98,9 +98,9 @@
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
             </td>
         </tr>
-        <tr class="subtotal">
+        <tr class="subtotal" style="background-color:white !important;">
             <td colspan="{{show.description ? '2' : '1'}}">
-                {{bedroomsLabel(i)}}
+                <!--{{bedroomsLabel(i)}}-->
                 <i class="fa fa-exclamation-triangle"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="bedroom.excluded"

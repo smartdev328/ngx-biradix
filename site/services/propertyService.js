@@ -431,7 +431,7 @@ define(['app'], function (app) {
                 });
 
                 for (var b in bedrooms) {
-                    switch (b) {
+                    switch (parseInt(b)) {
                         case 0:
                             resp.bedrooms.push({value: 0, text: 'Studios'})
                             break;

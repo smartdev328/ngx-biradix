@@ -10,9 +10,10 @@ define([
     '../../services/cookieSettingsService',
     '../../services/exportService',
     '../../services/progressService',
+    '../../services/auditService',
 ], function (app) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -246,7 +247,7 @@ define([
             url += "&selectedRange=" + $scope.daterange.selectedRange
             url += "&progressId=" + $scope.progressId
 
-            $window.setTimeout($scope.checkProgress, 500);
+            window.setTimeout($scope.checkProgress, 500);
 
             location.href = url;
 
