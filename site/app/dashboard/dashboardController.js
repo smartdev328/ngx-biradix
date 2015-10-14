@@ -106,7 +106,7 @@ define([
 
         $scope.refreshGraphs = function() {
             $scope.selectedBedroom = $scope.bedroom.value;
-            $scope.loadProperty($rootScope.me.settings.defaultPropertyId, true);
+            $scope.loadProperty($scope.selectedProperty._id, true);
         }
 
         $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
