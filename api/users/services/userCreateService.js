@@ -205,6 +205,7 @@ module.exports = {
             newUser.settings = {
                 hideUnlinked: false
             }
+            newUser.legacyHash = user.legacyHash
 
             newUser.save(function (err, usr) {
                 if (err) {

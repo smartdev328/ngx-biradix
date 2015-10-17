@@ -11,6 +11,7 @@ var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
 var AuditService = require('../../audit/services/auditService')
 var localCacheService = require('../../utilities/services/localcacheService')
+var md5 = require('md5');
 
 module.exports = {
     getSystemUser : function(callback) {
@@ -284,10 +285,18 @@ module.exports = {
             }
 
             if (usr.hashed_password !== UtilityService.hashPassword(user.password, usr.salt)) {
-                modelErrors.push({msg: 'Unable to validate email address / password.'});
-                AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
-                error(modelErrors);
-                return;
+                if (usr.legacyHash && usr.legacyHash == md5(user.password)) {
+                    //dont error on if legacy hash exists and matches password
+                } else {
+                    modelErrors.push({msg: 'Unable to validate email address / password.'});
+                    AuditService.create({
+                        type: 'login_failed',
+                        description: user.email + ' (' + modelErrors[0].msg + ')',
+                        context: context
+                    })
+                    error(modelErrors);
+                    return;
+                }
             }
 
             if (!usr.active) {

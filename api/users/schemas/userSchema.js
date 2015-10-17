@@ -21,7 +21,7 @@ var UserSchema = new Schema({
     hashed_password: {
         type: String
     },
-    legacy_hash: String,
+    legacyHash: String,
     active: Boolean,
     salt: String,
     date: Date,
