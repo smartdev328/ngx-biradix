@@ -82,7 +82,7 @@ define([
                 });
 
             },
-            templateUrl: '/components/reports/marketshare.html'
+            templateUrl: '/components/reports/marketshare.html?bust=' + version
         };
     })
 

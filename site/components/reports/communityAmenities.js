@@ -22,7 +22,7 @@ define([
                 })
 
             },
-            templateUrl: '/components/reports/communityAmenities.html'
+            templateUrl: '/components/reports/communityAmenities.html?bust=' + version
         };
     })
 

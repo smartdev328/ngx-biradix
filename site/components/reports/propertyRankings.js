@@ -116,7 +116,7 @@ define([
                 }
 
             },
-            templateUrl: '/components/reports/rankings.html'
+            templateUrl: '/components/reports/rankings.html?bust=' + version
         };
     })
 

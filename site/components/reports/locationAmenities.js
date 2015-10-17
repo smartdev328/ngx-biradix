@@ -22,7 +22,7 @@ define([
                 })
 
             },
-            templateUrl: '/components/reports/locationAmenities.html'
+            templateUrl: '/components/reports/locationAmenities.html?bust=' + version
         };
     })
 

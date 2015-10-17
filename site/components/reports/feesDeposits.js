@@ -21,7 +21,7 @@ define([
                 })
 
             },
-            templateUrl: '/components/reports/feesDeposits.html'
+            templateUrl: '/components/reports/feesDeposits.html?bust=' + version
         };
     })
 
