@@ -1,93 +1,99 @@
 <div class="row">
     <div class="col-xs-7 col-sm-7">
-        <h2>Reporting</h2>
+        <h2 class="mainheader">Reporting</h2>
     </div>
     <div class="col-xs-5 col-sm-5 hidden-print" ng-if="reports && !noReports && !reportLoading">
         <div class="btn-group pull-right" style="padding-bottom:10px">
             <button tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
-                <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret"></span>
+                <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                <li><a href ng-click="print()"><i class="fa fa-print"></i> Print</a></li>
-                <li><a href ng-click="pdf(false)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf</a></li>
+                <li><a href ng-click="pdf('')"><i class="fa fa-print"></i> Print</a></li>
+                <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf</a></li>
             </ul>
         </div>
 
     </div>
 </div>
-
-{{debug}}
-<div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
-    <div class="alert alert-warning" role="alert"><b>There are no properties assigned to your account</b></div>
-
+<div ng-show="localLoading">
+    <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
 </div>
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
-    <img src="/images/squares.gif" style="width:100px">
-</div>
-<div class="row" ng-show="localLoading && myProperties.length > 0">
-    <div class="panel panel-info hidden-print">
-        <div class="panel-heading">Criteria</div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-4">
-                    Subject:<Br>
-                    <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
-                    <div class="visible-print"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
-                    <select ng-show="myProperties.length > 1"
-                            class="form-control input-sm hidden-print"
-                            ng-change="changeProperty()"
-                            ng-model="selectedProperty"
-                            ng-options="item.name for item in myProperties"
-                            style="font-size:14px"
-                            >
-                    </select>
-                </div>
-
-                <div class="col-sm-4">
-                    Comps:<Br>
-                    <div ng-if="items.length == 0" style="text-align:center">
-                        <div class="alert alert-warning" role="alert"><b>There are no comps assigned to this property</b></div>
-                    </div>
-
-                    <div ng-if="items.length > 0">
-                        <filter-list options="options" items="items"></filter-list>
-                    </div>
-                </div>
-
-                <div class="col-sm-4" ng-if="items.length > 0">
-                    Reports:<Br>
-                    <div ng-if="items.length > 0">
-                        <filter-list options="reportOptions" items="reportItems"></filter-list>
-                    </div>
-                </div>
-            </div>
-
-            <div style="width:100px;margin:10px auto 0px auto" class="hidden-print" ng-if="items.length > 0">
-                <button class="btn btm-sm btn-primary" ng-click="run()">Run Report</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel panel-info hidden-print" ng-if="items.length > 0">
-        <div class="panel-heading">Results</div>
-        <div class="panel-body">
-            <div ng-show="reportLoading" style="display:block;width:40px;margin:50px auto">
-                <img src="/images/squares.gif" style="width:100px">
-            </div>
-            <div class="alert alert-warning" role="alert" ng-if="!reports && !noReports && !reportLoading"><b>Please select your Criteria and hit 'Run Report'</b></div>
-            <div class="alert alert-danger" role="alert" ng-if="noReports"><b>Please select at least 1 report and hit 'Run Report'</b></div>
+<div class="row">
+    <div class="col-xs-12">
+        <div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
+            <div class="alert alert-warning" role="alert"><b>There are no properties assigned to your account</b></div>
 
         </div>
-    </div>
+        <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+            <img src="/images/squares.gif" style="width:100px">
+        </div>
+        <div class="row" ng-if="localLoading && myProperties.length > 0">
+            <div class="panel panel-info hidden-print">
+                <div class="panel-heading">Criteria</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            Subject:<Br>
+                            <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
+                            <div class="visible-print"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
+                            <select ng-show="myProperties.length > 1"
+                                    class="form-control input-sm hidden-print"
+                                    ng-change="changeProperty()"
+                                    ng-model="selectedProperty"
+                                    ng-options="item.name for item in myProperties"
+                                    style="font-size:14px"
+                                    >
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4">
+                            Comps:<Br>
+                            <div ng-if="items.length == 0" style="text-align:center">
+                                <div class="alert alert-warning" role="alert"><b>There are no comps assigned to this property</b></div>
+                            </div>
+
+                            <div ng-if="items.length > 0">
+                                <filter-list options="options" items="items"></filter-list>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4" ng-if="items.length > 0">
+                            Reports:<Br>
+                            <div ng-if="items.length > 0">
+                                <filter-list options="reportOptions" items="reportItems"></filter-list>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="width:100px;margin:10px auto 0px auto" class="hidden-print" ng-if="items.length > 0">
+                        <button class="btn btm-sm btn-primary" ng-click="run()">Run Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info hidden-print" ng-if="items.length > 0 && !reports">
+                <div class="panel-heading">Results</div>
+                <div class="panel-body">
+                    <div ng-show="reportLoading" style="display:block;width:40px;margin:50px auto">
+                        <img src="/images/squares.gif" style="width:100px">
+                    </div>
+                    <div class="alert alert-warning" role="alert" ng-if="!reports && !noReports && !reportLoading"><b>Please select your Criteria and hit 'Run Report'</b></div>
+                    <div class="alert alert-danger" role="alert" ng-if="noReports"><b>Please select at least 1 report and hit 'Run Report'</b></div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+        <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></rankings-report>
+
+        <marketshare-report ng-if="!reportLoading && reports && reports.floorplans && marketShare" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></marketshare-report>
+
+        <communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selectedProperty" comps="selectedComps"></communityamenities-report>
+
+        <locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selectedProperty" comps="selectedComps"></locationamenities-report>
+
+        <fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selectedProperty" comps="selectedComps"></fees-report>
+        </div>
+     </div>
 </div>
-
-<rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></rankings-report>
-
-<marketshare-report ng-if="!reportLoading && reports && reports.floorplans && marketShare" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></marketshare-report>
-
-<communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selectedProperty" comps="selectedComps"></communityamenities-report>
-
-<locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selectedProperty" comps="selectedComps"></locationamenities-report>
-
-<fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selectedProperty" comps="selectedComps"></fees-report>
-

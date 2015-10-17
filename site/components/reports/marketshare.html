@@ -1,8 +1,14 @@
-<h4>Market Share Report</h4>
-<table class="table table-condensed table-striped table-hover" style="font-size:9pt">
-    <thead>
-    <tr>
-        <th class="center">
+<div class="panel panel-info">
+    <div class="panel-heading">Market Share Report</div>
+    <div class="panel-body">
+        <hr>
+        <div class="maingrid wrapper panel" style="overflow-x:auto">
+            <div class="header" style="height:46px"></div>
+            <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+                <thead>
+                <tr>
+
+        <th class="center" style="height:45px">
             Property
         </th>
         <th class="center">
@@ -17,8 +23,8 @@
         <th class="center">
             Unit Sqft
         </th>
-        <th class="center">
-            <div class="pull-left">Net Eff. Rent
+        <th class="center" style="min-width:75px">
+            Net Eff.<Br> Rent
         </th>
         <th class="center">
             NER/Sqft
@@ -41,31 +47,31 @@
             </h4></td>
         </tr>
         <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-style="{'font-weight':fp.subject ? 'bold' : 'normal'}">
-            <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle">
+            <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
                 {{fp.name}}
             </td>
-            <td class="center" ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle">
+            <td class="center" ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
                 {{value.share[fp.id].units / value.summary.units * 100 | number : 0}}%
             </td>
-            <td>
+            <td style="background-color: #f9f9f9 !important">
                 {{fp.description || '-'}}
             </td>
-            <td class="center">
+            <td class="center" style="background-color: #f9f9f9 !important">
                 {{fp.units}}
             </td>
-            <td class="center">
+            <td class="center" style="background-color: #f9f9f9 !important">
                 {{fp.sqft}}
             </td>
-            <td class="center">
+            <td class="center" style="background-color: #f9f9f9 !important">
                 {{fp.ner | currency : "$" : 0}}
             </td>
-            <td class="center">
+            <td class="center" style="background-color: #f9f9f9 !important">
                 {{fp.nersqft | currency}}
             </td>
         </tr>
-        <tr style="background-color:#ebf8fe !important;font-weight:Bold">
+        <tr class=subtotal style="background-color:#fff !important;">
             <td>
-                Totals/Averages
+
             </td>
             <td class="center">
                100%
@@ -92,3 +98,6 @@
     </tbody>
 
 </table>
+        </div>
+        </div>
+    </div>

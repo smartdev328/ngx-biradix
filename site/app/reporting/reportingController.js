@@ -144,17 +144,10 @@ define([
                 });
         }
 
-        $scope.print = function() {
-            $scope.audit('report_print','Print');
-            window.print();
-        }
 
-        $scope.pdf = function() {
+        $scope.pdf = function(showFile) {
             $scope.audit('report_pdf','Pdf');
 
-            ngProgress.start();
-
-            $('#export').prop('disabled', true);
 
             $scope.progressId = _.random(1000000, 9999999);
 
@@ -164,11 +157,21 @@ define([
             url += "&reportIds=" + $scope.reportIds
             url += "&progressId=" + $scope.progressId
             url += "&timezone=" + moment().utcOffset()
+            url += "&showFile=" + showFile
 
 
-            window.setTimeout($scope.checkProgress, 500);
+            if (showFile === true) {
+                ngProgress.start();
 
-            location.href = url;
+                $('#export').prop('disabled', true);
+
+                window.setTimeout($scope.checkProgress, 500);
+                location.href = url;
+            }
+            else {
+                window.open(url);
+            }
+
         }
 
         $scope.checkProgress = function() {

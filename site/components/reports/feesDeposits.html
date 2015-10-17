@@ -1,10 +1,14 @@
-<h4>Fees & Deposits Report</h4>
-<div class="alert alert-warning" role="alert" ng-if="uniqueAmenities.length == 0"><b>No Data Available</b></div>
-<table class="table table-condensed table-striped table-hover" style="font-size:9pt" ng-if="uniqueAmenities.length > 0">
-    <thead>
-    <tr>
-        <th class="center">
-            Location Amenities
+<div class="panel panel-info">
+    <div class="panel-heading">Fees & Deposits Report</div>
+    <div class="panel-body">
+        <hr>
+        <div class="maingrid wrapper panel" style="overflow-x:auto">
+            <div class="header" style="height:46px"></div>
+            <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+                <thead>
+                <tr>
+                    <th class="center" style="height:45px;max-height:45px">
+            Fees / Deposits
         </th>
         <th class="center">
             {{subject.name}}
@@ -29,3 +33,6 @@
         <tr ng-repeat-end ng-if="false"></tr>
     </tbody>
 </table>
+</div>
+</div>
+</div>
