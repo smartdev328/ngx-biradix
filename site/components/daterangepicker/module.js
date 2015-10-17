@@ -34,7 +34,7 @@ define([
 
                 $scope.populate();
 
-                $($element.find('span')).daterangepicker({
+                $($element.find('div')).daterangepicker({
                     format: 'MM/DD/YYYY',
                     startDate: $scope.daterange.selectedStartDate,
                     endDate: $scope.daterange.selectedEndDate,

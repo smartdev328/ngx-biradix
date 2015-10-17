@@ -9,7 +9,7 @@ body {
 }
 
 .header-nav a {
-    color: #3362aa !important;
+    color: #000 !important;
     font-weight:bold !important;
 }
 
@@ -23,8 +23,12 @@ body {
     font-weight:normal;
 }
 
-.navbar-tabs li.active {
-    background-color: whitesmoke;
+.navbar-tabs li.active a,
+.nav>li>a:focus,
+.nav>li>a:hover{
+    border-bottom:4px solid #30c827 !important;
+    background-color:white ;
+    color: #30c827 !important;
 }
 
 .header-nav .search a {

@@ -235,3 +235,11 @@ select {
 .dropdown-menu>li>a {
     padding: 3px 13px;
 }
+
+A.gear .fa-gear {
+    color:#a1a1a1;font-size:24px;padding:1px 0px 0px 7px; !important;
+}
+
+A.gear:hover .fa-gear  {
+    color: #488fff !important;
+}
