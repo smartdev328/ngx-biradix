@@ -76,7 +76,7 @@ define([
                     })
 
                     if (!sel || sel.length == 0) {
-                        return "None"
+                        return $scope.options.noneLabel || "None"
                     }
 
                     if (sel.length == 1) {

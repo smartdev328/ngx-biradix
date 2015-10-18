@@ -45,7 +45,7 @@ define([
                     timePicker12Hour: true,
                     ranges: $scope.daterange.Ranges,
 
-                    opens: 'left',
+                    opens: $scope.daterange.direction || 'left',
                     drops: 'down',
                     buttonClasses: ['btn', 'btn-sm'],
                     applyClass: 'btn-primary',

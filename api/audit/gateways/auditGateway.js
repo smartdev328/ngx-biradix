@@ -28,6 +28,8 @@ Routes.get('/filters', function (req, res) {
         audits: function(callbackp) {
             var audits = AuditService.audits;
 
+            console.log('IsAdmin',req.user.memberships.isadmin,(req.user.memberships.isadmin !== true))
+
             if (req.user.memberships.isadmin !== true) {
                 _.remove(audits, function(x) {return x.admin === true})
             }

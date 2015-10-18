@@ -9,33 +9,35 @@
 <div ng-show="localLoading">
 
     <div class="row">
-        <div class="col-sm-3 col-xs-6">
-            Rows: <Br>
-            <select class="form-control input-sm" ng-model="pager.itemsPerPage"
-                          ng-change="resetPager()"
-                          ng-options="item for item in limits">
-        </select>
+        <div class="col-xs-6 col-md-3" style="height:55px">
+            Date Range:<Br>
+            <daterange-picker daterange="daterange"></daterange-picker>
         </div>
 
-        <div class="col-sm-3 col-xs-6">
+        <div class="col-xs-6 col-md-3" style="height:55px">
             Types: <Br>
             <filter-list options="typeOptions" items="typeItems"></filter-list>
         </div>
 
-        <div class="col-sm-3 col-xs-6" ng-if="userItems.length > 0">
+        <div class="col-xs-6 col-md-3" style="height:55px" ng-if="propertyItems.length > 0">
+            Properties:<br>
+            <filter-list options="propertyOptions" items="propertyItems"></filter-list>
+        </div>
+
+        <div class="col-xs-6 col-md-3" style="height:55px" ng-if="userItems.length > 0">
             Users: <Br>
             <filter-list options="userOptions" items="userItems"></filter-list>
         </div>
 
-        <div class="col-sm-3 col-xs-6" ng-if="propertyItems.length > 0">
-            Properties:<br> <filter-list options="propertyOptions" items="propertyItems"></filter-list>
+        <div class="col-xs-6 col-md-3" style="height:55px">
+            Rows: <Br>
+            <select class="form-control input-sm" ng-model="pager.itemsPerPage"
+                    ng-change="resetPager()"
+                    ng-options="item for item in limits">
+            </select>
         </div>
 
-        <div class="col-sm-3 col-xs-6">
-            Date Range:<br> <daterange-picker daterange="daterange"></daterange-picker>
-        </div>
-
-        <div class="col-xs-1">
+        <div class="col-xs-1" style="height:55px">
             <br>
             <button class="btn btn-primary btn-sm" ng-click="reload()">Filter</button>
         </div>
