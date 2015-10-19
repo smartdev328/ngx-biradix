@@ -1,10 +1,10 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-    <h3 class="modal-title"><i class="fa fa-check-square-o fa-2x"></i> Confirm</h3>
+    <h3 class="modal-title">Confirm</h3>
 </div>
 <div class="centered modal-body">
 <h4 ng-bind-html="msg | sanitize"></h4>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-success" ng-click="confirm()">Yes</button> <button class="btn btn-warning" ng-click="cancel()">No</button>
+<div class="modal-footer" style="text-align:center">
+    <button class="btn btn-success" ng-click="confirm()">Yes</button> <button class="btn btn-default" ng-click="cancel()">No</button>
 </div>
