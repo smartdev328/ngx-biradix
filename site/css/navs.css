@@ -23,9 +23,9 @@ body {
     font-weight:normal;
 }
 
-.navbar-tabs li.active a,
-.nav>li>a:focus,
-.nav>li>a:hover{
+.navbar .navbar-tabs li.active a,
+.navbar .nav>li>a:focus,
+.navbar .nav>li>a:hover{
     border-bottom:4px solid #30c827 !important;
     background-color:white ;
     color: #30c827 !important;
