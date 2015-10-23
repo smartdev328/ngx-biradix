@@ -30,10 +30,6 @@ a:focus {
     text-decoration: none !important;
 }
 
-.btn-primary .fa {
-    color:white
-}
-
 span.success {color:green}
 span.danger {color:pink}
 span.warning {color:orange}
@@ -185,6 +181,14 @@ td.center,th.center {text-align:center}
     border-top: 1px solid white !important;
 }
 
+/* assuming the rest of the bootstrap defaults for btn-default will be inherited and only color will be overwritten */
+.btn-default {
+    color: #337ab7;
+}
+
+.btn-primary .fa {
+    color:white
+}
 
 .btn-primary {
     background-color: #1E90FF;
