@@ -46,6 +46,7 @@ d.run(function() {
 
             if (settings.RUN_PHANTOM == "phantom") {
                 require('../api/properties/consumers/pdfConsumer')
+                require('../api/status/consumers/phantomConsumer')
             }
 
         }

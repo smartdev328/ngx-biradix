@@ -1,15 +1,58 @@
 'use strict';
+var settings = require('../../../config/settings')
+var queues = require('../../../config/queues')
 var express = require('express');
 var Routes = express.Router();
 var HerokuService = require("../../utilities/services/herokuService");
 var queueService = require('../../properties/services/queueService');
 var propertyService = require('../../properties/services/propertyService');
 var userService  = require('../../users/services/userService');
+var propertySchema = require('../../properties/schemas/propertySchema');
 
 Routes.get('/restart', function (req, res) {
     HerokuService.restartAllDynos();
 
     return res.status(200).json({success: true});
+});
+
+Routes.get('/rabbit', function (req, res) {
+    queues.getExchange().publish({test:true},
+        {
+            key: settings.WEB_STATUS_QUEUE,
+            reply: function (data) {
+                if (data.data.test !== true) {
+                    throw new Error("Rabbit result doesnt match");
+                }
+                res.status(200).send("OK");
+            }
+        }
+    );
+});
+
+Routes.get('/rabbitPhantom', function (req, res) {
+    queues.getExchange().publish({test:true},
+        {
+            key: settings.PHANTOM_STATUS_QUEUE,
+            reply: function (data) {
+
+                if (data.data.test !== true) {
+
+                    throw new Error("Rabbit result doesnt match");
+                }
+                res.status(200).send("OK");
+            }
+        }
+    );
+});
+
+Routes.get('/db', function (req, res) {
+    propertySchema.findOne({}, function(err, obj) {
+        if (err) {
+            throw new Error(err);
+        }
+        obj = null;
+        res.status(200).send("OK");
+    })
 });
 
 Routes.get('/profile', function (req, res) {

@@ -8,6 +8,8 @@ var dashboard_queue;
 var profile_queue;
 var pdf_profile_queue;
 var pdf_reporting_queue;
+var web_status_queue;
+var phantom_status_queue;
 
 module.exports = {
     getExchange : function() {return exchange},
@@ -15,6 +17,8 @@ module.exports = {
     getProfileQueue : function() {return profile_queue},
     getPdfProfileQueue : function() {return pdf_profile_queue},
     getPdfReportingQueue : function() {return pdf_reporting_queue},
+    getWebStatusQueue : function() {return web_status_queue},
+    getPhantomStatusQueue : function() {return phantom_status_queue},
     connect : function(callback) {
 
         if (settings.SKIPRABBIT) {
@@ -26,8 +30,13 @@ module.exports = {
             exchange = queue.default();
             dashboard_queue = exchange.queue({ name: settings.DASHBOARD_QUEUE, prefetch: 1, durable: false });
             profile_queue = exchange.queue({ name: settings.PROFILE_QUEUE, prefetch: 1, durable: false });
+
             pdf_profile_queue = exchange.queue({ name: settings.PDF_PROFILE_QUEUE, prefetch: 1, durable: false });
             pdf_reporting_queue = exchange.queue({ name: settings.PDF_REPORTING_QUEUE, prefetch: 1, durable: false });
+
+            web_status_queue = exchange.queue({ name: settings.WEB_STATUS_QUEUE, prefetch: 1, durable: false });
+            phantom_status_queue = exchange.queue({ name: settings.PHANTOM_STATUS_QUEUE, prefetch: 1, durable: false });
+
             console.log({ type: 'info', msg: 'connected', service: 'rabbitmq' });
             callback();
         })

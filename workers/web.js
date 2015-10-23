@@ -58,12 +58,15 @@ d.run(function() {
             })
 
             if (!settings.SKIPRABBIT) {
+                require('../api/status/consumers/webConsumer')
+
                 if (settings.RUN_DASHBOARD == "web") {
                     require('../api/properties/consumers/dashboardConsumer');
                 }
 
                 if (settings.RUN_PHANTOM == "web") {
                     require('../api/properties/consumers/pdfConsumer')
+                    require('../api/status/consumers/phantomConsumer')
                 }
             }
 

@@ -5,7 +5,7 @@ define(['app'], function (app) {
 
             svc.confirm = function (msg,confirm,deny) {
                 var modalInstance = $modal.open({
-                    templateUrl: '/components/dialog/confirm.html',
+                    templateUrl: '/components/dialog/confirm.html?bust='+version,
                     controller: function($scope, $modalInstance){
                         $scope.msg = msg;
                         $scope.cancel = function () {
