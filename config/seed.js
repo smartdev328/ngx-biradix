@@ -759,7 +759,7 @@ var PropertiesCreate = function(System, companies,callback) {
         , community_amenities: ["Business Center - Conference Room", "Business Center - Free Wi-Fi", "Clubhouse - Resident Lounge", "Comm Parking - Carport/Covered", "Comm Parking - Detached Garage (Add Fee)", "Fitness Center - Treadmills", "Misc - Barbecue (BBQ) Grills", "Misc - Concierge Services", "Pool - Heated Pool", "Misc - Outdoor Fireplace"]
         , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
     }
-    var Marcus = { name: 'Marcus Aurelius Place', address: '7800 E. McDowell Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 786-3323', owner: 'Roman Residential Services', management: 'Roman Residential Services', yearBuilt: 2006, orgid: companies.Greystar._id, constructionType: 'Garden', notes: 'Owners Of Community Refuse to provied Occupancy and Traffic Information', fees: {
+    var Marcus = { name: 'Marcus Aurelius Place', address: '7800 E. McDowell Rd.', city: 'Scottsdale', state: 'AZ', zip: '85257', phone: '(180) 786-3323', owner: 'Roman Residential Services', management: 'Roman Residential Services', yearBuilt: 2006, orgid: companies.Greystar._id, constructionType: 'Garden', notes: 'Concessions: $500 Off Move-In on a 12 month lease. Comments: Deposit wavied OAC', fees: {
         application_fee : '$40',
         lease_terms: '6-14 months',
         short_term_premium: 'no short term leases, but have 20 corp suites',
