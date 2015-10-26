@@ -155,13 +155,13 @@
                         <a ng-class="{'active': sideNav == 'Reporting'}" href="#/reporting" ng-click="turnOffIfMobile()"><i class="fa fa-bar-chart"></i> Reporting</a>
                     </li>
                     <li>
-                        <a href = "#/updateProfile" ng-click="turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
+                        <a href = "#/updateProfile" ng-class="{'active': sideNav == 'UpdateProfile'}" ng-click="turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
                     </li>
                     <li>
-                        <a href = "#/updateProfile" ng-class="{'active': sideNav == 'UpdateProfile'}"  href class="subnav" ng-click="turnOffIfMobile()"> - Update Profile</a>
+                        <a href = "#/updateProfile" href class="subnav" ng-click="turnOffIfMobile()"> - Update Profile</a>
                     </li>
                     <li>
-                        <a href class="subnav" ng-click="updatePassword();turnOffIfMobile()"> - Update Password</a>
+                        <a href = "#/updateProfile" class="subnav" ng-click="turnOffIfMobile()"> - Update Password</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Users') > -1">
                         <a ng-class="{'active': sideNav == 'Users'}" href="#/manageusers" ng-click="turnOffIfMobile()"><i class="fa fa-users"></i> Manage Users</a>

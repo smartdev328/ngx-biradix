@@ -134,3 +134,26 @@
 .grid-search input {
     width:150px
 }
+
+@media print {
+    .maingrid .header {
+        background-color: #f8f8f8 !important;
+    }
+
+    .maingrid > table thead th {
+        background-color: #f9f9f9 !important;
+    }
+
+    .maingrid > table >tbody>tr:nth-of-type(odd) td {
+        background-color: #fff;
+    }
+
+    .maingrid > table >tbody>tr:nth-of-type(even) td {
+        background-color: #f9f9f9 !important;
+    }
+
+    .maingrid.wrapper.panel .subtotal TD {
+        background-color:white !important;
+        color: #4460a9 !important;
+    }
+}

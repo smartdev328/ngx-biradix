@@ -81,7 +81,7 @@ define([
 
                     if ($scope.first && !$rootScope.me.passwordUpdated) {
                         $scope.first = false;
-                        $scope.updatePassword();
+                        $location.path("/updateProfile");
                     }
 
                     if (callback) {
@@ -189,32 +189,6 @@ define([
 
 
 
-        }
-
-        $scope.updatePassword = function() {
-            require([
-                '/app/updatepassword/updatePasswordController.js'
-            ], function () {
-                var modalInstance = $modal.open({
-                    templateUrl: '/app/updatepassword/updatePassword.html',
-                    controller: 'updatePasswordController',
-                    size: "sm",
-                    keyboard: false,
-                    backdrop: 'static',
-                    resolve: {
-                        me: function () {
-                            return $rootScope.me;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function () {
-                    //Save successfully
-                    $rootScope.refreshToken();
-                }, function () {
-                    //Cancel
-                });
-            });
         }
 
         $scope.getLocation = function (val) {
