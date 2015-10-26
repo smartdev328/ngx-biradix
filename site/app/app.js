@@ -195,7 +195,7 @@ define([
                 resolve: {get : function($q) {return resolve($q, 'reporting/reportingController')}}
             })
             .state('updateProfile', {
-                url: "/updateProfile",
+                url: "/updateProfile?password",
                 views: {
                     "loggedInView": {
                         templateUrl: "app/updateprofile/updateProfile.html?bust=" + version ,

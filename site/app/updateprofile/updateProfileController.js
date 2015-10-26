@@ -4,9 +4,19 @@ define([
     '../../services/userService.js',
 ], function (app) {
      app.controller
-        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService) {
+        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams) {
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
+            }
+
+            if ($stateParams.password === "1") {
+                $('html, body').animate({
+                    scrollTop: ($('#passwordPannel').offset().top - 80)
+                },500);
+            }else {
+                $('html, body').animate({
+                    scrollTop: 0
+                },500);
             }
 
             window.document.title = "My Account - Update Profile | BI:Radix";
