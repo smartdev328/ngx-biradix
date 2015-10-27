@@ -33,12 +33,16 @@ define([
         $scope.data = [];
         $scope.limits = [10,50,100,500]
         $scope.limit = 50;
-        $scope.sort = {}
+        $scope.sort = {date:false}
         $scope.search = {}
         $scope.filters = {active:true}
         $scope.defaultSort = "-date";
         $scope.searchable = ['name', 'email', 'role', 'company'];
         $scope.search['active'] = true;
+
+        $scope.showInactive = false;
+        $scope.showActive = true;
+
 
         $scope.adjustToSize = function(size) {
             var isTiny = size < 967;
@@ -62,6 +66,18 @@ define([
                 $scope.adjustToSize(size);
             }
         });
+
+        $scope.calcActive = function() {
+            if ($scope.showActive === $scope.showInactive) {
+                delete $scope.search.active;
+            }
+            else
+            {
+                $scope.search.active = $scope.showActive;
+            }
+
+            $scope.resetPager();
+        }
 
         /////////////////////////////
         $scope.reload = function () {

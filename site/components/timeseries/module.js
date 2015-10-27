@@ -26,15 +26,13 @@ define([
                                 plotOptions: {
                                     series: {
                                         animation: !phantom
+                                    },
+                                   spline: {
+                                        marker: {
+                                            enabled: false
+                                        }
                                     }
                                 },
-                                //plotOptions: {
-                                //    spline: {
-                                //        marker: {
-                                //            enabled: $scope.options.marker
-                                //        }
-                                //    }
-                                //},
                                 title: {
                                     text: '',
                                 },

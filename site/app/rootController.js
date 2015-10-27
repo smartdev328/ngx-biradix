@@ -81,7 +81,7 @@ define([
 
                     if ($scope.first && !$rootScope.me.passwordUpdated) {
                         $scope.first = false;
-                        $location.path("/updateProfile");
+                        $location.path("/updateProfile?password=1");
                     }
 
                     if (callback) {
