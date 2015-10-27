@@ -36,7 +36,7 @@
 
         </tr>
         <tr>
-            <td colspan="100%" style="background-color: white !important;"><h4>Floorplans: {{key}}
+            <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header"><h4>Floorplans: {{key}}
                 <i class="fa fa-exclamation-triangle"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="value.excluded"
@@ -46,7 +46,7 @@
                         ></i>
             </h4></td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-style="{'font-weight':fp.subject ? 'bold' : 'normal'}">
+        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-style="{'color': (fp.subject ? '#4460a9' : 'inherit') }">
             <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
                 {{fp.name}}
             </td>
@@ -71,7 +71,7 @@
         </tr>
         <tr class=subtotal style="background-color:#fff !important;">
             <td>
-
+                Totals / Averages
             </td>
             <td class="center">
                100%

@@ -11,6 +11,8 @@ define([
                 items:'='
             },
             controller: function ($scope, $filter, $element) {
+                $scope.version = version;
+
                 $scope.search = function(s) {
                     if (s) {
                         var filtered = $filter('filter')($scope.items, s.lstfilter)
