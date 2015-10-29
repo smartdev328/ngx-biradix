@@ -24,6 +24,7 @@ define([
         $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
+                $scope.adjustToSize($(window).width());
             }
         })
 
@@ -54,12 +55,11 @@ define([
                 email: !isTiny,
                 role: true,
                 company: siteAdmin,
-                active: !isTiny,
+                active: false,
                 tools: true
             }
         }
 
-        $scope.adjustToSize($(window).width());
 
         $scope.$on('size', function(e,size) {
             if (!$scope.columnsChanged) {
