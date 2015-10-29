@@ -28,14 +28,14 @@ module.exports = {
         }
         queue = jackrabbit(settings.CLOUDAMQP_URL).on('connected', function() {
             exchange = queue.default();
-            dashboard_queue = exchange.queue({ name: settings.DASHBOARD_QUEUE, prefetch: 1, durable: false });
-            profile_queue = exchange.queue({ name: settings.PROFILE_QUEUE, prefetch: 1, durable: false });
+            dashboard_queue = exchange.queue({ name: settings.DASHBOARD_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+            profile_queue = exchange.queue({ name: settings.PROFILE_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
-            pdf_profile_queue = exchange.queue({ name: settings.PDF_PROFILE_QUEUE, prefetch: 1, durable: false });
-            pdf_reporting_queue = exchange.queue({ name: settings.PDF_REPORTING_QUEUE, prefetch: 1, durable: false });
+            pdf_profile_queue = exchange.queue({ name: settings.PDF_PROFILE_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+            pdf_reporting_queue = exchange.queue({ name: settings.PDF_REPORTING_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
-            web_status_queue = exchange.queue({ name: settings.WEB_STATUS_QUEUE, prefetch: 1, durable: false });
-            phantom_status_queue = exchange.queue({ name: settings.PHANTOM_STATUS_QUEUE, prefetch: 1, durable: false });
+            web_status_queue = exchange.queue({ name: settings.WEB_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+            phantom_status_queue = exchange.queue({ name: settings.PHANTOM_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
             console.log({ type: 'info', msg: 'connected', service: 'rabbitmq' });
             callback();
