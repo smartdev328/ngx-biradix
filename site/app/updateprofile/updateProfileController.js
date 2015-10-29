@@ -27,7 +27,7 @@ define([
             $rootScope.sideNav = "UpdateProfile";
 
 
-            $rootScope.$watch("me", function(x) {
+            var unbind = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
 
@@ -35,6 +35,7 @@ define([
 
                     if (!$rootScope.me.passwordUpdated) {
                         toastr.warning('For security purposes, please update the temporary password assigned to you.');
+                        unbind();
                     }
                 }
             })

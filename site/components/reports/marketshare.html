@@ -8,14 +8,14 @@
                 <thead>
                 <tr>
 
-        <th class="center" style="height:45px">
+        <th style="height:45px">
             Property
         </th>
         <th class="center">
             Market Share
         </th>
-        <th class="center">
-            Floor Plans
+        <th>
+            Description
         </th>
         <th class="center">
             Units
@@ -46,7 +46,7 @@
                         ></i>
             </h4></td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-style="{'color': (fp.subject ? '#4460a9' : 'inherit') }">
+        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-style="{'color': (fp.subject ? '#4460a9' : 'inherit'),'font-weight': (fp.subject ? 'bold' : 'normal') }">
             <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
                 {{fp.name}}
             </td>

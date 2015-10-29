@@ -7,14 +7,14 @@
     <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <thead>
     <tr>
-        <th class="center" ng-click="toggleSort('name')" style="height:45px">
+        <th ng-click="toggleSort('name')" style="height:45px">
             Property
             <i ng-show="sort.name == null" class="fa fa-sort"></i>
             <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center" ng-click="toggleSort('description')" style="min-width:85px;">
-            Floor<br>&nbsp;&nbsp;&nbsp;Plan
+        <th ng-click="toggleSort('description')" style="min-width:85px;">
+            Description
             <i ng-show="sort.description == null" class="fa fa-sort" style="color:#E0E0E0"></i>
             <i ng-show="sort.description === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.description === false" class="fa fa-sort-up"></i>
@@ -60,7 +60,7 @@
                         ></i>
             </h4></td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-style="{'color': (fp.subject ? '#4460a9' : 'inherit') }">
+        <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-style="{'color': (fp.subject ? '#4460a9' : 'inherit'),'font-weight': (fp.subject ? 'bold' : 'normal') }">
             <td>
                 {{fp.name}}
             </td>

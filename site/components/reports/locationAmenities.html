@@ -7,17 +7,17 @@
             <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
                 <thead>
                 <tr>
-                    <th class="center" style="height:45px;max-height:45px">
-            Location Amenities
-        </th>
-        <th class="center">
-            <div style="max-height:34px;overflow-y:visible">{{subject.name}}</div>
-        </th>
-        <th ng-repeat="comp in comps">
-            <div style="max-height:34px;overflow-y:visible">{{comp.name}}</div>
-        </th>
-    </tr>
-    </thead>
+                    <th style="height:45px;max-height:45px">
+                        Location Amenities
+                    </th>
+                    <th class="center">
+                        <div style="max-height:34px;overflow-y:visible">{{subject.name}}</div>
+                    </th>
+                    <th ng-repeat="comp in comps" class="center">
+                        <div style="max-height:34px;overflow-y:visible">{{comp.name}}</div>
+                    </th>
+                </tr>
+                </thead>
     <tbody>
         <tr ng-repeat-start="amenity in uniqueAmenities">
             <td>
