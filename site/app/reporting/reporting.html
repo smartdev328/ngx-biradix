@@ -9,9 +9,34 @@
         padding-top:5px !important;
     }
 
+    .subject td {
+        font-weight: bold !important;
+        color:#4460a9 !important;
+    }
+
+
     @media print {
+
+        /*table { page-break-inside:auto; position:relative}*/
+        /*tr { page-break-before:avoid; page-break-after:auto;position:relative}*/
+        /*td{ border:solid 1px #CCCCCC;width:auto;position:relative}*/
+        /*thead { display:table-header-group;position:relative }*/
+        /*tfoot { display:table-footer-group;positioion:relative}*/
+
+        td{
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .panel-heading {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+        }
+
         .panel-info {
             width: 1080px;
+            page-break-after: always !important;
+            break-after: always !important;
         }
 
         .maingrid .header {
