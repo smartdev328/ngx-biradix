@@ -46,7 +46,7 @@
                         ></i>
             </h4></td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-style="{'color': (fp.subject ? '#4460a9' : 'inherit'),'font-weight': (fp.subject ? 'bold' : 'normal') }">
+        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-class="{'subject': fp.subject }">
             <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
                 {{fp.name}}
             </td>

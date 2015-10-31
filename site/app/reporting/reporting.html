@@ -17,6 +17,11 @@
 
     @media print {
 
+        @page { margin: 5px; }
+        body {
+            margin:10px 20px
+        }
+
         /*table { page-break-inside:auto; position:relative}*/
         /*tr { page-break-before:avoid; page-break-after:auto;position:relative}*/
         /*td{ border:solid 1px #CCCCCC;width:auto;position:relative}*/
@@ -31,12 +36,23 @@
         .panel-heading {
             page-break-after: avoid !important;
             break-after: avoid !important;
+            display: inline-block;
         }
 
         .panel-info {
             width: 1080px;
-            page-break-after: always !important;
-            break-after: always !important;
+            page-break-before: always !important;
+            break-before: always !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            display: inline-block;
+        }
+
+        .panel-info:first-of-type {
+            page-break-before: avoid !important;
+            break-before: avoid !important;
+            page-break-inside: auto !important;
+            break-inside: auto !important;
         }
 
         .maingrid .header {
@@ -63,7 +79,7 @@
         /*page-break-inside: avoid;*/
     /*}*/
 </style>
-<div class="row">
+<div class="row hidden-print">
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Reporting</h2>
     </div>
@@ -80,7 +96,7 @@
 
     </div>
 </div>
-<div ng-show="localLoading">
+<div ng-show="localLoading" class="hidden-print">
     <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
 </div>
 <div class="row">
