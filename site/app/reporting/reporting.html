@@ -18,7 +18,25 @@
             height:57px !important;
         }
 
+        table,th {
+            /*page-break-inside: avoid !important;*/
+            position: relative !important;
+        }
+
+        /*tr,td {*/
+            /*page-break-inside: avoid !important;*/
+        /*}*/
     }
+
+    /*table,.page-content-wrapper, .row, communityamenities-report, locationamenities-report,fees-report, .panel,.panel-body,body,html {*/
+        /*position: relative !important;*/
+    /*}*/
+    /*.break*/
+    /*{*/
+        /*break-before: always;*/
+        /*page-break-before: always;*/
+        /*page-break-inside: avoid;*/
+    /*}*/
 </style>
 <div class="row">
     <div class="col-xs-7 col-sm-7">
@@ -107,6 +125,7 @@
         </div>
 
         <div class="row">
+
         <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></rankings-report>
 
         <marketshare-report ng-if="!reportLoading && reports && reports.floorplans && marketShare" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></marketshare-report>
