@@ -34,8 +34,8 @@
             display: inline-block;
         }
 
-        .print-header {
-            /*display:none !important;*/
+        .print-header HR {
+            display:none !important;
         }
 
         #page-content-wrapper {
@@ -53,8 +53,15 @@
             /*margin-top:10px !important;*/
         }
 
+        h4 {color:#4460a9 !important}
+
         .fp-header-div {
+            position: relative;
+            display: inline-block;
             page-break-before: always !important;
+            break-before: always !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid;
         }
 
         /*.panel-info:first-of-type {*/
