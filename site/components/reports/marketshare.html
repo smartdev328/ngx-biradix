@@ -36,7 +36,9 @@
 
         </tr>
         <tr>
-            <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header"><h4>Floorplans: {{key}}
+            <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
+                <div class="fp-header-div">
+                <h4>Floorplans: {{key}}
                 <i class="fa fa-exclamation-triangle"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="value.excluded"
@@ -44,7 +46,9 @@
                    popover-placement="right"
                    popover="This report has some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i>
-            </h4></td>
+            </h4>
+            </div>
+            </td>
         </tr>
         <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-class="{'subject': fp.subject }">
             <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
