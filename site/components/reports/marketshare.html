@@ -75,25 +75,25 @@
         </tr>
         <tr class=subtotal style="background-color:#fff !important;">
             <td>
-                Totals / Averages
+                <div style="color:black !important;">Totals / Averages</div>
             </td>
             <td class="center">
-               100%
+                <div style="color:black !important;">100%</div>
             </td>
             <td>
                 &nbsp;
             </td>
             <td class="center">
-                {{value.summary.units}}
+                <div style="color:black !important;">{{value.summary.units}}</div>
             </td>
             <td class="center">
-                {{value.summary.sqft | number : 0}}
+                <div style="color:black !important;">{{value.summary.sqft | number : 0}}</div>
             </td>
             <td class="center">
-                {{value.summary.ner | currency : "$" : 0}}
+                <div style="color:black !important;">{{value.summary.ner | currency : "$" : 0}}</div>
             </td>
             <td class="center">
-                {{value.summary.ner / value.summary.sqft | currency}}
+                <div style="color:black !important;">{{value.summary.ner / value.summary.sqft | currency}}</div>
             </td>
         </tr>
         <tr ng-repeat-end ng-if="false">

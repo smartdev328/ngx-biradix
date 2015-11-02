@@ -16,6 +16,8 @@ define([
             $location.path('/login')
         }
 
+        $scope.selected = {};
+
         $rootScope.nav = "Reporting";
 
         $rootScope.sideMenu = false;
@@ -47,13 +49,13 @@ define([
                 id = null;
             }
             else if (!id) {
-                $scope.selectedProperty = $scope.myProperties[0];
+                $scope.selected.Property = $scope.myProperties[0];
             } else {
-                $scope.selectedProperty = _.find($scope.myProperties, function(x) {return x._id.toString() == id})
+                $scope.selected.Property = _.find($scope.myProperties, function(x) {return x._id.toString() == id})
             }
 
-            if ($scope.selectedProperty) {
-                $scope.loadComps(_.pluck($scope.selectedProperty.comps,"id"), $scope.selectedProperty._id)
+            if ($scope.selected.Property) {
+                $scope.loadComps(_.pluck($scope.selected.Property.comps,"id"), $scope.selected.Property._id)
             } else {
                 window.document.title = "Reporting | BI:Radix";
                 $scope.localLoading = true;
@@ -62,7 +64,7 @@ define([
         })
 
         $scope.loadComps = function(compids,subjectid) {
-            window.document.title = $scope.selectedProperty.name + " - Reporting | BI:Radix";
+            window.document.title = $scope.selected.Property.name + " - Reporting | BI:Radix";
             $scope.reportLoading = false;
             $scope.noReports = false;
             delete $scope.reports;
@@ -95,20 +97,20 @@ define([
 
         $scope.changeProperty = function() {
             $scope.localLoading = false;
-            $scope.loadComps(_.pluck($scope.selectedProperty.comps,"id"), $scope.selectedProperty._id);
+            $scope.loadComps(_.pluck($scope.selected.Property.comps,"id"), $scope.selected.Property._id);
         }
 
         $scope.run = function() {
             $scope.reportLoading = true;
             $scope.noReports = false;
 
-            $scope.selectedComps = _.filter($scope.items,function(x) {return x.selected == true})
+            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
 
             $scope.reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
-            $scope.compIds =  _.pluck($scope.selectedComps,"id")
+            $scope.compIds =  _.pluck($scope.selected.Comps,"id")
 
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
-            $scope.compNames =  _.pluck($scope.selectedComps,"name")
+            $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
@@ -124,13 +126,13 @@ define([
 
             $propertyService.reports(
                 $scope.compIds
-                , $scope.selectedProperty._id
+                , $scope.selected.Property._id
                 ,$scope.reportIds
             ).then(function(response) {
                     $scope.reportLoading = false;
                     $scope.reports = response.data;
 
-                    $scope.description = $scope.selectedProperty.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
+                    $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
 
                     if (!phantom) {
                         $scope.audit('report', 'Website');
@@ -151,7 +153,7 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            var url = '/api/1.0/properties/' + $scope.selectedProperty._id + '/reportsPdf?'
+            var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/reportsPdf?'
             url += "token=" + $cookies.get('token')
             url += "&compIds=" + $scope.compIds
             url += "&reportIds=" + $scope.reportIds
@@ -190,7 +192,7 @@ define([
         }
 
         $scope.audit = function(type, where) {
-            $auditService.create({type: 'report', property: $scope.selectedProperty, description: $scope.description.replace('%where%',where), data: $scope.compNames.concat($scope.reportNames)});
+            $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: $scope.compNames.concat($scope.reportNames)});
         }
 
 

@@ -14,6 +14,10 @@
         color:#4460a9 !important;
     }
 
+    .maingrid.wrapper.panel .subtotal TD  {
+        padding-bottom:10px !important;
+    }
+
 
     @media print {
 
@@ -38,14 +42,19 @@
             display:none !important;
         }
 
+        .print-header {
+            margin-bottom: 10px;
+        }
+
+
         #page-content-wrapper {
             padding: 0px !important;
         }
 
         .panel-info {
             width: 1160px;
-            page-break-before: avoid !important;
-            break-before: avoid !important;
+            page-break-before: auto !important;
+            break-before: auto !important;
             page-break-inside: auto  !important;
             break-inside: auto !important;
             display: inline-block;
@@ -64,17 +73,17 @@
             page-break-inside: avoid;
         }
 
-        /*.panel-info:first-of-type {*/
-            /*margin-top: 0px;*/
-        /*}*/
 
         .maingrid .header {
             height:57px !important;
         }
 
         table,th {
-            /*page-break-inside: avoid !important;*/
             position: relative !important;
+        }
+
+        TD .black {
+            color: #000 !important;
         }
 
     }
@@ -125,12 +134,12 @@
                     <div class="row">
                         <div class="col-sm-4">
                             Subject:<Br>
-                            <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
-                            <div class="visible-print"><h4 style="margin:0px">{{selectedProperty.name}}</h4></div>
+                            <div ng-show="myProperties.length == 1"><h4 style="margin:0px">{{selected.Property.name}}</h4></div>
+                            <div class="visible-print"><h4 style="margin:0px">{{selected.Property.name}}</h4></div>
                             <select ng-show="myProperties.length > 1"
                                     class="form-control input-sm hidden-print"
                                     ng-change="changeProperty()"
-                                    ng-model="selectedProperty"
+                                    ng-model="selected.Property"
                                     ng-options="item.name for item in myProperties"
                                     style="font-size:14px"
                                     >
@@ -177,15 +186,15 @@
 
         <div class="row">
 
-        <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></rankings-report>
+        <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
 
-        <marketshare-report ng-if="!reportLoading && reports && reports.floorplans && marketShare" report="reports.floorplans" subject="selectedProperty" comps="selectedComps" settings="me.settings"></marketshare-report>
+        <marketshare-report ng-if="!reportLoading && reports && reports.floorplans && marketShare" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></marketshare-report>
 
-        <communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selectedProperty" comps="selectedComps"></communityamenities-report>
+        <communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
 
-        <locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selectedProperty" comps="selectedComps"></locationamenities-report>
+        <locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
 
-        <fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selectedProperty" comps="selectedComps"></fees-report>
+        <fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
         </div>
      </div>
 </div>
