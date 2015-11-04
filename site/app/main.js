@@ -11,6 +11,16 @@ requirejs.config({
     }
 });
 
+requirejs.onError = function (err) {
+    if (err) {
+        //Reload
+        location.href="/error.html";
+    }
+    else {
+        throw err;
+    }
+};
+
 require([
     'app'
 ], function (app) {

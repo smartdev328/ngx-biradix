@@ -39,6 +39,18 @@
     <script src="components/angular-toastr/angular-toastr.tpls.min.js"></script>
 
     <script data-main="app/main" src="libs/requirejs/require-min.js"></script>
+
+    <script>
+        var _prum = [['id', '56383da9abe53d4f5b9548ca'],
+            ['mark', 'firstbyte', (new Date()).getTime()]];
+        (function() {
+            var s = document.getElementsByTagName('script')[0]
+                    , p = document.createElement('script');
+            p.async = 'async';
+            p.src = '//rum-static.pingdom.net/prum.min.js';
+            s.parentNode.insertBefore(p, s);
+        })();
+    </script>
 </head>
 <body ng-controller="rootController" ng-click="resetTimeout()" ng-keypress="resetTimeout()">
     <div class="loading" style="display:block;width:100px;margin:50px auto">
