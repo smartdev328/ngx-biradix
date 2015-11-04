@@ -51,6 +51,7 @@ define([
                             var j = 0;
                             comp.bedrooms = [];
                             for (var b in comp.survey.bedrooms) {
+                                comp.survey.bedrooms[b].bedrooms = b;
                                 comp.survey.bedrooms[b].name = $scope.bedroomsLabel(b);
                                 comp.survey.bedrooms[b].number = j;
                                 comp.survey.bedrooms[b].units = comp.survey.bedrooms[b].totUnits;

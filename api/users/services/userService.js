@@ -505,7 +505,8 @@ function getFullUser(usr, callback) {
                     })
                 }
 
-                var token = jwt.sign(usrobj, settings.SECRET, {expiresInSeconds: 60 * 60});
+                var minutesToExpire = 60;
+                var token = jwt.sign(usrobj, settings.SECRET, {expiresInSeconds: minutesToExpire * 60});
 
                 delete usrobj.memberships;
                 delete usrobj.ip;

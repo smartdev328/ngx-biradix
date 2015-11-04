@@ -177,7 +177,7 @@
 
         </td>
     </tr>
-    <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : i}">
+    <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : row.bedrooms}">
         <td style="text-align: center"></td>
         <td  style="text-align:center; width:32px">
 
