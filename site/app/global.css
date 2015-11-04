@@ -73,7 +73,7 @@ td.center,th.center {text-align:center}
     .right-print {
         float:left;
         width:75%;
-        max-width:780px;overflow-x:hidden;
+        max-width:1000px;overflow-x:hidden;
     }
     .row {
         margin-left:-15px !important;

@@ -51,25 +51,25 @@
             </td>
         </tr>
         <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-class="{'subject': fp.subject }">
-            <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
+            <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #ffffff !important">
                 {{fp.name}}
             </td>
-            <td class="center" ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #f9f9f9 !important">
+            <td class="center" ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #ffffff !important">
                 {{value.share[fp.id].units / value.summary.units * 100 | number : 0}}%
             </td>
-            <td style="background-color: #f9f9f9 !important">
+            <td astyle="background-color: #ffffff !important">
                 {{fp.description || '-'}}
             </td>
-            <td class="center" style="background-color: #f9f9f9 !important">
+            <td class="center" astyle="background-color: #ffffff !important">
                 {{fp.units}}
             </td>
-            <td class="center" style="background-color: #f9f9f9 !important">
+            <td class="center" astyle="background-color: #ffffff !important">
                 {{fp.sqft}}
             </td>
-            <td class="center" style="background-color: #f9f9f9 !important">
+            <td class="center" astyle="background-color: #ffffff !important">
                 {{fp.ner | currency : "$" : 0}}
             </td>
-            <td class="center" style="background-color: #f9f9f9 !important">
+            <td class="center" astyle="background-color: #ffffff !important">
                 {{fp.nersqft | currency}}
             </td>
         </tr>
