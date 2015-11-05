@@ -4,7 +4,7 @@ define(['app'], function (app) {
         var fac = {};
 
         fac.send = function (msg) {
-            return $http.post('/contact/send', msg).success(function (response) {
+            return $http.post('/contact/send'+ '?bust=' + (new Date()).getTime(), msg).success(function (response) {
                 return response;
             }).error(function (response) {
                 return response;

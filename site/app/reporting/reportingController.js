@@ -61,6 +61,13 @@ define([
                 $scope.localLoading = true;
             }
 
+        }, function(error) {
+            if (error.status == 401) {
+                $rootScope.logoff();
+                return;
+            }
+
+            $scope.localLoading = true;
         })
 
         $scope.loadComps = function(compids,subjectid) {

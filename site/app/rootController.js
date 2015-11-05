@@ -56,7 +56,7 @@ define([
                         if ($rootScope.loggedIn) {
                             $window.sessionStorage.redirect = $location.path();
                         }
-                        $scope.logoff()
+                        $rootScope.logoff()
                     }
                 })
             }
@@ -95,7 +95,7 @@ define([
                     if ($rootScope.loggedIn) {
                         $window.sessionStorage.redirect = $location.path();
                     }
-                    $scope.logoff()
+                    $rootScope.logoff()
                 }
             })
 
@@ -152,7 +152,7 @@ define([
         }
 
         //Local functions
-        $scope.logoff = function() {
+        $rootScope.logoff = function() {
             $rootScope.loggedIn = false;
             $cookies.remove('token');
             $rootScope.swaptoLoggedOut();

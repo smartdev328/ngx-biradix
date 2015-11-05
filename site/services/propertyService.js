@@ -4,7 +4,7 @@ define(['app'], function (app) {
         var fac = {};
 
         fac.profile = function (id,daterange,show) {
-            return $http.post('/api/1.0/properties/' + id + '/profile', {
+            return $http.post('/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
                 daterange:daterange,
                 offset: moment().utcOffset(),
                 show: show
@@ -17,7 +17,7 @@ define(['app'], function (app) {
         }
 
         fac.getSurvey = function (id, surveyid) {
-            return $http.get('/api/1.0/properties/' + id + '/survey/' + surveyid, {
+            return $http.get('/api/1.0/properties/' + id + '/survey/' + surveyid + '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -26,7 +26,7 @@ define(['app'], function (app) {
         }
 
         fac.full = function (id,summary,bedrooms,daterange, show) {
-            return $http.post('/api/1.0/properties/' + id + '/full', {
+            return $http.post('/api/1.0/properties/' + id + '/full'+ '?bust=' + (new Date()).getTime(), {
                 summary: summary,
                 bedrooms: bedrooms,
                 daterange:daterange,
@@ -41,7 +41,7 @@ define(['app'], function (app) {
         }
 
         fac.dashboard = function (id,summary,bedrooms,daterange, show) {
-            return $http.post('/api/1.0/properties/' + id + '/dashboard', {
+            return $http.post('/api/1.0/properties/' + id + '/dashboard'+ '?bust=' + (new Date()).getTime(), {
                 summary: summary,
                 bedrooms: bedrooms,
                 daterange:daterange,
@@ -56,7 +56,7 @@ define(['app'], function (app) {
         }
 
         fac.search = function (criteria) {
-            return $http.post('/api/1.0/properties', criteria, {
+            return $http.post('/api/1.0/properties'+ '?bust=' + (new Date()).getTime(), criteria, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -65,7 +65,7 @@ define(['app'], function (app) {
         }
 
         fac.create = function (property) {
-            return $http.put('/api/1.0/properties', property, {
+            return $http.put('/api/1.0/properties'+ '?bust=' + (new Date()).getTime(), property, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -74,7 +74,7 @@ define(['app'], function (app) {
         }
 
         fac.update = function (property) {
-            return $http.put('/api/1.0/properties/' + property._id, property, {
+            return $http.put('/api/1.0/properties/' + property._id+ '?bust=' + (new Date()).getTime(), property, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -83,7 +83,7 @@ define(['app'], function (app) {
         }
 
         fac.setActive = function (active, userId) {
-            return $http.put('/api/1.0/properties/' + userId + '/active', { active: active}, {
+            return $http.put('/api/1.0/properties/' + userId + '/active'+ '?bust=' + (new Date()).getTime(), { active: active}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -92,7 +92,7 @@ define(['app'], function (app) {
         }
 
         fac.lookups = function () {
-            return $http.get('/api/1.0/properties/lookups', {
+            return $http.get('/api/1.0/properties/lookups'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -101,7 +101,7 @@ define(['app'], function (app) {
         }
 
         fac.unlinkComp = function (propertyid, compid) {
-            return $http.delete('/api/1.0/properties/' + propertyid + '/comps/' + compid, {
+            return $http.delete('/api/1.0/properties/' + propertyid + '/comps/' + compid + '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -110,7 +110,7 @@ define(['app'], function (app) {
         }
 
         fac.saveCompLink = function (propertyid, compid, floorplans, excluded) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/comps/' + compid, {floorplans: floorplans, excluded : excluded}, {
+            return $http.post('/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {floorplans: floorplans, excluded : excluded}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -119,7 +119,7 @@ define(['app'], function (app) {
         }
 
         fac.linkComp = function (propertyid, compid) {
-            return $http.put('/api/1.0/properties/' + propertyid + '/comps/' + compid, {}, {
+            return $http.put('/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -128,7 +128,7 @@ define(['app'], function (app) {
         }
 
         fac.createSurvey = function (propertyid, survey) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/survey', survey, {
+            return $http.post('/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), survey, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -137,7 +137,7 @@ define(['app'], function (app) {
         }
 
         fac.updateSurvey = function (propertyid, surveyid, survey) {
-            return $http.put('/api/1.0/properties/' + propertyid + '/survey/' + surveyid , survey, {
+            return $http.put('/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime() , survey, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -463,7 +463,7 @@ define(['app'], function (app) {
         }
 
         fac.reports = function(compids, subjectid, reports) {
-            return $http.post('/api/1.0/properties/' + subjectid + '/reports', {
+            return $http.post('/api/1.0/properties/' + subjectid + '/reports'+ '?bust=' + (new Date()).getTime(), {
                 compids: compids,
                 reports: reports,
             }, {

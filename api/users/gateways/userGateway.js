@@ -162,6 +162,7 @@ userRoutes.post('/updatePasswordByToken', function (req, res) {
 })
 
 userRoutes.post('/', function (req, res) {
+
     UserService.search(req.user, req.body, function(err, users) {
 
         if (err) {

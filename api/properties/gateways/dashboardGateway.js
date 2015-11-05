@@ -50,7 +50,6 @@ module.exports = {
         });
 
         Routes.post('/:id/dashboard', function (req, res) {
-
             queueService.getDashboard(req, function(err, dashboard) {
                 if (err) {
                     return res.status(400).send(err);

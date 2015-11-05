@@ -6,7 +6,7 @@ define([
         var fac = {};
 
         fac.getRolesToAssign = function () {
-            return $http.get('/api/1.0/access/roles', {
+            return $http.get('/api/1.0/access/roles'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -15,7 +15,7 @@ define([
         }
 
         fac.search = function (criteria) {
-            return $http.post('/api/1.0/users', criteria, {
+            return $http.post('/api/1.0/users'+ '?bust=' + (new Date()).getTime(), criteria, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -24,7 +24,7 @@ define([
         }
 
         fac.setActive = function (active, userId) {
-            return $http.put('/api/1.0/users/' + userId + '/active', { active: active}, {
+            return $http.put('/api/1.0/users/' + userId + '/active'+ '?bust=' + (new Date()).getTime(), { active: active}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -33,7 +33,7 @@ define([
         }
 
         fac.create = function (user) {
-            return $http.post('/api/1.0/users/create', user, {
+            return $http.post('/api/1.0/users/create'+ '?bust=' + (new Date()).getTime(), user, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -42,7 +42,7 @@ define([
         }
 
         fac.update = function (user) {
-            return $http.put('/api/1.0/users/' + user._id, user, {
+            return $http.put('/api/1.0/users/' + user._id+ '?bust=' + (new Date()).getTime(), user, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -51,7 +51,7 @@ define([
         }
 
         fac.updatePassword = function (passwords) {
-            return $http.post('/api/1.0/users/updatePassword', passwords, {
+            return $http.post('/api/1.0/users/updatePassword'+ '?bust=' + (new Date()).getTime(), passwords, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

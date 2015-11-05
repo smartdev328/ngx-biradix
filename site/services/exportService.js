@@ -19,7 +19,8 @@ define([
             url += "&orderBy=" + ($cookies.get("fp.o") || '');
             url += "&show=" + encodeURIComponent ($cookies.get("fp.s") || '')
             url += "&orderByC=" + ($cookies.get("cmp.o") || '');
-            url += "&showC=" + encodeURIComponent ($cookies.get("cmp.s") || '')
+            url += "&showC=" + encodeURIComponent ($cookies.get("cmp.s") || '') ;
+            url += '&bust=' + (new Date()).getTime();
             return url;
         }
 

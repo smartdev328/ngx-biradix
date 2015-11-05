@@ -4,7 +4,7 @@ define(['app'], function (app) {
         var fac = {};
 
         fac.isComplete = function (progressId, callback) {
-            return $http.get('/progress/' + progressId).success(function (response) {
+            return $http.get('/progress/' + progressId+ '?bust=' + (new Date()).getTime()).success(function (response) {
                 if (response.progressId) {
                     callback(true);
                 }

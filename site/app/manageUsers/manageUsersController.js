@@ -83,12 +83,16 @@ define([
         $scope.reload = function () {
             $scope.localLoading = false;
             $userService.search().then(function (response) {
-                    $scope.data = response.data.users;
-                      $scope.localLoading = true;
-                },
-                function (error) {
-                    $scope.localLoading = true;
-                });
+                $scope.data = response.data.users;
+                $scope.localLoading = true;
+            },
+            function (error) {
+                if (error.status == 401) {
+                    $rootScope.logoff();
+                    return;
+                }
+                $scope.localLoading = true;
+            });
         }
 
         $scope.reload();
