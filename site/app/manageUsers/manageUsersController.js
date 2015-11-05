@@ -7,7 +7,7 @@ define([
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$modal','$gridService', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$modal,$gridService) {
+    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$modal','$gridService','toastr', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$modal,$gridService,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -227,29 +227,28 @@ define([
 
         $scope.toggleActive = function (user) {
             $dialog.confirm('Are you sure you want to set "' + user.name + '" as ' + (!user.active ? "active" : "inactive") + '?', function() {
-            $scope.alerts = [];
 
             ngProgress.start();
 
             $userService.setActive(!user.active, user._id).then(function (response) {
 
                     if (response.data.errors) {
-                        $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
+                        toastr.error( _.pluck(response.data.errors,'msg').join("<br>"));
                     }
                     else {
                         user.active = !user.active;
 
                         if (user.active) {
-                            $scope.alerts.push({type: 'success', msg: user.name + " has been activated."});
+                            toastr.success(user.name + " has been activated.");
                         } else {
-                            $scope.alerts.push({type: 'warning', msg: user.name + " has been de-activated. "});
+                            toastr.warning(user.name + " has been de-activated. ");
                         }
                     }
 
                     ngProgress.reset();
                 },
                 function (error) {
-                    $scope.alerts.push({ type: 'danger', msg: "Unable to update your account. Please contact the administrator." });
+                    toastr.error("Unable to update your account. Please contact the administrator.");
                     ngProgress.reset();
                 });
             }, function() {})
@@ -279,8 +278,7 @@ define([
                     if (!userId) {
                         action = "created";
                     }
-                    $scope.alerts = [];
-                    $scope.alerts.push({ type: 'success', msg: newUser.first + " " + newUser.last + " " + action + " successfully."});
+                    toastr.success(newUser.first + " " + newUser.last + " " + action + " successfully.");
                     $scope.reload()
                 }, function () {
 

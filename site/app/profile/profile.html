@@ -28,11 +28,6 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div class="row" ng-show="localLoading">
-    <div class="hidden-print alert alert-{{comp.survey.tier}}" role="alert" ng-if="comp.survey.tier" style="margin:0px 15px 20px 15px">
-        <span ng-if="comp.survey && comp.survey.date">Property has not been updated in {{comp.survey.days | number : 0}} days.</span>
-        <span ng-if="!comp.survey || !comp.survey.date">Property has NEVER been updated.</span>
-    </div>
-
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
             <div class="panel-heading">{{property.name}}</div>

@@ -478,7 +478,6 @@ define([
 
                     ngProgress.start();
                     $('#add' + type +'Amenity').prop("disabled",true);
-                    $scope.alerts = [];
 
                     $amenityService.create(amenity).then(
                         function(response) {
@@ -579,7 +578,6 @@ define([
             $scope.save = function() {
                 ngProgress.start();
                 $('#propertySave').prop("disabled",true);
-                $scope.alerts = [];
 
                 var newProp = $scope.getPropertyForSave();
 

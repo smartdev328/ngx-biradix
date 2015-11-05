@@ -7,7 +7,7 @@ define([
     '../../components/daterangepicker/module',
 ], function (app) {
 
-    app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService) {
+    app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -63,6 +63,10 @@ define([
                     $scope.localLoading = true;
                 },
                 function (error) {
+                    if (error.status == 401) {
+                        $rootScope.logoff();
+                        return;
+                    }
                     $scope.localLoading = true;
                 });
         }
@@ -95,16 +99,15 @@ define([
 
         $scope.undo = function(row) {
             $dialog.confirm('Are you sure you want to Undo this item?', function() {
-                $scope.alerts = [];
                 $scope.localLoading = false;
 
                 $auditService.undo(row._id).then(function (response) {
                         if (response.data.errors.length > 0) {
-                            $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
+                            toastr.error( _.pluck(response.data.errors,'msg').join("<br>"));
                             $scope.localLoading = true;
                         }
                         else {
-                            $scope.alerts.push({type: 'success', msg: "Undo action performed successfully."});
+                            toastr.success("Undo action performed successfully.");
                             window.setTimeout(function() {$scope.reload();}, 1000);
 
                         }
@@ -112,7 +115,7 @@ define([
 
                     },
                     function (error) {
-                        $scope.alerts.push({ type: 'danger', msg: "Unable to undo. Please contact the administrator." });
+                        toastr.error("Unable to undo. Please contact the administrator." );
                         $scope.localLoading = true;
                     });
 

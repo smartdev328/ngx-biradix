@@ -7,9 +7,7 @@ define([
     '../../components/filterlist/module.js',
 ], function (app) {
      app.controller
-        ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService', function ($scope, $modalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService) {
-            $scope.alerts = [];
-
+        ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $modalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
             $scope.user = {};
             $scope.properties = [];
             $scope.propertyOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', searchLabel: "Properties" }
@@ -24,7 +22,6 @@ define([
 
             $scope.getDropdowns = function () {
                 $scope.loading = true;
-                $scope.alerts = [];
 
                 $userService.getRolesToAssign().then(function (response) {
                         $scope.roles = response.data;
@@ -45,11 +42,8 @@ define([
                     },
                     function (error) {
                         $scope.loading = false;
-                        $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
+                        toastr.error("Unable to retrieve data. Please contact the administrator.");
                     });
-
-
-
             };
 
             if (userId) {
@@ -63,12 +57,12 @@ define([
                                 $scope.getDropdowns();
                             },
                             function (error) {
-                                $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
+                                toastr.error("Unable to retrieve data. Please contact the administrator.");
                                 $scope.loading = false;
                             });
                     },
                     function (error) {
-                        $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
+                        toastr.error("Unable to retrieve data. Please contact the administrator.");
                         $scope.loading = false;
                     });
             }
@@ -102,9 +96,8 @@ define([
             }
 
             $scope.save = function() {
-                $scope.alerts = [];
                 if (!$scope.selectedRole._id) {
-                    return $scope.alerts.push({ type: 'danger', msg: "Please select a role." });
+                    toastr.error("Please select a role.");
                 }
 
                 $scope.loading = true;
@@ -119,10 +112,7 @@ define([
                 if (!userId) {
                     $userService.create($scope.user).then(function (response) {
                             if (response.data.errors) {
-                                $scope.alerts.push({
-                                    type: 'danger',
-                                    msg: _.pluck(response.data.errors, 'msg').join("<br>")
-                                });
+                                toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
                             }
                             else {
                                 $scope.saveProperties(response.data.user._id,selectedProperties);
@@ -130,19 +120,13 @@ define([
                             }
                         },
                         function (error) {
-                            $scope.alerts.push({
-                                type: 'danger',
-                                msg: "Unable to create. Please contact the administrator."
-                            });
+                            toastr.error("Unable to create. Please contact the administrator.");
                         });
                 }
                 else {
                     $userService.update($scope.user).then(function (response) {
                             if (response.data.errors) {
-                                $scope.alerts.push({
-                                    type: 'danger',
-                                    msg: _.pluck(response.data.errors, 'msg').join("<br>")
-                                });
+                                toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
                             }
                             else {
                                 $scope.saveProperties(response.data.user._id,selectedProperties);
@@ -150,10 +134,7 @@ define([
                             }
                         },
                         function (error) {
-                            $scope.alerts.push({
-                                type: 'danger',
-                                msg: "Unable to update. Please contact the administrator."
-                            });
+                            toastr.error("Unable to update. Please contact the administrator.");
                         });
                 }
 

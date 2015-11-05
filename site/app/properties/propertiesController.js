@@ -5,7 +5,7 @@ define([
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal','$authService','$dialog', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal,$authService,$dialog) {
+    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal','$authService','$dialog','toastr', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal,$authService,$dialog,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -334,26 +334,25 @@ define([
         $scope.unlinkComp = function (property, comp) {
 
             $dialog.confirm('Are you sure you want to remove comp <b>"' + comp.name + '"</b> from subject <b>"' + property.name + '"</b>?', function() {
-                $scope.alerts = [];
 
                 ngProgress.start();
 
                 $propertyService.unlinkComp(property._id, comp._id).then(function (response) {
 
                         if (response.data.errors) {
-                            $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
+                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
                         }
                         else {
                             _.remove(property.comps, function(c) {return c.id.toString() == comp._id.toString() })
                             _.remove(property.fullcomps, function(c) {return c._id.toString() == comp._id.toString() })
 
-                            $scope.alerts.push({type: 'success', msg: 'Comp <b>"' + comp.name + '"</b> removed from <b>"' + property.name + '"</b> successfully.'});
+                            toastr.success('Comp <b>"' + comp.name + '"</b> removed from <b>"' + property.name + '"</b> successfully.');
                         }
 
                         ngProgress.reset();
                     },
                     function (error) {
-                        $scope.alerts.push({ type: 'danger', msg: "Unable to update property. Please contact the administrator." });
+                        toastr.error("Unable to update property. Please contact the administrator.");
                         ngProgress.reset();
                     });
 
@@ -363,29 +362,27 @@ define([
         $scope.toggleActive = function (property) {
 
             $dialog.confirm('Are you sure you want to set "' + property.name + '" as ' + (!property.active ? "active" : "inactive") + '?', function() {
-                $scope.alerts = [];
-
                 ngProgress.start();
 
                 $propertyService.setActive(!property.active, property._id).then(function (response) {
 
                         if (response.data.errors) {
-                            $scope.alerts.push({ type: 'danger', msg: _.pluck(response.data.errors,'msg').join("<br>") });
+                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
                         }
                         else {
                             property.active = !property.active;
 
                             if (property.active) {
-                                $scope.alerts.push({type: 'success', msg: property.name + " has been activated."});
+                                toastr.success(property.name + " has been activated.");
                             } else {
-                                $scope.alerts.push({type: 'warning', msg: property.name + " has been de-activated. "});
+                                toastr.warning(property.name + " has been de-activated. ");
                             }
                         }
 
                         ngProgress.reset();
                     },
                     function (error) {
-                        $scope.alerts.push({ type: 'danger', msg: "Unable to update property. Please contact the administrator." });
+                        toastr.error("Unable to update property. Please contact the administrator.");
                         ngProgress.reset();
                     });
 
@@ -509,8 +506,7 @@ define([
                         $scope.toggleOpen(subject);
                     }
                     $scope.toggleOpen(subject);
-                    $scope.alerts = [];
-                    $scope.alerts.push({type: 'success', msg: '<b>' + comp.name + "</b> has been added as a comp for <b>" + subject.name + "</b>."});
+                    toastr.success('<b>' + comp.name + "</b> has been added as a comp for <b>" + subject.name + "</b>.");
                 }, function (from) {
                     //Cancel
                     if (from == "create") {
@@ -541,9 +537,7 @@ define([
                 });
 
                 modalInstance.result.then(function () {
-
-                    $scope.alerts = [];
-                    $scope.alerts.push({type: 'success', msg: "Users updated successfully"});
+                    toastr.error("Users updated successfully");
                 }, function (from) {
                     //Cancel
                 });

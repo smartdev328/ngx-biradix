@@ -7,7 +7,7 @@ define([
     '../../components/filterlist/module.js',
 ], function (app) {
      app.controller
-        ('manageUsersController', ['$scope', '$modalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService', function ($scope, $modalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService) {
+        ('manageUsersController', ['$scope', '$modalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $modalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
 
             $scope.property = property;
             $scope.users = [];
@@ -18,7 +18,6 @@ define([
             };
 
             $scope.loading = true;
-            $scope.alerts = [];
 
             $propertyUsersService.getPropertyAssignedUsers(property._id).then(function (response) {
 
@@ -34,11 +33,11 @@ define([
                         },
                         function (error) {
                             $scope.loading = false;
-                            $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
+                            toastr.error("Unable to retrieve data. Please contact the administrator.");
                         });
                 },
                 function (error) {
-                    $scope.alerts.push({ type: 'danger', msg: "Unable to retrieve data. Please contact the administrator." });
+                    toastr.error("Unable to retrieve data. Please contact the administrator.");
                     $scope.loading = false;
                 });
 

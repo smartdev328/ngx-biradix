@@ -13,12 +13,11 @@ define([
         window.document.title = "Forgot Password | BI:Radix";
 
         $scope.btnSubmit = function() {
-            $scope.alerts = [];
             $scope.localLoading = true;
             $authService.recoverPassword($scope.email).then(function (resp) {
                     $scope.localLoading = false;
                     if (!resp.data.success) {
-                        $scope.alerts.push({type: 'danger', msg: "Unable to locate account with that email address."});
+                        toastr.error("Unable to locate account with that email address.");
                     }
                     else {
                         $location.path('/password/sent')

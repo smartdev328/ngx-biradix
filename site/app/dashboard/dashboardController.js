@@ -13,7 +13,7 @@ define([
     '../../services/auditService',
 ], function (app) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -138,6 +138,7 @@ define([
                 return;
             }
 
+            toastr.error('Unable to access the system at this time. Please contact an administrator');
             $scope.localLoading = true;
         })
 
@@ -207,6 +208,8 @@ define([
                         $rootScope.logoff();
                         return;
                     }
+
+                    toastr.error('Unable to access the system at this time. Please contact an administrator');
 
                     $scope.localLoading = true;
                 });

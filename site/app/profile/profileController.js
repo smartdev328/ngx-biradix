@@ -16,7 +16,7 @@ define([
     '../../services/exportService'
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -131,36 +131,52 @@ define([
                     ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs}
                 ).then(function (response) {
 
-                        var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs);
+                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs);
 
-                        if (!resp) {
-                            $location.path('/dashboard')
-                            return;
+                    if (!resp) {
+                        $location.path('/dashboard')
+                        return;
+                    }
+
+                    if (!trendsOnly) {
+                        $scope.lookups = resp.lookups;
+                        $scope.property = resp.property;
+                        $scope.canManage = resp.canManage;
+                        $scope.owner = resp.owner;
+                        $scope.comp = resp.comp;
+                        $window.document.title = $scope.property.name + " - Profile | BI:Radix";
+
+                        $auditService.create({type: 'property_profile', property: {id: resp.property._id, name: resp.property.name, orgid: resp.property.orgid}, description: resp.property.name});
+                    }
+
+                    $scope.points = resp.points;
+                    $scope.surveyData = resp.surveyData;
+                    $scope.nerData = resp.nerData
+                    $scope.occData = resp.occData;
+                    $scope.otherData = resp.otherData;
+                    $scope.nerKeys = resp.nerKeys;
+                    $scope.otherTable = resp.otherTable
+
+                    $scope.localLoading = true;
+                    $scope.trendsLoading = true;
+
+                    $scope.setRenderable();
+
+                    if ($scope.comp.survey && $scope.comp.survey.tier == "danger") {
+                        if ($scope.comp.survey.date) {
+                            toastr.error('Property has not been updated in ' + Math.round($scope.comp.survey.days) + ' days.');
                         }
+                    }
 
-                        if (!trendsOnly) {
-                            $scope.lookups = resp.lookups;
-                            $scope.property = resp.property;
-                            $scope.canManage = resp.canManage;
-                            $scope.owner = resp.owner;
-                            $scope.comp = resp.comp;
-                            $window.document.title = $scope.property.name + " - Profile | BI:Radix";
-
-                            $auditService.create({type: 'property_profile', property: {id: resp.property._id, name: resp.property.name, orgid: resp.property.orgid}, description: resp.property.name});
+                    if ($scope.comp.survey && $scope.comp.survey.tier == "warning") {
+                        if ($scope.comp.survey.date) {
+                            toastr.warning('Property has not been updated in ' + Math.round($scope.comp.survey.days) + ' days.');
                         }
+                    }
 
-                        $scope.points = resp.points;
-                        $scope.surveyData = resp.surveyData;
-                        $scope.nerData = resp.nerData
-                        $scope.occData = resp.occData;
-                        $scope.otherData = resp.otherData;
-                        $scope.nerKeys = resp.nerKeys;
-                        $scope.otherTable = resp.otherTable
-
-                        $scope.localLoading = true;
-                        $scope.trendsLoading = true;
-
-                        $scope.setRenderable();
+                    if (!$scope.comp.survey || !$scope.comp.survey.date) {
+                        toastr.error('Property has NEVER been updated.');
+                    }
 
 
                 }, function(error) {

@@ -68,7 +68,6 @@ define([
             $scope.password = {};
 
             $scope.submitPassword = function (user) {
-                $scope.alerts = [];
                 if (user.newpassword != user.confirmpassword) {
                     toastr.error('Passwords do not match.');
                     return;

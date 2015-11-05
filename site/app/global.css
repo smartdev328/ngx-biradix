@@ -247,3 +247,33 @@ A.gear .fa-gear {
 A.gear:hover .fa-gear  {
     color: #488fff !important;
 }
+
+#toast-container>div {
+    padding: 15px !important;
+    margin-top: 5px !important;
+}
+
+.toast-close-button {
+    color: inherit !important;
+}
+
+#toast-container>.toast-success {
+    background-image: none !important;
+    background-color: #e8f8ed;
+    border: 1px solid #70b760 !important;
+    color: #70b760;
+}
+
+#toast-container>.toast-warning {
+    background-image: none !important;
+    background-color: #ffe5cb;
+    border: 1px solid #f90 !important;
+    color: #f90;
+}
+
+#toast-container>.toast-error {
+    background-image: none !important;
+    background-color: #ffe1e1;
+    border: 1px solid #f33 !important;
+    color: #f33;
+}
