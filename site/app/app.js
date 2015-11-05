@@ -230,14 +230,17 @@ define([
     app.run([
         '$rootScope', '$modalStack',
         function($rootScope, $modalStack) {
-            $rootScope.$on('$stateChangeStart', function() {
-                $modalStack.dismissAll('cancel');
-            });
 
             var hadRouteChange = false;
-            $rootScope.$on("$routeChangeStart", function() {
+
+            $rootScope.$on('$stateChangeStart', function() {
+                //Cancel all popups
+                $modalStack.dismissAll('cancel');
+
+                //RUM
                 hadRouteChange = true;
             });
+
             function hook() {
                 if (window.BOOMR && BOOMR.version) {
                     if (BOOMR.plugins && BOOMR.plugins.Angular) {
