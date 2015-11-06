@@ -249,12 +249,14 @@ A.gear:hover .fa-gear  {
 }
 
 #toast-container>div {
-    padding: 15px !important;
-    margin-top: 5px !important;
+    padding: 10px 15px !important;
+    margin-top: 10px !important;
+    width: 350px !important;
 }
 
 .toast-close-button {
     color: inherit !important;
+    padding-top:3px !important;
 }
 
 #toast-container>.toast-success {
@@ -262,6 +264,9 @@ A.gear:hover .fa-gear  {
     background-color: #e8f8ed;
     border: 1px solid #70b760 !important;
     color: #70b760;
+    font-family: Lato;
+    font-size: 15px;
+    font-weight: 400;
 }
 
 #toast-container>.toast-warning {
@@ -269,6 +274,9 @@ A.gear:hover .fa-gear  {
     background-color: #ffe5cb;
     border: 1px solid #f90 !important;
     color: #f90;
+    font-family: Lato;
+    font-size: 15px;
+    font-weight: 400;
 }
 
 #toast-container>.toast-error {
@@ -276,4 +284,7 @@ A.gear:hover .fa-gear  {
     background-color: #ffe1e1;
     border: 1px solid #f33 !important;
     color: #f33;
+    font-family: Lato;
+    font-size: 15px;
+    font-weight: 400;
 }
