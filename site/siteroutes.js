@@ -9,6 +9,10 @@ module.exports = (function() {
     var ui = express.Router();
 
     ui.get('/', function (req, res) {
+        if (req.headers['x-forwarded-proto'] !== 'https' && req.get('host').indexOf('biradix.com') > -1) {
+            return res.redirect('https://' + req.get('host') + req.originalUrl);
+        }
+
         var subdomain = req.hostname.split('.')[0].toLowerCase();
 
         OrgService.read(function(err, orgs) {
