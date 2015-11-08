@@ -1,5 +1,6 @@
 var async = require("async");
 var moment = require("moment");
+var settings = require("./settings");
 var UserSchema = require('../api/users/schemas/userSchema')
 var AccessService = require('../api/access/services/accessService')
 var UserCreateService = require('../api/users/services/userCreateService')
@@ -42,16 +43,24 @@ module.exports = {
                         })
                     },
                     function(users, companies, roles, callbackw) {
+                        if (!settings.SEED_DEMO) {
+                            return callbackw(null,users, roles, null)
+                        }
+
                         PropertiesCreate(users.System, companies,function(properties) {
                             callbackw(null,users, roles, properties)
                         })
                     },
                     function(users, roles, properties, callbackw) {
-                        PermissionsCreate(roles, properties, function() {
+                        PermissionsCreate(roles, function() {
                             callbackw(null,users, roles, properties)
                         })
                     },
                     function(users, roles, properties, callbackw) {
+                        if (!settings.SEED_DEMO) {
+                            return callbackw(null,users, roles, properties)
+                        }
+
                         SurveysCreate(users, properties, function() {
                             callbackw(null,users, roles, properties)
                         })
@@ -974,6 +983,9 @@ var UsersCreate = function(roles, callback) {
                     );
                 },
                 Michelle: function(callbackp) {
+                    if (!settings.SEED_DEMO) {
+                        return callbackp(null, null);
+                    }
                     UserCreateService.insert(System, context, Michelle, null,function(usr) {
                             callbackp(null, usr)
                         },
@@ -1188,7 +1200,7 @@ var CompaniesCreate = function(callback) {
 
 }
 
-var PermissionsCreate = function(roles, properties, callback) {
+var PermissionsCreate = function(roles, callback) {
 
     var permissions = [
         {executorid: roles.BiradixAdmin._id, resource: "Users/LogInAs", allow: true, type: 'Execute'},

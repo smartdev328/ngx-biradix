@@ -70,6 +70,8 @@ d.run(function() {
                     require('../api/status/consumers/phantomConsumer')
                     require('../config/pdfHitCount');
                 }
+
+                require('../poc/importConsumer');
             }
 
             var server = app.listen(settings.PORT, function () {

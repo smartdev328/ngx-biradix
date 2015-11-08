@@ -18,6 +18,7 @@ module.exports = {
     PDF_REPORTING_QUEUE : "jobs.reporting.pdf",
     WEB_STATUS_QUEUE : "jobs.status.web",
     PHANTOM_STATUS_QUEUE : "jobs.status.phantom",
+    IMPORT_QUEUE : "jobs.temp.import",
     RUN_PHANTOM : process.env.RUN_PHANTOM || "web",
     RUN_DASHBOARD : process.env.RUN_DASHBOARD || "web",
     HEROKU_API_KEY : process.env.HEROKU_API_KEY,
@@ -25,6 +26,7 @@ module.exports = {
     PDF_HIT_COUNT: 0,
     PDF_HIT_RESTART: process.env.PDF_HIT_RESTART || 2,
     PDF_WORKERS: process.env.PDF_WORKERS || 3,
+    SEED_DEMO : process.env.SEED_DEMO == "1" || false
     //SKIPRABBIT : true
 
 }
