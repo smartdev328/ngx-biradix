@@ -69,11 +69,13 @@ module.exports = {
                     //
                     //EmailService.send(email, function(emailError,status) {console.log(emailError,status)});
 
+                    var timer = new Date().getTime();
                     var r = request.post(settings.EXCEL_URL, {
                         json: json
                     }).pipe(res)
 
                     r.on('finish', function () {
+                        console.log("Excel AppHarbor for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
                         if (req.query.progressId) {
                             ProgressService.setComplete(req.query.progressId)
                         }

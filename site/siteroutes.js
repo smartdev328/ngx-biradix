@@ -3,6 +3,7 @@ var express = require('express');
 var _ = require('lodash');
 var packages = require('../package.json');
 var OrgService = require('../api/organizations/services/organizationService')
+var newrelic = require('newrelic');
 module.exports = (function() {
 
     var ui = express.Router();
@@ -21,7 +22,9 @@ module.exports = (function() {
             var phantom = req.headers['user-agent'].indexOf('PhantomJS') > -1;
             var local = (subdomain == 'localhost' || phantom);
 
-            res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom});
+            res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom,
+                nreum : newrelic.getBrowserTimingHeader()
+            });
 
         })
 
