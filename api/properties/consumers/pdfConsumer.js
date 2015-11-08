@@ -1,4 +1,5 @@
 var queues = require("../../../config/queues")
+var settings = require("../../../config/settings")
 var PropertyService = require("../services/propertyService")
 var pdfService = require("../services/pdfService")
 var UserService = require('../../users/services/userService')
@@ -79,6 +80,8 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 options = null;
                 properties = null;
                 newBuffer = null;
+
+                settings.PDF_HIT_COUNT ++;;
             });
 
             var r = render(url, options).pipe(ws);
@@ -144,6 +147,7 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
                 options = null;
                 properties = null;
                 newBuffer = null;
+                settings.PDF_HIT_COUNT ++;;
             });
 
             var r = render(url, options).pipe(ws);

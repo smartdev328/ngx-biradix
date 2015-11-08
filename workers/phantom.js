@@ -1,6 +1,5 @@
 var settings = require('../config/settings')
 var errors = require("../config/error")
-
 var d= require("domain").create();
 
 d.on("error", function(err) {
@@ -47,6 +46,7 @@ d.run(function() {
             if (settings.RUN_PHANTOM == "phantom") {
                 require('../api/properties/consumers/pdfConsumer')
                 require('../api/status/consumers/phantomConsumer')
+                require('../config/pdfHitCount');
             }
 
         }
