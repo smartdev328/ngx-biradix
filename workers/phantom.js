@@ -12,7 +12,7 @@ d.on("error", function(err) {
 
 d.run(function() {
     //Initialize CPU clustering
-    require('../config/cluster').init({maxThreads: 3}, function (workerId) {
+    require('../config/cluster').init({maxThreads: 4}, function (workerId) {
         console.log('WorkerID: %s', workerId)
 
         var mongoose = require('mongoose');
