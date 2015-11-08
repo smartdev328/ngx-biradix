@@ -24,6 +24,7 @@ module.exports = {
     HEROKU_APP : process.env.HEROKU_APP || "birdaixplatform-dev",
     PDF_HIT_COUNT: 0,
     PDF_HIT_RESTART: process.env.PDF_HIT_RESTART || 2,
+    PDF_WORKERS: process.env.PDF_WORKERS || 3,
     //SKIPRABBIT : true
 
 }
