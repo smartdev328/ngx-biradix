@@ -1,7 +1,7 @@
 module.exports = {
     getDefaultOptions : function() {
         var options = {
-            pool        : 5,           // Change the pool size. Defaults to 1
+            pool        : 1,           // Change the pool size. Defaults to 1
             timeout     : 30000,        // Set a render timeout in milliseconds. Defaults to 30 seconds.
             format      : 'pdf',      // The default output format. Defaults to png
             quality     : 100,         // The default image quality. Defaults to 100. Only relevant for jpeg format.
