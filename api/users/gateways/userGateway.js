@@ -11,7 +11,8 @@ var userCreateService = require('../services/userCreateService')
 var userRoutes = express.Router();
 
 userRoutes.post('/resetPassword', function (req, res) {
-    UserService.resetPassword(req.body.email, "http://" + req.headers.host, req.context, function(success) {
+
+    UserService.resetPassword(req.body.email, req.basePath, req.context, function(success) {
             res.status(200).json({ success: success });
         }
     );
@@ -89,7 +90,7 @@ userRoutes.post('/create', function (req, res) {
         req.body.emailPassword = true;
         req.body.isSystem = false;
 
-        userCreateService.insert(req.user, req.context, req.body, "http://" + req.headers.host, function (errors, usr) {
+        userCreateService.insert(req.user, req.context, req.body, req.basePath, function (errors, usr) {
                 if (errors) {
                     res.status(200).json({errors: errors, user: null});
                 }

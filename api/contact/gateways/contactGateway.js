@@ -9,7 +9,7 @@ var Routes = express.Router()
 
 Routes.post('/send', function (req, res) {
     var modelErrors = [];
-    var base = "http://" + req.headers.host;
+    var base = req.basePath;
 
     if (!req.body.name)
     {

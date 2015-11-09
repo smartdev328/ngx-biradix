@@ -6,9 +6,9 @@ define(['app'], function (app) {
         fac.getSummary = function () {
 
             try {
-                return JSON.parse($cookies.get('Summary') || "false")
+                return JSON.parse($cookies.get('Summary') || "true")
             } catch(ex) {
-                return false;
+                return true;
             }
 
         }

@@ -52,6 +52,13 @@ module.exports = {
             app.use(function (req, res, next) {
                 var context = {ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress, user_agent: req.headers['user-agent']};
                 req.context = context;
+
+
+                if (req.headers['x-forwarded-proto'] !== 'https') {
+                    req.basePath = "http://" + req.headers.host;
+                } else {
+                    req.basePath = "https://" + req.headers.host;
+                }
                 next();
             });
 
