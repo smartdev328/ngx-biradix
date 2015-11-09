@@ -90,7 +90,7 @@ queues.getImportQueue().consume(function(data,reply) {
                     prop._id = newprop._id;
                     callbackp(err, newprop)
                 });
-            },2000);
+            },100);
         }, function(err) {
 
             async.eachLimit(all.links, 20, function(link, callbackp){
