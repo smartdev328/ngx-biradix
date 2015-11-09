@@ -97,7 +97,7 @@ module.exports = {
             queues.getExchange().publish({
                     user: req.user,
                     id: req.params.id,
-                    url : req.protocol + '://' + req.get('host'),
+                    url : req.basePath,
                     timezone : req.query.timezone,
                     hostname : req.hostname,
                     progressId : req.query.progressId,
@@ -135,7 +135,7 @@ module.exports = {
                     id: req.params.id,
                     timezone : req.query.timezone,
                     full : req.query.full,
-                    url : req.protocol + '://' + req.get('host'),
+                    url : req.basePath,
                     hostname : req.hostname,
                     Graphs : req.query.Graphs,
                     selectedStartDate : req.query.selectedStartDate,
