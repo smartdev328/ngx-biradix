@@ -624,7 +624,7 @@ var getSurvey = function(date, property, occupancy, weeklytraffic, weeklyleases,
 }
 
 var AmenitiesCreate = function(System, callback) {
-    var amenitites = [{"name":"Business Center - Conference Room","type":"Community"},{"name":"Business Center - Free Wi-Fi","type":"Community"},{"name":"Business Center - Laptop Checkout","type":"Community"},{"name":"Business Center - Printers","type":"Community"},{"name":"Clubhouse - Billiards/Pool Table","type":"Community"},{"name":"Clubhouse - Coffee Bar","type":"Community"},{"name":"Clubhouse - Cyber Cafe","type":"Community"},{"name":"Clubhouse - Game Room","type":"Community"},{"name":"Clubhouse - Gourmet Kitchen","type":"Community"},{"name":"Clubhouse - Movie Theater","type":"Community"},{"name":"Clubhouse - Ping Pong Table","type":"Community"},{"name":"Clubhouse - Rentable Clubhouse","type":"Community"},{"name":"Clubhouse - Rentable DVDs/Movies","type":"Community"},{"name":"Clubhouse - Resident Lounge","type":"Community"},{"name":"Clubhouse - Shuffleboard","type":"Community"},{"name":"Comm Parking - Carport/Covered","type":"Community"},{"name":"Comm Parking - Detached Garage (Add Fee)","type":"Community"},{"name":"Comm Parking - Garage Structure (Free)","type":"Community"},{"name":"Fitness Center - Elliptical","type":"Community"},{"name":"Fitness Center - Free Weights","type":"Community"},{"name":"Fitness Center - Stationary Bicycles","type":"Community"},{"name":"Fitness Center - Treadmills","type":"Community"},{"name":"Landscape - Lush Landscape","type":"Community"},{"name":"Landscape - Mature Landscape","type":"Community"},{"name":"Misc - Air Conditioned Hallways","type":"Community"},{"name":"Misc - Barbecue (BBQ) Grills","type":"Community"},{"name":"Misc - Bike Storage","type":"Community"},{"name":"Misc - Boat Slips","type":"Community"},{"name":"Misc - Car Charging Stations","type":"Community"},{"name":"Misc - Carwash","type":"Community"},{"name":"Misc - Concierge Services","type":"Community"},{"name":"Misc - Elevators","type":"Community"},{"name":"Misc - Guest Parking","type":"Community"},{"name":"Misc - Laundry Drop off/Pick-up","type":"Community"},{"name":"Misc - Laundry Room","type":"Community"},{"name":"Misc - On-Site Storage","type":"Community"},{"name":"Misc - Outdoor Amphitheater","type":"Community"},{"name":"Misc - Outdoor Fireplace","type":"Community"},{"name":"Misc - Playground","type":"Community"},{"name":"Misc - Rooftop Deck","type":"Community"},{"name":"Misc - Storage for Rent","type":"Community"},{"name":"Misc - Surfboard Storage","type":"Community"},{"name":"Misc - Wine Cellar","type":"Community"},{"name":"Misc - Wine Storage Locker (Add. Fee)","type":"Community"},{"name":"Pets - Kennel on Site","type":"Community"},{"name":"Pets - Pet Maintenance Station","type":"Community"},{"name":"Pets - Pet Park","type":"Community"},{"name":"Pool - Diving Pool","type":"Community"},{"name":"Pool - Hammocks","type":"Community"},{"name":"Pool - Heated Pool","type":"Community"},{"name":"Pool - Jaccuzi/Hot Tub/Spa","type":"Community"},{"name":"Pool - Lap Pool","type":"Community"},{"name":"Pool - Large Size Pool","type":"Community"},{"name":"Pool - Lounge","type":"Community"},{"name":"Pool - Luxury Cabanas","type":"Community"},{"name":"Pool - Multiple Pools","type":"Community"},{"name":"Pool - Pool with Slide","type":"Community"},{"name":"Pool - Resort Style","type":"Community"},{"name":"Pool - Salt Water Pool","type":"Community"},{"name":"Pool - Standard Size Pool","type":"Community"},{"name":"Pool - Wi-Fi (Free)","type":"Community"},{"name":"Recreation - Basketball Court","type":"Community"},{"name":"Recreation - Biking Trails","type":"Community"},{"name":"Recreation - Bocce Ball Court","type":"Community"},{"name":"Recreation - Boxing Studio","type":"Community"},{"name":"Recreation - Dance Studio","type":"Community"},{"name":"Recreation - Golf Course","type":"Community"},{"name":"Recreation - Jogging Trails","type":"Community"},{"name":"Recreation - Massage Room","type":"Community"},{"name":"Recreation - Pilate Room","type":"Community"},{"name":"Recreation - Putting Green","type":"Community"},{"name":"Recreation - Racquetball","type":"Community"},{"name":"Recreation - Sand Volleyball Court","type":"Community"},{"name":"Recreation - Sauna","type":"Community"},{"name":"Recreation - Tennis Court","type":"Community"},{"name":"Recreation - Volleyball Court","type":"Community"},{"name":"Recreation - Yoga Room","type":"Community"},{"name":"Security - Controlled Access","type":"Community"},{"name":"Security - Courtesy Patrol","type":"Community"},{"name":"Security - Gated Community","type":"Community"},{"name":"Security - Security Guards","type":"Community"},{"name":"Access to Freeways","type":"Location"},{"name":"Access to Parks","type":"Location"},{"name":"Beach Access","type":"Location"},{"name":"Lake Access","type":"Location"},{"name":"Near Downtown/Employment","type":"Location"},{"name":"Near Golf Course","type":"Location"},{"name":"Near Public Transportation","type":"Location"},{"name":"Near Restaurants \u0026 Bars","type":"Location"},{"name":"Near Retail","type":"Location"},{"name":"Visibility","type":"Location"},{"name":"Walkability","type":"Location"},{"name":"Appliances - Black Appliances","type":"Unit"},{"name":"Appliances - French Door Refrigerator","type":"Unit"},{"name":"Appliances - Gas Stove","type":"Unit"},{"name":"Appliances - Microwave","type":"Unit"},{"name":"Appliances - Refrigerator w/ Water\u0026Ice","type":"Unit"},{"name":"Appliances - Side by Side Refrigerator","type":"Unit"},{"name":"Appliances - Stainless Steel Appliances","type":"Unit"},{"name":"Appliances - Stove Hood","type":"Unit"},{"name":"Appliances - White Appliances","type":"Unit"},{"name":"Bath - Dual Vanity","type":"Unit"},{"name":"Bath - Roman/Garden Tub","type":"Unit"},{"name":"Bath - Separate Shower","type":"Unit"},{"name":"Bath - Steam Shower","type":"Unit"},{"name":"Ceilings - Ceiling Fan","type":"Unit"},{"name":"Ceilings - Crown Molding","type":"Unit"},{"name":"Ceilings - High Ceilings (10ft)","type":"Unit"},{"name":"Ceilings - High Ceilings (10ft+)","type":"Unit"},{"name":"Ceilings - Vaulted Ceilings","type":"Unit"},{"name":"Features - Accent Color Walls","type":"Unit"},{"name":"Features - Air Conditioning","type":"Unit"},{"name":"Features - Backyard","type":"Unit"},{"name":"Features - Balcony","type":"Unit"},{"name":"Features - Built-In Bookshelves","type":"Unit"},{"name":"Features - Computer Desk","type":"Unit"},{"name":"Features - Corner Unit","type":"Unit"},{"name":"Features - Decor Shelving","type":"Unit"},{"name":"Features - Linen Closet","type":"Unit"},{"name":"Features - Patio","type":"Unit"},{"name":"Features - Storage Room","type":"Unit"},{"name":"Features - Two-Inch Blinds","type":"Unit"},{"name":"Features - Venetian Blinds","type":"Unit"},{"name":"Features - Wine Celler","type":"Unit"},{"name":"Features - Wine Cooler","type":"Unit"},{"name":"Features - Wood Blinds","type":"Unit"},{"name":"Fireplace - Gas","type":"Unit"},{"name":"Fireplace - Wood","type":"Unit"},{"name":"Floor Level - First Floor","type":"Unit"},{"name":"Floor Level - Second Floor","type":"Unit"},{"name":"Floor Level - Top Floor","type":"Unit"},{"name":"Flooring - Bamboo","type":"Unit"},{"name":"Flooring - Berber Carpet","type":"Unit"},{"name":"Flooring - Laminate","type":"Unit"},{"name":"Flooring - Tile","type":"Unit"},{"name":"Flooring - Wood Flooring","type":"Unit"},{"name":"Kitchen - Bar Top","type":"Unit"},{"name":"Kitchen - Breakfast Nook","type":"Unit"},{"name":"Kitchen - Dining Room","type":"Unit"},{"name":"Kitchen - Galley Kitchen Style","type":"Unit"},{"name":"Kitchen - Granite Countertops","type":"Unit"},{"name":"Kitchen - Kitchen Island","type":"Unit"},{"name":"Kitchen - Open Kitchen Style","type":"Unit"},{"name":"Kitchen - Pantry","type":"Unit"},{"name":"Kitchen - Quartz Countertops","type":"Unit"},{"name":"Laundry - Dry Cleaning Services","type":"Unit"},{"name":"Laundry - Laundry Room in Unit","type":"Unit"},{"name":"Laundry - Stackable Washer/Dryer","type":"Unit"},{"name":"Laundry - Washer/Dryer Hookup","type":"Unit"},{"name":"Laundry - Washer/Dryer in Unit","type":"Unit"},{"name":"Layout - Den","type":"Unit"},{"name":"Layout - Floor-to-Ceiling Windows","type":"Unit"},{"name":"Layout - Handicap Unit","type":"Unit"},{"name":"Layout - Large Windows","type":"Unit"},{"name":"Layout - Loft Style","type":"Unit"},{"name":"Layout - Open Floor-plan","type":"Unit"},{"name":"Layout - Penthouse","type":"Unit"},{"name":"Layout - Townhome Style","type":"Unit"},{"name":"Parking - Attached Garage (to Unit)","type":"Unit"},{"name":"Parking - Carport (per Unit)","type":"Unit"},{"name":"Parking - Detached Garage (Free)","type":"Unit"},{"name":"Renovated - Upgraded Bath","type":"Unit"},{"name":"Renovated - Upgraded Kitchen","type":"Unit"},{"name":"Security - Alarm System","type":"Unit"},{"name":"Security - Alarm System (Pre-Wired)","type":"Unit"},{"name":"Tech - Cable TV (Avail.)","type":"Unit"},{"name":"Tech - Cable TV (Incl.)","type":"Unit"},{"name":"Tech - Dish/Satellite TV (Avail.)","type":"Unit"},{"name":"Tech - Dish/Satellite TV (Incl.)","type":"Unit"},{"name":"Tech - High Speed Internet (Incl.)","type":"Unit"},{"name":"Tech - Sound System","type":"Unit"},{"name":"Tech - USB Outlets","type":"Unit"},{"name":"Tech - Wireless Internet (Avail.)","type":"Unit"},{"name":"Views - Courtyard View","type":"Unit"},{"name":"Views - Mountain View","type":"Unit"},{"name":"Views - Ocean View","type":"Unit"},{"name":"Views - Pool View","type":"Unit"},{"name":"Views - Skyline/City View","type":"Unit"}];
+    var amenitites = [{"name":"Business Center - Conference Room","type":"Community"},{"name":"Business Center - Free Wi-Fi","type":"Community"},{"name":"Business Center - Laptop Checkout","type":"Community"},{"name":"Business Center - Printers","type":"Community"},{"name":"Clubhouse - Billiards/Pool Table","type":"Community"},{"name":"Clubhouse - Coffee Bar","type":"Community"},{"name":"Clubhouse - Cyber Cafe","type":"Community"},{"name":"Clubhouse - Game Room","type":"Community"},{"name":"Clubhouse - Gourmet Kitchen","type":"Community"},{"name":"Clubhouse - Movie Theater","type":"Community"},{"name":"Clubhouse - Ping Pong Table","type":"Community"},{"name":"Clubhouse - Rentable Clubhouse","type":"Community"},{"name":"Clubhouse - Rentable DVDs/Movies","type":"Community"},{"name":"Clubhouse - Resident Lounge","type":"Community"},{"name":"Clubhouse - Shuffleboard","type":"Community"},{"name":"Comm Parking - Carport/Covered","type":"Community"},{"name":"Comm Parking - Detached Garage (Add Fee)","type":"Community"},{"name":"Comm Parking - Garage Structure (Free)","type":"Community"},{"name":"Fitness Center - 24 Hour Access","type":"Community"},{"name":"Fitness Center - Barre Studio","type":"Community"},{"name":"Fitness Center - Crossfit","type":"Community"},{"name":"Fitness Center - Elliptical","type":"Community"},{"name":"Fitness Center - Fitness Classes ","type":"Community"},{"name":"Fitness Center - Free Weights","type":"Community"},{"name":"Fitness Center - Stationary Bicycles","type":"Community"},{"name":"Fitness Center - Treadmills","type":"Community"},{"name":"Fitness Center - WellBeats ","type":"Community"},{"name":"Landscape - Lush Landscape","type":"Community"},{"name":"Landscape - Mature Landscape","type":"Community"},{"name":"Misc - Air Conditioned Hallways","type":"Community"},{"name":"Misc - Barbecue (BBQ) Grills","type":"Community"},{"name":"Misc - Bike Repair Station","type":"Community"},{"name":"Misc - Bike Storage","type":"Community"},{"name":"Misc - Boat Slips","type":"Community"},{"name":"Misc - Car Charging Stations","type":"Community"},{"name":"Misc - Carwash","type":"Community"},{"name":"Misc - Community Garden","type":"Community"},{"name":"Misc - Concierge Services","type":"Community"},{"name":"Misc - Corporate Units","type":"Community"},{"name":"Misc - Courtyards","type":"Community"},{"name":"Misc - Dry Cleaning Drop-off/Pick-up","type":"Community"},{"name":"Misc - Elevators","type":"Community"},{"name":"Misc - Guest Parking","type":"Community"},{"name":"Misc - Laundry Drop-off/Pick-up","type":"Community"},{"name":"Misc - Laundry Room","type":"Community"},{"name":"Misc - On-Site Storage","type":"Community"},{"name":"Misc - Outdoor Amphitheater","type":"Community"},{"name":"Misc - Outdoor Fireplace","type":"Community"},{"name":"Misc - Parcel Pending","type":"Community"},{"name":"Misc - Playground","type":"Community"},{"name":"Misc - Retail on Site ","type":"Community"},{"name":"Misc - Rooftop Deck","type":"Community"},{"name":"Misc - Storage for Rent","type":"Community"},{"name":"Misc - Surfboard Storage","type":"Community"},{"name":"Misc - Valet Trash","type":"Community"},{"name":"Misc - Wine Cellar","type":"Community"},{"name":"Misc - Wine Storage Locker (Add. Fee)","type":"Community"},{"name":"Pets - Kennel on Site","type":"Community"},{"name":"Pets - Pet Maintenance Station","type":"Community"},{"name":"Pets - Pet Park","type":"Community"},{"name":"Pool - Diving Pool","type":"Community"},{"name":"Pool - Hammocks","type":"Community"},{"name":"Pool - Heated Pool","type":"Community"},{"name":"Pool - Jaccuzi/Hot Tub/Spa","type":"Community"},{"name":"Pool - Lap Pool","type":"Community"},{"name":"Pool - Large Size Pool","type":"Community"},{"name":"Pool - Lounge","type":"Community"},{"name":"Pool - Luxury Cabanas","type":"Community"},{"name":"Pool - Multiple Pools","type":"Community"},{"name":"Pool - Pool with Slide","type":"Community"},{"name":"Pool - Resort Style","type":"Community"},{"name":"Pool - Salt Water Pool","type":"Community"},{"name":"Pool - Standard Size Pool","type":"Community"},{"name":"Pool - Wi-Fi (Free)","type":"Community"},{"name":"Recreation - Basketball Court","type":"Community"},{"name":"Recreation - Biking Trails","type":"Community"},{"name":"Recreation - Bocce Ball Court","type":"Community"},{"name":"Recreation - Boxing Studio","type":"Community"},{"name":"Recreation - Dance Studio","type":"Community"},{"name":"Recreation - Golf Course","type":"Community"},{"name":"Recreation - Horseshoe Pit","type":"Community"},{"name":"Recreation - Jogging Trails","type":"Community"},{"name":"Recreation - Massage Room","type":"Community"},{"name":"Recreation - Pilate Room","type":"Community"},{"name":"Recreation - Putting Green","type":"Community"},{"name":"Recreation - Racquetball","type":"Community"},{"name":"Recreation - Sand Volleyball Court","type":"Community"},{"name":"Recreation - Sauna","type":"Community"},{"name":"Recreation - Tanning Bed","type":"Community"},{"name":"Recreation - Tennis Court","type":"Community"},{"name":"Recreation - Volleyball Court","type":"Community"},{"name":"Recreation - Yoga Room","type":"Community"},{"name":"Security - Controlled Access","type":"Community"},{"name":"Security - Courtesy Patrol","type":"Community"},{"name":"Security - Gated Community","type":"Community"},{"name":"Security - Security Guards","type":"Community"},{"name":"Access to Freeways","type":"Location"},{"name":"Access to Parks","type":"Location"},{"name":"Beach Access","type":"Location"},{"name":"Lake Access","type":"Location"},{"name":"Near Biking/Walking Trails","type":"Location"},{"name":"Near Downtown/Employment","type":"Location"},{"name":"Near Golf Course","type":"Location"},{"name":"Near Public Transportation","type":"Location"},{"name":"Near Restaurants \u0026 Bars","type":"Location"},{"name":"Near Retail","type":"Location"},{"name":"Visibility","type":"Location"},{"name":"Walkability","type":"Location"},{"name":"Appliances - Black Appliances","type":"Unit"},{"name":"Appliances - Dishwasher","type":"Unit"},{"name":"Appliances - French Door Refrigerator","type":"Unit"},{"name":"Appliances - Gas Stove","type":"Unit"},{"name":"Appliances - Microwave","type":"Unit"},{"name":"Appliances - Refrigerator w/ Water\u0026Ice","type":"Unit"},{"name":"Appliances - Side by Side Refrigerator","type":"Unit"},{"name":"Appliances - Stainless Steel Appliances","type":"Unit"},{"name":"Appliances - Stove Hood","type":"Unit"},{"name":"Appliances - White Appliances","type":"Unit"},{"name":"Bath - Dual Vanity","type":"Unit"},{"name":"Bath - Roman/Garden Tub","type":"Unit"},{"name":"Bath - Separate Shower","type":"Unit"},{"name":"Bath - Steam Shower","type":"Unit"},{"name":"Bath - Under-Mount Sink","type":"Unit"},{"name":"Ceilings - Ceiling Fan","type":"Unit"},{"name":"Ceilings - Crown Molding","type":"Unit"},{"name":"Ceilings - High Ceilings (10ft)","type":"Unit"},{"name":"Ceilings - High Ceilings (10ft+)","type":"Unit"},{"name":"Ceilings - Vaulted Ceilings","type":"Unit"},{"name":"Features - Accent Color Walls","type":"Unit"},{"name":"Features - Air Conditioning","type":"Unit"},{"name":"Features - Backyard","type":"Unit"},{"name":"Features - Balcony","type":"Unit"},{"name":"Features - Built-In Bookshelves","type":"Unit"},{"name":"Features - Computer Desk","type":"Unit"},{"name":"Features - Corner Unit","type":"Unit"},{"name":"Features - Decor Shelving","type":"Unit"},{"name":"Features - Large Balcony","type":"Unit"},{"name":"Features - Linen Closet","type":"Unit"},{"name":"Features - Patio","type":"Unit"},{"name":"Features - Storage Room","type":"Unit"},{"name":"Features - Two-Inch Blinds","type":"Unit"},{"name":"Features - Venetian Blinds","type":"Unit"},{"name":"Features - Walk-in Closet","type":"Unit"},{"name":"Features - Wine Celler","type":"Unit"},{"name":"Features - Wine Cooler","type":"Unit"},{"name":"Features - Wood Blinds","type":"Unit"},{"name":"Fireplace - Gas","type":"Unit"},{"name":"Fireplace - Wood","type":"Unit"},{"name":"Floor Level - First Floor","type":"Unit"},{"name":"Floor Level - Second Floor","type":"Unit"},{"name":"Floor Level - Top Floor","type":"Unit"},{"name":"Flooring - Bamboo","type":"Unit"},{"name":"Flooring - Berber Carpet","type":"Unit"},{"name":"Flooring - Carpet","type":"Unit"},{"name":"Flooring - Laminate","type":"Unit"},{"name":"Flooring - Tile","type":"Unit"},{"name":"Flooring - Wood Flooring","type":"Unit"},{"name":"Kitchen - Backsplash","type":"Unit"},{"name":"Kitchen - Bar Top","type":"Unit"},{"name":"Kitchen - Breakfast Nook","type":"Unit"},{"name":"Kitchen - Dining Room","type":"Unit"},{"name":"Kitchen - Galley Kitchen Style","type":"Unit"},{"name":"Kitchen - Granite Countertops","type":"Unit"},{"name":"Kitchen - Kitchen Island","type":"Unit"},{"name":"Kitchen - Open Kitchen Style","type":"Unit"},{"name":"Kitchen - Pantry","type":"Unit"},{"name":"Kitchen - Quartz Countertops","type":"Unit"},{"name":"Kitchen - Under-Mount Sink","type":"Unit"},{"name":"Laundry - Dry Cleaning Services","type":"Unit"},{"name":"Laundry - Laundry Room in Unit","type":"Unit"},{"name":"Laundry - Stackable Washer/Dryer","type":"Unit"},{"name":"Laundry - Washer/Dryer Hookup","type":"Unit"},{"name":"Laundry - Washer/Dryer in Unit","type":"Unit"},{"name":"Layout - Den","type":"Unit"},{"name":"Layout - Floor-to-Ceiling Windows","type":"Unit"},{"name":"Layout - Handicap Unit","type":"Unit"},{"name":"Layout - Large Windows","type":"Unit"},{"name":"Layout - Loft Style","type":"Unit"},{"name":"Layout - Open Floor-plan","type":"Unit"},{"name":"Layout - Penthouse","type":"Unit"},{"name":"Layout - Townhome Style","type":"Unit"},{"name":"Layout- Study/Office","type":"Unit"},{"name":"Parking - Attached Garage (2 car)","type":"Unit"},{"name":"Parking - Attached Garage (to Unit)","type":"Unit"},{"name":"Parking - Carport (per Unit)","type":"Unit"},{"name":"Parking - Detached Garage (Free)","type":"Unit"},{"name":"Renovated - Upgraded Bath","type":"Unit"},{"name":"Renovated - Upgraded Kitchen","type":"Unit"},{"name":"Security - Alarm System","type":"Unit"},{"name":"Security - Alarm System (Pre-Wired)","type":"Unit"},{"name":"Tech - Cable TV (Avail.)","type":"Unit"},{"name":"Tech - Cable TV (Incl.)","type":"Unit"},{"name":"Tech - Dish/Satellite TV (Avail.)","type":"Unit"},{"name":"Tech - Dish/Satellite TV (Incl.)","type":"Unit"},{"name":"Tech - High Speed Internet (Incl.)","type":"Unit"},{"name":"Tech - Sound System","type":"Unit"},{"name":"Tech - USB Outlets","type":"Unit"},{"name":"Tech - Wireless Internet (Avail.)","type":"Unit"},{"name":"Views - Courtyard View","type":"Unit"},{"name":"Views - Mountain View","type":"Unit"},{"name":"Views - Ocean View","type":"Unit"},{"name":"Views - Pool View","type":"Unit"},{"name":"Views - Skyline/City View","type":"Unit"}];
     async.eachLimit(amenitites, 10, function(amenity, callbackp){
         AmenityService.create(System, context, amenity, function (err, am) {
             callbackp(err, am)
@@ -690,7 +690,17 @@ var RolesAssignPermissionsCreate = function(roles, callback) {
         {executorid: roles.PeakLivingBM._id, resource: roles.PeakLivingBM._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.PeakLivingBM._id, resource: roles.PeakLivingPO._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.PeakLivingPO._id, resource: roles.PeakLivingPO._id.toString(), allow: true, type: 'RoleAssign'},
-        
+
+        {executorid: roles.HarborCM._id, resource: roles.HarborCM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborCM._id, resource: roles.HarborRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborCM._id, resource: roles.HarborBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborCM._id, resource: roles.HarborPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborRM._id, resource: roles.HarborRM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborRM._id, resource: roles.HarborBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborRM._id, resource: roles.HarborPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborBM._id, resource: roles.HarborBM._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborBM._id, resource: roles.HarborPO._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.HarborPO._id, resource: roles.HarborPO._id.toString(), allow: true, type: 'RoleAssign'},        
     ];
 
     async.eachLimit(permissions, 10, function(permission, callbackp){
@@ -1026,7 +1036,12 @@ var RolesCreate = function(Orgs, callback) {
     var PeakLivingCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.PeakLiving._id}
     var PeakLivingRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.PeakLiving._id}
     var PeakLivingBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.PeakLiving._id}
-    var PeakLivingPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.PeakLiving._id}    
+    var PeakLivingPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.PeakLiving._id}
+
+    var HarborCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Harbor._id}
+    var HarborRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Harbor._id}
+    var HarborBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Harbor._id}
+    var HarborPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Harbor._id}
 
     async.parallel({
         BiradixAdmin: function(callbackp) {
@@ -1134,6 +1149,26 @@ var RolesCreate = function(Orgs, callback) {
                 callbackp(null, role)
             });
         },
+        HarborCM: function(callbackp) {
+            AccessService.createRole(HarborCM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        HarborRM: function(callbackp) {
+            AccessService.createRole(HarborRM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        HarborBM: function(callbackp) {
+            AccessService.createRole(HarborBM, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        HarborPO: function(callbackp) {
+            AccessService.createRole(HarborPO, function(err, role){
+                callbackp(null, role)
+            });
+        },        
 },function(err, roles) {callback(roles)})
 
 
@@ -1146,48 +1181,56 @@ var CompaniesCreate = function(callback) {
     var Wood = {name: "Wood Residential", subdomain: 'wood', logoBig: 'wood.png', logoSmall: 'wood-small.png'}
     var Alliance = {name: "Alliance Residential", subdomain: 'alliance', logoBig: 'alliance.png', logoSmall: 'alliance-small.png'}
     var PeakLiving = {name: "Peak Living", subdomain: 'peakliving', logoBig: 'peakliving.png', logoSmall: 'peakliving-small.png'}
+    var Harbor = {name: "Harbor", subdomain: 'harbor', logoBig: 'harbor.png', logoSmall: 'harbor-small.png'}
 
 
     async.parallel({
         Biradix: function(callbackp)
-    {
-        OrgService.create(Biradix, function (err, org) {
-            callbackp(err, org)
-        });
-    }
-    ,
-        Alliance: function (callbackp) {
-        OrgService.create(Alliance, function (err, org) {
-            callbackp(err, org)
-        });
-    }
-    ,
-        Demo: function (callbackp) {
-        OrgService.create(Demo, function (err, org) {
-            callbackp(err, org)
-        });
-    }
-
-    ,
-        Wood: function (callbackp) {
-        OrgService.create(Wood, function (err, org) {
-            callbackp(err, org)
-        });
-    }
-
-    ,
-        Greystar: function (callbackp) {
-        OrgService.create(Greystar, function (err, org) {
-            callbackp(err, org)
-        });
-    }
-
+        {
+            OrgService.create(Biradix, function (err, org) {
+                callbackp(err, org)
+            });
+        }
+        ,
+            Alliance: function (callbackp) {
+            OrgService.create(Alliance, function (err, org) {
+                callbackp(err, org)
+            });
+        }
+        ,
+            Demo: function (callbackp) {
+            OrgService.create(Demo, function (err, org) {
+                callbackp(err, org)
+            });
+        }
+    
+        ,
+            Wood: function (callbackp) {
+            OrgService.create(Wood, function (err, org) {
+                callbackp(err, org)
+            });
+        }
+    
+        ,
+            Greystar: function (callbackp) {
+            OrgService.create(Greystar, function (err, org) {
+                callbackp(err, org)
+            });
+        }
+    
         ,
         PeakLiving: function (callbackp) {
             OrgService.create(PeakLiving, function (err, org) {
                 callbackp(err, org)
             });
         }
+
+        ,
+        Harbor: function (callbackp) {
+            OrgService.create(Harbor, function (err, org) {
+                callbackp(err, org)
+            });
+        }        
 
 },function(err, orgs) {
         if (err) {
@@ -1287,7 +1330,23 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.PeakLivingCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
         {executorid: roles.PeakLivingCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.PeakLivingRM._id, resource: "Properties", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingBM._id, resource: "Properties", allow: true, type: 'Execute'},        
+        {executorid: roles.PeakLivingBM._id, resource: "Properties", allow: true, type: 'Execute'},
+
+        {executorid: roles.HarborCM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.HarborRM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.HarborBM._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.HarborCM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.HarborRM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.HarborBM._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.HarborCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.HarborRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.HarborBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.HarborCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.HarborRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.HarborCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
+        {executorid: roles.HarborCM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.HarborRM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.HarborBM._id, resource: "Properties", allow: true, type: 'Execute'},
     ];
 
     async.eachLimit(permissions, 10, function(permission, callbackp){

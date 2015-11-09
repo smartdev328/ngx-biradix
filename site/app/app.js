@@ -33,13 +33,13 @@ define([
         app.filter = $filterProvider.register;
 
         angular.extend(toastrConfig, {
-            timeOut: 15000,
+            timeOut: 5000,
             closeButton: true,
-            positionClass: 'toast-top-center',
+            positionClass: 'toast-top-right',
             allowHtml: true,
             progressBar : true,
             tapToDismiss: true,
-            extendedTimeOut: 15000
+            extendedTimeOut: 5000
         });
 
         if (!window.sessionStorage.redirect) {
