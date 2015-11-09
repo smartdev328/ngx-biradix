@@ -18,7 +18,7 @@ module.exports = {
                 PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property) {
-                    console.log("Subject DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                    //console.log("Subject DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                     callbackp(err, property[0])
                 })
             },
@@ -26,7 +26,7 @@ module.exports = {
                 PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: compId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property, lookups) {
-                    console.log("Comp DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                    //console.log("Comp DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                     callbackp(err, {p: property[0], l: lookups})
                 })
             },
@@ -96,7 +96,7 @@ module.exports = {
                         }
                     })
 
-                    console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                    //console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
 
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner})
 
@@ -167,7 +167,7 @@ module.exports = {
                                 delete c.floorplans;
                             })
 
-                            console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
+                            //console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
 
                             callback (null,{property: property[0], comps: all.comps, points: all.points});
 

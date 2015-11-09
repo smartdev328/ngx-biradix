@@ -251,8 +251,9 @@ A.gear:hover .fa-gear  {
 #toast-container>div {
     padding: 10px 15px !important;
     margin-top: 10px !important;
-    width: 350px !important;
+    width: 300px !important;
 }
+
 
 .toast-close-button {
     color: inherit !important;
@@ -284,4 +285,9 @@ A.gear:hover .fa-gear  {
     color: #f33;
     font-size: 13px;
     font-weight: 400;
+}
+
+.toast-top-right {
+    top:0px !important;
+    right:20px !important;
 }
