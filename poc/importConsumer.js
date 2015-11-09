@@ -84,11 +84,13 @@ queues.getImportQueue().consume(function(data,reply) {
         })
 
         async.eachLimit(all.props, 1, function(prop, callbackp){
-            CreateService.create(all.systemUser,context,prop, function (err, newprop) {
-                console.log(prop.name, err)
-                prop._id = newprop._id;
-                callbackp(err, newprop)
-            });
+            setTimeout(function() {
+                CreateService.create(all.systemUser, context, prop, function (err, newprop) {
+                    console.log(prop.name, err)
+                    prop._id = newprop._id;
+                    callbackp(err, newprop)
+                });
+            },2000);
         }, function(err) {
 
             async.eachLimit(all.links, 20, function(link, callbackp){
