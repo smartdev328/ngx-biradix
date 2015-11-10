@@ -23,6 +23,19 @@ routes.get('/import', function(req, res) {
 
 })
 
+routes.get('/importUsers', function(req, res) {
+    queues.getExchange().publish({},
+        {
+            key: settings.IMPORT_USERS_QUEUE,
+            reply: function () {
+                res.status(200).send("OK");
+            }
+        }
+    );
+
+})
+
+
 routes.get('/readXls', function (req, res) {
 
 

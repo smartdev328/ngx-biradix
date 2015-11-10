@@ -197,15 +197,16 @@ module.exports = {
 
             populateBaseFields(operator, newUser, user, false);
 
-            newUser.date = Date.now();
+            newUser.date = user.date || Date.now();
             newUser.salt = UtilityService.makeSalt();
             newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
             newUser.isSystem = user.isSystem || false;
-            newUser.active = true;
+            newUser.active = user.active || true;
             newUser.settings = {
-                hideUnlinked: false
+                hideUnlinked: user.hideUnlinked || false
             }
             newUser.legacyHash = user.legacyHash
+            newUser.passwordUpdated = user.passwordUpdated || false;
 
             newUser.save(function (err, usr) {
                 if (err) {
@@ -232,6 +233,8 @@ module.exports = {
 
                     //Email password async
                     if (user.emailPassword) {
+                        console.log('Email Sent');
+
                         var logo = base + "/images/organizations/" + userRole.org.logoBig;
                         var email = {
                             to: usr.email,

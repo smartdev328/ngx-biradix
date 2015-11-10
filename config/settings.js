@@ -19,6 +19,7 @@ module.exports = {
     WEB_STATUS_QUEUE : "jobs.status.web",
     PHANTOM_STATUS_QUEUE : "jobs.status.phantom",
     IMPORT_QUEUE : "jobs.temp.import",
+    IMPORT_USERS_QUEUE : "jobs.temp.importUsers",
     RUN_PHANTOM : process.env.RUN_PHANTOM || "web",
     RUN_DASHBOARD : process.env.RUN_DASHBOARD || "web",
     HEROKU_API_KEY : process.env.HEROKU_API_KEY,
