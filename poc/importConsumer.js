@@ -24,15 +24,35 @@ queues.getImportQueue().consume(function(data,reply) {
             });
         },
         props: function(callbackp) {
-            console.log('Getting props');
-            request({url: 'http://platform.biradix.com/seed/props?secret=alex', timeout: 1000 * 60 * 60}, function (error, response, body) {
-                console.log('Got props');
+            console.log('Getting props 1');
+            request({url: 'http://platform.biradix.com/seed/props?secret=alex&skip=0&take=150', timeout: 1000 * 60 * 60}, function (error, response, body) {
+                console.log('Got props 1');
                 if (!error && response.statusCode == 200) {
 
                     var props = JSON.parse(body)
-                    callbackp(null,props)
+                    console.log('Getting props 2');
+                    request({url: 'http://platform.biradix.com/seed/props?secret=alex&skip=150&take=150', timeout: 1000 * 60 * 60}, function (error, response, body) {
+                        console.log('Got props 2');
+                        if (!error && response.statusCode == 200) {
+
+                            props = props.concat(JSON.parse(body));
+                            console.log('Getting props 3');
+                            request({url: 'http://platform.biradix.com/seed/props?secret=alex&skip=300&take=600', timeout: 1000 * 60 * 60}, function (error, response, body) {
+                                console.log('Got props 3');
+                                if (!error && response.statusCode == 200) {
+
+                                    props = props.concat(JSON.parse(body));
+                                    callbackp(null,props);
+                                } else {
+                                    throw Error("Unable to get props")
+                                }
+                            })
+                        } else {
+                            throw Error("Unable to get props")
+                        }
+                    })
                 } else {
-                    callbackp(error, null);
+                    throw Error("Unable to get props")
                 }
             })
         },
@@ -120,14 +140,14 @@ queues.getImportQueue().consume(function(data,reply) {
             }
         })
 
-        async.eachLimit(all.props, 1, function(prop, callbackp){
+        async.eachLimit(all.props, 5, function(prop, callbackp){
             setTimeout(function() {
                 CreateService.create(all.systemUser, context, prop, function (err, newprop) {
                     console.log(prop.name, err)
                     prop._id = newprop._id;
                     callbackp(err, newprop)
                 });
-            },100);
+            },10);
         }, function(err) {
 
             async.eachLimit(all.links, 20, function(link, callbackp){
