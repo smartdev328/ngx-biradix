@@ -245,7 +245,7 @@ module.exports = userRoutes;
 
 function getToken(usr, res) {
     UserService.getFullUser(usr, function(resp) {
-        resp.version = packages.version;
+        resp.user.version = packages.version;
         res.status(200).json(resp);
         resp = null;
         usr = null;

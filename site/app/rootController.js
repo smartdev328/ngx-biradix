@@ -42,10 +42,11 @@ define([
         $rootScope.refreshToken = function(callback) {
             if ($rootScope.refresh) {
                 $authService.refreshToken($cookies.get('token'), function (usr, status) {
+
                     if (usr) {
                         $rootScope.me = usr;
 
-                        if ($rootScope.me.version != version) {
+                        if ($rootScope.me.version.toString() != version.toString()) {
                             location.reload();
                         }
 
@@ -56,17 +57,20 @@ define([
                             callback();
                         }
                     }
-                    else if (status == 401) {
+                    else if (status == 401 ) {
                         if ($rootScope.loggedIn) {
                             $window.sessionStorage.redirect = $location.path();
                         }
                         $rootScope.logoff()
                     }
+                    else if (status == 0 ) {
+                        $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
+                    }
                 })
             }
             else {
                 $rootScope.getMe(function() {
-                    if ($rootScope.me.version != version) {
+                    if ($rootScope.me.version.toString() != version.toString()) {
                         location.reload();
                     }
 
@@ -105,6 +109,11 @@ define([
                         $window.sessionStorage.redirect = $location.path();
                     }
                     $rootScope.logoff()
+                }
+                else if (status == 0) {
+                    if (callback) {
+                        callback();
+                    }
                 }
             })
 
