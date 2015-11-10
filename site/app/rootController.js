@@ -45,6 +45,10 @@ define([
                     if (usr) {
                         $rootScope.me = usr;
 
+                        if ($rootScope.me.version != version) {
+                            location.reload();
+                        }
+
                         $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
 
 
@@ -62,12 +66,17 @@ define([
             }
             else {
                 $rootScope.getMe(function() {
+                    if ($rootScope.me.version != version) {
+                        location.reload();
+                    }
+
                     $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
                     if (callback) {
                         callback();
                     }
                 });
             }
+
 
         }
 

@@ -9,6 +9,7 @@ var AuditService = require('../../audit/services/auditService')
 var settings = require('../../../config/settings')
 var userCreateService = require('../services/userCreateService')
 var userRoutes = express.Router();
+var packages = require('../../../package.json');
 
 userRoutes.post('/resetPassword', function (req, res) {
 
@@ -50,8 +51,12 @@ userRoutes.get('/refreshToken', function (req, res) {
             if (err) {
                 return res.status(200).json(err);
             }
-            getToken(usr, res);
 
+        if (!usr) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+            getToken(usr, res);
         }
     );
 })
@@ -75,7 +80,19 @@ userRoutes.get('/me', function (req, res) {
     delete req.user.memberships;
     delete req.user.ip;
     delete req.user.useragent;
-    res.status(200).json(req.user);
+
+    UserService.getUserById(req.user._id, function(err, obj) {
+        if (!obj) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        obj = null;
+
+        req.user.version = packages.version;
+        res.status(200).json(req.user);
+    })
+
+
 })
 
 userRoutes.post('/create', function (req, res) {
@@ -228,6 +245,7 @@ module.exports = userRoutes;
 
 function getToken(usr, res) {
     UserService.getFullUser(usr, function(resp) {
+        resp.version = packages.version;
         res.status(200).json(resp);
         resp = null;
         usr = null;

@@ -1176,13 +1176,12 @@ var RolesCreate = function(Orgs, callback) {
 
 var CompaniesCreate = function(callback) {
     var Biradix = {name: "BI:Radix", subdomain: 'platform', logoBig: 'biradix.png', logoSmall: 'biradix-small.png', isDefault : true}
-    var Demo = {name: "Demo Residential", subdomain: 'demo', logoBig: 'demo.png', logoSmall: 'demo-small.png'}
-    var Greystar = {name: "Greystar", subdomain: 'greystar', logoBig: 'greystar.jpg', logoSmall: 'greystar-small.png'}
+    var Demo = {name: "Demo Residential", subdomain: 'demo', logoBig: 'biradix.png', logoSmall: 'biradix-small.png'}
+    var Greystar = {name: "Greystar", subdomain: 'greystar', logoBig: 'greystar.png', logoSmall: 'greystar-small.png'}
     var Wood = {name: "Wood Residential", subdomain: 'wood', logoBig: 'wood.png', logoSmall: 'wood-small.png'}
-    var Alliance = {name: "Alliance Residential", subdomain: 'alliance', logoBig: 'alliance.png', logoSmall: 'alliance-small.png'}
+    var Alliance = {name: "Alliance Residential", subdomain: 'alliance', logoBig: 'biradix.png', logoSmall: 'biradix-small.png'}
     var PeakLiving = {name: "Peak Living", subdomain: 'peakliving', logoBig: 'peakliving.png', logoSmall: 'peakliving-small.png'}
     var Harbor = {name: "Harbor", subdomain: 'harbor', logoBig: 'harbor.png', logoSmall: 'harbor-small.png'}
-
 
     async.parallel({
         Biradix: function(callbackp)
