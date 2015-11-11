@@ -241,7 +241,7 @@ define([
     app.factory('$exceptionHandler', function () {
         return function errorCatcherHandler(exception, cause) {
             console.error(exception.stack);
-            $.post( "/error", { error: exception.stack } );
+            NREUM.noticeError(exception);
             location.href="/error.html";
         };
     });
