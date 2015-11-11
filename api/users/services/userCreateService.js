@@ -200,13 +200,13 @@ module.exports = {
             newUser.date = user.date || Date.now();
             newUser.salt = UtilityService.makeSalt();
             newUser.hashed_password = UtilityService.hashPassword(user.password, newUser.salt);
-            newUser.isSystem = user.isSystem || false;
-            newUser.active = user.active || true;
+            newUser.isSystem = (user.isSystem === true) || false;
+            newUser.active = user.active === false ? false : true;
             newUser.settings = {
-                hideUnlinked: user.hideUnlinked || false
+                hideUnlinked: (user.hideUnlinked === true) || false
             }
             newUser.legacyHash = user.legacyHash
-            newUser.passwordUpdated = user.passwordUpdated || false;
+            newUser.passwordUpdated = (user.passwordUpdated === true) || false;
 
             newUser.save(function (err, usr) {
                 if (err) {

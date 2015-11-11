@@ -238,5 +238,12 @@ define([
         }
     ]);
 
+    app.factory('$exceptionHandler', function () {
+        return function errorCatcherHandler(exception, cause) {
+            console.error(exception.stack);
+            location.reload();
+        };
+    });
+
     return app;
 });
