@@ -108,31 +108,33 @@ define([
                             $scope.staticUrl += "&markers=icon:https://biradixplatform-prod.herokuapp.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
                         })
 
-                        if ($scope.aMarkers) {
+                        if (!phantom) {
+                            if ($scope.aMarkers) {
 
-                            for (var i = 0; i < $scope.aMarkers.length; i++) {
-                                google.maps.event.removeListener($scope.aMarkers[i].handle);
+                                for (var i = 0; i < $scope.aMarkers.length; i++) {
+                                    google.maps.event.removeListener($scope.aMarkers[i].handle);
+                                }
                             }
+                            $scope.aMarkers = [];
+
+                            var mapOptions = {
+                                zoom: $scope.getZoom($scope.options.points),
+                                center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            }
+                            var elMap = $($element).find('div')[0]
+                            $scope.oMap = new google.maps.Map(elMap, mapOptions);
+
+                            $scope.loadMarkers();
+
+
+                            $(elMap).width($scope.options.width);
+                            $(elMap).height($scope.options.height + "px");
+
+                            window.setTimeout(function () {
+                                $scope.resize(1)
+                            }, 100);
                         }
-                        $scope.aMarkers = [];
-
-                        var mapOptions = {
-                            zoom: $scope.getZoom($scope.options.points),
-                            center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
-                        }
-                        var elMap = $($element).find('div')[0]
-                        $scope.oMap = new google.maps.Map(elMap, mapOptions);
-
-                        $scope.loadMarkers();
-
-
-                        $(elMap).width($scope.options.width);
-                        $(elMap).height($scope.options.height + "px");
-
-                        window.setTimeout(function () {
-                            $scope.resize(1)
-                        }, 100);
 
                         $scope.gLoaded = true;
                     }
