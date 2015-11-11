@@ -136,7 +136,7 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
             AccessService.getRoles({tags:[propertyid.toString()]}, callbackp);
         },
         properties: function(callbackp) {
-            PropertyService.search(operator, {select:"_id name", ids:[propertyid.toString()]}, function(err,props,lookups) {
+            PropertyService.search(operator, {select:"_id name comps.id", ids:[propertyid.toString()]}, function(err,props,lookups) {
                 callbackp(err,props)
             })
         }
@@ -164,6 +164,18 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
             AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.createPermission({executorid: PORole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.assignMembership({userid: user._id, roleid: PORole._id}, function () {});
+
+            all.properties.forEach(function(property) {
+                property.comps.forEach(function(comp) {
+                    AccessService.createPermission({
+                        executorid: PORole._id,
+                        resource: comp.id,
+                        allow: true,
+                        type: 'PropertyView'
+                    }, function () {
+                    });
+                })
+            })
         }
         AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
 
