@@ -238,13 +238,15 @@ define([
         }
     ]);
 
-    app.factory('$exceptionHandler', function () {
-        return function errorCatcherHandler(exception, cause) {
-            console.error(exception.stack);
-            NREUM.noticeError(exception);
-            location.href="/error.html";
-        };
-    });
+    if (!phantom) {
+        app.factory('$exceptionHandler', function () {
+            return function errorCatcherHandler(exception, cause) {
+                console.error(exception.stack);
+                NREUM.noticeError(exception);
+                location.href = "/error.html";
+            };
+        });
+    }
 
     return app;
 });
