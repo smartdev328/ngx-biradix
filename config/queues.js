@@ -10,7 +10,7 @@ var pdf_profile_queue;
 var pdf_reporting_queue;
 var web_status_queue;
 var phantom_status_queue;
-var import_queue;
+//var import_queue;
 //var import_users_queue;
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
     getPdfReportingQueue : function() {return pdf_reporting_queue},
     getWebStatusQueue : function() {return web_status_queue},
     getPhantomStatusQueue : function() {return phantom_status_queue},
-    getImportQueue : function() {return import_queue},
+    //getImportQueue : function() {return import_queue},
     //getImportUsersQueue : function() {return import_users_queue},
     connect : function(callback) {
 
@@ -41,7 +41,7 @@ module.exports = {
             web_status_queue = exchange.queue({ name: settings.WEB_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
             phantom_status_queue = exchange.queue({ name: settings.PHANTOM_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
-            import_queue = exchange.queue({ name: settings.IMPORT_QUEUE, prefetch: 1, durable: false});
+            //import_queue = exchange.queue({ name: settings.IMPORT_QUEUE, prefetch: 1, durable: false});
             //import_users_queue = exchange.queue({ name: settings.IMPORT_USERS_QUEUE, prefetch: 1, durable: false});
 
 

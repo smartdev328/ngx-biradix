@@ -241,7 +241,8 @@ define([
     app.factory('$exceptionHandler', function () {
         return function errorCatcherHandler(exception, cause) {
             console.error(exception.stack);
-            location.reload();
+            $.post( "/error", { error: exception.stack } );
+            location.href="/error.html";
         };
     });
 

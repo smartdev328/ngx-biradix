@@ -8,6 +8,10 @@ module.exports = (function() {
 
     var ui = express.Router();
 
+    ui.post('/error', function (req, res) {
+        throw new Error(req.body.error);
+    });
+
     ui.get('/', function (req, res) {
         if (req.headers['x-forwarded-proto'] !== 'https' && req.get('host').indexOf('biradix.com') > -1) {
             return res.redirect('https://' + req.get('host') + req.originalUrl);

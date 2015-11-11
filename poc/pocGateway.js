@@ -11,17 +11,17 @@ var settings = require("../config/settings")
 routes.get('/error', function(req, res) {
     throw new Error('I am an error');
 });
-routes.get('/import', function(req, res) {
-    queues.getExchange().publish({},
-        {
-            key: settings.IMPORT_QUEUE,
-            reply: function () {
-                res.status(200).send("OK");
-            }
-        }
-    );
-
-})
+//routes.get('/import', function(req, res) {
+//    queues.getExchange().publish({},
+//        {
+//            key: settings.IMPORT_QUEUE,
+//            reply: function () {
+//                res.status(200).send("OK");
+//            }
+//        }
+//    );
+//
+//})
 
 //routes.get('/importUsers', function(req, res) {
 //    queues.getExchange().publish({},

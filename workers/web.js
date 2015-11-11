@@ -71,7 +71,7 @@ d.run(function() {
                     require('../config/pdfHitCount');
                 }
 
-                require('../poc/importConsumer');
+                //require('../poc/importConsumer');
             }
 
             var server = app.listen(settings.PORT, function () {
