@@ -9,7 +9,6 @@ define([
     '../../components/propertyProfile/tableView',
     '../../services/progressService',
     '../../components/toggle/module',
-    '../../components/daterangepicker/module',
     '../../components/timeseries/module',
     '../../services/cookieSettingsService',
     '../../services/auditService',

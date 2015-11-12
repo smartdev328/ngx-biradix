@@ -5,7 +5,6 @@ define([
     '../../components/propertyProfile/comps',
     '../../components/googleMap/module',
     '../../components/toggle/module',
-    '../../components/daterangepicker/module',
     '../../components/timeseries/module',
     '../../services/cookieSettingsService',
     '../../services/exportService',
@@ -110,37 +109,46 @@ define([
             $scope.loadProperty($scope.selectedProperty._id, true);
         }
 
-        $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true}).then(function (response) {
-            $scope.myProperties = response.data.properties;
+        //make sure me is loaded befor you search initially
+        $rootScope.$watch("me", function(x) {
+            $propertyService.search({
+                limit: 1000,
+                permission: 'PropertyManage',
+                active: true
+            }).then(function (response) {
+                $scope.myProperties = response.data.properties;
 
 
-            var id = $rootScope.me.settings.defaultPropertyId;
+                var id = $rootScope.me.settings.defaultPropertyId;
 
 
-            if (!$scope.myProperties || $scope.myProperties.length == 0) {
-                id = null;
-            }
-            else if (!id) {
-                $scope.selectedProperty = $scope.myProperties[0];
-            } else {
-                $scope.selectedProperty = _.find($scope.myProperties, function(x) {return x._id.toString() == id})
-            }
+                if (!$scope.myProperties || $scope.myProperties.length == 0) {
+                    id = null;
+                }
+                else if (!id) {
+                    $scope.selectedProperty = $scope.myProperties[0];
+                } else {
+                    $scope.selectedProperty = _.find($scope.myProperties, function (x) {
+                        return x._id.toString() == id
+                    })
+                }
 
-            if ($scope.selectedProperty) {
-                $scope.loadProperty($scope.selectedProperty._id)
-            } else {
+                if ($scope.selectedProperty) {
+                    $scope.loadProperty($scope.selectedProperty._id)
+                } else {
+                    $scope.localLoading = true;
+                }
+
+            }, function (error) {
+                if (error.status == 401) {
+                    $rootScope.logoff();
+                    return;
+                }
+
+                toastr.error('Unable to access the system at this time. Please contact an administrator');
                 $scope.localLoading = true;
-            }
-
-        }, function(error) {
-            if (error.status == 401) {
-                $rootScope.logoff();
-                return;
-            }
-
-            toastr.error('Unable to access the system at this time. Please contact an administrator');
-            $scope.localLoading = true;
-        })
+            })
+        });
 
         $scope.viewProfile = function() {
             $location.path("/profile/" + $scope.selectedProperty._id);

@@ -40,6 +40,7 @@ module.exports = {
 
             var RMRole = _.find(all.subjectgrouprole, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
             var BMRole = _.find(all.subjectgrouprole, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
+            var PORole = _.find(all.subjectgrouprole, function(x) {return x.tags.indexOf('PO_GROUP') > -1});
             var CMRole = _.find(all.CMroles, function(x) {return x.tags.indexOf('CM') > -1 && x.orgid.toString() == (all.subject.orgid || '').toString()});
 
             var ObjectId = require('mongoose').Types.ObjectId;
@@ -49,7 +50,25 @@ module.exports = {
             var options = {new: true};
 
             PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                //Allows POs to view any comp they have as a subject
+                if (PORole) {
+                    AccessService.createPermission({
+                        executorid: PORole._id,
+                        resource: new ObjectId(compid),
+                        allow: true,
+                        type: 'PropertyView'
+                    }, function () {
+                    });
+                    AccessService.createPermission({
+                        executorid: PORole._id,
+                        resource: new ObjectId(subjectid),
+                        allow: true,
+                        type: 'PropertyView'
+                    }, function () {
+                    });
+                }
 
+                //Allows RMs, BMs and CMs to manage any comp they have as a subject
                 if (all.subject._id.toString() != all.comp._id.toString() && CMRole) {
                     AccessService.createPermission({
                         executorid: RMRole._id,

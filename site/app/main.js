@@ -15,6 +15,7 @@ requirejs.onError = function (err) {
     if (err) {
         //Reload
         NREUM.noticeError(err);
+        console.error(err);
         location.href="/error.html";
     }
     else {

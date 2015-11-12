@@ -6,6 +6,8 @@ var routes = express.Router();
 var async = require("async");
 var request = require('request')
 var PropertyService = require('../api/properties/services/propertyService')
+var AccessService = require('../api/access/services/accessService')
+var PropertySchema = require('../api/properties/schemas/propertySchema')
 var settings = require("../config/settings")
 
 routes.get('/error', function(req, res) {
@@ -35,6 +37,41 @@ routes.get('/error', function(req, res) {
 //
 //})
 
+routes.get('/fixPOs', function (req, res) {
+
+    AccessService.getRoles({tags:['PO_GROUP']}, function(err,roles) {
+        PropertySchema.find({},function(err, props) {
+            var data = [];
+            props.forEach(function(prop) {
+                var comps = _.pluck(prop.comps,"id");
+
+                comps.forEach(function(c) {
+                      var r = _.find(roles, function(x) { return x.tags.indexOf(prop._id.toString()) > -1 })._id.toString();
+                      data.push({n: prop.name, s:prop._id.toString(), comp: c.toString(), role: r});
+                })
+            })
+
+            var ObjectId = require('mongoose').Types.ObjectId;
+
+            async.eachLimit(data, 10, function(d, callbackp){
+
+                AccessService.createPermission({
+                    executorid: new ObjectId(d.role),
+                    resource: new ObjectId(d.comp),
+                    allow: true,
+                    type: 'PropertyView'
+                }, function () {
+                    callbackp(null);
+                });
+            }, function(err) {
+                res.status(200).json(data);
+            });
+
+        });
+    });
+
+
+});
 
 routes.get('/readXls', function (req, res) {
 

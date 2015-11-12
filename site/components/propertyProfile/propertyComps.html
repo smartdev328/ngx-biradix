@@ -127,7 +127,7 @@
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
         <td style="text-align:center" class="hidden-print">
-            <a href ng-click="marketSurvey(comp._id)"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
+            <a href ng-click="marketSurvey(comp._id)" ng-if="canSurvey"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          tooltip-placement="left"
                                                          tooltip="{{surveyTooltip(comp)}}"
 

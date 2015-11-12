@@ -165,17 +165,17 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
             AccessService.createPermission({executorid: PORole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.assignMembership({userid: user._id, roleid: PORole._id}, function () {});
 
-            all.properties.forEach(function(property) {
-                property.comps.forEach(function(comp) {
-                    AccessService.createPermission({
-                        executorid: PORole._id,
-                        resource: comp.id,
-                        allow: true,
-                        type: 'PropertyView'
-                    }, function () {
-                    });
-                })
-            })
+            //all.properties.forEach(function(property) {
+            //    property.comps.forEach(function(comp) {
+            //        AccessService.createPermission({
+            //            executorid: PORole._id,
+            //            resource: comp.id,
+            //            allow: true,
+            //            type: 'PropertyView'
+            //        }, function () {
+            //        });
+            //    })
+            //})
         }
         AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
 

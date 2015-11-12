@@ -9,7 +9,8 @@ define([
             scope: {
                 comps: '=',
                 orderBy: '=',
-                show: '='
+                show: '=',
+                canSurvey: '='
             },
             controller: function ($scope, $gridService, $cookies) {
                 $scope.defaultSort = "number"

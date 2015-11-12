@@ -15,7 +15,7 @@ module.exports = {
                 if (subjectId == compId) {
                     return callbackp();
                 }
-                PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: subjectId
+                PropertyService.search(user, {limit: 1, permission: ['PropertyView'], _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property) {
                     //console.log("Subject DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
@@ -23,7 +23,7 @@ module.exports = {
                 })
             },
             comp: function (callbackp) {
-                PropertyService.search(user, {limit: 1, permission: 'PropertyView', _id: compId
+                PropertyService.search(user, {limit: 1, permission: ['PropertyView','PropertyManage','CompManage'], _id: compId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid"
                 }, function(err, property, lookups) {
                     //console.log("Comp DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
@@ -35,7 +35,7 @@ module.exports = {
                 if (!checkManaged) {
                     return callbackp(null,false);
                 }
-                PropertyService.search(user, {limit: 1, permission: 'CompManage', _id: compId
+                PropertyService.search(user, {limit: 1, permission: ['CompManage'], _id: compId
                     , select: "_id"
                 }, function(err, property) {
                     callbackp(err, property.length == 1)
@@ -46,7 +46,7 @@ module.exports = {
                 if (!checkManaged) {
                     return callbackp(null,true);
                 }
-                PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: compId
+                PropertyService.search(user, {limit: 1, permission: ['PropertyManage'], _id: compId
                     , select: "_id"
                 }, function(err, property) {
                     callbackp(err, property.length == 1)
@@ -61,6 +61,7 @@ module.exports = {
                 if (subjectId == compId) {
                     all.subject = _.cloneDeep(all.comp.p);
                 }
+
                 delete all.comp.p.comps;
 
                 async.parallel({

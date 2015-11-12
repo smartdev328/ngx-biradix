@@ -194,6 +194,10 @@ module.exports = {
                 })
         }
         }, function(err, all) {
+
+            //if (criteria.permission[0]=='PropertyView') {
+            //    console.log(criteria, all.permissions, Operator.memberships, Operator._id)
+            //}
             var query = PropertySchema.find();
             if (criteria._id) {
                 criteria.ids = criteria.ids || [];
@@ -222,8 +226,6 @@ module.exports = {
                 query = query.where('_id').in(all.permissions);
             }
 
-
-
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
             }
@@ -243,6 +245,7 @@ module.exports = {
                     query = query.select(criteria.select || '_id name');
                 }
             }
+
 
             query.exec(function(err, props) {
                 var time = new Date();
