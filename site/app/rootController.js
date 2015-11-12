@@ -8,6 +8,8 @@ define([
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $modal, toastr,ngProgress,$timeout) {
 
+        var refreshFactor = 1;
+
         $rootScope.version = version;
         $rootScope.logoBig = logoBig;
 
@@ -48,10 +50,10 @@ define([
                         $rootScope.me = usr;
 
                         if ($rootScope.me.version.toString() != version.toString()) {
-                            location.reload();
+                               location.reload();
                         }
 
-                        $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
+                        $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
 
 
                         if (callback) {
@@ -65,7 +67,7 @@ define([
                         $rootScope.logoff()
                     }
                     else if (status == 0 ) {
-                        $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
+                        $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
                     }
                 })
             }
@@ -75,7 +77,7 @@ define([
                         location.reload();
                     }
 
-                    $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
+                    $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
                     if (callback) {
                         callback();
                     }
@@ -145,7 +147,7 @@ define([
                     $rootScope.updateLogos();
 
 
-                    $window.setTimeout($rootScope.refreshToken,60 * 1000); // start token refresh in 1 min
+                    $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
                     $timeout($rootScope.incrementTimeout, 1000);
 
                     if ($window.sessionStorage.redirect) {
