@@ -137,7 +137,7 @@
 
 @media print {
 
-    table,th, tr, tfoot {
+    table,th, tr, tfoot tr td {
         position: relative !important;
     }
 
