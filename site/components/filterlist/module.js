@@ -111,7 +111,10 @@ define([
 
                 }
 
-                $scope.ie = /rv:11/.test(window.navigator.userAgent) || /MSIE/.test(window.navigator.userAgent)
+                $scope.ie =
+                    /rv:11/.test(window.navigator.userAgent)
+                    || /MSIE/.test(window.navigator.userAgent)
+                    || /Edge/.test(window.navigator.userAgent)
 
                 $scope.small = $(window).width() <= 550 || $scope.ie;
 
