@@ -216,7 +216,7 @@ module.exports = {
                     return callback(false);
                 }
 
-                var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresInSeconds: 30 * 60 });
+                var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresIn: 30 * 60 });
 
                 getFullUser(usr, function(resp) {
                     var logo = base + "/images/organizations/" + resp.user.org.logoBig;
@@ -506,7 +506,7 @@ function getFullUser(usr, callback) {
                 }
 
                 var minutesToExpire = 60;
-                var token = jwt.sign(usrobj, settings.SECRET, {expiresInSeconds: minutesToExpire * 60});
+                var token = jwt.sign(usrobj, settings.SECRET, {expiresIn: minutesToExpire * 60});
 
                 delete usrobj.memberships;
                 delete usrobj.ip;

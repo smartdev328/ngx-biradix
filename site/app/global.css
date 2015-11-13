@@ -62,6 +62,15 @@ td.center,th.center {text-align:center}
 }
 
 @media print {
+
+    .fa-clock-o.danger:before {
+        color: red !important;
+    }
+
+    .fa-clock-o.warning:before {
+        color: orange !important;
+    }
+
     body {
         width:1210px;
     }

@@ -136,6 +136,11 @@
 }
 
 @media print {
+
+    table,th {
+        position: relative !important;
+    }
+
     .maingrid .header {
         background-color: #f8f8f8 !important;
     }
@@ -152,7 +157,9 @@
         background-color: #f9f9f9 !important;
     }
 
-    .maingrid.wrapper.panel .subtotal TD {
+    .maingrid.wrapper.panel .subtotal TD,
+    .maingrid.wrapper.panel .subtotal TD SPAN
+    {
         background-color:white !important;
         color: #4460a9 !important;
     }

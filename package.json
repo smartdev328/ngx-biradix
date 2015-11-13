@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "ioredis": "^1.2.5",
     "jackrabbit": "^4.0.1",
     "json-buffer": "^2.0.11",
-    "jsonwebtoken": "^5.0.0",
+    "jsonwebtoken": "5.4.1",
     "liquid-node": "^2.5.0",
     "lodash": "^3.8.0",
     "md5": "^2.0.0",
