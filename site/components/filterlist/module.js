@@ -30,11 +30,13 @@ define([
                     if ($scope.options) {
                         $scope.search();
 
-                        $scope.items.forEach(function(i) {
-                           if (!i.selected) {
-                               $scope.filters.checkAll = false;
-                           }
-                        });
+                        if ($scope.items) {
+                            $scope.items.forEach(function (i) {
+                                if (!i.selected) {
+                                    $scope.filters.checkAll = false;
+                                }
+                            });
+                        }
                     }
                 });
 
