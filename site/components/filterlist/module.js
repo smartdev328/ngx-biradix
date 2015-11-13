@@ -40,20 +40,15 @@ define([
 
                 $scope.timer = 0;
 
-                $scope.resetTime = function() {
-                    $scope.timer = 0;
-                    window.setTimeout(function() {
-                        $scope.resetTime();
-                    }, 300);
-                }
-
-                $scope.resetTime();
-
                 $scope.clk = function(rows,state) {
                     $scope.timer ++;
 
-                    if ($scope.timer == 2 && rows && rows.length) {
+                    if ($scope.timer % 2 == 0 && rows && rows.length) {
                         $scope.dbl(rows,state);
+                    } else {
+                        window.setTimeout(function() {
+                            $scope.timer = 0;
+                        }, 500);
                     }
                 }
 
