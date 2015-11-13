@@ -13,6 +13,8 @@ define([
             controller: function ($scope, $filter, $element) {
                 $scope.version = version;
 
+                $scope.filters = {checkAll : true}
+
                 $scope.search = function(s) {
                     if (s) {
                         var filtered = $filter('filter')($scope.items, s.lstfilter)
@@ -27,6 +29,12 @@ define([
 
                     if ($scope.options) {
                         $scope.search();
+
+                        $scope.items.forEach(function(i) {
+                           if (!i.selected) {
+                               $scope.filters.checkAll = false;
+                           }
+                        });
                     }
                 });
 
@@ -108,7 +116,8 @@ define([
 
                 }
 
-                $scope.ie = /rv:11.0/.test(window.navigator.userAgent)
+                $scope.ie = /rv:11/.test(window.navigator.userAgent) || /MSIE/.test(window.navigator.userAgent)
+
                 $scope.small = $(window).width() <= 550 || $scope.ie;
 
                 if (!$scope.ie) {

@@ -9,6 +9,9 @@
             <i class="fa fa-search form-control-feedback" style="color:#BDE3FD"></i>
         </div>
         <div style="max-height:200px;overflow-y:auto">
+            <div class="checkbox-row">
+                <label><input type="checkbox" ng-model="filters.checkAll" ng-change="all(filters.checkAll)"> <b style="cursor: pointer"><span ng-if="filters.checkAll">Uncheck</span><span ng-if="!filters.checkAll">Check</span> All</b></label>
+            </div>
             <div ng-repeat="(key, value) in groups">
                 <b ng-show="key != 'undefined'">{{key}}</b>
                 <div ng-repeat="item in value" class="checkbox-row">
