@@ -30,6 +30,25 @@ define([
                     }
                 });
 
+                $scope.timer = 0;
+
+                $scope.resetTime = function() {
+                    $scope.timer = 0;
+                    window.setTimeout(function() {
+                        $scope.resetTime();
+                    }, 300);
+                }
+
+                $scope.resetTime();
+
+                $scope.clk = function(rows,state) {
+                    $scope.timer ++;
+
+                    if ($scope.timer == 2 && rows && rows.length) {
+                        $scope.dbl(rows,state);
+                    }
+                }
+
                 $scope.dbl = function (rows, state) {
                     if (!rows || rows.length == 0) {
                         return;
@@ -89,12 +108,15 @@ define([
 
                 }
 
-                $scope.small = $(window).width() <= 550;
+                $scope.ie = /rv:11.0/.test(window.navigator.userAgent)
+                $scope.small = $(window).width() <= 550 || $scope.ie;
 
-                $scope.$on('size', function(e,size) {
-                    $scope.small = size <= 550;
+                if (!$scope.ie) {
+                    $scope.$on('size', function (e, size) {
+                        $scope.small = size <= 550;
 
-                });
+                    });
+                }
             },
             templateUrl: '/components/filterlist/filterlist.html?bust=' + version
         };
