@@ -24,13 +24,12 @@
         <div ng-show="findComp && findComp.length > 1 && properties.length == 0" class="alert alert-warning" role="alert">No properties found. Use the option below to create a new comp property.</div>
 
         <table class="table table-condensed table-striped table-hover" style="margin-top:10px" ng-show="findComp && findComp.length > 1 && properties.length > 0">
-            <thead>
-            <tr>
+            <tbody>
+            <tr class="thead">
                 <th>Property</th>
                 <th></th>
             </tr>
-            </thead>
-            <tbody>
+
             <tr ng-repeat="row in properties">
                 <td>
                     <div ng-bind-html="row.summary | sanitize">

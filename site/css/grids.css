@@ -148,3 +148,8 @@
 
 
 }
+
+
+.table>tbody>tr>th {
+    border-top: inherit !important;
+}

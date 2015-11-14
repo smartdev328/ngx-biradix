@@ -41,8 +41,8 @@
         </div>
 
         <table class="table table-condensed table-striped table-hover survey-values" style="margin-bottom:10px">
-            <thead>
-            <tr>
+            <tbody>
+            <tr class="thead">
                 <th><span class="hidden-xs">Type</span><span class="visible-xs">F.P.</span></th>
                 <th class="hidden-xs">Desc.</th>
                 <th style="text-align: center"><span class="hidden-xs">Units</span><span class="visible-xs">#</span></th>
@@ -58,8 +58,6 @@
                  popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
                         ></i></th>
             </tr>
-            </thead>
-            <tbody>
 
             <tr ng-repeat="row in survey.floorplans">
                 <td>

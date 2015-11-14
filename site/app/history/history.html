@@ -51,8 +51,8 @@
     <div class="maingrid wrapper"  style="overflow-x:auto" ng-if="activity && activity.length > 0">
         <div class="header"></div>
     <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
-        <thead>
-        <tr>
+        <tbody>
+        <tr class="thead">
             <th style="width:24px"></th>
             <th>Date</th>
             <th>Action</th>
@@ -60,8 +60,6 @@
             <th>Operator</th>
             <th>&nbsp;</th>
         </tr>
-        </thead>
-        <tbody>
         <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : ''}">
             <td style="text-align: center"><i
                     ng-if="me.permissions.indexOf('History/MoreInfo') > -1 || row.data"

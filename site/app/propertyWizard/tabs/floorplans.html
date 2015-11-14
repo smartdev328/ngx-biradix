@@ -16,8 +16,8 @@ There are currently no floor plans set up for this property.
 </button>
 
 <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px" ng-show="property.floorplans.length > 0">
-    <thead>
-    <tr>
+    <tbody>
+    <tr class="thead">
         <th>Type</th>
         <th>Desc.</th>
         <th style="text-align: center">Units</th>
@@ -25,8 +25,7 @@ There are currently no floor plans set up for this property.
         <th style="text-align: center">Sqft</th>
         <th></th>
     </tr>
-    </thead>
-    <tbody>
+
     <tr ng-repeat="row in property.floorplans | orderBy:['bedrooms','bathrooms','sqft','units','description']">
         <td>
             {{row.bedrooms}}x{{row.bathrooms}}

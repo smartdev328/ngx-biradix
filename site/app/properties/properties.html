@@ -93,8 +93,8 @@
     <div class="maingrid wrapper">
         <div class="header"></div>
         <table class="table table-condensed table-striped table-hover">
-        <thead>
-        <tr>
+            <tbody>
+            <tr class="thead">
             <th style="width:24px"></th>
             <th ng-show="show.rownumber">#</th>
             <th ng-show="show.date" class= ng-click="toggleSort('date')">
@@ -162,8 +162,7 @@
             </th>
             <th ng-show="show.tools" class="center"></th>
         </tr>
-        </thead>
-        <tbody>
+
         <tr ng-repeat-start="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
             <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
