@@ -63,6 +63,10 @@ td.center,th.center {text-align:center}
 
 @media print {
 
+    a[href]:after {
+        content: none !important;
+    }
+
     /*body,td {*/
         /*font-size:20px !important;*/
     /*}*/
@@ -79,6 +83,11 @@ td.center,th.center {text-align:center}
     .fa-clock-o.warning:before {
         color: orange !important;
     }
+
+    .fa-exclamation-triangle.warning:before {
+        color: orange !important;
+    }
+
 
     body {
         width:1210px;
@@ -308,4 +317,28 @@ A.gear:hover .fa-gear  {
 .toast-top-right {
     top:0px !important;
     right:20px !important;
+}
+
+@media print {
+
+    #toast-container>.toast-error {
+        background-color: #ffe1e1 !important;
+        color: #f33 !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+    }
+
+    #toast-container>.toast-success {
+        background-color: #e8f8ed;
+        color: #70b760;
+        font-size: 13px;
+        font-weight: 400;
+    }
+
+    #toast-container>.toast-warning {
+        background-color: #ffe5cb;
+        color: #f90;
+        font-size: 13px;
+        font-weight: 400;
+    }
 }

@@ -38,7 +38,8 @@ define([
                 rent: true,
                 concessions: true,
                 ner: true,
-                nersqft: true
+                nersqft: true,
+                mersqft: false
             }
 
             var w = $(window).width();

@@ -35,7 +35,7 @@ define([
             $scope.orderByFp = $cookies.get("fp.o");
         }
 
-        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true,mersqft: false}
         if ($cookies.get("fp.s")) {
             $scope.show = JSON.parse($cookies.get("fp.s"));
         }
@@ -46,7 +46,7 @@ define([
             $scope.orderByComp = $cookies.get("cmp.o");
         }
 
-        $scope.showComp = {description:true,units:true,unitPercent:false,occupancy:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true}
+        $scope.showComp = {description:true,units:true,unitPercent:false,occupancy:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true,mersqft: false}
         if ($cookies.get("cmp.s")) {
             $scope.showComp = JSON.parse($cookies.get("cmp.s"));
         }

@@ -12,8 +12,6 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
     console.log(data.id + " pdf started");
     PropertyService.search(data.user, {_id: data.id}, function(err, properties) {
         UserService.getFullUser(data.user, function(full) {
-            moment().utcOffset(data.timezone);
-
             var p = properties[0];
             var fileName = p.name.replace(/ /g, "_");
 
@@ -21,7 +19,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 fileName += '_and_Comps';
             }
 
-            fileName += "_" + moment().format("MM_DD_YYYY");
+            fileName += "_" + moment().utcOffset(data.timezone).format("MM_DD_YYYY");
 
             fileName += ".pdf";
 
@@ -102,11 +100,10 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
 
     PropertyService.search(data.user, {_id: data.id}, function(err, properties) {
         UserService.getFullUser(data.user, function (full) {
-            moment().utcOffset(data.timezone);
             var p = properties[0];
             var fileName = p.name.replace(/ /g, "_");
 
-            fileName += "_Report" + moment().format("MM_DD_YYYY");
+            fileName += "_Report_" + moment().utcOffset(data.timezone).format("MM_DD_YYYY");
 
             fileName += ".pdf";
 

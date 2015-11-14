@@ -100,6 +100,7 @@ module.exports = {
             delete fp.amenities;
             fp.ner = Math.round(fp.rent - (fp.concessions / 12))
             fp.nersqft = Math.round(fp.ner / fp.sqft * 100) / 100
+            fp.mersqft = Math.round(fp.rent / fp.sqft * 100) / 100
             if (links.excluded === true && hide) {
                 links.floorplans = links.floorplans.map(function (x) {
                     return x.toString()
@@ -112,6 +113,7 @@ module.exports = {
                     delete fp.concessions;
                     delete fp.ner;
                     delete fp.nersqft;
+                    delete fp.mersqft;
                 }
             }
         })
@@ -169,5 +171,6 @@ var  getSurveyStats = function(floorplans, survey, links, hide) {
             }) / totUnits);
         survey.ner = Math.round(survey.rent - (survey.concessions / 12))
         survey.nersqft = Math.round(survey.ner / survey.sqft * 100) / 100
+        survey.mersqft = Math.round(survey.rent / survey.sqft * 100) / 100
     }
 }

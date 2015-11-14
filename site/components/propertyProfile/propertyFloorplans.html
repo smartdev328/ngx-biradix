@@ -54,6 +54,12 @@
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft">
+            Rent/&nbsp;&nbsp;<br>Sqft
+            <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
+        </th>
     </tr>
 
         <tr ng-repeat-start="(i, bedroom) in comp.survey.bedrooms" ng-if="false">
@@ -66,7 +72,7 @@
             </td>
             <td ng-if="show.description">
                 {{fp.description}}
-                <i class="fa fa-exclamation-triangle"
+                <i class="fa fa-exclamation-triangle warning"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="fp.excluded"
                    popover-trigger="mouseenter"
@@ -95,11 +101,14 @@
             <td style="text-align: right" class="pad" ng-if="show.nersqft">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
             </td>
+            <td style="text-align: right" class="pad" ng-if="show.mersqft">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.mersqft == null ? "-" : "$" + (fp.mersqft | number : 2)}}</span>
+            </td>
         </tr>
         <tr class="subtotal" style="background-color:white !important">
             <td colspan="{{show.description ? '2' : '1'}}">
                 <!--{{bedroomsLabel(i)}}-->
-                <i class="fa fa-exclamation-triangle"
+                <i class="fa fa-exclamation-triangle warning"
                    style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="bedroom.excluded"
                    popover-trigger="mouseenter"
@@ -128,6 +137,9 @@
             <td style="text-align: right" class="pad" ng-if="show.nersqft">
                 <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.nersqft == null ? "-" : "$" + (bedroom.nersqft | number : 2)}}</span>
             </td>
+            <td style="text-align: right" class="pad" ng-if="show.mersqft">
+                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.mersqft == null ? "-" : "$" + (bedroom.mersqft | number : 2)}}</span>
+            </td>
         </tr>
         <tr ng-repeat-end ng-if="false">
 
@@ -136,7 +148,7 @@
     <tr class="tfoot">
         <td colspan="{{show.description ? '2' : '1'}}">
             Totals/Averages
-            <i class="fa fa-exclamation-triangle"
+            <i class="fa fa-exclamation-triangle warning"
                style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                ng-if="comp.survey.excluded"
                popover-trigger="mouseenter"
@@ -144,7 +156,7 @@
                popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                     ></i>
         </td>
-        <td style="text-align: right" ng-if="show.units">
+        <td style="text-align: right" ng-if="show.units" class="pad">
             {{comp.totalUnits}}
         </td>
         <td style="text-align: right" class="pad" ng-if="show.unitPercent">
@@ -164,6 +176,9 @@
         </td>
         <td style="text-align: right" class="pad" ng-if="show.nersqft">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft | number : 2)}}</span>
+        </td>
+        <td style="text-align: right" class="pad" ng-if="show.mersqft">
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.mersqft == null ? "-" : "$" + (comp.survey.mersqft | number : 2)}}</span>
         </td>
     </tr>
 
