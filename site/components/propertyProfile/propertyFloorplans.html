@@ -1,8 +1,8 @@
 <div class="maingrid wrapper panel" style="overflow-x:auto">
 <div class="header" style="height:46px"></div>
 <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
-    <thead>
-    <tr style="height: 45px">
+    <tbody>
+    <tr style="height: 45px;" class="thead">
         <th style="min-width:40px;" class="center">
             Type
         </th>
@@ -56,8 +56,6 @@
         </th>
     </tr>
 
-    </thead>
-    <tbody>
         <tr ng-repeat-start="(i, bedroom) in comp.survey.bedrooms" ng-if="false">
 
         </tr>
@@ -135,8 +133,7 @@
 
         </tr>
     </tbody>
-    <tfoot>
-    <tr>
+    <tr class="tfoot">
         <td colspan="{{show.description ? '2' : '1'}}">
             Totals/Averages
             <i class="fa fa-exclamation-triangle"
@@ -169,7 +166,6 @@
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft | number : 2)}}</span>
         </td>
     </tr>
-    </tfoot>
 
 </table>
 </div>

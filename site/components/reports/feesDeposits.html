@@ -5,8 +5,8 @@
         <div class="maingrid wrapper panel" style="overflow-x:auto">
             <div class="header" style="height:46px"></div>
             <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
-                <thead>
-                <tr>
+                <tbody>
+                <tr class="thead">
                     <th style="height:45px;max-height:45px">
             Fees / Deposits
         </th>
@@ -17,8 +17,6 @@
             <div style="max-height:34px;overflow-y:visible">{{comp.name}}</div>
         </th>
     </tr>
-    </thead>
-    <tbody>
         <tr ng-repeat-start="amenity in uniqueAmenities">
             <td>
                 {{amenity}}

@@ -5,8 +5,8 @@
         <div class="maingrid wrapper panel" style="overflow-x:auto">
     <div class="header" style="height:46px"></div>
     <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
-    <thead>
-    <tr>
+    <tbody>
+    <tr class="thead">
         <th ng-click="toggleSort('name')" style="height:45px">
             Property
             <i ng-show="sort.name == null" class="fa fa-sort"></i>
@@ -44,8 +44,7 @@
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
     </tr>
-    </thead>
-    <tbody>
+
         <tr ng-repeat-start="(key,value) in rankings" ng-if="false">
 
         </tr>

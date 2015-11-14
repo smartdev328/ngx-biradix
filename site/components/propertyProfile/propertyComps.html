@@ -1,8 +1,8 @@
 <div class="maingrid wrapper panel" style="overflow-x:auto">
     <div class="header" style="height:46px"></div>
 <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
-    <thead>
-    <tr>
+    <tbody>
+    <tr class="thead">
         <th style="width:25px;" class="hidden-print">
 
         </th>
@@ -67,8 +67,7 @@
             &nbsp;
         </th>
     </tr>
-    </thead>
-    <tbody>
+
     <tr ng-repeat-start="comp in comps | orderBy : orderBy">
         <td style="text-align: center"  class="hidden-print">
             <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(comp)"></i>

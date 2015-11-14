@@ -10,24 +10,9 @@
     border-bottom: 1px solid #ccc;
 }
 
-.maingrid > table thead {
-    background-color: #f9f9f9;
-}
-
-.maingrid > table >tbody>tr:nth-of-type(odd) {
-    background-color: #fff !important;
-}
-
-.maingrid > table >tbody>tr:nth-of-type(even) {
+.maingrid > table .thead {
     background-color: #f9f9f9 !important;
-}
-
-.maingrid > table >tbody>tr:nth-of-type(odd):hover {
-    background-color: #d9edf7 !important;
-}
-
-.maingrid > table >tbody>tr:nth-of-type(even):hover {
-    background-color: #d9edf7 !important;
+    border-bottom: 2px solid #ddd;
 }
 
 
@@ -45,7 +30,7 @@
 }
 
 .maingrid .header {
-    position:absolute;background-color: #f8f8f8; top:0;height:37px;margin-left:-20px;width:100%;margin-right:-20px;border-bottom:2px solid #ddd;z-index: 1
+    position:absolute;background-color: #f9f9f9; top:0;height:37px;margin-left:-20px;width:100%;margin-right:-20px;border-bottom:2px solid #ddd;z-index: 1
 }
 
 .maingrid > table {
@@ -97,10 +82,11 @@
     font-weight: bold;
 }
 
-.maingrid.wrapper.panel tfoot {
+.maingrid.wrapper.panel .tfoot {
     border-top: 3px double #ccc;
 }
-.maingrid.wrapper.panel tfoot td {
+.maingrid.wrapper.panel .tfoot td {
+    background-color: white !important;
     font-weight: bold !important;
 }
 @media all and (min-width: 0px) and (max-width: 600px) {
@@ -123,7 +109,7 @@
     visibility: hidden;
 }
 
-.hidden-arrows thead:hover th i {
+.hidden-arrows .thead:hover th i {
     visibility:visible;
 }
 
@@ -141,25 +127,11 @@
         position: relative !important;
     }
 
-    /*tfoot tr td,tfoot tr {*/
-        /*border:0px !important;*/
-    /*}*/
 
     .maingrid .header {
         background-color: #f8f8f8 !important;
     }
 
-    .maingrid > table thead th {
-        background-color: #f9f9f9 !important;
-    }
-
-    .maingrid > table >tbody>tr:nth-of-type(odd) td {
-        background-color: #fff;
-    }
-
-    .maingrid > table >tbody>tr:nth-of-type(even) td {
-        background-color: #f9f9f9 !important;
-    }
 
     .maingrid.wrapper.panel .subtotal TD,
     .maingrid.wrapper.panel .subtotal TD SPAN
@@ -167,4 +139,12 @@
         background-color:white !important;
         color: #4460a9 !important;
     }
+
+    .maingrid > table >tbody>tr:nth-of-type(odd) td,
+    .maingrid > table .thead th {
+        background-color: #f9f9f9 !important;
+    }
+
+
+
 }

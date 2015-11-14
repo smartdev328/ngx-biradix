@@ -5,8 +5,8 @@
         <div class="maingrid wrapper panel" style="overflow-x:auto">
             <div class="header" style="height:46px"></div>
             <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
-                <thead>
-                <tr>
+                <tbody>
+                <tr class="thead">
                     <th style="height:45px;max-height:45px">
                         Location Amenities
                     </th>
@@ -17,8 +17,7 @@
                         <div style="max-height:34px;overflow-y:visible">{{comp.name}}</div>
                     </th>
                 </tr>
-                </thead>
-    <tbody>
+
         <tr ng-repeat-start="amenity in uniqueAmenities">
             <td>
                 {{amenity}}
@@ -32,8 +31,7 @@
         </tr>
         <tr ng-repeat-end ng-if="false"></tr>
     </tbody>
-    <tfoot>
-    <tr>
+    <tr class="tfoot">
         <td>
             Amenities Score
         </td>
@@ -44,7 +42,6 @@
             {{hash[comp.name + 'summary'] || 0}}
         </td>
     </tr>
-    </tfoot>
 </table>
         </div>
     </div>

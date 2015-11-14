@@ -5,8 +5,8 @@
 <div class="maingrid wrapper panel" style="overflow-x:auto" ng-if="data && data.length > 0">
     <div class="header" style="height:47px"></div>
     <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
-    <thead>
-    <tr style="height:46px">
+    <tbody>
+    <tr style="height:46px" class="thead">
         <th class="center">
             Date
         </th>
@@ -29,8 +29,6 @@
             {{b}} Bedrooms
         </th>
     </tr>
-    </thead>
-    <tbody>
     <tr ng-repeat="item in data">
         <td class="center">
           {{item.d | date: 'MM/dd/yyyy'}} <i class="fa fa-edit" ng-if="survey" ng-click="marketsurvey(propertyid,item.surveyid)" style="cursor:pointer" tooltip="Edit this Survey"></i>
