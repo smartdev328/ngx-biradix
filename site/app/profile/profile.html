@@ -1,5 +1,5 @@
 
-<div class="row" ng-show="localLoading" style="margin-bottom: 0px !important;">
+<div class="row hidden-print" ng-show="localLoading" style="margin-bottom: 0px !important;">
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Property Profile</h2>
     </div>
@@ -21,7 +21,7 @@
         </button>
     </div>
 </div>
-<div ng-show="localLoading">
+<div ng-show="localLoading" class="hidden-print">
     <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
 </div>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
@@ -57,7 +57,7 @@
                 <property-amenities amenities="property.floorplan_am"></property-amenities>
             </div>
         </div>
-        <div class="panel panel-info" ng-show="property.hasFees">
+        <div class="panel panel-info" ng-show="property.hasFees" style="margin-bottom: 0px !important;">
             <div class="panel-heading">Fees, Deposits, Lease Terms</div>
             <div class="panel-body">
                 <hr>
@@ -161,7 +161,7 @@
         </div>
 
 
-        <div class="panel panel-info">
+        <div class="panel panel-info"  style="margin-bottom: 0px !important;">
             <div class="panel-heading">
                 <span class="pull-left">Floor Plans</span>
                 <span class="dropdown pull-left hidden-print">

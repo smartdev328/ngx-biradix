@@ -1,9 +1,9 @@
-<div class="maingrid wrapper panel" style="overflow-x:auto;margin-bottom: 0px !important;">
+<div class="maingrid wrapper panel" style="overflow-x:auto">
 <div class="header" style="height:46px"></div>
 <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <thead>
     <tr style="height: 45px">
-        <th style="min-width:40px" class="center">
+        <th style="min-width:40px;" class="center">
             Type
         </th>
         <th  style="min-width:100px" class="sortable" ng-click="toggleSort('description')" ng-if="show.description">
@@ -98,7 +98,7 @@
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
             </td>
         </tr>
-        <tr class="subtotal" style="background-color:white !important;">
+        <tr class="subtotal" style="background-color:white !important">
             <td colspan="{{show.description ? '2' : '1'}}">
                 <!--{{bedroomsLabel(i)}}-->
                 <i class="fa fa-exclamation-triangle"

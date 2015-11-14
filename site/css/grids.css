@@ -137,9 +137,13 @@
 
 @media print {
 
-    table,th, tr, tfoot tr td {
+    table,th, tr, tfoot tr, tfoot tr td, thead tr, thead tr th {
         position: relative !important;
     }
+
+    /*tfoot tr td,tfoot tr {*/
+        /*border:0px !important;*/
+    /*}*/
 
     .maingrid .header {
         background-color: #f8f8f8 !important;
