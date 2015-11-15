@@ -28,6 +28,8 @@ define([
 
         $scope.summary = $cookieSettingsService.getSummary();
 
+        $scope.graphs = $cookieSettingsService.getGraphs();
+
         $scope.selectedBedroom = -1;
         $scope.bedrooms = [{value: -1, text: 'All'}]
 

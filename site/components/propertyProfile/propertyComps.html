@@ -45,6 +45,12 @@
             <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
         </th>
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft">
+            Rent/&nbsp;&nbsp;<br>Sqft
+            <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
+        </th>
         <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
             Concess/&nbsp;<br>12 Mos.
             <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
@@ -63,12 +69,7 @@
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft">
-            Rent/&nbsp;&nbsp;<br>Sqft
-            <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
-        </th>
+
         <th>
             &nbsp;
         </th>
@@ -122,6 +123,9 @@
         <td style="text-align: right" ng-if="show.rent" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}</span>
         </td>
+        <td style="text-align: right" ng-if="show.mersqft" class="pad">
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.mersqft == null ? "-" : "$" + (comp.survey.mersqft  | number : 2)}}</span>
+        </td>
         <td style="text-align: right" ng-if="show.concessions"  class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}</span>
         </td>
@@ -131,9 +135,7 @@
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
-        <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.mersqft == null ? "-" : "$" + (comp.survey.mersqft  | number : 2)}}</span>
-        </td>
+
         <td style="text-align:center" class="hidden-print">
             <a href ng-click="marketSurvey(comp._id)" ng-if="canSurvey"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          tooltip-placement="left"
@@ -172,6 +174,9 @@
         <td style="text-align: right" ng-if="show.rent" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.rent == null ? "-" : "$" + row.rent}}</span>
         </td>
+        <td style="text-align: right" ng-if="show.mersqft" class="pad">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.mersqft == null ? "-" : "$" + (mow.nersqft | number : 2)}}</span>
+        </td>
         <td style="text-align: right" ng-if="show.concessions" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.concessions == null ? "-" : "$" + row.concessions}}</span>
         </td>
@@ -180,9 +185,6 @@
         </td>
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.mersqft == null ? "-" : "$" + (mow.nersqft | number : 2)}}</span>
         </td>
         <td style="text-align:center" class="hidden-print">
 
@@ -218,6 +220,9 @@
         <td style="text-align: right" ng-if="show.rent" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.rent == null ? "-" : "$" + fp.rent}}</span>
         </td>
+        <td style="text-align: right" ng-if="show.mersqft" class="pad">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.mersqft == null ? "-" : "$" + (fp.mersqft | number : 2)}}</span>
+        </td>
         <td style="text-align: right" ng-if="show.concessions" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
         </td>
@@ -226,9 +231,6 @@
         </td>
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.mersqft == null ? "-" : "$" + (fp.mersqft | number : 2)}}</span>
         </td>
         <td style="text-align:center" class="hidden-print">
 
