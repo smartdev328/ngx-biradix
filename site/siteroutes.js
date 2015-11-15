@@ -16,6 +16,7 @@ module.exports = (function() {
         if (req.headers['x-forwarded-proto'] !== 'https'
             && req.get('host').indexOf('biradix.com') > -1
             && req.get('host').indexOf('dev.biradix.com') == -1
+            && req.get('host').indexOf('demo.biradix.com') == -1
         ) {
             return res.redirect('https://' + req.get('host') + req.originalUrl);
         }
