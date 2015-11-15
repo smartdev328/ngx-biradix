@@ -73,7 +73,8 @@ td.center,th.center {text-align:center}
 
 
     #page-content-wrapper {
-        padding: 0px !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
     }
 
     .fa-clock-o.danger:before {

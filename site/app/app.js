@@ -33,7 +33,7 @@ define([
         app.filter = $filterProvider.register;
 
         angular.extend(toastrConfig, {
-            timeOut: 500000,
+            timeOut: 5000,
             closeButton: true,
             positionClass: 'toast-top-right',
             allowHtml: true,
