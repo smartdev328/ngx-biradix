@@ -19,7 +19,9 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 fileName += '_and_Comps';
             }
 
-            console.log(data.timezone, moment().utc().utcOffset(data.timezone).format());
+            console.log(data.timezone, 'Naked: ',moment().format());
+            console.log('Utc: ',moment().utc().format());
+            console.log('Utc Offset: ',moment().utc().utcOffset(data.timezone).format());
 
             fileName += "_" + moment().utcOffset(data.timezone).format("MM_DD_YYYY");
 
