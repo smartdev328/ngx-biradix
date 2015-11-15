@@ -13,7 +13,10 @@ module.exports = (function() {
     //});
 
     ui.get('/', function (req, res) {
-        if (req.headers['x-forwarded-proto'] !== 'https' && req.get('host').indexOf('biradix.com') > -1) {
+        if (req.headers['x-forwarded-proto'] !== 'https'
+            && req.get('host').indexOf('biradix.com') > -1
+            && req.get('host').indexOf('dev.biradix.com') == -1
+        ) {
             return res.redirect('https://' + req.get('host') + req.originalUrl);
         }
 
