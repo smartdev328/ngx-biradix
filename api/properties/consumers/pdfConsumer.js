@@ -19,12 +19,12 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 fileName += '_and_Comps';
             }
 
-            console.log(data.timezone, 'Naked: ',moment().format());
-            console.log('Utc: ',moment().utc().format());
-            console.log('Utc Offset: ',moment().utc().utcOffset(data.timezone).format());
-            console.log('Add: ',moment().utc().add(data.timezone,"minute").format());
+            //console.log(data.timezone, 'Naked: ',moment().format());
+            //console.log('Utc: ',moment().utc().format());
+            //console.log('Utc Offset: ',moment().utc().utcOffset(data.timezone).format());
+            //console.log('Add: ',moment().utc().add(data.timezone,"minute").format());
 
-            fileName += "_" + moment().utcOffset(data.timezone).format("MM_DD_YYYY");
+            fileName += "_" + moment().utc().add(data.timezone,"minute").format("MM_DD_YYYY");
 
             fileName += ".pdf";
 
@@ -108,7 +108,7 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
             var p = properties[0];
             var fileName = p.name.replace(/ /g, "_");
 
-            fileName += "_Report_" + moment().utcOffset(data.timezone).format("MM_DD_YYYY");
+            fileName += "_Report_" + moment().utc().add(data.timezone,"minute").format("MM_DD_YYYY");
 
             fileName += ".pdf";
 
