@@ -1,4 +1,36 @@
-﻿.filter-list select {
+﻿.filter-list .filter-panel {
+    height:200px;
+    width:250px;
+    border: 1px solid #BDE3FD;
+    overflow-x: auto;
+    overflow-y: auto;
+    border-radius: 3px 3px 3px 3px;
+    margin-top:5px;
+    font-size:13px;
+    padding:1px
+
+}
+
+.filter-list .filter-li {
+    cursor: pointer
+}
+
+.filter-list  .filter-li:hover {
+    color:black !important;
+    background-color: #ddd !important;
+}
+
+.filter-list .highlighted, .filter-list .highlighted:hover {
+    color:white !important;
+    background-color: #3362aa !important;
+}
+
+
+.hasGroup {
+    padding-left:15px
+}
+
+.filter-list select {
     height:200px;
     width:250px;
     border: 1px solid #BDE3FD;

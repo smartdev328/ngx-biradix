@@ -23,6 +23,9 @@ define([
                     }
                     $scope.groups = _.groupBy($scope.items, function(i) {return i['group']})
 
+                    $scope.groupsAvailable = _.groupBy(_.filter($scope.items, function(x) {return x.selected == false}), function(i) {return i['group']})
+                    $scope.groupsSelected = _.groupBy(_.filter($scope.items, function(x) {return x.selected == true}), function(i) {return i['group']})
+
                 }
 
                 $scope.$watch('items', function() {
@@ -38,9 +41,30 @@ define([
                             });
                         }
                     }
-                });
+                }, true);
 
                 $scope.timer = 0;
+
+                $scope.keydown = function(event) {
+                    console.log(event);
+                }
+
+                $scope.clk2 = function(id,state) {
+                    var row = _.filter($scope.items, function(x) {return x.id == id});
+
+                    row[0].checked = row[0].checked === true ? false : true;
+
+                    $scope.clk(row,state);
+
+
+                }
+
+                $scope.single = function(state) {
+                    var row = _.filter($scope.items, function(x) {
+                        return x.checked == true && x.selected == state});
+
+                    $scope.dbl(row,!state);
+                }
 
                 $scope.clk = function(rows,state) {
                     $scope.timer ++;
@@ -73,7 +97,9 @@ define([
 
                     items.forEach(function (item) {
                         item.selected = state;
+                        item.checked = false;
                     });
+
                 }
 
                 $scope.all = function (state) {
@@ -94,6 +120,10 @@ define([
                     list.forEach(function (x) {
                         x.selected = state;
                     })
+
+                    $scope.items.forEach(function(item) {
+                        item.checked = false;
+                    })
                 }
 
                 $scope.output = function () {
@@ -113,10 +143,10 @@ define([
 
                 }
 
-                $scope.ie =
-                    /rv:11/.test(window.navigator.userAgent)
-                    || /MSIE/.test(window.navigator.userAgent)
-                    || /Edge/.test(window.navigator.userAgent)
+                //$scope.ie =
+                //    /rv:11/.test(window.navigator.userAgent)
+                //    || /MSIE/.test(window.navigator.userAgent)
+                //    || /Edge/.test(window.navigator.userAgent)
 
                 $scope.small = $(window).width() <= 550 || $scope.ie;
 

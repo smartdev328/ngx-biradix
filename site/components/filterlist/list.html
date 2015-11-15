@@ -38,17 +38,22 @@
         <tr>
             <td>
                 {{options.availableLabel || 'Available'}}<br />
-                <select
-                        ng-style="{width: options.panelWidth ? options.panelWidth + 'px' : 'default'}"
-                        ng-model="ogItems" multiple
-                        ng-click="clk(ogItems, true)"
-                        ng-options="item.name group by item.group for item in filtered = (items | filter : lstfilter ) | filter: {selected: false}"></select><br />
-
+                <div class="filter-panel" ng-style="{width: options.panelWidth ? options.panelWidth + 'px' : 'default'}">
+                    <div ng-repeat="(key, value) in groupsAvailable">
+                        <b ng-show="key != 'undefined'">{{key}}</b>
+                        <div ng-repeat="item in value"
+                             ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined')}"
+                             ng-click="clk2(item.id, true)"
+                             ng-keydown="keydown($event)">
+                            {{item.name}}
+                        </div>
+                    </div>
+                </div>
             </td>
             <td class="filter-buttons">
                 <br />
                 <div class="btn-group">
-                    <button tooltip="Add Selected" tooltip-placement="left" type="button" ng-click="dbl(ogItems, true)" class="btn btn-default btn-sm"><i class="fa fa-angle-right" style="font-size:13px;font-weight:bold"></i></button>
+                    <button tooltip="Add Selected" tooltip-placement="left" type="button" ng-click="single(false)" class="btn btn-default btn-sm"><i class="fa fa-angle-right" style="font-size:13px;font-weight:bold"></i></button>
                 </div>
                 <br />
                 <div class="btn-group action_dropdown" style="margin-top:10px">
