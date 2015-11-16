@@ -37,14 +37,17 @@
 
         <tr>
             <td>
-                {{options.availableLabel || 'Available'}}<br />
-                <div class="filter-panel" ng-style="{width: options.panelWidth ? options.panelWidth + 'px' : 'default'}">
+                {{options.availableLabel || 'Available'}}<br />{{test}}
+                <div class="filter-panel" ng-style="{width: options.panelWidth ? options.panelWidth + 'px' : 'default'}"
+                     ng-keydown="keydown($event)"
+                     ng-keyup="keyup($event)"
+                     tabindex="0">
                     <div ng-repeat="(key, value) in groupsAvailable">
                         <b ng-show="key != 'undefined'">{{key}}</b>
                         <div ng-repeat="item in value"
                              ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined')}"
                              ng-click="clk2(item.id, true)"
-                             ng-keydown="keydown($event)">
+                             >
                             {{item.name}}
                         </div>
                     </div>

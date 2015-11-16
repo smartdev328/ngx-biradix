@@ -44,10 +44,28 @@ define([
                 }, true);
 
                 $scope.timer = 0;
+                $scope.ctrl = false;
+                $scope.selectAll = false;
 
-                $scope.keydown = function(event) {
-                    console.log(event);
+
+                $scope.keydown = function($event) {
+                    $event.preventDefault();
                 }
+
+                $scope.keyup = function($event) {
+                    $event.preventDefault();
+
+                    if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                        $scope.items.forEach(function(item) {
+                            if (!item.selected) {
+                                item.checked = !$scope.selectAll;
+                            }
+                        })
+
+                        $scope.selectAll = !$scope.selectAll;
+                    }
+                }
+
 
                 $scope.clk2 = function(id,state) {
                     var row = _.filter($scope.items, function(x) {return x.id == id});
