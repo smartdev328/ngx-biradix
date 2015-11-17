@@ -13,20 +13,27 @@ define([
             controller: function ($scope, $filter, $element) {
                 $scope.version = version;
 
-                $scope.filters = {checkAll : true}
+                $scope.filters = {checkAll : true, lstfilter: ""}
 
-                $scope.search = function(s) {
-                    if (s) {
-                        var filtered = $filter('filter')($scope.items, s.lstfilter)
-                        $scope.groups = _.groupBy(filtered, function(i) {return i['group']})
-                        return;
+                $scope.search = function() {
+                    var filtered;
+                    if ($scope.filters.lstfilter) {
+                        filtered = $filter('filter')($scope.items, $scope.filters.lstfilter)
+
                     }
-                    $scope.groups = _.groupBy($scope.items, function(i) {return i['group']})
+                    else {
+                        filtered = $scope.items;
+                    }
 
-                    $scope.groupsAvailable = _.groupBy(_.filter($scope.items, function(x) {return x.selected == false}), function(i) {return i['group']})
+                    $scope.groups = _.groupBy(filtered, function(i) {return i['group']})
+                    $scope.groupsAvailable = _.groupBy(_.filter(filtered, function(x) {return x.selected == false}), function(i) {return i['group']})
                     $scope.groupsSelected = _.groupBy(_.filter($scope.items, function(x) {return x.selected == true}), function(i) {return i['group']})
 
                 }
+
+                $scope.$watch('filters.lstfilter', function() {
+                    $scope.search();
+                }, true);
 
                 $scope.$watch('items', function() {
 
@@ -46,16 +53,72 @@ define([
                 $scope.timer = 0;
                 $scope.ctrl = false;
                 $scope.selectAll = false;
+                $scope.focused = null;
 
 
                 $scope.keydown = function($event) {
-                    $event.preventDefault();
+
+                    //console.log($event);
+                    //console.log($scope.focused);
+
+                    if (!$scope.focused) {
+                        return;
+                    }
+
+                    //Down Arrow
+                    if ($event.keyCode == 40) {
+                        var found = false;
+                        var done = false;
+                        $scope.items.forEach(function(item) {
+
+                            if (!done) {
+                                if (item.id == $scope.focused.id) {
+                                    found = true;
+                                }
+                                else if (found && !item.selected) {
+                                    $scope.focused = item;
+                                    done = true;
+                                }
+                            }
+                        })
+                    }
+                    else
+                    //up arrow
+                    if ($event.keyCode == 38) {
+                        var found = false;
+                        var done = false;
+
+                        for(var i = $scope.items.length - 1; i >= 0; i--) {
+                            var item = $scope.items[i];
+                            if (!done) {
+                                if (item.id == $scope.focused.id) {
+                                    found = true;
+                                }
+                                else if (found && !item.selected) {
+                                    $scope.focused = item;
+                                    done = true;
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    if ($event.keyCode == 32) {
+                        $scope.clk2($scope.focused.id,true);
+                        $scope.timer = 0;
+                    }
+                    else
+                    if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                        //dont highlight the entire screen but allow other cntrl key combinations
+                        $event.preventDefault();
+                    }
                 }
 
                 $scope.keyup = function($event) {
-                    $event.preventDefault();
 
+                    //Ctrl-A
                     if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                        $event.preventDefault();
                         $scope.items.forEach(function(item) {
                             if (!item.selected) {
                                 item.checked = !$scope.selectAll;
@@ -69,6 +132,8 @@ define([
 
                 $scope.clk2 = function(id,state) {
                     var row = _.filter($scope.items, function(x) {return x.id == id});
+
+                    $scope.focused = row[0];
 
                     row[0].checked = row[0].checked === true ? false : true;
 
@@ -121,16 +186,9 @@ define([
                 }
 
                 $scope.all = function (state) {
-
-                    var elSearch = $($element).find('.search');
-                    var search = '';
-                    if (elSearch) {
-                        search = elSearch.val();
-                    }
-
                     var list;
                     if (state) {
-                        list = $filter('filter')($scope.items, search)
+                        list = $filter('filter')($scope.items, $scope.filters.lstfilter)
                     } else {
                         list = $scope.items;
                     }

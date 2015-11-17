@@ -3,9 +3,9 @@
         <div class="form-group has-feedback" ng-show="!options.hideSearch">
             <input type="text" class="form-control input-sm"
                    placeholder="Search {{options.searchLabel}}"
-                   ng-model="lstfilter"
+                   ng-model="filters.lstfilter"
                    style="border-color:#BDE3FD"
-                   ng-change="search(this)">
+                   >
             <i class="fa fa-search form-control-feedback" style="color:#BDE3FD"></i>
         </div>
         <div style="max-height:200px;overflow-y:auto">
@@ -26,9 +26,9 @@
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control input-sm search"
                            placeholder="Search {{options.searchLabel}}"
-                           ng-model="lstfilter"
+                           ng-model="filters.lstfilter"
                            style="border-color:#BDE3FD"
-                           ng-change="resetPager()">
+                           >
                     <i class="fa fa-search form-control-feedback" style="color:#BDE3FD"></i>
                 </div>
 
@@ -45,7 +45,7 @@
                     <div ng-repeat="(key, value) in groupsAvailable">
                         <b ng-show="key != 'undefined'">{{key}}</b>
                         <div ng-repeat="item in value"
-                             ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined')}"
+                             ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': focused && item.id == focused.id}"
                              ng-click="clk2(item.id, true)"
                              >
                             {{item.name}}

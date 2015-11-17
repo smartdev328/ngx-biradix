@@ -15,7 +15,8 @@
     cursor: pointer
 }
 
-.filter-list  .filter-li:hover {
+.filter-list  .filter-li:hover,
+.filter-list  .focused{
     color:black !important;
     background-color: #ddd !important;
 }
@@ -57,6 +58,11 @@
     padding-left:10px
 }
 
+.unselectable {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
 
 .filter-dropdown > .btn-default {
     text-align:left
