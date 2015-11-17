@@ -1,0 +1,14 @@
+<div class="filter-panel" ng-style="{width: options.panelWidth ? options.panelWidth + 'px' : 'default'}"
+     ng-keydown="keydown($event)"
+     ng-keyup="keyup($event)"
+     tabindex="0">
+    <div ng-repeat="(key, value) in groups">
+        <b ng-show="key != 'undefined'">{{key}}</b>
+        <div ng-repeat="item in value"
+             ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused}"
+             ng-click="clk($event,item)"
+        >
+            {{item.name}}
+        </div>
+    </div>
+</div>

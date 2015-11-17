@@ -3,6 +3,51 @@ define([
     'app',
     'css!/components/filterlist/filterlist.css'
     ], function (app) {
+    app.directive('filterPanel', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                options: '=',
+                groups: '=',
+                moveChecked: '&',
+            },
+            controller: function ($scope) {
+                $scope.version = version;
+                $scope.clickCounter = 0;
+
+                $scope.clk = function($event, item) {
+                    if ($event.ctrlKey) {
+                        item.checked = item.checked === true ? false : true;
+                    } else {
+                        $scope.resetChecked();
+                        item.checked = true;
+
+                        $scope.clickCounter ++;
+
+                        if ($scope.clickCounter % 2 == 0) {
+                            $scope.moveChecked();
+                        } else {
+                            window.setTimeout(function() {
+                                $scope.clickCounter = 0;
+                            }, 500);
+                        }
+                    }
+
+                }
+
+                $scope.resetChecked = function() {
+                    for(var group in $scope.groups) {
+                        $scope.groups[group].forEach(function (item) {
+                            item.checked = false;
+                            item.focused = false;
+                        })
+                    }
+                }
+            },
+            templateUrl: '/components/filterlist/filterpanel.html?bust=' + version
+        }
+    });
+
     app.directive('filterList', function () {
         return {
             restrict: 'E',
@@ -40,152 +85,128 @@ define([
                     if ($scope.options) {
                         $scope.search();
 
-                        if ($scope.items) {
-                            $scope.items.forEach(function (i) {
-                                if (!i.selected) {
-                                    $scope.filters.checkAll = false;
-                                }
-                            });
-                        }
+                        //if ($scope.items) {
+                        //    $scope.items.forEach(function (i) {
+                        //        if (!i.selected) {
+                        //            $scope.filters.checkAll = false;
+                        //        }
+                        //    });
+                        //}
                     }
                 }, true);
 
-                $scope.timer = 0;
-                $scope.ctrl = false;
-                $scope.selectAll = false;
-                $scope.focused = null;
+                //$scope.timer = 0;
+                //$scope.selectAll = false;
+                //$scope.focused = null;
+                //
+                //
+                //$scope.keydown = function($event) {
+                //
+                //    console.log($event);
+                //    //console.log($scope.focused);
+                //
+                //    if (!$scope.focused) {
+                //        return;
+                //    }
+                //
+                //    //Down Arrow
+                //    if ($event.keyCode == 40) {
+                //        var found = false;
+                //        var done = false;
+                //        $scope.items.forEach(function(item) {
+                //
+                //            if (!done) {
+                //                if (item.id == $scope.focused.id) {
+                //                    found = true;
+                //                }
+                //                else if (found && !item.selected) {
+                //                    $scope.focused = item;
+                //
+                //                    if ($event.shiftKey == true) {
+                //                        item.checked = true;
+                //                    }
+                //                    done = true;
+                //                }
+                //            }
+                //        })
+                //    }
+                //    else
+                //    //up arrow
+                //    if ($event.keyCode == 38) {
+                //        var found = false;
+                //        var done = false;
+                //
+                //        for(var i = $scope.items.length - 1; i >= 0; i--) {
+                //            var item = $scope.items[i];
+                //            if (!done) {
+                //                if (item.id == $scope.focused.id) {
+                //                    found = true;
+                //                }
+                //                else if (found && !item.selected) {
+                //                    $scope.focused = item;
+                //                    done = true;
+                //                }
+                //            }
+                //        }
+                //
+                //    }
+                //    else
+                //    if ($event.keyCode == 32) {
+                //        $scope.clk2($scope.focused.id,true);
+                //        $scope.timer = 0;
+                //    }
+                //    else
+                //    if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                //        //dont highlight the entire screen but allow other cntrl key combinations
+                //        $event.preventDefault();
+                //    }
+                //}
+                //
+                //$scope.keyup = function($event) {
+                //
+                //    //Ctrl-A
+                //    if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                //        $event.preventDefault();
+                //        $scope.items.forEach(function(item) {
+                //            if (!item.selected) {
+                //                item.checked = !$scope.selectAll;
+                //            }
+                //        })
+                //
+                //        $scope.selectAll = !$scope.selectAll;
+                //    }
+                //}
 
+                $scope.moveChecked = function (state) {
+                    $scope.resetFocused();
 
-                $scope.keydown = function($event) {
+                    $scope.items.forEach(function (item) {
 
-                    //console.log($event);
-                    //console.log($scope.focused);
-
-                    if (!$scope.focused) {
-                        return;
-                    }
-
-                    //Down Arrow
-                    if ($event.keyCode == 40) {
-                        var found = false;
-                        var done = false;
-                        $scope.items.forEach(function(item) {
-
-                            if (!done) {
-                                if (item.id == $scope.focused.id) {
-                                    found = true;
-                                }
-                                else if (found && !item.selected) {
-                                    $scope.focused = item;
-                                    done = true;
-                                }
-                            }
-                        })
-                    }
-                    else
-                    //up arrow
-                    if ($event.keyCode == 38) {
-                        var found = false;
-                        var done = false;
-
-                        for(var i = $scope.items.length - 1; i >= 0; i--) {
-                            var item = $scope.items[i];
-                            if (!done) {
-                                if (item.id == $scope.focused.id) {
-                                    found = true;
-                                }
-                                else if (found && !item.selected) {
-                                    $scope.focused = item;
-                                    done = true;
-                                }
-                            }
+                        if (item.selected === state && item.checked) {
+                            item.selected = !state;
+                            item.focused = true;
                         }
-
-                    }
-                    else
-                    if ($event.keyCode == 32) {
-                        $scope.clk2($scope.focused.id,true);
-                        $scope.timer = 0;
-                    }
-                    else
-                    if ($event.keyCode == 65 && $event.ctrlKey === true) {
-                        //dont highlight the entire screen but allow other cntrl key combinations
-                        $event.preventDefault();
-                    }
-                }
-
-                $scope.keyup = function($event) {
-
-                    //Ctrl-A
-                    if ($event.keyCode == 65 && $event.ctrlKey === true) {
-                        $event.preventDefault();
-                        $scope.items.forEach(function(item) {
-                            if (!item.selected) {
-                                item.checked = !$scope.selectAll;
-                            }
-                        })
-
-                        $scope.selectAll = !$scope.selectAll;
-                    }
-                }
-
-
-                $scope.clk2 = function(id,state) {
-                    var row = _.filter($scope.items, function(x) {return x.id == id});
-
-                    $scope.focused = row[0];
-
-                    row[0].checked = row[0].checked === true ? false : true;
-
-                    $scope.clk(row,state);
-
-
-                }
-
-                $scope.single = function(state) {
-                    var row = _.filter($scope.items, function(x) {
-                        return x.checked == true && x.selected == state});
-
-                    $scope.dbl(row,!state);
-                }
-
-                $scope.clk = function(rows,state) {
-                    $scope.timer ++;
-
-                    if ($scope.timer % 2 == 0 && rows && rows.length) {
-                        $scope.dbl(rows,state);
-                    } else {
-                        window.setTimeout(function() {
-                            $scope.timer = 0;
-                        }, 500);
-                    }
-                }
-
-                $scope.dbl = function (rows, state) {
-                    if (!rows || rows.length == 0) {
-                        return;
-                    }
-
-                    var items = _.filter($scope.items, function (x) {
-                        var item2 = _.find(rows, function (y) {
-                            return y.id == x.id
-                        })
-
-                        if (item2) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    })
-
-                    items.forEach(function (item) {
-                        item.selected = state;
-                        item.checked = false;
                     });
+
+                    $scope.resetChecked();
+
+                }
+
+                $scope.resetChecked = function() {
+                    $scope.items.forEach(function(item) {
+                        item.checked = false;
+                    })
+                }
+
+                $scope.resetFocused = function() {
+                    $scope.items.forEach(function(item) {
+                        item.focused = false;
+                    })
 
                 }
 
                 $scope.all = function (state) {
+                    $scope.resetFocused();
                     var list;
                     if (state) {
                         list = $filter('filter')($scope.items, $scope.filters.lstfilter)
@@ -195,11 +216,10 @@ define([
 
                     list.forEach(function (x) {
                         x.selected = state;
+                        x.focused = true;
                     })
 
-                    $scope.items.forEach(function(item) {
-                        item.checked = false;
-                    })
+                    $scope.resetChecked();
                 }
 
                 $scope.output = function () {
