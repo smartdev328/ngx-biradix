@@ -3,7 +3,7 @@ module.exports = {
     MONGODB_URI: process.env.MONGOHQ_URL ||process.env.MONGOLAB_URI || 'mongodb://127.0.0.1:27017/Biradix',
     SENDGRID_USERNAME : process.env.SENDGRID_USERNAME || 'app36507393@heroku.com',
     SENDGRID_PASSWORD : process.env.SENDGRID_PASSWORD || 'vnlgjsnu0908',
-    MODE : process.env.mode || 'development',
+    MODE : process.env.mode || 'production',
     PORT : process.env.PORT || 2000,
     SECRET : process.env.secret || 'test',
     API_PATH : process.env.apipath || '/api/1.0/',

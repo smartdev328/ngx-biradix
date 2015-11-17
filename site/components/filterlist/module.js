@@ -15,8 +15,13 @@ define([
                 $scope.version = version;
                 $scope.clickCounter = 0;
                 $scope.selectAll = false;
+                $scope.shiftStarted = null;
 
                 $scope.clk = function($event, item) {
+                    if ($scope.shiftStarted) {
+                        $scope.selectBetween($scope.shiftStarted, item);
+                    }
+                    else
                     if ($event.ctrlKey) {
                         item.checked = item.checked === true ? false : true;
                     } else {
@@ -36,8 +41,29 @@ define([
 
                 }
 
+                $scope.selectBetween = function(item1, item2) {
+                    $scope.resetChecked();
+                    var started = false
+                    for(var group in $scope.groups) {
+                        $scope.groups[group].forEach(function (item) {
+                            if (item.id == item1.id || item.id == item2.id) {
+                                started = !started;
+                            }
+
+                            if (started || item.id == item1.id || item.id == item2.id) {
+                                item.checked = true;
+                            }
+                        })
+                    }
+                }
+
                 $scope.keyup = function($event) {
 
+                    //Shift
+                    if ($event.keyCode == 16 && $scope.shiftStarted) {
+                        $scope.shiftStarted = null;
+                    }
+                    else
                     //Ctrl-A
                     if ($event.keyCode == 65 && $event.ctrlKey === true) {
                         $event.preventDefault();
@@ -52,10 +78,22 @@ define([
                 }
 
                 $scope.keydown = function($event) {
-                        if ($event.keyCode == 65 && $event.ctrlKey === true) {
-                            //dont highlight the entire screen but allow other cntrl key combinations
-                            $event.preventDefault();
+                    //Shift
+                    if ($event.keyCode == 16 && !$scope.shiftStarted) {
+                        for(var group in $scope.groups) {
+                            $scope.groups[group].forEach(function (item) {
+                                if (item.checked) {
+                                    $scope.shiftStarted = item;
+                                }
+                            })
                         }
+                    }
+                    else
+                    //Ctrl-A
+                    if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                        //dont highlight the entire screen but allow other cntrl key combinations
+                        $event.preventDefault();
+                    }
                 }
 
                 $scope.resetChecked = function() {
