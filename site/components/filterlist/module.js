@@ -14,6 +14,7 @@ define([
             controller: function ($scope) {
                 $scope.version = version;
                 $scope.clickCounter = 0;
+                $scope.selectAll = false;
 
                 $scope.clk = function($event, item) {
                     if ($event.ctrlKey) {
@@ -33,6 +34,28 @@ define([
                         }
                     }
 
+                }
+
+                $scope.keyup = function($event) {
+
+                    //Ctrl-A
+                    if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                        $event.preventDefault();
+                        $scope.resetChecked();
+                        for(var group in $scope.groups) {
+                            $scope.groups[group].forEach(function (item) {
+                                item.checked = true;
+                            })
+                        }
+                        $scope.selectAll = !$scope.selectAll;
+                    }
+                }
+
+                $scope.keydown = function($event) {
+                        if ($event.keyCode == 65 && $event.ctrlKey === true) {
+                            //dont highlight the entire screen but allow other cntrl key combinations
+                            $event.preventDefault();
+                        }
                 }
 
                 $scope.resetChecked = function() {
@@ -85,24 +108,21 @@ define([
                     if ($scope.options) {
                         $scope.search();
 
-                        //if ($scope.items) {
-                        //    $scope.items.forEach(function (i) {
-                        //        if (!i.selected) {
-                        //            $scope.filters.checkAll = false;
-                        //        }
-                        //    });
-                        //}
+                        if ($scope.items) {
+                            $scope.items.forEach(function (i) {
+                                if (!i.selected) {
+                                    $scope.filters.checkAll = false;
+                                }
+                            });
+                        }
                     }
                 }, true);
 
-                //$scope.timer = 0;
-                //$scope.selectAll = false;
                 //$scope.focused = null;
                 //
                 //
                 //$scope.keydown = function($event) {
                 //
-                //    console.log($event);
                 //    //console.log($scope.focused);
                 //
                 //    if (!$scope.focused) {
@@ -154,26 +174,6 @@ define([
                 //    if ($event.keyCode == 32) {
                 //        $scope.clk2($scope.focused.id,true);
                 //        $scope.timer = 0;
-                //    }
-                //    else
-                //    if ($event.keyCode == 65 && $event.ctrlKey === true) {
-                //        //dont highlight the entire screen but allow other cntrl key combinations
-                //        $event.preventDefault();
-                //    }
-                //}
-                //
-                //$scope.keyup = function($event) {
-                //
-                //    //Ctrl-A
-                //    if ($event.keyCode == 65 && $event.ctrlKey === true) {
-                //        $event.preventDefault();
-                //        $scope.items.forEach(function(item) {
-                //            if (!item.selected) {
-                //                item.checked = !$scope.selectAll;
-                //            }
-                //        })
-                //
-                //        $scope.selectAll = !$scope.selectAll;
                 //    }
                 //}
 

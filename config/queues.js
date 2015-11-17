@@ -30,7 +30,7 @@ module.exports = {
             callback();
             return;
         }
-        queue = jackrabbit(settings.CLOUDAMQP_URL).on('connected', function() {
+            queue = jackrabbit(settings.CLOUDAMQP_URL).on('connected', function() {
             exchange = queue.default();
             dashboard_queue = exchange.queue({ name: settings.DASHBOARD_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
             profile_queue = exchange.queue({ name: settings.PROFILE_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
@@ -44,8 +44,15 @@ module.exports = {
             //import_queue = exchange.queue({ name: settings.IMPORT_QUEUE, prefetch: 1, durable: false});
             //import_users_queue = exchange.queue({ name: settings.IMPORT_USERS_QUEUE, prefetch: 1, durable: false});
 
-
             console.log({ type: 'info', msg: 'connected', service: 'rabbitmq' });
+
+                attachQListeners(dashboard_queue, "Dashboard");
+                attachQListeners(profile_queue, "Profile");
+                attachQListeners(pdf_profile_queue, "Pdf Profile");
+                attachQListeners(pdf_reporting_queue, "Pdf Reporting");
+                    attachQListeners(web_status_queue, "Web Status");
+                    attachQListeners(phantom_status_queue, "Phantom Status");
+
             callback();
         })
         .on('error', function(err) {
@@ -56,4 +63,22 @@ module.exports = {
         });
 
     }
+}
+
+function attachQListeners(q, name) {
+    q.on('consuming', function() {
+            console.log(name+ " Q Consuming");
+        })
+        .on('close', function(err) {
+            errors.send(err);
+        })
+        .on('error', function(err) {
+            errors.send(err);
+        })
+        .on('ready', function() {
+            console.log(name+ " Q Ready");
+        })
+        .on('connected', function() {
+            console.log(name+ " Q Connected");
+        });
 }
