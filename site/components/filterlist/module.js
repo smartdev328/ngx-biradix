@@ -22,6 +22,7 @@ define([
                     $scope.current = item;
                     if ($scope.shiftStarted) {
                         $scope.selectBetween($scope.shiftStarted, item);
+                        document.getSelection().removeAllRanges();
                     }
                     else
                     if ($event.ctrlKey) {
