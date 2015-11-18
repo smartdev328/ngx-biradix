@@ -16,8 +16,10 @@ define([
                 $scope.clickCounter = 0;
                 $scope.selectAll = false;
                 $scope.shiftStarted = null;
+                $scope.current = null;
 
                 $scope.clk = function($event, item) {
+                    $scope.current = item;
                     if ($scope.shiftStarted) {
                         $scope.selectBetween($scope.shiftStarted, item);
                     }
@@ -94,8 +96,104 @@ define([
                         //dont highlight the entire screen but allow other cntrl key combinations
                         $event.preventDefault();
                     }
+
+                    else
+                    //Up Arrow
+                    if ($event.keyCode == 38) {
+                        var prev = $scope.getPrevious(1);
+                        $scope.resetChecked();
+                        prev.checked = true;
+                        $scope.current = prev;
+                    }
+                    else
+                    //Page Up
+                    if ($event.keyCode == 33) {
+                        var prev = $scope.getPrevious(4);
+                        $scope.resetChecked();
+                        prev.checked = true;
+                        $scope.current = prev;
+                    }
+                    else
+                    //Down Arrow
+                    if ($event.keyCode == 40) {
+                        var next = $scope.getNext(1);
+                        $scope.resetChecked();
+                        next.checked = true;
+                        $scope.current = next;
+                        console.log(next);
+                    }
+                    else
+                    //Page Down
+                    if ($event.keyCode == 34) {
+                        $event.preventDefault();
+                        var next = $scope.getNext(3);
+                        $scope.resetChecked();
+                        next.checked = true;
+                        $scope.current = next;
+                    }
                 }
 
+                $scope.getNext = function(x) {
+                    var j = 0;
+                    var found;
+                    var response = null;
+
+                    for(var group in $scope.groups) {
+                        for (var i = 0; i < $scope.groups[group].length; i++) {
+                            var item = $scope.groups[group][i];
+
+                            if (item.id == $scope.current.id ) {
+                                found = true;
+                            }
+
+                            if (found && j <= x) {
+                                response = item;
+                            }
+
+                            if (found) {
+                                j++;
+                            }
+                        }
+                    }
+
+                    return response;
+                }
+
+                $scope.getPrevious = function(x) {
+                    var j = 0;
+                    var found;
+                    var response = null;
+
+
+                    var ar = [];
+                    for(var group in $scope.groups) {
+                        ar.push(group);
+                    }
+                    ar.reverse();
+
+                    ar.forEach(function(group) {
+                        for (var i = $scope.groups[group].length - 1; i >= 0; i--) {
+                            var item = $scope.groups[group][i];
+
+                            if (item.id == $scope.current.id ) {
+                                found = true;
+                            }
+
+
+                            if (found && j <= x) {
+                                response = item;
+                            }
+
+                            if (found) {
+                                j++;
+                            }
+                        }
+
+                    })
+
+
+                    return response;
+                }
                 $scope.resetChecked = function() {
                     for(var group in $scope.groups) {
                         $scope.groups[group].forEach(function (item) {
