@@ -49,13 +49,6 @@ module.exports = {
 
                         console.log({ type: 'info', msg: 'connected', service: 'rabbitmq' });
 
-                        attachQListeners(dashboard_queue, "Dashboard");
-                        attachQListeners(profile_queue, "Profile");
-                        attachQListeners(pdf_profile_queue, "Pdf Profile");
-                        attachQListeners(pdf_reporting_queue, "Pdf Reporting");
-                        attachQListeners(web_status_queue, "Web Status");
-                        attachQListeners(phantom_status_queue, "Phantom Status");
-
                         callback();
                     }, 1000);
 
@@ -67,10 +60,8 @@ module.exports = {
                    errors.send("Rabbit disconnected");
                 });
 
-    }
-}
-
-function attachQListeners(q, name) {
+    },
+    attachQListeners: function(q, name) {
     q.on('consuming', function() {
             q.consuming = true;
             console.log(name+ " Q Consuming");
@@ -88,11 +79,14 @@ function attachQListeners(q, name) {
             console.log(name+ " Q Connected");
         });
 
-    //check if the q is consuming in 10 seconds
-    //setTimeout(function() {
-    //    isConsuming(q,name );
-    //}, 30000)
+    //check if the q is consuming in 20 seconds
+    setTimeout(function() {
+        isConsuming(q,name );
+    }, 20000)
 }
+}
+
+
 
 function isConsuming(q, name) {
     console.log(name,'Consuming:' + (q.consuming === true));

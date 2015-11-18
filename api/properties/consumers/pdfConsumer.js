@@ -158,3 +158,6 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
 
 
 });
+
+queues.attachQListeners(queues.getPdfProfileQueue(), "Pdf Profile");
+queues.attachQListeners(queues.getPdfReportingQueue(), "Pdf Reporting");

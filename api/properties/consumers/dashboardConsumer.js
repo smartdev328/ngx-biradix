@@ -9,6 +9,8 @@ queues.getDashboardQueue().consume(function(data,reply) {
     })
 });
 
+queues.attachQListeners(queues.getDashboardQueue(), "Dashboard");
+
 queues.getProfileQueue().consume(function(data,reply) {
     console.log(data.compId + " profile started: " + (new Date()));
     DashboardService.getProfile(data.user,data.options, data.checkManaged, data.subjectId, data.compId, function(err, profile) {
@@ -16,4 +18,6 @@ queues.getProfileQueue().consume(function(data,reply) {
         reply({err: err, profile: profile});
     })
 });
+
+queues.attachQListeners(queues.getDashboardQueue(), "Profile");
 
