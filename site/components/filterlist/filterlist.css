@@ -55,7 +55,11 @@
 }
 
 .checkbox-row  {
-    padding-left:10px
+    padding-left:7px
+}
+
+.filter-li  {
+    padding-left:3px
 }
 
 .unselectable, .filter-list * {
