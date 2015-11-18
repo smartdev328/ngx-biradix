@@ -28,7 +28,7 @@
 
 
 .hasGroup {
-    padding-left:15px
+    padding-left:15px !important;
 }
 
 .filter-list select {
@@ -55,12 +55,14 @@
 }
 
 .checkbox-row  {
-    padding-left:7px
+    padding-left:10px !important;
 }
 
 .filter-li  {
     padding-left:3px
 }
+
+
 
 .unselectable, .filter-list * {
     -moz-user-select: none;
