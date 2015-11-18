@@ -8,7 +8,7 @@
              ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused}"
              ng-click="clk($event,item)"
         >
-            {{item.name}}
+            <input type="text" style="width:0px;height:18px;border:0" value="{{item.name}}">{{item.name}}
         </div>
     </div>
 </div>

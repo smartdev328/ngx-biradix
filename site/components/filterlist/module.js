@@ -96,46 +96,71 @@ define([
                         //dont highlight the entire screen but allow other cntrl key combinations
                         $event.preventDefault();
                     }
-
                     else
                     //Up Arrow
                     if ($event.keyCode == 38) {
-                        var prev = $scope.getPrevious(1);
-                        $scope.resetChecked();
-                        prev.checked = true;
+                        var prev = $scope.getPrevious($event,1);
+
+                        if ($scope.shiftStarted) {
+                            $scope.selectBetween($scope.shiftStarted, prev);
+                        }
+                        else {
+                            $scope.resetChecked();
+                            prev.checked = true;
+                        }
                         $scope.current = prev;
                     }
                     else
                     //Page Up
                     if ($event.keyCode == 33) {
-                        var prev = $scope.getPrevious(4);
-                        $scope.resetChecked();
-                        prev.checked = true;
+                        var prev = $scope.getPrevious($event,3);
+                        if ($scope.shiftStarted) {
+                            $scope.selectBetween($scope.shiftStarted, prev);
+                        }
+                        else {
+                            $scope.resetChecked();
+                            prev.checked = true;
+                        }
                         $scope.current = prev;
                     }
                     else
                     //Down Arrow
                     if ($event.keyCode == 40) {
-                        var next = $scope.getNext(1);
-                        $scope.resetChecked();
-                        next.checked = true;
+                        var next = $scope.getNext($event,1);
+
+                        if ($scope.shiftStarted) {
+                            $scope.selectBetween($scope.shiftStarted, next);
+                        }
+                        else {
+                            $scope.resetChecked();
+                            next.checked = true;
+                        }
+
                         $scope.current = next;
                     }
                     else
                     //Page Down
                     if ($event.keyCode == 34) {
                         $event.preventDefault();
-                        var next = $scope.getNext(3);
-                        $scope.resetChecked();
-                        next.checked = true;
+                        var next = $scope.getNext($event,3);
+                        if ($scope.shiftStarted) {
+                            $scope.selectBetween($scope.shiftStarted, next);
+                        }
+                        else {
+                            $scope.resetChecked();
+                            next.checked = true;
+                        }
+
                         $scope.current = next;
                     }
+
                 }
 
-                $scope.getNext = function(x) {
+                $scope.getNext = function($event, x) {
                     var j = 0;
                     var found;
                     var response = null;
+                    var total = 0;
 
                     for(var group in $scope.groups) {
                         for (var i = 0; i < $scope.groups[group].length; i++) {
@@ -149,16 +174,30 @@ define([
                                 response = item;
                             }
 
+                            if (j <= x) {
+                                total++;
+                            }
+
                             if (found) {
                                 j++;
                             }
                         }
                     }
 
+                    if ($event.target.type == 'text') {
+                        $event.target = $($event.target).closest("filter-panel");
+                    }
+                    var formElements = $($event.target).find("input");
+
+                    if (formElements.length >= total) {
+                        formElements[total-1].focus();
+                    }
+
+
                     return response;
                 }
 
-                $scope.getPrevious = function(x) {
+                $scope.getPrevious = function($event, x) {
                     var j = 0;
                     var found;
                     var response = null;
@@ -169,6 +208,7 @@ define([
                         ar.push(group);
                     }
                     ar.reverse();
+                    var total = 0;
 
                     ar.forEach(function(group) {
                         for (var i = $scope.groups[group].length - 1; i >= 0; i--) {
@@ -183,12 +223,23 @@ define([
                                 response = item;
                             }
 
+                            if (j <= x) {
+                                total++;
+                            }
+
                             if (found) {
                                 j++;
                             }
                         }
 
                     })
+
+                    if ($event.target.type == 'text') {
+                        $event.target = $($event.target).closest("filter-panel");
+                    }
+                    var formElements = $($event.target).find("input");
+
+                    formElements[formElements.length - total].focus();
 
 
                     return response;

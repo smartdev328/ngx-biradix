@@ -1,4 +1,4 @@
-﻿<div ng-include="'/components/filterlist/list.html'" ng-if="!options.dropdown"/>
+﻿<div ng-include="'/components/filterlist/list.html?bust=' + version" ng-if="!options.dropdown"/>
 
 <div class="btn-group stay_open_button filter-dropdown" ng-if="options.dropdown">
     <button type="button" class="btn btn-default dropdown-toggle btn-sm btn-block" data-toggle="dropdown" aria-expanded="false" style="width:{{options.minwidth ? (options.minwidth + 35) + 'px' : 'default' }}">
