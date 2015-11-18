@@ -120,7 +120,6 @@ define([
                         $scope.resetChecked();
                         next.checked = true;
                         $scope.current = next;
-                        console.log(next);
                     }
                     else
                     //Page Down
@@ -253,65 +252,6 @@ define([
                         }
                     }
                 }, true);
-
-                //$scope.focused = null;
-                //
-                //
-                //$scope.keydown = function($event) {
-                //
-                //    //console.log($scope.focused);
-                //
-                //    if (!$scope.focused) {
-                //        return;
-                //    }
-                //
-                //    //Down Arrow
-                //    if ($event.keyCode == 40) {
-                //        var found = false;
-                //        var done = false;
-                //        $scope.items.forEach(function(item) {
-                //
-                //            if (!done) {
-                //                if (item.id == $scope.focused.id) {
-                //                    found = true;
-                //                }
-                //                else if (found && !item.selected) {
-                //                    $scope.focused = item;
-                //
-                //                    if ($event.shiftKey == true) {
-                //                        item.checked = true;
-                //                    }
-                //                    done = true;
-                //                }
-                //            }
-                //        })
-                //    }
-                //    else
-                //    //up arrow
-                //    if ($event.keyCode == 38) {
-                //        var found = false;
-                //        var done = false;
-                //
-                //        for(var i = $scope.items.length - 1; i >= 0; i--) {
-                //            var item = $scope.items[i];
-                //            if (!done) {
-                //                if (item.id == $scope.focused.id) {
-                //                    found = true;
-                //                }
-                //                else if (found && !item.selected) {
-                //                    $scope.focused = item;
-                //                    done = true;
-                //                }
-                //            }
-                //        }
-                //
-                //    }
-                //    else
-                //    if ($event.keyCode == 32) {
-                //        $scope.clk2($scope.focused.id,true);
-                //        $scope.timer = 0;
-                //    }
-                //}
 
                 $scope.moveChecked = function (state) {
                     $scope.resetFocused();
