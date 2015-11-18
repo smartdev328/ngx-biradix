@@ -87,6 +87,7 @@ define([
 
                 $scope.keydown = function($event) {
                     //Shift
+
                     if ($event.keyCode == 16 && !$scope.shiftStarted) {
                         for(var group in $scope.groups) {
                             $scope.groups[group].forEach(function (item) {

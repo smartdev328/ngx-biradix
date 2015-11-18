@@ -58,7 +58,7 @@
     padding-left:10px
 }
 
-.unselectable {
+.unselectable, .filter-list * {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
