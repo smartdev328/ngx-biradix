@@ -91,7 +91,7 @@ function attachQListeners(q, name) {
     //check if the q is consuming in 10 seconds
     setTimeout(function() {
         isConsuming(q,name );
-    }, 10000)
+    }, 30000)
 }
 
 function isConsuming(q, name) {
