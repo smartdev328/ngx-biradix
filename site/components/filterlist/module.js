@@ -45,6 +45,12 @@ define([
 
                 $scope.selectBetween = function(item1, item2) {
                     $scope.resetChecked();
+
+                    if (item1.id == item2.id) {
+                        item1.checked = true;
+                        return;
+                    }
+
                     var started = false
                     for(var group in $scope.groups) {
                         $scope.groups[group].forEach(function (item) {
