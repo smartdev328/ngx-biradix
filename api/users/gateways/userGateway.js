@@ -13,9 +13,12 @@ var packages = require('../../../package.json');
 
 userRoutes.post('/bounce', function (req, res) {
 
-    if (req.body.email && req.body.reason) {
-        UserService.updateBounce(req.body.email, req.body.reason, function() {});
-    }
+    req.body.forEach(function(b) {
+        if (b.email && b.reason) {
+            UserService.updateBounce(b.email, b.reason, function() {});
+        }
+    })
+
     res.status(200).json({ success: true });
 
 })
