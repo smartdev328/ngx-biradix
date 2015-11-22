@@ -16,6 +16,7 @@ var audits  = [
     {key: 'user_updated', value: 'User Updated', undo: true, group: 'User'},
     {key: 'user_assigned', value: 'User Assigned to Property', undo: true, group: 'User'},
     {key: 'user_unassigned', value: 'User Unassigned from Property', undo: true, group: 'User'},
+    {key: 'user_bounced', value: 'User Email Undeliverable', group: 'User'},
 
     {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true, group: 'Reporting'},
     {key: 'pdf_profile', value: 'PDF Profile', group: 'Reporting'},

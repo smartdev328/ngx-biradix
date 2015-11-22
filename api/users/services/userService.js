@@ -23,7 +23,14 @@ module.exports = {
                 if (user) {
                     user.bounceReason = reason;
                     user.save(function(err, newUser) {
-                        callback();
+
+                        getSysemUser(function(sysTemUser) {
+
+                            AuditService.create({type: 'user_bounced', description: email + ": " + reason, context: {ip: '127.0.0.1', user_agent: 'server'}})
+
+                            callback();
+                        });
+
                     })
 
                 }
@@ -32,32 +39,8 @@ module.exports = {
     },
     getSystemUser : function(callback) {
 
-        var key = "systemUser";
+        getSysemUser(callback);
 
-        var user = localCacheService.get(key);
-
-        if (user) {
-            callback(user);
-            user = null;
-            return;
-        }
-
-        UserSchema.findOne({
-            isSystem: true
-        }, function(err, user) {
-            if (err) {
-                throw new Error(err);
-            }
-            getFullUser(user, function(obj) {
-                obj.user.memberships = {isadmin:true};
-                localCacheService.set(key, obj, 120)
-                callback(obj);
-                obj = null;
-                user = null;
-                return;
-            });
-
-        })
     },
     search: function(Operator,criteria, callback) {
 
@@ -532,4 +515,33 @@ function getFullUser(usr, callback) {
 
             });
         })
+}
+
+function getSysemUser (callback) {
+    var key = "systemUser";
+
+    var user = localCacheService.get(key);
+
+    if (user) {
+        callback(user);
+        user = null;
+        return;
+    }
+
+    UserSchema.findOne({
+        isSystem: true
+    }, function(err, user) {
+        if (err) {
+            throw new Error(err);
+        }
+        getFullUser(user, function(obj) {
+            obj.user.memberships = {isadmin:true};
+            localCacheService.set(key, obj, 120)
+            callback(obj);
+            obj = null;
+            user = null;
+            return;
+        });
+
+    })
 }
