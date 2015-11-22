@@ -35,8 +35,13 @@ define([
 
                     if (!$rootScope.me.passwordUpdated) {
                         toastr.warning('For security purposes, please update the temporary password assigned to you.');
-                        unbind();
                     }
+
+                    if ($rootScope.me.bounceReason) {
+                        toastr.error('We were unable to deliver email to your email address: <b>' + $rootScope.me.email + '</b> for the following reason: <b>' + $rootScope.me.bounceReason + '</b>. Please verify your email address below and hit Update.');
+                    }
+
+                    unbind();
                 }
             })
 
@@ -52,9 +57,9 @@ define([
                     }
                     else {
                         toastr.success('Profile updated successfully.');
-                        $rootScope.me.last = user.last;
-                        $rootScope.me.first = user.first;
-                        $rootScope.me.email = user.email;
+                        $rootScope.refreshToken(function() {
+
+                        });
                     }
                     
 

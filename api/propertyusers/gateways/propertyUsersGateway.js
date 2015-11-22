@@ -6,6 +6,7 @@ var routes = express.Router();
 var async = require("async");
 var _ = require("lodash");
 
+
 routes.get('/properties/:userid', function (req, res) {
     AccessService.canAccessResource(req.user,req.params.userid,'UserManage', function(canAccess) {
         if (!canAccess) {

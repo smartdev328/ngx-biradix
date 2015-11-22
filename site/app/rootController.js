@@ -102,6 +102,14 @@ define([
                             $location.path("/updateProfile").search('password', '1');
                         }
                     }
+                    else
+                    if ($scope.first && $rootScope.me.bounceReason) {
+                        $scope.first = false;
+
+                        if (!phantom) {
+                            $location.path("/updateProfile");
+                        }
+                    }
 
                     if (callback) {
                         callback();

@@ -11,6 +11,15 @@ var userCreateService = require('../services/userCreateService')
 var userRoutes = express.Router();
 var packages = require('../../../package.json');
 
+userRoutes.post('/bounce', function (req, res) {
+
+    if (req.body.email && req.body.reason) {
+        UserService.updateBounce(req.body.email, req.body.reason, function() {});
+    }
+    res.status(200).json({ success: true });
+
+})
+
 userRoutes.post('/resetPassword', function (req, res) {
 
     UserService.resetPassword(req.body.email, req.basePath, req.context, function(success) {

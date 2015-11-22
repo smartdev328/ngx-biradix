@@ -36,6 +36,11 @@ module.exports = {
 
             populateBaseFields(operator, usr, user, true);
 
+
+            if (usr.bounceReason) {
+                usr.bounceReason = undefined;
+            }
+
             usr.save(function (err, usr) {
                 if (err) {
                     modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});

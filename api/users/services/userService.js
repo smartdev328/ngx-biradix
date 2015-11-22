@@ -14,6 +14,22 @@ var localCacheService = require('../../utilities/services/localcacheService')
 var md5 = require('md5');
 
 module.exports = {
+    updateBounce: function(email,reason,callback) {
+        UserSchema.findOne(
+            {
+                emailLower: email.toLowerCase()
+            }
+            , function(err, user) {
+                if (user) {
+                    user.bounceReason = reason;
+                    user.save(function(err, newUser) {
+                        callback();
+                    })
+
+                }
+
+        });
+    },
     getSystemUser : function(callback) {
 
         var key = "systemUser";

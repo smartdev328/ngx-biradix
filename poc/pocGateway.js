@@ -93,6 +93,7 @@ routes.get('/addorg', function(req, res) {
                             callbackp(err, perm)
                         });
                     }, function (err) {
+                        //Todo: update local cache with new ogs
                         res.status(200).send("OK");
                     });
 
