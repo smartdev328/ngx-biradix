@@ -24,9 +24,8 @@ module.exports = {
                     user.bounceReason = reason;
                     user.save(function(err, newUser) {
 
-                        getSysemUser(function(sysTemUser) {
-
-                            AuditService.create({type: 'user_bounced', description: email + ": " + reason, context: {ip: '127.0.0.1', user_agent: 'server'}})
+                        getSysemUser(function(systemUser) {
+                            AuditService.create({user: newUser, operator: systemUser.user,type: 'user_bounced', description: email + ": " + reason, context: {ip: '127.0.0.1', user_agent: 'server'}})
 
                             callback();
                         });
