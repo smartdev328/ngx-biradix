@@ -38,7 +38,7 @@ define([
                     }
 
                     if ($rootScope.me.bounceReason) {
-                        toastr.error('We were unable to deliver email to your email address:: <b>' + $rootScope.me.email + '</b>. Please verify your email address below and click "Update".');
+                        toastr.error('We were unable to deliver email to your email address: <b>' + $rootScope.me.email + '</b>. Please verify your email address and click "Update".');
                     }
 
                     unbind();
