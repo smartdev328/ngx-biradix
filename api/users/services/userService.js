@@ -97,7 +97,7 @@ module.exports = {
             if (criteria.custom) {
                 query = query.select(criteria.select);
             } else {
-                query = query.select('_id first last email active date');
+                query = query.select('_id first last email active date bounceReason');
             }
 
             query = query.sort("-date");

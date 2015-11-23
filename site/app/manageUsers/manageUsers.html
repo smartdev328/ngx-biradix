@@ -132,7 +132,15 @@
                 <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
                 <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
                 <td ng-show="show.name">{{row.name}}</td>
-                <td ng-show="show.email">{{row.email}}</td>
+                <td ng-show="show.email">{{row.email}}
+                    <i class="fa fa-exclamation-triangle warning" class="pull-left"
+                       style="color:orange;cursor:pointer;font-size:16px;padding:4px 0px 0px 5px"
+                       ng-if="row.bounceReason"
+                       popover-trigger="mouseenter"
+                       popover-placement="top"
+                       popover="Undeliverable: {{row.bounceReason}}"
+                    ></i>
+                </td>
                 <td ng-show="show.role">{{row.role}}</td>
                 <td ng-show="show.company">{{row.company}}</td>
                 <td ng-show="show.active" class="center">

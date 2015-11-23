@@ -123,6 +123,10 @@ module.exports = {
                     changes.push({description: "Role: " + removedRole.org.name + ": " + removedRole.name + " => " + userRole.org.name + ": " + userRole.name, field: 'roleid', old_value: removedRole._id.toString()})
                 }
 
+                if (usr.bounceReason) {
+                    usr.bounceReason = undefined;
+                }
+
                 usr.save(function (err, usr) {
                     if (err) {
                         modelErrors.push({msg: 'Unexpected Error. Unable to update user.'});
