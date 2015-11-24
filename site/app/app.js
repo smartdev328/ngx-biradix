@@ -42,11 +42,11 @@ define([
             extendedTimeOut: 5000
         });
 
-        if (!window.sessionStorage.redirect) {
+        //if (!window.sessionStorage.redirect) {
             $urlRouterProvider.otherwise("/dashboard");
-        }
+        //}
         $stateProvider
-             .state('login', {
+            .state('login', {
                 url: "/login",
                 views: {
                     "loggedOutView": {
@@ -121,7 +121,6 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'dashboard/dashboardController')}}
             })
-
             .state('manageUsers', {
                 url: "/manageusers",
                 views: {

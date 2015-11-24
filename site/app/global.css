@@ -343,3 +343,19 @@ A.gear:hover .fa-gear  {
         font-weight: 400;
     }
 }
+
+select {
+    color: #337ab7 !important;
+}
+
+option {
+    color:#333;
+}
+
+.hover-only {
+    display:none
+}
+
+.panel:hover .hover-only {
+    display:block !important;
+}
