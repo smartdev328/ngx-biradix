@@ -347,9 +347,7 @@ define([
                 })
 
                 if (id) {
-                    $propertyService.search({limit: 1, permission: ['PropertyManage','CompManage'], _id: id
-                        , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees orgid floorplans totalUnits community_amenities location_amenities"
-                    }).then(function (response) {
+                    $propertyService.getFullProperty(id).then(function (response) {
                         $scope.property = response.data.properties[0];
                         $scope.localLoading = true;
 

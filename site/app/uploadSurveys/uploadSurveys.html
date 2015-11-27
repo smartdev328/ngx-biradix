@@ -1,0 +1,46 @@
+<h2 class="mainheader">Admin > Upload Surveys
+    <hr>
+</h2>
+
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading">\
+    <div class="panel panel-info">
+        <div class="panel-heading">Upload</div>
+        <dev class="panel-body">
+            <hr>
+            Property:<Br>
+            <select
+                    class="form-control input-sm hidden-print"
+                    ng-options="item.name for item in myProperties"
+                    ng-model="data.property"
+                    style="font-size:14px"
+            >
+            </select><br>
+            <Br>
+            Data:<br>
+            <textarea class="form-control" style="height:220px" ng-model="data.surveys"></textarea><br>
+            <Br>
+            <Center>
+            <button class="btn btn-primary" ng-click="upload()">Upload</button>
+            </Center>
+        </dev>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">Sample</div>
+        <div class="panel-body">
+            <hr>
+            <textarea class="form-control" style="height:220px" id="sample">Type	Desc	Unit Count	SQFT	Rent	Concession	Rent	Concession	Rent	Concession
+Occupancy				96.10		95.20		94.20
+Traffic				53		56		59
+Leases				17		18		19
+Date				8/1/2013		9/1/2013		10/1/2013
+1x1	Fireplace	96	749	760.00 	0.00 	865.00 	0.00 	865.00 	0.00
+1x1	Fireplace	22	791	860.00 	0.00 	965.00 	0.00 	965.00 	0.00
+2x2		60	1053	1030.00 	0.00 	1060.00 	0.00 	1020.00 	0.00
+2x2		88	1077	1065.00 	0.00 	1097.00 	0.00 	1055.00 	0.00
+3x2		48	1250	1245.00 	0.00 	1276.00 	0.00 	1200.00 	0.00 </textarea>
+        </div>
+    </div>
+</div>

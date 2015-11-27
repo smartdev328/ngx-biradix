@@ -218,6 +218,17 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'contact/contactController')}}
             })
+            .state('uploadSurveys', {
+                url: "/uploadSurveys",
+                views: {
+                    "loggedInView": {
+                        templateUrl: "app/uploadSurveys/uploadSurveys.html?bust=" + version ,
+                        controller : "uploadSurveysController"
+                    }
+
+                },
+                resolve: {get : function($q) {return resolve($q, 'uploadSurveys/uploadSurveysController')}}
+            })
     });
 
     app.filter("sanitize", ['$sce', function ($sce) {
