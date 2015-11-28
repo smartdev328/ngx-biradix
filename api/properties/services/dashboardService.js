@@ -121,7 +121,7 @@ module.exports = {
     getDashboard: function(user,id,options,callback) {
         var timer = new Date().getTime();
         PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: id
-            , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
+            , select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
         }, function(err, property) {
 
             if (err) {

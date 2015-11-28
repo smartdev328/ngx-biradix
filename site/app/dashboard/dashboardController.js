@@ -40,6 +40,7 @@ define([
             $scope.orderByComp = $cookies.get("cmp.o");
         }
 
+        /*************************************/
         $scope.defaultShow = function() {
             $scope.show = {
                 units: true,
@@ -85,8 +86,6 @@ define([
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
             $cookies.put('cmp.o', $scope.orderByComp, {expires : expireDate})
-
-
         }
 
         $scope.saveShow = function() {
@@ -94,6 +93,44 @@ define([
             expireDate.setDate(expireDate.getDate() + 365);
             $cookies.put('cmp.s', JSON.stringify($scope.show), {expires : expireDate})
         }
+        /**********************************************/
+        $scope.defaultShowProfile = function() {
+            $scope.showProfile = {
+                address: true,
+                website: false,
+                phone: true,
+                email: false,
+                name: false,
+                const: true,
+                built: true,
+                ren: true,
+                owner: true,
+                mgmt: true,
+                units: true,
+                occ: true,
+                traf: true,
+                lease: true
+            }
+
+        }
+
+        $scope.defaultShowProfile();
+
+        if ($cookies.get("pr.s")) {
+            $scope.showProfile = JSON.parse($cookies.get("pr.s"));
+        }
+
+        $scope.resetProfile = function() {
+            $scope.defaultShowProfile();
+            $cookies.put('pr.s');
+        }
+
+        $scope.saveShowProfile = function() {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('pr.s', JSON.stringify($scope.showProfile), {expires : expireDate})
+        }
+        /***************************/
 
         $scope.$watch('daterange', function(d) {
             if (!$scope.localLoading) return;

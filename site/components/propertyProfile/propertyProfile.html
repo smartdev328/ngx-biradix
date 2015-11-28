@@ -3,20 +3,51 @@
         padding: 2px 6px 2px 0px
     }
 </style>
-<address style="margin-bottom:5px">
+<address style="margin-bottom:5px" ng-if="show.address">
     {{property.address}}<br>
     {{property.city}}, {{property.state}}  {{property.zip}} <br>
 </address>
 <table cellpadding="2" cellspacing="0" class="profiletable">
-    <tbody><tr>
+    <tbody>
+    <tr ng-if="show.website && property.website">
+        <td colspan="2">
+            <a href="{{property.website}}" target="_blank">{{property.website}}</a>
+        </td>
+    </tr>
+    <tr ng-if="show.website && !property.website">
+        <td>
+            <b>Website:</b>
+        </td>
+        <td>
+            N/A
+        </td>
+    </tr>
+    <tr ng-if="show.phone">
         <td>
             <b>Phone:</b>
         </td>
         <td>
-            {{property.phone}}
+            {{property.phone || 'N/A'}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.email">
+        <td>
+            <b>Email:</b>
+        </td>
+        <td>
+            <span ng-if="!property.contactEmail">N/A</span>
+            <a href="mailto:{{property.contactEmail}}" ng-if="property.contactEmail">{{property.contactEmail}}</a>
+        </td>
+    </tr>
+    <tr ng-if="show.contact">
+        <td>
+            <b>Contact:</b>
+        </td>
+        <td>
+            {{property.contactName || 'N/A'}}
+        </td>
+    </tr>
+    <tr ng-if="show.const">
         <td>
             <b>Construction:</b>
         </td>
@@ -24,23 +55,23 @@
             {{property.constructionType}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.built">
         <td>
             <b>Year Built:</b>
         </td>
         <td>
-            {{property.yearBuilt}}
+            {{property.yearBuilt || 'N/A'}}
         </td>
     </tr>
-    <tr ng-show="property.yearRenovated">
+    <tr ng-if="show.ren">
         <td>
             <b>Renovated:</b>
         </td>
         <td>
-            {{property.yearRenovated}}
+            {{property.yearRenovated || 'N/A'}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.owner">
         <td>
             <b>Owner:</b>
         </td>
@@ -48,7 +79,7 @@
             {{property.owner}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.mgmt">
         <td>
             <b>Mgmt:</b>
         </td>
@@ -56,7 +87,7 @@
             {{property.management}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.units">
         <td>
             <b>Total Units:</b>
         </td>
@@ -64,7 +95,7 @@
             {{property.totalUnits || 'N/A'}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.occ">
         <td>
             <b>Occupancy:</b>
         </td>
@@ -72,7 +103,7 @@
             {{property.survey.occupancy == null ? "N/A" : property.survey.occupancy + '%'}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.traf">
         <td>
             <b>Traffic/Wk:</b>
         </td>
@@ -80,7 +111,7 @@
             {{property.survey.weeklytraffic == null ? "N/A" : property.survey.weeklytraffic.toString()}}
         </td>
     </tr>
-    <tr>
+    <tr ng-if="show.lease">
         <td>
             <b>Leases/Wk:</b>
         </td>
