@@ -28,6 +28,9 @@ var s = new Schema({
     contactEmail: {
         type: String
     },
+    website: {
+        type: String
+    },
     yearBuilt: {
         type: Number
     },

@@ -331,6 +331,10 @@ function errorCheck(property, modelErrors) {
         modelErrors.push({param: 'yearRenovated', msg : 'Please enter a valid Year Renovated'});
     }
 
+    if (property.website && !property.website.match(/^http:\/\/.*\..*$/ig)) {
+        modelErrors.push({param: 'website', msg : 'Please enter a valid Website Address'});
+    }
+
     property.floorplans.forEach(function(fp) {
         if (typeof fp.bedrooms == 'undefined' || isNaN(fp.bedrooms) || parseInt(fp.bedrooms) < 0) {
             modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of bedrooms'});
@@ -439,6 +443,7 @@ function populateSchema(property, n, all) {
     n.phone = property.phone;
     n.owner = property.owner;
     n.contactEmail = property.contactEmail;
+    n.website = property.website;
     n.contactName = property.contactName;
     n.management = property.management;
     n.yearBuilt = property.yearBuilt;
@@ -475,6 +480,7 @@ function getContactChanges(property, n, all) {
     checkChange(changes,property,n,"contactName","Contact Name");
     checkChange(changes,property,n,"contactEmail","Contact Email");
     checkChange(changes,property,n,"phone","Contact Phone");
+    checkChange(changes,property,n,"website","Website Address");
     checkChange(changes,property,n,"notes","Notes", true);
 
     return changes;

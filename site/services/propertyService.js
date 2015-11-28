@@ -308,8 +308,9 @@ define(['app'], function (app) {
 
             resp.property.hasName = resp.property.contactName && resp.property.contactName.length > 0;
             resp.property.hasEmail = resp.property.contactEmail && resp.property.contactEmail.length > 0;
+            resp.property.hasWebsite = resp.property.website && resp.property.website.length > 0;
             resp.property.hasNotes = resp.property.notes && resp.property.notes.length > 0;
-            resp.property.hasContact = resp.property.hasName || resp.property.hasEmail;
+            resp.property.hasContact = resp.property.hasName || resp.property.hasEmail || resp.property.hasWebsite;
             resp.property.notes = (resp.property.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
 
             resp.property.hasFees = false;
@@ -485,7 +486,7 @@ define(['app'], function (app) {
 
         fac.getFullProperty = function(id) {
             return fac.search({limit: 1, permission: ['PropertyManage','CompManage'], _id: id
-                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail notes fees orgid floorplans totalUnits community_amenities location_amenities"
+                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid floorplans totalUnits community_amenities location_amenities"
             });
         }
 
