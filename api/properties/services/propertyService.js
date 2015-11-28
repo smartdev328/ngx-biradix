@@ -134,11 +134,18 @@ module.exports = {
         })
     },
     getSurvey: function(criteria, callback) {
-        if (!criteria.ids || criteria.ids.length == 0) {
+        if (!criteria.ids && !criteria.propertyid) {
             return callback('Error', null);
         }
         var query = SurveySchema.find();
-        query = query.where('_id').in(criteria.ids);
+
+        if (criteria.ids) {
+            query = query.where('_id').in(criteria.ids);
+        }
+
+        if (criteria.propertyid) {
+            query = query.where('propertyid').equals(criteria.propertyid);
+        }
 
         if (criteria.select) {
             query = query.select(criteria.select);
@@ -153,9 +160,12 @@ module.exports = {
                 delete surveys[i].location_amenities;
                 delete surveys[i].community_amenities;
                 delete surveys[i].exclusions;
-                surveys[i].floorplans.forEach(function(fp,j) {
-                    delete surveys[i].floorplans[j].amenities;
-                })
+
+                if (surveys[i].floorplans) {
+                    surveys[i].floorplans.forEach(function (fp, j) {
+                        delete surveys[i].floorplans[j].amenities;
+                    })
+                }
             })
             callback(err,surveys)
         })
@@ -510,12 +520,19 @@ module.exports = {
 
         async.waterfall([
             function(callbackw){
-                PropertySchema.findOne({_id:id}, function(err, prop) {
+                //if we pass in the date, pick last survey before the date
+                PropertySchema.findOne({_id: id}, function (err, prop) {
                     subject = prop;
-                    callbackw(null,(prop.survey ? prop.survey.id : null))
+                    callbackw(null, (prop.survey ? prop.survey.id : null), survey.date)
                 })
             },
-            function(surveyid, callbackw) {
+            function(surveyid, date, callbackw) {
+                if (date) {
+                    SurveySchema.findOne({date:{$lt : date},propertyid:subject._id}, function(err, lastsurvey) {
+                        callbackw(null,lastsurvey)
+                    })
+                }
+                else
                 if (surveyid) {
                     SurveySchema.findOne({_id:surveyid}, function(err, lastsurvey) {
                         callbackw(null,lastsurvey)

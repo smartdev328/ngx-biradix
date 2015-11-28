@@ -1,7 +1,8 @@
 'use strict';
 define([
     'app',
-], function (app) {
+    'async2'
+], function (app,async) {
 
     app.controller('uploadSurveysController', ['$scope','$rootScope','$location','ngProgress','toastr','$propertyService', function ($scope,$rootScope,$location,ngProgress,toastr,$propertyService) {
         if (!$rootScope.loggedIn) {
@@ -23,9 +24,9 @@ define([
             $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true, select : "_id name"}).then(function (response) {
                 $scope.myProperties = response.data.properties;
 
-                //Temp
-                $scope.data.property = $scope.myProperties[0];
-                $scope.data.surveys = $("#sample").val();
+                ////Temp
+                //$scope.data.property = $scope.myProperties[0];
+                //$scope.data.surveys = $("#sample").val();
 
                 $scope.localLoading = true;
             }, function(error) {
@@ -77,11 +78,11 @@ define([
                 for(var i = 5; i < data.length; i++) {
                     var fp = {};
                     var type = data[i][0].split("x");
-                    fp.bedrooms = type[0];
+                    fp.bedrooms = parseInt(type[0]);
                     fp.bathrooms = type[1];
                     fp.description = data[i][1];
-                    fp.units = data[i][2];
-                    fp.sqft = data[i][3];
+                    fp.units = parseInt(data[i][2]);
+                    fp.sqft = parseInt(data[i][3]);
 
                     var old = _.filter(p.floorplans,function(x) {
                         return x.bedrooms.toString() == fp.bedrooms.toString() && x.bathrooms.toString() == fp.bathrooms.toString() && x.sqft.toString() == fp.sqft.toString()
@@ -156,11 +157,85 @@ define([
         }
 
         $scope.addSurveys = function(data, floorplans, property) {
-            console.log(data, floorplans, property)
-            //TODO: Populate all Survey Objects
-            //TODO: Give warning if survey within 4 days or add/success
+            var surveys = [];
+            for (var i = 4; i < data.length; i+=2) {
+                var survey = {};
+                survey.occupancy = data[1][i];
+                survey.weeklytraffic = data[2][i];
+                survey.weeklyleases = data[3][i];
+                survey.date = data[4][i];
+                survey.propertyid = property._id;
+                survey.floorplans = [];
+                for(var fi in floorplans) {
+                    var fp = _.cloneDeep(floorplans[fi]);
+                    fp.amenities = [];
+                    fp.rent = parseInt(data[fi][i]);
+                    fp.concessions = parseInt(data[fi][i + 1]);
+                    survey.floorplans.push(fp);
+                }
 
-            $scope.localLoading = true;
+                surveys.push(survey);
+            }
+            var errors = [];
+            var warnings = [];
+            var successes = [];
+
+            //console.log(surveys);
+            //return;
+
+            $propertyService.getSurveyDates(property._id).then(function (response) {
+                var dates = _.pluck(response.data.survey,"date");
+                async.eachSeries(surveys
+                    , function (survey, callbackp) {
+                        var inrange = _.find(dates, function(d) {
+
+                            var diff = moment(d).diff(moment(new Date(survey.date)));
+                            var days = Math.abs(diff / 1000 / 60 / 60 / 24);
+                            return days < 4;
+                        })
+
+                        if (inrange) {
+                            warnings.push(survey.date + ': Duplicate Date / Not Added');
+                            callbackp();
+                        }
+                        else {
+
+                            $propertyService.createSurvey(property._id, survey).then(
+                                function(resp) {
+
+                                    if (resp.data.errors && resp.data.errors.length > 0) {
+                                        errors.push(survey.date + ': ' + resp.data.errors[0].msg);
+                                    }
+                                    else {
+                                        successes.push(survey.date + ' added successfully');
+                                    }
+                                    callbackp();
+                            }, function(resp) {
+                                    errors.push(survey.date + ': Unknown error');
+                                    callbackp();
+                                })
+                        }
+                    },
+                    function done() {
+
+                        if (successes.length > 0) {
+                            toastr.success(successes.join("<Br>"));
+                        }
+
+                        if (errors.length > 0) {
+                            toastr.error(errors.join("<Br>"));
+                        }
+
+                        if (warnings.length > 0) {
+                            toastr.warning(warnings.join("<Br>"));
+                        }
+
+                        $scope.localLoading = true;
+                    })
+            },function() {});
+
+
+
         }
 
         $scope.parseTSV = function(data) {

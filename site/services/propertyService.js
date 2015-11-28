@@ -25,6 +25,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.getSurveyDates = function (id) {
+            return $http.get('/api/1.0/properties/' + id + '/surveys?bust=' + (new Date()).getTime(), {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.full = function (id,summary,bedrooms,daterange, show) {
             return $http.post('/api/1.0/properties/' + id + '/full'+ '?bust=' + (new Date()).getTime(), {
                 summary: summary,

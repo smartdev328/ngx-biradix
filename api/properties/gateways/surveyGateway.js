@@ -53,5 +53,22 @@ module.exports = {
                 });
             })
         })
+
+        Routes.get('/:id/surveys', function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+                if (!canAccess) {
+                    return res.status(401).json("Unauthorized request");
+                }
+
+                PropertyService.getSurvey({propertyid: req.params.id, select: "date"}, function (err, survey) {
+                    if (err) {
+                        return res.status(400).json({errors: err});
+                    }
+                    else {
+                        return res.status(200).json({survey: survey});
+                    }
+                });
+            })
+        })
     }
 }
