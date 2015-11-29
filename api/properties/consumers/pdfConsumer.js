@@ -44,6 +44,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 pdfService.getCookie(data.hostname,"fp.s", data.show),
                 pdfService.getCookie(data.hostname,"cmp.o", data.orderByComp),
                 pdfService.getCookie(data.hostname,"cmp.s", data.showComp),
+                pdfService.getCookie(data.hostname,"pr.s", data.showProfile),
 
             ];
 

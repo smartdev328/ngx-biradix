@@ -11,7 +11,7 @@
     <tbody>
     <tr ng-if="show.website && property.website">
         <td colspan="2">
-            <a href="{{property.website}}" target="_blank">{{property.website}}</a>
+            <a href="{{property.website}}" target="_blank">{{property.website.replace("http://",'')}}</a>
         </td>
     </tr>
     <tr ng-if="show.website && !property.website">

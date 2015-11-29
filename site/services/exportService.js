@@ -20,6 +20,7 @@ define([
             url += "&show=" + encodeURIComponent ($cookies.get("fp.s") || '')
             url += "&orderByC=" + ($cookies.get("cmp.o") || '');
             url += "&showC=" + encodeURIComponent ($cookies.get("cmp.s") || '') ;
+            url += "&showP=" + encodeURIComponent ($cookies.get("pr.s") || '') ;
             url += '&bust=' + (new Date()).getTime();
             return url;
         }

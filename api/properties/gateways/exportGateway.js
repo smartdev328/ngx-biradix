@@ -146,6 +146,7 @@ module.exports = {
                     show : req.query.show,
                     orderByComp : req.query.orderByC,
                     showComp : req.query.showC,
+                    showProfile : req.query.showP,
 
                 },
                 {

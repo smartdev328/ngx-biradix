@@ -51,6 +51,25 @@ define([
             $scope.showComp = JSON.parse($cookies.get("cmp.s"));
         }
 
+        $scope.showProfile = {
+            address: true,
+            website: false,
+            phone: true,
+            email: false,
+            name: false,
+            const: true,
+            built: true,
+            ren: true,
+            owner: true,
+            mgmt: true,
+            units: true,
+            occ: true,
+            traf: true,
+            lease: true
+        }
+        if ($cookies.get("pr.s")) {
+            $scope.showProfile = JSON.parse($cookies.get("pr.s"));
+        }
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $scope.localLoading = false;
