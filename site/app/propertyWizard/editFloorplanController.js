@@ -14,7 +14,7 @@ define([
             $scope.values.newUnitAmenity = '';
 
             //Clone amenities so we dont change master
-            $scope.unitItemsCopy = _.cloneDeep(unitItems);
+            $scope.unitItemsCopy = _.cloneDeep(unitItems) || [];
 
             if (fp) {
                 $scope.edit = true;
@@ -34,7 +34,7 @@ define([
 
 
             //Clone the entire floor plan so we dont two way bind in case we need to cancel
-            $scope.fpCopy = _.cloneDeep(fp);
+            $scope.fpCopy = _.cloneDeep(fp) || {};
 
             $scope.cancel = function () {
                 $modalInstance.dismiss('cancel');
@@ -63,6 +63,7 @@ define([
             }
 
             $scope.populateAmenities = function() {
+                $scope.unitItemsCopy = $scope.unitItemsCopy || [];
                 var response = [];
                 $scope.unitItemsCopy.forEach(function(a) {
                     if (a.selected) {

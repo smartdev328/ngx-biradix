@@ -24,7 +24,7 @@ define([
             $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true, select : "_id name"}).then(function (response) {
                 $scope.myProperties = response.data.properties;
 
-                ////Temp
+                ////For testing
                 //$scope.data.property = $scope.myProperties[0];
                 //$scope.data.surveys = $("#sample").val();
 
@@ -54,17 +54,17 @@ define([
                 return;
             }
 
-            if (data[0].length < 6) {
+            if (data[4].length < 6) {
                 toastr.error("Must contain at least 6 columns");
                 return;
             }
 
-            if (data[0].length % 2 != 0) {
+            if (data[4].length % 2 != 0) {
                 toastr.error("Must contain even number of columns");
                 return;
             }
 
-            if (data[0][0] != 'Type' || data[1][0] != 'Occupancy' || data[2][0] != 'Traffic' || data[3][0] != 'Leases' || data[4][0] != 'Date') {
+            if (data[0][0] != 'Date' || data[1][0] != 'Occupancy' || data[2][0] != 'Traffic' || data[3][0] != 'Leases' || data[4][0] != 'Type') {
                 toastr.error("First column must be: Type,Occupancy,Traffic,Leases,Date");
                 return;
             }
@@ -101,7 +101,7 @@ define([
                     }
 
                     if (old.length == 1) {
-                        fp = old[0];
+                        fp = _.cloneDeep(old[0]);
                     } else {
                         fp.id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                             var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -158,12 +158,12 @@ define([
 
         $scope.addSurveys = function(data, floorplans, property) {
             var surveys = [];
-            for (var i = 4; i < data.length; i+=2) {
+            for (var i = 4; i < data[0].length; i+=2) {
                 var survey = {};
                 survey.occupancy = data[1][i];
                 survey.weeklytraffic = data[2][i];
                 survey.weeklyleases = data[3][i];
-                survey.date = data[4][i];
+                survey.date = data[0][i];
                 survey.propertyid = property._id;
                 survey.floorplans = [];
                 for(var fi in floorplans) {
@@ -179,9 +179,6 @@ define([
             var errors = [];
             var warnings = [];
             var successes = [];
-
-            //console.log(surveys);
-            //return;
 
             $propertyService.getSurveyDates(property._id).then(function (response) {
                 var dates = _.pluck(response.data.survey,"date");

@@ -291,6 +291,10 @@ function errorCheck(property, modelErrors) {
     property.yearBuilt = property.yearBuilt || '';
     property.floorplans = property.floorplans || [];
 
+    if (property.website && !property.website.match(/^http/ig)) {
+        property.website = "http://" + property.website;
+    }
+
     if (property.name == '') {
         modelErrors.push({param: 'name', msg : 'Please enter the Property Name'});
     }
@@ -329,10 +333,6 @@ function errorCheck(property, modelErrors) {
 
     if (property.yearRenovated && (isNaN(property.yearRenovated) || parseInt(property.yearRenovated) < 1900 || parseInt(property.yearRenovated) > (new Date()).getFullYear() + 5)) {
         modelErrors.push({param: 'yearRenovated', msg : 'Please enter a valid Year Renovated'});
-    }
-
-    if (property.website && !property.website.match(/^http:\/\/.*\..*$/ig)) {
-        modelErrors.push({param: 'website', msg : 'Please enter a valid Website Address'});
     }
 
     property.floorplans.forEach(function(fp) {

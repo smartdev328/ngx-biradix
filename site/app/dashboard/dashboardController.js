@@ -103,7 +103,7 @@ define([
                 name: false,
                 const: true,
                 built: true,
-                ren: true,
+                ren: false,
                 owner: true,
                 mgmt: true,
                 units: true,
