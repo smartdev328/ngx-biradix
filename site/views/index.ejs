@@ -39,7 +39,7 @@
     <link href="components/angular-toastr/angular-toastr.min.css" rel="stylesheet" type="text/css">
     <script src="components/angular-toastr/angular-toastr.tpls.min.js"></script>
 
-    <script data-main="app/main" src="libs/requirejs/require-min.js"></script>
+    <script data-main="app/main.js?bust=<%=version%>" src="libs/requirejs/require-min.js"></script>
 
 </head>
 <body ng-controller="rootController" ng-click="resetTimeout()" ng-keypress="resetTimeout()">
