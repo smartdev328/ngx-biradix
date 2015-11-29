@@ -2,7 +2,7 @@
 define([
     'app',
     'async2'
-], function (app,async) {
+], function (app,async2) {
 
     app.controller('uploadSurveysController', ['$scope','$rootScope','$location','ngProgress','toastr','$propertyService', function ($scope,$rootScope,$location,ngProgress,toastr,$propertyService) {
         if (!$rootScope.loggedIn) {
@@ -185,7 +185,7 @@ define([
 
             $propertyService.getSurveyDates(property._id).then(function (response) {
                 var dates = _.pluck(response.data.survey,"date");
-                async.eachSeries(surveys
+                async2.eachSeries(surveys
                     , function (survey, callbackp) {
                         var inrange = _.find(dates, function(d) {
 
