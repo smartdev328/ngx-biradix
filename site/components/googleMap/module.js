@@ -179,7 +179,7 @@ define([
 
 
             },
-            templateUrl: '/components/googleMap/googleMap.html'
+            templateUrl: '/components/googleMap/googleMap.html?bust=' + version
         };
     })
 })

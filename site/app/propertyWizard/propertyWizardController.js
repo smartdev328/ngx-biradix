@@ -523,7 +523,7 @@ define([
                     '/app/propertyWizard/editFloorplanController.js'
                 ], function () {
                     var modalInstance = $modal.open({
-                        templateUrl: '/app/propertyWizard/tabs/editFloorplanController.html',
+                        templateUrl: '/app/propertyWizard/tabs/editFloorplanController.html?bust=' + version,
                         controller: 'editFloorplanController',
                         size: "md",
                         keyboard: false,

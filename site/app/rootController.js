@@ -287,7 +287,7 @@ define([
                 '/app/marketSurvey/marketSurveyController.js'
             ], function () {
                 var modalInstance = $modal.open({
-                    templateUrl: '/app/marketSurvey/marketSurvey.html',
+                    templateUrl: '/app/marketSurvey/marketSurvey.html?bust='+version,
                     controller: 'marketSurveyController',
                     size: "md",
                     keyboard: false,

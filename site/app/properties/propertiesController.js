@@ -394,7 +394,7 @@ define([
                 '/app/floorplanLinks/floorplanLinksController.js'
             ], function () {
                 var modalInstance = $modal.open({
-                    templateUrl: '/app/floorplanLinks/floorplanLinks.html',
+                    templateUrl: '/app/floorplanLinks/floorplanLinks.html?bust=' + version,
                     controller: 'floorplanLinksController',
                     size: "md",
                     keyboard: false,
@@ -423,7 +423,7 @@ define([
                 '/app/propertyWizard/propertyWizardController.js'
             ], function () {
                 var modalInstance = $modal.open({
-                    templateUrl: '/app/propertyWizard/propertyWizard.html',
+                    templateUrl: '/app/propertyWizard/propertyWizard.html?bust='+version,
                     controller: 'propertyWizardController',
                     size: "md",
                     keyboard: false,
@@ -486,7 +486,7 @@ define([
                 '/app/findComp/findCompController.js'
             ], function () {
                 var modalInstance = $modal.open({
-                    templateUrl: '/app/findComp/findComp.html',
+                    templateUrl: '/app/findComp/findComp.html?bust=' + version,
                     controller: 'findCompController',
                     size: "md",
                     keyboard: false,
