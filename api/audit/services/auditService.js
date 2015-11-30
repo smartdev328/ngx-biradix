@@ -4,6 +4,7 @@ var async = require("async");
 var _ = require("lodash")
 var PaginationService = require('../../utilities/services/paginationService')
 var DateService = require('../../utilities/services/dateService')
+var error = require("../../../config/error");
 
 var audits  = [
     {key: 'login_failed', value: 'Login Failed', group: 'User'},
@@ -120,7 +121,7 @@ module.exports = {
                     query = query.select(criteria.select);
                 }
                 query.exec(function(err, list) {
-                    if (userids.length > 0) {
+                    if (!err && list && userids.length > 0) {
                         list.forEach(function (li) {
                             if (userids.indexOf(li.operator.id.toString()) == -1) {
                                 li.operator.name = "External User";
@@ -134,6 +135,11 @@ module.exports = {
 
                         });
                     }
+
+                    if (err) {
+                        error.send(err,{criteria: criteria, userids: userids, propertyids: propertyids, compids: compids});
+                    }
+
                     callback(err,list,PaginationService.getPager(criteria.skip, criteria.limit, obj))
                 });
             }
