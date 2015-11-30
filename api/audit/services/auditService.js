@@ -121,6 +121,8 @@ module.exports = {
                     query = query.select(criteria.select);
                 }
                 query.exec(function(err, list) {
+                    console.log(err,list);
+
                     if (!err && list && userids.length > 0) {
                         list.forEach(function (li) {
                             if (userids.indexOf(li.operator.id.toString()) == -1) {
@@ -134,10 +136,6 @@ module.exports = {
                             }
 
                         });
-                    }
-
-                    if (err) {
-                        error.send(err,{criteria: criteria, userids: userids, propertyids: propertyids, compids: compids});
                     }
 
                     callback(err,list,PaginationService.getPager(criteria.skip, criteria.limit, obj))
