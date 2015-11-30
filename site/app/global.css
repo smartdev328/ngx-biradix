@@ -61,7 +61,15 @@ td.center,th.center {text-align:center}
     display:block;
 }
 
+
+.property-title {
+    max-width:205px;
+}
+
 @media print {
+    .property-title {
+        max-width:240px !important;
+    }
 
     a[href]:after {
         content: none !important;
