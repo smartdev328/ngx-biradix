@@ -39,19 +39,22 @@
 <div class="row" ng-show="localLoading && myProperties.length > 0">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading" style="min-height:52px">
-                <span ng-if="myProperties.length == 1" class="pull-left property-title">{{selectedProperty.name}}</span>
+            <div class="panel-heading">
+                <table style="width:100%">
+                    <tr>
+                        <Td style="height:30px">
+                            <span ng-if="myProperties.length == 1" class="pull-left" style="color: #4460a9 !important;">{{selectedProperty.name}}</span>
 
-                <span ng-if="myProperties.length > 1" class="dropdown pull-left property-title">
-                    <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit">{{selectedProperty.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
+                            <span ng-if="myProperties.length > 1" class="dropdown pull-left" style="color: #4460a9 !important;">
+                    <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit; color: #4460a9 !important;">{{selectedProperty.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
                     <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:310px;overflow-y:auto">
                         <div style="margin:10px" ng-if="myProperties.length > 7">
-                        <input type="text" class="form-control input-sm"
-                               placeholder="Search Properties"
-                               ng-model="filters.searchDashboard"
-                               style="font-weight: normal"
-                               >
-                        <i class="fa fa-search form-control-feedback" style="color:#ccc;top:10px;right:10px"></i>
+                            <input type="text" class="form-control input-sm"
+                                   placeholder="Search Properties"
+                                   ng-model="filters.searchDashboard"
+                                   style="font-weight: normal"
+                            >
+                            <i class="fa fa-search form-control-feedback" style="color:#ccc;top:10px;right:10px"></i>
                         </div>
 
                         <ul class="multi-col-list">
@@ -59,31 +62,35 @@
                         </ul>
                     </div>
                 </span>
+                        </Td>
+                        <td style="width:50px" class="hidden-print" valign="top">
+                            <div class="btn-group action_dropdown pull-right hover-only" style="margin-right:-15px">
+                                <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
+                                    <span class="fa fa-table"></span> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.address" ng-checked="showProfile.address" ng-click="saveShowProfile()"> Address</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.website" ng-checked="showProfile.website" ng-click="saveShowProfile()"> Website</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.phone" ng-checked="showProfile.phone" ng-click="saveShowProfile()"> Phone</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.email" ng-checked="showProfile.email" ng-click="saveShowProfile()"> Email</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.contact" ng-checked="showProfile.contact" ng-click="saveShowProfile()"> Contact</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.const" ng-checked="showProfile.const" ng-click="saveShowProfile()"> Contstruction</label></div></li>
 
-                <div class="btn-group action_dropdown pull-right hidden-print hover-only" style="margin-right:-15px">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
-                        <span class="fa fa-table"></span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.address" ng-checked="showProfile.address" ng-click="saveShowProfile()"> Address</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.website" ng-checked="showProfile.website" ng-click="saveShowProfile()"> Website</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.phone" ng-checked="showProfile.phone" ng-click="saveShowProfile()"> Phone</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.email" ng-checked="showProfile.email" ng-click="saveShowProfile()"> Email</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.contact" ng-checked="showProfile.contact" ng-click="saveShowProfile()"> Contact</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.const" ng-checked="showProfile.const" ng-click="saveShowProfile()"> Contstruction</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.built" ng-checked="showProfile.built" ng-click="saveShowProfile()"> Year Built</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.ren" ng-checked="showProfile.ren" ng-click="saveShowProfile()"> Year Renovated</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.owner" ng-checked="showProfile.owner" ng-click="saveShowProfile()"> Owner</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.mgmt" ng-checked="showProfile.mgmt" ng-click="saveShowProfile()"> Management</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.units" ng-checked="showProfile.units" ng-click="saveShowProfile()"> Total Units</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.occ" ng-checked="showProfile.occ" ng-click="saveShowProfile()"> Occupancy</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.traf" ng-checked="showProfile.traf" ng-click="saveShowProfile()"> Traffic / Week</label></div></li>
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.lease" ng-checked="showProfile.lease" ng-click="saveShowProfile()"> Leases / Week</label></div></li>
+                                    <li class="hidden-print"><div style="width:60px;margin:0px auto"><input type="button" class="btn btn-primary btn-xs" value="Reset All" ng-click="resetProfile()"></div></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
 
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.built" ng-checked="showProfile.built" ng-click="saveShowProfile()"> Year Built</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.ren" ng-checked="showProfile.ren" ng-click="saveShowProfile()"> Year Renovated</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.owner" ng-checked="showProfile.owner" ng-click="saveShowProfile()"> Owner</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.mgmt" ng-checked="showProfile.mgmt" ng-click="saveShowProfile()"> Management</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.units" ng-checked="showProfile.units" ng-click="saveShowProfile()"> Total Units</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.occ" ng-checked="showProfile.occ" ng-click="saveShowProfile()"> Occupancy</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.traf" ng-checked="showProfile.traf" ng-click="saveShowProfile()"> Traffic / Week</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.lease" ng-checked="showProfile.lease" ng-click="saveShowProfile()"> Leases / Week</label></div></li>
-                        <li class="hidden-print"><div style="width:60px;margin:0px auto"><input type="button" class="btn btn-primary btn-xs" value="Reset All" ng-click="resetProfile()"></div></li>
-                    </ul>
-                </div>
-                <Br clear="all">
+                </table>
             </div>
             <div class="panel-body">
                 <hr>
