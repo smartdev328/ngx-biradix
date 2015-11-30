@@ -121,15 +121,14 @@ module.exports = {
                     query = query.select(criteria.select);
                 }
                 query.exec(function(err, list) {
-                    console.log(err,list);
-
-                    if (!err && list && userids.length > 0) {
+                    if (userids.length > 0) {
                         list.forEach(function (li) {
-                            if (userids.indexOf(li.operator.id.toString()) == -1) {
+
+                            if (li.operator && userids.indexOf(li.operator.id.toString()) == -1) {
                                 li.operator.name = "External User";
                             }
 
-                            if (li.user && li.user.id && userids.indexOf(li.user.id.toString()) == -1) {
+                            if (li.user && li.user && li.user.id && userids.indexOf(li.user.id.toString()) == -1) {
                                 li.description = li.description.replace(li.user.name, "External User")
                                 li.user.name = "External User";
 
