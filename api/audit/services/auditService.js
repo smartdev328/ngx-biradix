@@ -124,11 +124,11 @@ module.exports = {
                     if (userids.length > 0) {
                         list.forEach(function (li) {
 
-                            if (li.operator && userids.indexOf(li.operator.id.toString()) == -1) {
+                            if (li.operator && li.operator.id && userids.indexOf(li.operator.id.toString()) == -1) {
                                 li.operator.name = "External User";
                             }
 
-                            if (li.user && li.user && li.user.id && userids.indexOf(li.user.id.toString()) == -1) {
+                            if (li.user && li.user.id && userids.indexOf(li.user.id.toString()) == -1) {
                                 li.description = li.description.replace(li.user.name, "External User")
                                 li.user.name = "External User";
 
