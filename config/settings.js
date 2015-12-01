@@ -7,7 +7,7 @@ module.exports = {
     PORT : process.env.PORT || 2000,
     SECRET : process.env.secret || 'test',
     API_PATH : process.env.apipath || '/api/1.0/',
-    NEW_RELIC_LICENSE_KEY : process.env.NEW_RELIC_LICENSE_ || '71d799aa1dc64627ec44bbc97103b81fa1e68a7c',
+    NEW_RELIC_LICENSE_KEY : process.env.NEW_RELIC_LICENSE_KEY || '71d799aa1dc64627ec44bbc97103b81fa1e68a7c',
     NEW_RELIC_NAME : process.env.NEW_RELIC_NAME || 'Localhost',
     REDIS_URL : process.env.REDIS_URL || 'redis://h:pf6q4cqj9942d78kbbk0gtdie32@ec2-54-83-9-36.compute-1.amazonaws.com:18649',
     EXCEL_URL : process.env.EXCEL_URL || 'http://localhost:12008/excel',
