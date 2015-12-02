@@ -250,12 +250,7 @@ define([
 
     app.factory('$exceptionHandler', function () {
         return function errorCatcherHandler(exception, cause) {
-            console.error(exception.stack);
-            NREUM.noticeError(exception);
-
-            if (!phantom) {
-                location.href = "/error.html";
-            }
+            global_error(exception);
         };
     });
 

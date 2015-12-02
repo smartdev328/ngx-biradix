@@ -3,14 +3,14 @@ var express = require('express');
 var _ = require('lodash');
 var packages = require('../package.json');
 var OrgService = require('../api/organizations/services/organizationService')
-var newrelic = require('newrelic');
+//var newrelic = require('newrelic');
 module.exports = (function() {
 
     var ui = express.Router();
 
-    //ui.post('/error', function (req, res) {
-    //    throw new Error(req.body.error);
-    //});
+    ui.post('/error', function (req, res) {
+        throw new Error(req.body.error);
+    });
 
     ui.get('/', function (req, res) {
         if (req.headers['x-forwarded-proto'] !== 'https'
@@ -36,7 +36,7 @@ module.exports = (function() {
             var local = (subdomain == 'localhost' || phantom);
 
             res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom,
-                nreum : newrelic.getBrowserTimingHeader()
+                //nreum : newrelic.getBrowserTimingHeader()
             });
 
         })

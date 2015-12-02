@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>BI:Radix</title>
-    <%-nreum%>
     <script type="text/javascript">window.renderable = false</script>
     <link rel="icon" type="image/png" href="/images/organizations/<%=logoSmall%>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -175,11 +174,14 @@
                     <li ng-if="$root.me.permissions.indexOf('History') > -1">
                         <a ng-class="{'active': sideNav == 'History'}"  href="#/history" ng-click="turnOffIfMobile()"><i class="fa fa-history"></i> Activity History</a>
                     </li>
-                    <li>
+                    <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href = "#/uploadSurveys" ng-click="turnOffIfMobile()"><i class="fa fa-wrench"></i> Admin</a>
                     </li>
-                    <li>
+                    <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href = "#/uploadSurveys" href ng-class="{'active': sideNav == 'UploadSurveys', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Upload Surveys</a>
+                    </li>
+                    <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
+                        <a href  href ng-class="{'subnav' : true}" ng-click="test_error()"> - Throw an Error</a>
                     </li>
                     <li>
                         <a ng-class="{'active': sideNav == 'ContactUs'}" href="#/contactus" ng-click="turnOffIfMobile()"><i class="fa fa-envelope"></i> Contact Us</a>

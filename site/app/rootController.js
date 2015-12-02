@@ -282,6 +282,10 @@ define([
             }
         }
 
+        $rootScope.test_error = function() {
+            a = b;
+        }
+
         $rootScope.marketSurvey = function (id, surveyid) {
             require([
                 '/app/marketSurvey/marketSurveyController.js'

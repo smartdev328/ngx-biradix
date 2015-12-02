@@ -12,16 +12,20 @@ requirejs.config({
     }
 });
 
-requirejs.onError = function (err) {
+global_error = function(err) {
     if (err) {
         //Reload
-        NREUM.noticeError(err);
-        console.error(err);
-        location.href="/error.html";
+        console.error(err.stack);
+        $.post("/error",{error: err.stack}).error(function(data) {
+            if (!phantom) {
+                location.href = "/error.html";
+            }
+        });
     }
-    else {
-        throw err;
-    }
+}
+
+requirejs.onError = function (err) {
+    global_error(err);
 };
 
 require([
