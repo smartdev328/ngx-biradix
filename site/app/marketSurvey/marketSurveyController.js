@@ -101,7 +101,7 @@ define([
                             } else {
 
                                 var er = "";
-                                if (isNaN($scope.survey.occupancy) || parseInt($scope.survey.occupancy) < 0) {
+                                if ($scope.survey.occupancy == null || typeof $scope.survey.occupancy == 'undefined' || isNaN($scope.survey.occupancy) || parseInt($scope.survey.occupancy) < 0) {
                                     er = '<b>Warning:</b> Occupancy must be a positive number';
                                 }
                                 else
@@ -137,7 +137,7 @@ define([
                                 }, 300);
                             } else {
                                 var er = "";
-                                if (isNaN($scope.survey.weeklytraffic) || parseInt($scope.survey.weeklytraffic) < 0) {
+                                if ($scope.survey.weeklytraffic == null || typeof $scope.survey.weeklytraffic == 'undefined' || isNaN($scope.survey.weeklytraffic) || parseInt($scope.survey.weeklytraffic) < 0) {
                                     er = '<b>Warning:</b> Traffic/Week must be a positive number';
                                 }
                                 else
@@ -167,7 +167,7 @@ define([
                                 }, 300);
                             } else {
                                 var er = "";
-                                if (isNaN($scope.survey.weeklyleases) || parseInt($scope.survey.weeklyleases) < 0) {
+                                if ($scope.survey.weeklyleases == null || typeof $scope.survey.weeklyleases == 'undefined' || isNaN($scope.survey.weeklyleases) || parseInt($scope.survey.weeklyleases) < 0) {
                                     er = '<b>Warning:</b> Leases/Week must be a positive number';
                                 }
                                 else
@@ -203,7 +203,7 @@ define([
                         }, 300);
                     } else {
                         var er = "";
-                        if (isNaN(fp.rent) || parseInt(fp.rent) < 0 ) {
+                        if (fp.rent == null || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 0 ) {
                             er = '<b>Warning:</b> Rent must be a positive number';
                         }
                         else
@@ -220,7 +220,8 @@ define([
                             return;
                         }
 
-                        if (isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
+
+                        if (fp.concessions == null || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
                             er = '<b>Warning:</b> Concessions must be a positive number';
                         }
                         else
