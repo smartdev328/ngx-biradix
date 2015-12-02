@@ -16,7 +16,7 @@ global_error = function(err) {
     if (err) {
         //Reload
         console.error(err.stack);
-        $.post("/error",{error: err.stack}).error(function(data) {
+        $.post("/error",{error: err.stack}).done(function(data) {
             if (!phantom) {
                 location.href = "/error.html";
             }

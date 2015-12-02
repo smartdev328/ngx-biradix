@@ -4,12 +4,14 @@ var _ = require('lodash');
 var packages = require('../package.json');
 var OrgService = require('../api/organizations/services/organizationService')
 //var newrelic = require('newrelic');
+var error = require('../config/error')
 module.exports = (function() {
 
     var ui = express.Router();
 
     ui.post('/error', function (req, res) {
-        throw new Error(req.body.error);
+        error.send(req.body.error);
+        return res.status(200).json({success:true});
     });
 
     ui.get('/', function (req, res) {
