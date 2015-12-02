@@ -10,7 +10,7 @@ module.exports = (function() {
     var ui = express.Router();
 
     ui.post('/error', function (req, res) {
-        error.send(req.body.error);
+        error.send(req.body.error, {headers:req.headers, ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress});
         return res.status(200).json({success:true});
     });
 

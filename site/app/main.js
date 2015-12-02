@@ -12,11 +12,11 @@ requirejs.config({
     }
 });
 
-global_error = function(err) {
+global_error = function(err,context) {
     if (err) {
         //Reload
         console.error(err.stack);
-        $.post("/error",{error: err.stack}).done(function(data) {
+        $.post("/error",{error: err.stack, context: context}).done(function(data) {
             if (!phantom) {
                 location.href = "/error.html";
             }
@@ -25,7 +25,7 @@ global_error = function(err) {
 }
 
 requirejs.onError = function (err) {
-    global_error(err);
+    global_error(err,null);
 };
 
 require([

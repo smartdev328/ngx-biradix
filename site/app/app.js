@@ -250,7 +250,7 @@ define([
 
     app.factory('$exceptionHandler', function () {
         return function errorCatcherHandler(exception, cause) {
-            global_error(exception);
+            global_error(exception,null);
         };
     });
 
