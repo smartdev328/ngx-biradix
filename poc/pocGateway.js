@@ -13,7 +13,7 @@ var OrgService = require('../api/organizations/services/organizationService')
 
 
 routes.get('/addorg', function(req, res) {
-    var org = {name: "PB Bell", subdomain: 'pbbell', logoBig: 'pbbell.png', logoSmall: 'pbbell-small.png'}
+    var org = {name: "TDC", subdomain: 'tdc', logoBig: 'tdc.png', logoSmall: 'tdc-small.png'}
 
     OrgService.read(function(err, orgs) {
         if (_.find(orgs, function(x) {return x.subdomain == org.subdomain})) {
