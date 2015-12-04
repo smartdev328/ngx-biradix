@@ -556,4 +556,5 @@ function defaultSettings(user) {
     user.settings.notifications.cron = user.settings.notifications.cron || "* * * * 2"
     user.settings.notifications.props = user.settings.notifications.props || [];
     user.settings.notifications.last = user.settings.notifications.last || null;
+    user.settings.notifications.on = typeof user.settings.notifications.on == 'undefined' ? true : user.settings.notifications.on;
 }
