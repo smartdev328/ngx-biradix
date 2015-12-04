@@ -2,6 +2,7 @@
 define([
     'app',
     '../../services/userService.js',
+    '../../components/toggle/module',
 ], function (app) {
      app.controller
         ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams) {
@@ -9,9 +10,17 @@ define([
                 $location.path('/login')
             }
 
+            console.log($stateParams);
+
             if ($stateParams.password === "1") {
                 $('html, body').animate({
                     scrollTop: ($('#passwordPannel').offset().top - 80)
+                }, 500);
+            }
+            else
+            if ($stateParams.notifications === "1") {
+                $('html, body').animate({
+                    scrollTop: ($('#notificationsPanel').offset().top - 80)
                 },500);
             }else {
                 $('html, body').animate({
