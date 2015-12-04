@@ -14,6 +14,9 @@ var localCacheService = require('../../utilities/services/localcacheService')
 var md5 = require('md5');
 
 module.exports = {
+    defaultSettings: function(user) {
+        defaultSettings(user);
+    },
     updateBounce: function(email,reason,callback) {
         UserSchema.findOne(
             {
@@ -503,12 +506,15 @@ function getFullUser(usr, callback) {
                     })
                 }
 
+                defaultSettings(usrobj);
+
                 var minutesToExpire = 60;
                 var token = jwt.sign(usrobj, settings.SECRET, {expiresIn: minutesToExpire * 60});
 
                 delete usrobj.memberships;
                 delete usrobj.ip;
                 delete usrobj.useragent;
+
 
                 callback({token: token, user: usrobj});
 
@@ -543,4 +549,11 @@ function getSysemUser (callback) {
         });
 
     })
+}
+
+function defaultSettings(user) {
+    user.settings.notifications = user.settings.notifications || {};
+    user.settings.notifications.cron = user.settings.notifications.cron || "* * * * 2"
+    user.settings.notifications.props = user.settings.notifications.props || [];
+    user.settings.notifications.last = user.settings.notifications.last || null;
 }
