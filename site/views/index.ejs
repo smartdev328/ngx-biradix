@@ -165,6 +165,9 @@
                     <li>
                         <a href = "#/updateProfile?password=1" class="subnav" ng-click="turnOffIfMobile()"> - Update Password</a>
                     </li>
+                    <li>
+                        <a href = "#/updateProfile?notifications=1" class="subnav" ng-click="turnOffIfMobile()"> - Notifications</a>
+                    </li>
                     <li ng-if="$root.me.permissions.indexOf('Users') > -1">
                         <a ng-class="{'active': sideNav == 'Users'}" href="#/manageusers" ng-click="turnOffIfMobile()"><i class="fa fa-users"></i> Manage Users</a>
                     </li>
