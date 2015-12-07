@@ -419,6 +419,7 @@ define([
 
         $scope.edit = function (id, isComp, subject) {
             var subjectid = subject ? subject._id : null;
+
             require([
                 '/app/propertyWizard/propertyWizardController.js'
             ], function () {
