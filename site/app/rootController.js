@@ -99,7 +99,10 @@ define([
                         $scope.first = false;
 
                         if (!phantom) {
-                            $location.path("/updateProfile").search('password', '1');
+                            $timeout(function() {
+                                $location.path("/updateProfile").search('password', '1');
+                            }, 2000)
+
                         }
                     }
                     else
@@ -107,7 +110,9 @@ define([
                         $scope.first = false;
 
                         if (!phantom) {
-                            $location.path("/updateProfile");
+                            $timeout(function() {
+                                $location.path("/updateProfile");
+                            }, 2000)
                         }
                     }
 
@@ -159,9 +164,11 @@ define([
                     $timeout($rootScope.incrementTimeout, 1000);
 
                     if ($window.sessionStorage.redirect) {
-                        var x = $window.sessionStorage.redirect;
-                        $window.sessionStorage.removeItem('redirect');
-                        $location.path(x)
+                        $timeout(function() {
+                            var x = $window.sessionStorage.redirect;
+                            $window.sessionStorage.removeItem('redirect');
+                            $location.path(x)
+                        }, 2000);
                     }
 
                 });
