@@ -86,7 +86,33 @@
             <div class="panel-heading">Notifications</div>
             <div class="panel-body">
                 <hr>
-                Send me email notifications on my properties: <toggle-switch checked="me.settings.notifications.on"></toggle-switch>
+                Send me email notifications on my properties: <toggle-switch checked="me.settings.notifications.on"></toggle-switch><Br>
+                <br>
+                <Table ng-if="me.settings.notifications.on === true">
+                    <Tr>
+                        <Td>
+                            How Often:&nbsp;
+                        </Td>
+                        <Td>
+                            <select class="form-control input-sm" ng-options="item for item in nots.howOftenOptions" ng-model="nots.howOften" style="display:inline;width:100px">
+                            </select>, every
+                            <select ng-if="nots.howOften == 'Weekly'"
+                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:100px">
+                            </select>
+                            <select ng-if="nots.howOften == 'Monthly'"
+                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:100px">
+                            </select>
+                        </Td>
+                    </Tr>
+                    <tr>
+                        <Td colspan="2" style="padding-top:10px">
+                            Receive notification emails for all your properties: <toggle-switch checked="nots.all"></toggle-switch><br>
+                            <div ng-if="!nots.all" style="padding-top:10px">
+                                TODO: Add Props
+                            </div>
+                        </Td>
+                    </tr>
+                </Table>
             </div>
         </div>
     </div>
