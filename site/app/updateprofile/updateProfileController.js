@@ -2,15 +2,15 @@
 define([
     'app',
     '../../services/userService.js',
+    '../../services/propertyService',
     '../../components/toggle/module',
+    '../../components/filterlist/module.js',
 ], function (app) {
      app.controller
-        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams) {
+        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams,$propertyService) {
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
             }
-
-            console.log($stateParams);
 
             if ($stateParams.password === "1") {
                 $('html, body').animate({
@@ -53,7 +53,7 @@ define([
                 ],
             };
 
-            for (var i = 1; i < 32; i++) {
+            for (var i = 1; i < 29; i++) {
                 var name = "th";
                 if (i == 1 || i == 21 || i == 31) {name = "st"}
                 if (i == 2 || i == 22) {name = "nd"}
@@ -78,6 +78,8 @@ define([
                         toastr.error('We were unable to deliver email to your email address: <b>' + $rootScope.me.email + '</b>. Please verify your email address and click "Update".');
                     }
 
+                    //$rootScope.me.settings.notifications.props = ['5642bae9ff18a018187b2e9f','5642bab4ff18a018187b0417'];
+
                     $scope.nots.howOften = $scope.nots.howOftenOptions[0];
                     $scope.nots.dayOfWeek = $scope.nots.daysOfWeek[2];
                     $scope.nots.dayOfMonth = $scope.nots.daysOfMonth[0];
@@ -87,6 +89,9 @@ define([
 
                     if (cron[4] == "*") {
                         $scope.nots.howOften = $scope.nots.howOftenOptions[1]
+                        $scope.nots.dayOfMonth = _.find($scope.nots.daysOfMonth, function(x) {
+                            return x.id.toString() == cron[2];
+                        })
                     }
                     else {
                         $scope.nots.dayOfWeek = _.find($scope.nots.daysOfWeek, function(x) {
@@ -94,6 +99,36 @@ define([
                         })
                     }
 
+
+
+                    $scope.propertyOptions = { panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Excluded Properties", labelSelected: "Included Properties", searchLabel: "Properties" }
+
+                    $propertyService.search({
+                        limit: 1000,
+                        permission: 'PropertyManage',
+                        active: true
+                    }).then(function (response) {
+                        //$scope.myProperties = response.data.properties;
+                        $scope.notificationsLoaded = true;
+
+                        $scope.propertyItems = [];
+
+                        response.data.properties.forEach(function(a) {
+                            var selected = true;
+                            if (!$scope.nots.all) {
+                                selected = $rootScope.me.settings.notifications.props.indexOf(a._id.toString()) > -1;
+                            }
+                            $scope.propertyItems.push({id: a._id, name: a.name, selected: selected})
+                        })
+
+                    }, function (error) {
+                        if (error.status == 401) {
+                            $rootScope.logoff();
+                            return;
+                        }
+
+                        toastr.error('Unable to retrieve your properties. Please contact an administrator');
+                    })
                     unbind();
                 }
             })
