@@ -10,6 +10,8 @@ define([
                 $location.path('/login')
             }
 
+            console.log($stateParams);
+
             if ($stateParams.password === "1") {
                 $('html, body').animate({
                     scrollTop: ($('#passwordPannel').offset().top - 80)
