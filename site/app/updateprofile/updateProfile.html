@@ -85,6 +85,12 @@
         <div class="panel panel-info"  style="height:410px" id="notificationsPanel">
             <div class="panel-heading">Notifications</div>
             <div class="panel-body">
+
+                <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
+                    <img src="/images/squares.gif" style="width:100px">
+                </div>
+
+                <div ng-show="notificationsLoaded">
                 <hr>
                 Send me email notifications on my properties: <toggle-switch checked="me.settings.notifications.on"></toggle-switch><Br>
                 <br>
@@ -107,12 +113,26 @@
                     <tr>
                         <Td colspan="2" style="padding-top:10px">
                             Receive notification emails for all your properties: <toggle-switch checked="nots.all"></toggle-switch><br>
-                            <div ng-if="!nots.all" style="padding-top:10px">
-                                TODO: Add Props
-                            </div>
+
                         </Td>
                     </tr>
+                    <Tr ng-if="!nots.all">
+                        <Td>
+                            Specific Properties:&nbsp;
+                        </Td>
+                        <td>
+                            <div ng-if="!nots.all" style="padding-top:10px">
+                                <filter-list options="propertyOptions" items="propertyItems"></filter-list>
+                            </div>
+                        </td>
+                    </tr>
                 </Table>
+                </div>
+                <Br>
+                <center>
+                    <button class=" btn btn-warning btn-large" type="button" ng-if="me.settings.notifications.on === true">Send Report Now</button>
+                    <button class=" btn btn-primary btn-large nots-submit" type="button">Update</button>
+                </center>
             </div>
         </div>
     </div>
