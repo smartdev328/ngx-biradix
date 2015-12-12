@@ -619,7 +619,7 @@ module.exports = {
 
 
     },
-    getLastSurveyStats: function(hide,subject, comps, callback) {
+    getLastSurveyStats: function(options,subject, comps, callback) {
         var surveyids = _.pluck(comps,"survey.id");
 
         //get all surveys of comps at once to be efficient
@@ -646,22 +646,32 @@ module.exports = {
 
                         comp.survey.days = daysSince;
 
-                        //Inject any actual floorplans into the survey that are not in the last survey
-                        comp.floorplans.forEach(function(cfp) {
-                            if (!_.find(s.floorplans, function(sfp) {return sfp.id.toString() == cfp.id.toString()})) {
-                                s.floorplans.push(cfp);
-                            }
-                        })
+                        if (options.injectFloorplans) {
+                            //Inject any actual floorplans into the survey that are not in the last survey
+                            comp.floorplans.forEach(function (cfp) {
+                                if (!_.find(s.floorplans, function (sfp) {
+                                        return sfp.id.toString() == cfp.id.toString()
+                                    })) {
+                                    s.floorplans.push(cfp);
+                                }
+                            })
+                        }
 
                         comp.survey.occupancy = s.occupancy;
-                        SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, hide);
+                        SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide);
                     }
 
                 } else {
                     //No surveys at all, create a fake survey with current floorplan data but no rent data
                     comp.survey = {};
                     comp.survey.tier = "danger";
-                    SurveyHelperService.floorplansToSurvey(comp.survey, comp.floorplans, links, hide);
+
+                    if (options.injectFloorplans) {
+                        SurveyHelperService.floorplansToSurvey(comp.survey, comp.floorplans, links, options.hide);
+                    }
+                    else {
+                        SurveyHelperService.floorplansToSurvey(comp.survey, [], links, options.hide);
+                    }
                 }
             });
             return callback();

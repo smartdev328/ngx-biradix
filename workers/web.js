@@ -77,6 +77,28 @@ d.run(function() {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
+                //if (workerId == 1) {
+                //    var dashboardService = require("../api/properties/services/dashboardService");
+                //    var userService = require("../api/users/services/userService");
+                //    userService.getSystemUser(function (user) {
+                //        //Hide unlinked for this report. Override any settings.
+                //        user.settings.hideUnlinked = true;
+                //        var d = new Date();
+                //        d.setDate(d.getDate()-520);
+                //        console.log(d);
+                //
+                //        dashboardService.getDashboard(user.user, "5642bae5ff18a018187b2c5c",
+                //            {skipPoints: true, injectFloorplans: false, surveyDate: d}
+                //            , function (err, dashboard) {
+                //            dashboard.comps.forEach(function(c) {
+                //                console.log(c.name, c.survey.ner);
+                //            })
+                //        });
+                //    });
+                //
+                //}
+
+
             })
         };
 
