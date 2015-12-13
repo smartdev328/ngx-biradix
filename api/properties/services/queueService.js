@@ -3,6 +3,18 @@ var queues = require('../../../config/queues')
 var DashboardService = require("../services/dashboardService")
 
 module.exports = {
+    getCompareReport: function(user, id, callback) {
+        var timer = new Date().getTime();
+        queues.getExchange().publish({user: user, id: id},
+            {
+                key: settings.HISTORY_COMPARE_REPORT_QUEUE,
+                reply: function (data) {
+                    console.log("Compare report for " + id + ": " + (new Date().getTime() - timer) + "ms");
+                    callback(data.err, data.report);
+                }
+            }
+        );
+    },
     getDashboard: function (req, callback) {
 
         if (settings.SKIPRABBIT) {

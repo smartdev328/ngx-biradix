@@ -42,6 +42,7 @@ d.run(function() {
 
             if (settings.RUN_DASHBOARD == "phantom") {
                 require('../api/properties/consumers/dashboardConsumer');
+                require('../api/properties/consumers/historyCompareConsumer');
             }
 
             if (settings.RUN_PHANTOM == "phantom") {

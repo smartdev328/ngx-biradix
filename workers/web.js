@@ -63,6 +63,7 @@ d.run(function() {
 
                 if (settings.RUN_DASHBOARD == "web") {
                     require('../api/properties/consumers/dashboardConsumer');
+                    require('../api/properties/consumers/historyCompareConsumer');
                 }
 
                 if (settings.RUN_PHANTOM == "web") {
@@ -77,7 +78,18 @@ d.run(function() {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
-                //if (workerId == 1) {
+
+
+                if (workerId == 1) {
+                    var userService = require("../api/users/services/userService");
+                    userService.getSystemUser(function (user) {
+                        var queueService = require('../api/properties/services/queueService');
+
+                        queueService.getCompareReport(user.user, "5642bae5ff18a018187b2c5c", function(err,report) {
+                            console.log(report);
+                        })
+                    });
+                }
                 //    var dashboardService = require("../api/properties/services/dashboardService");
                 //    var userService = require("../api/users/services/userService");
                 //    userService.getSystemUser(function (user) {
