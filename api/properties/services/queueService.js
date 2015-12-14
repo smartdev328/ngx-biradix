@@ -3,13 +3,25 @@ var queues = require('../../../config/queues')
 var DashboardService = require("../services/dashboardService")
 
 module.exports = {
+    sendNotification: function(user, properties, callback) {
+        var timer = new Date().getTime();
+        queues.getExchange().publish({user: user, properties: properties},
+            {
+                key: settings.NOTIFICATIONS_QUEUE,
+                reply: function () {
+                    console.log("Send Notifications for " + user._id + ": " + (new Date().getTime() - timer) + "ms");
+                    callback(null);
+                }
+            }
+        );
+    },
     getCompareReport: function(user, id, callback) {
         var timer = new Date().getTime();
         queues.getExchange().publish({user: user, id: id},
             {
                 key: settings.HISTORY_COMPARE_REPORT_QUEUE,
                 reply: function (data) {
-                    console.log("Compare report for " + id + ": " + (new Date().getTime() - timer) + "ms");
+                    //console.log("Compare report for " + id + ": " + (new Date().getTime() - timer) + "ms");
                     callback(data.err, data.report);
                 }
             }
@@ -28,7 +40,7 @@ module.exports = {
                 {
                     key: settings.DASHBOARD_QUEUE,
                     reply: function (data) {
-                        console.log("Dashboard for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                        //console.log("Dashboard for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
                         callback(data.err, data.dashboard);
                     }
                 }
@@ -55,7 +67,7 @@ module.exports = {
                 {
                     key: settings.PROFILE_QUEUE,
                     reply: function (data) {
-                        console.log("Profile Q for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                        //console.log("Profile Q for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                         callback(data.err, data.profile);
                     }
                 }

@@ -17,6 +17,7 @@ module.exports = {
     PDF_PROFILE_QUEUE : "jobs.property.profile.pdf",
     PDF_REPORTING_QUEUE : "jobs.reporting.pdf",
     HISTORY_COMPARE_REPORT_QUEUE : "jobs.reporting.history_compare",
+    NOTIFICATIONS_QUEUE : "jobs.notifications.property",
     WEB_STATUS_QUEUE : "jobs.status.web",
     PHANTOM_STATUS_QUEUE : "jobs.status.phantom",
     IMPORT_QUEUE : "jobs.temp.import",
