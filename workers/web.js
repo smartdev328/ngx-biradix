@@ -64,6 +64,7 @@ d.run(function() {
                 if (settings.RUN_DASHBOARD == "web") {
                     require('../api/properties/consumers/dashboardConsumer');
                     require('../api/properties/consumers/historyCompareConsumer');
+                    require('../api/properties/consumers/notificationsConsumer');
                 }
 
                 if (settings.RUN_PHANTOM == "web") {
@@ -85,31 +86,10 @@ d.run(function() {
                     userService.getSystemUser(function (user) {
                         var queueService = require('../api/properties/services/queueService');
 
-                        queueService.getCompareReport(user.user, "5642bae5ff18a018187b2c5c", function(err,report) {
-                            console.log(report);
+                        queueService.sendNotification(user.user, ["5642bae5ff18a018187b2c5c","5642bab9ff18a018187b07fb"], function() {
                         })
                     });
                 }
-                //    var dashboardService = require("../api/properties/services/dashboardService");
-                //    var userService = require("../api/users/services/userService");
-                //    userService.getSystemUser(function (user) {
-                //        //Hide unlinked for this report. Override any settings.
-                //        user.settings.hideUnlinked = true;
-                //        var d = new Date();
-                //        d.setDate(d.getDate()-520);
-                //        console.log(d);
-                //
-                //        dashboardService.getDashboard(user.user, "5642bae5ff18a018187b2c5c",
-                //            {skipPoints: true, injectFloorplans: false, surveyDate: d}
-                //            , function (err, dashboard) {
-                //            dashboard.comps.forEach(function(c) {
-                //                console.log(c.name, c.survey.ner);
-                //            })
-                //        });
-                //    });
-                //
-                //}
-
 
             })
         };

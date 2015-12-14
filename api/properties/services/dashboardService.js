@@ -210,6 +210,11 @@ function updateCompSurveyIdsByDate(comps,surveyDate, callback) {
     }
     else {
         async.each(comps, function(comp, callbackp) {
+            if (!comp.survey) {
+                callbackp(null);
+                return;
+            }
+
             SurveyHelperService.getSurveyBeforeDate(comp._id, surveyDate, function(err, surveys) {
                 if (!surveys || surveys.length == 0) {
                     delete comp.survey;
