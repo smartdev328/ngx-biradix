@@ -3,6 +3,7 @@ var queueService = require('../services/queueService');
 var propertyService = require('../services/propertyService');
 var async = require("async");
 var _ = require("lodash");
+var redisService = require('../../utilities/services/redisService')
 
 queues.getNotificationsQueue().consume(function(data,reply) {
 
@@ -25,14 +26,24 @@ queues.getNotificationsQueue().consume(function(data,reply) {
     }, function(err, all) {
         if (all.properties.length > 0) {
             async.eachLimit(all.properties, 20, function(id, callbackp){
-                queueService.getCompareReport(data.user, id, function (err, report) {
 
-                    if (report.length > 2) {
-                        console.log(report);
+                var key = "not-" + id;
+                redisService.get(key, function(err, result) {
+                    if (result) {
+                        console.log('Cache:', result);
+                        callbackp(null)
                     }
+                    else {
+                        queueService.getCompareReport(data.user, id, function (err, report) {
+                            redisService.set(key, report, 3 * 60 * 60 * 1000); // 3 hours
+                            console.log('No Cache:', report);
+                            callbackp(null)
+                        })
+                    }
+                });
 
-                    callbackp(null);
-                })
+
+
             }, function(err) {
                 reply({done: true});
             });
