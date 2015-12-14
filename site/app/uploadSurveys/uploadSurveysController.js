@@ -42,6 +42,7 @@ define([
         $scope.reload();
 
         $scope.upload = function() {
+
             if (!$scope.data.property) {
                 toastr.error("Please select a proeprty");
                 return;
@@ -85,18 +86,18 @@ define([
                     fp.sqft = parseInt(data[i][3]);
 
                     var old = _.filter(p.floorplans,function(x) {
-                        return x.bedrooms.toString() == fp.bedrooms.toString() && x.bathrooms.toString() == fp.bathrooms.toString() && x.sqft.toString() == fp.sqft.toString()
+                        return x.bedrooms.toString() == fp.bedrooms.toString() && x.bathrooms.toString() == fp.bathrooms.toString() && x.sqft.toString() == fp.sqft.toString() && !x.new
                     });
 
                     if (old.length > 1) {
                         old = _.filter(old,function(x) {
-                            return x.units.toString() == fp.units.toString()
+                            return x.units.toString() == fp.units.toString() && !x.new
                         });
                     }
 
                     if (old.length > 1) {
                         old = _.filter(old,function(x) {
-                            return x.description.toString() == fp.description.toString()
+                            return x.description.toString() == fp.description.toString() && !x.new
                         });
                     }
 
@@ -107,6 +108,7 @@ define([
                             var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
                             return v.toString(16);
                         });
+                        fp.new = true;
                         update = true;
                         p.floorplans.push(fp);
                     }
@@ -115,7 +117,9 @@ define([
 
                 }
 
-                if (update || true) {
+                //console.log(p.floorplans);
+
+                if (update) {
                     $propertyService.lookups().then(function (response) {
 
                         p.community_amenities = _.pluck(_.filter(response.data.amenities, function(x) {
