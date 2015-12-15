@@ -187,5 +187,15 @@ define([
                     ngProgress.complete();
                 });
             }
+
+            $scope.sendReport = function() {
+                var properties= [];
+                if (!$scope.nots.all) {
+                    properties = _.pluck(_.filter($scope.propertyItems, function(x) {return x.selected === true}),"id");
+                }
+                $propertyService.notifications_test(properties);
+                toastr.success('Your request for a notifications report has been submitted. Please allow up to 5 minutest to receive your report.');
+            }
         }]);
+
 });

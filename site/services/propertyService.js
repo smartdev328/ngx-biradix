@@ -3,6 +3,17 @@ define(['app'], function (app) {
     app.factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+        fac.notifications_test = function (properties) {
+            return $http.post('/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
+                properties:properties,
+            },  {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.profile = function (id,daterange,show) {
             return $http.post('/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
                 daterange:daterange,
