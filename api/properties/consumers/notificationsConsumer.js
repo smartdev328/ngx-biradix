@@ -4,6 +4,7 @@ var propertyService = require('../services/propertyService');
 var async = require("async");
 var _ = require("lodash");
 var redisService = require('../../utilities/services/redisService')
+var BizEmailService = require('../../business/services/emailService')
 
 queues.getNotificationsQueue().consume(function(data,reply) {
 
@@ -25,18 +26,21 @@ queues.getNotificationsQueue().consume(function(data,reply) {
         }
     }, function(err, all) {
         if (all.properties.length > 0) {
+            var final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
 
                 var key = "not-" + id;
                 redisService.get(key, function(err, result) {
                     if (result) {
-                        console.log('Cache:', result);
+                        //console.log('Cache:', result);
+                        final.push(result);
                         callbackp(null)
                     }
                     else {
                         queueService.getCompareReport(data.user, id, function (err, report) {
                             redisService.set(key, report, 3 * 60 * 60 * 1000); // 3 hours
-                            console.log('No Cache:', report);
+                            //console.log('No Cache:', report);
+                            final.push(report);
                             callbackp(null)
                         })
                     }
@@ -45,7 +49,34 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
 
             }, function(err) {
-                reply({done: true});
+                if (final.length > 0) {
+                    //console.log(final);
+                    var logo ='http://' + data.user.org.subdomain + ".biradix.com/images/organizations/" + data.user.org.logoBig;
+                    var unsub ='http://' + data.user.org.subdomain + ".biradix.com/unsub";
+                    var email = {
+                        from: "BIRadix Support <support@biradix.com>",
+                        to: data.user.email,
+                        logo: logo,
+                        subject: "Notification",
+                        template: 'notification.html',
+                        templateData: {
+                            first: data.user.first,
+                            data: final,
+                            unsub: unsub
+                        }
+
+                    }
+
+                    BizEmailService.send(email, function(emailError, status) {
+
+                        if (emailError) {
+                            throw Error(emailError)
+                        }
+
+                        reply({done: true});
+                    })
+                }
+
             });
 
         } else {

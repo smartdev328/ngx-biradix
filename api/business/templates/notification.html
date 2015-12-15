@@ -1,0 +1,87 @@
+Hello {{first}},<br/>
+<br/>
+Your report:<br/>
+<br/>
+<table border="1" style="font-size:8pt">
+    <tr>
+        <th>
+           Name
+        </th>
+        <th>
+            Occupancy
+        </th>
+        <th>
+            Units
+        </th>
+        <th>
+            Sqft
+        </th>
+        <th>
+            Rent
+        </th>
+        <th>
+            NER
+        </th>
+        <th>
+            NER/Sqft
+        </th>
+        <th>
+            NER/Sqft vs 7
+        </th>
+        <th>
+            NER/Sqft vs 30
+        </th>
+        <th>
+            Last
+        </th>
+    </tr>
+    {% for block in data %}
+    {% for row in block %}
+    <tr {% if forloop.first %}
+        style="font-weight:bold"
+        {% elsif forloop.last %}
+        style="font-style: italic"
+        {% endif %}>
+        <Td>
+            {{row.name}}
+        </Td>
+        <Td style="text-align: right">
+            {{row.occupancy}}%
+        </Td>
+        <Td style="text-align: right">
+            {{row.totUnits}}
+        </Td>
+        <Td style="text-align: right">
+            {{row.sqft}}
+        </Td>
+        <Td style="text-align: right">
+            ${{row.rent}}
+        </Td>
+        <Td style="text-align: right">
+            ${{row.ner}}
+        </Td>
+        <Td style="text-align: right">
+            ${{row.nersqft}}
+        </Td>
+        <Td style="text-align: right">
+            {{row.lastweeknersqftpercent}}%
+        </Td>
+        <Td style="text-align: right">
+            {{row.lastmonthnersqftpercent}}%
+        </Td>
+        <Td style="text-align: right">
+            {{row.date | date : '%D'}}
+        </Td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="10">
+            &nbsp;
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+If you have any questions, please contact support@biradix.com<br>
+<Br>
+To modify your email notification settings, <A href="{{unsub}}">click here</A>.

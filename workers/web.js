@@ -81,15 +81,15 @@ d.run(function() {
 
 
 
-                if (workerId == 1) {
-                    var userService = require("../api/users/services/userService");
-                    userService.getSystemUser(function (user) {
-                        var queueService = require('../api/properties/services/queueService');
-
-                        queueService.sendNotification(user.user, ["5642bae5ff18a018187b2c5c","5642bab9ff18a018187b07fb"], function() {
-                        })
-                    });
-                }
+                //if (workerId == 1) {
+                //    var userService = require("../api/users/services/userService");
+                //    userService.getSystemUser(function (user) {
+                //        var queueService = require('../api/properties/services/queueService');
+                //
+                //        queueService.sendNotification(user.user, ["5642bae5ff18a018187b2c5c","5642bab9ff18a018187b07fb"], function() {
+                //        })
+                //    });
+                //}
 
             })
         };

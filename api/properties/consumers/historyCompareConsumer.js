@@ -111,7 +111,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.totUnits * 10) / 10;
             totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
             totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
-            totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits * 100) / 100;
+            totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
             totalrow.nersqft = Math.round(totalrow.nersqft / totalrow.totUnits * 100) / 100;
             totalrow.lastweeknersqft = Math.round(totalrow.lastweeknersqft / totalrow.totUnits * 100) / 100;
             totalrow.lastmonthnersqft = Math.round(totalrow.lastmonthnersqft / totalrow.totUnits * 100) / 100;
