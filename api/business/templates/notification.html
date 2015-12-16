@@ -1,78 +1,105 @@
 Hello {{first}},<br/>
 <br/>
-Your report:<br/>
+Below is your property status report. You are currently set to receive this update {{when}}. If you with to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>:<br/>
 <br/>
-<table border="1" style="font-size:8pt">
-    <tr>
-        <th>
-           Name
+<table border="0" style="font-size:9pt;border:1px solid #ddd" cellpadding="5" cellspacing="0">
+    <tr style="background-color: #f9f9f9">
+        <th style="border-bottom:2px solid #ddd;">
+           Property
         </th>
-        <th>
+        <th style="border-bottom:2px solid #ddd;">
             Occupancy
         </th>
-        <th>
+        <th style="border-bottom:2px solid #ddd;">
             Units
         </th>
-        <th>
+        <th style="border-bottom:2px solid #ddd;">
             Sqft
         </th>
-        <th>
+        <th style="border-bottom:2px solid #ddd;">
             Rent
         </th>
-        <th>
+        <th style="border-bottom:2px solid #ddd;">
             NER
         </th>
-        <th>
+        <th style="border-bottom:2px solid #ddd;">
             NER/Sqft
         </th>
-        <th>
-            NER/Sqft vs 7
+        <th style="border-bottom:2px solid #ddd;">
+            NER/Sqft<Br>vs Last Week
         </th>
-        <th>
-            NER/Sqft vs 30
+        <th style="border-bottom:2px solid #ddd;">
+            NER/Sqft<Br>vs Last Month
         </th>
-        <th>
-            Last
+        <th style="border-bottom:2px solid #ddd;">
+            Last<Br>
+            Updated
         </th>
     </tr>
     {% for block in data %}
     {% for row in block %}
+    {%if forloop.last %}
+    {%else%}
     <tr {% if forloop.first %}
-        style="font-weight:bold"
+        style="font-weight:bold;color: #4460a9"
         {% elsif forloop.last %}
         style="font-style: italic"
         {% endif %}>
-        <Td>
+        <Td style="border-bottom:1px solid #ddd;">
             {{row.name}}
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;">
             {{row.occupancy}}%
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;">
             {{row.totUnits}}
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;">
             {{row.sqft}}
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;">
             ${{row.rent}}
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;">
             ${{row.ner}}
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;">
             ${{row.nersqft}}
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;
+        {% if row.lastweeknersqftpercent > 0%}
+        color:green;
+        {% elsif row.lastweeknersqftpercent < 0 %}
+        color:red;
+        {% endif%}
+        ">
             {{row.lastweeknersqftpercent}}%
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;
+        {% if row.lastmonthnersqftpercent > 0%}
+        color:green;
+        {% elsif row.lastmonthnersqftpercent < 0 %}
+        color:red;
+        {% endif%}
+        ">
+            {% if row.lastmonthnersqftpercent > 0%}
+            &uarr;
+            {% elsif row.lastmonthnersqftpercent < 0 %}
+            &darr;
+            {% endif%}
             {{row.lastmonthnersqftpercent}}%
         </Td>
-        <Td style="text-align: right">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;
+        {% if row.tier == 'danger'%}
+        color:red;
+        {% elsif row.tier == 'warning' %}
+        color:orange;
+        {% endif%}
+        ">
             {{row.date | date : '%D'}}
         </Td>
     </tr>
+    {% endif %}
     {% endfor %}
     <tr>
         <td colspan="10">
@@ -82,6 +109,6 @@ Your report:<br/>
     {% endfor %}
 </table>
 <br>
-If you have any questions, please contact support@biradix.com<br>
-<Br>
-To modify your email notification settings, <A href="{{unsub}}">click here</A>.
+You are currently set to receive this update {{when}}. If you wish to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>.<br>
+<br>
+If you have any other questions, please contact support@biradix.com.

@@ -53,16 +53,25 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                     //console.log(final);
                     var logo ='http://' + data.user.org.subdomain + ".biradix.com/images/organizations/" + data.user.org.logoBig;
                     var unsub ='http://' + data.user.org.subdomain + ".biradix.com/unsub";
+
+                    var cron = data.user.settings.notifications.cron.split(" ");
+
+                    var when = "Weekly";
+
+                    if (cron[4] == "*") {
+                        when = "Monthly";
+                    }
+
                     var email = {
-                        from: "BIRadix Support <support@biradix.com>",
                         to: data.user.email,
                         logo: logo,
-                        subject: "Notification",
+                        subject: "Property Status Update",
                         template: 'notification.html',
                         templateData: {
                             first: data.user.first,
                             data: final,
-                            unsub: unsub
+                            unsub: unsub,
+                            when: when
                         }
 
                     }
