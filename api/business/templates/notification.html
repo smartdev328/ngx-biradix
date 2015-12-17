@@ -1,6 +1,6 @@
 Hello {{first}},<br/>
 <br/>
-Below is your property status report. You are currently set to receive this update {{when}}. If you with to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>:<br/>
+Below is your property status report. You are currently set to receive this update {{when}}. If you with to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>.<br/>
 <br/>
 <table border="0" style="font-size:9pt;border:1px solid #ddd" cellpadding="5" cellspacing="0">
     <tr style="background-color: #f9f9f9">
@@ -38,35 +38,33 @@ Below is your property status report. You are currently set to receive this upda
     </tr>
     {% for block in data %}
     {% for row in block %}
-    {%if forloop.last %}
-    {%else%}
     <tr {% if forloop.first %}
         style="font-weight:bold;color: #4460a9"
         {% elsif forloop.last %}
-        style="font-style: italic"
+        style="font-weight:bold"
         {% endif %}>
-        <Td style="border-bottom:1px solid #ddd;">
+        <Td style="border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
             {{row.name}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
             {{row.occupancy}}%
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
             {{row.totUnits}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
             {{row.sqft}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
             ${{row.rent}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
             ${{row.ner}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;">
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
             ${{row.nersqft}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}
         {% if row.lastweeknersqftpercent > 0%}
         color:green;
         {% elsif row.lastweeknersqftpercent < 0 %}
@@ -75,7 +73,7 @@ Below is your property status report. You are currently set to receive this upda
         ">
             {{row.lastweeknersqftpercent}}%
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}
         {% if row.lastmonthnersqftpercent > 0%}
         color:green;
         {% elsif row.lastmonthnersqftpercent < 0 %}
@@ -89,17 +87,16 @@ Below is your property status report. You are currently set to receive this upda
             {% endif%}
             {{row.lastmonthnersqftpercent}}%
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;
+        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}
         {% if row.tier == 'danger'%}
         color:red;
         {% elsif row.tier == 'warning' %}
         color:orange;
-        {% endif%}
+        {% endif %}
         ">
-            {{row.date | date : '%D'}}
+            {{row.date | date : '%b %d'}}
         </Td>
     </tr>
-    {% endif %}
     {% endfor %}
     <tr>
         <td colspan="10">

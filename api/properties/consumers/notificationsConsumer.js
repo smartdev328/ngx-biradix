@@ -1,4 +1,5 @@
 var queues = require("../../../config/queues")
+var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 var propertyService = require('../services/propertyService');
 var async = require("async");
@@ -31,7 +32,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                 var key = "not-" + id;
                 redisService.get(key, function(err, result) {
-                    if (result) {
+                    if (result && settings.HEROKU_APP != "birdaixplatform-qa") {
                         //console.log('Cache:', result);
                         final.push(result);
                         callbackp(null)
@@ -56,10 +57,10 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                     var cron = data.user.settings.notifications.cron.split(" ");
 
-                    var when = "Weekly";
+                    var when = "weekly";
 
                     if (cron[4] == "*") {
-                        when = "Monthly";
+                        when = "monthly";
                     }
 
                     var email = {
