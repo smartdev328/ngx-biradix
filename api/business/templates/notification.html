@@ -71,6 +71,11 @@ Below is your property status report. You are currently set to receive this upda
         color:red;
         {% endif%}
         ">
+            {% if row.lastweeknersqftpercent > 0%}
+            &uarr;
+            {% elsif row.lastweeknersqftpercent < 0 %}
+            &darr;
+            {% endif%}
             {{row.lastweeknersqftpercent}}%
         </Td>
         <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}
