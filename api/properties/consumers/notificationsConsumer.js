@@ -32,7 +32,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                 var key = "not-" + id;
                 redisService.get(key, function(err, result) {
-                    if (result && settings.HEROKU_APP != "birdaixplatform-qa") {
+                    if (result && settings.HEROKU_APP != "biradixplatform-qa") {
                         //console.log('Cache:', result);
                         final.push(result);
                         callbackp(null)
