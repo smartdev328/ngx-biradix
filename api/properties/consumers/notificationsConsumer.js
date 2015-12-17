@@ -39,7 +39,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                     }
                     else {
                         queueService.getCompareReport(data.user, id, function (err, report) {
-                            redisService.set(key, report, 3 * 60 * 60 * 1000); // 3 hours
+                            redisService.set(key, report, 3 * 60); // 3 hours
                             //console.log('No Cache:', report);
                             final.push(report);
                             callbackp(null)
