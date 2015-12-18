@@ -15,7 +15,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                 callbackp(null,data.properties);
             } else {
                 propertyService.search(data.user, {
-                    select:"_id",
+                    select:"_id name",
                     limit: 1000,
                     permission: 'PropertyManage',
                     active: true
@@ -39,6 +39,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                     }
                     else {
                         queueService.getCompareReport(data.user, id, function (err, report) {
+                            //console.log(id, report[0].name, report[0]._id)
                             redisService.set(key, report, 3 * 60); // 3 hours
                             //console.log('No Cache:', report);
                             final.push(report);

@@ -1,8 +1,8 @@
 Hello {{first}},<br/>
 <br/>
-Below is your property status report. You are currently set to receive this update {{when}}. If you with to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>.<br/>
+You are currently set to receive this update {{when}}. If you with to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>.<br/>
 <br/>
-<table border="0" style="font-size:9pt;border:1px solid #ddd" cellpadding="5" cellspacing="0">
+<table border="0" style="font-size:9pt;width:100%" cellpadding="5" cellspacing="0">
     <tr style="background-color: #f9f9f9">
         <th style="border-bottom:2px solid #ddd;">
            Property
@@ -43,28 +43,28 @@ Below is your property status report. You are currently set to receive this upda
         {% elsif forloop.last %}
         style="font-weight:bold"
         {% endif %}>
-        <Td style="border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
+        <Td style="{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.name}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.occupancy}}%
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.totUnits}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.sqft}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             ${{row.rent}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             ${{row.ner}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}">
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             ${{row.nersqft}}
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.lastweeknersqftpercent > 0%}
         color:green;
         {% elsif row.lastweeknersqftpercent < 0 %}
@@ -72,13 +72,14 @@ Below is your property status report. You are currently set to receive this upda
         {% endif%}
         ">
             {% if row.lastweeknersqftpercent > 0%}
-            &uarr;
+            {{row.lastweeknersqftpercent}}% &uarr;
             {% elsif row.lastweeknersqftpercent < 0 %}
-            &darr;
+            {{row.lastweeknersqftpercent}}% &darr;
+            {% else %}
+            -
             {% endif%}
-            {{row.lastweeknersqftpercent}}%
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.lastmonthnersqftpercent > 0%}
         color:green;
         {% elsif row.lastmonthnersqftpercent < 0 %}
@@ -86,13 +87,14 @@ Below is your property status report. You are currently set to receive this upda
         {% endif%}
         ">
             {% if row.lastmonthnersqftpercent > 0%}
-            &uarr;
+            {{row.lastmonthnersqftpercent}}% &uarr;
             {% elsif row.lastmonthnersqftpercent < 0 %}
-            &darr;
+            {{row.lastmonthnersqftpercent}}% &darr;
+            {% else %}
+            -
             {% endif%}
-            {{row.lastmonthnersqftpercent}}%
         </Td>
-        <Td style="text-align: right;border-bottom:1px solid #ddd;{% if forloop.last %}border-top: 1px solid #ddd;{% endif %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.tier == 'danger'%}
         color:red;
         {% elsif row.tier == 'warning' %}
