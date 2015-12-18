@@ -64,6 +64,19 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                         when = "monthly";
                     }
 
+                    final.forEach(function(x) {
+                        x.forEach(function(y)
+                        {
+                            if (typeof y.lastmonthnersqftpercent == "undefined") {
+                                y.lastmonthnersqftpercent = "";
+                            }
+
+                            if (typeof y.lastweeknersqftpercent == "undefined") {
+                                y.lastweeknersqftpercent = "";
+                            }
+                        })
+                    })
+
                     var email = {
                         to: data.user.email,
                         logo: logo,

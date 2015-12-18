@@ -75,8 +75,10 @@ You are currently set to receive this update {{when}}. If you with to modify thi
             {{row.lastweeknersqftpercent}}% &uarr;
             {% elsif row.lastweeknersqftpercent < 0 %}
             {{row.lastweeknersqftpercent}}% &darr;
+            {% elsif row.lastweeknersqftpercent != "" %}
+            {{row.lastweeknersqftpercent}}% &nbsp;&nbsp;
             {% else %}
-            -
+            - &nbsp;&nbsp;
             {% endif%}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
@@ -90,8 +92,10 @@ You are currently set to receive this update {{when}}. If you with to modify thi
             {{row.lastmonthnersqftpercent}}% &uarr;
             {% elsif row.lastmonthnersqftpercent < 0 %}
             {{row.lastmonthnersqftpercent}}% &darr;
+            {% elsif row.lastmonthnersqftpercent != "" %}
+            {{row.lastmonthnersqftpercent}}% &nbsp;&nbsp;
             {% else %}
-            -
+            - &nbsp;&nbsp;
             {% endif%}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
