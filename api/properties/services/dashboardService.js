@@ -128,7 +128,6 @@ module.exports = {
         PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: id
             , select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
         }, function(err, property) {
-
             if (err) {
                 return callback(err,null)
             } else {
@@ -185,6 +184,13 @@ module.exports = {
                                 })
 
                                 //console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
+
+                                all.comps = _.sortBy(all.comps, function(n) {
+                                    if (n._id.toString() == property[0]._id.toString()) {
+                                        return "-1";
+                                    }
+                                    return n.name;
+                                })
 
                                 callback (null,{property: property[0], comps: all.comps, points: all.points});
 

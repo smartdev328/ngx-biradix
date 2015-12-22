@@ -25,6 +25,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
             }
         }
     }, function(err, all) {
+
         if (all.properties.length > 0) {
             var final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
@@ -50,6 +51,8 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
 
             }, function(err) {
+                //return reply({done: true});
+
                 if (final.length > 0) {
                     //console.log(final);
                     var logo ='http://' + data.user.org.subdomain + ".biradix.com/images/organizations/" + data.user.org.logoBig;
