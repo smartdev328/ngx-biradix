@@ -152,7 +152,7 @@ module.exports = {
                     } else {
                         //If we pass in a surveyDate, dont use the last survey date in comps.survey.id
                         //Instead get the last survey older then the date given
-                        updateCompSurveyIdsByDate(comps,options.surveyDate, function() {
+                        updateCompSurveyIdsByDate(comps,options.surveyDateStart,options.surveyDateEnd, function() {
                             async.parallel({
                                 comps: function (callbackp) {
                                     PropertyService.getLastSurveyStats({
@@ -210,8 +210,8 @@ module.exports = {
     }
 }
 
-function updateCompSurveyIdsByDate(comps,surveyDate, callback) {
-    if (!surveyDate) {
+function updateCompSurveyIdsByDate(comps,surveyDateStart,surveyDateEnd, callback) {
+    if (!surveyDateStart || !surveyDateEnd) {
         callback();
     }
     else {
@@ -221,7 +221,7 @@ function updateCompSurveyIdsByDate(comps,surveyDate, callback) {
                 return;
             }
 
-            SurveyHelperService.getSurveyBeforeDate(comp._id, surveyDate, function(err, surveys) {
+            SurveyHelperService.getSurveyBeforeDate(comp._id, surveyDateStart,surveyDateEnd, function(err, surveys) {
                 if (!surveys || surveys.length == 0) {
                     delete comp.survey;
                 } else {

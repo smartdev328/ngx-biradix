@@ -80,6 +80,16 @@ d.run(function() {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
 
+                //if (workerId == 1) {
+                //    var moment = require("moment");
+                //    var end = moment().add(-1,"day").startOf('week').add(1,"day").utcOffset(-480);
+                //    var start = moment(end).add(-7,"day")
+                //    console.log(start.format(), end.format());
+                //
+                //    var end1 = moment().add(-1,"month").endOf('month').utcOffset(-480);
+                //    var start1 = moment().add(-1,"month").startOf('month').utcOffset(-480);
+                //    console.log(start1.format(), end1.format());
+                //}
 
                 //if (workerId == 1) {
                 //    var userService = require("../api/users/services/userService");

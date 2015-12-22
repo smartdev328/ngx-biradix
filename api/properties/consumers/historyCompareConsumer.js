@@ -2,6 +2,7 @@ var queues = require("../../../config/queues")
 var queueService = require('../services/queueService');
 var async = require("async");
 var _ = require("lodash");
+var moment = require("moment")
 
 queues.getHistoryCompareReportQueue().consume(function(data,reply) {
     //console.log(data.id + " history compare started");
@@ -27,10 +28,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
         },
         lastweek: function(callbackp) {
 
-            var d = new Date();
-            d.setDate(d.getDate()-7);
+            var end = moment().add(-1,"day").startOf('week').add(1,"day").utcOffset(-480);
+            var start = moment(end).add(-7,"day")
 
-            var options = {skipPoints: true, injectFloorplans: false, surveyDate: d };
+
+            var options = {skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format() };
             var req = {user : data.user,params : {id: data.id}, body: options}
 
             queueService.getDashboard(req, function(err,dashboard) {
@@ -49,10 +51,10 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
         ,
         lastmonth: function(callbackp) {
 
-            var d = new Date();
-            d.setDate(d.getDate() - 30);
+            var end = moment().add(-1,"month").endOf('month').utcOffset(-480);
+            var start = moment().add(-1,"month").startOf('month').utcOffset(-480);
 
-            var options = {skipPoints: true, injectFloorplans: false, surveyDate: d};
+            var options = {skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format()};
             var req = {user: data.user, params: {id: data.id}, body: options}
 
             queueService.getDashboard(req, function (err, dashboard) {

@@ -7,8 +7,8 @@ var moment = require('moment');
 var CompsService = require('./compsService')
 
 module.exports = {
-    getSurveyBeforeDate: function(propertyid, date, callback) {
-        SurveySchema.find({propertyid: propertyid,date:{$lte:date}}).sort('-date').limit(1).exec(callback);
+    getSurveyBeforeDate: function(propertyid, dateStart,dateEnd, callback) {
+        SurveySchema.find({propertyid: propertyid,date:{$gt:dateStart, $lte:dateEnd}}).sort('-date').limit(1).exec(callback);
 
     },
     updateLastSurvey: function(propertyid, callback) {
