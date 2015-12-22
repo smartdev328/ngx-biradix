@@ -8,7 +8,6 @@ var redisService = require('../../utilities/services/redisService')
 var BizEmailService = require('../../business/services/emailService')
 
 queues.getNotificationsQueue().consume(function(data,reply) {
-
     async.parallel({
         properties : function(callbackp) {
             if (data.properties && data.properties.length > 0) {
@@ -32,7 +31,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                 var key = "not-" + id;
                 redisService.get(key, function(err, result) {
-                    if (result && settings.HEROKU_APP != "biradixplatform-qa") {
+                    if (false && result && settings.HEROKU_APP != "biradixplatform-qa") {
                         //console.log('Cache:', result);
                         final.push(result);
                         callbackp(null)
@@ -63,6 +62,8 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                     if (cron[4] == "*") {
                         when = "monthly";
                     }
+
+                    //console.log(final);
 
                     final.forEach(function(x) {
                         x.forEach(function(y)

@@ -76,35 +76,45 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
         report.forEach(function(p,i) {
             //if (i > 0) {
+            if (p.totUnits) {
                 totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
                 totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits);
                 totalrow.sqft = (totalrow.sqft || 0) + (p.sqft * p.totUnits);
                 totalrow.rent = (totalrow.rent || 0) + (p.rent * p.totUnits);
                 totalrow.ner = (totalrow.ner || 0) + (p.ner * p.totUnits);
                 totalrow.nersqft = (totalrow.nersqft || 0) + (p.nersqft * p.totUnits);
-            //}
 
-            var lastweek = _.find(all.lastweek, function(x) {return x._id.toString() == p._id.toString()});
-            var lastmonth = _.find(all.lastmonth, function(x) {return x._id.toString() == p._id.toString()});
+                //}
 
-            if (p.nersqft && lastweek && lastweek.nersqft) {
-                p.lastweeknersqft = lastweek.nersqft;
-                p.lastweeknersqftpercent = Math.round((p.nersqft - lastweek.nersqft) / p.nersqft * 100 * 10) / 10;
+                var lastweek = _.find(all.lastweek, function (x) {
+                    return x._id.toString() == p._id.toString()
+                });
+                var lastmonth = _.find(all.lastmonth, function (x) {
+                    return x._id.toString() == p._id.toString()
+                });
 
-                //if (i > 0) {
+                if (p.nersqft && lastweek && lastweek.nersqft) {
+                    p.lastweeknersqft = lastweek.nersqft;
+                    p.lastweeknersqftpercent = Math.round((p.nersqft - lastweek.nersqft) / p.nersqft * 100 * 10) / 10;
+
+                    //if (i > 0) {
                     totalrow.lastweeknersqft = (totalrow.lastweeknersqft || 0) + (p.lastweeknersqft * p.totUnits);
-                //}
-            }
+                    //}
+                }
 
-            if (p.nersqft && lastmonth && lastmonth.nersqft) {
-                p.lastmonthnersqft = lastmonth.nersqft;
-                p.lastmonthnersqftpercent = Math.round((p.nersqft - lastmonth.nersqft) / p.nersqft * 100 * 10) / 10;
+                if (p.nersqft && lastmonth && lastmonth.nersqft) {
+                    p.lastmonthnersqft = lastmonth.nersqft;
+                    p.lastmonthnersqftpercent = Math.round((p.nersqft - lastmonth.nersqft) / p.nersqft * 100 * 10) / 10;
 
-                //if (i > 0) {
+                    //if (i > 0) {
                     totalrow.lastmonthnersqft = (totalrow.lastmonthnersqft || 0) + (p.lastmonthnersqft * p.totUnits);
-                //}
+                    //}
+                }
             }
+
         })
+
+        //console.log(totalrow)
 
         if (totalrow.totUnits && totalrow.totUnits > 0) {
 
@@ -124,6 +134,8 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 totalrow.lastmonthnersqftpercent = Math.round((totalrow.nersqft - totalrow.lastmonthnersqft ) / totalrow.nersqft * 100 * 10) / 10;
             }
         }
+
+        //console.log(totalrow)
         report.push(totalrow);
 
         reply({err: err, report: report});

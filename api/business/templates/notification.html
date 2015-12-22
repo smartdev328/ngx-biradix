@@ -1,6 +1,8 @@
 Hello {{first}},<br/>
 <br/>
-You are currently set to receive this update {{when}}. If you with to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>.<br/>
+Your property status update has arrived!<br/>
+<br/>
+You are currently set to receive this update {{when}}. If you wish to modify this setting or change what's included in your property status update, <A href="{{unsub}}">click here</A>.<br/>
 <br/>
 <table border="0" style="font-size:9pt;width:100%" cellpadding="5" cellspacing="0">
     <tr style="background-color: #f9f9f9">
@@ -70,15 +72,15 @@ You are currently set to receive this update {{when}}. If you with to modify thi
         {% elsif row.lastweeknersqftpercent < 0 %}
         color:red;
         {% endif%}
-        ">
+        " nowrap>
             {% if row.lastweeknersqftpercent > 0%}
             {{row.lastweeknersqftpercent}}% &uarr;
             {% elsif row.lastweeknersqftpercent < 0 %}
             {{row.lastweeknersqftpercent}}% &darr;
             {% elsif row.lastweeknersqftpercent != "" %}
-            {{row.lastweeknersqftpercent}}% &nbsp;&nbsp;
-            {% else %}
             - &nbsp;&nbsp;
+            {% else %}
+            &nbsp;&nbsp;
             {% endif%}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
@@ -87,15 +89,15 @@ You are currently set to receive this update {{when}}. If you with to modify thi
         {% elsif row.lastmonthnersqftpercent < 0 %}
         color:red;
         {% endif%}
-        ">
+        " nowrap>
             {% if row.lastmonthnersqftpercent > 0%}
             {{row.lastmonthnersqftpercent}}% &uarr;
             {% elsif row.lastmonthnersqftpercent < 0 %}
             {{row.lastmonthnersqftpercent}}% &darr;
             {% elsif row.lastmonthnersqftpercent != "" %}
-            {{row.lastmonthnersqftpercent}}% &nbsp;&nbsp;
-            {% else %}
             - &nbsp;&nbsp;
+            {% else %}
+            &nbsp;&nbsp;
             {% endif%}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
