@@ -92,11 +92,11 @@
 
                 <div ng-show="notificationsLoaded">
                 <hr>
-                Send me email notifications on my properties: <toggle-switch checked="me.settings.notifications.on"></toggle-switch><Br>
+                    <B>Send me regular property status updates:</B> <toggle-switch checked="me.settings.notifications.on"></toggle-switch><Br>
                 <br>
-                <Table ng-if="me.settings.notifications.on === true">
+                <Table ng-if="me.settings.notifications.on === true" style="margin-left:20px">
                     <Tr>
-                        <Td>
+                        <Td style="width:200px">
                             How Often:&nbsp;
                         </Td>
                         <Td>
@@ -112,13 +112,13 @@
                     </Tr>
                     <tr>
                         <Td colspan="2" style="padding-top:10px">
-                            Receive notification emails for all your properties: <toggle-switch checked="nots.all"></toggle-switch><br>
+                            Include all properties I have access to in status updates: <toggle-switch checked="nots.all"></toggle-switch><br>
 
                         </Td>
                     </tr>
                     <Tr ng-if="!nots.all">
                         <Td>
-                            Specific Properties:&nbsp;
+                            Only include these properties:&nbsp;
                         </Td>
                         <td>
                             <div ng-if="!nots.all" style="padding-top:10px">

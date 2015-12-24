@@ -12,22 +12,6 @@ define([
                 $location.path('/login')
             }
 
-            if ($stateParams.password === "1") {
-                $('html, body').animate({
-                    scrollTop: ($('#passwordPannel').offset().top - 80)
-                }, 500);
-            }
-            else
-            if ($stateParams.notifications === "1") {
-                $('html, body').animate({
-                    scrollTop: ($('#notificationsPanel').offset().top - 80)
-                },500);
-            }else {
-                $('html, body').animate({
-                    scrollTop: 0
-                },500);
-            }
-
             window.document.title = "My Account - Update Profile | BI:Radix";
 
             $rootScope.nav = "";
@@ -66,6 +50,25 @@ define([
 
             var unbind = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
+                    window.setTimeout(function() {
+                        if ($stateParams.password === "1") {
+                            $('html, body').animate({
+                                scrollTop: ($('#passwordPannel').offset().top - 80)
+                            }, 500);
+                        }
+                        else
+                        if ($stateParams.notifications === "1") {
+                            $('html, body').animate({
+                                scrollTop: ($('#notificationsPanel').offset().top - 80)
+                            },500);
+                        }else {
+                            $('html, body').animate({
+                                scrollTop: 0
+                            },500);
+                        }
+                    }, 500)
+
+
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
 
                     $scope.canUpdateEmail = $rootScope.me.permissions.indexOf('Users/UpdateEmail') > -1
