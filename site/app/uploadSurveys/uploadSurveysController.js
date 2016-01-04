@@ -72,7 +72,9 @@ define([
 
             $scope.localLoading = false;
             $propertyService.getFullProperty($scope.data.property._id).then(function (response) {
+
                 var p = response.data.properties[0];
+                p.floorplans.forEach(function(x) {delete x.new});
                 var floorplans = {};
                 var update = false;
 
@@ -89,17 +91,24 @@ define([
                         return x.bedrooms.toString() == fp.bedrooms.toString() && x.bathrooms.toString() == fp.bathrooms.toString() && x.sqft.toString() == fp.sqft.toString() && !x.new
                     });
 
+                    //console.log('1:',old);
+
                     if (old.length > 1) {
                         old = _.filter(old,function(x) {
                             return x.units.toString() == fp.units.toString() && !x.new
                         });
                     }
 
+                    //console.log('2:',old);
+
                     if (old.length > 1) {
                         old = _.filter(old,function(x) {
                             return x.description.toString() == fp.description.toString() && !x.new
                         });
                     }
+
+                    //console.log('3:',old);
+                    //return;
 
                     if (old.length == 1) {
                         fp = _.cloneDeep(old[0]);
