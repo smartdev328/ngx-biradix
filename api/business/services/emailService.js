@@ -3,6 +3,17 @@ var LiquidService = require('../../utilities/services/liquidService')
 var EmailService = require('../../utilities/services/emailService')
 var fs = require('fs')
 
+var filters = {
+    formatNumber: function(input,decimals) {
+
+        if (!input || isNaN(input)) {
+            return "";
+        }
+
+        return parseFloat(input).toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
+    }
+}
+
 module.exports = {
     send: function (email, callback) {
         var newemail = {
@@ -17,7 +28,7 @@ module.exports = {
                     throw (err)
                 }
                 else {
-                    LiquidService.parse(data, {message: html, logo: email.logo }, null, function(result) {
+                    LiquidService.parse(data, {message: html, logo: email.logo }, filters, function(result) {
                         newemail.html = result;
                         EmailService.send(newemail,callback);
                     })
@@ -35,7 +46,7 @@ function getData(email, callback) {
                 throw (err)
             }
             else {
-                LiquidService.parse(data, email.templateData, null, function(result) {
+                LiquidService.parse(data, email.templateData, filters, function(result) {
                     callback(result);
                 })
             }

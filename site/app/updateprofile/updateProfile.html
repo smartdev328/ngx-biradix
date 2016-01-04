@@ -92,14 +92,14 @@
 
                 <div ng-show="notificationsLoaded">
                 <hr>
-                    <B>Send me regular property status updates:</B> <toggle-switch checked="me.settings.notifications.on"></toggle-switch><Br>
+                    <B>Send me regular property status updates:</B> <toggle-switch checked="me.settings.notifications.on"></toggle-switch>
+                    <button class=" btn btn-warning btn-xs" style="font-style: italic;margin-left:20px;font-size:10px" type="button" ng-if="me.settings.notifications.on === true" ng-click="sendReport()">Send Now</button><Br>
                 <br>
                 <Table ng-if="me.settings.notifications.on === true" style="margin-left:20px">
                     <Tr>
-                        <Td style="width:200px">
+                        <Td colspan="2">
                             How Often:&nbsp;
-                        </Td>
-                        <Td>
+
                             <select class="form-control input-sm" ng-options="item for item in nots.howOftenOptions" ng-model="nots.howOften" style="display:inline;width:100px">
                             </select>, every
                             <select ng-if="nots.howOften == 'Weekly'"
@@ -117,20 +117,20 @@
                         </Td>
                     </tr>
                     <Tr ng-if="!nots.all">
-                        <Td>
-                            Only include these properties:&nbsp;
-                        </Td>
-                        <td>
-                            <div ng-if="!nots.all" style="padding-top:10px">
+                        <Td colspan="2">
+                            <div style="float:left;margin-top:15px">
+                                Only include these properties:&nbsp;
+                            </div>
+                            <div ng-if="!nots.all" style="padding-top:10px;float:left;width:200px">
                                 <filter-list options="propertyOptions" items="propertyItems"></filter-list>
                             </div>
+                            <Br clear="all">
                         </td>
                     </tr>
                 </Table>
                 </div>
                 <Br>
                 <center>
-                    <button class=" btn btn-warning btn-large" type="button" ng-if="me.settings.notifications.on === true" ng-click="sendReport()">Send Report Now</button>
                     <button class=" btn btn-primary btn-large nots-submit" type="button">Update</button>
                 </center>
             </div>

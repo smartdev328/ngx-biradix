@@ -80,6 +80,7 @@ d.run(function() {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
 
+//console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
                 //if (workerId == 1) {
                 //    var moment = require("moment");
                 //    var end = moment().add(-1,"day").startOf('week').add(1,"day").utcOffset(-480);

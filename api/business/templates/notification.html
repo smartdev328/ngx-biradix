@@ -49,22 +49,22 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {{row.name}}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            {{row.occupancy}}%
+            {{row.occupancy | formatNumber : 2}}%
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            {{row.totUnits}}
+            {{row.totUnits | formatNumber : 0}}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            {{row.sqft}}
+            {{row.sqft | formatNumber : 0}}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            ${{row.rent}}
+            ${{row.rent | formatNumber : 0}}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            ${{row.ner}}
+            ${{row.ner | formatNumber : 0}}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            ${{row.nersqft}}
+            ${{row.nersqft | formatNumber : 2}}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.lastweeknersqftpercent > 0%}
