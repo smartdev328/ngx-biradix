@@ -8,6 +8,7 @@ var CompsService = require('./compsService')
 
 module.exports = {
     getSurveyBeforeDate: function(propertyid, dateStart,dateEnd, callback) {
+        console.log({propertyid: propertyid,date:{$gt:dateStart, $lte:dateEnd}});
         SurveySchema.find({propertyid: propertyid,date:{$gt:dateStart, $lte:dateEnd}}).sort('-date').limit(1).exec(callback);
 
     },
