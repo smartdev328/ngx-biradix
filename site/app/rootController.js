@@ -4,6 +4,8 @@ define([
     '../services/authService',
     '../services/propertyService',
     '../components/daterangepicker/module',
+    '../components/filterlist/module',
+    '../components/timeseries/module',
 ], function (app) {
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $modal, toastr,ngProgress,$timeout) {

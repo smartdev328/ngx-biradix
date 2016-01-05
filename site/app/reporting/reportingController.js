@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../components/filterlist/module.js',
     '../../components/reports/communityAmenities.js',
     '../../components/reports/locationAmenities.js',
     '../../components/reports/feesDeposits.js',

@@ -4,7 +4,6 @@ define([
     '../../services/userService.js',
     '../../services/propertyService.js',
     '../../services/propertyUsersService.js',
-    '../../components/filterlist/module.js',
 ], function (app) {
      app.controller
         ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $modalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {

@@ -5,7 +5,6 @@ define([
     '../../components/propertyProfile/comps',
     '../../components/googleMap/module',
     '../../components/toggle/module',
-    '../../components/timeseries/module',
     '../../services/cookieSettingsService',
     '../../services/exportService',
     '../../services/progressService',

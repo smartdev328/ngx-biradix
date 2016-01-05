@@ -9,7 +9,6 @@ define([
     '../../components/propertyProfile/floorplans',
     '../../components/propertyProfile/tableView',
     '../../components/googleMap/module',
-    '../../components/timeseries/module',
     '../../services/cookieSettingsService'
 ], function (app) {
 

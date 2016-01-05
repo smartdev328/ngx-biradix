@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../components/filterlist/module.js'
 ], function (app) {
      app.controller
         ('floorplanLinksController', ['$scope', '$modalInstance', 'id', 'compid', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', function ($scope, $modalInstance, id, compid, ngProgress, $rootScope, toastr, $location, $propertyService) {

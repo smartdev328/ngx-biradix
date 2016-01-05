@@ -4,7 +4,6 @@ define([
     '../../services/userService.js',
     '../../services/propertyService',
     '../../components/toggle/module',
-    '../../components/filterlist/module.js',
 ], function (app) {
      app.controller
         ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams,$propertyService) {
