@@ -49,7 +49,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {{row.name}}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            {{row.occupancy | formatNumber : 2}}%
+            {{row.occupancy}}%
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.totUnits | formatNumber : 0}}
@@ -78,7 +78,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {% elsif row.lastweeknersqftpercent < 0 %}
             {{row.lastweeknersqftpercent}}% &darr;
             {% elsif row.lastweeknersqftpercent != "" %}
-            - &harr;
+            0% &harr;
             {% else %}
             &nbsp;&nbsp;
             {% endif%}
@@ -95,7 +95,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {% elsif row.lastmonthnersqftpercent < 0 %}
             {{row.lastmonthnersqftpercent}}% &darr;
             {% elsif row.lastmonthnersqftpercent != "" %}
-            - &harr;
+            0% &harr;
             {% else %}
             &nbsp;&nbsp;
             {% endif%}
