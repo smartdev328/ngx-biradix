@@ -39,10 +39,15 @@ define([
                     }
                     else {
                         if (window.sessionStorage.redirect) {
-                            window.location.href = '/#' + window.sessionStorage.redirect;
+                            var x = $window.sessionStorage.redirect;
                             $window.sessionStorage.removeItem('redirect');
-                            console.log(window.location.href);
-                            window.location.reload();
+
+                            if (x.indexOf("?") == -1) {
+                                $location.path(x)
+                            } else {
+                                var a = x.split('?')
+                                $location.path(a[0]).search(a[1]);
+                            }
                         } else {
                             window.location.href = "/";
                         }
