@@ -78,7 +78,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {% elsif row.lastweeknersqftpercent < 0 %}
             {{row.lastweeknersqftpercent}}% &darr;
             {% elsif row.lastweeknersqftpercent != "" %}
-            0% ↕
+            0% <span style="font-weight:600">↕</span>
             {% else %}
             &nbsp;&nbsp;
             {% endif%}
@@ -95,7 +95,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {% elsif row.lastmonthnersqftpercent < 0 %}
             {{row.lastmonthnersqftpercent}}% &darr;
             {% elsif row.lastmonthnersqftpercent != "" %}
-            0% ↕
+            0% <span style="font-weight:600">↕</span>
             {% else %}
             &nbsp;&nbsp;
             {% endif%}
