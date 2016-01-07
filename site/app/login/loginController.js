@@ -11,7 +11,15 @@ define([
         }
 
         if ($rootScope.loggedIn) {
-            location.href="/";
+            var x = $window.sessionStorage.redirect;
+            $window.sessionStorage.removeItem('redirect');
+
+            if (x.indexOf("?") == -1) {
+                $location.path(x)
+            } else {
+                var a = x.split('?')
+                $location.path(a[0]).search(a[1]);
+            }
             return;
         }
 
@@ -30,7 +38,14 @@ define([
                         $scope.localLoading = false;
                     }
                     else {
-                        $window.location.href = '/'
+                        if (window.sessionStorage.redirect) {
+                            window.location.href = '/#' + window.sessionStorage.redirect;
+                            $window.sessionStorage.removeItem('redirect');
+                            console.log(window.location.href);
+                            window.location.reload();
+                        } else {
+                            window.location.href = "/";
+                        }
                     }
             },
             function(errors) {

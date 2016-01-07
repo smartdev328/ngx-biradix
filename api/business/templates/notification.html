@@ -74,11 +74,11 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         {% endif%}
         " nowrap>
             {% if row.lastweeknersqftpercent > 0%}
-            {{row.lastweeknersqftpercent}}% &uarr;
+            {{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="15" align="absmiddle">
             {% elsif row.lastweeknersqftpercent < 0 %}
-            {{row.lastweeknersqftpercent}}% &darr;
+            {{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="15" align="absmiddle">
             {% elsif row.lastweeknersqftpercent != "" %}
-            0% <span style="font-weight:600">↕</span>
+            0% <img src= "https://platform.biradix.com/images/nochange.png" height="15" align="absmiddle">
             {% else %}
             &nbsp;&nbsp;
             {% endif%}
@@ -91,11 +91,11 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         {% endif%}
         " nowrap>
             {% if row.lastmonthnersqftpercent > 0%}
-            {{row.lastmonthnersqftpercent}}% &uarr;
+            {{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="15" align="absmiddle">
             {% elsif row.lastmonthnersqftpercent < 0 %}
-            {{row.lastmonthnersqftpercent}}% &darr;
+            {{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="15" align="absmiddle">
             {% elsif row.lastmonthnersqftpercent != "" %}
-            0% <span style="font-weight:600">↕</span>
+            0% <img src= "https://platform.biradix.com/images/nochange.png" height="15" align="absmiddle">
             {% else %}
             &nbsp;&nbsp;
             {% endif%}

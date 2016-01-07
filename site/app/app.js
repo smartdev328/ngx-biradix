@@ -42,9 +42,8 @@ define([
             extendedTimeOut: 5000
         });
 
-        //if (!window.sessionStorage.redirect) {
-            $urlRouterProvider.otherwise("/dashboard");
-        //}
+        $urlRouterProvider.otherwise("/dashboard");
+
         $stateProvider
             .state('login', {
                 url: "/login?r",

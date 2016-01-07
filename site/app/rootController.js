@@ -165,19 +165,19 @@ define([
                     $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
                     $timeout($rootScope.incrementTimeout, 1000);
 
-                    if ($window.sessionStorage.redirect) {
-                        $timeout(function() {
-                            var x = $window.sessionStorage.redirect;
-                            $window.sessionStorage.removeItem('redirect');
-
-                            if (x.indexOf("&") == -1) {
-                                $location.path(x)
-                            } else {
-                                var a = x.split('&')
-                                $location.path(a[0]).search(a[1]);
-                            }
-                        }, 2000);
-                    }
+                    //if ($window.sessionStorage.redirect) {
+                    //    $timeout(function() {
+                    //        var x = $window.sessionStorage.redirect;
+                    //        $window.sessionStorage.removeItem('redirect');
+                    //
+                    //        if (x.indexOf("&") == -1) {
+                    //            $location.path(x)
+                    //        } else {
+                    //            var a = x.split('&')
+                    //            $location.path(a[0]).search(a[1]);
+                    //        }
+                    //    }, 2000);
+                    //}
 
                 });
             })
