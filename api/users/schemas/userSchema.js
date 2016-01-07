@@ -28,7 +28,8 @@ var UserSchema = new Schema({
     isSystem: Boolean,
     settings: {
         hideUnlinked: Boolean,
-        defaultPropertyId: Schema.Types.ObjectId
+        defaultPropertyId: Schema.Types.ObjectId,
+        notifications: {}
     },
     passwordUpdated: Boolean,
     bounceReason: String

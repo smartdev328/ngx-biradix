@@ -190,6 +190,50 @@ define([
                 });
             }
 
+            $scope.saveNotifications = function() {
+                if ($rootScope.me.settings.notifications.on === true) {
+
+                    if ($scope.nots.all === true) {
+                        $rootScope.me.settings.notifications.props = [];
+                    } else {
+                        $rootScope.me.settings.notifications.props = _.pluck(_.filter($scope.propertyItems, function(x) {return x.selected === true}),"id")
+                    }
+
+                    if ($scope.nots.howOften == "Weekly") {
+                        $rootScope.me.settings.notifications.cron = "* * * * " + $scope.nots.dayOfWeek.id;
+                    } else {
+                        $rootScope.me.settings.notifications.cron = "* * " + $scope.nots.dayOfMonth.id + " * *";
+                    }
+
+                }
+
+                //console.log($rootScope.me.settings.notifications);
+
+                $('button.nots-submit').prop('disabled', true);
+                ngProgress.start();
+
+                $authService.updateSettings($rootScope.me.settings).then(function (resp) {
+                    $('button.nots-submit').prop('disabled', false);
+                    ngProgress.complete();
+                    if (resp.data.errors && resp.data.errors.length > 0) {
+                        resp.data.errors.forEach(function(e) {
+                            toastr.error(e.msg);
+                        })
+
+                    }
+                    else {
+                        toastr.success('Notifications updated successfully.');
+
+                        $rootScope.refreshToken(function() {});
+                    }
+
+                }, function (err) {
+                    $('button.contact-submit').prop('disabled', false);
+                    toastr.error('Unable to save Notifications. Please contact an administrator');
+                    ngProgress.complete();
+                });
+            }
+
             $scope.sendReport = function() {
                 var properties= [];
                 if (!$scope.nots.all) {

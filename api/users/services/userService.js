@@ -392,6 +392,8 @@ module.exports = {
 
             usr.settings = settings
 
+            usr.markModified("settings.notifications");
+
             usr.save(function (err, usr) {
                 if (err) {
                     modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
