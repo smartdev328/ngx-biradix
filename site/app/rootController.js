@@ -169,7 +169,13 @@ define([
                         $timeout(function() {
                             var x = $window.sessionStorage.redirect;
                             $window.sessionStorage.removeItem('redirect');
-                            $location.path(x)
+
+                            if (x.indexOf("&") == -1) {
+                                $location.path(x)
+                            } else {
+                                var a = x.split('&')
+                                $location.path(a[0]).search(a[1]);
+                            }
                         }, 2000);
                     }
 

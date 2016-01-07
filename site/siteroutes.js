@@ -9,6 +9,9 @@ module.exports = (function() {
 
     var ui = express.Router();
 
+    ui.get('/u', function(req,res) {
+        return res.redirect('/#/login?r=%2FupdateProfile%26notifications=1');
+    })
     ui.post('/error', function (req, res) {
         error.send(req.body.error, {headers:req.headers, ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress});
         return res.status(200).json({success:true});

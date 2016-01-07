@@ -4,10 +4,15 @@ define([
     '../../services/authService'
 ], function (app) {
 
-    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window', function ($scope,$rootScope,$location,toastr, $authService,$window) {
+    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams) {
+
+        if ($stateParams.r) {
+            $window.sessionStorage.redirect = $stateParams.r;
+        }
 
         if ($rootScope.loggedIn) {
-            $location.path('/dashboard')
+            location.href="/";
+            return;
         }
 
         $scope.setRenderable = function() {

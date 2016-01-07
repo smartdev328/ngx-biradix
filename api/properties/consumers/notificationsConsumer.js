@@ -56,7 +56,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                 if (final.length > 0) {
                     //console.log(final);
                     var logo ='http://' + data.user.org.subdomain + ".biradix.com/images/organizations/" + data.user.org.logoBig;
-                    var unsub ='http://' + data.user.org.subdomain + ".biradix.com/unsub";
+                    var unsub ='http://' + data.user.org.subdomain + ".biradix.com/u";
 
                     var cron = data.user.settings.notifications.cron.split(" ");
 

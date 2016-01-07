@@ -47,7 +47,7 @@ define([
         //}
         $stateProvider
             .state('login', {
-                url: "/login",
+                url: "/login?r",
                 views: {
                     "loggedOutView": {
                         templateUrl: "app/login/login.html?bust=" + version,
