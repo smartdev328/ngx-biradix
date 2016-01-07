@@ -8,7 +8,8 @@ define([
      app.controller
         ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams,$propertyService) {
             if (!$rootScope.loggedIn) {
-                $location.path('/login')
+                $rootScope.logoff()
+                return;
             }
 
             window.document.title = "My Account - Update Profile | BI:Radix";

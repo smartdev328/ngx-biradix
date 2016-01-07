@@ -16,11 +16,13 @@ global_error = function(err,context) {
     if (err) {
         //Reload
         console.error(err.stack);
-        $.post("/error",{error: err.stack, context: context}).done(function(data) {
-            if (!phantom) {
-                location.href = "/error.html";
-            }
-        });
+        if (location.href.indexOf('localhost') == -1) {
+            $.post("/error", {error: err.stack, context: context}).done(function (data) {
+                if (!phantom) {
+                    location.href = "/error.html";
+                }
+            });
+        }
     }
 }
 

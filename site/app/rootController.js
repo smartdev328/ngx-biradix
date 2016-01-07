@@ -153,6 +153,7 @@ define([
                 'css!/css/grids'
             ], function () {
                 $rootScope.getMe(function() {
+                    $rootScope.loggedIn = true;
                     $('.loading').hide();
                     $('.loggedout').hide();
                     $('.loggedin').show();
@@ -165,19 +166,27 @@ define([
                     $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
                     $timeout($rootScope.incrementTimeout, 1000);
 
-                    //if ($window.sessionStorage.redirect) {
-                    //    $timeout(function() {
-                    //        var x = $window.sessionStorage.redirect;
-                    //        $window.sessionStorage.removeItem('redirect');
-                    //
-                    //        if (x.indexOf("&") == -1) {
-                    //            $location.path(x)
-                    //        } else {
-                    //            var a = x.split('&')
-                    //            $location.path(a[0]).search(a[1]);
-                    //        }
-                    //    }, 2000);
-                    //}
+                    var ar = location.hash.split("login?r=");
+                    if (ar.length == 2) {
+                        $window.sessionStorage.redirect = decodeURIComponent(ar[1]);
+                    }
+
+                    if ($window.sessionStorage.redirect) {
+                        var x = $window.sessionStorage.redirect;
+                        $window.sessionStorage.removeItem('redirect');
+
+                        if (x.indexOf("?") == -1) {
+                            $location.path(x)
+                        } else {
+                            var a = x.split('?')
+                            $location.path(a[0]).search(a[1]);
+                        }
+
+                    } else {
+                        $location.path("/dashboard");
+                    }
+
+
 
                 });
             })
@@ -192,6 +201,7 @@ define([
                 $('.loggedout').show();
                 $('.loggedin').hide();
                 $('body').css("padding-top","10px")
+                $rootScope.loggedIn = false;
             })
         }
 
@@ -199,8 +209,7 @@ define([
         $rootScope.logoff = function() {
             $rootScope.loggedIn = false;
             $cookies.remove('token');
-            $rootScope.swaptoLoggedOut();
-            $location.path("/login")
+            window.location.href = "/";
         }
 
         $rootScope.toggleUnlniked = function() {

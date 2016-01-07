@@ -11,15 +11,7 @@ define([
         }
 
         if ($rootScope.loggedIn) {
-            var x = $window.sessionStorage.redirect;
-            $window.sessionStorage.removeItem('redirect');
-
-            if (x.indexOf("?") == -1) {
-                $location.path(x)
-            } else {
-                var a = x.split('?')
-                $location.path(a[0]).search(a[1]);
-            }
+            window.location.href = "/";
             return;
         }
 
@@ -39,15 +31,7 @@ define([
                     }
                     else {
                         if (window.sessionStorage.redirect) {
-                            var x = $window.sessionStorage.redirect;
-                            $window.sessionStorage.removeItem('redirect');
-
-                            if (x.indexOf("?") == -1) {
-                                $location.path(x)
-                            } else {
-                                var a = x.split('?')
-                                $location.path(a[0]).search(a[1]);
-                            }
+                            $rootScope.swaptoLoggedIn();
                         } else {
                             window.location.href = "/";
                         }
