@@ -100,6 +100,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
                     totalrow.lastweeknersqft = (totalrow.lastweeknersqft || 0) + (p.lastweeknersqft * p.totUnits);
                     totalrow.lastweeknersqftTotal = (totalrow.lastweeknersqftTotal || 0) + (p.nersqft * p.totUnits);
+                    totalrow.lastweeknersqftTotalUnits = (totalrow.lastweeknersqftTotalUnits || 0) + p.totUnits;
                 }
 
                 if (p.nersqft && lastmonth && lastmonth.nersqft) {
@@ -108,6 +109,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
                     totalrow.lastmonthnersqft = (totalrow.lastmonthnersqft || 0) + (p.lastmonthnersqft * p.totUnits);
                     totalrow.lastmonthnersqftTotal = (totalrow.lastmonthnersqftTotal || 0) + (p.nersqft * p.totUnits);
+                    totalrow.lastmonthnersqftTotalUnits = (totalrow.lastmonthnersqftTotalUnits || 0) + p.totUnits;
                 }
             }
 
@@ -121,17 +123,17 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
             totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
             totalrow.nersqft = Math.round(totalrow.nersqft / totalrow.totUnits * 100) / 100;
-            totalrow.lastweeknersqft = Math.round(totalrow.lastweeknersqft / totalrow.totUnits * 100) / 100;
-            totalrow.lastmonthnersqft = Math.round(totalrow.lastmonthnersqft / totalrow.totUnits * 100) / 100;
-            totalrow.lastweeknersqftTotal = Math.round(totalrow.lastweeknersqftTotal / totalrow.totUnits * 100) / 100;
-            totalrow.lastmonthnersqftTotal = Math.round(totalrow.lastmonthnersqftTotal / totalrow.totUnits * 100) / 100;
+            totalrow.lastweeknersqft = Math.round(totalrow.lastweeknersqft / totalrow.lastweeknersqftTotalUnits * 100) / 100;
+            totalrow.lastmonthnersqft = Math.round(totalrow.lastmonthnersqft / totalrow.lastmonthnersqftTotalUnits * 100) / 100;
+            totalrow.lastweeknersqftTotal = Math.round(totalrow.lastweeknersqftTotal / totalrow.lastweeknersqftTotalUnits * 100) / 100;
+            totalrow.lastmonthnersqftTotal = Math.round(totalrow.lastmonthnersqftTotal / totalrow.lastmonthnersqftTotalUnits * 100) / 100;
 
             if (totalrow.lastweeknersqft) {
                 totalrow.lastweeknersqftpercent = Math.round((totalrow.lastweeknersqftTotal - totalrow.lastweeknersqft ) / totalrow.lastweeknersqftTotal * 100 * 10) / 10;
             }
 
             if (totalrow.lastmonthnersqft) {
-                totalrow.lastmonthnersqftpercent = Math.round((totalrow.lastmonthnersqftTotal - totalrow.lastmonthnersqftTotal ) / totalrow.nersqft * 100 * 10) / 10;
+                totalrow.lastmonthnersqftpercent = Math.round((totalrow.lastmonthnersqftTotal - totalrow.lastmonthnersqft ) / totalrow.lastmonthnersqftTotal * 100 * 10) / 10;
             }
         }
 
