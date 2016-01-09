@@ -36,10 +36,10 @@ define(['app'], function (app) {
         fac.getDaterange = function () {
             return {
                 Ranges : {
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'Last 90 Days': [moment().subtract(89, 'days'), moment()],
-                    'Last Year': [moment().subtract(1, 'year'), moment()],
-                    'Lifetime': [moment().subtract(30, 'year'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment().endOf("day")],
+                    'Last 90 Days': [moment().subtract(89, 'days'), moment().endOf("day")],
+                    'Last Year': [moment().subtract(1, 'year'), moment().endOf("day")],
+                    'Lifetime': [moment().subtract(30, 'year'), moment().endOf("day")],
                 },
                 selectedRange : $cookies.get('selectedRange') || "Last 90 Days",
                 selectedStartDate : moment($cookies.get('selectedStartDate')),

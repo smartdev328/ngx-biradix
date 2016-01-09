@@ -388,10 +388,37 @@ module.exports = {
                 return;
             };
 
+            defaultSettings(usr);
+
             var bLinkedUpdated = usr.settings.hideUnlinked != settings.hideUnlinked;
 
-            usr.settings = settings
+            var nots = [];
+            var notsDescription = "";
 
+            if (usr.settings.notifications.on == true && settings.notifications.on == false) {
+                notsDescription = "On => Off";
+            }
+            else if (usr.settings.notifications.on == false && settings.notifications.on == true) {
+                notsDescription = "Off => On";
+            }
+            else {
+                if (usr.settings.notifications.cron != settings.notifications.cron) {
+                    notsDescription = "Schedule"
+                }
+
+                if (!_.isEqual(usr.settings.notifications.props.sort(), settings.notifications.props.sort()) ) {
+                    if (notsDescription) {
+                        notsDescription += ", ";
+                    }
+                    notsDescription += "Properties";
+                }
+
+                if (notsDescription) {
+                    notsDescription += " Updated";
+                }
+            }
+
+            usr.settings = settings
             usr.markModified("settings.notifications");
 
             usr.save(function (err, usr) {
@@ -403,6 +430,10 @@ module.exports = {
 
                 if (bLinkedUpdated) {
                     AuditService.create({operator: usr, user: usr, type: 'show_unlinked', description: usr.settings.hideUnlinked === true ? 'Hide' : 'Show', context: context})
+                }
+
+                if (notsDescription) {
+                    AuditService.create({operator: usr, user: usr, type: 'user_notifications', description: notsDescription, context: context, data: nots})
                 }
                 callback(null,usr.settings);
 
