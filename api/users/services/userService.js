@@ -11,6 +11,7 @@ var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
 var AuditService = require('../../audit/services/auditService')
 var localCacheService = require('../../utilities/services/localcacheService')
+var cronService = require('../../utilities/services/cronService')
 var md5 = require('md5');
 
 module.exports = {
@@ -366,6 +367,31 @@ module.exports = {
         });
 
     },
+    getUsersForNotifications : function(callback) {
+        UserSchema.find({active:true, bounceReason : null}).select("_id settings first last email").exec(function(err, users) {
+            users.forEach(function(u) {
+                defaultSettings(u);
+            })
+
+            _.remove(users, function(x) {
+                var s = x.settings.notifications;
+                //s.last = "1/7/2016";
+
+                var hoursSinceLast = Math.abs((new Date(s.last)).getTime() - (new Date()).getTime()) / 3600000;
+
+                if (isNaN(hoursSinceLast)) {
+                    hoursSinceLast = 24 * 7;
+                }
+                //console.log(hoursSinceLast)
+                return  s.on == false // remove "Off"
+                    || hoursSinceLast < 24 // remove anything alfready sent within 24 hours
+                    || !cronService.isAllowed(s.cron) // remove when cron is not allowed
+            })
+            callback(err,users);
+        });
+    }
+    ,
+
     updateSettings : function(Operator, settings, context, callback)  {
         var modelErrors = [];
 

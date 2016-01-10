@@ -79,6 +79,14 @@ d.run(function() {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
+                //var userService = require("../api/users/services/userService");
+                //userService.getUsersForNotifications(function(err,users) {
+                //    console.log(users);
+                //});
+
+                //var cronService = require("../api/utilities/services/cronService");
+                //cronService.isAllowed("* * * * 2");
+
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
                 //if (workerId == 1) {
                 //    var moment = require("moment");
