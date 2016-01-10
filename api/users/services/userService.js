@@ -367,6 +367,9 @@ module.exports = {
         });
 
     },
+    notificatonSent : function(callback) {
+
+    },
     getUsersForNotifications : function(callback) {
         UserSchema.find({active:true, bounceReason : null}).select("_id settings first last email").exec(function(err, users) {
             users.forEach(function(u) {
@@ -570,12 +573,14 @@ function getFullUser(usr, callback) {
                 var minutesToExpire = 60;
                 var token = jwt.sign(usrobj, settings.SECRET, {expiresIn: minutesToExpire * 60});
 
+                var operator = _.clone(usrobj);
+
                 delete usrobj.memberships;
                 delete usrobj.ip;
                 delete usrobj.useragent;
 
 
-                callback({token: token, user: usrobj});
+                callback({token: token, user: usrobj, operator: operator});
 
             });
         })
