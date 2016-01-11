@@ -31,6 +31,8 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             var end = moment().add(-1,"day").startOf('week').add(1,"day").utcOffset(-480);
             var start = moment(end).add(-7,"day")
 
+            console.log('last week:',start,end);
+
             var options = {skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format() };
             var req = {user : data.user,params : {id: data.id}, body: options}
 
