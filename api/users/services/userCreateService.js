@@ -244,7 +244,10 @@ module.exports = {
                     if (user.emailPassword) {
                         console.log('Email Sent');
 
+                        base = base.replace("platform",userRole.org.subdomain)
+
                         var logo = base + "/images/organizations/" + userRole.org.logoBig;
+
                         var email = {
                             to: usr.email,
                             subject: operator.org.name + " has created a new account for you at BI:radix",

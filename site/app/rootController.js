@@ -183,7 +183,7 @@ define([
                         }
 
                     } else {
-                        $location.path("/dashboard");
+                        //$location.path("/dashboard");
                     }
 
 
