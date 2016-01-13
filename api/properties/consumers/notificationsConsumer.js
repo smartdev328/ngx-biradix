@@ -32,7 +32,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                 var key = "not-" + id;
                 redisService.get(key, function(err, result) {
-                    if (false && result && settings.HEROKU_APP != "biradixplatform-qa") {
+                    if (settings.HEROKU_APP == "biradixplatform-prod") {
                         //console.log('Cache:', result);
                         final.push(result);
                         callbackp(null)
@@ -114,6 +114,8 @@ queues.getNotificationsQueue().consume(function(data,reply) {
         } else {
             reply({done: true});
         }
+
+        all = null;
 
     });
 });
