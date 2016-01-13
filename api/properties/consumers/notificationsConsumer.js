@@ -32,7 +32,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                 var key = "not-" + id;
                 redisService.get(key, function(err, result) {
-                    if (settings.HEROKU_APP == "biradixplatform-prod") {
+                    if (result && settings.HEROKU_APP == "biradixplatform-prod") {
                         //console.log('Cache:', result);
                         final.push(result);
                         callbackp(null)
@@ -82,8 +82,8 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                     })
 
                     var email = {
-                        //to: data.user.email,
-                        to: "eugene@biradix.com,alex@biradix.com",
+                        to: data.user.email,
+                        //to: "eugene@biradix.com,alex@biradix.com",
                         logo: logo,
                         subject: "Property Status Update",
                         template: 'notification.html',
