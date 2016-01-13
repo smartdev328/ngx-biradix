@@ -16,7 +16,10 @@ var s = new Schema({
         type: Boolean,
         default: true
     },
-    type: String,
+    type: {
+        type: String,
+        index: true
+    },
     direct : Boolean //direct means not explicit
 });
 
