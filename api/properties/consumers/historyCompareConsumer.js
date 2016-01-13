@@ -102,7 +102,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
                 if (p.nersqft && lastweek && lastweek.nersqft) {
                     p.lastweeknersqft = lastweek.nersqft;
-                    p.lastweeknersqftpercent = Math.round((p.nersqft - lastweek.nersqft) / p.nersqft * 100 * 10) / 10;
+                    p.lastweeknersqftpercent = Math.round((p.nersqft - lastweek.nersqft) / lastmonth.nersqft * 100 * 10) / 10;
 
                     totalrow.lastweeknersqft = (totalrow.lastweeknersqft || 0) + (p.lastweeknersqft * p.totUnits);
                     totalrow.lastweeknersqftTotal = (totalrow.lastweeknersqftTotal || 0) + (p.nersqft * p.totUnits);
@@ -111,7 +111,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
                 if (p.nersqft && lastmonth && lastmonth.nersqft) {
                     p.lastmonthnersqft = lastmonth.nersqft;
-                    p.lastmonthnersqftpercent = Math.round((p.nersqft - lastmonth.nersqft) / p.nersqft * 100 * 10) / 10;
+                    p.lastmonthnersqftpercent = Math.round((p.nersqft - lastmonth.nersqft) / lastmonth.nersqft * 100 * 10) / 10;
 
                     totalrow.lastmonthnersqft = (totalrow.lastmonthnersqft || 0) + (p.lastmonthnersqft * p.totUnits);
                     totalrow.lastmonthnersqftTotal = (totalrow.lastmonthnersqftTotal || 0) + (p.nersqft * p.totUnits);
@@ -135,11 +135,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             totalrow.lastmonthnersqftTotal = Math.round(totalrow.lastmonthnersqftTotal / totalrow.lastmonthnersqftTotalUnits * 100) / 100;
 
             if (totalrow.lastweeknersqft) {
-                totalrow.lastweeknersqftpercent = Math.round((totalrow.lastweeknersqftTotal - totalrow.lastweeknersqft ) / totalrow.lastweeknersqftTotal * 100 * 10) / 10;
+                totalrow.lastweeknersqftpercent = Math.round((totalrow.lastweeknersqftTotal - totalrow.lastweeknersqft ) / totalrow.lastweeknersqft * 100 * 10) / 10;
             }
 
             if (totalrow.lastmonthnersqft) {
-                totalrow.lastmonthnersqftpercent = Math.round((totalrow.lastmonthnersqftTotal - totalrow.lastmonthnersqft ) / totalrow.lastmonthnersqftTotal * 100 * 10) / 10;
+                totalrow.lastmonthnersqftpercent = Math.round((totalrow.lastmonthnersqftTotal - totalrow.lastmonthnersqft ) / totalrow.lastmonthnersqft * 100 * 10) / 10;
             }
         }
 
