@@ -23,6 +23,8 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 })
 
                 callbackp(null, report);
+                report = null;
+
 
             });
         },
@@ -46,6 +48,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 })
 
                 callbackp(null, report);
+                report = null;
 
             });
         }
@@ -68,6 +71,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 })
 
                 callbackp(null, report);
+                report = null;
 
             });
         }
@@ -143,6 +147,9 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
         report.push(totalrow);
 
         reply({err: err, report: report});
+
+        report = null;
+        all = null;
     })
 
 

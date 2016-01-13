@@ -104,6 +104,9 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                         reply({done: true});
                     })
+
+                    final = null;
+                    email = null;
                 }
 
             });

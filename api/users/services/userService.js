@@ -509,7 +509,7 @@ module.exports = {
                     return;
                 }
 
-                AuditService.create({operator: operator, user: saved, type: 'user_status', revertedFromId : revertedFromId, description: user.active ? "Inactive => Active" : "Active => Inactive", context: context, data : [{description: "Previous: " + (user.active ? "Inactive" : "Active"), status: !user.active}]})
+                AuditService.create({operator: operator, user: saved, type: 'user_status', revertedFromId : revertedFromId, description: saved.first + ' ' + saved.last + ': ' + (user.active ? "Inactive => Active" : "Active => Inactive"), context: context, data : [{description: "Previous: " + (user.active ? "Inactive" : "Active"), status: !user.active}]})
 
                 return callback(err, saved)
             })
