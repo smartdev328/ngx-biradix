@@ -88,17 +88,25 @@ define([
                 mgmt: true,
                 units: true,
                 occ: true,
+                leased: $rootScope.me.settings.showLeases,
                 traf: true,
                 lease: true
             }
 
         }
 
-        $scope.defaultShowProfile();
+        //make sure me is loaded befor you search initially
+        var me = $rootScope.$watch("me", function(x) {
+            if ($rootScope.me) {
+                me();
+                $scope.defaultShowProfile();
 
-        if ($cookies.get("pr.s")) {
-            $scope.showProfile = JSON.parse($cookies.get("pr.s"));
-        }
+                if ($cookies.get("pr.s")) {
+                    $scope.showProfile = JSON.parse($cookies.get("pr.s"));
+                }
+            }
+        });
+
 
         $scope.resetProfile = function() {
             $scope.defaultShowProfile();

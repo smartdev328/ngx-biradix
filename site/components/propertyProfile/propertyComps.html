@@ -21,6 +21,12 @@
             <i ng-show="sort.occupancy === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.occupancy === false" class="fa fa-sort-up"></i>
         </th>
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased">
+            Leased %
+            <i ng-show="sort.leased == null" class="fa fa-sort"></i>
+            <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
+        </th>
         <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
             Units
             <i ng-show="sort.units == null" class="fa fa-sort"></i>
@@ -111,6 +117,9 @@
         <td style="text-align: right" ng-if="show.occupancy" class="pad">
             {{comp.survey.occupancy == null ? "-" : comp.survey.occupancy + '%'}}
         </td>
+        <td style="text-align: right" ng-if="show.leased" class="pad">
+            {{comp.survey.leased == null ? "-" : comp.survey.leased + '%'}}
+        </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
             {{comp.units}}
         </td>
@@ -162,6 +171,9 @@
         <td style="text-align: right" ng-if="show.occupancy" class="pad">
             -
         </td>
+        <td style="text-align: right" ng-if="show.leased" class="pad">
+            -
+        </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
             {{row.units}}
         </td>
@@ -204,6 +216,9 @@
                popover-placement="right"
                popover="This floor plan has been manually excluded from reporting and dashboard calculations."
                     ></i>
+        </td>
+        <td style="text-align: right" ng-if="show.occupancy" class="pad">
+            -
         </td>
         <td style="text-align: right" ng-if="show.occupancy" class="pad">
             -

@@ -35,6 +35,7 @@ define([
                     fp.rent = fp.rent || 0;
                     fp.concessions = fp.concessions || 0;
                 })
+                $scope.survey.leased = $scope.survey.leased || 0;
                 $scope.survey.occupancy = $scope.survey.occupancy || 0;
                 $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || 0;
                 $scope.survey.weeklyleases = $scope.survey.weeklyleases || 0;
@@ -48,6 +49,7 @@ define([
                         var s= response.data.survey;
                         if (s && s.length > 0) {
                             s = s[0];
+                            $scope.survey.leased = s.leased;
                             $scope.survey.occupancy = s.occupancy;
                             $scope.survey.weeklytraffic = s.weeklytraffic
                             $scope.survey.weeklyleases = s.weeklyleases
@@ -91,6 +93,32 @@ define([
 
                 if (typeof fp == 'string') {
                     switch(fp) {
+                        case "leased":
+                            if (!state) {
+                                $scope.survey.leased = $scope.originalSurvey.leased;
+                                window.setTimeout(function() {
+                                    $('#leased')[0].focus();
+                                    $('#leased')[0].select();
+                                }, 300);
+                            } else {
+                                var er = "";
+
+                                if ($scope.survey.leased && parseFloat($scope.survey.leased) > 100) {
+                                    er = '<b>Warning:</b> Leased cannot exceed 100%';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function() {
+                                        $('#leased')[0].focus();
+                                        $('#leased')[0].select();
+                                    }, 300);
+                                    return;
+                                }
+
+                            }
+                            $scope.survey.leasedupdated = state;
+                            break;
                         case "occupancy":
                             if (!state) {
                                 $scope.survey.occupancy = $scope.originalSurvey.occupancy;
@@ -307,6 +335,11 @@ define([
                     }
 
                 })
+
+                if (isSuccess && (!$scope.survey.leasedupdated)) {
+                    isSuccess = false;
+                    error = 'Please update all fields.';
+                }
 
                 if (isSuccess && (!$scope.survey.occupancyupdated || $scope.survey.occupancy === '')) {
                     isSuccess = false;

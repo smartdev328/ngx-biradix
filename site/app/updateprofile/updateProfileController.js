@@ -223,13 +223,13 @@ define([
 
                     }
                     else {
-                        toastr.success('Notifications updated successfully.');
+                        toastr.success('Settings & Notifications updated successfully.');
 
                         $rootScope.refreshToken(function() {});
                     }
 
                 }, function (err) {
-                    $('button.contact-submit').prop('disabled', false);
+                    $('button.nots-submit').prop('disabled', false);
                     toastr.error('Unable to save Notifications. Please contact an administrator');
                     ngProgress.complete();
                 });

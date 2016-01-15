@@ -458,15 +458,19 @@ module.exports = {
                 copy._id = lastsurvey._id;
                 copy.floorplans = lastsurvey.floorplans;
                 copy.occupancy = lastsurvey.occupancy;
+                copy.leased = lastsurvey.leased;
                 copy.weeklyleases = lastsurvey.weeklyleases;
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
 
 
                 var data = [{description: "Survey Date: ", date: lastsurvey.date, survey: copy}];
 
-
                 if (lastsurvey.occupancy !== survey.occupancy) {
                     data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + survey.occupancy + "%"})
+                }
+
+                if (lastsurvey.leased !== survey.leased) {
+                    data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + '%') + " => " + (typeof survey.leased == 'undefined' || survey.leased == null ? 'N/A' : survey.leased + "%")})
                 }
 
                 if (lastsurvey.weeklyleases !== survey.weeklyleases) {
@@ -490,6 +494,7 @@ module.exports = {
 
                 lastsurvey.floorplans = survey.floorplans;
                 lastsurvey.occupancy = survey.occupancy;
+                lastsurvey.leased = survey.leased;
                 lastsurvey.weeklyleases = survey.weeklyleases;
                 lastsurvey.weeklytraffic = survey.weeklytraffic;
 
@@ -567,6 +572,7 @@ module.exports = {
             n.community_amenities = survey.community_amenities || [];
             n.propertyid = id;
             n.occupancy = survey.occupancy;
+            n.leased = survey.leased;
             n.weeklyleases = survey.weeklyleases;
             n.weeklytraffic = survey.weeklytraffic;
             n.date = survey.date || Date.now();
@@ -574,8 +580,12 @@ module.exports = {
 
             var data = [{description: "Survey Date: ", date: n.date, id: n._id}];
 
+
             if (lastsurvey.occupancy !== n.occupancy) {
                 data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + n.occupancy + "%"})
+            }
+            if (lastsurvey.leased !== n.leased) {
+                data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + "%") + " => " + (typeof n.leased == 'undefined' || n.leased == null ? 'N/A' : n.leased + "%")})
             }
 
             if (lastsurvey.weeklyleases !== n.weeklyleases) {
@@ -658,6 +668,7 @@ module.exports = {
                         }
 
                         comp.survey.occupancy = s.occupancy;
+                        comp.survey.leased = s.leased;
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide);
                     }
 

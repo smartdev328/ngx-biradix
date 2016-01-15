@@ -105,6 +105,26 @@
                     <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated">Undo</a>
                 </td>
             </tr>
+            <tr ng-if="$root.me.settings.showLeases">
+                <td>
+
+                </td>
+                <td class="hidden-xs">
+
+                </td>
+
+                <td colspan="3">
+                    <b>Leased %</b>
+                </td>
+                <td style="text-align: right">
+                    <span ng-if="!survey.leasedupdated"><input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()"></span>
+                    <div ng-if="survey.leasedupdated" style="width:58px;text-align:right">{{survey.leased}}%</div>
+                </td>
+                <td>
+                    <a href ng-click="next('leased', 'occupancy')" ng-if="!survey.leasedupdated">Update</a>
+                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated">Undo</a>
+                </td>
+            </tr>
             <tr>
                 <td>
 

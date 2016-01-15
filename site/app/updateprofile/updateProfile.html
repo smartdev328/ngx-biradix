@@ -83,7 +83,7 @@
 <div class="row">
     <div class="col-sm-6">
         <div class="panel panel-info"  style="height:410px" id="notificationsPanel">
-            <div class="panel-heading">Notifications</div>
+            <div class="panel-heading">Settings & Notifications</div>
             <div class="panel-body">
 
                 <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
@@ -95,7 +95,7 @@
                     <B>Send me regular property status updates:</B> <toggle-switch checked="me.settings.notifications.on"></toggle-switch>
                     <button class=" btn btn-warning btn-xs" style="font-style: italic;margin-left:20px;font-size:10px" type="button" ng-if="me.settings.notifications.on === true" ng-click="sendReport()">Send Now</button><Br>
                 <br>
-                <Table ng-if="me.settings.notifications.on === true" style="margin-left:20px">
+                <Table ng-if="me.settings.notifications.on === true" style="margin-left:20px;margin-bottom:15px">
                     <Tr>
                         <Td colspan="2">
                             How Often:&nbsp;
@@ -128,11 +128,13 @@
                         </td>
                     </tr>
                 </Table>
-                </div>
+                <hr>
+                    <B>Show "Leased %" information:</B> <toggle-switch checked="me.settings.showLeases"></toggle-switch><Br>
                 <Br>
                 <center>
                     <button class=" btn btn-primary btn-large nots-submit" type="button" ng-click="saveNotifications()">Update</button>
                 </center>
+                </div>
             </div>
         </div>
     </div>

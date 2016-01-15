@@ -616,6 +616,7 @@ function getSysemUser (callback) {
 }
 
 function defaultSettings(user) {
+    user.settings.showLeases = user.settings.showLeases || false;
     user.settings.notifications = user.settings.notifications || {};
     user.settings.notifications.cron = user.settings.notifications.cron || "* * * * 2"
     user.settings.notifications.props = user.settings.notifications.props || [];

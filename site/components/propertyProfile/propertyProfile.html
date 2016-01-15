@@ -103,6 +103,14 @@
             {{property.survey.occupancy == null ? "N/A" : property.survey.occupancy + '%'}}
         </td>
     </tr>
+    <tr ng-if="show.leased">
+        <td>
+            <b>Leased:</b>
+        </td>
+        <td>
+            {{property.survey.leased == null ? "N/A" : property.survey.leased + '%'}}
+        </td>
+    </tr>
     <tr ng-if="show.traf">
         <td>
             <b>Traffic/Wk:</b>

@@ -42,6 +42,7 @@ define([
                             comp.ner = comp.survey.ner == null ? -1 : comp.survey.ner;
                             comp.nersqft = comp.survey.nersqft == null ? -1 : comp.survey.nersqft;
                             comp.occupancy = comp.survey.occupancy == null ? -1 : comp.survey.occupancy;
+                            comp.leased = comp.survey.leased == null ? -1 : comp.survey.leased;
 
                             comp.survey.floorplans.forEach(function(fp,i) {
                                 fp.number = i;

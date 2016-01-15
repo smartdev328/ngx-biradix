@@ -45,6 +45,7 @@ define([
                 units: true,
                 unitPercent: false,
                 occupancy: true,
+                leased: $rootScope.me.settings.showLeases,
                 sqft: true,
                 rent: true,
                 concessions: true,
@@ -68,14 +69,9 @@ define([
             if (w < 500) {
                 $scope.show.sqft = false;
                 $scope.show.occupancy = false;
+                $scope.show.leased = false
                 $scope.show.units = false;
             }
-        }
-
-        $scope.defaultShow();
-
-        if ($cookies.get("cmp.s")) {
-            $scope.show = JSON.parse($cookies.get("cmp.s"));
         }
 
         $scope.reset = function() {
@@ -107,16 +103,11 @@ define([
                 mgmt: true,
                 units: true,
                 occ: true,
+                leased: $rootScope.me.settings.showLeases,
                 traf: true,
                 lease: true
             }
 
-        }
-
-        $scope.defaultShowProfile();
-
-        if ($cookies.get("pr.s")) {
-            $scope.showProfile = JSON.parse($cookies.get("pr.s"));
         }
 
         $scope.resetProfile = function() {
@@ -152,6 +143,18 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 me();
+                $scope.defaultShow();
+
+                if ($cookies.get("cmp.s")) {
+                    $scope.show = JSON.parse($cookies.get("cmp.s"));
+                }
+
+                $scope.defaultShowProfile();
+
+                if ($cookies.get("pr.s")) {
+                    $scope.showProfile = JSON.parse($cookies.get("pr.s"));
+                }
+
                 $propertyService.search({
                     limit: 1000,
                     permission: 'PropertyManage',

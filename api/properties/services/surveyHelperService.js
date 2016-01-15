@@ -42,6 +42,7 @@ module.exports = {
                     var s = {
                         id: survey._id,
                         occupancy: survey.occupancy,
+                        leased: survey.leased,
                         ner: ner,
                         weeklyleases: survey.weeklyleases,
                         weeklytraffic: survey.weeklytraffic
