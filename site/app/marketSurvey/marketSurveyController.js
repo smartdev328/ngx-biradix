@@ -336,7 +336,7 @@ define([
 
                 })
 
-                if (isSuccess && (!$scope.survey.leasedupdated)) {
+                if ($rootScope.me.settings.showLeased && isSuccess && (!$scope.survey.leasedupdated)) {
                     isSuccess = false;
                     error = 'Please update all fields.';
                 }
