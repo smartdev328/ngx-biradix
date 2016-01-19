@@ -86,7 +86,7 @@ define([
                 ).then(function (response) {
                     var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary);
 
-                        window.document.title = resp.property.name + " - Profile + Comps | BI:Radix";
+                    window.document.title = resp.property.name + " - Profile + Comps | BI:Radix";
 
                     $scope.property = resp.property;
                     $scope.comps = resp.comps;
@@ -104,8 +104,14 @@ define([
 
                         $scope.profiles = [];
 
+                    $scope.columns = ['occupancy', 'leases', 'traffic'];
+
+                    if ($rootScope.me.settings.showLeases) {
+                        $scope.columns = ['occupancy', 'leased', 'leases', 'traffic'];
+                    }
+
                     response.data.profiles.forEach(function(p) {
-                        var resp = $propertyService.parseProfile(p,$scope.graphs);
+                        var resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases);
 
                         $scope.profiles.push({
                             lookups : resp.lookups,

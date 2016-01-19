@@ -26,15 +26,19 @@ module.exports = {
         var select = "_id date propertyid";
 
         if (show.occupancy) {
-            select += "  occupancy"
+            select += " occupancy"
+        }
+
+        if (show.leased) {
+            select += " leased"
         }
 
         if (show.leases) {
-            select += "  weeklyleases"
+            select += " weeklyleases"
         }
 
         if (show.traffic) {
-            select += "  weeklytraffic"
+            select += " weeklytraffic"
         }
 
         if (show.ner) {
@@ -82,6 +86,12 @@ module.exports = {
                     points[s.propertyid].occupancy = points[s.propertyid].occupancy || {};
                     points[s.propertyid].occupancy[dateKey] = s.occupancy;
                 }
+
+                if (show.leased && s.leased != null) {
+                    points[s.propertyid].leased = points[s.propertyid].leased || {};
+                    points[s.propertyid].leased[dateKey] = s.leased;
+                }
+
                 if (show.leases) {
                     points[s.propertyid].leases = points[s.propertyid].leases || {};
                     points[s.propertyid].leases[dateKey] = s.weeklyleases;
@@ -121,6 +131,9 @@ module.exports = {
                     if (show.occupancy) {
                         points[prop].occupancy = DataPointsHelperService.normailizePoints(points[prop].occupancy, offset, dr);
                     }
+                    if (show.leased) {
+                        points[prop].leased = DataPointsHelperService.normailizePoints(points[prop].leased, offset, dr);
+                    }
                     if (show.traffic) {
                         points[prop].traffic = DataPointsHelperService.normailizePoints(points[prop].traffic, offset, dr);
                     }
@@ -140,6 +153,9 @@ module.exports = {
                 if (show.occupancy) {
                     points[prop].occupancy = DataPointsHelperService.objectToArray(points[prop].occupancy);
                 }
+                if (show.leased) {
+                    points[prop].leased = DataPointsHelperService.objectToArray(points[prop].leased);
+                }
                 if (show.traffic) {
                     points[prop].traffic = DataPointsHelperService.objectToArray(points[prop].traffic);
                 }
@@ -155,6 +171,9 @@ module.exports = {
 
                 if (show.occupancy) {
                     points[prop].occupancy = DataPointsHelperService.extrapolateMissingPoints(points[prop].occupancy);
+                }
+                if (show.leased) {
+                    points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].leased);
                 }
                 if (show.traffic) {
                     points[prop].traffic = DataPointsHelperService.extrapolateMissingPoints(points[prop].traffic);
@@ -177,7 +196,9 @@ module.exports = {
                 if (show.occupancy) {
                     DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy');
                 }
-
+                if (show.leased) {
+                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased');
+                }
                 if (show.traffic) {
                     DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic');
                 }

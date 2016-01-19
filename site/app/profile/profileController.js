@@ -172,10 +172,16 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs, leased: $rootScope.me.settings.showLeases}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs);
+                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs, $rootScope.me.settings.showLeases);
+
+                    $scope.columns = ['occupancy', 'leases', 'traffic'];
+
+                    if ($rootScope.me.settings.showLeases) {
+                        $scope.columns = ['occupancy', 'leased', 'leases', 'traffic'];
+                    }
 
                     if (!resp) {
                         $location.path('/dashboard')

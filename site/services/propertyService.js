@@ -273,13 +273,19 @@ define(['app'], function (app) {
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
 
-        var extractTableViews = function(surveys, occupancy, pts, nerColumns) {
+        var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases) {
             var table = [];
 
             occupancy.data[0].data.forEach(function(o) {
                 var tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
                 var ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
                 var surveyid = _.find(surveys, function(x,y) {return y == o[0]})
+
+                var leased;
+                if (showLeases) {
+                    leased = _.find(pts['leased'], function(x) {return x.d == o[0]})
+                }
+
 
                 if (!tr.f) {
 
@@ -293,6 +299,10 @@ define(['app'], function (app) {
                         row[k] = n.v
                     })
 
+                    if (leased) {
+                        row.leased = leased.v;
+                    }
+
 
                     table.push(row);
                 }
@@ -303,7 +313,7 @@ define(['app'], function (app) {
             return table;
 
         }
-        fac.parseProfile = function(profile, graphs) {
+        fac.parseProfile = function(profile, graphs, showLeases) {
 
             var resp = {};
             resp.lookups = profile.lookups;
@@ -386,16 +396,28 @@ define(['app'], function (app) {
 
 
             var ner = fac.extractSeries(profile.points, keys,labels,0,1000,0, [resp.property], false);
-            var occ = fac.extractSeries(profile.points, ['occupancy'],['Occupancy %'],80,100,1, [resp.property], false);
+
+            var occ ;
+            if (showLeases) {
+                occ = fac.extractSeries(profile.points, ['occupancy','leased'],['Occupancy %','Leased %'],80,100,1, [resp.property], false);
+                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy % / Leased %', marker: false, data: occ.data, min: (resp.summary ? occ.min : 80), max: (resp.summary ? occ.max : 100)};
+            }
+            else {
+                occ = fac.extractSeries(profile.points, ['occupancy'],['Occupancy %'],80,100,1, [resp.property], false);
+                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : 80), max: (resp.summary ? occ.max : 100)};
+
+            }
+
+
             var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
 
             resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
-            resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : 80), max: (resp.summary ? occ.max : 100)};
+
             resp.otherData = {height:250, printWidth:380, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
 
             if (pts && !graphs) {
                 resp.nerKeys = keys;
-                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys);
+                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases);
             }
 
             return resp;
