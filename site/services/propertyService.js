@@ -400,11 +400,11 @@ define(['app'], function (app) {
             var occ ;
             if (showLeases) {
                 occ = fac.extractSeries(profile.points, ['occupancy','leased'],['Occupancy %','Leased %'],80,100,1, [resp.property], false);
-                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy % / Leased %', marker: false, data: occ.data, min: (resp.summary ? occ.min : 80), max: (resp.summary ? occ.max : 100)};
+                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy % / Leased %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
             }
             else {
                 occ = fac.extractSeries(profile.points, ['occupancy'],['Occupancy %'],80,100,1, [resp.property], false);
-                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : 80), max: (resp.summary ? occ.max : 100)};
+                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
 
             }
 
