@@ -13,7 +13,7 @@ var OrgService = require('../api/organizations/services/organizationService')
 
 
 routes.get('/addorg', function(req, res) {
-    var org = {name: "TDC", subdomain: 'tdc', logoBig: 'tdc.png', logoSmall: 'tdc-small.png'}
+    var org = {name: "Inland Group", subdomain: 'inlandgroup', logoBig: 'inlandgroup.png', logoSmall: 'inlandgroup-small.png'}
 
     OrgService.read(function(err, orgs) {
         if (_.find(orgs, function(x) {return x.subdomain == org.subdomain})) {
@@ -22,6 +22,9 @@ routes.get('/addorg', function(req, res) {
 
         PropertySchema.find({},function(err, props) {
             OrgService.create(org, function (err, newOrg) {
+                if (err) {
+                    return res.status(200).send(err);
+                }
                 org = newOrg;
 
                 var CM = {name: "Corporate Manager", tags: ['CM'], orgid: org._id}
