@@ -22,6 +22,7 @@ module.exports = {
             req.body.show.selectedBedroom = -1;
             req.body.show.ner = true;
             req.body.show.occupancy = true;
+            req.body.show.leased = true;
             req.body.daterange =
             {
                 daterange: req.query.selectedRange,
