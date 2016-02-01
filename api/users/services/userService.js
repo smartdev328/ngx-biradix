@@ -76,10 +76,6 @@ module.exports = {
                 }
             }, function(err, all) {
 
-            if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
-                console.log(all);
-            }
-
             var query = UserSchema.find();
 
             if (criteria._id) {
@@ -124,6 +120,11 @@ module.exports = {
                         }
 
                         var membership = _.find(all.memberships, function(m) { return m.userid.toString() == x._id.toString()})
+
+                        if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
+                            console.log(membership);
+                            console.log(_.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()}));
+                        }
 
                         if (membership) {
                             var role = _.find(all.roles, function(r) {return r._id.toString() == membership.roleid.toString()})
