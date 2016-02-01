@@ -76,6 +76,10 @@ module.exports = {
                 }
             }, function(err, all) {
 
+            if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
+                console.log(all);
+            }
+
             var query = UserSchema.find();
 
             if (criteria._id) {
