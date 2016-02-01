@@ -119,15 +119,21 @@ module.exports = {
                             x.company = 'N/A';
                         }
 
-                        var membership = _.find(all.memberships, function(m) { return m.userid.toString() == x._id.toString()})
+                        var membership = _.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()})
 
-                        if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
-                            console.log(membership);
-                            console.log(_.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()}));
-                        }
+                        //if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
+                        //    console.log(membership);
+                        //    console.log(_.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()}));
+                        //}
 
-                        if (membership) {
-                            var role = _.find(all.roles, function(r) {return r._id.toString() == membership.roleid.toString()})
+                        if (membership && membership.length > 0) {
+
+                            var role = _.find(all.roles, function(r) {
+                                return _.find(membership, function(m) {return r._id.toString() == m.roleid.toString()});
+
+                            })
+                            //console.log("Membership",membership,"Role",role)
+
                             if (role) {
                                 if (!criteria.custom) {
                                     x.role = role.name;
