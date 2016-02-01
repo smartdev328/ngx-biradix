@@ -10,7 +10,19 @@ var AccessService = require('../api/access/services/accessService')
 var PropertySchema = require('../api/properties/schemas/propertySchema')
 var settings = require("../config/settings")
 var OrgService = require('../api/organizations/services/organizationService')
+var userService = require('../api/users/services/userService')
 
+routes.get('/jasmine', function(req, res) {
+    userService.getSystemUser(function(obj) {
+        var SystemUser = obj.user;
+
+
+        userService.search(SystemUser,{_id: "5642c28855d27c0e003bbaf2" }, function(err, users) {
+            res.status(200).json(users);
+        })
+    });
+
+});
 
 routes.get('/addorg', function(req, res) {
     var org = {name: "Inland Group", subdomain: 'inlandgroup', logoBig: 'inlandgroup.png', logoSmall: 'inlandgroup-small.png'}
