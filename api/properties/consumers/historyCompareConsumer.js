@@ -19,8 +19,9 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 var report = [];
 
                 dashboard.comps.forEach(function(c) {
-                    report.push({name: c.name, _id: c._id, sqft: c.survey.sqft, ner: c.survey.ner, rent: c.survey.rent, nersqft: c.survey.nersqft, totUnits: c.survey.totUnits, date: c.survey.date, occupancy: c.survey.occupancy, tier: c.survey.tier});
+                    report.push({name: c.name, _id: c._id, sqft: c.survey.sqft, ner: c.survey.ner, rent: c.survey.rent, nersqft: c.survey.nersqft, totUnits: c.survey.totUnits, date: c.survey.date, occupancy: c.survey.occupancy, leased: c.survey.leased, tier: c.survey.tier});
                 })
+
 
                 callbackp(null, report);
                 report = null;
@@ -44,7 +45,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 var report = [];
 
                 dashboard.comps.forEach(function(c) {
-                    report.push({name: c.name, _id: c._id, sqft: c.survey.sqft, ner: c.survey.ner, rent: c.survey.rent, nersqft: c.survey.nersqft, totUnits: c.survey.totUnits, date: c.survey.date, occupancy: c.survey.occupancy, tier: c.survey.tier});
+                    report.push({name: c.name, _id: c._id, sqft: c.survey.sqft, ner: c.survey.ner, rent: c.survey.rent, nersqft: c.survey.nersqft, totUnits: c.survey.totUnits, date: c.survey.date, occupancy: c.survey.occupancy, leased: c.survey.leased, tier: c.survey.tier});
                 })
 
                 callbackp(null, report);
@@ -67,7 +68,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 var report = [];
 
                 dashboard.comps.forEach(function (c) {
-                    report.push({name: c.name, _id: c._id, sqft: c.survey.sqft, ner: c.survey.ner, rent: c.survey.rent, nersqft: c.survey.nersqft, totUnits: c.survey.totUnits, date: c.survey.date, occupancy: c.survey.occupancy, tier: c.survey.tier});
+                    report.push({name: c.name, _id: c._id, sqft: c.survey.sqft, ner: c.survey.ner, rent: c.survey.rent, nersqft: c.survey.nersqft, totUnits: c.survey.totUnits, date: c.survey.date, occupancy: c.survey.occupancy, leased: c.survey.leased, tier: c.survey.tier});
                 })
 
                 callbackp(null, report);
@@ -83,6 +84,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
         report.forEach(function(p,i) {
             //if (i > 0) {
+
+            if (typeof p.leased === 'undefined') {
+                p.leased = "";
+            }
+
             if (p.totUnits) {
                 totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
                 totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits);
@@ -90,6 +96,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 totalrow.rent = (totalrow.rent || 0) + (p.rent * p.totUnits);
                 totalrow.ner = (totalrow.ner || 0) + (p.ner * p.totUnits);
                 totalrow.nersqft = (totalrow.nersqft || 0) + (p.nersqft * p.totUnits);
+
+                if (p.leased !== '') {
+                    totalrow.leased = (totalrow.leased || 0) + (p.leased * p.totUnits);
+                    totalrow.leasedUnits = (totalrow.leasedUnits || 0) + p.totUnits;
+                }
 
                 //}
 
@@ -121,6 +132,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
         })
 
+        if (totalrow.leasedUnits && totalrow.leasedUnits > 0) {
+            totalrow.leased = Math.round(totalrow.leased / totalrow.leasedUnits * 10) / 10;
+        } else {
+            totalrow.leased = "";
+        }
 
         if (totalrow.totUnits && totalrow.totUnits > 0) {
 

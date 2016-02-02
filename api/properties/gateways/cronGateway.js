@@ -13,7 +13,7 @@ Routes.get('/notifications', function (req, res) {
             userService.getFullUser(user, function(full) {
                 full.operator.settings.notifications.last = new Date();
                 userService.updateSettings(full.operator, full.operator.settings, {ip: '127.0.0.1', user_agent: 'server'}, function () {
-                    queueService.sendNotification(full.operator, full.operator.settings.notifications.props, function() {})
+                    queueService.sendNotification(full.operator, {properties: full.operator.settings.notifications.props, showLeases: full.operator.settings.showLeases}, function() {})
                     callbackp()
                 });
             })

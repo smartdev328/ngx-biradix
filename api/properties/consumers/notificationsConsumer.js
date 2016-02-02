@@ -91,7 +91,8 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                             first: data.user.first,
                             data: final,
                             unsub: unsub,
-                            when: when
+                            when: when,
+                            showLeases: data.showLeases
                         }
 
                     }

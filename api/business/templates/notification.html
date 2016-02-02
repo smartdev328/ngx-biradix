@@ -12,6 +12,11 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         <th style="border-bottom:2px solid #ddd;">
             Occupancy
         </th>
+        {% if showLeases %}
+        <th style="border-bottom:2px solid #ddd;">
+            Leased
+        </th>
+        {% endif %}
         <th style="border-bottom:2px solid #ddd;">
             Units
         </th>
@@ -51,6 +56,15 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.occupancy}}%
         </Td>
+        {% if showLeases %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {% if row.leased != "" %}
+            {{row.leased}}%
+            {% else %}
+            -
+            {% endif %}
+        </Td>
+        {% endif %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.totUnits | formatNumber : 0}}
         </Td>

@@ -3,9 +3,10 @@ define(['app'], function (app) {
     app.factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
-        fac.notifications_test = function (properties) {
+        fac.notifications_test = function (properties,showLeases) {
             return $http.post('/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
                 properties:properties,
+                showLeases: showLeases
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;

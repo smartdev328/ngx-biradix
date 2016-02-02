@@ -119,6 +119,7 @@ module.exports = {
                             x.company = 'N/A';
                         }
 
+                        //Get ALl memberships for this user.
                         var membership = _.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()})
 
                         //if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
@@ -128,6 +129,7 @@ module.exports = {
 
                         if (membership && membership.length > 0) {
 
+                            //Get the first role that matches any memberships.
                             var role = _.find(all.roles, function(r) {
                                 return _.find(membership, function(m) {return r._id.toString() == m.roleid.toString()});
 
