@@ -266,6 +266,8 @@ define(['app'], function (app) {
                 max = defaultMax;
             }
 
+            console.log(series);
+
             return {data: series, min: min, max: max};
         }
 
