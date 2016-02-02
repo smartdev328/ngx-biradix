@@ -233,6 +233,8 @@ define(['app'], function (app) {
 
                         s.data.push([point.d, v])
                     });
+
+                    s.data = _.sortBy(s.data, function(o) { return o[0]; });
                 }
 
                 series.push(s)
@@ -266,7 +268,6 @@ define(['app'], function (app) {
                 max = defaultMax;
             }
 
-            console.log(series);
 
             return {data: series, min: min, max: max};
         }
