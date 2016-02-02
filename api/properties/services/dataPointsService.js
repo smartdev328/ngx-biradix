@@ -8,7 +8,6 @@ var SurveySchema= require('../schemas/surveySchema')
 
 module.exports = {
     getPoints: function(hide,subject,comps,summary,bedrooms,daterange,offset,show,callback) {
-
         var propertyids = _.pluck(comps,"_id");
         if (!propertyids || propertyids.length == 0) {
             return callback({});
@@ -127,11 +126,13 @@ module.exports = {
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
             for (var prop in points) {
 
+
+
                 if (show.graphs === true) {
                     if (show.occupancy) {
                         points[prop].occupancy = DataPointsHelperService.normailizePoints(points[prop].occupancy, offset, dr);
                     }
-                    if (show.leased) {
+                    if (show.leased && points[prop].leased) {
                         points[prop].leased = DataPointsHelperService.normailizePoints(points[prop].leased, offset, dr);
                     }
                     if (show.traffic) {
@@ -149,6 +150,7 @@ module.exports = {
                         })
                     }
                 }
+
 
                 if (show.occupancy) {
                     points[prop].occupancy = DataPointsHelperService.objectToArray(points[prop].occupancy);

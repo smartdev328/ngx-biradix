@@ -17,7 +17,7 @@ module.exports = {
             req.body.show.selectedBedroom = -1;
             req.body.show.ner = true;
             req.body.show.occupancy = true;
-            req.body.show.leased = req.user.settings.showLeases;
+            req.body.show.leased = true;
 
             queueService.getDashboard(req, function(err,dashboard) {
                 if (err) {

@@ -234,10 +234,10 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                         }
-                    ,{ner: true, occupancy: true, graphs: true}
+                    ,{ner: true, occupancy: true, leased: true, graphs: true}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseDashboard(response.data,$scope.summary);
+                    var resp = $propertyService.parseDashboard(response.data,$scope.summary, $rootScope.me.settings.showLeases);
 
                     if (!trendsOnly) {
                         $scope.property = resp.property;
@@ -253,6 +253,7 @@ define([
                     $scope.points = resp.points;
                     $scope.nerData = resp.nerData;
                     $scope.occData = resp.occData;
+                    $scope.leasedData = resp.leasedData;
 
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;

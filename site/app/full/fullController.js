@@ -84,7 +84,7 @@ define([
                         }
                     ,{graphs: $scope.graphs }
                 ).then(function (response) {
-                    var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary);
+                    var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary, $rootScope.me.settings.showLeases);
 
                     window.document.title = resp.property.name + " - Profile + Comps | BI:Radix";
 
@@ -98,6 +98,7 @@ define([
                     $scope.points = resp.points;
                     $scope.nerData = resp.nerData;
                     $scope.occData = resp.occData;
+                    $scope.leasedData = resp.leasedData;
 
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
