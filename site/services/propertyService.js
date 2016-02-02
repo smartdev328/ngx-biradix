@@ -506,8 +506,13 @@ define(['app'], function (app) {
             var leased = fac.extractSeries(dashboard.points, ['leased'],[],80,100,1, resp.comps, summary);
 
             resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
-            resp.occData = {height:300, printWidth:800, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
-            resp.leasedData = {height:300, printWidth:800, prefix:'',suffix:'%',title: 'Leased %', marker: false, data: leased.data, min: (summary ? leased.min : 80), max: (summary ? leased.max : 100)};
+
+            var printWidth = 800;
+            if (showLeases) {
+                printWidth = 380;
+            }
+            resp.occData = {height:300, printWidth:printWidth, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
+            resp.leasedData = {height:300, printWidth:printWidth, prefix:'',suffix:'%',title: 'Leased %', marker: false, data: leased.data, min: (summary ? leased.min : 80), max: (summary ? leased.max : 100)};
 
             return resp;
         }
