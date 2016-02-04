@@ -32,10 +32,6 @@ module.exports = {
                 })
             },
             modify: function(callbackp) {
-
-                if (subjectId == compId) {
-                    return callbackp(null,true);
-                }
                 if (!checkManaged) {
                     return callbackp(null,false);
                 }
