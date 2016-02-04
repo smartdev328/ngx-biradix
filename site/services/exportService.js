@@ -9,6 +9,7 @@ define([
             var url = '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token')
             url += "&Graphs=" + graphs
+            url += "&Summary=" + $cookies.get('Summary') || "true"
             url += "&selectedStartDate=" + daterange.selectedStartDate.format()
             url += "&selectedEndDate=" + daterange.selectedEndDate.format()
             url += "&selectedRange=" + daterange.selectedRange

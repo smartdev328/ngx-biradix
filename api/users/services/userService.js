@@ -460,6 +460,15 @@ module.exports = {
                 }
             }
 
+            var leasesDescription = "";
+            if (usr.settings.showLeases == true && settings.showLeases == false) {
+                leasesDescription = "On => Off";
+            }
+            else
+            if (usr.settings.showLeases == false && settings.showLeases == true) {
+                leasesDescription = "Off => On";
+            }
+
             usr.settings = settings
             usr.markModified("settings.notifications");
 
@@ -476,6 +485,10 @@ module.exports = {
 
                 if (notsDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_notifications', description: notsDescription, context: context, data: nots})
+                }
+
+                if (leasesDescription) {
+                    AuditService.create({operator: usr, user: usr, type: 'user_leased', description: leasesDescription, context: context})
                 }
                 callback(null,usr.settings);
 

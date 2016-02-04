@@ -141,6 +141,7 @@ module.exports = {
                     url : req.basePath,
                     hostname : req.hostname,
                     Graphs : req.query.Graphs,
+                    Summary : req.query.Summary,
                     selectedStartDate : req.query.selectedStartDate,
                     selectedEndDate : req.query.selectedEndDate,
                     selectedRange : req.query.selectedRange,
