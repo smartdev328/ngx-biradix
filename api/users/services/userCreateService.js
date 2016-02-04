@@ -108,7 +108,12 @@ module.exports = {
                 };
 
                 //get roleid from users
-                var membership = _.find(all.memberships, function(m) { return m.userid.toString() == user._id.toString()})
+                //make sure the role is the main role
+                var membership = _.find(all.memberships, function(m) {
+                    return m.userid.toString() == user._id.toString() &&
+                    _.find(all.roles, function(r) {
+                        return r._id.toString() == m.roleid.toString()})
+                })
 
                 var bRoleChanged = membership.roleid.toString() != user.roleid.toString();
 
