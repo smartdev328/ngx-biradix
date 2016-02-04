@@ -33,10 +33,13 @@ module.exports = {
             },
             modify: function(callbackp) {
 
+                if (subjectId == compId) {
+                    return callbackp(null,true);
+                }
                 if (!checkManaged) {
                     return callbackp(null,false);
                 }
-                PropertyService.search(user, {limit: 1, permission: ['CompManage'], _id: compId
+                PropertyService.search(user, {limit: 1, permission: ['CompManage','PropertyManage'], _id: compId
                     , select: "_id"
                 }, function(err, property) {
                     callbackp(err, property.length == 1)
