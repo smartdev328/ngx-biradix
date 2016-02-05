@@ -90,16 +90,18 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             }
 
             if (p.totUnits) {
+                totalrow.count = (totalrow.count || 0) + 1;
                 totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
-                totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits);
+                totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * 1); // not weighted
                 totalrow.sqft = (totalrow.sqft || 0) + (p.sqft * p.totUnits);
                 totalrow.rent = (totalrow.rent || 0) + (p.rent * p.totUnits);
                 totalrow.ner = (totalrow.ner || 0) + (p.ner * p.totUnits);
                 totalrow.nersqft = (totalrow.nersqft || 0) + (p.nersqft * p.totUnits);
 
                 if (p.leased !== '') {
-                    totalrow.leased = (totalrow.leased || 0) + (p.leased * p.totUnits);
-                    totalrow.leasedUnits = (totalrow.leasedUnits || 0) + p.totUnits;
+                    // not weighted
+                    totalrow.leased = (totalrow.leased || 0) + (p.leased * 1);
+                    totalrow.leasedUnits = (totalrow.leasedUnits || 0) + 1;
                 }
 
                 //}
@@ -140,7 +142,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
         if (totalrow.totUnits && totalrow.totUnits > 0) {
 
-            totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.totUnits * 10) / 10;
+            totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.count * 10) / 10; // not weighted
             totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
             totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
             totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
