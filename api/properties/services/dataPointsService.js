@@ -22,7 +22,7 @@ module.exports = {
             query = query.where("date").gte(dr.start).lte(dr.end);
         }
 
-        var select = "_id date propertyid";
+        var select = "_id date propertyid floorplans.units";
 
         if (show.occupancy) {
             select += " occupancy"
@@ -41,7 +41,7 @@ module.exports = {
         }
 
         if (show.ner) {
-            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.bedrooms floorplans.bathrooms floorplans.units"
+            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.bedrooms floorplans.bathrooms"
         }
 
         query = query.select(select)
@@ -105,7 +105,7 @@ module.exports = {
                     points[s.propertyid].ner = points[s.propertyid].ner || {};
 
                     var nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps);
-                    points[s.propertyid].ner[dateKey] = nerPoint.value;
+                    points[s.propertyid].ner[dateKey] = nerPoint;
 
                     if (nerPoint.excluded) {
                         excluded = true;
@@ -116,7 +116,7 @@ module.exports = {
                         points[s.propertyid][b][dateKey] = points[s.propertyid][b][dateKey] || {};
 
                         nerPoint = DataPointsHelperService.getNerPoint(s, b, hide, subject, comps);
-                        points[s.propertyid][b][dateKey] = nerPoint.value;
+                        points[s.propertyid][b][dateKey] = nerPoint;
                     })
 
                 }
@@ -125,8 +125,6 @@ module.exports = {
 
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
             for (var prop in points) {
-
-
 
                 if (show.graphs === true) {
                     if (show.occupancy) {
@@ -143,10 +141,10 @@ module.exports = {
                     }
 
                     if (show.ner) {
-                        points[prop].ner = DataPointsHelperService.normailizePoints(points[prop].ner, offset, dr);
+                        points[prop].ner = DataPointsHelperService.normailizePoints(points[prop].ner, offset, dr, true);
 
                         bedroomBeakdown.forEach(function (b) {
-                            points[prop][b] = DataPointsHelperService.normailizePoints(points[prop][b], offset, dr);
+                            points[prop][b] = DataPointsHelperService.normailizePoints(points[prop][b], offset, dr, true);
                         })
                     }
                 }
@@ -166,6 +164,7 @@ module.exports = {
                 }
                 if (show.ner) {
                     points[prop].ner = DataPointsHelperService.objectToArray(points[prop].ner);
+
                     bedroomBeakdown.forEach(function(b) {
                         points[prop][b] = DataPointsHelperService.objectToArray(points[prop][b]);
                     })
@@ -185,9 +184,10 @@ module.exports = {
                 }
 
                 if (show.ner) {
-                    points[prop].ner = DataPointsHelperService.extrapolateMissingPoints(points[prop].ner);
+                    points[prop].ner = DataPointsHelperService.extrapolateMissingPoints(points[prop].ner, true);
+
                     bedroomBeakdown.forEach(function(b) {
-                        points[prop][b] = DataPointsHelperService.extrapolateMissingPoints(points[prop][b]);
+                        points[prop][b] = DataPointsHelperService.extrapolateMissingPoints(points[prop][b], true);
                     })
                 }
 
@@ -210,10 +210,21 @@ module.exports = {
                 }
 
                 if (show.ner) {
-                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner');
+                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner', true);
                 }
 
                 points = newpoints;
+            }
+
+            //Remove unit counts when not averaging points
+            if (show.ner) {
+                for (var prop in points) {
+                    points[prop].ner.forEach(function(p) {
+                        if (p.v && p.v.totalUnits) {
+                            p.v = p.v.value;
+                        }
+                    });
+                }
             }
 
             points.excluded = excluded;

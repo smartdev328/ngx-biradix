@@ -65,9 +65,9 @@ module.exports = {
         })
 
 
-        return {value: ret, excluded: excluded};
+        return {value: ret, excluded: excluded, totalUnits: tot};
     },
-    normailizePoints: function (points, offset, dr) {
+    normailizePoints: function (points, offset, dr, weighted) {
         if (points == {}) {
             return {}
         }
@@ -93,8 +93,15 @@ module.exports = {
             }
 
             if (rangePoints.length > 0) {
-                //console.log(rangePoints)
-                ret[monday] = _.sum(rangePoints) / rangePoints.length;
+
+                if (weighted) {
+                    var totalUnits = _.sum(rangePoints, function(x) {return x.totalUnits});
+                    //weighte average value and totalUnits
+                    ret[monday] = {value: _.sum(rangePoints, function(x) {return x.value * x.totalUnits}) / totalUnits, totalUnits: totalUnits / rangePoints.length};
+                }
+                else {
+                    ret[monday] = _.sum(rangePoints) / rangePoints.length;
+                }
 
                 if (first == null) {
                     first = ret[monday];
@@ -112,7 +119,7 @@ module.exports = {
 
         return ret;
     },
-    extrapolateMissingPoints: function (pts) {
+    extrapolateMissingPoints: function (pts, weighted) {
 
         var Count = pts.length;
 
@@ -128,13 +135,25 @@ module.exports = {
         while (i < Count) {
             Current = pts[i];
             if (Last != null && Current.d - Last.d > WEEK) {
-                Delta = (Current.v - Last.v) / (Current.d - Last.d) * WEEK;
-                Current =
-                {
-                    d: Last.d + WEEK,
-                    v: Last.v + Delta,
-                    f: true
-                };
+
+                if (weighted) {
+                    Delta = (Current.v.value - Last.v.value) / (Current.d - Last.d) * WEEK;
+                    Current =
+                    {
+                        d: Last.d + WEEK,
+                        v: {value: Last.v.value + Delta, totalUnits: Last.v.totalUnits},
+                        f: true
+                    };
+                } else {
+                    Delta = (Current.v - Last.v) / (Current.d - Last.d) * WEEK;
+                    Current =
+                    {
+                        d: Last.d + WEEK,
+                        v: Last.v + Delta,
+                        f: true
+                    };
+                }
+
 
                 pts.splice(i, 0, Current);
 
@@ -161,7 +180,7 @@ module.exports = {
 
         return ar;
     },
-    getSummary: function(points, subjectid, newpoints, dimension) {
+    getSummary: function(points, subjectid, newpoints, dimension, weighted) {
         newpoints['averages'][dimension] = [];
         for (var prop in points) {
             if (prop == subjectid) {
@@ -172,11 +191,23 @@ module.exports = {
         }
 
         var g = _.chain(newpoints['averages'][dimension]).groupBy("d").map(function (v, k) {
+            var total = v.length;
+            if (weighted) {
+                total = _.sum(v, function (x) {
+                    return x.v.totalUnits
+                })
+            }
+
             return {
                 d: parseInt(k),
                 v: _.sum(v, function (x) {
-                    return x.v
-                }) / v.length
+                    if (weighted) {
+                        return x.v.value * x.v.totalUnits
+                    } else {
+                        return x.v
+                    }
+
+                }) / total
             }
         }).value();
 
