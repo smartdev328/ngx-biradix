@@ -224,6 +224,14 @@ module.exports = {
                             p.v = p.v.value;
                         }
                     });
+
+                    bedroomBeakdown.forEach(function(b) {
+                        points[prop][b].forEach(function(p) {
+                            if (p.v && p.v.totalUnits) {
+                                p.v = p.v.value;
+                            }
+                        });
+                    })
                 }
             }
 
