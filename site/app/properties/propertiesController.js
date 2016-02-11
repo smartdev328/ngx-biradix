@@ -538,7 +538,7 @@ define([
                 });
 
                 modalInstance.result.then(function () {
-                    toastr.error("Users updated successfully");
+                    toastr.success("Users updated successfully");
                 }, function (from) {
                     //Cancel
                 });

@@ -214,11 +214,13 @@ module.exports = {
         }
     },
     resetPassword: function(email,base,context,callback) {
+        var modelErrors = [];
         email = email || '';
 
         if (email === '')
         {
-            return callback(false);
+            modelErrors.push({param: 'email', msg : 'Missing email address.'});
+            return callback(modelErrors,false);
         }
 
         var emailLower = email.toLowerCase();
@@ -227,9 +229,16 @@ module.exports = {
                 emailLower: emailLower
             }, function(err, usr) {
                 if (!usr) {
-                    AuditService.create({type: 'reset_password', description: 'Failed: ' + email, context: context})
-                    return callback(false);
+                    modelErrors.push({param: 'email', msg : 'Unable to locate account with that email address.'});
+                    AuditService.create({type: 'reset_password', description: 'Failed: ' + email + ' (' + modelErrors[0].msg + ')', context: context})
+                    return callback(modelErrors,false);
                 }
+
+            if (!usr.active) {
+                modelErrors.push({param: 'email', msg : 'This account is currently marked as inactive. Please contact your company BI:Radix admin or support@biradix.com if this is incorrect.'});
+                AuditService.create({type: 'reset_password', description: 'Failed: ' + email + ' (' + modelErrors[0].msg + ')', context: context})
+                return callback(modelErrors,false);
+            }
 
                 var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresIn: 30 * 60 });
 
@@ -249,7 +258,7 @@ module.exports = {
                         usr = null;
                         email = null;
                         resp = null;
-                        return callback(true);
+                        return callback(null,true);
                     })
                 })
 
@@ -293,7 +302,14 @@ module.exports = {
             }
 
             if (!usr) {
-                modelErrors.push({msg: 'Unable to validate email address / password.'});
+                modelErrors.push({msg: 'Your email address / password appear to be incorrect. Please verify them and try logging in again.'});
+                AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
+                error(modelErrors);
+                return;
+            }
+
+            if (!usr.active) {
+                modelErrors.push({msg: 'This account is currently marked as inactive. Please contact your company BI:Radix admin or support@biradix.com if this is incorrect.'});
                 AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
                 error(modelErrors);
                 return;
@@ -303,7 +319,7 @@ module.exports = {
                 if (usr.legacyHash && usr.legacyHash == md5(user.password)) {
                     //dont error on if legacy hash exists and matches password
                 } else {
-                    modelErrors.push({msg: 'Unable to validate email address / password.'});
+                    modelErrors.push({msg: 'Your email address / password appear to be incorrect. Please verify them and try logging in again.'});
                     AuditService.create({
                         type: 'login_failed',
                         description: user.email + ' (' + modelErrors[0].msg + ')',
@@ -312,13 +328,6 @@ module.exports = {
                     error(modelErrors);
                     return;
                 }
-            }
-
-            if (!usr.active) {
-                modelErrors.push({msg: 'Your account has been deactivated.'});
-                AuditService.create({type: 'login_failed', description: user.email + ' (' + modelErrors[0].msg + ')', context: context})
-                error(modelErrors);
-                return;
             }
 
             AuditService.create({type: 'login_succeeded', operator: usr, user: usr, description: usr.email, context: context})

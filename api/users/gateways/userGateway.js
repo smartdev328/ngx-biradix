@@ -25,8 +25,8 @@ userRoutes.post('/bounce', function (req, res) {
 
 userRoutes.post('/resetPassword', function (req, res) {
 
-    UserService.resetPassword(req.body.email, req.basePath, req.context, function(success) {
-            res.status(200).json({ success: success });
+    UserService.resetPassword(req.body.email, req.basePath, req.context, function(errors, success) {
+            res.status(200).json({ errors: errors, success: success });
         }
     );
 

@@ -17,7 +17,7 @@ define([
             $authService.recoverPassword($scope.email).then(function (resp) {
                     $scope.localLoading = false;
                     if (!resp.data.success) {
-                        toastr.error("Unable to locate account with that email address.");
+                        toastr.error(resp.data.errors[0].msg);
                     }
                     else {
                         $location.path('/password/sent')

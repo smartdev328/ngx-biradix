@@ -164,6 +164,7 @@ define([
             $scope.password = {};
 
             $scope.submitPassword = function (user) {
+
                 if (user.newpassword != user.confirmpassword) {
                     toastr.error('Passwords do not match.');
                     return;
@@ -182,6 +183,10 @@ define([
                     }
                     else {
                         toastr.success('Password updated successfully.');
+                        user.newpassword = "";
+                        user.confirmpassword = "";
+                        user.currentpassword = "";
+                        $scope.myFormPassword.$setPristine();
                     }
 
                 }, function (err) {

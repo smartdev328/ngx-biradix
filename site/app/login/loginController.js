@@ -26,7 +26,7 @@ define([
 
             $authService.login($scope.email, $scope.password).then(function (authinfo) {
                     if (authinfo.data.token == null) {
-                        toastr.error('Your email address / password appear to be incorrect. Please verify them and try logging in again.');
+                        toastr.error(authinfo.data[0].msg);
                         $scope.localLoading = false;
                     }
                     else {

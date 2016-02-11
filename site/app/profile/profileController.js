@@ -225,7 +225,7 @@ define([
                     }
 
                     if (!$scope.comp.survey || !$scope.comp.survey.date) {
-                        toastr.error('Property has NEVER been updated.');
+                        toastr.error('No market surveys have been done for this property.');
                     }
 
 
