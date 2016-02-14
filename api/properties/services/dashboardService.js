@@ -191,6 +191,10 @@ module.exports = {
                                     return n.name;
                                 })
 
+                                all.comps.forEach(function(comp) {
+                                    comp.survey.floorplans = _.sortByAll(comp.survey.floorplans, ['bedrooms', 'bathrooms', 'sqft', 'description'])
+                                });
+
                                 callback (null,{property: property[0], comps: all.comps, points: all.points});
 
                                 for (var s in all) {

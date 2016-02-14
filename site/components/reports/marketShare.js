@@ -18,6 +18,8 @@ define([
                 $scope.reload = function() {
                     $scope.rankings = {}
                     var last = "";
+                    var lbedrooms = "";
+                    var lbathrooms = "";
                     $scope.report.forEach(function (fp) {
 
                         $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms] = $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms] || {};
@@ -33,24 +35,24 @@ define([
                             $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].units = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].units || 0) + fp.units;
                             $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].count = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].share[fp.id].count || 0) + 1;
                             var f = {
-                                fid: fp.fid,
+                                fid: fp.fid.toString(),
                                 description: fp.description,
                                 units: fp.units,
                                 sqft: fp.sqft,
                                 ner: fp.ner,
                                 nersqft: fp.nersqft,
-                                first: fp.id != last,
-                                id: fp.id
+                                first: fp.id.toString() != last.toString() || fp.bedrooms.toString() != lbedrooms.toString() || fp.bathrooms.toString() != lbathrooms.toString() ,
+                                id: fp.id.toString()
                             };
 
 
 
-                            if ($scope.subject._id == fp.id) {
+                            if ($scope.subject._id.toString() == fp.id.toString()) {
                                 f.name = $scope.subject.name;
                                 f.subject = true;
                             } else {
                                 f.name = _.find($scope.comps, function (x) {
-                                    return x.id == fp.id
+                                    return x.id.toString() == fp.id.toString()
                                 }).name;
                             }
 
@@ -65,7 +67,9 @@ define([
                             $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalner = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalner || 0) + fp.units * fp.ner;
 
 
-                            last = fp.id;
+                            last = fp.id.toString();
+                            lbedrooms = fp.bedrooms;
+                            lbathrooms = fp.bathrooms;
                         }
                     })
 
