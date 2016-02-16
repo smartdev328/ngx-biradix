@@ -124,6 +124,10 @@ define([
                         p.occupancy = -1;
                         p.ner = -1;
                     }
+
+                    if ($scope.data.length < 6) {
+                        $scope.toggleOpen(p);
+                    }
                 })
                 $scope.localLoading = true;
 
