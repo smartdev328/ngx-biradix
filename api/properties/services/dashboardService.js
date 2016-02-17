@@ -191,6 +191,18 @@ module.exports = {
                                     return n.name;
                                 })
 
+                                //Remove all points for lifetime older then subject property
+                                if (options.daterange.daterange == "Lifetime") {
+                                    var minDate = all.points[id].ner[0].d;
+                                    for (var g in all.points) {
+                                        if (g != id && typeof all.points[g] === 'object') {
+                                            for (var l in all.points[g]) {
+                                                _.remove(all.points[g][l], function(x) {return x.d < minDate});
+                                            }
+                                        }
+                                    }
+                                }
+
                                 all.comps.forEach(function(comp) {
                                     comp.survey.floorplans = _.sortByAll(comp.survey.floorplans, ['bedrooms', 'bathrooms', 'sqft', 'description'])
                                 });
