@@ -142,6 +142,7 @@ module.exports = {
                     hostname : req.hostname,
                     Graphs : req.query.Graphs,
                     Summary : req.query.Summary,
+                    Scale : req.query.Scale,
                     selectedStartDate : req.query.selectedStartDate,
                     selectedEndDate : req.query.selectedEndDate,
                     selectedRange : req.query.selectedRange,

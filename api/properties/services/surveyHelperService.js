@@ -175,9 +175,10 @@ var  getSurveyStats = function(floorplans, survey, links, hide) {
         survey.concessions = _.sum(fps, function (fp) {
                 return (fp.concessions) * fp.units
             }) / totUnits;
-        survey.ner = Math.round(survey.rent - (survey.concessions / 12))
+        survey.ner = survey.rent - (survey.concessions / 12)
         survey.nersqft = Math.round(survey.ner / survey.sqft * 100) / 100
         survey.mersqft = Math.round(survey.rent / survey.sqft * 100) / 100
+        survey.ner = Math.round(survey.ner);
         survey.rent = Math.round(survey.rent);
         survey.concessions = Math.round(survey.concessions);
     }

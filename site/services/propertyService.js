@@ -317,7 +317,7 @@ define(['app'], function (app) {
             return table;
 
         }
-        fac.parseProfile = function(profile, graphs, showLeases) {
+        fac.parseProfile = function(profile, graphs, showLeases, scale) {
 
             var resp = {};
             resp.lookups = profile.lookups;
@@ -399,7 +399,15 @@ define(['app'], function (app) {
             }
 
 
-            var ner = fac.extractSeries(profile.points, keys,labels,0,1000,0, [resp.property], false);
+            var scaleDecimals = 0;
+            var scaleText = "Net Eff. Rent $";
+
+            if (scale == "nersqft") {
+                scaleDecimals = 2;
+                scaleText = "Net Eff. Rent / Sqft $";
+            }
+
+            var ner = fac.extractSeries(profile.points, keys,labels,0,1000,scaleDecimals, [resp.property], false);
 
             var occ ;
             if (showLeases) {
@@ -419,7 +427,7 @@ define(['app'], function (app) {
 
             var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
 
-            resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
+            resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
 
             resp.otherData = {height:250, printWidth:380, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
 
@@ -433,7 +441,7 @@ define(['app'], function (app) {
 
 
 
-        fac.parseDashboard = function(dashboard, summary, showLeases) {
+        fac.parseDashboard = function(dashboard, summary, showLeases, scale) {
 
             var resp = {};
 
@@ -503,12 +511,20 @@ define(['app'], function (app) {
                 resp.bedroom = resp.bedrooms[0];
             }
 
+            var scaleDecimals = 0;
+            var scaleText = "Net Eff. Rent $";
+
+            if (scale == "nersqft") {
+                scaleDecimals = 2;
+                scaleText = "Net Eff. Rent / Sqft $";
+            }
+
             resp.points = {excluded: dashboard.points.excluded};
-            var ner = fac.extractSeries(dashboard.points, ['ner'],[],0,1000,0, resp.comps, summary);
+            var ner = fac.extractSeries(dashboard.points, ['ner'],[],0,1000,scaleDecimals, resp.comps, summary);
             var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],80,100,1, resp.comps, summary);
             var leased = fac.extractSeries(dashboard.points, ['leased'],[],80,100,1, resp.comps, summary);
 
-            resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: 'Net Eff. Rent $', marker: true, data: ner.data, min: ner.min, max: ner.max};
+            resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
 
             var printWidth = 800;
             if (showLeases) {

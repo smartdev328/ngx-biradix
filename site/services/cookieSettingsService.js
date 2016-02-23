@@ -33,6 +33,21 @@ define(['app'], function (app) {
             $cookies.put('Graphs', graphs, {expires : expireDate})
         }
 
+        fac.getNerScale = function () {
+            try {
+                return $cookies.get('Scale') || "ner"
+            } catch(ex) {
+                return "ner";
+            }
+        }
+
+        fac.saveNerScale = function(graphs) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('Scale', graphs, {expires : expireDate})
+        }
+
+
         fac.getDaterange = function () {
             return {
                 Ranges : {

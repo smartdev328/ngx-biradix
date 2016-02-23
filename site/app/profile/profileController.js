@@ -149,6 +149,14 @@ define([
         }, true);
 
 
+        $scope.nerScale = $cookieSettingsService.getNerScale();
+
+        $scope.$watch('nerScale', function(d) {
+            if (!$scope.localLoading) return;
+            $cookieSettingsService.saveNerScale($scope.nerScale)
+            $scope.refreshGraphs();
+        }, true);
+
         $scope.propertyId = $stateParams.id;
 
         $scope.refreshGraphs = function() {
@@ -172,10 +180,10 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs, leased: $rootScope.me.settings.showLeases}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs, leased: $rootScope.me.settings.showLeases, scale: $scope.nerScale}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs, $rootScope.me.settings.showLeases);
+                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs, $rootScope.me.settings.showLeases, $scope.nerScale);
 
                     $scope.columns = ['occupancy', 'leases', 'traffic'];
 

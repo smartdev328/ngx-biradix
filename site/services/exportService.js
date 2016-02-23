@@ -10,6 +10,7 @@ define([
             url += "token=" + $cookies.get('token')
             url += "&Graphs=" + graphs
             url += "&Summary=" + $cookies.get('Summary') || "true"
+            url += "&Scale=" + $cookies.get('Scale') || "ner"
             url += "&selectedStartDate=" + daterange.selectedStartDate.format()
             url += "&selectedEndDate=" + daterange.selectedEndDate.format()
             url += "&selectedRange=" + daterange.selectedRange

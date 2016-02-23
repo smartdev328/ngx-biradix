@@ -38,6 +38,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 pdfService.getCookie(data.hostname,"token", full.token),
                 pdfService.getCookie(data.hostname,"Graphs", data.Graphs),
                 pdfService.getCookie(data.hostname,"Summary", data.Summary),
+                pdfService.getCookie(data.hostname,"Scale", data.Scale),
                 pdfService.getCookie(data.hostname,"selectedStartDate", data.selectedStartDate),
                 pdfService.getCookie(data.hostname,"selectedEndDate", data.selectedEndDate),
                 pdfService.getCookie(data.hostname,"selectedRange", data.selectedRange),

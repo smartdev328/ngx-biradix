@@ -116,7 +116,7 @@
                 <span class="pull-left">Trends</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
-                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:210px;margin-top:5px">
+                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px;margin-top:5px">
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
                             <Tr>
                                 <td>
@@ -139,6 +139,18 @@
                                        popover-placement="top"
                                        popover="This option gives you the ability to show excluded floor plans."
                                             ></i>
+                                </Td>
+
+                            </Tr>
+                            <Tr>
+                                <td style="text-align: center">
+                                    <select style="width:77px;font-weight: normal;font-size: 9pt;padding: 1px;" ng-model="nerScale">
+                                        <option value="ner" ng-selected="nerScale=='ner'">NER</option>
+                                        <option value="nersqft" ng-selected="nerScale=='nersqft'">NER/Sqft</option>
+                                    </select>&nbsp;
+                                </td>
+                                <Td>
+                                    &nbsp;Measurement Scale
                                 </Td>
 
                             </Tr>

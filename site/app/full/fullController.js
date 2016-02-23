@@ -28,6 +28,8 @@ define([
 
         $scope.graphs = $cookieSettingsService.getGraphs();
 
+        $scope.nerScale = $cookieSettingsService.getNerScale();
+
         $scope.orderByFp = "sqft";
 
         if ($cookies.get("fp.o")) {
@@ -82,9 +84,9 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                         }
-                    ,{graphs: $scope.graphs }
+                    ,{graphs: $scope.graphs, scale: $scope.nerScale }
                 ).then(function (response) {
-                    var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary, $rootScope.me.settings.showLeases);
+                    var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary, $rootScope.me.settings.showLeases, $scope.nerScale);
 
                     window.document.title = resp.property.name + " - Profile + Comps | BI:Radix";
 
@@ -112,7 +114,7 @@ define([
                     }
 
                     response.data.profiles.forEach(function(p) {
-                        var resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases);
+                        var resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases, $scope.nerScale);
 
                         $scope.profiles.push({
                             lookups : resp.lookups,

@@ -6,7 +6,7 @@ var moment = require('moment');
 var WEEK = 7 * 24 * 60 * 60 * 1000;
 
 module.exports = {
-    getNerPoint: function(s, bedrooms, hide, subject, comps) {
+    getNerPoint: function(s, bedrooms, hide, subject, comps, scale) {
         var fps = _.flatten(s.floorplans);
 
         if (bedrooms > -1) {
@@ -61,7 +61,12 @@ module.exports = {
             return x.units
         });
         var ret = _.sum(fps, function (x) {
-            return (x.rent - x.concessions / 12) * x.units / tot
+
+            var sqft = 1;
+            if (scale == "nersqft") {
+                sqft = x.sqft;
+            }
+            return (x.rent - x.concessions / 12 ) / sqft * x.units / tot
         })
 
 

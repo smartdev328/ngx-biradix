@@ -41,7 +41,7 @@ module.exports = {
         }
 
         if (show.ner) {
-            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.bedrooms floorplans.bathrooms"
+            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.bedrooms floorplans.bathrooms floorplans.sqft"
         }
 
         query = query.select(select)
@@ -104,7 +104,7 @@ module.exports = {
                 if (show.ner) {
                     points[s.propertyid].ner = points[s.propertyid].ner || {};
 
-                    var nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps);
+                    var nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, show.scale);
                     points[s.propertyid].ner[dateKey] = nerPoint;
 
                     if (nerPoint.excluded) {
@@ -115,7 +115,7 @@ module.exports = {
                         points[s.propertyid][b] = points[s.propertyid][b] || {};
                         points[s.propertyid][b][dateKey] = points[s.propertyid][b][dateKey] || {};
 
-                        nerPoint = DataPointsHelperService.getNerPoint(s, b, hide, subject, comps);
+                        nerPoint = DataPointsHelperService.getNerPoint(s, b, hide, subject, comps, show.scale);
                         points[s.propertyid][b][dateKey] = nerPoint;
                     })
 

@@ -29,6 +29,8 @@ define([
 
         $scope.graphs = $cookieSettingsService.getGraphs();
 
+        $scope.nerScale = $cookieSettingsService.getNerScale();
+
         $scope.selectedBedroom = -1;
         $scope.bedrooms = [{value: -1, text: 'All'}]
 
@@ -121,6 +123,12 @@ define([
             $cookies.put('pr.s', JSON.stringify($scope.showProfile), {expires : expireDate})
         }
         /***************************/
+
+        $scope.$watch('nerScale', function(d) {
+            if (!$scope.localLoading) return;
+            $cookieSettingsService.saveNerScale($scope.nerScale)
+            $scope.refreshGraphs();
+        }, true);
 
         $scope.$watch('daterange', function(d) {
             if (!$scope.localLoading) return;
@@ -234,10 +242,10 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                         }
-                    ,{ner: true, occupancy: true, leased: true, graphs: true}
+                    ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.nerScale}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseDashboard(response.data,$scope.summary, $rootScope.me.settings.showLeases);
+                    var resp = $propertyService.parseDashboard(response.data,$scope.summary, $rootScope.me.settings.showLeases, $scope.nerScale);
 
                     if (!trendsOnly) {
                         $scope.property = resp.property;
