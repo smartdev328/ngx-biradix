@@ -416,20 +416,20 @@ define(['app'], function (app) {
                 if (occ.min > 0) {
                     occ.min = occ.min * .9;
                 }
-                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy % / Leased %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
+                resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Occupancy % / Leased %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
             }
             else {
                 occ = fac.extractSeries(profile.points, ['occupancy'],['Occupancy %'],80,100,1, [resp.property], false);
-                resp.occData = {height:250, printWidth:380, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
+                resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
 
             }
 
 
             var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
 
-            resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
+            resp.nerData = {height:300, printWidth:800, decimalPlaces: scaleDecimals, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
 
-            resp.otherData = {height:250, printWidth:380, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
+            resp.otherData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
 
             if (pts && !graphs) {
                 resp.nerKeys = keys;
@@ -524,14 +524,14 @@ define(['app'], function (app) {
             var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],80,100,1, resp.comps, summary);
             var leased = fac.extractSeries(dashboard.points, ['leased'],[],80,100,1, resp.comps, summary);
 
-            resp.nerData = {height:300, printWidth:800, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
+            resp.nerData = {height:300, printWidth:800, decimalPlaces: scaleDecimals, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
 
             var printWidth = 800;
             if (showLeases) {
                 printWidth = 380;
             }
-            resp.occData = {height:300, printWidth:printWidth, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
-            resp.leasedData = {height:300, printWidth:printWidth, prefix:'',suffix:'%',title: 'Leased %', marker: false, data: leased.data, min: (summary ? leased.min : 80), max: (summary ? leased.max : 100)};
+            resp.occData = {height:300, printWidth:printWidth, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
+            resp.leasedData = {height:300, printWidth:printWidth, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Leased %', marker: false, data: leased.data, min: (summary ? leased.min : 80), max: (summary ? leased.max : 100)};
 
             return resp;
         }

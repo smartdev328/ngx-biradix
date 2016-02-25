@@ -60,15 +60,22 @@ module.exports = {
         var tot = _.sum(fps, function (x) {
             return x.units
         });
-        var ret = _.sum(fps, function (x) {
 
-            var sqft = 1;
-            if (scale == "nersqft") {
-                sqft = x.sqft;
-            }
-            return (x.rent - x.concessions / 12 ) / sqft * x.units / tot
+        var ret = _.sum(fps, function (x) {
+            return (x.rent - x.concessions / 12 ) * x.units / tot
         })
 
+        if (scale == "nersqft") {
+            var sqft = _.sum(fps, function (x) {
+
+                var sqft = 1;
+                if (scale == "nersqft") {
+                    sqft = x.sqft;
+                }
+                return x.sqft * x.units / tot
+            })
+            ret = ret / sqft;
+        }
 
         return {value: ret, excluded: excluded, totalUnits: tot};
     },
