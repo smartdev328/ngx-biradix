@@ -11,6 +11,7 @@ var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 var queues = require('../../../config/queues')
 var JSONB = require('json-buffer')
+var EmailService = require('../../utilities/services/emailService')
 
 module.exports = {
     init: function(Routes) {
