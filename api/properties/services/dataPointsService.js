@@ -220,14 +220,14 @@ module.exports = {
             if (show.ner) {
                 for (var prop in points) {
                     points[prop].ner.forEach(function(p) {
-                        if (p.v && p.v.totalUnits) {
+                        if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
                             p.v = p.v.value;
                         }
                     });
 
                     bedroomBeakdown.forEach(function(b) {
                         points[prop][b].forEach(function(p) {
-                            if (p.v && p.v.totalUnits) {
+                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
                                 p.v = p.v.value;
                             }
                         });
