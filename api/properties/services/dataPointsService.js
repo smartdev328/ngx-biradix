@@ -227,6 +227,9 @@ module.exports = {
 
                     bedroomBeakdown.forEach(function(b) {
                         points[prop][b].forEach(function(p) {
+                            if (p.v.totalUnits == 0) {
+                                console.log(prop,b,p);
+                            }
                             if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
                                 p.v = p.v.value;
                             }

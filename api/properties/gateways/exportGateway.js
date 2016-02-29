@@ -11,7 +11,6 @@ var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 var queues = require('../../../config/queues')
 var JSONB = require('json-buffer')
-var EmailService = require('../../utilities/services/emailService')
 
 module.exports = {
     init: function(Routes) {
@@ -64,14 +63,14 @@ module.exports = {
                         showLeases: req.user.settings.showLeases
                     }};
 
-                    var email = {
-                        from: 'support@biradix.com',
-                        to: 'alex@viderman.com',
-                        subject: 'Excel Json',
-                        html: JSON.stringify(json)
-                    };
-
-                    EmailService.send(email, function(emailError,status) {console.log(emailError,status)});
+                    //var email = {
+                    //    from: 'support@biradix.com',
+                    //    to: 'alex@viderman.com',
+                    //    subject: 'Excell Json',
+                    //    html: JSON.stringify(json)
+                    //};
+                    //
+                    //EmailService.send(email, function(emailError,status) {console.log(emailError,status)});
 
                     var timer = new Date().getTime();
                     var r = request.post(settings.EXCEL_URL, {

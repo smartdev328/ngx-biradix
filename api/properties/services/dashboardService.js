@@ -192,7 +192,7 @@ module.exports = {
                                 })
 
                                 //Remove all points for lifetime older then subject property
-                                if (options.daterange.daterange == "Lifetime" && all.points[id] && all.points[id].ner) {
+                                if (options.daterange && options.daterange.daterange == "Lifetime" && all.points[id] && all.points[id].ner) {
                                     var minDate = all.points[id].ner[0].d;
                                     for (var g in all.points) {
                                         if (g != id && typeof all.points[g] === 'object') {
