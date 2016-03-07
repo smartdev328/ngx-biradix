@@ -1,6 +1,9 @@
 var moment = require('moment')
 module.exports = {
     convertRangeToParts: function (daterange) {
+
+        daterange = daterange || {daterange:'Last 90 Days'};
+
         switch (daterange.daterange) {
             case "Today":
                 return {start: moment().startOf("day").format(), end: moment().endOf("day").format()}

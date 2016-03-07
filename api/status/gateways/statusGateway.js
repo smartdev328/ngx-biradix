@@ -55,6 +55,35 @@ Routes.get('/db', function (req, res) {
     })
 });
 
+Routes.get('/dashboard', function (req, res) {
+    userService.getSystemUser(function (obj) {
+        var SystemUser = obj.user;
+        propertyService.search(SystemUser, {limit: 1}, function (err, properties) {
+            if (err) {
+                throw new Error(err);
+            }
+
+            var options = {
+                daterange: { daterange: "Today"},
+                show: {}
+            };
+            var req = {user: SystemUser, params: {id: properties[0]._id}, body: options};
+
+            queueService.getDashboard(req, function (err, o) {
+                if (err) {
+                    throw new Error(err);
+                }
+
+                res.status(200).send("OK");
+                properties = null;
+                SystemUser = null;
+                obj = null;
+                o = 0;
+            });
+        })
+    })
+})
+
 Routes.get('/profile', function (req, res) {
     userService.getSystemUser(function(obj) {
         var SystemUser = obj.user;

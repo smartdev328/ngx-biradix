@@ -11,9 +11,9 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "angular": "1.4.4",
+    "angular": "1.4.9",
     "angular-bootstrap": "0.13.0",
-    "angular-cookies": "1.4.4",
+    "angular-cookies": "1.4.9",
     "angular-ui-router": "~0.2.15",
     "bootstrap": "3.3.5",
     "font-awesome": "4.2.0",

@@ -13,7 +13,7 @@ define([
             },
             controller: function ($scope) {
 
-                $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms', 'id', 'sqft', 'fid'])
+                $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms', 'id', 'sqft', 'description', 'fid'])
 
                 $scope.reload = function() {
                     $scope.rankings = {}
@@ -44,8 +44,6 @@ define([
                                 first: fp.id.toString() != last.toString() || fp.bedrooms.toString() != lbedrooms.toString() || fp.bathrooms.toString() != lbathrooms.toString() ,
                                 id: fp.id.toString()
                             };
-
-
 
                             if ($scope.subject._id.toString() == fp.id.toString()) {
                                 f.name = $scope.subject.name;

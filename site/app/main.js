@@ -24,7 +24,7 @@ global_error = function(err,context) {
                     !phantom //dont redirect on phantom errors
                     && s.indexOf("Unable to get property 'focus'") == -1 //strange error that happens when closing modal, dont redirect
                 ) {
-                    location.href = "/error.html";
+                    //location.href = "/error.html";
                 }
             });
         }

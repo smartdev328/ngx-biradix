@@ -49,7 +49,7 @@
             </div>
             </td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','sqft', 'fid']" ng-class="{'subject': fp.subject }">
+        <tr ng-repeat="fp in value.floorplans | orderBy : ['name','-first','sqft', 'description', 'fid']" ng-class="{'subject': fp.subject }">
             <td ng-if="fp.first" rowspan="{{value.share[fp.id].count}}" style="vertical-align:middle;background-color: #ffffff !important">
                 {{fp.name}}
             </td>
