@@ -47,7 +47,7 @@ module.exports = {
                 var updated = floorplans.map(function(x) {return x.toString()})
                 var full = _.pluck(comp.floorplans,"id").map(function(x) {return x.toString()})
 
-                console.log(updated,full);
+                console.log(updated.sort(),full.sort());
                 var excluded = !_.isEqual(full.sort(), updated.sort())
 
                 var update = {$set: {'comps.$.floorplans': floorplans, 'comps.$.excluded': excluded}};
