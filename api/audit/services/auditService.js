@@ -171,7 +171,7 @@ function QueryBuilder (criteria, userids, propertyids, compids) {
 
     //Everyone can filter on daterange
     if (criteria.daterange) {
-        var dr = DateService.convertRangeToParts(criteria.daterange);
+        var dr = DateService.convertRangeToParts(criteria.daterange,0);
         if (criteria.daterange != "Lifetime") {
             query = query.where("date").gte(dr.start).lte(dr.end);
         }

@@ -16,7 +16,7 @@ module.exports = {
         var query = SurveySchema.find();
 
         query = query.where("propertyid").in(propertyids);
-        var dr = DateService.convertRangeToParts(daterange);
+        var dr = DateService.convertRangeToParts(daterange,offset);
 
         if (daterange.daterange != "Lifetime") {
             query = query.where("date").gte(dr.start).lte(dr.end);
