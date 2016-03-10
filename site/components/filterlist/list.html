@@ -38,7 +38,7 @@
         <tr>
             <td>
                 {{options.availableLabel || 'Available'}}<br />
-                <filter-panel options="options" groups="groupsAvailable" move-checked="moveChecked(false)"></filter-panel>
+                <filter-panel options="options" groups="groupsAvailable" move-checked="moveChecked(false)" reset-checked="resetChecked()"></filter-panel>
             </td>
             <td class="filter-buttons">
                 <br />
@@ -61,7 +61,7 @@
             </td>
             <td>
                 {{options.selectedLabel || 'Selected'}}<br />
-                <filter-panel options="options" groups="groupsSelected" move-checked="moveChecked(true)"></filter-panel>
+                <filter-panel options="options" groups="groupsSelected" move-checked="moveChecked(true)" reset-checked="resetChecked()"></filter-panel>
             </td>
         </tr>
     </table>

@@ -10,6 +10,7 @@ define([
                 options: '=',
                 groups: '=',
                 moveChecked: '&',
+                resetChecked: '&',
             },
             controller: function ($scope) {
                 $scope.version = version;
@@ -41,7 +42,6 @@ define([
                             }, 500);
                         }
                     }
-
                 }
 
                 $scope.selectBetween = function(item1, item2) {
@@ -251,14 +251,6 @@ define([
 
 
                     return response;
-                }
-                $scope.resetChecked = function() {
-                    for(var group in $scope.groups) {
-                        $scope.groups[group].forEach(function (item) {
-                            item.checked = false;
-                            item.focused = false;
-                        })
-                    }
                 }
             },
             templateUrl: '/components/filterlist/filterpanel.html?bust=' + version
