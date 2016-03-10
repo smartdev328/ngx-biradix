@@ -415,11 +415,20 @@ var populateAmenitiesandFloorplans = function(property, all) {
     property.floorplans.forEach(function(fp) {
         property.totalUnits += (fp.units || 0);
 
+        var bAdd = false;
         if (!fp.id) {
             fp.id = uuid.v1();
+            bAdd = true;
+        }
 
+        if (!bAdd && fp.new) {
+            bAdd = true;
+        }
+
+        if (bAdd) {
             property.addedFloorplans.push(fp.id)
         }
+
 
         var amenities = [];
         (fp.amenities || []).forEach(function(pa) {
