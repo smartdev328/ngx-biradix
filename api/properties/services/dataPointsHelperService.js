@@ -125,6 +125,8 @@ module.exports = {
             nextMonday = nextMonday - WEEK;
         }
 
+        console.log(moment.utc(dr.end).format(),moment.utc(dr.end).add(offset, "minute").format(),moment.utc(dr.end).add(offset, "minute").startOf("day").format());
+
         var today = parseInt(moment.utc(dr.end).add(offset, "minute").startOf("day").subtract(offset, "minute").format('x'))
 
         ret[today] = first;
