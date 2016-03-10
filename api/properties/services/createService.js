@@ -425,6 +425,8 @@ var populateAmenitiesandFloorplans = function(property, all) {
             bAdd = true;
         }
 
+        console.log(fp, bAdd);
+
         if (bAdd) {
             property.addedFloorplans.push(fp.id)
         }
@@ -440,6 +442,8 @@ var populateAmenitiesandFloorplans = function(property, all) {
         fp.amenities = amenities;
 
     })
+
+    console.log(property.addedFloorplans);
 }
 
 function populateSchema(property, n, all) {
