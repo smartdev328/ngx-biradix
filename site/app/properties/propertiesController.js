@@ -526,11 +526,11 @@ define([
         $scope.manageUsers = function(property) {
 
             require([
-                '/app/properties/manageUsersController.js'
+                '/app/properties/managePropertyUsersController.js'
             ], function () {
                 var modalInstance = $modal.open({
                     templateUrl: '/app/properties/manageUsers.html?bust=' + version,
-                    controller: 'manageUsersController',
+                    controller: 'managePropertyUsersController',
                     size: "md",
                     keyboard: false,
                     backdrop: 'static',

@@ -6,7 +6,7 @@ define([
     '../../services/propertyUsersService.js',
 ], function (app) {
      app.controller
-        ('manageUsersController', ['$scope', '$modalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $modalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
+        ('managePropertyUsersController', ['$scope', '$modalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $modalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
 
             $scope.property = property;
             $scope.users = [];
