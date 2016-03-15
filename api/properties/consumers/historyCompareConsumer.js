@@ -5,8 +5,6 @@ var _ = require("lodash");
 var moment = require("moment")
 
 queues.getHistoryCompareReportQueue().consume(function(data,reply) {
-    //console.log(data.id + " history compare started");
-
     async.parallel({
         current: function(callbackp) {
 

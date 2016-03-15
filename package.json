@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.2.25",
+  "version": "2.2.26",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "mocha": "^2.2.5",
     "mock-require": "^1.1.0",
     "moment": "^2.10.3",
+    "moment-timezone": "^0.5.1",
     "mongoose": "^4.0.2",
     "newrelic": "^1.23.1",
     "node-geocoder": "^2.20.1",

@@ -1,6 +1,7 @@
 'use strict';
 define([
     'app',
+    '../../components/jstimezonedetect/jstz.min',
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/comps',
     '../../components/googleMap/module',
@@ -9,12 +10,13 @@ define([
     '../../services/exportService',
     '../../services/progressService',
     '../../services/auditService',
-], function (app) {
+], function (app,jstz) {
 
     app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
+
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -155,6 +157,11 @@ define([
 
                 if ($cookies.get("cmp.s")) {
                     $scope.show = JSON.parse($cookies.get("cmp.s"));
+                }
+
+                if (!$rootScope.me.settings.tz) {
+                    $rootScope.me.settings.tz = jstz.determine().name();
+                    $authService.updateSettings($rootScope.me.settings);
                 }
 
                 $scope.defaultShowProfile();

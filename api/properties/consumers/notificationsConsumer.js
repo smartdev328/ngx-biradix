@@ -4,6 +4,7 @@ var queueService = require('../services/queueService');
 var propertyService = require('../services/propertyService');
 var async = require("async");
 var _ = require("lodash");
+var moment = require("moment-timezone");
 var redisService = require('../../utilities/services/redisService')
 var BizEmailService = require('../../business/services/emailService')
 
@@ -31,6 +32,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
             async.eachLimit(all.properties, 20, function(id, callbackp){
 
                 var key = "not-" + id;
+
                 redisService.get(key, function(err, result) {
                     if (result && settings.HEROKU_APP == "biradixplatform-prod") {
                         //console.log('Cache:', result);
@@ -68,9 +70,16 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                     //console.log(final);
 
+                    var tz = data.user.settings.tz || 'America/Los_Angeles';
+
                     final.forEach(function(x) {
                         x.forEach(function(y)
                         {
+                            if (y.date) {
+                                y.date = moment(y.date.toString()).tz(tz).format()
+                                console.log(y.date);
+                            }
+
                             if (typeof y.lastmonthnersqftpercent == "undefined") {
                                 y.lastmonthnersqftpercent = "";
                             }
