@@ -76,8 +76,9 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                         x.forEach(function(y)
                         {
                             if (y.date) {
-                                y.date = moment(y.date.toString()).tz(tz).format()
                                 console.log(y.date);
+                                y.date = moment(y.date.toString()).tz(tz).format()
+                                console.log(tz,y.date);
                             }
 
                             if (typeof y.lastmonthnersqftpercent == "undefined") {
