@@ -77,7 +77,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                         {
                             if (y.date) {
                                 console.log(y.date);
-                                y.date = moment(y.date.toString()).tz(tz).format()
+                                y.date = moment(y.date.toString()).tz(tz).format("MMM DD")
                                 console.log(tz,y.date);
                             }
 
