@@ -19,6 +19,17 @@ define([
             $rootScope.sideMenu = true;
             $rootScope.sideNav = "UpdateProfile";
 
+            $scope.timezones = [
+                {id: 'America/Los_Angeles', name: "Los Angeles (Pacific)"},
+                {id: 'America/Phoenix', name: "Phoenix (Arizona)"},
+                {id: 'America/Denver', name: "Denver (Mountain)"},
+                {id: 'America/Chicago', name: "Chicago (Central)"},
+                {id: 'America/New_York', name: "New York (Eastern)"},
+            ];
+
+
+            $scope.settings = {tz: $scope.timezones[0]}
+
 
             $scope.nots = {
                 howOftenOptions: ["Weekly","Monthly"],
@@ -67,6 +78,9 @@ define([
                             },500);
                         }
                     }, 500)
+
+                    $scope.settings.tz = _.find($scope.timezones, function(x) {return x.id == $rootScope.me.settings.tz});
+
 
 
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
@@ -213,6 +227,7 @@ define([
 
                 }
 
+                $rootScope.me.settings.tz = $scope.settings.tz.id;
                 //console.log($rootScope.me.settings.notifications);
 
                 $('button.nots-submit').prop('disabled', true);
