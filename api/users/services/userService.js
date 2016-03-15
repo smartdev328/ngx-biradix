@@ -480,6 +480,7 @@ module.exports = {
 
             usr.settings = settings
             usr.markModified("settings.notifications");
+            usr.markModified("settings.tz");
 
             usr.save(function (err, usr) {
                 if (err) {
