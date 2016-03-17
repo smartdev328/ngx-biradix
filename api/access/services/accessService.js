@@ -208,10 +208,6 @@
                 modelErrors.push({param: 'resource', msg: 'Missing Resource.'});
             }
 
-            if (!permission.executorid) {
-                modelErrors.push({param: 'executorid', msg: 'Missing ExecutorId.'});
-            }
-
             if (!permission.type) {
                 modelErrors.push({param: 'type', msg: 'Missing type.'});
             }
@@ -221,13 +217,17 @@
                 return;
             }
 
-            var newpermission =  new PermissionsSchema();
-            newpermission.resource = permission.resource;
-            newpermission.executorid = permission.executorid;
-            newpermission.allow = permission.allow;
-            newpermission.type = permission.type;
+            var criteria = {resource: permission.resource, type: permission.type};
 
-            PermissionsSchema.findOneAndRemove({resource: permission.resource, executorid: permission.executorid, type: permission.type},function (err, obj) {
+            if (permission.direct) {
+                criteria.direct = true;
+            }
+
+            if (permission.executorid) {
+                criteria.executorid = permission.executorid;
+            }
+
+            PermissionsSchema.findOneAndRemove(criteria,function (err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to delete permission: ' + err});
                     callback(modelErrors, null);

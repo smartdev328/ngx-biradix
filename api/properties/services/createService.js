@@ -87,6 +87,9 @@ module.exports = {
                                 })
                             }
 
+                            //Remove all direct/explicit permission to the proprty if org changes
+                            removePermissions.push({direct:true, type: 'PropertyManage', resource : n._id.toString()})
+
                             var oldName = "None";
                             var newName = "None";
 
