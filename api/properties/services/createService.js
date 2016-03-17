@@ -58,9 +58,17 @@ module.exports = {
                     var floorplansUpdatedChanges = getFloorplansUpdatedChanges(property,n, all);
                     var floorplansAmenitiesUpdatedChanges = getFloorplansAmenitiesUpdatedChanges(property,n, all);
 
+                    //Get Comps so that we can un-link them and re-link them to get all the new permissions
+                    var comps = _.pluck(n.comps,"id").map(function(x) {return x.toString()});
+                    _.remove(comps,function(x) {return x == property._id.toString()});
+
+                    var reLinkComps = false;
+
+
                      if (canAccess) {
                         //we have access to update orgs, lets see if the org changed
                         if ((n.orgid || '').toString() != (property.orgid || '').toString()) {
+                            reLinkComps = true;
                             //Remove all implicit (CM) PropertyManage permissions for old org
                             if (n.orgid) {
                                 var oldCMs;
@@ -176,6 +184,26 @@ module.exports = {
                         floorplansAmenitiesUpdatedChanges.forEach(function(change) {
                             AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
                         })
+
+                        if (reLinkComps && comps.length > 0) {
+                            //Unlink all comps async
+                            async.eachLimit(comps, 10, function (compid, callbackp) {
+                                PropertyService.unlinkComp(operator,context,null,property._id,compid,function(err, obj) {
+                                    callbackp(err);
+                                });
+                            }, function (err) {
+                                //ReLink them
+                                async.eachLimit(comps, 10, function (compid, callbackp) {
+                                    CompsService.linkComp(operator,context,null,true,property._id,compid,function(err, obj) {
+                                        callbackp(err);
+                                    });
+                                }, function (err) {
+
+
+                                });
+                            });
+                        }
+
 
                         callback(null, n);
 

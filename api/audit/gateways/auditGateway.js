@@ -353,22 +353,27 @@ function propertyFloorplanRemovedUndo  (req, o, callback) {
 }
 
 function propertyFloorplanUpdatedUndo  (req, o, callback) {
-    PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
-        var property = props[0];
+    AmenitiesService.search({}, function(err, amenities) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+            var property = props[0];
 
-        var old = o.data[0].old_value;
+            var old = o.data[0].old_value;
 
-        property.floorplans.forEach(function(fp,i) {
-            if (fp.id.toString() == old.id.toString()) {
-                property.floorplans[i].bedrooms = old.bedrooms;
-                property.floorplans[i].bathrooms = old.bathrooms;
-                property.floorplans[i].description = old.description;
-                property.floorplans[i].units = old.units;
-                property.floorplans[i].sqft = old.sqft;
-            }
-        })
+            property.floorplans.forEach(function (fp, i) {
+                if (fp.id.toString() == old.id.toString()) {
+                    property.floorplans[i].bedrooms = old.bedrooms;
+                    property.floorplans[i].bathrooms = old.bathrooms;
+                    property.floorplans[i].description = old.description;
+                    property.floorplans[i].units = old.units;
+                    property.floorplans[i].sqft = old.sqft;
 
-        CreateService.update(req.user,req.context, o._id,property,callback);
+                    property.floorplans[i].amenities = _.pluck(_.filter(amenities, function(x) {return property.floorplans[i].amenities.indexOf(x._id.toString()) > -1}),"name");
+
+                }
+            })
+
+            CreateService.update(req.user,req.context, o._id,property,callback);
+        });
     });
 }
 
