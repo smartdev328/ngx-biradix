@@ -195,15 +195,16 @@ module.exports = {
                                     callbackp(err);
                                 });
                             }, function (err) {
-                                //ReLink them
-                                async.eachLimit(comps, 10, function (compid, callbackp) {
-                                    CompsService.linkComp(operator,context,null,true,property._id,compid,function(err, obj) {
-                                        callbackp(err);
-                                    });
-                                }, function (err) {
-
-
-                                });
+                                //Don't relink comps on org change per Eugene's request: NP-298
+                                ////ReLink them
+                                //async.eachLimit(comps, 10, function (compid, callbackp) {
+                                //    CompsService.linkComp(operator,context,null,true,property._id,compid,function(err, obj) {
+                                //        callbackp(err);
+                                //    });
+                                //}, function (err) {
+                                //
+                                //
+                                //});
                             });
                         }
 

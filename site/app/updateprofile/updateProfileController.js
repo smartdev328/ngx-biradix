@@ -72,7 +72,16 @@ define([
                             $('html, body').animate({
                                 scrollTop: ($('#notificationsPanel').offset().top - 80)
                             },500);
-                        }else {
+
+                        }
+                        else
+                        if ($stateParams.settings === "1") {
+                            $('html, body').animate({
+                                scrollTop: ($('#settingsPanel').offset().top - 80)
+                            },500);
+
+                        }
+                        else {
                             $('html, body').animate({
                                 scrollTop: 0
                             },500);
@@ -227,9 +236,6 @@ define([
 
                 }
 
-                $rootScope.me.settings.tz = $scope.settings.tz.id;
-                //console.log($rootScope.me.settings.notifications);
-
                 $('button.nots-submit').prop('disabled', true);
                 ngProgress.start();
 
@@ -243,7 +249,7 @@ define([
 
                     }
                     else {
-                        toastr.success('Settings & Notifications updated successfully.');
+                        toastr.success('Notifications updated successfully.');
 
                         $rootScope.refreshToken(function() {});
                     }
@@ -251,6 +257,36 @@ define([
                 }, function (err) {
                     $('button.nots-submit').prop('disabled', false);
                     toastr.error('Unable to save Notifications. Please contact an administrator');
+                    ngProgress.complete();
+                });
+            }
+
+            $scope.saveSettings = function() {
+
+                $rootScope.me.settings.tz = $scope.settings.tz.id;
+                //console.log($rootScope.me.settings.notifications);
+
+                $('button.settings-submit').prop('disabled', true);
+                ngProgress.start();
+
+                $authService.updateSettings($rootScope.me.settings).then(function (resp) {
+                    $('button.nots-submit').prop('disabled', false);
+                    ngProgress.complete();
+                    if (resp.data.errors && resp.data.errors.length > 0) {
+                        resp.data.errors.forEach(function(e) {
+                            toastr.error(e.msg);
+                        })
+
+                    }
+                    else {
+                        toastr.success('Settings updated successfully.');
+
+                        $rootScope.refreshToken(function() {});
+                    }
+
+                }, function (err) {
+                    $('button.settings-submit').prop('disabled', false);
+                    toastr.error('Unable to save Settings. Please contact an administrator');
                     ngProgress.complete();
                 });
             }

@@ -2,7 +2,7 @@
     <hr>
 </h2>
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-md-6">
         <div class="panel panel-info"  style="height:410px">
             <div class="panel-heading">Update Profile</div>
             <div class="panel-body">
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <div class="col-sm-6">
+    <div class="col-md-6">
         <div class="panel panel-info" style="height:410px" id="passwordPannel">
             <div class="panel-heading">Update Password</div>
             <div class="panel-body">
@@ -81,9 +81,9 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-md-6">
         <div class="panel panel-info"  style="height:410px" id="notificationsPanel">
-            <div class="panel-heading">Settings & Notifications</div>
+            <div class="panel-heading">Notifications</div>
             <div class="panel-body">
 
                 <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
@@ -128,17 +128,38 @@
                         </td>
                     </tr>
                 </Table>
-                <hr>
-                    <B>Show "Leased %" information:</B> <toggle-switch checked="me.settings.showLeases"></toggle-switch><Br>
-                <Br>
+
+                <center>
+                    <button class=" btn btn-primary btn-large nots-submit" type="button" ng-click="saveNotifications()">Update</button>
+                </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-info"  style="height:410px" id="settingsPanel">
+            <div class="panel-heading">Settings</div>
+            <div class="panel-body">
+                <div>
+                    <hr>
+                    <B>Show "Leased %" information:</B> <toggle-switch checked="me.settings.showLeases"></toggle-switch>
+                    <i class="fa fa-info-circle"
+                       style="cursor:pointer;font-size:16px;padding:3px 0px 0px 1px"
+                       popover-trigger="mouseenter"
+                       popover-placement="left"
+                       popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing market surveys. Note: Data for Leased % will only be shown if it exists for a property.'
+                    ></i>
+                    <Br>
+                    <Br>
                     <hr>
                     <B>Timezone:</B>
                     <select class="form-control input-sm" ng-options="item.name for item in timezones" ng-model="settings.tz" style="display:inline;width:200px">
                     </select><Br>
                     <Br>
-                <center>
-                    <button class=" btn btn-primary btn-large nots-submit" type="button" ng-click="saveNotifications()">Update</button>
-                </center>
+                    <center>
+                        <button class=" btn btn-primary btn-large settings-submit" type="button" ng-click="saveSettings()">Update</button>
+                    </center>
                 </div>
             </div>
         </div>
