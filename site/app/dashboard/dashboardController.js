@@ -190,6 +190,13 @@ define([
                         $scope.selectedProperty = _.find($scope.myProperties, function (x) {
                             return x._id.toString() == id
                         })
+
+                        //if you lost access to your saved property, update your settings
+                        if (!$scope.selectedProperty ) {
+                            $scope.selectedProperty = $scope.myProperties[0];
+                            $scope.changeProperty();
+                            return;
+                        }
                     }
 
                     if ($scope.selectedProperty) {
