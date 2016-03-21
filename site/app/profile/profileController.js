@@ -134,8 +134,9 @@ define([
 
         $scope.daterange=$cookieSettingsService.getDaterange();
 
-        $scope.$watch('daterange', function(d) {
+        $scope.$watch('daterange', function(d,old) {
             if (!$scope.localLoading) return;
+            if(JSON.stringify(old) == JSON.stringify(d)) return;
             $cookieSettingsService.saveDaterange($scope.daterange)
             $scope.refreshGraphs();
         }, true);

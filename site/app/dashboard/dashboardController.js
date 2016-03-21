@@ -132,8 +132,10 @@ define([
             $scope.refreshGraphs();
         }, true);
 
-        $scope.$watch('daterange', function(d) {
+        $scope.$watch('daterange', function(d,old) {
             if (!$scope.localLoading) return;
+            if(JSON.stringify(old) == JSON.stringify(d)) return;
+
             $cookieSettingsService.saveDaterange($scope.daterange)
             $scope.refreshGraphs();
         }, true);
@@ -310,6 +312,7 @@ define([
         $scope.pdf = function(full) {
 
             ngProgress.start();
+
 
             $('#export').prop('disabled', true);
 
