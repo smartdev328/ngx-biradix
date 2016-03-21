@@ -131,6 +131,13 @@ module.exports = {
         });
 
         Routes.get('/:id/pdf', function (req, res) {
+
+            if (!req.query.showFile && req.headers["user-agent"].indexOf(" Edge/") > -1 && !req.headers["getcontentfeatures.dlna.org"]) {
+                res.setHeader("content-type", "application/pdf");
+                res.send();
+                return;
+            }
+
             var timer = new Date().getTime();
             queues.getExchange().publish({
                     user: req.user,
