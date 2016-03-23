@@ -169,7 +169,7 @@ define([
                 $scope.defaultShowProfile();
 
                 if ($cookies.get("pr.s")) {
-                    $scope.showProfile = JSON.parse($cookies.get("pr.s"));
+                    //$scope.showProfile = JSON.parse($cookies.get("pr.s"));
                 }
 
                 $propertyService.search({
