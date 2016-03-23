@@ -69,7 +69,7 @@ define([
             lease: true
         }
         if ($cookies.get("pr.s")) {
-            //$scope.showProfile = JSON.parse($cookies.get("pr.s"));
+            $scope.showProfile = JSON.parse($cookies.get("pr.s"));
         }
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
