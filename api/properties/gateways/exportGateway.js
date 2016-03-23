@@ -11,6 +11,7 @@ var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 var queues = require('../../../config/queues')
 var JSONB = require('json-buffer')
+var redisService = require('../../utilities/services/redisService')
 
 module.exports = {
     init: function(Routes) {
@@ -79,7 +80,7 @@ module.exports = {
 
                     r.on('finish', function () {
                         console.log("Excel AppHarbor for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
-                        if (req.query.progressId) {
+                        if (query.progressId) {
                             ProgressService.setComplete(req.query.progressId)
                         }
                         dashboard = null;
@@ -138,49 +139,59 @@ module.exports = {
             //    return;
             //}
 
+
             var timer = new Date().getTime();
-            queues.getExchange().publish({
-                    user: req.user,
-                    context : req.context,
-                    id: req.params.id,
-                    timezone : req.query.timezone,
-                    full : req.query.full,
-                    url : req.basePath,
-                    hostname : req.hostname,
-                    Graphs : req.query.Graphs,
-                    Summary : req.query.Summary,
-                    Scale : req.query.Scale,
-                    selectedStartDate : req.query.selectedStartDate,
-                    selectedEndDate : req.query.selectedEndDate,
-                    selectedRange : req.query.selectedRange,
-                    progressId : req.query.progressId,
-                    orderBy : req.query.orderBy,
-                    show : req.query.show,
-                    orderByComp : req.query.orderByC,
-                    showComp : req.query.showC,
-                    showProfile : req.query.showP,
 
-                },
-                {
-                    key: settings.PDF_PROFILE_QUEUE,
-                    reply: function (data) {
-                        console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
-                        res.setHeader("content-type", "application/pdf");
+            redisService.getByKey(req.query.key, function(err, result) {
+                var query = {};
 
-                        if (req.query.showFile) {
-                            res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
-                        }
-
-                        var stream = require('stream');
-                        var bufferStream = new stream.PassThrough();
-                        bufferStream.end(JSONB.parse(data.stream));
-                        bufferStream.pipe(res)
-
-                        data = null;
-
-                    }
+                if (result) {
+                    query = JSON.parse(result);
                 }
-            );
+
+                queues.getExchange().publish({
+                        user: req.user,
+                        context : req.context,
+                        id: req.params.id,
+                        timezone : req.query.timezone,
+                        full : req.query.full,
+                        url : req.basePath,
+                        hostname : req.hostname,
+                        Graphs : query.Graphs,
+                        Summary : query.Summary,
+                        Scale : query.Scale,
+                        selectedStartDate : query.selectedStartDate,
+                        selectedEndDate : query.selectedEndDate,
+                        selectedRange : query.selectedRange,
+                        progressId : query.progressId,
+                        orderBy : query.orderBy,
+                        show : query.show,
+                        orderByComp : query.orderByC,
+                        showComp : query.showC,
+                        showProfile : query.showP,
+
+                    },
+                    {
+                        key: settings.PDF_PROFILE_QUEUE,
+                        reply: function (data) {
+                            console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                            res.setHeader("content-type", "application/pdf");
+
+                            if (query.showFile) {
+                                res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
+                            }
+
+                            var stream = require('stream');
+                            var bufferStream = new stream.PassThrough();
+                            bufferStream.end(JSONB.parse(data.stream));
+                            bufferStream.pipe(res)
+
+                            data = null;
+
+                        }
+                    }
+                );
+            });
 
 
         });
