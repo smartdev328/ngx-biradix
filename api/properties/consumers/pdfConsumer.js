@@ -71,6 +71,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
             ws.on('finish', function() {
                 var newBuffer = Buffer.concat(ws.buffer);
+                console.log(data.progressId);
                 if (data.progressId) {
                     ProgressService.setComplete(data.progressId)
                 }

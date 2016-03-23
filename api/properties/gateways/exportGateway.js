@@ -80,8 +80,8 @@ module.exports = {
 
                     r.on('finish', function () {
                         console.log("Excel AppHarbor for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
-                        if (query.progressId) {
-                            ProgressService.setComplete(query.progressId)
+                        if (req.query.progressId) {
+                            ProgressService.setComplete(req.query.progressId)
                         }
                         dashboard = null;
                         profiles = null;
@@ -148,6 +148,7 @@ module.exports = {
                 if (result) {
                     query = JSON.parse(result);
                 }
+
 
                 queues.getExchange().publish({
                         user: req.user,

@@ -55,9 +55,6 @@ d.run(function() {
             app.use('/progress', require('../api/progress/gateways/progressGateway'));
             app.use('/status', require('../api/status/gateways/statusGateway'));
             app.use('/properties/cron', require('../api/properties/gateways/cronGateway'));
-
-            app.use('/url', require('../api/urlshortener/gateways/urlGateway'));
-
             app.get('/p/:token', function (req, res) {
                 res.redirect('/#/password/reset/' + req.params.token)
             })
