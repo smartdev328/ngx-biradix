@@ -11,7 +11,7 @@ define([
             },
             controller: function ($scope) {
                 if ($scope.show && typeof $scope.show == "string") {
-                    //$scope.show = JSON.parse($scope.show);
+                    $scope.show = JSON.parse($scope.show);
                 }
             },
             templateUrl: '/components/propertyProfile/propertyProfile.html?bust=' + version
