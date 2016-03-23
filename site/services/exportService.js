@@ -1,8 +1,9 @@
 'use strict';
 define([
     'app',
+    '../../services/urlService.js'
 ], function (app) {
-    app.factory('$exportService', ['$http','$cookies', function ($http,$cookies) {
+    app.factory('$exportService', ['$http','$cookies','$urlService', function ($http,$cookies,$urlService) {
         var fac = {};
 
         var getPdfUrl = function(full, showFile,propertyId,graphs, daterange, progressId) {
@@ -30,12 +31,20 @@ define([
         fac.print = function (propertyId, full, showFile, daterange, progressId, graphs) {
             var url = getPdfUrl(full, showFile,propertyId, graphs, daterange, progressId);
 
-            if (showFile === true) {
-                location.href = url;
-            }
-            else {
-                window.open(url);
-            }
+            $urlService.shorten(url).then(function(resp) {
+                url = resp.data.url;
+
+                if (showFile === true) {
+                    location.href = url;
+                }
+                else {
+                    window.open(url);
+                }
+
+            }, function (errors) {
+                //TODO: Not sure what to do here.
+            })
+
         }
 
         return fac;
