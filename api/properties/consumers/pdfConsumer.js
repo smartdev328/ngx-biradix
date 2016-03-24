@@ -15,7 +15,9 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
             var p = properties[0];
             var fileName = p.name.replace(/ /g, "_");
 
-            if (data.full == "true") {
+            console.log(data.full);
+
+            if (data.full) {
                 fileName += '_and_Comps';
             }
 
@@ -32,7 +34,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
             var render = phantom(options);
 
-            var url = data.url + "/#/" + (data.full == "true" ? "full" : "profile") + "/" + p._id;
+            var url = data.url + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
 
             var cookies = [
                 pdfService.getCookie(data.hostname,"token", full.token),
@@ -53,7 +55,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
             var description = p.name;
 
-            if (data.full == "true") {
+            if (data.full) {
                 description += ' (with Comps)';
             }
 
@@ -71,7 +73,6 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
             ws.on('finish', function() {
                 var newBuffer = Buffer.concat(ws.buffer);
-                console.log(data.progressId);
                 if (data.progressId) {
                     ProgressService.setComplete(data.progressId)
                 }

@@ -247,8 +247,6 @@ module.exports = {
 
                     //Email password async
                     if (user.emailPassword) {
-                        console.log('Email Sent');
-
                         base = base.replace("platform",userRole.org.subdomain)
 
                         var logo = base + "/images/organizations/" + userRole.org.logoBig;

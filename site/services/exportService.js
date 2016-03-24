@@ -25,8 +25,7 @@ define([
                 show: encodeURIComponent($cookies.get("fp.s") || ''),
                 orderByC: ($cookies.get("cmp.o") || ''),
                 showC: encodeURIComponent($cookies.get("cmp.s") || ''),
-                showP: encodeURIComponent($cookies.get("pr.s") || ''),
-                bust: + (new Date()).getTime()
+                showP: encodeURIComponent($cookies.get("pr.s") || '')
             }
 
 
@@ -38,6 +37,9 @@ define([
 
             $urlService.shorten(JSON.stringify(pdf.data)).then(function(resp) {
                 var url = pdf.base + "&key=" + resp.data.key;
+
+                url += "&bust=" + (new Date()).getTime();
+
                 if (showFile === true) {
                     location.href = url;
                 }

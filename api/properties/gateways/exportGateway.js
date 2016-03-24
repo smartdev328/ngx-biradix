@@ -149,15 +149,17 @@ module.exports = {
                     query = JSON.parse(result);
                 }
 
+                //console.log(query, typeof query.showFile, typeof query.full);
+
 
                 queues.getExchange().publish({
                         user: req.user,
                         context : req.context,
-                        id: req.params.id,
-                        timezone : req.query.timezone,
-                        full : req.query.full,
                         url : req.basePath,
                         hostname : req.hostname,
+                        id: req.params.id,
+                        timezone : query.timezone,
+                        full : query.full,
                         Graphs : query.Graphs,
                         Summary : query.Summary,
                         Scale : query.Scale,
