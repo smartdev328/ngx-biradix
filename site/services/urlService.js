@@ -6,11 +6,20 @@ define([
         var fac = {};
 
         fac.shorten = function (url) {
-            return $http.post('/url'+ '?bust=' + (new Date()).getTime(), {url:url}, {}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
+
+            var strReturn = "";
+
+            jQuery.ajax({
+                type: "POST",
+                data: {url:url},
+                url: '/url'+ '?bust=' + (new Date()).getTime(),
+                success: function(html) {
+                    strReturn = html.key;
+                },
+                async:false
             });
+
+            return strReturn;
         }
 
         return fac;

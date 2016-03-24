@@ -35,22 +35,18 @@ define([
         fac.print = function (propertyId, full, showFile, daterange, progressId, graphs) {
             var pdf = getPdfUrl(full, showFile,propertyId, graphs, daterange, progressId);
 
-            $urlService.shorten(JSON.stringify(pdf.data)).then(function(resp) {
-                var url = pdf.base + "&key=" + resp.data.key;
+            //Has to be synchronous
+            var key = $urlService.shorten(JSON.stringify(pdf.data));
+            var url = pdf.base + "&key=" + key;
 
-                url += "&bust=" + (new Date()).getTime();
+            url += "&bust=" + (new Date()).getTime();
 
-                if (showFile === true) {
-                    location.href = url;
-                }
-                else {
-                    window.open(url);
-                }
-
-            }, function (errors) {
-                //TODO: Not sure what to do here.
-            })
-
+            if (showFile === true) {
+                location.href = url;
+            }
+            else {
+                window.open(url);
+            }
         }
 
         return fac;
