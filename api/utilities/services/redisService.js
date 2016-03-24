@@ -5,7 +5,7 @@ var md5 = require('MD5');
 
 module.exports = {
     getByKey:function(key, callback) {
-        redis.get(key, function(err, result) {
+        redis.get(key.toString(), function(err, result) {
             if (result) {
                 callback(err, JSON.parse(result))
             }
@@ -15,7 +15,7 @@ module.exports = {
         });
     },
     get:function(key, callback) {
-        redis.get(md5(key), function(err, result) {
+        redis.get(md5(key.toString()), function(err, result) {
             if (result) {
                 callback(err, JSON.parse(result))
             }
@@ -25,7 +25,7 @@ module.exports = {
         });
     },
     set:function(key, result, expireInMinutes) {
-        redis.set(md5(key), JSON.stringify(result));
-        redis.expire(md5(key), expireInMinutes * 60);
+        redis.set(md5(key.toString()), JSON.stringify(result));
+        redis.expire(md5(key.toString()), expireInMinutes * 60);
     }
 }

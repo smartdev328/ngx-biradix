@@ -76,9 +76,9 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                         x.forEach(function(y)
                         {
                             if (y.date) {
-                                console.log(y.date);
+                                //console.log(y.date);
                                 y.date = moment(y.date.toString()).tz(tz).format("MMM DD")
-                                console.log(tz,y.date);
+                                //console.log(tz,y.date);
                             }
 
                             if (typeof y.lastmonthnersqftpercent == "undefined") {
@@ -90,6 +90,11 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                             }
                         })
                     })
+
+                    //sort the list by subject alphabetically;
+                    final = _.sortBy(final, function(x) {
+                        return x[0].name.toLowerCase();
+                    });
 
                     var email = {
                         to: data.user.email,
