@@ -15,8 +15,6 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
             var p = properties[0];
             var fileName = p.name.replace(/ /g, "_");
 
-            console.log(data.full);
-
             if (data.full) {
                 fileName += '_and_Comps';
             }

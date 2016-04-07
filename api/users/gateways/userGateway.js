@@ -60,9 +60,9 @@ userRoutes.put('/me/settings', function (req, res) {
 
 userRoutes.get('/refreshToken', function (req, res) {
     UserService.getUserById(req.user._id, function(err, usr) {
-            if (err) {
-                return res.status(200).json(err);
-            }
+        if (err) {
+            return res.status(200).json(err);
+        }
 
         if (!usr) {
             return res.status(401).json("Unauthorized request");
@@ -258,6 +258,7 @@ module.exports = userRoutes;
 function getToken(usr, res) {
     UserService.getFullUser(usr, function(resp) {
         resp.user.version = packages.version;
+        delete resp.operator;
         res.status(200).json(resp);
         resp = null;
         usr = null;

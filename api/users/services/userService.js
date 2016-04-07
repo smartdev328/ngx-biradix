@@ -13,6 +13,7 @@ var AuditService = require('../../audit/services/auditService')
 var localCacheService = require('../../utilities/services/localcacheService')
 var cronService = require('../../utilities/services/cronService')
 var md5 = require('md5');
+var redisService = require('../../utilities/services/redisService')
 
 module.exports = {
     defaultSettings: function(user) {
@@ -607,7 +608,15 @@ function getFullUser(usr, callback) {
                 defaultSettings(usrobj);
 
                 var minutesToExpire = 60;
-                var token = jwt.sign(usrobj, settings.SECRET, {expiresIn: minutesToExpire * 60});
+
+                var key = md5(JSON.stringify(usrobj));
+                redisService.set(JSON.stringify(usrobj),usrobj,60);
+
+                var token = jwt.sign(key, settings.SECRET, {expiresIn: minutesToExpire * 60});
+
+
+
+
 
                 var operator = _.clone(usrobj);
 

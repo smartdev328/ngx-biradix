@@ -104,6 +104,8 @@ define([
                 if ($cookies.get("pr.s")) {
                     $scope.showProfile = JSON.parse($cookies.get("pr.s"));
                 }
+
+                $scope.loadProperty($scope.propertyId)
             }
         });
 
@@ -253,8 +255,6 @@ define([
 
             return $(window).width()
         }
-
-        $scope.loadProperty($scope.propertyId)
 
         $scope.$on('data.reload', function(event, args) {
             $scope.loadProperty($scope.propertyId)

@@ -71,6 +71,14 @@ define([
         if ($cookies.get("pr.s")) {
             $scope.showProfile = JSON.parse($cookies.get("pr.s"));
         }
+
+        var me = $rootScope.$watch("me", function(x) {
+            if ($rootScope.me) {
+                me();
+                $scope.loadProperty($stateParams.id)
+            }
+        });
+
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
                 $scope.localLoading = false;
@@ -142,7 +150,6 @@ define([
             }
         };
 
-        $scope.loadProperty($stateParams.id);
 
         $scope.setRenderable = function() {
             if (!phantom) {

@@ -4,6 +4,7 @@ var bodyParser = require('body-parser')
 var expressJwt = require('express-jwt')
 var cookieParser = require('cookie-parser')
 var compression = require('compression')
+var redisService = require('../api/utilities/services/redisService')
 
 module.exports = {
         init: function (app, domain) {
@@ -30,12 +31,23 @@ module.exports = {
                     secret: settings.SECRET,
                     credentialsRequired: true,
                     getToken: function fromHeaderOrQuerystring (req) {
+                        var token = null;
                         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-                            return req.headers.authorization.split(' ')[1];
+                            token = req.headers.authorization.split(' ')[1];
                         } else if (req.query && req.query.token) {
-                            return req.query.token;
+                            token =  req.query.token;
                         }
-                        return null;
+
+                        return token;
+                        //if (token) {
+                        //    redisService.getByKey(token, function(err, result) {
+                        //        return  result;
+                        //    });
+                        //}
+                        //else {
+                        //    return null;
+                        //}
+
                     }
                 }
             )
@@ -65,10 +77,21 @@ module.exports = {
 
             //Middleware to insure session token is not hi-jacked by looking at user agent
             app.use(function (req, res, next) {
-                if (req.user && !req.user.active) {
-                    return res.status(401).json('Unauthorized request');
+                if (req.user) {
+                    redisService.getByKey(req.user, function(err, result) {
+                        req.user = result;
+
+                        if (!req.user || !req.user.active) {
+                            return res.status(401).json('Unauthorized request');
+                        }
+                        next();
+                    });
+
+                } else {
+                    next();
                 }
-                next();
+
+
             });
 
              //Parse body into req for form submission
