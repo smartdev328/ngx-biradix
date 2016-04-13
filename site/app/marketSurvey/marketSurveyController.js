@@ -5,7 +5,7 @@ define([
     '../../components/dialog/module.js'
 ], function (app) {
      app.controller
-        ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid) {
+        ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService) {
 
             $scope.editableSurveyId = surveyid;
 
@@ -16,6 +16,10 @@ define([
             $scope.cancel = function () {
                 $modalInstance.dismiss('cancel');
             };
+
+            $scope.toggleConcessions = function() {
+                $authService.updateSettings($rootScope.me.settings);
+            }
 
             $propertyService.search({
                 limit: 1,
@@ -78,7 +82,19 @@ define([
 
             });
 
+            $scope.updateconcessions = function(row) {
+                row.concessions12 = row.concessions / 12;
+            }
+
+            $scope.updateconcessions12 = function(row) {
+                row.concessions = row.concessions12 * 12;
+            }
+
             $scope.doneLoading = function() {
+
+                $scope.survey.floorplans.forEach(function(fp) {
+                    fp.concessions12 = fp.concessions / 12;
+                })
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
                 $scope.localLoading = true;

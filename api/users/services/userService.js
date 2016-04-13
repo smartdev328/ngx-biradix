@@ -479,6 +479,15 @@ module.exports = {
                 leasesDescription = "Off => On";
             }
 
+            var concessionsDescription = "";
+            if (usr.settings.monthlyConcessions == true && settings.monthlyConcessions == false) {
+                concessionsDescription = "On => Off";
+            }
+            else
+            if (usr.settings.monthlyConcessions == false && settings.monthlyConcessions == true) {
+                concessionsDescription = "Off => On";
+            }
+
             usr.settings = settings
             usr.markModified("settings.notifications");
             usr.markModified("settings.tz");
@@ -500,6 +509,10 @@ module.exports = {
 
                 if (leasesDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_leased', description: leasesDescription, context: context})
+                }
+
+                if (concessionsDescription) {
+                    AuditService.create({operator: usr, user: usr, type: 'user_concessions', description: concessionsDescription, context: context})
                 }
                 callback(null,usr.settings);
 
@@ -661,6 +674,7 @@ function getSysemUser (callback) {
 }
 
 function defaultSettings(user) {
+    user.settings.monthlyConcessions = user.settings.monthlyConcessions || false;
     user.settings.showLeases = user.settings.showLeases || false;
     user.settings.notifications = user.settings.notifications || {};
     user.settings.notifications.cron = user.settings.notifications.cron || "* * * * 2"
