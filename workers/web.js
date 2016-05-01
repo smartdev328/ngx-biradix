@@ -1,3 +1,10 @@
+//var moment = require("moment");
+//var end = moment("5/2/2016 3:00").subtract(5,"weeks").endOf("week").add(1,"day").utcOffset(-480);
+//var start = moment("5/2/2016 3:00").subtract(5,"weeks").startOf("week").add(1,"day").utcOffset(-480);
+//console.log(start.format(),end.format());
+//process.exit();
+//return;
+
 require('newrelic');
 var settings = require('../config/settings')
 var errors = require("../config/error")
@@ -114,6 +121,8 @@ d.run(function() {
                 //        })
                 //
                 //}
+
+
 
             })
         };

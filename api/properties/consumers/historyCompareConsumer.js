@@ -54,8 +54,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
         ,
         lastmonth: function(callbackp) {
 
-            var end = moment().add(-1,"month").endOf('month').utcOffset(-480);
-            var start = moment().add(-1,"month").startOf('month').utcOffset(-480);
+            //var end = moment().add(-1,"month").endOf('month').utcOffset(-480);
+            //var start = moment().add(-1,"month").startOf('month').utcOffset(-480);
+
+            var end = moment().subtract(5,"weeks").endOf("week").add(1,"day").utcOffset(-480);
+            var start = moment().subtract(5,"weeks").startOf("week").add(1,"day").utcOffset(-480);
 
             var options = {skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format()};
             var req = {user: data.user, params: {id: data.id}, body: options}
