@@ -58,19 +58,27 @@
                  popover-placement="left"
                  popover="Enter the current gross floor-plan rent, before any concessions or discounts. If the floor plan has a range, please enter minimum price."
                         ></i></th>
-                <th  ng-if="!$root.me.settings.monthlyConcessions" style="white-space: nowrap;text-align:left" colspan="2">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                <th  ng-if="!$root.me.settings.monthlyConcessions" style="white-space: nowrap;text-align:center">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
                  popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
                         ></i><br>
-                <span style="font-size:8pt;font-weight: normal">(One Time)</span></th>
+                <span style="font-size:8pt;font-weight: normal">(Total)</span></th>
 
-                <th  ng-if="$root.me.settings.monthlyConcessions" style="white-space: nowrap;text-align:left" colspan="2">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                <th  ng-if="$root.me.settings.monthlyConcessions" style="white-space: nowrap;text-align:center">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                                                                                                                                      popover-trigger="mouseenter"
+                                                                                                                                      popover-placement="left"
+                                                                                                                                      popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
+                ></i><br>
+                    <span style="font-size:8pt;font-weight: normal">(One Time)</span></th>
+
+                <th  ng-if="$root.me.settings.monthlyConcessions" style="white-space: nowrap;text-align:center">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                                                                                         popover-trigger="mouseenter"
                                                                                         popover-placement="left"
                                                                                         popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
                 ></i><br>
                     <span style="font-size:8pt;font-weight: normal">(Monthly)</span></th>
+                <th>&nbsp;</th>
             </tr>
 
             <tr ng-repeat="row in survey.floorplans">
@@ -87,22 +95,24 @@
                     {{row.sqft}}
                 </td>
                 <td style="white-space: nowrap;text-align:right;">
-                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()"></span>
-                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.rent}}</div>
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()">
                 </td>
                 <td style="white-space: nowrap;text-align:right" ng-if="!$root.me.settings.monthlyConcessions">
-                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions" ng-change="updateconcessions(row)" input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()"></span>
-                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions | number : 0}}</div>
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions" input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()">
                 </td>
                 <td style="white-space: nowrap;text-align:right" ng-if="$root.me.settings.monthlyConcessions">
-                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions12" ng-change="updateconcessions12(row)"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()"></span>
-                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions12 | number : 2}}</div>
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions1" input-mask="9{1,5}" ng-enter="next(row,'concessions1-' + row.id)" id="concessions1-{{row.id}}" onclick="select()">
+                </td>
+                <td style="white-space: nowrap;text-align:right" ng-if="$root.me.settings.monthlyConcessions">
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions12" input-mask="9{1,5}" ng-enter="next(row,'concessions12-' + row.id)" id="concessions12-{{row.id}}" onclick="select()">
                 </td>
                 <td>
-                    <div style="width:46px"><a href ng-click="next(row,'concessions-' + row.id)" ng-if="!row.updated">Update</a></div>
-                    <div style="width:46px"><a href ng-click="undo(row)" ng-if="row.updated">Undo</a></div>
+                    <div style="width:46px"><a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo"></i></a></div>
                 </td>
             </tr>
+
+            </table>
+        <table class="table table-condensed table-striped table-hover survey-values" style="margin-bottom:10px">
             <tr>
                 <td>
 
@@ -115,12 +125,10 @@
                     <b>Occupancy %</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.occupancyupdated"><input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()"></span>
-                    <div ng-if="survey.occupancyupdated" style="width:58px;text-align:right">{{survey.occupancy}}%</div>
+                    <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('occupancy', 'occupancy')" ng-if="!survey.occupancyupdated">Update</a>
-                    <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated">Undo</a>
+                    <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo"></i></a>
                 </td>
             </tr>
             <tr ng-if="$root.me.settings.showLeases">
@@ -135,12 +143,10 @@
                     <b>Leased %</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.leasedupdated"><input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()"></span>
-                    <div ng-if="survey.leasedupdated" style="width:58px;text-align:right">{{survey.leased}}%</div>
+                    <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('leased', 'occupancy')" ng-if="!survey.leasedupdated">Update</a>
-                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated">Undo</a>
+                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo"></i></a>
                 </td>
             </tr>
             <tr>
@@ -155,12 +161,10 @@
                     <b>Traffic/Week</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.trafficupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()"></span>
-                    <div ng-if="survey.trafficupdated" style="width:58px;text-align:right">{{survey.weeklytraffic}}</div>
+                    <input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('traffic','traffic')" ng-if="!survey.trafficupdated">Update</a>
-                    <a href ng-click="undo('traffic')" ng-if="survey.trafficupdated">Undo</a>
+                    <a href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo"></i></a>
                 </td>
             </tr>
             <tr>
@@ -175,12 +179,10 @@
                     <b>Leases/Week</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.leasesupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()"></span>
-                    <div ng-if="survey.leasesupdated" style="width:58px;text-align:right;">{{survey.weeklyleases}}</div>
+                    <input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('leases','leases')" ng-if="!survey.leasesupdated">Update</a>
-                    <a href ng-click="undo('leases')" ng-if="survey.leasesupdated">Undo</a>
+                    <a href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo"></i></a>
                 </td>
             </tr>
             </tbody>

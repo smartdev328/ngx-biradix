@@ -82,19 +82,9 @@ define([
 
             });
 
-            $scope.updateconcessions = function(row) {
-                row.concessions12 = row.concessions / 12;
-            }
-
-            $scope.updateconcessions12 = function(row) {
-                row.concessions = row.concessions12 * 12;
-            }
 
             $scope.doneLoading = function() {
 
-                $scope.survey.floorplans.forEach(function(fp) {
-                    fp.concessions12 = fp.concessions / 12;
-                })
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
                 $scope.localLoading = true;
@@ -133,7 +123,7 @@ define([
                                 }
 
                             }
-                            $scope.survey.leasedupdated = state;
+                            $scope.survey.leasedupdated = $scope.survey.leased != $scope.originalSurvey.leased;
                             break;
                         case "occupancy":
                             if (!state) {
@@ -169,7 +159,7 @@ define([
                                     }
                                 }
                             }
-                            $scope.survey.occupancyupdated = state;
+                            $scope.survey.occupancyupdated = $scope.survey.occupancy != $scope.originalSurvey.occupancy;;
                             break;
                         case "traffic":
 
@@ -199,7 +189,7 @@ define([
                                 }
                             }
 
-                            $scope.survey.trafficupdated = state;
+                            $scope.survey.trafficupdated = $scope.survey.weeklytraffic != $scope.originalSurvey.weeklytraffic;
                             break;
                         case "leases":
 
@@ -229,7 +219,7 @@ define([
                                 }
                             }
 
-                            $scope.survey.leasesupdated = state;
+                            $scope.survey.leasesupdated = $scope.survey.weeklyleases != $scope.originalSurvey.weeklyleases;
                             break;
 
                     }
@@ -290,7 +280,7 @@ define([
                         }
                     }
 
-                    fp.updated = state;
+                    fp.updated = old.rent != fp.rent || old.concessions != fp.concessions;
                 }
 
             }
