@@ -28,23 +28,17 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Market Survey: {{property.name}}</h2>
     </div>
-    <div class="modal-body" style="padding:0px 14px 14px 14px">
-        <div ng-show="hasContact" style="color:#777">
+    <div class="modal-body" style="padding:14px">
+        <div class="alert alert-info" ng-show="hasContact">
             <b>Contact: </b>
             <span ng-show="hasName"> {{property.contactName}}</span>
             <span ng-show="hasEmail"> {{property.contactEmail}}</span>
             <span ng-show="hasPhone"> {{property.phone}}</span>
         </div>
 
-        <hr style="margin:14px 0px;border-color:#4460a9">
-
         <div class="alert alert-warning" ng-if="editMode">
             <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
         </div>
-
-        <toggle-switch checked="$root.me.settings.monthlyConcessions" click-fn="toggleConcessions()"></toggle-switch>&nbsp;&nbsp;Detailed Concessions<br>
-        <br>
-
 
         <table class="table table-condensed table-striped table-hover survey-values" style="margin-bottom:10px">
             <tbody>
@@ -58,19 +52,11 @@
                  popover-placement="left"
                  popover="Enter the current gross floor-plan rent, before any concessions or discounts. If the floor plan has a range, please enter minimum price."
                         ></i></th>
-                <th  ng-if="!$root.me.settings.monthlyConcessions" style="white-space: nowrap;text-align:left" colspan="2">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                <th style="white-space: nowrap;text-align:left" colspan="2">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
                  popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
-                        ></i><br>
-                <span style="font-size:8pt;font-weight: normal">(One Time)</span></th>
-
-                <th  ng-if="$root.me.settings.monthlyConcessions" style="white-space: nowrap;text-align:left" colspan="2">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
-                                                                                        popover-trigger="mouseenter"
-                                                                                        popover-placement="left"
-                                                                                        popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
-                ></i><br>
-                    <span style="font-size:8pt;font-weight: normal">(Monthly)</span></th>
+                        ></i></th>
             </tr>
 
             <tr ng-repeat="row in survey.floorplans">
@@ -90,13 +76,9 @@
                     <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()"></span>
                     <div ng-if="row.updated" style="width:58px;text-align:right">${{row.rent}}</div>
                 </td>
-                <td style="white-space: nowrap;text-align:right" ng-if="!$root.me.settings.monthlyConcessions">
-                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions" ng-change="updateconcessions(row)" input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()"></span>
-                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions | number : 0}}</div>
-                </td>
-                <td style="white-space: nowrap;text-align:right" ng-if="$root.me.settings.monthlyConcessions">
-                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions12" ng-change="updateconcessions12(row)"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()"></span>
-                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions12 | number : 2}}</div>
+                <td style="white-space: nowrap;text-align:right">
+                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()"></span>
+                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions}}</div>
                 </td>
                 <td>
                     <div style="width:46px"><a href ng-click="next(row,'concessions-' + row.id)" ng-if="!row.updated">Update</a></div>
