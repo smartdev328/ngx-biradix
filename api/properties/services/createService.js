@@ -119,7 +119,10 @@ module.exports = {
                         }
 
                         //find all subjects and their comp links to this comp and update with new floorplans asynchornously
+
+
                         if (property.addedFloorplans.length > 0) {
+                            property.floorplans = property.floorplans.map(function(x) {return x.id.toString()})
                             CompsService.getSubjects(prop._id, {select: "_id name comps"}, function (err, subjects) {
                                 async.eachLimit(subjects, 10, function(subject, callbackp){
                                     //find the comp link inside all the subject comps and grab its floorplan links
@@ -127,6 +130,13 @@ module.exports = {
 
                                     comp.floorplans = comp.floorplans || [];
                                     comp.floorplans = comp.floorplans.concat(property.addedFloorplans);
+
+
+                                    //remvoe any orphan comp floorplans that dont exist in property anymore
+                                    _.remove(comp.floorplans, function(fp) {
+                                        return property.floorplans.indexOf(fp.toString()) == -1;
+                                    })
+                                    //console.log(comp.floorplans, property.floorplans);
 
                                     PropertyService.saveCompLink(operator, context, null, subject._id, prop._id, comp.floorplans, function(err, link) {
                                         callbackp(err, link)
