@@ -82,9 +82,19 @@ define([
 
             });
 
+            $scope.updateconcessions = function(row) {
+                row.concessions12 = row.concessions / 12;
+            }
+
+            $scope.updateconcessions12 = function(row) {
+                row.concessions = row.concessions12 * 12;
+            }
 
             $scope.doneLoading = function() {
 
+                $scope.survey.floorplans.forEach(function(fp) {
+                    fp.concessions12 = fp.concessions / 12;
+                })
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
                 $scope.localLoading = true;
@@ -123,7 +133,7 @@ define([
                                 }
 
                             }
-                            $scope.survey.leasedupdated = $scope.survey.leased != $scope.originalSurvey.leased;
+                            $scope.survey.leasedupdated = state;
                             break;
                         case "occupancy":
                             if (!state) {
@@ -159,7 +169,7 @@ define([
                                     }
                                 }
                             }
-                            $scope.survey.occupancyupdated = $scope.survey.occupancy != $scope.originalSurvey.occupancy;;
+                            $scope.survey.occupancyupdated = state;
                             break;
                         case "traffic":
 
@@ -189,7 +199,7 @@ define([
                                 }
                             }
 
-                            $scope.survey.trafficupdated = $scope.survey.weeklytraffic != $scope.originalSurvey.weeklytraffic;
+                            $scope.survey.trafficupdated = state;
                             break;
                         case "leases":
 
@@ -219,7 +229,7 @@ define([
                                 }
                             }
 
-                            $scope.survey.leasesupdated = $scope.survey.weeklyleases != $scope.originalSurvey.weeklyleases;
+                            $scope.survey.leasesupdated = state;
                             break;
 
                     }
@@ -280,7 +290,7 @@ define([
                         }
                     }
 
-                    fp.updated = old.rent != fp.rent || old.concessions != fp.concessions;
+                    fp.updated = state;
                 }
 
             }
