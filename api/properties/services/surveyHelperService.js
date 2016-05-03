@@ -166,9 +166,9 @@ var  getSurveyStats = function(floorplans, survey, links, hide) {
     });
 
     if (totUnits > 0) {
-        survey.sqft = Math.round(_.sum(fps, function (fp) {
+        survey.sqft = _.sum(fps, function (fp) {
                 return (fp.sqft) * fp.units
-            }) / totUnits);
+            }) / totUnits;
         survey.rent = _.sum(fps, function (fp) {
                 return (fp.rent) * fp.units
             }) / totUnits
@@ -180,6 +180,7 @@ var  getSurveyStats = function(floorplans, survey, links, hide) {
         survey.mersqft = Math.round(survey.rent / survey.sqft * 100) / 100
         survey.ner = Math.round(survey.ner);
         survey.rent = Math.round(survey.rent);
+        survey.sqft = Math.round(survey.sqft);
         survey.concessions = Math.round(survey.concessions);
     }
 }
