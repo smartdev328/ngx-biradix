@@ -31,7 +31,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
             var final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
 
-                var key = "not-" + id;
+                var key = "nots-" + id;
 
                 redisService.get(key, function(err, result) {
                     if (result && settings.HEROKU_APP == "biradixplatform-prod") {
