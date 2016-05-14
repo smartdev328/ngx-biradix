@@ -25,7 +25,7 @@ routes.get('/jasmine', function(req, res) {
 });
 
 routes.get('/addorg', function(req, res) {
-    var org = {name: "Inland Group", subdomain: 'inlandgroup', logoBig: 'inlandgroup.png', logoSmall: 'inlandgroup-small.png'}
+    var org = {name: "Picerne", subdomain: 'picerne', logoBig: 'picerne.png', logoSmall: 'picerne-small.png'}
 
     OrgService.read(function(err, orgs) {
         if (_.find(orgs, function(x) {return x.subdomain == org.subdomain})) {
