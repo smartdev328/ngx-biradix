@@ -1,7 +1,7 @@
 'use strict';
 define([
     'app',
-    phantom ? 'empty' : 'async!//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places'
+    phantom ? 'empty' : 'async!//maps.googleapis.com/maps/api/js?key=AIzaSyDSPRIxjN2eQGgXzcDVXHemAG5Lf9GVdgk&v=3.exp&libraries=places'
 ], function (app) {
     app.directive('googleMap', function () {
         return {

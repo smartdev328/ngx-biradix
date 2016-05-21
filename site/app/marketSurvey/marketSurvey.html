@@ -28,17 +28,22 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Market Survey: {{property.name}}</h2>
     </div>
-    <div class="modal-body" style="padding:14px">
-        <div class="alert alert-info" ng-show="hasContact">
+    <div class="modal-body" style="padding:0px 14px 14px 14px">
+        <div ng-show="hasContact" style="color:#777">
             <b>Contact: </b>
             <span ng-show="hasName"> {{property.contactName}}</span>
             <span ng-show="hasEmail"> {{property.contactEmail}}</span>
             <span ng-show="hasPhone"> {{property.phone}}</span>
         </div>
 
+        <hr style="margin:14px 0px;border-color:#4460a9">
+
         <div class="alert alert-warning" ng-if="editMode">
             <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
         </div>
+
+        <toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Show Notes<br>
+        <br>
 
         <table class="table table-condensed table-striped table-hover survey-values" style="margin-bottom:10px">
             <tbody>

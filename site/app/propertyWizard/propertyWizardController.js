@@ -2,7 +2,7 @@
 define([
     'app',
     '../../components/inputmask/module.js',
-    'async!//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places',
+    'async!//maps.googleapis.com/maps/api/js?key=AIzaSyDSPRIxjN2eQGgXzcDVXHemAG5Lf9GVdgk&v=3.exp&libraries=places',
     '../../components/dialog/module.js',
     '../../services/amenityService.js'
 ], function (app) {
