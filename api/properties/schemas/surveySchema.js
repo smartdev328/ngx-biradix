@@ -19,7 +19,8 @@ var s = new Schema({
     floorplans: Array,
     exclusions: Array,
     location_amenities: Array,
-    community_amenities: Array
+    community_amenities: Array,
+    notes: String
 });
 
 module.exports = mongoose.model('Survey', s);

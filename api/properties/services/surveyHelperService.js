@@ -45,7 +45,8 @@ module.exports = {
                         leased: survey.leased,
                         ner: ner,
                         weeklyleases: survey.weeklyleases,
-                        weeklytraffic: survey.weeklytraffic
+                        weeklytraffic: survey.weeklytraffic,
+                        notes: survey.notes
                     }
                     var query = {_id: propertyid};
                     var update = {survey: s};

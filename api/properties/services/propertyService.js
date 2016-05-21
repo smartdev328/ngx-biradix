@@ -462,9 +462,14 @@ module.exports = {
                 copy.leased = lastsurvey.leased;
                 copy.weeklyleases = lastsurvey.weeklyleases;
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
+                copy.notes = lastsurvey.notes;
 
 
                 var data = [{description: "Survey Date: ", date: lastsurvey.date, survey: copy}];
+
+                if (lastsurvey.notes !== survey.notes) {
+                    data.push({description: "Notes: " + (typeof lastsurvey.notes == 'undefined' || lastsurvey.notes == null || lastsurvey.notes == '' ? 'N/A' : lastsurvey.notes ) + " => " + (typeof survey.notes == 'undefined' || survey.notes == null || survey.notes == '' ? 'N/A' : survey.notes )})
+                }
 
                 if (lastsurvey.occupancy !== survey.occupancy) {
                     data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + survey.occupancy + "%"})
@@ -498,6 +503,7 @@ module.exports = {
                 lastsurvey.leased = survey.leased;
                 lastsurvey.weeklyleases = survey.weeklyleases;
                 lastsurvey.weeklytraffic = survey.weeklytraffic;
+                lastsurvey.notes = survey.notes;
 
                 lastsurvey.save(function (err, created) {
 
@@ -578,9 +584,14 @@ module.exports = {
             n.weeklytraffic = survey.weeklytraffic;
             n.date = survey.date || Date.now();
             n.exclusions = exclusions;
+            n.notes = survey.notes;
 
             var data = [{description: "Survey Date: ", date: n.date, id: n._id}];
 
+
+            if (lastsurvey.notes !== n.notes) {
+                data.push({description: "Notes: " + (typeof lastsurvey.notes == 'undefined' || lastsurvey.notes == null || lastsurvey.notes == '' ? 'N/A' : lastsurvey.notes ) + " => " + (typeof n.notes == 'undefined' || n.notes == null || n.notes == '' ? 'N/A' : n.notes )})
+            }
 
             if (lastsurvey.occupancy !== n.occupancy) {
                 data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + n.occupancy + "%"})

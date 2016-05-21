@@ -102,6 +102,13 @@ module.exports = {
 
                     //console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
 
+                    if (all.comp.p.survey && all.comp.p.survey.notes && all.comp.p.survey.notes.length > 0) {
+                        if ((all.comp.p.notes || '') != '') {
+                            all.comp.p.notes += "\r\n\r\n";
+                        }
+                        all.comp.p.notes += "Latest Market Survey notes: " + all.comp.p.survey.notes;
+                    }
+
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner})
 
                     for (var s in all) {

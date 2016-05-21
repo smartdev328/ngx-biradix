@@ -43,8 +43,10 @@
         </div>
 
         <toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Show Notes<br>
-        <br>
-
+        <div style="margin-top:10px"></div>
+        <div ng-if="settings.showNotes">
+        <textarea class="form-control" placeholder="Type notes here" ng-model="survey.notes"></textarea><br>
+        </div>
         <table class="table table-condensed table-striped table-hover survey-values" style="margin-bottom:10px">
             <tbody>
             <tr class="thead">

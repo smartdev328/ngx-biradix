@@ -8,6 +8,8 @@ define([
         ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid) {
 
             $scope.editableSurveyId = surveyid;
+            $scope.settings = {showNotes : false};
+
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -53,6 +55,8 @@ define([
                             $scope.survey.occupancy = s.occupancy;
                             $scope.survey.weeklytraffic = s.weeklytraffic
                             $scope.survey.weeklyleases = s.weeklyleases
+                            $scope.survey.notes = s.notes;
+                            $scope.settings.showNotes = (s.notes || '') != '';
 
                             $scope.survey.floorplans.forEach(function(fp) {
                                 var old = _.find(s.floorplans, function(ofp) {return ofp.id.toString() == fp.id.toString()})
