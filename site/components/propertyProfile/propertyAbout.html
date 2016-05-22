@@ -7,5 +7,9 @@
 <span ng-show="property.hasWebsite">
     <b>Website:</b> <a href="{{property.website}}" target="_blank">{{property.website.replace("http://",'')}}</a>&nbsp;&nbsp;
 </span>
-<div ng-show="property.hasContact && !poperty.hasNotes"><br></div>
+<div ng-show="property.hasContact"><br></div>
 <div ng-show="property.hasNotes" ng-bind-html="property.notes | sanitize"></div>
+<span ng-show="property.hasSurveyNotes">
+    <div ng-show="property.hasNotes"><br></div>
+    <b>Latest Market Survey notes:</b> <span ng-bind-html="property.survey.notes | sanitize"></span>
+</span>

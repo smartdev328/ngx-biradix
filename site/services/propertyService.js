@@ -334,9 +334,14 @@ define(['app'], function (app) {
             resp.property.hasName = resp.property.contactName && resp.property.contactName.length > 0;
             resp.property.hasEmail = resp.property.contactEmail && resp.property.contactEmail.length > 0;
             resp.property.hasWebsite = resp.property.website && resp.property.website.length > 0;
+            resp.property.hasSurveyNotes = resp.property.survey && resp.property.survey.notes && resp.property.survey.notes.length > 0;
             resp.property.hasNotes = resp.property.notes && resp.property.notes.length > 0;
             resp.property.hasContact = resp.property.hasName || resp.property.hasEmail || resp.property.hasWebsite;
             resp.property.notes = (resp.property.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+            if (resp.property.hasSurveyNotes) {
+                resp.property.survey.notes = (resp.property.survey.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
+            }
 
             resp.property.hasFees = false;
             if (resp.property.fees) {
