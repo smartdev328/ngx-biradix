@@ -9,6 +9,10 @@ module.exports = (function() {
 
     var ui = express.Router();
 
+    ui.get('/d/:id', function(req,res) {
+        return res.redirect('/#/login?r=%2Fdashboard%3Fid=' + req.params.id);
+    })
+
     ui.get('/u', function(req,res) {
         return res.redirect('/#/login?r=%2FupdateProfile%3Fnotifications=1');
     })

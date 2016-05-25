@@ -59,6 +59,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                     //console.log(final);
                     var logo ='https://' + data.user.org.subdomain + ".biradix.com/images/organizations/" + data.user.org.logoBig;
                     var unsub ='https://' + data.user.org.subdomain + ".biradix.com/u";
+                    var dashboardBase ='https://' + data.user.org.subdomain + ".biradix.com/d/";
 
                     var cron = data.user.settings.notifications.cron.split(" ");
 
@@ -107,7 +108,8 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                             data: final,
                             unsub: unsub,
                             when: when,
-                            showLeases: data.showLeases
+                            showLeases: data.showLeases,
+                            dashboardBase : dashboardBase
                         }
 
                     }

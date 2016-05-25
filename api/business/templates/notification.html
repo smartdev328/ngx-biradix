@@ -51,7 +51,11 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         style="font-weight:bold"
         {% endif %}>
         <Td style="{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {% if forloop.first %}
+            <A href="{{dashboardBase}}{{row._id}}" style="color: #4460a9;text-decoration:none">{{row.name}}</A>
+            {%else%}
             {{row.name}}
+            {% endif %}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.occupancy}}%

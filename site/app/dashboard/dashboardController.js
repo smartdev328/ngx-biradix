@@ -12,7 +12,7 @@ define([
     '../../services/auditService',
 ], function (app,jstz) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr','$stateParams', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr,$stateParams) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -182,6 +182,11 @@ define([
 
                     var id = $rootScope.me.settings.defaultPropertyId;
 
+                    if($stateParams.id) {
+                        id = $stateParams.id;
+                        $scope.selectedProperty = id;
+                    }
+
 
                     if (!$scope.myProperties || $scope.myProperties.length == 0) {
                         id = null;
@@ -203,6 +208,9 @@ define([
 
                     if ($scope.selectedProperty) {
                         $scope.loadProperty($scope.selectedProperty._id)
+                        if($stateParams.id) {
+                            $scope.changeProperty();
+                        }
                     } else {
                         $scope.localLoading = true;
                     }

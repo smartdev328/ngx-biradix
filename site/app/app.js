@@ -110,7 +110,7 @@ define([
                 resolve: {get : function($q) {return resolve($q, 'passwordOff/resetController')}}
             })
             .state('dashboard', {
-                url: "/dashboard",
+                url: "/dashboard?id",
                 views: {
                     "loggedInView": {
                         templateUrl: "app/dashboard/dashboard.html?bust=" + version ,
