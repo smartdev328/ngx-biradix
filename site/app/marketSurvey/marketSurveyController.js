@@ -5,7 +5,7 @@ define([
     '../../components/dialog/module.js'
 ], function (app) {
      app.controller
-        ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid) {
+        ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false};
@@ -18,6 +18,10 @@ define([
             $scope.cancel = function () {
                 $modalInstance.dismiss('cancel');
             };
+
+            $scope.toggleConcessions = function() {
+                $authService.updateSettings($rootScope.me.settings);
+            }
 
             $propertyService.search({
                 limit: 1,
@@ -34,13 +38,13 @@ define([
                 $scope.survey = {floorplans: $scope.property.floorplans, location_amenities: $scope.property.location_amenities, community_amenities: $scope.property.community_amenities}
 
                 $scope.survey.floorplans.forEach(function(fp) {
-                    fp.rent = fp.rent || 0;
-                    fp.concessions = fp.concessions || 0;
+                    fp.rent = fp.rent || ''
+                    fp.concessions = fp.concessions || '';
                 })
-                $scope.survey.leased = $scope.survey.leased || 0;
-                $scope.survey.occupancy = $scope.survey.occupancy || 0;
-                $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || 0;
-                $scope.survey.weeklyleases = $scope.survey.weeklyleases || 0;
+                $scope.survey.leased = $scope.survey.leased || '';
+                $scope.survey.occupancy = $scope.survey.occupancy || '';
+                $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || '';
+                $scope.survey.weeklyleases = $scope.survey.weeklyleases || '';
 
                 if (!$scope.editableSurveyId && $scope.property.survey) {
                     $scope.editableSurveyId = $scope.property.survey.id;
@@ -120,8 +124,16 @@ define([
                                     return;
                                 }
 
+                                $scope.leasedWarning = false;
+                                if ($scope.originalSurvey.leased && $scope.originalSurvey.leased > 0 && $scope.survey.leased) {
+                                    var percent = Math.abs((parseInt($scope.survey.leased) - parseInt($scope.originalSurvey.leased)) / parseInt($scope.originalSurvey.leased) * 100);
+                                    if (percent >= 10) {
+                                        $scope.leasedWarning = true;
+                                    }
+                                }
+
                             }
-                            $scope.survey.leasedupdated = state;
+                            $scope.survey.leasedupdated = $scope.survey.leased != $scope.originalSurvey.leased;;
                             break;
                         case "occupancy":
                             if (!state) {
@@ -150,14 +162,15 @@ define([
                                     return;
                                 }
 
+                                $scope.occupancyWarning = false;
                                 if ($scope.originalSurvey.occupancy > 0) {
                                     var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
                                     if (percent >= 10) {
-                                        toastr.warning('<b>Warning:</b> The updated value has changed by over 10%');
+                                        $scope.occupancyWarning = true;
                                     }
                                 }
                             }
-                            $scope.survey.occupancyupdated = state;
+                            $scope.survey.occupancyupdated = $scope.survey.occupancy != $scope.originalSurvey.occupancy;;
                             break;
                         case "traffic":
 
@@ -187,7 +200,7 @@ define([
                                 }
                             }
 
-                            $scope.survey.trafficupdated = state;
+                            $scope.survey.trafficupdated = $scope.survey.weeklytraffic != $scope.originalSurvey.weeklytraffic;
                             break;
                         case "leases":
 
@@ -217,7 +230,7 @@ define([
                                 }
                             }
 
-                            $scope.survey.leasesupdated = state;
+                            $scope.survey.leasesupdated = $scope.survey.weeklyleases != $scope.originalSurvey.weeklyleases;
                             break;
 
                     }
@@ -228,6 +241,7 @@ define([
                     if (!state) {
                         fp.rent = old.rent;
                         fp.concessions = old.concessions;
+                        fp.warning = false;
 
                         window.setTimeout(function() {
                             $('#rent-' + fp.id)[0].focus();
@@ -235,8 +249,8 @@ define([
                         }, 300);
                     } else {
                         var er = "";
-                        if (fp.rent == null || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 0 ) {
-                            er = '<b>Warning:</b> Rent must be a positive number';
+                        if (fp.rent == null || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 1 ) {
+                            er = '<b>Warning:</b> Rent must be a positive number greater than 0';
                         }
                         else
                         if (fp.rent.toString().indexOf('.') > -1) {
@@ -270,15 +284,18 @@ define([
                             return;
                         }
 
+                        fp.warning = false;
                         if (old.rent > 0) {
-                            var percent = Math.abs((parseInt(fp.rent) - parseInt(old.rent)) / parseInt(old.rent) * 100);
+                            fp.ner = fp.rent - fp.concessions / 12;
+                            old.ner = old.rent - old.concessions / 12;
+                            var percent = Math.abs((parseInt(fp.ner) - parseInt(old.ner)) / parseInt(old.ner) * 100);
                             if (percent >= 10) {
-                                toastr.warning('<b>Warning:</b> The updated value has changed by over 10%');
+                                fp.warning = true;
                             }
                         }
                     }
 
-                    fp.updated = state;
+                    fp.updated = parseInt(fp.rent) != parseInt(old.rent) || parseInt(fp.concessions) != parseInt(old.concessions);
                 }
 
             }
@@ -322,7 +339,7 @@ define([
 
                 var tenpercent = false;
                 $scope.survey.floorplans.forEach(function(fp) {
-                    if (isSuccess && (!fp.updated || fp.rent === '' || fp.concessions === '')) {
+                    if (isSuccess && (fp.rent === '' || fp.concessions === '')) {
                         isSuccess = false;
                         error = 'Please update all fields.';
                     }
@@ -340,22 +357,18 @@ define([
 
                 })
 
-                if ($rootScope.me.settings.showLeased && isSuccess && (!$scope.survey.leasedupdated)) {
+
+                if (isSuccess && ($scope.survey.occupancy === '')) {
                     isSuccess = false;
                     error = 'Please update all fields.';
                 }
 
-                if (isSuccess && (!$scope.survey.occupancyupdated || $scope.survey.occupancy === '')) {
+                if (isSuccess && ($scope.survey.weeklytraffic === '')) {
                     isSuccess = false;
                     error = 'Please update all fields.';
                 }
 
-                if (isSuccess && (!$scope.survey.trafficupdated || $scope.survey.weeklytraffic === '')) {
-                    isSuccess = false;
-                    error = 'Please update all fields.';
-                }
-
-                if (isSuccess && (!$scope.survey.leasesupdated || $scope.survey.weeklyleases === '')) {
+                if (isSuccess && ($scope.survey.weeklyleases === '')) {
                     isSuccess = false;
                     error = 'Please update all fields.';
                 }

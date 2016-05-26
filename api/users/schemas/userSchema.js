@@ -31,7 +31,8 @@ var UserSchema = new Schema({
         defaultPropertyId: Schema.Types.ObjectId,
         notifications: {},
         showLeases: Boolean,
-        tz: String
+        tz: String,
+        monthlyConcessions: Boolean
     },
     passwordUpdated: Boolean,
     bounceReason: String

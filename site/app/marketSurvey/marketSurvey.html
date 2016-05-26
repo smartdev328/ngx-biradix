@@ -42,6 +42,7 @@
             <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
         </div>
 
+        <toggle-switch checked="$root.me.settings.monthlyConcessions" click-fn="toggleConcessions()"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
         <toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Market Survey Notes<br>
         <div style="margin-top:10px"></div>
         <div ng-if="settings.showNotes">
@@ -80,16 +81,20 @@
                     {{row.sqft}}
                 </td>
                 <td style="white-space: nowrap;text-align:right;">
-                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()"></span>
-                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.rent}}</div>
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()">
                 </td>
                 <td style="white-space: nowrap;text-align:right">
-                    <span ng-if="!row.updated">$<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()"></span>
-                    <div ng-if="row.updated" style="width:58px;text-align:right">${{row.concessions}}</div>
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()">
                 </td>
                 <td>
-                    <div style="width:46px"><a href ng-click="next(row,'concessions-' + row.id)" ng-if="!row.updated">Update</a></div>
-                    <div style="width:46px"><a href ng-click="undo(row)" ng-if="row.updated">Undo</a></div>
+                    <i ng-if="row.warning" class="fa fa-info-circle" style="color:orange"
+                       popover-trigger="mouseenter"
+                       popover-placement="left"
+                       popover="The Net Eff. Rent for this floor plan has changed by more than 10% since the last market survey"
+
+                    ></i>&nbsp;
+
+                    <a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
             </tr>
             <tr>
@@ -104,12 +109,16 @@
                     <b>Occupancy %</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.occupancyupdated"><input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()"></span>
-                    <div ng-if="survey.occupancyupdated" style="width:58px;text-align:right">{{survey.occupancy}}%</div>
+                    <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('occupancy', 'occupancy')" ng-if="!survey.occupancyupdated">Update</a>
-                    <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated">Undo</a>
+                    <i ng-if="occupancyWarning" class="fa fa-info-circle" style="color:orange"
+                       popover-trigger="mouseenter"
+                       popover-placement="left"
+                       popover="Occupancy % has changed by more than 10% since the last market survey"
+
+                    ></i>&nbsp;
+                    <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
             </tr>
             <tr ng-if="$root.me.settings.showLeases">
@@ -124,12 +133,16 @@
                     <b>Leased %</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.leasedupdated"><input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()"></span>
-                    <div ng-if="survey.leasedupdated" style="width:58px;text-align:right">{{survey.leased}}%</div>
+                    <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('leased', 'occupancy')" ng-if="!survey.leasedupdated">Update</a>
-                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated">Undo</a>
+                    <i ng-if="leasedWarning" class="fa fa-info-circle" style="color:orange"
+                       popover-trigger="mouseenter"
+                       popover-placement="left"
+                       popover="Leased % has changed by more than 10% since the last market survey"
+
+                    ></i>&nbsp;
+                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
             </tr>
             <tr>
@@ -144,12 +157,10 @@
                     <b>Traffic/Week</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.trafficupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()"></span>
-                    <div ng-if="survey.trafficupdated" style="width:58px;text-align:right">{{survey.weeklytraffic}}</div>
+                    <input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('traffic','traffic')" ng-if="!survey.trafficupdated">Update</a>
-                    <a href ng-click="undo('traffic')" ng-if="survey.trafficupdated">Undo</a>
+                    <a href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
             </tr>
             <tr>
@@ -164,12 +175,10 @@
                     <b>Leases/Week</b>
                 </td>
                 <td style="text-align: right">
-                    <span ng-if="!survey.leasesupdated"><input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()"></span>
-                    <div ng-if="survey.leasesupdated" style="width:58px;text-align:right;">{{survey.weeklyleases}}</div>
+                    <input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()">
                 </td>
                 <td>
-                    <a href ng-click="next('leases','leases')" ng-if="!survey.leasesupdated">Update</a>
-                    <a href ng-click="undo('leases')" ng-if="survey.leasesupdated">Undo</a>
+                    <a href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
             </tr>
             </tbody>
