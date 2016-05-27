@@ -8,14 +8,26 @@
         .modal-dialog {
             margin:0px !important;
         }
+
+        .occupancy TD B {
+            font-size:11px;
+        }
+
+        .occupancy .heading {
+            text-align: right;padding:0px 2px !important;
+        }
     }
 
     .survey-value {
-        width:54px;height:25px;display: inline;padding-left:2px;padding-right:3px;text-align:right;padding-top:2px
+        max-width:60px;min-width:54px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
     }
 
     .survey-values tr {
         height:36px
+    }
+
+    .occupancy .heading {
+        text-align: right;padding:0px 7px
     }
 
 </Style>
@@ -43,6 +55,7 @@
         </div>
 
         <toggle-switch checked="$root.me.settings.monthlyConcessions" click-fn="toggleConcessions()"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
+        <div class="visible-xs"></div>
         <toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Market Survey Notes<br>
         <div style="margin-top:10px"></div>
         <div ng-if="settings.showNotes">
@@ -53,18 +66,22 @@
             <tr class="thead">
                 <th><span class="hidden-xs">Type</span><span class="visible-xs">F.P.</span></th>
                 <th class="hidden-xs">Desc.</th>
-                <th style="text-align: center"><span class="hidden-xs">Units</span><span class="visible-xs">#</span></th>
-                <th style="text-align: center">Sqft</th>
-                <th style="white-space: nowrap;text-align:center">Rent <i class="fa fa-info-circle" style="font-size:12px"
+                <th style="text-align: right"><span class="hidden-xs">Units</span><span class="visible-xs">#</span></th>
+                <th style="text-align: right">Sqft</th>
+                <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-info-circle" style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
                  popover="Enter the current gross floor-plan rent, before any concessions or discounts. If the floor plan has a range, please enter minimum price."
                         ></i></th>
-                <th style="white-space: nowrap;text-align:left" colspan="2">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                <th style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
                  popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
-                        ></i></th>
+                        ></i><Br>
+                <div style="font-size:9pt;font-weight:normal;padding-right:25px">(Total)</div></th>
+                <th style="min-width:55px">
+
+                </th>
             </tr>
 
             <tr ng-repeat="row in survey.floorplans">
@@ -74,10 +91,10 @@
                 <td class="hidden-xs">
                     {{row.description}}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: right">
                     {{row.units}}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: right">
                     {{row.sqft}}
                 </td>
                 <td style="white-space: nowrap;text-align:right;">
@@ -86,7 +103,8 @@
                 <td style="white-space: nowrap;text-align:right">
                     $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()">
                 </td>
-                <td>
+                <td style="text-align: right">
+                    &nbsp;
                     <i ng-if="row.warning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
                        popover-placement="left"
@@ -94,95 +112,82 @@
 
                     ></i>&nbsp;
 
-                    <a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    <a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" tooltip="Undo"></i></a>&nbsp;
                 </td>
             </tr>
+
+            </tbody>
+            </table>
+
+            <Center>
+            <table class="survey-values occupancy">
+                <tbody>
             <tr>
-                <td>
-
-                </td>
-                <td class="hidden-xs">
-
-                </td>
-
-                <td colspan="3">
+                <td class="heading">
                     <b>Occupancy %</b>
                 </td>
                 <td style="text-align: right">
                     <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()">
                 </td>
-                <td>
+                <td style="width:40px;">
+                    &nbsp;
                     <i ng-if="occupancyWarning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
-                       popover-placement="left"
+                       popover-placement="top"
                        popover="Occupancy % has changed by more than 10% since the last market survey"
 
                     ></i>&nbsp;
                     <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
-            </tr>
-            <tr ng-if="$root.me.settings.showLeases">
-                <td>
 
-                </td>
-                <td class="hidden-xs">
-
-                </td>
-
-                <td colspan="3">
-                    <b>Leased %</b>
-                </td>
-                <td style="text-align: right">
-                    <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()">
-                </td>
-                <td>
-                    <i ng-if="leasedWarning" class="fa fa-info-circle" style="color:orange"
-                       popover-trigger="mouseenter"
-                       popover-placement="left"
-                       popover="Leased % has changed by more than 10% since the last market survey"
-
-                    ></i>&nbsp;
-                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-
-                </td>
-                <td class="hidden-xs">
-
-                </td>
-
-                <td colspan="3">
-                    <b>Traffic/Week</b>
+                <td class="heading">
+                    <b class="hidden-xs">Traffic/Week</b>
+                    <b class="visible-xs">Traffic/Wk</b>
                 </td>
                 <td style="text-align: right">
                     <input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()">
                 </td>
-                <td>
-                    <a href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                <td style="width:40px;">
+                    &nbsp;<a href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
             </tr>
             <tr>
-                <td>
 
+                <td class="heading">
+                    <b ng-if="$root.me.settings.showLeases">Leased %</b>
                 </td>
-                <td class="hidden-xs">
+                <td style="text-align: right">
+                    <input ng-if="$root.me.settings.showLeases" type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()">
+                </td>
+                <td style="width:40px;">
+                    <Div ng-if="$root.me.settings.showLeases">
+                        &nbsp;
+                    <i ng-if="leasedWarning" class="fa fa-info-circle" style="color:orange"
+                       popover-trigger="mouseenter"
+                       popover-placement="top"
+                       popover="Leased % has changed by more than 10% since the last market survey"
 
+                    ></i>&nbsp;
+                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    </Div>
                 </td>
 
-                <td colspan="3">
-                    <b>Leases/Week</b>
+                <td class="heading">
+                    <b class="hidden-xs">Leases/Week</b>
+                    <b class="visible-xs">Leases/Wk</b>
                 </td>
                 <td style="text-align: right">
                     <input type="number" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()">
                 </td>
-                <td>
-                    <a href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                <td style="width:40px;">
+                    &nbsp;<a href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                 </td>
             </tr>
+
             </tbody>
         </table>
+                </Center>
+        <Br>
         <div style="text-align: center">
         <button class="btn btn-warning contact-submit" ng-click="create()">Save Changes</button>
         </div>
