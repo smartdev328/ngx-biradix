@@ -31,7 +31,14 @@ module.exports = {
     },
 
     floorplanRentName: function(fp) {
-        return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/12)";
+
+        if (typeof fp.concessionsOneTime != 'undefined') {
+            return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total, $" + fp.concessionsOneTime + " cons/one-time, $" + fp.concessionsOneTime + " cons/monthly)";
+        }
+        else {
+            return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total)";
+        }
+
     },
     flattenAllCompFloorplans: function(comps, subjectid) {
         var subjcomps = _.find(comps,function(x) {return x._id.toString() == subjectid.toString()}).comps;

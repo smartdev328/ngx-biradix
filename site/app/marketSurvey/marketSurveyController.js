@@ -8,7 +8,7 @@ define([
         ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService) {
 
             $scope.editableSurveyId = surveyid;
-            $scope.settings = {showNotes : false};
+            $scope.settings = {showNotes : false, showDetailed: false};
 
 
             if (!$rootScope.loggedIn) {
@@ -20,70 +20,97 @@ define([
             };
 
             $scope.toggleConcessions = function() {
+                $rootScope.me.settings.monthlyConcessions = $scope.settings.showDetailed;
                 $authService.updateSettings($rootScope.me.settings);
+
+                if (!$scope.settings.showDetailed) {
+                    $scope.survey.floorplans.forEach(function(fp) {
+                        if (fp.concessionsOneTime && fp.concessionsMonthly
+                            && !isNaN(fp.concessionsOneTime)&& !isNaN(fp.concessionsMonthly)) {
+                            fp.concessions = fp.concessionsOneTime +  fp.concessionsMonthly * 12;
+                        }
+                    })
+                }
             }
 
-            $propertyService.search({
-                limit: 1,
-                permission: ['PropertyManage','CompManage'],
-                ids: [id],
-                select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id"
-            }).then(function (response) {
-                $scope.property = response.data.properties[0]
-                $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
-                $scope.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
-                $scope.hasPhone = $scope.property.phone && $scope.property.phone.length > 0;
-                $scope.hasContact = $scope.hasName || $scope.hasEmail || $scope.hasPhone;
+            var me = $rootScope.$watch("me", function(x) {
+                if ($rootScope.me) {
+                    me();
+                    $scope.settings.showDetailed = $rootScope.me.settings.monthlyConcessions;
 
-                $scope.survey = {floorplans: $scope.property.floorplans, location_amenities: $scope.property.location_amenities, community_amenities: $scope.property.community_amenities}
+                    $propertyService.search({
+                        limit: 1,
+                        permission: ['PropertyManage', 'CompManage'],
+                        ids: [id],
+                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id"
+                    }).then(function (response) {
+                        $scope.property = response.data.properties[0]
+                        $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
+                        $scope.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
+                        $scope.hasPhone = $scope.property.phone && $scope.property.phone.length > 0;
+                        $scope.hasContact = $scope.hasName || $scope.hasEmail || $scope.hasPhone;
 
-                $scope.survey.floorplans.forEach(function(fp) {
-                    fp.rent = fp.rent || ''
-                    fp.concessions = fp.concessions || '';
-                })
-                $scope.survey.leased = $scope.survey.leased || '';
-                $scope.survey.occupancy = $scope.survey.occupancy || '';
-                $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || '';
-                $scope.survey.weeklyleases = $scope.survey.weeklyleases || '';
-
-                if (!$scope.editableSurveyId && $scope.property.survey) {
-                    $scope.editableSurveyId = $scope.property.survey.id;
-                }
-
-                if ($scope.property.survey && $scope.editableSurveyId) {
-                    $propertyService.getSurvey(id,$scope.editableSurveyId).then(function(response) {
-                        var s= response.data.survey;
-                        if (s && s.length > 0) {
-                            s = s[0];
-                            $scope.survey.leased = s.leased;
-                            $scope.survey.occupancy = s.occupancy;
-                            $scope.survey.weeklytraffic = s.weeklytraffic
-                            $scope.survey.weeklyleases = s.weeklyleases
-                            $scope.survey.notes = s.notes;
-                            $scope.settings.showNotes = (s.notes || '') != '';
-
-                            $scope.survey.floorplans.forEach(function(fp) {
-                                var old = _.find(s.floorplans, function(ofp) {return ofp.id.toString() == fp.id.toString()})
-
-                                if (old) {
-                                    fp.rent = old.rent;
-                                    fp.concessions = old.concessions;
-                                }
-                            })
-
-                            if (surveyid) {
-                                $scope.editMode = true;
-                                $scope.editDate = s.date;
-                            }
+                        $scope.survey = {
+                            floorplans: $scope.property.floorplans,
+                            location_amenities: $scope.property.location_amenities,
+                            community_amenities: $scope.property.community_amenities
                         }
 
-                        $scope.doneLoading();
-                    })
-                } else {
-                    $scope.doneLoading();
+                        $scope.survey.floorplans.forEach(function (fp) {
+                            fp.rent = fp.rent || ''
+                            fp.concessions = fp.concessions || '';
+                        })
+                        $scope.survey.leased = $scope.survey.leased || '';
+                        $scope.survey.occupancy = $scope.survey.occupancy || '';
+                        $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || '';
+                        $scope.survey.weeklyleases = $scope.survey.weeklyleases || '';
+
+                        if (!$scope.editableSurveyId && $scope.property.survey) {
+                            $scope.editableSurveyId = $scope.property.survey.id;
+                        }
+
+                        if ($scope.property.survey && $scope.editableSurveyId) {
+                            $propertyService.getSurvey(id, $scope.editableSurveyId).then(function (response) {
+                                var s = response.data.survey;
+                                if (s && s.length > 0) {
+                                    s = s[0];
+                                    $scope.survey.leased = s.leased;
+                                    $scope.survey.occupancy = s.occupancy;
+                                    $scope.survey.weeklytraffic = s.weeklytraffic
+                                    $scope.survey.weeklyleases = s.weeklyleases
+                                    $scope.survey.notes = s.notes;
+                                    $scope.settings.showNotes = (s.notes || '') != '';
+
+                                    $scope.survey.floorplans.forEach(function (fp) {
+                                        var old = _.find(s.floorplans, function (ofp) {
+                                            return ofp.id.toString() == fp.id.toString()
+                                        })
+
+                                        if (old) {
+                                            fp.rent = old.rent;
+                                            fp.concessions = old.concessions;
+                                            fp.concessionsOneTime = old.concessionsOneTime;
+                                            fp.concessionsMonthly = old.concessionsMonthly;
+                                        }
+
+                                        if (typeof fp.concessionsOneTime != 'undefined') {
+                                            $scope.settings.showDetailed = true;
+                                        }
+                                    })
+
+                                    if (surveyid) {
+                                        $scope.editMode = true;
+                                        $scope.editDate = s.date;
+                                    }
+                                }
+
+                                $scope.doneLoading();
+                            })
+                        } else {
+                            $scope.doneLoading();
+                        }
+                    });
                 }
-
-
             });
 
             $scope.doneLoading = function() {
@@ -238,9 +265,15 @@ define([
                 else {
                     var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
 
+                    if (old && old.rent) {
+                        old.ner = old.rent - old.concessions / 12;
+                    }
+
                     if (!state) {
                         fp.rent = old.rent;
                         fp.concessions = old.concessions;
+                        fp.concessionsMonthly = old.concessionsMonthly;
+                        fp.concessionsOneTime = old.concessionsOneTime;
                         fp.warning = false;
 
                         window.setTimeout(function() {
@@ -267,27 +300,66 @@ define([
                         }
 
 
-                        if (fp.concessions == null || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
-                            er = '<b>Warning:</b> Concessions must be a positive number';
-                        }
-                        else
-                        if (fp.concessions.toString().indexOf('.') > -1) {
-                            er = '<b>Warning:</b> Concessions must not include any decimals';
-                        }
+                        if ($scope.settings.showDetailed) {
+                            if (fp.concessionsOneTime == null || typeof fp.concessionsOneTime == 'undefined' || isNaN(fp.concessionsOneTime) || parseInt(fp.concessionsOneTime) < 0) {
+                                er = '<b>Warning:</b> Concessions must be a positive number';
+                            }
+                            else if (fp.concessionsOneTime.toString().indexOf('.') > -1) {
+                                er = '<b>Warning:</b> Concessions must not include any decimals';
+                            }
 
-                        if (er.length > 0) {
-                            toastr.warning(er);
-                            window.setTimeout(function() {
-                                $('#concessions-' + fp.id)[0].focus();
-                                $('#concessions-' + fp.id)[0].select();
-                            }, 300);
-                            return;
+                            if (er.length > 0) {
+                                toastr.warning(er);
+                                window.setTimeout(function () {
+                                    $('#concessionsOneTime-' + fp.id)[0].focus();
+                                    $('#concessionsOneTime-' + fp.id)[0].select();
+                                }, 300);
+                                return;
+                            }
+
+                            if (fp.concessionsMonthly == null || typeof fp.concessionsMonthly == 'undefined' || isNaN(fp.concessionsMonthly) || parseInt(fp.concessionsMonthly) < 0) {
+                                er = '<b>Warning:</b> Concessions must be a positive number';
+                            }
+                            else if (fp.concessionsMonthly.toString().indexOf('.') > -1) {
+                                er = '<b>Warning:</b> Concessions must not include any decimals';
+                            }
+
+                            if (er.length > 0) {
+                                toastr.warning(er);
+                                window.setTimeout(function () {
+                                    $('#concessionsMonthly-' + fp.id)[0].focus();
+                                    $('#concessionsMonthly-' + fp.id)[0].select();
+                                }, 300);
+                                return;
+                            }                            
+                        }
+                        else {
+                            if (fp.concessions == null || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
+                                er = '<b>Warning:</b> Concessions must be a positive number';
+                            }
+                            else if (fp.concessions.toString().indexOf('.') > -1) {
+                                er = '<b>Warning:</b> Concessions must not include any decimals';
+                            }
+
+                            if (er.length > 0) {
+                                toastr.warning(er);
+                                window.setTimeout(function () {
+                                    $('#concessions-' + fp.id)[0].focus();
+                                    $('#concessions-' + fp.id)[0].select();
+                                }, 300);
+                                return;
+                            }
                         }
 
                         fp.warning = false;
                         if (old.rent > 0) {
-                            fp.ner = fp.rent - fp.concessions / 12;
-                            old.ner = old.rent - old.concessions / 12;
+
+                            if ($scope.settings.showDetailed) {
+                                fp.ner = fp.rent - fp.concessionsOneTime / 12 - fp.concessionsMonthly;
+                            } else {
+                                fp.ner = fp.rent - fp.concessions / 12;
+                            }
+
                             var percent = Math.abs((parseInt(fp.ner) - parseInt(old.ner)) / parseInt(old.ner) * 100);
                             if (percent >= 10) {
                                 fp.warning = true;
@@ -295,7 +367,11 @@ define([
                         }
                     }
 
-                    fp.updated = parseInt(fp.rent) != parseInt(old.rent) || parseInt(fp.concessions) != parseInt(old.concessions);
+                    if ($scope.settings.showDetailed) {
+                        fp.updated = parseInt(fp.rent) != parseInt(old.rent) || parseInt(fp.concessionsOneTime) != parseInt(old.concessionsOneTime) || parseInt(fp.concessionsMonthly) != parseInt(old.concessionsMonthly);
+                    } else {
+                        fp.updated = parseInt(fp.rent) != parseInt(old.rent) || parseInt(fp.concessions) != parseInt(old.concessions);
+                    }
                 }
 
             }
@@ -328,7 +404,7 @@ define([
                 all[next].focus();
                 all[next].select();
 
-                if (id.indexOf("rent") == -1) {
+                if (id.indexOf("rent") == -1 && id.indexOf("concessionsOneTime") == -1) {
                     $scope.update(fp)
                 }
             }
@@ -417,6 +493,23 @@ define([
             }
 
             $scope.success = function() {
+
+                if ($scope.settings.showDetailed) {
+                    $scope.survey.floorplans.forEach(function (fp) {
+                        if (fp.concessionsOneTime && fp.concessionsMonthly
+                            && !isNaN(fp.concessionsOneTime) && !isNaN(fp.concessionsMonthly)) {
+                            fp.concessions = fp.concessionsOneTime + fp.concessionsMonthly * 12;
+                        } else {
+                            fp.concessions = 0;
+                        }
+
+                    })
+                } else {
+                    $scope.survey.floorplans.forEach(function (fp) {
+                        delete fp.concessionsOneTime;
+                        delete fp.concessionsMonthly;
+                    })
+                }
 
                 $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();

@@ -16,10 +16,11 @@
         .occupancy .heading {
             text-align: right;padding:0px 2px !important;
         }
+
     }
 
     .survey-value {
-        max-width:60px;min-width:54px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
+        max-width:60px;min-width:48px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
     }
 
     .survey-values tr {
@@ -54,7 +55,7 @@
             <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
         </div>
 
-        <toggle-switch checked="$root.me.settings.monthlyConcessions" click-fn="toggleConcessions()"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
+        <toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
         <div class="visible-xs"></div>
         <toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Market Survey Notes<br>
         <div style="margin-top:10px"></div>
@@ -66,42 +67,63 @@
             <tr class="thead">
                 <th><span class="hidden-xs">Type</span><span class="visible-xs">F.P.</span></th>
                 <th class="hidden-xs">Desc.</th>
-                <th style="text-align: right"><span class="hidden-xs">Units</span><span class="visible-xs">#</span></th>
-                <th style="text-align: right">Sqft</th>
+                <th class="hidden-xs" style="text-align: right"><span class="hidden-xs">Units</span><span class="visible-xs">#</span></th>
+                <th class="hidden-xs" style="text-align: right">Sqft</th>
                 <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-info-circle" style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
                  popover="Enter the current gross floor-plan rent, before any concessions or discounts. If the floor plan has a range, please enter minimum price."
                         ></i></th>
-                <th style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
                  popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
                         ></i><Br>
                 <div style="font-size:9pt;font-weight:normal;padding-right:25px">(Total)</div></th>
+
+                <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                                                                                                           popover-trigger="mouseenter"
+                                                                                                           popover-placement="left"
+                                                                                                           popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
+                ></i><Br>
+                    <div style="font-size:9pt;font-weight:normal;padding-right:15px">(One Time)</div></th>
+
+                <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                                                                                                           popover-trigger="mouseenter"
+                                                                                                           popover-placement="left"
+                                                                                                           popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
+                ></i><Br>
+                    <div style="font-size:9pt;font-weight:normal;padding-right:20px">(Monthly)</div></th>
                 <th style="min-width:55px">
 
                 </th>
             </tr>
 
             <tr ng-repeat="row in survey.floorplans">
-                <td>
-                    {{row.bedrooms}}x{{row.bathrooms}}
+                <td style="white-space: nowrap;">
+                    {{row.bedrooms}}x{{row.bathrooms}}<span class="visible-xs-inline">x{{row.units}}</span>
+                    <div class="visible-xs">{{row.sqft}}sf</div>
                 </td>
                 <td class="hidden-xs">
                     {{row.description}}
                 </td>
-                <td style="text-align: right">
+                <td class="hidden-xs" style="text-align: right">
                     {{row.units}}
                 </td>
-                <td style="text-align: right">
+                <td class="hidden-xs" style="text-align: right">
                     {{row.sqft}}
                 </td>
                 <td style="white-space: nowrap;text-align:right;">
                     $<input type="number" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()">
                 </td>
-                <td style="white-space: nowrap;text-align:right">
+                <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
                     $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()">
+                </td>
+                <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()">
+                </td>
+                <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
+                    $<input type="number" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()">
                 </td>
                 <td style="text-align: right">
                     &nbsp;
