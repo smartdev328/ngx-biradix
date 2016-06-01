@@ -19,6 +19,18 @@ define([
                 $modalInstance.dismiss('cancel');
             };
 
+            $scope.clear = function(id) {
+                $("#" + id).parent().removeClass("has-error");
+            }
+
+            $scope.pressed = function(row,id,event) {
+                //Tab
+                if (event.keyCode == 9 && !event.shiftKey) {
+                    event.preventDefault();
+                    $scope.next(row,id);
+                }
+            }
+
             $scope.toggleConcessions = function() {
                 $rootScope.me.settings.monthlyConcessions = $scope.settings.showDetailed;
                 $authService.updateSettings($rootScope.me.settings);
@@ -134,6 +146,7 @@ define([
                                 window.setTimeout(function() {
                                     $('#leased')[0].focus();
                                     $('#leased')[0].select();
+                                    $('#leased').parent().addClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
@@ -147,6 +160,7 @@ define([
                                     window.setTimeout(function() {
                                         $('#leased')[0].focus();
                                         $('#leased')[0].select();
+                                        $('#leased').parent().addClass("has-error");
                                     }, 300);
                                     return;
                                 }
@@ -168,6 +182,7 @@ define([
                                 window.setTimeout(function() {
                                     $('#occupancy')[0].focus();
                                     $('#occupancy')[0].select();
+                                    $('#occupancy').parent().addClass("has-error");
                                 }, 300);
                             } else {
 
@@ -185,6 +200,7 @@ define([
                                     window.setTimeout(function() {
                                         $('#occupancy')[0].focus();
                                         $('#occupancy')[0].select();
+                                        $('#occupancy').parent().addClass("has-error");
                                     }, 300);
                                     return;
                                 }
@@ -206,6 +222,7 @@ define([
                                 window.setTimeout(function() {
                                     $('#traffic')[0].focus();
                                     $('#traffic')[0].select();
+                                    $('#traffic').parent().addClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
@@ -222,6 +239,7 @@ define([
                                     window.setTimeout(function() {
                                         $('#traffic')[0].focus();
                                         $('#traffic')[0].select();
+                                        $('#traffic').parent().addClass("has-error");
                                     }, 300);
                                     return;
                                 }
@@ -236,6 +254,7 @@ define([
                                 window.setTimeout(function() {
                                     $('#leases')[0].focus();
                                     $('#leases')[0].select();
+                                    $('#leases').parent().addClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
@@ -252,6 +271,7 @@ define([
                                     window.setTimeout(function() {
                                         $('#leases')[0].focus();
                                         $('#leases')[0].select();
+                                        $('#leases').parent().addClass("has-error");
                                     }, 300);
                                     return;
                                 }
@@ -279,6 +299,7 @@ define([
                         window.setTimeout(function() {
                             $('#rent-' + fp.id)[0].focus();
                             $('#rent-' + fp.id)[0].select();
+                            $('#rent-' + fp.id).parent().addClass("has-error");
                         }, 300);
                     } else {
                         var er = "";
@@ -295,6 +316,7 @@ define([
                             window.setTimeout(function() {
                                 $('#rent-' + fp.id)[0].focus();
                                 $('#rent-' + fp.id)[0].select();
+                                $('#rent-' + fp.id).parent().addClass("has-error");
                             }, 300);
                             return;
                         }
@@ -313,6 +335,7 @@ define([
                                 window.setTimeout(function () {
                                     $('#concessionsOneTime-' + fp.id)[0].focus();
                                     $('#concessionsOneTime-' + fp.id)[0].select();
+                                    $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
                                 }, 300);
                                 return;
                             }
@@ -329,6 +352,7 @@ define([
                                 window.setTimeout(function () {
                                     $('#concessionsMonthly-' + fp.id)[0].focus();
                                     $('#concessionsMonthly-' + fp.id)[0].select();
+                                    $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
                                 }, 300);
                                 return;
                             }                            
@@ -346,6 +370,7 @@ define([
                                 window.setTimeout(function () {
                                     $('#concessions-' + fp.id)[0].focus();
                                     $('#concessions-' + fp.id)[0].select();
+                                    $('#concessions-' + fp.id).parent().addClass("has-error");
                                 }, 300);
                                 return;
                             }
@@ -401,6 +426,8 @@ define([
                 if (next >= all.length) {
                     next = 0;
                 }
+
+
                 all[next].focus();
                 all[next].select();
 
@@ -415,12 +442,55 @@ define([
 
                 var tenpercent = false;
                 $scope.survey.floorplans.forEach(function(fp) {
-                    if (isSuccess && (fp.rent === '' || fp.concessions === '')) {
+
+                    if (fp.rent == null || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 1 ) {
                         isSuccess = false;
                         error = 'Please update all fields.';
+                        $('#rent-' + fp.id).parent().addClass("has-error");
                     }
-                    else if (isSuccess) {
+                    else
+                    if (fp.rent.toString().indexOf('.') > -1) {
+                        isSuccess = false;
+                        error = 'Please update all fields.';
+                        $('#rent-' + fp.id).parent().addClass("has-error");
+                    }
 
+                    if ($scope.settings.showDetailed) {
+                        if (fp.concessionsOneTime == null || typeof fp.concessionsOneTime == 'undefined' || isNaN(fp.concessionsOneTime) || parseInt(fp.concessionsOneTime) < 0) {
+                            isSuccess = false;
+                            error = 'Please update all fields.';
+                            $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
+                        }
+                        else if (fp.concessionsOneTime.toString().indexOf('.') > -1) {
+                            isSuccess = false;
+                            error = 'Please update all fields.';
+                            $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
+                        }
+
+                        if (fp.concessionsMonthly == null || typeof fp.concessionsMonthly == 'undefined' || isNaN(fp.concessionsMonthly) || parseInt(fp.concessionsMonthly) < 0) {
+                            isSuccess = false;
+                            error = 'Please update all fields.';
+                            $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
+                        }
+                        else if (fp.concessionsMonthly.toString().indexOf('.') > -1) {
+                            isSuccess = false;
+                            error = 'Please update all fields.';
+                            $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
+                        }
+                    } else {
+                        if (fp.concessions == null || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
+                            isSuccess = false;
+                            error = 'Please update all fields.';
+                            $('#concessions-' + fp.id).parent().addClass("has-error");
+                        }
+                        else if (fp.concessions.toString().indexOf('.') > -1) {
+                            isSuccess = false;
+                            error = 'Please update all fields.';
+                            $('#concessions-' + fp.id).parent().addClass("has-error");
+                        }
+                    }
+
+                    if (isSuccess) {
                         var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
 
                         if (old.rent > 0) {
@@ -434,17 +504,18 @@ define([
                 })
 
 
-                if (isSuccess && ($scope.survey.occupancy === '')) {
+                if ($scope.survey.occupancy == null || typeof $scope.survey.occupancy == 'undefined' || isNaN($scope.survey.occupancy) || parseInt($scope.survey.occupancy) < 0) {
+                    isSuccess = false;
+                    error = 'Please update all fields.';
+                    $('#occupancy').parent().addClass("has-error");
+                }
+
+                if ($scope.survey.weeklytraffic == null || typeof $scope.survey.weeklytraffic == 'undefined' || isNaN($scope.survey.weeklytraffic) || parseInt($scope.survey.weeklytraffic) < 0) {
                     isSuccess = false;
                     error = 'Please update all fields.';
                 }
 
-                if (isSuccess && ($scope.survey.weeklytraffic === '')) {
-                    isSuccess = false;
-                    error = 'Please update all fields.';
-                }
-
-                if (isSuccess && ($scope.survey.weeklyleases === '')) {
+                if ($scope.survey.weeklyleases == null || typeof $scope.survey.weeklyleases == 'undefined' || isNaN($scope.survey.weeklyleases) || parseInt($scope.survey.weeklyleases) < 0) {
                     isSuccess = false;
                     error = 'Please update all fields.';
                 }
