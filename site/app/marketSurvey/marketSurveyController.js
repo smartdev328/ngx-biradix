@@ -380,9 +380,9 @@ define([
                         if (old.rent > 0) {
 
                             if ($scope.settings.showDetailed) {
-                                fp.ner = fp.rent - fp.concessionsOneTime / 12 - fp.concessionsMonthly;
+                                fp.ner = fp.rent - (fp.concessionsOneTime || 0) / 12 - (fp.concessionsMonthly || 0);
                             } else {
-                                fp.ner = fp.rent - fp.concessions / 12;
+                                fp.ner = fp.rent - (fp.concessions || 0) / 12;
                             }
 
                             var percent = Math.abs((parseInt(fp.ner) - parseInt(old.ner)) / parseInt(old.ner) * 100);
@@ -431,9 +431,9 @@ define([
                 all[next].focus();
                 all[next].select();
 
-                if (id.indexOf("rent") == -1 && id.indexOf("concessionsOneTime") == -1) {
+                //if (id.indexOf("rent") == -1 && id.indexOf("concessionsOneTime") == -1) {
                     $scope.update(fp)
-                }
+                //}
             }
 
             $scope.create = function() {
