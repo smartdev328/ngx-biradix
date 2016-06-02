@@ -147,8 +147,8 @@ define([
                             if (!state) {
                                 $scope.survey.leased = $scope.originalSurvey.leased;
                                 window.setTimeout(function() {
-                                    $('#leased')[0].focus();
-                                    $('#leased')[0].select();
+                                    //$('#leased')[0].focus();
+                                    //$('#leased')[0].select();
                                     $('#leased').parent().removeClass("has-error");
                                 }, 300);
                             } else {
@@ -161,8 +161,8 @@ define([
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        $('#leased')[0].focus();
-                                        $('#leased')[0].select();
+                                        //$('#leased')[0].focus();
+                                        //$('#leased')[0].select();
                                         $('#leased').parent().addClass("has-error");
                                     }, 300);
                                     return;
@@ -183,8 +183,8 @@ define([
                             if (!state) {
                                 $scope.survey.occupancy = $scope.originalSurvey.occupancy;
                                 window.setTimeout(function() {
-                                    $('#occupancy')[0].focus();
-                                    $('#occupancy')[0].select();
+                                    //$('#occupancy')[0].focus();
+                                    //$('#occupancy')[0].select();
                                     $('#occupancy').parent().removeClass("has-error");
                                 }, 300);
                             } else {
@@ -197,8 +197,8 @@ define([
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        $('#occupancy')[0].focus();
-                                        $('#occupancy')[0].select();
+                                        //$('#occupancy')[0].focus();
+                                        //$('#occupancy')[0].select();
                                         $('#occupancy').parent().addClass("has-error");
                                     }, 300);
                                     return;
@@ -218,8 +218,8 @@ define([
                             if (!state) {
                                 $scope.survey.weeklytraffic = $scope.originalSurvey.weeklytraffic;
                                 window.setTimeout(function() {
-                                    $('#traffic')[0].focus();
-                                    $('#traffic')[0].select();
+                                    //$('#traffic')[0].focus();
+                                    //$('#traffic')[0].select();
                                     $('#traffic').parent().removeClass("has-error");
                                 }, 300);
                             } else {
@@ -232,8 +232,8 @@ define([
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        $('#traffic')[0].focus();
-                                        $('#traffic')[0].select();
+                                        //$('#traffic')[0].focus();
+                                        //$('#traffic')[0].select();
                                         $('#traffic').parent().addClass("has-error");
                                     }, 300);
                                     return;
@@ -247,8 +247,8 @@ define([
                             if (!state) {
                                 $scope.survey.weeklyleases = $scope.originalSurvey.weeklyleases;
                                 window.setTimeout(function() {
-                                    $('#leases')[0].focus();
-                                    $('#leases')[0].select();
+                                    //$('#leases')[0].focus();
+                                    //$('#leases')[0].select();
                                     $('#leases').parent().removeClass("has-error");
                                 }, 300);
                             } else {
@@ -260,8 +260,8 @@ define([
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        $('#leases')[0].focus();
-                                        $('#leases')[0].select();
+                                        //$('#leases')[0].focus();
+                                        //$('#leases')[0].select();
                                         $('#leases').parent().addClass("has-error");
                                     }, 300);
                                     return;
@@ -290,9 +290,12 @@ define([
                         fp.warning = false;
 
                         window.setTimeout(function() {
-                            $('#rent-' + fp.id)[0].focus();
-                            $('#rent-' + fp.id)[0].select();
+                            //$('#rent-' + fp.id)[0].focus();
+                            //$('#rent-' + fp.id)[0].select();
                             $('#rent-' + fp.id).parent().removeClass("has-error");
+                            $('#concessionsOneTime-' + fp.id).parent().removeClass("has-error");
+                            $('#concessionsMonthly-' + fp.id).parent().removeClass("has-error");
+                            $('#concessions-' + fp.id).parent().removeClass("has-error");
                         }, 300);
                     } else {
                         var er = "";
@@ -306,8 +309,8 @@ define([
                             if (er.length > 0) {
                                 toastr.warning(er);
                                 window.setTimeout(function () {
-                                    $('#rent-' + fp.id)[0].focus();
-                                    $('#rent-' + fp.id)[0].select();
+                                    //$('#rent-' + fp.id)[0].focus();
+                                    //$('#rent-' + fp.id)[0].select();
                                     $('#rent-' + fp.id).parent().addClass("has-error");
                                 }, 300);
                                 return;
@@ -326,8 +329,8 @@ define([
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function () {
-                                        $('#concessionsOneTime-' + fp.id)[0].focus();
-                                        $('#concessionsOneTime-' + fp.id)[0].select();
+                                        //$('#concessionsOneTime-' + fp.id)[0].focus();
+                                        //$('#concessionsOneTime-' + fp.id)[0].select();
                                         $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
                                     }, 300);
                                     return;
@@ -342,8 +345,8 @@ define([
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function () {
-                                        $('#concessionsMonthly-' + fp.id)[0].focus();
-                                        $('#concessionsMonthly-' + fp.id)[0].select();
+                                        //$('#concessionsMonthly-' + fp.id)[0].focus();
+                                        //$('#concessionsMonthly-' + fp.id)[0].select();
                                         $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
                                     }, 300);
                                     return;
