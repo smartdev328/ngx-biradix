@@ -136,17 +136,20 @@ define([
                 }, 300);
             }
 
-            $scope.updateDone = function(fp, state) {
+            $scope.updateDone = function(fp, state, fp_field) {
+
+                fp_field = fp_field || '';
 
                 if (typeof fp == 'string') {
                     switch(fp) {
                         case "leased":
+                            $scope.leasedWarning = false;
                             if (!state) {
                                 $scope.survey.leased = $scope.originalSurvey.leased;
                                 window.setTimeout(function() {
                                     $('#leased')[0].focus();
                                     $('#leased')[0].select();
-                                    $('#leased').parent().addClass("has-error");
+                                    $('#leased').parent().removeClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
@@ -165,7 +168,6 @@ define([
                                     return;
                                 }
 
-                                $scope.leasedWarning = false;
                                 if ($scope.originalSurvey.leased && $scope.originalSurvey.leased > 0 && $scope.survey.leased) {
                                     var percent = Math.abs((parseInt($scope.survey.leased) - parseInt($scope.originalSurvey.leased)) / parseInt($scope.originalSurvey.leased) * 100);
                                     if (percent >= 10) {
@@ -177,22 +179,19 @@ define([
                             $scope.survey.leasedupdated = $scope.survey.leased != $scope.originalSurvey.leased;;
                             break;
                         case "occupancy":
+                            $scope.occupancyWarning = false;
                             if (!state) {
                                 $scope.survey.occupancy = $scope.originalSurvey.occupancy;
                                 window.setTimeout(function() {
                                     $('#occupancy')[0].focus();
                                     $('#occupancy')[0].select();
-                                    $('#occupancy').parent().addClass("has-error");
+                                    $('#occupancy').parent().removeClass("has-error");
                                 }, 300);
                             } else {
 
                                 var er = "";
-                                if ($scope.survey.occupancy == null || typeof $scope.survey.occupancy == 'undefined' || isNaN($scope.survey.occupancy) || parseInt($scope.survey.occupancy) < 0) {
-                                    er = '<b>Warning:</b> Occupancy must be a positive number';
-                                }
-                                else
-                                if (parseFloat($scope.survey.occupancy) > 100) {
-                                    er = '<b>Warning:</b> Occupancy cannot exceed 100%';
+                                if (typeof $scope.survey.occupancy == 'undefined' || ($scope.survey.occupancy && !isNaN($scope.survey.occupancy) && (parseFloat($scope.survey.occupancy) > 100 || parseFloat($scope.survey.occupancy) < 0))) {
+                                    er = '<b>Warning:</b> Occupancy must be between 0% and 100%';
                                 }
 
                                 if (er.length > 0) {
@@ -205,7 +204,6 @@ define([
                                     return;
                                 }
 
-                                $scope.occupancyWarning = false;
                                 if ($scope.originalSurvey.occupancy > 0) {
                                     var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
                                     if (percent >= 10) {
@@ -213,7 +211,7 @@ define([
                                     }
                                 }
                             }
-                            $scope.survey.occupancyupdated = $scope.survey.occupancy != $scope.originalSurvey.occupancy;;
+                            $scope.survey.occupancyupdated = $scope.survey.occupancy != $scope.originalSurvey.occupancy;
                             break;
                         case "traffic":
 
@@ -222,16 +220,13 @@ define([
                                 window.setTimeout(function() {
                                     $('#traffic')[0].focus();
                                     $('#traffic')[0].select();
-                                    $('#traffic').parent().addClass("has-error");
+                                    $('#traffic').parent().removeClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
-                                if ($scope.survey.weeklytraffic == null || typeof $scope.survey.weeklytraffic == 'undefined' || isNaN($scope.survey.weeklytraffic) || parseInt($scope.survey.weeklytraffic) < 0) {
-                                    er = '<b>Warning:</b> Traffic/Week must be a positive number';
-                                }
-                                else
-                                if ($scope.survey.weeklytraffic.toString().indexOf('.') > -1) {
-                                    er = '<b>Warning:</b> Traffic/Week must not include any decimals';
+
+                                if (typeof $scope.survey.weeklytraffic == 'undefined' || ($scope.survey.weeklytraffic != null && !isNaN($scope.survey.weeklytraffic) && $scope.survey.weeklytraffic.toString().indexOf('.') > -1)) {
+                                    er = '<b>Warning:</b> Traffic/Week must be 0 or greater, no decimals';
                                 }
 
                                 if (er.length > 0) {
@@ -254,16 +249,12 @@ define([
                                 window.setTimeout(function() {
                                     $('#leases')[0].focus();
                                     $('#leases')[0].select();
-                                    $('#leases').parent().addClass("has-error");
+                                    $('#leases').parent().removeClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
-                                if ($scope.survey.weeklyleases == null || typeof $scope.survey.weeklyleases == 'undefined' || isNaN($scope.survey.weeklyleases) || parseInt($scope.survey.weeklyleases) < 0) {
-                                    er = '<b>Warning:</b> Leases/Week must be a positive number';
-                                }
-                                else
-                                if ($scope.survey.weeklyleases.toString().indexOf('.') > -1) {
-                                    er = '<b>Warning:</b> Leases/Week must not include any decimals';
+                                if (typeof $scope.survey.weeklyleases == 'undefined' || ($scope.survey.weeklyleases != null && !isNaN($scope.survey.weeklyleases) && $scope.survey.weeklyleases.toString().indexOf('.') > -1)) {
+                                    er = '<b>Warning:</b> Leases/Week must be 0 or greater, no decimals';
                                 }
 
                                 if (er.length > 0) {
@@ -283,6 +274,8 @@ define([
                     }
                 }
                 else {
+                    fp.warning = false;
+
                     var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
 
                     if (old && old.rent) {
@@ -299,84 +292,82 @@ define([
                         window.setTimeout(function() {
                             $('#rent-' + fp.id)[0].focus();
                             $('#rent-' + fp.id)[0].select();
-                            $('#rent-' + fp.id).parent().addClass("has-error");
+                            $('#rent-' + fp.id).parent().removeClass("has-error");
                         }, 300);
                     } else {
                         var er = "";
-                        if (fp.rent == null || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 1 ) {
-                            er = '<b>Warning:</b> Rent must be a positive number greater than 0';
-                        }
-                        else
-                        if (fp.rent.toString().indexOf('.') > -1) {
-                            er = '<b>Warning:</b> Rent must not include any decimals';
-                        }
 
-                        if (er.length > 0) {
-                            toastr.warning(er);
-                            window.setTimeout(function() {
-                                $('#rent-' + fp.id)[0].focus();
-                                $('#rent-' + fp.id)[0].select();
-                                $('#rent-' + fp.id).parent().addClass("has-error");
-                            }, 300);
-                            return;
+                        if (fp_field == 'rent') {
+
+                            if (typeof fp.rent == 'undefined' || (fp.rent != null && !isNaN(fp.rent) && fp.rent.toString().indexOf('.') > -1)) {
+                                er = '<b>Warning:</b> Rent must be 0 or greater, no decimals';
+                            }
+
+                            if (er.length > 0) {
+                                toastr.warning(er);
+                                window.setTimeout(function () {
+                                    $('#rent-' + fp.id)[0].focus();
+                                    $('#rent-' + fp.id)[0].select();
+                                    $('#rent-' + fp.id).parent().addClass("has-error");
+                                }, 300);
+                                return;
+
+                            }
                         }
 
 
                         if ($scope.settings.showDetailed) {
-                            if (fp.concessionsOneTime == null || typeof fp.concessionsOneTime == 'undefined' || isNaN(fp.concessionsOneTime) || parseInt(fp.concessionsOneTime) < 0) {
-                                er = '<b>Warning:</b> Concessions must be a positive number';
-                            }
-                            else if (fp.concessionsOneTime.toString().indexOf('.') > -1) {
-                                er = '<b>Warning:</b> Concessions must not include any decimals';
+
+                            if (fp_field == 'concessionsOneTime') {
+                                if (typeof fp.concessionsOneTime == 'undefined' || (fp.concessionsOneTime != null && !isNaN(fp.concessionsOneTime) && fp.concessionsOneTime.toString().indexOf('.') > -1)) {
+                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function () {
+                                        $('#concessionsOneTime-' + fp.id)[0].focus();
+                                        $('#concessionsOneTime-' + fp.id)[0].select();
+                                        $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
+                                    }, 300);
+                                    return;
+                                }
                             }
 
-                            if (er.length > 0) {
-                                toastr.warning(er);
-                                window.setTimeout(function () {
-                                    $('#concessionsOneTime-' + fp.id)[0].focus();
-                                    $('#concessionsOneTime-' + fp.id)[0].select();
-                                    $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
-                                }, 300);
-                                return;
-                            }
+                            if (fp_field == 'concessionsMonthly') {
+                                if (typeof fp.concessionsMonthly == 'undefined' || (fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly) && fp.concessionsMonthly.toString().indexOf('.') > -1)) {
+                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals';
+                                }
 
-                            if (fp.concessionsMonthly == null || typeof fp.concessionsMonthly == 'undefined' || isNaN(fp.concessionsMonthly) || parseInt(fp.concessionsMonthly) < 0) {
-                                er = '<b>Warning:</b> Concessions must be a positive number';
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function () {
+                                        $('#concessionsMonthly-' + fp.id)[0].focus();
+                                        $('#concessionsMonthly-' + fp.id)[0].select();
+                                        $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
+                                    }, 300);
+                                    return;
+                                }
                             }
-                            else if (fp.concessionsMonthly.toString().indexOf('.') > -1) {
-                                er = '<b>Warning:</b> Concessions must not include any decimals';
-                            }
-
-                            if (er.length > 0) {
-                                toastr.warning(er);
-                                window.setTimeout(function () {
-                                    $('#concessionsMonthly-' + fp.id)[0].focus();
-                                    $('#concessionsMonthly-' + fp.id)[0].select();
-                                    $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
-                                }, 300);
-                                return;
-                            }                            
                         }
                         else {
-                            if (fp.concessions == null || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
-                                er = '<b>Warning:</b> Concessions must be a positive number';
-                            }
-                            else if (fp.concessions.toString().indexOf('.') > -1) {
-                                er = '<b>Warning:</b> Concessions must not include any decimals';
-                            }
+                            if (fp_field == 'concessions') {
+                                if (typeof fp.concessions == 'undefined' || (fp.concessions != null && !isNaN(fp.concessions) && fp.concessions.toString().indexOf('.') > -1)) {
+                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals';
+                                }
 
-                            if (er.length > 0) {
-                                toastr.warning(er);
-                                window.setTimeout(function () {
-                                    $('#concessions-' + fp.id)[0].focus();
-                                    $('#concessions-' + fp.id)[0].select();
-                                    $('#concessions-' + fp.id).parent().addClass("has-error");
-                                }, 300);
-                                return;
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function () {
+                                        $('#concessions-' + fp.id)[0].focus();
+                                        $('#concessions-' + fp.id)[0].select();
+                                        $('#concessions-' + fp.id).parent().addClass("has-error");
+                                    }, 300);
+                                    return;
+                                }
                             }
                         }
 
-                        fp.warning = false;
                         if (old.rent > 0) {
 
                             if ($scope.settings.showDetailed) {
@@ -432,7 +423,7 @@ define([
                 all[next].select();
 
                 //if (id.indexOf("rent") == -1 && id.indexOf("concessionsOneTime") == -1) {
-                    $scope.update(fp)
+                    //$scope.update(fp)
                 //}
             }
 
@@ -445,47 +436,47 @@ define([
 
                     if (fp.rent == null || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 1 ) {
                         isSuccess = false;
-                        error = 'Please update all fields.';
+                        error = 'Please update the highlighted required fields.';
                         $('#rent-' + fp.id).parent().addClass("has-error");
                     }
                     else
                     if (fp.rent.toString().indexOf('.') > -1) {
                         isSuccess = false;
-                        error = 'Please update all fields.';
+                        error = 'Please update the highlighted required fields.';
                         $('#rent-' + fp.id).parent().addClass("has-error");
                     }
 
                     if ($scope.settings.showDetailed) {
                         if (fp.concessionsOneTime == null || typeof fp.concessionsOneTime == 'undefined' || isNaN(fp.concessionsOneTime) || parseInt(fp.concessionsOneTime) < 0) {
                             isSuccess = false;
-                            error = 'Please update all fields.';
+                            error = 'Please update the highlighted required fields.';
                             $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
                         }
                         else if (fp.concessionsOneTime.toString().indexOf('.') > -1) {
                             isSuccess = false;
-                            error = 'Please update all fields.';
+                            error = 'Please update the highlighted required fields.';
                             $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
                         }
 
                         if (fp.concessionsMonthly == null || typeof fp.concessionsMonthly == 'undefined' || isNaN(fp.concessionsMonthly) || parseInt(fp.concessionsMonthly) < 0) {
                             isSuccess = false;
-                            error = 'Please update all fields.';
+                            error = 'Please update the highlighted required fields.';
                             $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
                         }
                         else if (fp.concessionsMonthly.toString().indexOf('.') > -1) {
                             isSuccess = false;
-                            error = 'Please update all fields.';
+                            error = 'Please update the highlighted required fields.';
                             $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
                         }
                     } else {
                         if (fp.concessions == null || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
                             isSuccess = false;
-                            error = 'Please update all fields.';
+                            error = 'Please update the highlighted required fields.';
                             $('#concessions-' + fp.id).parent().addClass("has-error");
                         }
                         else if (fp.concessions.toString().indexOf('.') > -1) {
                             isSuccess = false;
-                            error = 'Please update all fields.';
+                            error = 'Please update the highlighted required fields.';
                             $('#concessions-' + fp.id).parent().addClass("has-error");
                         }
                     }
@@ -506,18 +497,18 @@ define([
 
                 if ($scope.survey.occupancy == null || typeof $scope.survey.occupancy == 'undefined' || isNaN($scope.survey.occupancy) || parseInt($scope.survey.occupancy) < 0) {
                     isSuccess = false;
-                    error = 'Please update all fields.';
+                    error = 'Please update the highlighted required fields.';
                     $('#occupancy').parent().addClass("has-error");
                 }
 
                 if ($scope.survey.weeklytraffic == null || typeof $scope.survey.weeklytraffic == 'undefined' || isNaN($scope.survey.weeklytraffic) || parseInt($scope.survey.weeklytraffic) < 0) {
                     isSuccess = false;
-                    error = 'Please update all fields.';
+                    error = 'Please update the highlighted required fields.';
                 }
 
                 if ($scope.survey.weeklyleases == null || typeof $scope.survey.weeklyleases == 'undefined' || isNaN($scope.survey.weeklyleases) || parseInt($scope.survey.weeklyleases) < 0) {
                     isSuccess = false;
-                    error = 'Please update all fields.';
+                    error = 'Please update the highlighted required fields.';
                 }
 
                 if (isSuccess) {
