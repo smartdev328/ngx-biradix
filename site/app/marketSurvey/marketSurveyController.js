@@ -387,9 +387,9 @@ define([
                     }
 
                     if ($scope.settings.showDetailed) {
-                        fp.updated = parseInt(fp.rent) != parseInt(old.rent) || parseInt(fp.concessionsOneTime) != parseInt(old.concessionsOneTime) || parseInt(fp.concessionsMonthly) != parseInt(old.concessionsMonthly);
+                        fp.updated = parseInt(fp.rent || '0') != parseInt(old.rent || '0') || parseInt(fp.concessionsOneTime || '0') != parseInt(old.concessionsOneTime || '0') || parseInt(fp.concessionsMonthly || '0') != parseInt(old.concessionsMonthly || '0');
                     } else {
-                        fp.updated = parseInt(fp.rent) != parseInt(old.rent) || parseInt(fp.concessions) != parseInt(old.concessions);
+                        fp.updated = parseInt(fp.rent || '0') != parseInt(old.rent || '0') || parseInt(fp.concessions || '0') != parseInt(old.concessions || '0');
                     }
                 }
 
