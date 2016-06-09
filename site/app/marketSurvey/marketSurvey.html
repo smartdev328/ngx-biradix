@@ -143,15 +143,14 @@
                     </div>
                 </td>
                 <td>
+                    &nbsp;<a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                     &nbsp;
                     <i ng-if="row.warning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
                        popover-placement="left"
                        popover="The Net Eff. Rent for this floor plan has changed by more than 10% since the last market survey"
 
-                    ></i>&nbsp;
-
-                    <a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" tooltip="Undo"></i></a>&nbsp;
+                    ></i>
                 </td>
             </tr>
 
@@ -171,14 +170,14 @@
                     </div>
                 </td>
                 <td style="width:40px;">
+                    &nbsp;<a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                     &nbsp;
                     <i ng-if="occupancyWarning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
                        popover-placement="top"
                        popover="Occupancy % has changed by more than 10% since the last market survey"
 
-                    ></i>&nbsp;
-                    <a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    ></i>
                 </td>
                 <td rowspan="2" style="width:30px" class="hidden-xs">
 
@@ -209,14 +208,14 @@
                 </td>
                 <td style="width:40px;">
                     <div ng-if="$root.me.settings.showLeases">
+                        &nbsp;<a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                         &nbsp;
                     <i ng-if="leasedWarning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
                        popover-placement="top"
                        popover="Leased % has changed by more than 10% since the last market survey"
 
-                    ></i>&nbsp;
-                    <a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    ></i>
                     </div>
                 </td>
 
