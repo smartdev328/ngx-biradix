@@ -71,8 +71,6 @@ define([
                         $scope.survey.floorplans.forEach(function (fp) {
                             fp.rent = fp.rent || ''
                             fp.concessions = fp.concessions || '';
-                            fp.concessionsMonthly = fp.concessionsMonthly || '';
-                            fp.concessionsOneTime = fp.concessionsOneTime || '';
                         })
                         $scope.survey.leased = $scope.survey.leased || '';
                         $scope.survey.occupancy = $scope.survey.occupancy || '';
@@ -128,6 +126,11 @@ define([
             });
 
             $scope.doneLoading = function() {
+
+                $scope.survey.floorplans.forEach(function(fp) {
+                    fp.concessionsOneTime = fp.concessionsOneTime || '';
+                    fp.concessionsMonthly = fp.concessionsMonthly || '';
+                })
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
                 $scope.localLoading = true;
@@ -324,6 +327,7 @@ define([
                         if ($scope.settings.showDetailed) {
 
                             if (fp_field == 'concessionsOneTime') {
+                                //console.log(fp);
                                 if (typeof fp.concessionsOneTime == 'undefined' || (fp.concessionsOneTime != null && !isNaN(fp.concessionsOneTime) && fp.concessionsOneTime.toString().indexOf('.') > -1)) {
                                     er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals';
                                 }
