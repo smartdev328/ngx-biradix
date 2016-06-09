@@ -307,8 +307,8 @@ define([
 
                         if (fp_field == 'rent') {
 
-                            if (typeof fp.rent == 'undefined' || (fp.rent != null && !isNaN(fp.rent) && fp.rent.toString().indexOf('.') > -1)) {
-                                er = '<b>Warning:</b> Rent must be 0 or greater, no decimals';
+                            if (typeof fp.rent == 'undefined' || fp.rent == null || isNaN(fp.rent) || fp.rent.toString().indexOf('.') > -1) {
+                                er = '<b>Warning:</b> Rent must be 1 or greater, no decimals or blank fields';
                             }
 
                             if (er.length > 0) {
@@ -328,8 +328,8 @@ define([
 
                             if (fp_field == 'concessionsOneTime') {
                                 //console.log(fp);
-                                if (typeof fp.concessionsOneTime == 'undefined' || (fp.concessionsOneTime != null && !isNaN(fp.concessionsOneTime) && fp.concessionsOneTime.toString().indexOf('.') > -1)) {
-                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals';
+                                if (typeof fp.concessionsOneTime == 'undefined' || fp.concessionsOneTime == null || isNaN(fp.concessionsOneTime) || fp.concessionsOneTime.toString().indexOf('.') > -1) {
+                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
                                 }
 
                                 if (er.length > 0) {
@@ -344,8 +344,8 @@ define([
                             }
 
                             if (fp_field == 'concessionsMonthly') {
-                                if (typeof fp.concessionsMonthly == 'undefined' || (fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly) && fp.concessionsMonthly.toString().indexOf('.') > -1)) {
-                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals';
+                                if (typeof fp.concessionsMonthly == 'undefined' || fp.concessionsMonthly == null || isNaN(fp.concessionsMonthly) || fp.concessionsMonthly.toString().indexOf('.') > -1) {
+                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
                                 }
 
                                 if (er.length > 0) {
@@ -361,8 +361,8 @@ define([
                         }
                         else {
                             if (fp_field == 'concessions') {
-                                if (typeof fp.concessions == 'undefined' || (fp.concessions != null && !isNaN(fp.concessions) && fp.concessions.toString().indexOf('.') > -1)) {
-                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals';
+                                if (typeof fp.concessions == 'undefined' || fp.concessions == null || isNaN(fp.concessions) || fp.concessions.toString().indexOf('.') > -1) {
+                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
                                 }
 
                                 if (er.length > 0) {
@@ -443,7 +443,7 @@ define([
                 var tenpercent = false;
                 $scope.survey.floorplans.forEach(function(fp) {
 
-                    if (fp.rent == null || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 1 ) {
+                    if (fp.rent == null || fp.rent == '' || typeof fp.rent == 'undefined' || isNaN(fp.rent) || parseInt(fp.rent) < 1 ) {
                         isSuccess = false;
                         error = 'Please update the highlighted required fields.';
                         $('#rent-' + fp.id).parent().addClass("has-error");
@@ -456,7 +456,8 @@ define([
                     }
 
                     if ($scope.settings.showDetailed) {
-                        if (fp.concessionsOneTime == null || typeof fp.concessionsOneTime == 'undefined' || isNaN(fp.concessionsOneTime) || parseInt(fp.concessionsOneTime) < 0) {
+
+                        if (fp.concessionsOneTime == null || fp.concessionsOneTime == '' || typeof fp.concessionsOneTime == 'undefined' || isNaN(fp.concessionsOneTime) || parseInt(fp.concessionsOneTime) < 0) {
                             isSuccess = false;
                             error = 'Please update the highlighted required fields.';
                             $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
@@ -467,7 +468,7 @@ define([
                             $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
                         }
 
-                        if (fp.concessionsMonthly == null || typeof fp.concessionsMonthly == 'undefined' || isNaN(fp.concessionsMonthly) || parseInt(fp.concessionsMonthly) < 0) {
+                        if (fp.concessionsMonthly == null || fp.concessionsMonthly == '' || typeof fp.concessionsMonthly == 'undefined' || isNaN(fp.concessionsMonthly) || parseInt(fp.concessionsMonthly) < 0) {
                             isSuccess = false;
                             error = 'Please update the highlighted required fields.';
                             $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
@@ -478,7 +479,7 @@ define([
                             $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
                         }
                     } else {
-                        if (fp.concessions == null || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
+                        if (fp.concessions == null || fp.concessions == null == '' || typeof fp.concessions == 'undefined' || isNaN(fp.concessions) || parseInt(fp.concessions) < 0) {
                             isSuccess = false;
                             error = 'Please update the highlighted required fields.';
                             $('#concessions-' + fp.id).parent().addClass("has-error");
@@ -539,6 +540,7 @@ define([
                     }
 
                 } else {
+                    error = "Please update the highlighted required fields. <b>Rent values of \"0\" and blank fields are not valid</b>.";
                     toastr.error(error);
                 }
             }

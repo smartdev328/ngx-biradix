@@ -21,6 +21,10 @@
             font-size:9px
         }
 
+        .col-spacer {
+            width:10px !important;
+        }
+
     }
 
     .survey-value {
@@ -37,6 +41,15 @@
 
     .survey-values .form-group {
         margin-bottom: 0px;
+    }
+
+
+    .survey-values .fa-undo {
+        padding-left: 5px;
+    }
+
+    .col-spacer {
+        width:30px;
     }
 
 </Style>
@@ -124,7 +137,7 @@
                 </td>
                 <td style="white-space: nowrap;text-align:right;">
                     <div class="form-group">
-                        $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
+                        $<input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
                     </div>
                 </td>
                 <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
@@ -169,7 +182,7 @@
                         <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
                     </div>
                 </td>
-                <td style="width:40px;">
+                <td style="width:45px;">
                     &nbsp;<a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                     &nbsp;
                     <i ng-if="occupancyWarning" class="fa fa-info-circle" style="color:orange"
@@ -179,7 +192,7 @@
 
                     ></i>
                 </td>
-                <td rowspan="2" style="width:30px" class="hidden-xs">
+                <td rowspan="2" class="col-spacer">
 
                 <td class="heading">
                     <b class="hidden-xs">Traffic/Week</b>
@@ -206,7 +219,7 @@
                         <input ng-if="$root.me.settings.showLeases" type="number" min = "0" max="150" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
                     </div>
                 </td>
-                <td style="width:40px;">
+                <td style="width:45px;">
                     <div ng-if="$root.me.settings.showLeases">
                         &nbsp;<a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
                         &nbsp;
