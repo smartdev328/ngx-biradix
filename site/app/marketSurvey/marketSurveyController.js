@@ -71,6 +71,8 @@ define([
                         $scope.survey.floorplans.forEach(function (fp) {
                             fp.rent = fp.rent || ''
                             fp.concessions = fp.concessions || '';
+                            fp.concessionsMonthly = fp.concessionsMonthly || '';
+                            fp.concessionsOneTime = fp.concessionsOneTime || '';
                         })
                         $scope.survey.leased = $scope.survey.leased || '';
                         $scope.survey.occupancy = $scope.survey.occupancy || '';
