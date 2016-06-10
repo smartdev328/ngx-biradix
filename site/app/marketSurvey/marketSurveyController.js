@@ -307,7 +307,7 @@ define([
 
                         if (fp_field == 'rent') {
 
-                            if (typeof fp.rent == 'undefined' || fp.rent == null || isNaN(fp.rent) || fp.rent.toString().indexOf('.') > -1) {
+                            if (typeof fp.rent == 'undefined' || fp.rent == null || fp.rent == '' || isNaN(fp.rent) || fp.rent.toString().indexOf('.') > -1) {
                                 er = '<b>Warning:</b> Rent must be 1 or greater, no decimals or blank fields';
                             }
 
@@ -328,7 +328,7 @@ define([
 
                             if (fp_field == 'concessionsOneTime') {
                                 //console.log(fp);
-                                if (typeof fp.concessionsOneTime == 'undefined' || fp.concessionsOneTime == null || isNaN(fp.concessionsOneTime) || fp.concessionsOneTime.toString().indexOf('.') > -1) {
+                                if (typeof fp.concessionsOneTime == 'undefined' || fp.concessionsOneTime == null || fp.concessionsOneTime == '' || isNaN(fp.concessionsOneTime) || fp.concessionsOneTime.toString().indexOf('.') > -1) {
                                     er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
                                 }
 
@@ -344,7 +344,7 @@ define([
                             }
 
                             if (fp_field == 'concessionsMonthly') {
-                                if (typeof fp.concessionsMonthly == 'undefined' || fp.concessionsMonthly == null || isNaN(fp.concessionsMonthly) || fp.concessionsMonthly.toString().indexOf('.') > -1) {
+                                if (typeof fp.concessionsMonthly == 'undefined' || fp.concessionsMonthly == null || fp.concessionsMonthly == '' || isNaN(fp.concessionsMonthly) || fp.concessionsMonthly.toString().indexOf('.') > -1) {
                                     er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
                                 }
 
@@ -361,7 +361,7 @@ define([
                         }
                         else {
                             if (fp_field == 'concessions') {
-                                if (typeof fp.concessions == 'undefined' || fp.concessions == null || isNaN(fp.concessions) || fp.concessions.toString().indexOf('.') > -1) {
+                                if (typeof fp.concessions == 'undefined' || fp.concessions == null || fp.concessions == '' || isNaN(fp.concessions) || fp.concessions.toString().indexOf('.') > -1) {
                                     er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
                                 }
 
@@ -381,8 +381,16 @@ define([
 
                             if ($scope.settings.showDetailed) {
                                 fp.ner = fp.rent - (fp.concessionsOneTime || 0) / 12 - (fp.concessionsMonthly || 0);
+
+                                if ((fp.concessionsOneTime || '') == '' || (fp.concessionsMonthly || '') == '') {
+                                    fp.ner = old.ner;
+                                }
                             } else {
                                 fp.ner = fp.rent - (fp.concessions || 0) / 12;
+
+                                if ((fp.concessions || '') == '') {
+                                    fp.ner = old.ner;
+                                }
                             }
 
                             var percent = Math.abs((parseInt(fp.ner) - parseInt(old.ner)) / parseInt(old.ner) * 100);
