@@ -76,7 +76,12 @@
             <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
         </div>
 
-        <toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()" style="margin-left:30px;"></toggle-switch>&nbsp;&nbsp;Detailed Concessions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()" style="margin-left:30px;"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
+        <i class="fa fa-info-circle"  style="font-size:12px"
+        popover-trigger="mouseenter"
+        popover-placement="bottom"
+        popover="Turn on detailed concessions if you want to input one time and monthly concessions separately rather than a single total value over 12 months"
+    ></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div class="visible-xs"></div>
         <span class="visible-xs-inline-block" style="width:30px;"></span><toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Market Survey Notes<br>
         <div style="margin-top:10px"></div>
