@@ -157,6 +157,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.getSurveyWarnings = function (propertyid, survey) {
+            return $http.post('/api/1.0/properties/' + propertyid + '/survey/warnings'+ '?bust=' + (new Date()).getTime(), survey, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.updateSurvey = function (propertyid, surveyid, survey) {
             return $http.put('/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime() , survey, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

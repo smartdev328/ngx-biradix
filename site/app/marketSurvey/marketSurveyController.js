@@ -511,16 +511,16 @@ define([
                         }
                     }
 
-                    if (isSuccess) {
-                        var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
-
-                        if (old.rent > 0) {
-                            var percent = Math.abs((parseInt(fp.rent) - parseInt(old.rent)) / parseInt(old.rent) * 100);
-                            if (percent >= 10) {
-                                tenpercent = true;
-                            }
-                        }
-                    }
+                    //if (isSuccess) {
+                    //    var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
+                    //
+                    //    if (old.rent > 0) {
+                    //        var percent = Math.abs((parseInt(fp.rent) - parseInt(old.rent)) / parseInt(old.rent) * 100);
+                    //        if (percent >= 10) {
+                    //            tenpercent = true;
+                    //        }
+                    //    }
+                    //}
 
                 })
 
@@ -549,22 +549,37 @@ define([
 
                 if (isSuccess) {
 
-                    if ($scope.originalSurvey.occupancy > 0) {
-                        var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
-                        if (percent >= 10) {
-                            tenpercent = true;
-                        }
-                    }
-
-                    if (tenpercent) {
-                        $dialog.confirm('One or more values have been changed by 10% or more. Are you sure you want to submit this market survey?', function() {
-                            $scope.success();
-                        }, function() {});
-                    }
-                    else {
+                    if (surveyid) {
                         $scope.success();
+                        return;
                     }
 
+                    //if ($scope.originalSurvey.occupancy > 0) {
+                    //    var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
+                    //    if (percent >= 10) {
+                    //        tenpercent = true;
+                    //    }
+                    //}
+
+                    $('button.contact-submit').prop('disabled', true);
+                    ngProgress.start();
+                    $propertyService.getSurveyWarnings(id, $scope.survey).then(function(resp) {
+                        $('button.contact-submit').prop('disabled', false);
+                        ngProgress.complete();
+                        if (resp.data.errors && resp.data.errors.length > 0) {
+                            var errors = _.pluck(resp.data.errors,"msg").join("<li>")
+                            $dialog.confirm('<B>Please confirm that the following items are correct.</B> If not, please click "No" to go back to the market survey and update information. If the values are correct, please click "Yes" to save your changes.<br><br><ul><li>' + errors + '</ul>', function() {
+                                $scope.success();
+                            }, function() {});
+                        }
+                        else {
+                            $scope.success();
+                        }
+                    }, function (err) {
+                        $('button.contact-submit').prop('disabled', false);
+                        toastr.error('Unable to perform action. Please contact an administrator');
+                        ngProgress.complete();
+                    })
                 } else {
                     error = "Please update the highlighted required fields. <b>Rent values of \"0\" and blank fields are not valid</b>.";
                     toastr.error(error);
