@@ -149,11 +149,11 @@ define([
                         return false;
                     }
                 } else {
-                    if (typeof field === 'undefined' || field === '' || field == null) {
+                    if (field === '') {
                         return true;
                     }
                     else
-                    if (field != '' && isNaN(field)) {
+                    if (typeof field === 'undefined') {
                         return false;
                     }
                 }
@@ -185,7 +185,7 @@ define([
                                 var er = "";
 
                                 if (!$scope.isValid($scope.survey.leased, false, true)) {
-                                    er = '<b>Warning:</b> Leased cannot exceed 150%';
+                                    er = '<b>Warning:</b> Leased must be between 0% and 150%';
                                 }
 
                                 if (er.length > 0) {
@@ -436,10 +436,11 @@ define([
 
             $scope.checkUndoFp = function(fp, old) {
                 if ($scope.settings.showDetailed) {
-                    fp.updated = parseInt(fp.rent || '0') != parseInt(old.rent || '0') || parseInt(fp.concessionsOneTime || '0') != parseInt(old.concessionsOneTime || '0') || parseInt(fp.concessionsMonthly || '0') != parseInt(old.concessionsMonthly || '0');
+                    fp.updated = fp.rent != old.rent || fp.concessionsOneTime != old.concessionsOneTime || fp.concessionsMonthly != old.concessionsMonthly;
                 } else {
-                    fp.updated = parseInt(fp.rent || '0') != parseInt(old.rent || '0') || parseInt(fp.concessions || '0') != parseInt(old.concessions || '0');
+                    fp.updated = fp.rent != old.rent || fp.concessions != old.concessions;
                 }
+
             }
 
             $scope.update = function(fp) {
@@ -554,12 +555,7 @@ define([
                         return;
                     }
 
-                    //if ($scope.originalSurvey.occupancy > 0) {
-                    //    var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
-                    //    if (percent >= 10) {
-                    //        tenpercent = true;
-                    //    }
-                    //}
+                    $scope.fixConessions();
 
                     $('button.contact-submit').prop('disabled', true);
                     ngProgress.start();
@@ -581,11 +577,24 @@ define([
                         ngProgress.complete();
                     })
                 } else {
-                    error = "Please update the highlighted required fields. <b>Rent values of \"0\" and blank fields are not valid</b>.";
+                    error = "Please update the highlighted required fields.<br><Br><b>- Blank or negative values are not valid.</b><br><b>- Rents/Concessions can not be decimal</b><Br><b>- Traffic or Leases can not be decimal</b><br><b>- Rents cannot be \"0\"</b>";
                     toastr.error(error);
                 }
             }
 
+            $scope.fixConessions = function() {
+                if ($scope.settings.showDetailed) {
+                    $scope.survey.floorplans.forEach(function (fp) {
+                        delete fp.ner;
+                        if (fp.concessionsOneTime != null && fp.concessionsMonthly != null
+                            && !isNaN(fp.concessionsOneTime) && !isNaN(fp.concessionsMonthly)) {
+                            fp.concessions = fp.concessionsOneTime + fp.concessionsMonthly * 12;
+                        } else {
+                            fp.concessions = 0;
+                        }
+                    })
+                }
+            }
             var surveyError = function (err) {
                 $('button.contact-submit').prop('disabled', false);
                 toastr.error('Unable to perform action. Please contact an administrator');
@@ -608,21 +617,13 @@ define([
 
             $scope.success = function() {
 
-                if ($scope.settings.showDetailed) {
-                    $scope.survey.floorplans.forEach(function (fp) {
-                        if (fp.concessionsOneTime && fp.concessionsMonthly
-                            && !isNaN(fp.concessionsOneTime) && !isNaN(fp.concessionsMonthly)) {
-                            fp.concessions = fp.concessionsOneTime + fp.concessionsMonthly * 12;
-                        } else {
-                            fp.concessions = 0;
-                        }
+                $scope.fixConessions();
 
-                    })
-                } else {
+                if (!$scope.settings.showDetailed) {
                     $scope.survey.floorplans.forEach(function (fp) {
                         delete fp.concessionsOneTime;
                         delete fp.concessionsMonthly;
-                    })
+                    });
                 }
 
                 $('button.contact-submit').prop('disabled', true);

@@ -3,6 +3,7 @@ var PropertyService = require('../services/propertyService')
 var surveyHelperService = require('../services/surveyHelperService')
 var moment = require('moment');
 var async = require('async');
+var _ = require("lodash")
 
 module.exports = {
     init: function(Routes) {
@@ -42,7 +43,7 @@ module.exports = {
                             })
                         }
                     },function(err,all) {
-                        console.log(all)
+                        //console.log(all)
 
                         var errors = [];
                         if (all.twoWeeks) {
@@ -61,6 +62,63 @@ module.exports = {
                                 errors.push({msg:'Leases has not changed in two weeks'});
                             }
 
+                            var percent = Math.abs((parseFloat(n.occupancy) - parseFloat(o.occupancy)) / parseFloat(n.occupancy || 1) * 100);
+
+                            if (percent >= 10) {
+                                errors.push({msg:'Occupancy % has changed by more than 10% in two weeks'});
+                            }
+
+                            percent = Math.abs((parseFloat(n.leased || 0) - parseFloat(o.occupancy || 0)) / parseFloat(n.leased || 1) * 100);
+
+                            if (percent >= 10) {
+                                errors.push({msg:'Leased % has changed by more than 10% in two weeks'});
+                            }
+
+                            var fpNer =false;
+                            n.floorplans.forEach(function(fp) {
+                                var old = _.find(o.floorplans, function(x) {return x.id.toString() == fp.id.toString() });
+
+                                if (old && old.rent) {
+                                    var oldNer = old.rent - old.concessions / 12;
+                                    var newNer = fp.rent - fp.concessions / 12;
+                                    percent = Math.abs((parseInt(newNer) - parseInt(oldNer)) / parseInt(oldNer) * 100);
+                                    if (percent >= 10) {
+                                        fpNer = true;
+                                    }
+
+                                }
+                            })
+
+                            if (fpNer === true) {
+                                errors.push({msg:'Rent pricing for some floor plans has changed by more than 10% in two weeks'});
+                            }
+                        }
+
+                        if (all.oneMonth) {
+                            var o = all.oneMonth;
+                            var n = req.body;
+
+                            var fpNer = false;
+                            var fpNerAll = true;
+                            n.floorplans.forEach(function(fp) {
+                                var old = _.find(o.floorplans, function(x) {return x.id.toString() == fp.id.toString() });
+
+                                if (old && old.rent) {
+                                    var oldNer = old.rent - old.concessions / 12;
+                                    var newNer = fp.rent - fp.concessions / 12;
+                                    if (parseInt(newNer) == parseInt(oldNer)) {
+                                        fpNer = true;
+                                    } else {
+                                        fpNerAll = false;
+                                    }
+                                }
+                            })
+
+                            if (fpNerAll === true) {
+                                errors.push({msg:'Rent pricing for all floor plans has not changed in one month'});
+                            } else if (fpNer) {
+                                errors.push({msg:'Rent pricing for some floor plans has not changed in one month'});
+                            }
                         }
 
                         return res.status(200).json({success: errors.length > 0, errors: errors});
