@@ -18,7 +18,7 @@ module.exports = {
                 async.parallel(
                     {
                         twoWeeks: function(callbackp) {
-                            var end = moment().add(-3,"day");
+                            var end = moment().add(-7,"day");
                             var start = moment(end).add(-14,"day")
                             surveyHelperService.getSurveyBeforeDate(req.params.id,start,end, function(err, surveys) {
 
@@ -41,37 +41,44 @@ module.exports = {
                                 }
                                 callbackp(null,surveys);
                             })
+                        },
+                        recent: function(callbackp) {
+                            var end = moment().add(1,"day");
+                            var start = moment(end).add(-13,"day")
+                            surveyHelperService.getSurveyBeforeDate(req.params.id,start,end, function(err, surveys) {
+                                if (surveys.length == 1) {
+                                    surveys = surveys[0];
+                                } else {
+                                    surveys = null;
+                                }
+                                callbackp(null,surveys);
+                            })
                         }
                     },function(err,all) {
                         //console.log(all)
 
                         var errors = [];
-                        if (all.twoWeeks) {
-                            var o = all.twoWeeks;
+
+                        if (all.recent) {
+                            var o = all.recent;
                             var n = req.body;
 
-                            if (parseFloat(o.occupancy) === parseFloat(n.occupancy)) {
-                                errors.push({msg:'Occupancy % has not changed in two weeks'});
+                            var percent;
+
+                            if (n.occupancy) {
+                                percent = Math.abs((parseFloat(n.occupancy) - parseFloat(o.occupancy)) / parseFloat(n.occupancy) * 100);
+
+                                if (percent >= 10) {
+                                    errors.push({msg: 'Occupancy % has changed by more than 10% since last survey'});
+                                }
                             }
 
-                            if (parseFloat(o.weeklytraffic) === parseFloat(n.weeklytraffic)) {
-                                errors.push({msg:'Traffic has not changed in two weeks'});
-                            }
+                            if (n.leased) {
+                                percent = Math.abs((parseFloat(n.leased || 0) - parseFloat(o.leased || 0)) / parseFloat(n.leased) * 100);
 
-                            if (parseFloat(o.weeklyleases) === parseFloat(n.weeklyleases)) {
-                                errors.push({msg:'Leases has not changed in two weeks'});
-                            }
-
-                            var percent = Math.abs((parseFloat(n.occupancy) - parseFloat(o.occupancy)) / parseFloat(n.occupancy || 1) * 100);
-
-                            if (percent >= 10) {
-                                errors.push({msg:'Occupancy % has changed by more than 10% in two weeks'});
-                            }
-
-                            percent = Math.abs((parseFloat(n.leased || 0) - parseFloat(o.occupancy || 0)) / parseFloat(n.leased || 1) * 100);
-
-                            if (percent >= 10) {
-                                errors.push({msg:'Leased % has changed by more than 10% in two weeks'});
+                                if (percent >= 10) {
+                                    errors.push({msg: 'Leased % has changed by more than 10% since last survey'});
+                                }
                             }
 
                             var fpNer =false;
@@ -90,13 +97,33 @@ module.exports = {
                             })
 
                             if (fpNer === true) {
-                                errors.push({msg:'Rent pricing for some floor plans has changed by more than 10% in two weeks'});
+                                errors.push({msg:'Rent pricing for some floor plans has changed by more than 10% since last survey'});
                             }
+                        }
+
+
+                        if (all.twoWeeks) {
+                            var o = all.twoWeeks;
+                            var n = req.body;
+
+                            if (parseFloat(o.occupancy) === parseFloat(n.occupancy)) {
+                                errors.push({msg:'Occupancy % has not changed in two weeks'});
+                            }
+
+                            if (parseFloat(o.weeklytraffic) === parseFloat(n.weeklytraffic)) {
+                                errors.push({msg:'Traffic has not changed in two weeks'});
+                            }
+
                         }
 
                         if (all.oneMonth) {
                             var o = all.oneMonth;
                             var n = req.body;
+
+                            if (parseFloat(o.weeklyleases) === parseFloat(n.weeklyleases)) {
+                                errors.push({msg:'Leases has not changed in a month'});
+                            }
+
 
                             var fpNer = false;
                             var fpNerAll = true;
@@ -115,7 +142,7 @@ module.exports = {
                             })
 
                             if (fpNerAll === true) {
-                                errors.push({msg:'Rent pricing for all floor plans has not changed in one month'});
+                                errors.push({msg:'<B>Rent pricing for all floor plans has not changed in one month</B>'});
                             } else if (fpNer) {
                                 errors.push({msg:'Rent pricing for some floor plans has not changed in one month'});
                             }

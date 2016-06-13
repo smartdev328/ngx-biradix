@@ -148,14 +148,6 @@ define([
                     if (typeof field === 'undefined' || field === '' || field === null || isNaN(field)) {
                         return false;
                     }
-                } else {
-                    if (field === '') {
-                        return true;
-                    }
-                    else
-                    if (typeof field === 'undefined') {
-                        return false;
-                    }
                 }
 
 
@@ -487,7 +479,7 @@ define([
 
                     if (!$scope.isValid(fp.rent,true,false)) {
                         isSuccess = false;
-                        error = '1';
+                        error = 'rent';
                         $('#rent-' + fp.id).parent().addClass("has-error");
                     }
 
@@ -495,58 +487,49 @@ define([
 
                         if (!$scope.isValid(fp.concessionsOneTime,true,false)) {
                             isSuccess = false;
-                            error = '1';
+                            error = 'concessionsOneTime';
                             $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
                         }
 
                         if (!$scope.isValid(fp.concessionsMonthly,true,false)) {
                             isSuccess = false;
-                            error = '1';
+                            error = 'concessionsMonthly';
                             $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
                         }
                     } else {
                         if (!$scope.isValid(fp.concessions,true,false)) {
                             isSuccess = false;
-                            error = '1';
+                            error = 'concessions';
                             $('#concessions-' + fp.id).parent().addClass("has-error");
                         }
                     }
-
-                    //if (isSuccess) {
-                    //    var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
-                    //
-                    //    if (old.rent > 0) {
-                    //        var percent = Math.abs((parseInt(fp.rent) - parseInt(old.rent)) / parseInt(old.rent) * 100);
-                    //        if (percent >= 10) {
-                    //            tenpercent = true;
-                    //        }
-                    //    }
-                    //}
 
                 })
 
 
                 if (!$scope.isValid($scope.survey.occupancy,true,true)) {
                     isSuccess = false;
-                    error = '1';
+                    error = 'Occupancy';
                     $('#occupancy').parent().addClass("has-error");
                 }
 
                 if (!$scope.isValid($scope.survey.weeklytraffic,true,false)) {
                     isSuccess = false;
-                    error = '1';
+                    error = 'Traffic';
+                    $('#traffic').parent().addClass("has-error");
                 }
 
                 if (!$scope.isValid($scope.survey.weeklyleases,true,false)) {
                     isSuccess = false;
-                    error = '1';
+                    error = 'Leases';
+                    $('#leases').parent().addClass("has-error");
                 }
 
                 if (!$scope.isValid($scope.survey.leased,false,true)) {
                     isSuccess = false;
-                    error = '1';
+                    error = 'Leased';
+                    $('#leased').parent().addClass("has-error");
                 }
-
 
                 if (isSuccess) {
 
@@ -564,7 +547,7 @@ define([
                         ngProgress.complete();
                         if (resp.data.errors && resp.data.errors.length > 0) {
                             var errors = _.pluck(resp.data.errors,"msg").join("<li>")
-                            $dialog.confirm('<B>Please confirm that the following items are correct.</B> If not, please click "No" to go back to the market survey and update information. If the values are correct, please click "Yes" to save your changes.<br><br><ul><li>' + errors + '</ul>', function() {
+                            $dialog.confirm('<span style="font-size:14px;font-weight: 500">Please double check  that the following item(s) are correct:</span><br><br><ul style="font-size: 17px; color: black; text-decoration: underline;"><li>' + errors + '</ul>', function() {
                                 $scope.success();
                             }, function() {});
                         }
