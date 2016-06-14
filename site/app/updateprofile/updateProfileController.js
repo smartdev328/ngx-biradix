@@ -270,7 +270,7 @@ define([
                 ngProgress.start();
 
                 $authService.updateSettings($rootScope.me.settings).then(function (resp) {
-                    $('button.nots-submit').prop('disabled', false);
+                    $('button.settings-submit').prop('disabled', false);
                     ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
                         resp.data.errors.forEach(function(e) {

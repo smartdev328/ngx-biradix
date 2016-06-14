@@ -131,6 +131,9 @@ define([
                     fp.concessionsOneTime = fp.concessionsOneTime || '';
                     fp.concessionsMonthly = fp.concessionsMonthly || '';
                 })
+
+                $scope.survey.floorplans = _.sortByAll($scope.survey.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'fid'])
+
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
                 $scope.localLoading = true;
@@ -403,24 +406,31 @@ define([
                             if ($scope.settings.showDetailed) {
                                 fp.ner = fp.rent - (fp.concessionsOneTime || 0) / 12 - (fp.concessionsMonthly || 0);
 
-                                if ((fp.concessionsOneTime || '') == '' || (fp.concessionsMonthly || '') == '') {
+
+                                if (fp.concessionsOneTime === null || typeof fp.concessionsOneTime == 'undefined' || fp.concessionsOneTime === ''
+                                    || fp.concessionsMonthly === null || typeof fp.concessionsMonthly == 'undefined' || fp.concessionsMonthly === ''
+                                ) {
                                     fp.ner = old.ner;
                                 }
+
                             } else {
                                 fp.ner = fp.rent - (fp.concessions || 0) / 12;
 
-                                if ((fp.concessions || '') == '') {
+                                if (fp.concessions === null || typeof fp.concessions == 'undefined' || fp.concessions === '' ) {
                                     fp.ner = old.ner;
                                 }
                             }
 
                             var percent = Math.abs((parseInt(fp.ner) - parseInt(old.ner)) / parseInt(old.ner) * 100);
+
                             if (percent >= 10) {
                                 fp.warning = true;
                             }
                         }
+
+                        $scope.checkUndoFp(fp,old);
                     }
-                    $scope.checkUndoFp(fp,old);
+
 
                 }
 
@@ -432,6 +442,7 @@ define([
                 } else {
                     fp.updated = fp.rent != old.rent || fp.concessions != old.concessions;
                 }
+
 
             }
 
@@ -546,8 +557,8 @@ define([
                         $('button.contact-submit').prop('disabled', false);
                         ngProgress.complete();
                         if (resp.data.errors && resp.data.errors.length > 0) {
-                            var errors = _.pluck(resp.data.errors,"msg").join("<li>")
-                            $dialog.confirm('<span style="font-size:14px;font-weight: 500">Please double check  that the following item(s) are correct:</span><br><br><ul style="font-size: 17px; color: black; text-decoration: underline;"><li>' + errors + '</ul>', function() {
+                            var errors = _.pluck(resp.data.errors,"msg").join("<li style='padding-top:5px'>")
+                            $dialog.confirm('<span style="font-size:14px;font-weight: 500">Please double check  that the following item(s) are correct:</span><br><br><ul style="font-size: 15px; color: red;"><li>' + errors + '</ul>', function() {
                                 $scope.success();
                             }, function() {});
                         }

@@ -97,6 +97,7 @@ define([
             $scope.save = function() {
                 if (!$scope.selectedRole._id) {
                     toastr.error("Please select a role.");
+                    return;
                 }
 
                 $scope.loading = true;

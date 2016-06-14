@@ -73,7 +73,7 @@ module.exports = {
                                 }
                             }
 
-                            if (n.leased) {
+                            if (n.leased && o.leased != null && o.leased != '' && typeof o.leased != 'undefined') {
                                 percent = Math.abs((parseFloat(n.leased || 0) - parseFloat(o.leased || 0)) / parseFloat(n.leased) * 100);
 
                                 if (percent >= 10) {
@@ -142,7 +142,7 @@ module.exports = {
                             })
 
                             if (fpNerAll === true) {
-                                errors.push({msg:'<B>Rent pricing for all floor plans has not changed in one month</B>'});
+                                errors.push({msg:'<B>Rent pricing for all floor plans have not changed in one month</B>'});
                             } else if (fpNer) {
                                 errors.push({msg:'Rent pricing for some floor plans has not changed in one month'});
                             }
