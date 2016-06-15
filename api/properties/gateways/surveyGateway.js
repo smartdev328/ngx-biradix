@@ -142,9 +142,9 @@ module.exports = {
                             })
 
                             if (fpNerAll === true) {
-                                errors.push({msg:'<B>Rent pricing for all floor plans have not changed in one month</B>'});
+                                errors.push({msg:'<B>Rents for all floor plans have not changed in a month</B>'});
                             } else if (fpNer) {
-                                errors.push({msg:'Rent pricing for some floor plans has not changed in one month'});
+                                //errors.push({msg:'Rent pricing for some floor plans has not changed in one month'});
                             }
                         }
 

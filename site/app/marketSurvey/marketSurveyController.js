@@ -70,7 +70,7 @@ define([
 
                         $scope.survey.floorplans.forEach(function (fp) {
                             fp.rent = fp.rent || ''
-                            fp.concessions = fp.concessions || '';
+                            fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : '';
                         })
                         $scope.survey.leased = $scope.survey.leased || '';
                         $scope.survey.occupancy = $scope.survey.occupancy || '';
@@ -110,6 +110,15 @@ define([
                                         }
                                     })
 
+                                    if (!surveyid) {
+                                        var hoursOld = ((new Date()).getTime() - (new Date(s.date)).getTime()) / 1000 / 60 / 60;
+                                        if (hoursOld < 24) {
+                                            surveyid = s._id;
+                                        }
+                                    }
+
+
+
                                     if (surveyid) {
                                         $scope.editMode = true;
                                         $scope.editDate = s.date;
@@ -128,8 +137,9 @@ define([
             $scope.doneLoading = function() {
 
                 $scope.survey.floorplans.forEach(function(fp) {
-                    fp.concessionsOneTime = fp.concessionsOneTime || '';
-                    fp.concessionsMonthly = fp.concessionsMonthly || '';
+                    fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ?  fp.concessionsOneTime : '';
+                    fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ?  fp.concessionsMonthly : '';
+
                 })
 
                 $scope.survey.floorplans = _.sortByAll($scope.survey.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'fid'])
@@ -558,7 +568,7 @@ define([
                         ngProgress.complete();
                         if (resp.data.errors && resp.data.errors.length > 0) {
                             var errors = _.pluck(resp.data.errors,"msg").join("<li style='padding-top:5px'>")
-                            $dialog.confirm('<span style="font-size:14px;font-weight: 500">Please double check  that the following item(s) are correct:</span><br><br><ul style="font-size: 15px; color: red;"><li>' + errors + '</ul>', function() {
+                            $dialog.confirm('<span style="font-size:14px;font-weight: 500">Please double check  that the following item(s) are correct:</span><br><br><ul style="font-size: 15px; color: #f90 ;"><li>' + errors + '</ul>', function() {
                                 $scope.success();
                             }, function() {});
                         }
