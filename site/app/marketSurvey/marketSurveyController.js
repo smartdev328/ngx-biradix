@@ -453,9 +453,8 @@ define([
                             }
                         }
 
-                        $scope.checkUndoFp(fp,old);
                     }
-
+                    $scope.checkUndoFp(fp,old);
 
                 }
 
