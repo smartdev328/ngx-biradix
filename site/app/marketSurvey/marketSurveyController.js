@@ -111,8 +111,13 @@ define([
                                     })
 
                                     if (!surveyid) {
-                                        var hoursOld = ((new Date()).getTime() - (new Date(s.date)).getTime()) / 1000 / 60 / 60;
-                                        if (hoursOld < 24) {
+                                        //var hoursOld = ((new Date()).getTime() - (new Date(s.date)).getTime()) / 1000 / 60 / 60;
+                                        //if (hoursOld < 24) {
+                                        //    surveyid = s._id;
+                                        //}
+                                        var d1 = new Date();
+                                        var d2 = new Date(s.date);
+                                        if (d1.getDate() == d2.getDate() && d1.getMonth() == d2.getMonth() && d1.getYear() == d2.getYear()) {
                                             surveyid = s._id;
                                         }
                                     }
@@ -154,7 +159,7 @@ define([
                 }, 300);
             }
 
-            $scope.isValid  = function(field, required, allowDecimal) {
+            $scope.isValid  = function(field, required, allowDecimal, min, max) {
 
                 if (required) {
 
@@ -166,6 +171,16 @@ define([
 
                 if (!allowDecimal && field.toString().indexOf('.') > -1) {
                     return false;
+                }
+
+                if (typeof field !== 'undefined' && field != null && !isNaN(field)) {
+                    if (typeof min !== 'undefined' && parseFloat(field) < min) {
+                        return false;
+                    }
+                    if (typeof max !== 'undefined' && parseFloat(field) > max) {
+                        return false;
+                    }
+
                 }
 
                 return true
@@ -189,7 +204,7 @@ define([
                             } else {
                                 var er = "";
 
-                                if (!$scope.isValid($scope.survey.leased, false, true)) {
+                                if (!$scope.isValid($scope.survey.leased, false, true, 0, 150)) {
                                     er = '<b>Warning:</b> Leased must be between 0% and 150%';
                                 }
 
@@ -546,7 +561,7 @@ define([
                     $('#leases').parent().addClass("has-error");
                 }
 
-                if (!$scope.isValid($scope.survey.leased,false,true)) {
+                if (!$scope.isValid($scope.survey.leased,false,true,0,150)) {
                     isSuccess = false;
                     error = 'Leased';
                     $('#leased').parent().addClass("has-error");
