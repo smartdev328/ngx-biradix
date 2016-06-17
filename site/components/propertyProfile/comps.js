@@ -47,7 +47,13 @@ define([
                             comp.survey.floorplans.forEach(function(fp,i) {
                                 fp.number = i;
                                 fp.unitPercent = fp.units / comp.totalUnits * 100;
-                                fp.name = fp.bedrooms + "x" + fp.bathrooms + " " + fp.description;
+
+                                if (typeof fp.description == "undefined" || fp.description === "" || fp.description == null) {
+                                    fp.name = fp.bedrooms + "x" + fp.bathrooms;
+                                } else {
+                                    fp.name = fp.bedrooms + "x" + fp.bathrooms + " " + fp.description;
+                                }
+
                             })
 
                             var j = 0;

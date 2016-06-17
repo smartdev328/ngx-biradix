@@ -455,6 +455,11 @@ var populateAmenitiesandFloorplans = function(property, all) {
     property.addedFloorplans = [];
 
     property.floorplans.forEach(function(fp) {
+
+        if (typeof fp.description == "undefined" || fp.description == null) {
+            fp.description = "";
+        }
+
         property.totalUnits += (fp.units || 0);
 
         var bAdd = false;

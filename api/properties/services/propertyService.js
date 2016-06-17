@@ -609,6 +609,10 @@ module.exports = {
             }
 
             n.floorplans.forEach(function(fp) {
+                if (typeof fp.description == "undefined" || fp.description == null) {
+                    fp.description = "";
+                }
+
                 var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
 
                 if (!oldfp) {
