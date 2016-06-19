@@ -118,7 +118,8 @@
 }
 
 .grid-search input {
-    width:150px
+    width:150px;
+    font-size:12px
 }
 
 @media print {

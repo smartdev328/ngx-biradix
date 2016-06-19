@@ -236,11 +236,11 @@ define([
 
                 }
 
-                $('button.nots-submit').prop('disabled', true);
+                $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
 
                 $authService.updateSettings($rootScope.me.settings).then(function (resp) {
-                    $('button.nots-submit').prop('disabled', false);
+                    $('button.contact-submit').prop('disabled', false);
                     ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
                         resp.data.errors.forEach(function(e) {
@@ -255,7 +255,7 @@ define([
                     }
 
                 }, function (err) {
-                    $('button.nots-submit').prop('disabled', false);
+                    $('button.contact-submit').prop('disabled', false);
                     toastr.error('Unable to save Notifications. Please contact an administrator');
                     ngProgress.complete();
                 });
@@ -266,11 +266,11 @@ define([
                 $rootScope.me.settings.tz = $scope.settings.tz.id;
                 //console.log($rootScope.me.settings.notifications);
 
-                $('button.settings-submit').prop('disabled', true);
+                $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
 
                 $authService.updateSettings($rootScope.me.settings).then(function (resp) {
-                    $('button.settings-submit').prop('disabled', false);
+                    $('button.contact-submit').prop('disabled', false);
                     ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
                         resp.data.errors.forEach(function(e) {
@@ -285,7 +285,7 @@ define([
                     }
 
                 }, function (err) {
-                    $('button.settings-submit').prop('disabled', false);
+                    $('button.contact-submit').prop('disabled', false);
                     toastr.error('Unable to save Settings. Please contact an administrator');
                     ngProgress.complete();
                 });

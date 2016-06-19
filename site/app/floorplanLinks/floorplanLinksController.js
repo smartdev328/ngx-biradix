@@ -26,6 +26,8 @@ define([
                 $scope.items = [];
                 $scope.options = {searchLabel: 'Floor Plans', availableLabel: "Excluded Floor Plans", selectedLabel : "Included Floor Plans"}
 
+                $scope.comp.floorplans = _.sortByAll($scope.comp.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'id'])
+
                 $scope.comp.floorplans.forEach(function(fp) {
                     var link = {id: fp.id, name: $propertyService.floorplanName(fp), group: $scope.floorplanGroup(fp), selected: false}
 

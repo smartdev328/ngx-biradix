@@ -187,7 +187,7 @@
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.rent == null ? "-" : "$" + row.rent}}</span>
         </td>
         <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.mersqft == null ? "-" : "$" + (mow.nersqft | number : 2)}}</span>
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.mersqft == null ? "-" : "$" + (row.mersqft | number : 2)}}</span>
         </td>
         <td style="text-align: right" ng-if="show.concessions" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.concessions == null ? "-" : "$" + row.concessions}}</span>

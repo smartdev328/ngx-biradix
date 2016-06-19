@@ -466,6 +466,7 @@ define([
                 $dialog.confirm('Are you sure you want to remove the following floor plan: ' + $propertyService.floorplanName(fp) + '?', function() {
                     var i = $scope.property.floorplans.indexOf(fp);
                     $scope.property.floorplans.splice(i,1);
+                    $scope.calculateFloorplanTotals();
                 }, function() {});
             }
 
@@ -557,19 +558,31 @@ define([
                             $scope.property.floorplans.push(addedFp);
                         }
 
-                        //re-calcualte total units in case we updated unit counts
-                        var newTotal = 0;
-                        $scope.property.floorplans.forEach(function(f) {
-                            newTotal += parseInt(f.units);
-                        })
-
-                        $scope.property.totalUnits = newTotal;
+                        $scope.calculateFloorplanTotals();
 
                         toastr.success('Floor Plan ' + (fp == null ? 'created' : 'updated')+  ' successfully.');
                     }, function () {
                         //Cancel
                     });
                 });
+            }
+
+            $scope.calculateFloorplanTotals = function() {
+                //re-calcualte total units in case we updated unit counts
+                var newTotal = 0;
+                var newAvg = 0;
+                $scope.property.floorplans.forEach(function(f) {
+                    newTotal += parseInt(f.units);
+                    newAvg += parseInt(f.units) * parseInt(f.sqft);
+                })
+
+                $scope.property.totalUnits = newTotal;
+
+                if (newTotal > 0) {
+                    $scope.property.averageSqft = parseInt(newAvg / newTotal);
+                } else {
+                    $scope.property.averageSqft = 0;
+                }
             }
 
             $scope.save = function() {

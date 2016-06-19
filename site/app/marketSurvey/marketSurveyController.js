@@ -628,7 +628,12 @@ define([
                 }
                 else {
                     $rootScope.$broadcast('data.reload');
-                    toastr.success('Market Survey Updated Sucessfully.');
+                    if (surveyid) {
+                        toastr.success('Market Survey Updated Successfully.');
+                    }
+                    else {
+                        toastr.success('Market Survey Created Successfully.');
+                    }
                     $modalInstance.close();
                 }
             }
