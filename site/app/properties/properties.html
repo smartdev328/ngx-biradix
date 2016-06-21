@@ -14,14 +14,14 @@
     </div>
 
     <div class="btn-group action_dropdown pull-right">
-        <button type="button" class="btn btn-default dropdown-toggle btn-sm" tooltip="Download Results" ng-click="download()">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Download Results" ng-click="download()">
             <span class="fa fa-download"></span>
         </button>
     </div>
 
 
     <div class="btn-group action_dropdown stay_open_button pull-right" style="margin-right:5px">
-        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Filters">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Filters">
             <span class="fa fa-filter"></span> <span class="caret"></span>
         </button>
         <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
@@ -60,7 +60,7 @@
     </div>
 
     <div class="btn-group action_dropdown stay_open_button pull-right" style="margin-right:5px">
-        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
             <span class="fa fa-table"></span> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
@@ -175,7 +175,7 @@
                    onclick="event.stopPropagation()"
                    popover-trigger="mouseenter"
                    popover-placement="right"
-                   popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                   uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i></td>
             <td ng-show="show.address">{{row.address}}</td>
             <td ng-show="show.city">{{row.city}}</td>
@@ -235,7 +235,7 @@
                    onclick="event.stopPropagation()"
                    popover-trigger="mouseenter"
                    popover-placement="right"
-                   popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                   uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i></td>
             <td ng-show="show.address">{{comp.address}}</td>
             <td ng-show="show.city">{{comp.city}}</td>

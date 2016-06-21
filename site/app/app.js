@@ -237,12 +237,12 @@ define([
     }]);
 
     app.run([
-        '$rootScope', '$modalStack',
-        function($rootScope, $modalStack) {
+        '$rootScope', '$uibModalStack',
+        function($rootScope, $uibModalStack) {
 
             $rootScope.$on('$stateChangeStart', function() {
                 //Cancel all popups
-                $modalStack.dismissAll('cancel');
+                $uibModalStack.dismissAll('cancel');
             });
         }
     ]);

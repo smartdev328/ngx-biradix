@@ -1,7 +1,7 @@
 var settings = require('../../../config/settings.js')
 var Redis = require('ioredis');
 var redis = new Redis(settings.REDIS_URL);
-var md5 = require('MD5');
+var md5 = require('md5');
 
 module.exports = {
     getByKey:function(key, callback) {

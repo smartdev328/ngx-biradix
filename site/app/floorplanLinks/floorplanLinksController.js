@@ -3,14 +3,14 @@ define([
     'app',
 ], function (app) {
      app.controller
-        ('floorplanLinksController', ['$scope', '$modalInstance', 'id', 'compid', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', function ($scope, $modalInstance, id, compid, ngProgress, $rootScope, toastr, $location, $propertyService) {
+        ('floorplanLinksController', ['$scope', '$uibModalInstance', 'id', 'compid', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', function ($scope, $uibModalInstance, id, compid, ngProgress, $rootScope, toastr, $location, $propertyService) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
             }
 
             $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             };
 
             $propertyService.search({
@@ -78,7 +78,7 @@ define([
                     else {
                         toastr.success('Link updated successfully.');
                         $rootScope.$broadcast('properties.excluded',id,compid, excluded);
-                        $modalInstance.close();
+                        $uibModalInstance.close();
                     }
 
 

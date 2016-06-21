@@ -30,7 +30,7 @@
                            ng-if="me.bounceReason"
                            popover-trigger="mouseenter"
                            popover-placement="top"
-                           popover='We were unable to deliver email to your email address: {{me.email}} for the following reason: {{me.bounceReason}}. Please verify your email address and click "Update".'
+                           uib-popover='We were unable to deliver email to your email address: {{me.email}} for the following reason: {{me.bounceReason}}. Please verify your email address and click "Update".'
                         ></i>
                     </div>
                 <div class="form-group " ng-class="{'has-error': (myForm.email.$dirty && myForm.email.$invalid) || me.bounceReason, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
@@ -148,7 +148,7 @@
                        style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
                        popover-trigger="mouseenter"
                        popover-placement="top"
-                       popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing market surveys. Note: Data for Leased % will only be shown if it exists for a property.'
+                       uib-popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing market surveys. Note: Data for Leased % will only be shown if it exists for a property.'
                     ></i>
                     <Br>
                     <Br>

@@ -2,7 +2,7 @@
 var express = require('express');
 var Routes = express.Router();
 var redisService = require('../../utilities/services/redisService')
-var md5 = require('MD5');
+var md5 = require('md5');
 /////////////////////////////////
 
 Routes.post('/', function (req, res) {

@@ -1,19 +1,19 @@
 'use strict';
 define(['app'], function (app) {
-    app.factory('$dialog', ['$modal', function ($modal) {
+    app.factory('$dialog', ['$uibModal', function ($uibModal) {
             var svc = {};
 
             svc.confirm = function (msg,confirm,deny) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: '/components/dialog/confirm.html?bust='+version,
-                    controller: function($scope, $modalInstance){
+                    controller: function($scope, $uibModalInstance){
                         $scope.msg = msg;
                         $scope.cancel = function () {
-                            $modalInstance.dismiss('cancel');
+                            $uibModalInstance.dismiss('cancel');
                         };
 
                         $scope.confirm = function () {
-                            $modalInstance.close('confirm');
+                            $uibModalInstance.close('confirm');
                         };
                     }
                 });

@@ -7,7 +7,7 @@ define([
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$modal','$gridService','toastr', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$modal,$gridService,toastr) {
+    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -259,7 +259,7 @@ define([
             require([
                 '/app/manageUsers/editUserController.js'
             ], function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: '/app/manageUsers/editUser.html?bust=' + version,
                     controller: 'editUserController',
                     size: "sm",

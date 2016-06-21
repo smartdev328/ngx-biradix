@@ -8,7 +8,7 @@ define([
     '../components/timeseries/module',
 ], function (app) {
 
-    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$modal', 'toastr', 'ngProgress', '$timeout', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $modal, toastr,ngProgress,$timeout) {
+    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce) {
 
         var refreshFactor = 1;
 
@@ -247,6 +247,9 @@ define([
 
         }
 
+        $scope.sanitize = function(s) {
+            return $sce.trustAsHtml(s);
+        }
         $scope.getLocation = function (val) {
             return $propertyService.search({search: val, active: true}).then(function (response) {
                 return response.data.properties
@@ -314,7 +317,7 @@ define([
             require([
                 '/app/marketSurvey/marketSurveyController.js'
             ], function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: '/app/marketSurvey/marketSurvey.html?bust='+version,
                     controller: 'marketSurveyController',
                     size: "md",

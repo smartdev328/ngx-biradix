@@ -80,7 +80,7 @@
         <i class="fa fa-info-circle"  style="font-size:12px"
         popover-trigger="mouseenter"
         popover-placement="bottom"
-        popover="Turn on detailed concessions if you want to input one time and monthly concessions separately rather than a single total value over 12 months"
+           uib-popover="Turn on detailed concessions if you want to input one time and monthly concessions separately rather than a single total value over 12 months"
     ></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div class="visible-xs"></div>
         <span class="visible-xs-inline-block" style="width:30px;"></span><toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Market Survey Notes<br>
@@ -98,26 +98,26 @@
                 <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-info-circle" style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
-                 popover="Enter the current gross floor-plan rent, before any concessions or discounts. If the floor plan has a range, please enter minimum price."
+                                                                         uib-popover="Enter the current gross floor-plan rent, before any concessions or discounts. If the floor plan has a range, please enter minimum price."
                         ></i></th>
                 <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                  popover-trigger="mouseenter"
                  popover-placement="left"
-                 popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
+                                                                                                            uib-popover="Enter the offered rent discount, such as one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offer over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. For any waived fees, please enter under Fees & Deposits."
                         ></i><Br>
                 <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
 
                 <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                                                                                                            popover-trigger="mouseenter"
                                                                                                            popover-placement="left"
-                                                                                                           popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
+                                                                                                           uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
                 ></i><Br>
                     <div style="font-size:8pt;font-weight:normal;">(One Time)</div></th>
 
                 <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
                                                                                                            popover-trigger="mouseenter"
                                                                                                            popover-placement="left"
-                                                                                                           popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
+                                                                                                           uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
                 ></i><Br>
                     <div style="font-size:8pt;font-weight:normal;">(Monthly)</div></th>
                 <th style="width:55px">
@@ -161,12 +161,12 @@
                     </div>
                 </td>
                 <td>
-                    &nbsp;<a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    &nbsp;<a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                     &nbsp;
                     <i ng-if="row.warning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
                        popover-placement="left"
-                       popover="The Net Eff. Rent for this floor plan has changed by more than 10% since the last market survey"
+                       uib-popover="The Net Eff. Rent for this floor plan has changed by more than 10% since the last market survey"
 
                     ></i>
                 </td>
@@ -188,12 +188,12 @@
                     </div>
                 </td>
                 <td style="width:45px;">
-                    &nbsp;<a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    &nbsp;<a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                     &nbsp;
                     <i ng-if="occupancyWarning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
                        popover-placement="top"
-                       popover="Occupancy % has changed by more than 10% since the last market survey"
+                       uib-popover="Occupancy % has changed by more than 10% since the last market survey"
 
                     ></i>
                 </td>
@@ -211,7 +211,7 @@
                     </div>
                 </td>
                 <td style="width:40px;">
-                    &nbsp;<a href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    &nbsp;<a href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                 </td>
             </tr>
             <tr>
@@ -226,12 +226,12 @@
                 </td>
                 <td style="width:45px;">
                     <div ng-if="$root.me.settings.showLeases">
-                        &nbsp;<a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                        &nbsp;<a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                         &nbsp;
                     <i ng-if="leasedWarning" class="fa fa-info-circle" style="color:orange"
                        popover-trigger="mouseenter"
                        popover-placement="top"
-                       popover="Leased % has changed by more than 10% since the last market survey"
+                       uib-popover="Leased % has changed by more than 10% since the last market survey"
 
                     ></i>
                     </div>
@@ -247,7 +247,7 @@
                     </div>
                 </td>
                 <td style="width:40px;">
-                    &nbsp;<a href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" tooltip="Undo"></i></a>
+                    &nbsp;<a href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                 </td>
             </tr>
 

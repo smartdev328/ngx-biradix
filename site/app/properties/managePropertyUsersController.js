@@ -6,14 +6,14 @@ define([
     '../../services/propertyUsersService.js',
 ], function (app) {
      app.controller
-        ('managePropertyUsersController', ['$scope', '$modalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $modalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
+        ('managePropertyUsersController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
 
             $scope.property = property;
             $scope.users = [];
             $scope.userOptions = { hideSearch: true, dropdown: false, dropdownDirection : 'left', searchLabel: "Users" }
 
             $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             };
 
             $scope.loading = true;
@@ -44,7 +44,7 @@ define([
             $scope.save = function() {
                 var users  = _.pluck(_.filter($scope.users, function(x) {return x.selected == true}),"id");
                 $propertyUsersService.setUsersForProperty(property._id,users)
-                $modalInstance.close();
+                $uibModalInstance.close();
 
             }
 

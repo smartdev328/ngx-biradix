@@ -69,9 +69,9 @@
             <td>{{row.description}}</td>
             <td>{{row.operator.name}}</td>
             <td>
-                <span ng-if="getAudit(row.type).undo && row.revertedFromId" class="fa fa-info-circle" tooltip-placement="left" tooltip="This action is due to an earlier undo"></span>
-                <a ng-if="getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" tooltip="Undo"><span class="fa fa-undo"></span></a>
-                <span ng-if="row.reverted" class="fa fa-undo" style="color:red" tooltip="Already undone"></span>
+                <span ng-if="getAudit(row.type).undo && row.revertedFromId" class="fa fa-info-circle" tooltip-placement="left" uib-tooltip="This action is due to an earlier undo"></span>
+                <a ng-if="getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
+                <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
             </td>
         </tr>
         <tr ng-if="row.open">

@@ -3,14 +3,14 @@ define([
     'app'
 ], function (app) {
      app.controller
-        ('findCompController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService) {
+        ('findCompController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
             }
 
             $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             };
 
             $propertyService.search({
@@ -27,7 +27,7 @@ define([
             });
 
             $scope.create = function () {
-                $modalInstance.dismiss('create');
+                $uibModalInstance.dismiss('create');
             };
 
             $scope.autoComplete = function() {
@@ -47,7 +47,7 @@ define([
                         toastr.error(errors);
                     }
                     else {
-                        $modalInstance.close(comp);
+                        $uibModalInstance.close(comp);
                     }
 
 

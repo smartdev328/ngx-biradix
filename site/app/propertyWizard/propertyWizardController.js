@@ -7,14 +7,14 @@ define([
     '../../services/amenityService.js'
 ], function (app) {
      app.controller
-        ('propertyWizardController', ['$scope', '$modalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$modal','subjectid', function ($scope, $modalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$modal,subjectid) {
+        ('propertyWizardController', ['$scope', '$uibModalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$uibModal','subjectid', function ($scope, $uibModalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$uibModal,subjectid) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
             }
 
             $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             };
 
             $scope.values = {};
@@ -522,7 +522,7 @@ define([
                 require([
                     '/app/propertyWizard/editFloorplanController.js'
                 ], function () {
-                    var modalInstance = $modal.open({
+                    var modalInstance = $uibModal.open({
                         templateUrl: '/app/propertyWizard/tabs/editFloorplanController.html?bust=' + version,
                         controller: 'editFloorplanController',
                         size: "md",
@@ -605,18 +605,18 @@ define([
                                 $propertyService.linkComp(subjectid, response.data.property._id).then(
                                     function(response) {
 
-                                        $modalInstance.close(response.data.property);
+                                        $uibModalInstance.close(response.data.property);
                                     },
                                     function(response) {
 
-                                        $modalInstance.close(response.data.property);
+                                        $uibModalInstance.close(response.data.property);
                                     }
                                 )
 
                             }
                             else {
                                 //not a comp, but a subject being added
-                                $modalInstance.close(response.data.property);
+                                $uibModalInstance.close(response.data.property);
                             }
                         }
 
@@ -638,7 +638,7 @@ define([
                         else {
                             toastr.success($scope.property.name + ' updated successfully');
 
-                            $modalInstance.close(response.data.property);
+                            $uibModalInstance.close(response.data.property);
                         }
 
                         ngProgress.complete();

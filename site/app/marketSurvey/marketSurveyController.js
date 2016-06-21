@@ -5,7 +5,7 @@ define([
     '../../components/dialog/module.js'
 ], function (app) {
      app.controller
-        ('marketSurveyController', ['$scope', '$modalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService', function ($scope, $modalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService) {
+        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
@@ -16,7 +16,7 @@ define([
             }
 
             $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             };
 
             $scope.clear = function(id) {
@@ -634,7 +634,7 @@ define([
                     else {
                         toastr.success('Market Survey Created Successfully.');
                     }
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 }
             }
 

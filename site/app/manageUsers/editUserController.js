@@ -6,7 +6,7 @@ define([
     '../../services/propertyUsersService.js',
 ], function (app) {
      app.controller
-        ('editUserController', ['$scope', '$modalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $modalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
+        ('editUserController', ['$scope', '$uibModalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $uibModalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
             $scope.user = {};
             $scope.properties = [];
             $scope.propertyOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', searchLabel: "Properties" }
@@ -16,7 +16,7 @@ define([
             $scope.propertyids = [];
 
             $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             };
 
             $scope.getDropdowns = function () {
@@ -116,7 +116,7 @@ define([
                             }
                             else {
                                 $scope.saveProperties(response.data.user._id,selectedProperties);
-                                $modalInstance.close(response.data.user);
+                                $uibModalInstance.close(response.data.user);
                             }
                         },
                         function (error) {
@@ -130,7 +130,7 @@ define([
                             }
                             else {
                                 $scope.saveProperties(response.data.user._id,selectedProperties);
-                                $modalInstance.close(response.data.user);
+                                $uibModalInstance.close(response.data.user);
                             }
                         },
                         function (error) {

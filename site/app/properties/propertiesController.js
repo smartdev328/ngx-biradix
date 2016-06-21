@@ -5,7 +5,7 @@ define([
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$modal','$authService','$dialog','toastr', function ($scope,$rootScope,$location,$propertyService,ngProgress,$modal,$authService,$dialog,toastr) {
+    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$uibModal','$authService','$dialog','toastr', function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -397,7 +397,7 @@ define([
             require([
                 '/app/floorplanLinks/floorplanLinksController.js'
             ], function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: '/app/floorplanLinks/floorplanLinks.html?bust=' + version,
                     controller: 'floorplanLinksController',
                     size: "md",
@@ -427,7 +427,7 @@ define([
             require([
                 '/app/propertyWizard/propertyWizardController.js'
             ], function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: '/app/propertyWizard/propertyWizard.html?bust='+version,
                     controller: 'propertyWizardController',
                     size: "md",
@@ -490,7 +490,7 @@ define([
             require([
                 '/app/findComp/findCompController.js'
             ], function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: '/app/findComp/findComp.html?bust=' + version,
                     controller: 'findCompController',
                     size: "md",
@@ -528,7 +528,7 @@ define([
             require([
                 '/app/properties/managePropertyUsersController.js'
             ], function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: '/app/properties/manageUsers.html?bust=' + version,
                     controller: 'managePropertyUsersController',
                     size: "md",

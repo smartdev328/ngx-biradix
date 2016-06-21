@@ -8,7 +8,7 @@ requirejs.config({
     paths: {
         'async': '/libs/requirejs/async',
         'highcharts': '/bower_components/highcharts-release/highcharts',
-        'async2': local ? '/bower_components/async/dist/async.min' : '//cdnjs.cloudflare.com/ajax/libs/async/1.5.0/async.min',
+        'async2': local ? '/bower_components/async/dist/async.min' : '//cdnjs.cloudflare.com/ajax/libs/async/1.5.2/async.min',
     }
 });
 

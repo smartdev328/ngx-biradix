@@ -4,7 +4,7 @@
     </div>
     <div class="col-xs-5 col-sm-5 hidden-print">
         <div class="btn-group pull-right">
-            <button tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
+            <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -65,7 +65,7 @@
                         </Td>
                         <td style="width:50px" class="hidden-print" valign="top">
                             <div class="btn-group action_dropdown pull-right hover-only" style="margin-right:-15px">
-                                <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
+                                <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                                     <span class="fa fa-table"></span> <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
@@ -138,7 +138,7 @@
                                     <i class="fa fa-info-circle" style="font-size:12px"
                                        popover-trigger="mouseenter"
                                        popover-placement="top"
-                                       popover="This option gives you the ability to show excluded floor plans."
+                                       uib-popover="This option gives you the ability to show excluded floor plans."
                                             ></i>
                                 </Td>
 
@@ -163,7 +163,7 @@
                    ng-if="points.excluded"
                    popover-trigger="mouseenter"
                    popover-placement="right"
-                   popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                   uib-popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i>
 
                 <daterange-picker daterange="daterange" class="pull-right" style="margin-right:-15px"></daterange-picker>
@@ -223,7 +223,7 @@
                                     <i class="fa fa-info-circle" style="font-size:12px"
                                        popover-trigger="mouseenter"
                                        popover-placement="top"
-                                       popover="This option gives you the ability to show excluded floor plans."
+                                       uib-popover="This option gives you the ability to show excluded floor plans."
                                             ></i>
                                 </Td>
 
@@ -233,7 +233,7 @@
                 </span>
 
                 <div class="btn-group action_dropdown pull-right hidden-print hover-only" style="margin-right:-15px">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" tooltip="Show/Hide Columns">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">

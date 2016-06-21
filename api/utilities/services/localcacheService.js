@@ -1,5 +1,5 @@
 var cache = require('memory-cache');
-var md5 = require('MD5');
+var md5 = require('md5');
 
 module.exports = {
     get:function(key) {

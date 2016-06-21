@@ -3,7 +3,7 @@ define([
     'app',
 ], function (app) {
      app.controller
-        ('editFloorplanController', ['$scope', '$modalInstance', 'fp','toastr','unitItems','unitAmenityOptions','values','addAmenityGlobal', function ($scope, $modalInstance, fp, toastr,unitItems,unitAmenityOptions,values,addAmenityGlobal) {
+        ('editFloorplanController', ['$scope', '$uibModalInstance', 'fp','toastr','unitItems','unitAmenityOptions','values','addAmenityGlobal', function ($scope, $uibModalInstance, fp, toastr,unitItems,unitAmenityOptions,values,addAmenityGlobal) {
 
             $scope.edit = false;
 
@@ -37,7 +37,7 @@ define([
             $scope.fpCopy = _.cloneDeep(fp) || {};
 
             $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             };
 
             $scope.getTitle = function() {
@@ -55,10 +55,10 @@ define([
                     fp.sqft = $scope.fpCopy.sqft;
                     fp.units = $scope.fpCopy.units;
                     fp.amenities = $scope.populateAmenities();
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 }else {
                     $scope.fpCopy.amenities = $scope.populateAmenities();
-                    $modalInstance.close($scope.fpCopy);
+                    $uibModalInstance.close($scope.fpCopy);
                 }
             }
 
