@@ -274,7 +274,7 @@
         <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
     </div>
     <div class="pull-right grid-pager">
-        <pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></pagination>
+        <uib-pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></uib-pagination>
     </div>
     <br clear="all" />
     </div>
