@@ -24,6 +24,7 @@ define([
         , 'toastr'
         , 'ngCookies'
         , 'ngProgress'
+        , 'ngSanitize'
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {
@@ -230,9 +231,9 @@ define([
             })
     });
 
-    app.filter("sanitize", ['$sce', function ($sce) {
+    app.filter("sanitize", ['$sanitize', function ($sanitize) {
         return function (htmlCode) {
-            return $sce.trustAsHtml(htmlCode);
+            return $sanitize(htmlCode);
         }
     }]);
 
