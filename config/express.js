@@ -19,6 +19,7 @@ module.exports = {
             var cacheTime = 86400000*7;     // 7 days
             app.use(require('express').static(__dirname + '../../site/',{ maxAge: cacheTime }));
             app.use('/bower_components',  require('express').static(__dirname + '../../bower_components/',{ maxAge: cacheTime }));
+            app.use('/node_modules',  require('express').static(__dirname + '../../node_modules/',{ maxAge: cacheTime }));
 
             app.use(cookieParser())
 
@@ -39,15 +40,6 @@ module.exports = {
                         }
 
                         return token;
-                        //if (token) {
-                        //    redisService.getByKey(token, function(err, result) {
-                        //        return  result;
-                        //    });
-                        //}
-                        //else {
-                        //    return null;
-                        //}
-
                     }
                 }
             )
@@ -123,10 +115,10 @@ module.exports = {
                 next();
             });
 
-            //app.all("*", function(req, res, next) {
-            //    //console.log(req.path, req.cookies)
+            // app.all("*", function(req, res, next) {
+            //    console.log(req.path, req.headers, req.user)
             //    next();
-            //})
+            // })
         }
 }
 

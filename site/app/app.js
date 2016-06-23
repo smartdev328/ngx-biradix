@@ -14,6 +14,35 @@ function resolve($q, ctrl) {
     return deferred.promise;
 }
 
+function AsyncRoute (url, path, controller,view, outlet) {
+
+    var views = {};
+    views[outlet] = {
+        templateUrl: "/app/" + path +"/" + view + "?bust=" + version,
+    };
+
+    if (controller) {
+        views[outlet].controller = controller;
+    }
+
+    var r =
+    {
+        url: url,
+        views: views ,
+    };
+
+    if (controller) {
+        r.resolve = {
+            get: function ($q) {
+                return resolve($q, path + '/' + controller)
+            }
+        }
+    }
+
+
+    return r;
+}
+
 define([
     '../components/ngProgress/module',
     'css!global'
@@ -46,16 +75,7 @@ define([
         $urlRouterProvider.otherwise("/dashboard");
 
         $stateProvider
-            .state('login', {
-                url: "/login?r",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/login/login.html?bust=" + version,
-                        controller : "loginController"
-                    }
-                },
-                resolve: {get : function($q) {return resolve($q, 'login/loginController')}}
-            })
+            .state('login', AsyncRoute("/login?r","login","loginController","login.html","loggedOutView"))
             .state('contact', {
                 url: "/contact",
                 views: {
@@ -74,64 +94,14 @@ define([
                     }
                 }
             })
-            .state('password', {
-                url: "/password",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/passwordOff/password.html?bust=" + version,
-                        controller : "passwordOffController"
-                    }
-                },
-                resolve: {get : function($q) {return resolve($q, 'passwordOff/passwordOffController')}}
-            })
-            .state('password_sent', {
-                url: "/password/sent",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/passwordOff/sent.html?bust=" + version,
-                    }
-                }
-            })
-            .state('password_invalid', {
-                url: "/password/invalid",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/passwordOff/invalid.html?bust=" + version,
-                    }
-                }
-            })
-            .state('password_reset', {
-                url: "/password/reset/:token",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/passwordOff/reset.html?bust=" + version,
-                        controller : "resetController"
-                    }
-                },
-                resolve: {get : function($q) {return resolve($q, 'passwordOff/resetController')}}
-            })
-            .state('dashboard', {
-                url: "/dashboard?id",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/dashboard/dashboard.html?bust=" + version ,
-                        controller : "dashboardController"
-                    }
+            .state('password', AsyncRoute("/password","passwordOff","passwordOffController","password.html","loggedOutView"))
+            .state('password_sent', AsyncRoute("/password/sent","passwordOff",null,"sent.html","loggedOutView"))
+            .state('password_invalid', AsyncRoute("/password/invalid","passwordOff",null,"invalid.html","loggedOutView"))
+            .state('password_reset', AsyncRoute("/password/reset/:token","passwordOff","resetController","reset.html","loggedOutView"))
 
-                },
-                resolve: {get : function($q) {return resolve($q, 'dashboard/dashboardController')}}
-            })
-            .state('manageUsers', {
-                url: "/manageusers",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/manageUsers/manageUsers.html?bust=" + version ,
-                        controller : "manageUsersController"
-                    }
+            .state('dashboard?id', AsyncRoute("/dashboard","dashboard","dashboardController","dashboard.html","loggedInView"))
+            .state('manageUsers', AsyncRoute("/manageusers","manageUsers","manageUsersController","manageUsers.html","loggedInView"))
 
-                },
-                resolve: {get : function($q) {return resolve($q, 'manageUsers/manageUsersController')}}
-            })
             .state('properties', {
                 url: "/properties",
                 views: {
@@ -196,17 +166,7 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'reporting/reportingController')}}
             })
-            .state('updateProfile', {
-                url: "/updateProfile?password&notifications&settings",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/updateprofile/updateProfile.html?bust=" + version ,
-                        controller : "updateProfileController"
-                    }
-
-                },
-                resolve: {get : function($q) {return resolve($q, 'updateprofile/updateProfileController')}}
-            })
+            .state('updateProfile', AsyncRoute("/updateProfile?password&notifications&settings","updateprofile","updateProfileController","updateProfile.html","loggedInView"))
             .state('contactus', {
                 url: "/contactus",
                 views: {

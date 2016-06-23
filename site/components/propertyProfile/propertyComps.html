@@ -95,21 +95,21 @@
                ng-if="comp.survey.excluded"
                popover-trigger="mouseenter"
                popover-placement="right"
-               popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+               uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                     ></i>
             <i class="fa fa-clock-o danger"
                style="color:red;cursor:pointer;font-size:16px;padding-left:1px"
                ng-if="comp.survey.tier == 'danger'"
                popover-trigger="mouseenter"
                popover-placement="right"
-               popover="Property has not been updated in 15+ days"
+               uib-popover="Property has not been updated in 15+ days"
                     ></i>
             <i class="fa fa-clock-o warning"
                style="color:orange;cursor:pointer;font-size:16px;padding-left:1px"
                ng-if="comp.survey.tier == 'warning'"
                popover-trigger="mouseenter"
                popover-placement="right"
-               popover="Property has not been updated in 8+ days"
+               uib-popover="Property has not been updated in 8+ days"
                     ></i>
             <Br>
             {{comp.address}}
@@ -165,7 +165,7 @@
                ng-if="row.excluded"
                popover-trigger="mouseenter"
                popover-placement="right"
-               popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
+               uib-popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
                     ></i>
         </td>
         <td style="text-align: right" ng-if="show.occupancy" class="pad">
@@ -214,7 +214,7 @@
                ng-if="fp.excluded"
                popover-trigger="mouseenter"
                popover-placement="right"
-               popover="This floor plan has been manually excluded from reporting and dashboard calculations."
+               uib-popover="This floor plan has been manually excluded from reporting and dashboard calculations."
                     ></i>
         </td>
         <td style="text-align: right" ng-if="show.occupancy" class="pad">

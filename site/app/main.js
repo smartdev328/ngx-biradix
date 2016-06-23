@@ -18,7 +18,7 @@ global_error = function(err,context) {
         console.error(err.stack);
         var s= JSON.stringify(err.stack);
 
-        if (location.href.indexOf('localhost') == -1) {
+        //if (location.href.indexOf('localhost') == -1) {
             $.post("/error", {error: err.stack, context: context}).done(function (data) {
                 if (
                     !phantom //dont redirect on phantom errors
@@ -27,7 +27,7 @@ global_error = function(err,context) {
                     //location.href = "/error.html";
                 }
             });
-        }
+        //}
     }
 }
 
