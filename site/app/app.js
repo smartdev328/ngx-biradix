@@ -191,9 +191,15 @@ define([
             })
     });
 
-    app.filter("sanitize", ['$sanitize', function ($sanitize) {
+    app.filter("sanitize2", ['$sanitize', function ($sanitize) {
         return function (htmlCode) {
             return $sanitize(htmlCode);
+        }
+    }]);
+
+    app.filter("sanitize", ['$sce', function ($sce) {
+        return function (htmlCode) {
+            return $sce.trustAsHtml(htmlCode);
         }
     }]);
 
