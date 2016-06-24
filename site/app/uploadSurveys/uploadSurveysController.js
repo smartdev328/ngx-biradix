@@ -110,11 +110,20 @@ define([
                     //console.log('3:',old);
                     //return;
 
+                    var cr;
+
+                    try {
+                        cr = crypto;
+                    } catch (er) {
+                        cr = msCrypto;
+                    }
+
+
                     if (old.length == 1) {
                         fp = _.cloneDeep(old[0]);
                     } else {
                         fp.id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                            var r = (crypto || msCrypto).getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                            var r = cr.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
                             return v.toString(16);
                         });
                         fp.new = true;
