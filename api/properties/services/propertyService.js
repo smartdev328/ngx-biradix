@@ -129,6 +129,19 @@ module.exports = {
                             id: subj._id
                         }, {description: "Comp: " + comp.name, id: comp._id},]
                     })
+
+                    AuditService.create({
+                        operator: operator,
+                        property: comp,
+                        type: 'property_unlinked',
+                        revertedFromId: revertedFromId,
+                        description: subj.name + " ~ " + comp.name,
+                        context: context,
+                        data: [{
+                            description: "Subject: " + subj.name,
+                            id: subj._id
+                        }, {description: "Comp: " + comp.name, id: comp._id},]
+                    })
                     return callback(err, saved)
                 })
             })

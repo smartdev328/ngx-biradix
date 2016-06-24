@@ -10,7 +10,7 @@ define([
             $location.path('/login')
         }
 
-        window.document.title = "Manage Properties | BI:Radix";
+        window.setTimeout(function() {window.document.title = "Manage Properties | BI:Radix";},1500);
 
         $rootScope.nav = "";
 

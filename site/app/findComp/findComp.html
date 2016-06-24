@@ -35,7 +35,7 @@
                     <div ng-bind-html="row.summary | sanitize">
                 </td>
                 <td>
-                    <button class="btn btn-primary" ng-click="link(row)">Add Comp</button>
+                    <button class="btn btn-primary" ng-click="link(row)" ng-disabled="row.disabled"><span ng-if="!row.disabled">Add Comp</span><span ng-if="row.disabled">Added</span></button>
                 </td>
             </tr>
             </tbody>

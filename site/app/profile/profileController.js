@@ -205,7 +205,7 @@ define([
                         $scope.canManage = resp.canManage;
                         $scope.owner = resp.owner;
                         $scope.comp = resp.comp;
-                        $window.document.title = $scope.property.name + " - Profile | BI:Radix";
+                        window.setTimeout(function() {$window.document.title = $scope.property.name + " - Profile | BI:Radix";},1500);
 
                         $auditService.create({type: 'property_profile', property: {id: resp.property._id, name: resp.property.name, orgid: resp.property.orgid}, description: resp.property.name});
                     }

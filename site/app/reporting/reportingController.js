@@ -56,7 +56,7 @@ define([
             if ($scope.selected.Property) {
                 $scope.loadComps(_.pluck($scope.selected.Property.comps,"id"), $scope.selected.Property._id)
             } else {
-                window.document.title = "Reporting | BI:Radix";
+                window.setTimeout(function() {window.document.title = "Reporting | BI:Radix";},1500);
                 $scope.localLoading = true;
             }
 
@@ -70,7 +70,7 @@ define([
         })
 
         $scope.loadComps = function(compids,subjectid) {
-            window.document.title = $scope.selected.Property.name + " - Reporting | BI:Radix";
+            window.setTimeout(function() {window.document.title = $scope.selected.Property.name + " - Reporting | BI:Radix";},1500);
             $scope.reportLoading = false;
             $scope.noReports = false;
             delete $scope.reports;

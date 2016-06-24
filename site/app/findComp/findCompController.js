@@ -22,9 +22,12 @@ define([
                 $scope.subject = response.data.properties[0]
                 $scope.exclude = _.pluck($scope.subject.comps,"id");
 
+                $scope.exclude.forEach(function(x) {x = x.toString()});
+
                 $scope.localLoading = true;
 
             });
+
 
             $scope.create = function () {
                 $uibModalInstance.dismiss('create');
@@ -32,8 +35,13 @@ define([
 
             $scope.autoComplete = function() {
                 if ($scope.findComp.length > 1) {
-                    $propertyService.search({search: $scope.findComp, active: true, exclude: $scope.exclude}).then(function (response) {
+                    $propertyService.search({search: $scope.findComp, active: true}).then(function (response) {
                         $scope.properties = response.data.properties;
+                        $scope.properties.forEach(function(p) {
+                            if ($scope.exclude.indexOf(p._id.toString()) > -1) {
+                                p.disabled = true;
+                            }
+                        })
                     });
                 }
             }

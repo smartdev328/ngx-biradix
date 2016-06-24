@@ -12,7 +12,7 @@ define([
                 return;
             }
 
-            window.document.title = "My Account - Update Profile | BI:Radix";
+            window.setTimeout(function() {window.document.title = "My Account - Update Profile | BI:Radix";},1500);
 
             $rootScope.nav = "";
 

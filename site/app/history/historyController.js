@@ -10,7 +10,7 @@ define([
             $location.path('/login')
         }
 
-        window.document.title = "Activity History | BI:Radix";
+        window.setTimeout(function() {window.document.title = "Activity History | BI:Radix";},1500)
 
         $rootScope.nav = "";
         $scope.pager = {offset : 0, currentPage: 1, itemsPerPage: 50}
