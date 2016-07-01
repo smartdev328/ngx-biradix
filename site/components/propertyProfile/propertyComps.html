@@ -146,11 +146,20 @@
         </td>
 
         <td style="text-align:center" class="hidden-print">
-            <a href ng-click="marketSurvey(comp._id)" ng-if="canSurvey"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
+            <a href ng-click="marketSurvey(comp._id)" ng-if="comp.canSurvey"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          tooltip-placement="left"
                                                          uib-tooltip="{{surveyTooltip(comp)}}"
 
                     ></i></a>
+
+            <a href  ng-if="!comp.canSurvey"><i class="fa fa-lock" style="font-size:18px;padding-top:12px;cursor: not-allowed;"
+                                                popover-trigger="mouseenter"
+                                                popover-placement="left"
+                                                popover-title="This property is managed by a BI:Radix user."
+                                                uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
+
+
+            ></i></a>
         </td>
     </tr>
     <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">

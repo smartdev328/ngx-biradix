@@ -149,7 +149,7 @@ module.exports = {
                     permission: 'PropertyView',
                     ids: compids
                     ,
-                    select: "_id name address city state zip loc totalUnits survey.id floorplans"
+                    select: "_id name address city state zip loc totalUnits survey.id floorplans orgid"
                 }, function(err, comps) {
 
                     if (err) {
@@ -182,10 +182,30 @@ module.exports = {
                                                 callbackp(null, points)
                                             })
                                     }
+                                },
+                                owned: function(callbackp) {
+                                    PropertyService.search(user, {limit: 20, permission: ['PropertyManage'], ids: compids
+                                        , select: "_id"
+                                    }, function(err, property) {
+                                        property.push({ _id: id }) // add subject to the list of owned
+                                        callbackp(err, property)
+                                    })
                                 }
                             }, function(err, all) {
+
                                 all.comps.forEach(function(c) {
                                     delete c.floorplans;
+                                })
+
+
+                                all.comps.forEach(function(c) {
+                                    c.canSurvey = true;
+
+                                    if (c.orgid && !_.find(all.owned, function(x) {return x._id.toString() == c._id.toString()})) {
+                                        c.canSurvey = false;
+                                    }
+
+                                    // console.log(c.canSurvey,all.owned,c._id);
                                 })
 
                                 //console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
