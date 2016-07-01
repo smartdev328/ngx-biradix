@@ -15,9 +15,19 @@
                 <li ng-if="owner"><a href ng-click="excel()"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel: Property Profile + Comps</a></li>
             </ul>
         </div>
-        <button ng-if="canManage" uib-tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
+        <button ng-if="canSurvey" uib-tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
             <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Market Survey</span>
         </button>
+        <button ng-if="!canSurvey"
+                style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
+                popover-trigger="mouseenter"
+                popover-placement="bottom"
+                popover-title="This property is managed by a BI:Radix user."
+                uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
+                type="button" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-lock"></i> <span class="hidden-xs">Market Survey</span>
+        </button>
+
     </div>
 </div>
 <div ng-show="localLoading" class="hidden-print">
@@ -182,7 +192,7 @@
                     </div>
 
                     <div ng-if="!graphs">
-                        <table-view data="otherTable" columns="nerKeys" survey="canManage" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
+                        <table-view data="otherTable" columns="nerKeys" survey="canSurvey" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
                         <hr style="margin:20px 0px 50px 0px !important;">
                     </div>
                 </div>
@@ -201,7 +211,7 @@
                         </div>
                     </div>
                     <div ng-if="!graphs">
-                        <table-view data="otherTable" columns="columns" survey="canManage" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
+                        <table-view data="otherTable" columns="columns" survey="canSurvey" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
                     </div>
                 </div>
             </div>

@@ -102,7 +102,12 @@ module.exports = {
 
                     //console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
 
-                    callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner})
+                    var canSurvey = all.modify;
+                    if (!all.owner && all.comp.p.orgid) {
+                        canSurvey = false;
+                    }
+
+                    callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
 
                     for (var s in all) {
                         all[s] = null;
