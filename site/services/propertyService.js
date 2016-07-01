@@ -336,6 +336,7 @@ define(['app'], function (app) {
             } else {
                 resp.property = profile.property;
                 resp.canManage = profile.canManage;
+                resp.canSurvey = profile.canSurvey;
                 resp.owner = profile.owner;
                 resp.comp = profile.comps[0];
             }
