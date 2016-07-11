@@ -42,19 +42,27 @@ module.exports = {
                     return callback([{msg: 'Unable to update comp links, not currently linked.'}])
                 }
 
+                //This is the current list of comped floorplans
                 var old = isLinked.floorplans.map(function(x) {return x.toString()})
 
-                var updated = floorplans.map(function(x) {return x.toString()})
+                //This is the list of selected included floorplans of the comp from the subject's perspective, the caller passes this list in
+                var updated = _.uniq(floorplans.map(function(x) {return x.toString()}));
+
+                // This is the full list of real floorplans of the comp
                 var full = _.pluck(comp.floorplans,"id").map(function(x) {return x.toString()})
+
+
+                //Remove anything in the updated list that is no longer a valid floorplan
+                _.remove(updated, function(u) {return full.indexOf(u) == -1 });
 
                 //console.log(updated.sort(),full.sort());
                 var excluded = !_.isEqual(full.sort(), updated.sort())
 
                 var update = {$set: {'comps.$.floorplans': floorplans, 'comps.$.excluded': excluded}};
 
-                if (_.isEqual(old.sort(), updated.sort())) {
-                    return callback([{msg: 'Unable to update comp links, no changes detected'}])
-                }
+                // if (_.isEqual(old.sort(), updated.sort())) {
+                //     return callback([{msg: 'Unable to update comp links, no changes detected'}])
+                // }
 
                 var removed = _.difference(old, updated);
                 var added = _.difference(updated, old);
@@ -76,22 +84,29 @@ module.exports = {
 
                 PropertySchema.update(query, update, function (err, saved) {
 
-                    AuditService.create({
-                        operator: operator,
-                        property: subj,
-                        type: 'links_updated',
-                        revertedFromId: revertedFromId,
-                        description: subj.name + " + " + comp.name + " (" + added.length + " Added, " + removed.length +" Removed)",
-                        context: context,
-                        data: [{
-                            description: "Subject: " + subj.name,
-                            id: subj._id
-                        }, {description: "Comp: " + comp.name, id: comp._id},].concat(addedData).concat(removedData)
-                    })
+                    if (addedData.length > 0 || removedData.length > 0) {
+                        AuditService.create({
+                            operator: operator,
+                            property: subj,
+                            type: 'links_updated',
+                            revertedFromId: revertedFromId,
+                            description: subj.name + " + " + comp.name + " (" + added.length + " Added, " + removed.length + " Removed)",
+                            context: context,
+                            data: [{
+                                description: "Subject: " + subj.name,
+                                id: subj._id
+                            }, {
+                                description: "Comp: " + comp.name,
+                                id: comp._id
+                            },].concat(addedData).concat(removedData)
+                        })
+                    }
 
 
                     return callback(err, saved)
                 })
+
+
             })
         })
     },

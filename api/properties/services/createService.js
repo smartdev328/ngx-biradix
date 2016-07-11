@@ -119,9 +119,10 @@ module.exports = {
                         }
 
                         //find all subjects and their comp links to this comp and update with new floorplans asynchornously
+                        //If there are no new floorplans, do it anyway just to fix any changes.
 
 
-                        if (property.addedFloorplans.length > 0) {
+                        //if (property.addedFloorplans.length > 0) {
                             property.floorplans = property.floorplans.map(function(x) {return x.id.toString()})
                             CompsService.getSubjects(prop._id, {select: "_id name comps"}, function (err, subjects) {
                                 async.eachLimit(subjects, 10, function(subject, callbackp){
@@ -132,7 +133,7 @@ module.exports = {
                                     comp.floorplans = comp.floorplans.concat(property.addedFloorplans);
 
 
-                                    //remvoe any orphan comp floorplans that dont exist in property anymore
+                                    //remove any orphan comp floorplans that dont exist in property anymore
                                     _.remove(comp.floorplans, function(fp) {
                                         return property.floorplans.indexOf(fp.toString()) == -1;
                                     })
@@ -146,7 +147,7 @@ module.exports = {
 
                                 });
                             });
-                        }
+                        //}
 
                         //Add  all permissions  asynchornously
                         async.eachLimit(permissions, 10, function(permission, callbackp){

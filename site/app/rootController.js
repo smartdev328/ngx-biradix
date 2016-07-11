@@ -256,6 +256,14 @@ define([
             });
         };
 
+        $scope.disableSearchKeys = function(event) {
+            switch(event.keyCode) {
+                case 191: // "/"
+                case 220: // "\"
+                    event.preventDefault();
+            }
+        }
+        
         $scope.searchSelected = function (item, model, label) {
             $scope.search1 = "";
             $scope.search2 = "";

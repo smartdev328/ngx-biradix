@@ -17,6 +17,7 @@
                        ng-model="findComp",
                        ng-change="autoComplete()"
                        style="padding-left:25px"
+                       ng-keydown="disableSearchKeys($event)"
                         >
                 <i class="fa fa-search form-control-feedback" style="color:#ccc;top:0px !important;"></i>
             </div>

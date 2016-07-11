@@ -13,6 +13,14 @@ define([
                 $uibModalInstance.dismiss('cancel');
             };
 
+            $scope.disableSearchKeys = function(event) {
+                switch(event.keyCode) {
+                    case 191: // "/"
+                    case 220: // "\"
+                        event.preventDefault();
+                }
+            }
+            
             $propertyService.search({
                 limit: 20,
                 permission: 'PropertyManage',
