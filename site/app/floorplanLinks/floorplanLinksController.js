@@ -76,7 +76,7 @@ define([
                         toastr.error(errors);
                     }
                     else {
-                        toastr.success('Link updated successfully.');
+                        toastr.success('Comped floor plans updated successfully.');
                         $rootScope.$broadcast('properties.excluded',id,compid, excluded);
                         $uibModalInstance.close();
                     }
