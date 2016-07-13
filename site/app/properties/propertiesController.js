@@ -79,26 +79,41 @@ define([
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
                 $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid", ids: compids}).then(function (response) {
-                    row.fullcomps = response.data.properties;
+                    $propertyService.search({
+                        limit: 1000,
+                        permission: 'PropertyManage',
+                        select: "_id orgid",
+                        ids: compids
+                    }).then(function (responseOwned) {
 
-                    row.fullcomps.forEach(function(p) {
-                        //For propert sorting
-                        if (p.survey){
-                            if (p.survey.occupancy != null) {
-                                p.occupancy = p.survey.occupancy;
+                        var ownedProps = responseOwned.data.properties;
+                        row.fullcomps = response.data.properties;
+
+                        row.fullcomps.forEach(function (p) {
+                            //For propert sorting
+                            if (p.survey) {
+                                if (p.survey.occupancy != null) {
+                                    p.occupancy = p.survey.occupancy;
+                                }
+
+                                if (p.survey.ner != null) {
+                                    p.ner = p.survey.ner;
+                                }
+
+                            } else {
+                                p.occupancy = -1;
+                                p.ner = -1;
                             }
 
-                            if (p.survey.ner != null) {
-                                p.ner = p.survey.ner;
+                            p.canEdit = true;
+
+                            if (p.orgid && !_.find(ownedProps.owned, function(x) {return x._id.toString() == p._id.toString()})) {
+                                p.canEdit = false;
                             }
+                        })
 
-                        } else {
-                            p.occupancy = -1;
-                            p.ner = -1;
-                        }
-                    })
-
-                    row.compsLoaded = true;
+                        row.compsLoaded = true;
+                    });
                 })
 
             }
