@@ -107,7 +107,7 @@ define([
 
                             p.canEdit = true;
 
-                            if (p.orgid && !_.find(ownedProps.owned, function(x) {return x._id.toString() == p._id.toString()})) {
+                            if (p.orgid && !_.find(ownedProps, function(x) {return x._id.toString() == p._id.toString()})) {
                                 p.canEdit = false;
                             }
                         })

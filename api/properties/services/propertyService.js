@@ -20,7 +20,7 @@ module.exports = {
     linkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
         CompsService.linkComp(operator,context,revertedFromId, true, subjectid,compid,callback);
     },
-    saveCompLink:function(operator,context,revertedFromId,subjectid, compid, floorplans, callback) {
+    saveCompLink:function(operator,context,revertedFromId,subjectid, compid, floorplans, callback, skipAudit) {
         var ObjectId = require('mongoose').Types.ObjectId;
         var query = {_id: new ObjectId(subjectid), 'comps.id': new ObjectId(compid)};
 
@@ -84,7 +84,7 @@ module.exports = {
 
                 PropertySchema.update(query, update, function (err, saved) {
 
-                    if (addedData.length > 0 || removedData.length > 0) {
+                    if (!skipAudit && (addedData.length > 0 || removedData.length > 0)) {
                         AuditService.create({
                             operator: operator,
                             property: subj,

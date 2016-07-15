@@ -14,7 +14,7 @@ var AmenityService = require('../../amenities/services/amenityService')
 var OrganizationService = require('../../organizations/services/organizationService')
 
 module.exports = {
-    update: function(operator, context,revertedFromId, property, callback) {
+    update: function(operator, context,revertedFromId, property, callback, skipCompLinkAudit) {
 
         var modelErrors = [];
 
@@ -121,6 +121,10 @@ module.exports = {
                         //find all subjects and their comp links to this comp and update with new floorplans asynchornously
                         //If there are no new floorplans, do it anyway just to fix any changes.
 
+                        //If we are adding floorplans, do not insert an audit history item to all the comps saying comped floorplans added
+                        if (property.addedFloorplans.length > 0) {
+                            skipCompLinkAudit = true;
+                        }
 
                         //if (property.addedFloorplans.length > 0) {
                             property.floorplans = property.floorplans.map(function(x) {return x.id.toString()})
@@ -141,7 +145,7 @@ module.exports = {
 
                                     PropertyService.saveCompLink(operator, context, null, subject._id, prop._id, comp.floorplans, function(err, link) {
                                         callbackp(err, link)
-                                    })
+                                    },skipCompLinkAudit)
 
                                 }, function(err) {
 

@@ -377,7 +377,7 @@ function fixAmenities(property, amenities) {
 
 }
 
-function propertyFloorplanCreatedUndo  (req, o, callback) {
+function propertyFloorplanCreatedUndo (req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
         PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
             var property = props[0];
