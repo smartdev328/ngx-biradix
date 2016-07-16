@@ -125,11 +125,13 @@ module.exports = {
                 }
 
                 var isLinked = _.find(subj.comps, function (x) {
-                    return x.id == compid
+                    return x.id.toString() == compid.toString()
                 })
 
+                console.log(isLinked);
+
                 if (!isLinked) {
-                    return callback([{msg: 'Unable to unlink comp, it is not currently linked.'}])
+                    return callback([{msg: 'Unable to remove comp, it is not currently attached to subject property.'}])
                 }
                 PropertySchema.update(query, update, function (err, saved) {
                     AuditService.create({

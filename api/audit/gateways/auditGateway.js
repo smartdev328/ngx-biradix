@@ -269,8 +269,17 @@ function linksUpdated(req, o, callback) {
     var added = _.pluck(_.filter(o.data, function(x) {return x.type && x.type == 'added'}),"id");
     var removed = _.pluck(_.filter(o.data, function(x) {return x.type && x.type == 'removed'}),"id");
     PropertyService.search(req.user,{_id: subjectid, select: 'comps'}, function(er, props) {
+
         var comp = _.find(props[0].comps, function(x) {
-            return x.id == compid}).floorplans;
+            return x.id == compid});
+
+        if (!comp) {
+            callback([{msg: 'These 2 properties are no longer comps. Their floor plans comp links can no longer be updated'}]);
+            return;
+        }
+
+        comp = comp.floorplans;
+
         //console.log(comp, added, removed);
         if (added && added.length > 0) {
             _.remove(comp, function(x) {return added.indexOf(x.toString()) > -1})
