@@ -44,6 +44,7 @@ Routes.get('/filters', function (req, res) {
 
 Routes.post('/undo', function (req, res) {
     AccessService.canAccess(req.user,"History", function(canAccess) {
+
         if (!canAccess) {
             return res.status(401).json("Unauthorized request");
         }
@@ -295,7 +296,7 @@ function linksUpdated(req, o, callback) {
 
 function propertyUpdateUndo(req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
             o.data.forEach(function (d) {
                 property[d.field] = d.old_value;
@@ -314,7 +315,7 @@ function propertyUpdateUndo(req, o, callback) {
 
 function propertyFeesUndo(req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
             o.data.forEach(function (d) {
                 property.fees[d.field] = d.old_value;
@@ -332,7 +333,7 @@ function propertyFeesUndo(req, o, callback) {
 
 function propertyAmenitiesUndo(req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user,{_id: o.property.id, select: "*"}, function(er, props) {
+        PropertyService.search(req.user,{_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function(er, props) {
             var property = props[0];
 
             o.data.forEach(function (d) {
@@ -388,7 +389,7 @@ function fixAmenities(property, amenities) {
 
 function propertyFloorplanCreatedUndo (req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
             _.remove(property.floorplans, function (fp) {
                 return fp.id.toString() == o.data[0].id.toString()
@@ -408,7 +409,7 @@ function propertyFloorplanCreatedUndo (req, o, callback) {
 
 function propertyFloorplanRemovedUndo  (req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
             var oldfp = o.data[0].old_value;
             oldfp.new = true;
@@ -428,7 +429,7 @@ function propertyFloorplanRemovedUndo  (req, o, callback) {
 
 function propertyFloorplanUpdatedUndo  (req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
 
             var old = o.data[0].old_value;
@@ -458,7 +459,7 @@ function propertyFloorplanUpdatedUndo  (req, o, callback) {
 
 function propertyFloorplanAmenitiesUpdatedUndo  (req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*"}, function (er, props) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
 
 

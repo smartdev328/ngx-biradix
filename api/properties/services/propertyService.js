@@ -245,6 +245,14 @@ module.exports = {
                 criteria.ids.push(criteria._id);
             }
 
+            if (criteria.ids) {
+                criteria.ids = criteria.ids.map(function(x) {return x.toString()})
+            }
+
+            if (criteria.exclude) {
+                criteria.exclude = criteria.exclude.map(function(x) {return x.toString()})
+            }
+
             if (Operator.memberships.isadmin === true) {
                 if (criteria.ids) {
                     query = query.where("_id").in(criteria.ids);
@@ -263,6 +271,8 @@ module.exports = {
                 if (criteria.exclude) {
                     _.remove(all.permissions, function(p) {return criteria.exclude.indexOf(p) > -1})
                 }
+
+
 
                 query = query.where('_id').in(all.permissions);
             }
