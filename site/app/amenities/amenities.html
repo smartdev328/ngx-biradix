@@ -1,0 +1,111 @@
+<h2 class="mainheader">Amenities
+    <hr>
+</h2>
+
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading">
+
+    <div class="btn-group action_dropdown stay_open_button pull-right" style="margin-right:5px">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Filters">
+            <span class="fa fa-filter"></span> <span class="caret"></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
+            <table>
+                <tr>
+                    <td class="center">
+                        <input type="checkbox" ng-model="showActive" ng-click="calcActive()" id="showActive">
+                    </td>
+                    <Td>
+                        &nbsp;<label for="showActive" style="font-weight: normal">Approved</label>
+                    </Td>
+                </tr>
+
+                <tr>
+                    <td class="center">
+                        <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
+                    </td>
+                    <Td>
+                        &nbsp;<label for="showInactive" style="font-weight: normal">Unapproved</label>
+                    </Td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:2px !important;font-size:11px;height:25px"
+                                ng-change="resetPager()"
+                                ng-options="item for item in limits">
+                        </select>
+                    </td>
+                    <Td>
+                        &nbsp;Rows
+                    </Td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback pull-right grid-search" style="margin-right:5px">
+        <input type="text" class="form-control input-sm"
+               placeholder="Search Amenities"
+               ng-model="searchText"
+               ng-change="resetPager()">
+        <i class="fa fa-search form-control-feedback" style="color:#ccc"></i>
+    </div>
+
+    <br clear="all">
+
+
+    <div class="maingrid wrapper">
+        <div class="header"></div>
+        <table class="table table-condensed table-striped table-hover">
+            <tbody>
+            <tr class="thead">
+                <th>#</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th class="center">
+                    Approved
+                </th>
+                <th></th>
+            </tr>
+
+            <tr ng-repeat="row in filtered = (data  | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
+                <td>{{pageStart() + $index}}.</td>
+                <td ng-if="!row.edit"><span style="cursor:cell" ng-dblclick="row.edit= true">{{row.name}}</span></td>
+                <td ng-if="row.edit" style="cursor:default;white-space: nowrap">
+                    <input type="text" ng-model="row.name" class="form-control" ng-keydown="pressed(row,$event)">
+                    <A href ng-click="update(row)"><i class="fa fa-check fa-2x" style="color:lightgreen"></i> Save/Approve</A>
+                    <A href ng-click="row.edit = false;row.name = row.old_name;"><i class="fa fa-times fa-2x" style="color:red"></i> Cancel</A>
+                </td>
+                <td>{{row.type}}</td>
+                <td class="center">
+                    <span class="fa fa-check fa-2x" ng-show="row.approved"></span>
+                    <span class="fa fa-times fa-2x" ng-show="!row.approved" style="color:#ccc"></span>
+                </td>
+                <td class="center">
+                    <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-show="row._id != me._id">
+                        <div class="btn-group action_dropdown">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        <div class="pull-left grid-show" style="padding-top:5px;">
+            Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
+            <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
+        </div>
+        <div class="pull-right grid-pager">
+            <uib-pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></uib-pagination>
+        </div>
+        <br clear="all" />
+    </div>
+</div>

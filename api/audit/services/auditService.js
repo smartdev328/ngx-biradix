@@ -56,7 +56,8 @@ var audits  = [
     {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
     {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},
 
-    {key: 'amenity_created', value: 'Amenity Created', group: 'Amenity'},
+    {key: 'amenity_created', value: 'Amenity Created', group: 'Amenity', admin: true},
+    {key: 'amenity_updated', value: 'Amenity Updated/Approved', group: 'Amenity', admin: true},
 ];
 
 module.exports = {

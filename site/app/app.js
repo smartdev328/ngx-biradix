@@ -178,17 +178,8 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'contact/contactController')}}
             })
-            .state('uploadSurveys', {
-                url: "/uploadSurveys",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/uploadSurveys/uploadSurveys.html?bust=" + version ,
-                        controller : "uploadSurveysController"
-                    }
-
-                },
-                resolve: {get : function($q) {return resolve($q, 'uploadSurveys/uploadSurveysController')}}
-            })
+            .state('uploadSurveys', AsyncRoute("/uploadSurveys","uploadSurveys","uploadSurveysController","uploadSurveys.html","loggedInView"))
+            .state('amenities', AsyncRoute("/amenities","amenities","amenitiesController","amenities.html","loggedInView"))
     });
 
     app.filter("sanitize2", ['$sanitize', function ($sanitize) {
