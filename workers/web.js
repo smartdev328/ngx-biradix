@@ -122,9 +122,13 @@ d.run(function() {
                 //
 
                     // var PropertyService = require("../api/properties/services/propertyService");
-                    // PropertyService.getAmenityCounts(function(err,counts) {
-                    //     console.log(counts);
-                    // })
+                    // var userService = require("../api/users/services/userService");
+                    // userService.getSystemUser(function (obj) {
+                    //     var SystemUser = obj.user;
+                    //     PropertyService.search(SystemUser,{select:"name", amenity: "5642ba20ff18a018187afda3", limit: 1000},function (err, props) {
+                    //         console.log(props);
+                    //     })
+                    // });
                 }
 
 

@@ -249,6 +249,7 @@ module.exports = {
         })
     },
     search: function(Operator, criteria, callback) {
+        var ObjectId = require('mongoose').Types.ObjectId;
         criteria.permission = criteria.permission || ['PropertyView'];
 
         if (!criteria.permission.length) {
@@ -330,6 +331,18 @@ module.exports = {
 
             if (criteria.orgid != null) {
                 query = query.where("orgid").equals(criteria.orgid);
+            }
+
+            if (criteria.amenity) {
+                query = query.or([
+                    {"community_amenities": criteria.amenity},
+                    {"community_amenities": new ObjectId(criteria.amenity)},
+                    {"location_amenities": criteria.amenity},
+                    {"location_amenities": new ObjectId(criteria.amenity)},
+                    {"floorplans.amenities": criteria.amenity},
+                    {"floorplans.amenities": new ObjectId(criteria.amenity)},
+
+                ])
             }
 
             query = query.sort(criteria.sort || "name");
