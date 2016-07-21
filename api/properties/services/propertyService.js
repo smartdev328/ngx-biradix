@@ -17,6 +17,53 @@ var SurveyHelperService = require('./surveyHelperService')
 
 
 module.exports = {
+    getAmenityCounts:function(callback) {
+        var o = {};
+
+        o.query = {};
+        o.scope = {};        
+        o.map = function () {
+            this.location_amenities.forEach(function (a) {
+                emit({amenity: a.toString(), type: 'Location'}, {count: 1});
+            })
+
+            this.community_amenities.forEach(function (a) {
+                emit({amenity: a.toString(), type: 'Community'}, {count: 1});
+            })
+
+            var fps = {};
+            this.floorplans.forEach(function (fp) {
+                fp.amenities.forEach(function (a) {
+                    fps[a.toString()] = true;
+                })
+            })
+
+            for (var a in fps) {
+                emit({amenity: a, type: 'Floorplan'}, {count: 1});
+            }
+        }
+
+        o.reduce = function (k, vals) {
+            var reduced = {count: 0};
+
+            vals.forEach(function (val) {
+                reduced.count += val.count;
+            });
+
+
+            return reduced;
+        }
+        PropertySchema.mapReduce(o, function (err, obj) {
+            var counts = {};
+            // console.log(obj);
+            obj.forEach(function(o) {
+                counts[o._id.amenity.toString().replace('ObjectId("','').replace('")','')] = o.value.count;
+            })
+            callback(err, counts);
+        });
+        
+            
+    },
     linkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
         CompsService.linkComp(operator,context,revertedFromId, true, subjectid,compid,callback);
     },

@@ -101,7 +101,7 @@ d.run(function() {
                 //cronService.isAllowed("* * * * 2");
 
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                //if (workerId == 1) {
+                if (workerId == 1) {
                 //    var moment = require("moment");
                 //    var end = moment().add(-1,"day").startOf('week').add(1,"day").utcOffset(-480);
                 //    var start = moment(end).add(-7,"day")
@@ -120,7 +120,12 @@ d.run(function() {
                 //        queueService.sendNotification(user.user, ["5642bae5ff18a018187b2c5c","5642bab9ff18a018187b07fb"], function() {
                 //        })
                 //
-                //}
+
+                    // var PropertyService = require("../api/properties/services/propertyService");
+                    // PropertyService.getAmenityCounts(function(err,counts) {
+                    //     console.log(counts);
+                    // })
+                }
 
 
 

@@ -2,12 +2,13 @@
 define([
     'app',
     '../../services/amenityService',
+    '../../services/propertyService',
     '../../services/gridService',
     '../../filters/skip/filter',
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr) {
+    app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -36,10 +37,28 @@ define([
             $scope.localLoading = false;
             $amenityService.search({getCounts: true, active: true}).then(function (response) {
                 $scope.data = response.data.amenities;
-                    $scope.data.forEach(function(a) {
-                        a.old_name = a.name;
-                    })
-                $scope.localLoading = true;
+                $scope.data.forEach(function(a) {
+                    a.old_name = a.name;
+                })
+
+                $propertyService.getAmenityCounts().then(function (response) {
+                    console.log(response.data);
+
+                        $scope.data.forEach(function(a) {
+                            a.properties = response.data.counts[a._id] || 0;
+                        })
+
+                    $scope.localLoading = true;
+                },
+                function (error) {
+                    if (error.status == 401) {
+                        $rootScope.logoff();
+                        return;
+                    }
+                    $scope.localLoading = true;
+                });
+
+
             },
             function (error) {
                 if (error.status == 401) {

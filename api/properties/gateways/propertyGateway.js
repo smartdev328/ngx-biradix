@@ -24,6 +24,13 @@ DashboardGateway.init(Routes)
 ExportGateway.init(Routes)
 /////////////////////
 
+Routes.get('/getAmenityCounts', function (req, res) {
+    PropertyService.getAmenityCounts(function(err,counts) {
+        res.status(200).json({counts: counts});    
+    })
+      
+});
+
 Routes.get('/lookups', function (req, res) {
     async.parallel({
         orgs: function (callbackp) {
