@@ -42,7 +42,6 @@ define([
                 })
 
                 $propertyService.getAmenityCounts().then(function (response) {
-                    console.log(response.data);
 
                         $scope.data.forEach(function(a) {
                             a.properties = response.data.counts[a._id] || 0;
@@ -71,6 +70,17 @@ define([
 
 
 
+        $scope.toggleOpen = function(row) {
+            row.open = !row.open;
+            row.loaded = false;
+
+            if (row.open) {
+                $propertyService.search({select:"name", amenity: row._id, limit: 1000,sort:"-date"}).then(function (response) {
+                    row.loaded = true;
+                    row.props = response.data.properties;
+                });
+            }
+        }
 
         $scope.resetPager = function () {
             $scope.currentPage = 1;

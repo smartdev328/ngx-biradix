@@ -62,6 +62,7 @@
         <table class="table table-condensed table-striped table-hover">
             <tbody>
             <tr class="thead">
+                <th></th>
                 <th>#</th>
                 <th>Name</th>
                 <th>Type</th>
@@ -72,7 +73,8 @@
                 <th></th>
             </tr>
 
-            <tr ng-repeat="row in filtered = (data  | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
+            <tr ng-repeat-start="row in filtered = (data  | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
+                <td style="text-align: center"><i ng-if = "row.properties > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
                 <td>{{pageStart() + $index}}.</td>
                 <td ng-if="!row.edit"><span style="cursor:cell" ng-dblclick="row.edit= true">{{row.name}}</span></td>
                 <td ng-if="row.edit" style="cursor:default;white-space: nowrap">
@@ -98,6 +100,17 @@
                     </div>
                 </td>
             </tr>
+            <tr ng-if="row.open">
+                <Td colspan="100%">
+                    <div style="display:block;width:40px;margin:20px auto" ng-if="!row.loaded">
+                        <img src="/images/squares.gif" style="width:40px">
+                    </div>
+                    <div ng-if="row.loaded" style="height:100px;overflow-y:auto">
+                        <div ng-repeat="property in row.props"><A href="#/profile/{{property._id}}" target="_blank">{{property.name}}</A></div>
+                    </div>
+                </Td>
+            </tr>
+            <tr ng-repeat-end="" ng-if="false"></tr>
             </tbody>
 
         </table>
