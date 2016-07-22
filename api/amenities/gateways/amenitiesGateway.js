@@ -23,6 +23,15 @@ Routes.put('/update', function (req, res) {
 
 });
 
+Routes.put('/updateAliases', function (req, res) {
+    var amenity = req.body;
+
+    AmenitiesService.updateAliases(req.user, req.context, amenity, function(err, amenity) {
+        return res.status(200).json({errors:err, amenity: amenity});
+    })
+
+});
+
 Routes.put('/', function (req, res) {
     var amenity = req.body;
 

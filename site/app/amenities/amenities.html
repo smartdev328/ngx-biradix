@@ -66,7 +66,8 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Type</th>
-                <th>Properties</th>
+                <th class="center">Properties</th>
+                <th class="center">Aliases</th>
                 <th class="center">
                     Approved
                 </th>
@@ -84,6 +85,18 @@
                 </td>
                 <td>{{row.type}}</td>
                 <td style="text-align:center">{{row.properties | number}}</td>
+                <td style="text-align:center">
+                    <div class="btn-group action_dropdown">
+                        <a href class="dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px" id="aliases_{{row._id}}">
+                            {{(row.aliases.length || 0) | number}}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu" onclick="event.stopPropagation();" style="padding: 10px">
+                            <textarea class="form-control" style="width:200px;height:200px" ng-model="row.aliasesList"></textarea>
+                            <A href ng-click="saveAliases(row);"><i class="fa fa-check fa-2x" style="color:lightgreen"></i> Save Aliases</A>
+                        </div>
+                    </div>
+
+                </td>
                 <td class="center">
                     <span class="fa fa-check fa-2x" ng-show="row.approved"></span>
                     <span class="fa fa-times fa-2x" ng-show="!row.approved" style="color:#ccc"></span>
@@ -106,7 +119,19 @@
                         <img src="/images/squares.gif" style="width:40px">
                     </div>
                     <div ng-if="row.loaded" style="height:100px;overflow-y:auto">
-                        <div ng-repeat="property in row.props"><A href="#/profile/{{property._id}}" target="_blank">{{property.name}}</A></div>
+                        <Table>
+                            <Tr>
+                                <Td width="50%" style="vertical-align: top">
+                                    <b>Properties</b><Br>
+                                    <div ng-repeat="property in row.props"><A href="#/profile/{{property._id}}" target="_blank">{{property.name}}</A></div>
+                                </Td>
+                                <Td width="50%" style="vertical-align: top">
+                                    <b>Aliases</b><Br>
+                                    <div ng-repeat="alias in row.aliases">{{alias}}</div>
+                                </Td>
+                            </Tr>
+                        </Table>
+
                     </div>
                 </Td>
             </tr>

@@ -33,7 +33,19 @@ module.exports = {
             return;
         }
 
-        AmenitySchema.find({"name": {$regex: new RegExp(amenity.name, "i")}, type: amenity.type}, function (err, dupe) {
+        AmenitySchema.find(
+
+
+
+        {
+            $or : [
+                {"name": {$regex: new RegExp(amenity.name, "i")}},
+                {"aliases": {$regex: new RegExp(amenity.name, "i")}}
+            ],type: amenity.type
+        }
+
+
+            , function (err, dupe) {
 
             if (err) {
                 modelErrors.push({msg: 'Unexpected Error. Unable to create organziaion.'});
@@ -162,5 +174,29 @@ module.exports = {
 
             })
         });
+    },
+
+    updateAliases: function (operator, context, amenity, callback) {
+
+        var modelErrors = [];
+
+        amenity.aliases = amenity.aliases || [];
+
+        var query = {_id: amenity._id};
+        var update = {aliases: amenity.aliases};
+        var options = {};
+
+        AmenitySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to update amenity.'});
+                callback(modelErrors, null);
+                return;
+            }
+
+
+            return callback(err, saved)
+        })
+
     }
 }

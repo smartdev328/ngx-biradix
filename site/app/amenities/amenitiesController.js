@@ -39,6 +39,9 @@ define([
                 $scope.data = response.data.amenities;
                 $scope.data.forEach(function(a) {
                     a.old_name = a.name;
+                    a.aliasesList = (a.aliases || []).join("\n");
+                    a.old_aliasesList = a.aliasesList;
+                    
                 })
 
                 $propertyService.getAmenityCounts().then(function (response) {
@@ -182,6 +185,35 @@ define([
                     row.edit = false;
                     row.old_name = row.name;
                     row.approved = true;
+                }
+
+            }, function(response) {
+                toastr.error('Unable to update amenity. Please contact an administrator');
+
+            })
+        }
+
+        $scope.saveAliases = function(row) {
+
+            var aliases = [];
+
+            row.aliasesList.split("\n").forEach(function(x) {
+                var a= x.trim();
+                if (a && a.length > 1) {
+                    aliases.push(a);
+                }
+            })
+            var amenity = {_id: row._id, aliases: aliases}
+
+            $amenityService.updateAliases(amenity).then(function(response) {
+
+                if (response.data.errors) {
+                    toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                }
+                else {
+                    toastr.success(row.name + ' updated successfully');
+                    row.aliases = aliases;
+                    $("#aliases_" + row._id).dropdown('toggle');
                 }
 
             }, function(response) {

@@ -12,8 +12,8 @@ var s = new Schema({
     },
     approved: Boolean,
     deleted: Boolean,
-    aliasof: {
-        type: Schema.Types.ObjectId,
+    aliases: {
+        type: Array,
     }
 
 });

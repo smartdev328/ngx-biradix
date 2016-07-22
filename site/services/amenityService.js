@@ -14,6 +14,15 @@ define([
             });
         }
 
+        fac.updateAliases = function (amenity) {
+            return $http.put('/api/1.0/amenities/updateAliases'+ '?bust=' + (new Date()).getTime(), amenity, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.update = function (amenity) {
             return $http.put('/api/1.0/amenities/update'+ '?bust=' + (new Date()).getTime(), amenity, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
