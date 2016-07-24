@@ -17,18 +17,32 @@ Routes.post('/', function (req, res) {
 Routes.put('/update', function (req, res) {
     var amenity = req.body;
 
-    AmenitiesService.update(req.user, req.context, amenity, function(err, amenity) {
-        return res.status(200).json({errors:err, amenity: amenity});
-    })
+    AccessService.canAccess(req.user,"Admin", function(canAccess) {
+
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        AmenitiesService.update(req.user, req.context, amenity, function (err, amenity) {
+            return res.status(200).json({errors: err, amenity: amenity});
+        })
+    });
 
 });
 
 Routes.put('/updateAliases', function (req, res) {
     var amenity = req.body;
 
-    AmenitiesService.updateAliases(req.user, req.context, amenity, function(err, amenity) {
-        return res.status(200).json({errors:err, amenity: amenity});
-    })
+    AccessService.canAccess(req.user,"Admin", function(canAccess) {
+
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+        
+        AmenitiesService.updateAliases(req.user, req.context, amenity, function (err, amenity) {
+            return res.status(200).json({errors: err, amenity: amenity});
+        })
+    });
 
 });
 

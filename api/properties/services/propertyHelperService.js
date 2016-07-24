@@ -44,4 +44,29 @@ module.exports = {
         var subjcomps = _.find(comps,function(x) {return x._id.toString() == subjectid.toString()}).comps;
         return _.flatten(_.pluck(_.flatten(subjcomps),"floorplans"));
     },
+    fixAmenities: function(property, amenities) {
+        var o = property.community_amenities.map(function(x) {return x.toString()})
+        var a = _.pluck(_.filter(amenities, function (x) {
+            return o.indexOf(x._id.toString()) > -1
+        }), "name");
+
+        property.community_amenities = a;
+
+        o = property.location_amenities.map(function(x) {return x.toString()})
+        a = _.pluck(_.filter(amenities, function (x) {
+            return o.indexOf(x._id.toString()) > -1
+        }), "name");
+
+        property.location_amenities = a;
+
+        property.floorplans.forEach(function(fp) {
+            o = fp.amenities.map(function(x) {return x.toString()})
+            a = _.pluck(_.filter(amenities, function (x) {
+                return o.indexOf(x._id.toString()) > -1
+            }), "name");
+
+            fp.amenities = a;
+        })
+
+    }
 }

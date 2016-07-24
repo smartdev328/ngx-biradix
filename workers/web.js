@@ -56,6 +56,7 @@ d.run(function() {
             app.use(settings.API_PATH + 'users/', require('../api/users/gateways/userGateway'));
             app.use(settings.API_PATH + 'properties/', require('../api/properties/gateways/propertyGateway'));
             app.use(settings.API_PATH + 'propertyusers/', require('../api/propertyusers/gateways/propertyUsersGateway'));
+            app.use(settings.API_PATH + 'propertyamenities/', require('../api/propertyamenities/gateways/propertyAmenityGateway'));
             app.use(settings.API_PATH + 'audit/', require('../api/audit/gateways/auditGateway'));
             app.use(settings.API_PATH + 'amenities/', require('../api/amenities/gateways/amenitiesGateway'));
             app.use('/contact', require('../api/contact/gateways/contactGateway'));
@@ -121,12 +122,12 @@ d.run(function() {
                 //        })
                 //
 
-                    // var PropertyService = require("../api/properties/services/propertyService");
+                    // var PropertyAmenityService = require("../api/propertyamenities/services/propertyAmenityService");
                     // var userService = require("../api/users/services/userService");
                     // userService.getSystemUser(function (obj) {
                     //     var SystemUser = obj.user;
-                    //     PropertyService.search(SystemUser,{select:"name", amenity: "5642ba20ff18a018187afda3", limit: 1000},function (err, props) {
-                    //         console.log(props);
+                    //     PropertyAmenityService.deleteAmenity(SystemUser,{},null,"5642ba20ff18a018187afdae", function(errors) {
+                    //         console.log(errors);
                     //     })
                     // });
                 }

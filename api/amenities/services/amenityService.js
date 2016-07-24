@@ -11,6 +11,11 @@ module.exports = {
         if (criteria.active) {
             query = query.where("deleted").equals(false);
         }
+
+        if (criteria.id) {
+            query = query.where("_id").equals(criteria.id);
+        }
+        
         query = query.sort({type: 1, name: 1});
         query.exec(callback);
     },
@@ -184,6 +189,30 @@ module.exports = {
 
         var query = {_id: amenity._id};
         var update = {aliases: amenity.aliases};
+        var options = {};
+
+        AmenitySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to update amenity.'});
+                callback(modelErrors, null);
+                return;
+            }
+
+
+            return callback(err, saved)
+        })
+
+    },
+
+    updateDeleted: function (operator, context, amenity, callback) {
+
+        var modelErrors = [];
+
+        amenity.aliases = amenity.aliases || [];
+
+        var query = {_id: amenity._id};
+        var update = {deleted: amenity.deleted};
         var options = {};
 
         AmenitySchema.findOneAndUpdate(query, update, options, function (err, saved) {

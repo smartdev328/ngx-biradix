@@ -3,12 +3,13 @@ define([
     'app',
     '../../services/amenityService',
     '../../services/propertyService',
+    '../../services/propertyAmenityService',
     '../../services/gridService',
     '../../filters/skip/filter',
     '../../components/dialog/module'
 ], function (app) {
 
-    app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService) {
+    app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService','$propertyAmenityService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService,$propertyAmenityService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -26,7 +27,7 @@ define([
         $scope.limits = [10,50,100,500]
         $scope.limit = 50;
         $scope.search = {}
-        $scope.searchable = ['name','type'];
+        $scope.searchable = ['name','type','aliases'];
 
         $scope.showInactive = true;
         $scope.showActive = false;
@@ -220,6 +221,23 @@ define([
                 toastr.error('Unable to update amenity. Please contact an administrator');
 
             })
+        }
+
+        $scope.delete = function(row) {
+            $dialog.confirm('Are you sure you want to delete "<B>' + row.name +'</B>"?', function() {
+                $propertyAmenityService.deleteAmenity(row._id).then(function(response) {
+                    if (response.data.errors) {
+                        toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                    }
+                    else {
+                        toastr.success(row.name + ' deleted successfully');
+                        $scope.reload();
+                    }
+                }, function(response) {
+                    toastr.error('Unable to update amenity. Please contact an administrator');
+                })
+
+            });
         }
     }]);
 });
