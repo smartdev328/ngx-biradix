@@ -1,6 +1,6 @@
 'use strict';
 var AccessService =  require('../../access/services/accessService')
-var PropertyAmenityService =  require('../services/PropertyAmenityService')
+var PropertyAmenityService =  require('../services/propertyAmenityService')
 var express = require('express');
 var routes = express.Router();
 
