@@ -8,6 +8,91 @@ var AuditService = require('../../audit/services/auditService')
 var CreateService = require('../../properties/services/createService')
 
 module.exports = {
+    unDeleteAmenity: function (operator, context, revertedFromId, amenityid, properties, callback) {
+        async.parallel({
+                properties: function(callbackp) {
+                    PropertyService.search(operator,
+                        {
+                            ids: _.pluck(properties,"_id"),
+                            limit: 10000,
+                            select: "*", sort: "name"
+                        }, function(err,properties) {
+                            //console.log(properties);
+                            callbackp(err,properties);
+                        }
+                    );
+                },
+                amenity: function (callbackp)  {
+                    AmenityService.search(
+                        {
+                            id: amenityid,
+                        }, callbackp
+                    );
+                },
+                amenities: function(callbackp) {
+                    AmenityService.search({}, function(err, amenities) {
+                        callbackp(err, amenities)
+                    });
+                }
+
+            }, function(err,all) {
+            //console.log(all);
+
+            if (!all.amenity || !all.amenity.length || !all.amenity[0].deleted) {
+                return callback([{msg: all.amenity[0].name + ' is NOT marked as deleted'}]);
+            }
+
+            var amenity = all.amenity[0];
+            amenity.deleted = false;
+
+            var propsDescription = _.map(all.properties,"name").join(", ");
+
+            all.properties.forEach(function(p) {
+                if (amenity.type == "Unit") {
+                    p.floorplans.forEach(function(fp) {
+                        fp.amenities = fp.amenities.map(function(x) {return x.toString()});
+                        if (fp.amenities.indexOf(amenityid.toString()) > -1) {
+                            fp.amenities.push(amenityid.toString());
+                        }
+                    })
+                } else if (amenity.type == 'Community') {
+                    p.community_amenities = p.community_amenities.map(function(x) {return x.toString()});
+                    p.community_amenities.push(amenityid.toString());
+                } else if (amenity.type == 'Location') {
+                    p.location_amenities = p.location_amenities.map(function(x) {return x.toString()});
+                    p.location_amenities.push(amenityid.toString());
+                }
+
+                PropertyHelperService.fixAmenities(p,all.amenities);
+            })
+
+            AmenityService.updateDeleted(operator,context,amenity, function(err,obj) {
+                if (err) {
+                    return callback(err);
+                }
+
+                AuditService.create({
+                    operator: operator,
+                    amenity: amenity,
+                    type: 'amenity_undeleted',
+                    revertedFromId: revertedFromId,
+                    description: amenity.type + ': ' + amenity.name + " un-deleted, " + all.properties.length + " properties affected.",
+                    context: context,
+                    data: [{amenityid: amenityid, description: propsDescription}]
+                })
+
+                async.eachLimit(all.properties, 20, function(property, callbackp){
+                    CreateService.update(operator, context, property._id, property, callbackp);
+                }, function(err) {
+                    callback(null);
+                });
+
+            })
+
+        })
+
+    },
+
     deleteAmenity: function (operator, context, revertedFromId, amenityid, callback) {
         async.parallel({
             properties: function(callbackp) {

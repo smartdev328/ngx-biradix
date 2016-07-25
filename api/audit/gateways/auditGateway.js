@@ -10,6 +10,7 @@ var AmenitiesService = require('../../amenities/services/amenityService')
 var UserService = require('../../users/services/userService')
 var UserCreateService = require('../../users/services/userCreateService')
 var PropertyUserService = require('../../propertyusers/services/propertyUsersService')
+var PropertyAmenityService = require('../../propertyamenities/services/propertyAmenityService')
 var Routes = express.Router();
 var async = require('async')
 var _ = require('lodash')
@@ -169,6 +170,18 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             })
                             break;
+                        case "amenity_deleted":
+                            amenityDeletedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "amenity_undeleted":
+                            amenityUnDeletedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);
@@ -311,6 +324,14 @@ function propertyUpdateUndo(req, o, callback) {
         });
     });
 
+}
+
+function amenityDeletedUndo(req, o, callback) {
+    PropertyAmenityService.unDeleteAmenity(req.user,req.context, o._id, o.data[0].amenityid, o.data[0].properties,callback);
+}
+
+function amenityUnDeletedUndo(req, o, callback) {
+    PropertyAmenityService.deleteAmenity(req.user,req.context, o._id, o.data[0].amenityid,callback);
 }
 
 function propertyFeesUndo(req, o, callback) {

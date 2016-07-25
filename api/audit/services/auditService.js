@@ -59,6 +59,7 @@ var audits  = [
     {key: 'amenity_created', value: 'Amenity Created', group: 'Amenity', admin: true},
     {key: 'amenity_updated', value: 'Amenity Updated/Approved', group: 'Amenity', admin: true},
     {key: 'amenity_deleted', value: 'Amenity Deleted', group: 'Amenity', admin: true, undo: true},
+    {key: 'amenity_undeleted', value: 'Amenity Undeleted', group: 'Amenity', admin: true, undo: true},
 ];
 
 module.exports = {
