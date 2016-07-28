@@ -5,7 +5,7 @@ var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
     read: function(callback) {
-        var key = "orgs";
+        var key = "orgs2";
 
         var orgs =  localCacheService.get(key);
 
