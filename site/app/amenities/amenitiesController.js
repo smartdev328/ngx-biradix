@@ -137,37 +137,6 @@ define([
             return parseInt(x);
         }
 
-        // $scope.toggleActive = function (user) {
-        //     $dialog.confirm('Are you sure you want to set "' + user.name + '" as ' + (!user.active ? "active" : "inactive") + '?', function() {
-        //
-        //     ngProgress.start();
-        //
-        //     $userService.setActive(!user.active, user._id).then(function (response) {
-        //
-        //             if (response.data.errors) {
-        //                 toastr.error( _.pluck(response.data.errors,'msg').join("<br>"));
-        //             }
-        //             else {
-        //                 user.active = !user.active;
-        //
-        //                 if (user.active) {
-        //                     toastr.success(user.name + " has been activated.");
-        //                 } else {
-        //                     toastr.warning(user.name + " has been de-activated. ");
-        //                 }
-        //             }
-        //
-        //             ngProgress.reset();
-        //         },
-        //         function (error) {
-        //             toastr.error("Unable to update your account. Please contact the administrator.");
-        //             ngProgress.reset();
-        //         });
-        //     }, function() {})
-        // }
-        //
-        //
-
         $scope.pressed = function(row,event) {
             if (event.keyCode == 13) {
                 event.preventDefault();
@@ -237,6 +206,36 @@ define([
                     toastr.error('Unable to update amenity. Please contact an administrator');
                 })
 
+            });
+        }
+
+        $scope.map = function (amenity) {
+            require([
+                '/app/amenities/mapAmenityController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/amenities/mapAmenity.html?bust=' + version,
+                    controller: 'mapAmenityController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        amenity: function () {
+                            return amenity;
+                        },
+                        amenities: function() {
+                            return $scope.data
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (mapped) {
+
+                    toastr.success(amenity.name + " mapped to" + mapped.name  + " successfully.");
+                    $scope.reload()
+                }, function () {
+
+                });
             });
         }
     }]);

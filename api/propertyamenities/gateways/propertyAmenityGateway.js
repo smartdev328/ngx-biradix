@@ -17,4 +17,17 @@ routes.get('/delete/:amenityid', function (req, res) {
     })
 });
 
+routes.get('/map/:amenityid/:newid', function (req, res) {
+    AccessService.canAccess(req.user,'Admin', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyAmenityService.mapAmenity(req.user,req.context,null, req.params.amenityid, req.params.newid, function (err) {
+            return res.status(200).json({errors: err});
+
+        });
+    })
+});
+
 module.exports = routes;

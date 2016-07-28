@@ -189,5 +189,53 @@ module.exports = {
         })
 
 
+    },
+
+    mapAmenity: function (operator, context, revertedFromId, amenityid, newid, callback) {
+        async.parallel({
+            properties: function(callbackp) {
+                PropertyService.search(operator,
+                    {
+                        amenity: amenityid,
+                        limit: 10000,
+                        select: "*", sort: "name"
+                    }, function(err,properties) {
+                        //console.log(properties);
+                        callbackp(err,properties);
+                    }
+                );
+            },
+            amenities: function(callbackp) {
+                AmenityService.search({}, function(err, amenities) {
+                    callbackp(err, amenities)
+                });
+            }
+
+        }, function(err,all) {
+            // console.log(all.properties);
+
+            var oldamenity = _.find(all.amenities, function(x) {return x._id == amenityid});
+            var newamenity = _.find(all.amenities, function(x) {return x._id == newid});
+
+            if (!oldamenity || oldamenity.deleted) {
+                return callback([{msg: "Can't map a deleted amenity"}]);
+            }
+
+            if (!newamenity || newamenity.deleted) {
+                return callback([{msg: "Can't map to a deleted amenity"}]);
+            }
+
+            newamenity.aliases.push(oldamenity.name);
+            AmenityService.updateAliases(operator,context,newamenity, function() {
+                return callback([{msg: 'Test'}]);
+            })
+
+
+
+
+
+        })
+
+
     }
 }

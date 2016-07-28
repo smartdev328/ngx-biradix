@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">Map Amenity: {{amenity.type}}: {{amenity.name}}</h2>
+    <hr>
+</div>
+
+<div class="modal-body">
+    Map To:
+    <select ng-options="a.name for a in amenities" class="form-control" ng-model="mapTo"></select>
+    <br>
+    <center>
+        <button class="btn btn-primary" ng-click="map();" ng-disabled="!mapTo.name">Map</button>
+    </center>
+</div>

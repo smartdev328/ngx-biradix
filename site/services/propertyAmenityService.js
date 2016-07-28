@@ -14,6 +14,15 @@ define([
             });
         }
 
+        fac.mapAmenity = function (amenityid, newid) {
+            return $http.get('/api/1.0/propertyamenities/map/' + amenityid + '/' + newid + '?bust=' + (new Date()).getTime(), {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+        
         return fac;
     }]);
 });
