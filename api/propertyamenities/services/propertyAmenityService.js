@@ -74,7 +74,7 @@ module.exports = {
                     amenity: amenity,
                     type: 'amenity_undeleted',
                     revertedFromId: revertedFromId,
-                    description: amenity.type + ': ' + amenity.name + " un-deleted, " + all.properties.length + " properties affected.",
+                    description: "(Undeleted) " + amenity.type + ': ' + amenity.name + ": " + all.properties.length + " properties affected.",
                     context: context,
                     data: [{amenityid: amenityid, description: propsDescription}]
                 })
@@ -178,7 +178,7 @@ module.exports = {
                         amenity: amenity,
                         type: 'amenity_deleted',
                         revertedFromId: revertedFromId,
-                        description: amenity.type + ': ' + amenity.name + " deleted, " + all.properties.length + " properties affected.",
+                        description: "(Deleted) " + amenity.type + ': ' + amenity.name + ": " + all.properties.length + " properties affected.",
                         context: context,
                         data: [{amenityid: amenityid, properties: props, description: propsDescription}]
                     })
@@ -227,7 +227,64 @@ module.exports = {
 
             newamenity.aliases.push(oldamenity.name);
             AmenityService.updateAliases(operator,context,newamenity, function() {
-                return callback([{msg: 'Test'}]);
+
+                var props = [];
+                var propsDescription = _.map(all.properties,"name").join(", ");
+
+                all.properties.forEach(function(p) {
+                    //console.log(p);
+                    var p2 = {_id: p._id}
+
+                    var fps = [];
+
+                    if (oldamenity.type == "Unit") {
+                        p.floorplans.forEach(function(fp) {
+                            fp.amenities = fp.amenities.map(function(x) {return x.toString()});
+                            if (fp.amenities.indexOf(amenityid.toString()) > -1) {
+                                fps.push(fp.id.toString());
+                                _.remove(fp.amenities,function(x) {return x.toString() == amenityid.toString()});
+                                fp.amenities.push(newid);
+                            }
+                        })
+                    } else if (oldamenity.type == 'Community') {
+                        p.community_amenities = p.community_amenities.map(function(x) {return x.toString()});
+                        _.remove(p.community_amenities,function(x) {return x.toString() == amenityid.toString()});
+                        p.community_amenities.push(newid);
+                    } else if (oldamenity.type == 'Location') {
+                        p.location_amenities = p.location_amenities.map(function(x) {return x.toString()});
+                        _.remove(p.location_amenities,function(x) {return x.toString() == amenityid.toString()});
+                        p.location_amenities.push(newid);
+                    }
+                    p2.floorplans = fps;
+
+                    props.push(p2);
+
+                    PropertyHelperService.fixAmenities(p,all.amenities);
+                })
+
+
+                async.eachLimit(all.properties, 20, function(property, callbackp){
+                    CreateService.update(operator, context, property._id, property, callbackp);
+                }, function(err) {
+                    AmenityService.delete(operator,context,oldamenity, function(err,obj) {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        AuditService.create({
+                            operator: operator,
+                            amenity: oldamenity,
+                            type: 'amenity_mapped',
+                            revertedFromId: revertedFromId,
+                            description: "(Mapped) " + oldamenity.type + ': ' + oldamenity.name + " => " + newamenity.name + ": " + all.properties.length + " properties affected.",
+                            context: context,
+                            data: [{amenityid: amenityid, properties: props, description: propsDescription}]
+                        })
+                        callback(null);
+                    })
+                });                
+                
+                
             })
 
 

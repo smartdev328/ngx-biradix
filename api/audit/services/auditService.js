@@ -61,6 +61,7 @@ var audits  = [
     {key: 'amenity_aliases_updated', value: 'Amenity Aliases Updated', group: 'Amenity'},
     {key: 'amenity_deleted', value: 'Amenity Deleted', group: 'Amenity', admin: true, undo: true},
     {key: 'amenity_undeleted', value: 'Amenity Undeleted', group: 'Amenity', admin: true, undo: true},
+    {key: 'amenity_mapped', value: 'Amenity Mapped as Alias', group: 'Amenity', admin: true, undo: true},
 ];
 
 module.exports = {

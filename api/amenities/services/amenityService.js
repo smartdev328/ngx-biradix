@@ -145,18 +145,20 @@ module.exports = {
 
                     var description = "";
                     if (!old[0].approved || old[0].name != amenity.name) {
-                        description = "(" + old[0].type + ") " + old[0].name + ": ";
 
-                        if (old[0].name != amenity.name) {
-                            description += amenity.name;
+                        if (old[0].name != amenity.name && !old[0].approved) {
+                            description += "(Updated & Approved) "
+                        }
+                        else if (old[0].name != amenity.name) {
+                            description += "(Updated) "
+                        } else {
+                            description += "(Approved) "
                         }
 
-                        if (!old[0].approved) {
-                            if (old[0].name != amenity.name) {
-                                description += " / Approved"
-                            } else {
-                                description += "Approved"
-                            }
+                        description += old[0].type + ": " + old[0].name;
+
+                        if (old[0].name != amenity.name) {
+                            description += " => " + amenity.name;
                         }
                     }
 
@@ -230,6 +232,21 @@ module.exports = {
             })
         });
 
+    },
+
+    delete: function (operator, context, amenity, callback) {
+        var modelErrors = [];
+        AmenitySchema.remove({_id: amenity._id}, function (err, removed) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to delete amenity.'});
+                callback(modelErrors, null);
+                return;
+            }
+
+
+            return callback(err, removed)
+        })
     },
 
     updateDeleted: function (operator, context, amenity, callback) {
