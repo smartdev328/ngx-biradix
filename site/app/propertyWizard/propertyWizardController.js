@@ -330,6 +330,8 @@ define([
                         am = {id: a._id, name: a.name, selected: false};
                     }
 
+                    am.search = a.aliases;
+
 
                     switch(a.type) {
                         case 'Community':

@@ -51,9 +51,7 @@ module.exports = {
                 if (amenity.type == "Unit") {
                     p.floorplans.forEach(function(fp) {
                         fp.amenities = fp.amenities.map(function(x) {return x.toString()});
-                        if (fp.amenities.indexOf(amenityid.toString()) > -1) {
-                            fp.amenities.push(amenityid.toString());
-                        }
+                        fp.amenities.push(amenityid.toString());
                     })
                 } else if (amenity.type == 'Community') {
                     p.community_amenities = p.community_amenities.map(function(x) {return x.toString()});

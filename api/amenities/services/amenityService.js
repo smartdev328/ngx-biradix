@@ -191,17 +191,44 @@ module.exports = {
         var update = {aliases: amenity.aliases};
         var options = {};
 
-        AmenitySchema.findOneAndUpdate(query, update, options, function (err, saved) {
 
-            if (err) {
-                modelErrors.push({msg: 'Unable to update amenity.'});
-                callback(modelErrors, null);
-                return;
-            }
+        AmenitySchema.find({"_id": amenity._id}, function (err, original) {
 
 
-            return callback(err, saved)
-        })
+            original = original[0];
+
+            var old = original.aliases.sort();
+            var updated = amenity.aliases.sort();
+
+            var removed = _.difference(old, updated);
+            var added = _.difference(updated, old);
+
+            added = added.map(function(x) {return {description: "Added: " + x, alias: x}});
+            removed = removed.map(function(x) {return {description: "Removed: " + x, alias: x}});
+
+            var description = "(" + original.type + ") " + original.name + ": " + added.length + " Added, " + removed.length + " Removed";
+            AmenitySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+                if (err) {
+                    modelErrors.push({msg: 'Unable to update amenity.'});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                if (added.length || removed.length) {
+                    AuditService.create({
+                        operator: operator,
+                        amenity: old[0],
+                        type: 'amenity_aliases_updated',
+                        description: description,
+                        context: context,
+                        data: added.concat(removed)
+                    })
+                }
+
+                return callback(err, saved)
+            })
+        });
 
     },
 
@@ -214,6 +241,7 @@ module.exports = {
         var query = {_id: amenity._id};
         var update = {deleted: amenity.deleted};
         var options = {};
+
 
         AmenitySchema.findOneAndUpdate(query, update, options, function (err, saved) {
 
