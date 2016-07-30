@@ -48,10 +48,16 @@ module.exports = {
             var propsDescription = _.map(all.properties,"name").join(", ");
 
             all.properties.forEach(function(p) {
+                var historyproperty = _.find(properties, function(x) {return x._id.toString() == p._id.toString()})
+
                 if (amenity.type == "Unit") {
                     p.floorplans.forEach(function(fp) {
                         fp.amenities = fp.amenities.map(function(x) {return x.toString()});
-                        fp.amenities.push(amenityid.toString());
+
+                        if (historyproperty.floorplans.indexOf(fp.id.toString()) == -1) {
+                            fp.amenities.push(amenityid.toString());
+                        }
+
                     })
                 } else if (amenity.type == 'Community') {
                     p.community_amenities = p.community_amenities.map(function(x) {return x.toString()});
@@ -80,7 +86,7 @@ module.exports = {
                 })
 
                 async.eachLimit(all.properties, 20, function(property, callbackp){
-                    CreateService.update(operator, context, property._id, property, callbackp);
+                    CreateService.update(operator, context, revertedFromId, property, callbackp);
                 }, function(err) {
                     callback(null);
                 });
@@ -166,7 +172,7 @@ module.exports = {
             //  return callback([{msg: 'Test'}]);
 
             async.eachLimit(all.properties, 20, function(property, callbackp){
-                CreateService.update(operator, context, property._id, property, callbackp);
+                CreateService.update(operator, context, revertedFromId, property, callbackp);
             }, function(err) {
                 AmenityService.updateDeleted(operator,context,amenity, function(err,obj) {
                     if (err) {
@@ -190,7 +196,109 @@ module.exports = {
 
 
     },
+    unMapAmenity: function (operator, context, revertedFromId, oldamenity, newid, properties, callback) {
+        async.parallel({
+                properties: function (callbackp) {
+                    PropertyService.search(operator,
+                        {
+                            ids: _.pluck(properties,"_id"),
+                            limit: 10000,
+                            select: "*", sort: "name"
+                        }, function (err, properties) {
+                            //console.log(properties);
+                            callbackp(err, properties);
+                        }
+                    );
+                },
+                amenities: function (callbackp) {
+                    AmenityService.search({}, function (err, amenities) {
+                        callbackp(err, amenities)
+                    });
+                }
 
+            }, function (err, all) {
+            var newamenity = _.find(all.amenities, function(x) {return x._id == newid});
+
+            if (!newamenity) {
+                return callback([{msg: "Can't find amenity"}]);
+            }
+
+            if (newamenity.aliases.indexOf(oldamenity.name) == -1) {
+                return callback([{msg: oldamenity.name + " is no longer an Alias of " + newamenity.name}]);
+            }
+            _.remove(newamenity.aliases,function(x) {return x == oldamenity.name});
+
+            AmenityService.updateAliases(operator,context,newamenity,function() {
+                AmenityService.create(operator,context,oldamenity, function(err, createdamenity) {
+
+                    all.amenities.push(createdamenity);
+                    var propsDescription = _.map(all.properties,"name").join(", ");
+
+                    all.properties.forEach(function(p) {
+                        var historyproperty = _.find(properties, function(x) {return x._id.toString() == p._id.toString()})
+
+                        if (newamenity.type == "Unit") {
+                            p.floorplans.forEach(function(fp) {
+                                fp.amenities = fp.amenities.map(function(x) {return x.toString()});
+
+                                if (historyproperty.floorplansAdded.indexOf(fp.id.toString()) > -1) {
+                                    var removed = _.remove(fp.amenities,function(x) {return x.toString() == newid.toString()});
+                                }
+
+                                if (historyproperty.floorplansRemoved.indexOf(fp.id.toString()) > -1) {
+                                    fp.amenities.push(createdamenity._id.toString());
+                                }
+                            })
+                        } else if (oldamenity.type == 'Community') {
+                            p.community_amenities = p.community_amenities.map(function(x) {return x.toString()});
+
+                            if (historyproperty.added) {
+                                _.remove(p.community_amenities, function (x) {
+                                    return x.toString() == newid.toString()
+                                });
+                            }
+
+                            p.community_amenities.push(createdamenity._id);
+
+                        } else if (oldamenity.type == 'Location') {
+                            p.location_amenities = p.location_amenities.map(function(x) {return x.toString()});
+
+                            if (historyproperty.added) {
+                                _.remove(p.location_amenities, function (x) {
+                                    return x.toString() == newid.toString()
+                                });
+                            }
+
+                            p.location_amenities.push(createdamenity._id);
+
+                        }
+
+                        PropertyHelperService.fixAmenities(p,all.amenities);
+
+                    })
+
+                    AuditService.create({
+                        operator: operator,
+                        amenity: createdamenity,
+                        type: 'amenity_unmapped',
+                        revertedFromId: revertedFromId,
+                        description: "(Unmapped) " + createdamenity.type + ': ' + createdamenity.name + " ~ " + newamenity.name + ": " + all.properties.length + " properties affected.",
+                        context: context,
+                        data: [{amenityid: createdamenity._id, newid: newid, description: propsDescription}]
+                    })
+
+                    async.eachLimit(all.properties, 20, function(property, callbackp){
+                        CreateService.update(operator, context, revertedFromId, property, callbackp);
+                    }, function(err) {
+                        callback(null);
+                    });
+                })
+            })
+
+
+            }
+        );
+    },
     mapAmenity: function (operator, context, revertedFromId, amenityid, newid, callback) {
         async.parallel({
             properties: function(callbackp) {
@@ -235,27 +343,41 @@ module.exports = {
                     //console.log(p);
                     var p2 = {_id: p._id}
 
-                    var fps = [];
+                    var fpsAdded = [];
+                    var fpsRemoved = [];
 
                     if (oldamenity.type == "Unit") {
                         p.floorplans.forEach(function(fp) {
                             fp.amenities = fp.amenities.map(function(x) {return x.toString()});
                             if (fp.amenities.indexOf(amenityid.toString()) > -1) {
-                                fps.push(fp.id.toString());
+                                fpsRemoved.push(fp.id.toString());
                                 _.remove(fp.amenities,function(x) {return x.toString() == amenityid.toString()});
-                                fp.amenities.push(newid);
+
+                                if (fp.amenities.indexOf(newid.toString()) == -1) {
+                                    fp.amenities.push(newid);
+                                    fpsAdded.push(fp.id.toString());
+                                }
                             }
                         })
                     } else if (oldamenity.type == 'Community') {
                         p.community_amenities = p.community_amenities.map(function(x) {return x.toString()});
                         _.remove(p.community_amenities,function(x) {return x.toString() == amenityid.toString()});
-                        p.community_amenities.push(newid);
+
+                        if (p.community_amenities.indexOf(newid.toString()) == -1) {
+                            p.community_amenities.push(newid);
+                            p2.added = true;
+                        }
                     } else if (oldamenity.type == 'Location') {
                         p.location_amenities = p.location_amenities.map(function(x) {return x.toString()});
                         _.remove(p.location_amenities,function(x) {return x.toString() == amenityid.toString()});
-                        p.location_amenities.push(newid);
+
+                        if (p.community_amenities.indexOf(newid.toString()) == -1) {
+                            p.location_amenities.push(newid);
+                            p2.added = true;
+                        }
                     }
-                    p2.floorplans = fps;
+                    p2.floorplansAdded = fpsAdded;
+                    p2.floorplansRemoved = fpsRemoved;
 
                     props.push(p2);
 
@@ -264,7 +386,7 @@ module.exports = {
 
 
                 async.eachLimit(all.properties, 20, function(property, callbackp){
-                    CreateService.update(operator, context, property._id, property, callbackp);
+                    CreateService.update(operator, context, revertedFromId, property, callbackp);
                 }, function(err) {
                     AmenityService.delete(operator,context,oldamenity, function(err,obj) {
                         if (err) {
@@ -278,7 +400,7 @@ module.exports = {
                             revertedFromId: revertedFromId,
                             description: "(Mapped) " + oldamenity.type + ': ' + oldamenity.name + " => " + newamenity.name + ": " + all.properties.length + " properties affected.",
                             context: context,
-                            data: [{amenityid: amenityid, properties: props, description: propsDescription}]
+                            data: [{amenity: oldamenity, newid : newid, properties: props, description: propsDescription}]
                         })
                         callback(null);
                     })

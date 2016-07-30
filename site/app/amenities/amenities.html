@@ -120,16 +120,20 @@
                     <div style="display:block;width:40px;margin:20px auto" ng-if="!row.loaded">
                         <img src="/images/squares.gif" style="width:40px">
                     </div>
-                    <div ng-if="row.loaded" style="height:100px;overflow-y:auto">
+                    <div ng-if="row.loaded" style="height:150px;overflow-y:auto">
                         <Table>
                             <Tr>
-                                <Td width="50%" style="vertical-align: top">
+                                <Td width="50%" style="vertical-align: top" nowrap="">
                                     <b>Properties</b><Br>
-                                    <div ng-repeat="property in row.props"><A href="#/profile/{{property._id}}" target="_blank">{{property.name}}</A></div>
+                                    <ul>
+                                    <li ng-repeat="property in row.props"><A href="#/profile/{{property._id}}" target="_blank">{{property.name}}</A></li>
+                                    </ul>
                                 </Td>
-                                <Td width="50%" style="vertical-align: top">
+                                <Td width="50%" style="vertical-align: top;padding-left:10px" nowrap="">
                                     <b>Aliases</b><Br>
-                                    <div ng-repeat="alias in row.aliases">{{alias}}</div>
+                                    <ul>
+                                    <li ng-repeat="alias in row.aliases">{{alias}}</li>
+                                    </ul>
                                 </Td>
                             </Tr>
                         </Table>

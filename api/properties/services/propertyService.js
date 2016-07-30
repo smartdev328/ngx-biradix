@@ -57,7 +57,8 @@ module.exports = {
             var counts = {};
             // console.log(obj);
             obj.forEach(function(o) {
-                counts[o._id.amenity.toString().replace('ObjectId("','').replace('")','')] = o.value.count;
+                var key = o._id.amenity.toString().replace('ObjectId("','').replace('")','');
+                counts[key] = (counts[key] || 0) + o.value.count;
             })
             callback(err, counts);
         });

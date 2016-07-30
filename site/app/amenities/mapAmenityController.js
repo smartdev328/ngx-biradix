@@ -23,14 +23,14 @@ define([
                     $propertyAmenityService.mapAmenity(amenity._id, $scope.mapTo._id).then(function(response) {
                         if (response.data.errors) {
                             toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
-                            ngProgress.stop();
                         }
                         else {
                             $uibModalInstance.close($scope.mapTo);
                         }
+                        ngProgress.complete();
                     }, function(response) {
                         toastr.error('Unable to map amenity. Please contact an administrator');
-                        ngProgress.stop();
+                        ngProgress.complete();
                     })
 
                 }, function () {

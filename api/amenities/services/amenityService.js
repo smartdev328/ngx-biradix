@@ -74,8 +74,9 @@ module.exports = {
 
             n.name = amenity.name;
             n.type = amenity.type;
-            n.approved = false;
-            n.deleted = false;
+            n.approved = amenity.approved || false;
+            n.deleted = amenity.deleted || false;
+                n.aliases = amenity.aliases || [];
 
             n.save(function (err, am) {
 

@@ -182,6 +182,18 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             })
                             break;
+                        case "amenity_mapped":
+                            amenityMapUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "amenity_unmapped":
+                            amenityUnMapUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;                        
                         default:
                             errors = [{msg:"Unable to undo this action"}];
                             callbacks(null);
@@ -332,6 +344,14 @@ function amenityDeletedUndo(req, o, callback) {
 
 function amenityUnDeletedUndo(req, o, callback) {
     PropertyAmenityService.deleteAmenity(req.user,req.context, o._id, o.data[0].amenityid,callback);
+}
+
+function amenityMapUndo(req, o, callback) {
+    PropertyAmenityService.unMapAmenity(req.user,req.context, o._id, o.data[0].amenity,o.data[0].newid, o.data[0].properties,callback);
+}
+
+function amenityUnMapUndo(req, o, callback) {
+    PropertyAmenityService.mapAmenity(req.user,req.context, o._id, o.data[0].amenityid, o.data[0].newid,callback);
 }
 
 function propertyFeesUndo(req, o, callback) {
