@@ -284,7 +284,7 @@ module.exports = {
                         revertedFromId: revertedFromId,
                         description: "(Unmapped) " + createdamenity.type + ': ' + createdamenity.name + " ~ " + newamenity.name + ": " + all.properties.length + " properties affected.",
                         context: context,
-                        data: [{amenityid: createdamenity._id, newid: newid, description: propsDescription}]
+                        data: [{amenityid: createdamenity._id.toString(), newid: newid, description: propsDescription}]
                     })
 
                     async.eachLimit(all.properties, 20, function(property, callbackp){
