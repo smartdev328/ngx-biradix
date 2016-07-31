@@ -86,7 +86,7 @@ module.exports = {
                 })
 
                 async.eachLimit(all.properties, 20, function(property, callbackp){
-                    CreateService.update(operator, context, revertedFromId, property, callbackp);
+                    CreateService.update(operator, context, revertedFromId, property, {skipGeo: true}, callbackp);
                 }, function(err) {
                     callback(null);
                 });
@@ -172,7 +172,7 @@ module.exports = {
             //  return callback([{msg: 'Test'}]);
 
             async.eachLimit(all.properties, 20, function(property, callbackp){
-                CreateService.update(operator, context, revertedFromId, property, callbackp);
+                CreateService.update(operator, context, revertedFromId, property, {skipGeo: true}, callbackp);
             }, function(err) {
                 AmenityService.updateDeleted(operator,context,amenity, function(err,obj) {
                     if (err) {
@@ -288,7 +288,7 @@ module.exports = {
                     })
 
                     async.eachLimit(all.properties, 20, function(property, callbackp){
-                        CreateService.update(operator, context, revertedFromId, property, callbackp);
+                        CreateService.update(operator, context, revertedFromId, property, {skipGeo: true}, callbackp);
                     }, function(err) {
                         callback(null);
                     });
@@ -386,7 +386,7 @@ module.exports = {
 
 
                 async.eachLimit(all.properties, 20, function(property, callbackp){
-                    CreateService.update(operator, context, revertedFromId, property, callbackp);
+                    CreateService.update(operator, context, revertedFromId, property, {skipGeo: true}, callbackp);
                 }, function(err) {
                     AmenityService.delete(operator,context,oldamenity, function(err,obj) {
                         if (err) {

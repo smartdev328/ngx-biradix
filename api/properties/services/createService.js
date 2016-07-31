@@ -14,7 +14,7 @@ var AmenityService = require('../../amenities/services/amenityService')
 var OrganizationService = require('../../organizations/services/organizationService')
 
 module.exports = {
-    update: function(operator, context,revertedFromId, property, callback, skipCompLinkAudit) {
+    update: function(operator, context,revertedFromId, property, options, callback) {
 
         var modelErrors = [];
 
@@ -26,7 +26,7 @@ module.exports = {
             return;
         }
 
-        getHelpers(property,  function(err, all) {
+        getHelpers(property, options, function(err, all) {
             if (err) {
                 return callback([{msg: err}], null)
             }
@@ -123,7 +123,7 @@ module.exports = {
 
                         //If we are adding floorplans, do not insert an audit history item to all the comps saying comped floorplans added
                         if (property.addedFloorplans.length > 0) {
-                            skipCompLinkAudit = true;
+                            options.skipCompLinkAudit = true;
                         }
 
                         //if (property.addedFloorplans.length > 0) {
@@ -145,7 +145,7 @@ module.exports = {
 
                                     PropertyService.saveCompLink(operator, context, null, subject._id, prop._id, comp.floorplans, function(err, link) {
                                         callbackp(err, link)
-                                    },skipCompLinkAudit)
+                                    },options.skipCompLinkAudit)
 
                                 }, function(err) {
 
@@ -245,7 +245,7 @@ module.exports = {
             return;
         }
 
-        getHelpers(property,  function(err, all)
+        getHelpers(property, {}, function(err, all)
             {
                 if (err) {
                     return callback([{msg:err}],null)
@@ -401,14 +401,19 @@ function errorCheck(property, modelErrors) {
     })
 }
 
-var getHelpers = function(property, callback) {
+var getHelpers = function(property, options, callback) {
     async.parallel({
         geo: function (callbackp) {
 
-            GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, true, function (err, res, fromCache) {
-                //console.log(res[0].latitude, res[0].longitude);
-                callbackp(err, res[0])
-            });
+            if (options.skipGeo) {
+                callbackp(null,{latitude:property.loc[0], longitude: property.loc[1]});
+            }
+            else {
+                GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, true, function (err, res, fromCache) {
+                    //console.log(res[0].latitude, res[0].longitude);
+                    callbackp(err, res[0])
+                });
+            }
         },
         roles: function (callbackp) {
             AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO'], cache:true},function(err, roles) {

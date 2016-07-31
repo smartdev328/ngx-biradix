@@ -237,7 +237,7 @@ Routes.put('/:id', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        CreateService.update(req.user,  req.context, null, req.body, function (err, newprop) {
+        CreateService.update(req.user,  req.context, null, req.body, {}, function (err, newprop) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

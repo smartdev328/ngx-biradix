@@ -332,7 +332,7 @@ function propertyUpdateUndo(req, o, callback) {
             // callback([{msg: 'test'}]);
             // return;
 
-            CreateService.update(req.user, req.context, o._id, property, callback);
+            CreateService.update(req.user, req.context, o._id, property, {skipGeo: true}, callback);
         });
     });
 
@@ -367,7 +367,7 @@ function propertyFeesUndo(req, o, callback) {
             // callback([{msg: 'test'}]);
             // return;
 
-            CreateService.update(req.user, req.context, o._id, property, callback);
+            CreateService.update(req.user, req.context, o._id, property, {skipGeo: true}, callback);
         });
     });
 }
@@ -396,7 +396,7 @@ function propertyAmenitiesUndo(req, o, callback) {
             // callback([{msg: 'test'}]);
             // return;
 
-            CreateService.update(req.user,req.context, o._id,property,callback);
+            CreateService.update(req.user,req.context, o._id,property, {skipGeo: true},callback);
         });
     })
 
@@ -417,7 +417,7 @@ function propertyFloorplanCreatedUndo (req, o, callback) {
             // return;
 
 
-            CreateService.update(req.user, req.context, o._id, property, callback);
+            CreateService.update(req.user, req.context, o._id, property, {skipGeo: true}, callback);
         });
     });
 }
@@ -437,7 +437,7 @@ function propertyFloorplanRemovedUndo  (req, o, callback) {
             // callback([{msg: 'test'}]);
             // return;
 
-            CreateService.update(req.user,req.context, o._id,property,callback);
+            CreateService.update(req.user,req.context, o._id,property, {skipGeo: true},callback);
         });
     });
 }
@@ -467,7 +467,7 @@ function propertyFloorplanUpdatedUndo  (req, o, callback) {
             // callback([{msg: 'test'}]);
             // return;
 
-            CreateService.update(req.user,req.context, o._id,property,callback);
+            CreateService.update(req.user,req.context, o._id,property, {skipGeo: true},callback);
         });
     });
 }
@@ -502,7 +502,7 @@ function propertyFloorplanAmenitiesUpdatedUndo  (req, o, callback) {
             // callback([{msg: 'test'}]);
             // return;
 
-            CreateService.update(req.user,req.context, o._id,property,callback);
+            CreateService.update(req.user,req.context, o._id,property, {skipGeo: true},callback);
 
         });
     });
