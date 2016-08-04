@@ -258,7 +258,7 @@ module.exports = {
                                 });
                             }
 
-                            p.community_amenities.push(createdamenity._id);
+                            p.community_amenities.push(createdamenity._id.toString());
 
                         } else if (oldamenity.type == 'Location') {
                             p.location_amenities = p.location_amenities.map(function(x) {return x.toString()});
@@ -269,7 +269,7 @@ module.exports = {
                                 });
                             }
 
-                            p.location_amenities.push(createdamenity._id);
+                            p.location_amenities.push(createdamenity._id.toString());
 
                         }
 
@@ -322,8 +322,8 @@ module.exports = {
         }, function(err,all) {
             // console.log(all.properties);
 
-            var oldamenity = _.find(all.amenities, function(x) {return x._id == amenityid});
-            var newamenity = _.find(all.amenities, function(x) {return x._id == newid});
+            var oldamenity = _.find(all.amenities, function(x) {return x._id.toString() == amenityid.toString()});
+            var newamenity = _.find(all.amenities, function(x) {return x._id.toString() == newid.toString()});
 
             if (!oldamenity || oldamenity.deleted) {
                 return callback([{msg: "Can't map a deleted amenity"}]);
@@ -354,7 +354,7 @@ module.exports = {
                                 _.remove(fp.amenities,function(x) {return x.toString() == amenityid.toString()});
 
                                 if (fp.amenities.indexOf(newid.toString()) == -1) {
-                                    fp.amenities.push(newid);
+                                    fp.amenities.push(newid.toString());
                                     fpsAdded.push(fp.id.toString());
                                 }
                             }
@@ -364,15 +364,15 @@ module.exports = {
                         _.remove(p.community_amenities,function(x) {return x.toString() == amenityid.toString()});
 
                         if (p.community_amenities.indexOf(newid.toString()) == -1) {
-                            p.community_amenities.push(newid);
+                            p.community_amenities.push(newid.toString());
                             p2.added = true;
                         }
                     } else if (oldamenity.type == 'Location') {
                         p.location_amenities = p.location_amenities.map(function(x) {return x.toString()});
                         _.remove(p.location_amenities,function(x) {return x.toString() == amenityid.toString()});
 
-                        if (p.community_amenities.indexOf(newid.toString()) == -1) {
-                            p.location_amenities.push(newid);
+                        if (p.location_amenities.indexOf(newid.toString()) == -1) {
+                            p.location_amenities.push(newid.toString());
                             p2.added = true;
                         }
                     }

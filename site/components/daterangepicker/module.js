@@ -50,6 +50,8 @@ define([
                     buttonClasses: ['btn', 'btn-sm'],
                     applyClass: 'btn-primary',
                     cancelClass: 'btn-default',
+                    maxDate : moment().format("MM/DD/YYYY"),
+                    minDate : moment().subtract(30, 'year').format("MM/DD/YYYY")
                 }, function (start, end, label) {
                     $scope.daterange.selectedStartDate = start;
                     $scope.daterange.selectedEndDate = end;
