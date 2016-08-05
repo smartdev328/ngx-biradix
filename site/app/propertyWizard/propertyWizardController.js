@@ -19,7 +19,7 @@ define([
             $scope.changed = false;
 
             $scope.$watch("property", function(old) {
-                console.log(old);
+                console.log(old,$scope.changed);
 
                 if ($scope.first < 2) {
                     $scope.first++;
@@ -30,7 +30,7 @@ define([
             }, true);
 
             $scope.$watch("communityItems", function(old) {
-
+                console.log(old,$scope.changed);
                 if ($scope.firstCommunity < 2) {
                     $scope.firstCommunity++;
                     return;
@@ -40,7 +40,7 @@ define([
             }, true);
 
             $scope.$watch("locationItems", function(old) {
-
+                console.log(old,$scope.changed);
                 if ($scope.firstLocation < 2) {
                     $scope.firstLocation++;
                     return;
