@@ -13,8 +13,53 @@ define([
                 $location.path('/login')
             }
 
+            $scope.first = 0;
+            $scope.firstCommunity = 0;
+            $scope.firstLocation = 0;
+            $scope.changed = false;
+
+            $scope.$watch("property", function(old) {
+
+                if ($scope.first < 2) {
+                    $scope.first++;
+                    return;
+                }
+                $scope.changed = true;
+
+            }, true);
+
+            $scope.$watch("communityItems", function(old) {
+
+                if ($scope.firstCommunity < 2) {
+                    $scope.firstCommunity++;
+                    return;
+                }
+                $scope.changed = true;
+
+            }, true);
+
+            $scope.$watch("locationItems", function(old) {
+
+                if ($scope.firstLocation < 2) {
+                    $scope.firstLocation++;
+                    return;
+                }
+                $scope.changed = true;
+
+            }, true);
+
             $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
+
+                if ($scope.changed) {
+                    $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                        $uibModalInstance.dismiss('cancel');
+                    }, function () {
+                    });
+                }
+                else {
+                    $uibModalInstance.dismiss('cancel');
+                }
+
             };
 
             $scope.values = {};
@@ -708,6 +753,7 @@ define([
 
                 return prop;
             }
+
         }]);
 
 });
