@@ -19,6 +19,7 @@ define([
             $scope.changed = false;
 
             $scope.$watch("property", function(old) {
+                console.log(old);
 
                 if ($scope.first < 2) {
                     $scope.first++;
