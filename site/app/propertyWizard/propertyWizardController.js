@@ -13,41 +13,32 @@ define([
                 $location.path('/login')
             }
 
-            $scope.first = 0;
-            $scope.firstCommunity = 0;
-            $scope.firstLocation = 0;
+
             $scope.changed = false;
 
-            $scope.$watch("property", function(old) {
-                console.log(old,$scope.changed);
+            $scope.startWatchingChanges = function() {
+                window.setTimeout(function() {
+                    $scope.$watch("property", function (newValue, oldValue) {
 
-                if ($scope.first < 2) {
-                    $scope.first++;
-                    return;
-                }
-                $scope.changed = true;
+                        if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+                            $scope.changed = true;
+                        }
 
-            }, true);
+                    }, true);
 
-            $scope.$watch("communityItems", function(old) {
-                console.log(old,$scope.changed);
-                if ($scope.firstCommunity < 2) {
-                    $scope.firstCommunity++;
-                    return;
-                }
-                $scope.changed = true;
+                    $scope.$watch("communityItems", function (newValue, oldValue) {
+                        if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+                            $scope.changed = true;
+                        }
+                    }, true);
 
-            }, true);
-
-            $scope.$watch("locationItems", function(old) {
-                console.log(old,$scope.changed);
-                if ($scope.firstLocation < 2) {
-                    $scope.firstLocation++;
-                    return;
-                }
-                $scope.changed = true;
-
-            }, true);
+                    $scope.$watch("locationItems", function (newValue, oldValue) {
+                        if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+                            $scope.changed = true;
+                        }
+                    }, true);
+                },1000);
+            }
 
             $scope.cancel = function () {
 
@@ -431,11 +422,15 @@ define([
                             }
                         })
 
+                        $scope.startWatchingChanges();
+
                     });
                 }
                 else {
                     $scope.localLoading = true;
                     $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
+
+                    $scope.startWatchingChanges();
                 }
             });
 
