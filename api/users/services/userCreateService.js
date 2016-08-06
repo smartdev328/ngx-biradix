@@ -40,9 +40,10 @@ module.exports = {
 
             if (usr.bounceReason) {
                 usr.bounceReason = undefined;
-                userBounceService.resetBounce(usr.email,function(){});
             }
 
+            userBounceService.resetBounce(usr.email,function(){});
+            
             usr.save(function (err, usr) {
                 if (err) {
                     modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
@@ -132,8 +133,9 @@ module.exports = {
 
                 if (usr.bounceReason) {
                     usr.bounceReason = undefined;
-                    userBounceService.resetBounce(usr.email,function(){});
                 }
+
+                userBounceService.resetBounce(usr.email,function(){});
 
                 usr.save(function (err, usr) {
                     if (err) {
