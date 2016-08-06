@@ -256,12 +256,16 @@ module.exports = {
 
                     AuditService.create({type: 'reset_password', user : usr,description: 'Success: ' + usr.email, context: context})
 
-                    EmailService.send(email,function(emailError,status) {
-                        usr = null;
-                        email = null;
-                        resp = null;
-                        return callback(null,true);
-                    })
+                    UserSchema.findOneAndUpdate({_id: usr._id}, {bounceReason: undefined}, {}, function() {});
+                    userBounceService.resetBounce(usr.email,function(){
+                        EmailService.send(email,function(emailError,status) {
+                            usr = null;
+                            email = null;
+                            resp = null;
+                            return callback(null,true);
+                        })
+                    });
+
                 })
 
 

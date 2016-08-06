@@ -86,7 +86,7 @@
         <span class="visible-xs-inline-block" style="width:30px;"></span><toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Market Survey Notes<br>
         <div style="margin-top:10px"></div>
         <div ng-if="settings.showNotes">
-        <textarea class="form-control" placeholder="Type Market Survey notes here" ng-model="survey.notes" ng-keypress="updateChanged()"></textarea><br>
+        <textarea class="form-control" placeholder="Type Market Survey notes here" ng-model="survey.notes" ng-keydown="updateChanged()"></textarea><br>
         </div>
         <table class="table table-condensed table-striped table-hover survey-values" style="margin-bottom:10px">
             <tbody>

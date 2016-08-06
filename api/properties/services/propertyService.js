@@ -786,6 +786,8 @@ module.exports = {
 
                         comp.survey.occupancy = s.occupancy;
                         comp.survey.leased = s.leased;
+                        comp.survey.weeklyleases = s.weeklyleases;
+                        comp.survey.weeklytraffic = s.weeklytraffic;
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide);
                     }
 

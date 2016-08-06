@@ -55,7 +55,8 @@ define([
                 concessions: true,
                 ner: true,
                 nersqft: true,
-                mersqft: false
+                mersqft: false,
+                weekly:false
             }
 
 

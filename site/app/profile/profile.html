@@ -50,7 +50,7 @@
                                 <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                                     <span class="fa fa-table"></span> <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px;height:200px;overflow-y: auto" onclick="event.stopPropagation();">
                                     <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.address" ng-checked="showProfile.address" ng-click="saveShowProfile()"> Address</label></div></li>
                                     <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.website" ng-checked="showProfile.website" ng-click="saveShowProfile()"> Website</label></div></li>
                                     <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.phone" ng-checked="showProfile.phone" ng-click="saveShowProfile()"> Phone</label></div></li>
@@ -249,7 +249,7 @@
                     <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:220px;height:200px;overflow-y: auto" onclick="event.stopPropagation();">
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.description" ng-checked="show.description" ng-click="saveShow()"> Description</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.units" ng-checked="show.units" ng-click="saveShow()"> Units</label></div></li>
                         <li><div class="checkbox"><label><input type="checkbox" ng-model="show.unitPercent" ng-checked="show.unitPercent" ng-click="saveShow()"> Unit %</label></div></li>

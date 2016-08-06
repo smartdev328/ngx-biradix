@@ -30,6 +30,7 @@ define([
             $scope.changed = false;
             
             $scope.updateChanged = function() {
+                console.log('hi')
                 $scope.changed = true;
             }
 
