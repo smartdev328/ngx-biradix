@@ -28,6 +28,10 @@ define([
             };
 
             $scope.changed = false;
+            
+            $scope.updateChanged = function() {
+                $scope.changed = true;
+            }
 
             $scope.clear = function(id) {
                 $("#" + id).parent().removeClass("has-error");
