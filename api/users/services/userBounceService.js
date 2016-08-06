@@ -24,6 +24,8 @@ module.exports = {
             timeout: 60000
         };
 
+        // console.log(options);
+
         request.delete(options, callback)
         
     }

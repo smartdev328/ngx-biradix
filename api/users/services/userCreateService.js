@@ -132,6 +132,7 @@ module.exports = {
 
                 if (usr.bounceReason) {
                     usr.bounceReason = undefined;
+                    userBounceService.resetBounce(usr.email,function(){});
                 }
 
                 usr.save(function (err, usr) {
