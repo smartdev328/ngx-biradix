@@ -4,6 +4,7 @@ var _ = require('lodash');
 var async = require('async')
 var UserSchema= require('../schemas/userSchema')
 var UtilityService = require('./utilityService')
+var userBounceService = require('./userBounceService')
 var EmailService = require('../../business/services/emailService')
 var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
@@ -39,6 +40,7 @@ module.exports = {
 
             if (usr.bounceReason) {
                 usr.bounceReason = undefined;
+                userBounceService.resetBounce(usr.email,function(){});
             }
 
             usr.save(function (err, usr) {

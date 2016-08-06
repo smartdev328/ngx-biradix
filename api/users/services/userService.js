@@ -14,6 +14,7 @@ var localCacheService = require('../../utilities/services/localcacheService')
 var cronService = require('../../utilities/services/cronService')
 var md5 = require('md5');
 var redisService = require('../../utilities/services/redisService')
+var userBounceService = require('./userBounceService')
 
 module.exports = {
     defaultSettings: function(user) {

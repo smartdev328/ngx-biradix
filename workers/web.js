@@ -130,6 +130,12 @@ d.run(function() {
                     //         console.log(errors);
                     //     })
                     // });
+
+                    // var userService = require("../api/users/services/userBounceService");
+                    //
+                    // userService.resetBounce("bjones@viderman.com", function(err,response) {
+                    //     console.log(err,response.statusCode);
+                    // })
                 }
 
 
