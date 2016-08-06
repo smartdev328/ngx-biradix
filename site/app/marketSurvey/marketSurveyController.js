@@ -16,8 +16,18 @@ define([
             }
 
             $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
+                if ($scope.changed) {
+                    $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                        $uibModalInstance.dismiss('cancel');
+                    }, function () {
+                    });
+                }
+                else {
+                    $uibModalInstance.dismiss('cancel');
+                }
             };
+
+            $scope.changed = false;
 
             $scope.clear = function(id) {
                 $("#" + id).parent().removeClass("has-error");
@@ -28,6 +38,11 @@ define([
                 if (event.keyCode == 9 && !event.shiftKey) {
                     event.preventDefault();
                     $scope.next(row,id);
+                } else {
+                    if (event.keyCode != 13) {
+                        $scope.changed = true;
+                    }
+
                 }
             }
 
@@ -157,6 +172,7 @@ define([
                     first.focus();
                     first.select();
                 }, 300);
+
             }
 
             $scope.isValid  = function(field, required, allowDecimal, min, max) {
