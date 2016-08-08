@@ -21,6 +21,12 @@
             <i ng-show="sort.occupancy === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.occupancy === false" class="fa fa-sort-up"></i>
         </th>
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased">
+            Leased %
+            <i ng-show="sort.leased == null" class="fa fa-sort"></i>
+            <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
+        </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly">
             Traffic/&nbsp;&nbsp;<br>Week
             <i ng-show="sort.weeklytraffic == null" class="fa fa-sort"></i>
@@ -32,12 +38,6 @@
             <i ng-show="sort.weeklyleases == null" class="fa fa-sort"></i>
             <i ng-show="sort.weeklyleases === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.weeklyleases === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased">
-            Leased %
-            <i ng-show="sort.leased == null" class="fa fa-sort"></i>
-            <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
             Units
