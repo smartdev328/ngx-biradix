@@ -2,6 +2,7 @@
 var AuditSchema= require('../schema/auditSchema')
 var async = require("async");
 var _ = require("lodash")
+var moment = require("moment")
 var PaginationService = require('../../utilities/services/paginationService')
 var DateService = require('../../utilities/services/dateService')
 var error = require("../../../config/error");
@@ -186,7 +187,7 @@ function QueryBuilder (criteria, userids, propertyids, compids) {
     if (criteria.daterange) {
         var dr = DateService.convertRangeToParts(criteria.daterange,0);
         if (criteria.daterange != "Lifetime") {
-            query = query.where("date").gte(dr.start).lte(dr.end);
+            query = query.where("date").gte(dr.start).lte(moment(dr.end).add(1,"day").format());
         }
     }
 
