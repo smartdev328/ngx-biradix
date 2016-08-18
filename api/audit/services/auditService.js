@@ -15,6 +15,7 @@ var audits  = [
     {key: 'reset_password', value: 'Password Reset', group: 'User'},
     {key: 'user_status', value:  'User Status Updated', undo: true, group: 'User'},
     {key: 'user_notifications', value:  'Notification Settings Updated', undo: false, group: 'User'},
+    {key: 'user_reminders', value:  'Reminder Settings Updated', undo: false, group: 'User'},
     {key: 'user_leased', value:  'Leased Settings Updated', undo: false, group: 'User'},
     {key: 'user_concessions', value:  'Detailed Concessions', undo: false, group: 'User'},
     {key: 'user_created', value: 'User Created', group: 'User'},

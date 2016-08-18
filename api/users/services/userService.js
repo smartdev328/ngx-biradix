@@ -475,6 +475,15 @@ module.exports = {
                 }
             }
 
+            var reminderDescription = "";
+
+            if (usr.settings.reminders.on == true && settings.reminders.on == false) {
+                reminderDescription = "On => Off";
+            }
+            else if (usr.settings.reminders.on == false && settings.reminders.on == true) {
+                reminderDescription = "Off => On";
+            }
+
             var leasesDescription = "";
             if (usr.settings.showLeases == true && settings.showLeases == false) {
                 leasesDescription = "On => Off";
@@ -495,6 +504,7 @@ module.exports = {
 
             usr.settings = settings
             usr.markModified("settings.notifications");
+            usr.markModified("settings.reminders");
             usr.markModified("settings.tz");
 
             usr.save(function (err, usr) {
@@ -512,6 +522,10 @@ module.exports = {
                     AuditService.create({operator: usr, user: usr, type: 'user_notifications', description: notsDescription, context: context, data: nots})
                 }
 
+                if (reminderDescription) {
+                    AuditService.create({operator: usr, user: usr, type: 'user_reminders', description: reminderDescription, context: context, data: nots})
+                }
+                
                 if (leasesDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_leased', description: leasesDescription, context: context})
                 }
@@ -687,4 +701,8 @@ function defaultSettings(user) {
     user.settings.notifications.props = user.settings.notifications.props || [];
     user.settings.notifications.last = user.settings.notifications.last || null;
     user.settings.notifications.on = typeof user.settings.notifications.on == 'undefined' ? true : user.settings.notifications.on;
+
+    user.settings.reminders = user.settings.reminders || {};
+    user.settings.reminders.on = typeof user.settings.reminders.on == 'undefined' ? true : user.settings.reminders.on;
+    user.settings.reminders.history = user.settings.reminders.history || {};
 }
