@@ -7,11 +7,29 @@ var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
 
 module.exports = {
+    getPropertiesForReminders: function(operator, callback) {
+        PropertyService.getPropertiesForReminders(function(properties) {
+
+            async.eachLimit(properties,20, function(property, callbackp) {
+                getPropertyAssignedUsers(operator, property._id, ['RM','BM'], function(err, userids) {
+                    property.userids = userids;
+                    callbackp();
+                });
+            }, function(err) {
+                _.remove(properties, function(x) {return !x.userids || !x.userids.length})
+                //Todo: Get reminders proeprty on all users and remove anyone with "Off" or  bounced / check again for no users / append relavant user info
+                //Todo: Get same values for all comps and join on each property
+                //put together email for each user
+                callback(properties)
+            })
+
+        })
+    },
     setUsersForProperty : function(operator,context,revertedFromId, propertyid, ids, callback) {
 
         async.parallel({
             differences: function(callbackp) {
-                getPropertyAssignedUsers(operator, propertyid, function(err, userids) {
+                getPropertyAssignedUsers(operator, propertyid,['RM','BM','PO'], function(err, userids) {
                     var removed = _.difference(userids, ids);
                     var added = _.difference(ids, userids);
                     callbackp(null, {added: added, removed: removed})
@@ -58,7 +76,7 @@ module.exports = {
     },
 
     getPropertyAssignedUsers : function(operator, propertyid, callback) {
-        getPropertyAssignedUsers(operator, propertyid, callback)
+        getPropertyAssignedUsers(operator, propertyid, ['RM','BM','PO'], callback)
     },
 
     unlink : function(operator,context,revertedFromId,userid,propertyid,callback) {
@@ -224,7 +242,7 @@ var getUserAssignedProperties = function(operator, userid, callback) {
 
 }
 
-var getPropertyAssignedUsers = function(operator, propertyid, callback) {
+var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callback) {
 
     //Get Orgid of property first
     PropertyService.search(operator, {ids:[propertyid]}, function(err, props) {
@@ -247,7 +265,7 @@ var getPropertyAssignedUsers = function(operator, propertyid, callback) {
             //all proeprties the operator can manage
             operatorAllowed : function(callbackp) {
 
-                UserService.search(operator, {active:true, roleTypes:['RM','BM','PO'], orgid: props[0].orgid}, function(err, obj) {
+                UserService.search(operator, {active:true, roleTypes:roleTypes, orgid: props[0].orgid}, function(err, obj) {
                     var userids;
 
                     if (obj && !err) {

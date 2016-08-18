@@ -704,5 +704,4 @@ function defaultSettings(user) {
 
     user.settings.reminders = user.settings.reminders || {};
     user.settings.reminders.on = typeof user.settings.reminders.on == 'undefined' ? true : user.settings.reminders.on;
-    user.settings.reminders.history = user.settings.reminders.history || {};
 }

@@ -6,6 +6,12 @@ var routes = express.Router();
 var async = require("async");
 var _ = require("lodash");
 
+routes.get('/reminders_test', function (req, res) {
+    PropertyUsersService.getPropertiesForReminders(req.user,function(properties) {
+        res.status(200).json(properties);
+    })
+
+});
 
 routes.get('/properties/:userid', function (req, res) {
     AccessService.canAccessResource(req.user,req.params.userid,'UserManage', function(canAccess) {

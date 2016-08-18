@@ -17,6 +17,59 @@ var SurveyHelperService = require('./surveyHelperService')
 
 
 module.exports = {
+    getPropertiesForReminders: function(callback) {
+        var query = PropertySchema.find(
+            {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
+        );
+        query.select("name orgid survey.id survey.occupancy date comps.id")
+        query.exec(function(err, properties) {
+            var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
+
+            _.remove(surveyids,function(x) {return x == ''})
+
+            query = SurveySchema.find({_id: {$in : surveyids}});
+            query.select("date");
+
+            query.exec(function(err, surveys) {
+                var final = [];
+                properties.forEach(function(p) {
+                    p.comps = _.map(p.comps,"id")
+                    if (!p.survey) {
+                        final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps});
+                    } else {
+                        var survey = _.find(surveys, function (x) {
+                            return x._id.toString() == p.survey.id.toString();
+                        });
+
+                        if (!survey) {
+                            final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps});
+                        } else {
+                            var date1 = new Date(survey.date);
+                            var date2 = new Date();
+                            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                            if (diffDays >= 9) {
+                                final.push({
+                                    _id: p._id,
+                                    name: p.name,
+                                    date: survey.date,
+                                    occupancy: p.survey.occupancy,
+                                    compids: p.comps
+                                });
+                            }
+                        }
+
+                    }
+                })
+                callback(final);
+            });
+
+
+        });
+
+
+
+    },
     getAmenityCounts:function(callback) {
         var o = {};
 
