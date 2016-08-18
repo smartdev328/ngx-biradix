@@ -3,15 +3,17 @@
 var _ = require("lodash");
 
 var fees  = {
+    administrative_fee: 'Administrative fee',
     application_fee : 'Application fee',
     lease_terms: 'Lease terms',
-    short_term_premium: 'Short term premium',
-    refundable_security_deposit: 'Refundable security deposit',
-    administrative_fee: 'Administrative fee',
     non_refundable_pet_deposit: 'Non refundable pet deposit',
     pet_deposit: 'Pet deposit',
-    pet_rent: 'Pet rent'
+    pet_rent: 'Pet rent',
+    refundable_security_deposit: 'Refundable security deposit',
+    short_term_premium: 'Short term premium',
 }
+
+
 
 module.exports = {
     fees: fees,

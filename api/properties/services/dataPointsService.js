@@ -17,9 +17,9 @@ module.exports = {
 
         query = query.where("propertyid").in(propertyids);
         var dr = DateService.convertRangeToParts(daterange,offset);
-
+        
         if (daterange.daterange != "Lifetime") {
-            query = query.where("date").gte(dr.start).lte(moment(dr.end).add(1,"day").format());
+            query = query.where("date").gte(dr.start).lte(dr.end);
         }
 
         var select = "_id date propertyid floorplans.units";

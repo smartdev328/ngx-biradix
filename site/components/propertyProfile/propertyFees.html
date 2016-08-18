@@ -1,6 +1,6 @@
 <ul class="profile-list">
-    <li ng-repeat="(fee, value) in fees">
-        {{lookups[fee]}}: {{value}}
+    <li ng-repeat="fee in final | orderBy : 'display'">
+        {{fee.display}}: {{fee.value}}
     </li>
 </ul>
 

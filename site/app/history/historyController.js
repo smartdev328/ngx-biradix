@@ -55,6 +55,7 @@ define([
                         start: $scope.daterange.selectedStartDate,
                     end: $scope.daterange.selectedEndDate
                 }
+                ,offset : moment().utcOffset()
             }).then(function (response) {
                     $scope.activity = response.data.activity;
                     $scope.pager = response.data.pager;

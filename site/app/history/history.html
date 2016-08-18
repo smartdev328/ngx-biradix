@@ -71,7 +71,7 @@
             <td>
                 <span ng-if="getAudit(row.type).undo && row.revertedFromId" class="fa fa-info-circle" tooltip-placement="left" uib-tooltip="This action is due to an earlier undo"></span>
                 <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
-                <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="mouseenter"
+                <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="'mouseenter'"
                    popover-placement="left"
                    popover-title="This property is managed by a BI:Radix user."
                    uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
