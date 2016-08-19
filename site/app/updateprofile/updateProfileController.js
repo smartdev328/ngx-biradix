@@ -130,7 +130,7 @@ define([
                     $scope.propertyOptions = { panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Excluded Properties", labelSelected: "Included Properties", searchLabel: "Properties" }
 
                     $propertyService.search({
-                        limit: 1000,
+                        limit: 10000,
                         permission: 'PropertyManage',
                         active: true
                     }).then(function (response) {

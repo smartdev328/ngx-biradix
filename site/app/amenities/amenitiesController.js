@@ -79,7 +79,7 @@ define([
             row.loaded = false;
 
             if (row.open) {
-                $propertyService.search({select:"name", amenity: row._id, limit: 1000,sort:"-date"}).then(function (response) {
+                $propertyService.search({select:"name", amenity: row._id, limit: 10000,sort:"-date"}).then(function (response) {
                     row.loaded = true;
                     row.props = response.data.properties;
                 });

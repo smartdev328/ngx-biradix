@@ -33,7 +33,7 @@ define([
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
 
 
-        $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true, select : "_id name comps.id orgid"}).then(function (response) {
+        $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id orgid"}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
 
@@ -75,7 +75,7 @@ define([
             $scope.noReports = false;
             delete $scope.reports;
 
-            $propertyService.search({limit: 1000, permission: 'PropertyView', active: true, select : "_id name", ids: compids, sort: "name"}).then(function (response) {
+            $propertyService.search({limit: 10000, permission: 'PropertyView', active: true, select : "_id name", ids: compids, sort: "name"}).then(function (response) {
                 $scope.items = [];
                 response.data.properties.forEach(function(c) {
                     if (c._id != subjectid) {

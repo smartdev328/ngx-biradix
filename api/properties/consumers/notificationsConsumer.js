@@ -16,7 +16,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
             } else {
                 propertyService.search(data.user, {
                     select:"_id name",
-                    limit: 1000,
+                    limit: 10000,
                     permission: 'PropertyManage',
                     active: true
                 }, function(err,props) {

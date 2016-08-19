@@ -78,9 +78,9 @@ define([
 
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
-                $propertyService.search({limit: 1000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid", ids: compids}).then(function (response) {
+                $propertyService.search({limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid", ids: compids}).then(function (response) {
                     $propertyService.search({
-                        limit: 1000,
+                        limit: 10000,
                         permission: 'PropertyManage',
                         select: "_id orgid",
                         ids: compids
@@ -122,7 +122,7 @@ define([
         /////////////////////////////
         $scope.reload = function (callback) {
             $scope.localLoading = false;
-            $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded"}).then(function (response) {
+            $propertyService.search({limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded"}).then(function (response) {
                 $scope.data = response.data.properties;
 
                 $scope.data.forEach(function(p) {

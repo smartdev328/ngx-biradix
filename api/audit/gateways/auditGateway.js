@@ -231,7 +231,7 @@ Routes.post('/', function (req, res) {
                     propertyids = _.uniq(propertyids);
 
                     obj = JSON.parse(JSON.stringify(obj));
-                    PropertyService.search(req.user, {limit: 1000, permission: ['PropertyManage'], ids: propertyids
+                    PropertyService.search(req.user, {limit: 10000, permission: ['PropertyManage'], ids: propertyids
                         , select: "_id"
                     }, function(err, properties) {
                         obj.forEach(function(o) {
@@ -532,12 +532,12 @@ function getPropertiesAndComps (req, callback) {
 
     async.parallel({
         subjects: function(callbackp) {
-            PropertyService.search(req.user, {permission: ['PropertyManage'], select: '_id name', limit: 1000}, function(err, properties) {
+            PropertyService.search(req.user, {permission: ['PropertyManage'], select: '_id name', limit: 10000}, function(err, properties) {
                 callbackp(null, properties)
             })
         },
         comps: function(callbackp) {
-            PropertyService.search(req.user, {permission: ['CompManage'], select: '_id name', limit: 1000}, function(err, properties) {
+            PropertyService.search(req.user, {permission: ['CompManage'], select: '_id name', limit: 10000}, function(err, properties) {
                 callbackp(null, properties)
             })
         }
