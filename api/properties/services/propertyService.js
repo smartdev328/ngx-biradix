@@ -17,6 +17,52 @@ var SurveyHelperService = require('./surveyHelperService')
 
 
 module.exports = {
+    getCompsForReminders: function(compids,callback) {
+        var query = PropertySchema.find(
+            {_id: {$in : compids}}
+        );
+        query.select("name orgid survey.id survey.occupancy date")
+        query.exec(function(err, properties) {
+            var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
+
+            _.remove(surveyids,function(x) {return x == ''})
+
+            query = SurveySchema.find({_id: {$in : surveyids}});
+            query.select("date");
+
+            query.exec(function(err, surveys) {
+                var final = [];
+                properties.forEach(function(p) {
+                    p.comps = _.map(p.comps,"id")
+                    if (!p.survey) {
+                        final.push({_id: p._id, name: p.name, date: p.date});
+                    } else {
+                        var survey = _.find(surveys, function (x) {
+                            return x._id.toString() == p.survey.id.toString();
+                        });
+
+                        if (!survey) {
+                            final.push({_id: p._id, name: p.name, date: p.date});
+                        } else {
+                            final.push({
+                                _id: p._id,
+                                name: p.name,
+                                date: survey.date,
+                                occupancy: p.survey.occupancy,
+                            });
+                        }
+
+                    }
+                })
+                callback(final);
+            });
+
+
+        });
+
+
+
+    },
     getPropertiesForReminders: function(callback) {
         var query = PropertySchema.find(
             {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
