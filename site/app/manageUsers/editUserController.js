@@ -77,7 +77,7 @@ define([
                     $scope.properties = [];
                     $scope.loading = false;
                 } else {
-                    $propertyService.search({limit: 1000, permission: 'PropertyManage', select:"_id name orgid", orgid: $scope.selectedRole.orgid, active: true}).then(function (response) {
+                    $propertyService.search({limit: 10000, permission: 'PropertyManage', select:"_id name orgid", orgid: $scope.selectedRole.orgid, active: true}).then(function (response) {
                         $scope.properties = [];
 
                         response.data.properties.forEach(function(x) {

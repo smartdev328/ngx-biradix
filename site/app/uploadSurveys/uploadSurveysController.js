@@ -21,7 +21,7 @@ define([
         $scope.reload = function () {
             $scope.localLoading = false;
 
-            $propertyService.search({limit: 1000, permission: 'PropertyManage', active: true, select : "_id name"}).then(function (response) {
+            $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name"}).then(function (response) {
                 $scope.myProperties = response.data.properties;
 
                 ////For testing

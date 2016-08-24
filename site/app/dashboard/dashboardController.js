@@ -174,7 +174,7 @@ define([
                 }
 
                 $propertyService.search({
-                    limit: 1000,
+                    limit: 10000,
                     permission: 'PropertyManage',
                     active: true
                 }).then(function (response) {
