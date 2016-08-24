@@ -1,0 +1,69 @@
+Hello There!,<br/>
+<br/>
+We know how busy work can be onsite and things slip by. We wanted to send a reminder to let you know that you have subject properties that not been updated in 9 or more days.<Br>
+<Br>
+We appreciate you taking the time to do market survey updates as it keeps our shared ecosystem running smoothly!<Br>
+<br/>
+<table border="0" style="font-size:9pt;width:100%" cellpadding="5" cellspacing="0">
+    <tr style="background-color: #f9f9f9">
+        <th style="border-bottom:2px solid #ddd;">
+           Property
+        </th>
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            Occupancy
+        </th>
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            Units
+        </th>
+        <th style="border-bottom:2px solid #ddd;;text-align:right">
+            Last Updated
+        </th>
+        <th>
+            &nbsp;
+        </th>
+    </tr>
+    {% for block in data.properties %}
+    {% for row in block.comps %}
+    <tr {% if forloop.first %}
+        style="font-weight:bold;color: #4460a9"
+        {% elsif forloop.last %}
+        style="font-weight:bold"
+        {% endif %}>
+        <Td style="{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {% if forloop.first %}
+            <A href="{{dashboardBase}}{{row._id}}" style="color: #4460a9;text-decoration:none">{{row.name}}</A>
+            {%else%}
+            {{row.name}}
+            {% endif %}
+        </Td>
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {{row.occupancy}}%
+        </Td>
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {{row.totalUnits | formatNumber : 0}}
+        </Td>
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
+        {% if row.tier == 'danger'%}
+        color:red;
+        {% elsif row.tier == 'warning' %}
+        color:orange;
+        {% endif %}
+        ">
+            {{row.date}}
+        </Td>
+        <td>
+            &nbsp;
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="10">
+            &nbsp;
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+You are currently set to receive this update weekly. If you wish to modify this setting, <A href="{{unsub}}">click here</A>.<br>
+<br>
+If you have any other questions, please contact support@biradix.com.

@@ -21,7 +21,7 @@ module.exports = {
         var query = PropertySchema.find(
             {_id: {$in : compids}}
         );
-        query.select("name orgid survey.id survey.occupancy date")
+        query.select("name orgid survey.id survey.occupancy date totalUnits")
         query.exec(function(err, properties) {
             var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
 
@@ -35,20 +35,21 @@ module.exports = {
                 properties.forEach(function(p) {
                     p.comps = _.map(p.comps,"id")
                     if (!p.survey) {
-                        final.push({_id: p._id, name: p.name, date: p.date});
+                        final.push({_id: p._id, name: p.name, date: p.date, totalUnits: p.totalUnits});
                     } else {
                         var survey = _.find(surveys, function (x) {
                             return x._id.toString() == p.survey.id.toString();
                         });
 
                         if (!survey) {
-                            final.push({_id: p._id, name: p.name, date: p.date});
+                            final.push({_id: p._id, name: p.name, date: p.date, totalUnits: p.totalUnits});
                         } else {
                             final.push({
                                 _id: p._id,
                                 name: p.name,
                                 date: survey.date,
                                 occupancy: p.survey.occupancy,
+                                totalUnits: p.totalUnits
                             });
                         }
 
@@ -67,7 +68,7 @@ module.exports = {
         var query = PropertySchema.find(
             {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
         );
-        query.select("name orgid survey.id survey.occupancy date comps.id")
+        query.select("name orgid survey.id survey.occupancy date comps.id totalUnits")
         query.exec(function(err, properties) {
             var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
 
@@ -81,14 +82,14 @@ module.exports = {
                 properties.forEach(function(p) {
                     p.comps = _.map(p.comps,"id")
                     if (!p.survey) {
-                        final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps});
+                        final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps, totalUnits: p.totalUnits});
                     } else {
                         var survey = _.find(surveys, function (x) {
                             return x._id.toString() == p.survey.id.toString();
                         });
 
                         if (!survey) {
-                            final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps});
+                            final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps, totalUnits: p.totalUnits});
                         } else {
                             var date1 = new Date(survey.date);
                             var date2 = new Date();
@@ -100,7 +101,8 @@ module.exports = {
                                     name: p.name,
                                     date: survey.date,
                                     occupancy: p.survey.occupancy,
-                                    compids: p.comps
+                                    compids: p.comps,
+                                    totalUnits: p.totalUnits
                                 });
                             }
                         }

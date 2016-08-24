@@ -76,8 +76,22 @@ module.exports = {
 
                         });
 
-                        //Todo: put together email for each user
-                        callback(final)
+                        var lq = require("../../utilities/services/liquidService");
+                        var fs = require('fs')
+                        fs.readFile(process.cwd() +'/../api/business/templates/reminder.html', 'utf8', function (err,data) {
+                            lq.parse(data, {data: final[0]},{},function(result) {
+                                console.log(result);
+                            })
+                        });
+
+                        //TODO: Fix Date
+                        //TODO: Link to dashboard
+                        //TODO: Make survey pop on dashboard from parameter
+                        //TODO: Send email to alex@viderman.com
+                        //TODO: run all in parallel
+                        //TODO: change to eugene and deploy to prod
+
+                        callback(final[0])
                     });
 
                 });
