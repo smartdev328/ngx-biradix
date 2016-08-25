@@ -128,6 +128,7 @@
                         </td>
                     </tr>
                 </Table>
+                    <div ng-if="$root.me.permissions.indexOf('Admin') > -1">
                     <hr>
                     <B>Send me property update reminders:</B> <toggle-switch checked="me.settings.reminders.on"></toggle-switch>
                     <i class="fa fa-info-circle"
@@ -136,7 +137,9 @@
                        popover-placement="top"
                        uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
                     ></i><Br>
-                    <br>
+                        <br>
+                    </div>
+
 
 
                 <center>

@@ -79,6 +79,19 @@ module.exports = {
                         //for each unique users, get all the properties they are assigned to
                         finaluserids.forEach(function(userid) {
                             var propertyusers = _.filter(properties, function(p) { return _.find(p.users, function(pu) { return pu._id.toString() == userid})});
+
+                            //Sort by subject first, then alpahabetically
+                            propertyusers.forEach(function(p) {
+                                p.comps = _.sortBy(p.comps, function (n) {
+
+                                    if (n._id.toString() == p._id.toString()) {
+                                        return "-1";
+                                    }
+                                    return n.name;
+                                })
+                            })
+
+
                             final.push({user: _.find(users, function(x) {return x._id.toString() == userid.toString()}), properties: propertyusers});
 
                         });
@@ -99,9 +112,7 @@ module.exports = {
                             })
 
                             //TODO: Make survey pop on dashboard from parameter
-                            //TODO: run all in parallel
-                            //TODO: add to admin menu to pick # to send and email address / hide options
-                            //TODO: Make sure Subject is on top
+                            //TODO: Make sure event only runs once a week
 
                             callback(final)
                         });
