@@ -11,7 +11,7 @@ routes.get('/reminders_test', function (req, res) {
 
         async.eachLimit(properties,2, function(property, callbackp) {
                 var email = {
-                    to: '<alex@biradix.com>',
+                    to: '<eugene@biradix.com>',
                     logo: property.logo,
                     subject: "Property update reminder",
                     template: 'reminder.html',
