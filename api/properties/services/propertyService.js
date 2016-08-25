@@ -65,6 +65,7 @@ module.exports = {
 
     },
     getPropertiesForReminders: function(callback) {
+        console.log( moment().subtract(9,"day").format());
         var query = PropertySchema.find(
             {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
         );
