@@ -11,7 +11,7 @@ routes.get('/reminders_test', function (req, res) {
 
         async.eachLimit(properties,2, function(property, callbackp) {
                 var email = {
-                    to: '<eugene@biradix.com>',
+                    to: '<alex@biradix.com>,<eugene@biradix.com>',
                     logo: property.logo,
                     subject: "Property update reminder",
                     template: 'reminder.html',
@@ -23,19 +23,19 @@ routes.get('/reminders_test', function (req, res) {
 
                 }
 
-                // var BizEmailService = require('../../business/services/emailService')
-                //
-                // BizEmailService.send(email, function (emailError, status) {
-                //
-                //     if (emailError) {
-                //         throw Error(emailError)
-                //     }
+                var BizEmailService = require('../../business/services/emailService')
+
+                BizEmailService.send(email, function (emailError, status) {
+
+                    if (emailError) {
+                        throw Error(emailError)
+                    }
                     
                     setTimeout(callbackp,1000);
 
-                //})
+                })
         }, function(err) {
-            
+
         }
         );
 

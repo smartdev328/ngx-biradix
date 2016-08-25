@@ -94,9 +94,8 @@ module.exports = {
                             var date1 = new Date(survey.date);
                             var date2 = new Date();
                             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                            var diffDays = timeDiff / (1000 * 3600 * 24);
 
-                            console.log(date2,date1,diffDays);
                             if (diffDays >= 9) {
                                 final.push({
                                     _id: p._id,
