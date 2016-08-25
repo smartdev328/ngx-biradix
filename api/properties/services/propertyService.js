@@ -65,7 +65,6 @@ module.exports = {
 
     },
     getPropertiesForReminders: function(callback) {
-        console.log( moment().subtract(9,"day").format());
         var query = PropertySchema.find(
             {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
         );
@@ -96,6 +95,8 @@ module.exports = {
                             var date2 = new Date();
                             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                            console.log(date2,date1,diffDays);
                             if (diffDays >= 9) {
                                 final.push({
                                     _id: p._id,
