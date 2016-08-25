@@ -1,6 +1,7 @@
 'use strict';
 var LiquidService = require('../../utilities/services/liquidService')
 var EmailService = require('../../utilities/services/emailService')
+var settings = require('../../../config/settings')
 var fs = require('fs')
 
 var filters = {
@@ -23,7 +24,7 @@ module.exports = {
         };
 
         getData(email, function(html) {
-            fs.readFile(process.cwd() +'/api/business/templates/email.html', 'utf8', function (err,data) {
+            fs.readFile(settings.PROJECT_DIR +'/../api/business/templates/email.html', 'utf8', function (err,data) {
                 if (err) {
                     throw (err)
                 }
@@ -41,7 +42,7 @@ module.exports = {
 
 function getData(email, callback) {
     if (email.template) {
-        fs.readFile(process.cwd() +'/api/business/templates/' + email.template, 'utf8', function (err,data) {
+        fs.readFile(settings.PROJECT_DIR +'/../api/business/templates/' + email.template, 'utf8', function (err,data) {
             if (err) {
                 throw (err)
             }

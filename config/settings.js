@@ -30,7 +30,8 @@ module.exports = {
     PDF_HIT_COUNT: 0,
     PDF_HIT_RESTART: process.env.PDF_HIT_RESTART || 2,
     PDF_WORKERS: process.env.PDF_WORKERS || 3,
-    SEED_DEMO : process.env.SEED_DEMO == "1" || false
+    SEED_DEMO : process.env.SEED_DEMO == "1" || false,
+    PROJECT_DIR : __dirname
     //SKIPRABBIT : true
 
 }

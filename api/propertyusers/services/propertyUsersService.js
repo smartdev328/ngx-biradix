@@ -5,6 +5,8 @@ var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../../properties/services/propertyService')
 var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
+var moment = require("moment");
+var OrgService = require('../../organizations/services/organizationService')
 
 module.exports = {
     getPropertiesForReminders: function(operator, callback) {
@@ -25,7 +27,12 @@ module.exports = {
                     userids = userids.concat(p.userids);
                 })
 
-                UserService.search(operator,{select:"_id first last email bounceReason settings.reminders",ids:userids}, function(err, users) {
+                UserService.search(operator,{select:"_id first last email bounceReason settings.reminders settings.tz",ids:userids}, function(err, users) {
+
+                    users.forEach(function(u) {
+                        u.settings = u.settings || {};
+                        u.settings.tz = u.settings.tz || 'America/Los_Angeles';
+                    })
                     properties.forEach(function(p) {
                         p.users = [];
                         //join full user on ids
@@ -76,22 +83,30 @@ module.exports = {
 
                         });
 
-                        var lq = require("../../utilities/services/liquidService");
-                        var fs = require('fs')
-                        fs.readFile(process.cwd() +'/../api/business/templates/reminder.html', 'utf8', function (err,data) {
-                            lq.parse(data, {data: final[0]},{},function(result) {
-                                console.log(result);
+                        OrgService.read(function (err, orgs) {
+                            final.forEach(function(f) {
+                                f.user.org = _.find(orgs,function(x) {return x._id.toString() == f.user.orgid.toString()});
+                                f.logo ='https://' + f.user.org.subdomain + ".biradix.com/images/organizations/" + f.user.org.logoBig;
+                                f.unsub ='https://' + f.user.org.subdomain + ".biradix.com/u";
+                                f.dashboardBase ='https://' + f.user.org.subdomain + ".biradix.com/d/";
+
+                                f.properties.forEach(function(p) {
+                                    p.comps.forEach(function(c) {
+                                        c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
+                                    })
+
+                                });
                             })
+
+                            //TODO: Make survey pop on dashboard from parameter
+                            //TODO: run all in parallel
+                            //TODO: add to admin menu to pick # to send and email address / hide options
+                            //TODO: Make sure Subject is on top
+
+                            callback(final)
                         });
 
-                        //TODO: Fix Date
-                        //TODO: Link to dashboard
-                        //TODO: Make survey pop on dashboard from parameter
-                        //TODO: Send email to alex@viderman.com
-                        //TODO: run all in parallel
-                        //TODO: change to eugene and deploy to prod
 
-                        callback(final[0])
                     });
 
                 });

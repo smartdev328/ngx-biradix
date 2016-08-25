@@ -8,6 +8,32 @@ var _ = require("lodash");
 
 routes.get('/reminders_test', function (req, res) {
     PropertyUsersService.getPropertiesForReminders(req.user,function(properties) {
+
+        for(var i=0; i < 2; i++) {
+            var email = {
+                to: "eugene@biradix.com,alex@biradix.com",
+                logo: properties[i].logo,
+                subject: "Property update reminder",
+                template: 'reminder.html',
+                templateData: {
+                    data: properties[i],
+                    unsub: properties[i].unsub,
+                    dashboardBase: properties[i].dashboardBase
+                }
+
+            }
+
+            var BizEmailService = require('../../business/services/emailService')
+
+            BizEmailService.send(email, function (emailError, status) {
+
+                if (emailError) {
+                    throw Error(emailError)
+                }
+
+            })
+        }
+
         res.status(200).json(properties);
     })
 
