@@ -23,6 +23,8 @@ routes.get('/reminders_test', function (req, res) {
 
                 }
 
+            // setTimeout(callbackp,1000);
+
                 var BizEmailService = require('../../business/services/emailService')
 
                 BizEmailService.send(email, function (emailError, status) {
@@ -30,7 +32,7 @@ routes.get('/reminders_test', function (req, res) {
                     if (emailError) {
                         throw Error(emailError)
                     }
-                    
+
                     setTimeout(callbackp,1000);
 
                 })
@@ -38,7 +40,6 @@ routes.get('/reminders_test', function (req, res) {
     
             }
         );
-
 
         res.status(200).json(properties);
     })

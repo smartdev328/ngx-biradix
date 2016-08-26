@@ -27,7 +27,7 @@ module.exports = {
                     userids = userids.concat(p.userids);
                 })
 
-                UserService.search(operator,{select:"_id first last email bounceReason settings.reminders settings.tz",ids:userids}, function(err, users) {
+                UserService.search(operator,{select:"_id first last email bounceReason active settings.reminders settings.tz",ids:userids}, function(err, users) {
 
                     users.forEach(function(u) {
                         u.settings = u.settings || {};
@@ -41,7 +41,7 @@ module.exports = {
                         })
 
                         //remove bounced or reminders off users
-                        _.remove(p.users, function(x) {return x.bounceReason || (x.settings && x.settings.reminders && x.settings.reminders.on === false)});
+                        _.remove(p.users, function(x) {return x.active === false || x.bounceReason || (x.settings && x.settings.reminders && x.settings.reminders.on === false)});
                         delete p.userids;
                     })
 
@@ -96,6 +96,7 @@ module.exports = {
 
                         });
 
+                        //join full company to get logo and subdomain
                         OrgService.read(function (err, orgs) {
                             final.forEach(function(f) {
                                 f.user.org = _.find(orgs,function(x) {return x._id.toString() == f.user.orgid.toString()});
@@ -103,12 +104,12 @@ module.exports = {
                                 f.unsub ='https://' + f.user.org.subdomain + ".biradix.com/u";
                                 f.dashboardBase ='https://' + f.user.org.subdomain + ".biradix.com/d/";
 
+                                //Fix last survey date to users timezone
                                 f.properties.forEach(function(p) {
                                     p.comps.forEach(function(c) {
                                         if (!c.date) {
                                             c.dateUser = "-";
                                         } else {
-                                            // console.log(f.user, c.date)
                                             c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
                                         }
                                     })
