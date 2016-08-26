@@ -105,13 +105,16 @@ module.exports = {
 
                                 f.properties.forEach(function(p) {
                                     p.comps.forEach(function(c) {
-                                        c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
+                                        if (!c.date) {
+                                            c.dateUser = "-";
+                                        } else {
+                                            c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
+                                        }
                                     })
 
                                 });
                             })
 
-                            //TODO: Make survey pop on dashboard from parameter
                             //TODO: Make sure event only runs once a week
 
                             callback(final)
