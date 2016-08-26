@@ -29,7 +29,7 @@ We appreciate you taking the time to do market survey updates as it keeps our sh
         {% endif %}>
         <Td style="border-bottom:1px solid #ddd;">
             {% if forloop.first %}
-            <A href="{{dashboardBase}}{{row._id}}" style="color: #4460a9;text-decoration:none">{{row.name}}</A>
+            <A href="{{dashboardBase}}{{row._id}}?s=1" style="color: #4460a9;text-decoration:none">{{row.name}}</A>
             {%else%}
             {{row.name}}
             {% endif %}
@@ -45,7 +45,7 @@ We appreciate you taking the time to do market survey updates as it keeps our sh
         </Td>
         <Td style="text-align: right;border-bottom:1px solid #ddd;">
             {% if forloop.first %}
-            <A href="{{dashboardBase}}{{row._id}}" style="color: #4460a9;text-decoration:underline;font-style: italic">Update Now</A>
+            <A href="{{dashboardBase}}{{row._id}}?s=1" style="color: #4460a9;text-decoration:underline;font-style: italic">Update Now</A>
             {% else %}
             &nbsp;
             {% endif %}

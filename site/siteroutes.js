@@ -10,7 +10,7 @@ module.exports = (function() {
     var ui = express.Router();
 
     ui.get('/d/:id', function(req,res) {
-        return res.redirect('/#/login?r=%2Fdashboard%3Fid=' + req.params.id);
+        return res.redirect('/#/login?r=%2Fdashboard%3Fid=' + req.params.id + '%26s='+req.query.s);
     })
 
     ui.get('/u', function(req,res) {

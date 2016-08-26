@@ -290,6 +290,12 @@ define([
 
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
+
+                    if($stateParams.s == "1" && !$scope.surveyPopped) {
+                        $rootScope.marketSurvey(defaultPropertyId);
+                        $scope.surveyPopped =  true;
+                    }
+
                 }, function(error) {
                     if (error.status == 401) {
                         $rootScope.logoff();
