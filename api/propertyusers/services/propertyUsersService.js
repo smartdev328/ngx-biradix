@@ -5,7 +5,7 @@ var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../../properties/services/propertyService')
 var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
-var moment = require("moment");
+var moment = require("moment-timezone");
 var OrgService = require('../../organizations/services/organizationService')
 
 module.exports = {
@@ -108,7 +108,7 @@ module.exports = {
                                         if (!c.date) {
                                             c.dateUser = "-";
                                         } else {
-                                            console.log(f.user, c.date)
+                                            // console.log(f.user, c.date)
                                             c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
                                         }
                                     })
