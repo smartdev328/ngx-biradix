@@ -108,6 +108,7 @@ module.exports = {
                                         if (!c.date) {
                                             c.dateUser = "-";
                                         } else {
+                                            console.log(f.user, c.date)
                                             c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
                                         }
                                     })
