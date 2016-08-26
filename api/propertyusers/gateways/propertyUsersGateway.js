@@ -25,15 +25,15 @@ routes.get('/reminders_test', function (req, res) {
 
                 var BizEmailService = require('../../business/services/emailService')
 
-                // BizEmailService.send(email, function (emailError, status) {
-                //
-                //     if (emailError) {
-                //         throw Error(emailError)
-                //     }
+                BizEmailService.send(email, function (emailError, status) {
+
+                    if (emailError) {
+                        throw Error(emailError)
+                    }
                     
                     setTimeout(callbackp,1000);
 
-                // })
+                })
             }, function(err) {
     
             }
