@@ -103,7 +103,7 @@
         Showing {{pageStart()}} to {{pageEnd()}} of {{pager.count}}
     </div>
     <div class="pull-right grid-pager" ng-if="activity && activity.length > 0">
-        <uib-pagination ng-change="pagerChanged()" ng-show="pager.count > pager.itemsPerPage" max-size="5" total-items="pager.count" ng-model="pager.currentPage" class="pagination-sm" items-per-page="pager.itemsPerPage" style="margin-top:0px"></uib-pagination>
+        <ul uib-pagination ng-change="pagerChanged()" ng-show="pager.count > pager.itemsPerPage" max-size="5" total-items="pager.count" ng-model="pager.currentPage" class="pagination-sm" items-per-page="pager.itemsPerPage" style="margin-top:0px"></ul>
     </div>
     <br clear="all" />
     </div>
