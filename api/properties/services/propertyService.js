@@ -21,7 +21,7 @@ module.exports = {
         var query = PropertySchema.find(
             {_id: {$in : compids}}
         );
-        query.select("name orgid survey.id survey.occupancy date totalUnits")
+        query.select("name orgid survey.id survey.occupancy survey.ner date totalUnits")
         query.exec(function(err, properties) {
             var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
 
@@ -49,6 +49,7 @@ module.exports = {
                                 name: p.name,
                                 date: survey.date,
                                 occupancy: p.survey.occupancy,
+                                ner : p.survey.ner,
                                 totalUnits: p.totalUnits
                             });
                         }
@@ -68,7 +69,7 @@ module.exports = {
         var query = PropertySchema.find(
             {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
         );
-        query.select("name orgid survey.id survey.occupancy date comps.id totalUnits")
+        query.select("name orgid survey.id survey.occupancy survey.ner date comps.id totalUnits")
         query.exec(function(err, properties) {
             var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
 
@@ -102,6 +103,7 @@ module.exports = {
                                     name: p.name,
                                     date: survey.date,
                                     occupancy: p.survey.occupancy,
+                                    ner: p.survey.ner,
                                     compids: p.comps,
                                     totalUnits: p.totalUnits
                                 });

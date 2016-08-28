@@ -65,6 +65,9 @@ var audits  = [
     {key: 'amenity_undeleted', value: 'Amenity Undeleted', group: 'Amenity', admin: true, undo: true},
     {key: 'amenity_mapped', value: 'Amenity Mapped as Alias', group: 'Amenity', admin: true, undo: true},
     {key: 'amenity_unmapped', value: 'Amenity Unmapped as Alias', group: 'Amenity', admin: true, undo: true},
+
+    {key: 'tracking_reminder_clicked', value: 'Reminder Email Clicked', group: 'Tracking', admin: true},
+    {key: 'tracking_reminder_survey', value: 'Reminder Email Survey', group: 'Tracking', admin: true},
 ];
 
 module.exports = {

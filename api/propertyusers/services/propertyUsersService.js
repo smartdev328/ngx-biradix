@@ -111,6 +111,13 @@ module.exports = {
                                             c.dateUser = "-";
                                         } else {
                                             c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
+
+                                        }
+
+                                        if (!c.ner) {
+                                            c.nerUser = "-";
+                                        } else {
+                                            c.nerUser = "$" + c.ner.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                         }
                                     })
 

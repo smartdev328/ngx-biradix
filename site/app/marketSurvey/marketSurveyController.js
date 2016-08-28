@@ -5,7 +5,7 @@ define([
     '../../components/dialog/module.js'
 ], function (app) {
      app.controller
-        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService) {
+        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
@@ -654,6 +654,10 @@ define([
                     }
                     else {
                         toastr.success('Market Survey Created Successfully.');
+                    }
+
+                    if (options && options.trackReminders === true) {
+                        $auditService.create({type: 'tracking_reminder_survey', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name});
                     }
                     $uibModalInstance.close();
                 }
