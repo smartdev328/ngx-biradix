@@ -35,14 +35,14 @@ module.exports = {
                 properties.forEach(function(p) {
                     p.comps = _.map(p.comps,"id")
                     if (!p.survey) {
-                        final.push({_id: p._id, name: p.name, date: p.date, totalUnits: p.totalUnits});
+                        final.push({_id: p._id, name: p.name, totalUnits: p.totalUnits});
                     } else {
                         var survey = _.find(surveys, function (x) {
                             return x._id.toString() == p.survey.id.toString();
                         });
 
                         if (!survey) {
-                            final.push({_id: p._id, name: p.name, date: p.date, totalUnits: p.totalUnits});
+                            final.push({_id: p._id, name: p.name, totalUnits: p.totalUnits});
                         } else {
                             final.push({
                                 _id: p._id,
@@ -83,14 +83,14 @@ module.exports = {
                 properties.forEach(function(p) {
                     p.comps = _.map(p.comps,"id")
                     if (!p.survey) {
-                        final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps, totalUnits: p.totalUnits});
+                        final.push({_id: p._id, name: p.name, compids: p.comps, totalUnits: p.totalUnits});
                     } else {
                         var survey = _.find(surveys, function (x) {
                             return x._id.toString() == p.survey.id.toString();
                         });
 
                         if (!survey) {
-                            final.push({_id: p._id, name: p.name, date: p.date, compids: p.comps, totalUnits: p.totalUnits});
+                            final.push({_id: p._id, name: p.name, compids: p.comps, totalUnits: p.totalUnits});
                         } else {
                             var date1 = new Date(survey.date);
                             var date2 = new Date();

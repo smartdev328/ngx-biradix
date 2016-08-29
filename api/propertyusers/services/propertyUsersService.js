@@ -108,17 +108,24 @@ module.exports = {
                                 f.properties.forEach(function(p) {
                                     p.comps.forEach(function(c) {
                                         if (!c.date) {
-                                            c.dateUser = "-";
+                                            c.dateUser = "Never";
                                         } else {
                                             c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
 
                                         }
 
                                         if (!c.ner) {
-                                            c.nerUser = "-";
+                                            c.nerUser = "";
                                         } else {
                                             c.nerUser = "$" + c.ner.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                         }
+
+                                        if (!c.occupancy) {
+                                            c.occupancyUser = "";
+                                        } else {
+                                            c.occupancyUser = c.occupancy + "%";
+                                        }
+
                                     })
 
                                 });
