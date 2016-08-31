@@ -13,7 +13,7 @@ routes.get('/reminders', function (req, res) {
     var key = "reminders_Sent";
     var dayofweek = moment().tz('America/Los_Angeles').format("dd");
 
-    if (dayofweek != 'Tu') {
+    if (dayofweek != 'Th') {
         return res.status(200).json(dayofweek +': Can only run this on Thursday');
     }
 
@@ -33,7 +33,7 @@ routes.get('/reminders', function (req, res) {
 
                 async.eachLimit(properties,2, function(property, callbackp) {
                         var email = {
-                            to: '<alex@biradix.com>',
+                            to: property.user.email,
                             bcc: '<cue@biradix.com>',
                             logo: property.logo,
                             subject: "Property update reminder",
