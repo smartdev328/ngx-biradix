@@ -82,7 +82,11 @@ define([
                 })
 
                 response.data.users.forEach(function(a) {
-                    $scope.userItems.push({id: a._id, name: a.name, selected: false})
+                    var u = {id: a._id, name: a.name, selected: false};
+                    if ($rootScope.me.permissions.indexOf('Admin') > -1) {
+                        u.group = a.company;
+                    }
+                    $scope.userItems.push(u)
                 })
 
                 response.data.properties.forEach(function(a) {
