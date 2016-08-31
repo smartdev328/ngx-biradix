@@ -11,7 +11,7 @@ var redisService = require('../../utilities/services/redisService')
 routes.get('/reminders', function (req, res) {
 
     var key = "reminders_Sent";
-    var dayofweek = moment('America/Los_Angeles').format("dd");
+    var dayofweek = moment().tz('America/Los_Angeles').format("dd");
 
     if (dayofweek != 'Tu') {
         return res.status(200).json(dayofweek +': Can only run this on Thursday');
