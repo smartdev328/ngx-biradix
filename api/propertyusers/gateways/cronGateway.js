@@ -5,13 +5,13 @@ var routes = express.Router();
 var async = require("async");
 var _ = require("lodash");
 var userService = require("../../users/services/userService");
-var moment = require("moment");
+var moment = require("moment-timezone");
 var redisService = require('../../utilities/services/redisService')
 
 routes.get('/reminders', function (req, res) {
 
     var key = "reminders_Sent";
-    var dayofweek = moment().format("dd");
+    var dayofweek = moment('America/Los_Angeles').format("dd");
 
     if (dayofweek != 'Tu') {
         return res.status(200).json(dayofweek +': Can only run this on Thursday');
