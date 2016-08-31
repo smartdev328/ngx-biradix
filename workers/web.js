@@ -63,6 +63,7 @@ d.run(function() {
             app.use('/progress', require('../api/progress/gateways/progressGateway'));
             app.use('/status', require('../api/status/gateways/statusGateway'));
             app.use('/properties/cron', require('../api/properties/gateways/cronGateway'));
+            app.use('/propertyusers/cron', require('../api/propertyusers/gateways/cronGateway'));
 
             app.use('/url', require('../api/urlshortener/gateways/urlGateway'));
 

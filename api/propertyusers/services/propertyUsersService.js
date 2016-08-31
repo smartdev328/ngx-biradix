@@ -114,13 +114,13 @@ module.exports = {
 
                                         }
 
-                                        if (!c.ner) {
+                                        if (typeof c.ner == 'undefined') {
                                             c.nerUser = "";
                                         } else {
                                             c.nerUser = "$" + c.ner.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                         }
 
-                                        if (!c.occupancy) {
+                                        if (typeof c.occupancy == 'undefined') {
                                             c.occupancyUser = "";
                                         } else {
                                             c.occupancyUser = c.occupancy + "%";
@@ -130,8 +130,6 @@ module.exports = {
 
                                 });
                             })
-
-                            //TODO: Make sure event only runs once a week
 
                             callback(final)
                         });

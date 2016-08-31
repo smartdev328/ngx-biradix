@@ -20,6 +20,7 @@ module.exports = {
         var newemail = {
             from: email.from || 'BIRadix Team <support@biradix.com>',
             to: email.to,
+            bcc: email.bcc,
             subject: email.subject
         };
 
