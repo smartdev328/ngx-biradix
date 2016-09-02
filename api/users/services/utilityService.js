@@ -1,6 +1,7 @@
 'use strict';
 
 var crypto = require('crypto')
+var url = require('url');
 
 module.exports = {
     sRegexEmail : /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -31,5 +32,29 @@ module.exports = {
     hashPassword: function (password, salt) {
         var bSalt = new Buffer(salt, 'base64');
         return crypto.pbkdf2Sync(password, bSalt, 10000, 64).toString('base64');
+    },
+    
+    getOrgByUrl : function (orgs, base) {
+        var subdomain = url.parse(base).hostname.toLowerCase();
+
+        var org;
+
+        if (orgs.length == 1) {
+            org = orgs[0];
+        } else {
+            orgs.forEach(function(x) {
+                if (x.subdomain.toLowerCase() == subdomain) {
+                    org = x;
+                }
+            })
+
+            if (!org) {
+                org = orgs[0];
+            }
+
+        }
+
+        return org;
+
     }
 }

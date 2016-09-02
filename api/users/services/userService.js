@@ -245,7 +245,8 @@ module.exports = {
                 var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresIn: 30 * 60 });
 
                 getFullUser(usr, function(resp) {
-                    var logo = base + "/images/organizations/" + resp.user.org.logoBig;
+                    var org = UtilityService.getOrgByUrl(resp.user.orgs, base);
+                    var logo = base + "/images/organizations/" + org.logoBig;
                     var email = {
                         to: usr.email,
                         subject: 'Password recovery',
@@ -633,8 +634,8 @@ function getFullUser(usr, callback) {
                 usrobj.roles = _.pluck(final,'name');
 
                 if (final.length > 0) {
-                    usrobj.org = _.find(all.orgs, function(x) {
-                        return final[0].orgid.toString() == x._id.toString();
+                    usrobj.orgs = _.filter(all.orgs, function(x) {
+                        return _.find(final, function(y) {return y.orgid.toString() == x._id.toString()});
                     })
                 }
 

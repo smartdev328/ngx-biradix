@@ -35,10 +35,13 @@ Routes.get('/lookups', function (req, res) {
     async.parallel({
         orgs: function (callbackp) {
             AccessService.canAccess(req.user,"Org/Assign", function(canAccess) {
+
+                //If you dont have access to assign orgs, only return orgs you have access to
                 if (!canAccess) {
-                    callbackp(null, [req.user.org])
+                    callbackp(null, req.user.orgs)
                 }
                 else {
+                    //Return all Orgs
                     OrgService.read(function (err, orgs) {
                         callbackp(null, orgs)
                     });

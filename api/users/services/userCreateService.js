@@ -177,6 +177,8 @@ module.exports = {
     insert : function(operator,context, user, base, callback)  {
         var modelErrors = [];
 
+        modelErrors.push({param: 'password', msg : 'Test'});;
+
         initUser(user)
 
         validateContact(user, modelErrors);
@@ -256,9 +258,11 @@ module.exports = {
 
                         var logo = base + "/images/organizations/" + userRole.org.logoBig;
 
+                        var org = UtilityService.getOrgByUrl(operator.orgs, base);
+
                         var email = {
                             to: usr.email,
-                            subject: operator.org.name + " has created a new account for you at BI:radix",
+                            subject: org.name + " has created a new account for you at BI:radix",
                             logo : logo,
                             template : 'create.html',
                             templateData : {first: usr.first, email: usr.email, link: base, password: user.password }

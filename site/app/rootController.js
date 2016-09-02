@@ -138,12 +138,29 @@ define([
         }
 
         $rootScope.updateLogos = function() {
+            var org;
+
+            if ($rootScope.me.orgs.length == 1) {
+                org = $rootScope.me.orgs[0];
+            } else {
+                $rootScope.me.orgs.forEach(function(x) {
+                    if (x.subdomain.toLowerCase() == window.location.hostname.toLowerCase()) {
+                        org = x;
+                    }
+                })
+
+                if (!org) {
+                    org = $rootScope.me.orgs[0];
+                }
+
+            }
+
             $('.logoBig').each(function(l) {
-                this.src = "/images/organizations/" + $rootScope.me.org.logoBig
+                this.src = "/images/organizations/" + org.logoBig
             })
 
             $('.logoSmall').each(function(l) {
-                this.src = "/images/organizations/" + $rootScope.me.org.logoSmall
+                this.src = "/images/organizations/" + org.logoSmall
             })
         }
 
