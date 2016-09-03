@@ -84,9 +84,15 @@ define([
                 response.data.users.forEach(function(a) {
                     var u = {id: a._id, name: a.name, selected: false};
                     if ($rootScope.me.permissions.indexOf('Admin') > -1) {
-                        u.group = a.company;
+                        a.roles.forEach(function(r) {
+                            var u2 = _.cloneDeep(u);
+                            u2.group = r.org.name;
+                            $scope.userItems.push(u2);
+                        })
+
+                    } else {
+                        $scope.userItems.push(u)
                     }
-                    $scope.userItems.push(u)
                 })
 
                 response.data.properties.forEach(function(a) {

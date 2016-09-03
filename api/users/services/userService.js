@@ -117,8 +117,6 @@ module.exports = {
                             x.name = x.first + ' ' + x.last;
                             delete x.first;
                             delete x.last;
-                            x.role = 'N/A';
-                            x.company = 'N/A';
                         }
 
                         //Get ALl memberships for this user.
@@ -132,43 +130,32 @@ module.exports = {
                         if (membership && membership.length > 0) {
 
                             //Get the first role that matches any memberships.
-                            var role = _.find(all.roles, function(r) {
+                            var roles = _.filter(all.roles, function(r) {
                                 return _.find(membership, function(m) {return r._id.toString() == m.roleid.toString()});
 
                             })
-                            //console.log("Membership",membership,"Role",role)
 
-                            if (role) {
-                                if (!criteria.custom) {
-                                    x.role = role.name;
-                                }
-                                else {
-                                    x.roleid = role._id;
-                                    x.roleType = role.tags[0];
-                                }
-
-                                //remove role types after we know what actual role it is
-                                if (criteria.roleTypes && criteria.roleTypes.indexOf(role.tags[0]) == -1) {
+                            if (roles && roles.length  > 0) {
+                                //filter users by role types from criteria
+                                if (criteria.roleTypes && !_.find(roles, function(x) {return criteria.roleTypes.indexOf(x.tags[0]) > -1})) {
                                     x.deleted = true;
                                 }
 
-                                var company = _.find(all.orgs, function(o) {return o._id.toString() == role.orgid.toString() })
-                                if (company) {
-                                    if (!criteria.custom) {
-                                        x.company = company.name;
-                                    } else {
-                                        x.orgid = company._id;
-                                    }
-
-                                    //remove role orgids if we are asking for an orgid and it doesnt match
-                                    if (criteria.orgid && criteria.orgid.toString() != company._id.toString()) {
-                                        x.deleted = true;
-                                    }
+                                //filter users by role orgid from criteria
+                                if (criteria.orgid && !_.find(roles, function(x) {return criteria.orgid.toString() == x.orgid.toString()})) {
+                                    x.deleted = true;
                                 }
 
+                                roles.forEach(function(r) {
+                                    r.org = _.find(all.orgs, function(o) {return o._id.toString() == r.orgid.toString() })
+                                })
 
                             }
+
+
                         }
+
+                        x.roles = roles;
                     })
                 }
 

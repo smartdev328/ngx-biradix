@@ -69,7 +69,7 @@
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name" ng-click="columnsChanged=true"> Name</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.email" ng-checked="show.email" ng-click="columnsChanged=true"> Email</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.role" ng-checked="show.role" ng-click="columnsChanged=true"> Role</label></div></li>
-            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+            <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools" ng-click="columnsChanged=true"> Actions</label></div></li>
         </ul>
