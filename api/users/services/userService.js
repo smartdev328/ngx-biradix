@@ -156,6 +156,13 @@ module.exports = {
                         }
 
                         x.roles = roles;
+
+                        //For NOn-admins only return roles in their org
+                        if (!Operator.memberships.isadmin) {
+                            var allowedOrgs = _.map(Operator.orgs, function(o) {return o._id.toString()});
+                            _.remove(x.roles, function(z) {
+                                return allowedOrgs.indexOf(z.orgid.toString()) == -1})
+                        }
                     })
                 }
 

@@ -32,19 +32,24 @@
                     </div>
                 </div>
             </div>
+            <div ng-repeat="role in user.roles" ng-if="$index == 0 || user.roles[0].selectedRole.tags[0]== 'PO'">
             <h3 style="margin-top:10px">Access</h3>
 
             <div class="row">
                 <div class="col-xs-12">
-                    <select class="form-control input-sm" ng-change="getProps()" ng-model="selectedRole" ng-options="(item.org ? (item.org + ': ' +item.name) : item.name) for item in roles"></select>
+                    <select class="form-control input-sm" ng-change="getProps(role)" ng-model="role.selectedRole" ng-options="(item.org ? (item.org + ': ' +item.name) : item.name) for item in roles | filter: allowedRoles($index)"></select>
                 </div>
             </div>
 
-            <h3 style="margin-top:10px" ng-if="properties && properties.length > 0">Properties</h3>
-            <div class="row" ng-if="properties && properties.length > 0">
+            <h3 style="margin-top:10px" ng-if="role.properties && role.properties.length > 0">Properties</h3>
+            <div class="row" ng-if="role.properties && role.properties.length > 0">
                 <div class="col-xs-12">
-                    <filter-list options="propertyOptions" items="properties"></filter-list>
+                    <filter-list options="role.propertyOptions" items="role.properties"></filter-list>
                 </div>
+            </div>
+                <A href ng-click="user.roles.splice($index,1)" ng-if="$index > 0 && $root.me.permissions.indexOf('Admin') > -1"><i class="fa fa-trash" style="color:pink !important;"></i></A>
+                <A href ng-click="addRole()" ng-if="user.roles[0].selectedRole.tags[0]== 'PO' && $root.me.permissions.indexOf('Admin') > -1"><i class="fa fa-plus-circle" style="color:green !important;"></i></A>
+                <hr ng-if="$root.me.permissions.indexOf('Admin') > -1 && user.roles.length > 1 && $index < user.roles.length - 1 ">
             </div>
             <br />
             <div style="margin:0px auto;width:75px">
