@@ -96,43 +96,39 @@ module.exports = {
 
                         });
 
-                        //join full company to get logo and subdomain
-                        OrgService.read(function (err, orgs) {
-                            final.forEach(function(f) {
-                                f.user.org = _.find(orgs,function(x) {return x._id.toString() == f.user.orgid.toString()});
-                                f.logo ='https://' + f.user.org.subdomain + ".biradix.com/images/organizations/" + f.user.org.logoBig;
-                                f.unsub ='https://' + f.user.org.subdomain + ".biradix.com/u";
-                                f.dashboardBase ='https://' + f.user.org.subdomain + ".biradix.com/d/";
+                        final.forEach(function(f) {
+                            f.logo ='https://' + f.user.roles[0].org.subdomain + ".biradix.com/images/organizations/" + f.user.roles[0].org.logoBig;
+                            f.unsub ='https://' + f.user.roles[0].org.subdomain + ".biradix.com/u";
+                            f.dashboardBase ='https://' + f.user.roles[0].org.subdomain + ".biradix.com/d/";
 
-                                //Fix last survey date to users timezone
-                                f.properties.forEach(function(p) {
-                                    p.comps.forEach(function(c) {
-                                        if (!c.date) {
-                                            c.dateUser = "Never";
-                                        } else {
-                                            c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
+                            //Fix last survey date to users timezone
+                            f.properties.forEach(function(p) {
+                                p.comps.forEach(function(c) {
+                                    if (!c.date) {
+                                        c.dateUser = "Never";
+                                    } else {
+                                        c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
 
-                                        }
+                                    }
 
-                                        if (typeof c.ner == 'undefined') {
-                                            c.nerUser = "";
-                                        } else {
-                                            c.nerUser = "$" + c.ner.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                        }
+                                    if (typeof c.ner == 'undefined') {
+                                        c.nerUser = "";
+                                    } else {
+                                        c.nerUser = "$" + c.ner.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }
 
-                                        if (typeof c.occupancy == 'undefined') {
-                                            c.occupancyUser = "";
-                                        } else {
-                                            c.occupancyUser = c.occupancy + "%";
-                                        }
+                                    if (typeof c.occupancy == 'undefined') {
+                                        c.occupancyUser = "";
+                                    } else {
+                                        c.occupancyUser = c.occupancy + "%";
+                                    }
 
-                                    })
+                                })
 
-                                });
-                            })
+                            });
+                        })
 
-                            callback(final)
-                        });
+                        callback(final)
 
 
                     });

@@ -124,19 +124,34 @@ define([
             }
 
             $scope.save = function() {
-                if (!$scope.selectedRole._id) {
+                $scope.user.roleids = [];
+                var selectedProperties = [];
+                var err = false;
+                $scope.user.roles.forEach(function(r) {
+                    if (!r.selectedRole._id) {
+                        err = true;
+                    }
+
+
+                    $scope.user.roleids.push(r.selectedRole._id);
+
+                    if (r.properties) {
+                        selectedProperties = selectedProperties.concat(_.pluck(_.filter(r.properties, function(x) {return x.selected == true}),"id"));
+                    }
+
+                })
+
+                $scope.user.roleids = _.uniq($scope.user.roleids);
+                selectedProperties = _.uniq(selectedProperties);
+
+                if (err) {
                     toastr.error("Please select a role.");
                     return;
+
                 }
 
                 $scope.loading = true;
-                $scope.user.roleid=$scope.selectedRole._id;
 
-                var selectedProperties = [];
-
-                if ($scope.properties) {
-                    selectedProperties = _.pluck(_.filter($scope.properties, function(x) {return x.selected == true}),"id");
-                }
 
                 if (!userId) {
                     $userService.create($scope.user).then(function (response) {

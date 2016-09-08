@@ -83,7 +83,7 @@ module.exports = {
 
         validateContact(user, modelErrors);
 
-        if (!user.roleid)
+        if (!user.roleids || ! user.roleids.length)
         {
             modelErrors.push({param: 'roleid', msg : 'Please select the role.'});
         }
@@ -177,8 +177,6 @@ module.exports = {
     insert : function(operator,context, user, base, callback)  {
         var modelErrors = [];
 
-        modelErrors.push({param: 'password', msg : 'Test'});;
-
         initUser(user)
 
         validateContact(user, modelErrors);
@@ -188,9 +186,9 @@ module.exports = {
             modelErrors.push({param: 'password', msg : 'Passwords must be at least 8 characters'});
         }
 
-        if (!user.roleid)
+        if (!user.roleids || !user.roleids.length)
         {
-            modelErrors.push({param: 'roleid', msg : 'Please select the role.'});
+            modelErrors.push({param: 'roleid', msg : 'Please select a role.'});
         }
 
         if (modelErrors.length > 0) {
@@ -212,7 +210,7 @@ module.exports = {
             }
 
             var permissions = [];
-            var userRole = updateNewRole(user.roleid, all, permissions);
+            var userRoles = updateNewRole(user.roleids, all, permissions);
 
             var newUser = new UserSchema();
 
@@ -237,11 +235,12 @@ module.exports = {
                 }
                 ;
 
-                addUserToRole(usr._id,user.roleid, permissions, function() {
+                addUserToRole(usr._id,user.roleids, permissions, function() {
                     //Log for Audit async if not creating system users
 
                     if (operator) {
-                        var data = [{description: "Email: " + usr.email}, {description: "Role: " + userRole.org.name + ": " + userRole.name}]
+                        var roles = _.map(userRoles, function(x) { return x.org.name + ": " + x.name}).join(", ");
+                        var data = [{description: "Email: " + usr.email}, {description: "Role(s): " + roles}]
                         AuditService.create({
                             operator: operator,
                             user: usr,
@@ -254,11 +253,12 @@ module.exports = {
 
                     //Email password async
                     if (user.emailPassword) {
-                        base = base.replace("platform",userRole.org.subdomain)
+                        //TODO: Pick the correct role
+                        var org = userRoles[0];
 
-                        var logo = base + "/images/organizations/" + userRole.org.logoBig;
+                        base = base.replace("platform",org.subdomain)
 
-                        var org = UtilityService.getOrgByUrl(operator.orgs, base);
+                        var logo = base + "/images/organizations/" + org.logoBig;
 
                         var email = {
                             to: usr.email,
@@ -414,15 +414,15 @@ function removeOldRole(roleid, all, permissions) {
 
 }
 
-function updateNewRole(roleid, all, permissions) {
-    var userRole = _.find(all.roles, function(x) {return x._id.toString() == roleid.toString()});
+function updateNewRole(roleids, all, permissions) {
+    roleids = _.map(roleids, function(x) {return x.toString()});
 
-    if (userRole && userRole.orgid) {
-        var orgid = userRole.orgid.toString();
+    var userRoles = _.filter(all.roles, function(x) {return roleids.indexOf(x._id.toString()) > -1});
 
 
-        //All CMs for the org get access to the new user
-        var rolesToAddPermission = _.filter(all.roles, function(x) {return x.orgid == orgid && x.tags.indexOf('CM') > -1})
+    if (userRoles && userRoles.length > 0) {
+        //All CMs for the orgs of the user get access to the new user
+        var rolesToAddPermission = _.filter(all.roles, function(x) {return _.find(userRoles, function(y) {return x.orgid.toString() == y.orgid.toString() }) && x.tags.indexOf('CM') > -1})
 
         ////All RMs for the org get access to the new user if new user is RM
         //if (userRole.tags.indexOf("RM") > -1) {
@@ -449,22 +449,27 @@ function updateNewRole(roleid, all, permissions) {
             permissions.push({executorid: x._id.toString(), allow: true, type: 'UserManage'})
         })
 
-        userRole = JSON.parse(JSON.stringify(userRole));
+        userRoles = JSON.parse(JSON.stringify(userRoles));
 
-        userRole.org = _.find(all.orgs, function(x) {return x._id.toString() == orgid});
+        userRoles.forEach(function(r) {
+            r.org = _.find(all.orgs, function(x) {return x._id.toString() == r.orgid.toString()});
+        })
     } else {
         throw new Error("Should not get here")
     }
 
-    return userRole;
+    return userRoles;
 }
 
-function addUserToRole(id, roleid, permissions, callback) {
-    var membership = {userid: id, roleid: roleid}
+function addUserToRole(id, roleids, permissions, callback) {
+    var memberships = _.map(roleids, function(x) { return  {userid: id, roleid: x} });
 
     //You need membership so the user gets access to everything in that role and is associated with that role
-    AccessService.assignMembership(membership, function(err, obj) {
-
+    async.eachLimit(memberships, 10, function(membership, callbackp){
+        AccessService.assignMembership(membership, function(err, obj) {
+            callbackp(err, obj)
+        });
+    }, function(err) {
         if (permissions.length > 0 ) {
             permissions.forEach(function(x) {
                 x.resource = id.toString();
@@ -479,7 +484,9 @@ function addUserToRole(id, roleid, permissions, callback) {
         }, function(err) {
             callback();
         });
-    })
+
+    });
+
 }
 
 function removeUserFromRole(id, roleid, permissions, callback) {

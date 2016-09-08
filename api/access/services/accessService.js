@@ -309,7 +309,11 @@
                 type = [type];
             }
 
-            PermissionsSchema.find({'executorid': {$in: user.memberships.memberships}, resource:resource, type: {$in : type} },function(err,permissions) {
+            if (!resource.length) {
+                resource = [resource];
+            }            
+
+            PermissionsSchema.find({'executorid': {$in: user.memberships.memberships}, resource:{$in : resource}, type: {$in : type} },function(err,permissions) {
                 //console.log(permissions);
                 //Get a list of negated permission ids
                 var neg = _.where(permissions, { 'allow': false });

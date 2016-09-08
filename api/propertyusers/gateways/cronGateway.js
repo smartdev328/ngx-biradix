@@ -8,6 +8,16 @@ var userService = require("../../users/services/userService");
 var moment = require("moment-timezone");
 var redisService = require('../../utilities/services/redisService')
 
+routes.get('/reminders_test', function(req, res) {
+    userService.getSystemUser(function(obj) {
+        var SystemUser = obj.user;
+        PropertyUsersService.getPropertiesForReminders(SystemUser,function(properties) {
+
+            return res.status(200).json(properties);
+        })
+    })
+})
+
 routes.get('/reminders', function (req, res) {
 
     var key = "reminders_Sent";

@@ -504,7 +504,7 @@ define(['app'], function (app) {
 
             resp.bedrooms = [{value: -1, text: 'All'}]
 
-            if (resp.comps[0].survey && resp.comps[0].survey.floorplans) {
+            if (resp.comps && resp.comps[0] && resp.comps[0].survey && resp.comps[0].survey.floorplans) {
                 var includedFps = _.filter(resp.comps[0].survey.floorplans, function (x) {
                     return !x.excluded
                 });

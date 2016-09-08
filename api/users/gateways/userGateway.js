@@ -110,8 +110,8 @@ userRoutes.get('/me', function (req, res) {
 userRoutes.post('/create', function (req, res) {
     //You must have access to the role you are creating a user for.
     //In the future we need to re-think it if we allow anyone to join
-    AccessService.canAccessResource(req.user,req.body.roleid,'RoleAssign', function(canAccess) {
-        if (!req.body.roleid || !canAccess) {
+    AccessService.canAccessResource(req.user,req.body.roleids,'RoleAssign', function(canAccess) {
+        if (!req.body.roleids || !canAccess) {
             return res.status(401).json("Unauthorized request");
         }
 

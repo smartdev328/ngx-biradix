@@ -951,10 +951,10 @@ var PropertiesCreate = function(System, companies,callback) {
 var UsersCreate = function(roles, callback) {
 
     var System = {email : "admin@biradix.com", password: "$%%##FSDFSD", first : "System", last : "User", isSystem : true, roleid: roles.BiradixAdmin._id};
-    var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K", roleid: roles.BiradixAdmin._id};
-    var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z", roleid: roles.BiradixAdmin._id};
-    var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleid: roles.BiradixAdmin._id, legacty_hash: ""};
-    var Michelle = {email : "cue+michelle@elkconsulting.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleid: roles.GreystarCM._id};
+    var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K", roleids: [roles.BiradixAdmin._id]};
+    var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z", roleids: [roles.BiradixAdmin._id]};
+    var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleids: [roles.BiradixAdmin._id], legacty_hash: ""};
+    var Michelle = {email : "cue+michelle@elkconsulting.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleids: [roles.GreystarCM._id]};
 
 
     UserCreateService.insert(null, null, System, null, function(errors, usr) {
