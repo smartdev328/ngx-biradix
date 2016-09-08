@@ -110,26 +110,40 @@ module.exports = {
                     return;
                 };
 
-                //get roleid from users
-                //make sure the role is the main role
-                var membership = _.find(all.memberships, function(m) {
-                    return m.userid.toString() == user._id.toString() &&
-                    _.find(all.roles, function(r) {
-                        return r._id.toString() == m.roleid.toString()})
-                })
 
-                var bRoleChanged = membership.roleid.toString() != user.roleid.toString();
+                //get all current roleids
+                //If non-admin only get roleids for their org so they do not remove orgs they dont have access to
+                var currentroleids = _.filter(all.memberships, function(m) {
+                    return m.userid.toString() == user._id.toString() &&
+                    _.find(all.roles, function(r) { return r._id.toString() == m.roleid.toString() && (operator.memberships.isadmin === true || operator.orgs[0]._id.toString() == r.orgid.toString())})
+                });
+                currentroleids = _.map(currentroleids,function(x) {return x.roleid.toString()});
+
+                //Find roles that were removed and roles that were added
+                var aAdded = _.difference(user.roleids, currentroleids);
+                var aRemoved = _.difference(currentroleids,user.roleids);
+
+
+                var bRoleChanged = aAdded.length > 0 || aRemoved.length > 0;
 
                 var permissions = [];
                 var removePermissions = [];
-                var userRole = {};
-                var removedRole = {};
 
                 if (bRoleChanged) {
-                    userRole = updateNewRole(user.roleid, all, permissions);
-                    removedRole = removeOldRole(membership.roleid.toString(), all, removePermissions);
-                    changes.push({description: "Role: " + removedRole.org.name + ": " + removedRole.name + " => " + userRole.org.name + ": " + userRole.name, field: 'roleid', old_value: removedRole._id.toString()})
+                    var userRoles = updateNewRole(aAdded, all, permissions);
+                    var removedRoles = removeOldRole(aRemoved, all, removePermissions);
+
+                    userRoles = _.map(userRoles, function(x) { return x.org.name + ": " + x.name}).join(", ");
+                    removedRoles = _.map(removedRoles, function(x) { return x.org.name + ": " + x.name}).join(", ");
+
+                    changes.push({description: "Role(s): " + removedRoles + " => " + userRoles, field: 'roleids', added: aAdded, removed: aRemoved})
                 }
+
+                console.log(currentroleids,user.roleids, aAdded, aRemoved,changes);
+
+                modelErrors.push({msg: 'Test.'});
+                callback(modelErrors, null);
+                return;
 
                 if (usr.bounceReason) {
                     usr.bounceReason = undefined;
@@ -389,28 +403,31 @@ function getHelpers(emailLower, callback) {
     });
 }
 
-function removeOldRole(roleid, all, permissions) {
-    var userRole = _.find(all.roles, function(x) {return x._id.toString() == roleid.toString()});
+function removeOldRole(roleids, all, permissions) {
+    roleids = _.map(roleids, function(x) {return x.toString()});
 
-    if (userRole && userRole.orgid) {
-        var orgid = userRole.orgid.toString();
+    var userRoles = _.filter(all.roles, function(x) {return roleids.indexOf(x._id.toString()) > -1});
 
+    if (userRoles && userRoles.length > 0) {
 
         //Remove all permissions
-        var rolesToAddPermission = _.filter(all.roles, function(x) {return x.orgid == orgid})
+        var rolesToAddPermission = _.filter(all.roles, function(x) {return _.find(userRoles, function(y) {return x.orgid.toString() == y.orgid.toString() })})
 
         rolesToAddPermission.forEach(function(x) {
             permissions.push({executorid: x._id.toString(), allow: true, type: 'UserManage'})
         })
 
-        userRole = JSON.parse(JSON.stringify(userRole));
+        userRoles = JSON.parse(JSON.stringify(userRoles));
 
-        userRole.org = _.find(all.orgs, function(x) {return x._id.toString() == orgid});
+        userRoles.forEach(function(r) {
+            r.org = _.find(all.orgs, function(x) {return x._id.toString() == r.orgid.toString()});
+        })
+
     } else {
         throw new Error("Should not get here")
     }
 
-    return userRole;
+    return userRoles;
 
 }
 
