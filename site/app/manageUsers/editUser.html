@@ -48,7 +48,7 @@
                 </div>
             </div>
                 <A href ng-click="user.roles.splice($index,1)" ng-if="$index > 0 && $root.me.permissions.indexOf('Admin') > -1"><i class="fa fa-trash" style="color:pink !important;"></i></A>
-                <A href ng-click="addRole()" ng-if="user.roles[0].selectedRole.tags[0]== 'PO' && $root.me.permissions.indexOf('Admin') > -1"><i class="fa fa-plus-circle" style="color:green !important;"></i></A>
+                <A href ng-click="addRole()" ng-if="user.roles[0].selectedRole.tags[0]== 'PO' && $root.me.permissions.indexOf('Admin') > -1 && $index == user.roles.length - 1"><i class="fa fa-plus-circle" style="color:green !important;"></i></A>
                 <hr ng-if="$root.me.permissions.indexOf('Admin') > -1 && user.roles.length > 1 && $index < user.roles.length - 1 ">
             </div>
             <br />

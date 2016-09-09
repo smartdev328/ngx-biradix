@@ -103,6 +103,15 @@ module.exports = {
 
                             //Fix last survey date to users timezone
                             f.properties.forEach(function(p) {
+                                p.users = null;
+                                delete p.users;
+                                delete p._id;
+                                delete p.name;
+                                delete p.date;
+                                delete p.occupancy;
+                                delete p.ner;
+                                delete p.totalUnits;
+
                                 p.comps.forEach(function(c) {
                                     if (!c.date) {
                                         c.dateUser = "Never";
@@ -125,10 +134,17 @@ module.exports = {
 
                                 })
 
+                                f.user.roles = null;
+                                delete f.user.roles;
+                                delete f.user.active;
+
+
                             });
                         })
 
                         callback(final)
+
+                        final = null;
 
 
                     });
@@ -280,18 +296,18 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
         var user = all.users[0];
         var property = all.properties[0];
 
-        if (user.roleType=="RM") {
+        if (user.roles[0].tags[0]=="RM") {
             AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.assignMembership({userid: user._id, roleid: RMRole._id}, function () {});
         }
         else
-        if (user.roleType=="BM") {
+        if (user.roles[0].tags[0]=="BM") {
             AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.assignMembership({userid: user._id, roleid: BMRole._id}, function () {});
         }
         else
-        if (user.roleType=="PO") {
+        if (user.roles[0].tags[0]=="PO") {
             AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
             AccessService.createPermission({executorid: PORole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});

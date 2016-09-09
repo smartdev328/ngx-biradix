@@ -129,21 +129,35 @@ module.exports = {
                 var permissions = [];
                 var removePermissions = [];
 
+                // console.log(currentroleids,user.roleids, aAdded, aRemoved,changes);
+                //
+                // modelErrors.push({msg: 'Test.'});
+                // callback(modelErrors, null);
+                // return;
+
+
                 if (bRoleChanged) {
                     var userRoles = updateNewRole(aAdded, all, permissions);
                     var removedRoles = removeOldRole(aRemoved, all, removePermissions);
 
-                    userRoles = _.map(userRoles, function(x) { return x.org.name + ": " + x.name}).join(", ");
-                    removedRoles = _.map(removedRoles, function(x) { return x.org.name + ": " + x.name}).join(", ");
+                    userRoles = _.map(userRoles, function(x) { return x.org.name + " - " + x.name}).join(", ");
+                    removedRoles = _.map(removedRoles, function(x) { return x.org.name + " - " + x.name}).join(", ");
 
-                    changes.push({description: "Role(s): " + removedRoles + " => " + userRoles, field: 'roleids', added: aAdded, removed: aRemoved})
+                    var description = "";
+                    if (removedRoles) {
+                        description = "Removed: " + removedRoles
+                    }
+
+                    if (userRoles) {
+
+                        if (description) {
+                            description +=", ";
+                        }
+                        description += "Added: " + userRoles;
+                    }
+                    changes.push({description: description, field: 'roleids', added: aAdded, removed: aRemoved})
                 }
 
-                console.log(currentroleids,user.roleids, aAdded, aRemoved,changes);
-
-                modelErrors.push({msg: 'Test.'});
-                callback(modelErrors, null);
-                return;
 
                 if (usr.bounceReason) {
                     usr.bounceReason = undefined;
@@ -173,8 +187,8 @@ module.exports = {
                     }
 
                     if (bRoleChanged) {
-                        removeUserFromRole(usr._id,membership.roleid.toString(), removePermissions, function() {
-                            addUserToRole(usr._id,user.roleid, permissions, function() {
+                        removeUserFromRole(usr._id,aRemoved, removePermissions, function() {
+                            addUserToRole(usr._id,aAdded, permissions, function() {
                                 callback(null, usr);
                             });
                         });
@@ -253,7 +267,7 @@ module.exports = {
                     //Log for Audit async if not creating system users
 
                     if (operator) {
-                        var roles = _.map(userRoles, function(x) { return x.org.name + ": " + x.name}).join(", ");
+                        var roles = _.map(userRoles, function(x) { return x.org.name + " - " + x.name}).join(", ");
                         var data = [{description: "Email: " + usr.email}, {description: "Role(s): " + roles}]
                         AuditService.create({
                             operator: operator,
@@ -404,6 +418,9 @@ function getHelpers(emailLower, callback) {
 }
 
 function removeOldRole(roleids, all, permissions) {
+    if (!roleids.length) {
+        return [];
+    }
     roleids = _.map(roleids, function(x) {return x.toString()});
 
     var userRoles = _.filter(all.roles, function(x) {return roleids.indexOf(x._id.toString()) > -1});
@@ -432,6 +449,9 @@ function removeOldRole(roleids, all, permissions) {
 }
 
 function updateNewRole(roleids, all, permissions) {
+    if (!roleids.length) {
+        return [];
+    }
     roleids = _.map(roleids, function(x) {return x.toString()});
 
     var userRoles = _.filter(all.roles, function(x) {return roleids.indexOf(x._id.toString()) > -1});
@@ -479,6 +499,10 @@ function updateNewRole(roleids, all, permissions) {
 }
 
 function addUserToRole(id, roleids, permissions, callback) {
+    if (!roleids || !roleids.length) {
+        return callback();
+    }
+
     var memberships = _.map(roleids, function(x) { return  {userid: id, roleid: x} });
 
     //You need membership so the user gets access to everything in that role and is associated with that role
@@ -506,11 +530,20 @@ function addUserToRole(id, roleids, permissions, callback) {
 
 }
 
-function removeUserFromRole(id, roleid, permissions, callback) {
-    var membership = {userid: id, roleid: roleid}
+function removeUserFromRole(id, roleids, permissions, callback) {
 
-    AccessService.revokeMembership(membership, function(err, obj) {
+    if (!roleids || !roleids.length) {
+        return callback();
+    }
 
+    var memberships = _.map(roleids, function(x) { return  {userid: id, roleid: x} });
+
+    //You need membership so the user gets access to everything in that role and is associated with that role
+    async.eachLimit(memberships, 10, function(membership, callbackp){
+        AccessService.revokeMembership(membership, function(err, obj) {
+            callbackp(err, obj)
+        });
+    }, function(err) {
         if (permissions.length > 0 ) {
             permissions.forEach(function(x) {
                 x.resource = id.toString();
@@ -524,7 +557,7 @@ function removeUserFromRole(id, roleid, permissions, callback) {
         }, function(err) {
             callback();
         });
-    })
+    });
 }
 
 function getChangesForAudit(oldUser, newUser) {
