@@ -8,7 +8,6 @@ define([
     '../../components/propertyProfile/floorplans',
     '../../components/propertyProfile/tableView',
     '../../services/progressService',
-    '../../components/toggle/module',
     '../../services/cookieSettingsService',
     '../../services/auditService',
     '../../services/exportService'
@@ -205,6 +204,7 @@ define([
                         $scope.canManage = resp.canManage;
                         $scope.canSurvey = resp.canSurvey;
                         $scope.owner = resp.owner;
+                        $scope.roles = $rootScope.me.roles;
                         $scope.comp = resp.comp;
                         window.setTimeout(function() {$window.document.title = $scope.property.name + " - Profile | BI:Radix";},1500);
 

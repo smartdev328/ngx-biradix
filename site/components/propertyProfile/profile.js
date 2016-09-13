@@ -7,7 +7,8 @@ define([
             restrict: 'E',
             scope: {
                 property: '=',
-                show: '='
+                show: '=',
+                roles: '='
             },
             controller: function ($scope) {
                 if ($scope.show && typeof $scope.show == "string") {

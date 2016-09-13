@@ -5,7 +5,6 @@ define([
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/comps',
     '../../components/googleMap/module',
-    '../../components/toggle/module',
     '../../services/cookieSettingsService',
     '../../services/exportService',
     '../../services/progressService',
@@ -275,6 +274,7 @@ define([
                     if (!trendsOnly) {
                         $scope.property = resp.property;
                         $scope.comps = resp.comps;
+                        $scope.roles = $rootScope.me.roles;
 
                         $scope.mapOptions = resp.mapOptions;
                         $scope.bedrooms = resp.bedrooms;

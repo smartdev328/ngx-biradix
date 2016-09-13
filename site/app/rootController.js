@@ -6,6 +6,7 @@ define([
     '../components/daterangepicker/module',
     '../components/filterlist/module',
     '../components/timeseries/module',
+    '../components/toggle/module',
 ], function (app) {
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce) {

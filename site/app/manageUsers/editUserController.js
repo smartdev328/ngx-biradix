@@ -157,37 +157,43 @@ define([
                     $userService.create($scope.user).then(function (response) {
                             if (response.data.errors) {
                                 toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                                $scope.loading = false;
                             }
                             else {
-                                $scope.saveProperties(response.data.user._id,selectedProperties);
-                                $uibModalInstance.close(response.data.user);
+                                $scope.saveProperties(response.data.user,selectedProperties);
                             }
                         },
                         function (error) {
                             toastr.error("Unable to create. Please contact the administrator.");
+                            $scope.loading = false;
                         });
                 }
                 else {
                     $userService.update($scope.user).then(function (response) {
                             if (response.data.errors) {
                                 toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                                $scope.loading = false;
                             }
                             else {
-                                $scope.saveProperties(response.data.user._id,selectedProperties);
-                                $uibModalInstance.close(response.data.user);
+                                $scope.saveProperties(response.data.user,selectedProperties);
                             }
                         },
                         function (error) {
                             toastr.error("Unable to update. Please contact the administrator.");
+                            $scope.loading = false;
                         });
                 }
 
-                $scope.loading = false;
-
             }
 
-            $scope.saveProperties = function(userid, properties) {
-                $propertyUsersService.setPropertiesForUser(userid,properties)
+            $scope.saveProperties = function(user, properties) {
+                $propertyUsersService.setPropertiesForUser(user._id,properties).then(function(response) {
+                    window.setTimeout(function() {$uibModalInstance.close(user)}, 1000) ;
+                },
+                    function (error) {
+                        toastr.error("Unable to update properties. Please contact the administrator.");
+                        $scope.loading = false;
+                    })
             }
 
             $scope.allowedRoles = function(index){

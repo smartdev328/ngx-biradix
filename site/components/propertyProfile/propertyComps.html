@@ -164,13 +164,13 @@
         </td>
 
         <td style="text-align:center" class="hidden-print">
-            <a href ng-click="marketSurvey(comp._id)" ng-if="comp.canSurvey"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
+            <a href ng-click="marketSurvey(comp._id)" ng-if="comp.canSurvey && roles[0] != 'Property Owner'"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
                                                          tooltip-placement="left"
                                                          uib-tooltip="{{surveyTooltip(comp)}}"
 
                     ></i></a>
 
-            <a href  ng-if="!comp.canSurvey"><i class="fa fa-lock" style="font-size:18px;padding-top:12px;cursor: not-allowed;"
+            <a href  ng-if="!comp.canSurvey && roles[0] != 'Property Owner'"><i class="fa fa-lock" style="font-size:18px;padding-top:12px;cursor: not-allowed;"
                                                 popover-trigger="'mouseenter'"
                                                 popover-placement="left"
                                                 popover-title="This property is managed by a BI:Radix user."
