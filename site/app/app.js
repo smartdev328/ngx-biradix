@@ -113,17 +113,9 @@ define([
                 },
                 resolve: {get : function($q) {return resolve($q, 'properties/propertiesController')}}
             })
-            .state('history', {
-                url: "/history",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/history/history.html?bust=" + version ,
-                        controller : "historyController"
-                    }
 
-                },
-                resolve: {get : function($q) {return resolve($q, 'history/historyController')}}
-            })
+            .state('history', AsyncRoute("/history?property","history","historyController","history.html","loggedInView"))
+
             .state('preferences', {
                 url: "/preferences",
                 views: {

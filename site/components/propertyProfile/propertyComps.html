@@ -88,7 +88,7 @@
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
 
-        <th>
+        <th  ng-if="roles[0] != 'Property Owner'">
             &nbsp;
         </th>
     </tr>
@@ -163,21 +163,28 @@
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
 
-        <td style="text-align:center" class="hidden-print">
-            <a href ng-click="marketSurvey(comp._id)" ng-if="comp.canSurvey && roles[0] != 'Property Owner'"><i class="fa fa-edit" style="font-size:18px;padding-top:12px"
-                                                         tooltip-placement="left"
-                                                         uib-tooltip="{{surveyTooltip(comp)}}"
+        <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
+            <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
+                <div ng-class="{'btn-group': true, 'action_dropdown': true, 'dropup' : $index == comps.length - 1}">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                        <span class="caret"></span>
+                    </button>
+                    <ul role="menu" ng-class="{'dropdown-menu': true, 'skinny': true, 'dropdown-menu-right' : true, 'dropup-menu-right' : $index == comps.length - 1}">
+                        <li ng-if="comp.canSurvey"><a href ng-click="marketSurvey(comp._id)"
+                                                      tooltip-placement="left"
+                                                      uib-tooltip="{{surveyTooltip(comp)}}"><i class="fa fa-edit fa-fw"></i> New Market Survey</a></li>
 
-                    ></i></a>
+                        <li ng-if="!comp.canSurvey"><a href
+                                                       popover-trigger="'mouseenter'"
+                                                       popover-placement="left"
+                                                       popover-title="This property is managed by a BI:Radix user."
+                                                       uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
+                        ><i class="fa fa-lock fa-fw" style="cursor: not-allowed;"></i> New Market Survey</a></li>
+                        <li><A href="#/history?property={{comp._id}}"><i class="fa fa-history fa-fw"></i> Activity History</A></li>
+                    </ul>
+                </div>
+            </div>
 
-            <a href  ng-if="!comp.canSurvey && roles[0] != 'Property Owner'"><i class="fa fa-lock" style="font-size:18px;padding-top:12px;cursor: not-allowed;"
-                                                popover-trigger="'mouseenter'"
-                                                popover-placement="left"
-                                                popover-title="This property is managed by a BI:Radix user."
-                                                uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
-
-
-            ></i></a>
         </td>
     </tr>
     <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
@@ -231,7 +238,7 @@
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
         </td>
-        <td style="text-align:center" class="hidden-print">
+        <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
 
         </td>
     </tr>
@@ -286,7 +293,7 @@
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
         </td>
-        <td style="text-align:center" class="hidden-print">
+        <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
 
         </td>
     </tr>

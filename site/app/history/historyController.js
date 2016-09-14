@@ -5,7 +5,7 @@ define([
     '../../services/auditService',
 ], function (app) {
 
-    app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr) {
+    app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -96,7 +96,11 @@ define([
                 })
 
                 response.data.properties.forEach(function(a) {
-                    $scope.propertyItems.push({id: a._id, name: a.name, selected: false})
+                    var selected = false;
+                    if ($stateParams.property && a._id.toString() == $stateParams.property) {
+                        selected = true;
+                    }
+                    $scope.propertyItems.push({id: a._id, name: a.name, selected: selected})
                 })
 
                 $scope.reload();

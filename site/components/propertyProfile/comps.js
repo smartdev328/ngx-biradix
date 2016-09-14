@@ -78,7 +78,7 @@ define([
                 }, true)
 
                 $scope.surveyTooltip = function(comp) {
-                    return "New Market Survey (last survey: " + (comp && comp.survey && comp.survey.date ? moment(comp.survey.date).format("MM/DD/YYYY") : "Never") + ")";
+                    return "Last Survey: " + (comp && comp.survey && comp.survey.date ? moment(comp.survey.date).format("MM/DD/YYYY") : "Never");
                 }
 
                 $scope.marketSurvey = function (compid) {
