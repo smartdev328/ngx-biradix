@@ -277,6 +277,18 @@ module.exports = {
                 })
                 ////////////////
 
+                var profileChanges = getProfileChanges(property, null, all);
+                var contactChanges = getContactChanges(property, null, all);
+                var feesChanges = getFeesChanges(property,null, all);
+
+                var amenitiesChanges = getAmenitiesChanges(property,n, all,"community_amenities", "Community");
+                amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
+
+               var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
+
+                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges);
+
+
                 var n = new PropertySchema();
 
                 populateSchema(property, n, all);
@@ -292,7 +304,7 @@ module.exports = {
                         return callback([{msg:"Unable to create property. Please contact the administrator."}], null)
                     }
 
-                    AuditService.create({operator: operator, property: prop, type: 'property_created', description: prop.name, context: context})
+                    AuditService.create({operator: operator, property: prop, type: 'property_created', description: prop.name, context: context, data: changes})
 
                     if (permissions.length > 0 ) {
                         permissions.forEach(function(x) {
@@ -561,6 +573,13 @@ function checkChange(changes, property, n,  field, label, useQoutes) {
 
     var quotes = useQoutes ? "\"" : "";
 
+    if (!n) {
+        if (property[field]) {
+            changes.push({description: label + ": " + (property[field] || '')});
+        }
+        return;
+    }
+
     if (n[field] != property[field]) {
         changes.push({description: label + ": " + quotes + (n[field] || '') + quotes + " => " + quotes + (property[field] || '') + quotes, field: field, old_value: n[field]  });
     }
@@ -568,10 +587,21 @@ function checkChange(changes, property, n,  field, label, useQoutes) {
 
 function getFeesChanges(property, n, all) {
     var changes = [];
-    n.fees = n.fees || {};
+
+    if (n) {
+        n.fees = n.fees || {};
+    }
     property.fees = property.fees || {};
 
     for (var f in PropertyHelperService.fees) {
+        if (!n) {
+            var newLabel = property.fees[f];
+
+            if (newLabel) {
+                changes.push({description: PropertyHelperService.fees[f] + ": \"" + newLabel + "\"", field: f});
+            }
+        }
+        else
         if (n.fees[f]  != property.fees[f]) {
             var oldLabel = "";
             var newLabel = "";
@@ -594,13 +624,21 @@ function getFeesChanges(property, n, all) {
 function getAmenitiesChanges(property, n, all, type, label) {
     var changes = [];
 
+    property[type] = property[type].map(function (x) {
+        return x.toString()
+    })
+
+    if (!n) {
+        _.filter(all.amenities, function(x) {return property[type].indexOf(x.id.toString()) > -1}).forEach(function(am) {
+            changes.push({description: label + ': ' + am.name})
+        })
+        return changes;
+    }
+
     n[type] = n[type].map(function (x) {
         return x.toString()
     })
 
-    property[type] = property[type].map(function (x) {
-        return x.toString()
-    })
 
     var removed = _.difference(n[type], property[type]);
     var added = _.difference(property[type], n[type]);
@@ -625,6 +663,23 @@ function getFloorplansAddedChanges(property, n, all) {
     var changes = [];
 
     property.floorplans.forEach(function(fp) {
+        if (!n) {
+            var desc = PropertyHelperService.floorplanName(fp);
+            if (fp.amenities && fp.amenities.length) {
+                fp.amenities = fp.amenities.map(function (x) {
+                    return x.toString()
+                })
+
+                var am = _.pluck(_.filter(all.amenities, function(x) {return fp.amenities.indexOf(x.id.toString()) > -1}),"name").join(", ");
+
+                desc += ", Amenities: " + am;
+
+
+            }
+
+            changes.push({id: fp.id.toString(), description: desc})
+        }
+        else
         if (!_.find(n.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
             changes.push({id: fp.id.toString(), description: PropertyHelperService.floorplanName(fp)})
         }
