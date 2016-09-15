@@ -44,7 +44,7 @@ module.exports = (function() {
             var phantom = req.headers['user-agent'].indexOf('PhantomJS') > -1;
             var local = (subdomain == 'localhost' || phantom);
 
-            res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom,
+            res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom, dyno: process.env.DYNO
                 //nreum : newrelic.getBrowserTimingHeader()
             });
 
