@@ -16,6 +16,7 @@ var async = require('async')
 var _ = require('lodash')
 
 Routes.get('/filters', function (req, res) {
+    var debug = {};
     async.parallel({
         users: function(callbackp) {
                 UserService.search(req.user, {}, callbackp)
@@ -29,15 +30,20 @@ Routes.get('/filters', function (req, res) {
         audits: function(callbackp) {
             var audits = AuditService.audits;
 
+            debug.before = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
+
             if (req.user.memberships.isadmin !== true) {
                 _.remove(audits, function(x) {return x.admin === true})
             }
+
+            debug.after = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
 
             callbackp(null,audits)
         }
 
     }, function(err, all) {
-        res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps), m: req.user.memberships});
+        debug.final = {audits:all.audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
+        res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps), debug : debug});
         all = null;
     })
 
