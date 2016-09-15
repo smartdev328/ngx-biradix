@@ -33,7 +33,7 @@ Routes.get('/filters', function (req, res) {
             debug.before = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
 
             if (req.user.memberships.isadmin !== true) {
-                _.remove(audits, function(x) {return x.admin === true})
+                audits = _.filter(audits, function(x) {return !x.admin})
             }
 
             debug.after = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
