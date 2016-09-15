@@ -69,45 +69,51 @@ define([
                     $scope.localLoading = true;
                 });
         }
+        var me = $rootScope.$watch("me", function(x) {
+            if ($rootScope.me) {
+                me();
 
-        $auditService.filters().then(function (response) {
-                $scope.audits = response.data.audits;
+                $auditService.filters().then(function (response) {
+                        $scope.audits = response.data.audits;
 
-                $scope.typeItems = [];
-                $scope.userItems = [];
-                $scope.propertyItems = [];
+                        $scope.typeItems = [];
+                        $scope.userItems = [];
+                        $scope.propertyItems = [];
 
-                $scope.audits.forEach(function(a) {
-                    $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group})
-                })
-
-                response.data.users.forEach(function(a) {
-                    var u = {id: a._id, name: a.name, selected: false};
-                    if ($rootScope.me.permissions.indexOf('Admin') > -1) {
-                        a.roles.forEach(function(r) {
-                            var u2 = _.cloneDeep(u);
-                            u2.group = r.org.name;
-                            $scope.userItems.push(u2);
+                        $scope.audits.forEach(function (a) {
+                            $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group})
                         })
 
-                    } else {
-                        $scope.userItems.push(u)
-                    }
-                })
+                        response.data.users.forEach(function (a) {
+                            var u = {id: a._id, name: a.name, selected: false};
+                            if ($rootScope.me.permissions.indexOf('Admin') > -1) {
+                                a.roles.forEach(function (r) {
+                                    var u2 = _.cloneDeep(u);
+                                    u2.group = r.org.name;
+                                    $scope.userItems.push(u2);
+                                })
 
-                response.data.properties.forEach(function(a) {
-                    var selected = false;
-                    if ($stateParams.property && a._id.toString() == $stateParams.property) {
-                        selected = true;
-                    }
-                    $scope.propertyItems.push({id: a._id, name: a.name, selected: selected})
-                })
+                            } else {
+                                $scope.userItems.push(u)
+                            }
+                        })
 
-                $scope.reload();
-            },
-            function (error) {
-                $scope.localLoading = true;
-            });
+                        response.data.properties.forEach(function (a) {
+                            var selected = false;
+                            if ($stateParams.property && a._id.toString() == $stateParams.property) {
+                                selected = true;
+                            }
+                            $scope.propertyItems.push({id: a._id, name: a.name, selected: selected})
+                        })
+
+                        $scope.reload();
+                    },
+                    function (error) {
+                        $scope.localLoading = true;
+                    });
+            }
+        });
+
 
 
         $scope.undo = function(row) {
