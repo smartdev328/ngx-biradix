@@ -89,7 +89,7 @@ userRoutes.post('/login', function (req, res) {
 })
 
 userRoutes.get('/me', function (req, res) {
-    delete req.user.memberships;
+    //delete req.user.memberships;
     delete req.user.ip;
     delete req.user.useragent;
 

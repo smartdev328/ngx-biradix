@@ -642,13 +642,9 @@ function getFullUser(usr, callback) {
 
                 var token = jwt.sign(key, settings.SECRET, {expiresIn: minutesToExpire * 60});
 
-
-
-
-
                 var operator = _.clone(usrobj);
 
-                delete usrobj.memberships;
+                //delete usrobj.memberships;
                 delete usrobj.ip;
                 delete usrobj.useragent;
 

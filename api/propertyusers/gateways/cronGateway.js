@@ -20,7 +20,7 @@ routes.get('/reminders_test', function(req, res) {
 
 routes.get('/reminders', function (req, res) {
 
-    var key = "reminders_Sent";
+    var key = "reminders_sent_new";
     var dayofweek = moment().tz('America/Los_Angeles').format("dd");
 
     if (dayofweek != 'Th') {
