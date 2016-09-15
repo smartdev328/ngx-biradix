@@ -37,7 +37,7 @@ Routes.get('/filters', function (req, res) {
         }
 
     }, function(err, all) {
-        res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps)});
+        res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps), m: req.user.memberships});
         all = null;
     })
 
