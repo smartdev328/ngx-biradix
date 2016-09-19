@@ -12,6 +12,7 @@ var GeocodeService = require('../../utilities/services/geocodeService')
 var AccessService = require('../../access/services/accessService')
 var AmenityService = require('../../amenities/services/amenityService')
 var OrganizationService = require('../../organizations/services/organizationService')
+var EmailService = require('../../business/services/emailService')
 
 module.exports = {
     update: function(operator, context,revertedFromId, property, options, callback) {
@@ -423,7 +424,24 @@ var getHelpers = function(property, options, callback) {
             else {
                 GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, true, function (err, res, fromCache) {
                     //console.log(res[0].latitude, res[0].longitude);
-                    callbackp(err, res[0])
+
+                    if (!res || !res[0]) {
+                        var email = {
+                            to: "alex@biradix.com,eugene@biradix.com",
+                            subject: "Geocode Error",
+                            logo : "https://platform.biradix.com/images/organizations/biradix.png",
+                            template : 'debug.html',
+                            templateData : {debug: JSON.stringify({err: err, res: res, address: property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip}) }
+                        };
+
+
+                        EmailService.send(email,function(emailError,status) {})
+                        
+                        callbackp("Unable to lookup address. Please re-submit to try again. If the problem persists, please contact support@biradix.com", null)
+                    }
+                    else {
+                        callbackp(err, res[0])
+                    }
                 });
             }
         },
