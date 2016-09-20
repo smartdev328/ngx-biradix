@@ -160,7 +160,7 @@
                popover-trigger="'mouseenter'"
                popover-placement="right"
                popover-title="This property is shared competitor"
-               uib-popover="This property is also a competitor for: {{comp.otherSubjects.join(', ')}}"
+               uib-popover-html="getPopoverContent(comp)"
 
             ></i>
             <Br>

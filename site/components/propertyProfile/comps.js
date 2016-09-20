@@ -13,7 +13,7 @@ define([
                 canSurvey: '=',
                 roles: '='
             },
-            controller: function ($scope, $gridService, $cookies) {
+            controller: function ($scope, $gridService, $cookies, $sce) {
                 $scope.defaultSort = "number"
 
                 if ($scope.show && typeof $scope.show == "string") {
@@ -79,6 +79,14 @@ define([
 
                 $scope.surveyTooltip = function(comp) {
                     return "Last Survey: " + (comp && comp.survey && comp.survey.date ? moment(comp.survey.date).format("MM/DD/YYYY") : "Never");
+                }
+
+                var trusted = {};
+                $scope.getPopoverContent = function(comp) {
+
+                    var content = "This property is also a competitor for: <B>"+  comp.otherSubjects.join(', ') + "</B>";
+
+                    return trusted[content] || (trusted[content] = $sce.trustAsHtml(content));
                 }
 
                 $scope.marketSurvey = function (compid) {
