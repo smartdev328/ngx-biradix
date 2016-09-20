@@ -200,13 +200,17 @@ module.exports = {
 
                                         subjects.forEach(function(x) {
                                             x.comps.forEach(function(y) {
-                                                //Do not count yourself as a comp
-                                                if (y.id.toString() != x._id.toString()) {
-                                                    shared[y.id.toString()] = (shared[y.id.toString()] || 0) + 1;
+                                                //Do not count yourself as a comp or current subject as a comp
+                                                if (y.id.toString() != x._id.toString() && id.toString() != x._id.toString() ) {
+
+                                                    if (!shared[y.id.toString()]) {
+                                                        shared[y.id.toString()] = [];
+                                                    }
+                                                    shared[y.id.toString()].push(x.name);
                                                 }
                                             })
                                         })
-                                        //console.log(shared);
+                                        // console.log(shared);
                                         callbackp(err, shared);
                                     })
                                 }
@@ -219,7 +223,7 @@ module.exports = {
 
                                 all.comps.forEach(function(c) {
                                     c.canSurvey = true;
-                                    c.isShared = (all.shared[c._id.toString()] || 0) > 1;
+                                    c.otherSubjects = all.shared[c._id.toString()];
 
                                     if (c.orgid && !_.find(all.owned, function(x) {return x._id.toString() == c._id.toString()})) {
                                         c.canSurvey = false;

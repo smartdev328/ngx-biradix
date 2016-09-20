@@ -1,6 +1,11 @@
+<style>
+    .table-comps TD {
+        vertical-align: middle !important;
+    }
+</style>
 <div class="maingrid wrapper panel" style="overflow-x:auto">
     <div class="header" style="height:46px"></div>
-<table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+<table class="table table-condensed table-striped table-hover hidden-arrows table-comps" style="font-size:9pt;">
     <tbody>
     <tr class="thead">
         <th style="width:25px;">
@@ -123,14 +128,23 @@
                uib-popover="This property has been updated within the last 7 days"
             ></i>
         </td>
-        <td  style="text-align:center; width:32px;vertical-align: middle">
+        <td  style="text-align:center; vertical-align: middle">
             <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;">
         </td>
         <td style="text-align: center;vertical-align: middle"  class="hidden-print">
-            <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
+            <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
         </td>
         <td>
             <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
+
+            <i class="fa fa-exclamation-triangle warning"
+               style="color:orange;cursor:pointer;font-size:14px;padding-left:1px"
+               ng-if="comp.survey.excluded"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+            ></i>
+
             <i class="fa fa-lock"
                style="cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.number > 0 && !comp.canSurvey"
@@ -142,20 +156,13 @@
             ></i>
             <i class="fa fa-share-alt"
                style="cursor:pointer;font-size:14px;padding-left:1px"
-               ng-if="comp.number > 0 && comp.canSurvey && comp.isShared"
+               ng-if="comp.number > 0 && comp.canSurvey && comp.otherSubjects"
                popover-trigger="'mouseenter'"
                popover-placement="right"
-               popover-title="This property is shared comp."
-               uib-popover="This property is a shared comp between multiple subject properties."
+               popover-title="This property is shared competitor"
+               uib-popover="This property is also a competitor for: {{comp.otherSubjects.join(', ')}}"
 
             ></i>
-            <i class="fa fa-exclamation-triangle warning"
-               style="color:orange;cursor:pointer;font-size:14px;padding-left:1px"
-               ng-if="comp.survey.excluded"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
-                    ></i>
             <Br>
             {{comp.address}}
         </td>
@@ -224,10 +231,10 @@
         <td style="text-align: center"></td>
         <td style="text-align: center" class="hidden-print"></td>
         <td  style="text-align:right;">
-            <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:13px;padding-top:2px;padding-left:5px" ng-click="toggleOpen(row)"></i>
+            <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:12px;padding-top:2px;padding-left:5px" ng-click="toggleOpen(row)"></i>
         </td>
         <td>
-            {{row.name}}
+            &nbsp;&nbsp;{{row.name}}
             <i class="fa fa-exclamation-triangle warning"
                style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                ng-if="row.excluded"
@@ -283,7 +290,7 @@
 
         </td>
         <td>
-            {{fp.name}}
+            &nbsp;&nbsp;&nbsp;&nbsp;{{fp.name}}
             <i class="fa fa-exclamation-triangle warning"
                style="color:orange;cursor:pointer;font-size:12px;padding-left:1px"
                ng-if="fp.excluded"
