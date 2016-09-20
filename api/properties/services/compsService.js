@@ -129,7 +129,14 @@ module.exports = {
     getSubjects: function(compid, criteria, callback) {
 
         var ObjectId = require('mongoose').Types.ObjectId;
-        var query = PropertySchema.find({'comps.id': new ObjectId(compid)});
+        if (!_.isArray(compid)) {
+            compid = [compid];
+        }
+
+        compid = _.map(compid, function(x) {return new ObjectId(x)})
+
+        var ObjectId = require('mongoose').Types.ObjectId;
+        var query = PropertySchema.find({'comps.id': {$in:  compid }});
         query.select(criteria.select);
         query.exec(callback);
     }

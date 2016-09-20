@@ -3,6 +3,9 @@
 <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <tbody>
     <tr class="thead">
+        <th style="width:25px;">
+
+        </th>
         <th style="width:25px;" class="hidden-print">
 
         </th>
@@ -94,34 +97,64 @@
     </tr>
 
     <tr ng-repeat-start="comp in comps | orderBy : orderBy">
-        <td style="text-align: center"  class="hidden-print">
-            <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
+        <td style="text-align: center;vertical-align: middle;border-right: 1px solid silver;">
+            <i class="fa fa-clock-o success"
+               style="color:red;cursor:pointer;font-size:14px;padding-left:1px"
+               ng-if="comp.survey.tier == 'danger'"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-title="{{surveyTooltip(comp)}}"
+               uib-popover="Property has not been updated in 15+ days"
+            ></i>
+            <i class="fa fa-clock-o warning"
+               style="color:orange;cursor:pointer;font-size:14px;padding-left:1px"
+               ng-if="comp.survey.tier == 'warning'"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-title="{{surveyTooltip(comp)}}"
+               uib-popover="Property has not been updated in 8+ days"
+            ></i>
+            <i class="fa fa-clock-o success"
+               style="color:green;cursor:pointer;font-size:14px;padding-left:1px"
+               ng-if="comp.survey.tier != 'warning' && comp.survey.tier != 'danger'"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-title="{{surveyTooltip(comp)}}"
+               uib-popover="This property has been updated within the last 7 days"
+            ></i>
         </td>
-        <td  style="text-align:center; width:32px">
+        <td  style="text-align:center; width:32px;vertical-align: middle">
             <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;">
+        </td>
+        <td style="text-align: center;vertical-align: middle"  class="hidden-print">
+            <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
         </td>
         <td>
             <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
+            <i class="fa fa-lock"
+               style="cursor:pointer;font-size:14px;padding-left:1px"
+               ng-if="comp.number > 0 && !comp.canSurvey"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-title="This property is managed by a BI:Radix user."
+               uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
+
+            ></i>
+            <i class="fa fa-share-alt"
+               style="cursor:pointer;font-size:14px;padding-left:1px"
+               ng-if="comp.number > 0 && comp.canSurvey && comp.isShared"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-title="This property is shared comp."
+               uib-popover="This property is a shared comp between multiple subject properties."
+
+            ></i>
             <i class="fa fa-exclamation-triangle warning"
-               style="color:orange;cursor:pointer;font-size:16px;padding-left:1px"
+               style="color:orange;cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.survey.excluded"
                popover-trigger="'mouseenter'"
                popover-placement="right"
                uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
-                    ></i>
-            <i class="fa fa-clock-o danger"
-               style="color:red;cursor:pointer;font-size:16px;padding-left:1px"
-               ng-if="comp.survey.tier == 'danger'"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               uib-popover="Property has not been updated in 15+ days"
-                    ></i>
-            <i class="fa fa-clock-o warning"
-               style="color:orange;cursor:pointer;font-size:16px;padding-left:1px"
-               ng-if="comp.survey.tier == 'warning'"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               uib-popover="Property has not been updated in 8+ days"
                     ></i>
             <Br>
             {{comp.address}}
@@ -188,9 +221,10 @@
         </td>
     </tr>
     <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
+        <td style="text-align: center"></td>
         <td style="text-align: center" class="hidden-print"></td>
-        <td  style="text-align:center; width:32px">
-            <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="toggleOpen(row)"></i>
+        <td  style="text-align:right;">
+            <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:13px;padding-top:2px;padding-left:5px" ng-click="toggleOpen(row)"></i>
         </td>
         <td>
             {{row.name}}
@@ -243,6 +277,7 @@
         </td>
     </tr>
     <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : row.bedrooms}">
+        <td style="text-align: center"></td>
         <td style="text-align: center"></td>
         <td  style="text-align:center; width:32px">
 

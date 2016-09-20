@@ -4,6 +4,7 @@ var _ = require("lodash")
 var moment = require('moment');
 var PropertyService = require('../services/propertyService')
 var DataPointsService = require('../services/dataPointsService')
+var CompsService = require('../services/compsService')
 var SurveyHelperService = require('../services/surveyHelperService')
 
 module.exports = {
@@ -190,6 +191,24 @@ module.exports = {
                                         property.push({ _id: id }) // add subject to the list of owned
                                         callbackp(err, property)
                                     })
+                                },
+                                shared : function(callbackp) {
+                                    //Get all Subjects for All Comps.
+                                    //Calculate counts for comps in multiple subjects among the group
+                                    CompsService.getSubjects(compids, {select: "_id name comps.id"}, function(err, subjects) {
+                                        var shared = {};
+
+                                        subjects.forEach(function(x) {
+                                            x.comps.forEach(function(y) {
+                                                //Do not count yourself as a comp
+                                                if (y.id.toString() != x._id.toString()) {
+                                                    shared[y.id.toString()] = (shared[y.id.toString()] || 0) + 1;
+                                                }
+                                            })
+                                        })
+                                        //console.log(shared);
+                                        callbackp(err, shared);
+                                    })
                                 }
                             }, function(err, all) {
 
@@ -200,6 +219,7 @@ module.exports = {
 
                                 all.comps.forEach(function(c) {
                                     c.canSurvey = true;
+                                    c.isShared = (all.shared[c._id.toString()] || 0) > 1;
 
                                     if (c.orgid && !_.find(all.owned, function(x) {return x._id.toString() == c._id.toString()})) {
                                         c.canSurvey = false;
