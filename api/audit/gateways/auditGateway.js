@@ -237,18 +237,34 @@ Routes.post('/', function (req, res) {
                     propertyids = _.uniq(propertyids);
 
                     obj = JSON.parse(JSON.stringify(obj));
-                    PropertyService.search(req.user, {limit: 10000, permission: ['PropertyManage'], ids: propertyids
-                        , select: "_id"
-                    }, function(err, properties) {
-                        obj.forEach(function(o) {
-                            o.canUndo = true;
-                            if (o.property && o.property.orgid && !_.find(properties, function(x) {return x._id.toString() == o.property.id.toString()})) {
-                                o.canUndo = false;
-                            }
+
+                    PropertyService.search(req.user, {limit: 10000, permission: ['PropertyView'], ids: propertyids
+                        , select: "_id orgid"
+                    }, function(err, orgids) {
+                        // console.log(orgids);
+
+
+                        PropertyService.search(req.user, {
+                            limit: 10000, permission: ['PropertyManage'], ids: propertyids
+                            , select: "_id"
+                        }, function (err, properties) {
+                            obj.forEach(function (o) {
+
+                                if (o.property) {
+                                    o.property.orgid = _.pluck(_.find(orgids, function(x) {return x._id.toString() == o.property.id.toString()}));
+                                }
+
+                                o.canUndo = true;
+                                if (o.property && o.property.orgid && !_.find(properties, function (x) {
+                                        return x._id.toString() == o.property.id.toString()
+                                    })) {
+                                    o.canUndo = false;
+                                }
+                            })
+                            res.status(200).json({errors: null, activity: obj, pager: pager});
+                            obj = null;
                         })
-                        res.status(200).json({errors: null, activity: obj, pager: pager});
-                        obj = null;
-                    })
+                    });
                 }
             });
     })
