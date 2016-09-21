@@ -81,6 +81,10 @@ define([
                     return "Last Survey: " + (comp && comp.survey && comp.survey.date ? moment(comp.survey.date).format("MM/DD/YYYY") : "Never");
                 }
 
+                $scope.placement = function(a,b) {
+                        return a == b ? "right-bottom" : 'right';
+                }
+
                 var trusted = {};
                 $scope.getPopoverContent = function(comp) {
 

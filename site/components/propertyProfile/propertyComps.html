@@ -107,7 +107,7 @@
                style="color:red;cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.survey.tier == 'danger'"
                popover-trigger="'mouseenter'"
-               popover-placement="right"
+               popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="{{surveyTooltip(comp)}}"
                uib-popover="Property has not been updated in 15+ days"
             ></i>
@@ -115,7 +115,7 @@
                style="color:orange;cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.survey.tier == 'warning'"
                popover-trigger="'mouseenter'"
-               popover-placement="right"
+               popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="{{surveyTooltip(comp)}}"
                uib-popover="Property has not been updated in 8+ days"
             ></i>
@@ -123,7 +123,7 @@
                style="color:green;cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.survey.tier != 'warning' && comp.survey.tier != 'danger'"
                popover-trigger="'mouseenter'"
-               popover-placement="right"
+               popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="{{surveyTooltip(comp)}}"
                uib-popover="This property has been updated within the last 7 days"
             ></i>
@@ -141,7 +141,7 @@
                style="color:orange;cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.survey.excluded"
                popover-trigger="'mouseenter'"
-               popover-placement="right"
+               popover-placement="{{placement($index,comps.length - 1)}}"
                uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
             ></i>
 
@@ -149,7 +149,7 @@
                style="cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.number > 0 && !comp.canSurvey"
                popover-trigger="'mouseenter'"
-               popover-placement="right"
+               popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="This property is managed by a BI:Radix user."
                uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
 
@@ -158,7 +158,7 @@
                style="cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.number > 0 && comp.canSurvey && comp.otherSubjects"
                popover-trigger="'mouseenter'"
-               popover-placement="right"
+               popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="This property is shared competitor"
                uib-popover-html="getPopoverContent(comp)"
 
