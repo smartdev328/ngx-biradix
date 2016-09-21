@@ -94,6 +94,10 @@ td.center,th.center {text-align:center}
         color: orange !important;
     }
 
+    .fa-clock-o.success:before {
+        color: green !important;
+    }
+
     .fa-exclamation-triangle.warning:before {
         color: orange !important;
     }

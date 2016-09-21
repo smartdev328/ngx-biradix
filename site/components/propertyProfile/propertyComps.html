@@ -103,7 +103,7 @@
 
     <tr ng-repeat-start="comp in comps | orderBy : orderBy">
         <td style="text-align: center;vertical-align: middle;">
-            <i class="fa fa-clock-o success"
+            <i class="fa fa-clock-o danger"
                style="color:red;cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.survey.tier == 'danger'"
                popover-trigger="'mouseenter'"
@@ -145,7 +145,7 @@
                uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
             ></i>
 
-            <i class="fa fa-lock"
+            <i class="fa fa-lock hidden-print"
                style="cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.number > 0 && !comp.canSurvey"
                popover-trigger="'mouseenter'"
@@ -154,7 +154,7 @@
                uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
 
             ></i>
-            <i class="fa fa-share-alt"
+            <i class="fa fa-share-alt hidden-print"
                style="cursor:pointer;font-size:14px;padding-left:1px"
                ng-if="comp.number > 0 && comp.canSurvey && comp.otherSubjects"
                popover-trigger="'mouseenter'"
