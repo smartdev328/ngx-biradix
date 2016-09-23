@@ -7,9 +7,10 @@ define([
     '../components/filterlist/module',
     '../components/timeseries/module',
     '../components/toggle/module',
+    '../../services/amenityService',
 ], function (app) {
 
-    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce) {
+    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce','$amenityService', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce,$amenityService) {
 
         var refreshFactor = 1;
 
@@ -92,11 +93,17 @@ define([
 
         $scope.first = true;
 
+        $rootScope.notifications = [];
+
         $rootScope.getMe = function(callback) {
 
             $authService.me($cookies.get('token'), function(usr, status) {
                 if (usr) {
                     $rootScope.me = usr;
+
+                    if ($scope.first) {
+                        $scope.alerts();
+                    }
 
                     if ($scope.first && !$rootScope.me.passwordUpdated) {
                         $scope.first = false;
@@ -323,6 +330,11 @@ define([
             $('#wrapper').removeClass('toggled');
         }
 
+        $rootScope.toggleAlerts = function() {
+            $('#alertsBar').slideToggle( "slow");
+            $('#wrapper').removeClass('toggled');
+        }
+
         $rootScope.turnOffSearch = function() {
             $('#searchBar').hide();
         }
@@ -370,5 +382,38 @@ define([
             });
         }
 
+
+        $scope.alerts = function() {
+
+            if ($rootScope.me.permissions.indexOf('Admin') > -1) {
+                $scope.alertsAmenities();
+            }
+        };
+
+        $scope.alertsAmenities = function() {
+            $amenityService.search({active: true, unapproved: true}).then(function (response) {
+
+                var a = _.find($rootScope.notifications, function(x) {return x.key == "amenities"});
+
+                if (a) {
+                    a.count = response.data.amenities.length;
+
+                    if (a.count == 0) {
+                        _.remove($rootScope.notifications, function(x) {return x.key == "amenities"});
+                    }
+                } else {
+                    $rootScope.notifications.push({key:"amenities",count:response.data.amenities.length,label: "Amenities: ", url: "#/amenities"})
+
+                }
+            },
+            function (error) {
+
+            });
+
+            window.setTimeout(function() {$scope.alertsAmenities()}, 120000);
+
+        }
     }]);
+
+
 });

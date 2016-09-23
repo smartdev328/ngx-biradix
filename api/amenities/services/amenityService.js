@@ -12,6 +12,10 @@ module.exports = {
             query = query.where("deleted").equals(false);
         }
 
+        if (criteria.unapproved) {
+            query = query.where("approved").equals(false);
+        }
+
         if (criteria.id) {
             query = query.where("_id").equals(criteria.id);
         }
