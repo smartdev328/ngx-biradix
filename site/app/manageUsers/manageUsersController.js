@@ -21,10 +21,11 @@ define([
 
         var siteAdmin;
 
-        $rootScope.$watch("me", function(x) {
+        var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
                 $scope.adjustToSize($(window).width());
+                me();
             }
         })
 
@@ -55,7 +56,7 @@ define([
                 email: !isTiny,
                 role: true,
                 company: siteAdmin,
-                active: false,
+                active: $scope.showInactive,
                 tools: true
             }
         }
@@ -77,6 +78,8 @@ define([
             }
 
             $scope.resetPager();
+
+            $scope.show.active =  $scope.showInactive;
         }
 
         /////////////////////////////

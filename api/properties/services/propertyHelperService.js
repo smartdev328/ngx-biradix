@@ -3,14 +3,14 @@
 var _ = require("lodash");
 
 var fees  = {
-    administrative_fee: 'Administrative fee',
-    application_fee : 'Application fee',
-    lease_terms: 'Lease terms',
-    non_refundable_pet_deposit: 'Non refundable pet deposit',
-    pet_deposit: 'Pet deposit',
-    pet_rent: 'Pet rent',
-    refundable_security_deposit: 'Refundable security deposit',
-    short_term_premium: 'Short term premium',
+    administrative_fee: 'Administrative Fee',
+    application_fee : 'Application Fee',
+    lease_terms: 'Lease Terms',
+    non_refundable_pet_deposit: 'Pet Deposit (non-refundable)',
+    pet_deposit: 'Pet Deposit (refundable)',
+    pet_rent: 'Pet Rent',
+    refundable_security_deposit: 'Security Deposit (refundable)',
+    short_term_premium: 'Short Term Lease Premium',
 }
 
 

@@ -40,7 +40,7 @@ define([
                 city: !isMedium,
                 state: !isMedium,
                 zip: !isMedium,
-                active:  false,
+                active:  $scope.showInactive,
                 totalUnits: true,
                 occupancy: true,
                 ner: !isMedium,
@@ -67,6 +67,8 @@ define([
             }
 
             $scope.resetPager();
+
+            $scope.show.active =  $scope.showInactive;
         }
         $scope.toggleOpen = function(row) {
             row.open = !(row.open || false);

@@ -109,6 +109,7 @@
                popover-trigger="'mouseenter'"
                popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="{{surveyTooltip(comp)}}"
+               popover-append-to-body="true"
                uib-popover="Property has not been updated in 15+ days"
             ></i>
             <i class="fa fa-clock-o warning"
@@ -117,6 +118,7 @@
                popover-trigger="'mouseenter'"
                popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="{{surveyTooltip(comp)}}"
+               popover-append-to-body="true"
                uib-popover="Property has not been updated in 8+ days"
             ></i>
             <i class="fa fa-clock-o success"
@@ -125,13 +127,14 @@
                popover-trigger="'mouseenter'"
                popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="{{surveyTooltip(comp)}}"
+               popover-append-to-body="true"
                uib-popover="This property has been updated within the last 7 days"
             ></i>
         </td>
         <td  style="text-align:center; vertical-align: middle">
-            <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;width:24px;text-align: center">
+            <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;width:22px;text-align: center">
         </td>
-        <td style="text-align: center;vertical-align: middle"  class="hidden-print">
+        <td style="text-align: center;vertical-align: middle; width:25px"  class="hidden-print">
             <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
         </td>
         <td>
@@ -142,6 +145,7 @@
                ng-if="comp.survey.excluded"
                popover-trigger="'mouseenter'"
                popover-placement="{{placement($index,comps.length - 1)}}"
+               popover-append-to-body="true"
                uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
             ></i>
 
@@ -151,6 +155,7 @@
                popover-trigger="'mouseenter'"
                popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="This property is managed by a BI:Radix user."
+               popover-append-to-body="true"
                uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
 
             ></i>
@@ -160,6 +165,7 @@
                popover-trigger="'mouseenter'"
                popover-placement="{{placement($index,comps.length - 1)}}"
                popover-title="This property is shared competitor"
+               popover-append-to-body="true"
                uib-popover-html="getPopoverContent(comp)"
 
             ></i>
@@ -230,7 +236,7 @@
     <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
         <td style="text-align: center"></td>
         <td style="text-align: center" class="hidden-print"></td>
-        <td  style="text-align:right;">
+        <td  style="text-align:right;; width:25px">
             <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:12px;padding-top:2px;padding-left:5px" ng-click="toggleOpen(row)"></i>
         </td>
         <td>
@@ -286,7 +292,7 @@
     <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : row.bedrooms}">
         <td style="text-align: center"></td>
         <td style="text-align: center"></td>
-        <td  style="text-align:center; width:32px">
+        <td  style="text-align:center; width:25px">
 
         </td>
         <td>
@@ -296,6 +302,7 @@
                ng-if="fp.excluded"
                popover-trigger="'mouseenter'"
                popover-placement="right"
+               popover-append-to-body="true"
                uib-popover="This floor plan has been manually excluded from reporting and dashboard calculations."
                     ></i>
         </td>
