@@ -52,6 +52,7 @@ var s = new Schema({
     },
     date: Date,
     active: Boolean,
+    needsApproval: Boolean,
     notes: String,
     fees: {},
     orgid: {

@@ -298,6 +298,7 @@ module.exports = {
                 n.orgid = property.orgid;
                 n.comps = [];
                 n.date = Date.now();
+                n.needsApproval = true;
 
                 n.save(function (err, prop) {
 
@@ -535,6 +536,9 @@ var populateAmenitiesandFloorplans = function(property, all) {
 }
 
 function populateSchema(property, n, all) {
+    if (property.name != n.name) {
+        n.needsApproval = true;
+    }
     n.loc = [all.geo.latitude, all.geo.longitude]
     n.name = property.name;
     n.address = property.address;
@@ -556,6 +560,7 @@ function populateSchema(property, n, all) {
     n.totalUnits = property.totalUnits;
     n.location_amenities = property.location_amenities;
     n.community_amenities = property.community_amenities;
+
 }
 
 function getProfileChanges(property, n, all) {

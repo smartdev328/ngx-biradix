@@ -434,6 +434,10 @@ module.exports = {
                 query = query.where("active").equals(criteria.active);
             }
 
+            if (criteria.needsApproval != null) {
+                query = query.where("needsApproval").equals(true);
+            }
+            
             if (criteria.orgid != null) {
                 query = query.where("orgid").equals(criteria.orgid);
             }
@@ -594,6 +598,33 @@ module.exports = {
         });
 
     },
+    Approve : function(id, callback)  {
+        var modelErrors = [];
+
+        if (!id)
+        {
+            modelErrors.push({msg : 'Invalid property id.'});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        var query = {_id: id};
+        var update = {needsApproval: undefined};
+        var options = {new: true};
+
+        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to update property.'});
+                callback(modelErrors, null);
+                return;
+            }
+
+            return callback(err, saved)
+        })
+    },    
     deleteSurvey: function(operator,context,revertedFromId, id, callback) {
         async.waterfall([
             function(callbackw){

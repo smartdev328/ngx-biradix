@@ -163,6 +163,17 @@ define([
 
         $scope.reload();
 
+        var me = $rootScope.$watch("me", function(x) {
+            if ($rootScope.me) {
+                if ($rootScope.me.permissions.indexOf("Admin") > -1) {
+                    $scope.getNeedsApproval();
+                    me();
+                }
+            }
+        })
+
+
+
         $scope.$on('properties.excluded', function(event, id, compid, excluded) {
             var prop = _.find($scope.data, function(p) {return p._id == id.toString()});
             var comp = _.find(prop.comps, function(c) {return c.id.toString() == compid.toString()})
@@ -564,6 +575,43 @@ define([
                     //Cancel
                 });
             });
+        }
+
+        $scope.needsApproval = [];
+
+        $scope.getNeedsApproval = function() {
+            $propertyService.search({needsApproval:true}).then(function (response) {
+                    $scope.needsApproval = response.data.properties;
+
+                },
+                function (error) {
+
+                });
+        }
+
+        $scope.Approve = function (property) {
+
+            $dialog.confirm('Are you sure you want to approve <b>"' + property.name + '</b>"?', function() {
+                ngProgress.start();
+
+                $propertyService.Approve(property._id).then(function (response) {
+
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                        }
+                        else {
+                            toastr.success(property.name + " has been marked as approved.");
+                            $scope.getNeedsApproval();
+                        }
+
+                        ngProgress.reset();
+                    },
+                    function (error) {
+                        toastr.error("Unable to update property. Please contact the administrator.");
+                        ngProgress.reset();
+                    });
+
+            }, function() {})
         }
 
     }]);

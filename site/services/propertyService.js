@@ -121,6 +121,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.Approve = function (id) {
+            return $http.get('/api/1.0/properties/' + id + '/approve'+ '?bust=' + (new Date()).getTime(), {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.lookups = function () {
             return $http.get('/api/1.0/properties/lookups'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

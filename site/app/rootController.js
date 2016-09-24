@@ -387,6 +387,7 @@ define([
 
             if ($rootScope.me.permissions.indexOf('Admin') > -1) {
                 $scope.alertsAmenities();
+                $scope.alertsProperties();
             }
         };
 
@@ -402,7 +403,14 @@ define([
                         _.remove($rootScope.notifications, function(x) {return x.key == "amenities"});
                     }
                 } else {
-                    $rootScope.notifications.push({key:"amenities",count:response.data.amenities.length,label: "Amenities: ", url: "#/amenities"})
+                    if (response.data.amenities.length) {
+                        $rootScope.notifications.push({
+                            key: "amenities",
+                            count: response.data.amenities.length,
+                            label: "Amenities: ",
+                            url: "#/amenities"
+                        })
+                    }
 
                 }
             },
@@ -411,6 +419,37 @@ define([
             });
 
             window.setTimeout(function() {$scope.alertsAmenities()}, 120000);
+
+        }
+
+        $scope.alertsProperties = function() {
+            $propertyService.search({needsApproval:true}).then(function (response) {
+
+                    var a = _.find($rootScope.notifications, function(x) {return x.key == "properties"});
+
+                    if (a) {
+                        a.count = response.data.properties.length;
+
+                        if (a.count == 0) {
+                            _.remove($rootScope.notifications, function(x) {return x.key == "properties"});
+                        }
+                    } else {
+                        if (response.data.properties.length) {
+                            $rootScope.notifications.push({
+                                key: "properties",
+                                count: response.data.properties.length,
+                                label: "Properties: ",
+                                url: "#/properties"
+                            })
+                        }
+
+                    }
+                },
+                function (error) {
+
+                });
+
+            window.setTimeout(function() {$scope.alertsAmenities()}, 60000);
 
         }
     }]);

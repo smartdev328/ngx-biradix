@@ -188,6 +188,23 @@ Routes.post('/', function (req, res) {
 
 });
 
+Routes.get('/:id/approve', function (req, res) {
+    AccessService.canAccess(req.user,"Properties/Deactivate", function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyService.Approve(req.params.id, function (err, newusr) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true});
+            }
+        });
+    })
+})
+
 Routes.put('/:id/active', function (req, res) {
     AccessService.canAccess(req.user,"Properties/Deactivate", function(canAccess) {
         if (!canAccess) {
