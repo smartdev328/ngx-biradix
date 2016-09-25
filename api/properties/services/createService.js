@@ -536,7 +536,7 @@ var populateAmenitiesandFloorplans = function(property, all) {
 }
 
 function populateSchema(property, n, all) {
-    if (property.name != n.name) {
+    if (property.name != n.name || property.address != n.address) {
         n.needsApproval = true;
     }
     n.loc = [all.geo.latitude, all.geo.longitude]

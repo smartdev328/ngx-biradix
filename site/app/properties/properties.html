@@ -22,6 +22,7 @@
             <tr ng-repeat="row in needsApproval">
                 <td>
                     <A href="#/history?property={{row._id}}" target="_blank">{{row.name}}</A>
+                    <i class="fa fa-copy" uib-tooltip="Duplicate by name" ng-if="row.dupeName"></i>
                 </td>
                 <td>
                     {{row.dupes || '-'}}

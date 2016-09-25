@@ -563,14 +563,28 @@ module.exports = {
                                 $near: prop.loc,
                                 $maxDistance: .1 / 6371
                             },
-                                _id : {$ne: prop._id}
+                                _id : {$ne: prop._id},
+                                active:true
                         }).select("_id name loc").exec(function(err, dupes) {
                             prop.dupes = _.map(dupes, function(x) {return x.name}).join(", ");
                             callbackp();
                         });
 
                     }, function(err) {
-                        callback(err, props, lookups)
+                        async.eachLimit(props, 10, function(prop, callbackp) {
+                            PropertySchema.find(
+                                {
+                                    name: {$regex: new RegExp("^"+prop.name+"$", "i")},
+                                    _id : {$ne: prop._id},
+                                    active:true
+                                }).select("_id name loc").exec(function(err, dupes) {
+                                prop.dupeName = dupes.length > 0;
+                                callbackp();
+                            });
+
+                        }, function(err) {
+                            callback(err, props, lookups)
+                        })
                     })
 
                 } else {
