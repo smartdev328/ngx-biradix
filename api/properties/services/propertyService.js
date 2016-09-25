@@ -435,6 +435,7 @@ module.exports = {
             }
 
             if (criteria.needsApproval != null) {
+                criteria.select = "id name loc"
                 query = query.where("needsApproval").equals(true);
             }
             
@@ -551,8 +552,30 @@ module.exports = {
                     })
                 }
 
+
                 all = null;
-                callback(err,props, lookups)
+
+                if (criteria.needsApproval != null) {
+                    async.eachLimit(props, 10, function(prop, callbackp) {
+                        PropertySchema.find(
+                            {
+                            loc: {
+                                $near: prop.loc,
+                                $maxDistance: .1 / 6371
+                            },
+                                _id : {$ne: prop._id}
+                        }).select("_id name loc").exec(function(err, dupes) {
+                            prop.dupes = _.map(dupes, function(x) {return x.name}).join(", ");
+                            callbackp();
+                        });
+
+                    }, function(err) {
+                        callback(err, props, lookups)
+                    })
+
+                } else {
+                    callback(err, props, lookups)
+                }
             })
         })
     },

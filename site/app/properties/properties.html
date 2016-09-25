@@ -13,12 +13,18 @@
                    Name
                 </th>
                 <th>
+                    Dupes By Geo
+                </th>
+                <th>
                     &nbsp;
                 </th>
             </tr>
             <tr ng-repeat="row in needsApproval">
                 <td>
                     <A href="#/history?property={{row._id}}" target="_blank">{{row.name}}</A>
+                </td>
+                <td>
+                    {{row.dupes || '-'}}
                 </td>
                 <td class="center">
                     <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
