@@ -25,10 +25,17 @@ routes.get('/jasmine', function(req, res) {
 });
 
 routes.get('/addorg', function(req, res) {
-    var org = {name: "Berkshire Communities ", subdomain: 'berkshire', logoBig: 'berkshire.png', logoSmall: 'berkshire-small.png'}
+    var name = req.query.name;
+    var subdomain = req.query.subdomain;
+
+    if (!name || !subdomain) {
+        return res.status(200).send("Error, syntax: ?name=My%20Org&subdomain=myorg");
+    }
+
+    var org = {name: name, subdomain: subdomain, logoBig: subdomain + '.png', logoSmall: subdomain + '-small.png'}
 
     OrgService.read(function(err, orgs) {
-        if (_.find(orgs, function(x) {return x.subdomain == org.subdomain})) {
+        if (_.find(orgs, function(x) {return x.subdomain == org.subdomain || x.name == org.name})) {
             return res.status(200).send("Duplicate");
         }
 
