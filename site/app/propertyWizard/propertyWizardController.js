@@ -750,6 +750,51 @@ define([
                 return prop;
             }
 
+            $scope.copyAmenities = function(fp) {
+                require([
+                    '/app/propertyWizard/copyAmenitiesController.js'
+                ], function () {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: '/app/propertyWizard/tabs/copyAmenities.html?bust=' + version,
+                        controller: 'copyAmenitiesController',
+                        size: "md",
+                        keyboard: false,
+                        backdrop: 'static',
+                        resolve: {
+                            //floor plan we are editing or null
+                            fp: function () {
+                                return fp;
+                            },
+                            //select list items for unit amenities
+                            unitItems: function () {
+                                return $scope.unitItems;
+                            } ,
+                            //select list options
+                            unitAmenityOptions: function () {
+                                return $scope.unitAmenityOptions;
+                            },
+                            //select list options
+                            floorplans: function () {
+                                return $scope.property.floorplans
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (addedFp) {
+
+                        if (addedFp) {
+                            $scope.property.floorplans.push(addedFp);
+                        }
+
+                        $scope.calculateFloorplanTotals();
+
+                        toastr.success('Floor Plan ' + (fp == null ? 'created' : 'updated')+  ' successfully.');
+                    }, function () {
+                        //Cancel
+                    });
+                });
+            }            
+
         }]);
 
 });

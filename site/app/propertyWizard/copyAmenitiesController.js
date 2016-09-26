@@ -1,0 +1,83 @@
+'use strict';
+define([
+    'app',
+], function (app) {
+     app.controller
+        ('copyAmenitiesController', ['$scope', '$uibModalInstance', 'fp','toastr','unitItems','unitAmenityOptions','$dialog','floorplans','$propertyService', function ($scope, $uibModalInstance, fp, toastr,unitItems,unitAmenityOptions,$dialog,floorplans,$propertyService) {
+
+            $scope.unitAmenityOptions = unitAmenityOptions;
+            
+            //Clone amenities so we dont change master
+            $scope.unitItemsCopy = _.cloneDeep(unitItems) || [];
+
+            if (fp) {
+                //select all seleced amenities in the copy of our unit amenities
+                fp.amenities.forEach(function(pa) {
+                    var am = _.find($scope.unitItemsCopy, function(a) {
+                        return a.id.toString() == pa.toString()});
+                    if (am) {
+                        am.selected = true;
+                    }
+                })
+            }
+
+            $scope.floorplanGroup = function(fp) {
+                switch (fp.bedrooms) {
+                    case 0:
+                        return "Studios";
+                    default:
+                        return fp.bedrooms + " Bedrooms"
+                }
+            }
+
+            $scope.floorplanItems = [];
+            $scope.floorplanOptions = {searchLabel: 'Floor Plans', availableLabel: "Available Floor Plans", selectedLabel : "Selected Floor Plans"}
+
+            floorplans.forEach(function(x) {
+
+                if (x.id.toString() != fp.id.toString()) {
+                    var link = {
+                        id: x.id,
+                        name: $propertyService.floorplanName(x),
+                        group: $scope.floorplanGroup(x),
+                        selected: false
+                    }
+
+
+                    $scope.floorplanItems.push(link);
+                }
+            })
+
+
+            //Clone the entire floor plan so we dont two way bind in case we need to cancel
+            $scope.fpCopy = _.cloneDeep(fp) || {};
+
+            $scope.changed = false;
+
+            // $scope.startWatchingChanges = function() {
+            //     window.setTimeout(function() {
+            //         $scope.$watch("unitItemsCopy", function (newValue, oldValue) {
+            //             if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+            //                 $scope.changed = true;
+            //             }
+            //         }, true);
+            //     },1000);
+            // }
+            //
+            // $scope.startWatchingChanges();
+
+
+            $scope.cancel = function () {
+                if ($scope.changed) {
+                    $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                        $uibModalInstance.dismiss('cancel');
+                    }, function () {
+                    });
+                }
+                else {
+                    $uibModalInstance.dismiss('cancel');
+                }
+            };
+        }]);
+
+});
