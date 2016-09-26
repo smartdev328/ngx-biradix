@@ -78,6 +78,37 @@ define([
                     $uibModalInstance.dismiss('cancel');
                 }
             };
+
+            $scope.copy = function() {
+                var fids = _.pluck(_.filter($scope.floorplanItems, function(i) {return i.selected == true}),"id");
+                var aids = _.pluck(_.filter($scope.unitItemsCopy, function(i) {return i.selected == true}),"id");
+
+                if (!aids.length) {
+                    toastr.error('Please select at least 1 amenity to copy');
+                    return;
+                }
+
+                if (!fids.length) {
+                    toastr.error('Please select at least 1 floor plan to copy amenities to');
+                    return;
+                }
+
+                fids.forEach(function(fid) {
+                    var cfp = _.find(floorplans,function(x) { return x.id.toString() == fid.toString()});
+                    if (cfp) {
+                        aids.forEach(function(a) {
+                            var am = _.find(cfp.amenities,function(x) { return x.toString() == a.toString()}); 
+                            
+                            if (!am) {
+                                cfp.amenities.push(a.toString());
+                            }
+                        })                        
+                    }
+                })
+
+                toastr.success('Amenities copied successfully');
+                $uibModalInstance.close();
+            }
         }]);
 
 });

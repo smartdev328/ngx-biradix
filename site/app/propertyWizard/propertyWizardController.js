@@ -780,18 +780,6 @@ define([
                         }
                     });
 
-                    modalInstance.result.then(function (addedFp) {
-
-                        if (addedFp) {
-                            $scope.property.floorplans.push(addedFp);
-                        }
-
-                        $scope.calculateFloorplanTotals();
-
-                        toastr.success('Floor Plan ' + (fp == null ? 'created' : 'updated')+  ' successfully.');
-                    }, function () {
-                        //Cancel
-                    });
                 });
             }            
 
