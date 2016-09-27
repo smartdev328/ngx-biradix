@@ -281,8 +281,8 @@ module.exports = {
 
                     //Email password async
                     if (user.emailPassword) {
-                        //TODO: Pick the correct role
-                        var org = userRoles[0];
+
+                        var org = userRoles[0].org;
 
                         base = base.replace("platform",org.subdomain)
 

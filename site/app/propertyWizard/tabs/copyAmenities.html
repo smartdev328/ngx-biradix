@@ -4,8 +4,8 @@
         <h2 class="modal-title">Copy Amenities</h2>
     </div>
     <div class="modal-body container-fluid">
-        <div class="alert alert-info" role="alert">
-            <b>Choose the floor plans you want to copy the selected amenities to:</b>
+        <div style="padding:0px 5px 10px 5px">
+        Choose the floor plans you want to copy the selected amenities to:
         </div>
         <div class="row">
             <filter-list options="unitAmenityOptions" items="unitItemsCopy"></filter-list>
@@ -15,8 +15,13 @@
             <filter-list options="floorplanOptions" items="floorplanItems"></filter-list>
         </div>
 
+        <div style="padding:10px 5px 0px 5px">
+        <i>Note: The amenities copied will be added to the selected floor plans in addition to any amenities already in those floor plans.</i>
+        </div>
+
     </div>
     <div class="modal-footer" style="text-align: center">
         <button class="btn btn-success" ng-click="copy()">Copy</button>
      </div>
+
 </div>

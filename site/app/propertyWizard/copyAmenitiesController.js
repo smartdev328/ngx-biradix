@@ -31,7 +31,9 @@ define([
             }
 
             $scope.floorplanItems = [];
-            $scope.floorplanOptions = {searchLabel: 'Floor Plans', availableLabel: "Available Floor Plans", selectedLabel : "Selected Floor Plans"}
+            $scope.floorplanOptions = {searchLabel: 'Floor Plans', availableLabel: "Available", selectedLabel : "Selected"}
+
+            floorplans = _.sortByAll(floorplans, ['bedrooms', 'bathrooms',  'sqft', 'units', 'description', 'id'])
 
             floorplans.forEach(function(x) {
 
