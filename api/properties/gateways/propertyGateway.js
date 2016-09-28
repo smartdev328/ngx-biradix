@@ -194,7 +194,7 @@ Routes.get('/:id/approve', function (req, res) {
             return res.status(401).json("Unauthorized request");
         }
 
-        PropertyService.Approve(req.params.id, function (err, newusr) {
+        PropertyService.Approve(req.user, req.params.id, req.context, function (err, newusr) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

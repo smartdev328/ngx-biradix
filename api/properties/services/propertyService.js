@@ -635,7 +635,7 @@ module.exports = {
         });
 
     },
-    Approve : function(id, callback)  {
+    Approve : function(operator, id, context, callback)  {
         var modelErrors = [];
 
         if (!id)
@@ -658,6 +658,8 @@ module.exports = {
                 callback(modelErrors, null);
                 return;
             }
+
+            AuditService.create({operator: operator, property: saved, type: 'property_approved', description: saved.name + ": Approved"})
 
             return callback(err, saved)
         })

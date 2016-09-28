@@ -165,6 +165,10 @@ module.exports = {
 
                 userBounceService.resetBounce(usr.email,function(){});
 
+                if (user.defaultRole) {
+                    usr.settings.defaultRole = user.defaultRole.toString();
+                }
+
                 usr.save(function (err, usr) {
                     if (err) {
                         modelErrors.push({msg: 'Unexpected Error. Unable to update user.'});

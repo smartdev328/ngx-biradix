@@ -33,7 +33,8 @@ var UserSchema = new Schema({
         reminders: {},
         showLeases: Boolean,
         tz: String,
-        monthlyConcessions: Boolean
+        monthlyConcessions: Boolean,
+        defaultRole: String
     },
     passwordUpdated: Boolean,
     bounceReason: String

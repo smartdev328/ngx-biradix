@@ -103,7 +103,7 @@ module.exports = {
             if (criteria.custom) {
                 query = query.select(criteria.select);
             } else {
-                query = query.select('_id first last email active date bounceReason');
+                query = query.select('_id first last email active date bounceReason settings.defaultRole');
             }
 
             query = query.sort("-date");
@@ -149,6 +149,15 @@ module.exports = {
                                 roles.forEach(function(r) {
                                     r.org = _.find(all.orgs, function(o) {return o._id.toString() == r.orgid.toString() })
                                 })
+
+                                if (x.settings && x.settings.defaultRole) {
+                                    roles = _.sortBy(roles, function (n) {
+                                        if (n._id.toString() == x.settings.defaultRole.toString()) {
+                                            return "-1";
+                                        }
+                                        return n.org.name;
+                                    })
+                                }
 
                             }
 
@@ -629,8 +638,24 @@ function getFullUser(usr, callback) {
 
                 if (final.length > 0) {
                     usrobj.orgs = _.filter(all.orgs, function(x) {
-                        return _.find(final, function(y) {return y.orgid.toString() == x._id.toString()});
+                        var o = _.find(final, function(y) {return y.orgid.toString() == x._id.toString()});
+
+                        if (o && usrobj.settings && usrobj.settings.defaultRole) {
+                            if (o._id.toString() == usrobj.settings.defaultRole) {
+                                x.isDefault = true;
+                            }
+
+                        }
+                        return o;
                     })
+
+                    usrobj.orgs = _.sortBy(usrobj.orgs, function (n) {
+                        if (n.isDefault && n.isDefault === true) {
+                            return "-1";
+                        }
+                        return n.name;
+                    })
+
                 }
 
                 defaultSettings(usrobj);

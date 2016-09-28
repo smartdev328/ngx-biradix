@@ -41,6 +41,7 @@ var audits  = [
 
     {key: 'property_linked', value: 'Property Added as a Comp', group: 'Property'},
     {key: 'property_unlinked', value: 'Property Removed as a Comp', group: 'Property'},
+    {key: 'property_approved', value: 'Property Approved', group: 'Property', admin: true},
 
 
     {key: 'links_updated', value: 'Comped Floor Plans Updated', undo: true, group: 'Property'},

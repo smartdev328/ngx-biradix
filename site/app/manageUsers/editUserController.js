@@ -7,7 +7,7 @@ define([
     '../../services/propertyUsersService.js',
 ], function (app,async2) {
      app.controller
-        ('editUserController', ['$scope', '$uibModalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $uibModalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
+        ('editUserController', ['$scope', '$uibModalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$rootScope', function ($scope, $uibModalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$rootScope) {
             $scope.user = {roles:[{propertyids:[]}]};
 
             $scope.userId = userId;
@@ -151,6 +151,10 @@ define([
                 }
 
                 $scope.loading = true;
+
+                if ($rootScope.me.permissions.indexOf('Admin') > -1) {
+                    $scope.user.defaultRole = $scope.user.roleids[0];
+                }
 
 
                 if (!userId) {
