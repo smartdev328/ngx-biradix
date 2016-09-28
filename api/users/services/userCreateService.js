@@ -259,6 +259,10 @@ module.exports = {
             newUser.legacyHash = user.legacyHash
             newUser.passwordUpdated = (user.passwordUpdated === true) || false;
 
+            if (user.defaultRole) {
+                newUser.settings.defaultRole = user.defaultRole.toString();
+            }
+
             newUser.save(function (err, usr) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to create user.'});
