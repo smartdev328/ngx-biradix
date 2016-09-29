@@ -101,6 +101,10 @@ module.exports = {
 
 
             if (criteria.custom) {
+
+                if (criteria.select.indexOf("settings.defaultRole") == -1) {
+                    criteria.select += " settings.defaultRole";
+                }
                 query = query.select(criteria.select);
             } else {
                 query = query.select('_id first last email active date bounceReason settings.defaultRole');
