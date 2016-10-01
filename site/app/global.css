@@ -102,6 +102,9 @@ td.center,th.center {text-align:center}
         color: orange !important;
     }
 
+    .fa-chain-broken.blue:before {
+        color: #1E90FF !important;
+    }
 
     body {
         width:1210px;

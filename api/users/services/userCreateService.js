@@ -274,6 +274,8 @@ module.exports = {
                 addUserToRole(usr._id,user.roleids, permissions, function() {
                     //Log for Audit async if not creating system users
 
+                    var creator = "";
+
                     if (operator) {
                         var roles = _.map(userRoles, function(x) { return x.org.name + " - " + x.name}).join(", ");
                         var data = [{description: "Email: " + usr.email}, {description: "Role(s): " + roles}]
@@ -285,6 +287,10 @@ module.exports = {
                             context: context,
                             data: data
                         })
+
+                        if (!operator.memberships.isadmin) {
+                            creator = " (" + operator.first + " " + operator.last + ")"
+                        }
                     }
 
                     //Email password async
@@ -298,11 +304,13 @@ module.exports = {
 
                         var email = {
                             to: usr.email,
-                            subject: org.name + " has created a new account for you at BI:radix",
+                            subject: org.name + creator + " has created a new account for you at BI:Radix",
                             logo : logo,
                             template : 'create.html',
                             templateData : {first: usr.first, email: usr.email, link: base, password: user.password }
                         };
+
+                        // console.log(email);
 
 
                         EmailService.send(email,function(emailError,status) {

@@ -99,6 +99,7 @@ Routes.post('/:id/reports', function (req, res) {
                     compreport.push([c.name, v]);
                 })
             })
+
             results.community_amenities = compreport
 
         }

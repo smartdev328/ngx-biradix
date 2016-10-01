@@ -20,6 +20,7 @@ define([
                     $scope.hash[x[0] + x[1]] = true;
                     $scope.hash[x[0] + 'summary'] = ($scope.hash[x[0] + 'summary'] || 0) + 1;
                 })
+                $scope.uniqueAmenities = _.sortBy( $scope.uniqueAmenities, function(x) {return x});
 
             },
             templateUrl: '/components/reports/locationAmenities.html?bust=' + version
