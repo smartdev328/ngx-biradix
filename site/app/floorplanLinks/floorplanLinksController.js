@@ -24,7 +24,7 @@ define([
                 var linkedfloorplans = _.find($scope.subject.comps, function(cm) {return cm.id == $scope.comp._id.toString()}).floorplans;
 
                 $scope.items = [];
-                $scope.options = {searchLabel: 'Floor Plans', availableLabel: "Excluded Floor Plans", selectedLabel : "Included Floor Plans"}
+                $scope.options = {searchLabel: 'Floor Plans', availableLabel: "Excluded", selectedLabel : "Included"}
 
                 $scope.comp.floorplans = _.sortByAll($scope.comp.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'id'])
 
