@@ -35,6 +35,12 @@
             <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
         </th>
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('renewal')" ng-if="show.renewal">
+            Renewal %
+            <i ng-show="sort.renewal == null" class="fa fa-sort"></i>
+            <i ng-show="sort.renewal === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.renewal === false" class="fa fa-sort-up"></i>
+        </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly">
             Traffic/&nbsp;&nbsp;<br>Week
             <i ng-show="sort.weeklytraffic == null" class="fa fa-sort"></i>
@@ -178,6 +184,9 @@
         <td style="text-align: right" ng-if="show.leased" class="pad">
             {{comp.survey.leased == null ? "-" : comp.survey.leased + '%'}}
         </td>
+        <td style="text-align: right" ng-if="show.renewal" class="pad">
+            {{comp.survey.renewal == null ? "-" : comp.survey.renewal + '%'}}
+        </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
             {{comp.survey.weeklytraffic == null ? "-" : comp.survey.weeklytraffic}}
         </td>
@@ -255,6 +264,9 @@
         <td style="text-align: right" ng-if="show.leased" class="pad">
             -
         </td>
+        <td style="text-align: right" ng-if="show.renewal" class="pad">
+            -
+        </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
             -
         </td>
@@ -310,6 +322,9 @@
             -
         </td>
         <td style="text-align: right" ng-if="show.leased" class="pad">
+            -
+        </td>
+        <td style="text-align: right" ng-if="show.renewal" class="pad">
             -
         </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">

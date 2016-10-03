@@ -88,6 +88,7 @@ define([
                 units: true,
                 occ: true,
                 leased: $rootScope.me.settings.showLeases,
+                renewal: $rootScope.me.settings.showRenewal,
                 traf: true,
                 lease: true
             }
@@ -182,7 +183,7 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs, leased: $rootScope.me.settings.showLeases, scale: $scope.nerScale}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.nerScale}
                 ).then(function (response) {
 
                     var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs, $rootScope.me.settings.showLeases, $scope.nerScale);

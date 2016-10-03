@@ -9,6 +9,7 @@ var s = new Schema({
         index: true
     },
     leased: Number,
+    renewal: Number,
     occupancy: Number,
     weeklytraffic: Number,
     weeklyleases: Number,

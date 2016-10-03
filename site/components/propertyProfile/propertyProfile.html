@@ -111,6 +111,14 @@
             {{property.survey.leased == null ? "N/A" : property.survey.leased + '%'}}
         </td>
     </tr>
+    <tr ng-if="show.renewal">
+        <td>
+            <b>Renewal:</b>
+        </td>
+        <td>
+            {{property.survey.renewal == null ? "N/A" : property.survey.renewal + '%'}}
+        </td>
+    </tr>
     <tr ng-if="show.traf">
         <td>
             <b>Traffic/Wk:</b>

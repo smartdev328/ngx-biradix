@@ -93,6 +93,7 @@ define([
                             fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : '';
                         })
                         $scope.survey.leased = $scope.survey.leased || '';
+                        $scope.survey.renewal = $scope.survey.renewal || '';
                         $scope.survey.occupancy = $scope.survey.occupancy || '';
                         $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || '';
                         $scope.survey.weeklyleases = $scope.survey.weeklyleases || '';
@@ -107,6 +108,7 @@ define([
                                 if (s && s.length > 0) {
                                     s = s[0];
                                     $scope.survey.leased = s.leased;
+                                    $scope.survey.renewal = s.renewal;
                                     $scope.survey.occupancy = s.occupancy;
                                     $scope.survey.weeklytraffic = s.weeklytraffic
                                     $scope.survey.weeklyleases = s.weeklyleases
@@ -248,6 +250,42 @@ define([
 
                             }
                             $scope.survey.leasedupdated = $scope.survey.leased != $scope.originalSurvey.leased;;
+                            break;
+                        case "renewal":
+                            $scope.renewalWarning = false;
+                            if (!state) {
+                                $scope.survey.renewal = $scope.originalSurvey.renewal;
+                                window.setTimeout(function() {
+                                    //$('#renewal')[0].focus();
+                                    //$('#renewal')[0].select();
+                                    $('#renewal').parent().removeClass("has-error");
+                                }, 300);
+                            } else {
+                                var er = "";
+
+                                if (!$scope.isValid($scope.survey.renewal, false, true, 0, 150)) {
+                                    er = '<b>Warning:</b> Renewal must be between 0% and 150%';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function() {
+                                        //$('#renewal')[0].focus();
+                                        //$('#renewal')[0].select();
+                                        $('#renewal').parent().addClass("has-error");
+                                    }, 300);
+                                    return;
+                                }
+
+                                if ($scope.originalSurvey.renewal && $scope.originalSurvey.renewal > 0 && $scope.survey.renewal) {
+                                    var percent = Math.abs((parseInt($scope.survey.renewal) - parseInt($scope.originalSurvey.renewal)) / parseInt($scope.originalSurvey.renewal) * 100);
+                                    if (percent >= 10) {
+                                        $scope.renewalWarning = true;
+                                    }
+                                }
+
+                            }
+                            $scope.survey.renewalupdated = $scope.survey.renewal != $scope.originalSurvey.renewal;;
                             break;
                         case "occupancy":
                             $scope.occupancyWarning = false;
@@ -585,6 +623,12 @@ define([
                     isSuccess = false;
                     error = 'Leased';
                     $('#leased').parent().addClass("has-error");
+                }
+
+                if (!$scope.isValid($scope.survey.renewal,false,true,0,150)) {
+                    isSuccess = false;
+                    error = 'Renewal';
+                    $('#renewal').parent().addClass("has-error");
                 }
 
                 if (isSuccess) {

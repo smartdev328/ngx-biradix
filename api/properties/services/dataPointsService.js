@@ -32,6 +32,10 @@ module.exports = {
             select += " leased"
         }
 
+        if (show.renewal) {
+            select += " renewal"
+        }
+        
         if (show.leases) {
             select += " weeklyleases"
         }
@@ -91,6 +95,11 @@ module.exports = {
                     points[s.propertyid].leased[dateKey] = s.leased;
                 }
 
+                if (show.renewal && s.renewal != null) {
+                    points[s.propertyid].renewal = points[s.propertyid].renewal || {};
+                    points[s.propertyid].renewal[dateKey] = s.renewal;
+                }
+                
                 if (show.leases) {
                     points[s.propertyid].leases = points[s.propertyid].leases || {};
                     points[s.propertyid].leases[dateKey] = s.weeklyleases;
@@ -133,6 +142,9 @@ module.exports = {
                     if (show.leased && points[prop].leased) {
                         points[prop].leased = DataPointsHelperService.normailizePoints(points[prop].leased, offset, dr);
                     }
+                    if (show.renewal && points[prop].renewal) {
+                        points[prop].renewal = DataPointsHelperService.normailizePoints(points[prop].renewal, offset, dr);
+                    }                    
                     if (show.traffic) {
                         points[prop].traffic = DataPointsHelperService.normailizePoints(points[prop].traffic, offset, dr);
                     }
@@ -156,6 +168,9 @@ module.exports = {
                 if (show.leased) {
                     points[prop].leased = DataPointsHelperService.objectToArray(points[prop].leased);
                 }
+                if (show.renewal) {
+                    points[prop].renewal = DataPointsHelperService.objectToArray(points[prop].renewal);
+                }                
                 if (show.traffic) {
                     points[prop].traffic = DataPointsHelperService.objectToArray(points[prop].traffic);
                 }

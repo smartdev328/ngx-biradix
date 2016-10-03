@@ -735,6 +735,7 @@ module.exports = {
                 copy.floorplans = lastsurvey.floorplans;
                 copy.occupancy = lastsurvey.occupancy;
                 copy.leased = lastsurvey.leased;
+                copy.renewal = lastsurvey.renewal;
                 copy.weeklyleases = lastsurvey.weeklyleases;
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
                 copy.notes = lastsurvey.notes;
@@ -752,6 +753,10 @@ module.exports = {
 
                 if (lastsurvey.leased !== survey.leased) {
                     data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + '%') + " => " + (typeof survey.leased == 'undefined' || survey.leased == null ? 'N/A' : survey.leased + "%")})
+                }
+
+                if (lastsurvey.renewal !== survey.renewal) {
+                    data.push({description: "Renewal: " + (typeof lastsurvey.renewal == 'undefined' || lastsurvey.renewal == null ? 'N/A' : lastsurvey.renewal + '%') + " => " + (typeof survey.renewal == 'undefined' || survey.renewal == null ? 'N/A' : survey.renewal + "%")})
                 }
 
                 if (lastsurvey.weeklyleases !== survey.weeklyleases) {
@@ -776,6 +781,7 @@ module.exports = {
                 lastsurvey.floorplans = survey.floorplans;
                 lastsurvey.occupancy = survey.occupancy;
                 lastsurvey.leased = survey.leased;
+                lastsurvey.renewal = survey.renewal;
                 lastsurvey.weeklyleases = survey.weeklyleases;
                 lastsurvey.weeklytraffic = survey.weeklytraffic;
                 lastsurvey.notes = survey.notes;
@@ -855,6 +861,7 @@ module.exports = {
             n.propertyid = id;
             n.occupancy = survey.occupancy;
             n.leased = survey.leased;
+            n.renewal = survey.renewal;
             n.weeklyleases = survey.weeklyleases;
             n.weeklytraffic = survey.weeklytraffic;
             n.date = survey.date || Date.now();
@@ -874,7 +881,9 @@ module.exports = {
             if (lastsurvey.leased !== n.leased) {
                 data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + "%") + " => " + (typeof n.leased == 'undefined' || n.leased == null ? 'N/A' : n.leased + "%")})
             }
-
+            if (lastsurvey.renewal !== n.renewal) {
+                data.push({description: "Renewal: " + (typeof lastsurvey.renewal == 'undefined' || lastsurvey.renewal == null ? 'N/A' : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == 'undefined' || n.renewal == null ? 'N/A' : n.renewal + "%")})
+            }
             if (lastsurvey.weeklyleases !== n.weeklyleases) {
                 data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + n.weeklyleases })
             }
@@ -960,6 +969,7 @@ module.exports = {
 
                         comp.survey.occupancy = s.occupancy;
                         comp.survey.leased = s.leased;
+                        comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide);

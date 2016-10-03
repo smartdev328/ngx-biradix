@@ -49,6 +49,7 @@ define([
                 unitPercent: false,
                 occupancy: true,
                 leased: $rootScope.me.settings.showLeases,
+                renewal: $rootScope.me.settings.showRenewal,
                 sqft: true,
                 rent: true,
                 concessions: true,
@@ -74,6 +75,7 @@ define([
                 $scope.show.sqft = false;
                 $scope.show.occupancy = false;
                 $scope.show.leased = false
+                $scope.show.renewal = false
                 $scope.show.units = false;
             }
         }
@@ -108,6 +110,7 @@ define([
                 units: true,
                 occ: true,
                 leased: $rootScope.me.settings.showLeases,
+                renewal: $rootScope.me.settings.showRenewal,
                 traf: true,
                 lease: true
             }

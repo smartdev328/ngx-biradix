@@ -251,6 +251,30 @@
                 </td>
             </tr>
 
+            <tr>
+
+                <td class="heading">
+                    <b ng-if="$root.me.settings.showRenewal">Renewal %</b>
+                </td>
+                <td style="text-align: right">
+                    <div class="form-group">
+                        <input ng-if="$root.me.settings.showRenewal" type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
+                    </div>
+                </td>
+                <td style="width:45px;">
+                    <div ng-if="$root.me.settings.showLeases">
+                        &nbsp;<a href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                        &nbsp;
+                        <i ng-if="renewalWarning" class="fa fa-info-circle" style="color:orange"
+                           popover-trigger="'mouseenter'"
+                           popover-placement="top"
+                           uib-popover="Renewal % has changed by more than 10% since the last market survey"
+
+                        ></i>
+                    </div>
+                </td>
+            </tr>
+
             </tbody>
         </table>
                 </Center>

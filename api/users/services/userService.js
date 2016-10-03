@@ -501,6 +501,15 @@ module.exports = {
                 leasesDescription = "Off => On";
             }
 
+            var renewalDescription = "";
+            if (usr.settings.showRenewal == true && settings.showRenewal == false) {
+                renewalDescription = "On => Off";
+            }
+            else
+            if (usr.settings.showRenewal == false && settings.showRenewal == true) {
+                renewalDescription = "Off => On";
+            }            
+
             var concessionsDescription = "";
             if (usr.settings.monthlyConcessions == true && settings.monthlyConcessions == false) {
                 concessionsDescription = "On => Off";
@@ -537,6 +546,10 @@ module.exports = {
                 if (leasesDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_leased', description: leasesDescription, context: context})
                 }
+
+                if (renewalDescription) {
+                    AuditService.create({operator: usr, user: usr, type: 'user_renewal', description: renewalDescription, context: context})
+                }                
 
                 if (concessionsDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_concessions', description: concessionsDescription, context: context})
@@ -716,6 +729,7 @@ function getSysemUser (callback) {
 function defaultSettings(user) {
     user.settings.monthlyConcessions = user.settings.monthlyConcessions || false;
     user.settings.showLeases = user.settings.showLeases || false;
+    user.settings.showRenewal = user.settings.showRenewal || false;
     user.settings.notifications = user.settings.notifications || {};
     user.settings.notifications.cron = user.settings.notifications.cron || "* * * * 2"
     user.settings.notifications.props = user.settings.notifications.props || [];
