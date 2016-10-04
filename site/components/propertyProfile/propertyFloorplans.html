@@ -109,14 +109,14 @@
         <tr class="subtotal" style="background-color:white !important">
             <td colspan="{{show.description ? '2' : '1'}}">
                 <!--{{bedroomsLabel(i)}}-->
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:1px"
-                   ng-if="bedroom.excluded"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   uib-popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
-                        ></i>
+                <!--<i class="fa fa-chain-broken blue"-->
+                   <!--style="cursor:pointer;font-size:12px;padding-left:1px"-->
+                   <!--ng-if="bedroom.excluded"-->
+                   <!--popover-trigger="'mouseenter'"-->
+                   <!--popover-placement="right"-->
+                   <!--popover-append-to-body="true"-->
+                   <!--uib-popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."-->
+                        <!--&gt;</i>-->
             </td>
             <td style="text-align: right" class="pad" ng-if="show.units">
                 {{bedroom.totUnits}}
@@ -149,7 +149,7 @@
     </tbody>
     <tr class="tfoot">
         <td colspan="{{show.description ? '2' : '1'}}">
-            Totals/Averages
+            Totals / Averages
             <i class="fa fa-chain-broken blue"
                style="cursor:pointer;font-size:12px;padding-left:1px"
                ng-if="comp.survey.excluded"

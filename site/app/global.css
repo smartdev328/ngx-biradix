@@ -104,6 +104,7 @@ td.center,th.center {text-align:center}
 
     .fa-chain-broken.blue:before {
         color: #1E90FF !important;
+        font-weight: bold;
     }
 
     body {
@@ -415,4 +416,8 @@ input[type='number'] {
 
 button.close {
     outline: none !important;
+}
+
+.fa-chain-broken.blue {
+    font-weight: bold !important;
 }

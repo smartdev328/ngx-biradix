@@ -304,7 +304,7 @@ define(['app'], function (app) {
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
 
-        var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases) {
+        var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases, showRenewal) {
             var table = [];
 
             occupancy.data[0].data.forEach(function(o) {
@@ -315,6 +315,11 @@ define(['app'], function (app) {
                 var leased;
                 if (showLeases) {
                     leased = _.find(pts['leased'], function(x) {return x.d == o[0]})
+                }
+
+                var renewal;
+                if (showRenewal) {
+                    renewal = _.find(pts['renewal'], function(x) {return x.d == o[0]})
                 }
 
 
@@ -334,6 +339,9 @@ define(['app'], function (app) {
                         row.leased = leased.v;
                     }
 
+                    if (renewal) {
+                        row.renewal = renewal.v;
+                    }
 
                     table.push(row);
                 }
@@ -344,7 +352,7 @@ define(['app'], function (app) {
             return table;
 
         }
-        fac.parseProfile = function(profile, graphs, showLeases, scale) {
+        fac.parseProfile = function(profile, graphs, showLeases, showRenewal, scale) {
 
             var resp = {};
             resp.lookups = profile.lookups;
@@ -443,19 +451,29 @@ define(['app'], function (app) {
             var ner = fac.extractSeries(profile.points, keys,labels,0,1000,scaleDecimals, [resp.property], false);
 
             var occ ;
+            var title = 'Occupancy %';
+            var points = ['occupancy'];
+            var labels = ['Occupancy %'];
+
             if (showLeases) {
-                occ = fac.extractSeries(profile.points, ['occupancy','leased'],['Occupancy %','Leased %'],80,100,1, [resp.property], false);
-
-                if (occ.min > 0) {
-                    occ.min = occ.min * .9;
-                }
-                resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Occupancy % / Leased %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
+                title += " / Leased %";
+                points.push('leased');
+                labels.push('Leased %');
             }
-            else {
-                occ = fac.extractSeries(profile.points, ['occupancy'],['Occupancy %'],80,100,1, [resp.property], false);
-                resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
 
+            if (showRenewal) {
+                title += " / Renewal %";
+                points.push('renewal');
+                labels.push('Renewal %');
             }
+
+            occ = fac.extractSeries(profile.points, points,labels,80,100,1, [resp.property], false);
+
+            if ((showRenewal || showLeases) && occ.min > 0) {
+                occ.min = occ.min * .9;
+            }
+
+            resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: title, marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
 
 
             var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
@@ -466,7 +484,7 @@ define(['app'], function (app) {
 
             if (pts && !graphs) {
                 resp.nerKeys = keys;
-                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases);
+                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases, showRenewal);
             }
 
             return resp;

@@ -110,7 +110,7 @@
     <tr ng-repeat-start="comp in comps | orderBy : orderBy">
         <td style="text-align: center;vertical-align: middle;">
             <i class="fa fa-clock-o danger"
-               style="color:red;cursor:pointer;font-size:14px;padding-left:1px"
+               style="color:red;cursor:pointer;font-size:14px;padding-left:2px"
                ng-if="comp.survey.tier == 'danger'"
                popover-trigger="'mouseenter'"
                popover-placement="right"
@@ -119,7 +119,7 @@
                uib-popover="Property has not been updated in 15+ days"
             ></i>
             <i class="fa fa-clock-o warning"
-               style="color:orange;cursor:pointer;font-size:14px;padding-left:1px"
+               style="color:orange;cursor:pointer;font-size:14px;padding-left:2px"
                ng-if="comp.survey.tier == 'warning'"
                popover-trigger="'mouseenter'"
                popover-placement="right"
@@ -128,7 +128,7 @@
                uib-popover="Property has not been updated in 8+ days"
             ></i>
             <i class="fa fa-clock-o success"
-               style="color:green;cursor:pointer;font-size:14px;padding-left:1px"
+               style="color:green;cursor:pointer;font-size:14px;padding-left:2px"
                ng-if="comp.survey.tier != 'warning' && comp.survey.tier != 'danger'"
                popover-trigger="'mouseenter'"
                popover-placement="right"
@@ -147,7 +147,7 @@
             <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
 
             <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:14px;padding-left:1px"
+               style="cursor:pointer;font-size:14px;padding-left:2px"
                ng-if="comp.survey.excluded"
                popover-trigger="'mouseenter'"
                popover-placement="right"
@@ -156,7 +156,7 @@
             ></i>
 
             <i class="fa fa-lock hidden-print"
-               style="cursor:pointer;font-size:14px;padding-left:1px"
+               style="cursor:pointer;font-size:14px;padding-left:2px"
                ng-if="comp.number > 0 && !comp.canSurvey"
                popover-trigger="'mouseenter'"
                popover-placement="right"
@@ -166,7 +166,7 @@
 
             ></i>
             <i class="fa fa-share-alt hidden-print"
-               style="cursor:pointer;font-size:14px;padding-left:1px"
+               style="cursor:pointer;font-size:14px;padding-left:2px"
                ng-if="comp.number > 0 && comp.canSurvey && comp.otherSubjects"
                popover-trigger="'mouseenter'"
                popover-placement="right"
@@ -251,7 +251,7 @@
         <td>
             &nbsp;&nbsp;{{row.name}}
             <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:12px;padding-left:1px"
+               style="cursor:pointer;font-size:12px;padding-left:2px"
                ng-if="row.excluded"
                popover-trigger="'mouseenter'"
                popover-placement="right"
@@ -310,7 +310,7 @@
         <td>
             &nbsp;&nbsp;&nbsp;&nbsp;{{fp.name}}
             <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:12px;padding-left:1px"
+               style="cursor:pointer;font-size:12px;padding-left:2px"
                ng-if="fp.excluded"
                popover-trigger="'mouseenter'"
                popover-placement="right"

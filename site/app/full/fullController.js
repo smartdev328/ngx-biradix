@@ -115,14 +115,20 @@ define([
 
                         $scope.profiles = [];
 
-                    $scope.columns = ['occupancy', 'leases', 'traffic'];
+                    $scope.columns = ['occupancy'];
 
                     if ($rootScope.me.settings.showLeases) {
-                        $scope.columns = ['occupancy', 'leased', 'leases', 'traffic'];
+                        $scope.columns.push('leased');
+                    }
+                    if ($rootScope.me.settings.showRenewal) {
+                        $scope.columns.push('renewal');
                     }
 
+                    $scope.columns.push('leases');
+                    $scope.columns.push('traffic');
+
                     response.data.profiles.forEach(function(p) {
-                        var resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases, $scope.nerScale);
+                        var resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.nerScale);
 
                         $scope.profiles.push({
                             lookups : resp.lookups,

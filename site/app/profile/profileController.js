@@ -186,13 +186,19 @@ define([
                     ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.nerScale}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs, $rootScope.me.settings.showLeases, $scope.nerScale);
+                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.nerScale);
 
-                    $scope.columns = ['occupancy', 'leases', 'traffic'];
+                    $scope.columns = ['occupancy'];
 
                     if ($rootScope.me.settings.showLeases) {
-                        $scope.columns = ['occupancy', 'leased', 'leases', 'traffic'];
+                        $scope.columns.push('leased');
                     }
+                    if ($rootScope.me.settings.showRenewal) {
+                        $scope.columns.push('renewal');
+                    }
+
+                    $scope.columns.push('leases');
+                    $scope.columns.push('traffic');
 
                     if (!resp) {
                         $location.path('/dashboard')

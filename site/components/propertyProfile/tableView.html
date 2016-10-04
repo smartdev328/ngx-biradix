@@ -16,6 +16,9 @@
         <th class="center" ng-if="columns.indexOf('leased') > -1">
             Leased
         </th>
+        <th class="center" ng-if="columns.indexOf('renewal') > -1">
+            Renewal
+        </th>
         <th class="center" ng-if="columns.indexOf('traffic') > -1">
             Traffic / Week
         </th>
@@ -41,6 +44,9 @@
         </td>
         <td class="center" ng-if="columns.indexOf('leased') > -1">
             {{item.leased != null ? ((item.leased | number : 1) + '%') : '-'}}
+        </td>
+        <td class="center" ng-if="columns.indexOf('renewal') > -1">
+            {{item.renewal != null ? ((item.renewal | number : 1) + '%') : '-'}}
         </td>
         <td class="center" ng-if="columns.indexOf('traffic') > -1">
             {{item.traffic| number : 0}}
