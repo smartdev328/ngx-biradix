@@ -27,8 +27,7 @@ define([
                 showC: encodeURIComponent($cookies.get("cmp.s") || ''),
                 showP: encodeURIComponent($cookies.get("pr.s") || '')
             }
-
-
+            
             return {base:url, data: data};
         }
 

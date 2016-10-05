@@ -473,14 +473,14 @@ define(['app'], function (app) {
                 occ.min = occ.min * .9;
             }
 
-            resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: title, marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
+            resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
 
 
             var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
 
             resp.nerData = {height:300, printWidth:800, decimalPlaces: scaleDecimals, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
 
-            resp.otherData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'', title: 'Traffic, Leases / Week', marker: true, data: other.data, min: other.min, max: other.max};
+            resp.otherData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'', title: '', marker: true, data: other.data, min: other.min, max: other.max};
 
             if (pts && !graphs) {
                 resp.nerKeys = keys;

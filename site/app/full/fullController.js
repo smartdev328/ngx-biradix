@@ -47,33 +47,51 @@ define([
             $scope.orderByComp = $cookies.get("cmp.o");
         }
 
-        $scope.showComp = {description:true,units:true,unitPercent:false,occupancy:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true,mersqft: false}
-        if ($cookies.get("cmp.s")) {
-            $scope.showComp = JSON.parse($cookies.get("cmp.s"));
-        }
-
-        $scope.showProfile = {
-            address: true,
-            website: false,
-            phone: true,
-            email: false,
-            name: false,
-            const: true,
-            built: true,
-            ren: false,
-            owner: true,
-            mgmt: true,
-            units: true,
-            occ: true,
-            traf: true,
-            lease: true
-        }
-        if ($cookies.get("pr.s")) {
-            $scope.showProfile = JSON.parse($cookies.get("pr.s"));
-        }
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
+
+                $scope.showComp = {
+                    units: true,
+                    unitPercent: false,
+                    occupancy: true,
+                    leased: $rootScope.me.settings.showLeases,
+                    renewal: $rootScope.me.settings.showRenewal,
+                    sqft: true,
+                    rent: true,
+                    concessions: true,
+                    ner: true,
+                    nersqft: true,
+                    mersqft: false,
+                    weekly:false
+                }
+                
+                if ($cookies.get("cmp.s")) {
+                    $scope.showComp = JSON.parse($cookies.get("cmp.s"));
+                }
+
+                $scope.showProfile = {
+                    address: true,
+                    website: false,
+                    phone: true,
+                    email: false,
+                    name: false,
+                    const: true,
+                    built: true,
+                    ren: false,
+                    owner: true,
+                    mgmt: true,
+                    units: true,
+                    occ: true,
+                    leased: $rootScope.me.settings.showLeases,
+                    renewal: $rootScope.me.settings.showRenewal,
+                    traf: true,
+                    lease: true
+                }
+                if ($cookies.get("pr.s")) {
+                    $scope.showProfile = JSON.parse($cookies.get("pr.s"));
+                }
+
                 me();
                 $scope.loadProperty($stateParams.id)
             }

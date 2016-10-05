@@ -151,7 +151,6 @@ module.exports = {
 
                 //console.log(query, typeof query.showFile, typeof query.full);
 
-
                 queues.getExchange().publish({
                         user: req.user,
                         context : req.context,
