@@ -32,15 +32,7 @@ define([
 
                 $scope.exclude.forEach(function(x) {x = x.toString()});
 
-                $propertyService.search({limit: 10000, permission: 'PropertyView', ids: $scope.exclude, exclude: [id], select:"name address city state"}).then(function (response) {
-                    $scope.localLoading = true;
-                    $scope.comps = response.data.properties;
-                    $scope.comps.forEach(function(c) {
-                        c.summary = c.name + "<br><i>" + c.address + ", " + c.city + ", " + c.state + "</i>";
-                    })
-                });
-
-
+                $scope.localLoading = true;
 
             });
 
@@ -50,7 +42,7 @@ define([
             };
 
             $scope.autoComplete = function() {
-                if ($scope.findComp && $scope.findComp.length > 1) {
+                if ($scope.findComp.length > 1) {
                     $propertyService.search({search: $scope.findComp, active: true}).then(function (response) {
                         $scope.properties = response.data.properties;
                         $scope.properties.forEach(function(p) {
@@ -62,33 +54,23 @@ define([
                 }
             }
 
-            $scope.remove = function(comp) {
-                _.remove($scope.exclude, function(x) {return x == comp._id.toString()});
-                _.remove($scope.comps, function(x) {return x._id == comp._id.toString()});
-                $scope.autoComplete();
-
-            },
-
             $scope.link = function(comp) {
-                $scope.exclude.push(comp._id.toString());
-                $scope.comps.push(comp);
-                $scope.autoComplete();
-                // ngProgress.start();
-                // $propertyService.linkComp(id, comp._id).then(function (resp) {
-                //     ngProgress.complete();
-                //     if (resp.data.errors && resp.data.errors.length > 0) {
-                //         var errors = resp.data.errors
-                //         toastr.error(errors);
-                //     }
-                //     else {
-                //         $uibModalInstance.close(comp);
-                //     }
-                //
-                //
-                // }, function (err) {
-                //     toastr.error('Unable to perform action. Please contact an administrator');
-                //     ngProgress.complete();
-                // });
+                ngProgress.start();
+                $propertyService.linkComp(id, comp._id).then(function (resp) {
+                    ngProgress.complete();
+                    if (resp.data.errors && resp.data.errors.length > 0) {
+                        var errors = resp.data.errors
+                        toastr.error(errors);
+                    }
+                    else {
+                        $uibModalInstance.close(comp);
+                    }
+
+
+                }, function (err) {
+                    toastr.error('Unable to perform action. Please contact an administrator');
+                    ngProgress.complete();
+                });
             }
 
 }]);

@@ -4,36 +4,11 @@
 <div ng-show="localLoading">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title">Manage Comps</h2>
+        <h2 class="modal-title">Add Comp</h2>
     </div>
     <div class="modal-body">
         To add a comp to <b>{{subject.name}}</b> please enter full or partial property name or address to search if it's already in BI:Radix. If a property exists you can simply add it. If not, you will be able to create a new comp.<Br>
         <Br>
-
-        <div ng-if="comps.length">
-            <div style="border:1px solid #ccc;border-radius: 3px;">
-                <div style="padding:5px 10px">
-                    <b>{{subject.name}}</b> Comps
-                </div>
-                <div ng-repeat="row in comps" style="border-top:1px solid #ccc; padding:5px 10px">
-                    <div style="float:left;cursor:move;padding:10px 10px 0px 0px;font-weight:bold">:::</div>
-                    <div ng-bind-html="($index+1).toString() + '. ' + row.summary | sanitize" style="float:left"/>
-                    <div style="float:right"><a href ng-click="remove(row)">X</a></div>
-                    <Br clear="all">
-                </div>
-                <Br>
-
-            </div>
-
-            <div style="text-align: center">
-                <Br>
-                <button class="btn btn-success">Save Comps</button><Br>
-                <Br>
-            </div>
-        </div>
-
-        <div class="alert alert-warning" role="alert" ng-if="!comps.length">There are currently no comps added to this property.</div>
-
 
         <div style="width:250px;margin:0px auto">
             <div class="form-group has-feedback search">
@@ -58,7 +33,7 @@
 
             <tr ng-repeat="row in properties">
                 <td>
-                    <div ng-bind-html="row.summary | sanitize"/>
+                    <div ng-bind-html="row.summary | sanitize">
                 </td>
                 <td>
                     <button class="btn btn-primary" ng-click="link(row)" ng-disabled="row.disabled"><span ng-if="!row.disabled">Add Comp</span><span ng-if="row.disabled">Added</span></button>
@@ -68,8 +43,9 @@
         </table>
 
         <div style="text-align: center">
+            OR<Br>
             <Br>
-            Can't find your comp? <button class="btn btn-warning" ng-click="create()">Create New Comp</button>
+            <button class="btn btn-warning" ng-click="create()">Create New Comp</button>
         </div>
     </div>
 </div>
