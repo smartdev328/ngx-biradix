@@ -641,25 +641,25 @@ define([
                             toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
                         }
                         else {
+                            newProp = response.data.property;
                             toastr.success($scope.property.name + ' created successfully');
 
                             //if we're adding a comp, link it to the subject before we return
                             if (isComp) {
                                 $propertyService.linkComp(subjectid, response.data.property._id).then(
                                     function(response) {
-
-                                        $uibModalInstance.close(response.data.property);
+                                        $uibModalInstance.close(newProp);
                                     },
                                     function(response) {
 
-                                        $uibModalInstance.close(response.data.property);
+                                        $uibModalInstance.close(newProp);
                                     }
                                 )
 
                             }
                             else {
                                 //not a comp, but a subject being added
-                                $uibModalInstance.close(response.data.property);
+                                $uibModalInstance.close(newProp);
                             }
                         }
 

@@ -1,3 +1,16 @@
+<style>
+    .animate-repeat
+    {
+        transition:all linear 1s;
+    }
+
+    .animate-repeat
+     {
+        opacity:0.5;
+        background-color: lightgreen;
+    }
+
+</style>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
@@ -12,7 +25,7 @@
                 <tr>
                     <td colspan="100%" style="padding:10px"><b>{{subject.name}}</b></td>
                 </tr>
-                <tr ng-repeat="row in comps" style="border-top:1px solid #ccc;">
+                <tr ng-repeat="row in comps" style="border-top:1px solid #ccc;" id="tr-animate-{{$index}}">
                     <td style="text-align:left;padding:10px 5px 10px 10px;font-weight:bold;width:16px"><A href ng-click="moveUp($index)"><i class="fa fa-arrow-up"></i></A></td>
                     <td style="text-align:left;padding:10px 10px 10px 5px;font-weight:bold;width:16px"><A href ng-click="moveDown($index)"><i class="fa fa-arrow-down"></i></A></td>
                     <td ng-bind-html="($index+1).toString() + '. ' + row.summary | sanitize" style="text-align:left"></td>
