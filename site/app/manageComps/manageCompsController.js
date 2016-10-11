@@ -52,6 +52,32 @@ define([
                 $scope.search1 = "";
             }
 
+            $scope.moveUp = function(index) {
+                if (1 == $scope.comps.length) return;
+
+                if (index == 0) {
+                    $scope.move($scope.comps,index, $scope.comps.length);
+                }
+                else {
+                    $scope.move($scope.comps,index, index - 1);
+                }
+            }
+
+            $scope.moveDown = function(index) {
+                if (1 == $scope.comps.length) return;
+
+                if (index == $scope.comps.length - 1) {
+                    $scope.move($scope.comps,index, 0);
+                }
+                else {
+                    $scope.move($scope.comps,index, index + 1);
+                }
+            }
+
+            $scope.move = function(ar, from, to) {
+                ar.splice(to, 0, ar.splice(from, 1)[0]);
+            };
+
         }]);
 
 });

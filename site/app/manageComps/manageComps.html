@@ -13,7 +13,8 @@
                     <td colspan="100%" style="padding:10px"><b>{{subject.name}}</b></td>
                 </tr>
                 <tr ng-repeat="row in comps" style="border-top:1px solid #ccc;">
-                    <td style="text-align:left;cursor:move;padding:10px;font-weight:bold;width:31px"><i class="fa fa-arrows fa-2x"></i></td>
+                    <td style="text-align:left;padding:10px 5px 10px 10px;font-weight:bold;width:16px"><A href ng-click="moveUp($index)"><i class="fa fa-arrow-up"></i></A></td>
+                    <td style="text-align:left;padding:10px 10px 10px 5px;font-weight:bold;width:16px"><A href ng-click="moveDown($index)"><i class="fa fa-arrow-down"></i></A></td>
                     <td ng-bind-html="($index+1).toString() + '. ' + row.summary | sanitize" style="text-align:left"></td>
                     <td style="text-align:right;border-right:1px solid #ccc;padding:10px"><a href ng-click="remove(row)"><i class="fa fa-close"></i></a></td>
                 </tr>
