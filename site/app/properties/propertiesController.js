@@ -516,11 +516,11 @@ define([
             }
 
             require([
-                '/app/findComp/findCompController.js'
+                '/app/manageComps/manageCompsController.js'
             ], function () {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/app/findComp/findComp.html?bust=' + version,
-                    controller: 'findCompController',
+                    templateUrl: '/app/manageComps/manageComps.html?bust=' + version,
+                    controller: 'manageCompsController',
                     size: "md",
                     keyboard: false,
                     backdrop: 'static',

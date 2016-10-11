@@ -1,0 +1,59 @@
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Manage Comps</h2>
+    </div>
+    <div class="modal-body">
+
+            <table style="border:1px solid #ccc;width:100%">
+                <tr>
+                    <td colspan="100%" style="padding:10px"><b>{{subject.name}}</b></td>
+                </tr>
+                <tr ng-repeat="row in comps" style="border-top:1px solid #ccc;">
+                    <td style="text-align:left;cursor:move;padding:10px;font-weight:bold;width:31px"><i class="fa fa-arrows fa-2x"></i></td>
+                    <td ng-bind-html="($index+1).toString() + '. ' + row.summary | sanitize" style="text-align:left"></td>
+                    <td style="text-align:right;border-right:1px solid #ccc;padding:10px"><a href ng-click="remove(row)"><i class="fa fa-close"></i></a></td>
+                </tr>
+                <tr ng-if="!comps.length">
+                    <td colspan="100%" style="border-top:1px solid #ccc;padding:10px">
+                        <div class="alert alert-warning" role="alert" ng-if="!comps.length" style="margin-bottom:0px !important;">There are currently no comps added to this property. Please type in the name of the comp you would like to add below.</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-top:1px solid #ccc;padding:10px" colspan="100%">
+                        <div class="form-group has-feedback has-feedback-left search" style="margin-bottom:0px !important;">
+                            <input type="text" class="form-control input-sm"
+                                   placeholder="Comp Name to Add"
+                                   uib-typeahead="props.summary for props in getLocation($viewValue)"
+                                   typeahead-on-select="searchSelected($item, $model, $label)"
+                                   typeahead-template-url="customTemplate.html"
+                                   typeahead-no-results="noResults"
+                                   ng-model="search1"
+                                   style="width:100%"
+                                   ng-keydown="disableSearchKeys($event)"
+                            >
+                            <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>
+                        </div>
+                        <div ng-show="noResults" style="padding:10px">
+                            Unable to find your comp. <button class="btn btn-warning" ng-click="create()">Create New Comp</button>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
+            <div style="text-align: center">
+                <Br>
+                <button class="btn btn-success">Save Comps</button><Br>
+                <Br>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
