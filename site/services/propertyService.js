@@ -166,6 +166,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.saveCompOrder = function (propertyid, compids) {
+            return $http.post('/api/1.0/properties/' + propertyid + '/comps/saveOrder?bust=' + (new Date()).getTime(), {compids: compids}, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.createSurvey = function (propertyid, survey) {
             return $http.post('/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), survey, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

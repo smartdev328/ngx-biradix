@@ -1,19 +1,54 @@
 'use strict';
 define([
-    'app'
+    'app',
+    '../../components/dialog/module.js',
 ], function (app) {
      app.controller
-        ('manageCompsController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$uibModal', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService,$uibModal) {
+        ('manageCompsController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$uibModal','$dialog', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService,$uibModal,$dialog) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
             }
 
             $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
+
+                if ($scope.changed) {
+                    $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                        $uibModalInstance.dismiss('cancel');
+                    }, function () {
+                    });
+                }
+                else {
+                    $uibModalInstance.dismiss('cancel');
+                }
+
             };
 
-            
+            $scope.changed = false;
+
+
+            $scope.save = function() {
+
+                var compids = _.map($scope.comps,function(x) {return x._id.toString()});
+
+                ngProgress.start();
+                $('.btn').prop("disabled",true);
+
+
+                $propertyService.saveCompOrder(id,compids).then(function (response) {
+
+                    ngProgress.complete();
+                    $('.btn').prop("disabled",false);
+
+                    $uibModalInstance.close();
+                }, function(response) {
+                    toastr.error('Unable to save Comps. Please contact an administrator');
+                    ngProgress.complete();
+                    $('.btn').prop("disabled",false);
+
+                });
+            }
+
             $propertyService.search({
                 limit: 20,
                 permission: 'PropertyManage',
@@ -35,6 +70,7 @@ define([
             });
 
             $scope.remove = function(comp) {
+                $scope.changed = true;
                 _.remove($scope.comps, function(x) {return x._id == comp._id.toString()});
                 $scope.search1 = "";
 
@@ -48,6 +84,7 @@ define([
             };
 
             $scope.searchSelected = function (item, model, label) {
+                $scope.changed = true;
                 $scope.comps.push(item);
                 $scope.search1 = "";
             }
@@ -61,6 +98,7 @@ define([
                 else {
                     $scope.move($scope.comps,index, index - 1);
                 }
+                $scope.changed = true;
             }
 
             $scope.moveDown = function(index) {
@@ -72,6 +110,7 @@ define([
                 else {
                     $scope.move($scope.comps,index, index + 1);
                 }
+                $scope.changed = true;
             }
 
             $scope.move = function(ar, from, to) {
@@ -114,6 +153,7 @@ define([
                         comp.summary = comp.name + "<br><i>" + comp.address + ", " + comp.city + ", " + comp.state + "</i>";
                         $scope.comps.push(comp);
                         $scope.search1 = "";
+                        $scope.changed = true;
 
                     }, function () {
                         //Cancel

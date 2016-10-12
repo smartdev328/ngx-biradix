@@ -363,33 +363,6 @@ define([
 
         }
 
-        $scope.unlinkComp = function (property, comp) {
-
-            $dialog.confirm('Are you sure you want to remove comp <b>"' + comp.name + '"</b> from subject <b>"' + property.name + '"</b>?', function() {
-
-                ngProgress.start();
-
-                $propertyService.unlinkComp(property._id, comp._id).then(function (response) {
-
-                        if (response.data.errors) {
-                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
-                        }
-                        else {
-                            _.remove(property.comps, function(c) {return c.id.toString() == comp._id.toString() })
-                            _.remove(property.fullcomps, function(c) {return c._id.toString() == comp._id.toString() })
-
-                            toastr.success('Comp <b>"' + comp.name + '"</b> removed from <b>"' + property.name + '"</b> successfully.');
-                        }
-
-                        ngProgress.reset();
-                    },
-                    function (error) {
-                        toastr.error("Unable to update property. Please contact the administrator.");
-                        ngProgress.reset();
-                    });
-
-            }, function() {})
-        }
 
         $scope.toggleActive = function (property) {
 
@@ -506,7 +479,9 @@ define([
         }
 
         $scope.hasExcluded = function(subj, comp) {
+
             var c = _.find(subj.comps, function(cm) {return cm.id.toString() == comp._id.toString()});
+
             return c.excluded || false;
         }
 
@@ -531,20 +506,24 @@ define([
                     }
                 });
 
-                modalInstance.result.then(function (comp) {
+                modalInstance.result.then(function () {
                     //Send successfully
-                    subject.comps.push({id: comp._id});
+                    $scope.reload(function() {
+                        //after we reload, we need to update the reference to our subject since it got new data from ajax
 
-                    if (subject.open) {
+                        subject = _.find($scope.data, function(x) {
+                            return x._id.toString() == subject._id.toString();
+                        });
+
+                        if (subject.open) {
+                            $scope.toggleOpen(subject);
+                        }
                         $scope.toggleOpen(subject);
-                    }
-                    $scope.toggleOpen(subject);
-                    toastr.success('<b>' + comp.name + "</b> has been added as a comp for <b>" + subject.name + "</b>.");
-                }, function (from) {
-                    //Cancel
-                    if (from == "create") {
-                        $scope.edit(null, true, subject)
-                    }
+
+                    });
+                    toastr.success("Comps have been updated for <b>" + subject.name + "</b>.");
+                }, function () {
+
                 });
             });
 
