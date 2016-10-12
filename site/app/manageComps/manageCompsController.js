@@ -53,7 +53,7 @@ define([
                 limit: 20,
                 permission: 'PropertyManage',
                 ids: [id],
-                select: "_id name comps.id"
+                select: "_id name comps.id comps.orderNumber"
             }).then(function (response) {
                 $scope.subject = response.data.properties[0]
 
@@ -64,7 +64,18 @@ define([
                     $scope.comps = response.data.properties;
                     $scope.comps.forEach(function(c) {
                         c.summary = c.name + "<br><i>" + c.address + ", " + c.city + ", " + c.state + "</i>";
+
+                        var comp = _.find($scope.subject.comps, function(x) {return x.id.toString() == c._id.toString()});
+
+                        c.orderNumber = 999;
+
+                        if (comp && typeof comp.orderNumber != 'undefined') {
+                            c.orderNumber = comp.orderNumber;
+                        }
+
                     })
+
+                    $scope.comps = _.sortByAll($scope.comps, ['orderNumber','name']);
                 });
 
             });

@@ -281,7 +281,7 @@
                 </div>
             </td>
         </tr>
-        <tr ng-repeat-end ng-if="row.open && row.compsLoaded && row.fullcomps.length > 0" ng-repeat="comp in row.fullcomps | orderBy : orderBy">
+        <tr ng-repeat-end ng-if="row.open && row.compsLoaded && row.fullcomps.length > 0" ng-repeat="comp in row.fullcomps | orderBy : ['orderNumber','name']">
             <td></td>
             <td ng-show="show.rownumber"></td>
             <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>

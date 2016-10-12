@@ -7,6 +7,14 @@ var AuditService = require('../../audit/services/auditService')
 var AccessService = require('../../access/services/accessService')
 
 module.exports = {
+    saveCompOrder:function(subjectid, compid, orderNumber, callback) {
+        var ObjectId = require('mongoose').Types.ObjectId;
+        var query = {_id: new ObjectId(subjectid), 'comps.id': new ObjectId(compid)};
+        var update = {$set: {'comps.$.orderNumber': orderNumber}};
+
+        PropertySchema.update(query, update, callback);
+
+    },
     linkComp: function (operator, context, revertedFromId, logHistory, subjectid, compid, callback) {
 
         async.parallel({

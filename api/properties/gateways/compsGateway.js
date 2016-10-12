@@ -1,5 +1,6 @@
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
+var CompService = require('../services/compsService')
 var _ = require("lodash");
 var async = require("async");
 
@@ -74,7 +75,18 @@ module.exports = {
 
                             });
                         }, function(err) {
-                            return res.status(200).json({success: true});
+                            var order = [];
+                            req.body.compids.forEach(function(x, i) {
+                               order.push({compid: x, orderNumber: i});
+                            });
+                            async.eachLimit(order, 10, function(o, callbackp){
+                                CompService.saveCompOrder(req.params.id, o.compid, o.orderNumber, function (err, newLink) {
+                                    callbackp();
+                                });
+                            }, function(err) {
+                                return res.status(200).json({success: true});
+                            });
+
                         });
                     });
                     // console.log('Added: ', added);

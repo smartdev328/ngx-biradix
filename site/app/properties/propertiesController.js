@@ -112,6 +112,13 @@ define([
                             if (p.orgid && !_.find(ownedProps, function(x) {return x._id.toString() == p._id.toString()})) {
                                 p.canEdit = false;
                             }
+
+                            var comp = _.find(row.comps, function(x) {return x.id.toString() == p._id.toString()});
+                            p.orderNumber = 999;
+
+                            if (comp && typeof comp.orderNumber != 'undefined') {
+                                p.orderNumber = comp.orderNumber;
+                            }
                         })
 
                         row.compsLoaded = true;
@@ -124,7 +131,7 @@ define([
         /////////////////////////////
         $scope.reload = function (callback) {
             $scope.localLoading = false;
-            $propertyService.search({limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded"}).then(function (response) {
+            $propertyService.search({limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber"}).then(function (response) {
                 $scope.data = response.data.properties;
 
                 $scope.data.forEach(function(p) {
