@@ -161,7 +161,7 @@ define([
                 var wait = 100;
                 if (!skipFadeOut) {
                     div.addClass("fade-out");
-                    wait = 200;
+                    wait = 100;
                 }
 
                 window.setTimeout(function() {
@@ -169,12 +169,12 @@ define([
                         callback();
                     }
                     window.setTimeout(function() {
+                        div.removeClass("fade-out");
                         div.addClass("fade-in");
                         window.setTimeout(function () {
-                            div.removeClass("fade-out");
                             div.removeClass("fade-in");
                         }, 400);
-                    },200);
+                    },700);
                 }, wait);
             }
 
