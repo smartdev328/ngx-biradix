@@ -89,14 +89,34 @@ define([
 
             $scope.getLocation = function (val) {
                 var compids = _.map($scope.comps,function(x) {return x._id.toString()});
-                return $propertyService.search({search: val, active: true, exclude: compids}).then(function (response) {
+                return $propertyService.search({search: val, active: true}).then(function (response) {
                     return response.data.properties
                 });
             };
 
             $scope.searchSelected = function (item, model, label) {
                 $scope.changed = true;
-                $scope.comps.push(item);
+                item.faded = true;
+
+                var found = -1;
+
+                for(var i =0; i < $scope.comps.length; i++) {
+                      if ($scope.comps[i]._id.toString() == item._id.toString()) {
+                          found = i;
+                      }
+                }
+
+                if (found  == -1) {
+                    $scope.comps.push(item);
+                    found = $scope.comps.length - 1;
+                }
+                window.setTimeout(function() {
+                    $scope.transition(found,function() {
+                        item.faded = false;
+                    },true);
+
+                }, 50);
+
                 $scope.search1 = "";
             }
 
@@ -125,15 +145,33 @@ define([
             }
 
             $scope.move = function(ar, from, to) {
-                ar.splice(to, 0, ar.splice(from, 1)[0]);
-                var div = $("#tr-animate-" + from);
-                div.addClass("animate-repeat");
-                window.setTimeout(function() {
-                    div.removeClass("animate-repeat");
-                }, 1000);
-
-
+                $scope.transition(from, function() {
+                    ar.splice(to, 0, ar.splice(from, 1)[0]);
+                })
             };
+
+            $scope.transition = function(index, callback, skipFadeOut) {
+                var div = $("#tr-animate-" + index);
+
+                var wait = 100;
+                if (!skipFadeOut) {
+                    div.addClass("animate-repeat");
+                    wait = 700;
+                }
+
+                window.setTimeout(function() {
+                    if (callback) {
+                        callback();
+                    }
+                    window.setTimeout(function() {
+                        div.addClass("animate-repeat2");
+                        window.setTimeout(function () {
+                            div.removeClass("animate-repeat");
+                            div.removeClass("animate-repeat2");
+                        }, 700);
+                    },700);
+                }, wait);
+            }
 
             $scope.create = function () {
                 require([
@@ -160,12 +198,17 @@ define([
 
                     modalInstance.result.then(function (comp) {
                         //Send successfully
-                        console.log(comp);
                         comp.summary = comp.name + "<br><i>" + comp.address + ", " + comp.city + ", " + comp.state + "</i>";
+                        comp.faded = true;
                         $scope.comps.push(comp);
                         $scope.search1 = "";
                         $scope.changed = true;
+                        window.setTimeout(function() {
+                            $scope.transition($scope.comps.length - 1,function() {
+                                comp.faded = false;
+                            },true);
 
+                        }, 50);
                     }, function () {
                         //Cancel
                     });

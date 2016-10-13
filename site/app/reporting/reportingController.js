@@ -33,7 +33,7 @@ define([
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
 
 
-        $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id orgid"}).then(function (response) {
+        $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id comps.orderNumber orgid"}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
 
@@ -54,7 +54,7 @@ define([
             }
 
             if ($scope.selected.Property) {
-                $scope.loadComps(_.pluck($scope.selected.Property.comps,"id"), $scope.selected.Property._id)
+                $scope.loadComps()
             } else {
                 window.setTimeout(function() {window.document.title = "Reporting | BI:Radix";},1500);
                 $scope.localLoading = true;
@@ -69,7 +69,11 @@ define([
             $scope.localLoading = true;
         })
 
-        $scope.loadComps = function(compids,subjectid) {
+        $scope.loadComps = function() {
+
+            var compids = _.pluck($scope.selected.Property.comps,"id");
+            var subjectid = $scope.selected.Property._id;
+
             window.setTimeout(function() {window.document.title = $scope.selected.Property.name + " - Reporting | BI:Radix";},1500);
             $scope.reportLoading = false;
             $scope.noReports = false;
@@ -77,6 +81,21 @@ define([
 
             $propertyService.search({limit: 10000, permission: 'PropertyView', active: true, select : "_id name", ids: compids, sort: "name"}).then(function (response) {
                 $scope.items = [];
+
+                response.data.properties.forEach(function(c) {
+                    var comp = _.find($scope.selected.Property.comps, function (x) {
+                        return x.id.toString() == c._id.toString()
+                    });
+
+                    c.orderNumber = 999;
+
+                    if (comp && typeof comp.orderNumber != 'undefined') {
+                        c.orderNumber = comp.orderNumber;
+                    }
+                });
+
+                response.data.properties = _.sortByAll(response.data.properties, ['orderNumber','name']);
+
                 response.data.properties.forEach(function(c) {
                     if (c._id != subjectid) {
                         $scope.items.push({id: c._id, name: c.name, selected: true});
@@ -103,7 +122,7 @@ define([
 
         $scope.changeProperty = function() {
             $scope.localLoading = false;
-            $scope.loadComps(_.pluck($scope.selected.Property.comps,"id"), $scope.selected.Property._id);
+            $scope.loadComps();
         }
 
         $scope.run = function() {

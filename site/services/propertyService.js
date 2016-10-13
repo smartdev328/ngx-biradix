@@ -520,13 +520,13 @@ define(['app'], function (app) {
                 }]
             }
 
-            resp.comps = _.sortBy(resp.comps, function (n) {
-
-                if (n._id.toString() == resp.property._id.toString()) {
-                    return "-1";
-                }
-                return n.name;
-            })
+            // resp.comps = _.sortBy(resp.comps, function (n) {
+            //
+            //     if (n._id.toString() == resp.property._id.toString()) {
+            //         return "-1";
+            //     }
+            //     return n.name;
+            // })
 
             resp.comps.forEach(function (c, i) {
                 if (c._id.toString() != resp.property._id.toString()) {

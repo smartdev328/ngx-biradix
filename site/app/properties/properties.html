@@ -285,7 +285,7 @@
             <td></td>
             <td ng-show="show.rownumber"></td>
             <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name"><i class="fa fa-building-o" style="padding-right:3px"></i> <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
+            <td ng-show="show.name"><A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
                 <i class="fa fa-chain-broken blue"
                    style="cursor:pointer;font-size:14px;padding-left:1px"
                    ng-if="hasExcluded(row,comp)"

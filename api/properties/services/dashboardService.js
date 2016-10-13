@@ -156,6 +156,7 @@ module.exports = {
                     if (err) {
                         return callback(err,null)
                     } else {
+
                         //If we pass in a surveyDate, dont use the last survey date in comps.survey.id
                         //Instead get the last survey older then the date given
                         updateCompSurveyIdsByDate(comps,options.surveyDateStart,options.surveyDateEnd, function() {
@@ -218,6 +219,16 @@ module.exports = {
 
                                 all.comps.forEach(function(c) {
                                     delete c.floorplans;
+                                    c.orderNumber = 999;
+                                    var comp = _.find(property[0].comps, function(x) {return x.id.toString() == c._id.toString() })
+
+                                    if (comp && typeof comp.orderNumber != 'undefined') {
+                                        c.orderNumber = comp.orderNumber;
+                                    }
+
+                                    if (c._id.toString() == property[0]._id.toString()) {
+                                        c.orderNumber = -1;
+                                    }
                                 })
 
 
@@ -234,12 +245,8 @@ module.exports = {
 
                                 //console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
 
-                                all.comps = _.sortBy(all.comps, function(n) {
-                                    if (n._id.toString() == property[0]._id.toString()) {
-                                        return "-1";
-                                    }
-                                    return n.name;
-                                })
+                                all.comps = _.sortByAll(all.comps,['orderNumber','name']);
+
 
                                 //Remove all points for lifetime older then subject property
                                 if (options.daterange && options.daterange.daterange == "Lifetime" && all.points[id] && all.points[id].ner) {
