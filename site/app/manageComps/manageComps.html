@@ -44,7 +44,10 @@
                         <A href ng-click="moveDown($index)" ng-if="$index < comps.length - 1"><i class="fa fa-arrow-down"></i></A>
                         <A href ng-if="$index == comps.length - 1" style="cursor:not-allowed"><i class="fa fa-arrow-down" style="color:#aaa !important;"></i></A>
                     </td>
-                    <td ng-bind-html="($index+1).toString() + '. ' + row.summary | sanitize" style="text-align:left"></td>
+                    <Td style="text-align:left;padding:0px 5px 0px 5px;font-weight:bold;font-size:22px;color:#ccc">
+                        {{($index+1)}}
+                    </Td>
+                    <td ng-bind-html="row.summary | sanitize" style="text-align:left"></td>
                     <td style="text-align:right;border-right:1px solid #ccc;padding:10px"><a href ng-click="remove(row)"><i class="fa fa-close"></i></a></td>
                 </tr>
                 <tr>

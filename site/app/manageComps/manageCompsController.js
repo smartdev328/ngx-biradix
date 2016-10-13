@@ -49,6 +49,10 @@ define([
                 });
             }
 
+            $scope.getSummary = function(c) {
+                return "<B>" + c.name + "</B><br>" + c.address + ", " + c.city + ", " + c.state;
+            }
+
             $propertyService.search({
                 limit: 20,
                 permission: 'PropertyManage',
@@ -63,7 +67,7 @@ define([
                     $scope.localLoading = true;
                     $scope.comps = response.data.properties;
                     $scope.comps.forEach(function(c) {
-                        c.summary = c.name + "<br><i>" + c.address + ", " + c.city + ", " + c.state + "</i>";
+                        c.summary = $scope.getSummary(c);
 
                         var comp = _.find($scope.subject.comps, function(x) {return x.id.toString() == c._id.toString()});
 
@@ -107,6 +111,7 @@ define([
                 }
 
                 if (found  == -1) {
+                    item.summary = $scope.getSummary(item);
                     $scope.comps.push(item);
                     found = $scope.comps.length - 1;
                 }
@@ -198,7 +203,7 @@ define([
 
                     modalInstance.result.then(function (comp) {
                         //Send successfully
-                        comp.summary = comp.name + "<br><i>" + comp.address + ", " + comp.city + ", " + comp.state + "</i>";
+                        comp.summary = $scope.getSummary(comp);
                         comp.faded = true;
                         $scope.comps.push(comp);
                         $scope.search1 = "";
