@@ -4,15 +4,15 @@
         opacity:0.4;
     }
 
-    .animate-repeat
+    .fade-out
      {
-        transition:all linear .6s;
+        transition:all linear .2s;
         opacity:0.4;
     }
 
-    .animate-repeat2
+    .fade-in
     {
-        transition:all linear .6s;
+        transition:all linear .3s;
         background-color: lightgreen;
         opacity:1;
     }
@@ -25,9 +25,11 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Manage Comps: {{subject.name}}</h2>
+        <hr>
     </div>
+
     <div class="modal-body">
-            Please add properties you would like to use as competitors ("comps") to <b>{{subject.name}}</b><Br>
+            Please add properties you would like to use as competitors ("comps") of <b>{{subject.name}}</b><Br>
             <Br>
             <div ng-if="!comps.length">
             <div class="alert alert-info" role="alert"  style="margin-bottom:0px !important;">There are currently no comps added. Please type in the <b>address or name</b> of the comp property you would like to add in the search below.</div>

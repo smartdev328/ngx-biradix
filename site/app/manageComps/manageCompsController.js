@@ -160,8 +160,8 @@ define([
 
                 var wait = 100;
                 if (!skipFadeOut) {
-                    div.addClass("animate-repeat");
-                    wait = 700;
+                    div.addClass("fade-out");
+                    wait = 200;
                 }
 
                 window.setTimeout(function() {
@@ -169,12 +169,12 @@ define([
                         callback();
                     }
                     window.setTimeout(function() {
-                        div.addClass("animate-repeat2");
+                        div.addClass("fade-in");
                         window.setTimeout(function () {
-                            div.removeClass("animate-repeat");
-                            div.removeClass("animate-repeat2");
-                        }, 700);
-                    },700);
+                            div.removeClass("fade-out");
+                            div.removeClass("fade-in");
+                        }, 400);
+                    },200);
                 }, wait);
             }
 
