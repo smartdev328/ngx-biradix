@@ -101,17 +101,18 @@ define([
             $scope.searchSelected = function (item, model, label) {
                 $scope.changed = true;
                 item.faded = true;
+                item.summary = $scope.getSummary(item);
 
                 var found = -1;
 
                 for(var i =0; i < $scope.comps.length; i++) {
                       if ($scope.comps[i]._id.toString() == item._id.toString()) {
                           found = i;
+                          $scope.comps[i] = item;
                       }
                 }
 
                 if (found  == -1) {
-                    item.summary = $scope.getSummary(item);
                     $scope.comps.push(item);
                     found = $scope.comps.length - 1;
                 }
