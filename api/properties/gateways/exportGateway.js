@@ -52,13 +52,22 @@ module.exports = {
 
                     fileName += ".xlsx";
 
-                    profiles = _.sortBy(profiles, function (n) {
+                    console.log(dashboard.comps);
 
-                        if (n.property._id.toString() == dashboard.property._id.toString()) {
-                            return "-1";
+                    profiles.forEach(function(c) {
+                        var comp = _.find(dashboard.comps, function (x) {
+                            return x._id.toString() == c.property._id.toString()
+                        });
+
+                        c.orderNumber = 999;
+
+                        if (comp && typeof comp.orderNumber != 'undefined') {
+                            c.orderNumber = comp.orderNumber;
                         }
-                        return n.property.name;
-                    })
+                        c.name = comp.name;
+                    });
+
+                    profiles = _.sortByAll(profiles, ['orderNumber','name']);
 
                     var json = {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone, settings: {
                         showLeases: req.user.settings.showLeases
