@@ -107,9 +107,9 @@ define([
         $scope.loginAs = function(userid) {
             $authService.loginAs(userid, function (usr, status) {
                 if (usr) {
-                    $rootScope.me = usr;
-                    $rootScope.updateLogos();
-                    $location.path('/dashboard')
+                    // $rootScope.me = usr;
+                    // $rootScope.updateLogos();
+                    window.location.href = '/';
                 }
             })
 

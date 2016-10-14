@@ -423,7 +423,7 @@ define([
         }
 
         $scope.alertsProperties = function() {
-            $propertyService.search({needsApproval:true}).then(function (response) {
+            $propertyService.search({limit: 10000, needsApproval:true}).then(function (response) {
 
                     var a = _.find($rootScope.notifications, function(x) {return x.key == "properties"});
 

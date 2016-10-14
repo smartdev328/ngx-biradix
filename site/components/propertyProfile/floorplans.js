@@ -54,9 +54,8 @@ define([
 
                     if (s == null) {
                         $scope.orderBy = $scope.defaultSort;
-                        return;
                     }
-
+                    else
                     if (s == true) {
                         $scope.orderBy = "-" + v;
                     }

@@ -14,7 +14,7 @@ define([
                 roles: '='
             },
             controller: function ($scope, $gridService, $cookies, $sce) {
-                $scope.defaultSort = "number"
+                $scope.defaultSort = ""
 
                 if ($scope.show && typeof $scope.show == "string") {
                     $scope.show = JSON.parse($scope.show);
@@ -118,9 +118,9 @@ define([
 
                     if (s == null) {
                         $scope.orderBy = $scope.defaultSort;
-                        return;
-                    }
 
+                    }
+                    else
                     if (s == true) {
                         $scope.orderBy = "-" + v;
                     }

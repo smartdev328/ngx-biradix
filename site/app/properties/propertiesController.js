@@ -23,7 +23,7 @@ define([
         $scope.limit = 50;
         $scope.sort = {name:true}
         $scope.search = {}
-        $scope.defaultSort = "-name";
+        $scope.defaultSort = "";
         $scope.searchable = ['name', 'address', 'city', 'state', 'zip', 'company'];
         $scope.search['active'] = true;
 
@@ -566,7 +566,7 @@ define([
         $scope.needsApproval = [];
 
         $scope.getNeedsApproval = function() {
-            $propertyService.search({needsApproval:true}).then(function (response) {
+            $propertyService.search({limit: 10000, needsApproval:true}).then(function (response) {
                     $scope.needsApproval = response.data.properties;
 
                 },
