@@ -1,7 +1,7 @@
 var AccessService = require('../../access/services/accessService')
 var async = require("async")
 var queueService = require('../services/queueService');
-
+var _ = require("lodash")
 module.exports = {
     init: function(Routes) {
         Routes.post('/notifications_test', function (req, res) {
@@ -37,6 +37,22 @@ module.exports = {
                     if (err) {
                         return res.status(400).send(err);
                     }
+
+                    profiles.forEach(function(c) {
+                        var comp = _.find(dashboard.comps, function (x) {
+                            return x._id.toString() == c.property._id.toString()
+                        });
+
+                        c.orderNumber = 999;
+
+                        if (comp && typeof comp.orderNumber != 'undefined') {
+                            c.orderNumber = comp.orderNumber;
+                        }
+                        c.name = comp.name;
+                    });
+
+                    profiles = _.sortByAll(profiles, ['orderNumber','name']);
+
                     res.status(200).json({dashboard: dashboard, profiles: profiles});
                     dashboard = null;
                     profiles = null;

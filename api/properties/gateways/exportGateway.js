@@ -52,8 +52,6 @@ module.exports = {
 
                     fileName += ".xlsx";
 
-                    console.log(dashboard.comps);
-
                     profiles.forEach(function(c) {
                         var comp = _.find(dashboard.comps, function (x) {
                             return x._id.toString() == c.property._id.toString()
