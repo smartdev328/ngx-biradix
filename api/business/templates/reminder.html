@@ -6,7 +6,7 @@ We appreciate you taking the time to do market survey updates as it keeps our sh
 <br/>
 <table border="0" style="font-size:9pt;width:100%" cellpadding="5" cellspacing="0">
     <tr style="background-color: #f9f9f9">
-        <th style="border-bottom:2px solid #ddd;">
+        <th style="border-bottom:2px solid #ddd;text-align:left">
            Property
         </th>
         <th style="border-bottom:2px solid #ddd;text-align:right">
@@ -27,7 +27,7 @@ We appreciate you taking the time to do market survey updates as it keeps our sh
     <tr {% if forloop.first %}
         style="font-weight:bold;color: #4460a9"
         {% endif %}>
-        <Td style="border-bottom:1px solid #ddd;">
+        <Td style="border-bottom:1px solid #ddd;text-align:left">
             {% if forloop.first %}
             <A href="{{dashboardBase}}{{row._id}}?s=1" style="color: #4460a9;text-decoration:none">{{row.name}}</A>
             {%else%}

@@ -1,6 +1,7 @@
 'use strict';
 define([
     'app',
+    '../../services/gridService',
 ], function (app) {
     app.directive('rankingsReport', function () {
         return {
@@ -11,7 +12,7 @@ define([
                 report: '=',
                 settings: '='
             },
-            controller: function ($scope) {
+            controller: function ($scope,$gridService) {
 
                 $scope.sort = {nersqft:true}
                 $scope.defaultSort = "-nersqft";
@@ -72,33 +73,8 @@ define([
                     $scope.reload();
                 });
 
-                $scope.toggle = function (obj, v, reset) {
-                    var s = obj[v];
-
-                    if (reset) {
-                        for (var i in obj) {
-                            if (i != v) {
-                                delete obj[i];
-                            }
-                        }
-                    }
-
-                    if (s === true) {
-                        obj[v] = false
-                        return;
-                    }
-
-                    if (s === false) {
-                        obj[v] = null
-                        return;
-                    }
-
-                    obj[v] = true;
-
-                }
-
                 $scope.toggleSort = function (v) {
-                    $scope.toggle($scope.sort, v, true)
+                    $gridService.toggle($scope.sort, v, true)
 
                     var s = $scope.sort[v];
 

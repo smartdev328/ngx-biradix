@@ -2,10 +2,11 @@
 define([
     'app',
     '../../filters/skip/filter',
-    '../../components/dialog/module'
+    '../../components/dialog/module',
+    '../../services/gridService',
 ], function (app) {
 
-    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$uibModal','$authService','$dialog','toastr', function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr) {
+    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$uibModal','$authService','$dialog','toastr','$gridService', function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr,$gridService) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -21,9 +22,9 @@ define([
         $scope.data = [];
         $scope.limits = [10,50,100,500]
         $scope.limit = 50;
-        $scope.sort = {name:true}
+        $scope.sort = {name:false}
         $scope.search = {}
-        $scope.defaultSort = "";
+        $scope.defaultSort = "name";
         $scope.searchable = ['name', 'address', 'city', 'state', 'zip', 'company'];
         $scope.search['active'] = true;
 
@@ -190,30 +191,6 @@ define([
         $scope.resetPager = function () {
             $scope.currentPage = 1;
         }
-        $scope.toggle = function (obj, v, reset) {
-            var s = obj[v];
-
-            if (reset) {
-                for (var i in obj) {
-                    if (i != v) {
-                        delete obj[i];
-                    }
-                }
-            }
-
-            if (s === true) {
-                obj[v] = false
-                return;
-            }
-
-            if (s === false) {
-                obj[v] = null
-                return;
-            }
-
-            obj[v] = true;
-
-        }
 
         $scope.searchFilter = function (obj) {
             if (!$scope.searchText) return true;
@@ -231,7 +208,7 @@ define([
 
         $scope.toggleSort = function (v) {
             $scope.resetPager();
-            $scope.toggle($scope.sort, v, true)
+            $gridService.toggle($scope.sort, v, true)
 
             var s = $scope.sort[v];
 

@@ -17,16 +17,16 @@ define([
             }
 
             if (s === true) {
-                obj[v] = false
-                return;
-            }
-
-            if (s === false) {
                 obj[v] = null
                 return;
             }
 
-            obj[v] = true;
+            if (s === false) {
+                obj[v] = true
+                return;
+            }
+
+            obj[v] = false;
 
         }
 

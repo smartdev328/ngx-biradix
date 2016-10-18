@@ -6,7 +6,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
 <br/>
 <table border="0" style="font-size:9pt;width:100%" cellpadding="5" cellspacing="0">
     <tr style="background-color: #f9f9f9">
-        <th style="border-bottom:2px solid #ddd;">
+        <th style="border-bottom:2px solid #ddd;text-align:left">
            Property
         </th>
         <th style="border-bottom:2px solid #ddd;text-align:right">
@@ -50,10 +50,13 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         {% elsif forloop.last %}
         style="font-weight:bold"
         {% endif %}>
-        <Td style="{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+        <Td style="{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}text-align:left">
             {% if forloop.first %}
             <A href="{{dashboardBase}}{{row._id}}" style="color: #4460a9;text-decoration:none">{{row.name}}</A>
             {%else%}
+                {% if forloop.last != true %}
+                &nbsp;&nbsp;{{forloop.index0}}.
+                {% endif %}
             {{row.name}}
             {% endif %}
         </Td>

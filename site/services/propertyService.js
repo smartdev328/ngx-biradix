@@ -285,9 +285,9 @@ define(['app'], function (app) {
                         return -x._last
                     })
 
-                    series.forEach(function (x, i) {
-                        x.name = (i + 1) + ". " + x.name
-                    })
+                    // series.forEach(function (x, i) {
+                    //     x.name = (i + 1) + ". " + x.name
+                    // })
                 }
 
                 var min = _.min(series, function (x) {
