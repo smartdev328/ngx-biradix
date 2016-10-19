@@ -76,6 +76,7 @@ define([
                         $scope.compItems ++;
                     }
                 }
+                $scope.stretchComps = $scope.compItems >= 10 || ($scope.compItems >= 9 && $scope.showComp.weekly === true)
 
                 $scope.showProfile = {
                     address: true,
