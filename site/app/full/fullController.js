@@ -70,6 +70,13 @@ define([
                     $scope.showComp = JSON.parse($cookies.get("cmp.s"));
                 }
 
+                $scope.compItems = 0;
+                for (var c in $scope.showComp) {
+                    if ($scope.showComp[c] === true) {
+                        $scope.compItems ++;
+                    }
+                }
+
                 $scope.showProfile = {
                     address: true,
                     website: false,
