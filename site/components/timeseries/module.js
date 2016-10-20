@@ -49,9 +49,24 @@ define([
                                 tooltip: {
                                     shared: true,
                                     xDateFormat: "%b %d, %Y",
-                                    pointFormatter: function() {
-                                        return '<span style="color:' + this.series.color + ';">\u25CF</span> ' + this.series.name + ': <b>' + $scope.options.prefix + this.y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
-                                    }
+                                    formatter: function() {
+                                        var s = "<span>" + moment(this.x).format("MMM DD, YYYY") + "</span><br/>";
+
+                                        var sortedPoints = this.points.sort(function(a, b){
+                                            return ((a.y > b.y) ? -1 : ((a.y < b.y) ? 1 : 0));
+                                        });
+
+                                        sortedPoints.forEach(function(p) {
+                                            s += '<span style="color:' + p.series.color + ';">\u25CF</span> ' + p.series.name + ': <b>' + $scope.options.prefix + p.y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+
+                                        })
+
+                                        return s;
+
+                                    },
+                                    // pointFormatter: function() {
+                                    //     return '<span style="color:' + this.series.color + ';">\u25CF</span> ' + this.series.name + ': <b>' + $scope.options.prefix + this.y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                    // }
                                 },
                                 credits: {
                                     enabled: false
