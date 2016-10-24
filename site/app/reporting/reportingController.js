@@ -16,22 +16,27 @@ define([
         }
 
         $scope.selected = {};
+        $scope.reportIds = [];
+        $scope.reportType = "";
 
         $rootScope.nav = "Reporting";
 
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Reporting";
 
+        $scope.propertyOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:false, group: "Individual Reports"});
-        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false, group: "Individual Reports"});
-        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports"});
-        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports"});
-        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports"});
+        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Protfolio Reports", type:"multiple"});
 
+        $scope.propertyItems = [];
 
         $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id comps.orderNumber orgid"}).then(function (response) {
             $scope.myProperties = response.data.properties;
@@ -59,6 +64,10 @@ define([
                 window.setTimeout(function() {window.document.title = "Reporting | BI:Radix";},1500);
                 $scope.localLoading = true;
             }
+
+            $scope.myProperties.forEach(function (a) {
+                $scope.propertyItems.push({id: a._id, name: a.name, selected: false})
+            })
 
         }, function(error) {
             if (error.status == 401) {
@@ -131,7 +140,6 @@ define([
 
             $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
 
-            $scope.reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
             $scope.compIds =  _.pluck($scope.selected.Comps,"id")
 
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
@@ -220,6 +228,26 @@ define([
             $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: $scope.compNames.concat($scope.reportNames)});
         }
 
+
+        $scope.$watch('reportItems', function() {
+            var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
+
+            var diff = _.difference(reportIds,$scope.reportIds);
+
+            if (!reportIds.length) {
+                $scope.reportType = "";
+            } else
+            if (diff && diff.length > 0) {
+                $scope.reportType = _.find($scope.reportItems, function(x) {return x.id == diff[0]}).type;
+                $scope.reportItems.forEach(function(x) {
+                    if (x.type != $scope.reportType && x.selected === true) {
+                        x.selected = false;
+                    }
+                })
+            }
+
+            $scope.reportIds = reportIds;
+        },true)
 
     }]);
 });
