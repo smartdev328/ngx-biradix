@@ -22,15 +22,15 @@ define([
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Reporting";
 
-        $scope.options = { hideSearch: true, dropdown: true, labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
-        $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
+        $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
+        $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:false});
-        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false});
-        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false});
-        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false});
-        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false});
+        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:false, group: "Individual Reports"});
+        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false, group: "Individual Reports"});
+        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports"});
+        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports"});
+        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports"});
 
 
         $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id comps.orderNumber orgid"}).then(function (response) {

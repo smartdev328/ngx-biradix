@@ -132,8 +132,15 @@
                 <div class="panel-heading">Criteria</div>
                 <div class="panel-body">
                     <div class="row">
+                        <div class="col-sm-4" ng-if="items.length > 0">
+                            Reports:<Br>
+                            <div ng-if="items.length > 0">
+                                <filter-list options="reportOptions" items="reportItems"></filter-list>
+                            </div>
+                        </div>
+
                         <div class="col-sm-4">
-                            Property:<Br>
+                            Property(ies):<Br>
                             <div ng-show="myProperties.length == 1"><h4 style="margin:4px 0px 0px 0px;color: #4460a9;">{{selected.Property.name}}</h4></div>
                             <div class="visible-print"><h4 style="margin:0px">{{selected.Property.name}}</h4></div>
                             <select ng-show="myProperties.length > 1"
@@ -157,12 +164,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4" ng-if="items.length > 0">
-                            Reports:<Br>
-                            <div ng-if="items.length > 0">
-                                <filter-list options="reportOptions" items="reportItems"></filter-list>
-                            </div>
-                        </div>
+
                     </div>
 
                     <div style="width:100px;margin:10px auto 0px auto" class="hidden-print" ng-if="items.length > 0">
