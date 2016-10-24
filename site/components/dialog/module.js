@@ -4,6 +4,7 @@ define(['app'], function (app) {
             var svc = {};
 
             svc.confirm = function (msg,confirm,deny) {
+                deny = deny || function() {};
                 var modalInstance = $uibModal.open({
                     templateUrl: '/components/dialog/confirm.html?bust='+version,
                     controller: function($scope, $uibModalInstance){
