@@ -12,6 +12,7 @@ var AmenityService = require('../../amenities/services/amenityService')
 /////////////////////
 var PropertyHelperService = require('../services/propertyHelperService')
 var CreateService = require('../services/createService')
+var queueService = require('../services/queueService');
 /////////////////////
 var SurveyGateway = require('./surveyGateway')
 var CompsGateway = require('./compsGateway')
@@ -57,6 +58,15 @@ Routes.get('/lookups', function (req, res) {
         res.status(200).json({fees: PropertyHelperService.fees, orgs: all.orgs, amenities: all.amenities})
         all= null;
     });
+
+
+});
+
+Routes.post('/group/reports', function (req, res) {
+
+    queueService.sendNotification(req.user, {properties: req.body.propertyids, showLeases: req.user.settings.showLeases, dontEmail: true}, function(response) {
+        res.status(200).json({"property_status" : response.data});
+    })
 
 
 });

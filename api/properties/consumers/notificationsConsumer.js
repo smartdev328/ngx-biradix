@@ -114,14 +114,18 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
                     }
 
-                    BizEmailService.send(email, function(emailError, status) {
+                    if (data.dontEmail) {
+                        reply({done: true, data: final});
+                    } else {
+                        BizEmailService.send(email, function (emailError, status) {
 
-                        if (emailError) {
-                            throw Error(emailError)
-                        }
+                            if (emailError) {
+                                throw Error(emailError)
+                            }
 
-                        reply({done: true});
-                    })
+                            reply({done: true});
+                        })
+                    }
 
                     final = null;
                     email = null;

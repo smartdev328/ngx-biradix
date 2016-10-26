@@ -5,12 +5,12 @@ var DashboardService = require("../services/dashboardService")
 module.exports = {
     sendNotification: function(user, options, callback) {
         var timer = new Date().getTime();
-        queues.getExchange().publish({user: user, properties: options.properties, showLeases: options.showLeases},
+        queues.getExchange().publish({user: user, properties: options.properties, showLeases: options.showLeases, dontEmail: options.dontEmail},
             {
                 key: settings.NOTIFICATIONS_QUEUE,
-                reply: function () {
+                reply: function (data) {
                     console.log("Send Notifications for " + user._id + ": " + (new Date().getTime() - timer) + "ms");
-                    callback(null);
+                    callback(data);
                 }
             }
         );

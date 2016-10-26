@@ -10,7 +10,7 @@ define([
     '../../services/progressService',
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login')
         }
@@ -137,22 +137,67 @@ define([
         $scope.run = function() {
             $scope.reportLoading = true;
             $scope.noReports = false;
-
-            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
-
-            $scope.compIds =  _.pluck($scope.selected.Comps,"id")
+            $scope.noProperties = false;
 
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
-            $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
-            $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
-
 
             if ($scope.reportIds.length == 0) {
                 $scope.noReports = true;
                 $scope.reportLoading = false;
                 return;
             }
+
+            if ($scope.reportType == "single") {
+                $scope.singleReport();
+            } else {
+                $scope.multipleReport();
+            }
+
+        }
+        $scope.multipleReport = function() {
+            var properties = _.filter($scope.propertyItems,function(x) {return x.selected == true});
+
+            if ($scope.myProperties.length == 1) {
+                properties = [$scope.selected.Property._id];
+            }
+
+            if (!properties.length) {
+                $scope.noProperties = true;
+                $scope.reportLoading = false;
+                return;
+            }
+
+            $scope.propertyNames =  _.pluck(properties,"name")
+            $scope.propertyNames.forEach(function(x,i) {$scope.propertyNames[i] = {description: 'Property: ' + x}});
+            var propertyIds =  _.pluck(properties,"id")
+
+            $propertyService.reportsGroup(propertyIds,$scope.reportIds).then(function(response) {
+                $scope.reportLoading = false;
+                $scope.reports = response.data;
+
+                $scope.description = '%where%, ' + $scope.propertyNames.length + ' Property(ies), ' + $scope.reportIds.length + ' Report Type(s)';
+
+                if (!phantom) {
+                    $scope.auditMultiple('report', 'Website');
+                }
+
+                window.setTimeout(function() {
+                    window.renderable = true;
+                },600)
+
+
+            });
+
+
+
+
+        }
+        $scope.singleReport = function() {
+            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
+            $scope.compIds =  _.pluck($scope.selected.Comps,"id")
+            $scope.compNames =  _.pluck($scope.selected.Comps,"name")
+            $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
             $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
             $scope.marketShare = $scope.reportIds.indexOf("market_share") > -1;
@@ -162,23 +207,22 @@ define([
                 , $scope.selected.Property._id
                 ,$scope.reportIds
             ).then(function(response) {
-                    $scope.reportLoading = false;
-                    $scope.reports = response.data;
+                $scope.reportLoading = false;
+                $scope.reports = response.data;
 
-                    $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
+                $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
 
-                    if (!phantom) {
-                        $scope.audit('report', 'Website');
-                    }
+                if (!phantom) {
+                    $scope.audit('report', 'Website');
+                }
 
-                    window.setTimeout(function() {
-                        window.renderable = true;
-                    },600)
+                window.setTimeout(function() {
+                    window.renderable = true;
+                },600)
 
 
-                });
+            });
         }
-
 
         $scope.pdf = function(showFile) {
             $scope.audit('report_pdf','Pdf');
@@ -228,11 +272,15 @@ define([
             $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: $scope.compNames.concat($scope.reportNames)});
         }
 
-
+        $scope.auditMultiple = function(type, where) {
+            $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: $scope.propertyNames.concat($scope.reportNames)});
+        }
         $scope.$watch('reportItems', function() {
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
             var diff = _.difference(reportIds,$scope.reportIds);
+
+            var oldReportType = $scope.reportType;
 
             if (!reportIds.length) {
                 $scope.reportType = "";
@@ -244,6 +292,10 @@ define([
                         x.selected = false;
                     }
                 })
+
+                if (oldReportType && $scope.reportType && oldReportType != $scope.reportType) {
+                    toastr.warning("Different types of reports (Portfolio and Individual) can't be run at the same time, please run them separately");
+                }
             }
 
             $scope.reportIds = reportIds;

@@ -608,6 +608,18 @@ define(['app'], function (app) {
             });
         }
 
+        fac.reportsGroup = function(propertyids, reports) {
+            return $http.post('/api/1.0/properties/group/reports'+ '?bust=' + (new Date()).getTime(), {
+                propertyids: propertyids,
+                reports: reports,
+            }, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.getFullProperty = function(id) {
             return fac.search({limit: 1, permission: ['PropertyManage','CompManage'], _id: id
                 , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid floorplans totalUnits community_amenities location_amenities"
