@@ -43,7 +43,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat-start="block in report" ng-if="false"></tr>
-                <tr ng-repeat-start="row in block" ng-class="{'subject':$index == 0,'subtotal' : $index == block.length - 1}"
+                <tr ng-repeat-start="row in block" ng-class="{'subject':$index == 0,'subtotal' : $index == block.length - 1,'subtotal-padding' : $index == block.length - 1}"
                     >
                     <td>
                         {{row.name}}
@@ -70,15 +70,15 @@
                         ${{row.nersqft | number : 2}}
                     </td>
                     <td style="text-align:right">
-                        <span ng-if="row.lastweeknersqftpercent > 0">{{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="top"></span>
-                        <span ng-if="row.lastweeknersqftpercent < 0">{{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="top"></span>
-                        <span ng-if="row.lastweeknersqftpercent === 0">0% <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="top"></span>
+                        <span ng-if="row.lastweeknersqftpercent > 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-up" style="color:green"></i></span>
+                        <span ng-if="row.lastweeknersqftpercent < 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-down" style="color:red"></i></span>
+                        <span ng-if="row.lastweeknersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastweeknersqftpercent == ''">&nbsp;&nbsp;</span>
                     </td>
                     <td style="text-align:right">
-                        <span ng-if="row.lastmonthnersqftpercent > 0">{{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="top"></span>
-                        <span ng-if="row.lastmonthnersqftpercent < 0">{{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="top"></span>
-                        <span ng-if="row.lastmonthnersqftpercent === 0">0% <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="top"></span>
+                        <span ng-if="row.lastmonthnersqftpercent > 0">{{row.lastmonthnersqftpercent}}% <i class="fa fa-long-arrow-up" style="color:green"></i></span>
+                        <span ng-if="row.lastmonthnersqftpercent < 0">{{row.lastmonthnersqftpercent}}% <i class="fa fa-long-arrow-down" style="color:red"></i></span>
+                        <span ng-if="row.lastmonthnersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastmonthnersqftpercent == ''">&nbsp;&nbsp;</span>
                     </td>
                     <td style="text-align:right">

@@ -113,7 +113,9 @@ module.exports = {
                     hostname : req.hostname,
                     progressId : req.query.progressId,
                     reportIds : req.query.reportIds,
-                    compIds : req.query.compIds
+                    compIds : req.query.compIds,
+                    type: req.query.type,
+                    propertyIds: req.query.propertyIds
                 },
                 {
                     key: settings.PDF_REPORTING_QUEUE,

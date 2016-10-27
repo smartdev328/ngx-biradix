@@ -126,6 +126,8 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
                 pdfService.getCookie(data.hostname,"compIds", data.compIds),
                 pdfService.getCookie(data.hostname,"reportIds", data.reportIds),
                 pdfService.getCookie(data.hostname,"subjectId", data.id),
+                pdfService.getCookie(data.hostname,"type", data.type),
+                pdfService.getCookie(data.hostname,"propertyIds", data.propertyIds),
             ];
 
             options.cookies = cookies;

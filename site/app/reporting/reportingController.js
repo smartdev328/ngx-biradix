@@ -66,9 +66,24 @@ define([
                 $scope.localLoading = true;
             }
 
+            if ($cookies.get("propertyIds")) {
+                $scope.propertyIds = $cookies.get("propertyIds");
+            }
+
             $scope.myProperties.forEach(function (a) {
-                $scope.propertyItems.push({id: a._id, name: a.name, selected: false})
+                var sel = false;
+
+                if ($scope.propertyIds) {
+                    sel = $scope.propertyIds.indexOf(a._id) > -1
+                }
+
+                $scope.propertyItems.push({id: a._id, name: a.name, selected: sel})
             })
+
+            if ($cookies.get("type")) {
+                $scope.reportType = $cookies.get("type");
+            }
+
 
         }, function(error) {
             if (error.status == 401) {
@@ -172,12 +187,11 @@ define([
 
             $scope.propertyNames =  _.pluck(properties,"name")
             $scope.propertyNames.forEach(function(x,i) {$scope.propertyNames[i] = {description: 'Property: ' + x}});
-            var propertyIds =  _.pluck(properties,"id")
+            $scope.propertyIds =  _.pluck(properties,"id")
 
-            $propertyService.reportsGroup(propertyIds,$scope.reportIds).then(function(response) {
+            $propertyService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
-                console.log()
 
                 $scope.description = '%where%, ' + $scope.propertyNames.length + ' Property(ies), ' + $scope.reportIds.length + ' Report Type(s)';
 
@@ -228,8 +242,12 @@ define([
         }
 
         $scope.pdf = function(showFile) {
-            $scope.audit('report_pdf','Pdf');
 
+            if ($scope.reportType == "single") {
+                $scope.audit('report_pdf','Pdf');
+            } else {
+                $scope.auditMultiple('report_pdf','Pdf');
+            }
 
             $scope.progressId = _.random(1000000, 9999999);
 
@@ -239,6 +257,8 @@ define([
             url += "&reportIds=" + $scope.reportIds
             url += "&progressId=" + $scope.progressId
             url += "&timezone=" + moment().utcOffset()
+            url += "&type=" + $scope.reportType
+            url += "&propertyIds=" + $scope.propertyIds
             url += "&showFile=" + showFile
 
 
