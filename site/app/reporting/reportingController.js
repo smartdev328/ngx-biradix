@@ -6,6 +6,7 @@ define([
     '../../components/reports/feesDeposits.js',
     '../../components/reports/propertyRankings.js',
     '../../components/reports/marketShare.js',
+    '../../components/reports/propertyStatus.js',
     '../../services/auditService',
     '../../services/progressService',
 ], function (app) {
@@ -175,6 +176,7 @@ define([
             $propertyService.reportsGroup(propertyIds,$scope.reportIds).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
+                console.log()
 
                 $scope.description = '%where%, ' + $scope.propertyNames.length + ' Property(ies), ' + $scope.reportIds.length + ' Report Type(s)';
 

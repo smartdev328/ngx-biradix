@@ -1,0 +1,95 @@
+<div class="break panel panel-info" style="margin-bottom: 0px !important;">
+    <div class="panel-heading">Property Status</div>
+    <div class="panel-body">
+        <hr>
+        <div class="maingrid wrapper panel" style="overflow-x:auto">
+            <div class="header" style="height:46px"></div>
+            <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+                <tbody>
+                <tr class="thead">
+                    <th style="height:45px;max-height:45px">
+                        Property
+                    </th>
+                    <th style="text-align: right">
+                        Occupancy
+                    </th>
+                    <th ng-if="showLeases" style="text-align: right">
+                        Leases
+                    </th>
+                    <th style="text-align: right">
+                        Units
+                    </th>
+                    <th style="text-align: right">
+                        Sqft
+                    </th>
+                    <th style="text-align: right">
+                        Rent
+                    </th>
+                    <th style="text-align: right">
+                        NER
+                    </th>
+                    <th style="text-align: right">
+                        NER/Sqft
+                    </th>
+                    <th style="text-align: right">
+                        NER/Sqft<Br>vs Last Week
+                    </th>
+                    <th style="text-align: right">
+                        NER/Sqft<Br>vs Last Month
+                    </th>
+                    <th style="text-align: right">
+                        Last<Br>
+                        Updated
+                    </th>
+                </tr>
+                <tr ng-repeat-start="block in report" ng-if="false"></tr>
+                <tr ng-repeat-start="row in block" ng-class="{'subject':$index == 0,'subtotal' : $index == block.length - 1}"
+                    >
+                    <td>
+                        {{row.name}}
+                    </td>
+                    <td style="text-align:right">
+                        {{row.occupancy}}%
+                    </td>
+                    <td style="text-align:right" ng-if="showLeases">
+                        {{row.leased != "" ? row.leased + "%" : "-"}}
+                    </td>
+                    <td style="text-align:right">
+                        {{row.totUnits | number : 0}}
+                    </td>
+                    <td style="text-align:right">
+                        {{row.sqft | number : 0}}
+                    </td>
+                    <td style="text-align:right">
+                        ${{row.rent | number : 0}}
+                    </td>
+                    <td style="text-align:right">
+                        ${{row.ner | number : 0}}
+                    </td>
+                    <td style="text-align:right">
+                        ${{row.nersqft | number : 2}}
+                    </td>
+                    <td style="text-align:right">
+                        <span ng-if="row.lastweeknersqftpercent > 0">{{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="top"></span>
+                        <span ng-if="row.lastweeknersqftpercent < 0">{{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="top"></span>
+                        <span ng-if="row.lastweeknersqftpercent === 0">0% <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="top"></span>
+                        <span ng-if="row.lastweeknersqftpercent == ''">&nbsp;&nbsp;</span>
+                    </td>
+                    <td style="text-align:right">
+                        <span ng-if="row.lastmonthnersqftpercent > 0">{{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="top"></span>
+                        <span ng-if="row.lastmonthnersqftpercent < 0">{{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="top"></span>
+                        <span ng-if="row.lastmonthnersqftpercent === 0">0% <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="top"></span>
+                        <span ng-if="row.lastmonthnersqftpercent == ''">&nbsp;&nbsp;</span>
+                    </td>
+                    <td style="text-align:right">
+                        {{row.date}}
+                    </td>
+                </tr>
+                <tr ng-repeat-end ng-if="false"></tr>
+                <tr ng-repeat-end ng-if="false"></tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

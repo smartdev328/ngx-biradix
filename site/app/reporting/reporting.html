@@ -175,7 +175,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-info hidden-print" ng-if="items.length > 0 && !reports">
+            <div class="panel panel-info hidden-print" ng-if="myProperties.length > 0 && !reports">
                 <div class="panel-heading">Results</div>
                 <div class="panel-body">
                     <div ng-show="reportLoading" style="display:block;width:40px;margin:50px auto">
@@ -200,6 +200,8 @@
         <locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
 
         <fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
+
+        <property-status ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases"></property-status>
         </div>
      </div>
 </div>
