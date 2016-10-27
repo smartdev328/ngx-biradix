@@ -136,6 +136,7 @@ define([
         }
 
         $scope.run = function() {
+            $scope.reports = null;
             $scope.reportLoading = true;
             $scope.noReports = false;
             $scope.noProperties = false;
