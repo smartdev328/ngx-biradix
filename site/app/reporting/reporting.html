@@ -1,9 +1,10 @@
 {{debug}}
 <style>
 
-    .maingrid.wrapper.panel .subtotal TD {
-        color:black;
-        font-weight: bold;
+    .maingrid.wrapper.panel .subtotal TD,
+    .maingrid.wrapper.panel .subtotal TD SPAN{
+        color:black !important;
+        font-weight: bold !important;
     }
 
     .fp-header  {
@@ -89,6 +90,16 @@
 
         .fa-check:before {
             color: #1E90FF !important;
+        }
+
+        *, :after, :before {
+            color:inherit !important;
+        }
+
+        .maingrid.wrapper.panel .subtotal TD,
+        .maingrid.wrapper.panel .subtotal TD SPAN{
+            color:black !important;
+            font-weight: bold !important;
         }
 
     }

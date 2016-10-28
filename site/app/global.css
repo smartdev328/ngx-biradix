@@ -86,7 +86,8 @@ td.center,th.center {text-align:center}
         padding-bottom: 0px !important;
     }
 
-    .fa-clock-o.danger:before {
+    .fa-clock-o.danger:before,
+    .fa-long-arrow-down.danger:before {
         color: red !important;
     }
 
@@ -94,7 +95,8 @@ td.center,th.center {text-align:center}
         color: orange !important;
     }
 
-    .fa-clock-o.success:before {
+    .fa-clock-o.success:before,
+    .fa-long-arrow-up.success:before {
         color: green !important;
     }
 
