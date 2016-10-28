@@ -26,6 +26,7 @@ d.run(function() {
             ready();
         })
 
+        mongoose.Promise = global.Promise;
         mongoose.connect(settings.MONGODB_URI);
         var conn = mongoose.connection;
         conn.once('open', function () {

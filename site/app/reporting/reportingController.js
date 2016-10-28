@@ -49,23 +49,6 @@ define([
                 id = $cookies.get("subjectId");
             }
 
-
-            if (!$scope.myProperties || $scope.myProperties.length == 0) {
-                id = null;
-            }
-            else if (!id) {
-                $scope.selected.Property = $scope.myProperties[0];
-            } else {
-                $scope.selected.Property = _.find($scope.myProperties, function(x) {return x._id.toString() == id})
-            }
-
-            if ($scope.selected.Property) {
-                $scope.loadComps()
-            } else {
-                window.setTimeout(function() {window.document.title = "Reporting | BI:Radix";},1500);
-                $scope.localLoading = true;
-            }
-
             if ($cookies.get("propertyIds")) {
                 $scope.propertyIds = $cookies.get("propertyIds");
             }
@@ -82,6 +65,22 @@ define([
 
             if ($cookies.get("type")) {
                 $scope.reportType = $cookies.get("type");
+            }
+            
+            if (!$scope.myProperties || $scope.myProperties.length == 0) {
+                id = null;
+            }
+            else if (!id) {
+                $scope.selected.Property = $scope.myProperties[0];
+            } else {
+                $scope.selected.Property = _.find($scope.myProperties, function(x) {return x._id.toString() == id})
+            }
+
+            if ($scope.selected.Property || $scope.reportType) {
+                $scope.loadComps()
+            } else {
+                window.setTimeout(function() {window.document.title = "Reporting | BI:Radix";},1500);
+                $scope.localLoading = true;
             }
 
 
@@ -138,6 +137,8 @@ define([
                         $scope.items[i].selected = $cookies.get("compIds").indexOf(x.id) > -1
                     })
 
+                    $scope.reportIds = $cookies.get("reportIds");
+
                     $scope.run();
                 }
 
@@ -159,9 +160,11 @@ define([
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
             $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
 
+
             if ($scope.reportIds.length == 0) {
                 $scope.noReports = true;
                 $scope.reportLoading = false;
+                window.renderable = true;
                 return;
             }
 
