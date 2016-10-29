@@ -82,7 +82,7 @@
                         <span ng-if="row.lastmonthnersqftpercent == ''">&nbsp;&nbsp;</span>
                     </td>
                     <td style="text-align:right">
-                        {{row.date}}
+                        <span ng-class="{'danger':row.tier == 'danger'}">{{row.date}}</span>
                     </td>
                 </tr>
                 <tr ng-repeat-end ng-if="false"></tr>
