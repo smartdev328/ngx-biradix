@@ -52,12 +52,34 @@ define([
                                     formatter: function() {
                                         var s = "<span>" + moment(this.x).format("MMM DD, YYYY") + "</span><br/>";
 
-                                        var sortedPoints = this.points.sort(function(a, b){
-                                            return ((a.y > b.y) ? -1 : ((a.y < b.y) ? 1 : 0));
+                                        var series = this.points[0].series.chart.series;
+                                        var x = this.x;
+
+                                        var sortedPoints = series.sort(function(a, b){
+                                            var ay = _.find(a.data,function(z) {return z.x == x});
+                                            var by = _.find(b.data,function(z) {return z.x == x});
+
+                                            if (ay) {
+                                                ay = ay.y
+                                            } else {
+                                                ay = 0;
+                                            }
+
+                                            if (by) {
+                                                by = by.y
+                                            } else {
+                                                by = 0;
+                                            }
+                                            return ((ay > by) ? -1 : ((ay < by) ? 1 : 0));
                                         });
 
                                         sortedPoints.forEach(function(p) {
-                                            s += '<span style="color:' + p.series.color + ';">\u25CF</span> ' + p.series.name + ': <b>' + $scope.options.prefix + p.y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                            var y = _.find(p.data,function(z) {return z.x == x});
+
+                                            if (y) {
+                                                y = y.y;
+                                                s += '<span style="color:' + p.color + ';">\u25CF</span> ' + p.name + ': <b>' + $scope.options.prefix + y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                            }
 
                                         })
 

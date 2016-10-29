@@ -93,7 +93,7 @@ define([
 
             $scope.getLocation = function (val) {
                 var compids = _.map($scope.comps,function(x) {return x._id.toString()});
-                return $propertyService.search({search: val, active: true}).then(function (response) {
+                return $propertyService.search({search: val, active: true, exclude: [id]}).then(function (response) {
                     return response.data.properties
                 });
             };

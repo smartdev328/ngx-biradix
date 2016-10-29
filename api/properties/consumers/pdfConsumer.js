@@ -111,6 +111,10 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
             var p = properties[0];
             var fileName = p.name.replace(/ /g, "_");
 
+            if (data.type == "multiple") {
+                fileName = "Portfolio"
+            }
+
             fileName += "_Report_" + moment().utc().add(data.timezone,"minute").format("MM_DD_YYYY");
 
             fileName += ".pdf";
