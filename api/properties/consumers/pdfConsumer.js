@@ -100,7 +100,9 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 console.log('I am about to render');
 
-                var r = render(url, options).pipe(ws);
+                var r = render(url, options).on('log', function(log) {
+                    console.log('Log:', log)
+                }).pipe(ws);
 
 
             });
