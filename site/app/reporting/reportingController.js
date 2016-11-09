@@ -85,6 +85,7 @@ define([
 
 
         }, function(error) {
+            window.renderable = true;
             if (error.status == 401) {
                 $rootScope.logoff();
                 return;

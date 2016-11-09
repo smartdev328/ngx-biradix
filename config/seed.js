@@ -4,6 +4,7 @@ var settings = require("./settings");
 var UserSchema = require('../api/users/schemas/userSchema')
 var AccessService = require('../api/access/services/accessService')
 var UserCreateService = require('../api/users/services/userCreateService')
+var UserService = require('../api/users/services/userService')
 var OrgService = require('../api/organizations/services/organizationService')
 var PropertyService = require('../api/properties/services/propertyService')
 var CreateService = require('../api/properties/services/createService')
@@ -950,65 +951,68 @@ var PropertiesCreate = function(System, companies,callback) {
 }
 var UsersCreate = function(roles, callback) {
 
-    var System = {email : "admin@biradix.com", password: "$%%##FSDFSD", first : "System", last : "User", isSystem : true, roleid: roles.BiradixAdmin._id};
-    var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K", roleids: [roles.BiradixAdmin._id]};
-    var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z", roleids: [roles.BiradixAdmin._id]};
-    var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleids: [roles.BiradixAdmin._id], legacty_hash: ""};
-    var Michelle = {email : "cue+michelle@elkconsulting.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleids: [roles.GreystarCM._id]};
+    var System = {email : "admin@biradix.com", password: "$%%##FSDFSD", first : "System", last : "User", isSystem : true, roleids: [roles.BiradixAdmin._id], passwordUpdated: true};
+    var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K", roleids: [roles.BiradixAdmin._id], passwordUpdated: true};
+    var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z", roleids: [roles.BiradixAdmin._id], passwordUpdated: true};
+    var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleids: [roles.BiradixAdmin._id], legacty_hash: "", passwordUpdated: true};
+    // var Michelle = {email : "cue+michelle@elkconsulting.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleids: [roles.GreystarCM._id]};
 
 
-    UserCreateService.insert(null, null, System, null, function(errors, usr) {
+    UserCreateService.insert(null, context, System, null, function(errors, usr) {
         if (errors) {
-            throw("Unable to seed: " + errors[0].msg);
+            throw("Unable to seed System: " + errors[0].msg);
         }
 
-        System = usr;
-
-        async.parallel({
-                Alex: function(callbackp) {
-                    UserCreateService.insert(System, context, Alex, null, function(usr) {
+        UserService.getSystemUser(function(s) {
+            System = s.user;
+            async.parallel({
+                    Alex: function(callbackp) {
+                        UserCreateService.insert(System, context, Alex, null, function(errors, usr) {
+                                if (errors) {
+                                    throw("Unable to seed Alex: " + errors[0].msg);
+                                }
+                                callbackp(null, usr)
+                            }
+                        );
+                    },
+                    Eugene: function(callbackp) {
+                        UserCreateService.insert(System, context, Eugene, null, function(errors, usr) {
+                                if (errors) {
+                                    throw("Unable to seed Eugene: " + errors[0].msg);
+                                }
+                                callbackp(null, usr)
+                            }
+                        );
+                    },
+                    Blerim: function(callbackp) {
+                        UserCreateService.insert(System, context, Blerim, null,function(errors, usr) {
+                            if (errors) {
+                                throw("Unable to seed Blerim: " + errors[0].msg);
+                            }
                             callbackp(null, usr)
-                        },
-                        function(errors) {
-                            throw("Unable to seed: "+ errors[0].msg);
-                        }
-                    );
-                },
-                Eugene: function(callbackp) {
-                    UserCreateService.insert(System, context, Eugene, null, function(usr) {
-                            callbackp(null, usr)
-                        },
-                        function(errors) {
-                            throw("Unable to seed: "+ errors[0].msg);
-                        }
-                    );
-                },
-                Blerim: function(callbackp) {
-                    UserCreateService.insert(System, context, Blerim, null,function(usr) {
-                            callbackp(null, usr)
-                        },
-                        function(errors) {
-                            throw("Unable to seed: "+ errors[0].msg);
-                        }
-                    );
-                },
-                Michelle: function(callbackp) {
-                    if (!settings.SEED_DEMO) {
-                        return callbackp(null, null);
-                    }
-                    UserCreateService.insert(System, context, Michelle, null,function(usr) {
-                            callbackp(null, usr)
-                        },
-                        function(errors) {
-                            throw("Unable to seed: "+ errors[0].msg);
-                        }
-                    );
+                        })
+                    },
+                    // Michelle: function(callbackp) {
+                    //     if (!settings.SEED_DEMO) {
+                    //         return callbackp(null, null);
+                    //     }
+                    //     UserCreateService.insert(System, context, Michelle, null,function(usr) {
+                    //             callbackp(null, usr)
+                    //         },
+                    //         function(errors) {
+                    //             throw("Unable to seed: "+ errors[0].msg);
+                    //         }
+                    //     );
+                    //}
+                },function(err, users) {
+                    users.System = System;
+                    callback(users)
                 }
-            },function(err, users) {
-                users.System = System;
-                callback(users)
-            }
-        );
+            );
+        })
+
+
+
     });
 
 

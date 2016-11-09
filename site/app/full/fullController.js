@@ -171,6 +171,8 @@ define([
                     })
 
                     $scope.setRenderable();
+                }, function(error) {
+                    window.renderable = true;
                 });
             }
         };
