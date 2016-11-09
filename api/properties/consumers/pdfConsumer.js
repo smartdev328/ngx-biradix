@@ -98,6 +98,8 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                     ;
                 });
 
+                console.log('I am about to render');
+
                 var r = render(url, options).pipe(ws);
 
 
@@ -107,6 +109,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
         })
     }
     catch (ex) {
+        console.log('I failed render');
         reply({err: ex});
         throw ex;
     }
