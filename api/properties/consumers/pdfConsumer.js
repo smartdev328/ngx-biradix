@@ -71,43 +71,38 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 options.cookies = cookies;
 
-                try {
-                    var MemoryStream = require('memory-stream');
+                var MemoryStream = require('memory-stream');
 
-                    var ws = new MemoryStream();
+                var ws = new MemoryStream();
 
 
-                    ws.on('finish', function () {
-                        var newBuffer = Buffer.concat(ws.buffer);
-                        if (data.progressId) {
-                            ProgressService.setComplete(data.progressId)
-                        }
+                ws.on('finish', function () {
+                    var newBuffer = Buffer.concat(ws.buffer);
+                    if (data.progressId) {
+                        ProgressService.setComplete(data.progressId)
+                    }
 
-                        var JSONB = require('json-buffer')
+                    var JSONB = require('json-buffer')
 
-                        console.log(data.id + " pdf ended");
-                        reply({stream: JSONB.stringify(newBuffer), filename: fileName});
-                        full = null;
-                        cookies = null;
-                        r = null;
-                        render = null;
-                        options = null;
-                        properties = null;
-                        newBuffer = null;
+                    console.log(data.id + " pdf ended");
+                    reply({stream: JSONB.stringify(newBuffer), filename: fileName});
+                    full = null;
+                    cookies = null;
+                    r = null;
+                    render = null;
+                    options = null;
+                    properties = null;
+                    newBuffer = null;
 
-                        settings.PDF_HIT_COUNT++;
-                        ;
-                    });
+                    settings.PDF_HIT_COUNT++;
+                    ;
+                });
 
-                    console.log('I am about to render');
+                console.log('I am about to render');
 
-                    var r = render(url, options).pipe(ws);
-                }
-                catch (ex) {
-                    console.log('I failed render inside');
-                    reply({err: ex});
-                    throw ex;
-                }
+                var r = render(url, options).pipe(ws);
+
+
             });
 
 
