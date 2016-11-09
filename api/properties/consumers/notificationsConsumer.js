@@ -12,7 +12,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
     console.log(data.properties, " notifications started");
     async.parallel({
         properties : function(callbackp) {
-            if (data.properties && data.properties.length > 0) {
+            if (data.properties && data.properties.length > 0 && data.properties[0] != null) {
                 callbackp(null,data.properties);
             } else {
                 propertyService.search(data.user, {
