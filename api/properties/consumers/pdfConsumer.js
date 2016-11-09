@@ -33,7 +33,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 var render = phantom(options);
 
-                var url = data.url + 'aa' + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
+                var url = data.url + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
 
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
