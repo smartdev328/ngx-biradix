@@ -33,7 +33,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 var render = phantom(options);
 
-                var url = data.url + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
+                var url = data.url + 'aa' + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
 
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
@@ -98,11 +98,14 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                     ;
                 });
 
+
                 console.log('I am about to render');
 
-                var r = render(url, options).on('log', function(log) {
-                    console.log('Log:', log)
+                var r = render(url, options).on('error', function(err) {
+                    console.log('I errored');
+                    reply({err: err});
                 }).pipe(ws);
+
 
 
             });
