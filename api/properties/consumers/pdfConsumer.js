@@ -71,38 +71,43 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 options.cookies = cookies;
 
-                var MemoryStream = require('memory-stream');
+                try {
+                    var MemoryStream = require('memory-stream');
 
-                var ws = new MemoryStream();
-
-
-                ws.on('finish', function () {
-                    var newBuffer = Buffer.concat(ws.buffer);
-                    if (data.progressId) {
-                        ProgressService.setComplete(data.progressId)
-                    }
-
-                    var JSONB = require('json-buffer')
-
-                    console.log(data.id + " pdf ended");
-                    reply({stream: JSONB.stringify(newBuffer), filename: fileName});
-                    full = null;
-                    cookies = null;
-                    r = null;
-                    render = null;
-                    options = null;
-                    properties = null;
-                    newBuffer = null;
-
-                    settings.PDF_HIT_COUNT++;
-                    ;
-                });
-
-                console.log('I am about to render');
-
-                var r = render(url, options).pipe(ws);
+                    var ws = new MemoryStream();
 
 
+                    ws.on('finish', function () {
+                        var newBuffer = Buffer.concat(ws.buffer);
+                        if (data.progressId) {
+                            ProgressService.setComplete(data.progressId)
+                        }
+
+                        var JSONB = require('json-buffer')
+
+                        console.log(data.id + " pdf ended");
+                        reply({stream: JSONB.stringify(newBuffer), filename: fileName});
+                        full = null;
+                        cookies = null;
+                        r = null;
+                        render = null;
+                        options = null;
+                        properties = null;
+                        newBuffer = null;
+
+                        settings.PDF_HIT_COUNT++;
+                        ;
+                    });
+
+                    console.log('I am about to render');
+
+                    var r = render(url, options).pipe(ws);
+                }
+                catch (ex) {
+                    console.log('I failed render inside');
+                    reply({err: ex});
+                    throw ex;
+                }
             });
 
 
