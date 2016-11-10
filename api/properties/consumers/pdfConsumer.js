@@ -102,8 +102,8 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
                 console.log('I am about to render');
 
                 var r = render(url, options).on('error', function(err) {
-                    console.log('I errored');
-                    reply({stream: null, err: err});
+                    console.log('I errored: ', err.toString());
+                    reply({stream: null, err: err.toString()});
 
                 }).pipe(ws);
 
