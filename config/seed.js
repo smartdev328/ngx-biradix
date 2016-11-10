@@ -1237,7 +1237,7 @@ var CompaniesCreate = function(callback) {
 
 },function(err, orgs) {
         if (err) {
-            throw Error(JSON.stringify(err));
+            throw new Error(JSON.stringify(err));
 
         }
         callback(orgs)
