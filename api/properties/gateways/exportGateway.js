@@ -192,7 +192,7 @@ module.exports = {
                             console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
                             
                             if (!data.stream) {
-                                error.send(data.err,message);
+                                error.send(JSON.stringify(data.err),message);
                                 return res.status("200").send("There was an error generating this report. Please contact an administrator");
                             }
                             
