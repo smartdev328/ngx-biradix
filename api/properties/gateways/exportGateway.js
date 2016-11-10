@@ -183,7 +183,8 @@ module.exports = {
                     showComp : query.showC,
                     showProfile : query.showP,
 
-                }/
+                };
+
                 queues.getExchange().publish(message,
                     {
                         key: settings.PDF_PROFILE_QUEUE,
