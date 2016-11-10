@@ -17,7 +17,7 @@ module.exports = {
             printMedia  : true,       // Defaults to false. Force the use of a print stylesheet.
             maxErrors   : 3,           // Number errors phantom process is allowed to throw before killing it. Defaults to 3.
             expects     : true, // No default. Do not render until window.renderable is set to 'something'
-            retries     : 2,           // How many times to try a render before giving up. Defaults to 1.
+            retries     : 1,           // How many times to try a render before giving up. Defaults to 1.
             phantomFlags: [], // Defaults to []. Command line flags passed to phantomjs
             maxRenders  : 20,          // How many renders can a phantom process make before being restarted. Defaults to 20
         };

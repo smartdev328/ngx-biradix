@@ -186,6 +186,11 @@ module.exports = {
                         key: settings.PDF_PROFILE_QUEUE,
                         reply: function (data) {
                             console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                            
+                            if (!data.stream) {
+                                return res.status("200").send("There was an error generating this report. Please contact an administrator");
+                            }
+                            
                             res.setHeader("content-type", "application/pdf");
 
                             if (query.showFile) {
