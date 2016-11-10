@@ -12,6 +12,8 @@ var queueService = require('../services/queueService');
 var queues = require('../../../config/queues')
 var JSONB = require('json-buffer')
 var redisService = require('../../utilities/services/redisService')
+var error = require('../../../config/error')
+
 
 module.exports = {
     init: function(Routes) {
@@ -160,34 +162,36 @@ module.exports = {
 
                 //console.log(query, typeof query.showFile, typeof query.full);
 
-                queues.getExchange().publish({
-                        user: req.user,
-                        context : req.context,
-                        url : req.basePath,
-                        hostname : req.hostname,
-                        id: req.params.id,
-                        timezone : query.timezone,
-                        full : query.full,
-                        Graphs : query.Graphs,
-                        Summary : query.Summary,
-                        Scale : query.Scale,
-                        selectedStartDate : query.selectedStartDate,
-                        selectedEndDate : query.selectedEndDate,
-                        selectedRange : query.selectedRange,
-                        progressId : query.progressId,
-                        orderBy : query.orderBy,
-                        show : query.show,
-                        orderByComp : query.orderByC,
-                        showComp : query.showC,
-                        showProfile : query.showP,
+                var message = {
+                    user: req.user,
+                    context : req.context,
+                    url : req.basePath,
+                    hostname : req.hostname,
+                    id: req.params.id,
+                    timezone : query.timezone,
+                    full : query.full,
+                    Graphs : query.Graphs,
+                    Summary : query.Summary,
+                    Scale : query.Scale,
+                    selectedStartDate : query.selectedStartDate,
+                    selectedEndDate : query.selectedEndDate,
+                    selectedRange : query.selectedRange,
+                    progressId : query.progressId,
+                    orderBy : query.orderBy,
+                    show : query.show,
+                    orderByComp : query.orderByC,
+                    showComp : query.showC,
+                    showProfile : query.showP,
 
-                    },
+                }/
+                queues.getExchange().publish(message,
                     {
                         key: settings.PDF_PROFILE_QUEUE,
                         reply: function (data) {
                             console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
                             
                             if (!data.stream) {
+                                error(data.err,message);
                                 return res.status("200").send("There was an error generating this report. Please contact an administrator");
                             }
                             

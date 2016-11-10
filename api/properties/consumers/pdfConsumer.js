@@ -103,7 +103,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 var r = render(url, options).on('error', function(err) {
                     console.log('I errored');
-                    reply({stream: null, filename: fileName});
+                    reply({stream: null, err: err});
 
                 }).pipe(ws);
 
@@ -116,8 +116,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
     }
     catch (ex) {
         console.log('I failed render');
-        reply({stream: null});
-        throw ex;
+        reply({stream: null, err: ex});
     }
 
 });
