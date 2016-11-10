@@ -200,7 +200,7 @@ module.exports = {
                                     CompsService.getSubjects(compids, {select: "_id name comps.id"}, function(err, subjects) {
 
                                         if (err || !subjects) {
-                                            error.send(err, subjects);
+                                            error.send(err, {subjects: subjects, compids: compids, id: id});
                                         }
 
                                         var shared = {};
