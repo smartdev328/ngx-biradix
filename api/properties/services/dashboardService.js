@@ -6,6 +6,7 @@ var PropertyService = require('../services/propertyService')
 var DataPointsService = require('../services/dataPointsService')
 var CompsService = require('../services/compsService')
 var SurveyHelperService = require('../services/surveyHelperService')
+var error = require('../../../config/error')
 
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
@@ -197,6 +198,11 @@ module.exports = {
                                     //Get all Subjects for All Comps.
                                     //Calculate counts for comps in multiple subjects among the group
                                     CompsService.getSubjects(compids, {select: "_id name comps.id"}, function(err, subjects) {
+
+                                        if (err || !subjects) {
+                                            error.send(err, subjects);
+                                        }
+
                                         var shared = {};
 
                                         subjects.forEach(function(x) {
