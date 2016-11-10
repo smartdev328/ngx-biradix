@@ -107,22 +107,30 @@ module.exports = {
 
         Routes.get('/:id/reportsPdf', function (req, res) {
             var timer = new Date().getTime();
-            queues.getExchange().publish({
-                    user: req.user,
-                    id: req.params.id,
-                    url : req.basePath,
-                    timezone : req.query.timezone,
-                    hostname : req.hostname,
-                    progressId : req.query.progressId,
-                    reportIds : req.query.reportIds,
-                    compIds : req.query.compIds,
-                    type: req.query.type,
-                    propertyIds: req.query.propertyIds
-                },
+            var message = {
+                user: req.user,
+                id: req.params.id,
+                url : req.basePath,
+                timezone : req.query.timezone,
+                hostname : req.hostname,
+                progressId : req.query.progressId,
+                reportIds : req.query.reportIds,
+                compIds : req.query.compIds,
+                type: req.query.type,
+                propertyIds: req.query.propertyIds
+            };
+            
+            queues.getExchange().publish(message,
                 {
                     key: settings.PDF_REPORTING_QUEUE,
                     reply: function (data) {
                         console.log("Pdf Reporting Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+
+                        if (!data.stream) {
+                            error.send(new Error(data.err),message);
+                            return res.status("200").send("There was an error generating this report. Please contact an administrator");
+                        }
+
                         res.setHeader("content-type", "application/pdf");
 
                         if (req.query.showFile) {

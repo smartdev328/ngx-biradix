@@ -182,13 +182,16 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
                     ;
                 });
 
-                var r = render(url, options).pipe(ws);
+                var r = render(url, options).on('error', function(err) {
+                    console.log('I errored: ', err.toString());
+                    reply({stream: null, err: err.toString()});
+
+                }).pipe(ws);
             });
         });
     }
     catch (ex) {
-        reply({err: ex});
-        throw ex;
+        reply({stream: null, err: ex.toString()});
     }
 
 });
