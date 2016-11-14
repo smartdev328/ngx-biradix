@@ -115,7 +115,7 @@
 
 </div>
 
-<div class="row" ng-if="stretchComps && localLoading">
+<div ng-if="stretchComps && localLoading" ng-class="{'row': true, 'break': comps.length > 13}">
     <div class="col-xs-12">
         <div class="panel panel-info" style="margin-right:35px">
             <div class="panel-heading">Competitors</div>

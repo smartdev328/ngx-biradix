@@ -5,8 +5,8 @@
 </div>
 
 <div class="modal-body">
-    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
-
+    <div>Please select users who should have access to <b>{{property.name}}</b>.<Br></div>
+    <Br>
     <div ng-show="loading" style="display:block;width:100px;margin:20px  auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
@@ -16,7 +16,7 @@
             <br>
             <Br>
             <div style="margin:0px auto;width:75px">
-                <button class=" btn btn-primary btn-large btn-block contact-submit" type="button" ng-click="save()">Save</button>
+                <button class=" btn btn-success btn-large btn-block contact-submit" type="button" ng-click="save()">Save</button>
             </div>
         </form>
     </div>

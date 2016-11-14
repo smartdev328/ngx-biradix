@@ -145,12 +145,10 @@
     .maingrid > table .thead th {
         background-color: #f9f9f9 !important;
     }
-
-
-
 }
 
 
 .table>tbody>tr>th {
     border-top: inherit !important;
 }
+

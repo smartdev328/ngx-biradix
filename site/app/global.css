@@ -423,3 +423,8 @@ button.close {
 .fa-chain-broken.blue {
     font-weight: bold !important;
 }
+
+.modal-header HR {
+    margin-top: 0px !important;;
+    margin-bottom: 0px !important;
+}
