@@ -154,6 +154,8 @@ define([
 
         $scope.nerScale = $cookieSettingsService.getNerScale();
 
+        $scope.totals = $cookieSettingsService.getTotals();
+
         $scope.$watch('nerScale', function(d) {
             if (!$scope.localLoading) return;
             $cookieSettingsService.saveNerScale($scope.nerScale)
@@ -316,7 +318,7 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs);
+            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs, $scope.totals);
 
             $window.setTimeout($scope.checkProgress, 500);
 
@@ -325,7 +327,7 @@ define([
 
         $scope.print = function(full) {
 
-            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs);
+            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs, $scope.totals);
         }
 
     }]);

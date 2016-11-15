@@ -30,6 +30,8 @@ define([
 
         $scope.nerScale = $cookieSettingsService.getNerScale();
 
+        $scope.totals = $cookieSettingsService.getTotals();
+
         $scope.orderByFp = "sqft";
 
         if ($cookies.get("fp.o")) {
@@ -126,6 +128,10 @@ define([
 
                     $scope.property = resp.property;
                     $scope.comps = resp.comps;
+
+                    if ($scope.comps.length > 13) {
+                        $scope.stretchComps = true;
+                    }
 
                     $scope.mapOptions = resp.mapOptions;
                     $scope.bedrooms = resp.bedrooms;

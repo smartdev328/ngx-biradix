@@ -212,7 +212,7 @@
                 <span class="pull-left">Competitors</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
-                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:200px;margin-top:5px">
+                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:240px;margin-top:5px">
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
                             <Tr>
                                 <td>
@@ -226,6 +226,17 @@
                                        popover-placement="top"
                                        uib-popover="Turn this option off to calculate all floor plan data, including floor plans that have been manually excluded by the user from reporting and dashboard calculations."
                                             ></i>
+                                </Td>
+
+                            </Tr>
+
+                            <Tr>
+                                <td>
+                                    <toggle-switch checked="totals"></toggle-switch>&nbsp;
+                                </td>
+                                <Td>
+                                    &nbsp;Show Totals/Averages
+
                                 </Td>
 
                             </Tr>
@@ -258,7 +269,7 @@
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>
-                <property-comps roles="roles" comps="comps" order-by="orderByComp" show="show" can-survey="me.permissions.indexOf('Properties') > -1"></property-comps>
+                <property-comps roles="roles" comps="comps" order-by="orderByComp" show="show" can-survey="me.permissions.indexOf('Properties') > -1" show-totals="totals"></property-comps>
             </div>
         </div>
     </div>

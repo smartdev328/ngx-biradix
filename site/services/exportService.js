@@ -6,7 +6,7 @@ define([
     app.factory('$exportService', ['$http','$cookies','$urlService', function ($http,$cookies,$urlService) {
         var fac = {};
 
-        var getPdfUrl = function(full, showFile,propertyId,graphs, daterange, progressId) {
+        var getPdfUrl = function(full, showFile,propertyId,graphs, daterange, progressId, totals) {
             var url = '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
             
@@ -21,6 +21,7 @@ define([
                 progressId: progressId,
                 full: full,
                 showFile: showFile,
+                Totals: totals,
                 orderBy: ($cookies.get("fp.o") || ''),
                 show: encodeURIComponent($cookies.get("fp.s") || ''),
                 orderByC: ($cookies.get("cmp.o") || ''),
@@ -31,8 +32,8 @@ define([
             return {base:url, data: data};
         }
 
-        fac.print = function (propertyId, full, showFile, daterange, progressId, graphs) {
-            var pdf = getPdfUrl(full, showFile,propertyId, graphs, daterange, progressId);
+        fac.print = function (propertyId, full, showFile, daterange, progressId, graphs, totals) {
+            var pdf = getPdfUrl(full, showFile,propertyId, graphs, daterange, progressId, totals);
 
             //Has to be synchronous
             var key = $urlService.shorten(JSON.stringify(pdf.data));

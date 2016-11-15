@@ -179,6 +179,7 @@ module.exports = {
                     timezone : query.timezone,
                     full : query.full,
                     Graphs : query.Graphs,
+                    Totals : query.Totals,
                     Summary : query.Summary,
                     Scale : query.Scale,
                     selectedStartDate : query.selectedStartDate,

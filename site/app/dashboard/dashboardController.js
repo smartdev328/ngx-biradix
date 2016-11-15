@@ -30,6 +30,8 @@ define([
 
         $scope.graphs = $cookieSettingsService.getGraphs();
 
+        $scope.totals = $cookieSettingsService.getTotals();
+
         $scope.nerScale = $cookieSettingsService.getNerScale();
 
         $scope.selectedBedroom = -1;
@@ -147,6 +149,11 @@ define([
             if (!$scope.localLoading) return;
             $cookieSettingsService.saveSummary($scope.summary)
             $scope.refreshGraphs();
+        }, true);
+
+        $scope.$watch('totals', function() {
+            if (!$scope.localLoading) return;
+            $cookieSettingsService.saveTotals($scope.totals)
         }, true);
 
         $scope.refreshGraphs = function() {
@@ -337,14 +344,14 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs);
+            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs, $scope.totals);
 
             window.setTimeout($scope.checkProgress, 500);
 
         }
 
         $scope.print = function(full) {
-            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs);
+            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs, $scope.totals);
         }
 
         $scope.excel = function() {

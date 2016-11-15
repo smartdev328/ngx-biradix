@@ -13,6 +13,14 @@ define(['app'], function (app) {
 
         }
 
+        fac.getTotals = function () {
+            try {
+                return JSON.parse($cookies.get('Totals') || "false")
+            } catch(ex) {
+                return false;
+            }
+        }
+
         fac.saveSummary = function(summary) {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
@@ -31,6 +39,12 @@ define(['app'], function (app) {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
             $cookies.put('Graphs', graphs, {expires : expireDate})
+        }
+
+        fac.saveTotals = function(totals) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('Totals', totals, {expires : expireDate})
         }
 
         fac.getNerScale = function () {
