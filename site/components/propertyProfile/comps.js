@@ -35,7 +35,7 @@ define([
                     if ($scope.comps) {
 
                         $scope.totals = {units : 0};
-                        $scope.totalUnits = 0;
+                        $scope.totalSurveys = 0;
 
                         $scope.comps.forEach(function(comp, i) {
                             comp.number = i;
@@ -54,8 +54,8 @@ define([
                             comp.weeklyleases = comp.survey.weeklyleases == null ? -1 : comp.survey.weeklyleases;
 
                             if (comp.survey && comp.survey.rent) {
-                                $scope.totalUnits += comp.units;
-                                $scope.totals.units = ($scope.totals.units || 0) +  comp.units * comp.units;
+                                $scope.totalSurveys += 1;
+                                $scope.totals.units = ($scope.totals.units || 0) +  comp.units;
                                 $scope.totals.sqft = ($scope.totals.sqft || 0) +  comp.survey.sqft * comp.units;
                                 $scope.totals.occupancy = ($scope.totals.occupancy || 0) +  comp.survey.occupancy * comp.units;
                                 $scope.totals.leased = ($scope.totals.leased || 0) +  comp.survey.leased * comp.units;
@@ -97,22 +97,20 @@ define([
 
                         })
                         
-                        if ($scope.totalUnits > 0) {
-                            $scope.totals.units = ($scope.totals.units || 0) / $scope.totalUnits;
-                            $scope.totals.sqft = ($scope.totals.sqft || 0) / $scope.totalUnits;
-                            $scope.totals.occupancy = ($scope.totals.occupancy || 0) / $scope.totalUnits;
-                            $scope.totals.leased = ($scope.totals.leased || 0) / $scope.totalUnits;
-                            $scope.totals.renewal = ($scope.totals.renewal || 0) / $scope.totalUnits;
-                            $scope.totals.weeklytraffic = ($scope.totals.weeklytraffic || 0) / $scope.totalUnits;
-                            $scope.totals.weeklyleases = ($scope.totals.weeklyleases || 0) / $scope.totalUnits;
+                        if ($scope.totalSurveys > 0) {
+                            $scope.totals.sqft = ($scope.totals.sqft || 0) / $scope.totals.units;
+                            $scope.totals.occupancy = ($scope.totals.occupancy || 0) / $scope.totals.units;
+                            $scope.totals.leased = ($scope.totals.leased || 0) / $scope.totals.units;
+                            $scope.totals.renewal = ($scope.totals.renewal || 0) / $scope.totals.units;
+                            $scope.totals.weeklytraffic = ($scope.totals.weeklytraffic || 0) / $scope.totals.units;
+                            $scope.totals.weeklyleases = ($scope.totals.weeklyleases || 0) / $scope.totals.units;
                             $scope.totals.unitPercent = 100;
-
-                            $scope.totals.rent = ($scope.totals.rent || 0) / $scope.totalUnits;
-                            $scope.totals.mersqft = ($scope.totals.mersqft || 0) / $scope.totalUnits;
-                            $scope.totals.concessions = ($scope.totals.concessions || 0) / $scope.totalUnits;
-                            $scope.totals.ner = ($scope.totals.ner || 0) / $scope.totalUnits;
-                            $scope.totals.nersqft = ($scope.totals.nersqft || 0) / $scope.totalUnits;
-
+                            $scope.totals.rent = ($scope.totals.rent || 0) / $scope.totals.units;
+                            $scope.totals.mersqft = ($scope.totals.mersqft || 0) / $scope.totals.units;
+                            $scope.totals.concessions = ($scope.totals.concessions || 0) / $scope.totals.units;
+                            $scope.totals.ner = ($scope.totals.ner || 0) / $scope.totals.units;
+                            $scope.totals.nersqft = ($scope.totals.nersqft || 0) / $scope.totals.units;
+                            $scope.totals.units = ($scope.totals.units || 0) / $scope.totalSurveys;
 
                         }
 

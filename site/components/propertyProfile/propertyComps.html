@@ -372,43 +372,54 @@
             Totals / Averages
         </td>
         <td style="text-align: right" ng-if="show.occupancy" class="pad">
-            {{totals.occupancy | number : 1}}%
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">{{totals.occupancy | number : 1}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.leased" class="pad">
-            {{totals.leased | number : 1}}%
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">{{totals.leased | number : 1}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.renewal" class="pad">
-            {{totals.renewal | number : 1}}%
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">{{totals.renewal | number : 1}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
-            {{totals.weeklytraffic | number : 0}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">{{totals.weeklytraffic | number : 0}}</span>
         </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
-            {{totals.weeklyleases | number : 0}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">{{totals.weeklyleases | number : 0}}</span>
         </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
             {{totals.units | number : 0}}
         </td>
         <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-            {{totals.unitPercent | number : 1 }}%
+            100%
         </td>
         <td style="text-align: right" ng-if="show.sqft" class="pad">
-            {{totals.sqft | number : 0}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">{{totals.sqft | number : 0}}</span>
         </td>
         <td style="text-align: right" ng-if="show.rent" class="pad">
-            ${{totals.rent | number : 0}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">${{totals.rent | number : 0}}</span>
         </td>
         <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            ${{totals.mersqft | number : 2}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">${{totals.mersqft | number : 2}}</span>
         </td>
         <td style="text-align: right" ng-if="show.concessions" class="pad">
-            ${{totals.concessions | number : 0}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">${{totals.concessions | number : 0}}</span>
         </td>
         <td style="text-align: right" ng-if="show.ner" class="pad">
-            ${{totals.ner | number : 0}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">${{totals.ner | number : 0}}</span>
         </td>
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
-            ${{totals.nersqft | number : 2}}
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">${{totals.nersqft | number : 2}}</span>
         </td>
         <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
 
