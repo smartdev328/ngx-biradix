@@ -60,15 +60,12 @@ define([
                                 $scope.totals.sqft = ($scope.totals.sqft || 0) +  comp.survey.sqft * comp.units;
                                 $scope.totals.occupancy = ($scope.totals.occupancy || 0) +  comp.survey.occupancy * comp.units;
 
-                                if (typeof comp.survey.leased != 'undefined') {
+                                if (typeof comp.survey.leased != 'undefined' && comp.survey.leased != null) {
                                     $scope.totals.leased = ($scope.totals.leased || 0) + comp.survey.leased * comp.units;
                                     $scope.totals.unitsLeased = ($scope.totals.unitsLeased || 0) +  comp.units;
-                                    console.log(comp.survey.leased, $scope.totals.unitsLeased)
                                 }
 
-                                console.log(comp.survey.leased, $scope.totals.unitsLeased)
-
-                                if (typeof comp.survey.renewal != 'undefined') {
+                                if (typeof comp.survey.renewal != 'undefined' && comp.survey.renewal != null) {
                                     $scope.totals.renewal = ($scope.totals.renewal || 0) + comp.survey.renewal * comp.units;
                                     $scope.totals.unitsRenewal = ($scope.totals.unitsRenewal || 0) +  comp.units;
                                 }
