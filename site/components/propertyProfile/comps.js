@@ -63,9 +63,10 @@ define([
                                 if (typeof comp.survey.leased != 'undefined') {
                                     $scope.totals.leased = ($scope.totals.leased || 0) + comp.survey.leased * comp.units;
                                     $scope.totals.unitsLeased = ($scope.totals.unitsLeased || 0) +  comp.units;
+                                    console.log(comp.survey.leased, $scope.totals.unitsLeased)
                                 }
 
-                                console.log(comp.survey.leased, $scope.totals.leased,$scope.totals.unitsLeased)
+                                console.log(comp.survey.leased, $scope.totals.unitsLeased)
 
                                 if (typeof comp.survey.renewal != 'undefined') {
                                     $scope.totals.renewal = ($scope.totals.renewal || 0) + comp.survey.renewal * comp.units;
