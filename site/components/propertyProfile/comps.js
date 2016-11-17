@@ -61,13 +61,13 @@ define([
                                 $scope.totals.occupancy = ($scope.totals.occupancy || 0) +  comp.survey.occupancy * comp.units;
 
                                 if (typeof comp.survey.leased != 'undefined') {
-
                                     $scope.totals.leased = ($scope.totals.leased || 0) + comp.survey.leased * comp.units;
                                     $scope.totals.unitsLeased = ($scope.totals.unitsLeased || 0) +  comp.units;
                                 }
 
-                                if (typeof comp.survey.renewal != 'undefined') {
+                                console.log(comp.survey.leased, $scope.totals.leased,$scope.totals.unitsLeased)
 
+                                if (typeof comp.survey.renewal != 'undefined') {
                                     $scope.totals.renewal = ($scope.totals.renewal || 0) + comp.survey.renewal * comp.units;
                                     $scope.totals.unitsRenewal = ($scope.totals.unitsRenewal || 0) +  comp.units;
                                 }
