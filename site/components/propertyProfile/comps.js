@@ -34,7 +34,7 @@ define([
                 $scope.$watch("comps", function() {
                     if ($scope.comps) {
 
-                        $scope.totals = {units : 0};
+                        $scope.totals = {units : 0, totalUnits : 0};
                         $scope.totalSurveys = 0;
 
                         $scope.comps.forEach(function(comp, i) {
@@ -53,13 +53,25 @@ define([
                             comp.weeklytraffic = comp.survey.weeklytraffic == null ? -1 : comp.survey.weeklytraffic;
                             comp.weeklyleases = comp.survey.weeklyleases == null ? -1 : comp.survey.weeklyleases;
 
+                            $scope.totals.totalUnits += comp.totalUnits;
                             if (comp.survey && comp.survey.rent) {
                                 $scope.totalSurveys += 1;
                                 $scope.totals.units = ($scope.totals.units || 0) +  comp.units;
                                 $scope.totals.sqft = ($scope.totals.sqft || 0) +  comp.survey.sqft * comp.units;
                                 $scope.totals.occupancy = ($scope.totals.occupancy || 0) +  comp.survey.occupancy * comp.units;
-                                $scope.totals.leased = ($scope.totals.leased || 0) +  comp.survey.leased * comp.units;
-                                $scope.totals.renewal = ($scope.totals.renewal || 0) +  comp.survey.renewal * comp.units;
+
+                                if (typeof comp.survey.leased != 'undefined') {
+
+                                    $scope.totals.leased = ($scope.totals.leased || 0) + comp.survey.leased * comp.units;
+                                    $scope.totals.unitsLeased = ($scope.totals.unitsLeased || 0) +  comp.units;
+                                }
+
+                                if (typeof comp.survey.renewal != 'undefined') {
+
+                                    $scope.totals.renewal = ($scope.totals.renewal || 0) + comp.survey.renewal * comp.units;
+                                    $scope.totals.unitsRenewal = ($scope.totals.unitsRenewal || 0) +  comp.units;
+                                }
+
                                 $scope.totals.weeklytraffic = ($scope.totals.weeklytraffic || 0)+  comp.survey.weeklytraffic * comp.units;
                                 $scope.totals.weeklyleases = ($scope.totals.weeklyleases || 0)+  comp.survey.weeklyleases * comp.units;
 
@@ -96,12 +108,25 @@ define([
 
 
                         })
+
+                        $scope.totals.totalUnits /= $scope.comps.length;
                         
                         if ($scope.totalSurveys > 0) {
                             $scope.totals.sqft = ($scope.totals.sqft || 0) / $scope.totals.units;
                             $scope.totals.occupancy = ($scope.totals.occupancy || 0) / $scope.totals.units;
-                            $scope.totals.leased = ($scope.totals.leased || 0) / $scope.totals.units;
-                            $scope.totals.renewal = ($scope.totals.renewal || 0) / $scope.totals.units;
+
+                            if (!$scope.totals.unitsLeased) {
+                                $scope.totals.leased = 0
+                            } else {
+                                $scope.totals.leased = ($scope.totals.leased || 0) / $scope.totals.unitsLeased;
+                            }
+
+                            if (!$scope.totals.unitsRenewal) {
+                                $scope.totals.renewal = 0
+                            } else {
+                                $scope.totals.renewal = ($scope.totals.renewal || 0) / $scope.totals.unitsRenewal;
+                            }
+
                             $scope.totals.weeklytraffic = ($scope.totals.weeklytraffic || 0) / $scope.totals.units;
                             $scope.totals.weeklyleases = ($scope.totals.weeklyleases || 0) / $scope.totals.units;
                             $scope.totals.unitPercent = 100;
