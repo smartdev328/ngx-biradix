@@ -86,8 +86,8 @@ Routes.post('/:id/reports', function (req, res) {
         columns += " fees";
     }
 
-    if (req.body.reports.indexOf('property_rankings') > -1 || req.body.reports.indexOf('market_share') > -1) {
-        columns += " survey.id comps.floorplans";
+    if (req.body.reports.indexOf('property_rankings') > -1 || req.body.reports.indexOf('property_rankings_summary') > -1 || req.body.reports.indexOf('market_share') > -1) {
+        columns += " survey.id comps.floorplans address";
     }
 
     PropertyService.search(req.user, {

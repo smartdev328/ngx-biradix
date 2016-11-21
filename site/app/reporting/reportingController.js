@@ -5,6 +5,7 @@ define([
     '../../components/reports/locationAmenities.js',
     '../../components/reports/feesDeposits.js',
     '../../components/reports/propertyRankings.js',
+    '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/marketShare.js',
     '../../components/reports/propertyStatus.js',
     '../../services/auditService',
@@ -30,7 +31,8 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (datailed)", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
@@ -39,7 +41,7 @@ define([
 
         $scope.propertyItems = [];
 
-        $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id comps.orderNumber orgid"}).then(function (response) {
+        $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id comps.orderNumber orgid address"}).then(function (response) {
             $scope.myProperties = response.data.properties;
 
 
@@ -104,7 +106,7 @@ define([
             $scope.noReports = false;
             delete $scope.reports;
 
-            $propertyService.search({limit: 10000, permission: 'PropertyView', active: true, select : "_id name", ids: compids, sort: "name"}).then(function (response) {
+            $propertyService.search({limit: 10000, permission: 'PropertyView', active: true, select : "_id name address", ids: compids, sort: "name"}).then(function (response) {
                 $scope.items = [];
 
                 response.data.properties.forEach(function(c) {
@@ -123,7 +125,7 @@ define([
 
                 response.data.properties.forEach(function(c) {
                     if (c._id != subjectid) {
-                        $scope.items.push({id: c._id, name: c.name, selected: true});
+                        $scope.items.push({id: c._id, name: c.name, selected: true, address: c.address});
                     }
                 })
                 $scope.localLoading = true;
@@ -148,6 +150,7 @@ define([
         }
 
         $scope.changeProperty = function() {
+            $scope.localLoading = false;
             $scope.localLoading = false;
             $scope.loadComps();
         }
@@ -219,6 +222,8 @@ define([
             $scope.compIds =  _.pluck($scope.selected.Comps,"id")
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
+
+            $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
 
             $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
             $scope.marketShare = $scope.reportIds.indexOf("market_share") > -1;

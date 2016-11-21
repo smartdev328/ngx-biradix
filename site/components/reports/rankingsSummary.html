@@ -1,5 +1,5 @@
 <div class="break panel panel-info">
-    <div class="panel-heading">Property Rankings Report (detailed)</div>
+    <div class="panel-heading">Property Rankings Report</div>
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
@@ -51,7 +51,7 @@
         <tr>
             <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
                 <div class="fp-header-div">
-                <h4>Floorplans: {{key}}
+                <h4>{{bedroomsLabel(key)}}
                 <i class="fa fa-chain-broken blue"
                    style="cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="value.excluded"
@@ -74,7 +74,7 @@
                 {{fp.units}}
             </td>
             <td class="center">
-                {{fp.sqft}}
+                {{fp.sqft | number : 0}}
             </td>
             <td class="center">
                 {{fp.ner | currency : "$" : 0}}
@@ -91,7 +91,7 @@
                 &nbsp;
             </td>
             <td class="center black">
-                <div style="color:black !important;">{{value.summary.units}}</div>
+                <div style="color:black !important;">{{value.summary.units  | number : 0}}</div>
             </td>
             <td class="center black">
                 <div style="color:black !important;">{{value.summary.sqft | number : 0}}</div>
