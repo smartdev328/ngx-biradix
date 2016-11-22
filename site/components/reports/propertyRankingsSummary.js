@@ -16,9 +16,9 @@ define([
 
 
 
-                $scope.sort = {nersqft:true}
-                $scope.defaultSort = "-nersqft";
-                $scope.orderBy = "-nersqft";
+                $scope.sort = {nersqft:false}
+                $scope.defaultSort = "nersqft";
+                $scope.orderBy = "nersqft";
 
                 $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms'])
 
@@ -85,12 +85,18 @@ define([
                             $scope.rankings[fp.bedrooms].summary.totalsqft = ($scope.rankings[fp.bedrooms].summary.totalsqft || 0) + fp.units * fp.sqft;
 
                             $scope.rankings[fp.bedrooms].summary.totalner = ($scope.rankings[fp.bedrooms].summary.totalner || 0) + fp.units * fp.ner;
+
+                            $scope.rankings[fp.bedrooms].summary.totalnersqft = ($scope.rankings[fp.bedrooms].summary.totalnersqft || 0) + fp.units * fp.nersqft;
+
+
+
                         }
                     })
 
                     for (var fp in $scope.rankings) {
                         $scope.rankings[fp].summary.sqft = $scope.rankings[fp].summary.totalsqft / $scope.rankings[fp].summary.units;
                         $scope.rankings[fp].summary.ner = $scope.rankings[fp].summary.totalner / $scope.rankings[fp].summary.units;
+                        $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.totalnersqft / $scope.rankings[fp].summary.units;
                         $scope.rankings[fp].floorplans.forEach(function(f) {
                             f.sqft = Math.round(f.sqft / f.units);
                             f.ner = f.ner / f.units;
@@ -116,6 +122,7 @@ define([
                     var s = $scope.sort[v];
 
                     if (s == null) {
+                        $scope.sort = {nersqft:false}
                         $scope.orderBy = $scope.defaultSort;
                         return;
                     }

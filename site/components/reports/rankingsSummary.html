@@ -7,37 +7,31 @@
     <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <tbody>
     <tr class="thead">
-        <th ng-click="toggleSort('name')" style="height:45px">
+        <th ng-click="toggleSort('name')" style="height:45px" class="sortable">
             Property
             <i ng-show="sort.name == null" class="fa fa-sort"></i>
             <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
         </th>
-        <th ng-click="toggleSort('description')" style="min-width:85px;">
-            Description
-            <i ng-show="sort.description == null" class="fa fa-sort" style="color:#E0E0E0"></i>
-            <i ng-show="sort.description === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.description === false" class="fa fa-sort-up"></i>
-        </th>
-        <th class="center" ng-click="toggleSort('units')" style="min-width:60px">
+        <th class="center sortable" ng-click="toggleSort('units')" style="min-width:60px">
             Units
             <i ng-show="sort.units == null" class="fa fa-sort"></i>
             <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center" ng-click="toggleSort('sqft')" style="min-width:60px">
+        <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px">
             Unit<Br>&nbsp;&nbsp;&nbsp;Sqft
             <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center" ng-click="toggleSort('ner')" style="min-width:70px">
+        <th class="center sortable" ng-click="toggleSort('ner')" style="min-width:70px">
             Net Eff.<br>&nbsp;Rent
             <i ng-show="sort.ner == null" class="fa fa-sort"></i>
             <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center" ng-click="toggleSort('nersqft')" style="min-width:70px">
+        <th class="center sortable" ng-click="toggleSort('nersqft')" style="min-width:70px">
             NER/&nbsp;<Br>Sqft
             <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
@@ -67,9 +61,6 @@
             <td>
                 {{fp.name}}
             </td>
-            <td>
-                {{fp.description || '-'}}
-            </td>
             <td class="center">
                 {{fp.units}}
             </td>
@@ -87,9 +78,6 @@
             <td>
                 <div style="color:black !important;">Totals / Averages</div>
             </td>
-            <td class="black">
-                &nbsp;
-            </td>
             <td class="center black">
                 <div style="color:black !important;">{{value.summary.units  | number : 0}}</div>
             </td>
@@ -100,7 +88,7 @@
                 <div style="color:black !important;">{{value.summary.ner | currency : "$" : 0}}</div>
             </td>
             <td class="center black">
-                <div style="color:black !important;">{{value.summary.ner / value.summary.sqft | currency}}</div>
+                <div style="color:black !important;">{{value.summary.nersqft | currency}}</div>
             </td>
         </tr>
         <tr ng-repeat-end ng-if="false">
