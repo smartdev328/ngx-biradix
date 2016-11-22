@@ -20,7 +20,7 @@
             <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
         <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px">
-            Unit<Br>&nbsp;&nbsp;&nbsp;Sqft
+            Sqft
             <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
@@ -38,7 +38,57 @@
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
     </tr>
+    <tr>
+        <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
+            <div class="fp-header-div">
+                <h4>All
+                    <i class="fa fa-chain-broken blue"
+                       style="cursor:pointer;font-size:12px;padding-left:1px"
+                       ng-if="excluded"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       uib-popover="This report has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                    ></i>
+                </h4>
+            </div>
+        </td>
+    </tr>
 
+    <tr ng-repeat="fp in summary | orderBy : orderBy" ng-class="{'subject':fp.subject}">
+        <td>
+            {{fp.name}}
+        </td>
+        <td class="center">
+            {{fp.units}}
+        </td>
+        <td class="center">
+            {{fp.sqft | number : 0}}
+        </td>
+        <td class="center">
+            {{fp.ner | currency : "$" : 0}}
+        </td>
+        <td class="center">
+            {{fp.nersqft | currency}}
+        </td>
+    </tr>
+
+    <tr class="subtotal" style="background-color:white !important;">
+        <td>
+            <div style="color:black !important;">Totals / Averages</div>
+        </td>
+        <td class="center black">
+            <div style="color:black !important;">{{totals.units  | number : 0}}</div>
+        </td>
+        <td class="center black">
+            <div style="color:black !important;">{{totals.sqft | number : 0}}</div>
+        </td>
+        <td class="center black">
+            <div style="color:black !important;">{{totals.ner | currency : "$" : 0}}</div>
+        </td>
+        <td class="center black">
+            <div style="color:black !important;">{{totals.nersqft | currency}}</div>
+        </td>
+    </tr>
         <tr ng-repeat-start="(key,value) in rankings" ng-if="false">
 
         </tr>

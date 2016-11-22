@@ -24,6 +24,9 @@ define([
 
                 $scope.reload = function() {
                     $scope.rankings = {}
+                    $scope.summary = [];
+                    $scope.totals = {};
+                    $scope.excluded = false;
                     $scope.report.forEach(function (fp) {
 
                         $scope.rankings[fp.bedrooms] = $scope.rankings[fp.bedrooms] || {};
@@ -32,6 +35,7 @@ define([
 
                         if ($scope.settings.hideUnlinked && fp.excluded) {
                             $scope.rankings[fp.bedrooms].excluded = true;
+                            $scope.excluded = true;
                         }  else {
                             var f = {
                                 description: fp.description,
@@ -78,16 +82,39 @@ define([
                                 p.nersqft += (fp.nersqft * fp.units);
                             }
 
-                             $scope.rankings[fp.bedrooms].summary = $scope.rankings[fp.bedrooms].summary || {};
+                            var s = _.find($scope.summary, function(x) {return x.id == fp.id.toString() })
 
-                            $scope.rankings[fp.bedrooms ].summary.units = ($scope.rankings[fp.bedrooms].summary.units || 0) + fp.units;
+                            if (!s) {
 
+                                s = {
+                                    id: fp.id.toString(),
+                                    name: f.name,
+                                    description : f.address,
+                                    subject: f.subject,
+                                    units: fp.units,
+                                    sqft: fp.sqft * fp.units,
+                                    ner: fp.ner * fp.units,
+                                    nersqft: fp.nersqft * fp.units
+                                };
+
+                                $scope.summary.push(s);
+                            } else {
+                                s.units += fp.units;
+                                s.sqft += (fp.sqft * fp.units);
+                                s.ner += (fp.ner * fp.units);
+                                s.nersqft += (fp.nersqft * fp.units);
+                            }
+
+                            $scope.rankings[fp.bedrooms].summary = $scope.rankings[fp.bedrooms].summary || {};
+                            $scope.rankings[fp.bedrooms].summary.units = ($scope.rankings[fp.bedrooms].summary.units || 0) + fp.units;
                             $scope.rankings[fp.bedrooms].summary.totalsqft = ($scope.rankings[fp.bedrooms].summary.totalsqft || 0) + fp.units * fp.sqft;
-
                             $scope.rankings[fp.bedrooms].summary.totalner = ($scope.rankings[fp.bedrooms].summary.totalner || 0) + fp.units * fp.ner;
-
                             $scope.rankings[fp.bedrooms].summary.totalnersqft = ($scope.rankings[fp.bedrooms].summary.totalnersqft || 0) + fp.units * fp.nersqft;
 
+                            $scope.totals.units = ($scope.totals.units || 0) + fp.units;
+                            $scope.totals.totalsqft = ($scope.totals.totalsqft || 0) + fp.units * fp.sqft;
+                            $scope.totals.totalner = ($scope.totals.totalner || 0) + fp.units * fp.ner;
+                            $scope.totals.totalnersqft = ($scope.totals.totalnersqft || 0) + fp.units * fp.nersqft;
 
 
                         }
@@ -106,6 +133,17 @@ define([
                         $scope.rankings[fp].summary.units = $scope.rankings[fp].summary.units / $scope.rankings[fp].floorplans.length;
 
                     }
+
+                    $scope.summary.forEach(function(f) {
+                        f.sqft = Math.round(f.sqft / f.units);
+                        f.ner = f.ner / f.units;
+                        f.nersqft = f.nersqft / f.units;
+                    })
+
+                    $scope.totals.sqft = $scope.totals.totalsqft / $scope.totals.units;
+                    $scope.totals.ner = $scope.totals.totalner / $scope.totals.units;
+                    $scope.totals.nersqft = $scope.totals.totalnersqft / $scope.totals.units;
+                    $scope.totals.units = $scope.totals.units / $scope.summary.length;
 
 
                 }

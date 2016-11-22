@@ -97,52 +97,55 @@ define([
 
         $rootScope.getMe = function(callback) {
 
-            $authService.me($cookies.get('token'), function(usr, status) {
-                if (usr) {
-                    $rootScope.me = usr;
+            try {
+                $authService.me($cookies.get('token'), function (usr, status) {
+                    if (usr) {
+                        $rootScope.me = usr;
 
-                    if ($scope.first) {
-                        $scope.alerts();
-                    }
+                        if ($scope.first) {
+                            $scope.alerts();
+                        }
 
-                    if ($scope.first && !$rootScope.me.passwordUpdated) {
-                        $scope.first = false;
+                        if ($scope.first && !$rootScope.me.passwordUpdated) {
+                            $scope.first = false;
 
-                        if (!phantom) {
-                            $timeout(function() {
-                                $location.path("/updateProfile").search('password', '1');
-                            }, 2000)
+                            if (!phantom) {
+                                $timeout(function () {
+                                    $location.path("/updateProfile").search('password', '1');
+                                }, 2000)
 
+                            }
+                        }
+                        else if ($scope.first && $rootScope.me.bounceReason) {
+                            $scope.first = false;
+
+                            if (!phantom) {
+                                $timeout(function () {
+                                    $location.path("/updateProfile");
+                                }, 2000)
+                            }
+                        }
+
+                        if (callback) {
+                            callback();
                         }
                     }
-                    else
-                    if ($scope.first && $rootScope.me.bounceReason) {
-                        $scope.first = false;
-
-                        if (!phantom) {
-                            $timeout(function() {
-                                $location.path("/updateProfile");
-                            }, 2000)
+                    else if (status == 401) {
+                        if ($rootScope.loggedIn) {
+                            $window.sessionStorage.redirect = $location.path();
+                        }
+                        $rootScope.logoff()
+                    }
+                    else if (status == 0) {
+                        if (callback) {
+                            callback();
                         }
                     }
-
-                    if (callback) {
-                        callback();
-                    }
-                }
-                else if (status == 401) {
-                    if ($rootScope.loggedIn) {
-                        $window.sessionStorage.redirect = $location.path();
-                    }
-                    $rootScope.logoff()
-                }
-                else if (status == 0) {
-                    if (callback) {
-                        callback();
-                    }
-                }
-            })
-
+                })
+            }
+            catch (ex) {
+                $rootScope.logoff()
+            }
         }
 
         $rootScope.updateLogos = function() {
