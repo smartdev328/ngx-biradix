@@ -123,11 +123,11 @@ define([
                     for (var fp in $scope.rankings) {
                         $scope.rankings[fp].summary.sqft = $scope.rankings[fp].summary.totalsqft / $scope.rankings[fp].summary.units;
                         $scope.rankings[fp].summary.ner = $scope.rankings[fp].summary.totalner / $scope.rankings[fp].summary.units;
-                        $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.totalnersqft / $scope.rankings[fp].summary.units;
+                        $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.ner / $scope.rankings[fp].summary.sqft;
                         $scope.rankings[fp].floorplans.forEach(function(f) {
-                            f.sqft = Math.round(f.sqft / f.units);
+                            f.sqft = f.sqft / f.units;
                             f.ner = f.ner / f.units;
-                            f.nersqft = f.nersqft / f.units;
+                            f.nersqft = f.ner / f.sqft;
                         })
 
                         $scope.rankings[fp].summary.units = $scope.rankings[fp].summary.units / $scope.rankings[fp].floorplans.length;
@@ -137,12 +137,12 @@ define([
                     $scope.summary.forEach(function(f) {
                         f.sqft = Math.round(f.sqft / f.units);
                         f.ner = f.ner / f.units;
-                        f.nersqft = f.nersqft / f.units;
+                        f.nersqft = f.ner / f.sqft;
                     })
 
                     $scope.totals.sqft = $scope.totals.totalsqft / $scope.totals.units;
                     $scope.totals.ner = $scope.totals.totalner / $scope.totals.units;
-                    $scope.totals.nersqft = $scope.totals.totalnersqft / $scope.totals.units;
+                    $scope.totals.nersqft = $scope.totals.ner / $scope.totals.sqft;
                     $scope.totals.units = $scope.totals.units / $scope.summary.length;
 
 
