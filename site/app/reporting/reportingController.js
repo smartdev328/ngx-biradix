@@ -32,7 +32,7 @@ define([
 
         $scope.reportItems = []
         $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (datailed)", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
