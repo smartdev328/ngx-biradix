@@ -190,9 +190,13 @@ define([
         '$rootScope', '$uibModalStack',
         function($rootScope, $uibModalStack) {
 
-            $rootScope.$on('$stateChangeStart', function() {
+            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 //Cancel all popups
                 $uibModalStack.dismissAll('cancel');
+
+                ga('set', 'title', toState.name);
+                ga('set', 'page', toState.name);
+                ga('send', 'pageview');
             });
         }
     ]);
