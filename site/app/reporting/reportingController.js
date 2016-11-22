@@ -132,15 +132,21 @@ define([
 
                 if ($cookies.get("reportIds")) {
 
+                    if (!_.isArray($cookies.get("reportIds"))) {
+                        $scope.reportIds = $cookies.get("reportIds").split(",");
+                    } else {
+                        $scope.reportIds = $cookies.get("reportIds");
+                    }
+
                     $scope.reportItems.forEach(function(x,i) {
-                        $scope.reportItems[i].selected = $cookies.get("reportIds").split(",").indexOf(x.id) > -1
+                        $scope.reportItems[i].selected = $cookies.get("reportIds").indexOf(x.id) > -1
                     })
 
                     $scope.items.forEach(function(x,i) {
                         $scope.items[i].selected = $cookies.get("compIds").indexOf(x.id) > -1
                     })
 
-                    $scope.reportIds = $cookies.get("reportIds");
+
 
                     $scope.run();
                 }
@@ -223,9 +229,9 @@ define([
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
-            $scope.rankingsSummary = $scope.reportIds.split(',').indexOf("property_rankings_summary") > -1;
-            $scope.rankings = $scope.reportIds.split(',').indexOf("property_rankings") > -1;
-            $scope.marketShare = $scope.reportIds.split(',').indexOf("market_share") > -1;
+            $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
+            $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
+            $scope.marketShare = $scope.reportIds.indexOf("market_share") > -1;
 
             $propertyService.reports(
                 $scope.compIds
