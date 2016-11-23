@@ -52,9 +52,10 @@ define([
 
                     if (usr) {
                         $rootScope.me = usr;
+                        $rootScope.reload = false;
 
                         if ($rootScope.me.version.toString() != version.toString()) {
-                               //location.reload();
+                            $rootScope.reload = true;
                         }
 
                         $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
@@ -77,8 +78,10 @@ define([
             }
             else {
                 $rootScope.getMe(function() {
+                    $rootScope.reload = false;
+
                     if ($rootScope.me.version.toString() != version.toString()) {
-                        location.reload();
+                        $rootScope.reload = true;
                     }
 
                     $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min

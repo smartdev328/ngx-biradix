@@ -197,6 +197,10 @@ define([
                 ga('set', 'title', toState.name);
                 ga('set', 'page', toState.name);
                 ga('send', 'pageview');
+
+                if ($rootScope.reload === true) {
+                    location.reload();
+                }
             });
         }
     ]);
