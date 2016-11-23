@@ -9,6 +9,10 @@ define([
                 $location.path('/login')
             }
 
+            ga('set', 'title', "/compedFloorPlans");
+            ga('set', 'page', "/compedFloorPlans");
+            ga('send', 'pageview');
+            
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };

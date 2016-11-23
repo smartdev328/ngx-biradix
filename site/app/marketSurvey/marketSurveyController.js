@@ -15,6 +15,10 @@ define([
                 $location.path('/login')
             }
 
+            ga('set', 'title', "/marketSurvey");
+            ga('set', 'page', "/marketSurvey");
+            ga('send', 'pageview');            
+
             $scope.cancel = function () {
                 if ($scope.changed) {
                     $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {

@@ -10,6 +10,10 @@ define([
                 $location.path('/login')
             }
 
+            ga('set', 'title', "/manageComps");
+            ga('set', 'page', "/manageComps");
+            ga('send', 'pageview');
+
             $scope.cancel = function () {
 
                 if ($scope.changed) {

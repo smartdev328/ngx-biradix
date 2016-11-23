@@ -13,6 +13,10 @@ define([
             $scope.userId = userId;
             $scope.loading = true;
 
+            ga('set', 'title', "/editUser");
+            ga('set', 'page', "/editUser");
+            ga('send', 'pageview');
+
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };

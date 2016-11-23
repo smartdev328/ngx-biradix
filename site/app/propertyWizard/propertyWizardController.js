@@ -13,7 +13,6 @@ define([
                 $location.path('/login')
             }
 
-
             $scope.changed = false;
 
             $scope.startWatchingChanges = function() {
@@ -99,6 +98,11 @@ define([
                 }
                 $scope.stepIndex = i;
                 $scope.stepTemplate = '/app/propertyWizard/tabs/' + $scope.steps[i].template + "?bust=" + version;
+
+                ga('set', 'title', "/propertyWizard/" +  $scope.steps[i].label);
+                ga('set', 'page', "/propertyWizard/" +  $scope.steps[i].label);
+                ga('send', 'pageview');
+
 
             }
 

@@ -9,6 +9,10 @@ define([
                 $location.path('/login')
             }
 
+            ga('set', 'title', "/mapAmenities");
+            ga('set', 'page', "/mapAmenities");
+            ga('send', 'pageview');
+            
             $scope.mapTo = {};
             $scope.amenity = amenity;
             $scope.amenities = _.filter(amenities, function(x) {return x.approved === true && x._id.toString() != amenity._id.toString() && x.type == amenity.type});

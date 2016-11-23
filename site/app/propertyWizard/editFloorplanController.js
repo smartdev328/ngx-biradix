@@ -7,6 +7,10 @@ define([
 
             $scope.edit = false;
 
+            ga('set', 'title', "/editFloorPlans");
+            ga('set', 'page', "/editFloorPlans");
+            ga('send', 'pageview');
+
             $scope.values = values;
 
             $scope.unitAmenityOptions = unitAmenityOptions;

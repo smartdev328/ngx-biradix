@@ -16,6 +16,11 @@ define([
                 $uibModalInstance.dismiss('cancel');
             };
 
+            ga('set', 'title', "/assignUsers");
+            ga('set', 'page', "/assignUsers");
+            ga('send', 'pageview');
+
+
             $scope.loading = true;
 
             $propertyUsersService.getPropertyAssignedUsers(property._id).then(function (response) {
