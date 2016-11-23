@@ -54,7 +54,7 @@ define([
                         $rootScope.me = usr;
 
                         if ($rootScope.me.version.toString() != version.toString()) {
-                               location.reload();
+                               //location.reload();
                         }
 
                         $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
