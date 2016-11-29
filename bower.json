@@ -11,10 +11,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "angular": "1.5.7",
-    "angular-bootstrap": "2.0.2",
-    "angular-cookies": "1.5.7",
-    "angular-sanitize": "1.5.7",
+    "angular": "1.5.9",
+    "angular-bootstrap": "2.3.0",
+    "angular-cookies": "1.5.9",
+    "angular-sanitize": "1.5.9",
     "angular-ui-router": "~0.2.15",
     "bootstrap": "3.3.7",
     "font-awesome": "4.4.0",
@@ -25,6 +25,6 @@
     "async": "1.5.2"
   },
   "resolutions": {
-    "angular": "1.5.7"
+    "angular": "1.5.9"
   }
 }
