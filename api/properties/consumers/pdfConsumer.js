@@ -35,6 +35,8 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 var url = data.url + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
 
+                url = url.replace("https://","http://");
+
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "Graphs", data.Graphs),
@@ -145,6 +147,7 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
                 var render = phantom(options);
 
                 var url = data.url + "/#/reporting";
+                url = url.replace("https://","http://");
 
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
