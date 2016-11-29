@@ -190,6 +190,14 @@ module.exports = {
                                     PropertyService.search(user, {limit: 20, permission: ['PropertyManage'], ids: compids
                                         , select: "_id"
                                     }, function(err, property) {
+
+                                        if (err || !property) {
+                                            error.send(err, {property: property, compids: compids, id: id});
+
+                                            return callbackp(err, [])
+                                        }
+
+
                                         property.push({ _id: id }) // add subject to the list of owned
                                         callbackp(err, property)
                                     })
@@ -199,8 +207,11 @@ module.exports = {
                                     //Calculate counts for comps in multiple subjects among the group
                                     CompsService.getSubjects(compids, {select: "_id name comps.id"}, function(err, subjects) {
 
+
                                         if (err || !subjects) {
                                             error.send(err, {subjects: subjects, compids: compids, id: id});
+
+                                            return callbackp(err, {})
                                         }
 
                                         var shared = {};
