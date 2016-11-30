@@ -50,7 +50,7 @@ module.exports = {
                         notes: survey.notes
                     }
                     var query = {_id: propertyid};
-                    var update = {survey: s};
+                    var update = {survey: s, $unset : {needsSurvey: ""}};
                     var options = {new: true};
 
                     PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {

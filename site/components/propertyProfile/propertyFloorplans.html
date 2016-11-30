@@ -150,8 +150,16 @@
     <tr class="tfoot">
         <td colspan="{{show.description ? '2' : '1'}}">
             Totals / Averages
+            <i class="fa fa-exclamation-triangle warning"
+               style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
+               ng-if="comp.needsSurvey"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-append-to-body="true"
+               uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new survey."
+            ></i>
             <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:12px;padding-left:1px"
+               style="cursor:pointer;font-size:12px;padding-left:2px"
                ng-if="comp.survey.excluded"
                popover-trigger="'mouseenter'"
                popover-placement="right"

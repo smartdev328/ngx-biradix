@@ -100,6 +100,7 @@ td.center,th.center {text-align:center}
         color: green !important;
     }
 
+
     .fa-exclamation-triangle.warning:before {
         color: orange !important;
     }

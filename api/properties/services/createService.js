@@ -700,10 +700,12 @@ function getFloorplansAddedChanges(property, n, all) {
 
             }
 
+            n.needsApproval = true;
             changes.push({id: fp.id.toString(), description: desc})
         }
         else
         if (!_.find(n.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
+            n.needsApproval = true;
             changes.push({id: fp.id.toString(), description: PropertyHelperService.floorplanName(fp)})
         }
     })
@@ -716,6 +718,7 @@ function getFloorplansRemovedChanges(property, n, all) {
 
     n.floorplans.forEach(function(fp) {
         if (!_.find(property.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
+            n.needsApproval = true;
             changes.push({old_value: fp, description: PropertyHelperService.floorplanName(fp)})
         }
     })
@@ -741,6 +744,14 @@ function getFloorplansUpdatedChanges(property, n, all) {
                     description: PropertyHelperService.floorplanName(fp) + " => " + PropertyHelperService.floorplanName(nfp)
                 })
             }
+
+            if (fp.bedrooms != nfp.bedrooms
+                || fp.bathrooms != nfp.bathrooms
+                || fp.units != nfp.units
+                || fp.sqft != nfp.sqft
+            ) {
+                n.needsSurvey = true;
+            }            
         }
     })
 
