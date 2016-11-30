@@ -25,6 +25,9 @@ define([
             if ($rootScope.me) {
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
                 $scope.adjustToSize($(window).width());
+
+                $scope.reload();
+
                 me();
             }
         })
@@ -87,6 +90,7 @@ define([
             $scope.localLoading = false;
             $userService.search().then(function (response) {
                 $scope.data = response.data.users;
+
                 $scope.data.forEach(function(x) {
                     x.role = _.uniq(_.map(x.roles, function(y) {return y.name})).join(", ")
                     x.company = _.map(x.roles, function(y) {return y.org.name}).join(", ")
@@ -101,8 +105,6 @@ define([
                 $scope.localLoading = true;
             });
         }
-
-        $scope.reload();
 
         $scope.loginAs = function(userid) {
             $authService.loginAs(userid, function (usr, status) {

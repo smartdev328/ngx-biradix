@@ -178,23 +178,28 @@ module.exports = {
             });
         });
     },
-    setPropertiesForUser : function(operator,context,revertedFromId, userid, ids, callback) {
-
+    setPropertiesForUser : function(operator,context,revertedFromId, userid, ids, rolesChanged, callback) {
         async.parallel({
             differences: function(callbackp) {
                 getUserAssignedProperties(operator, userid, function(err, propertyids) {
-                    var removed = _.difference(propertyids, ids);
-                    var added = _.difference(ids, propertyids);
+                    //remove all and re-add all properties when updating a user to make sure all permissions get created when roles changed
+                    var removed = propertyids;//_.difference(propertyids, ids);
+                    var added = ids;//_.difference(ids, propertyids);
+
+                    if (!rolesChanged) {
+                        removed = _.difference(propertyids, ids);
+                        added = _.difference(ids, propertyids);
+                    }
                     callbackp(null, {added: added, removed: removed})
                 })
             }
         }, function(err, all) {
+            async.eachLimit(all.differences.removed, 10, function(propertyid, callbackp){
+                unLinkPropertyFromUser(operator,context,revertedFromId,userid, propertyid, callbackp)
 
-            async.eachLimit(all.differences.added, 10, function(propertyid, callbackp){
-                LinkPropertyWithUser(operator,context,revertedFromId,userid, propertyid, callbackp)
             }, function(err) {
-                async.eachLimit(all.differences.removed, 10, function(propertyid, callbackp){
-                    unLinkPropertyFromUser(operator,context,revertedFromId,userid, propertyid, callbackp)
+                async.eachLimit(all.differences.added, 10, function(propertyid, callbackp){
+                    LinkPropertyWithUser(operator,context,revertedFromId,userid, propertyid, callbackp)
                 }, function(err) {
                     callback();
                 });
@@ -239,6 +244,7 @@ module.exports = {
 
 }
 var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, propertyid, callback) {
+    // console.log('Unlink:', userid, propertyid);
     async.parallel({
         users: function(callbackp) {
             UserService.search(operator,{select:"_id first last",ids:[userid.toString()]}, callbackp);
@@ -276,6 +282,7 @@ var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, pr
 }
 
 var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, propertyid, callback) {
+    // console.log('Link:', userid, propertyid);
     async.parallel({
         users: function(callbackp) {
             UserService.search(operator,{select:"_id first last",ids:[userid.toString()]}, callbackp);
@@ -326,6 +333,7 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
             //})
         }
         AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
+        AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyView',direct: true}, function () {});
 
         AuditService.create({operator: operator, property: property, user: user, type: 'user_assigned', revertedFromId : revertedFromId, description: user.first + ' ' + user.last + ' <= + => ' + property.name, context: context, data : [{propertyid: propertyid, userid: userid}]})
 

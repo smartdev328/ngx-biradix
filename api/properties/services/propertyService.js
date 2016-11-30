@@ -392,6 +392,7 @@ module.exports = {
             //if (criteria.permission[0]=='PropertyView') {
             //    console.log(criteria, all.permissions, Operator.memberships, Operator._id)
             //}
+
             var query = PropertySchema.find();
             if (criteria._id) {
                 criteria.ids = criteria.ids || [];

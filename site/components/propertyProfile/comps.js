@@ -129,10 +129,10 @@ define([
                             $scope.totals.weeklyleases = ($scope.totals.weeklyleases || 0) / $scope.totals.units;
                             $scope.totals.unitPercent = 100;
                             $scope.totals.rent = ($scope.totals.rent || 0) / $scope.totals.units;
-                            $scope.totals.mersqft = ($scope.totals.mersqft || 0) / $scope.totals.units;
+                            $scope.totals.mersqft = ($scope.totals.rent || 0) / $scope.totals.sqft;
                             $scope.totals.concessions = ($scope.totals.concessions || 0) / $scope.totals.units;
                             $scope.totals.ner = ($scope.totals.ner || 0) / $scope.totals.units;
-                            $scope.totals.nersqft = ($scope.totals.nersqft || 0) / $scope.totals.units;
+                            $scope.totals.nersqft = ($scope.totals.ner || 0) / $scope.totals.sqft;
                             $scope.totals.units = ($scope.totals.units || 0) / $scope.totalSurveys;
 
                         }

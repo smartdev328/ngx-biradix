@@ -28,7 +28,7 @@ routes.put('/properties/:userid', function (req, res) {
     //        return res.status(401).json("Unauthorized request");
     //    }
 
-        PropertyUsersService.setPropertiesForUser(req.user,req.context, null, req.params.userid, req.body, function (err) {
+        PropertyUsersService.setPropertiesForUser(req.user,req.context, null, req.params.userid, req.body.properties, req.body.rolesChanged, function (err) {
             if (err) {
                 return res.status(200).json({success: false, errors: err});
             }

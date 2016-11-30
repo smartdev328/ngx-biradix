@@ -515,6 +515,9 @@ function updateNewRole(roleids, all, permissions) {
 }
 
 function addUserToRole(id, roleids, permissions, callback) {
+
+    //console.log(permissions);
+
     if (!roleids || !roleids.length) {
         return callback();
     }

@@ -25,6 +25,8 @@ define([
                 $scope.user.roles.push({selectedRole : $scope.roles[0], propertyids:[]});
             }
 
+            $scope.originalRoles = [];
+
             $scope.getDropdowns = function () {
                 $scope.loading = true;
 
@@ -63,34 +65,35 @@ define([
             if (userId) {
                 $scope.loading = true;
                 $userService.search({_id:userId, select: "_id first last email"}).then(function (response) {
-                        $scope.user = response.data.users[0];
+                    $scope.user = response.data.users[0];
 
+                    $scope.originalRoles = _.map($scope.user.roles, function(x) {return x._id.toString()});
 
-                        async2.each($scope.user.roles, function(role, callback) {
-                            role.propertyids = [];
+                    async2.each($scope.user.roles, function(role, callback) {
+                        role.propertyids = [];
 
-                            $propertyUsersService.getUserAssignedProperties(userId).then(function (response) {
-                                    role.propertyids = response.data.properties;
+                        $propertyUsersService.getUserAssignedProperties(userId).then(function (response) {
+                                role.propertyids = response.data.properties;
 
-                                    $scope.getDropdowns();
-                                    callback();
-                                },
-                                function (error) {
-                                    callback(error);
-                                });
-                        }, function(err) {
-                            if (err) {
-                                toastr.error("Unable to retrieve data. Please contact the administrator.");
-                            }
-                            $scope.loading = false;
-                        });
-
-
-                    },
-                    function (error) {
-                        toastr.error("Unable to retrieve data. Please contact the administrator.");
+                                $scope.getDropdowns();
+                                callback();
+                            },
+                            function (error) {
+                                callback(error);
+                            });
+                    }, function(err) {
+                        if (err) {
+                            toastr.error("Unable to retrieve data. Please contact the administrator.");
+                        }
                         $scope.loading = false;
                     });
+
+
+                },
+                function (error) {
+                    toastr.error("Unable to retrieve data. Please contact the administrator.");
+                    $scope.loading = false;
+                });
             }
             else {
                 $scope.getDropdowns();
@@ -148,6 +151,8 @@ define([
                 $scope.user.roleids = _.uniq($scope.user.roleids);
                 selectedProperties = _.uniq(selectedProperties);
 
+                var rolesChanged = _.difference($scope.originalRoles, $scope.user.roleids).length || _.difference($scope.user.roleids, $scope.originalRoles).length;
+
                 if (err) {
                     toastr.error("Please select a role.");
                     return;
@@ -168,7 +173,7 @@ define([
                                 $scope.loading = false;
                             }
                             else {
-                                $scope.saveProperties(response.data.user,selectedProperties);
+                                $scope.saveProperties(response.data.user,selectedProperties, true);
                             }
                         },
                         function (error) {
@@ -182,8 +187,8 @@ define([
                                 toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
                                 $scope.loading = false;
                             }
-                            else {
-                                $scope.saveProperties(response.data.user,selectedProperties);
+                            else {                                
+                                $scope.saveProperties(response.data.user,selectedProperties, rolesChanged);
                             }
                         },
                         function (error) {
@@ -194,8 +199,8 @@ define([
 
             }
 
-            $scope.saveProperties = function(user, properties) {
-                $propertyUsersService.setPropertiesForUser(user._id,properties).then(function(response) {
+            $scope.saveProperties = function(user, properties,rolesChanged) {
+                $propertyUsersService.setPropertiesForUser(user._id,properties,rolesChanged).then(function(response) {
                     window.setTimeout(function() {$uibModalInstance.close(user)}, 1000) ;
                 },
                     function (error) {

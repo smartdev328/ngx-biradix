@@ -78,6 +78,7 @@ module.exports = {
                 }
             }, function(err, all) {
 
+
             var query = UserSchema.find();
 
             if (criteria._id) {
@@ -150,9 +151,13 @@ module.exports = {
                                     x.deleted = true;
                                 }
 
+                                roles = JSON.parse(JSON.stringify(roles));
                                 roles.forEach(function(r) {
-                                    r.org = _.find(all.orgs, function(o) {return o._id.toString() == r.orgid.toString() })
+                                    var org = _.find(all.orgs, function(o) {return o._id.toString() == r.orgid.toString() });
+                                    r.org = org;
                                 })
+
+                                // console.log(roles);
 
                                 if (x.settings && x.settings.defaultRole) {
                                     roles = _.sortBy(roles, function (n) {
@@ -176,6 +181,7 @@ module.exports = {
                             _.remove(x.roles, function(z) {
                                 return allowedOrgs.indexOf(z.orgid.toString()) == -1})
                         }
+
                     })
                 }
 
