@@ -121,16 +121,20 @@ define([
                     })
 
                     for (var fp in $scope.rankings) {
-                        $scope.rankings[fp].summary.sqft = $scope.rankings[fp].summary.totalsqft / $scope.rankings[fp].summary.units;
-                        $scope.rankings[fp].summary.ner = $scope.rankings[fp].summary.totalner / $scope.rankings[fp].summary.units;
-                        $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.ner / $scope.rankings[fp].summary.sqft;
-                        $scope.rankings[fp].floorplans.forEach(function(f) {
-                            f.sqft = f.sqft / f.units;
-                            f.ner = f.ner / f.units;
-                            f.nersqft = f.ner / f.sqft;
-                        })
+                        if (!$scope.rankings[fp].summary) {
+                            delete $scope.rankings[fp];
+                        } else {
+                            $scope.rankings[fp].summary.sqft = $scope.rankings[fp].summary.totalsqft / $scope.rankings[fp].summary.units;
+                            $scope.rankings[fp].summary.ner = $scope.rankings[fp].summary.totalner / $scope.rankings[fp].summary.units;
+                            $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.ner / $scope.rankings[fp].summary.sqft;
+                            $scope.rankings[fp].floorplans.forEach(function (f) {
+                                f.sqft = f.sqft / f.units;
+                                f.ner = f.ner / f.units;
+                                f.nersqft = f.ner / f.sqft;
+                            })
 
-                        $scope.rankings[fp].summary.units = $scope.rankings[fp].summary.units / $scope.rankings[fp].floorplans.length;
+                            $scope.rankings[fp].summary.units = $scope.rankings[fp].summary.units / $scope.rankings[fp].floorplans.length;
+                        }
 
                     }
 
