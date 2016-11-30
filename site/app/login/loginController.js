@@ -30,6 +30,7 @@ define([
                         $scope.localLoading = false;
                     }
                     else {
+                        ga('set', 'userId', authinfo.data.user._id.toString());
                         if (window.sessionStorage.redirect) {
                             $rootScope.swaptoLoggedIn();
                         } else {
