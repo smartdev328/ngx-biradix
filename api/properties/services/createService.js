@@ -299,6 +299,7 @@ module.exports = {
                 n.comps = [];
                 n.date = Date.now();
                 n.needsApproval = true;
+                n.needsSurvey = true;
 
                 n.save(function (err, prop) {
 
@@ -700,12 +701,11 @@ function getFloorplansAddedChanges(property, n, all) {
 
             }
 
-            n.needsApproval = true;
             changes.push({id: fp.id.toString(), description: desc})
         }
         else
         if (!_.find(n.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
-            n.needsApproval = true;
+            n.needsSurvey = true;
             changes.push({id: fp.id.toString(), description: PropertyHelperService.floorplanName(fp)})
         }
     })
@@ -718,7 +718,7 @@ function getFloorplansRemovedChanges(property, n, all) {
 
     n.floorplans.forEach(function(fp) {
         if (!_.find(property.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
-            n.needsApproval = true;
+            n.needsSurvey = true;
             changes.push({old_value: fp, description: PropertyHelperService.floorplanName(fp)})
         }
     })
