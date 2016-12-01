@@ -92,7 +92,6 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             }
 
             if (p.totUnits) {
-                
                 totalrow.count = (totalrow.count || 0) + 1;
                 totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
                 totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * 1); // not weighted
