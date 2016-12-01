@@ -421,7 +421,10 @@ define([
                 }
             },
             function (error) {
-
+                if (error.status == 401) {
+                    $rootScope.logoff();
+                    return;
+                }
             });
 
             window.setTimeout(function() {$scope.alertsAmenities()}, 120000);
@@ -452,7 +455,10 @@ define([
                     }
                 },
                 function (error) {
-
+                    if (error.status == 401) {
+                        $rootScope.logoff();
+                        return;
+                    }
                 });
 
             window.setTimeout(function() {$scope.alertsAmenities()}, 60000);
