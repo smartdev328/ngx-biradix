@@ -153,11 +153,11 @@ define([
                         var el = $($element).find('.break');
                         var height = el.height();
                         $scope.debug=height;
-                        
-                        if (height >= 2000 && height <= 2100) {
+
+                        if (height >= 1500 && height <= 1700) {
                             el.height(el.height() + 5);
                         }
-                    },100)
+                    },50)
 
                 }
 
