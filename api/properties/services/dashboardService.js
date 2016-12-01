@@ -164,7 +164,8 @@ module.exports = {
                                 comps: function (callbackp) {
                                     PropertyService.getLastSurveyStats({
                                         hide: user.settings.hideUnlinked,
-                                        injectFloorplans: options.injectFloorplans
+                                        injectFloorplans: options.injectFloorplans,
+                                        nerPlaces : options.nerPlaces
                                     }, property[0], comps, function() {
                                         callbackp(null, comps)
                                     })

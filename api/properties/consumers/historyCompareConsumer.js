@@ -8,7 +8,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
     async.parallel({
         current: function(callbackp) {
 
-            var options = {skipPoints: true, injectFloorplans: false};
+            var options = {nerPlaces: 1, skipPoints: true, injectFloorplans: false};
             var req = {user : data.user,params : {id: data.id}, body: options}
 
             queueService.getDashboard(req, function(err,dashboard) {
@@ -34,7 +34,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
             //console.log('last week:',start,end);
 
-            var options = {skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format() };
+            var options = {nerPlaces: 1, skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format() };
             var req = {user : data.user,params : {id: data.id}, body: options}
 
             queueService.getDashboard(req, function(err,dashboard) {
@@ -61,7 +61,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             var end = moment().subtract(4,"weeks").endOf("week").add(1,"day").utcOffset(-480);
 
 
-            var options = {skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format()};
+            var options = {nerPlaces: 1, skipPoints: true, injectFloorplans: false, surveyDateStart: start.format(), surveyDateEnd: end.format()};
             var req = {user: data.user, params: {id: data.id}, body: options}
 
             queueService.getDashboard(req, function (err, dashboard) {

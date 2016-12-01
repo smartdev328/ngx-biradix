@@ -87,8 +87,8 @@ module.exports = {
             callback(exclusions);
         });
     },
-    floorplansToSurvey : function(survey, floorplans, links, hide) {
-        getSurveyStats(floorplans, survey, links, hide);
+    floorplansToSurvey : function(survey, floorplans, links, hide, nerPlaces) {
+        getSurveyStats(floorplans, survey, links, hide, nerPlaces);
         survey.bedrooms = {};
 
         for (var i = 0; i < 7; i++) {
@@ -98,7 +98,7 @@ module.exports = {
 
             if (temp.length > 0) {
                 survey.bedrooms[i] = {};
-                getSurveyStats(temp, survey.bedrooms[i], links, hide);
+                getSurveyStats(temp, survey.bedrooms[i], links, hide,nerPlaces);
             }
         }
 
@@ -129,7 +129,7 @@ module.exports = {
 }
 
 
-var  getSurveyStats = function(floorplans, survey, links, hide) {
+var  getSurveyStats = function(floorplans, survey, links, hide, nerPlaces) {
 
     var fps = _.cloneDeep(floorplans);
 
@@ -180,8 +180,11 @@ var  getSurveyStats = function(floorplans, survey, links, hide) {
         survey.ner = survey.rent - (survey.concessions / 12)
         survey.nersqft = Math.round(survey.ner / survey.sqft * 100) / 100
         survey.mersqft = Math.round(survey.rent / survey.sqft * 100) / 100
-        survey.ner = Math.round(survey.ner);
-        survey.rent = Math.round(survey.rent);
+
+        if (!nerPlaces) {
+            survey.ner = Math.round(survey.ner);
+            survey.rent = Math.round(survey.rent);
+        }        
         survey.sqft = Math.round(survey.sqft);
         survey.concessions = Math.round(survey.concessions);
     }

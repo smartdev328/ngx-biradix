@@ -973,7 +973,7 @@ module.exports = {
                         comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
-                        SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide);
+                        SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide, options.nerPlaces);
                     }
 
                 } else {
@@ -982,10 +982,10 @@ module.exports = {
                     comp.survey.tier = "danger";
 
                     if (options.injectFloorplans) {
-                        SurveyHelperService.floorplansToSurvey(comp.survey, comp.floorplans, links, options.hide);
+                        SurveyHelperService.floorplansToSurvey(comp.survey, comp.floorplans, links, options.hide, options.nerPlaces);
                     }
                     else {
-                        SurveyHelperService.floorplansToSurvey(comp.survey, [], links, options.hide);
+                        SurveyHelperService.floorplansToSurvey(comp.survey, [], links, options.hide, options.nerPlaces);
                     }
                 }
             });
