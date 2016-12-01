@@ -12,7 +12,7 @@ define([
                 report: '=',
                 settings: '='
             },
-            controller: function ($scope,$gridService) {
+            controller: function ($scope,$gridService,$element) {
 
 
 
@@ -149,6 +149,14 @@ define([
                     $scope.totals.nersqft = $scope.totals.ner / $scope.totals.sqft;
                     $scope.totals.units = $scope.totals.units / $scope.summary.length;
 
+                    window.setTimeout(function() {
+                        var el = $($element).find('.break');
+                        var height = el.height();
+
+                        if (height >= 2000 && height <= 2100) {
+                            el.height(el.height() + 5);
+                        }
+                    },100)
 
                 }
 

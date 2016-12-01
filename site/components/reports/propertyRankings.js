@@ -79,12 +79,10 @@ define([
                     window.setTimeout(function() {
                         var el = $($element).find('.break');
                         var height = el.height();
-                        $scope.debug=height;
 
                         if (height >= 2000 && height <= 2100) {
                             el.height(el.height() + 5);
                         }
-
                     },100)
                 }
 
