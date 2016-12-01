@@ -154,8 +154,8 @@ define([
                         var height = el.height();
                         $scope.debug=height;
 
-                        if (height >= 1580 && height <= 1660) {
-                            el.height(el.height() + 1660 - height);
+                        if (height >= 1580 && height <= 1650) {
+                            el.height(el.height() + 1650 - height);
                         }
                     },50)
 
