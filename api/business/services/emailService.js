@@ -7,7 +7,7 @@ var fs = require('fs')
 var filters = {
     formatNumber: function(input,decimals) {
 
-        if (!input || isNaN(input)) {
+        if (typeof input == 'undefined' || input == null || isNaN(input) || input === '') {
             return "";
         }
 

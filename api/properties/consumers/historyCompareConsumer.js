@@ -156,7 +156,6 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             totalrow.totUnits = Math.round(totalrow.totUnits / totalrow.count * 10) / 10; // not weighted
         }
 
-        //console.log(totalrow)
         report.push(totalrow);
 
         reply({err: err, report: report});
