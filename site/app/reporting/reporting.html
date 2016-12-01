@@ -113,6 +113,10 @@
             color:red !important;
         }
 
+        .print-header {
+            display:none !important;
+        }
+
     }
 
     /*table,.page-content-wrapper, .row, communityamenities-report, locationamenities-report,fees-report, .panel,.panel-body,body,html {*/
@@ -217,6 +221,8 @@
         </div>
 
         <div class="row">
+
+            <img src="" class="logoBig visible-print" style="height:41px">
          <rankings-report-summary ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 
         <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
