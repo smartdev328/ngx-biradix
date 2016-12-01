@@ -12,7 +12,7 @@ define([
                 report: '=',
                 settings: '='
             },
-            controller: function ($scope,$gridService) {
+            controller: function ($scope,$gridService,$element) {
 
                 $scope.sort = {nersqft:false}
                 $scope.defaultSort = "nersqft";
@@ -75,6 +75,16 @@ define([
                             $scope.rankings[fp].summary.units = $scope.rankings[fp].summary.units / $scope.rankings[fp].floorplans.length;
                         }
                     }
+
+                    window.setTimeout(function() {
+                        var el = $($element).find('.break');
+                        var height = el.height();
+
+                        if (height >= 2000 && height <= 2100) {
+                            el.height(el.height() + 5);
+                        }
+
+                    },100)
                 }
 
                 $scope.reload();

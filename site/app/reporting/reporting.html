@@ -56,7 +56,6 @@
         }
 
 
-
         #page-content-wrapper {
             padding: 0px !important;
         }
@@ -113,9 +112,17 @@
             color:red !important;
         }
 
-        .print-header {
-            display:none !important;
-        }
+        /*.break {*/
+            /*page-break-before: avoid !important;*/
+            /*break-before: avoid !important;*/
+            /*break-inside: auto !important;*/
+            /*page-break-inside: auto !important;*/
+        /*}*/
+
+        /*td,tr {*/
+            /*break-inside: auto !important;*/
+            /*page-break-inside: auto !important;*/
+        /*}*/
 
     }
 
@@ -222,7 +229,6 @@
 
         <div class="row">
 
-            <img src="" class="logoBig visible-print" style="height:41px">
          <rankings-report-summary ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 
         <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
