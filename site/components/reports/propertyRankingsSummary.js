@@ -154,7 +154,7 @@ define([
                         window.setTimeout(function () {
                             var el = $($element).find('.break');
                             var height = el.height();
-                            $scope.debug = height;
+                            // $scope.debug = height;
 
                             if (height >= 1580 && height <= 1660) {
                                 el.height(el.height() + 1660 - height);
