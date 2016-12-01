@@ -150,15 +150,17 @@ define([
                     $scope.totals.units = $scope.totals.units / $scope.summary.length;
 
                     //Phantom JS hack. if the report fits the page exactly, add more pixesl so it doesnt leave a blank logo on the previous page
-                    window.setTimeout(function() {
-                        var el = $($element).find('.break');
-                        var height = el.height();
-                        $scope.debug=height;
+                    if (phantom) {
+                        window.setTimeout(function () {
+                            var el = $($element).find('.break');
+                            var height = el.height();
+                            $scope.debug = height;
 
-                        if (height >= 1580 && height <= 1655) {
-                            el.height(el.height() + 1655 - height);
-                        }
-                    },50)
+                            if (height >= 1580 && height <= 1655) {
+                                el.height(el.height() + 1655 - height);
+                            }
+                        }, 50)
+                    }
 
                 }
 
