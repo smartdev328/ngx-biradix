@@ -7,7 +7,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
 <table border="0" style="font-size:9pt;width:100%" cellpadding="5" cellspacing="0">
     <tr style="background-color: #f9f9f9">
         <th style="border-bottom:2px solid #ddd;text-align:left">
-           Property
+            Property
         </th>
         <th style="border-bottom:2px solid #ddd;text-align:right">
             Occupancy
@@ -35,14 +35,8 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         <th style="border-bottom:2px solid #ddd;text-align:right">
             NER/Sqft<Br>vs Last Week
         </th>
-        <th style="border-bottom:2px solid #ddd;width:20px">
-        &nbsp;
-        </th>
         <th style="border-bottom:2px solid #ddd;;text-align:right">
             NER/Sqft<Br>vs Last Month
-        </th>
-        <th style="border-bottom:2px solid #ddd;width:20px">
-            &nbsp;
         </th>
         <th style="border-bottom:2px solid #ddd;;text-align:right">
             Last<Br>
@@ -60,9 +54,9 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {% if forloop.first %}
             <A href="{{dashboardBase}}{{row._id}}" style="color: #4460a9;text-decoration:none">{{row.name}}</A>
             {%else%}
-                {% if forloop.last != true %}
-                &nbsp;&nbsp;{{forloop.index0}}.
-                {% endif %}
+            {% if forloop.last != true %}
+            &nbsp;&nbsp;{{forloop.index0}}.
+            {% endif %}
             {{row.name}}
             {% endif %}
         </Td>
@@ -93,7 +87,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             ${{row.nersqft | formatNumber : 2}}
         </Td>
-        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
+        <Td style="vertical-align:top !important;text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.lastweeknersqftpercent > 0%}
         color:green;
         {% elsif row.lastweeknersqftpercent < 0 %}
@@ -101,27 +95,16 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         {% endif%}
         " nowrap>
             {% if row.lastweeknersqftpercent > 0%}
-            {{row.lastweeknersqftpercent | formatNumber : 1}}%
+            {{row.lastweeknersqftpercent | formatNumber : 1}}% <img src= "https://platform.biradix.com/images/up.png?v=1" height="13" align="top">
             {% elsif row.lastweeknersqftpercent < 0 %}
-            {{row.lastweeknersqftpercent | formatNumber : 1}}%
+            {{row.lastweeknersqftpercent | formatNumber : 1}}% <img src= "https://platform.biradix.com/images/down.png?v=1" height="13" align="top">
             {% elsif row.lastweeknersqftpercent != "" %}
-            0%
+            0% <img src= "https://platform.biradix.com/images/nochange.png?v=1" height="13" align="top">
             {% else %}
             &nbsp;&nbsp;
             {% endif%}
         </Td>
-        <Td style="text-align:center;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            {% if row.lastweeknersqftpercent > 0%}
-            <img src= "https://platform.biradix.com/images/up.png" height="14" align="middle" style="vertical-align:middle !important;">
-            {% elsif row.lastweeknersqftpercent < 0 %}
-            <img src= "https://platform.biradix.com/images/down.png" height="14" align="middle" style="vertical-align:middle !important;">
-            {% elsif row.lastweeknersqftpercent != "" %}
-            <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="middle" style="vertical-align:middle !important;">
-            {% else %}
-            &nbsp;
-            {% endif%}
-        </Td>
-        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
+        <Td style="vertical-align:top !important;text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.lastmonthnersqftpercent > 0%}
         color:green;
         {% elsif row.lastmonthnersqftpercent < 0 %}
@@ -129,24 +112,13 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         {% endif%}
         " nowrap>
             {% if row.lastmonthnersqftpercent > 0%}
-            {{row.lastmonthnersqftpercent | formatNumber : 1 }}%
+            {{row.lastmonthnersqftpercent | formatNumber : 1 }}% <img src= "https://platform.biradix.com/images/up.png?v=1" height="13" align="top">
             {% elsif row.lastmonthnersqftpercent < 0 %}
-            {{row.lastmonthnersqftpercent | formatNumber : 1 }}%
+            {{row.lastmonthnersqftpercent | formatNumber : 1 }}% <img src= "https://platform.biradix.com/images/down.png?v=1" height="13" align="top">
             {% elsif row.lastmonthnersqftpercent != "" %}
-            0%
+            0% <img src= "https://platform.biradix.com/images/nochange.png?v=1" height="13" align="top">
             {% else %}
             &nbsp;&nbsp;
-            {% endif%}
-        </Td>
-        <Td style="text-align:center;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            {% if row.lastmonthnersqftpercent > 0%}
-            <img src= "https://platform.biradix.com/images/up.png" height="14" align="middle" style="vertical-align:middle !important;">
-            {% elsif row.lastmonthnersqftpercent < 0 %}
-            <img src= "https://platform.biradix.com/images/down.png" height="14" align="middle" style="vertical-align:middle !important;">
-            {% elsif row.lastmonthnersqftpercent != "" %}
-            <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="middle" style="vertical-align:middle !important;">
-            {% else %}
-            &nbsp;
             {% endif%}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
