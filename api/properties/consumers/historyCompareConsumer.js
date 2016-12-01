@@ -82,7 +82,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
 
         var report = all.current;
 
-        var totalrow = {name: 'Totals/Averages'};
+        var totalrow = {name: 'Averages'};
 
         report.forEach(function(p,i) {
             //if (i > 0) {
@@ -92,6 +92,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             }
 
             if (p.totUnits) {
+                
                 totalrow.count = (totalrow.count || 0) + 1;
                 totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
                 totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * 1); // not weighted
@@ -143,12 +144,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
         }
 
         if (totalrow.totUnits && totalrow.totUnits > 0) {
-
             totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.count * 10) / 10; // not weighted
             totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
             totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
             totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
-            totalrow.nersqft = Math.round(totalrow.nersqft / totalrow.totUnits * 100) / 100;
+            totalrow.nersqft = Math.round(totalrow.ner / totalrow.sqft * 100) / 100;
             totalrow.lastweeknersqft = Math.round(totalrow.lastweeknersqft / totalrow.lastweeknersqftTotalUnits * 100) / 100;
             totalrow.lastmonthnersqft = Math.round(totalrow.lastmonthnersqft / totalrow.lastmonthnersqftTotalUnits * 100) / 100;
             totalrow.lastweeknersqftTotal = Math.round(totalrow.lastweeknersqftTotal / totalrow.lastweeknersqftTotalUnits * 100) / 100;
@@ -161,6 +161,8 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             if (totalrow.lastmonthnersqft) {
                 totalrow.lastmonthnersqftpercent = Math.round((totalrow.lastmonthnersqftTotal - totalrow.lastmonthnersqft ) / totalrow.lastmonthnersqft * 100 * 10) / 10;
             }
+
+            totalrow.totUnits = Math.round(totalrow.totUnits / totalrow.count * 10) / 10; // not weighted
         }
 
         //console.log(totalrow)

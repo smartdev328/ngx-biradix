@@ -61,12 +61,12 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {% endif %}
         </Td>
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
-            {{row.occupancy}}%
+            {{row.occupancy | formatNumber : 1}}%
         </Td>
         {% if showLeases %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {% if row.leased != "" %}
-            {{row.leased}}%
+            {{row.leased | formatNumber : 1}}%
             {% else %}
             -
             {% endif %}
@@ -95,9 +95,9 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         {% endif%}
         " nowrap>
             {% if row.lastweeknersqftpercent > 0%}
-            {{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="top">
+            {{row.lastweeknersqftpercent | formatNumber : 1}}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="middle">
             {% elsif row.lastweeknersqftpercent < 0 %}
-            {{row.lastweeknersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="top">
+            {{row.lastweeknersqftpercent | formatNumber : 1}}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="middle">
             {% elsif row.lastweeknersqftpercent != "" %}
             0% <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="top">
             {% else %}
@@ -112,9 +112,9 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         {% endif%}
         " nowrap>
             {% if row.lastmonthnersqftpercent > 0%}
-            {{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="top">
+            {{row.lastmonthnersqftpercent | formatNumber : 1 }}% <img src= "https://platform.biradix.com/images/up.png" height="14" align="middle">
             {% elsif row.lastmonthnersqftpercent < 0 %}
-            {{row.lastmonthnersqftpercent}}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="top">
+            {{row.lastmonthnersqftpercent | formatNumber : 1 }}% <img src= "https://platform.biradix.com/images/down.png" height="14" align="middle">
             {% elsif row.lastmonthnersqftpercent != "" %}
             0% <img src= "https://platform.biradix.com/images/nochange.png" height="14" align="top">
             {% else %}
