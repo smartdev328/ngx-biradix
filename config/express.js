@@ -1,5 +1,6 @@
 'use strict';
 var settings = require('./settings.js')
+var error = require('./error.js')
 var bodyParser = require('body-parser')
 var expressJwt = require('express-jwt')
 var cookieParser = require('cookie-parser')
@@ -20,6 +21,8 @@ module.exports = {
             app.use(require('express').static(__dirname + '../../site/',{ maxAge: cacheTime }));
             app.use('/bower_components',  require('express').static(__dirname + '../../bower_components/',{ maxAge: cacheTime }));
             app.use('/node_modules',  require('express').static(__dirname + '../../node_modules/',{ maxAge: cacheTime }));
+
+            app.use(error.getClient().expressHandler);
 
             app.use(cookieParser())
 
@@ -114,6 +117,10 @@ module.exports = {
 
                 next();
             });
+
+
+            //throw new Error("Test");
+
 
             // app.all("*", function(req, res, next) {
             //    console.log(req.path, req.headers, req.user)

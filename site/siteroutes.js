@@ -3,22 +3,47 @@ var express = require('express');
 var _ = require('lodash');
 var packages = require('../package.json');
 var OrgService = require('../api/organizations/services/organizationService')
-//var newrelic = require('newrelic');
+var redisService = require('../api/utilities/services/redisService')
 var error = require('../config/error')
+var settings = require('../config/settings')
+var jwt = require('jsonwebtoken');
+
+function sendError(req,res) {
+    error.send(req.body.error, {headers:req.headers, ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress, user: req.user});
+    return res.status(200).json({success:true});
+}
+
 module.exports = (function() {
 
     var ui = express.Router();
 
     ui.get('/d/:id', function(req,res) {
         return res.redirect('/#/login?r=%2Fdashboard%3Fid=' + req.params.id + '%26s='+req.query.s);
+
     })
 
     ui.get('/u', function(req,res) {
         return res.redirect('/#/login?r=%2FupdateProfile%3Fnotifications=1');
     })
     ui.post('/error', function (req, res) {
-        error.send(req.body.error, {headers:req.headers, ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress});
-        return res.status(200).json({success:true});
+        if (!req.cookies.token) {
+            return sendError(req,res);
+        }
+
+        jwt.verify(req.cookies.token, settings.SECRET, function(err, decoded) {
+
+            if (!decoded) {
+                return sendError(req,res);
+            }
+            redisService.getByKey(decoded, function(err, result) {
+                if (result) {
+                    req.user = result;
+                }
+                sendError(req,res);
+            });
+
+
+        });
     });
 
     ui.get('/', function (req, res) {

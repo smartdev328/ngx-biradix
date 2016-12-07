@@ -32,6 +32,8 @@ define([
                                 $scope.users.push({id: u._id, name: u.name, selected: users.indexOf(u._id.toString()) > -1});
                             });
 
+                            $scope.users = _.sortBy($scope.users, function(x) {return (x.group || '') + x.name});
+
                             $scope.userOptions.hideSearch =  $scope.users.length < 10;
                             $scope.loading = false;
                         },

@@ -98,6 +98,10 @@ define([
                             }
                         })
 
+                        $scope.userItems = _.sortBy($scope.userItems, function(x) {return (x.group || '') + x.name});
+                        $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || '') + x.name});
+
+
                         response.data.properties.forEach(function (a) {
                             var selected = false;
                             if ($stateParams.property && a._id.toString() == $stateParams.property) {
