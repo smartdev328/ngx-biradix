@@ -12,10 +12,10 @@ module.exports = {
             if (context && context.user) {
 
                 return {
-                    identifier: context.user.first + ' ' + context.user.last,
-                    email: context.user.email,
+                    identifier: context.user.email,
+                    //email: context.user.email,
                     fullName:  context.user.first + ' ' + context.user.last,
-                    firstName:  context.user.first,
+                    // firstName:  context.user.first,
                     uuid: context.user.orgs[0].name
                 };
 
