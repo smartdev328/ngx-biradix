@@ -81,7 +81,7 @@ define([
 
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
-                $propertyService.search({limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid needsSurvey", ids: compids}).then(function (response) {
+                $propertyService.search({limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid needsSurvey survey.date", ids: compids}).then(function (response) {
                     $propertyService.search({
                         limit: 10000,
                         permission: 'PropertyManage',
@@ -112,6 +112,10 @@ define([
 
                             if (p.orgid && !_.find(ownedProps, function(x) {return x._id.toString() == p._id.toString()})) {
                                 p.canEdit = false;
+                            }
+
+                            if (!p.survey || !p.survey.date || (Date.now() - new Date(p.survey.date).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
+                                p.canEdit = true;
                             }
 
                             var comp = _.find(row.comps, function(x) {return x.id.toString() == p._id.toString()});
@@ -250,7 +254,7 @@ define([
                 var value = content[i];
 
                 for (var j = 0; j < value.length; j++) {
-                    var innerValue = value[j].toString();
+                    var innerValue = (value[j] || '').toString();
                     var result = innerValue.replace(/"/g, '""');
                     if (result.search(/("|,|\n)/g) >= 0)
                         result = '"' + result + '"';

@@ -109,6 +109,10 @@ module.exports = {
                         canSurvey = false;
                     }
 
+                    if (!all2.comps[0].survey || (all2.comps[0].survey.tier && all2.comps[0].survey.tier == 'danger')) {
+                        canSurvey = true;
+                    }
+
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
 
                     for (var s in all) {
@@ -255,6 +259,10 @@ module.exports = {
 
                                     if (c.orgid && !_.find(all.owned, function(x) {return x._id.toString() == c._id.toString()})) {
                                         c.canSurvey = false;
+                                    }
+
+                                    if (!c.survey || (c.survey.tier && c.survey.tier == 'danger')) {
+                                        c.canSurvey = true;
                                     }
 
                                     // console.log(c.canSurvey,all.owned,c._id);

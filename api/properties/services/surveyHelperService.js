@@ -47,7 +47,8 @@ module.exports = {
                         ner: ner,
                         weeklyleases: survey.weeklyleases,
                         weeklytraffic: survey.weeklytraffic,
-                        notes: survey.notes
+                        notes: survey.notes,
+                        date: survey.date
                     }
                     var query = {_id: propertyid};
                     var update = {survey: s, $unset : {needsSurvey: ""}};
