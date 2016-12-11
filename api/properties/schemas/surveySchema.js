@@ -21,7 +21,8 @@ var s = new Schema({
     exclusions: Array,
     location_amenities: Array,
     community_amenities: Array,
-    notes: String
+    notes: String,
+    doneByOwner : Boolean
 });
 
 module.exports = mongoose.model('Survey', s);

@@ -869,6 +869,10 @@ module.exports = {
             n.exclusions = exclusions;
             n.notes = survey.notes;
 
+            if (subject.orgid && operator.orgs[0]._id.toString() == subject.orgid.toString()) {
+                n.doneByOwner = true;
+            }
+
             var data = [{description: "Survey Date: ", date: n.date, id: n._id}];
 
 

@@ -13,45 +13,21 @@ module.exports = {
 
     },
     updateLastSurvey: function(propertyid, callback) {
-        SurveySchema.find({propertyid: propertyid}).sort('-date').limit(1).exec(function (err, surveys) {
-            if (err) {
-                return callback();
+        SurveySchema.find({propertyid: propertyid, doneByOwner: true}).sort('-date').limit(1).exec(function (err, ownersurveys) {
+            var dateByOwner = null;
+
+            if (ownersurveys && ownersurveys.length && ownersurveys.length == 1) {
+                dateByOwner = ownersurveys[0].date;
             }
 
-            if (!surveys || surveys.length == 0) {
-                var query = {_id: propertyid};
-                var update = {survey: {}};
-                var options = {new: true};
+            SurveySchema.find({propertyid: propertyid}).sort('-date').limit(1).exec(function (err, surveys) {
+                if (err) {
+                    return callback();
+                }
 
-                PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                    callback()
-                })
-            }
-            else {
-                var survey = surveys[0];
-
-                var totUnits = _.sum(survey.floorplans, function (fp) {
-                    return fp.units
-                });
-
-                if (totUnits > 0) {
-                    var ner = Math.round(_.sum(survey.floorplans, function (fp) {
-                            return (fp.rent - fp.concessions / 12) * fp.units
-                        }) / totUnits);
-
-                    var s = {
-                        id: survey._id,
-                        occupancy: survey.occupancy,
-                        leased: survey.leased,
-                        renewal: survey.renewal,
-                        ner: ner,
-                        weeklyleases: survey.weeklyleases,
-                        weeklytraffic: survey.weeklytraffic,
-                        notes: survey.notes,
-                        date: survey.date
-                    }
+                if (!surveys || surveys.length == 0) {
                     var query = {_id: propertyid};
-                    var update = {survey: s, $unset : {needsSurvey: ""}};
+                    var update = {survey: {}};
                     var options = {new: true};
 
                     PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
@@ -59,16 +35,49 @@ module.exports = {
                     })
                 }
                 else {
-                    var query = {_id: propertyid};
-                    var update = {survey: undefined};
-                    var options = {new: true};
+                    var survey = surveys[0];
 
-                    PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                        callback()
-                    })
+                    var totUnits = _.sum(survey.floorplans, function (fp) {
+                        return fp.units
+                    });
+
+                    if (totUnits > 0) {
+                        var ner = Math.round(_.sum(survey.floorplans, function (fp) {
+                                return (fp.rent - fp.concessions / 12) * fp.units
+                            }) / totUnits);
+
+                        var s = {
+                            id: survey._id,
+                            occupancy: survey.occupancy,
+                            leased: survey.leased,
+                            renewal: survey.renewal,
+                            ner: ner,
+                            weeklyleases: survey.weeklyleases,
+                            weeklytraffic: survey.weeklytraffic,
+                            notes: survey.notes,
+                            date: survey.date,
+                            dateByOwner : dateByOwner
+                        }
+                        var query = {_id: propertyid};
+                        var update = {survey: s, $unset: {needsSurvey: ""}};
+                        var options = {new: true};
+
+                        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                            callback()
+                        })
+                    }
+                    else {
+                        var query = {_id: propertyid};
+                        var update = {survey: undefined};
+                        var options = {new: true};
+
+                        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                            callback()
+                        })
+                    }
                 }
-            }
 
+            })
         })
     },
 

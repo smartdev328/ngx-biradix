@@ -114,8 +114,9 @@ define([
                                 p.canEdit = false;
                             }
 
+                            //TODO: Replace with last survey by owner logic
                             if (!p.survey || !p.survey.date || (Date.now() - new Date(p.survey.date).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
-                                p.canEdit = true;
+                                // p.canEdit = true;
                             }
 
                             var comp = _.find(row.comps, function(x) {return x.id.toString() == p._id.toString()});

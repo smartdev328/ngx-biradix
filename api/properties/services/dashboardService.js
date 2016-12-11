@@ -109,8 +109,9 @@ module.exports = {
                         canSurvey = false;
                     }
 
+                    //TODO: Replace with last survey by owner logic
                     if (!all2.comps[0].survey || (all2.comps[0].survey.tier && all2.comps[0].survey.tier == 'danger')) {
-                        canSurvey = true;
+                        //canSurvey = true;
                     }
 
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
@@ -261,8 +262,9 @@ module.exports = {
                                         c.canSurvey = false;
                                     }
 
+                                    //TODO: Replace with last survey by owner logic
                                     if (!c.survey || (c.survey.tier && c.survey.tier == 'danger')) {
-                                        c.canSurvey = true;
+                                        // c.canSurvey = true;
                                     }
 
                                     // console.log(c.canSurvey,all.owned,c._id);
