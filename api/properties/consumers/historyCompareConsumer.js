@@ -12,7 +12,7 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
             var req = {user : data.user,params : {id: data.id}, body: options}
 
             queueService.getDashboard(req, function(err,dashboard) {
-                //console.log(data.id + " history compare ended");
+                console.log(data.id + " history compare ended");
 
                 var report = [];
 
