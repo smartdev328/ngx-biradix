@@ -69,7 +69,7 @@
             {{fp.units}}
         </td>
         <td class="center">
-            {{fp.unitpercent | number : 1}}%
+            {{fp.unitpercent == 100 ? '100' : (fp.unitpercent | number : 1)}}%
         </td>
         <td class="center">
             {{fp.sqft | number : 0}}
@@ -128,7 +128,7 @@
                 {{fp.units}}
             </td>
             <td class="center">
-                {{fp.unitpercent | number : 1}}%
+                {{fp.unitpercent == 100 ? '100' : (fp.unitpercent | number : 1)}}%
             </td>
             <td class="center">
                 {{fp.sqft | number : 0}}
