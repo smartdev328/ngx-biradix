@@ -334,10 +334,10 @@ define([
                     row.push(r['totalUnits'] || '')
                 }
                 if ($scope.show.occupancy) {
-                    row.push(r['survey.occupancy'] || '')
+                    row.push(r['occupancy'] == -1 ?  '' : r['occupancy'])
                 }
                 if ($scope.show.ner) {
-                    row.push(r['survey.ner'] || '')
+                    row.push(r['ner'] == -1 ?  '' : r['ner'])
                 }
                 if ($scope.show.active) {
                     row.push(r['active'] ? 'Yes' : 'No')
@@ -351,7 +351,6 @@ define([
             $scope.streamCsv('properties.csv', content)
 
         }
-
 
         $scope.toggleActive = function (property) {
 

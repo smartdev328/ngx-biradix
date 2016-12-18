@@ -6,7 +6,6 @@ define([
     '../../components/reports/feesDeposits.js',
     '../../components/reports/propertyRankings.js',
     '../../components/reports/propertyRankingsSummary.js',
-    '../../components/reports/marketShare.js',
     '../../components/reports/propertyStatus.js',
     '../../services/auditService',
     '../../services/progressService',
@@ -34,7 +33,6 @@ define([
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "market_share", name: "Market Share", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:false, group: "Individual Reports", type:"single"});
 
@@ -233,7 +231,6 @@ define([
 
             $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
-            $scope.marketShare = $scope.reportIds.indexOf("market_share") > -1;
 
             $propertyService.reports(
                 $scope.compIds

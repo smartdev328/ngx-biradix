@@ -20,6 +20,12 @@
             <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
+        <th class="center sortable" ng-click="toggleSort('unitpercent')" style="min-width:60px">
+            Unit %
+            <i ng-show="sort.unitpercent == null" class="fa fa-sort"></i>
+            <i ng-show="sort.unitpercent === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.unitpercent === false" class="fa fa-sort-up"></i>
+        </th>
         <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px">
             Sqft
             <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
@@ -63,6 +69,9 @@
             {{fp.units}}
         </td>
         <td class="center">
+            {{fp.unitpercent | number : 1}}%
+        </td>
+        <td class="center">
             {{fp.sqft | number : 0}}
         </td>
         <td class="center">
@@ -79,6 +88,9 @@
         </td>
         <td class="center black">
             <div style="color:black !important;">{{totals.units  | number : 0}}</div>
+        </td>
+        <td class="center black">
+            <div style="color:black !important;">{{totals.unitpercent  | number : 0}}%</div>
         </td>
         <td class="center black">
             <div style="color:black !important;">{{totals.sqft | number : 0}}</div>
@@ -116,6 +128,9 @@
                 {{fp.units}}
             </td>
             <td class="center">
+                {{fp.unitpercent | number : 1}}%
+            </td>
+            <td class="center">
                 {{fp.sqft | number : 0}}
             </td>
             <td class="center">
@@ -131,6 +146,9 @@
             </td>
             <td class="center black">
                 <div style="color:black !important;">{{value.summary.units  | number : 0}}</div>
+            </td>
+            <td class="center black">
+                <div style="color:black !important;">100%</div>
             </td>
             <td class="center black">
                 <div style="color:black !important;">{{value.summary.sqft | number : 0}}</div>

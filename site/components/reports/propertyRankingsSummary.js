@@ -131,6 +131,8 @@ define([
                                 f.sqft = f.sqft / f.units;
                                 f.ner = f.ner / f.units;
                                 f.nersqft = f.ner / f.sqft;
+                                f.unitpercent = f.units / $scope.rankings[fp].summary.units * 100;
+
                             })
 
                             $scope.rankings[fp].summary.units = $scope.rankings[fp].summary.units / $scope.rankings[fp].floorplans.length;
@@ -142,11 +144,14 @@ define([
                         f.sqft = Math.round(f.sqft / f.units);
                         f.ner = f.ner / f.units;
                         f.nersqft = f.ner / f.sqft;
+                        f.unitpercent = f.units / $scope.totals.units * 100;
                     })
 
                     $scope.totals.sqft = $scope.totals.totalsqft / $scope.totals.units;
                     $scope.totals.ner = $scope.totals.totalner / $scope.totals.units;
                     $scope.totals.nersqft = $scope.totals.ner / $scope.totals.sqft;
+                    $scope.totals.unitsTotal = $scope.totals.units;
+                    $scope.totals.unitpercent = 100;
                     $scope.totals.units = $scope.totals.units / $scope.summary.length;
 
                     //Phantom JS hack. if the report fits the page exactly, add more pixesl so it doesnt leave a blank logo on the previous page
