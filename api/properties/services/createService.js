@@ -341,6 +341,10 @@ module.exports = {
     },
 }
 
+function isValidString(s) {
+    return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s)
+}
+
 function errorCheck(property, modelErrors) {
     property = property || {};
     property.name = property.name || '';
@@ -361,9 +365,18 @@ function errorCheck(property, modelErrors) {
         modelErrors.push({param: 'name', msg : 'Please enter the Property Name'});
     }
 
+    if (!isValidString(property.name)) {
+        modelErrors.push({param: 'name', msg : 'There are invalid characters in your Property Name.'});
+    }
+
     if (property.address == '') {
         modelErrors.push({param: 'address', msg : 'Please enter the Property Address'});
     }
+
+    if (!isValidString(property.address)) {
+        modelErrors.push({param: 'address', msg : 'There are invalid characters in your Property Address.'});
+    }
+
 
     if (property.city == '') {
         modelErrors.push({param: 'city', msg : 'Please enter the Property City'});

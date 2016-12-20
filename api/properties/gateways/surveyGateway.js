@@ -120,7 +120,7 @@ module.exports = {
                             var o = all.oneMonth;
                             var n = req.body;
 
-                            if (parseFloat(o.weeklyleases) === parseFloat(n.weeklyleases)) {
+                            if (req.user.settings.showLeases && parseFloat(o.weeklyleases) === parseFloat(n.weeklyleases)) {
                                 errors.push({msg:'Leases has not changed in a month'});
                             }
 

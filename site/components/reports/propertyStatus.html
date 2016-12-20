@@ -73,13 +73,13 @@
                         <span ng-if="row.lastweeknersqftpercent > 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastweeknersqftpercent < 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastweeknersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
-                        <span ng-if="row.lastweeknersqftpercent == ''">&nbsp;&nbsp;</span>
+                        <span ng-if="row.lastweeknersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
                     <td style="text-align:right">
                         <span ng-if="row.lastmonthnersqftpercent > 0">{{row.lastmonthnersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastmonthnersqftpercent < 0">{{row.lastmonthnersqftpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastmonthnersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
-                        <span ng-if="row.lastmonthnersqftpercent == ''">&nbsp;&nbsp;</span>
+                        <span ng-if="row.lastmonthnersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
                     <td style="text-align:right">
                         <span ng-class="{'danger':row.tier == 'danger'}">{{row.date}}</span>
