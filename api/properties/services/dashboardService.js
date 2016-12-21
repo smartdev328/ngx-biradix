@@ -90,7 +90,6 @@ module.exports = {
                     all2.comps.forEach(function(c) {
                         if (c.survey) {
                             delete c.floorplans;
-
                             if (c.survey.date) {
                                 var daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
                                 if (daysSince >= 15) {
@@ -109,9 +108,8 @@ module.exports = {
                         canSurvey = false;
                     }
 
-                    //TODO: Replace with last survey by owner logic
-                    if (!all2.comps[0].survey || (all2.comps[0].survey.tier && all2.comps[0].survey.tier == 'danger')) {
-                        //canSurvey = true;
+                    if (!all2.comps[0].survey || !all2.comps[0].survey.dateByOwner || (Date.now() - new Date(all2.comps[0].survey.dateByOwner).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
+                        canSurvey = true;
                     }
 
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
@@ -155,8 +153,17 @@ module.exports = {
                     permission: 'PropertyView',
                     ids: compids
                     ,
-                    select: "_id name address city state zip loc totalUnits survey.id floorplans orgid needsSurvey"
+                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey"
                 }, function(err, comps) {
+
+                    //pre-comupte a lookup for datest by owner for locks
+                    var datesByOner = {};
+
+                    comps.forEach(function(c) {
+                        if (c.survey && c.survey.dateByOwner) {
+                            datesByOner[c._id.toString()] = c.survey.dateByOwner;
+                        }
+                    })
 
                     if (err) {
                         return callback(err,null)
@@ -262,9 +269,8 @@ module.exports = {
                                         c.canSurvey = false;
                                     }
 
-                                    //TODO: Replace with last survey by owner logic
-                                    if (!c.survey || (c.survey.tier && c.survey.tier == 'danger')) {
-                                        // c.canSurvey = true;
+                                    if (!datesByOner[c._id.toString()] || (Date.now() - new Date(datesByOner[c._id.toString()]).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
+                                        c.canSurvey = true;
                                     }
 
                                     // console.log(c.canSurvey,all.owned,c._id);

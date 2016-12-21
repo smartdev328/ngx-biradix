@@ -81,7 +81,7 @@ define([
 
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
-                $propertyService.search({limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid needsSurvey survey.date", ids: compids}).then(function (response) {
+                $propertyService.search({limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid needsSurvey survey.dateByOwner", ids: compids}).then(function (response) {
                     $propertyService.search({
                         limit: 10000,
                         permission: 'PropertyManage',
@@ -114,9 +114,8 @@ define([
                                 p.canEdit = false;
                             }
 
-                            //TODO: Replace with last survey by owner logic
-                            if (!p.survey || !p.survey.date || (Date.now() - new Date(p.survey.date).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
-                                // p.canEdit = true;
+                            if (!p.survey || !p.survey.dateByOwner || (Date.now() - new Date(p.survey.dateByOwner).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
+                                p.canEdit = true;
                             }
 
                             var comp = _.find(row.comps, function(x) {return x.id.toString() == p._id.toString()});
