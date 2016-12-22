@@ -119,7 +119,8 @@ define([
                                     $scope.survey.notes = s.notes;
                                     $scope.settings.showNotes = (s.notes || '') != '';
 
-                                    $scope.survey.floorplans.forEach(function (fp) {
+                                    var removeFloorplans = [];
+                                    $scope.survey.floorplans.forEach(function (fp, i) {
                                         var old = _.find(s.floorplans, function (ofp) {
                                             return ofp.id.toString() == fp.id.toString()
                                         })
@@ -134,7 +135,15 @@ define([
                                         if (typeof fp.concessionsOneTime != 'undefined') {
                                             $scope.settings.showDetailed = true;
                                         }
+
+                                        //If we are modifying a survey and there is a new floorplan, exclude it
+                                        if (surveyid && !old) {
+                                            removeFloorplans.push(fp.id.toString());
+                                        }
                                     })
+
+                                    _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
+
 
                                     if (!surveyid) {
                                         //var hoursOld = ((new Date()).getTime() - (new Date(s.date)).getTime()) / 1000 / 60 / 60;
@@ -154,6 +163,7 @@ define([
                                         $scope.editMode = true;
                                         $scope.editDate = s.date;
                                     }
+
                                 }
 
                                 $scope.doneLoading();
