@@ -34,7 +34,6 @@ define([
             $scope.changed = false;
             
             $scope.updateChanged = function() {
-                console.log('hi')
                 $scope.changed = true;
             }
 
@@ -120,6 +119,8 @@ define([
                                     $scope.settings.showNotes = (s.notes || '') != '';
 
                                     var removeFloorplans = [];
+
+                                    var bFloorplansChanged = false
                                     $scope.survey.floorplans.forEach(function (fp, i) {
                                         var old = _.find(s.floorplans, function (ofp) {
                                             return ofp.id.toString() == fp.id.toString()
@@ -136,16 +137,40 @@ define([
                                             $scope.settings.showDetailed = true;
                                         }
 
-                                        //If we are modifying a survey and there is a new floorplan, exclude it
-                                        if (surveyid && !old) {
-                                            removeFloorplans.push(fp.id.toString());
+
+                                        if (!old) {
+                                            //Always Keep track of floorplan changes
+                                            bFloorplansChanged = true;
+
+                                            //If we are modifying a survey and there is a new floorplan, exclude it
+                                            if (surveyid) {
+                                                removeFloorplans.push(fp.id.toString());
+                                            }
                                         }
                                     })
 
-                                    _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
+
+                                    var removed = _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
 
 
-                                    if (!surveyid) {
+                                    s.floorplans.forEach(function (fp) {
+                                        var n = _.find($scope.survey.floorplans, function (nfp) {
+                                            return nfp.id.toString() == fp.id.toString()
+                                        })
+
+                                        if (!n) {
+                                            //Add missing floorplans from survey being edited
+                                            if (surveyid) {
+                                                $scope.survey.floorplans.push(fp);
+                                            }
+                                            //Always Keep track of floorplan changes
+                                            bFloorplansChanged = true;
+                                        }
+                                    })
+
+
+                                    //If Adding a new Survey and no changes in floorplans and there is already a survey today, edit that one
+                                    if (!surveyid && !bFloorplansChanged) {
                                         //var hoursOld = ((new Date()).getTime() - (new Date(s.date)).getTime()) / 1000 / 60 / 60;
                                         //if (hoursOld < 24) {
                                         //    surveyid = s._id;
