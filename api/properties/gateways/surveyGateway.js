@@ -111,7 +111,7 @@ module.exports = {
                             }
 
                             if (parseFloat(o.weeklytraffic) === parseFloat(n.weeklytraffic)) {
-                                errors.push({msg:'Traffic has not changed in two weeks'});
+                                errors.push({msg:'Traffic/Week has not changed in two weeks'});
                             }
 
                         }
@@ -121,7 +121,7 @@ module.exports = {
                             var n = req.body;
 
                             if (parseFloat(o.weeklyleases) === parseFloat(n.weeklyleases)) {
-                                errors.push({msg:'Leases has not changed in a month'});
+                                errors.push({msg:'Leases/Week has not changed in a month'});
                             }
 
 
