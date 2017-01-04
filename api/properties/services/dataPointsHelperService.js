@@ -77,7 +77,7 @@ module.exports = {
             ret = ret / sqft;
         }
 
-        return {value: ret, excluded: excluded, totalUnits: tot};
+        return {value: tot == 0 ? null : ret, excluded: excluded, totalUnits: tot};
     },
     normailizePoints: function (points, offset, dr, weighted) {
         if (points == {}) {

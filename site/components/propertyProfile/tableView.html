@@ -1,7 +1,6 @@
 <div class="alert alert-warning" role="alert" ng-if="!data || data.length == 0">
     There is currently no data avaiable.
 </div>
-
 <div class="maingrid wrapper panel" style="overflow-x:auto" ng-if="data && data.length > 0">
     <div class="header" style="height:47px"></div>
     <table class="table table-condensed table-striped table-hover" style="font-size:9pt">
@@ -59,7 +58,7 @@
         </td>
 
         <td class="center" ng-repeat="b in bedrooms">
-            {{item[b] == null ? '-' : '$' + (item[b] | number : 2)}}
+            {{item[b] == null ? '-' : '$' + (item[b] | number : (item[b] > 100 ? 0 : 2))}}
         </td>
     </tr>
     </tbody>
