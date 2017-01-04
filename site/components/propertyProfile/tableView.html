@@ -55,11 +55,11 @@
             {{item.leases| number : 0}}
         </td>
         <td class="center" ng-if="columns.indexOf('ner') > -1">
-            ${{item.ner | number : (item.ner > 100 ? 0 : 2)}}
+            {{item.ner == null ? '-' : '$' + (item.ner | number : (item.ner > 100 ? 0 : 2))}}
         </td>
 
         <td class="center" ng-repeat="b in bedrooms">
-            {{item[b] == null ? '-' : '$' + (item[b] | number : (item.ner > 100 ? 0 : 2))}}
+            {{item[b] == null ? '-' : '$' + (item[b] | number : 2)}}
         </td>
     </tr>
     </tbody>
