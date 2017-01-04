@@ -7,6 +7,7 @@ var _ = require("lodash");
 var moment = require("moment-timezone");
 var redisService = require('../../utilities/services/redisService')
 var BizEmailService = require('../../business/services/emailService')
+var error = require('../../../config/error')
 
 queues.getNotificationsQueue().consume(function(data,reply) {
     console.log(data.properties, " notifications started");
@@ -46,7 +47,12 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                             redisService.set(key, report, 3 * 60); // 3 hours
                             //console.log('No Cache:', report);
                             final.push(report);
-                            callbackp(null)
+
+                            if (report == null) {
+                                callbackp(err);
+                            } else {
+                                callbackp(null)
+                            }
                         })
                     }
                 });
@@ -54,7 +60,12 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
 
             }, function(err) {
-                //return reply({done: true});
+                if (err) {
+                    error.send(err, {data: data, user: data.user});
+                    reply({done:true});
+                    return
+                }
+
 
                 if (final.length > 0) {
                     //console.log(final);
