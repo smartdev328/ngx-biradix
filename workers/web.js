@@ -47,8 +47,6 @@ d.run(function() {
             if (connectedCount < 2) {
                 return;
             }
-            require('../config/seed').init();
-
             require('../config/express').init(app, d)
             app.use('/poc/', require('../poc/pocGateway'));
             app.use('/', require('../site/siteroutes'));
@@ -104,6 +102,7 @@ d.run(function() {
 
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
                 if (workerId == 1) {
+                    require('../config/seed').init();
                 //    var moment = require("moment");
                 //    var end = moment().add(-1,"day").startOf('week').add(1,"day").utcOffset(-480);
                 //    var start = moment(end).add(-7,"day")

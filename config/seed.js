@@ -637,6 +637,8 @@ var AmenitiesCreate = function(System, callback) {
 var RolesAssignPermissionsCreate = function(roles, callback) {
     var permissions = [
         {executorid: roles.BiradixAdmin._id, resource: roles.BiradixAdmin._id.toString(), allow: true, type: 'RoleAssign'},
+        {executorid: roles.BiradixAdmin._id, resource: roles.Guest._id.toString(), allow: true, type: 'RoleAssign'},
+
         {executorid: roles.GreystarCM._id, resource: roles.GreystarCM._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.GreystarCM._id, resource: roles.GreystarRM._id.toString(), allow: true, type: 'RoleAssign'},
         {executorid: roles.GreystarCM._id, resource: roles.GreystarBM._id.toString(), allow: true, type: 'RoleAssign'},
@@ -1020,6 +1022,7 @@ var UsersCreate = function(roles, callback) {
 
 var RolesCreate = function(Orgs, callback) {
     var BiradixAdmin = {name: "Site Admin", isadmin: true, tags: ['Admin'], orgid : Orgs.Biradix._id}
+    var Guest = {name: "Guest", tags: ['Guest'], orgid : Orgs.Biradix._id}
     var AllianceCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Alliance._id}
     var AllianceRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Alliance._id}
     var AllianceBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Alliance._id}
@@ -1050,6 +1053,11 @@ var RolesCreate = function(Orgs, callback) {
     async.parallel({
         BiradixAdmin: function(callbackp) {
             AccessService.createRole(BiradixAdmin, function(err, role){
+                callbackp(null, role)
+            });
+        },
+        Guest: function(callbackp) {
+            AccessService.createRole(Guest, function(err, role){
                 callbackp(null, role)
             });
         },

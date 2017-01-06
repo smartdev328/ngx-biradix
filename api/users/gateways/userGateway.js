@@ -116,7 +116,8 @@ userRoutes.post('/create', function (req, res) {
         }
 
         //Anyone going through the gateway gets their random password emailed to them
-        req.body.emailPassword = true;
+        //Do not email guests
+        req.body.emailPassword = (req.body.isGuest || false) != true;
         req.body.isSystem = false;
 
         userCreateService.insert(req.user, req.context, req.body, req.basePath, function (errors, usr) {
