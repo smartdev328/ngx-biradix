@@ -82,7 +82,7 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div class="panel panel-info"  style="height:410px" id="notificationsPanel">
+        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:410px" id="notificationsPanel">
             <div class="panel-heading">Notifications</div>
             <div class="panel-body">
 
@@ -151,7 +151,7 @@
     </div>
 
     <div class="col-md-6">
-        <div class="panel panel-info"  style="height:410px" id="settingsPanel">
+        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:410px" id="settingsPanel">
             <div class="panel-heading">Settings</div>
             <div class="panel-body">
                 <div>

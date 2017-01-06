@@ -1264,6 +1264,11 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.BiradixAdmin._id, resource: "History/MoreInfo", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Admin", allow: true, type: 'Execute'},
 
+        {executorid: roles.Guest._id, resource: "Hide/Search", allow: true, type: 'Execute'},
+        {executorid: roles.Guest._id, resource: "Hide/Reporting", allow: true, type: 'Execute'},
+        {executorid: roles.Guest._id, resource: "Hide/Settings", allow: true, type: 'Execute'},
+        {executorid: roles.Guest._id, resource: "Hide/Notifications", allow: true, type: 'Execute'},
+
         {executorid: roles.GreystarCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.GreystarRM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.GreystarBM._id, resource: "Users", allow: true, type: 'Execute'},
