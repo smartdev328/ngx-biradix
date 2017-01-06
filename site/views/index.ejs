@@ -100,7 +100,7 @@
                     </a>
                 </script>
 
-                <ul class="nav navbar-nav hidden-xs pull-right">
+                <ul class="nav navbar-nav hidden-xs pull-right" ng-if="$root.me.permissions.indexOf('Hide/Search') == -1">
                     <form class="navbar-form navbar-left" role="search" style="padding-right:25px;padding-top:3px">
                         <div class="form-group has-feedback has-feedback-left search">
                             <input type="text" class="form-control input-sm"
@@ -119,7 +119,7 @@
 
                 <ul class="nav navbar-nav pull-right navbar-tabs">
                     <li ng-class="{active: $root.nav == 'Dashboard'}"><a href="#/dashboard">Dashboard</a></li>
-                    <li ng-class="{active: $root.nav == 'Reporting'}" style="margin-left: 5px"><a href="#/reporting">Reporting</a></li>
+                    <li ng-class="{active: $root.nav == 'Reporting'}" style="margin-left: 5px" ng-if="$root.me.permissions.indexOf('Hide/Reporting') == -1"><a href="#/reporting">Reporting</a></li>
                 </ul>
 
                 <div class="dropdown pull-right" style="padding:18px 15px 0px 0px" ng-if="$root.notifications.length">
@@ -142,7 +142,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <button type="button" class="pull-right" ng-click="toggleSearch()"
+                    <button ng-if="$root.me.permissions.indexOf('Hide/Search') == -1" type="button" class="pull-right" ng-click="toggleSearch()"
                             style="padding: 5px 10px 7px 10px;margin-right:10px;margin-top:2px">
                         <i class="fa fa-search"></i>
                     </button>
@@ -198,7 +198,7 @@
                     <li class="visible-xs">
                         <a ng-class="{'active': sideNav == 'Dashboard'}" href="#/dashboard" ng-click="turnOffIfMobile()"><i class="fa fa-tachometer"></i> Dashboard</a>
                     </li>
-                    <li class="visible-xs">
+                    <li class="visible-xs" ng-if="$root.me.permissions.indexOf('Hide/Reporting') == -1">
                         <a ng-class="{'active': sideNav == 'Reporting'}" href="#/reporting" ng-click="turnOffIfMobile()"><i class="fa fa-bar-chart"></i> Reporting</a>
                     </li>
                     <li>
@@ -210,10 +210,10 @@
                     <li>
                         <a href = "#/updateProfile?password=1" class="subnav" ng-click="turnOffIfMobile()"> - Update Password</a>
                     </li>
-                    <li>
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1">
                         <a href = "#/updateProfile?notifications=1" class="subnav" ng-click="turnOffIfMobile()"> - Notifications</a>
                     </li>
-                    <li>
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Settings') == -1">
                         <a href = "#/updateProfile?settings=1" class="subnav" ng-click="turnOffIfMobile()"> - Settings</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Users') > -1">
