@@ -167,6 +167,8 @@ define([
 
 
                 if (!userId) {
+                    $scope.user.isGuest = $scope.user.roles[0].selectedRole.name == "Guest";
+
                     $userService.create($scope.user).then(function (response) {
                             if (response.data.errors) {
                                 toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
