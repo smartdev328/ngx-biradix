@@ -111,7 +111,17 @@ define([
                         $scope.loading = false;
                     }
                 } else {
-                    $propertyService.search({limit: 10000, permission: 'PropertyManage', select:"_id name orgid", orgid: role.selectedRole.orgid, active: true}).then(function (response) {
+
+                    var isGuest = $scope.user.roles[0].selectedRole.name == "Guest";
+                    var criteria = {limit: 10000, permission: 'PropertyManage', select:"_id name orgid", active: true};
+
+                    if (isGuest) {
+                        criteria.noorgid = true;
+                    } else {
+                        criteria.orgid = role.selectedRole.orgid;
+                    }
+
+                    $propertyService.search(criteria).then(function (response) {
                         role.properties = [];
 
                         response.data.properties.forEach(function(x) {

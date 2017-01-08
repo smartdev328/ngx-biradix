@@ -444,6 +444,10 @@ module.exports = {
                 query = query.where("orgid").equals(criteria.orgid);
             }
 
+            if (criteria.noorgid) {
+                query = query.exists("orgid", false);
+            }
+
             if (criteria.amenity) {
                 query = query.or([
                     {"community_amenities": criteria.amenity},
