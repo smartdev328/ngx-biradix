@@ -1263,11 +1263,16 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.BiradixAdmin._id, resource: "Org/Assign", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "History/MoreInfo", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Admin", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "Users", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "Settings/Default", allow: true, type: 'Execute'},
 
+        {executorid: roles.Guest._id, resource: "Hide/Dashboard", allow: true, type: 'Execute'},
         {executorid: roles.Guest._id, resource: "Hide/Search", allow: true, type: 'Execute'},
         {executorid: roles.Guest._id, resource: "Hide/Reporting", allow: true, type: 'Execute'},
-        {executorid: roles.Guest._id, resource: "Hide/Settings", allow: true, type: 'Execute'},
-        {executorid: roles.Guest._id, resource: "Hide/Notifications", allow: true, type: 'Execute'},
+        {executorid: roles.Guest._id, resource: "Hide/Account", allow: true, type: 'Execute'},
 
         {executorid: roles.GreystarCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.GreystarRM._id, resource: "Users", allow: true, type: 'Execute'},
