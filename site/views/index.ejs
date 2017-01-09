@@ -83,7 +83,7 @@
                         <div style="text-align: center;color:#737373;border-bottom:1px solid #ccc;padding-bottom:5px">{{$root.me.roles[0]}}</div>
 
                         <ul class="multi-col-list">
-                            <li><a href="#/updateProfile"><i class="fa fa-user"></i> My Account</a></li>
+                            <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1"><a href="#/updateProfile"><i class="fa fa-user"></i> My Account</a></li>
                             <li ng-show="$root.me.permissions.indexOf('Users') > -1"><a href="#/manageusers"><i class="fa fa-users"></i> Manage Users</a></li>
                             <li ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/properties"><i class="fa fa-building"></i> Manage Properties</a></li>
                             <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/history"><i class="fa fa-history"></i> Activity History</a></li>
@@ -118,7 +118,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav pull-right navbar-tabs">
-                    <li ng-class="{active: $root.nav == 'Dashboard'}"><a href="#/dashboard">Dashboard</a></li>
+                    <li ng-class="{active: $root.nav == 'Dashboard'}" ng-if="$root.me.permissions.indexOf('Hide/Dashboard') == -1"><a href="#/dashboard">Dashboard</a></li>
                     <li ng-class="{active: $root.nav == 'Reporting'}" style="margin-left: 5px" ng-if="$root.me.permissions.indexOf('Hide/Reporting') == -1"><a href="#/reporting">Reporting</a></li>
                 </ul>
 
@@ -195,25 +195,25 @@
             <!-- Sidebar -->
             <div id="sidebar-wrapper" ng-class="{'nobig' : !sideMenu}">
                 <ul class="sidebar-nav">
-                    <li class="visible-xs">
+                    <li class="visible-xs" ng-if="$root.me.permissions.indexOf('Hide/Dashboard') == -1">
                         <a ng-class="{'active': sideNav == 'Dashboard'}" href="#/dashboard" ng-click="turnOffIfMobile()"><i class="fa fa-tachometer"></i> Dashboard</a>
                     </li>
                     <li class="visible-xs" ng-if="$root.me.permissions.indexOf('Hide/Reporting') == -1">
                         <a ng-class="{'active': sideNav == 'Reporting'}" href="#/reporting" ng-click="turnOffIfMobile()"><i class="fa fa-bar-chart"></i> Reporting</a>
                     </li>
-                    <li>
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1">
                         <a href = "#/updateProfile" ng-class="{'active': sideNav == 'UpdateProfile'}" ng-click="turnOffIfMobile()"><i class="fa fa-user"></i> My Account</a>
                     </li>
-                    <li>
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1">
                         <a href = "#/updateProfile" href class="subnav" ng-click="turnOffIfMobile()"> - Update Profile</a>
                     </li>
-                    <li>
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1">
                         <a href = "#/updateProfile?password=1" class="subnav" ng-click="turnOffIfMobile()"> - Update Password</a>
                     </li>
-                    <li ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1">
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1">
                         <a href = "#/updateProfile?notifications=1" class="subnav" ng-click="turnOffIfMobile()"> - Notifications</a>
                     </li>
-                    <li ng-if="$root.me.permissions.indexOf('Hide/Settings') == -1">
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1">
                         <a href = "#/updateProfile?settings=1" class="subnav" ng-click="turnOffIfMobile()"> - Settings</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Users') > -1">

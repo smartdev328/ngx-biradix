@@ -216,6 +216,15 @@ define([
                         }
                     }
 
+                    if ($rootScope.me.roles[0] == 'Guest') {
+                        if ($scope.selectedProperty) {
+                            $location.path('/profile/' + $scope.selectedProperty._id)
+                        } else {
+                            $rootScope.logoff();
+                        }
+                        return;
+                    }
+
                     if ($scope.selectedProperty) {
                         $scope.loadProperty($scope.selectedProperty._id)
                         if($stateParams.id) {
