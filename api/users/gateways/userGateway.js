@@ -117,8 +117,8 @@ userRoutes.post('/create', function (req, res) {
 
         //Anyone going through the gateway gets their random password emailed to them
         //Do not email guests
-        req.body.emailPassword = (req.body.isGuest || false) // If guest, dont email password
-        req.body.passwordUpdated = (req.body.isGuest || true); // If Guest, mark password as updated, dont force update
+        req.body.emailPassword = !(req.body.isGuest || false) // If guest, dont email password
+        req.body.passwordUpdated = (req.body.isGuest || false); // If Guest, mark password as updated, dont force update
         req.body.isSystem = false;
 
         userCreateService.insert(req.user, req.context, req.body, req.basePath, function (errors, usr) {
