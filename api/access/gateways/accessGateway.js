@@ -20,6 +20,10 @@ routes.get("/roles", function(req, res) {
             OrgService.read(callbackp)
         }
     },function(err, all) {
+
+        if (req.user.memberships && req.user.memberships.isadmin === true) {
+            all.allowedRoles = _.map(all.allRoles, function(x) {return x._id.toString()});
+        }
         var response = [];
 
         //Get all Allowed Role resource ids

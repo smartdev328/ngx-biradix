@@ -1265,6 +1265,7 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.BiradixAdmin._id, resource: "Admin", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "History", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Settings/Default", allow: true, type: 'Execute'},
