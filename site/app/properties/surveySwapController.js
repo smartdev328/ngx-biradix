@@ -19,20 +19,42 @@ define([
             ga('send', 'pageview');
 
 
-            $scope.newGuest = '';
 
-            $scope.loading = true;
 
-            $propertyUsersService.getPropertyAssignedGuests(property._id).then(function (response) {
+            $scope.reload = function() {
+                $scope.newGuest = {};
+                $scope.loading = true;
 
-                    $scope.users = response.data.users;
-                    $scope.loading = false;
 
-                },
-                function (error) {
-                    toastr.error("Unable to retrieve data. Please contact the administrator.");
-                    $scope.loading = false;
-                });
+                $propertyUsersService.getPropertyAssignedGuests(property._id).then(function (response) {
+
+                        $scope.users = response.data.users;
+                        $scope.loading = false;
+
+                    },
+                    function (error) {
+                        toastr.error("Unable to retrieve data. Please contact the administrator.");
+                        $scope.loading = false;
+                    });
+            }
+            $scope.reload();
+
+            $scope.save = function() {
+                $scope.loading = true;
+                $userService.createGuest($scope.newGuest).then(function (response) {
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                            $scope.loading = false;
+                        }
+                        else {
+                            $scope.reload();
+                        }
+                    },
+                    function (error) {
+                        toastr.error("Unable to create. Please contact the administrator.");
+                        $scope.loading = false;
+                    });
+            }
 
 
         }]);

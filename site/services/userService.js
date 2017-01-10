@@ -41,6 +41,15 @@ define([
             });
         }
 
+        fac.createGuest = function (user) {
+            return $http.post('/api/1.0/users/createGuest'+ '?bust=' + (new Date()).getTime(), user, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.update = function (user) {
             return $http.put('/api/1.0/users/' + user._id+ '?bust=' + (new Date()).getTime(), user, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

@@ -107,6 +107,30 @@ userRoutes.get('/me', function (req, res) {
 
 })
 
+userRoutes.post('/createGuest', function (req, res) {
+    //Anyone going through the gateway gets their random password emailed to them
+    //Do not email guests
+    req.body.emailPassword = false
+    req.body.passwordUpdated = true
+    req.body.isSystem = false;
+
+    AccessService.getRoles({tags: ['Guest'], cache: false}, function(err, guests) {
+        req.body.roleids = [guests[0]._id.toString()];
+
+        userCreateService.insert(req.user, req.context, req.body, req.basePath, function (errors, usr) {
+                if (errors) {
+                    res.status(200).json({errors: errors, user: null});
+                }
+                else {
+                    res.status(201).json({errors: null, user: UtilityService.getPublicJSON(usr)});
+                }
+            }
+        );
+    })
+
+
+});
+
 userRoutes.post('/create', function (req, res) {
     //You must have access to the role you are creating a user for.
     //In the future we need to re-think it if we allow anyone to join
