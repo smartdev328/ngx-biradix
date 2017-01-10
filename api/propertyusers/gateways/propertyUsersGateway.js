@@ -73,4 +73,21 @@ routes.put('/users/:propertyid', function (req, res) {
     })
 });
 
+routes.get('/guests/:propertyid', function (req, res) {
+    AccessService.canAccessResource(req.user,req.params.propertyid,'CompManage', function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        PropertyUsersService.getPropertyAssignedGuests(req.user,  req.params.propertyid, function (err, users) {
+            if (err) {
+                return res.status(200).json({errors: err});
+            }
+            else {
+                return res.status(200).json({users: users});
+            }
+        });
+    })
+});
+
 module.exports = routes;

@@ -516,6 +516,31 @@ define([
 
         }
 
+        $scope.surveySwap = function(property) {
+
+            require([
+                '/app/properties/surveySwapController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/properties/surveySwap.html?bust=' + version,
+                    controller: 'surveySwapController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        property: function () {
+                            return property;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    toastr.success("Users updated successfully");
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
 
         $scope.manageUsers = function(property) {
 
