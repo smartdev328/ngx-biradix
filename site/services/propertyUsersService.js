@@ -5,6 +5,15 @@ define([
     app.factory('$propertyUsersService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+        fac.getPropertyAssignedGuests = function (propertyid) {
+            return $http.get('/api/1.0/propertyusers/guests/' + propertyid+ '?bust=' + (new Date()).getTime(), {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.getPropertyAssignedUsers = function (propertyid) {
             return $http.get('/api/1.0/propertyusers/users/' + propertyid+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

@@ -240,7 +240,46 @@ module.exports = {
                 callback([{msg:"Property and User are are already assigned to each other"}]);
             }
         });
-    }
+    },
+
+    getPropertyAssignedGuests : function(operator, propertyid, callback) {
+        PropertyService.search(operator, {ids:[propertyid]}, function(err, props) {
+            async.parallel({
+                //user assigned direct proprties
+                userAssigned  : function(callbackp) {
+                    AccessService.searchPermissions({types:['PropertyManage'], resource : propertyid, direct: true},function(err, obj) {
+
+                        var userids;
+
+                        if (obj && !err) {
+                            userids = _.pluck(obj, "executorid").map(function (x) {
+                                return x.toString()
+                            })
+                        }
+                        callbackp(err, userids)
+
+                    })
+                },
+                systemUser: function(callbackp) {
+                    UserService.getSystemUser(function(obj) {
+                        var SystemUser = obj.user;
+                        callbackp(null, SystemUser)
+                    });
+                },
+            },function(err, all) {
+
+                if (err) {
+                    return callback([{msg:"Unable to retrieve users."}], null)
+                }
+
+                UserService.search(all.systemUser, {ids: all.userAssigned, select: "first last email"}, function(err, obj) {
+                    //make sure to return only properties of the user that the operator has access to:
+                    callback(err, obj)
+                });
+
+            })
+        })
+    },
 
 }
 var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, propertyid, callback) {

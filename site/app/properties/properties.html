@@ -341,6 +341,7 @@
                                    uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
                             ><i class="fa fa-lock fa-fw"></i> Edit Comp</a></li>
                             <li><a href ng-click="editLink(row, comp)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
+                            <li><a href ng-click="surveySwap(comp)" ng-if="!comp.orgid"><span class="fa fa-exchange fa-fw"></span> Survey Swap</a></li>
                         </ul>
                     </div>
                 </div>
