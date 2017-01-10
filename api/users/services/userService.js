@@ -185,7 +185,7 @@ module.exports = {
                     })
                 }
 
-                _.remove(users, function(x) {return x.deleted})
+                _.remove(users, function(x) {return x.deleted || (x.roles && x.roles.length === 0)})
 
                 callback(err,users)
 
