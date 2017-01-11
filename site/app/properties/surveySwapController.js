@@ -47,7 +47,22 @@ define([
                             $scope.loading = false;
                         }
                         else {
-                            $scope.reload();
+                            var newUser = response.data.user;
+                            $propertyUsersService.linkGuest(property._id,response.data.user._id).then(function (response) {
+                                if (response.data.errors) {
+                                    toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                                    $scope.loading = false;
+                                }
+                                else {
+                                    toastr.success("Contact <B>" + newUser.name + "</B> added successfully.");
+                                    $scope.reload();
+                                }
+                            },
+                            function (error) {
+                                toastr.error("Unable to create. Please contact the administrator.");
+                                $scope.loading = false;
+                            });
+
                         }
                     },
                     function (error) {

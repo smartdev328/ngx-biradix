@@ -50,6 +50,14 @@ define([
             });
         }
 
+        fac.linkGuest = function (propertyid, userid) {
+            return $http.get('/api/1.0/propertyusers/users/guest/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
         return fac;
     }]);
 });

@@ -242,6 +242,68 @@ module.exports = {
         });
     },
 
+    linkGuest : function(operator,context,revertedFromId,userid,propertyid,callback) {
+        UserService.getSystemUser(function(System) {
+            async.parallel({
+                users: function (callbackp) {
+                    UserService.search(System.user, {select: "_id first last", ids: [userid.toString()]}, callbackp);
+                },
+
+                properties: function (callbackp) {
+                    PropertyService.search(System.user, {
+                        select: "_id name comps.id",
+                        ids: [propertyid.toString()]
+                    }, function (err, props, lookups) {
+                        callbackp(err, props)
+                    })
+                },
+
+                assigned: function(callbackp) {
+                    getUserAssignedProperties(System.user, userid, callbackp)
+                }  ,
+            }, function (err, all) {
+
+                var user = all.users[0];
+                var property = all.properties[0];
+
+                if (all.assigned.indexOf(propertyid) > -1) {
+                    return callback([{msg:user.first + ' ' + user.last + ' is already assigned to ' + property.name}]);
+                }
+
+                AccessService.createPermission({
+                    executorid: userid,
+                    resource: propertyid,
+                    allow: true,
+                    type: 'PropertyManage',
+                    direct: true
+                }, function () {
+                    callback();
+                });
+                AccessService.createPermission({
+                    executorid: userid,
+                    resource: propertyid,
+                    allow: true,
+                    type: 'PropertyView',
+                    direct: true
+                }, function () {
+                });
+
+                AuditService.create({
+                    operator: operator,
+                    property: property,
+                    user: user,
+                    type: 'user_assigned',
+                    revertedFromId: revertedFromId,
+                    description: 'Contact: ' + user.first + ' ' + user.last + ' <= + => ' + property.name,
+                    context: context,
+                    data: [{propertyid: propertyid, userid: userid}]
+                })
+
+
+            });
+        });
+
+    },
     getPropertyAssignedGuests : function(operator, propertyid, callback) {
         PropertyService.search(operator, {ids:[propertyid]}, function(err, props) {
             async.parallel({
