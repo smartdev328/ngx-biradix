@@ -372,9 +372,9 @@
 
             var query = PermissionsSchema.find({'type': {$in: types} });
 
-            //if (!user.memberships.isadmin) {
+            if (!user.isSystem) {
                 query = query.where('executorid').in(user.memberships.memberships);
-            //}
+            }
 
             query.exec(function(err,permissions) {
                 //Get a list of negated permission ids

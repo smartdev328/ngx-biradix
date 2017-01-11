@@ -100,6 +100,10 @@ module.exports = {
                 query = query.where('_id').in(all.permissions);
             }
 
+            if (criteria.email) {
+                query = query.where('emailLower').in(criteria.email.toLowerCase());
+            }
+
 
             if (criteria.custom) {
 
