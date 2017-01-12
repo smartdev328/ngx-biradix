@@ -242,106 +242,106 @@ module.exports = {
         });
     },
 
-    linkGuest : function(operator,context,revertedFromId,userid,propertyid,callback) {
-        UserService.getSystemUser(function(System) {
-            async.parallel({
-                users: function (callbackp) {
-                    UserService.search(System.user, {select: "_id first last", ids: [userid.toString()]}, callbackp);
-                },
-
-                properties: function (callbackp) {
-                    PropertyService.search(System.user, {
-                        select: "_id name comps.id",
-                        ids: [propertyid.toString()]
-                    }, function (err, props, lookups) {
-                        callbackp(err, props)
-                    })
-                },
-
-                assigned: function(callbackp) {
-                    getUserAssignedProperties(System.user, userid, callbackp)
-                }  ,
-            }, function (err, all) {
-
-                var user = all.users[0];
-                var property = all.properties[0];
-
-                if (all.assigned.indexOf(propertyid) > -1) {
-                    return callback([{msg:user.first + ' ' + user.last + ' is already assigned to ' + property.name}]);
-                }
-
-                AccessService.createPermission({
-                    executorid: userid,
-                    resource: propertyid,
-                    allow: true,
-                    type: 'PropertyManage',
-                    direct: true
-                }, function () {
-                    callback();
-                });
-                AccessService.createPermission({
-                    executorid: userid,
-                    resource: propertyid,
-                    allow: true,
-                    type: 'PropertyView',
-                    direct: true
-                }, function () {
-                });
-
-                AuditService.create({
-                    operator: operator,
-                    property: property,
-                    user: user,
-                    type: 'user_assigned',
-                    revertedFromId: revertedFromId,
-                    description: 'Contact: ' + user.first + ' ' + user.last + ' <= + => ' + property.name,
-                    context: context,
-                    data: [{propertyid: propertyid, userid: userid}]
-                })
-
-
-            });
-        });
-
-    },
-    getPropertyAssignedGuests : function(operator, propertyid, callback) {
-        PropertyService.search(operator, {ids:[propertyid]}, function(err, props) {
-            async.parallel({
-                //user assigned direct proprties
-                userAssigned  : function(callbackp) {
-                    AccessService.searchPermissions({types:['PropertyManage'], resource : propertyid, direct: true},function(err, obj) {
-
-                        var userids;
-
-                        if (obj && !err) {
-                            userids = _.pluck(obj, "executorid").map(function (x) {
-                                return x.toString()
-                            })
-                        }
-                        callbackp(err, userids)
-
-                    })
-                },
-                systemUser: function(callbackp) {
-                    UserService.getSystemUser(function(obj) {
-                        var SystemUser = obj.user;
-                        callbackp(null, SystemUser)
-                    });
-                },
-            },function(err, all) {
-
-                if (err) {
-                    return callback([{msg:"Unable to retrieve users."}], null)
-                }
-
-                UserService.search(all.systemUser, {ids: all.userAssigned, select: "first last email"}, function(err, obj) {
-                    //make sure to return only properties of the user that the operator has access to:
-                    callback(err, obj)
-                });
-
-            })
-        })
-    },
+    // linkGuest : function(operator,context,revertedFromId,userid,propertyid,callback) {
+    //     UserService.getSystemUser(function(System) {
+    //         async.parallel({
+    //             users: function (callbackp) {
+    //                 UserService.search(System.user, {select: "_id first last", ids: [userid.toString()]}, callbackp);
+    //             },
+    //
+    //             properties: function (callbackp) {
+    //                 PropertyService.search(System.user, {
+    //                     select: "_id name comps.id",
+    //                     ids: [propertyid.toString()]
+    //                 }, function (err, props, lookups) {
+    //                     callbackp(err, props)
+    //                 })
+    //             },
+    //
+    //             assigned: function(callbackp) {
+    //                 getUserAssignedProperties(System.user, userid, callbackp)
+    //             }  ,
+    //         }, function (err, all) {
+    //
+    //             var user = all.users[0];
+    //             var property = all.properties[0];
+    //
+    //             if (all.assigned.indexOf(propertyid) > -1) {
+    //                 return callback([{msg:user.first + ' ' + user.last + ' is already assigned to ' + property.name}]);
+    //             }
+    //
+    //             AccessService.createPermission({
+    //                 executorid: userid,
+    //                 resource: propertyid,
+    //                 allow: true,
+    //                 type: 'PropertyManage',
+    //                 direct: true
+    //             }, function () {
+    //                 callback();
+    //             });
+    //             AccessService.createPermission({
+    //                 executorid: userid,
+    //                 resource: propertyid,
+    //                 allow: true,
+    //                 type: 'PropertyView',
+    //                 direct: true
+    //             }, function () {
+    //             });
+    //
+    //             AuditService.create({
+    //                 operator: operator,
+    //                 property: property,
+    //                 user: user,
+    //                 type: 'user_assigned',
+    //                 revertedFromId: revertedFromId,
+    //                 description: 'Contact: ' + user.first + ' ' + user.last + ' <= + => ' + property.name,
+    //                 context: context,
+    //                 data: [{propertyid: propertyid, userid: userid}]
+    //             })
+    //
+    //
+    //         });
+    //     });
+    //
+    // },
+    // getPropertyAssignedGuests : function(operator, propertyid, callback) {
+    //     PropertyService.search(operator, {ids:[propertyid]}, function(err, props) {
+    //         async.parallel({
+    //             //user assigned direct proprties
+    //             userAssigned  : function(callbackp) {
+    //                 AccessService.searchPermissions({types:['PropertyManage'], resource : propertyid, direct: true},function(err, obj) {
+    //
+    //                     var userids;
+    //
+    //                     if (obj && !err) {
+    //                         userids = _.pluck(obj, "executorid").map(function (x) {
+    //                             return x.toString()
+    //                         })
+    //                     }
+    //                     callbackp(err, userids)
+    //
+    //                 })
+    //             },
+    //             systemUser: function(callbackp) {
+    //                 UserService.getSystemUser(function(obj) {
+    //                     var SystemUser = obj.user;
+    //                     callbackp(null, SystemUser)
+    //                 });
+    //             },
+    //         },function(err, all) {
+    //
+    //             if (err) {
+    //                 return callback([{msg:"Unable to retrieve users."}], null)
+    //             }
+    //
+    //             UserService.search(all.systemUser, {ids: all.userAssigned, select: "first last email"}, function(err, obj) {
+    //                 //make sure to return only properties of the user that the operator has access to:
+    //                 callback(err, obj)
+    //             });
+    //
+    //         })
+    //     })
+    // },
 
 }
 var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, propertyid, callback) {
@@ -384,62 +384,72 @@ var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, pr
 
 var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, propertyid, callback) {
     // console.log('Link:', userid, propertyid);
-    async.parallel({
-        users: function(callbackp) {
-            UserService.search(operator,{select:"_id first last",ids:[userid.toString()]}, callbackp);
-        }  ,
-        roles: function(callbackp) {
-            AccessService.getRoles({tags:[propertyid.toString()]}, callbackp);
-        },
-        properties: function(callbackp) {
-            PropertyService.search(operator, {select:"_id name comps.id", ids:[propertyid.toString()]}, function(err,props,lookups) {
-                callbackp(err,props)
-            })
-        }
-    }, function(err, all) {
-        var RMRole = _.find(all.roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
-        var BMRole = _.find(all.roles, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
-        var PORole = _.find(all.roles, function(x) {return x.tags.indexOf('PO_GROUP') > -1});
+    UserService.search(operator,{select:"_id first last",ids:[userid.toString()]}, function(err, users) {
+        var user = users[0];
+        async.parallel({
+            roles: function(callbackp) {
+                AccessService.getRoles({tags:[propertyid.toString()]}, callbackp);
+            },
+            properties: function(callbackp) {
+                var permission = 'PropertyManage';
 
-        var user = all.users[0];
-        var property = all.properties[0];
+                if (user.roles[0].tags[0] == 'Guest') {
+                    permission = 'CompManage';
+                }
 
-        if (user.roles[0].tags[0]=="RM") {
-            AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
-            AccessService.assignMembership({userid: user._id, roleid: RMRole._id}, function () {});
-        }
-        else
-        if (user.roles[0].tags[0]=="BM") {
-            AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
-            AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
-            AccessService.assignMembership({userid: user._id, roleid: BMRole._id}, function () {});
-        }
-        else
-        if (user.roles[0].tags[0]=="PO") {
-            AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
-            AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
-            AccessService.createPermission({executorid: PORole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
-            AccessService.assignMembership({userid: user._id, roleid: PORole._id}, function () {});
+                PropertyService.search(operator, {select:"_id name comps.id", ids:[propertyid.toString()], permission: permission}, function(err,props,lookups) {
+                    callbackp(err,props)
+                })
+            }
+        }, function(err, all) {
 
-            //all.properties.forEach(function(property) {
-            //    property.comps.forEach(function(comp) {
-            //        AccessService.createPermission({
-            //            executorid: PORole._id,
-            //            resource: comp.id,
-            //            allow: true,
-            //            type: 'PropertyView'
-            //        }, function () {
-            //        });
-            //    })
-            //})
-        }
-        AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
-        AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyView',direct: true}, function () {});
+            var RMRole = _.find(all.roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
+            var BMRole = _.find(all.roles, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
+            var PORole = _.find(all.roles, function(x) {return x.tags.indexOf('PO_GROUP') > -1});
 
-        AuditService.create({operator: operator, property: property, user: user, type: 'user_assigned', revertedFromId : revertedFromId, description: user.first + ' ' + user.last + ' <= + => ' + property.name, context: context, data : [{propertyid: propertyid, userid: userid}]})
 
-        callback(null)
+            var property = all.properties[0];
+
+            if (user.roles[0].tags[0]=="RM") {
+                AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+                AccessService.assignMembership({userid: user._id, roleid: RMRole._id}, function () {});
+            }
+            else
+            if (user.roles[0].tags[0]=="BM") {
+                AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+                AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+                AccessService.assignMembership({userid: user._id, roleid: BMRole._id}, function () {});
+            }
+            else
+            if (user.roles[0].tags[0]=="PO") {
+                AccessService.createPermission({executorid: RMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+                AccessService.createPermission({executorid: BMRole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+                AccessService.createPermission({executorid: PORole._id ,resource: user._id,allow: true,type: 'UserManage'}, function () {});
+                AccessService.assignMembership({userid: user._id, roleid: PORole._id}, function () {});
+
+                //all.properties.forEach(function(property) {
+                //    property.comps.forEach(function(comp) {
+                //        AccessService.createPermission({
+                //            executorid: PORole._id,
+                //            resource: comp.id,
+                //            allow: true,
+                //            type: 'PropertyView'
+                //        }, function () {
+                //        });
+                //    })
+                //})
+            }
+
+            //TODO: If guest, do the get all subjects redo
+            AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
+            AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyView',direct: true}, function () {});
+
+            AuditService.create({operator: operator, property: property, user: user, type: 'user_assigned', revertedFromId : revertedFromId, description: user.first + ' ' + user.last + ' <= + => ' + property.name, context: context, data : [{propertyid: propertyid, userid: userid}]})
+
+            callback(null)
+        });
     });
+
 }
 
 var getUserAssignedProperties = function(operator, userid, callback) {
@@ -462,7 +472,7 @@ var getUserAssignedProperties = function(operator, userid, callback) {
         },
         //all proeprties the operator can manage
         operatorAllowed : function(callbackp) {
-            AccessService.getPermissions(operator,['PropertyManage'],function(resourceids) {
+            AccessService.getPermissions(operator,['PropertyManage','CompManage'],function(resourceids) {
 
                 callbackp(null,resourceids)
 
@@ -503,7 +513,6 @@ var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callbac
             },
             //all proeprties the operator can manage
             operatorAllowed : function(callbackp) {
-
                 UserService.search(operator, {active:true, roleTypes:roleTypes, orgid: props[0].orgid}, function(err, obj) {
                     var userids;
 
