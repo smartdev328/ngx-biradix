@@ -117,6 +117,7 @@ define([
 
                     if (isGuest) {
                         criteria.noorgid = true;
+                        criteria.permission = 'CompManage';
                     } else {
                         criteria.orgid = role.selectedRole.orgid;
                     }

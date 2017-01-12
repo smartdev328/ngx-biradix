@@ -183,13 +183,13 @@ module.exports = {
                         if (!Operator.memberships.isadmin) {
                             var allowedOrgs = _.map(Operator.orgs, function(o) {return o._id.toString()});
                             _.remove(x.roles, function(z) {
-                                return allowedOrgs.indexOf(z.orgid.toString()) == -1})
+                                return z.tags[0] != 'Guest' && allowedOrgs.indexOf(z.orgid.toString()) == -1})
                         }
 
                     })
                 }
 
-                _.remove(users, function(x) {return x.deleted || (x.roles && x.roles.length === 0)})
+                _.remove(users, function(x) {return x.deleted})
 
                 callback(err,users)
 

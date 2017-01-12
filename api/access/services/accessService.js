@@ -372,7 +372,7 @@
 
             var query = PermissionsSchema.find({'type': {$in: types} });
 
-            if (!user.isSystem) {
+            if (user.memberships.isadmin !== true) {
                 query = query.where('executorid').in(user.memberships.memberships);
             }
 
@@ -383,6 +383,10 @@
 
                 //Remove any negated permissions from list
                 _.remove(permissions, function(x) {return neg.indexOf(x._id) > -1;})
+
+                if (user.memberships.isadmin === true) {
+                    _.remove(permissions, function(x) {return x.resource.indexOf('Hide/') > -1})
+                }
 
                 permissions = _.uniq(_.pluck(permissions, 'resource'));
                callback(permissions);
