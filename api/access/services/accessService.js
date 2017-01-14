@@ -201,6 +201,36 @@
             });
         },
 
+        deletePermissionByExecutorAndType: function(permission, callback) {
+            var modelErrors = [];
+
+            if (!permission.executorid) {
+                modelErrors.push({param: 'resource', msg: 'Missing executorid.'});
+            }
+
+            if (!permission.type) {
+                modelErrors.push({param: 'type', msg: 'Missing type.'});
+            }
+
+            if (modelErrors.length > 0) {
+                callback(modelErrors, null);
+                return;
+            }
+
+            var criteria = {executorid: permission.executorid, type: permission.type};
+
+
+            PermissionsSchema.findOneAndRemove(criteria,function (err, obj) {
+                if (err) {
+                    modelErrors.push({msg: 'Unexpected Error. Unable to delete permission: ' + err});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                callback(null, obj);
+            });
+        },
+
         deletePermission: function(permission, callback) {
             var modelErrors = [];
 
