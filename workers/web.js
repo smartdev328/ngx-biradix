@@ -136,6 +136,9 @@ d.run(function() {
                     // userService.resetBounce("bjones@viderman.com", function(err,response) {
                     //     console.log(err,response.statusCode);
                     // })
+
+                    var propertyUserService = require("../api/propertyusers/services/propertyUsersService")
+                    propertyUserService.updateGuestPermissionsForProperty("5876f78dc63f6f03c0a96840");
                 }
 
 
