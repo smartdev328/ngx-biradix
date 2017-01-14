@@ -252,6 +252,17 @@ var updateGuestPermissionsForSubject = function(guestid, subjectid) {
     //Add view permission for subject
     AccessService.createPermission({executorid: guestid,resource: subjectid,allow: true,type: 'PropertyView',direct: true}, function () {});
 
+    //Give inherited access to RMs and BMs of subjects to manage these users
+    AccessService.getRoles({tags:[subjectid]}, function(err, roles) {
+        var RMRole = _.find(roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
+        var BMRole = _.find(roles, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
+
+        AccessService.createPermission({executorid: RMRole._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {});
+        AccessService.createPermission({executorid: BMRole._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {});
+    });
+
+    //TODO: Get all CMs of subject org
+    //TODO: Give them all user manage rights on guest
 }
 var uppdateGuestPermissions = function(guestid) {
     UserService.getSystemUser(function(System) {
@@ -259,27 +270,43 @@ var uppdateGuestPermissions = function(guestid) {
         //Get all comps the guest belongs to
        getUserAssignedProperties(SystemUser,guestid,function(err,properties) {
 
-           //Remove All View Permissions from guest
-           AccessService.deletePermissionByExecutorAndType({exectuorid: guestid, type: 'PropertyView'}, function() {
-               //Get all subjects all the comps belong to and update permissions for each
-               CompService.getSubjects(properties,{select: "_id"}, function(err, subjects) {
-                   async.eachLimit(subjects, 10, function(subject, callbackp){
-                       updateGuestPermissionsForSubject(guestid, subject._id.toString());
-                       callbackp();
-
-                   }, function(err) {
-
-                       //Add All View Permissions from guest to their comps
-                       async.eachLimit(properties, 10, function(propertyid, callbackp){
-                           AccessService.createPermission({executorid: guestid,resource: propertyid,allow: true,type: 'PropertyView',direct: true}, function () {});
+           console.log(guestid);
+           //Delete All User Manage Roles for resource guestid
+           AccessService.deletePermission({resource: guestid, type: 'UserManage'}, function(err) {
+               console.log(err);
+               //Remove All View Permissions from guest
+               AccessService.deletePermissionByExecutorAndType({
+                   executorid: guestid,
+                   type: 'PropertyView'
+               }, function (err) {
+                   console.log(err);
+                   //Get all subjects all the comps belong to and update permissions for each
+                   CompService.getSubjects(properties, {select: "_id"}, function (err, subjects) {
+                       async.eachLimit(subjects, 10, function (subject, callbackp) {
+                           updateGuestPermissionsForSubject(guestid, subject._id.toString());
                            callbackp();
 
-                       }, function(err) {
+                       }, function (err) {
 
+                           //Add All View Permissions from guest to their comps
+                           async.eachLimit(properties, 10, function (propertyid, callbackp) {
+                               AccessService.createPermission({
+                                   executorid: guestid,
+                                   resource: propertyid,
+                                   allow: true,
+                                   type: 'PropertyView',
+                                   direct: true
+                               }, function () {
+                               });
+                               callbackp();
+
+                           }, function (err) {
+
+                           });
                        });
-                   });
+                   })
                })
-           })
+           });
 
 
        })
