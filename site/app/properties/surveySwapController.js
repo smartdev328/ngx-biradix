@@ -6,7 +6,7 @@ define([
     '../../services/propertyUsersService.js',
 ], function (app) {
      app.controller
-        ('surveySwapController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {
+        ('surveySwapController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$dialog', function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$dialog) {
 
             $scope.property = property;
 
@@ -26,10 +26,19 @@ define([
                 $scope.loading = true;
 
 
-                $propertyUsersService.getPropertyAssignedGuests(property._id).then(function (response) {
+                $propertyUsersService.getPropertyAssignedUsers(property._id).then(function (response) {
 
-                        $scope.users = response.data.users;
-                        $scope.loading = false;
+
+
+                        $userService.search({ids:response.data.users, select: "first last email"}).then(function (response) {
+
+                                $scope.users = response.data.users;
+                                $scope.loading = false;
+                        },
+                        function (error) {
+                            toastr.error("Unable to retrieve data. Please contact the administrator.");
+                            $scope.loading = false;
+                        });
 
                     },
                     function (error) {
@@ -48,13 +57,13 @@ define([
                         }
                         else {
                             var newUser = response.data.user;
-                            $propertyUsersService.linkGuest(property._id,response.data.user._id).then(function (response) {
+                            $propertyUsersService.link(property._id,response.data.user._id).then(function (response) {
                                 if (response.data.errors) {
                                     toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
                                     $scope.loading = false;
                                 }
                                 else {
-                                    toastr.success("Contact <B>" + newUser.name + "</B> added successfully.");
+                                    toastr.success("Contact <B>" + newUser.first + ' ' + newUser.last + "</B> added successfully.");
                                     $scope.reload();
                                 }
                             },
@@ -69,6 +78,27 @@ define([
                         toastr.error("Unable to create. Please contact the administrator.");
                         $scope.loading = false;
                     });
+            }
+
+            $scope.remove = function(user) {
+                $dialog.confirm('Are you sure you want to remove "' + user.first + ' ' + user.last+ '?', function() {
+                    $propertyUsersService.unlink(property._id,user._id).then(function (response) {
+                            if (response.data.errors) {
+                                toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                                $scope.loading = false;
+                            }
+                            else {
+                                toastr.success("Contact <B>" + user.first + ' ' + user.last + "</B> removed successfully.");
+                                $scope.reload();
+                            }
+                        },
+                        function (error) {
+                            toastr.error("Unable to remove. Please contact the administrator.");
+                            $scope.loading = false;
+                        });
+                }, function() {
+
+                })
             }
 
 
