@@ -249,24 +249,38 @@ module.exports = {
 }
 
 var updateGuestPermissionsForSubject = function(guestid, subjectid) {
-    console.log(guestid, subjectid);
+    //Add view permission for subject
+    AccessService.createPermission({executorid: guestid,resource: subjectid,allow: true,type: 'PropertyView',direct: true}, function () {});
 
 }
 var uppdateGuestPermissions = function(guestid) {
     UserService.getSystemUser(function(System) {
         var SystemUser = System.user;
         //Get all comps the guest belongs to
-       getUserAssignedProperties(SystemUser,guestid,function(properties) {
+       getUserAssignedProperties(SystemUser,guestid,function(err,properties) {
 
-           //Get all subjects all the comps belong to
-           CompService.getSubjects(properties,{select: "_id"}, function(err, subjects) {
-               async.eachLimit(subjects, 10, function(subject, callbackp){
-                   updateGuestPermissionsForSubject(guestid, subject._id.toString());
-                   callbackp();
+           //Remove All View Permissions from guest
+           AccessService.deletePermissionByExecutorAndType({exectuorid: guestid, type: 'PropertyView'}, function() {
+               //Get all subjects all the comps belong to and update permissions for each
+               CompService.getSubjects(properties,{select: "_id"}, function(err, subjects) {
+                   async.eachLimit(subjects, 10, function(subject, callbackp){
+                       updateGuestPermissionsForSubject(guestid, subject._id.toString());
+                       callbackp();
 
-               }, function(err) {
-               });
+                   }, function(err) {
+
+                       //Add All View Permissions from guest to their comps
+                       async.eachLimit(properties, 10, function(propertyid, callbackp){
+                           AccessService.createPermission({executorid: guestid,resource: propertyid,allow: true,type: 'PropertyView',direct: true}, function () {});
+                           callbackp();
+
+                       }, function(err) {
+
+                       });
+                   });
+               })
            })
+
 
        })
     });
@@ -467,13 +481,12 @@ var getUserAssignedProperties = function(operator, userid, callback) {
             })
         }
     },function(err, all) {
-
         if (err) {
             return callback([{msg:"Unable to retrieve properties."}], null)
         }
 
         if (operator.memberships && operator.memberships.isadmin) {
-            return callback(all.userAssigned)
+            return callback(null,all.userAssigned)
         }
 
         //make sure to return only properties of the user that the operator has access to:

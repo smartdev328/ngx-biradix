@@ -73,14 +73,14 @@ define([
                         role.propertyids = [];
 
                         $propertyUsersService.getUserAssignedProperties(userId).then(function (response) {
-                                role.propertyids = response.data.properties;
+                            role.propertyids = response.data.properties;
 
-                                $scope.getDropdowns();
-                                callback();
-                            },
-                            function (error) {
-                                callback(error);
-                            });
+                            $scope.getDropdowns();
+                            callback();
+                        },
+                        function (error) {
+                            callback(error);
+                        });
                     }, function(err) {
                         if (err) {
                             toastr.error("Unable to retrieve data. Please contact the administrator.");
