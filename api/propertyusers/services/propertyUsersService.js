@@ -6,7 +6,7 @@ var PropertyService = require('../../properties/services/propertyService')
 var UserService = require('../../users/services/userService')
 var AuditService = require('../../audit/services/auditService')
 var moment = require("moment-timezone");
-var OrgService = require('../../organizations/services/organizationService')
+var CompService = require('../../properties/services/compsService')
 
 module.exports = {
     getPropertiesForReminders: function(operator, callback) {
@@ -156,7 +156,7 @@ module.exports = {
         })
     },
     updateGuestPermissionsForProperty : function(propertyid) {
-        updateGuestPermissionsForProperty(properyid);
+        updateGuestPermissionsForProperty(propertyid);
 
     },
     setUsersForProperty : function(operator,context,revertedFromId, propertyid, ids, callback) {
@@ -247,13 +247,27 @@ module.exports = {
         });
     },
 }
+
+var updateGuestPermissionsForSubject = function(guestid, subjectid) {
+    console.log(guestid, subjectid);
+
+}
 var uppdateGuestPermissions = function(guestid) {
     UserService.getSystemUser(function(System) {
         var SystemUser = System.user;
+        //Get all comps the guest belongs to
        getUserAssignedProperties(SystemUser,guestid,function(properties) {
-           console.log(properties);
-           //Get All Unique Subjects for Each
-           //for subject run new function
+
+           //Get all subjects all the comps belong to
+           CompService.getSubjects(properties,{select: "_id"}, function(err, subjects) {
+               async.eachLimit(subjects, 10, function(subject, callbackp){
+                   updateGuestPermissionsForSubject(guestid, subject._id.toString());
+                   callbackp();
+
+               }, function(err) {
+               });
+           })
+
        })
     });
 }
@@ -266,6 +280,7 @@ var updateGuestPermissionsForProperty = function(propertyid) {
         getPropertyAssignedUsers(SystemUser, propertyid, ['Guest'], function(err, users) {
             async.eachLimit(users, 10, function(guest, callbackp){
                 uppdateGuestPermissions(guest);
+                callbackp();
 
             }, function(err) {
             });
