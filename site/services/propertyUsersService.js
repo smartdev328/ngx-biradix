@@ -5,15 +5,6 @@ define([
     app.factory('$propertyUsersService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
-        fac.getPropertyAssignedGuests = function (propertyid) {
-            return $http.get('/api/1.0/propertyusers/guests/' + propertyid+ '?bust=' + (new Date()).getTime(), {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
-            });
-        }
-
         fac.getPropertyAssignedUsers = function (propertyid) {
             return $http.get('/api/1.0/propertyusers/users/' + propertyid+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
@@ -50,8 +41,17 @@ define([
             });
         }
 
-        fac.linkGuest = function (propertyid, userid) {
-            return $http.get('/api/1.0/propertyusers/users/guest/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
+        fac.link = function (propertyid, userid) {
+            return $http.get('/api/1.0/propertyusers/link/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
+        fac.unlink = function (propertyid, userid) {
+            return $http.get('/api/1.0/propertyusers/unlink/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

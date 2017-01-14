@@ -115,7 +115,7 @@ userRoutes.post('/createGuest', function (req, res) {
     req.body.isSystem = false;
 
     UserService.getSystemUser(function(System) {
-        UserService.search(System.user, {email: req.body.email}, function(err,users) {
+        UserService.search(System.user, {email: req.body.email, select: "first last email"}, function(err,users) {
             if (users && users.length == 1 && users[0].roles[0].name == 'Guest') {
                 return res.status(201).json({errors: null, user: UtilityService.getPublicJSON(users[0])});
             }
@@ -136,9 +136,6 @@ userRoutes.post('/createGuest', function (req, res) {
         })
 
     })
-
-
-
 });
 
 userRoutes.post('/create', function (req, res) {

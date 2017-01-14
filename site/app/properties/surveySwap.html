@@ -30,7 +30,7 @@
                     <td>{{row.first}}</td>
                     <td>{{row.last}}</td>
                     <td>{{row.email}}</td>
-                    <td style="vertical-align: middle !important;"><i class="fa fa-times fa-fw"></i></td>
+                    <td style="vertical-align: middle !important;"><i class="fa fa-times fa-fw" style="cursor: pointer" ng-click="remove(row)"></i></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.first" id="newGuestfirst" placeholder="First"></td>
