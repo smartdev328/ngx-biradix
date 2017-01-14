@@ -261,8 +261,19 @@ var updateGuestPermissionsForSubject = function(guestid, subjectid) {
         AccessService.createPermission({executorid: BMRole._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {});
     });
 
-    //TODO: Get all CMs of subject org
-    //TODO: Give them all user manage rights on guest
+    //Get all CMs of subject org and give that role inherit permissions to manage these users
+    UserService.getSystemUser(function(System) {
+        var SystemUser = System.user;
+        PropertyService.search(SystemUser, {ids:[subjectid], select: "name orgid"}, function(err, props) {
+            if (props[0].orgid) {
+                AccessService.getRoles({orgid:props[0].orgid, tags: ['CM'] }, function(err, roles) {
+                    AccessService.createPermission({executorid: roles[0]._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {});
+
+                });
+            }
+        })
+    });
+
 }
 var uppdateGuestPermissions = function(guestid) {
     UserService.getSystemUser(function(System) {

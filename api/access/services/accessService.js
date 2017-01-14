@@ -27,6 +27,10 @@
                 query = query.where("tags").in(criteria.tags);
             }
 
+            if (criteria.orgid) {
+                query = query.where("orgid").in(criteria.orgid);
+            }
+
             query.exec(function(err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to get roles: ' + err});
