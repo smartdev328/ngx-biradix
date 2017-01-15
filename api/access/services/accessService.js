@@ -205,7 +205,7 @@
             });
         },
 
-        deletePermissionByExecutorAndType: function(permission, callback) {
+        deletePermissionsByExecutorAndType: function(permission, callback) {
             var modelErrors = [];
 
             if (!permission.executorid) {
@@ -224,7 +224,7 @@
             var criteria = {executorid: permission.executorid, type: permission.type};
 
 
-            PermissionsSchema.findOneAndRemove(criteria,function (err, obj) {
+            PermissionsSchema.remove(criteria,function (err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to delete permission: ' + err});
                     callback(modelErrors, null);
@@ -261,7 +261,7 @@
                 criteria.executorid = permission.executorid;
             }
 
-            PermissionsSchema.findOneAndRemove(criteria,function (err, obj) {
+            PermissionsSchema.remove(criteria,function (err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to delete permission: ' + err});
                     callback(modelErrors, null);

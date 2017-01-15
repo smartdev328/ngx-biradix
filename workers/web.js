@@ -137,8 +137,16 @@ d.run(function() {
                     //     console.log(err,response.statusCode);
                     // })
 
-                    var propertyUserService = require("../api/propertyusers/services/propertyUsersService")
-                    propertyUserService.updateGuestPermissionsForProperty("5876f78dc63f6f03c0a96840");
+                    // var propertyUserService = require("../api/propertyusers/services/propertyUsersService")
+                    // propertyUserService.updateGuestPermissionsForProperty("5876f78dc63f6f03c0a96840", function() {
+                    //     console.log('Done 1');
+                    //     propertyUserService.updateGuestPermissionsForProperty("5876f78dc63f6f03c0a96841", function() {
+                    //         console.log('Done 2');
+                    //         propertyUserService.updateGuestPermissionsForProperty("5876f78dc63f6f03c0a9683d", function() {
+                    //             console.log('Done 3');
+                    //         });
+                    //     });
+                    // });
                 }
 
 

@@ -155,8 +155,8 @@ module.exports = {
 
         })
     },
-    updateGuestPermissionsForProperty : function(propertyid) {
-        updateGuestPermissionsForProperty(propertyid);
+    updateGuestPermissionsForProperty : function(propertyid,callback) {
+        updateGuestPermissionsForProperty(propertyid,callback);
 
     },
     setUsersForProperty : function(operator,context,revertedFromId, propertyid, ids, callback) {
@@ -248,34 +248,62 @@ module.exports = {
     },
 }
 
-var updateGuestPermissionsForSubject = function(guestid, subjectid) {
-    //Add view permission for subject
-    AccessService.createPermission({executorid: guestid,resource: subjectid,allow: true,type: 'PropertyView',direct: true}, function () {});
+var updateGuestPermissionsForSubject = function(guestid, subjectid, callback) {
 
-    //Give inherited access to RMs and BMs of subjects to manage these users
-    AccessService.getRoles({tags:[subjectid]}, function(err, roles) {
-        var RMRole = _.find(roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
-        var BMRole = _.find(roles, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
+    async.parallel([
+            function (callbackp) {
+                //Add view permission for subject
+                AccessService.createPermission({executorid: guestid,resource: subjectid,allow: true,type: 'PropertyView',direct: true}, function () {
+                    callbackp();
+                });
+            },
+            function (callbackp) {
+                //Give inherited access to RMs and BMs of subjects to manage these users
+                AccessService.getRoles({tags:[subjectid]}, function(err, roles) {
+                    var RMRole = _.find(roles, function(x) {return x.tags.indexOf('RM_GROUP') > -1});
+                    var BMRole = _.find(roles, function(x) {return x.tags.indexOf('BM_GROUP') > -1});
 
-        AccessService.createPermission({executorid: RMRole._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {});
-        AccessService.createPermission({executorid: BMRole._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {});
-    });
-
-    //Get all CMs of subject org and give that role inherit permissions to manage these users
-    UserService.getSystemUser(function(System) {
-        var SystemUser = System.user;
-        PropertyService.search(SystemUser, {ids:[subjectid], select: "name orgid"}, function(err, props) {
-            if (props[0].orgid) {
-                AccessService.getRoles({orgid:props[0].orgid, tags: ['CM'] }, function(err, roles) {
-                    AccessService.createPermission({executorid: roles[0]._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {});
+                    AccessService.createPermission({executorid: RMRole._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {
+                        AccessService.createPermission({executorid: BMRole._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {
+                            callbackp();
+                        });
+                    });
 
                 });
+
+            },
+            function (callbackp) {
+                //Get all CMs of subject org and give that role inherit permissions to manage these users
+                UserService.getSystemUser(function(System) {
+                    var SystemUser = System.user;
+                    PropertyService.search(SystemUser, {ids:[subjectid], select: "name orgid"}, function(err, props) {
+                        if (props[0].orgid) {
+                            AccessService.getRoles({orgid:props[0].orgid, tags: ['CM'] }, function(err, roles) {
+                                AccessService.createPermission({executorid: roles[0]._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {
+                                    callbackp();
+                                });
+
+                            });
+                        } else {
+                            callbackp();
+                        }
+                    })
+                });
             }
-        })
-    });
+
+        ],
+        function () {
+            callback();
+        }
+    )
+
+
+
+
+
 
 }
-var uppdateGuestPermissions = function(guestid) {
+var uppdateGuestPermissions = function(guestid, callback) {
     UserService.getSystemUser(function(System) {
         var SystemUser = System.user;
         //Get all comps the guest belongs to
@@ -286,7 +314,7 @@ var uppdateGuestPermissions = function(guestid) {
            AccessService.deletePermission({resource: guestid, type: 'UserManage'}, function(err) {
                console.log(err);
                //Remove All View Permissions from guest
-               AccessService.deletePermissionByExecutorAndType({
+               AccessService.deletePermissionsByExecutorAndType({
                    executorid: guestid,
                    type: 'PropertyView'
                }, function (err) {
@@ -294,8 +322,7 @@ var uppdateGuestPermissions = function(guestid) {
                    //Get all subjects all the comps belong to and update permissions for each
                    CompService.getSubjects(properties, {select: "_id"}, function (err, subjects) {
                        async.eachLimit(subjects, 10, function (subject, callbackp) {
-                           updateGuestPermissionsForSubject(guestid, subject._id.toString());
-                           callbackp();
+                           updateGuestPermissionsForSubject(guestid, subject._id.toString(), callbackp);
 
                        }, function (err) {
 
@@ -308,11 +335,11 @@ var uppdateGuestPermissions = function(guestid) {
                                    type: 'PropertyView',
                                    direct: true
                                }, function () {
+                                   callbackp();
                                });
-                               callbackp();
 
                            }, function (err) {
-
+                                callback();
                            });
                        });
                    })
@@ -324,17 +351,16 @@ var uppdateGuestPermissions = function(guestid) {
     });
 }
 
-var updateGuestPermissionsForProperty = function(propertyid) {
+var updateGuestPermissionsForProperty = function(propertyid, callback) {
     UserService.getSystemUser(function(System) {
         var SystemUser = System.user;
 
         //Get all Guests
         getPropertyAssignedUsers(SystemUser, propertyid, ['Guest'], function(err, users) {
             async.eachLimit(users, 10, function(guest, callbackp){
-                uppdateGuestPermissions(guest);
-                callbackp();
-
+                uppdateGuestPermissions(guest, callbackp);
             }, function(err) {
+                callback();
             });
         })
 
@@ -375,56 +401,89 @@ var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, pr
 
             var property = all.properties[0];
 
-            AccessService.deletePermission({
-                executorid: RMRole._id,
-                resource: user._id,
-                type: 'UserManage'
-            }, function () {
-            });
-            AccessService.deletePermission({
-                executorid: BMRole._id,
-                resource: user._id,
-                type: 'UserManage'
-            }, function () {
-            });
-            AccessService.deletePermission({
-                executorid: PORole._id,
-                resource: user._id,
-                type: 'UserManage'
-            }, function () {
-            });
+            async.parallel([
+                function(callbackp) {
+                    AccessService.deletePermission({
+                        executorid: RMRole._id,
+                        resource: user._id,
+                        type: 'UserManage'
+                    }, function () {
+                        callbackp(null,1);
+                    });
+                },
+                function(callbackp) {
+                    AccessService.deletePermission({
+                        executorid: BMRole._id,
+                        resource: user._id,
+                        type: 'UserManage'
+                    }, function () {
+                        callbackp(null,2);
+                    });
+                },
+                function(callbackp) {
+                    AccessService.deletePermission({
+                        executorid: PORole._id,
+                        resource: user._id,
+                        type: 'UserManage'
+                    }, function () {
+                        callbackp(null,3);
+                    });
+                },
+                function(callbackp) {
+                    AccessService.revokeMembership({userid: user._id, roleid: RMRole._id}, function () {
+                        callbackp(null,4);
+                    });
+                },
+                function(callbackp) {
+                    AccessService.revokeMembership({userid: user._id, roleid: BMRole._id}, function () {
+                        callbackp(null,5);
+                    });
+                },
+                function(callbackp) {
+                    AccessService.revokeMembership({userid: user._id, roleid: PORole._id}, function () {
+                        callbackp(null,6);
+                    });
+                },
+                function(callbackp) {
+                    AccessService.deletePermission({
+                        executorid: userid,
+                        resource: propertyid,
+                        type: 'PropertyManage'
+                    }, function () {
+                        callbackp(null,7);
+                    });
+                },
+            ], function(err,done) {
+                console.log(done);
 
-            AccessService.revokeMembership({userid: user._id, roleid: RMRole._id}, function () {
-            });
-            AccessService.revokeMembership({userid: user._id, roleid: BMRole._id}, function () {
-            });
-            AccessService.revokeMembership({userid: user._id, roleid: PORole._id}, function () {
-            });
+                AuditService.create({
+                    operator: operator,
+                    property: property,
+                    user: user,
+                    type: 'user_unassigned',
+                    revertedFromId: revertedFromId,
+                    description: user.first + ' ' + user.last + ' <= ~ => ' + property.name,
+                    context: context,
+                    data: [{propertyid: propertyid, userid: userid}]
+                })
 
-            AccessService.deletePermission({
-                executorid: userid,
-                resource: propertyid,
-                type: 'PropertyManage'
-            }, function () {
-            });
+                //Re-calculate all guest permissions related if this is a guest
 
-            AuditService.create({
-                operator: operator,
-                property: property,
-                user: user,
-                type: 'user_unassigned',
-                revertedFromId: revertedFromId,
-                description: user.first + ' ' + user.last + ' <= ~ => ' + property.name,
-                context: context,
-                data: [{propertyid: propertyid, userid: userid}]
+                if (user.roles[0].tags[0] == 'Guest') {
+                    uppdateGuestPermissions(userid, function() {
+                        callback(null)
+                    });
+                } else {
+                    callback(null)
+                }
+
             })
 
-            //Re-calculate all guest permissions related if this is a comp
-            setTimeout(function() {
-                updateGuestPermissionsForProperty(propertyid);
-            }, 1000);
 
-            callback(null)
+
+
+
+
         });
     });
 }
@@ -475,18 +534,22 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
                 AccessService.assignMembership({userid: user._id, roleid: PORole._id}, function () {});
             }
 
-            AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {});
             AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyView',direct: true}, function () {});
 
             AuditService.create({operator: operator, property: property, user: user, type: 'user_assigned', revertedFromId : revertedFromId, description: user.first + ' ' + user.last + ' <= + => ' + property.name, context: context, data : [{propertyid: propertyid, userid: userid}]})
 
-            //Re-calculate all guest permissions related if this is a comp
-            setTimeout(function() {
-                updateGuestPermissionsForProperty(propertyid);
-            }, 1000);
 
+            AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {
+                if (user.roles[0].tags[0] == 'Guest') {
+                    //Re-calculate all guest permissions related if this is a comp
+                    uppdateGuestPermissions(userid, function() {
+                        callback(null)
+                    })
+                } else {
+                    callback(null)
+                }
+            });
 
-            callback(null)
         });
     });
 

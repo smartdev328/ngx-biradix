@@ -16,6 +16,7 @@ var PropertyHelperService = require('./propertyHelperService')
 var SurveyHelperService = require('./surveyHelperService')
 
 
+
 module.exports = {
     getCompsForReminders: function(compids,callback) {
         var query = PropertySchema.find(

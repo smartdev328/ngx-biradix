@@ -128,6 +128,7 @@ module.exports = {
                         }, {description: "Comp: " + all.comp.name, id: all.comp._id},]
                     })
                 }
+
                 return callback(err, saved)
             })
 
