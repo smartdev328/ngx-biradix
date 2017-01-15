@@ -239,7 +239,7 @@ Routes.post('/', function (req, res) {
                     obj = JSON.parse(JSON.stringify(obj));
 
                     PropertyService.search(req.user, {limit: 10000, permission: ['PropertyView'], ids: propertyids
-                        , select: "_id orgid"
+                        , select: "_id orgid name"
                     }, function(err, orgids) {
                         // console.log(orgids);
 
@@ -251,7 +251,14 @@ Routes.post('/', function (req, res) {
                             obj.forEach(function (o) {
 
                                 if (o.property) {
-                                    o.property.orgid = _.pluck(_.find(orgids, function(x) {return x._id.toString() == o.property.id.toString()}));
+
+                                    var org = _.find(orgids, function(x) {return x._id.toString() == o.property.id.toString()});
+
+                                    if (org && org.orgid) {
+                                        o.property.orgid = org.orgid.toString();
+                                    }
+
+
                                 }
 
                                 o.canUndo = true;
@@ -260,6 +267,7 @@ Routes.post('/', function (req, res) {
                                     })) {
                                     o.canUndo = false;
                                 }
+
                             })
                             res.status(200).json({errors: null, activity: obj, pager: pager});
                             obj = null;
