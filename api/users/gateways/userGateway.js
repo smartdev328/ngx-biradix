@@ -117,22 +117,25 @@ userRoutes.post('/createGuest', function (req, res) {
     UserService.getSystemUser(function(System) {
         UserService.search(System.user, {email: req.body.email, select: "first last email"}, function(err,users) {
             if (users && users.length == 1 && users[0].roles[0].name == 'Guest') {
-                return res.status(201).json({errors: null, user: UtilityService.getPublicJSON(users[0])});
+                AccessService.createPermission({executorid: req.user._id, resource: users[0]._id,type: 'UserManage'}, function() {
+                    return res.status(201).json({errors: null, user: UtilityService.getPublicJSON(users[0])});
+                })
+
+            } else {
+                AccessService.getRoles({tags: ['Guest'], cache: false}, function (err, guests) {
+                    req.body.roleids = [guests[0]._id.toString()];
+
+                    userCreateService.insert(req.user, req.context, req.body, req.basePath, function (errors, usr) {
+                            if (errors) {
+                                res.status(200).json({errors: errors, user: null});
+                            }
+                            else {
+                                res.status(201).json({errors: null, user: UtilityService.getPublicJSON(usr)});
+                            }
+                        }
+                    );
+                })
             }
-
-            AccessService.getRoles({tags: ['Guest'], cache: false}, function(err, guests) {
-                req.body.roleids = [guests[0]._id.toString()];
-
-                userCreateService.insert(req.user, req.context, req.body, req.basePath, function (errors, usr) {
-                        if (errors) {
-                            res.status(200).json({errors: errors, user: null});
-                        }
-                        else {
-                            res.status(201).json({errors: null, user: UtilityService.getPublicJSON(usr)});
-                        }
-                    }
-                );
-            })
         })
 
     })
