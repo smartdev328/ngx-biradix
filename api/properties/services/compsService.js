@@ -5,7 +5,7 @@ var _ = require("lodash")
 var moment = require('moment');
 var AuditService = require('../../audit/services/auditService')
 var AccessService = require('../../access/services/accessService')
-
+var guestQueueService = require('../../propertyusers/services/guestsQueueService')
 module.exports = {
     saveCompOrder:function(subjectid, compid, orderNumber, callback) {
         var ObjectId = require('mongoose').Types.ObjectId;
@@ -128,6 +128,8 @@ module.exports = {
                         }, {description: "Comp: " + all.comp.name, id: all.comp._id},]
                     })
                 }
+
+                guestQueueService.updateGuestPermissionsForProperty(compid, function() {});
 
                 return callback(err, saved)
             })
