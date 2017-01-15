@@ -14,7 +14,7 @@ var moment = require('moment');
 var CompsService = require('./compsService')
 var PropertyHelperService = require('./propertyHelperService')
 var SurveyHelperService = require('./surveyHelperService')
-
+var guestQueueService = require('../../propertyusers/services/guestsQueueService')
 
 
 module.exports = {
@@ -312,6 +312,9 @@ module.exports = {
                             id: subj._id
                         }, {description: "Comp: " + comp.name, id: comp._id},]
                     })
+
+                    guestQueueService.updateGuestPermissionsForProperty(compid, function() {});
+
                     return callback(err, saved)
                 })
             })

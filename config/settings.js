@@ -21,6 +21,7 @@ module.exports = {
     NOTIFICATIONS_QUEUE : "jobs.notifications.property",
     WEB_STATUS_QUEUE : "jobs.status.web",
     PHANTOM_STATUS_QUEUE : "jobs.status.phantom",
+    GUESTS_QUEUE : "jobs.propertyusers.guests",
     IMPORT_QUEUE : "jobs.temp.import",
     IMPORT_USERS_QUEUE : "jobs.temp.importUsers",
     RUN_PHANTOM : process.env.RUN_PHANTOM || "web",

@@ -12,6 +12,7 @@ var web_status_queue;
 var phantom_status_queue;
 var history_compare_report_queue;
 var notifications_queue;
+var guests_queue;
 //var import_queue;
 //var import_users_queue;
 
@@ -25,6 +26,7 @@ module.exports = {
     getPhantomStatusQueue : function() {return phantom_status_queue},
     getHistoryCompareReportQueue : function() {return history_compare_report_queue},
     getNotificationsQueue : function() {return notifications_queue},
+    getGuestsQueue : function() {return guests_queue},
     //getImportQueue : function() {return import_queue},
     //getImportUsersQueue : function() {return import_users_queue},
     connect : function(callback) {
@@ -51,6 +53,8 @@ module.exports = {
                         history_compare_report_queue = exchange.queue({ name: settings.HISTORY_COMPARE_REPORT_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
                         notifications_queue = exchange.queue({ name: settings.NOTIFICATIONS_QUEUE, prefetch: 1, durable: false });
+
+                        guests_queue = exchange.queue({ name: settings.GUESTS_QUEUE, prefetch: 1, durable: false });
 
                         //import_queue = exchange.queue({ name: settings.IMPORT_QUEUE, prefetch: 1, durable: false});
                         //import_users_queue = exchange.queue({ name: settings.IMPORT_USERS_QUEUE, prefetch: 1, durable: false});
