@@ -2,10 +2,13 @@
 define([
     'app',
     '../../components/ngEnter/module.js',
-    '../../components/dialog/module.js'
+    '../../components/dialog/module.js',
+    '../../services/userService.js',
+    '../../services/propertyUsersService.js',
+    '../../services/propertyService.js',
 ], function (app) {
      app.controller
-        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options) {
+        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options','$userService','$propertyUsersService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
@@ -17,7 +20,8 @@ define([
 
             ga('set', 'title', "/marketSurvey");
             ga('set', 'page', "/marketSurvey");
-            ga('send', 'pageview');            
+            ga('send', 'pageview');
+            $scope.swap = {};
 
             $scope.cancel = function () {
                 if ($scope.changed) {
@@ -77,7 +81,7 @@ define([
                         limit: 1,
                         permission: ['PropertyManage', 'CompManage'],
                         ids: [id],
-                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id"
+                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id orgid"
                     }).then(function (response) {
                         $scope.property = response.data.properties[0]
                         $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
@@ -193,7 +197,8 @@ define([
 
                                 $scope.doneLoading();
                             })
-                        } else {
+                        }
+                        else {
                             $scope.doneLoading();
                         }
                     });
@@ -212,13 +217,59 @@ define([
 
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
+                if (!$scope.editMode && !$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
+                    $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
+                            $userService.search({ids:response.data.users, select: "first last email bounceReason"}).then(function (response) {
+                                    $scope.swap.guests = response.data.users;
+                                    if ($scope.swap.guests.length > 0) {
+                                        $scope.swap.who = null;
+                                        $scope.swap.selectedGuest = $scope.swap.guests[0];
+                                        $scope.showGuests();
+                                    }
+                                     else {
+                                        $scope.showSurvey();
+                                    }
+                                },
+                                function (error) {
+                                    toastr.error("Unable to retrieve data. Please contact the administrator.");
+                                    $scope.loading = false;
+                                });
+
+                        },
+                        function (error) {
+                            toastr.error("Unable to retrieve data. Please contact the administrator.");
+                            $scope.loading = false;
+                        });
+
+                } else {
+                    $scope.showSurvey();
+                }
+
+            }
+
+            $scope.surveyWhoSelector = function() {
+                if (!$scope.swap.who) {
+                    toastr.error("Please select an option.");
+                } else if ($scope.swap.who == 'manual') {
+                    $scope.showSurvey();
+                } else {
+                    toastr.warning("Coming soon...");
+                }
+            }
+
+            $scope.showGuests = function() {
                 $scope.localLoading = true;
+                $scope.showGuests = true;
+            }
+
+            $scope.showSurvey = function() {
+                $scope.localLoading = true;
+                $scope.showGuests = false;
                 window.setTimeout(function() {
                     var first = $('.survey-values').find('input')[0];
                     first.focus();
                     first.select();
                 }, 300);
-
             }
 
             $scope.isValid  = function(field, required, allowDecimal, min, max) {
