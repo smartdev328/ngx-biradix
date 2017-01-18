@@ -11,7 +11,7 @@
     <div ng-if="loading" style="display:block;width:100px;margin:20px  auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
-    <div ng-if="!loading">
+    <div ng-if="!loading" style="overflow-x: auto">
         <div ng-if="!users.length">
             <div class="alert alert-info" role="alert"  style="margin-bottom:0px !important;">There are currently no <b>Survey Swap</b> contacts setup for this comp.</div>
             <Br>
@@ -23,6 +23,8 @@
                     <th>First</th>
                     <th>Last</th>
                     <th>Email</th>
+                    <th>Last Emailed</th>
+                    <th>Last Completed</th>
                     <th></th>
                 </tr>
 
@@ -30,12 +32,16 @@
                     <td>{{row.first}}</td>
                     <td>{{row.last}}</td>
                     <td>{{row.email}}</td>
+                    <td>{{(row.lastEmailed | date : 'short') || '-'}}</td>
+                    <td>{{(row.lastCompleted | date : 'short') || '-'}}</td>
                     <td style="vertical-align: middle !important;"><i class="fa fa-times fa-fw" style="cursor: pointer" ng-click="remove(row)"></i></td>
                 </tr>
                 <tr>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.first" id="newGuestfirst" placeholder="First"></td>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.last" id="newGuestlast" placeholder="Last"></td>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.email" id="newGuestemail" placeholder="Email"></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                     <td style="vertical-align: middle !important;"><i class="fa fa-plus fa-fw" style="cursor: pointer" ng-click="save()"></i></td>
                 </tr>
                 </tbody>

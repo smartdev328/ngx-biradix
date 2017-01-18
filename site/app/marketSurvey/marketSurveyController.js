@@ -21,7 +21,7 @@ define([
             ga('set', 'title', "/marketSurvey");
             ga('set', 'page', "/marketSurvey");
             ga('send', 'pageview');
-            $scope.swap = {};
+            $scope.swap = {daysSinceSurvey : 0};
 
             $scope.cancel = function () {
                 if ($scope.changed) {
@@ -81,7 +81,7 @@ define([
                         limit: 1,
                         permission: ['PropertyManage', 'CompManage'],
                         ids: [id],
-                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id orgid"
+                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id survey.date orgid"
                     }).then(function (response) {
                         $scope.property = response.data.properties[0]
                         $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
@@ -222,6 +222,11 @@ define([
                             $userService.search({ids:response.data.users, select: "first last email bounceReason"}).then(function (response) {
                                     $scope.swap.guests = response.data.users;
                                     if ($scope.swap.guests.length > 0) {
+
+                                        if ($scope.property.survey && $scope.property.survey.date) {
+                                            $scope.swap.daysSinceSurvey = ((new Date()).getTime() - (new Date($scope.property.survey.date)).getTime()) / 1000 / 60 / 60 / 24;
+                                        }
+
                                         $scope.swap.who = null;
                                         $scope.swap.selectedGuest = $scope.swap.guests[0];
                                         $scope.showGuests();

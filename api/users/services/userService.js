@@ -20,6 +20,24 @@ module.exports = {
     defaultSettings: function(user) {
         defaultSettings(user);
     },
+    updateGuestStatsDateAdded: function(guestid, propertyid, callback) {
+        var query = {_id: guestid};
+        var update = {$addToSet: {guestStats: {propertyid: propertyid.toString(), dateAdded: new Date(), lastEmailed: null, lastCompleted: null}}};
+        var options = {new: true};
+
+        UserSchema.findOneAndUpdate(query, update, options, function (err, saved) {
+           callback();
+        });
+    },
+    removeGuestStats: function(guestid, propertyid, callback) {
+        var query = {_id: guestid};
+        var update = {$pull: {guestStats: {propertyid: propertyid.toString()}}};
+        var options = {new: true};
+
+        UserSchema.findOneAndUpdate(query, update, options, function (err, saved) {
+            callback();
+        });
+    },
     updateBounce: function(email,reason,callback) {
         UserSchema.findOne(
             {

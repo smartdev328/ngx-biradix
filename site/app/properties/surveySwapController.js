@@ -30,9 +30,20 @@ define([
 
 
 
-                        $userService.search({ids:response.data.users, select: "first last email"}).then(function (response) {
+                        $userService.search({ids:response.data.users, select: "first last email guestStats"}).then(function (response) {
 
                                 $scope.users = response.data.users;
+
+                                $scope.users.forEach(function(u) {
+                                    u.lastEmailed = null;
+                                    if (u.guestStats) {
+                                        var stats = _.find(u.guestStats, function(x) {return x.propertyid == property._id.toString()})
+                                        if (stats) {
+                                            u.lastEmailed = stats.lastEmailed;
+                                            u.lastCompleted = stats.lastCompleted;
+                                        }
+                                    }
+                                })
                                 $scope.loading = false;
                         },
                         function (error) {

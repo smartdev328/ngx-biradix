@@ -471,7 +471,9 @@ var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, pr
 
                 if (user.roles[0].tags[0] == 'Guest') {
                     uppdateGuestPermissions(userid, function() {
-                        callback(null)
+                        UserService.removeGuestStats(userid, propertyid, function() {
+                            callback(null)
+                        })
                     });
                 } else {
                     callback(null)
@@ -543,7 +545,10 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
                 if (user.roles[0].tags[0] == 'Guest') {
                     //Re-calculate all guest permissions related if this is a comp
                     uppdateGuestPermissions(userid, function() {
-                        callback(null)
+                        UserService.updateGuestStatsDateAdded(userid, propertyid, function() {
+                            callback(null)
+                        })
+
                     })
                 } else {
                     callback(null)
