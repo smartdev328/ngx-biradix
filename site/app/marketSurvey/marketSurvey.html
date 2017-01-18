@@ -52,6 +52,10 @@
         width:30px;
     }
 
+    .radio.disabled label {
+        opacity: .5;
+    }
+
 </Style>
 
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
@@ -73,8 +77,23 @@
         <hr style="margin:14px 0px;border-color:#4460a9">
 
         <div ng-if="showGuests">
-            <label style="font-weight:normal;width:100%"><input type="radio" ng-model="swap.who" value="manual"> Manual Market Survey</label><Br>
-            <label style="font-weight:normal;width:100%"><input type="radio" ng-model="swap.who" value="swap"> Send Survey Swap <select ng-options="guest.first + ' ' + guest.last for guest in swap.guests" ng-model="swap.selectedGuest" class="form-control input-sm" style="display: inline-block;max-width:250px"></select></label><Br>
+            <div ng-class="{'radio' : true, disabled: false}">
+                <label style="font-weight:normal;width:100%"><input type="radio" ng-model="swap.who" value="manual"> Manual Market Survey</label><Br>
+            </div>
+            <div ng-class="{'radio' : true, disabled: swap.selectedGuest.bounceReason}">
+                <label style="font-weight:normal;"><input type="radio" ng-model="swap.who" value="swap" ng-disabled="swap.selectedGuest.bounceReason"> Send Survey Swap</label>
+                    <select ng-options="guest.first + ' ' + guest.last for guest in swap.guests" ng-model="swap.selectedGuest" class="form-control input-sm" style="display: inline-block;max-width:250px"></select>
+                    <i class="fa fa-exclamation-triangle warning"
+                       style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
+                       ng-if="swap.selectedGuest.bounceReason"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       uib-popover="We are unable to deliver email to this contact."
+                    ></i>
+
+                <Br>
+            </div>
             <Br>
             <div style="text-align: center">
                 <a class="btn btn-success contact-submit" ng-click="surveyWhoSelector()">Next</a>
