@@ -5,8 +5,16 @@ var async = require("async");
 var _ = require("lodash")
 var moment = require('moment');
 var CompsService = require('./compsService')
-
+var userService = require('../../users/services/userService')
 module.exports = {
+    emailGuest: function (operator, context, propertyid, guestid, callback) {
+
+        userService.updateGuestStatsLastEmailed(guestid, propertyid, function() {
+            callback([{msg: 'Test'}])
+        });
+
+
+    },
     getSurveyBeforeDate: function(propertyid, dateStart,dateEnd, callback) {
         //console.log({propertyid: propertyid,date:{$gt:dateStart, $lte:dateEnd}});
         SurveySchema.find({propertyid: propertyid,date:{$gt:new Date(dateStart), $lte:new Date(dateEnd)}}).sort('-date').limit(1).exec(callback);

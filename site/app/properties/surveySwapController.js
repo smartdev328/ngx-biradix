@@ -36,6 +36,8 @@ define([
 
                                 $scope.users.forEach(function(u) {
                                     u.lastEmailed = null;
+                                    u.lastCompleted = null;
+
                                     if (u.guestStats) {
                                         var stats = _.find(u.guestStats, function(x) {return x.propertyid == property._id.toString()})
                                         if (stats) {
