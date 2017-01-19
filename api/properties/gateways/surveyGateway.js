@@ -8,6 +8,18 @@ var _ = require("lodash")
 module.exports = {
     init: function(Routes) {
 
+        Routes.get('/:id/survey/guests/:guestid/email', function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+                if (!canAccess) {
+                    return res.status(401).json("Unauthorized request");
+                }
+
+                surveyHelperService.emailGuest(req.user, req.context, req.params.id, req.params.guestid, function (errs) {
+                    return res.status(200).json({errors: errs});
+                });
+            });
+        });
+
         Routes.post('/:id/survey/warnings', function (req, res) {
             AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
                 if (!canAccess) {

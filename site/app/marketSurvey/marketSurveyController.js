@@ -21,7 +21,7 @@ define([
             ga('set', 'title', "/marketSurvey");
             ga('set', 'page', "/marketSurvey");
             ga('send', 'pageview');
-            $scope.swap = {daysSinceSurvey : 0};
+            $scope.swap = {};
 
             $scope.cancel = function () {
                 if ($scope.changed) {
@@ -205,6 +205,30 @@ define([
                 }
             });
 
+            $scope.getGuestInfo = function(guest) {
+                var str = 'Last Email Sent: <b>';
+
+                if (guest.lastEmailed) {
+                    str += moment(guest.lastEmailed).format("MM/DD/YYYY")
+                } else {
+                    str += "Never"
+                }
+
+                str += "</b><Br>"
+
+                str += 'Last Survey Completed: <b>';
+
+                if (guest.lastCompleted) {
+                    str += moment(guest.lastCompleted).format("MM/DD/YYYY")
+                } else {
+                    str += "Never"
+                }
+
+                str += "</b>"
+
+                return str;
+            }
+
             $scope.doneLoading = function() {
 
                 $scope.survey.floorplans.forEach(function(fp) {
@@ -219,13 +243,22 @@ define([
 
                 if (!$scope.editMode && !$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
-                            $userService.search({ids:response.data.users, select: "first last email bounceReason"}).then(function (response) {
+                            $userService.search({ids:response.data.users, select: "first last email bounceReason guestStats"}).then(function (response) {
                                     $scope.swap.guests = response.data.users;
                                     if ($scope.swap.guests.length > 0) {
 
-                                        if ($scope.property.survey && $scope.property.survey.date) {
-                                            $scope.swap.daysSinceSurvey = ((new Date()).getTime() - (new Date($scope.property.survey.date)).getTime()) / 1000 / 60 / 60 / 24;
-                                        }
+                                        $scope.swap.guests.forEach(function(u) {
+                                            u.lastEmailed = null;
+                                            u.lastCompleted = null;
+
+                                            if (u.guestStats) {
+                                                var stats = _.find(u.guestStats, function(x) {return x.propertyid == $scope.property._id.toString()})
+                                                if (stats) {
+                                                    u.lastEmailed = stats.lastEmailed;
+                                                    u.lastCompleted = stats.lastCompleted;
+                                                }
+                                            }
+                                        })
 
                                         $scope.swap.who = null;
                                         $scope.swap.selectedGuest = $scope.swap.guests[0];
@@ -258,7 +291,23 @@ define([
                 } else if ($scope.swap.who == 'manual') {
                     $scope.showSurvey();
                 } else {
-                    toastr.warning("Coming soon...");
+                    $('button.contact-submit').prop('disabled', true);
+                    ngProgress.start();
+                    $propertyService.emailGuest($scope.property._id, $scope.swap.selectedGuest._id).then(function(response) {
+                        $('button.contact-submit').prop('disabled', false);
+                        ngProgress.complete();
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+
+                        }
+                        else {
+                            //TODO: Success
+                        }
+                    }, function (err) {
+                        $('button.contact-submit').prop('disabled', false);
+                        toastr.error('Unable to perform action. Please contact an administrator');
+                        ngProgress.complete();
+                    })
                 }
             }
 
