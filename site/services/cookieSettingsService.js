@@ -3,6 +3,35 @@ define(['app'], function (app) {
     app.factory('$cookieSettingsService', ['$cookies', function ($cookies) {
         var fac = {};
 
+        fac.getSurveyGuestOption = function (propertyid) {
+
+            var SurveyGuestOption = {}
+            try {
+                SurveyGuestOption = JSON.parse($cookies.get('SurveyGuestOption') || {})
+            } catch(ex) {
+
+            }
+
+            return SurveyGuestOption[propertyid];
+
+        }
+
+        fac.saveSurveyGuestOption = function(propertyid, value) {
+            var SurveyGuestOption = {}
+            try {
+                SurveyGuestOption = JSON.parse($cookies.get('SurveyGuestOption') || {})
+            } catch(ex) {
+
+            }
+
+            SurveyGuestOption[propertyid] = value
+
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('SurveyGuestOption', JSON.stringify(SurveyGuestOption), {expires : expireDate})
+        }
+
+
         fac.getSummary = function () {
 
             try {
