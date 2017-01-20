@@ -6,9 +6,10 @@ define([
     '../../services/userService.js',
     '../../services/propertyUsersService.js',
     '../../services/propertyService.js',
+    '../../services/cookieSettingsService.js',
 ], function (app) {
      app.controller
-        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options','$userService','$propertyUsersService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService) {
+        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options','$userService','$propertyUsersService','$cookieSettingsService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
@@ -260,7 +261,7 @@ define([
                                             }
                                         })
 
-                                        $scope.swap.who = null;
+                                        $scope.swap.who = $cookieSettingsService.getSurveyGuestOption($scope.property._id);;
                                         $scope.swap.selectedGuest = $scope.swap.guests[0];
                                         $scope.showGuests();
                                     }
@@ -289,8 +290,10 @@ define([
                 if (!$scope.swap.who) {
                     toastr.error("Please select an option.");
                 } else if ($scope.swap.who == 'manual') {
+                    $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'manual');
                     $scope.showSurvey();
                 } else {
+                    $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'swap');
                     $('button.contact-submit').prop('disabled', true);
                     ngProgress.start();
                     $propertyService.emailGuest($scope.property._id, $scope.swap.selectedGuest._id).then(function(response) {

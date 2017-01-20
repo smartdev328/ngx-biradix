@@ -82,7 +82,7 @@
             </div>
             <div ng-class="{'radio' : true, disabled: swap.selectedGuest.bounceReason}">
                 <label style="font-weight:normal;"><input type="radio" ng-model="swap.who" value="swap" ng-disabled="swap.selectedGuest.bounceReason"> Send Survey Swap</label>
-                    <select ng-options="guest.first + ' ' + guest.last for guest in swap.guests" ng-model="swap.selectedGuest" class="form-control input-sm" style="display: inline-block;max-width:250px"></select>
+                    <select ng-options="guest.first + ' ' + guest.last + ' _('+ guest.email +')_' for guest in swap.guests" ng-model="swap.selectedGuest" class="form-control input-sm" style="display: inline-block;max-width:250px"></select>
                     <i class="fa fa-info-circle"
                        style="cursor:pointer;font-size:14px;padding-left:2px;"
                        popover-trigger="'mouseenter'"
