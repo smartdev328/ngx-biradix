@@ -6,12 +6,87 @@ var _ = require("lodash")
 var moment = require('moment');
 var CompsService = require('./compsService')
 var userService = require('../../users/services/userService')
-module.exports = {
-    emailGuest: function (operator, context, propertyid, guestid, callback) {
+var EmailService = require('../../business/services/emailService')
+var AuditService = require('../../audit/services/auditService')
 
-        userService.updateGuestStatsLastEmailed(guestid, propertyid, function() {
-            callback([{msg: 'Test'}])
-        });
+module.exports = {
+    emailGuest: function (operator, context, base, propertyid, guestid, callback) {
+
+
+        PropertySchema.find({_id:propertyid}, function(err, properties) {
+            if (!properties || properties.length != 1) {
+                return callback([{msg: 'Unable to locate Property. Please contact the Administrator'}])
+            }
+            var property = properties[0];
+
+            //Get user / Check that primarySubject exists
+            userService.search(operator, {select: "first last email guestStats", ids: [guestid]}, function(err, users) {
+                if (!users || users.length != 1) {
+                    return callback([{msg: 'Unable to locate Contact. Please contact the Administrator'}])
+                }
+                var guest = users[0];
+                if (!guest.guestStats) {
+                    return callback([{msg: 'This Contact is not properly configured. Please re-add this Contact or contact the Administrator'}])
+                }
+
+                var guestStatComp = _.find(guest.guestStats, function(x) {return x.propertyid == propertyid})
+
+                if (!guestStatComp) {
+                    return callback([{msg: 'This Contact is not properly configured. Please re-add this Contact or contact the Administrator'}])
+                }
+
+                //Get subjects, exclude yourself
+                CompsService.getSubjects([propertyid], {select: "_id name"}, function (err, subjects) {
+                    _.remove(subjects, function(x) {return x._id.toString() == propertyid});
+
+                    //Split off primary subject from others
+                    var primarySubject = _.remove(subjects, function(x) {return x._id.toString() == guestStatComp.primarySubjectId})[0];
+
+                    var otherSubjectNames = _.map(subjects, function(x) {return x.name});
+
+                    //TODO: Create Login Token
+
+                    //Send Email
+                    var email = {
+                        to: guest.email,
+                        bcc: 'eugene@biradix.com',
+                        logo: base + "/images/organizations/biradix.png",
+                        subject: primarySubject.name + " is asking for some information about " + property.name,
+                        template: 'swap.html',
+                        templateData: {
+                            comp: property.name,
+                            subject: primarySubject.name,
+                            otherSubjects: otherSubjectNames
+                        }
+                    }
+
+                    EmailService.send(email,function(emailError,status) {
+                        console.log(status);
+
+                        if (emailError || !status || !status.message || status.message != 'success') {
+                            return callback([{msg: 'Unable to deliver mesage to Contact. Please contact the Administrator'}])
+                        }
+                        //Activity History
+                        var data = [{description: "Subject: " + primarySubject.name}];
+
+                        if (otherSubjectNames.length > 0) {
+                            data.push({description: "Other Subjects: " + otherSubjectNames.join(", ")})
+                        }
+
+                        AuditService.create({operator: operator, property: property, user: guest, type: 'survey_emailed', description: property.name + " => " + guest.first + ' ' + guest.last, data : data})
+
+                        //Update Last Emailed
+                        userService.updateGuestStatsLastEmailed(guestid, propertyid, function() {
+                            callback(null)
+                        });
+                    })
+
+
+                });
+
+            })
+
+        })
 
 
     },

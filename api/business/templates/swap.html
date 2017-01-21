@@ -1,0 +1,24 @@
+<div style="max-width: 500px">
+Hello {{first}},<br>
+<br>
+{{subject}} is doing a market survey and your property is currently a comp. You are being contacted because {{subject}} wants to do a Survey Swap with {{comp}}.<br>
+<br>
+What is "Survey Swap"?  Simply put, it's swapping market survey information about your property for theirs. Why do this? If you consider {{subject}} a comp, you can save time calling/emailing to get the latest survey info. How do I know this survey information is accurate? It's the same data that {{subject}} users internally!<br>
+<br>
+{% if otherSubjects.size > 0 %}
+In addition to {{subject}}, the market survey information for the following properties will also be accessible:<br>
+<ul>
+    {% for s in otherSubjects %}
+    <li>{{s}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+Click the link below and fill in the latest data about your property, we will give you access to the comparative data from all properties on BI:Radix platform that have your property listed as a comp.<br>
+    <br>
+[link]<br>
+    <br>
+Please contact us if you have any questions!<br>
+<br>
+Thank you,<br>
+BI:Radix Team<br>
+</div>
