@@ -318,16 +318,30 @@ var uppdateGuestPermissions = function(guestid, callback) {
                    executorid: guestid,
                    type: 'PropertyView'
                }, function (err) {
-                   console.log(err);
+                   //console.log(err);
                    //Get all subjects all the comps belong to and update permissions for each
                    CompService.getSubjects(properties, {select: "_id"}, function (err, subjects) {
-                       async.eachLimit(subjects, 10, function (subject, callbackp) {
-                           updateGuestPermissionsForSubject(guestid, subject._id.toString(), callbackp);
+
+                       var subjectids = _.map(subjects, function(x) {return x._id.toString()});
+
+                       _.remove(subjectids, function(x) {return properties.indexOf(x) > -1});
+
+                       async.eachLimit(subjectids, 10, function (subjectid, callbackp) {
+                           updateGuestPermissionsForSubject(guestid, subjectid, callbackp);
 
                        }, function (err) {
 
                            //Add All View Permissions from guest to their comps
                            async.eachLimit(properties, 10, function (propertyid, callbackp) {
+
+                               //For each comp, get all subjects and run the logic to update primary subject if needed
+                               CompService.getSubjects([propertyid], {select: "_id"}, function (err, compSubjects) {
+                                   compSubjects = _.map(compSubjects, function(x) {return x._id.toString()});
+
+                                   _.remove(compSubjects, function(x) {return x == propertyid});
+
+                                   UserService.updateGuestStatsPrimarySubject(guestid, propertyid, compSubjects)
+                               });
                                AccessService.createPermission({
                                    executorid: guestid,
                                    resource: propertyid,
@@ -544,11 +558,11 @@ var LinkPropertyWithUser = function(operator,context,revertedFromId, userid, pro
             AccessService.createPermission({executorid: userid,resource: propertyid,allow: true,type: 'PropertyManage',direct: true}, function () {
                 if (user.roles[0].tags[0] == 'Guest') {
                     //Re-calculate all guest permissions related if this is a comp
-                    uppdateGuestPermissions(userid, function() {
-                        UserService.updateGuestStatsDateAdded(userid, propertyid, function() {
+
+                    UserService.updateGuestStatsDateAdded(userid, propertyid, function() {
+                        uppdateGuestPermissions(userid, function() {
                             callback(null)
                         })
-
                     })
                 } else {
                     callback(null)
