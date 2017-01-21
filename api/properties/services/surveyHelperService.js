@@ -58,7 +58,7 @@ module.exports = {
                                 comp: property.name,
                                 subject: primarySubject.name,
                                 otherSubjects: otherSubjectNames,
-                                link: base + '/g/' + full.token
+                                link: base + '/g/' + property._id.toString() + '/' + full.token
                             }
                         }
 
