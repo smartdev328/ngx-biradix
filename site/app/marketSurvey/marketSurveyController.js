@@ -304,7 +304,8 @@ define([
 
                         }
                         else {
-                            //TODO: Success
+                            toastr.success("Survey swap email sent to " + $scope.swap.selectedGuest.first + " " + $scope.swap.selectedGuest.last + " (" + $scope.swap.selectedGuest.email + ")")
+                            $uibModalInstance.close();
                         }
                     }, function (err) {
                         $('button.contact-submit').prop('disabled', false);
