@@ -69,9 +69,9 @@ d.run(function() {
                 res.redirect('/#/password/reset/' + req.params.token)
             })
 
-            app.get('/g/:token', function (req, res) {
+            app.get('/g/:propertyid/:token', function (req, res) {
                 res.cookie('token', req.params.token);
-                res.redirect('/#/dashboard')
+                res.redirect('/#/profile/' + req.params.propertyid)
             })
 
             if (!settings.SKIPRABBIT) {
