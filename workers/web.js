@@ -69,6 +69,11 @@ d.run(function() {
                 res.redirect('/#/password/reset/' + req.params.token)
             })
 
+            app.get('/g/:token', function (req, res) {
+                res.cookie('token', req.params.token);
+                res.redirect('/#/dashboard')
+            })
+
             if (!settings.SKIPRABBIT) {
                 require('../api/status/consumers/webConsumer')
 

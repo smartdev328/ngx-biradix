@@ -249,6 +249,14 @@ define([
                         toastr.error('No market surveys have been done for this property.');
                     }
 
+                    if (
+                        !phantom
+                        && $rootScope.me.roles[0] == 'Guest'
+                        && (!$scope.comp.survey  || !$scope.comp.survey.date || $scope.comp.survey.days > 6)
+                    ) {
+                        $rootScope.marketSurvey($scope.property._id);
+                    }
+
 
                 }, function(error) {
                     window.renderable = true;

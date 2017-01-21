@@ -745,8 +745,13 @@ function getFullUser(usr, callback) {
 
                 var minutesToExpire = 60;
 
+                if (usr.minutesToExpire) {
+                    minutesToExpire = usr.minutesToExpire;
+                    delete usr.miuntesToExpire;
+                }
+
                 var key = md5(JSON.stringify(usrobj));
-                redisService.set(JSON.stringify(usrobj),usrobj,60);
+                redisService.set(JSON.stringify(usrobj),usrobj,minutesToExpire);
 
                 var token = jwt.sign(key, settings.SECRET, {expiresIn: minutesToExpire * 60});
 
