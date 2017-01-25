@@ -461,7 +461,7 @@ var getHelpers = function(property, options, callback) {
             }
         },
         roles: function (callbackp) {
-            AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO'], cache:true},function(err, roles) {
+            AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO'], cache:false},function(err, roles) {
                 callbackp(err, roles)
             })
 

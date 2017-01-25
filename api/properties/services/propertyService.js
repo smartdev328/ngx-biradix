@@ -280,7 +280,7 @@ module.exports = {
                     return x.id.toString() == compid.toString()
                 })
 
-                console.log(isLinked);
+                // console.log(isLinked);
 
                 if (!isLinked) {
                     return callback([{msg: 'Unable to remove comp, it is not currently attached to subject property.'}])
