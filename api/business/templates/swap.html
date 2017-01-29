@@ -1,26 +1,39 @@
 <div style="max-width: 500px">
-Hello {{first}},<br>
-<br>
-{{subject}} is doing a market survey and your property is currently a competitor. You are being contacted because {{subject}} wants to do a Survey Swap with {{comp}}.<br>
-<br>
-What is "Survey Swap"?  Simply put, it's swapping market survey information about your property for theirs. Why do this? If you consider {{subject}} a competitor, you can save time calling/emailing to get the latest survey info. How do I know this survey information is accurate? It's the same data that {{subject}} users internally!<br>
-<br>
-{% if otherSubjects.size > 0 %}
-In addition to {{subject}}, the market survey information for the following properties will also be accessible:<br>
-<ul>
-    {% for s in otherSubjects %}
-    <li>{{s}}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-Click the link below and fill in the latest data about your property, we will give you access to the comparative data from all properties on BI:Radix platform that have your property listed as a competitor.<br>
+    Hello {{first}},<br>
     <br>
-<A href="{{link}}">Market Survey</A><br>
+    {{operator}} is asking for your help to complete their Market Survey on the BI:Radix platform, and would like to swap information with your property, {{comp}}<br>
+    <Br>
+    Click the link below and fill in the latest data about your property, we will give you access to the comparative data from all properties on the BI:Radix platform that have your property listed as a comp. <br>
     <br>
-Please contact us if you have any questions!<br>
-<br>
-Thank you,<br>
-BI:Radix Team<br>
-support@biradix.com<br>
+    <A href="{{link}}">Market Survey</A><br>
+    <br>
+    {% if subjects.size > 1 %}
+        Market survey information for the following properties will be accessible after filling in the info:
+        <ul>
+            {% for s in subjects %}
+            <li><b>{{s}}</b></li>
+            {% endfor %}
+        </ul>
+        <Br>
+    <i>
+        Why do this? If you consider any of the above competitors, you can save time calling/emailing to get their latest survey info.<Br>
+        <Br>
+        How do I know this survey information is accurate?  It's the same data that they use internally!<Br>
+    </i>
+    {%else%}
+    Market survey information for <b>{{subjects[0]}}</b> will be accessible after filling in the info.<Br>
+        <Br>
+    <i>
+        Why do this? If you consider <b>{{subjects[0]}}</b> a competitor, you can save time calling/emailing to get the latest survey info.<Br>
+        <Br>
+        How do I know this survey information is accurate?  It's the same data that <b>{{subjects[0]}}</b> uses internally!<Br>
+    </i>
+    {% endif %}
+    <br>
+    Please contact us if you have any questions!<br>
+    <br>
+    Thank you,<br>
+    BI:Radix Team<br>
+    support@biradix.com<br>
     (602) 892-4788<Br>
 </div>

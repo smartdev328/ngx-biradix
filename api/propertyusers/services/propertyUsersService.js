@@ -334,14 +334,6 @@ var uppdateGuestPermissions = function(guestid, callback) {
                            //Add All View Permissions from guest to their comps
                            async.eachLimit(properties, 10, function (propertyid, callbackp) {
 
-                               //For each comp, get all subjects and run the logic to update primary subject if needed
-                               CompService.getSubjects([propertyid], {select: "_id"}, function (err, compSubjects) {
-                                   compSubjects = _.map(compSubjects, function(x) {return x._id.toString()});
-
-                                   _.remove(compSubjects, function(x) {return x == propertyid});
-
-                                   UserService.updateGuestStatsPrimarySubject(guestid, propertyid, compSubjects)
-                               });
                                AccessService.createPermission({
                                    executorid: guestid,
                                    resource: propertyid,

@@ -39,11 +39,9 @@ module.exports = {
                 CompsService.getSubjects([propertyid], {select: "_id name"}, function (err, subjects) {
                     _.remove(subjects, function(x) {return x._id.toString() == propertyid});
 
-                    //Split off primary subject from others
-                    var primarySubject = _.remove(subjects, function(x) {return x._id.toString() == guestStatComp.primarySubjectId})[0];
+                    var SubjectNames = _.map(subjects, function(x) {return x.name});
 
-                    var otherSubjectNames = _.map(subjects, function(x) {return x.name});
-
+                    // SubjectNames = _.take(SubjectNames,1);
                     //Create Login Token that expires in 30 days.
                     guest.minutesToExpire = 60 * 24 * 30;
                     userService.getFullUser(guest, function(full) {
@@ -52,13 +50,13 @@ module.exports = {
                             to: guest.email,
                             bcc: 'eugene@biradix.com',
                             logo: base + "/images/organizations/biradix.png",
-                            subject: primarySubject.name + " is asking for some information about " + property.name,
+                            subject: operator.first + ' ' + operator.last + " is asking for some information about " + property.name,
                             template: 'swap.html',
                             templateData: {
                                 comp: property.name,
-                                subject: primarySubject.name,
-                                otherSubjects: otherSubjectNames,
-                                link: base + '/g/' + property._id.toString() + '/' + full.token
+                                subjects: SubjectNames,
+                                link: base + '/g/' + property._id.toString() + '/' + full.token,
+                                operator: operator.first + ' ' + operator.last
                             }
                         }
 
@@ -72,11 +70,8 @@ module.exports = {
                                 return callback([{msg: 'Unable to deliver mesage to Contact. Please contact the Administrator'}])
                             }
                             //Activity History
-                            var data = [{description: "Subject: " + primarySubject.name}];
+                            var data = [{description: "Subjects: " + SubjectNames.join(", ")}];
 
-                            if (otherSubjectNames.length > 0) {
-                                data.push({description: "Other Subjects: " + otherSubjectNames.join(", ")})
-                            }
 
                             AuditService.create({operator: operator, property: property, user: guest, type: 'survey_emailed', description: property.name + " => " + guest.first + ' ' + guest.last, data : data})
 

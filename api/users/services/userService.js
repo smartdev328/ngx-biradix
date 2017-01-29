@@ -38,35 +38,6 @@ module.exports = {
             callback();
         });
     },
-    updateGuestStatsPrimarySubject: function(guestid, propertyid, subjectids) {
-        var query = {_id: guestid, "guestStats.propertyid" : propertyid};
-
-        UserSchema.findOne(query, function (err, user) {
-            if (user && user.guestStats && subjectids) {
-                var guestStat = _.find(user.guestStats, function(x) {return x.propertyid == propertyid})
-                if (guestStat) {
-                    var newPrimarySubjectId = null;
-
-                    //If the primary subject of a property is no longer a subject or the property has no subject, pick the first one
-                    if (!guestStat.primarySubjectId || subjectids.indexOf(guestStat.primarySubjectId) == -1) {
-                        newPrimarySubjectId = subjectids[0]
-                    }
-
-                    if (newPrimarySubjectId) {
-                        var update = {"guestStats.$.primarySubjectId" :  newPrimarySubjectId};
-                        var options = {new: true};
-
-                        UserSchema.findOneAndUpdate(query, update, options, function (err, saved) {
-
-                        });
-                    }
-
-                }
-            }
-        });
-
-
-    },
     removeGuestStats: function(guestid, propertyid, callback) {
         var query = {_id: guestid};
         var update = {$pull: {guestStats: {propertyid: propertyid.toString()}}};
