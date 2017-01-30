@@ -7,6 +7,7 @@ define([
     '../../services/propertyUsersService.js',
     '../../services/propertyService.js',
     '../../services/cookieSettingsService.js',
+    '../../services/auditService.js',
 ], function (app) {
      app.controller
         ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options','$userService','$propertyUsersService','$cookieSettingsService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService) {

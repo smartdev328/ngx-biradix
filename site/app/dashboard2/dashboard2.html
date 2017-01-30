@@ -1,0 +1,78 @@
+<div class="row" ng-show="localLoading" style="margin-bottom:0px !important;">
+    <div class="col-xs-7 col-sm-7">
+        <h2 class="mainheader">Dashboard</h2>
+    </div>
+    <div class="col-xs-5 col-sm-5 hidden-print">
+        <button uib-tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(selectedProperty._id)">
+            <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Market Survey</span>
+        </button>
+    </div>
+</div>
+<div ng-show="localLoading">
+    <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
+</div>
+<style>
+    @media all and (min-width: 0px) and (max-width: 500px) {
+        .bedrooms {
+            margin-right: -15px !important;
+            margin-top: 10px !important;
+            clear:both;
+        }
+    }
+</style>
+<div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
+    <div class="alert alert-warning" role="alert"><b>This account does not currently have access to any properties. Please contact <A href="#/contactus">Contact Support</A> for more information.</b></div>
+
+</div>
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div class="row" ng-show="localLoading && myProperties.length > 0">
+    <div class="col-md-4 col-sm-5 col-lg-3 left-print">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <table style="width:100%">
+                    <tr>
+                        <Td style="height:30px">
+                            <span ng-if="myProperties.length == 1" class="pull-left" style="color: #4460a9 !important;">{{selectedProperty.name}}</span>
+
+                            <span ng-if="myProperties.length > 1" class="dropdown pull-left" style="color: #4460a9 !important;">
+                    <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit; color: #4460a9 !important;">{{selectedProperty.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
+                    <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:310px;overflow-y:auto">
+                        <div style="margin:10px" ng-if="myProperties.length > 7">
+                            <input type="text" class="form-control input-sm"
+                                   placeholder="Search Properties"
+                                   ng-model="filters.searchDashboard"
+                                   style="font-weight: normal"
+                            >
+                            <i class="fa fa-search form-control-feedback" style="color:#ccc;top:10px;right:10px"></i>
+                        </div>
+
+                        <ul class="multi-col-list">
+                            <li ng-repeat="property in myProperties | filter : filters.searchDashboard"><A href ng-click="setProperty(property)">{{property.name}}</A></li>
+                        </ul>
+                    </div>
+                </span>
+                        </Td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="panel-body">
+                <hr>
+                <property-profile property="selectedProperty" show="showProfile"></property-profile>
+
+                <div style="width:155px;margin:10px auto 0px auto" class="hidden-print">
+                    <button class="btn btm-sm btn-primary" ng-click="viewProfile()">View Property Profile</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-8 col-sm-7 col-lg-9 right-print">
+
+    </div>
+
+</div>
+
+

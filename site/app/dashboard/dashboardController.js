@@ -176,6 +176,11 @@ define([
                     $authService.updateSettings($rootScope.me.settings);
                 }
 
+                if ($rootScope.me.roles[0] == 'Guest') {
+                    $location.path('/dashboard2')
+                    return;
+                }
+
                 $scope.defaultShowProfile();
 
                 if ($cookies.get("pr.s")) {
@@ -214,15 +219,6 @@ define([
                             $scope.changeProperty();
                             return;
                         }
-                    }
-
-                    if ($rootScope.me.roles[0] == 'Guest') {
-                        if ($scope.selectedProperty) {
-                            $location.path('/profile/' + $scope.selectedProperty._id)
-                        } else {
-                            $rootScope.logoff();
-                        }
-                        return;
                     }
 
                     if ($scope.selectedProperty) {

@@ -100,6 +100,7 @@ define([
             .state('password_reset', AsyncRoute("/password/reset/:token","passwordOff","resetController","reset.html","loggedOutView"))
 
             .state('dashboard', AsyncRoute("/dashboard?id&s","dashboard","dashboardController","dashboard.html","loggedInView"))
+            .state('dashboard2', AsyncRoute("/dashboard2?id","dashboard2","dashboard2Controller","dashboard2.html","loggedInView"))
             .state('manageUsers', AsyncRoute("/manageusers","manageUsers","manageUsersController","manageUsers.html","loggedInView"))
 
             .state('properties', {
