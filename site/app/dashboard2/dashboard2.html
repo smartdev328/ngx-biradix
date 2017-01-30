@@ -70,7 +70,34 @@
 
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Competitors
+            </div>
+            <div class="panel-body">
+                <hr>
+                Hello {{$root.me.first}},<Br>
+                <Br>
+                Please complete the <A href ng-click="marketSurvey(selectedProperty._id)">Market Survey</A> for <B>{{selectedProperty.name}}</B> to gain access to the comparative data of the following properties:<br>
+                <Br>
+                <div class="alert alert-success" role="alert" ng-if="canAccess">Your Market Survey is up to date! You may access the comparative data below.</div>
+                <div class="alert alert-danger" role="alert" ng-if="!canAccess">Your Market Survey is <b>NOT</b> up to date! Please complete the survey to gain access.</div>
+                <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
+                    <tbody>
+                    <tr class="thead">
+                        <th>Competitor Name</th>
+                        <th class="center">Data Link</th>
+                    </tr>
 
+                    <tr ng-repeat="row in subjects">
+                        <td>{{row.name}}</td>
+                        <td class="center" ng-if="canAccess"><A href="#/profile/{{row._id}}">View Data</A></td>
+                        <td class="center" ng-if="!canAccess"><i class="fa fa-lock"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 </div>

@@ -6,6 +6,23 @@ var async = require("async");
 
 module.exports = {
     init: function(Routes) {
+        Routes.get('/:id/subjects', function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+                if (!canAccess) {
+                    return res.status(401).json("Unauthorized request");
+                }
+
+                CompService.getSubjects([req.params.id], {select: "_id name"}, function (err, subjects) {
+                    if (err) {
+                        return res.status(200).json({subjects: null, errors: err});
+                    }
+                    else {
+                        return res.status(200).json({subjects: subjects});
+                    }
+                });
+            })
+        })
+
         Routes.put('/:id/comps/:compid', function (req, res) {
             AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
                 if (!canAccess) {

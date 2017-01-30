@@ -53,6 +53,7 @@ module.exports = {
                             subject: operator.first + ' ' + operator.last + " is asking for some information about " + property.name,
                             template: 'swap.html',
                             templateData: {
+                                first: guest.first,
                                 comp: property.name,
                                 subjects: SubjectNames,
                                 link: base + '/g/' + property._id.toString() + '/' + full.token,

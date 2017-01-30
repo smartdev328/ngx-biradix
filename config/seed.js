@@ -1265,6 +1265,7 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.Guest._id, resource: "Hide/Search", allow: true, type: 'Execute'},
         {executorid: roles.Guest._id, resource: "Hide/Reporting", allow: true, type: 'Execute'},
         {executorid: roles.Guest._id, resource: "Hide/Account", allow: true, type: 'Execute'},
+        {executorid: roles.Guest._id, resource: "Hide/ExtendedProfile", allow: true, type: 'Execute'},
 
         {executorid: roles.GreystarCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.GreystarRM._id, resource: "Users", allow: true, type: 'Execute'},

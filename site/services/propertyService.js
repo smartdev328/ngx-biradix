@@ -28,6 +28,15 @@ define(['app'], function (app) {
             });
         }
 
+        fac.getSubjects = function (propertyid) {
+            return $http.get('/api/1.0/properties/' + propertyid+ '/subjects?bust=' + (new Date()).getTime(), {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.getAmenityCounts = function () {
             return $http.get('/api/1.0/properties/getAmenityCounts?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
