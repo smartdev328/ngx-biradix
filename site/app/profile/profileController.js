@@ -228,10 +228,43 @@ define([
                     $scope.nerKeys = resp.nerKeys;
                     $scope.otherTable = resp.otherTable
 
-                    $scope.localLoading = true;
-                    $scope.trendsLoading = true;
+                    if (!resp.canManage && $rootScope.me.roles[0] == 'Guest') {
+                        //Todo: Check if any comps for this are up to date, if none, restrict access
 
-                    $scope.setRenderable();
+                        var compids= _.map(resp.comp.comps,function(x) {return x.id.toString()});
+
+                        $propertyService.search({select: "survey name", permission: ['PropertyManage']}).then(function(response) {
+                            var validSurveys = _.find(response.data.properties, function(x) {
+                                var surveyDaysAgo = 99;
+
+                                if (x.survey  && x.survey.date) {
+                                    surveyDaysAgo = (new Date().getTime() - (new Date(x.survey.date)).getTime()) / 1000 / 60 / 60 / 24;
+                                }
+
+                                return surveyDaysAgo < 7
+                            })
+
+                            if(!validSurveys) {
+                                $location.path('/dashboard2')
+                            } else {
+
+                                $scope.localLoading = true;
+                                $scope.trendsLoading = true;
+
+                                $scope.setRenderable();
+                            }
+                        }, function(error) {
+                            $location.path('/dashboard2')
+                        })
+
+
+                    } else {
+                        $scope.localLoading = true;
+                        $scope.trendsLoading = true;
+
+                        $scope.setRenderable();
+
+                    }
 
                     if ($scope.comp.survey && $scope.comp.survey.tier == "danger") {
                         if ($scope.comp.survey.date) {
