@@ -12,7 +12,7 @@ module.exports = {
                     return res.status(401).json("Unauthorized request");
                 }
 
-                CompService.getSubjects([req.params.id], {select: "_id name"}, function (err, subjects) {
+                CompService.getSubjects([req.params.id], {select: "_id name survey.date"}, function (err, subjects) {
                     if (err) {
                         return res.status(200).json({subjects: null, errors: err});
                     }

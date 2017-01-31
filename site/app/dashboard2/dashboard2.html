@@ -87,12 +87,14 @@
                     <tr class="thead">
                         <th>Competitor Name</th>
                         <th class="center">Data Link</th>
+                        <th class="center">Last Updated</th>
                     </tr>
 
                     <tr ng-repeat="row in subjects">
                         <td>{{row.name}}</td>
                         <td class="center" ng-if="canAccess"><A href="#/profile/{{row._id}}">View Data</A></td>
                         <td class="center" ng-if="!canAccess"><i class="fa fa-lock"></i></td>
+                        <td class="center">{{row.survey && row.survey.date ? (row.survey.date | date : 'fullDate') : 'Never'}}</td>
                     </tr>
                     </tbody>
                 </table>

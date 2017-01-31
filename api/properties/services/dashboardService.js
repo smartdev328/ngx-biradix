@@ -112,6 +112,11 @@ module.exports = {
                         canSurvey = true;
                     }
 
+                    //Guests cannot survey properties they do not manage
+                    if (canSurvey && !all.modify && user.roles[0] == 'Guest') {
+                        canSurvey = false;
+                    }
+
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
 
                     for (var s in all) {
