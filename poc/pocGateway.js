@@ -72,8 +72,15 @@ routes.get('/addorg', function(req, res) {
                             callbackp(null, role)
                         });
                     },
+                    Guest : function(callbackp) {
+                        AccessService.getRoles({tags: ['Guest'], cache: false}, function (err, roles) {
+
+                           callbackp(null,roles[0])
+                        })
+                    }
 
                 }, function (err, roles) {
+
 
                     var permissions = [
                         {executorid: roles.CM._id, resource: "Users", allow: true, type: 'Execute'},
@@ -91,15 +98,22 @@ routes.get('/addorg', function(req, res) {
                         {executorid: roles.CM._id, resource: "Properties", allow: true, type: 'Execute'},
                         {executorid: roles.RM._id, resource: "Properties", allow: true, type: 'Execute'},
                         {executorid: roles.BM._id, resource: "Properties", allow: true, type: 'Execute'},
+
                         {executorid: roles.CM._id, resource: roles.CM._id.toString(), allow: true, type: 'RoleAssign'},
                         {executorid: roles.CM._id, resource: roles.RM._id.toString(), allow: true, type: 'RoleAssign'},
                         {executorid: roles.CM._id, resource: roles.BM._id.toString(), allow: true, type: 'RoleAssign'},
                         {executorid: roles.CM._id, resource: roles.PO._id.toString(), allow: true, type: 'RoleAssign'},
+                        {executorid: roles.CM._id, resource: roles.Guest._id.toString(), allow: true, type: 'RoleAssign'},
+
                         {executorid: roles.RM._id, resource: roles.RM._id.toString(), allow: true, type: 'RoleAssign'},
                         {executorid: roles.RM._id, resource: roles.BM._id.toString(), allow: true, type: 'RoleAssign'},
                         {executorid: roles.RM._id, resource: roles.PO._id.toString(), allow: true, type: 'RoleAssign'},
+                        {executorid: roles.RM._id, resource: roles.Guest._id.toString(), allow: true, type: 'RoleAssign'},
+
                         {executorid: roles.BM._id, resource: roles.BM._id.toString(), allow: true, type: 'RoleAssign'},
                         {executorid: roles.BM._id, resource: roles.PO._id.toString(), allow: true, type: 'RoleAssign'},
+                        {executorid: roles.BM._id, resource: roles.Guest._id.toString(), allow: true, type: 'RoleAssign'},
+
                         {executorid: roles.PO._id, resource: roles.PO._id.toString(), allow: true, type: 'RoleAssign'},
                     ];
 
@@ -115,7 +129,6 @@ routes.get('/addorg', function(req, res) {
                             callbackp(err, perm)
                         });
                     }, function (err) {
-                        //Todo: update local cache with new ogs
                         res.status(200).send("OK");
                     });
 
