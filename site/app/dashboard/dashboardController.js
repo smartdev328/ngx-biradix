@@ -222,9 +222,10 @@ define([
                     }
 
                     if ($scope.selectedProperty) {
-                        $scope.loadProperty($scope.selectedProperty._id)
                         if($stateParams.id) {
                             $scope.changeProperty();
+                        } else {
+                            $scope.loadProperty($scope.selectedProperty._id)
                         }
                     } else {
                         $scope.localLoading = true;
