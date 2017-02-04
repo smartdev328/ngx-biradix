@@ -206,15 +206,21 @@ define([
                         var x = $window.sessionStorage.redirect;
                         $window.sessionStorage.removeItem('redirect');
 
-                        if (x.indexOf("?") == -1) {
-                            $location.path(x)
+
+                        //Make sure we dont redirect to /login
+                        if (x.indexOf('/login') == -1) {
+                            if (x.indexOf("?") == -1) {
+                                $location.path(x)
+                            } else {
+                                var a = x.split('?')
+                                $location.path(a[0]).search(a[1]);
+                            }
                         } else {
-                            var a = x.split('?')
-                            $location.path(a[0]).search(a[1]);
+                            $location.path("/dashboard");
                         }
 
                     } else {
-                        //$location.path("/dashboard");
+
                     }
 
 
