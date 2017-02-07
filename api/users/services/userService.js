@@ -168,8 +168,7 @@ module.exports = {
                     console.log('Guest:', criteria.isGuest);
 
                     if (criteria.isGuest === true) {
-                        _.remove(all.roles, function(x) {return x.tags[0] == 'Guest' })
-                        console.log(all.roles);
+                        _.remove(all.roles, function(x) {return x.tags[0] != 'Guest' })
                     }
 
                     var roleids = _.map(all.roles,function(x) {return x._id});
