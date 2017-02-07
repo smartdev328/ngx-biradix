@@ -618,7 +618,7 @@ var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callbac
                 var tS = (new Date()).getTime();
                 AccessService.searchPermissions({types:['PropertyManage'], resource : propertyid, direct: true},function(err, obj) {
                     var t = (new Date()).getTime();
-                    console.log('Get userAssigned in getPropertyAssignedUsers: ',(t-tS) / 100, "s");
+                    //console.log('Get userAssigned in getPropertyAssignedUsers: ',(t-tS) / 100, "s");
 
                     var userids;
 
@@ -637,7 +637,7 @@ var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callbac
                 UserService.search(operator, {active:true, roleTypes:roleTypes, orgid: props[0].orgid}, function(err, obj) {
 
                     var t = (new Date()).getTime();
-                    console.log('Get operatorAllowed in getPropertyAssignedUsers: ',(t-tS) / 100, "s");
+                    console.log('Get operatorAllowed in getPropertyAssignedUsers (' + operator.email + '): ',(t-tS) / 100, "s");
 
 
                     var userids;
