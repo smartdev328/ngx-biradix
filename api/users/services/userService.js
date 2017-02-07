@@ -75,7 +75,7 @@ module.exports = {
 
     },
     search: function(Operator,criteria, callback) {
-
+        var tStart = (new Date()).getTime();
         //if you pass in fields to select you are overwritting the default
         criteria.custom = criteria.select != undefined;
         async.parallel({
@@ -89,21 +89,33 @@ module.exports = {
                     }
                 },
                 roles: function (callbackp) {
+                    var tS = (new Date()).getTime();
                     AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache: false},function(err, roles) {
+                        var t = (new Date()).getTime();
+                        console.log('Get Roles is Done: ',(t-tS) / 100, "s");
+
                         callbackp(err, roles)
                     })
                 },
                 memberships: function (callbackp) {
+                    var tS = (new Date()).getTime();
                     AccessService.getAllMemberships(function(err, memberships) {
+                        var t = (new Date()).getTime();
+                        console.log('Get Memberships is Done: ',(t-tS) / 100, "s");
                         callbackp(err, memberships)
                     })
                 } ,
                 orgs: function(callbackp) {
+                    var tS = (new Date()).getTime();
                     OrgService.read(function (err, orgs) {
+                        var t = (new Date()).getTime();
+                        console.log('Get Orgs is Done: ',(t-tS) / 100, "s");
                         callbackp(null, orgs)
                     });
                 }
             }, function(err, all) {
+            var tAll = (new Date()).getTime();
+            console.log('All is Done: ',(tAll-tStart) / 100, "s");
 
 
             var query = UserSchema.find();

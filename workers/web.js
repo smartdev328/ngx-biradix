@@ -153,6 +153,15 @@ d.run(function() {
                     //         });
                     //     });
                     // });
+
+                    // var userService = require("../api/users/services/userService");
+                    // userService.getSystemUser(function (obj) {
+                    //     var SystemUser = obj.user;
+                    //
+                    //     userService.search(SystemUser, {}, function(err, users) {
+                    //         //console.log(users);
+                    //     })
+                    // });
                 }
 
 
