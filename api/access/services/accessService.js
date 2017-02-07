@@ -281,8 +281,14 @@
             })
         },
 
-        getAllMemberships: function(callback) {
-            MemberSchema.find().exec(function(err, obj) {
+        getAllMemberships: function(criteria, callback) {
+            var query = MemberSchema.find();
+
+            if (criteria.roleids) {
+                query = query.where("roleid").in(criteria.roleids);
+            }
+
+            query.exec(function(err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to get memberships: ' + err});
                     callback(modelErrors, null);

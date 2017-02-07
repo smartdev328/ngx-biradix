@@ -97,14 +97,6 @@ module.exports = {
                         callbackp(err, roles)
                     })
                 },
-                memberships: function (callbackp) {
-                    var tS = (new Date()).getTime();
-                    AccessService.getAllMemberships(function(err, memberships) {
-                        var t = (new Date()).getTime();
-                        console.log('Get Memberships is Done: ',(t-tS) / 100, "s");
-                        callbackp(err, memberships)
-                    })
-                } ,
                 orgs: function(callbackp) {
                     var tS = (new Date()).getTime();
                     OrgService.read(function (err, orgs) {
@@ -156,87 +148,122 @@ module.exports = {
 
             query = query.sort("-date");
 
+
             query.exec(function(err, users) {
 
                 if (users) {
                     users = JSON.parse(JSON.stringify(users));
-                    users.forEach(function(x) {
-                        if (!criteria.custom) {
-                            x.name = x.first + ' ' + x.last;
-                            delete x.first;
-                            delete x.last;
-                        }
+                    var tS = (new Date()).getTime();
 
-                        //Get ALl memberships for this user.
-                        var membership = _.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()})
+                    var roleids = _.map(all.roles,function(x) {return x._id});
 
-                        //if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
-                        //    console.log(membership);
-                        //    console.log(_.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()}));
-                        //}
+                    AccessService.getAllMemberships({roleids: roleids}, function(err, memberships) {
+                        all.memberships = memberships;
+                        var t = (new Date()).getTime();
+                        console.log('Get Memberships is Done: ',(t-tS) / 100, "s");
 
-                        if (membership && membership.length > 0) {
+                        users.forEach(function (x) {
+                            if (!criteria.custom) {
+                                x.name = x.first + ' ' + x.last;
+                                delete x.first;
+                                delete x.last;
+                            }
 
-                            //Get the first role that matches any memberships.
-                            var roles = _.filter(all.roles, function(r) {
-                                return _.find(membership, function(m) {return r._id.toString() == m.roleid.toString()});
-
+                            //Get ALl memberships for this user.
+                            var membership = _.filter(all.memberships, function (m) {
+                                return m.userid.toString() == x._id.toString()
                             })
 
-                            if (roles && roles.length  > 0) {
-                                //filter users by role types from criteria
-                                if (criteria.roleTypes && !_.find(roles, function(x) {return criteria.roleTypes.indexOf(x.tags[0]) > -1})) {
-                                    x.deleted = true;
-                                }
+                            //if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
+                            //    console.log(membership);
+                            //    console.log(_.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()}));
+                            //}
 
-                                //filter users by role orgid from criteria
-                                if (criteria.orgid && !_.find(roles, function(x) {return criteria.orgid.toString() == x.orgid.toString()})) {
-                                    x.deleted = true;
-                                }
+                            if (membership && membership.length > 0) {
 
-                                roles = JSON.parse(JSON.stringify(roles));
-                                roles.forEach(function(r) {
-                                    var org = _.find(all.orgs, function(o) {return o._id.toString() == r.orgid.toString() });
-                                    r.org = org;
+                                //Get the first role that matches any memberships.
+                                var roles = _.filter(all.roles, function (r) {
+                                    return _.find(membership, function (m) {
+                                        return r._id.toString() == m.roleid.toString()
+                                    });
+
                                 })
 
-                                // console.log(roles);
+                                if (roles && roles.length > 0) {
+                                    //filter users by role types from criteria
+                                    if (criteria.roleTypes && !_.find(roles, function (x) {
+                                            return criteria.roleTypes.indexOf(x.tags[0]) > -1
+                                        })) {
+                                        x.deleted = true;
+                                    }
 
-                                if (x.settings && x.settings.defaultRole) {
-                                    roles = _.sortBy(roles, function (n) {
-                                        if (n._id.toString() == x.settings.defaultRole.toString()) {
-                                            return "-1";
-                                        }
-                                        return n.org.name;
+                                    //filter users by role orgid from criteria
+                                    if (criteria.orgid && !_.find(roles, function (x) {
+                                            return criteria.orgid.toString() == x.orgid.toString()
+                                        })) {
+                                        x.deleted = true;
+                                    }
+
+                                    roles = JSON.parse(JSON.stringify(roles));
+                                    roles.forEach(function (r) {
+                                        var org = _.find(all.orgs, function (o) {
+                                            return o._id.toString() == r.orgid.toString()
+                                        });
+                                        r.org = org;
                                     })
+
+                                    // console.log(roles);
+
+                                    if (x.settings && x.settings.defaultRole) {
+                                        roles = _.sortBy(roles, function (n) {
+                                            if (n._id.toString() == x.settings.defaultRole.toString()) {
+                                                return "-1";
+                                            }
+                                            return n.org.name;
+                                        })
+                                    }
+
                                 }
+
 
                             }
 
+                            x.roles = roles;
 
+                            //For NOn-admins only return roles in their org
+                            if (!Operator.memberships.isadmin) {
+                                var allowedOrgs = _.map(Operator.orgs, function (o) {
+                                    return o._id.toString()
+                                });
+                                _.remove(x.roles, function (z) {
+                                    return z.tags[0] != 'Guest' && allowedOrgs.indexOf(z.orgid.toString()) == -1
+                                })
+                            }
+
+                        })
+
+                        _.remove(users, function (x) {
+                            return x.deleted
+                        })
+
+                        callback(err, users)
+
+                        for (var s in all) {
+                            all[s] = null;
+                            delete all[s];
                         }
+                        all = null;
+                    });
+                } else {
 
-                        x.roles = roles;
+                    callback(err, users)
 
-                        //For NOn-admins only return roles in their org
-                        if (!Operator.memberships.isadmin) {
-                            var allowedOrgs = _.map(Operator.orgs, function(o) {return o._id.toString()});
-                            _.remove(x.roles, function(z) {
-                                return z.tags[0] != 'Guest' && allowedOrgs.indexOf(z.orgid.toString()) == -1})
-                        }
-
-                    })
+                    for (var s in all) {
+                        all[s] = null;
+                        delete all[s];
+                    }
+                    all = null;
                 }
-
-                _.remove(users, function(x) {return x.deleted})
-
-                callback(err,users)
-
-                for (var s in all) {
-                    all[s] = null;
-                    delete all[s];
-                }
-                all = null;
             })
 
         });
