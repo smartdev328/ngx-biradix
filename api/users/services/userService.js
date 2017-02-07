@@ -86,7 +86,7 @@ module.exports = {
                         var tS = (new Date()).getTime();
                         AccessService.getPermissions(Operator, ['UserManage'], function(permissions) {
                             var t = (new Date()).getTime();
-                            console.log('Get UserManage Permissions is Done: ',(t-tS) / 100, "s");
+                            console.log('Get UserManage Permissions is Done: ',(t-tS) / 1000, "s");
 
                             callbackp(null, permissions)
                         });
@@ -96,7 +96,7 @@ module.exports = {
                     var tS = (new Date()).getTime();
                     AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache: false},function(err, roles) {
                         var t = (new Date()).getTime();
-                        console.log('Get Roles is Done: ',(t-tS) / 100, "s");
+                        console.log('Get Roles is Done: ',(t-tS) / 1000, "s");
 
                         callbackp(err, roles)
                     })
@@ -105,13 +105,13 @@ module.exports = {
                     var tS = (new Date()).getTime();
                     OrgService.read(function (err, orgs) {
                         var t = (new Date()).getTime();
-                        console.log('Get Orgs is Done: ',(t-tS) / 100, "s");
+                        console.log('Get Orgs is Done: ',(t-tS) / 1000, "s");
                         callbackp(null, orgs)
                     });
                 }
             }, function(err, all) {
             var tAll = (new Date()).getTime();
-            console.log('All is Done: ',(tAll-tStart) / 100, "s");
+            console.log('All is Done: ',(tAll-tStart) / 1000, "s");
 
 
             var query = UserSchema.find();
@@ -159,13 +159,23 @@ module.exports = {
                     users = JSON.parse(JSON.stringify(users));
                     var tS = (new Date()).getTime();
 
+
+                    // console.log(criteria);
+                    if (criteria.orgid) {
+                        _.remove(all.roles, function(x) {return x.orgid.toString() != criteria.orgid.toString() })
+                    }
+
+                    if (criteria.isGuest === true) {
+                        _.remove(all.roles, function(x) {return x.tags[0] == 'Guest' })
+                    }
+
                     var roleids = _.map(all.roles,function(x) {return x._id});
                     var userids = _.map(users,function(x) {return x._id});
 
                     AccessService.getAllMemberships({roleids: roleids, userids: userids}, function(err, memberships) {
                         all.memberships = memberships;
                         var t = (new Date()).getTime();
-                        console.log('Get Memberships is Done: ',(t-tS) / 100, "s");
+                        console.log('Get Memberships is Done: ',(t-tS) / 1000, "s");
 
                         users.forEach(function (x) {
                             if (!criteria.custom) {
@@ -228,6 +238,8 @@ module.exports = {
                                         })
                                     }
 
+                                } else {
+                                    x.deleted = true;
                                 }
 
 

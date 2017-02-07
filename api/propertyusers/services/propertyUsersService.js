@@ -611,7 +611,7 @@ var getUserAssignedProperties = function(operator, userid, callback) {
 var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callback) {
 
     //Get Orgid of property first
-    PropertyService.search(operator, {ids:[propertyid]}, function(err, props) {
+    PropertyService.search(operator, {ids:[propertyid], select: "_id name orgid"}, function(err, props) {
         async.parallel({
             //user assigned direct proprties
             userAssigned  : function(callbackp) {
@@ -634,10 +634,10 @@ var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callbac
             //all proeprties the operator can manage
             operatorAllowed : function(callbackp) {
                 var tS = (new Date()).getTime();
-                UserService.search(operator, {active:true, roleTypes:roleTypes, orgid: props[0].orgid}, function(err, obj) {
+                UserService.search(operator, {active:true, roleTypes:roleTypes, orgid: props[0].orgid, isGuest : (typeof props[0].orgid == 'undefined' )}, function(err, obj) {
 
                     var t = (new Date()).getTime();
-                    console.log('Get operatorAllowed in getPropertyAssignedUsers (' + operator.email + '): ',(t-tS) / 100, "s");
+                    console.log('Get operatorAllowed in getPropertyAssignedUsers (' + operator.email + '): ',(t-tS) / 1000, "s");
 
 
                     var userids;
