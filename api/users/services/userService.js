@@ -122,7 +122,7 @@ module.exports = {
             })
 
             t = (new Date()).getTime();
-            console.log('All is Done: ',(t-tStart) / 1000, "s");
+            console.log('User All is Done: ',(t-tStart) / 1000, "s");
 
 
             var query = UserSchema.find();

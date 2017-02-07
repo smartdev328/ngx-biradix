@@ -391,6 +391,10 @@ module.exports = {
                 })
         }
         }, function(err, all) {
+
+            t = (new Date()).getTime();
+            console.log('Property All is Done: ',(t-tStart) / 1000, "s");
+
             var query = PropertySchema.find();
             if (criteria._id) {
                 criteria.ids = criteria.ids || [];
@@ -470,8 +474,11 @@ module.exports = {
                 }
             }
 
-
+            tS = (new Date()).getTime();
             query.exec(function(err, props) {
+                t = (new Date()).getTime();
+                console.log('Property Exec: ',(t-tS) / 1000, "s");
+
                 var time = new Date();
                 if (props && props.length > 0) {
 
