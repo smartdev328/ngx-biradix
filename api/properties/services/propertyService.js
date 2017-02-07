@@ -358,6 +358,8 @@ module.exports = {
         })
     },
     search: function(Operator, criteria, callback) {
+        var tStart = (new Date()).getTime();
+        var t, tS;
         var ObjectId = require('mongoose').Types.ObjectId;
         criteria.permission = criteria.permission || ['PropertyView'];
 
@@ -384,19 +386,11 @@ module.exports = {
             },
 
             amenities: function(callbackp) {
-                var time = new Date();
                 AmenityService.search({active: true},function(err, amenities) {
-                    var time2 = new Date();
-                    //console.log("Amenities: " + (time2.getTime() - time.getTime()));
                     callbackp(err, amenities)
                 })
         }
         }, function(err, all) {
-
-            //if (criteria.permission[0]=='PropertyView') {
-            //    console.log(criteria, all.permissions, Operator.memberships, Operator._id)
-            //}
-
             var query = PropertySchema.find();
             if (criteria._id) {
                 criteria.ids = criteria.ids || [];
@@ -514,13 +508,19 @@ module.exports = {
                     if (criteria.select && criteria.select.indexOf('fees') > -1) {
                         lookups.fees = PropertyHelperService.fees;
                     }
+
+                    var company;
+                    var am;
+
+                    tS = (new Date()).getTime();
                     props.forEach(function(x) {
 
                         if (x.orgid) {
                             x.company = '';
-                            var company = _.find(all.orgs, function (o) {
+                            company = _.find(all.orgs, function (o) {
                                 return o._id.toString() == x.orgid.toString()
                             })
+
                             if (company) {
                                 x.company = company.name;
                             }
@@ -529,7 +529,7 @@ module.exports = {
 
                         if (x.community_amenities) {
                             x.community_amenities.forEach(function(x) {
-                                var am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
+                                am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
                                 if (am) {
                                     lookups.amenities.push({_id: am._id, name: am.name})
                                 }
@@ -538,7 +538,7 @@ module.exports = {
 
                         if (x.location_amenities) {
                             x.location_amenities.forEach(function(x) {
-                                var am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
+                                am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
                                 if (am) {
                                     lookups.amenities.push({_id: am._id, name: am.name})
                                 }
@@ -548,7 +548,7 @@ module.exports = {
                         if (x.floorplans) {
                             x.floorplans.forEach(function(fp) {
                                 fp.amenities.forEach(function(x) {
-                                    var am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
+                                    am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
                                     if (am) {
                                         if (!_.find(lookups.amenities, function(l) {return l._id.toString() == am._id.toString()})) {
                                             lookups.amenities.push({_id: am._id, name: am.name})
@@ -559,6 +559,9 @@ module.exports = {
                         }
 
                     })
+
+                    t = (new Date()).getTime();
+                    console.log('Property Loop is Done: ',(t-tS) / 1000, "s");
                 }
 
 
@@ -597,6 +600,10 @@ module.exports = {
                     })
 
                 } else {
+
+                    t = (new Date()).getTime();
+                    console.log('Property Search is Done: ',(t-tStart) / 1000, "s");
+
                     callback(err, props, lookups)
                 }
             })
