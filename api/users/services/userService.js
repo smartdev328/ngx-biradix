@@ -263,7 +263,7 @@ module.exports = {
                         })
 
                         var t = (new Date()).getTime();
-                        console.log('User Search Total: ',(t-tS) / 1000, "s");
+                        console.log('User Search Total: ',(t-tStart) / 1000, "s");
 
                         callback(err, users)
 
