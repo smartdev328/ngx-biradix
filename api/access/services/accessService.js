@@ -288,6 +288,10 @@
                 query = query.where("roleid").in(criteria.roleids);
             }
 
+            if (criteria.userids) {
+                query = query.where("userid").in(criteria.userids);
+            }
+
             query.exec(function(err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to get memberships: ' + err});

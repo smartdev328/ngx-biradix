@@ -83,7 +83,11 @@ module.exports = {
                     if (Operator.memberships.isadmin) {
                         callbackp(null,[]);
                     } else {
+                        var tS = (new Date()).getTime();
                         AccessService.getPermissions(Operator, ['UserManage'], function(permissions) {
+                            var t = (new Date()).getTime();
+                            console.log('Get UserManage Permissions is Done: ',(t-tS) / 100, "s");
+
                             callbackp(null, permissions)
                         });
                     }
@@ -156,8 +160,9 @@ module.exports = {
                     var tS = (new Date()).getTime();
 
                     var roleids = _.map(all.roles,function(x) {return x._id});
+                    var userids = _.map(users,function(x) {return x._id});
 
-                    AccessService.getAllMemberships({roleids: roleids}, function(err, memberships) {
+                    AccessService.getAllMemberships({roleids: roleids, userids: userids}, function(err, memberships) {
                         all.memberships = memberships;
                         var t = (new Date()).getTime();
                         console.log('Get Memberships is Done: ',(t-tS) / 100, "s");
