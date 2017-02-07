@@ -76,6 +76,7 @@ module.exports = {
     },
     search: function(Operator,criteria, callback) {
         var tStart = (new Date()).getTime();
+        var t, tS;
         //if you pass in fields to select you are overwritting the default
         criteria.custom = criteria.select != undefined;
         async.parallel({
@@ -83,29 +84,29 @@ module.exports = {
                     if (Operator.memberships.isadmin) {
                         callbackp(null,[]);
                     } else {
-                        var tS = (new Date()).getTime();
+                        tS = (new Date()).getTime();
                         AccessService.getPermissions(Operator, ['UserManage'], function(permissions) {
-                            var t = (new Date()).getTime();
-                            console.log('Get UserManage Permissions is Done: ',(t-tS) / 1000, "s");
+                            t = (new Date()).getTime();
+                            //console.log('Get UserManage Permissions is Done: ',(t-tS) / 1000, "s");
 
                             callbackp(null, permissions)
                         });
                     }
                 },
                 roles: function (callbackp) {
-                    var tS = (new Date()).getTime();
+                    tS = (new Date()).getTime();
                     AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache: false},function(err, roles) {
-                        var t = (new Date()).getTime();
-                        console.log('Get Roles is Done: ',(t-tS) / 1000, "s");
+                        t = (new Date()).getTime();
+                        //console.log('Get Roles is Done: ',(t-tS) / 1000, "s");
 
                         callbackp(err, roles)
                     })
                 },
                 orgs: function(callbackp) {
-                    var tS = (new Date()).getTime();
+                    tS = (new Date()).getTime();
                     OrgService.read(function (err, orgs) {
-                        var t = (new Date()).getTime();
-                        console.log('Get Orgs is Done: ',(t-tS) / 1000, "s");
+                        t = (new Date()).getTime();
+                        //console.log('Get Orgs is Done: ',(t-tS) / 1000, "s");
                         callbackp(null, orgs)
                     });
                 }
@@ -113,14 +114,15 @@ module.exports = {
 
             all.roles = JSON.parse(JSON.stringify(all.roles));
             all.roles.forEach(function (r) {
+                r.orgid = r.orgid.toString();
                 var org = _.find(all.orgs, function (o) {
-                    return o._id.toString() == r.orgid.toString()
+                    return o._id.toString() == r.orgid;
                 });
                 r.org = org;
             })
 
-            var tAll = (new Date()).getTime();
-            console.log('All is Done: ',(tAll-tStart) / 1000, "s");
+            t = (new Date()).getTime();
+            console.log('All is Done: ',(t-tStart) / 1000, "s");
 
 
             var query = UserSchema.find();
@@ -174,8 +176,6 @@ module.exports = {
                         _.remove(all.roles, function(x) {return x.orgid.toString() != criteria.orgid.toString() })
                     }
 
-                    console.log('Guest:', criteria.isGuest);
-
                     if (criteria.isGuest === true) {
                         _.remove(all.roles, function(x) {return x.tags[0] != 'Guest' })
                     }
@@ -185,14 +185,24 @@ module.exports = {
 
                     AccessService.getAllMemberships({roleids: roleids, userids: userids}, function(err, memberships) {
                         all.memberships = memberships;
+
+                        all.memberships = JSON.parse(JSON.stringify(all.memberships));
+                        all.memberships.forEach(function (m) {
+                            m.userid = m.userid.toString();
+                            m.roleid = m.roleid.toString();
+                        });
+
                         var allowedOrgs = _.map(Operator.orgs, function (o) {
                             return o._id.toString()
                         });
 
-                        var t = (new Date()).getTime();
+                        t = (new Date()).getTime();
                         console.log('Get Memberships is Done: ',(t-tS) / 1000, "s");
 
                         tS = (new Date()).getTime();
+
+                        var memberships, roles;
+
                         users.forEach(function (x) {
                             if (!criteria.custom) {
                                 x.name = x.first + ' ' + x.last;
@@ -201,19 +211,13 @@ module.exports = {
                             }
 
                             //Get ALl memberships for this user.
-                            var membership = _.filter(all.memberships, function (m) {
-                                return m.userid.toString() == x._id.toString()
-                            })
+                            memberships = _.filter(all.memberships, function (m) { return m.userid == x._id});
+                            memberships = _.map(memberships, function(m) {return m.roleid})
 
-                            if (membership && membership.length > 0) {
+                            if (memberships && memberships.length > 0) {
 
                                 //Get the first role that matches any memberships.
-                                var roles = _.filter(all.roles, function (r) {
-                                    return _.find(membership, function (m) {
-                                        return r._id.toString() == m.roleid.toString()
-                                    });
-
-                                })
+                                roles = _.filter(all.roles, function (r) { return memberships.indexOf(r._id) > -1})
 
                                 if (roles && roles.length > 0) {
                                     //filter users by role types from criteria
@@ -230,7 +234,7 @@ module.exports = {
                                         x.deleted = true;
                                     }
 
-                                    if (x.settings && x.settings.defaultRole) {
+                                    if (x.settings && x.settings.defaultRole && roles.length > 1) {
                                         roles = _.sortBy(roles, function (n) {
                                             if (n._id.toString() == x.settings.defaultRole.toString()) {
                                                 return "-1";
