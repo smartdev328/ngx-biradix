@@ -191,11 +191,6 @@ module.exports = {
                                 return m.userid.toString() == x._id.toString()
                             })
 
-                            //if (criteria._id &&criteria._id == "5642c28855d27c0e003bbaf2") {
-                            //    console.log(membership);
-                            //    console.log(_.filter(all.memberships, function(m) { return m.userid.toString() == x._id.toString()}));
-                            //}
-
                             if (membership && membership.length > 0) {
 
                                 //Get the first role that matches any memberships.
@@ -240,24 +235,26 @@ module.exports = {
                                         })
                                     }
 
+                                    x.roles = roles;
+
+                                    //For NOn-admins only return roles in their org
+                                    if (!Operator.memberships.isadmin) {
+                                        var allowedOrgs = _.map(Operator.orgs, function (o) {
+                                            return o._id.toString()
+                                        });
+                                        _.remove(x.roles, function (z) {
+                                            return z.tags[0] != 'Guest' && allowedOrgs.indexOf(z.orgid.toString()) == -1
+                                        })
+                                    }
+
                                 } else {
                                     x.deleted = true;
                                 }
-
-
+                            } else {
+                                x.deleted = true;
                             }
 
-                            x.roles = roles;
 
-                            //For NOn-admins only return roles in their org
-                            if (!Operator.memberships.isadmin) {
-                                var allowedOrgs = _.map(Operator.orgs, function (o) {
-                                    return o._id.toString()
-                                });
-                                _.remove(x.roles, function (z) {
-                                    return z.tags[0] != 'Guest' && allowedOrgs.indexOf(z.orgid.toString()) == -1
-                                })
-                            }
 
                         })
 
