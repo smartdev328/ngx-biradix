@@ -262,6 +262,9 @@ module.exports = {
                             return x.deleted
                         })
 
+                        var t = (new Date()).getTime();
+                        console.log('User Search Total: ',(t-tS) / 1000, "s");
+
                         callback(err, users)
 
                         for (var s in all) {
