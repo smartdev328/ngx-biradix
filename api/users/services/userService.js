@@ -179,6 +179,7 @@ module.exports = {
                         var t = (new Date()).getTime();
                         console.log('Get Memberships is Done: ',(t-tS) / 1000, "s");
 
+                        tS = (new Date()).getTime();
                         users.forEach(function (x) {
                             if (!criteria.custom) {
                                 x.name = x.first + ' ' + x.last;
@@ -262,7 +263,11 @@ module.exports = {
                             return x.deleted
                         })
 
-                        var t = (new Date()).getTime();
+                        t = (new Date()).getTime();
+                        console.log('User Loop Done: ',(t-tS) / 1000, "s");
+
+
+                        t = (new Date()).getTime();
                         console.log('User Search Total: ',(t-tStart) / 1000, "s");
 
                         callback(err, users)
