@@ -61,7 +61,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
             }, function(err) {
                 if (err) {
-                    error.send(err, {data: data, user: data.user});
+                    error.send(JSON.stringify(err), {data: data, user: data.user});
                     reply({done:true});
                     return
                 }

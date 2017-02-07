@@ -13,6 +13,10 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 var req = {user: data.user, params: {id: data.id}, body: options}
 
                 queueService.getDashboard(req, function (err, dashboard) {
+
+                    if (!dashboard || dashboard == null) {
+                        error.send("Null dashboard in notifications / current", {where: 'current', err: err, dashboard: dashboard, data: data, user: data.user});
+                    }
                     console.log(data.id + " history compare ended");
 
                     var report = [];
@@ -57,6 +61,11 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 var req = {user: data.user, params: {id: data.id}, body: options}
 
                 queueService.getDashboard(req, function (err, dashboard) {
+
+                    if (!dashboard || dashboard == null) {
+                        error.send("Null dashboard in notifications / lastweek", {where: 'lastweek', err: err, dashboard: dashboard, data: data, user: data.user});
+                    }
+
                     //console.log(data.id + " history compare ended");
 
                     var report = [];
@@ -108,26 +117,34 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
                 queueService.getDashboard(req, function (err, dashboard) {
                     //console.log(data.id + " history compare ended");
 
+                    if (!dashboard || dashboard == null) {
+                        error.send("Null dashboard in notifications / lastmonth", {where: 'lastmonth', err: err, dashboard: dashboard, data: data, user: data.user});
+                    }
+
                     var report = [];
 
-                    dashboard.comps.forEach(function (c) {
-                        report.push({
-                            name: c.name,
-                            _id: c._id,
-                            sqft: c.survey.sqft,
-                            ner: c.survey.ner,
-                            rent: c.survey.rent,
-                            nersqft: c.survey.nersqft,
-                            totUnits: c.survey.totUnits,
-                            date: c.survey.date,
-                            occupancy: c.survey.occupancy,
-                            leased: c.survey.leased,
-                            tier: c.survey.tier
-                        });
-                    })
+                    try {
+                        dashboard.comps.forEach(function (c) {
+                            report.push({
+                                name: c.name,
+                                _id: c._id,
+                                sqft: c.survey.sqft,
+                                ner: c.survey.ner,
+                                rent: c.survey.rent,
+                                nersqft: c.survey.nersqft,
+                                totUnits: c.survey.totUnits,
+                                date: c.survey.date,
+                                occupancy: c.survey.occupancy,
+                                leased: c.survey.leased,
+                                tier: c.survey.tier
+                            });
+                        })
 
-                    callbackp(null, report);
-                    report = null;
+                        callbackp(null, report);
+                        report = null;
+                    } catch (ex) {
+                        callbackp(ex);
+                    }
 
                 });
             }
