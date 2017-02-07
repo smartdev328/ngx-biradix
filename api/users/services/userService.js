@@ -110,6 +110,15 @@ module.exports = {
                     });
                 }
             }, function(err, all) {
+
+            all.roles = JSON.parse(JSON.stringify(all.roles));
+            all.roles.forEach(function (r) {
+                var org = _.find(all.orgs, function (o) {
+                    return o._id.toString() == r.orgid.toString()
+                });
+                r.org = org;
+            })
+
             var tAll = (new Date()).getTime();
             console.log('All is Done: ',(tAll-tStart) / 1000, "s");
 
@@ -176,6 +185,10 @@ module.exports = {
 
                     AccessService.getAllMemberships({roleids: roleids, userids: userids}, function(err, memberships) {
                         all.memberships = memberships;
+                        var allowedOrgs = _.map(Operator.orgs, function (o) {
+                            return o._id.toString()
+                        });
+
                         var t = (new Date()).getTime();
                         console.log('Get Memberships is Done: ',(t-tS) / 1000, "s");
 
@@ -217,16 +230,6 @@ module.exports = {
                                         x.deleted = true;
                                     }
 
-                                    roles = JSON.parse(JSON.stringify(roles));
-                                    roles.forEach(function (r) {
-                                        var org = _.find(all.orgs, function (o) {
-                                            return o._id.toString() == r.orgid.toString()
-                                        });
-                                        r.org = org;
-                                    })
-
-                                    // console.log(roles);
-
                                     if (x.settings && x.settings.defaultRole) {
                                         roles = _.sortBy(roles, function (n) {
                                             if (n._id.toString() == x.settings.defaultRole.toString()) {
@@ -238,11 +241,8 @@ module.exports = {
 
                                     x.roles = roles;
 
-                                    //For NOn-admins only return roles in their org
+                                    //For Non-admins only return roles in their org
                                     if (!Operator.memberships.isadmin) {
-                                        var allowedOrgs = _.map(Operator.orgs, function (o) {
-                                            return o._id.toString()
-                                        });
                                         _.remove(x.roles, function (z) {
                                             return z.tags[0] != 'Guest' && allowedOrgs.indexOf(z.orgid.toString()) == -1
                                         })
@@ -254,8 +254,6 @@ module.exports = {
                             } else {
                                 x.deleted = true;
                             }
-
-
 
                         })
 
