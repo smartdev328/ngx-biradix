@@ -6,10 +6,6 @@ define([
 ], function (app) {
 
     app.controller('dashboard2Controller', ['$scope','$rootScope','$location','$propertyService', '$authService','ngProgress','toastr','$stateParams', function ($scope,$rootScope,$location,$propertyService,$authService,ngProgress,toastr,$stateParams) {
-        if (!$rootScope.loggedIn) {
-            return $location.path('/login')
-        }
-
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";

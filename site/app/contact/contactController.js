@@ -8,10 +8,6 @@ define([
 
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
-            if (!$rootScope.loggedIn) {
-                $location.path('/login')
-            }
-
             $rootScope.sideMenu = true;
             $rootScope.sideNav = "ContactUs";
 

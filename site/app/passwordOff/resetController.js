@@ -8,10 +8,6 @@ define([
 
         window.document.title = "Forgot Password | BI:Radix";
 
-        if ($rootScope.loggedIn) {
-            $location.path('/dashboard')
-        }
-
         $scope.token = $stateParams.token;
 
         $authService.getEmailByRecoveryToken($scope.token).then(function (response) {

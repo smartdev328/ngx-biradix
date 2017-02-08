@@ -8,6 +8,7 @@ define(['app'], function (app) {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 if (response.token != null) {
                     $cookies.put('token',response.token)
+                    $cookies.put('tokenDate',new Date())
                     callback(response.user,200);
                 }
                 callback(null,200);
@@ -22,6 +23,7 @@ define(['app'], function (app) {
                 headers: {'Authorization': 'Bearer ' + token }}).success(function (response) {
                 if (response.token != null) {
                     $cookies.put('token',response.token)
+                    $cookies.put('tokenDate',new Date())
                     callback(response.user,200);
                 }
                 callback(null,200);
@@ -35,6 +37,7 @@ define(['app'], function (app) {
             return $http.post('/api/1.0/users/login'+ '?bust=' + (new Date()).getTime(), { email: email, password: password }).success(function (response) {
                 if (response.token != null) {
                     $cookies.put('token',response.token)
+                    $cookies.put('tokenDate',new Date())
                 }
                 return response;
             }).error(function (response) {

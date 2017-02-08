@@ -6,10 +6,6 @@ define([
 
     app.controller('passwordOffController', ['$scope','$rootScope','$location','toastr','$window', '$authService', function ($scope,$rootScope,$location,toastr,$window,$authService) {
 
-        if ($rootScope.loggedIn) {
-            $location.path('/dashboard')
-        }
-
         window.document.title = "Forgot Password | BI:Radix";
 
         $scope.btnSubmit = function() {

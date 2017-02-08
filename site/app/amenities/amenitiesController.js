@@ -10,10 +10,6 @@ define([
 ], function (app) {
 
     app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService','$propertyAmenityService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService,$propertyAmenityService) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login')
-        }
-
         window.setTimeout(function() {window.document.title = "Amenities | BI:Radix";},1500);
 
         $rootScope.nav = "";

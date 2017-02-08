@@ -6,10 +6,6 @@ define([
 ], function (app) {
 
     app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login')
-        }
-
         window.setTimeout(function() {window.document.title = "Activity History | BI:Radix";},1500)
 
         $rootScope.nav = "";

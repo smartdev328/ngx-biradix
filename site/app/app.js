@@ -14,7 +14,7 @@ function resolve($q, ctrl) {
     return deferred.promise;
 }
 
-function AsyncRoute (url, path, controller,view, outlet) {
+function AsyncRoute (url, path, controller,view, outlet, data) {
 
     var views = {};
     views[outlet] = {
@@ -29,6 +29,7 @@ function AsyncRoute (url, path, controller,view, outlet) {
     {
         url: url,
         views: views ,
+        data: data
     };
 
     if (controller) {
@@ -72,107 +73,29 @@ define([
             extendedTimeOut: 5000
         });
 
-        $urlRouterProvider.otherwise("/dashboard");
+        $urlRouterProvider.otherwise("/login");
 
         $stateProvider
-            .state('login', AsyncRoute("/login?r","login","loginController","login.html","loggedOutView"))
-            .state('contact', {
-                url: "/contact",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/contactOff/contact.html?bust=" + version,
-                        controller : "contactOffController"
-                    }
-                },
-                resolve: {get : function($q) {return resolve($q, 'contactOff/contactOffController')}}
-            })
-            .state('contact_thank_you', {
-                url: "/contact/thankyou",
-                views: {
-                    "loggedOutView": {
-                        templateUrl: "app/contactOff/thankyou.html?bust=" + version,
-                    }
-                }
-            })
-            .state('password', AsyncRoute("/password","passwordOff","passwordOffController","password.html","loggedOutView"))
-            .state('password_sent', AsyncRoute("/password/sent","passwordOff",null,"sent.html","loggedOutView"))
-            .state('password_invalid', AsyncRoute("/password/invalid","passwordOff",null,"invalid.html","loggedOutView"))
-            .state('password_reset', AsyncRoute("/password/reset/:token","passwordOff","resetController","reset.html","loggedOutView"))
+            .state('login', AsyncRoute("/login?r","login","loginController","login.html","loggedOutView",{}))
+            .state('contact', AsyncRoute("/contact","contactOff","contactOffController","contact.html","loggedOutView",{loggedIn: false}))
+            .state('contact_thank_you', AsyncRoute("/contact/thankyou","contactOff",null,"thankyou.html","loggedOutView",{loggedIn: false}))
+            .state('password', AsyncRoute("/password","passwordOff","passwordOffController","password.html","loggedOutView",{loggedIn: false}))
+            .state('password_sent', AsyncRoute("/password/sent","passwordOff",null,"sent.html","loggedOutView",{loggedIn: false}))
+            .state('password_invalid', AsyncRoute("/password/invalid","passwordOff","passwordOffController","invalid.html","loggedOutView",{loggedIn: false}))
+            .state('password_reset', AsyncRoute("/password/reset/:token","passwordOff","resetController","reset.html","loggedOutView",{loggedIn: false}))
 
-            .state('dashboard', AsyncRoute("/dashboard?id&s","dashboard","dashboardController","dashboard.html","loggedInView"))
-            .state('dashboard2', AsyncRoute("/dashboard2?id","dashboard2","dashboard2Controller","dashboard2.html","loggedInView"))
-            .state('manageUsers', AsyncRoute("/manageusers","manageUsers","manageUsersController","manageUsers.html","loggedInView"))
-
-            .state('properties', {
-                url: "/properties",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/properties/properties.html?bust=" + version ,
-                        controller : "propertiesController"
-                    }
-
-                },
-                resolve: {get : function($q) {return resolve($q, 'properties/propertiesController')}}
-            })
-
-            .state('history', AsyncRoute("/history?property","history","historyController","history.html","loggedInView"))
-
-            .state('preferences', {
-                url: "/preferences",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/preferences/preferences.html?bust=" + version ,
-                        controller : "preferencesController"
-                    }
-
-                },
-                resolve: {get : function($q) {return resolve($q, 'preferences/preferencesController')}}
-            })
-            .state('profile', {
-                url: "/profile/:id",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/profile/profile.html?bust=" + version,
-                        controller : "profileController"
-                    }
-                },
-                resolve: {get : function($q) {return resolve($q, 'profile/profileController')}}
-            })
-            .state('full', {
-                url: "/full/:id",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/full/full.html?bust=" + version,
-                        controller : "fullController"
-                    }
-                },
-                resolve: {get : function($q) {return resolve($q, 'full/fullController')}}
-            })
-            .state('reporting', {
-                url: "/reporting",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/reporting/reporting.html?bust=" + version ,
-                        controller : "reportingController"
-                    }
-
-                },
-                resolve: {get : function($q) {return resolve($q, 'reporting/reportingController')}}
-            })
-            .state('updateProfile', AsyncRoute("/updateProfile?password&notifications&settings","updateprofile","updateProfileController","updateProfile.html","loggedInView"))
-            .state('contactus', {
-                url: "/contactus",
-                views: {
-                    "loggedInView": {
-                        templateUrl: "app/contact/contact.html?bust=" + version ,
-                        controller : "contactController"
-                    }
-
-                },
-                resolve: {get : function($q) {return resolve($q, 'contact/contactController')}}
-            })
-            .state('uploadSurveys', AsyncRoute("/uploadSurveys","uploadSurveys","uploadSurveysController","uploadSurveys.html","loggedInView"))
-            .state('amenities', AsyncRoute("/amenities","amenities","amenitiesController","amenities.html","loggedInView"))
+            .state('dashboard', AsyncRoute("/dashboard?id&s","dashboard","dashboardController","dashboard.html","loggedInView",{loggedIn: true}))
+            .state('dashboard2', AsyncRoute("/dashboard2?id","dashboard2","dashboard2Controller","dashboard2.html","loggedInView",{loggedIn: true}))
+            .state('manageUsers', AsyncRoute("/manageusers","manageUsers","manageUsersController","manageUsers.html","loggedInView",{loggedIn: true}))
+            .state('properties', AsyncRoute("/properties","properties","propertiesController","properties.html","loggedInView",{loggedIn: true}))
+            .state('history', AsyncRoute("/history?property","history","historyController","history.html","loggedInView",{loggedIn: true}))
+            .state('profile', AsyncRoute("/profile/:id","profile","profileController","profile.html","loggedInView",{loggedIn: true}))
+            .state('full', AsyncRoute("/full/:id","full","fullController","full.html","loggedInView",{loggedIn: true}))
+            .state('updateProfile', AsyncRoute("/updateProfile?password&notifications&settings","updateprofile","updateProfileController","updateProfile.html","loggedInView",{loggedIn: true}))
+            .state('uploadSurveys', AsyncRoute("/uploadSurveys","uploadSurveys","uploadSurveysController","uploadSurveys.html","loggedInView",{loggedIn: true}))
+            .state('amenities', AsyncRoute("/amenities","amenities","amenitiesController","amenities.html","loggedInView",{loggedIn: true}))
+            .state('reporting', AsyncRoute("/reporting","reporting","reportingController","reporting.html","loggedInView",{loggedIn: true}))
+            .state('contactus', AsyncRoute("/contactus","contact","contactController","contact.html","loggedInView",{loggedIn: true}))
     });
 
     app.filter("sanitize2", ['$sanitize', function ($sanitize) {
@@ -194,6 +117,17 @@ define([
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 //Cancel all popups
                 $uibModalStack.dismissAll('cancel');
+
+                if (toState.data && toState.data.loggedIn === true && !$rootScope.loggedIn) {
+                    window.location.href = '/';
+                    return event.preventDefault();
+                }
+
+                if (toState.data && toState.data.loggedIn === false && $rootScope.loggedIn) {
+                    $rootScope.swaptoLoggedIn();
+                    return event.preventDefault();
+                }
+
 
                 ga('set', 'title', toState.name);
                 ga('set', 'page', toState.name);

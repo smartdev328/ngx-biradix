@@ -14,9 +14,6 @@ define([
 ], function (app) {
 
     app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login')
-        }
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 

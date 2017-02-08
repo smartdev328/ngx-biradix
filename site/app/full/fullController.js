@@ -13,9 +13,6 @@ define([
 ], function (app) {
 
     app.controller('fullController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', '$stateParams','$cookies', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$stateParams,$cookies) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login')
-        }
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         //window.renderable = true;

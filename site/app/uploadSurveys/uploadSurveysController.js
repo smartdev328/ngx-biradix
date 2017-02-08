@@ -5,10 +5,6 @@ define([
 ], function (app,async2) {
 
     app.controller('uploadSurveysController', ['$scope','$rootScope','$location','ngProgress','toastr','$propertyService', function ($scope,$rootScope,$location,ngProgress,toastr,$propertyService) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login')
-        }
-
         $scope.data = {};
 
         window.setTimeout(function() {window.document.title = "Admin | Upload Surveys | BI:Radix";},1500);

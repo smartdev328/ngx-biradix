@@ -6,11 +6,6 @@ define([
 ], function (app) {
      app.controller
         ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams,$propertyService) {
-            if (!$rootScope.loggedIn) {
-                $rootScope.logoff()
-                return;
-            }
-
             window.setTimeout(function() {window.document.title = "My Account - Update Profile | BI:Radix";},1500);
 
             $rootScope.nav = "";

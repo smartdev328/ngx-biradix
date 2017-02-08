@@ -47,6 +47,7 @@ define([
         }
 
         $rootScope.refreshToken = function(callback) {
+
             if ($rootScope.refresh) {
                 $authService.refreshToken($cookies.get('token'), function (usr, status) {
 
@@ -100,55 +101,68 @@ define([
 
         $rootScope.getMe = function(callback) {
 
-            try {
-                $authService.me($cookies.get('token'), function (usr, status) {
-                    if (usr) {
-                        $rootScope.me = usr;
-
-                        if ($scope.first) {
-                            $scope.alerts();
-                        }
-
-                        if ($scope.first && !$rootScope.me.passwordUpdated) {
-                            $scope.first = false;
-
-                            if (!phantom) {
-                                $timeout(function () {
-                                    $location.path("/updateProfile").search('password', '1');
-                                }, 2000)
-
-                            }
-                        }
-                        else if ($scope.first && $rootScope.me.bounceReason) {
-                            $scope.first = false;
-
-                            if (!phantom) {
-                                $timeout(function () {
-                                    $location.path("/updateProfile");
-                                }, 2000)
-                            }
-                        }
-
-                        if (callback) {
-                            callback();
-                        }
-                    }
-                    else if (status == 401) {
-                        if ($rootScope.loggedIn) {
-                            $window.sessionStorage.redirect = $location.path();
-                        }
-                        $rootScope.logoff()
-                    }
-                    else if (status == 0) {
-                        if (callback) {
-                            callback();
-                        }
-                    }
-                })
+            if (!$cookies.get('token')) {
+                return $rootScope.logoff();
             }
-            catch (ex) {
-                $rootScope.logoff()
+
+            var date = $cookies.get('tokenDate');
+
+            if (!date) {
+                date = new Date();
+            } else {
+                date = new Date(date);
             }
+
+            var tokenAgeInMinutes = (new Date().getTime() - date.getTime()) / 1000 / 60;
+
+            if (tokenAgeInMinutes > 65) {
+                return $rootScope.logoff();
+            }
+
+            $authService.me($cookies.get('token'), function (usr, status) {
+                if (usr) {
+                    $rootScope.me = usr;
+
+                    if ($scope.first) {
+                        $scope.alerts();
+                    }
+
+                    if ($scope.first && !$rootScope.me.passwordUpdated) {
+                        $scope.first = false;
+
+                        if (!phantom) {
+                            $timeout(function () {
+                                $location.path("/updateProfile").search('password', '1');
+                            }, 2000)
+
+                        }
+                    }
+                    else if ($scope.first && $rootScope.me.bounceReason) {
+                        $scope.first = false;
+
+                        if (!phantom) {
+                            $timeout(function () {
+                                $location.path("/updateProfile");
+                            }, 2000)
+                        }
+                    }
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+                else if (status == 401) {
+                    if ($rootScope.loggedIn) {
+                        $window.sessionStorage.redirect = $location.path();
+                    }
+                    $rootScope.logoff()
+                }
+                else if (status == 0) {
+                    if (callback) {
+                        callback();
+                    }
+                }
+            })
         }
 
         $rootScope.updateLogos = function() {
@@ -178,7 +192,7 @@ define([
             })
         }
 
-        $rootScope.swaptoLoggedIn = function() {
+        $rootScope.swaptoLoggedIn = function(redirect) {
             require([
                 'css!/css/navs',
                 'css!/css/grids'
@@ -220,9 +234,10 @@ define([
                         }
 
                     } else {
-
+                        if (redirect !== false) {
+                            $location.path("/dashboard");
+                        }
                     }
-
 
 
                 });
@@ -313,7 +328,7 @@ define([
             $rootScope.swaptoLoggedOut();
         }
         else {
-            $rootScope.swaptoLoggedIn();
+            $rootScope.swaptoLoggedIn(false);
         }
 
         //make sure in full screen right nav is always shown

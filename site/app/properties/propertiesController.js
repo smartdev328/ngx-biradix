@@ -7,10 +7,6 @@ define([
 ], function (app) {
 
     app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$uibModal','$authService','$dialog','toastr','$gridService', function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr,$gridService) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login')
-        }
-
         window.setTimeout(function() {window.document.title = "Manage Properties | BI:Radix";},1500);
 
         $rootScope.nav = "";

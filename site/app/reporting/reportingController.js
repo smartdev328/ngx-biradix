@@ -12,10 +12,6 @@ define([
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login')
-        }
-
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -41,60 +37,78 @@ define([
 
         $scope.propertyItems = [];
 
-        $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name comps.id comps.orderNumber orgid address"}).then(function (response) {
-            $scope.myProperties = response.data.properties;
-
-
-            var id = $rootScope.me.settings.defaultPropertyId;
-
-            if ($cookies.get("subjectId")) {
-                id = $cookies.get("subjectId");
+        var me = $rootScope.$watch("me", function(x) {
+            if ($rootScope.me) {
+                $scope.reload();
+                me();
             }
+        })
 
-            if ($cookies.get("propertyIds")) {
-                $scope.propertyIds = $cookies.get("propertyIds");
-            }
+        $scope.reload = function() {
+            $propertyService.search({
+                limit: 10000,
+                permission: 'PropertyManage',
+                active: true,
+                select: "_id name comps.id comps.orderNumber orgid address"
+            }).then(function (response) {
+                $scope.myProperties = response.data.properties;
 
-            $scope.myProperties.forEach(function (a) {
-                var sel = false;
 
-                if ($scope.propertyIds) {
-                    sel = $scope.propertyIds.indexOf(a._id) > -1
+                var id = $rootScope.me.settings.defaultPropertyId;
+
+                if ($cookies.get("subjectId")) {
+                    id = $cookies.get("subjectId");
                 }
 
-                $scope.propertyItems.push({id: a._id, name: a.name, selected: sel})
-            })
+                if ($cookies.get("propertyIds")) {
+                    $scope.propertyIds = $cookies.get("propertyIds");
+                }
 
-            if ($cookies.get("type")) {
-                $scope.reportType = $cookies.get("type");
-            }
-            
-            if (!$scope.myProperties || $scope.myProperties.length == 0) {
-                id = null;
-            }
-            else if (!id) {
-                $scope.selected.Property = $scope.myProperties[0];
-            } else {
-                $scope.selected.Property = _.find($scope.myProperties, function(x) {return x._id.toString() == id})
-            }
+                $scope.myProperties.forEach(function (a) {
+                    var sel = false;
 
-            if ($scope.selected.Property || $scope.reportType) {
-                $scope.loadComps()
-            } else {
-                window.setTimeout(function() {window.document.title = "Reporting | BI:Radix";},1500);
+                    if ($scope.propertyIds) {
+                        sel = $scope.propertyIds.indexOf(a._id) > -1
+                    }
+
+                    $scope.propertyItems.push({id: a._id, name: a.name, selected: sel})
+                })
+
+                if ($cookies.get("type")) {
+                    $scope.reportType = $cookies.get("type");
+                }
+
+                if (!$scope.myProperties || $scope.myProperties.length == 0) {
+                    id = null;
+                }
+                else if (!id) {
+                    $scope.selected.Property = $scope.myProperties[0];
+                } else {
+                    $scope.selected.Property = _.find($scope.myProperties, function (x) {
+                        return x._id.toString() == id
+                    })
+                }
+
+                if ($scope.selected.Property || $scope.reportType) {
+                    $scope.loadComps()
+                } else {
+                    window.setTimeout(function () {
+                        window.document.title = "Reporting | BI:Radix";
+                    }, 1500);
+                    $scope.localLoading = true;
+                }
+
+
+            }, function (error) {
+                window.renderable = true;
+                if (error.status == 401) {
+                    $rootScope.logoff();
+                    return;
+                }
+
                 $scope.localLoading = true;
-            }
-
-
-        }, function(error) {
-            window.renderable = true;
-            if (error.status == 401) {
-                $rootScope.logoff();
-                return;
-            }
-
-            $scope.localLoading = true;
-        })
+            })
+        }
 
         $scope.loadComps = function() {
 
