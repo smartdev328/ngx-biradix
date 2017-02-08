@@ -32,7 +32,7 @@ global_error = function(err,context) {
 }
 
 requirejs.onError = function (err) {
-    global_error(err,null);
+    global_error(err,{location: location.href});
 };
 
 require([
