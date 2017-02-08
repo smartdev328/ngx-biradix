@@ -156,8 +156,9 @@ define([
                     $scope.columns.push('leases');
                     $scope.columns.push('traffic');
 
+                    var resp;
                     response.data.profiles.forEach(function(p) {
-                        var resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.nerScale);
+                        resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.nerScale);
 
                         $scope.profiles.push({
                             lookups : resp.lookups,

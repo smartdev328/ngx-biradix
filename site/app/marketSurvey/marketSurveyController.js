@@ -127,8 +127,9 @@ define([
                                     var removeFloorplans = [];
 
                                     var bFloorplansChanged = false
+                                    var old;
                                     $scope.survey.floorplans.forEach(function (fp, i) {
-                                        var old = _.find(s.floorplans, function (ofp) {
+                                        old = _.find(s.floorplans, function (ofp) {
                                             return ofp.id.toString() == fp.id.toString()
                                         })
 
@@ -156,11 +157,11 @@ define([
                                     })
 
 
-                                    var removed = _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
+                                    // var removed = _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
 
-
+                                    var n;
                                     s.floorplans.forEach(function (fp) {
-                                        var n = _.find($scope.survey.floorplans, function (nfp) {
+                                        n = _.find($scope.survey.floorplans, function (nfp) {
                                             return nfp.id.toString() == fp.id.toString()
                                         })
 

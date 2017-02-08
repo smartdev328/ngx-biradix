@@ -260,18 +260,19 @@ define(['app'], function (app) {
                     lines.push({key: ks[0], name: c.name, prop: c._id})
                 })
             }
-
+            var s;
+            var data;
+            var v;
             lines.forEach(function(c) {
-                var s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
-
-                var data = [];
+                s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
+                data = [];
                 if (p[c.prop] && p[c.prop][c.key]) {
                     data = p[c.prop][c.key];
                 }
 
                 if (data) {
                     data.forEach(function (point) {
-                        var v = point.v;
+                        v = point.v;
                         v = Math.round(v * Math.pow(10, decinalPlaces)) / Math.pow(10, decinalPlaces)
                         if (s._max < v) {
                             s._max = v;
@@ -334,28 +335,31 @@ define(['app'], function (app) {
         var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases, showRenewal) {
             var table = [];
 
+            var tr, ls, surveyid, leased, renewal, n, row;
             occupancy.data[0].data.forEach(function(o) {
-                var tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
-                var ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
-                var surveyid = _.find(surveys, function(x,y) {return y == o[0]})
+                tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
+                ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
+                surveyid = _.find(surveys, function(x,y) {return y == o[0]})
 
-                var leased;
                 if (showLeases) {
                     leased = _.find(pts['leased'], function(x) {return x.d == o[0]})
+                } else {
+                    leased = null;
                 }
 
-                var renewal;
                 if (showRenewal) {
                     renewal = _.find(pts['renewal'], function(x) {return x.d == o[0]})
+                } else {
+                    renewal = null;
                 }
 
 
                 if (!tr.f) {
 
-                    var row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v, surveyid: surveyid}
+                    row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v, surveyid: surveyid}
 
                     nerColumns.forEach(function (k) {
-                        var n = _.find(pts[k], function (x) {
+                        n = _.find(pts[k], function (x) {
                             return x.d == o[0]
                         })
 
@@ -415,9 +419,10 @@ define(['app'], function (app) {
                 }
             }
 
+            var am;
             resp.property.location_am = [];
             resp.property.location_amenities.forEach(function (la) {
-                var am = _.find(resp.lookups.amenities, function (a) {
+                am = _.find(resp.lookups.amenities, function (a) {
                     return a._id.toString() == la.toString()
                 })
                 if (am) {
@@ -427,7 +432,7 @@ define(['app'], function (app) {
 
             resp.property.community_am = [];
             resp.property.community_amenities.forEach(function (la) {
-                var am = _.find(resp.lookups.amenities, function (a) {
+                am = _.find(resp.lookups.amenities, function (a) {
                     return a._id.toString() == la.toString()
                 })
                 if (am) {
@@ -438,7 +443,7 @@ define(['app'], function (app) {
             resp.property.floorplan_am = [];
             resp.property.floorplans.forEach(function (fp) {
                 fp.amenities.forEach(function (la) {
-                    var am = _.find(resp.lookups.amenities, function (a) {
+                    am = _.find(resp.lookups.amenities, function (a) {
                         return a._id.toString() == la.toString()
                     })
                     if (am) {

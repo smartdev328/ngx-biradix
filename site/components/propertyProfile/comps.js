@@ -37,6 +37,7 @@ define([
                         $scope.totals = {units : 0, totalUnits : 0};
                         $scope.totalSurveys = 0;
 
+                        var j,b;
                         $scope.comps.forEach(function(comp, i) {
                             comp.number = i;
                             comp.units = comp.totalUnits;
@@ -92,9 +93,9 @@ define([
 
                             })
 
-                            var j = 0;
+                            j = 0;
                             comp.bedrooms = [];
-                            for (var b in comp.survey.bedrooms) {
+                            for (b in comp.survey.bedrooms) {
                                 comp.survey.bedrooms[b].bedrooms = b;
                                 comp.survey.bedrooms[b].name = $scope.bedroomsLabel(b);
                                 comp.survey.bedrooms[b].number = j;

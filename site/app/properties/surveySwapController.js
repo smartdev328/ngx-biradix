@@ -34,12 +34,13 @@ define([
 
                                 $scope.users = response.data.users;
 
+                                var stats;
                                 $scope.users.forEach(function(u) {
                                     u.lastEmailed = null;
                                     u.lastCompleted = null;
 
                                     if (u.guestStats) {
-                                        var stats = _.find(u.guestStats, function(x) {return x.propertyid == property._id.toString()})
+                                        stats = _.find(u.guestStats, function(x) {return x.propertyid == property._id.toString()})
                                         if (stats) {
                                             u.lastEmailed = stats.lastEmailed;
                                             u.lastCompleted = stats.lastCompleted;

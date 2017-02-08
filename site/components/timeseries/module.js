@@ -73,8 +73,9 @@ define([
                                             return ((ay > by) ? -1 : ((ay < by) ? 1 : 0));
                                         });
 
+                                        var y;
                                         sortedPoints.forEach(function(p) {
-                                            var y = _.find(p.data,function(z) {return z.x == x});
+                                            y = _.find(p.data,function(z) {return z.x == x});
 
                                             if (y) {
                                                 y = y.y;

@@ -88,6 +88,7 @@ define([
                         var ownedProps = responseOwned.data.properties;
                         row.fullcomps = response.data.properties;
 
+                        var comp;
                         row.fullcomps.forEach(function (p) {
                             //For propert sorting
                             if (p.survey) {
@@ -114,7 +115,7 @@ define([
                                 p.canEdit = true;
                             }
 
-                            var comp = _.find(row.comps, function(x) {return x.id.toString() == p._id.toString()});
+                            comp = _.find(row.comps, function(x) {return x.id.toString() == p._id.toString()});
                             p.orderNumber = 999;
 
                             if (comp && typeof comp.orderNumber != 'undefined') {

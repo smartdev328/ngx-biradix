@@ -113,9 +113,10 @@ module.exports = {
             }, function(err, all) {
 
             all.roles = JSON.parse(JSON.stringify(all.roles));
+            var org;
             all.roles.forEach(function (r) {
                 r.orgid = r.orgid.toString();
-                var org = _.find(all.orgs, function (o) {
+                org = _.find(all.orgs, function (o) {
                     return o._id.toString() == r.orgid;
                 });
                 r.org = org;

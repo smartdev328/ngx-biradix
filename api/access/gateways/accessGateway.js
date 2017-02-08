@@ -29,9 +29,10 @@ routes.get("/roles", function(req, res) {
         //Get all Allowed Role resource ids
         // Join on actual role to get name
         // Join on orgid to get orgname
+        var role,org;
         all.allowedRoles.forEach(function(al) {
-            var role = _.find(all.allRoles, function(x) {return x._id.toString() == al.toString()});
-            var org = _.find(all.orgs, function(x) {return x._id.toString() == role.orgid.toString()});
+            role = _.find(all.allRoles, function(x) {return x._id.toString() == al.toString()});
+            org = _.find(all.orgs, function(x) {return x._id.toString() == role.orgid.toString()});
 
             role = JSON.parse(JSON.stringify(role));
             role.org = org.name;
