@@ -169,10 +169,11 @@ define([
                     var found;
                     var response = null;
                     var total = 0;
+                    var item;
 
                     for(var group in $scope.groups) {
                         for (var i = 0; i < $scope.groups[group].length; i++) {
-                            var item = $scope.groups[group][i];
+                            item = $scope.groups[group][i];
 
                             if (item.id == $scope.current.id ) {
                                 found = true;
@@ -217,10 +218,11 @@ define([
                     }
                     ar.reverse();
                     var total = 0;
+                    var item;
 
                     ar.forEach(function(group) {
                         for (var i = $scope.groups[group].length - 1; i >= 0; i--) {
-                            var item = $scope.groups[group][i];
+                            item = $scope.groups[group][i];
 
                             if (item.id == $scope.current.id ) {
                                 found = true;

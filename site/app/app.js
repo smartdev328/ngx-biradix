@@ -142,7 +142,7 @@ define([
 
     app.factory('$exceptionHandler', function () {
         return function errorCatcherHandler(exception, cause) {
-            global_error(exception,null);
+            global_error(exception,{location: location.href});
         };
     });
 

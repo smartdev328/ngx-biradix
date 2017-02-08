@@ -9,7 +9,9 @@ var settings = require('../config/settings')
 var jwt = require('jsonwebtoken');
 
 function sendError(req,res) {
-    error.send(req.body.error, {headers:req.headers, ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress, user: req.user});
+    var context = req.body.context || {}
+
+    error.send(req.body.error, {ui_context: context, headers:req.headers, ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress, user: req.user});
     return res.status(200).json({success:true});
 }
 
@@ -26,6 +28,7 @@ module.exports = (function() {
         return res.redirect('/#/login?r=%2FupdateProfile%3Fnotifications=1');
     })
     ui.post('/error', function (req, res) {
+
         if (!req.cookies.token) {
             return sendError(req,res);
         }

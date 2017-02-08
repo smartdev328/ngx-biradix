@@ -80,11 +80,12 @@ define([
                             $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group})
                         })
 
+                        var u,u2;
                         response.data.users.forEach(function (a) {
-                            var u = {id: a._id, name: a.name, selected: false};
+                            u = {id: a._id, name: a.name, selected: false};
                             if ($rootScope.me.permissions.indexOf('Admin') > -1) {
                                 a.roles.forEach(function (r) {
-                                    var u2 = _.cloneDeep(u);
+                                    u2 = _.cloneDeep(u);
                                     u2.group = r.org.name;
                                     $scope.userItems.push(u2);
                                 })
@@ -98,8 +99,9 @@ define([
                         $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || '') + x.name});
 
 
+                        var selected;
                         response.data.properties.forEach(function (a) {
-                            var selected = false;
+                            selected = false;
                             if ($stateParams.property && a._id.toString() == $stateParams.property) {
                                 selected = true;
                             }
