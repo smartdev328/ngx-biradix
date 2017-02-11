@@ -740,12 +740,38 @@ define([
                             error = 'concessionsMonthly';
                             $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
                         }
+
+                        if (isSuccess) {
+                            fp.ner = fp.rent - (fp.concessionsOneTime || 0) / 12 - (fp.concessionsMonthly || 0);
+
+                            if (fp.ner < 0) {
+                                isSuccess = false;
+                                error = 'concessions';
+                                $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
+                                $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
+                                $('#rent-' + fp.id).parent().addClass("has-error");
+                            }
+                        }
+
                     } else {
                         if (!$scope.isValid(fp.concessions,true,false)) {
                             isSuccess = false;
                             error = 'concessions';
                             $('#concessions-' + fp.id).parent().addClass("has-error");
                         }
+
+                        if (isSuccess) {
+                            fp.ner = fp.rent - (fp.concessions || 0) / 12;
+
+                            if (fp.ner < 0) {
+                                isSuccess = false;
+                                error = 'concessions';
+                                $('#concessions-' + fp.id).parent().addClass("has-error");
+                                $('#rent-' + fp.id).parent().addClass("has-error");
+                            }
+                        }
+
+
                     }
 
                 })
@@ -810,7 +836,7 @@ define([
                         ngProgress.complete();
                     })
                 } else {
-                    error = "Please update the highlighted required fields.<br><Br><b>- Blank or negative values are not valid.</b><br><b>- Rents/Concessions can not be decimal</b><Br><b>- Traffic or Leases can not be decimal</b><br><b>- Rents cannot be \"0\"</b>";
+                    error = "Please update the highlighted required fields.<br><Br><b>- Blank or negative values are not valid.</b><br><b>- Rents/Concessions can not be decimal</b><Br><b>- Traffic or Leases can not be decimal</b><br><b>- Rents cannot be \"0\"</b><br><b>- Net Effect Rent cannot be negative</b>";
                     toastr.error(error);
                 }
             }

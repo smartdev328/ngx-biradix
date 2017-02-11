@@ -47,7 +47,9 @@ define([
         }
 
         $rootScope.refreshToken = function(callback) {
-
+            if (!$rootScope.validateTokens()) {
+                return;
+            }
             if ($rootScope.refresh) {
                 $authService.refreshToken($cookies.get('token'), function (usr, status) {
 
@@ -99,10 +101,11 @@ define([
 
         $rootScope.notifications = [];
 
-        $rootScope.getMe = function(callback) {
-
+        $rootScope.validateTokens = function() {
             if (!$cookies.get('token')) {
-                return $rootScope.logoff();
+                $window.sessionStorage.redirect = $location.path();
+                $rootScope.logoff();
+                return false;
             }
 
             var date = $cookies.get('tokenDate');
@@ -116,7 +119,17 @@ define([
             var tokenAgeInMinutes = (new Date().getTime() - date.getTime()) / 1000 / 60;
 
             if (tokenAgeInMinutes > 65) {
-                return $rootScope.logoff();
+                $window.sessionStorage.redirect = $location.path();
+                $rootScope.logoff();
+                return false;
+            }
+
+            return true;
+        }
+        $rootScope.getMe = function(callback) {
+
+            if (!$rootScope.validateTokens()) {
+                return;
             }
 
             $authService.me($cookies.get('token'), function (usr, status) {
