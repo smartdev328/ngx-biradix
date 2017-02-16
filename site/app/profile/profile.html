@@ -132,7 +132,7 @@
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
                             <Tr>
                                 <td>
-                                    <toggle-switch checked="graphs"></toggle-switch>&nbsp;
+                                    <toggle-switch checked="settings.graphs"></toggle-switch>&nbsp;
                                 </td>
                                 <Td>
                                     &nbsp;Show Graphs
@@ -156,9 +156,9 @@
                             </Tr>
                             <Tr>
                                 <td style="text-align: center">
-                                    <select style="width:77px;font-weight: normal;font-size: 9pt;padding: 1px;" ng-model="nerScale">
-                                        <option value="ner" ng-selected="nerScale=='ner'">NER</option>
-                                        <option value="nersqft" ng-selected="nerScale=='nersqft'">NER/Sqft</option>
+                                    <select style="width:77px;font-weight: normal;font-size: 9pt;padding: 1px;" ng-model="settings.nerScale">
+                                        <option value="ner" ng-selected="settings.nerScale=='ner'">NER</option>
+                                        <option value="nersqft" ng-selected="settings.nerScale=='nersqft'">NER/Sqft</option>
                                     </select>&nbsp;
                                 </td>
                                 <Td>
@@ -188,12 +188,12 @@
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <div ng-if="graphs">
+                    <div ng-if="settings.graphs">
                         <time-series options="nerData"></time-series>
                         <hr style="margin:10px 0px 20px 0px !important;">
                     </div>
 
-                    <div ng-if="!graphs">
+                    <div ng-if="!settings.graphs">
                         <table-view data="otherTable" columns="nerKeys" survey="canSurvey" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
                         <hr style="margin:20px 0px 50px 0px !important;">
                     </div>
@@ -204,7 +204,7 @@
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <div class="row" style="margin-left:-25px" ng-if="graphs">
+                    <div class="row" style="margin-left:-25px" ng-if="settings.graphs">
                         <div class="col-xs-6">
                             <time-series options="occData"></time-series>
                         </div>
@@ -212,7 +212,7 @@
                             <time-series options="otherData"></time-series>
                         </div>
                     </div>
-                    <div ng-if="!graphs">
+                    <div ng-if="!settings.graphs">
                         <table-view data="otherTable" columns="columns" survey="canSurvey" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
                     </div>
                 </div>

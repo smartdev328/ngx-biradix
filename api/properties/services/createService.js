@@ -361,6 +361,11 @@ function errorCheck(property, modelErrors) {
         property.website = "http://" + property.website;
     }
 
+    if (property.website && property.website.indexOf('@') < property.website.indexOf('.')) {
+        modelErrors.push({param: 'website', msg : '@ is not valid at this part of your Website Address'});
+    }
+
+
     if (property.name == '') {
         modelErrors.push({param: 'name', msg : 'Please enter the Property Name'});
     }

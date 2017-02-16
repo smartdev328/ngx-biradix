@@ -140,22 +140,25 @@ define([
             $scope.refreshGraphs();
         }, true);
 
-        $scope.graphs = $cookieSettingsService.getGraphs();
+        $scope.settings = {
+            graphs: $cookieSettingsService.getGraphs(),
+            nerScale: $cookieSettingsService.getNerScale(),
+            totals: $cookieSettingsService.getTotals()
+        };
 
-        $scope.$watch('graphs', function() {
+        $scope.settings.graphs = $cookieSettingsService.getGraphs();
+
+        $scope.$watch('settings.graphs', function() {
             if (!$scope.localLoading) return;
-            $cookieSettingsService.saveGraphs($scope.graphs)
+
+            $cookieSettingsService.saveGraphs($scope.settings.graphs)
             $scope.refreshGraphs();
         }, true);
 
 
-        $scope.nerScale = $cookieSettingsService.getNerScale();
-
-        $scope.totals = $cookieSettingsService.getTotals();
-
-        $scope.$watch('nerScale', function(d) {
+        $scope.$watch('settings.nerScale', function(d) {
             if (!$scope.localLoading) return;
-            $cookieSettingsService.saveNerScale($scope.nerScale)
+            $cookieSettingsService.saveNerScale($scope.settings.nerScale)
             $scope.refreshGraphs();
         }, true);
 
@@ -182,10 +185,10 @@ define([
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.nerScale}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseProfile(response.data.profile,$scope.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.nerScale);
+                    var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale);
 
                     $scope.columns = ['occupancy'];
 
@@ -347,7 +350,7 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs, $scope.totals);
+            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.totals);
 
             $window.setTimeout($scope.checkProgress, 500);
 
@@ -356,7 +359,7 @@ define([
 
         $scope.print = function(full) {
 
-            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs, $scope.totals);
+            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.settings.graphs, $scope.settings.totals);
         }
 
     }]);
