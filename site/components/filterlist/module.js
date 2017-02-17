@@ -109,6 +109,10 @@ define([
                     if ($event.keyCode == 38) {
                         var prev = $scope.getPrevious($event,1);
 
+                        if (!prev) {
+                            return;
+                        }
+
                         if ($scope.shiftStarted) {
                             $scope.selectBetween($scope.shiftStarted, prev);
                         }
@@ -122,6 +126,11 @@ define([
                     //Page Up
                     if ($event.keyCode == 33) {
                         var prev = $scope.getPrevious($event,3);
+
+                        if (!prev) {
+                            return;
+                        }
+
                         if ($scope.shiftStarted) {
                             $scope.selectBetween($scope.shiftStarted, prev);
                         }
@@ -135,6 +144,10 @@ define([
                     //Down Arrow
                     if ($event.keyCode == 40) {
                         var next = $scope.getNext($event,1);
+
+                        if (!next) {
+                            return;
+                        }
 
                         if ($scope.shiftStarted) {
                             $scope.selectBetween($scope.shiftStarted, next);
@@ -151,6 +164,11 @@ define([
                     if ($event.keyCode == 34) {
                         $event.preventDefault();
                         var next = $scope.getNext($event,3);
+
+                        if (!next) {
+                            return;
+                        }
+
                         if ($scope.shiftStarted) {
                             $scope.selectBetween($scope.shiftStarted, next);
                         }
@@ -198,7 +216,7 @@ define([
                     }
                     var formElements = $($event.target).find("input");
 
-                    if (formElements.length >= total) {
+                    if (formElements.length >= total && total > 0) {
                         formElements[total-1].focus();
                     }
 
