@@ -119,6 +119,13 @@ define([
                 $uibModalStack.dismissAll('cancel');
 
                 if (toState.data && toState.data.loggedIn === true && !$rootScope.loggedIn) {
+                    var ar = location.href.split("#");
+                    if (ar.length == 2) {
+                        if (window && window.sessionStorage) {
+                            window.sessionStorage.redirect = ar[1];
+                        }
+                    }
+
                     window.location.href = '/';
                     return event.preventDefault();
                 }
