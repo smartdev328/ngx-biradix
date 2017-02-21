@@ -1,25 +1,14 @@
 'use strict';
 
 var OrganizationSchema= require('../schemas/organizationSchema')
-var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
     read: function(callback) {
-        var key = "orgs2";
-
-        var orgs =  localCacheService.get(key);
-
-        if (orgs) {
-            callback(null, orgs)
-        } else {
-            var query = OrganizationSchema.find({})
-            query = query.sort("name")
-            query.exec(function(err, orgs) {
-                localCacheService.set(key, orgs, 60)
-                callback(err,orgs);
-            });
-        }
-
+        var query = OrganizationSchema.find({})
+        query = query.sort("name")
+        query.exec(function(err, orgs) {
+            callback(err,orgs);
+        });
     },
     create : function(org, callback)  {
         var modelErrors = [];
