@@ -22,6 +22,8 @@ module.exports = {
             }
         }
 
-        raygunClient.send(new Error(msg),context);
+        if (msg) {
+            raygunClient.send(new Error(msg), context);
+        }
     }
 }
