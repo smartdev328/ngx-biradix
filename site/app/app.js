@@ -121,7 +121,7 @@ define([
                 if (toState.data && toState.data.loggedIn === true && !$rootScope.loggedIn) {
                     var ar = location.href.split("#");
                     if (ar.length == 2) {
-                        if (window && window.sessionStorage) {
+                        if ($rootScope.hasSessionStorage) {
                             window.sessionStorage.redirect = ar[1];
                         }
                     }

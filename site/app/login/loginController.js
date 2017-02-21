@@ -6,7 +6,14 @@ define([
 
     app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams) {
 
-        if ($stateParams.r) {
+        $scope.hasSessionStorage = true;
+        try {
+            window.sessionStorage;
+        } catch (ex) {
+            $scope.hasSessionStorage = false;
+        }
+
+        if ($scope.hasSessionStorage && $stateParams.r) {
             $window.sessionStorage.redirect = $stateParams.r;
         }
 

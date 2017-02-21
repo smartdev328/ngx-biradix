@@ -87,10 +87,24 @@ define([
             $userService.search().then(function (response) {
                 $scope.data = response.data.users;
 
+                $scope.roles = [];
+
+                var roles;
                 $scope.data.forEach(function(x) {
-                    x.role = _.uniq(_.map(x.roles, function(y) {return y.name})).join(", ")
+                    roles = _.uniq(_.map(x.roles, function(y) {return y.name}));
+                    x.role = roles.join(", ")
                     x.company = _.map(x.roles, function(y) {return y.org.name}).join(", ")
+
+                    $scope.roles = $scope.roles.concat(roles);
                 })
+
+                $scope.roles = _.sortBy(_.uniq($scope.roles));
+
+                $scope.roles.forEach(function(r,i) {
+                    $scope.roles[i] = {id: r, name: r, selected:  r != 'Guest'}
+                })
+                    $scope.updateRoleFilters();
+
                 $scope.localLoading = true;
             },
             function (error) {
@@ -100,6 +114,10 @@ define([
                 }
                 $scope.localLoading = true;
             });
+        }
+
+        $scope.updateRoleFilters = function() {
+            $scope.selectedRoles = _.map(_.filter($scope.roles, function(x) {return x.selected == true}), function(x) {return x.name})
         }
 
         $scope.loginAs = function(userid) {
@@ -129,6 +147,10 @@ define([
                 }
             })
             return ret;
+        };
+
+        $scope.roleFilter = function (obj) {
+            return $scope.selectedRoles.indexOf(obj.role) > -1;
         };
 
         $scope.toggleFilter = function (v) {

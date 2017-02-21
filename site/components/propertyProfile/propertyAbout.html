@@ -5,7 +5,7 @@
     <b>Email:</b> <a href="mailto:{{property.contactEmail}}">{{property.contactEmail}}</a>&nbsp;&nbsp;
 </span>
 <span ng-show="property.hasWebsite">
-    <b>Website:</b> <a href="{{property.website}}" target="_blank">{{property.website.replace("http://",'')}}</a>&nbsp;&nbsp;
+    <b>Website:</b> <a href="{{property.website}}" target="_blank">{{property.websiteLabel}}</a>&nbsp;&nbsp;
 </span>
 <div ng-show="property.hasContact"><br></div>
 <div ng-show="property.hasNotes" ng-bind-html="property.notes | sanitize"></div>

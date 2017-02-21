@@ -410,6 +410,10 @@ define(['app'], function (app) {
                 resp.property.survey.notes = (resp.property.survey.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
             }
 
+            if (resp.property.hasWebsite && resp.property.website.length > 40) {
+                resp.property.websiteLabel = resp.property.website.replace("http://",'').substring(0,40) + "...";
+            }
+
             resp.property.hasFees = false;
             if (resp.property.fees) {
                 for (var fee in resp.property.fees) {

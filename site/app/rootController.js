@@ -12,6 +12,13 @@ define([
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce','$amenityService', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce,$amenityService) {
 
+        $scope.hasSessionStorage = true;
+        try {
+            window.sessionStorage;
+        } catch (ex) {
+            $scope.hasSessionStorage = false;
+        }
+
         var refreshFactor = 1;
 
         $rootScope.version = version;
@@ -69,7 +76,7 @@ define([
                         }
                     }
                     else if (status == 401 ) {
-                        if ($rootScope.loggedIn) {
+                        if ($rootScope.loggedIn && $scope.hasSessionStorage) {
                             $window.sessionStorage.redirect = $location.path();
                         }
                         $rootScope.logoff()
@@ -103,7 +110,9 @@ define([
 
         $rootScope.validateTokens = function() {
             if (!$cookies.get('token')) {
-                $window.sessionStorage.redirect = $location.path();
+                if ($scope.hasSessionStorage) {
+                    $window.sessionStorage.redirect = $location.path();
+                }
                 $rootScope.logoff();
                 return false;
             }
@@ -119,7 +128,9 @@ define([
             var tokenAgeInMinutes = (new Date().getTime() - date.getTime()) / 1000 / 60;
 
             if (tokenAgeInMinutes > 65) {
-                $window.sessionStorage.redirect = $location.path();
+                if ($scope.hasSessionStorage) {
+                    $window.sessionStorage.redirect = $location.path();
+                }
                 $rootScope.logoff();
                 return false;
             }
@@ -165,7 +176,7 @@ define([
                     }
                 }
                 else if (status == 401) {
-                    if ($rootScope.loggedIn) {
+                    if ($rootScope.loggedIn && $scope.hasSessionStorage) {
                         $window.sessionStorage.redirect = $location.path();
                     }
                     $rootScope.logoff()
@@ -225,14 +236,13 @@ define([
                     $timeout($rootScope.incrementTimeout, 1000);
 
                     var ar = location.hash.split("login?r=");
-                    if (ar.length == 2) {
+                    if (ar.length == 2 && $scope.hasSessionStorage) {
                         $window.sessionStorage.redirect = decodeURIComponent(ar[1]);
                     }
 
-                    if ($window.sessionStorage.redirect) {
+                    if ($scope.hasSessionStorage && $window.sessionStorage.redirect) {
                         var x = $window.sessionStorage.redirect;
                         $window.sessionStorage.removeItem('redirect');
-
 
                         //Make sure we dont redirect to /login
                         if (x.indexOf('/login') == -1) {
