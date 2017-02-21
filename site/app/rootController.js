@@ -7,6 +7,7 @@ define([
     '../components/filterlist/module',
     '../components/timeseries/module',
     '../components/toggle/module',
+    '../../components/propertyProfile/profile',
     '../../services/amenityService',
 ], function (app) {
 

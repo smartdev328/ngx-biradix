@@ -42,6 +42,9 @@
             </div>
 
             <h3 style="margin-top:10px" ng-if="role.properties && role.properties.length > 0">Properties</h3>
+                <div class="row" ng-if="!role.properties || role.properties.length == 0" style="height:30px">
+
+                </div>
             <div class="row" ng-if="role.properties && role.properties.length > 0">
                 <div class="col-xs-12">
                     <filter-list options="role.propertyOptions" items="role.properties"></filter-list>

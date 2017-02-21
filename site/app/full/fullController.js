@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../components/propertyProfile/profile',
     '../../components/propertyProfile/comps',
     '../../components/propertyProfile/about',
     '../../components/propertyProfile/fees',

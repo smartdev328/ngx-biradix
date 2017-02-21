@@ -2,7 +2,6 @@
 define([
     'app',
     '../../components/jstimezonedetect/jstz.min',
-    '../../components/propertyProfile/profile',
     '../../components/propertyProfile/comps',
     '../../components/googleMap/module',
     '../../services/cookieSettingsService',

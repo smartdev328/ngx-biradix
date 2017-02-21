@@ -27,17 +27,27 @@
         <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
             <table>
                 <tr>
-                    <td style="padding-bottom:5px">
-                        <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:2px !important;font-size:11px;height:25px"
+                    <td style="width:50px">
+                        <select class="form-control input-sm" ng-model="limit" style="width:45px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
                                 ng-change="resetPager()"
                                 ng-options="item for item in limits">
                         </select>
                     </td>
-                    <Td style="padding-bottom:5px">
-                        &nbsp;Rows
+                    <Td>
+                        Rows
                     </Td>
                 </tr>
-                <tr style="border-top: 1px solid #ccc">
+                <tr>
+                    <Td colspan="100%">
+                        <hr style="margin: 10px 0px">
+                    </Td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <b>Status</b>
+                    </Td>
+                </tr>
+                <tr >
                     <td class="center">
                         <input type="checkbox" ng-model="showActive" ng-click="calcActive()" id="showActive">
                     </td>
@@ -46,7 +56,7 @@
                     </Td>
                 </tr>
 
-                <tr style="border-bottom: 1px solid #ccc">
+                <tr>
                     <td class="center">
                         <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
                     </td>
@@ -55,6 +65,16 @@
                     </Td>
                 </tr>
 
+                <tr>
+                    <Td colspan="100%">
+                        <hr style="margin: 10px 0px">
+                    </Td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <b>Roles</b>
+                    </Td>
+                </tr>
                 <tr ng-repeat="role in roles">
                     <td class="center">
                         <input type="checkbox" ng-model="role.selected" ng-checked="role.selected" ng-click="updateRoleFilters()">

@@ -2,7 +2,6 @@
 define([
     'app',
     '../../components/propertyProfile/about',
-    '../../components/propertyProfile/profile',
     '../../components/propertyProfile/fees',
     '../../components/propertyProfile/amenities',
     '../../components/propertyProfile/floorplans',
