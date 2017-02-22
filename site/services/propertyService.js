@@ -273,20 +273,23 @@ define(['app'], function (app) {
                 if (data) {
                     data.forEach(function (point) {
                         v = point.v;
-                        v = Math.round(v * Math.pow(10, decinalPlaces)) / Math.pow(10, decinalPlaces)
-                        if (s._max < v) {
-                            s._max = v;
+
+                        if (v != null) {
+                            v = Math.round(v * Math.pow(10, decinalPlaces)) / Math.pow(10, decinalPlaces)
+                            if (s._max < v) {
+                                s._max = v;
+                            }
+
+                            if (s._min > v) {
+                                s._min = v;
+                            }
+
+                            hasPoints = true;
+
+                            s._last = v;
+
+                            s.data.push([point.d, v])
                         }
-
-                        if (s._min > v) {
-                            s._min = v;
-                        }
-
-                        hasPoints = true;
-
-                        s._last = v;
-
-                        s.data.push([point.d, v])
                     });
 
                     s.data = _.sortBy(s.data, function(o) { return o[0]; });
