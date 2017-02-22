@@ -46,6 +46,7 @@ routes.get('/reminders', function (req, res) {
                             to: property.user.email,
                             bcc: '<cue@biradix.com>',
                             logo: property.logo,
+                            width: 700,
                             subject: "Property update reminder",
                             template: 'reminder.html',
                             templateData: {

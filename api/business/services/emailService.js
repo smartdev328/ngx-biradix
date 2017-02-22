@@ -17,6 +17,8 @@ var filters = {
 
 module.exports = {
     send: function (email, callback) {
+        email.width = email.width || 600;
+
         var newemail = {
             from: email.from || 'BIRadix Team <support@biradix.com>',
             to: email.to,
@@ -30,7 +32,7 @@ module.exports = {
                     throw (err)
                 }
                 else {
-                    LiquidService.parse(data, {message: html, logo: email.logo }, filters, function(result) {
+                    LiquidService.parse(data, {message: html, logo: email.logo, width:email.width }, filters, function(result) {
                         newemail.html = result;
                         EmailService.send(newemail,callback);
                     })

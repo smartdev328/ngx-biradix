@@ -112,6 +112,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                     var email = {
                         to: data.user.email,
                         //to: "eugene@biradix.com,alex@biradix.com",
+                        width: 1000,
                         logo: logo,
                         subject: "Property Status Update",
                         template: 'notification.html',
