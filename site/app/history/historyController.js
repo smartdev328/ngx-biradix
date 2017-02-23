@@ -86,7 +86,11 @@ define([
                             if ($rootScope.me.permissions.indexOf('Admin') > -1) {
                                 a.roles.forEach(function (r) {
                                     u2 = _.cloneDeep(u);
-                                    u2.group = r.org.name;
+                                    if (r.name == "Guest") {
+                                        u2.group = "Guests";
+                                    } else {
+                                        u2.group = r.org.name;
+                                    }
                                     $scope.userItems.push(u2);
                                 })
 
