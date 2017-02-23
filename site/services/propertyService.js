@@ -413,7 +413,7 @@ define(['app'], function (app) {
                 resp.property.survey.notes = (resp.property.survey.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
             }
 
-            if (resp.property.hasWebsite) {
+            if (resp.property.website) {
                 if (resp.property.website.length > 40) {
                     resp.property.websiteLabel = resp.property.website.replace("http://", '').substring(0, 40) + "...";
                 } else {
@@ -552,6 +552,14 @@ define(['app'], function (app) {
                     marker: 'apartment-3',
                     content: markerContent(resp.property)
                 }]
+            }
+
+            if (resp.property.website) {
+                if (resp.property.website.length > 40) {
+                    resp.property.websiteLabel = resp.property.website.replace("http://", '').substring(0, 40) + "...";
+                } else {
+                    resp.property.websiteLabel = resp.property.website.replace("http://", '')
+                }
             }
 
             // resp.comps = _.sortBy(resp.comps, function (n) {
