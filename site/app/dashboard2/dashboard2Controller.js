@@ -1,8 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../components/propertyProfile/profile',
-
 ], function (app) {
 
     app.controller('dashboard2Controller', ['$scope','$rootScope','$location','$propertyService', '$authService','ngProgress','toastr','$stateParams', function ($scope,$rootScope,$location,$propertyService,$authService,ngProgress,toastr,$stateParams) {
