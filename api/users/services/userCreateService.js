@@ -115,8 +115,10 @@ module.exports = {
                 //If non-admin only get roleids for their org so they do not remove orgs they dont have access to
                 var currentroleids = _.filter(all.memberships, function(m) {
                     return m.userid.toString() == user._id.toString() &&
-                    _.find(all.roles, function(r) { return r._id.toString() == m.roleid.toString() && (operator.memberships.isadmin === true || operator.orgs[0]._id.toString() == r.orgid.toString())})
+                    _.find(all.roles, function(r) { return r._id.toString() == m.roleid.toString() && (r.tags[0] == 'Guest' || operator.memberships.isadmin === true || operator.orgs[0]._id.toString() == r.orgid.toString())})
                 });
+
+
                 currentroleids = _.map(currentroleids,function(x) {return x.roleid.toString()});
 
                 //Find roles that were removed and roles that were added
@@ -129,12 +131,12 @@ module.exports = {
                 var permissions = [];
                 var removePermissions = [];
 
-                // console.log(currentroleids,user.roleids, aAdded, aRemoved,changes);
+
+                // console.log(currentroleids, aAdded, aRemoved);
                 //
                 // modelErrors.push({msg: 'Test.'});
                 // callback(modelErrors, null);
                 // return;
-
 
                 if (bRoleChanged) {
                     var userRoles = updateNewRole(aAdded, all, permissions);

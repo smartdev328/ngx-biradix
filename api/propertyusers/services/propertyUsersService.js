@@ -384,11 +384,7 @@ var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, pr
                 AccessService.getRoles({tags: [propertyid.toString()]}, callbackp);
             },
             properties: function (callbackp) {
-                var permission = 'PropertyManage';
-
-                if (user.roles[0].tags[0] == 'Guest') {
-                    permission = 'CompManage';
-                }
+                var permission = ['PropertyManage','CompManage'];
 
                 PropertyService.search(operator, {select:"_id name comps.id", ids:[propertyid.toString()], permission: permission}, function(err,props,lookups) {
                     callbackp(err,props)
