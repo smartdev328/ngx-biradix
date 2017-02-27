@@ -13,6 +13,7 @@ var AccessService = require('../../access/services/accessService')
 var AmenityService = require('../../amenities/services/amenityService')
 var OrganizationService = require('../../organizations/services/organizationService')
 var EmailService = require('../../business/services/emailService')
+var PropertyUsersService = require('../../propertyusers/services/propertyUsersService')
 
 module.exports = {
     update: function(operator, context,revertedFromId, property, options, callback) {
@@ -119,15 +120,27 @@ module.exports = {
                             return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                         }
 
-                        //find all subjects and their comp links to this comp and update with new floorplans asynchornously
-                        //If there are no new floorplans, do it anyway just to fix any changes.
+                        async.parallel( {
+                            removeGuests: function(callbackp) {
+                                if (reLinkComps) {
+                                    //If we updated owner of property, remove all guests
+                                    PropertyUsersService.removeAllGuests(operator,context,property._id, function() {
+                                        callbackp();
+                                    });
+                                } else {
+                                    callbackp();
+                                }
+                            }
+                        }, function(err) {
+                            //find all subjects and their comp links to this comp and update with new floorplans asynchornously
+                            //If there are no new floorplans, do it anyway just to fix any changes.
 
-                        //If we are adding floorplans, do not insert an audit history item to all the comps saying comped floorplans added
-                        if (property.addedFloorplans.length > 0) {
-                            options.skipCompLinkAudit = true;
-                        }
+                            //If we are adding floorplans, do not insert an audit history item to all the comps saying comped floorplans added
+                            if (property.addedFloorplans.length > 0) {
+                                options.skipCompLinkAudit = true;
+                            }
 
-                        //if (property.addedFloorplans.length > 0) {
+                            //if (property.addedFloorplans.length > 0) {
                             property.floorplans = property.floorplans.map(function(x) {return x.id.toString()})
                             CompsService.getSubjects(prop._id, {select: "_id name comps"}, function (err, subjects) {
                                 async.eachLimit(subjects, 10, function(subject, callbackp){
@@ -152,80 +165,83 @@ module.exports = {
 
                                 });
                             });
-                        //}
+                            //}
 
-                        //Add  all permissions  asynchornously
-                        async.eachLimit(permissions, 10, function(permission, callbackp){
-                            AccessService.createPermission(permission, function (err, perm) {
-                                callbackp(err, perm)
-                            });
-                        }, function(err) {
-
-                        });
-
-                        //Remove  all permissions  asynchornously
-                        async.eachLimit(removePermissions, 10, function(permission, callbackp){
-                            AccessService.deletePermission(permission, function (err, perm) {
-                                callbackp(err, perm)
-                            });
-                        }, function(err) {
-
-                        });
-
-                        if (profileChanges.length > 0) {
-                            AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_profile_updated', description: prop.name + ": " + profileChanges.length  + " update(s)", context: context, data: profileChanges})
-                        }
-
-                        if (contactChanges.length > 0) {
-                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
-                        }
-
-                        if (feesChanges.length > 0) {
-                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
-                        }
-
-                        if (amenitiesChanges.length > 0) {
-                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
-                        }
-
-                        floorplansAddedChanges.forEach(function(change) {
-                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_created', description: prop.name + ": " + change.description, context: context, data: [change]})
-                        })
-
-                        floorplansRemovedChanges.forEach(function(change) {
-                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
-                        })
-
-                        floorplansUpdatedChanges.forEach(function(change) {
-                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_updated', description: prop.name + ": " + change.description, context: context, data: [change]})
-                        })
-
-                        floorplansAmenitiesUpdatedChanges.forEach(function(change) {
-                            AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
-                        })
-
-                        if (reLinkComps && comps.length > 0) {
-                            //Unlink all comps async
-                            async.eachLimit(comps, 10, function (compid, callbackp) {
-                                PropertyService.unlinkComp(operator,context,null,property._id,compid,function(err, obj) {
-                                    callbackp(err);
+                            //Add  all permissions  asynchornously
+                            async.eachLimit(permissions, 10, function(permission, callbackp){
+                                AccessService.createPermission(permission, function (err, perm) {
+                                    callbackp(err, perm)
                                 });
-                            }, function (err) {
-                                //Don't relink comps on org change per Eugene's request: NP-298
-                                ////ReLink them
-                                //async.eachLimit(comps, 10, function (compid, callbackp) {
-                                //    CompsService.linkComp(operator,context,null,true,property._id,compid,function(err, obj) {
-                                //        callbackp(err);
-                                //    });
-                                //}, function (err) {
-                                //
-                                //
-                                //});
+                            }, function(err) {
+
                             });
-                        }
 
+                            //Remove  all permissions  asynchornously
+                            async.eachLimit(removePermissions, 10, function(permission, callbackp){
+                                AccessService.deletePermission(permission, function (err, perm) {
+                                    callbackp(err, perm)
+                                });
+                            }, function(err) {
 
-                        callback(null, n);
+                            });
+
+                            if (profileChanges.length > 0) {
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_profile_updated', description: prop.name + ": " + profileChanges.length  + " update(s)", context: context, data: profileChanges})
+                            }
+
+                            if (contactChanges.length > 0) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
+                            }
+
+                            if (feesChanges.length > 0) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
+                            }
+
+                            if (amenitiesChanges.length > 0) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
+                            }
+
+                            floorplansAddedChanges.forEach(function(change) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_created', description: prop.name + ": " + change.description, context: context, data: [change]})
+                            })
+
+                            floorplansRemovedChanges.forEach(function(change) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
+                            })
+
+                            floorplansUpdatedChanges.forEach(function(change) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_updated', description: prop.name + ": " + change.description, context: context, data: [change]})
+                            })
+
+                            floorplansAmenitiesUpdatedChanges.forEach(function(change) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
+                            })
+
+                            if (reLinkComps && comps.length > 0) {
+                                //Unlink all comps async
+                                async.eachLimit(comps, 10, function (compid, callbackp) {
+                                    PropertyService.unlinkComp(operator,context,null,property._id,compid,function(err, obj) {
+                                        callbackp(err);
+                                    });
+                                }, function (err) {
+                                    //Don't relink comps on org change per Eugene's request: NP-298
+                                    ////ReLink them
+                                    //async.eachLimit(comps, 10, function (compid, callbackp) {
+                                    //    CompsService.linkComp(operator,context,null,true,property._id,compid,function(err, obj) {
+                                    //        callbackp(err);
+                                    //    });
+                                    //}, function (err) {
+                                    //
+                                    //
+                                    //});
+                                });
+
+                                //If we updated owner of property, remove all guests
+
+                            }
+
+                            callback(null, n);
+                        })
 
 
                     });

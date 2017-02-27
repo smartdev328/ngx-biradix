@@ -9,6 +9,16 @@ var moment = require("moment-timezone");
 var CompService = require('../../properties/services/compsService')
 
 module.exports = {
+    removeAllGuests : function(operator,context, propertyid, callback) {
+        getPropertyAssignedUsers(operator, propertyid, ['Guest'], function (err, userids) {
+            async.eachLimit(userids, 10, function(userid, callbackp){
+                unLinkPropertyFromUser(operator,context,null,userid, propertyid, callbackp)
+            }, function(err) {
+                callback();
+            });
+        }, true)
+    },
+
     getPropertiesForReminders: function(operator, callback) {
         PropertyService.getPropertiesForReminders(function(properties) {
 
@@ -309,10 +319,10 @@ var uppdateGuestPermissions = function(guestid, callback) {
         //Get all comps the guest belongs to
        getUserAssignedProperties(SystemUser,guestid,function(err,properties) {
 
-           console.log(guestid);
+           // console.log(guestid);
            //Delete All User Manage Roles for resource guestid
            AccessService.deletePermission({resource: guestid, type: 'UserManage'}, function(err) {
-               console.log(err);
+               //console.log(err);
                //Remove All View Permissions from guest
                AccessService.deletePermissionsByExecutorAndType({
                    executorid: guestid,
@@ -456,7 +466,7 @@ var unLinkPropertyFromUser = function(operator,context,revertedFromId,userid, pr
                     });
                 },
             ], function(err,done) {
-                console.log(done);
+                //console.log(done);
 
                 AuditService.create({
                     operator: operator,
@@ -604,7 +614,7 @@ var getUserAssignedProperties = function(operator, userid, callback) {
 
 }
 
-var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callback) {
+var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callback, isGuest) {
 
     //Get Orgid of property first
     PropertyService.search(operator, {ids:[propertyid], select: "_id name orgid"}, function(err, props) {
@@ -630,10 +640,17 @@ var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callbac
             //all proeprties the operator can manage
             operatorAllowed : function(callbackp) {
                 var tS = (new Date()).getTime();
-                UserService.search(operator, {active:true, roleTypes:roleTypes, orgid: props[0].orgid, isGuest : (typeof props[0].orgid == 'undefined' )}, function(err, obj) {
+
+                var criteria = {active:true, roleTypes:roleTypes, orgid: props[0].orgid, isGuest : (typeof props[0].orgid == 'undefined' )};
+
+                if (isGuest) {
+                    criteria = {roleTypes:['Guest']};
+                }
+
+                UserService.search(operator, criteria, function(err, obj) {
 
                     var t = (new Date()).getTime();
-                    console.log('Get operatorAllowed in getPropertyAssignedUsers (' + operator.email + '): ',(t-tS) / 1000, "s");
+                    //console.log('Get operatorAllowed in getPropertyAssignedUsers (' + operator.email + '): ',(t-tS) / 1000, "s");
 
 
                     var userids;
@@ -647,6 +664,8 @@ var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callbac
                 })
             }
         },function(err, all) {
+
+            console.log(all);
 
             if (err) {
                 return callback([{msg:"Unable to retrieve users."}], null)
