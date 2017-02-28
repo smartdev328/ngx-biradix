@@ -52,8 +52,9 @@ define([
                         return;
                     }
 
-                    var started = false
-                    for(var group in $scope.groups) {
+                    var started = false;
+                    var group;
+                    for(group in $scope.groups) {
                         $scope.groups[group].forEach(function (item) {
                             if (item.id == item1.id || item.id == item2.id) {
                                 started = !started;
@@ -77,7 +78,8 @@ define([
                     if ($event.keyCode == 65 && $event.ctrlKey === true) {
                         $event.preventDefault();
                         $scope.resetChecked();
-                        for(var group in $scope.groups) {
+                        var group;
+                        for(group in $scope.groups) {
                             $scope.groups[group].forEach(function (item) {
                                 item.checked = true;
                             })
@@ -89,8 +91,9 @@ define([
                 $scope.keydown = function($event) {
                     //Shift
 
+                    var group;
                     if ($event.keyCode == 16 && !$scope.shiftStarted) {
-                        for(var group in $scope.groups) {
+                        for(group in $scope.groups) {
                             $scope.groups[group].forEach(function (item) {
                                 if (item.checked) {
                                     $scope.shiftStarted = item;
@@ -188,12 +191,14 @@ define([
                     var response = null;
                     var total = 0;
                     var item;
+                    var group;
+                    var i;
 
-                    for(var group in $scope.groups) {
-                        for (var i = 0; i < $scope.groups[group].length; i++) {
+                    for(group in $scope.groups) {
+                        for (i = 0; i < $scope.groups[group].length; i++) {
                             item = $scope.groups[group][i];
 
-                            if (item.id == $scope.current.id ) {
+                            if (item && $scope.current && item.id == $scope.current.id ) {
                                 found = true;
                             }
 
@@ -237,12 +242,13 @@ define([
                     ar.reverse();
                     var total = 0;
                     var item;
+                    var i;
 
                     ar.forEach(function(group) {
-                        for (var i = $scope.groups[group].length - 1; i >= 0; i--) {
+                        for (i = $scope.groups[group].length - 1; i >= 0; i--) {
                             item = $scope.groups[group][i];
 
-                            if (item.id == $scope.current.id ) {
+                            if (item && $scope.current && item.id == $scope.current.id ) {
                                 found = true;
                             }
 
@@ -267,7 +273,9 @@ define([
                     }
                     var formElements = $($event.target).find("input");
 
-                    formElements[formElements.length - total].focus();
+                    if (formElements.length > 0 && total > 0) {
+                        formElements[formElements.length - total].focus();
+                    }
 
 
                     return response;
