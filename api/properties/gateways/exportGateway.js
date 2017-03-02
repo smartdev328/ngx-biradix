@@ -7,6 +7,7 @@ var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
 var AuditService = require('../../audit/services/auditService')
+var organizationService = require('../../organizations/services/organizationService')
 var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 var queues = require('../../../config/queues')
@@ -17,6 +18,79 @@ var error = require('../../../config/error')
 
 module.exports = {
     init: function(Routes) {
+        Routes.get('/alliance', function(req, res) {
+            res.setHeader('Content-disposition', 'attachment; filename=alliance.csv');
+            res.setHeader('Content-type', 'text/csv');
+            res.write("Property,Subject/Comp,CompFor,UnitType,Date,Units,Units %,Sqft,Market Rent,Concess. / 12mo,Net Eff. Rent,NER/Sqft,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built,Total Units\r\n")
+
+            organizationService.read(function(err, orgs) {
+                var allianceid = _.find(orgs, function(x) {return x.subdomain == 'alliance'})._id;
+
+                PropertyService.search(req.user, {limit: 10000, permission: 'PropertyManage', orgid: allianceid, active: true, select: "_id name survey zip active date totalUnits yearBuild address city state zip"}, function(err, props) {
+                    async.eachLimit(props, 1, function(prop, callbackp){
+
+                        queueService.getDashboard({
+                            user: req.user,
+                            params: {id: prop._id},
+                            body: {
+                                show: {
+
+                                },
+
+                                daterange: {
+
+                                }
+                            }
+                        }, function(err,dashboard) {
+                            var b, t;
+                            if (prop.totalUnits && prop.totalUnits > 0 && dashboard.comps.length > 1) {
+                                dashboard.comps.forEach(function(c, i) {
+                                    for (b in c.survey.bedrooms) {
+                                        t = c.survey.bedrooms[b];
+                                        res.write(CSVEncode(c.name));
+                                        res.write(',' + (i == 0 ? 'Subject' : 'Comp'));
+                                        res.write(',' + CSVEncode(prop.name))
+                                        res.write(',' + (b == 0 ? 'Studio' : b + ' Bdrs'))
+                                        res.write("," + moment(c.survey.date).utcOffset(-480).format("MM/DD/YYYY"));
+                                        res.write("," + t.totUnits);
+                                        res.write("," + Math.round(t.totUnits / c.survey.totUnits * 100) / 100);
+                                        res.write("," + t.sqft);
+                                        res.write("," + t.rent);
+                                        res.write("," + t.concessions);
+                                        res.write("," + t.ner);
+                                        res.write("," + t.nersqft);
+                                        res.write("," + c.survey.weeklytraffic);
+                                        res.write("," + c.survey.weeklyleases);
+                                        res.write("," + c.address);
+                                        res.write("," + c.city);
+                                        res.write("," + c.state);
+                                        res.write("," + c.zip);
+                                        res.write("," + c.constructionType);
+                                        res.write("," + c.yearBuilt);
+                                        res.write("," + c.survey.totUnits);
+                                        res.write("\r\n")
+                                    }
+
+
+
+                                })
+                            }
+
+                            callbackp();
+                        });
+
+                    }, function() {
+                        res.end()
+                    })
+
+                })
+
+            })
+
+
+
+        })
+
         Routes.get('/:id/excel', function (req, res) {
 
             var profiles = [];
@@ -226,4 +300,12 @@ module.exports = {
 
         });
     }
+}
+
+
+var CSVEncode = function(s) {
+    var result = s.replace(/"/g, '""');
+    if (result.search(/("|,|\n)/g) >= 0)
+        result = '"' + result + '"';
+    return result;
 }

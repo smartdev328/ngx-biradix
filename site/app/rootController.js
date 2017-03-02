@@ -402,6 +402,12 @@ define([
             a = b;
         }
 
+        $rootScope.alliance_report = function() {
+            var url = '/api/1.0/properties/alliance?'
+            url += "token=" + $cookies.get('token')
+            location.href = url;
+        }
+
         $rootScope.marketSurvey = function (id, surveyid,options) {
             require([
                 '/app/marketSurvey/marketSurveyController.js'
