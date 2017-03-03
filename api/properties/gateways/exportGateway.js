@@ -21,7 +21,7 @@ module.exports = {
         Routes.get('/alliance', function(req, res) {
             res.setHeader('Content-disposition', 'attachment; filename=alliance.csv');
             res.setHeader('Content-type', 'text/csv');
-            res.write("Property,Subject/Comp,CompFor,UnitType,Date,Units,Units %,Sqft,Market Rent,Concess. / 12mo,Net Eff. Rent,NER/Sqft,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built,Total Units\r\n")
+            res.write("Property,Subject/Comp,CompFor,UnitType,Date,Units,Units %,Sqft,Market Rent,Concess. / 12mo,Net Eff. Rent,NER/Sqft,Occupancy %,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built,Total Units\r\n")
 
             organizationService.read(function(err, orgs) {
                 var allianceid = _.find(orgs, function(x) {return x.subdomain == 'alliance'})._id;
@@ -53,12 +53,13 @@ module.exports = {
                                         res.write(',' + (b == 0 ? 'Studio' : b + ' Bdrs'))
                                         res.write("," + moment(c.survey.date).utcOffset(-480).format("MM/DD/YYYY"));
                                         res.write("," + t.totUnits);
-                                        res.write("," + Math.round(t.totUnits / c.survey.totUnits * 100) / 100);
+                                        res.write("," + Math.round(t.totUnits / c.survey.totUnits * 100 * 100) / 100);
                                         res.write("," + t.sqft);
                                         res.write("," + t.rent);
                                         res.write("," + t.concessions);
                                         res.write("," + t.ner);
                                         res.write("," + t.nersqft);
+                                        res.write("," + Math.round(c.survey.occupancy * 100) / 100);
                                         res.write("," + c.survey.weeklytraffic);
                                         res.write("," + c.survey.weeklyleases);
                                         res.write("," + c.address);
