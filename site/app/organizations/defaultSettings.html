@@ -1,0 +1,155 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">Default Settings: {{organization.name}}</h2>
+    <hr>
+</div>
+
+<div class="modal-body">
+    <div class="maingrid wrapper panel">
+        <div class="header" style="height:29px"></div>
+        <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+            <tbody>
+            <tr class="thead">
+                <th>
+                    Setting
+                </th>
+                <th>
+                    Allow Change
+                </th>
+                <th>
+                    Set
+                </th>
+                <th>
+                    Default
+                </th>
+            </tr>
+            <tr>
+                <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
+                    <div class="fp-header-div">
+                        <h4>Notifications</h4>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Regular Updates
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.updates.allow"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.updates.set"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.updates.default_value"></toggle-switch>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;&nbsp; - How Often
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.how_often.allow"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.how_often.set"></toggle-switch>
+                </td>
+                <td>
+                    <select class="form-control input-sm" ng-options="item for item in nots.howOftenOptions" ng-model="nots.howOften" style="display:inline;width:100px">
+                    </select>, every
+                    <select ng-if="nots.howOften == 'Weekly'"
+                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:100px">
+                    </select>
+                    <select ng-if="nots.howOften == 'Monthly'"
+                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:100px">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;&nbsp; - All Properties
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.all_properties.allow"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.all_properties.set"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.all_properties.default_value"></toggle-switch>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Property Reminders
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.reminders.allow"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.reminders.set"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.reminders.default_value"></toggle-switch>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
+                    <div class="fp-header-div">
+                        <h4>Settings</h4>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Show Leased %
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.leased.allow"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.leased.set"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.leased.default_value"></toggle-switch>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Show Renewal %
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.renewal.allow"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.renewal.set"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.renewal.default_value"></toggle-switch>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
+                    <div class="fp-header-div">
+                        <h4>Market Survey</h4>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Detailed Concessions
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.detailed_concessions.allow"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.detailed_concessions.set"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.detailed_concessions.default_value"></toggle-switch>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

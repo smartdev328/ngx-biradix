@@ -33,5 +33,31 @@ define([
 
         $scope.reload();
 
+        $scope.settings = function (organization) {
+            require([
+                '/app/organizations/defaultSettingsController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/organizations/defaultSettings.html?bust=' + version,
+                    controller: 'defaultSettingsController',
+                    size: "lg",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        organization: function () {
+                            return organization;
+                        },
+
+                    }
+                });
+
+                modalInstance.result.then(function (mapped) {
+
+                }, function () {
+
+                });
+            });
+        }
+
     }]);
 });
