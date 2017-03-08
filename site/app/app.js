@@ -96,6 +96,7 @@ define([
             .state('amenities', AsyncRoute("/amenities","amenities","amenitiesController","amenities.html","loggedInView",{loggedIn: true}))
             .state('reporting', AsyncRoute("/reporting","reporting","reportingController","reporting.html","loggedInView",{loggedIn: true}))
             .state('contactus', AsyncRoute("/contactus","contact","contactController","contact.html","loggedInView",{loggedIn: true}))
+            .state('organizations', AsyncRoute("/organizations","organizations","organizationsController","organizations.html","loggedInView",{loggedIn: true}))
     });
 
     app.filter("sanitize2", ['$sanitize', function ($sanitize) {

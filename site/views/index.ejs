@@ -240,6 +240,9 @@
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href  href ng-class="{'subnav' : true}" ng-click="alliance_report()"> - Alliance Report</a>
                     </li>
+                    <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
+                        <a href="#/organizations"  href ng-class="{'active': sideNav == 'Organizations','subnav' : true}"> - Organizations</a>
+                    </li>
                     <li>
                         <a ng-class="{'active': sideNav == 'ContactUs'}" href="#/contactus" ng-click="turnOffIfMobile()"><i class="fa fa-envelope"></i> Contact Us</a>
                     </li>

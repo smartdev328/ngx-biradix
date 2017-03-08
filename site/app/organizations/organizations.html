@@ -1,0 +1,41 @@
+<h2 class="mainheader">Organizations
+    <hr>
+</h2>
+
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading">
+    <div class="maingrid wrapper">
+        <div class="header"></div>
+        <table class="table table-condensed table-striped table-hover">
+            <tbody>
+            <tr class="thead">
+                <th>#</th>
+                <th>Name</th>
+                <th>Url</th>
+                <th></th>
+            </tr>
+
+            <tr ng-repeat-start="row in data | orderBy : 'name'">
+                <td>{{$index + 1}}.</td>
+                <td>{{row.name}}</td>
+                <td>https://{{row.subdomain}}.biradix.com</td>
+                <td class="center">
+                    <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
+                        <div class="btn-group action_dropdown">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-repeat-end="" ng-if="false"></tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

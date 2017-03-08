@@ -57,6 +57,7 @@ d.run(function() {
             app.use(settings.API_PATH + 'propertyamenities/', require('../api/propertyamenities/gateways/propertyAmenityGateway'));
             app.use(settings.API_PATH + 'audit/', require('../api/audit/gateways/auditGateway'));
             app.use(settings.API_PATH + 'amenities/', require('../api/amenities/gateways/amenitiesGateway'));
+            app.use(settings.API_PATH + 'organizations/', require('../api/organizations/gateways/organizationsGateway'));
             app.use('/contact', require('../api/contact/gateways/contactGateway'));
             app.use('/progress', require('../api/progress/gateways/progressGateway'));
             app.use('/status', require('../api/status/gateways/statusGateway'));
