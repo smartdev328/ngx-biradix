@@ -2,7 +2,7 @@ module.exports = {
     getDefaultOptions : function() {
         var options = {
             pool        : 1,           // Change the pool size. Defaults to 1
-            timeout     : 28000,        // Set a render timeout in milliseconds. Defaults to 30 seconds.
+            timeout     : 29000,        // Set a render timeout in milliseconds. Defaults to 30 seconds.
             format      : 'pdf',      // The default output format. Defaults to png
             quality     : 100,         // The default image quality. Defaults to 100. Only relevant for jpeg format.
             width       : 1280,        // Changes the width size. Defaults to 1280
@@ -17,7 +17,7 @@ module.exports = {
             printMedia  : true,       // Defaults to false. Force the use of a print stylesheet.
             maxErrors   : 3,           // Number errors phantom process is allowed to throw before killing it. Defaults to 3.
             expects     : true, // No default. Do not render until window.renderable is set to 'something'
-            retries     : 1,           // How many times to try a render before giving up. Defaults to 1.
+            retries     : 2,           // How many times to try a render before giving up. Defaults to 1.
             phantomFlags: [], // Defaults to []. Command line flags passed to phantomjs
             maxRenders  : 20,          // How many renders can a phantom process make before being restarted. Defaults to 20
         };
