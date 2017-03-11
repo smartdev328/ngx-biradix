@@ -32,6 +32,26 @@ define(['app'], function (app) {
         }
 
 
+        fac.getBedrooms = function () {
+
+            var v = $cookies.get('Bedrooms') || "-1";
+
+            if (isNaN(v)) {
+                v= -1;
+            }
+
+            v = parseInt(v);
+
+            return v;
+
+        }
+
+        fac.saveBedrooms = function(bedrooms) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('Bedrooms', bedrooms, {expires : expireDate})
+        }
+
         fac.getSummary = function () {
 
             try {

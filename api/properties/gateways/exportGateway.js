@@ -257,6 +257,7 @@ module.exports = {
                     Totals : query.Totals,
                     Summary : query.Summary,
                     Scale : query.Scale,
+                    Bedrooms: query.Bedrooms,
                     selectedStartDate : query.selectedStartDate,
                     selectedEndDate : query.selectedEndDate,
                     selectedRange : query.selectedRange,

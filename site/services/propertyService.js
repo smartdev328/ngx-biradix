@@ -535,7 +535,7 @@ define(['app'], function (app) {
 
 
 
-        fac.parseDashboard = function(dashboard, summary, showLeases, scale) {
+        fac.parseDashboard = function(dashboard, summary, showLeases, scale, selectedBedroom) {
 
             var resp = {};
 
@@ -580,7 +580,7 @@ define(['app'], function (app) {
                 }
             })
 
-            resp.bedrooms = [{value: -1, text: 'All'}]
+            resp.bedrooms = [{value: -1, text: 'Averages'}]
 
             if (resp.comps && resp.comps[0] && resp.comps[0].survey && resp.comps[0].survey.floorplans) {
                 var includedFps = _.filter(resp.comps[0].survey.floorplans, function (x) {
@@ -607,7 +607,7 @@ define(['app'], function (app) {
                 })
             }
 
-            resp.bedroom = _.find(resp.bedrooms, function(x) {return x.value == resp.selectedBedroom});
+            resp.bedroom = _.find(resp.bedrooms, function(x) {return x.value == selectedBedroom});
 
             if (!resp.bedroom) {
                 resp.bedroom = resp.bedrooms[0];

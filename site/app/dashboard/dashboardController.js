@@ -29,9 +29,7 @@ define([
 
         $scope.nerScale = $cookieSettingsService.getNerScale();
 
-        $scope.selectedBedroom = -1;
-        $scope.bedrooms = [{value: -1, text: 'All'}]
-
+        $scope.selectedBedroom = $cookieSettingsService.getBedrooms();
 
         $scope.orderByComp = "number";
 
@@ -153,6 +151,7 @@ define([
 
         $scope.refreshGraphs = function() {
             $scope.selectedBedroom = $scope.bedroom.value;
+            $cookieSettingsService.saveBedrooms($scope.selectedBedroom);
             $scope.loadProperty($scope.selectedProperty._id, true);
         }
 
@@ -280,12 +279,13 @@ define([
                     ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.nerScale}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseDashboard(response.data,$scope.summary, $rootScope.me.settings.showLeases, $scope.nerScale);
+                    var resp = $propertyService.parseDashboard(response.data,$scope.summary, $rootScope.me.settings.showLeases, $scope.nerScale, $scope.selectedBedroom);
 
                     if (!trendsOnly) {
                         $scope.property = resp.property;
                         $scope.comps = resp.comps;
                         $scope.roles = $rootScope.me.roles;
+
 
                         $scope.mapOptions = resp.mapOptions;
                         $scope.bedrooms = resp.bedrooms;
@@ -345,14 +345,14 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs, $scope.totals);
+            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs, $scope.totals, $scope.selectedBedroom);
 
             window.setTimeout($scope.checkProgress, 500);
 
         }
 
         $scope.print = function(full) {
-            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs, $scope.totals);
+            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.graphs, $scope.totals, $scope.selectedBedroom);
         }
 
         $scope.excel = function() {

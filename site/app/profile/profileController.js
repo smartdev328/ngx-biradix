@@ -142,7 +142,8 @@ define([
         $scope.settings = {
             graphs: $cookieSettingsService.getGraphs(),
             nerScale: $cookieSettingsService.getNerScale(),
-            totals: $cookieSettingsService.getTotals()
+            totals: $cookieSettingsService.getTotals(),
+            selectedBedroom: $cookieSettingsService.getBedrooms()
         };
 
         $scope.settings.graphs = $cookieSettingsService.getGraphs();
@@ -349,7 +350,7 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.totals);
+            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.totals, $scope.settings.selectedBedroom);
 
             $window.setTimeout($scope.checkProgress, 500);
 
@@ -358,7 +359,7 @@ define([
 
         $scope.print = function(full) {
 
-            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.settings.graphs, $scope.settings.totals);
+            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.settings.graphs, $scope.settings.totals, $scope.settings.selectedBedroom);
         }
 
     }]);
