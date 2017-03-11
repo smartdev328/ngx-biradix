@@ -613,12 +613,14 @@ define(['app'], function (app) {
                 resp.bedroom = resp.bedrooms[0];
             }
 
+
+
             var scaleDecimals = 0;
-            var scaleText = "Net Eff. Rent $";
+            var scaleText = "Net Eff. Rent (" + resp.bedroom.text + ") $";
 
             if (scale == "nersqft") {
                 scaleDecimals = 2;
-                scaleText = "Net Eff. Rent / Sqft $";
+                scaleText = "Net Eff. Rent / Sqft (" + resp.bedroom.text + ") $";
             }
 
             resp.points = {excluded: dashboard.points.excluded};
