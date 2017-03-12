@@ -245,7 +245,7 @@ define(['app'], function (app) {
             //summary, show first prop then averages series
             if (summary) {
                 lines.push({key: ks[0], name: comps[0].name, prop: comps[0]._id})
-                lines.push({key: ks[0], name: "Comp Averages", prop: 'averages'})
+                lines.push({key: ks[0], name: "Comp Average", prop: 'averages'})
             }
             else
             //multiple series on 1 chart for subject
@@ -580,7 +580,7 @@ define(['app'], function (app) {
                 }
             })
 
-            resp.bedrooms = [{value: -1, text: 'Averages'}]
+            resp.bedrooms = [{value: -1, text: 'Average'}]
 
             if (resp.comps && resp.comps[0] && resp.comps[0].survey && resp.comps[0].survey.floorplans) {
                 var includedFps = _.filter(resp.comps[0].survey.floorplans, function (x) {

@@ -242,6 +242,7 @@ define([
         }
 
         $scope.changeProperty = function() {
+            $scope.selectedBedroom = -1;
             $scope.loadProperty($scope.selectedProperty._id);
             $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty._id;
             $authService.updateSettings($rootScope.me.settings).then(function() {
