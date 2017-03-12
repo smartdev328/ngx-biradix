@@ -235,13 +235,22 @@ define(['app'], function (app) {
             return name
         }
 
-        fac.extractSeries = function(p, ks, ls, defaultMin, defaultMax, decinalPlaces, allComps, summary) {
+        fac.extractSeries = function(p, ks, ls, defaultMin, defaultMax, decinalPlaces, allComps, summary, selectedBedroom, bedrooms) {
             var series = [];
             var hasPoints = false;
             var comps = allComps;
 
 
             var lines = [];
+            if (selectedBedroom == -2) {
+                for (var b in bedrooms) {
+                    lines.push({key: b.toString(), name: (b == 0 ? "Studios" : b + " Bdrs.") + " - " + comps[0].name, prop: comps[0]._id})
+                    lines.push({key: b.toString(), name: (b == 0 ? "Studios" : b + " Bdrs.") + " - Comp Average" , prop: 'averages'})
+                }
+
+
+            }
+            else
             //summary, show first prop then averages series
             if (summary) {
                 lines.push({key: ks[0], name: comps[0].name, prop: comps[0]._id})
@@ -580,7 +589,7 @@ define(['app'], function (app) {
                 }
             })
 
-            resp.bedrooms = [{value: -1, text: 'Average'}]
+            resp.bedrooms = [{value: -1, text: 'Average'},{value: -2, text: 'All'}]
 
             if (resp.comps && resp.comps[0] && resp.comps[0].survey && resp.comps[0].survey.floorplans) {
                 var includedFps = _.filter(resp.comps[0].survey.floorplans, function (x) {
@@ -624,7 +633,7 @@ define(['app'], function (app) {
             }
 
             resp.points = {excluded: dashboard.points.excluded};
-            var ner = fac.extractSeries(dashboard.points, ['ner'],[],0,1000,scaleDecimals, resp.comps, summary);
+            var ner = fac.extractSeries(dashboard.points, ['ner'],[],0,1000,scaleDecimals, resp.comps, summary, selectedBedroom, bedrooms);
             var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],80,100,1, resp.comps, summary);
             var leased = fac.extractSeries(dashboard.points, ['leased'],[],80,100,1, resp.comps, summary);
 

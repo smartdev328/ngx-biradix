@@ -393,7 +393,7 @@ module.exports = {
         }, function(err, all) {
 
             t = (new Date()).getTime();
-            console.log('Property All is Done: ',(t-tStart) / 1000, "s");
+            //console.log('Property All is Done: ',(t-tStart) / 1000, "s");
 
             var query = PropertySchema.find();
             if (criteria._id) {
@@ -477,7 +477,7 @@ module.exports = {
             tS = (new Date()).getTime();
             query.exec(function(err, props) {
                 t = (new Date()).getTime();
-                console.log('Property Exec: ',(t-tS) / 1000, "s");
+                //console.log('Property Exec: ',(t-tS) / 1000, "s");
 
                 var time = new Date();
                 if (props && props.length > 0) {
@@ -568,7 +568,7 @@ module.exports = {
                     })
 
                     t = (new Date()).getTime();
-                    console.log('Property Loop is Done: ',(t-tS) / 1000, "s");
+                    //console.log('Property Loop is Done: ',(t-tS) / 1000, "s");
                 }
 
 
@@ -609,7 +609,7 @@ module.exports = {
                 } else {
 
                     t = (new Date()).getTime();
-                    console.log('Property Search is Done: ',(t-tStart) / 1000, "s");
+                    // console.log('Property Search is Done: ',(t-tStart) / 1000, "s");
 
                     callback(err, props, lookups)
                 }

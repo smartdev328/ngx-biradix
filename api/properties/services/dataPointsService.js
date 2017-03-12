@@ -8,6 +8,10 @@ var SurveySchema= require('../schemas/surveySchema')
 
 module.exports = {
     getPoints: function(hide,subject,comps,summary,bedrooms,daterange,offset,show,callback) {
+
+        if (bedrooms == -2) {
+            show.bedrooms = true;
+        }
         var propertyids = _.pluck(comps,"_id");
         if (!propertyids || propertyids.length == 0) {
             return callback({});
@@ -72,6 +76,8 @@ module.exports = {
 
                 bedroomBeakdown =  _.uniq(_.pluck(includedFps, 'bedrooms'));
             }
+
+            // console.log(show.bedrooms,bedroomBeakdown)
 
 
             surveys.forEach(function(s) {
@@ -208,7 +214,7 @@ module.exports = {
 
             }
 
-            if (summary) {
+            if (summary || bedrooms -2) {
                 var newpoints = {averages:{}}
                 if (show.occupancy) {
                     DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy');
@@ -228,6 +234,15 @@ module.exports = {
                     DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner', true);
                 }
 
+                if (bedrooms == -2) {
+                    bedroomBeakdown.forEach(function(b) {
+                        if (points[prop][b]) {
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, b.toString(), true);
+                        }
+                    });
+
+                }
+
                 points = newpoints;
             }
 
@@ -241,14 +256,16 @@ module.exports = {
                     });
 
                     bedroomBeakdown.forEach(function(b) {
-                        points[prop][b].forEach(function(p) {
-                            if (p.v.totalUnits == 0) {
-                                //console.log(prop,b,p);
-                            }
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
+                        if (points[prop][b]) {
+                            points[prop][b].forEach(function (p) {
+                                if (p.v.totalUnits == 0) {
+                                    //console.log(prop,b,p);
+                                }
+                                if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                                    p.v = p.v.value;
+                                }
+                            });
+                        }
                     })
                 }
             }
