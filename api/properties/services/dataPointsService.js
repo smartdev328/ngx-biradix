@@ -12,6 +12,8 @@ module.exports = {
         if (bedrooms == -2) {
             show.bedrooms = true;
         }
+
+
         var propertyids = _.pluck(comps,"_id");
         if (!propertyids || propertyids.length == 0) {
             return callback({});
@@ -219,7 +221,7 @@ module.exports = {
 
             }
 
-            if (summary || bedrooms -2) {
+            if (summary || bedrooms == -2) {
                 var newpoints = {averages:{}}
                 if (show.occupancy) {
                     DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy');
