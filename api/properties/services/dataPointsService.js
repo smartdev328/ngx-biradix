@@ -74,10 +74,11 @@ module.exports = {
                     return !hide || !x.excluded
                 });
 
+
                 bedroomBeakdown =  _.uniq(_.pluck(includedFps, 'bedrooms'));
             }
 
-            // console.log(show.bedrooms,bedroomBeakdown)
+
 
 
             surveys.forEach(function(s) {

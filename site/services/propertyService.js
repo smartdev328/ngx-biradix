@@ -244,8 +244,8 @@ define(['app'], function (app) {
             var lines = [];
             if (selectedBedroom == -2) {
                 for (var b in bedrooms) {
-                    lines.push({key: b.toString(), name: (b == 0 ? "Studios" : b + " Bdrs.") + " - " + comps[0].name, prop: comps[0]._id})
-                    lines.push({key: b.toString(), name: (b == 0 ? "Studios" : b + " Bdrs.") + " - Comp Average" , prop: 'averages'})
+                    lines.push({key: b.toString(), name: "(" + (b == 0 ? "Studios" : b + " Bdrs.") + ") " + comps[0].name, prop: comps[0]._id})
+                    lines.push({key: b.toString(), name: "(" + (b == 0 ? "Studios" : b + " Bdrs.") + ") Comp Average" , prop: 'averages'})
                 }
 
 
@@ -311,7 +311,7 @@ define(['app'], function (app) {
 
             if (hasPoints) {
 
-                if (!summary && ls.length == 0 && series.length > 1) {
+                if (!summary && !selectedBedroom == -2 && ls.length == 0 && series.length > 1) {
                     series = _.sortBy(series, function (x) {
                         return -x._last
                     })
