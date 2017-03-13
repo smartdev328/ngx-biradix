@@ -71,6 +71,9 @@ var audits  = [
 
     {key: 'tracking_reminder_clicked', value: 'Reminder Email Clicked', group: 'Tracking', admin: true},
     {key: 'tracking_reminder_survey', value: 'Reminder Email Survey', group: 'Tracking', admin: true},
+
+    {key: 'org_default_settings', value: 'Default Settings Updated', group: 'Tracking', admin: true},
+
 ];
 
 module.exports = {

@@ -19,6 +19,20 @@ Routes.post('/', function (req, res) {
             return res.status(200).json({errors: err, organizations: orgs});
         })
     });
-
 });
+
+Routes.put('/:id/defaultSettings', function (req, res) {
+
+    AccessService.canAccess(req.user,"Admin", function(canAccess) {
+
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        organizationService.defaultSettings(req.user, req.context, req.params.id, req.body,function (err, orgs) {
+            res.status(200).json({errors: err});
+        })
+    });
+});
+
 module.exports = Routes;

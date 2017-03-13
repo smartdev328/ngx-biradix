@@ -16,7 +16,8 @@ var s = new Schema({
     logoSmall: {
         type: String
     },
-    isDefault: Boolean
+    isDefault: Boolean,
+    settings : {}
 });
 
 module.exports = mongoose.model('Organization', s);

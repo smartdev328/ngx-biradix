@@ -1,93 +1,41 @@
 'use strict';
 define([
-    'app'
+    'app',
+    '../../services/cronService.js',
+    '../../services/organizationsService.js',
 ], function (app) {
      app.controller
-        ('defaultSettingsController', ['$scope', '$uibModalInstance', 'organization', 'ngProgress', '$rootScope','toastr', function ($scope, $uibModalInstance, organization, ngProgress, $rootScope, toastr) {
+        ('defaultSettingsController', ['$scope', '$uibModalInstance', 'organization', 'ngProgress', '$rootScope','toastr','$cronService','$organizationsService', function ($scope, $uibModalInstance, organization, ngProgress, $rootScope, toastr,$cronService,$organizationsService) {
 
             ga('set', 'title', "/defaultSettings");
             ga('set', 'page', "/defaultSettings");
             ga('send', 'pageview');
             
-            $scope.mapTo = {};
             $scope.organization = organization;
 
-            $scope.organization.settings = {
-                updates: {
-                    allow: true,
-                    set: true,
-                    default_value: true
-                },
-                how_often: {
-                    allow: true,
-                    set: true,
-                    default_value: "* * * * 2"
-                },
-                all_properties: {
-                    allow: true,
-                    set: true,
-                    default_value: true
-                },
-                reminders: {
-                    allow: true,
-                    set: true,
-                    default_value: true
-                },
-                leased: {
-                    allow: true,
-                    set: true,
-                    default_value: true
-                },
-                renewal: {
-                    allow: true,
-                    set: true,
-                    default_value: true
-                },
-                detailed_concessions: {
-                    allow: true,
-                    set: true,
-                    default_value: false
-                },
-            }
-
-            $scope.nots = {
-                howOftenOptions: ["Weekly","Monthly"],
-                daysOfWeek: [
-                    {id:0,name:'Sunday'},
-                    {id:1,name:'Monday'},
-                    {id:2,name:'Tuesday'},
-                    {id:3,name:'Wednesday'},
-                    {id:4,name:'Thursday'},
-                    {id:5,name:'Friday'},
-                    {id:6,name:'Saturday'},
-                ],
-
-                daysOfMonth: [
-
-                ],
-            };
-
-            for (var i = 1; i < 29; i++) {
-                var name = "th";
-                if (i == 1 || i == 21 || i == 31) {name = "st"}
-                if (i == 2 || i == 22) {name = "nd"}
-                if (i == 3 || i == 23) {name = "rd"}
-
-                $scope.nots.daysOfMonth.push({id:i,name: i.toString() + name})
-            }
-
-            $scope.nots.daysOfMonth.push({id:"L",name:'Last'});
-
-            $scope.nots.howOften = $scope.nots.howOftenOptions[0];
-            $scope.nots.dayOfWeek = $scope.nots.daysOfWeek[2];
-            $scope.nots.dayOfMonth = $scope.nots.daysOfMonth[0];
-
+            $scope.nots = $cronService.getOptions($scope.organization.settings.how_often.default_value);
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
 
+            $scope.save = function() {
+                $scope.organization.settings.how_often.default_value = $cronService.getCron($scope.nots);
 
+                ngProgress.start();
+                $organizationsService.updateDefaultSettings($scope.organization).then(function (response) {
+                    if (response.data.errors) {
+                        toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                    }
+                    else {
+                        toastr.success('Default Settings Updated Successfully');
+                    }
+                    ngProgress.complete();
+                }, function (response) {
+                    toastr.error('Unable to update settings. Please contact an administrator');
+                    ngProgress.complete();
+                })
+            }
 
     }]);
 

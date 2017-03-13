@@ -123,7 +123,7 @@ module.exports = {
             })
 
             t = (new Date()).getTime();
-            console.log('User All is Done: ',(t-tStart) / 1000, "s");
+            //console.log('User All is Done: ',(t-tStart) / 1000, "s");
 
 
             var query = UserSchema.find();
@@ -198,7 +198,7 @@ module.exports = {
                         });
 
                         t = (new Date()).getTime();
-                        console.log('Get Memberships is Done: ',(t-tS) / 1000, "s");
+                        //console.log('Get Memberships is Done: ',(t-tS) / 1000, "s");
 
                         tS = (new Date()).getTime();
 
@@ -267,11 +267,11 @@ module.exports = {
                         })
 
                         t = (new Date()).getTime();
-                        console.log('User Loop Done: ',(t-tS) / 1000, "s");
+                        //console.log('User Loop Done: ',(t-tS) / 1000, "s");
 
 
                         t = (new Date()).getTime();
-                        console.log('User Search Total: ',(t-tStart) / 1000, "s");
+                        //console.log('User Search Total: ',(t-tStart) / 1000, "s");
 
                         callback(err, users)
 

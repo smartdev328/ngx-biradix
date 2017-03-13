@@ -3,9 +3,10 @@ define([
     'app',
     '../../services/userService.js',
     '../../services/propertyService',
+    '../../services/cronService.js',
 ], function (app) {
      app.controller
-        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams,$propertyService) {
+        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService','$cronService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams,$propertyService,$cronService) {
             window.setTimeout(function() {window.document.title = "My Account - Update Profile | BI:Radix";},1500);
 
             $rootScope.nav = "";
@@ -24,34 +25,6 @@ define([
 
             $scope.settings = {tz: $scope.timezones[0]}
 
-
-            $scope.nots = {
-                howOftenOptions: ["Weekly","Monthly"],
-                daysOfWeek: [
-                    {id:0,name:'Sunday'},
-                    {id:1,name:'Monday'},
-                    {id:2,name:'Tuesday'},
-                    {id:3,name:'Wednesday'},
-                    {id:4,name:'Thursday'},
-                    {id:5,name:'Friday'},
-                    {id:6,name:'Saturday'},
-                ],
-
-                daysOfMonth: [
-
-                ],
-            };
-
-            for (var i = 1; i < 29; i++) {
-                var name = "th";
-                if (i == 1 || i == 21 || i == 31) {name = "st"}
-                if (i == 2 || i == 22) {name = "nd"}
-                if (i == 3 || i == 23) {name = "rd"}
-
-                $scope.nots.daysOfMonth.push({id:i,name: i.toString() + name})
-            }
-
-            $scope.nots.daysOfMonth.push({id:"L",name:'Last'});
 
             var unbind = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
@@ -100,26 +73,9 @@ define([
 
                     //$rootScope.me.settings.notifications.props = ['5642bae9ff18a018187b2e9f','5642bab4ff18a018187b0417'];
 
-                    $scope.nots.howOften = $scope.nots.howOftenOptions[0];
-                    $scope.nots.dayOfWeek = $scope.nots.daysOfWeek[2];
-                    $scope.nots.dayOfMonth = $scope.nots.daysOfMonth[0];
+                    $scope.nots = $cronService.getOptions($rootScope.me.settings.notifications.cron);
+
                     $scope.nots.all = !$rootScope.me.settings.notifications.props || !$rootScope.me.settings.notifications.props.length;
-
-                    var cron = $rootScope.me.settings.notifications.cron.split(" ");
-
-                    if (cron[4] == "*") {
-                        $scope.nots.howOften = $scope.nots.howOftenOptions[1]
-                        $scope.nots.dayOfMonth = _.find($scope.nots.daysOfMonth, function(x) {
-                            return x.id.toString() == cron[2];
-                        })
-                    }
-                    else {
-                        $scope.nots.dayOfWeek = _.find($scope.nots.daysOfWeek, function(x) {
-                            return x.id.toString() == cron[4];
-                        })
-                    }
-
-
 
                     $scope.propertyOptions = { panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Excluded Properties", labelSelected: "Included Properties", searchLabel: "Properties" }
 
@@ -222,12 +178,7 @@ define([
                         $rootScope.me.settings.notifications.props = _.pluck(_.filter($scope.propertyItems, function(x) {return x.selected === true}),"id")
                     }
 
-                    if ($scope.nots.howOften == "Weekly") {
-                        $rootScope.me.settings.notifications.cron = "* * * * " + $scope.nots.dayOfWeek.id;
-                    } else {
-                        $rootScope.me.settings.notifications.cron = "* * " + $scope.nots.dayOfMonth.id + " * *";
-                    }
-
+                    $rootScope.me.settings.notifications.cron = $cronService.getCron($scope.nots);
                 }
 
                 $('button.contact-submit').prop('disabled', true);
