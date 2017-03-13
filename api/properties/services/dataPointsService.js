@@ -66,19 +66,23 @@ module.exports = {
             var points = {};
             var excluded = false;
 
-            if (show.bedrooms && comps[0].survey){
-                var includedFps = _.filter(comps[0].survey.floorplans, function (x) {
+
+
+            if (show.bedrooms && subject.survey){
+
+                var fps = _.flatten(_.map(_.filter(surveys, function(x) {return x.propertyid.toString() == subject._id.toString()}), function(x) {
+                    return x.floorplans
+                }));
+
+                var includedFps = _.filter(fps, function (x) {
                     if (x.excluded) {
                         excluded = true;
                     }
                     return !hide || !x.excluded
                 });
 
-
                 bedroomBeakdown =  _.uniq(_.pluck(includedFps, 'bedrooms'));
             }
-
-
 
 
             surveys.forEach(function(s) {
