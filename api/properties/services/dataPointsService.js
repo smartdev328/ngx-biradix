@@ -70,9 +70,17 @@ module.exports = {
 
 
 
-            if (show.bedrooms && subject.survey){
+            if (show.bedrooms){
 
-                var fps = _.flatten(_.map(_.filter(surveys, function(x) {return x.propertyid.toString() == subject._id.toString()}), function(x) {
+                //if we are doing "All" on dashboard, get bedrooms from subject property
+                var propertyid;
+                if (bedrooms == -2) {
+                    propertyid = subject._id.toString()
+                } else {
+                    propertyid = comps[0]._id.toString()
+                }
+
+                var fps = _.flatten(_.map(_.filter(surveys, function(x) {return x.propertyid.toString() == propertyid}), function(x) {
                     return x.floorplans
                 }));
 

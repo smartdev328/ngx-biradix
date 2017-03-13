@@ -97,10 +97,13 @@ module.exports = {
             var profiles = [];
             req.body.show = {};
             req.body.show.graphs = false;
-            req.body.show.selectedBedroom = -1;
             req.body.show.ner = true;
             req.body.show.occupancy = true;
             req.body.show.leased = true;
+            req.body.show.bedrooms = true;
+            req.body.bedrooms = -1;
+            req.body.summary = false;
+
             req.body.daterange =
             {
                 daterange: req.query.selectedRange,
