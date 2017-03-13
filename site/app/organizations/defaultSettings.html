@@ -17,7 +17,7 @@
                     Allow Change
                 </th>
                 <th>
-                    Set
+                    Configured
                 </th>
                 <th>
                     Default
@@ -35,13 +35,13 @@
                     Regular Updates
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.updates.allow"></toggle-switch>
+                    <toggle-switch checked="organization.settings.updates.allow" click-fn="organization.settings.updates.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.updates.set"></toggle-switch>
+                    <toggle-switch checked="organization.settings.updates.configured"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.updates.default_value"></toggle-switch>
+                    <toggle-switch checked="organization.settings.updates.default_value" click-fn="organization.settings.updates.configured = true"></toggle-switch>
                 </td>
             </tr>
             <tr>
@@ -49,19 +49,19 @@
                     &nbsp;&nbsp; - How Often
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.how_often.allow"></toggle-switch>
+                    <toggle-switch checked="organization.settings.how_often.allow" click-fn="organization.settings.how_often.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.how_often.set"></toggle-switch>
+                    <toggle-switch checked="organization.settings.how_often.configured"></toggle-switch>
                 </td>
                 <td>
-                    <select class="form-control input-sm" ng-options="item for item in nots.howOftenOptions" ng-model="nots.howOften" style="display:inline;width:100px">
+                    <select class="form-control input-sm" ng-options="item for item in nots.howOftenOptions" ng-model="nots.howOften" style="display:inline;width:100px" ng-change="organization.settings.how_often.configured=true">
                     </select>, every
                     <select ng-if="nots.howOften == 'Weekly'"
-                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:100px">
+                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:100px" ng-change="organization.settings.how_often.configured=true">
                     </select>
                     <select ng-if="nots.howOften == 'Monthly'"
-                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:100px">
+                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:100px" ng-change="organization.settings.how_often.configured=true">
                     </select>
                 </td>
             </tr>
@@ -70,13 +70,13 @@
                     &nbsp;&nbsp; - All Properties
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.all_properties.allow"></toggle-switch>
+                    <toggle-switch checked="organization.settings.all_properties.allow" click-fn="organization.settings.all_properties.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.all_properties.set"></toggle-switch>
+                    <toggle-switch checked="organization.settings.all_properties.configured"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.all_properties.default_value"></toggle-switch>
+                    <toggle-switch checked="organization.settings.all_properties.default_value" click-fn="organization.settings.all_properties.configured = true"></toggle-switch>
                 </td>
             </tr>
             <tr>
@@ -84,13 +84,13 @@
                     Property Reminders
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.reminders.allow"></toggle-switch>
+                    <toggle-switch checked="organization.settings.reminders.allow" click-fn="organization.settings.reminders.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.reminders.set"></toggle-switch>
+                    <toggle-switch checked="organization.settings.reminders.configured"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.reminders.default_value"></toggle-switch>
+                    <toggle-switch checked="organization.settings.reminders.default_value" click-fn="organization.settings.reminders.configured = true"></toggle-switch>
                 </td>
             </tr>
             <tr>
@@ -105,13 +105,13 @@
                     Show Leased %
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.leased.allow"></toggle-switch>
+                    <toggle-switch checked="organization.settings.leased.allow" click-fn="organization.settings.leased.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.leased.set"></toggle-switch>
+                    <toggle-switch checked="organization.settings.leased.configured"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.leased.default_value"></toggle-switch>
+                    <toggle-switch checked="organization.settings.leased.default_value" click-fn="organization.settings.leased.configured = true"></toggle-switch>
                 </td>
             </tr>
             <tr>
@@ -119,13 +119,13 @@
                     Show Renewal %
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.renewal.allow"></toggle-switch>
+                    <toggle-switch checked="organization.settings.renewal.allow" click-fn="organization.settings.renewal.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.renewal.set"></toggle-switch>
+                    <toggle-switch checked="organization.settings.renewal.configured"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.renewal.default_value"></toggle-switch>
+                    <toggle-switch checked="organization.settings.renewal.default_value" click-fn="organization.settings.renewal.configured = true"></toggle-switch>
                 </td>
             </tr>
             <tr>
@@ -140,13 +140,13 @@
                     Detailed Concessions
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.detailed_concessions.allow"></toggle-switch>
+                    <toggle-switch checked="organization.settings.detailed_concessions.allow" click-fn="organization.settings.detailed_concessions.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.detailed_concessions.set"></toggle-switch>
+                    <toggle-switch checked="organization.settings.detailed_concessions.configured"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.detailed_concessions.default_value"></toggle-switch>
+                    <toggle-switch checked="organization.settings.detailed_concessions.default_value" click-fn="organization.settings.detailed_concessions.configured = true"></toggle-switch>
                 </td>
             </tr>
             </tbody>

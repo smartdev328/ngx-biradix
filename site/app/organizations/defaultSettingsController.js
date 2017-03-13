@@ -15,37 +15,37 @@ define([
             $scope.organization.settings = {
                 updates: {
                     allow: true,
-                    set: false,
+                    set: true,
                     default_value: true
                 },
                 how_often: {
                     allow: true,
-                    set: false,
+                    set: true,
                     default_value: "* * * * 2"
                 },
                 all_properties: {
                     allow: true,
-                    set: false,
+                    set: true,
                     default_value: true
                 },
                 reminders: {
                     allow: true,
-                    set: false,
+                    set: true,
                     default_value: true
                 },
                 leased: {
                     allow: true,
-                    set: false,
+                    set: true,
                     default_value: true
                 },
                 renewal: {
                     allow: true,
-                    set: false,
+                    set: true,
                     default_value: true
                 },
                 detailed_concessions: {
                     allow: true,
-                    set: false,
+                    set: true,
                     default_value: false
                 },
             }
