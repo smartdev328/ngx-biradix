@@ -8,6 +8,7 @@ define([
             restrict: 'E',
             scope: {
                 checked: '=',
+                disabled: '=',
                 clickFn: '&'
 
             },

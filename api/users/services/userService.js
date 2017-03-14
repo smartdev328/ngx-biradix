@@ -17,9 +17,6 @@ var redisService = require('../../utilities/services/redisService')
 var userBounceService = require('./userBounceService')
 
 module.exports = {
-    defaultSettings: function(user) {
-        defaultSettings(user);
-    },
     updateGuestStatsDateAdded: function(guestid, propertyid, callback) {
         var query = {_id: guestid};
         var update = {$addToSet: {guestStats: {propertyid: propertyid.toString(), dateAdded: new Date(), lastEmailed: null, lastCompleted: null}}};
@@ -78,7 +75,10 @@ module.exports = {
         var tStart = (new Date()).getTime();
         var t, tS;
         //if you pass in fields to select you are overwritting the default
+
         criteria.custom = criteria.select != undefined;
+
+
         async.parallel({
                 permissions: function(callbackp) {
                     if (Operator.memberships.isadmin) {
@@ -152,11 +152,14 @@ module.exports = {
             }
 
 
+
+
             if (criteria.custom) {
 
-                if (criteria.select.indexOf("settings.defaultRole") == -1) {
+                if (criteria.select.indexOf("settings") == -1) {
                     criteria.select += " settings.defaultRole";
                 }
+
                 query = query.select(criteria.select);
             } else {
                 query = query.select('_id first last email active date bounceReason settings.defaultRole');
@@ -510,27 +513,33 @@ module.exports = {
 
     },
     getUsersForNotifications : function(callback) {
-        UserSchema.find({active:true, bounceReason : null}).select("_id settings first last email").exec(function(err, users) {
-            users.forEach(function(u) {
-                defaultSettings(u);
-            })
+        var _this = this;
+        getSysemUser(function(system) {
+            _this.search(system.user,{active:true, select: "_id settings first last email bounceReason" }, function(err,users) {
+                users.forEach(function(u) {
+                    defaultSettings(u,u.roles[0].org.settings);
+                })
 
-            _.remove(users, function(x) {
-                var s = x.settings.notifications;
-                //s.last = "1/7/2016";
+                _.remove(users, function(x) {
+                    var s = x.settings.notifications;
+                    //s.last = "1/7/2016";
 
-                var hoursSinceLast = Math.abs((new Date(s.last)).getTime() - (new Date()).getTime()) / 3600000;
+                    var hoursSinceLast = Math.abs((new Date(s.last)).getTime() - (new Date()).getTime()) / 3600000;
 
-                if (isNaN(hoursSinceLast)) {
-                    hoursSinceLast = 24 * 7;
-                }
-                //console.log(hoursSinceLast)
-                return  s.on == false // remove "Off"
-                    || hoursSinceLast < 24 // remove anything alfready sent within 24 hours
-                    || !cronService.isAllowed(s.cron) // remove when cron is not allowed
-            })
-            callback(err,users);
-        });
+                    if (isNaN(hoursSinceLast)) {
+                        hoursSinceLast = 24 * 7;
+                    }
+                    //console.log(hoursSinceLast)
+                    return  s.on == false // remove "Off"
+                        || hoursSinceLast < 24 // remove anything alfready sent within 24 hours
+                        || !cronService.isAllowed(s.cron) // remove when cron is not allowed
+                        || x.bounceReason
+                        || x.roles[0].tags[0] == 'Guest'
+                })
+                callback(err,users);
+            });
+        })
+
     }
     ,
 
@@ -547,16 +556,20 @@ module.exports = {
             callback(modelErrors, null);
             return;
         }
-        UserSchema.findOne({
-            _id: Operator._id
-        }, function(err, usr) {
-            if (err || !usr) {
+
+        this.search(Operator,{_id: Operator._id, select: "settings first last email"}, function (err, users) {
+            if (err || users.length == 0) {
                 modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
                 callback(modelErrors,null);
                 return;
             };
 
-            defaultSettings(usr);
+            var usr = users[0];
+
+            //console.log(usr);
+
+            defaultSettings(usr,users[0].roles[0].org.settings);
+
 
             var bLinkedUpdated = usr.settings.hideUnlinked != settings.hideUnlinked;
 
@@ -611,7 +624,7 @@ module.exports = {
             else
             if (usr.settings.showRenewal == false && settings.showRenewal == true) {
                 renewalDescription = "Off => On";
-            }            
+            }
 
             var concessionsDescription = "";
             if (usr.settings.monthlyConcessions == true && settings.monthlyConcessions == false) {
@@ -623,11 +636,16 @@ module.exports = {
             }
 
             usr.settings = settings
-            usr.markModified("settings.notifications");
-            usr.markModified("settings.reminders");
-            usr.markModified("settings.tz");
+            // usr.markModified("settings.notifications");
+            // usr.markModified("settings.reminders");
+            // usr.markModified("settings.tz");
 
-            usr.save(function (err, usr) {
+                var query = {_id: usr._id};
+                var update = {settings: settings};
+                var options = {};
+
+            UserSchema.findOneAndUpdate(query, update, options, function (err, usr) {
+
                 if (err) {
                     modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
                     callback(modelErrors,null);
@@ -645,14 +663,14 @@ module.exports = {
                 if (reminderDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_reminders', description: reminderDescription, context: context, data: nots})
                 }
-                
+
                 if (leasesDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_leased', description: leasesDescription, context: context})
                 }
 
                 if (renewalDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_renewal', description: renewalDescription, context: context})
-                }                
+                }
 
                 if (concessionsDescription) {
                     AuditService.create({operator: usr, user: usr, type: 'user_concessions', description: concessionsDescription, context: context})
@@ -663,8 +681,7 @@ module.exports = {
 
             });
 
-
-        });
+        })
 
     },
     updateActive : function(operator, user, context, revertedFromId, callback)  {
@@ -778,7 +795,7 @@ function getFullUser(usr, callback) {
 
                 }
 
-                defaultSettings(usrobj);
+                defaultSettings(usrobj, usrobj.orgs[0].settings);
 
                 var minutesToExpire = 60;
 
@@ -834,16 +851,18 @@ function getSysemUser (callback) {
     })
 }
 
-function defaultSettings(user) {
-    user.settings.monthlyConcessions = user.settings.monthlyConcessions || false;
-    user.settings.showLeases = user.settings.showLeases || false;
-    user.settings.showRenewal = user.settings.showRenewal || false;
+function defaultSettings(user, orgSettings) {
+ //   orgSettings = orgSettings || { detailed_concessions : {}, leased: {}, renewal : {}, how_often: { default_value: "* * * * 2"}, updates: {}, reminders: {}};
+ //   console.log(orgSettings);
+    user.settings.monthlyConcessions = user.settings.monthlyConcessions || orgSettings.detailed_concessions.default_value;
+    user.settings.showLeases = user.settings.showLeases || orgSettings.leased.default_value;
+    user.settings.showRenewal = user.settings.showRenewal || orgSettings.renewal.default_value;
     user.settings.notifications = user.settings.notifications || {};
-    user.settings.notifications.cron = user.settings.notifications.cron || "* * * * 2"
+    user.settings.notifications.cron = user.settings.notifications.cron || orgSettings.how_often.default_value
     user.settings.notifications.props = user.settings.notifications.props || [];
     user.settings.notifications.last = user.settings.notifications.last || null;
-    user.settings.notifications.on = typeof user.settings.notifications.on == 'undefined' ? true : user.settings.notifications.on;
+    user.settings.notifications.on = typeof user.settings.notifications.on == 'undefined' ? orgSettings.updates.default_value : user.settings.notifications.on;
 
     user.settings.reminders = user.settings.reminders || {};
-    user.settings.reminders.on = typeof user.settings.reminders.on == 'undefined' ? true : user.settings.reminders.on;
+    user.settings.reminders.on = typeof user.settings.reminders.on == 'undefined' ? orgSettings.reminders.default_value : user.settings.reminders.on;
 }

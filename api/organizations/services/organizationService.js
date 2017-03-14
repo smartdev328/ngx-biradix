@@ -179,12 +179,12 @@ function defaultSettings(org) {
     org.settings.leased = org.settings.leased || {
             allow: true,
             configured: false,
-            default_value: true
+            default_value: false
         };
     org.settings.renewal = org.settings.renewal || {
             allow: true,
             configured: false,
-            default_value: true
+            default_value: false
         };
     org.settings.detailed_concessions = org.settings.detailed_concessions || {
             allow: true,

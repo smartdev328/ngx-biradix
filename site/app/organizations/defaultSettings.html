@@ -38,7 +38,7 @@
                     <toggle-switch checked="organization.settings.updates.allow" click-fn="organization.settings.updates.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.updates.configured"></toggle-switch>
+                    <input type="checkbox" ng-model="organization.settings.updates.configured">
                 </td>
                 <td>
                     <toggle-switch checked="organization.settings.updates.default_value" click-fn="organization.settings.updates.configured = true"></toggle-switch>
@@ -52,7 +52,7 @@
                     <toggle-switch checked="organization.settings.how_often.allow" click-fn="organization.settings.how_often.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.how_often.configured"></toggle-switch>
+                    <input type="checkbox" ng-model="organization.settings.how_often.configured">
                 </td>
                 <td>
                     <select class="form-control input-sm" ng-options="item for item in nots.howOftenOptions" ng-model="nots.howOften" style="display:inline;width:100px" ng-change="organization.settings.how_often.configured=true">
@@ -73,8 +73,9 @@
                     <toggle-switch checked="organization.settings.all_properties.allow" click-fn="organization.settings.all_properties.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.all_properties.configured"></toggle-switch>
+                    <input type="checkbox" ng-model="organization.settings.all_properties.configured">
                 </td>
+
                 <td>
                     <toggle-switch checked="organization.settings.all_properties.default_value" click-fn="organization.settings.all_properties.configured = true"></toggle-switch>
                 </td>
@@ -87,8 +88,9 @@
                     <toggle-switch checked="organization.settings.reminders.allow" click-fn="organization.settings.reminders.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.reminders.configured"></toggle-switch>
+                    <input type="checkbox" ng-model="organization.settings.reminders.configured">
                 </td>
+
                 <td>
                     <toggle-switch checked="organization.settings.reminders.default_value" click-fn="organization.settings.reminders.configured = true"></toggle-switch>
                 </td>
@@ -108,8 +110,9 @@
                     <toggle-switch checked="organization.settings.leased.allow" click-fn="organization.settings.leased.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.leased.configured"></toggle-switch>
+                    <input type="checkbox" ng-model="organization.settings.leased.configured">
                 </td>
+
                 <td>
                     <toggle-switch checked="organization.settings.leased.default_value" click-fn="organization.settings.leased.configured = true"></toggle-switch>
                 </td>
@@ -122,7 +125,7 @@
                     <toggle-switch checked="organization.settings.renewal.allow" click-fn="organization.settings.renewal.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.renewal.configured"></toggle-switch>
+                    <input type="checkbox" ng-model="organization.settings.renewal.configured">
                 </td>
                 <td>
                     <toggle-switch checked="organization.settings.renewal.default_value" click-fn="organization.settings.renewal.configured = true"></toggle-switch>
@@ -143,7 +146,7 @@
                     <toggle-switch checked="organization.settings.detailed_concessions.allow" click-fn="organization.settings.detailed_concessions.configured = true"></toggle-switch>
                 </td>
                 <td>
-                    <toggle-switch checked="organization.settings.detailed_concessions.configured"></toggle-switch>
+                    <input type="checkbox" ng-model="organization.settings.detailed_concessions.configured">
                 </td>
                 <td>
                     <toggle-switch checked="organization.settings.detailed_concessions.default_value" click-fn="organization.settings.detailed_concessions.configured = true"></toggle-switch>

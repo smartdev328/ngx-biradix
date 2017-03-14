@@ -231,24 +231,29 @@ module.exports = {
 
             if (summary || bedrooms == -2) {
                 var newpoints = {averages:{}}
-                if (show.occupancy) {
-                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy');
-                }
-                if (show.leased) {
-                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased');
-                }
-                if (show.traffic) {
-                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic');
+
+                //Only Avergage if we want comps grouped
+                if (summary) {
+                    if (show.occupancy) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy');
+                    }
+                    if (show.leased) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased');
+                    }
+                    if (show.traffic) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic');
+                    }
+
+                    if (show.leases) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leases');
+                    }
+
+                    if (show.ner) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner', true);
+                    }
                 }
 
-                if (show.leases) {
-                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leases');
-                }
-
-                if (show.ner) {
-                    DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner', true);
-                }
-
+                //Go in here if we only want the "All" feature
                 if (bedrooms == -2) {
                     bedroomBeakdown.forEach(function(b) {
                         if (points[prop][b]) {
@@ -256,7 +261,17 @@ module.exports = {
                         }
                     });
 
+                    //If we dont want summary, put back other non-summary points
+                    if (!summary) {
+                        for (var prop in points) {
+                            if (prop != subject._id.toString()) {
+                                newpoints[prop] = points[prop];
+                            }
+                        }
+                    }
+
                 }
+
 
                 points = newpoints;
             }
@@ -264,11 +279,13 @@ module.exports = {
             //Remove unit counts when not averaging points
             if (show.ner) {
                 for (var prop in points) {
-                    points[prop].ner.forEach(function(p) {
-                        if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                            p.v = p.v.value;
-                        }
-                    });
+                    if (points[prop].ner) {
+                        points[prop].ner.forEach(function (p) {
+                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                                p.v = p.v.value;
+                            }
+                        });
+                    }
 
                     bedroomBeakdown.forEach(function(b) {
                         if (points[prop][b]) {

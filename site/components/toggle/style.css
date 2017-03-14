@@ -123,3 +123,8 @@
 .switch-green > .switch-input:checked ~ .switch-label {
   background: #4fb845;
 }
+
+.switch.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

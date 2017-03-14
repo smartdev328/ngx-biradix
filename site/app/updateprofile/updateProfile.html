@@ -156,16 +156,37 @@
             <div class="panel-body">
                 <div>
                     <hr>
-                    <B>Show "Leased %" information:</B> <toggle-switch checked="me.settings.showLeases"></toggle-switch>
+                    <B>Show "Leased %" information:</B> <toggle-switch checked="me.settings.showLeases" disabled="!me.orgs[0].settings.leased.allow"></toggle-switch>
+
+                    <i class="fa fa-lock" ng-if="!me.orgs[0].settings.leased.allow"
+                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="top"
+                       popover-append-to-body="true"
+                       uib-popover='This setting has been locked by your company administrator.'
+                    ></i>
+
                     <i class="fa fa-info-circle"
                        style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
+                       popover-append-to-body="true"
                        uib-popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing market surveys. Note: Data for Leased % will only be shown if it exists for a property.'
                     ></i>
+
+
+
                     <Br>
                     <Br>
-                    <B>Show "Renewal %" information:</B> <toggle-switch checked="me.settings.showRenewal"></toggle-switch>
+                    <B>Show "Renewal %" information:</B> <toggle-switch checked="me.settings.showRenewal" disabled="!me.orgs[0].settings.renewal.allow"></toggle-switch>
+                    <i class="fa fa-lock" ng-if="!me.orgs[0].settings.renewal.allow"
+                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="top"
+                       popover-append-to-body="true"
+                       uib-popover='This setting has been locked by your company administrator.'
+                    ></i>
+
                     <i class="fa fa-info-circle"
                        style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
                        popover-trigger="'mouseenter'"

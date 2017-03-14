@@ -7,6 +7,13 @@ var Routes = express.Router();
 var userService = require('../../users/services/userService')
 var queueService = require('../services/queueService');
 
+// Routes.get('/test', function (req, res) {
+//     userService.getUsersForNotifications(function (err, users) {
+//         res.status(200).json({users: users})
+//
+//     });
+// });
+
 Routes.get('/notifications', function (req, res) {
     userService.getUsersForNotifications(function (err, users) {
         async.eachLimit(users, 10, function (user, callbackp) {
