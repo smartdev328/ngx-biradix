@@ -1,4 +1,10 @@
-<label ng-class="{'switch' : true, 'disabled' : disabled}">
+<label ng-class="{'switch' : true, 'disabled' : disabled}"
+       popover-trigger="'mouseenter'"
+       popover-placement="top"
+       popover-append-to-body="true"
+       uib-popover="{{popover}}"
+
+>
     <input type="checkbox" class="switch-input" ng-checked="checked" ng-click="click();" ng-model="checked" ng-disabled="disabled">
     <span class="switch-label" data-on="On" data-off="Off"></span>
     <span class="switch-handle"></span>

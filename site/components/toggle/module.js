@@ -9,6 +9,7 @@ define([
             scope: {
                 checked: '=',
                 disabled: '=',
+                popover: '=',
                 clickFn: '&'
 
             },
