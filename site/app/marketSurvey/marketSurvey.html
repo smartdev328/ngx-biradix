@@ -112,7 +112,7 @@
                 <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
             </div>
 
-            <toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()" style="margin-left:30px;"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
+            <toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()" style="margin-left:30px;"  disabled="!me.orgs[0].settings.detailed_concessions.allow" popover="me.orgs[0].settings.detailed_concessions.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
             <i class="fa fa-info-circle"  style="font-size:12px"
             popover-trigger="'mouseenter'"
             popover-placement="bottom"
