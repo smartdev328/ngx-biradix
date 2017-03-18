@@ -5,6 +5,24 @@ define([
     app.factory('$userService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+        fac.updateUsersForSettingsApply = function(criteria) {
+            return $http.post('/api/1.0/users/updateUsersForSettingsApply'+ '?bust=' + (new Date()).getTime(), criteria, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
+        fac.getUsersForSettingsApply = function(criteria) {
+            return $http.post('/api/1.0/users/getUsersForSettingsApply'+ '?bust=' + (new Date()).getTime(), criteria, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.getRolesToAssign = function () {
             return $http.get('/api/1.0/access/roles'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

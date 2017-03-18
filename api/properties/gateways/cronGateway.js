@@ -19,7 +19,7 @@ Routes.get('/notifications', function (req, res) {
         async.eachLimit(users, 10, function (user, callbackp) {
             userService.getFullUser(user, function(full) {
                 full.operator.settings.notifications.last = new Date();
-                userService.updateSettings(full.operator, full.operator.settings, {ip: '127.0.0.1', user_agent: 'server'}, function () {
+                userService.updateSettings(full.operator, full.operator, full.operator.settings, {ip: '127.0.0.1', user_agent: 'server'}, function () {
                     if (full.operator.roles[0] != 'Guest') {
                         queueService.sendNotification(full.operator, {
                             properties: full.operator.settings.notifications.props,

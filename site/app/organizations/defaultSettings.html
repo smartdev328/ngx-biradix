@@ -43,6 +43,9 @@
                 <td style="border-left:1px solid #ccc;padding-left:15px">
                     <input type="checkbox" ng-model="organization.settings.updates.configured">
                 </td>
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('updates')"><i class="fa fa-exchange"></i> Apply</button>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -64,6 +67,9 @@
                 <td style="border-left:1px solid #ccc;padding-left:15px">
                     <input type="checkbox" ng-model="organization.settings.how_often.configured">
                 </td>
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('how_often')"><i class="fa fa-exchange"></i> Apply</button>
+                </td>
 
             </tr>
             <tr>
@@ -78,6 +84,9 @@
                 </td>
                 <td style="border-left:1px solid #ccc;padding-left:15px">
                     <input type="checkbox" ng-model="organization.settings.all_properties.configured">
+                </td>
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('all_properties')"><i class="fa fa-exchange"></i> Apply</button>
                 </td>
 
             </tr>
@@ -94,7 +103,9 @@
                 <td style="border-left:1px solid #ccc;padding-left:15px">
                     <input type="checkbox" ng-model="organization.settings.reminders.configured">
                 </td>
-
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('reminders')"><i class="fa fa-exchange"></i> Apply</button>
+                </td>
             </tr>
             <tr>
                 <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
@@ -116,7 +127,9 @@
                 <td style="border-left:1px solid #ccc;padding-left:15px">
                     <input type="checkbox" ng-model="organization.settings.leased.configured">
                 </td>
-
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('leased')"><i class="fa fa-exchange"></i> Apply</button>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -131,7 +144,9 @@
                 <td style="border-left:1px solid #ccc;padding-left:15px">
                     <input type="checkbox" ng-model="organization.settings.renewal.configured">
                 </td>
-
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('renewal')"><i class="fa fa-exchange"></i> Apply</button>
+                </td>
             </tr>
             <tr>
                 <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
@@ -152,6 +167,9 @@
                 </td>
                 <td style="border-left:1px solid #ccc;padding-left:15px">
                     <input type="checkbox" ng-model="organization.settings.detailed_concessions.configured">
+                </td>
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('detailed_concessions')"><i class="fa fa-exchange"></i> Apply</button>
                 </td>
 
             </tr>

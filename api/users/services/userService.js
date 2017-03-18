@@ -139,7 +139,6 @@ module.exports = {
                 }
             }
             else {
-
                 if (criteria.ids) {
                     all.permissions = _.intersection(all.permissions, criteria.ids);
                 }
@@ -150,9 +149,6 @@ module.exports = {
             if (criteria.email) {
                 query = query.where('emailLower').in(criteria.email.toLowerCase());
             }
-
-
-
 
             if (criteria.custom) {
 
@@ -543,11 +539,11 @@ module.exports = {
     }
     ,
 
-    updateSettings : function(Operator, settings, context, callback)  {
+    updateSettings : function(Operator, user, settings, context, callback)  {
         var modelErrors = [];
 
 
-        if (!Operator._id)
+        if (!user._id)
         {
             modelErrors.push({msg : 'Invalid user id.'});
         }
@@ -557,7 +553,7 @@ module.exports = {
             return;
         }
 
-        this.search(Operator,{_id: Operator._id, select: "settings first last email"}, function (err, users) {
+        this.search(Operator,{_id: user._id, select: "settings first last email"}, function (err, users) {
             if (err || users.length == 0) {
                 modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
                 callback(modelErrors,null);
@@ -569,7 +565,6 @@ module.exports = {
             //console.log(usr);
 
             defaultSettings(usr,users[0].roles[0].org.settings);
-
 
             var bLinkedUpdated = usr.settings.hideUnlinked != settings.hideUnlinked;
 
@@ -636,7 +631,6 @@ module.exports = {
             }
 
             usr.settings = settings
-            // usr.markModified("settings.notifications");
             // usr.markModified("settings.reminders");
             // usr.markModified("settings.tz");
 
@@ -645,7 +639,6 @@ module.exports = {
                 var options = {};
 
             UserSchema.findOneAndUpdate(query, update, options, function (err, usr) {
-
                 if (err) {
                     modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
                     callback(modelErrors,null);
@@ -653,27 +646,27 @@ module.exports = {
                 };
 
                 if (bLinkedUpdated) {
-                    AuditService.create({operator: usr, user: usr, type: 'show_unlinked', description: usr.settings.hideUnlinked === true ? 'Hide' : 'Show', context: context})
+                    AuditService.create({operator: Operator, user: usr, type: 'show_unlinked', description: usr.first + ' ' + usr.last + ': ' + usr.settings.hideUnlinked === true ? 'Hide' : 'Show', context: context})
                 }
 
                 if (notsDescription) {
-                    AuditService.create({operator: usr, user: usr, type: 'user_notifications', description: notsDescription, context: context, data: nots})
+                    AuditService.create({operator: Operator, user: usr, type: 'user_notifications', description: usr.first + ' ' + usr.last + ': ' + notsDescription, context: context, data: nots})
                 }
 
                 if (reminderDescription) {
-                    AuditService.create({operator: usr, user: usr, type: 'user_reminders', description: reminderDescription, context: context, data: nots})
+                    AuditService.create({operator: Operator, user: usr, type: 'user_reminders', description: usr.first + ' ' + usr.last + ': ' + reminderDescription, context: context, data: nots})
                 }
 
                 if (leasesDescription) {
-                    AuditService.create({operator: usr, user: usr, type: 'user_leased', description: leasesDescription, context: context})
+                    AuditService.create({operator: Operator, user: usr, type: 'user_leased', description: usr.first + ' ' + usr.last + ': ' + leasesDescription, context: context})
                 }
 
                 if (renewalDescription) {
-                    AuditService.create({operator: usr, user: usr, type: 'user_renewal', description: renewalDescription, context: context})
+                    AuditService.create({operator: Operator, user: usr, type: 'user_renewal', description: usr.first + ' ' + usr.last + ': ' + renewalDescription, context: context})
                 }
 
                 if (concessionsDescription) {
-                    AuditService.create({operator: usr, user: usr, type: 'user_concessions', description: concessionsDescription, context: context})
+                    AuditService.create({operator: Operator, user: usr, type: 'user_concessions', description: usr.first + ' ' + usr.last + ': ' + concessionsDescription, context: context})
                 }
 
                 callback(null,usr.settings);
@@ -728,6 +721,72 @@ module.exports = {
         })
 
     },
+    getUsersForSettingsApply : function(operator, orgid, setting, value, callback) {
+        this.search(operator, {orgid: orgid, select: "first last settings"}, function (err, users) {
+            users.forEach(function(u) {
+                defaultSettings(u,u.roles[0].org.settings);
+
+                switch (setting) {
+                    case 'updates':
+                       if (u.settings.notifications.on == value) {
+                           u.remove = true;
+                       }  else {
+                           u.settings.notifications.on = value;
+                       }
+                       break;
+                    case 'how_often':
+                        if (u.settings.notifications.cron == value) {
+                            u.remove = true;
+                        }  else {
+                            u.settings.notifications.cron = value;
+                        }
+                        break;
+                    case 'all_properties':
+                        if (u.settings.notifications.props.length != 0 && value == true) {
+                            u.settings.notifications.props = [];
+                        }  else {
+                            u.remove = true;
+                        }
+                        break;
+                    case 'reminders':
+                        if (u.settings.reminders.on == value) {
+                            u.remove = true;
+                        }  else {
+                            u.settings.reminders.on = value;
+                        }
+                        break;
+                    case 'leased':
+                        if (u.settings.showLeases == value) {
+                            u.remove = true;
+                        }  else {
+                            u.settings.showLeases = value;
+                        }
+                        break;
+                    case 'renewal':
+                        if (u.settings.showRenewal == value) {
+                            u.remove = true;
+                        }  else {
+                            u.settings.showRenewal = value;
+                        }
+                        break;
+                    case 'detailed_concessions':
+                        if (u.settings.monthlyConcessions == value) {
+                            u.remove = true;
+                        }  else {
+                            u.settings.monthlyConcessions = value;
+                        }
+                        break;
+                    default:
+                        u.remove = true;
+                }
+
+            })
+
+            _.remove(users, function(x) { return x.remove})
+
+            callback(users);
+        });
+    }
 }
 
 
@@ -854,6 +913,7 @@ function getSysemUser (callback) {
 function defaultSettings(user, orgSettings) {
  //   orgSettings = orgSettings || { detailed_concessions : {}, leased: {}, renewal : {}, how_often: { default_value: "* * * * 2"}, updates: {}, reminders: {}};
  //   console.log(orgSettings);
+    user.settings = user.settings || {};
     user.settings.monthlyConcessions = user.settings.monthlyConcessions || orgSettings.detailed_concessions.default_value;
     user.settings.showLeases = user.settings.showLeases || orgSettings.leased.default_value;
     user.settings.showRenewal = user.settings.showRenewal || orgSettings.renewal.default_value;

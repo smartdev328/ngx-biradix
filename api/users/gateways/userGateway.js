@@ -10,6 +10,7 @@ var settings = require('../../../config/settings')
 var userCreateService = require('../services/userCreateService')
 var userRoutes = express.Router();
 var packages = require('../../../package.json');
+var async = require('async');
 
 userRoutes.post('/bounce', function (req, res) {
 
@@ -48,7 +49,7 @@ userRoutes.put('/me', function (req, res) {
 })
 
 userRoutes.put('/me/settings', function (req, res) {
-    UserService.updateSettings(req.user, req.body, req.context, function (err, usr) {
+    UserService.updateSettings(req.user, req.user, req.body, req.context, function (err, usr) {
             if (err) {
                 return res.status(200).json({errors: err, user: null});
             }
@@ -287,6 +288,49 @@ userRoutes.put('/:id/active', function (req, res) {
         });
     })
 })
+
+userRoutes.post('/getUsersForSettingsApply', function (req, res) {
+    AccessService.canAccess(req.user,"Admin", function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        UserService.getUsersForSettingsApply(req.user, req.body.orgid, req.body.setting, req.body.value, function (users) {
+            return res.status(200).json({users: _.map(users, function(x) {return x.first + ' ' + x.last})});
+        });
+    })
+});
+
+userRoutes.post('/updateUsersForSettingsApply', function (req, res) {
+    AccessService.canAccess(req.user,"Admin", function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        UserService.getUsersForSettingsApply(req.user, req.body.orgid, req.body.setting, req.body.value, function (users) {
+            var good = [];
+            var bad = [];
+            async.eachLimit(users, 10, function (user, callbackp) {
+
+                UserService.updateSettings(req.user,user, user.settings, req.context, function(err, settings) {
+                    if (err) {
+                        bad.push(user.first + ' ' + user.last)
+                    } else {
+                        good.push(user.first + ' ' + user.last)
+                    }
+
+                    callbackp();
+                });
+
+            }, function (err) {
+                return res.status(200).json({
+                    good: good,
+                    bad: bad
+                });
+            });
+        });
+    })
+});
 
 module.exports = userRoutes;
 
