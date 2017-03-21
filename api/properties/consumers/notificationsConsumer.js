@@ -13,21 +13,24 @@ queues.getNotificationsQueue().consume(function(data,reply) {
     console.log(data.properties, " notifications started");
     async.parallel({
         properties : function(callbackp) {
-            if (data.properties && data.properties.length > 0 && data.properties[0] != null) {
-                callbackp(null,data.properties);
-            } else {
-                propertyService.search(data.user, {
-                    select:"_id name",
-                    limit: 10000,
-                    permission: 'PropertyManage',
-                    active: true
-                }, function(err,props) {
-                    callbackp(err, _.pluck(props,"_id"));
-                })
 
+            var criteria = {
+                select:"_id name",
+                limit: 10000,
+                permission: 'PropertyManage',
+                active: true
             }
+
+            if (data.properties && data.properties.length > 0 && data.properties[0] != null) {
+                criteria.ids = data.properties;
+            }
+
+            propertyService.search(data.user, criteria, function(err,props) {
+                callbackp(err, _.pluck(props,"_id"));
+            })
         }
     }, function(err, all) {
+        console.log(all.properties);
 
         if (all.properties.length > 0) {
             var final = [];

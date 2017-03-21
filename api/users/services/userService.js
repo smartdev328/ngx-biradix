@@ -150,6 +150,10 @@ module.exports = {
                 query = query.where('emailLower').in(criteria.email.toLowerCase());
             }
 
+            if (criteria.active) {
+                query = query.where('active').eq(criteria.active);
+            }
+
             if (criteria.custom) {
 
                 if (criteria.select.indexOf("settings") == -1) {
@@ -511,7 +515,7 @@ module.exports = {
     getUsersForNotifications : function(callback) {
         var _this = this;
         getSysemUser(function(system) {
-            _this.search(system.user,{active:true, select: "_id settings first last email bounceReason" }, function(err,users) {
+            _this.search(system.user,{active:true, select: "_id settings first last email bounceReason active" }, function(err,users) {
                 users.forEach(function(u) {
                     defaultSettings(u,u.roles[0].org.settings);
                 })
@@ -531,6 +535,7 @@ module.exports = {
                         || !cronService.isAllowed(s.cron) // remove when cron is not allowed
                         || x.bounceReason
                         || x.roles[0].tags[0] == 'Guest'
+                        || !x.active
                 })
                 callback(err,users);
             });
