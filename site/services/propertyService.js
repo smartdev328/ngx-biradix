@@ -272,7 +272,7 @@ define(['app'], function (app) {
             var s;
             var data;
             var v;
-            lines.forEach(function(c) {
+            lines.forEach(function(c, lineIndex) {
                 s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
                 data = [];
                 if (p[c.prop] && p[c.prop][c.key]) {
@@ -304,7 +304,9 @@ define(['app'], function (app) {
                     s.data = _.sortBy(s.data, function(o) { return o[0]; });
                 }
 
-                series.push(s)
+                if (s.data.length > 0 || lineIndex == 0) {
+                    series.push(s)
+                }
 
             })
 

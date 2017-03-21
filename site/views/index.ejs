@@ -46,7 +46,7 @@
     <script src="/node_modules/phantomjs-polyfill/bind-polyfill.js"></script>
     <%}%>
 
-    <script data-main="app/main.js?bust=<%=version%>" src="libs/requirejs/require-min.js"></script>
+    <script data-main="app/main.js?bust=<%=version%>" src="libs/requirejs/require-2.3.3.min.js"></script>
 
 </head>
 <body ng-controller="rootController" ng-click="resetTimeout()" ng-keypress="resetTimeout()">
@@ -108,7 +108,7 @@
                                    uib-typeahead="props.summary for props in getLocation($viewValue)"
                                    typeahead-on-select="searchSelected($item, $model, $label)"
                                    typeahead-template-url="customTemplate.html"
-                                   ng-model="search1"
+                                   ng-model="searches.search1"
                                    style="width:200px"
                                    ng-keydown="disableSearchKeys($event)"
                                     >
@@ -171,7 +171,7 @@
                            uib-typeahead="props.summary for props in getLocation($viewValue)"
                            typeahead-on-select="searchSelected($item, $model, $label)"
                            typeahead-template-url="customTemplate.html"
-                           ng-model="search1"
+                           ng-model="searches.search1"
                            ng-keydown="disableSearchKeys($event)"
                             >
                     <i class="fa fa-search form-control-feedback" style="color:#ccc;"></i>

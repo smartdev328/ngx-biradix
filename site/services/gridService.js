@@ -49,10 +49,16 @@ define([
                 finalVal += '\n';
             }
 
-            var pom = document.createElement('a');
-            pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(finalVal));
-            pom.setAttribute('download', filename);
-            pom.click();
+            if (window.navigator.msSaveOrOpenBlob) { // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                var blob = new Blob([finalVal]);
+                window.navigator.msSaveOrOpenBlob(blob, filename);
+            }
+            else {
+                var pom = document.createElement('a');
+                pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(finalVal));
+                pom.setAttribute('download', filename);
+                pom.click();
+            }
         }
 
         return fac;

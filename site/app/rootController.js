@@ -105,6 +105,10 @@ define([
 
         }
 
+        $scope.searches = {
+            search1: "",
+            search2: "",
+        }
         $scope.first = true;
 
         $rootScope.notifications = [];
@@ -341,8 +345,8 @@ define([
         }
         
         $scope.searchSelected = function (item, model, label) {
-            $scope.search1 = "";
-            $scope.search2 = "";
+            $scope.searches.search1 = "";
+            $scope.searches.search2 = "";
             $rootScope.turnOffSearch();
             $location.path("/profile/" + item._id);
         }
