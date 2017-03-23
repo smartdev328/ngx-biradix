@@ -8,6 +8,7 @@ define([
     '../components/timeseries/module',
     '../components/toggle/module',
     '../../components/propertyProfile/profile',
+    '../../components/propertyProfile/coverPage',
     '../../services/amenityService',
 ], function (app) {
 

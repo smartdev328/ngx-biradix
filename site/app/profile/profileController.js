@@ -220,6 +220,12 @@ define([
                         $auditService.create({type: 'property_profile', property: {id: resp.property._id, name: resp.property.name, orgid: resp.property.orgid}, description: resp.property.name});
                     }
 
+                    $scope.coverPage = {
+                        date: moment().format("MMM Do, YYYY"),
+                        reports: ['Profile Report: ' + $scope.property.name],
+                        org: $rootScope.me.orgs[0]
+                    }
+
                     $scope.points = resp.points;
                     $scope.surveyData = resp.surveyData;
                     $scope.nerData = resp.nerData
