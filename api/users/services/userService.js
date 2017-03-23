@@ -17,6 +17,11 @@ var redisService = require('../../utilities/services/redisService')
 var userBounceService = require('./userBounceService')
 
 module.exports = {
+
+    defaultSettings: function(user, orgSettings) {
+        return defaultSettings(user,orgSettings);
+    },
+
     updateGuestStatsDateAdded: function(guestid, propertyid, callback) {
         var query = {_id: guestid};
         var update = {$addToSet: {guestStats: {propertyid: propertyid.toString(), dateAdded: new Date(), lastEmailed: null, lastCompleted: null}}};

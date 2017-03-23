@@ -37,12 +37,13 @@ module.exports = {
                     userids = userids.concat(p.userids);
                 })
 
-                UserService.search(operator,{select:"_id first last email bounceReason active settings.reminders settings.tz",ids:userids}, function(err, users) {
+                UserService.search(operator,{select:"_id first last email bounceReason active settings",ids:userids}, function(err, users) {
 
                     users.forEach(function(u) {
-                        u.settings = u.settings || {};
+                        UserService.defaultSettings(u,u.roles[0].org.settings);
                         u.settings.tz = u.settings.tz || 'America/Los_Angeles';
                     })
+
                     properties.forEach(function(p) {
                         p.users = [];
                         //join full user on ids
@@ -664,8 +665,6 @@ var getPropertyAssignedUsers = function(operator, propertyid, roleTypes, callbac
                 })
             }
         },function(err, all) {
-
-            console.log(all);
 
             if (err) {
                 return callback([{msg:"Unable to retrieve users."}], null)
