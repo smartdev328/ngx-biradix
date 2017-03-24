@@ -131,6 +131,12 @@ define([
                         $scope.stretchComps = true;
                     }
 
+                    $scope.coverPage = {
+                        date: moment().format("MMM Do, YYYY"),
+                        reports: ['Profile Report w/Comps: ' + $scope.property.name],
+                        org: $rootScope.me.orgs[0]
+                    }
+
                     $scope.mapOptions = resp.mapOptions;
                     $scope.bedrooms = resp.bedrooms;
                     $scope.bedroom = resp.bedroom;;

@@ -389,6 +389,10 @@ A.gear:hover .fa-gear  {
         font-size: 13px;
         font-weight: 400;
     }
+
+    #toast-container {
+        display:none
+    }
 }
 
 select {

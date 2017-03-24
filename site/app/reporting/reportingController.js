@@ -182,6 +182,7 @@ define([
             $scope.noProperties = false;
 
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
+            var reportNames = _.clone($scope.reportNames);
             $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
 
 
@@ -190,6 +191,12 @@ define([
                 $scope.reportLoading = false;
                 window.renderable = true;
                 return;
+            }
+
+            $scope.coverPage = {
+                date: moment().format("MMM Do, YYYY"),
+                reports: reportNames,
+                org: $rootScope.me.orgs[0]
             }
 
             if ($scope.reportType == "single") {
