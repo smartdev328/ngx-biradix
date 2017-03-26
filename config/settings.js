@@ -1,6 +1,6 @@
 module.exports = {
     RAYGUN_APIKEY: process.env.RAYGUN_APIKEY || 'pVcxW+v/CU01JzU+42/WAg==',
-    MONGODB_URI: process.env.MONGOHQ_URL ||process.env.MONGOLAB_URI || 'mongodb://127.0.0.1:27017/Biradix',
+    MONGODB_URI: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI  || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Biradix',
     SENDGRID_USERNAME : process.env.SENDGRID_USERNAME || 'app43915263@heroku.com',
     SENDGRID_PASSWORD : process.env.SENDGRID_PASSWORD || 'cypsntld9977',
     SENDGRID_API_KEY :  process.env.SENDGRID_API_KEY || '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',
