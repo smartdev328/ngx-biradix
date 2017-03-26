@@ -1,5 +1,5 @@
 {
-  "name": "BI:Radix",
+  "name": "BI:Radix Platform",
   "env": {
     "SEED_DEMO": {
       "value": "1"
