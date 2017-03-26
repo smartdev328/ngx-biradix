@@ -2,7 +2,7 @@
   "name": "BI:Radix",
   "env": {
     "SEED_DEMO": {
-      "generator": "1"
+      "value": "1"
     },
     "mode": {
       "value": "production"
