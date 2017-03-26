@@ -1,0 +1,35 @@
+{
+  "name": "BI:Radix",
+  "env": {
+    "SEED_DEMO": {
+      "generator": "1"
+    },
+    "mode": {
+      "value": "production"
+    },
+    "EXCEL_URL": {
+      "value": "http://biradixsheets.apphb.com/excel"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "Standard-1X"
+    }
+  },
+  "addons": [
+    "cloudamqp:lemur",
+    "mongolab:shared-single-small",
+    "sendgrid:starter",
+    "heroku-redis:hobby-dev",
+    "raygun:intro"
+  ],
+  "buildpacks": [
+    {
+      "url": "http://github.com/heroku/heroku-buildpack-nodejs.git"
+    },
+    {
+      "url": "https://github.com/stomita/heroku-buildpack-phantomjs"
+    }
+  ]
+}
