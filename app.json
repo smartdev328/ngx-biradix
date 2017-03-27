@@ -11,6 +11,9 @@
       "value": "http://biradixsheets.apphb.com/excel"
     }
   },
+  "scripts": {
+    "postdeploy": "curl https://api.ghostinspector.com/v1/suites/58d891f966fd7359f7af2aa4/?apiKey=07cd183a6be0326686341494aaa63ca12218de05&startUrl="
+  },
   "formation": {
     "web": {
       "quantity": 1,
