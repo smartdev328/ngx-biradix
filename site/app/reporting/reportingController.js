@@ -171,7 +171,6 @@ define([
 
         $scope.changeProperty = function() {
             $scope.localLoading = false;
-            $scope.localLoading = false;
             $scope.loadComps();
         }
 
@@ -193,15 +192,32 @@ define([
                 return;
             }
 
-            $scope.coverPage = {
-                date: moment().format("MMM Do, YYYY"),
-                reports: reportNames,
-                org: $rootScope.me.orgs[0]
-            }
+
 
             if ($scope.reportType == "single") {
+
+                $scope.coverPage = {
+                    date: moment().format("MMM Do, YYYY"),
+                    reports: [{name: $scope.selected.Property.name, items : reportNames}],
+                    org: $rootScope.me.orgs[0]
+                }
+
                 $scope.singleReport();
             } else {
+
+                var properties = _.filter($scope.propertyItems,function(x) {return x.selected == true});
+                var reports = [];
+
+                properties.forEach(function(p) {
+                    reports.push({name:p.name, items : reportNames})
+                })
+
+                $scope.coverPage = {
+                    date: moment().format("MMM Do, YYYY"),
+                    reports: reports,
+                    org: $rootScope.me.orgs[0]
+                }
+
                 $scope.multipleReport();
             }
 

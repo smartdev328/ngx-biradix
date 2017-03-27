@@ -9,7 +9,7 @@ define([
                 options: '=',
             },
             controller: function ($scope) {
-
+                $scope.year = (new Date()).getFullYear();
             },
             templateUrl: '/components/propertyProfile/coverPage.html?bust=' + version
         };
