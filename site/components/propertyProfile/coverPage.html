@@ -1,5 +1,5 @@
 <div class="visible-print break-after">
-    <div style="text-align: center;height:1320px">
+    <div style="text-align: center;height:1450px">
         <h1 style="margin-top:200px;font-size:70px">{{options.org.name}}</h1>
         <h2 style="margin-top:20px;font-size:40px">Business Intelligence Report</h2>
         <div style="padding:200px 0px">
@@ -10,8 +10,13 @@
             <Table>
                 <tr>
                     <td style="text-align: left;">
-                        <h3 style="font-size:30px">Included in this Report:</h3>
-                        <h4 style="font-size:20px !important;color:black !important"><li ng-repeat="report in options.reports ">{{report}}</li></h4><Br>
+                        <h3 style="font-size:32px">Included in this Report:</h3>
+                        <h4 style="font-size:28px !important;color:black !important;margin-top:15px" ng-repeat="report in options.reports | limitTo: 8"><i>{{report.name}}</i>
+                            <li style="font-size:24px !important;color:black !important;margin-top:15px;list-style-type: none;margin-left:30px" ng-repeat="item in report.items">- {{item}}</li>
+                        </h4>
+
+                        <h4 style="font-size:28px !important;color:black !important;margin-top:15px" ng-if="options.reports.length > 8"><i>+ {{options.reports.length - 8}} more</i></h4>
+
                     </td>
                 </tr>
             </Table>
@@ -24,7 +29,7 @@
         Report Generated on: {{options.date}}
     </div>
     <div style="float:right;font-size:18px;padding-right:200px">
-        Powered by: <a href="http://www.biradix.com" style="color:#1E90FF !important;text-decoration: underline;font-size:18px;">www.biradix.com</a> &copy;
+        Powered by: <a href="http://www.biradix.com" style="color:#1E90FF !important;text-decoration: underline;font-size:18px;">www.biradix.com</a> &copy; {{year}}
     </div>
     <br clear="all">
 </div>

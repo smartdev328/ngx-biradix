@@ -253,7 +253,7 @@ body {
     }
     .break-after
     {
-        break-after: always !important;
+        break-after: page !important;
         page-break-after: always !important;
         page-break-inside: avoid !important;
     }

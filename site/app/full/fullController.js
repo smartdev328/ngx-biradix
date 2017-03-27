@@ -133,7 +133,7 @@ define([
 
                     $scope.coverPage = {
                         date: moment().format("MMM Do, YYYY"),
-                        reports: ['Profile Report w/Comps: ' + $scope.property.name],
+                        reports: [{name: $scope.property.name, items : ['Property Profile w/Comps']}],
                         org: $rootScope.me.orgs[0]
                     }
 
