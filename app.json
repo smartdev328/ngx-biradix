@@ -11,6 +11,9 @@
       "value": "http://biradixsheets.apphb.com/excel"
     }
   },
+  "scripts": {
+    "postdeploy": "echo $HEROKU_APP_NAME"
+  },
   "formation": {
     "web": {
       "quantity": 1,
