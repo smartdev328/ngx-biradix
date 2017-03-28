@@ -252,10 +252,6 @@ body {
         position: inherit;
     }
 
-    @page { margin: 5px; }
-    body {
-        margin:10px 20px
-    }
 
     #page-content-wrapper {
         padding: 0px !important;
