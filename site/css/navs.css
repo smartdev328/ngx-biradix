@@ -251,12 +251,6 @@ body {
     #page-content-wrapper {
         position: inherit;
     }
-
-
-    #page-content-wrapper {
-        padding: 0px !important;
-    }
-
     .break-after
     {
         break-after: page !important;
