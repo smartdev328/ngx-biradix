@@ -205,11 +205,11 @@ define([
                 $scope.singleReport();
             } else {
 
-                var properties = _.filter($scope.propertyItems,function(x) {return x.selected == true});
+                var properties =  _.pluck(_.filter($scope.propertyItems,function(x) {return x.selected == true}),"name");
                 var reports = [];
 
-                properties.forEach(function(p) {
-                    reports.push({name:p.name, items : reportNames})
+                reportNames.forEach(function(r) {
+                    reports.push({name:r, items : properties})
                 })
 
                 $scope.coverPage = {
