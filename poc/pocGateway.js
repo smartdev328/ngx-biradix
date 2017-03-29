@@ -17,7 +17,7 @@ routes.post('/gitWebHook', function(req, res) {
 
 
 
-    if (req.body.deployment_status && req.body.deployment_status.state == 'success' && req.body.deployment && req.body.deployment.environment) {
+    if (req.body.deployment_status && req.body.deployment_status.state == 'success' && req.body.deployment && req.body.deployment.environment && req.body.deployment.environment.indexOf('biradixplatform-qa-pr') > -1) {
         var url = "https://" + req.body.deployment.environment;
         var email = {
             to: "alex@biradix.com,eugene@biradix.com",
