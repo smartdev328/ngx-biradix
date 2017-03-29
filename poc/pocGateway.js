@@ -29,6 +29,11 @@ routes.post('/gitWebHook', function(req, res) {
         EmailService.send(email,function(emailError,status) {
             console.log(emailError,status);
         })
+        //TODO: Call Test(s)
+        //TODO: Mark Status as Success or Failed
+    } else if (req.body.deployment_status && req.body.deployment_status.state == 'pending' && req.body.deployment && req.body.deployment.environment && req.body.deployment.environment.indexOf('biradixplatform-qa-pr') > -1) {
+        //TODO: Mark Status Pending
+
     }
 
      res.status(200).json({success:true});
