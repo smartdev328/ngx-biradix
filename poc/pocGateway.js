@@ -14,16 +14,22 @@ var userService = require('../api/users/services/userService')
 var EmailService = require('../api/business/services/emailService')
 
 routes.post('/gitWebHook', function(req, res) {
-    var email = {
-        to: "alex@biradix.com,eugene@biradix.com",
-        subject: "WebHook",
-        logo: "https://platform.biradix.com/images/organizations/biradix.png",
-        html: JSON.stringify(req.body)
-    };
 
-    EmailService.send(email,function(emailError,status) {
-        console.log(emailError,status);
-    })
+
+
+    if (req.body.deployment_status && req.body.deployment_status.state == 'success' && req.body.deployment && req.body.deployment.environment) {
+        var url = "https://" + req.body.deployment.environment;
+        var email = {
+            to: "alex@biradix.com,eugene@biradix.com",
+            subject: "Review App Ready to Test: " + url,
+            logo: "https://platform.biradix.com/images/organizations/biradix.png",
+            html: "<a href='"+url+"'>"+url+"</a>"
+        };
+
+        EmailService.send(email,function(emailError,status) {
+            console.log(emailError,status);
+        })
+    }
 
      res.status(200).json({success:true});
 });
