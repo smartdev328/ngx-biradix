@@ -109,7 +109,7 @@ d.run(function() {
 
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
                 if (workerId == 1) {
-                    window.setTimeout(function() {
+                    setTimeout(function() {
                         require('../config/seed').init();
                     }, 30000)
 
