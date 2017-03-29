@@ -11,6 +11,22 @@ var PropertySchema = require('../api/properties/schemas/propertySchema')
 var settings = require("../config/settings")
 var OrgService = require('../api/organizations/services/organizationService')
 var userService = require('../api/users/services/userService')
+var EmailService = require('../api/business/services/emailService')
+
+routes.post('/gitWebHook', function(req, res) {
+    var email = {
+        to: "alex@biradix.com,eugene@biradix.com",
+        subject: "WebHook",
+        logo: "https://platform.biradix.com/images/organizations/biradix.png",
+        html: JSON.stringify(req.body)
+    };
+
+    EmailService.send(email,function(emailError,status) {
+        console.log(emailError,status);
+    })
+
+     res.status(200).json({success:true});
+});
 
 routes.get('/jasmine', function(req, res) {
     userService.getSystemUser(function(obj) {
