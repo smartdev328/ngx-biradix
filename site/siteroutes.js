@@ -73,6 +73,10 @@ module.exports = (function() {
                 org = _.find(orgs, function(org) { return org.isDefault === true })
             }
 
+            if (!org) {
+                return res.status(200).send("No data");
+            }
+
             res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom, dyno: process.env.DYNO
                 //nreum : newrelic.getBrowserTimingHeader()
             });
