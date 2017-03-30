@@ -19,11 +19,51 @@ routes.post('/gitWebHook', function(req, res) {
 
     if (req.body.deployment_status && req.body.deployment_status.state == 'success' && req.body.deployment && req.body.deployment.environment && req.body.deployment.environment.indexOf('biradixplatform-qa-pr') > -1) {
         var url = "https://" + req.body.deployment.environment + ".herokuapp.com";
+        // var email = {
+        //     to: "alex@biradix.com,eugene@biradix.com",
+        //     subject: "Review App Ready to Test: " + url,
+        //     logo: "https://platform.biradix.com/images/organizations/biradix.png",
+        //     html: "<a href='"+url+"'>"+url+"</a>"
+        // };
+        //
+        // EmailService.send(email,function(emailError,status) {
+        //     console.log(emailError,status);
+        // })
+
+        var ghostInspector = "https://api.ghostinspector.com/v1/suites/58d891f966fd7359f7af2aa4/execute/?apiKey=07cd183a6be0326686341494aaa63ca12218de05&startUrl=" + url;
+
+        //Call Test(s) after 1 minute
+        setTimeout(function() {
+            request({url: ghostInspector, timeout: 1000 * 60 * 60}, function (error, response, body) {
+                var resp;
+                try {
+                    resp = JSON.parse(response.body)
+                } catch (ex) {
+                    resp = null;
+                }
+
+                var email = {
+                    to: "alex@biradix.com,eugene@biradix.com",
+                    subject: "Test Ran on: " + url,
+                    logo: "https://platform.biradix.com/images/organizations/biradix.png",
+                    html: ghostInspector + "<Hr>" + JSON.stringify(resp) + "<Hr>" + JSON.stringify(req.body)
+                };
+
+                EmailService.send(email,function(emailError,status) {
+                    console.log(emailError,status);
+                })
+            });
+        }, 60000)
+
+        //TODO: Mark Status as Success or Failed
+    } else if (req.body.deployment_status && req.body.deployment_status.state == 'pending' && req.body.deployment && req.body.deployment.environment && req.body.deployment.environment.indexOf('biradixplatform-qa-pr') > -1) {
+        //TODO: Mark Status Pending
+
         var email = {
             to: "alex@biradix.com,eugene@biradix.com",
-            subject: "Review App Ready to Test: " + url,
+            subject: "Need to Set Status Pending Here",
             logo: "https://platform.biradix.com/images/organizations/biradix.png",
-            html: "<a href='"+url+"'>"+url+"</a>"
+            html: JSON.stringify(req.body)
         };
 
         EmailService.send(email,function(emailError,status) {
