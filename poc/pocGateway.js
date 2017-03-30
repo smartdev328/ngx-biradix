@@ -43,7 +43,7 @@ routes.post('/gitWebHook', function(req, res) {
                 }
 
                 var email = {
-                    to: "alex@biradix.com,eugene@biradix.com",
+                    to: "alex@biradix.com",
                     subject: "Test Ran on: " + url,
                     logo: "https://platform.biradix.com/images/organizations/biradix.png",
                     html: ghostInspector + "<Hr>" + JSON.stringify(resp) + "<Hr>" + JSON.stringify(req.body)
@@ -57,18 +57,18 @@ routes.post('/gitWebHook', function(req, res) {
 
         //TODO: Mark Status as Success or Failed
     } else if (req.body.deployment_status && req.body.deployment_status.state == 'pending' && req.body.deployment && req.body.deployment.environment && req.body.deployment.environment.indexOf('biradixplatform-qa-pr') > -1) {
-        //TODO: Mark Status Pending
-
-        var email = {
-            to: "alex@biradix.com,eugene@biradix.com",
-            subject: "Need to Set Status Pending Here",
-            logo: "https://platform.biradix.com/images/organizations/biradix.png",
-            html: JSON.stringify(req.body)
-        };
-
-        EmailService.send(email,function(emailError,status) {
-            console.log(emailError,status);
-        })
+        // //TODO: Mark Status Pending
+        //
+        // var email = {
+        //     to: "alex@biradix.com,eugene@biradix.com",
+        //     subject: "Need to Set Status Pending Here",
+        //     logo: "https://platform.biradix.com/images/organizations/biradix.png",
+        //     html: JSON.stringify(req.body)
+        // };
+        //
+        // EmailService.send(email,function(emailError,status) {
+        //     console.log(emailError,status);
+        // })
     }
 
      res.status(200).json({success:true});
