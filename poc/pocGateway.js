@@ -20,16 +20,6 @@ routes.post('/gitWebHook', function(req, res) {
     if (req.body.deployment_status && req.body.deployment_status.state == 'success' && req.body.deployment && req.body.deployment.environment && req.body.deployment.environment.indexOf('biradixplatform-qa-pr') > -1) {
         var url = "https://" + req.body.deployment.environment + ".herokuapp.com";
         var sha = req.body.deployment.sha;
-        // var email = {
-        //     to: "alex@biradix.com,eugene@biradix.com",
-        //     subject: "Review App Ready to Test: " + url,
-        //     logo: "https://platform.biradix.com/images/organizations/biradix.png",
-        //     html: "<a href='"+url+"'>"+url+"</a>"
-        // };
-        //
-        // EmailService.send(email,function(emailError,status) {
-        //     console.log(emailError,status);
-        // })
 
         var ghostInspector = "https://api.ghostinspector.com/v1/suites/58d891f966fd7359f7af2aa4/execute/?apiKey=07cd183a6be0326686341494aaa63ca12218de05&startUrl=" + url;
 
@@ -87,16 +77,7 @@ function GitHubStatus(sha, state, description) {
 
         },
         function (error, response, body) {
-            var email = {
-                to: "alex@biradix.com",
-                subject: "GitHub Status Update",
-                logo: "https://platform.biradix.com/images/organizations/biradix.png",
-                html: sha + "<Hr>" + response.body + "<Hr>" + state+ "<Hr>" + description
-            };
 
-            EmailService.send(email,function(emailError,status) {
-                console.log(emailError,status);
-            })
         }
     );
 
