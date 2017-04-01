@@ -95,9 +95,14 @@ module.exports = {
             }
 
 
+            var dateKey;
+            var nerPoint;
+            var prop;
+            var newpoints;
+
             surveys.forEach(function(s) {
 
-                var dateKey = parseInt(moment.utc(s.date).add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'));
+                dateKey = parseInt(moment.utc(s.date).add(offset,"minute").startOf("day").subtract(offset,"minute").format('x'));
 
                 points[s.propertyid] = points[s.propertyid] || {};
 
@@ -134,7 +139,7 @@ module.exports = {
                 if (show.ner) {
                     points[s.propertyid].ner = points[s.propertyid].ner || {};
 
-                    var nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, show.scale);
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, show.scale);
                     points[s.propertyid].ner[dateKey] = nerPoint;
 
                     if (nerPoint.excluded) {
@@ -154,7 +159,7 @@ module.exports = {
             })
 
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
-            for (var prop in points) {
+            for (prop in points) {
 
                 if (show.graphs === true) {
                     if (show.occupancy) {
@@ -230,7 +235,7 @@ module.exports = {
             }
 
             if (summary || bedrooms == -2) {
-                var newpoints = {averages:{}}
+                newpoints = {averages:{}}
 
                 //Only Avergage if we want comps grouped
                 if (summary) {
@@ -263,7 +268,7 @@ module.exports = {
 
                     //If we dont want summary, put back other non-summary points
                     if (!summary) {
-                        for (var prop in points) {
+                        for (prop in points) {
                             if (prop != subject._id.toString()) {
                                 newpoints[prop] = points[prop];
                             }
@@ -278,7 +283,7 @@ module.exports = {
 
             //Remove unit counts when not averaging points
             if (show.ner) {
-                for (var prop in points) {
+                for (prop in points) {
                     if (points[prop].ner) {
                         points[prop].ner.forEach(function (p) {
                             if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {

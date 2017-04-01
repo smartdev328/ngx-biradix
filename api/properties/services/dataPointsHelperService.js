@@ -95,10 +95,13 @@ module.exports = {
 
         var first = null;
 
+        var rangePoints;
+        var d;
+        var totalUnits;
         while (parseInt(minDate) < nextMonday) {
-            var rangePoints = [];
+            rangePoints = [];
 
-            for (var d in points) {
+            for (d in points) {
                 if (parseInt(d) >= monday && parseInt(d) < nextMonday) {
                     rangePoints.push(points[d])
                 }
@@ -107,7 +110,7 @@ module.exports = {
             if (rangePoints.length > 0) {
 
                 if (weighted) {
-                    var totalUnits = _.sum(rangePoints, function(x) {return x.totalUnits});
+                    totalUnits = _.sum(rangePoints, function(x) {return x.totalUnits});
                     //weighte average value and totalUnits
                     ret[monday] = {value: _.sum(rangePoints, function(x) {return x.value * x.totalUnits}) / totalUnits, totalUnits: totalUnits / rangePoints.length};
                 }
@@ -204,8 +207,9 @@ module.exports = {
             }
         }
 
+        var total;
         var g = _.chain(newpoints['averages'][dimension]).groupBy("d").map(function (v, k) {
-            var total = v.length;
+            total = v.length;
             if (weighted) {
                 total = _.sum(v, function (x) {
                     return x.v.totalUnits
