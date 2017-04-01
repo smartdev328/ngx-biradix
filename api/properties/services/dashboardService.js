@@ -93,11 +93,12 @@ module.exports = {
                             })
                     }
                 }, function(err, all2) {
+                    var daysSince;
                     all2.comps.forEach(function(c) {
                         if (c.survey) {
                             delete c.floorplans;
                             if (c.survey.date) {
-                                var daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
+                                daysSince = (Date.now() - c.survey.date.getTime()) / 1000 / 60 / 60 / 24;
                                 if (daysSince >= 15) {
                                     c.survey.tier = "danger";
                                 } else if (daysSince >= 8) {
@@ -260,10 +261,12 @@ module.exports = {
                                 }
                             }, function(err, all) {
 
+                                var comp;
+
                                 all.comps.forEach(function(c) {
                                     delete c.floorplans;
                                     c.orderNumber = 999;
-                                    var comp = _.find(property[0].comps, function(x) {return x.id.toString() == c._id.toString() })
+                                    comp = _.find(property[0].comps, function(x) {return x.id.toString() == c._id.toString() })
 
                                     if (comp && typeof comp.orderNumber != 'undefined') {
                                         c.orderNumber = comp.orderNumber;
@@ -294,13 +297,15 @@ module.exports = {
 
                                 all.comps = _.sortByAll(all.comps,['orderNumber','name']);
 
-
+                                var minDate;
+                                var g;
+                                var l;
                                 //Remove all points for lifetime older then subject property
                                 if (options.daterange && options.daterange.daterange == "Lifetime" && all.points[id] && all.points[id].ner) {
-                                    var minDate = all.points[id].ner[0].d;
-                                    for (var g in all.points) {
+                                    minDate = all.points[id].ner[0].d;
+                                    for (g in all.points) {
                                         if (g != id && typeof all.points[g] === 'object') {
-                                            for (var l in all.points[g]) {
+                                            for (l in all.points[g]) {
                                                 _.remove(all.points[g][l], function(x) {return x.d < minDate});
                                             }
                                         }
