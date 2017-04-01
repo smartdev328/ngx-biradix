@@ -240,6 +240,7 @@ Routes.post('/', function (req, res) {
 
                     PropertyService.search(req.user, {limit: 10000, permission: ['PropertyView'], ids: propertyids
                         , select: "_id orgid name"
+                        , skipAmenities: true
                     }, function(err, orgids) {
                         // console.log(orgids);
 
@@ -247,6 +248,7 @@ Routes.post('/', function (req, res) {
                         PropertyService.search(req.user, {
                             limit: 10000, permission: ['PropertyManage'], ids: propertyids
                             , select: "_id"
+                            , skipAmenities: true
                         }, function (err, properties) {
                             obj.forEach(function (o) {
 
@@ -324,7 +326,7 @@ function linksUpdated(req, o, callback) {
 
     var added = _.pluck(_.filter(o.data, function(x) {return x.type && x.type == 'added'}),"id");
     var removed = _.pluck(_.filter(o.data, function(x) {return x.type && x.type == 'removed'}),"id");
-    PropertyService.search(req.user,{_id: subjectid, select: 'comps'}, function(er, props) {
+    PropertyService.search(req.user,{_id: subjectid, select: 'comps', skipAmenities: true}, function(er, props) {
 
         var comp = _.find(props[0].comps, function(x) {
             return x.id == compid});
@@ -562,12 +564,12 @@ function getPropertiesAndComps (req, callback) {
 
     async.parallel({
         subjects: function(callbackp) {
-            PropertyService.search(req.user, {permission: ['PropertyManage'], select: '_id name', limit: 10000}, function(err, properties) {
+            PropertyService.search(req.user, {permission: ['PropertyManage'], select: '_id name', limit: 10000, skipAmenities: true}, function(err, properties) {
                 callbackp(null, properties)
             })
         },
         comps: function(callbackp) {
-            PropertyService.search(req.user, {permission: ['CompManage'], select: '_id name', limit: 10000}, function(err, properties) {
+            PropertyService.search(req.user, {permission: ['CompManage'], select: '_id name', limit: 10000, skipAmenities: true}, function(err, properties) {
                 callbackp(null, properties)
             })
         }

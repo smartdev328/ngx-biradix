@@ -20,6 +20,7 @@ module.exports = {
                 }
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView'], _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey"
+                    , skipAmenities: true
                 }, function(err, property) {
                     //console.log("Subject DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                     callbackp(err, property[0])
@@ -42,6 +43,7 @@ module.exports = {
                 }
                 PropertyService.search(user, {limit: 1, permission: ['CompManage','PropertyManage'], _id: compId
                     , select: "_id"
+                    , skipAmenities: true
                 }, function(err, property) {
                     callbackp(err, property.length == 1)
                 })
@@ -53,6 +55,7 @@ module.exports = {
                 }
                 PropertyService.search(user, {limit: 1, permission: ['PropertyManage'], _id: compId
                     , select: "_id"
+                    , skipAmenities: true
                 }, function(err, property) {
                     callbackp(err, property.length == 1)
                 })
@@ -144,6 +147,7 @@ module.exports = {
         var timer = new Date().getTime();
         PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: id
             , select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps"
+            , skipAmenities: true
         }, function(err, property) {
             if (err) {
                 return callback(err,null)
@@ -162,6 +166,7 @@ module.exports = {
                     ids: compids
                     ,
                     select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt"
+                    , skipAmenities: true
                 }, function(err, comps) {
 
                     //pre-comupte a lookup for datest by owner for locks
@@ -209,6 +214,7 @@ module.exports = {
                                 owned: function(callbackp) {
                                     PropertyService.search(user, {limit: 20, permission: ['PropertyManage'], ids: compids
                                         , select: "_id"
+                                        , skipAmenities: true
                                     }, function(err, property) {
 
                                         if (err || !property) {

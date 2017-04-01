@@ -75,6 +75,7 @@ define([
                 permission: 'PropertyManage',
                 active: true,
                 select: "address city state zip website name survey phone email contactName constructionType yearBuilt yearRenovated owner management totalUnits"
+                , skipAmenities: true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
 

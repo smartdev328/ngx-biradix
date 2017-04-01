@@ -332,7 +332,7 @@ define([
             return $sce.trustAsHtml(s);
         }
         $scope.getLocation = function (val) {
-            return $propertyService.search({search: val, active: true}).then(function (response) {
+            return $propertyService.search({search: val, active: true, skipAmenities: true}).then(function (response) {
                 return response.data.properties
             });
         };
@@ -488,7 +488,7 @@ define([
         }
 
         $scope.alertsProperties = function() {
-            $propertyService.search({limit: 10000, needsApproval:true}).then(function (response) {
+            $propertyService.search({limit: 10000, needsApproval:true, skipAmenities: true}).then(function (response) {
 
                     var a = _.find($rootScope.notifications, function(x) {return x.key == "properties"});
 

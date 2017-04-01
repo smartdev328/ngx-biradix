@@ -12,7 +12,7 @@ module.exports = {
     NEW_RELIC_NAME : process.env.NEW_RELIC_NAME || 'Localhost',
     REDIS_URL : process.env.REDIS_URL || 'redis://h:pdjspsu2slasi61aocetei0qp6j@ec2-54-83-62-222.compute-1.amazonaws.com:6819',
     EXCEL_URL : process.env.EXCEL_URL || 'http://localhost:12008/excel',
-    CLOUDAMQP_URL : process.env.CLOUDAMQP_URL || 'amqp://qntsinqa:64eqOU3x2xM2149WQ93jyplCpGk5CL8X@moose.rmq.cloudamqp.com/qntsinqa',
+    CLOUDAMQP_URL : process.env.CLOUDAMQP_URL || 'amqp://localhost',
     DASHBOARD_QUEUE : "jobs.property.dashboard",
     PROFILE_QUEUE : "jobs.property.profile",
     PDF_PROFILE_QUEUE : "jobs.property.profile.pdf",

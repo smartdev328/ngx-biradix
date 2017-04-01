@@ -83,6 +83,7 @@ define([
                         limit: 10000,
                         permission: 'PropertyManage',
                         active: true
+                        , skipAmenities: true
                     }).then(function (response) {
                         //$scope.myProperties = response.data.properties;
                         $scope.notificationsLoaded = true;

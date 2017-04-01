@@ -1260,6 +1260,7 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.BiradixAdmin._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
         {executorid: roles.BiradixAdmin._id, resource: "Settings/Default", allow: true, type: 'Execute'},
+        {executorid: roles.BiradixAdmin._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
         {executorid: roles.Guest._id, resource: "Hide/Dashboard", allow: true, type: 'Execute'},
         {executorid: roles.Guest._id, resource: "Hide/Search", allow: true, type: 'Execute'},
@@ -1282,6 +1283,9 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.GreystarCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.GreystarRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.GreystarBM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.GreystarBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
         {executorid: roles.AllianceCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.AllianceRM._id, resource: "Users", allow: true, type: 'Execute'},
@@ -1298,6 +1302,9 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.AllianceCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.AllianceRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.AllianceBM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.AllianceBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
         {executorid: roles.WoodCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.WoodRM._id, resource: "Users", allow: true, type: 'Execute'},
@@ -1314,6 +1321,9 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.WoodCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.WoodRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.WoodBM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.WoodCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.WoodRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.WoodBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
         {executorid: roles.DemoCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.DemoRM._id, resource: "Users", allow: true, type: 'Execute'},
@@ -1330,6 +1340,9 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.DemoCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.DemoRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.DemoBM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.DemoCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.DemoRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.DemoBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
         {executorid: roles.PeakLivingCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.PeakLivingRM._id, resource: "Users", allow: true, type: 'Execute'},
@@ -1346,6 +1359,9 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.PeakLivingCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.PeakLivingRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.PeakLivingBM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.PeakLivingBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
         {executorid: roles.HarborCM._id, resource: "Users", allow: true, type: 'Execute'},
         {executorid: roles.HarborRM._id, resource: "Users", allow: true, type: 'Execute'},
@@ -1362,6 +1378,9 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.HarborCM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.HarborRM._id, resource: "Properties", allow: true, type: 'Execute'},
         {executorid: roles.HarborBM._id, resource: "Properties", allow: true, type: 'Execute'},
+        {executorid: roles.HarborCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.HarborRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+        {executorid: roles.HarborBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
     ];
 
     async.eachLimit(permissions, 10, function(permission, callbackp){
