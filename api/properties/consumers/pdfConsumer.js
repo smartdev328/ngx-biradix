@@ -11,7 +11,7 @@ var ProgressService = require('../../progress/services/progressService')
 queues.getPdfProfileQueue().consume(function(data,reply) {
     console.log(data.id + " pdf started");
     try {
-        PropertyService.search(data.user, {_id: data.id}, function (err, properties) {
+        PropertyService.search(data.user, {_id: data.id, skipAmenities: true}, function (err, properties) {
             UserService.getFullUser(data.user, function (full) {
                 var p = properties[0];
                 var fileName = p.name.replace(/ /g, "_");
@@ -130,7 +130,7 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
     console.log(data.id + " reporting pdf started");
 
     try {
-        PropertyService.search(data.user, {_id: data.id}, function (err, properties) {
+        PropertyService.search(data.user, {_id: data.id, skipAmenities: true}, function (err, properties) {
             UserService.getFullUser(data.user, function (full) {
                 var p = properties[0];
                 var fileName = p.name.replace(/ /g, "_");

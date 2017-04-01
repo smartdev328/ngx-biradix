@@ -369,9 +369,13 @@ module.exports = {
 
         criteria.search = (criteria.search || '').trim();
 
+        var AllProperties =
+            Operator.memberships.isadmin === true
+            ||
+            (Operator.permissions.indexOf('Properties/ViewAll') > -1 && criteria.permission.indexOf('PropertyView') > -1);
         async.parallel({
             permissions: function(callbackp) {
-                if (Operator.memberships.isadmin === true) {
+                if (AllProperties) {
                     callbackp(null,[]);
                 } else {
                     AccessService.getPermissions(Operator, criteria.permission, function(permissions) {
@@ -386,14 +390,18 @@ module.exports = {
             },
 
             amenities: function(callbackp) {
-                AmenityService.search({active: true},function(err, amenities) {
-                    callbackp(err, amenities)
-                })
+                if (criteria.skipAmenities) {
+                    callbackp(null,[]);
+                } else {
+                    AmenityService.search({active: true}, function (err, amenities) {
+                        callbackp(err, amenities)
+                    })
+                }
         }
         }, function(err, all) {
 
             t = (new Date()).getTime();
-            //console.log('Property All is Done: ',(t-tStart) / 1000, "s");
+            console.log('Property All is Done: ',(t-tStart) / 1000, "s");
 
             var query = PropertySchema.find();
             if (criteria._id) {
@@ -409,7 +417,7 @@ module.exports = {
                 criteria.exclude = criteria.exclude.map(function(x) {return x.toString()})
             }
 
-            if (Operator.memberships.isadmin === true) {
+            if (AllProperties) {
                 if (criteria.ids) {
                     query = query.where("_id").in(criteria.ids);
                 }

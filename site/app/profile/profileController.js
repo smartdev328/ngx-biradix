@@ -239,7 +239,7 @@ define([
 
                         var compids= _.map(resp.comp.comps,function(x) {return x.id.toString()});
 
-                        $propertyService.search({select: "survey name", permission: ['PropertyManage']}).then(function(response) {
+                        $propertyService.search({select: "survey name", permission: ['PropertyManage'], skipAmenities: true}).then(function(response) {
                             var validSurveys = _.find(response.data.properties, function(x) {
                                 var surveyDaysAgo = 99;
 

@@ -50,6 +50,7 @@ define([
                 permission: 'PropertyManage',
                 active: true,
                 select: "_id name comps.id comps.orderNumber orgid address"
+                , skipAmenities: true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
 
@@ -120,7 +121,10 @@ define([
             $scope.noReports = false;
             delete $scope.reports;
 
-            $propertyService.search({limit: 10000, permission: 'PropertyView', active: true, select : "_id name address", ids: compids, sort: "name"}).then(function (response) {
+            $propertyService.search({
+                limit: 10000, permission: 'PropertyView', active: true, select : "_id name address", ids: compids, sort: "name"
+                , skipAmenities: true
+            }).then(function (response) {
                 $scope.items = [];
 
                 response.data.properties.forEach(function(c) {

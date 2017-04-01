@@ -14,9 +14,6 @@ var userService = require('../api/users/services/userService')
 var EmailService = require('../api/business/services/emailService')
 
 routes.post('/gitWebHook', function(req, res) {
-
-
-
     if (req.body.deployment_status && req.body.deployment_status.state == 'success' && req.body.deployment && req.body.deployment.environment && req.body.deployment.environment.indexOf('biradixplatform-qa-pr') > -1) {
         var url = "https://" + req.body.deployment.environment + ".herokuapp.com";
         var sha = req.body.deployment.sha;
@@ -45,7 +42,7 @@ routes.post('/gitWebHook', function(req, res) {
                 }
                 else {
                     status = "failure"
-                    description = "Ghost Inspector Passed"
+                    description = "Ghost Inspector Failed"
                 }
                 GitHubStatus(sha,status,description);
 
@@ -95,67 +92,24 @@ routes.get('/jasmine', function(req, res) {
 
 });
 
-routes.get('/guests', function(req, res) {
-    OrgService.read(function(err, orgs) {
-        var BIRadix = _.find(orgs, function (x) {
-            return x.isDefault == true
+routes.get('/viewall', function(req, res) {
+
+    AccessService.getRoles({tags: ['CM', 'RM', 'BM'], cache: false}, function(err, roles) {
+
+        var permissions = [];
+        roles.forEach(function(r) {
+            permissions.push({executorid: r._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'})
         })
-        if (!BIRadix) {
-            return res.status(200).send("Cant Find Org");
-        }
 
-        AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM','Guest'], cache: false}, function(err, roles) {
-
-            var BiradixAdmin = _.find(roles, function(x) {return x.tags[0] == 'Admin'})
-            var Guest = _.find(roles, function(x) {return x.tags[0] == 'Guest'})
-
-            if (!BiradixAdmin) {
-                return res.status(200).send("Cant Find Admin");
-            }
-
-            if (Guest) {
-                return res.status(200).send("Guest Already Exists");
-            }
-
-            var newGuest = {name: "Guest", tags: ['Guest'], orgid : BIRadix._id}
-
-            AccessService.createRole(newGuest, function(err, Guest) {
-
-                var permissions = [
-                    {executorid: BiradixAdmin._id, resource: "Users", allow: true, type: 'Execute'},
-                    {executorid: BiradixAdmin._id, resource: "History", allow: true, type: 'Execute'},
-                    {executorid: BiradixAdmin._id, resource: "Properties", allow: true, type: 'Execute'},
-                    {executorid: BiradixAdmin._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
-                    {executorid: BiradixAdmin._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
-                    {executorid: BiradixAdmin._id, resource: "Settings/Default", allow: true, type: 'Execute'},
-
-                    {executorid: Guest._id, resource: "Hide/Dashboard", allow: true, type: 'Execute'},
-                    {executorid: Guest._id, resource: "Hide/Search", allow: true, type: 'Execute'},
-                    {executorid: Guest._id, resource: "Hide/Reporting", allow: true, type: 'Execute'},
-                    {executorid: Guest._id, resource: "Hide/Account", allow: true, type: 'Execute'},
-                    {executorid: Guest._id, resource: "Hide/ExtendedProfile", allow: true, type: 'Execute'},
-                ]
-
-                roles.forEach(function (r) {
-                    permissions.push({
-                        executorid: r._id,
-                        resource: Guest._id.toString(),
-                        allow: true,
-                        type: 'RoleAssign'
-                    })
-                })
-
-                async.eachLimit(permissions, 10, function(permission, callbackp){
-                    AccessService.createPermission(permission, function (err, perm) {
-                        callbackp(err, perm)
-                    });
-                }, function(err) {
-                    return res.status(200).json(permissions);
-                });
-
-
+        async.eachLimit(permissions, 10, function(permission, callbackp){
+            AccessService.createPermission(permission, function (err, perm) {
+                callbackp(err, perm)
             });
-        })
+        }, function(err) {
+            return res.status(200).json(permissions);
+        });
+
+
     });
 });
 
@@ -233,6 +187,9 @@ routes.get('/addorg', function(req, res) {
                         {executorid: roles.CM._id, resource: "Properties", allow: true, type: 'Execute'},
                         {executorid: roles.RM._id, resource: "Properties", allow: true, type: 'Execute'},
                         {executorid: roles.BM._id, resource: "Properties", allow: true, type: 'Execute'},
+                        {executorid: roles.CM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+                        {executorid: roles.RM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
+                        {executorid: roles.BM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
                         {executorid: roles.CM._id, resource: roles.CM._id.toString(), allow: true, type: 'RoleAssign'},
                         {executorid: roles.CM._id, resource: roles.RM._id.toString(), allow: true, type: 'RoleAssign'},

@@ -62,12 +62,16 @@ define([
                 permission: 'PropertyManage',
                 ids: [id],
                 select: "_id name comps.id comps.orderNumber"
+                , skipAmenities: true
             }).then(function (response) {
                 $scope.subject = response.data.properties[0]
 
                 var compids = _.map($scope.subject.comps,function(x) {return x.id.toString()});
 
-                $propertyService.search({limit: 10000, permission: 'PropertyView', ids: compids, exclude: [id], select:"name address city state"}).then(function (response) {
+                $propertyService.search({
+                    limit: 10000, permission: 'PropertyView', ids: compids, exclude: [id], select:"name address city state"
+                    , skipAmenities: true
+                }).then(function (response) {
                     $scope.localLoading = true;
                     $scope.comps = response.data.properties;
                     $scope.comps.forEach(function(c) {
