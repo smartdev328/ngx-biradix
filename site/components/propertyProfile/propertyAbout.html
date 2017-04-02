@@ -1,15 +1,15 @@
-<span ng-show="property.hasName">
+<span ng-if="property.hasName">
     <b>Contact:</b> {{property.contactName}}&nbsp;&nbsp;
 </span>
-<span ng-show="property.hasEmail">
+<span ng-if="property.hasEmail">
     <b>Email:</b> <a href="mailto:{{property.contactEmail}}">{{property.contactEmail}}</a>&nbsp;&nbsp;
 </span>
-<span ng-show="property.hasWebsite">
+<span ng-if="property.hasWebsite">
     <b>Website:</b> <a href="{{property.website}}" target="_blank">{{property.websiteLabel}}</a>&nbsp;&nbsp;
 </span>
-<div ng-show="property.hasContact"><br></div>
-<div ng-show="property.hasNotes" ng-bind-html="property.notes | sanitize"></div>
-<span ng-show="property.hasSurveyNotes">
-    <div ng-show="property.hasNotes"><br></div>
+<div ng-if="property.hasContact"><br></div>
+<div ng-if="property.hasNotes" ng-bind-html="property.notes | sanitize"></div>
+<span ng-if="property.hasSurveyNotes">
+    <div ng-if="property.hasNotes"><br></div>
     <b>Latest Market Survey notes:</b> <span ng-bind-html="property.survey.notes | sanitize"></span>
 </span>
