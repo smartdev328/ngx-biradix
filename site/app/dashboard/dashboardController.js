@@ -155,6 +155,26 @@ define([
             $scope.loadProperty($scope.selectedProperty._id, true);
         }
 
+        $scope.first = true;
+        $scope.showSearch = false;
+        $scope.showInList = 100;
+        $scope.initialLength = 0;
+
+        $scope.autocomplete = function(search) {
+            $propertyService.search({
+                limit: $scope.showInList,
+                permission: 'PropertyManage',
+                active: true,
+                search:search
+                , skipAmenities: true
+            }).then(function (response) {
+                $scope.myProperties = response.data.properties;
+            }, function (error) {
+
+            })
+
+        }
+
         //make sure me is loaded befor you search initially
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
@@ -182,19 +202,25 @@ define([
                 }
 
                 $propertyService.search({
-                    limit: 10000,
+                    limit: $scope.showInList + 1,
                     permission: 'PropertyManage',
                     active: true
                     , skipAmenities: true
                 }).then(function (response) {
                     $scope.myProperties = response.data.properties;
 
+                    if ($scope.first) {
+                        $scope.initialLength = $scope.myProperties.length;
+
+                        if ($scope.myProperties.length > 7) {
+                            $scope.showSearch = true;
+                        }
+                    }
 
                     var id = $rootScope.me.settings.defaultPropertyId;
 
                     if($stateParams.id) {
                         id = $stateParams.id;
-                        $scope.selectedProperty = id;
                     }
 
 
@@ -204,9 +230,7 @@ define([
                     else if (!id) {
                         $scope.selectedProperty = $scope.myProperties[0];
                     } else {
-                        $scope.selectedProperty = _.find($scope.myProperties, function (x) {
-                            return x._id.toString() == id
-                        })
+                        $scope.selectedProperty = {_id: id}
 
                         //if you lost access to your saved property, update your settings
                         if (!$scope.selectedProperty ) {
@@ -221,6 +245,8 @@ define([
                             $scope.changeProperty();
                         } else {
                             $scope.loadProperty($scope.selectedProperty._id)
+                            // $scope.loadProperty("58cdc0bfa8c00c1158192b30")
+
                         }
                     } else {
                         $scope.localLoading = true;
@@ -239,7 +265,7 @@ define([
         });
 
         $scope.viewProfile = function() {
-            $location.path("/profile/" + $scope.selectedProperty._id);
+            $location.path("/profile/" + $scope.property._id);
         }
 
         $scope.changeProperty = function() {
@@ -314,6 +340,13 @@ define([
                     if (error.status == 401) {
                         $rootScope.logoff();
                         return;
+                    } else if (error.status == 400) {
+                        if (!$scope.myProperties || $scope.myProperties.length == 0) {
+                            $scope.selctedProperty = null;
+                        } else {
+                            $scope.selctedProperty = $scope.myProperties[0];
+                            location.reload();
+                        }
                     }
 
                     toastr.error('Unable to access the system at this time. Please contact an administrator');

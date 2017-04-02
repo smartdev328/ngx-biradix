@@ -2,7 +2,7 @@
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Dashboard</h2>
     </div>
-    <div class="col-xs-5 col-sm-5 hidden-print">
+    <div class="col-xs-5 col-sm-5 hidden-print" ng-if="property">
         <div class="btn-group pull-right">
             <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
@@ -29,36 +29,37 @@
         }
     }
 </style>
-<div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
+<div ng-show="localLoading && initialLength == 0" style="text-align:center">
     <div class="alert alert-warning" role="alert"><b>This account does not currently have access to any properties. Please ask the account administrator to add properties.</b></div>
 
 </div>
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-if="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div class="row" ng-show="localLoading && myProperties.length > 0">
+<div class="row" ng-if="localLoading && initialLength > 0">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <table style="width:100%">
                     <tr>
                         <Td style="height:30px">
-                            <span ng-if="myProperties.length == 1" class="pull-left" style="color: #4460a9 !important;">{{selectedProperty.name}}</span>
+                            <span ng-if="initialLength == 1" class="pull-left" style="color: #4460a9 !important;">{{property.name}}</span>
 
-                            <span ng-if="myProperties.length > 1" class="dropdown pull-left" style="color: #4460a9 !important;">
-                    <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit; color: #4460a9 !important;">{{selectedProperty.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
+                            <span ng-if="initialLength > 1" class="dropdown pull-left" style="color: #4460a9 !important;">
+                    <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit; color: #4460a9 !important;">{{property.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
                     <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:310px;overflow-y:auto">
-                        <div style="margin:10px" ng-if="myProperties.length > 7">
+                        <div style="margin:10px" ng-if="showSearch">
                             <input type="text" class="form-control input-sm"
                                    placeholder="Search Properties"
                                    ng-model="filters.searchDashboard"
                                    style="font-weight: normal"
+                                   ng-change="autocomplete(filters.searchDashboard)"
                             >
                             <i class="fa fa-search form-control-feedback" style="color:#ccc;top:10px;right:10px"></i>
                         </div>
 
                         <ul class="multi-col-list">
-                            <li ng-repeat="property in myProperties | filter : filters.searchDashboard"><A href ng-click="setProperty(property)">{{::property.name}}</A></li>
+                            <li ng-repeat="property in myProperties | limitTo : showInList"><A href ng-click="setProperty(property)">{{::property.name}}</A></li>
                         </ul>
                     </div>
                 </span>

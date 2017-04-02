@@ -13,9 +13,9 @@
                 <label><input type="checkbox" ng-model="filters.checkAll" ng-change="all(filters.checkAll)"> <b style="cursor: pointer"><span ng-if="filters.checkAll">Uncheck</span><span ng-if="!filters.checkAll">Check</span> All</b></label>
             </div>
             <div ng-repeat="(key, value) in groups">
-                <b ng-if="key != 'undefined'">{{key}}</b>
+                <b ng-if="key != 'undefined'">{{::key}}</b>
                 <div ng-repeat="item in value" class="checkbox-row">
-                    <label><input type="checkbox" ng-model="item.selected"> {{item.name}}</label>
+                    <label><input type="checkbox" ng-model="item.selected"> {{::item.name}}</label>
                 </div>
             </div>
         </div>
