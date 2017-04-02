@@ -58,7 +58,7 @@
                         </div>
 
                         <ul class="multi-col-list">
-                            <li ng-repeat="property in myProperties | filter : filters.searchDashboard"><A href ng-click="setProperty(property)">{{property.name}}</A></li>
+                            <li ng-repeat="property in myProperties | filter : filters.searchDashboard"><A href ng-click="setProperty(property)">{{::property.name}}</A></li>
                         </ul>
                     </div>
                 </span>
