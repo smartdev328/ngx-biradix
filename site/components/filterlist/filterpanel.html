@@ -3,7 +3,7 @@
      ng-keyup="keyup($event)"
      tabindex="0">
     <div ng-repeat="(key, value) in groups">
-        <b ng-if="key != 'undefined'" class="unselectable">{{::key}}</b>
+        <b ng-if="key != 'undefined'" class="unselectable">{{key}}</b>
         <div ng-repeat="item in value"
              ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused}"
              ng-click="clk($event,item)"

@@ -1,5 +1,5 @@
 <cover-page options="coverPage"></cover-page>
-<div ng-if="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div class="row" ng-if="!stretchComps && localLoading">
@@ -34,10 +34,10 @@
             </div>
             <div class="panel-body">
                 <hr>
-                <div ng-if="!trendsLoading" style="display:block;width:100px;margin:50px auto">
+                <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
-                <div ng-if="trendsLoading">
+                <div ng-show="trendsLoading">
                 <time-series options="nerData"></time-series>
                     <time-series options="occData" ng-if="!me.settings.showLeases"></time-series>
                     <div class="row" style="margin-left:-25px" ng-if="me.settings.showLeases">
@@ -94,10 +94,10 @@
             </div>
             <div class="panel-body">
                 <hr>
-                <div ng-if="!trendsLoading" style="display:block;width:100px;margin:50px auto">
+                <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
-                <div ng-if="trendsLoading">
+                <div ng-show="trendsLoading">
                     <time-series options="nerData"></time-series>
                     <time-series options="occData" ng-if="!me.settings.showLeases"></time-series>
                     <div class="row" style="margin-left:-25px" ng-if="me.settings.showLeases">
@@ -139,7 +139,7 @@
     }
 </Style>
 
-<div class="row break" ng-if="localLoading" ng-repeat="profile in profiles">
+<div class="row break" ng-show="localLoading" ng-repeat="profile in profiles">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
             <div class="panel-heading">{{profile.property.name}}</div>
@@ -148,28 +148,28 @@
                 <property-profile property="profile.property" show="showProfile"></property-profile>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="profile.property.community_am.length > 0">
+        <div class="panel panel-info" ng-show="profile.property.community_am.length > 0">
             <div class="panel-heading">Community Amenities</div>
             <div class="panel-body">
                 <hr>
                 <property-amenities amenities="profile.property.community_am"></property-amenities>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="profile.property.location_am.length > 0">
+        <div class="panel panel-info" ng-show="profile.property.location_am.length > 0">
             <div class="panel-heading">Location Amenities</div>
             <div class="panel-body">
                 <hr>
                 <property-amenities amenities="profile.property.location_am"></property-amenities>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="profile.property.floorplan_am.length > 0">
+        <div class="panel panel-info" ng-show="profile.property.floorplan_am.length > 0">
             <div class="panel-heading">Unit Amenities</div>
             <div class="panel-body">
                 <hr>
                 <property-amenities amenities="profile.property.floorplan_am"></property-amenities>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="profile.property.hasFees" style="margin-bottom: 0px !important;">
+        <div class="panel panel-info" ng-show="profile.property.hasFees" style="margin-bottom: 0px !important;">
             <div class="panel-heading">Fees, Deposits, Lease Terms</div>
             <div class="panel-body">
                 <hr>
@@ -179,7 +179,7 @@
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
 
-        <div class="panel panel-info" ng-if="profile.property.hasContact || profile.property.hasNotes || profile.property.hasSurveyNotes">
+        <div class="panel panel-info" ng-show="profile.property.hasContact || profile.property.hasNotes || profile.property.hasSurveyNotes">
             <div class="panel-heading">About Property</div>
             <div class="panel-body">
                 <hr>

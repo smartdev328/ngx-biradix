@@ -83,33 +83,33 @@
     <tr class="thead">
         <th ng-click="toggleSort('name')" style="height:45px" class="sortable">
             Property
-            <i ng-if="sort.name == null" class="fa fa-sort"></i>
-            <i ng-if="sort.name === true" class="fa fa-sort-down ng-hide"></i>
-            <i ng-if="sort.name === false" class="fa fa-sort-up ng-hide"></i>
+            <i ng-show="sort.name == null" class="fa fa-sort"></i>
+            <i ng-show="sort.name === true" class="fa fa-sort-down ng-hide"></i>
+            <i ng-show="sort.name === false" class="fa fa-sort-up ng-hide"></i>
         </th>
         <th class="center sortable" ng-click="toggleSort('units')" style="min-width:60px">
             Units
-            <i ng-if="sort.units == null" class="fa fa-sort"></i>
-            <i ng-if="sort.units === true" class="fa fa-sort-down ng-hide"></i>
-            <i ng-if="sort.units === false" class="fa fa-sort-up ng-hide"></i>
+            <i ng-show="sort.units == null" class="fa fa-sort"></i>
+            <i ng-show="sort.units === true" class="fa fa-sort-down ng-hide"></i>
+            <i ng-show="sort.units === false" class="fa fa-sort-up ng-hide"></i>
         </th>
         <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px">
             Sqft
-            <i ng-if="sort.sqft == null" class="fa fa-sort"></i>
-            <i ng-if="sort.sqft === true" class="fa fa-sort-down ng-hide"></i>
-            <i ng-if="sort.sqft === false" class="fa fa-sort-up ng-hide"></i>
+            <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.sqft === true" class="fa fa-sort-down ng-hide"></i>
+            <i ng-show="sort.sqft === false" class="fa fa-sort-up ng-hide"></i>
         </th>
         <th class="center sortable" ng-click="toggleSort('ner')" style="min-width:70px">
             Net Eff.<br>&nbsp;Rent
-            <i ng-if="sort.ner == null" class="fa fa-sort"></i>
-            <i ng-if="sort.ner === true" class="fa fa-sort-down ng-hide"></i>
-            <i ng-if="sort.ner === false" class="fa fa-sort-up ng-hide"></i>
+            <i ng-show="sort.ner == null" class="fa fa-sort"></i>
+            <i ng-show="sort.ner === true" class="fa fa-sort-down ng-hide"></i>
+            <i ng-show="sort.ner === false" class="fa fa-sort-up ng-hide"></i>
         </th>
         <th class="center sortable" ng-click="toggleSort('nersqft')" style="min-width:70px">
             NER/&nbsp;<br>Sqft
-            <i ng-if="sort.nersqft == null" class="fa fa-sort ng-hide"></i>
-            <i ng-if="sort.nersqft === true" class="fa fa-sort-down ng-hide"></i>
-            <i ng-if="sort.nersqft === false" class="fa fa-sort-up"></i>
+            <i ng-show="sort.nersqft == null" class="fa fa-sort ng-hide"></i>
+            <i ng-show="sort.nersqft === true" class="fa fa-sort-down ng-hide"></i>
+            <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
     </tr>
     <tr>

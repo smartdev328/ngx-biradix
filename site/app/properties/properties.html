@@ -52,10 +52,10 @@
 </h2>
 
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
-<div ng-if="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div ng-if="localLoading">
+<div ng-show="localLoading">
     <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Create') > -1">
         <button type="button" class="btn btn-default dropdown-toggle btn-sm"ng-click="edit(null,false)">
             <span class="fa fa-plus"></span> Add Property
@@ -154,78 +154,78 @@
             <tbody>
             <tr class="thead">
             <th style="width:24px"></th>
-            <th ng-if="show.rownumber">#</th>
-            <th ng-if="show.date" class="sortable" ng-click="toggleSort('date')">
+            <th ng-show="show.rownumber">#</th>
+            <th ng-show="show.date" class="sortable" ng-click="toggleSort('date')">
                 <div class="pull-left">Date</div>
-                <div class="pull-right" ng-if="sort.date == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.date === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.date === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.date == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.name" class="sortable" ng-click="toggleSort('name')">
+            <th ng-show="show.name" class="sortable" ng-click="toggleSort('name')">
                 <div class="pull-left">Name</div>
-                <div class="pull-right" ng-if="sort.name == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.name === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.name === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.name == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.address" class="sortable" ng-click="toggleSort('address')">
+            <th ng-show="show.address" class="sortable" ng-click="toggleSort('address')">
                 <div class="pull-left">Address</div>
-                <div class="pull-right" ng-if="sort.address == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.address === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.address === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.address == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.address === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.address === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.city" class="sortable" ng-click="toggleSort('city')">
+            <th ng-show="show.city" class="sortable" ng-click="toggleSort('city')">
                 <div class="pull-left">City</div>
-                <div class="pull-right" ng-if="sort.city == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.city === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.city === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.city == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.city === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.city === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.state" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('state')">
+            <th ng-show="show.state" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('state')">
                 <div class="pull-left">State</div>
-                <div class="pull-right" ng-if="sort.state == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.state === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.state === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.state == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.state === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.state === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.zip" class="sortable" ng-click="toggleSort('zip')">
+            <th ng-show="show.zip" class="sortable" ng-click="toggleSort('zip')">
                 <div class="pull-left">Zip</div>
-                <div class="pull-right" ng-if="sort.zip == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.zip === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.zip === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.zip == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.zip === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.zip === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.totalUnits" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('totalUnits')">
+            <th ng-show="show.totalUnits" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('totalUnits')">
                 <div class="pull-left">Units</div>
-                <div class="pull-right" ng-if="sort.totalUnits == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.totalUnits === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.totalUnits === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.totalUnits == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.totalUnits === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.totalUnits === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.occupancy" style="cursor:pointer;min-width:58px;width:58px" ng-click="toggleSort('occupancy')">
+            <th ng-show="show.occupancy" style="cursor:pointer;min-width:58px;width:58px" ng-click="toggleSort('occupancy')">
                 <div class="pull-left">Occ</div>
-                <div class="pull-right" ng-if="sort.occupancy == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.occupancy == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.ner" style="cursor:pointer;min-width:60px;width:60px" ng-click="toggleSort('ner')">
+            <th ng-show="show.ner" style="cursor:pointer;min-width:60px;width:60px" ng-click="toggleSort('ner')">
                 <div class="pull-left">NER</div>
-                <div class="pull-right" ng-if="sort.ner == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.ner === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.ner === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.ner == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.active" class="center">
+            <th ng-show="show.active" class="center">
                 Active
             </th>
-            <th ng-if="show.company" style="cursor:pointer;min-width:92px;width:120px" ng-click="toggleSort('company')">
+            <th ng-show="show.company" style="cursor:pointer;min-width:92px;width:120px" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>
-                <div class="pull-right" ng-if="sort.company == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-if="sort.company === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-if="sort.company === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-if="show.tools" class="center"></th>
+            <th ng-show="show.tools" class="center"></th>
         </tr>
 
         <tr ng-repeat-start="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
-            <td style="text-align: center"><i ng-if = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
-            <td ng-if="show.rownumber">{{pageStart() + $index}}.</td>
-            <td ng-if="show.date">{{row.date | date: 'shortDate'}}</td>
-            <td ng-if="show.name" ><A href="#/profile/{{row._id}}">{{row.name}}</A>
+            <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
+            <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
+            <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
+            <td ng-show="show.name" ><A href="#/profile/{{row._id}}">{{row.name}}</A>
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:1px;color:orange"
                    ng-if="row.needsSurvey"
@@ -246,19 +246,19 @@
                    uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i>
             </td>
-            <td ng-if="show.address">{{row.address}}</td>
-            <td ng-if="show.city">{{row.city}}</td>
-            <td ng-if="show.state">{{row.state}}</td>
-            <td ng-if="show.zip">{{row.zip}}</td>
-            <td ng-if="show.totalUnits" style="text-align:center">{{row.totalUnits == null ? '-' : row.totalUnits}}</td>
-            <td ng-if="show.occupancy" style="text-align:right">{{row.survey.occupancy == null ? '-' :  row.survey.occupancy + '%'}}</td>
-            <td ng-if="show.ner" style="text-align:right">{{row.survey.ner == null ? '-' : '$' + row.survey.ner }}</td>
-            <td ng-if="show.active" class="center">
-                <span class="fa fa-check fa-2x" ng-if="row.active"></span>
-                <span class="fa fa-times fa-2x" ng-if="!row.active" style="color:#ddd"></span>
+            <td ng-show="show.address">{{row.address}}</td>
+            <td ng-show="show.city">{{row.city}}</td>
+            <td ng-show="show.state">{{row.state}}</td>
+            <td ng-show="show.zip">{{row.zip}}</td>
+            <td ng-show="show.totalUnits" style="text-align:center">{{row.totalUnits == null ? '-' : row.totalUnits}}</td>
+            <td ng-show="show.occupancy" style="text-align:right">{{row.survey.occupancy == null ? '-' :  row.survey.occupancy + '%'}}</td>
+            <td ng-show="show.ner" style="text-align:right">{{row.survey.ner == null ? '-' : '$' + row.survey.ner }}</td>
+            <td ng-show="show.active" class="center">
+                <span class="fa fa-check fa-2x" ng-show="row.active"></span>
+                <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ddd"></span>
             </td>
-            <td ng-if="show.company">{{row.company || '-'}}</td>
-            <td ng-if="show.tools" class="center">
+            <td ng-show="show.company">{{row.company || '-'}}</td>
+            <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">
                         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
@@ -294,9 +294,9 @@
         </tr>
         <tr ng-repeat-end ng-if="row.open && row.compsLoaded && row.fullcomps.length > 0" ng-repeat="comp in row.fullcomps | orderBy : ['orderNumber','name']">
             <td></td>
-            <td ng-if="show.rownumber"></td>
-            <td ng-if="show.date">{{comp.date | date: 'shortDate'}}</td>
-            <td ng-if="show.name"><A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
+            <td ng-show="show.rownumber"></td>
+            <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
+            <td ng-show="show.name"><A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:1px;color:orange"
                    ng-if="comp.needsSurvey"
@@ -315,19 +315,19 @@
                    popover-append-to-body="true"
                    uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
                         ></i></td>
-            <td ng-if="show.address">{{comp.address}}</td>
-            <td ng-if="show.city">{{comp.city}}</td>
-            <td ng-if="show.state">{{comp.state}}</td>
-            <td ng-if="show.zip">{{comp.zip}}</td>
-            <td ng-if="show.totalUnits" style="text-align:center">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</td>
-            <td ng-if="show.occupancy" style="text-align:right">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</td>
-            <td ng-if="show.ner" style="text-align:right">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</td>
-            <td ng-if="show.active" class="center">
-                <span class="fa fa-check fa-2x" ng-if="comp.active"></span>
-                <span class="fa fa-times fa-2x" ng-if="!comp.active" style="color:#ddd"></span>
+            <td ng-show="show.address">{{comp.address}}</td>
+            <td ng-show="show.city">{{comp.city}}</td>
+            <td ng-show="show.state">{{comp.state}}</td>
+            <td ng-show="show.zip">{{comp.zip}}</td>
+            <td ng-show="show.totalUnits" style="text-align:center">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</td>
+            <td ng-show="show.occupancy" style="text-align:right">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</td>
+            <td ng-show="show.ner" style="text-align:right">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</td>
+            <td ng-show="show.active" class="center">
+                <span class="fa fa-check fa-2x" ng-show="comp.active"></span>
+                <span class="fa fa-times fa-2x" ng-show="!comp.active" style="color:#ddd"></span>
             </td>
-            <td ng-if="show.company">{{comp.company || '-'}}</td>
-            <td ng-if="show.tools" class="center">
+            <td ng-show="show.company">{{comp.company || '-'}}</td>
+            <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">
                         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
@@ -354,10 +354,10 @@
 
     <div class="pull-left grid-show" style="padding-top:5px;">
         Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
-        <span ng-if="filtered.length < data.length">(filtered from {{data.length}})</span>
+        <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
     </div>
     <div class="pull-right grid-pager">
-        <ul uib-pagination ng-if="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></ul>
+        <ul uib-pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></ul>
     </div>
     <br clear="all" />
     </div>

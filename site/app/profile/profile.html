@@ -1,5 +1,5 @@
 <cover-page options="coverPage"></cover-page>
-<div class="row hidden-print" ng-if="localLoading" style="margin-bottom: 0px !important;">
+<div class="row hidden-print" ng-show="localLoading" style="margin-bottom: 0px !important;">
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Property Profile</h2>
     </div>
@@ -32,13 +32,13 @@
 
     </div>
 </div>
-<div ng-if="localLoading" class="hidden-print">
+<div ng-show="localLoading" class="hidden-print">
     <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
 </div>
-<div ng-if="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div class="row" ng-if="localLoading">
+<div class="row" ng-show="localLoading">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -84,28 +84,28 @@
                 <property-profile property="property" show="showProfile"></property-profile>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="property.community_am.length > 0">
+        <div class="panel panel-info" ng-show="property.community_am.length > 0">
             <div class="panel-heading">Community Amenities</div>
             <div class="panel-body">
                 <hr>
                 <property-amenities amenities="property.community_am"></property-amenities>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="property.location_am.length > 0">
+        <div class="panel panel-info" ng-show="property.location_am.length > 0">
             <div class="panel-heading">Location Amenities</div>
             <div class="panel-body">
                 <hr>
                 <property-amenities amenities="property.location_am"></property-amenities>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="property.floorplan_am.length > 0">
+        <div class="panel panel-info" ng-show="property.floorplan_am.length > 0">
             <div class="panel-heading">Unit Amenities</div>
             <div class="panel-body">
                 <hr>
                 <property-amenities amenities="property.floorplan_am"></property-amenities>
             </div>
         </div>
-        <div class="panel panel-info" ng-if="property.hasFees" style="margin-bottom: 0px !important;">
+        <div class="panel panel-info" ng-show="property.hasFees" style="margin-bottom: 0px !important;">
             <div class="panel-heading">Fees, Deposits, Lease Terms</div>
             <div class="panel-body">
                 <hr>
@@ -115,7 +115,7 @@
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
 
-        <div class="panel panel-info" ng-if="property.hasContact || property.hasNotes || property.hasSurveyNotes" ng-if="$root.me.permissions.indexOf('Hide/ExtendedProfile') == -1">
+        <div class="panel panel-info" ng-show="property.hasContact || property.hasNotes || property.hasSurveyNotes" ng-if="$root.me.permissions.indexOf('Hide/ExtendedProfile') == -1">
             <div class="panel-heading">About Property</div>
             <div class="panel-body">
                 <hr>
@@ -185,10 +185,10 @@
             </div>
             <div class="panel-body">
                 <hr>
-                <div ng-if="!trendsLoading" style="display:block;width:100px;margin:50px auto">
+                <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
-                <div ng-if="trendsLoading">
+                <div ng-show="trendsLoading">
                     <div ng-if="settings.graphs">
                         <time-series options="nerData"></time-series>
                         <hr style="margin:10px 0px 20px 0px !important;">
@@ -201,10 +201,10 @@
                 </div>
 
 
-                <div ng-if="!trendsLoading" style="display:block;width:100px;margin:50px auto">
+                <div ng-show="!trendsLoading" style="display:block;width:100px;margin:50px auto">
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
-                <div ng-if="trendsLoading">
+                <div ng-show="trendsLoading">
                     <div class="row" style="margin-left:-25px" ng-if="settings.graphs">
                         <div class="col-xs-6">
                             <time-series options="occData"></time-series>
