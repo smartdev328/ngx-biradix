@@ -3,10 +3,10 @@
 </h2>
 
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
-<div ng-if="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div ng-if="localLoading">
+<div ng-show="localLoading">
 
     <div class="row">
         <div class="col-xs-6 col-md-3" style="height:55px">
@@ -104,7 +104,7 @@
         Showing {{pageStart()}} to {{pageEnd()}} of {{pager.count}}
     </div>
     <div class="pull-right grid-pager" ng-if="activity && activity.length > 0">
-        <ul uib-pagination ng-change="pagerChanged()" ng-if="pager.count > pager.itemsPerPage" max-size="5" total-items="pager.count" ng-model="pager.currentPage" class="pagination-sm" items-per-page="pager.itemsPerPage" style="margin-top:0px"></ul>
+        <ul uib-pagination ng-change="pagerChanged()" ng-show="pager.count > pager.itemsPerPage" max-size="5" total-items="pager.count" ng-model="pager.currentPage" class="pagination-sm" items-per-page="pager.itemsPerPage" style="margin-top:0px"></ul>
     </div>
     <br clear="all" />
     </div>
