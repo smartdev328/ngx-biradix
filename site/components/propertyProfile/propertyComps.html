@@ -19,87 +19,87 @@
         </th>
         <th class="sortable" ng-click="toggleSort('name')">
             &nbsp;&nbsp;Name/<Br>Address
-            <i ng-show="sort.name == null" class="fa fa-sort"></i>
-            <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.name == null" class="fa fa-sort"></i>
+            <i ng-if="sort.name === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.name === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('occupancy')" ng-if="show.occupancy">
             Occ. %
-            <i ng-show="sort.occupancy == null" class="fa fa-sort"></i>
-            <i ng-show="sort.occupancy === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.occupancy === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.occupancy == null" class="fa fa-sort"></i>
+            <i ng-if="sort.occupancy === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.occupancy === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased">
             Leased %
-            <i ng-show="sort.leased == null" class="fa fa-sort"></i>
-            <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.leased == null" class="fa fa-sort"></i>
+            <i ng-if="sort.leased === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.leased === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('renewal')" ng-if="show.renewal">
             Renewal %
-            <i ng-show="sort.renewal == null" class="fa fa-sort"></i>
-            <i ng-show="sort.renewal === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.renewal === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.renewal == null" class="fa fa-sort"></i>
+            <i ng-if="sort.renewal === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.renewal === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly">
             Traffic/&nbsp;&nbsp;<br>Week
-            <i ng-show="sort.weeklytraffic == null" class="fa fa-sort"></i>
-            <i ng-show="sort.weeklytraffic === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.weeklytraffic === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.weeklytraffic == null" class="fa fa-sort"></i>
+            <i ng-if="sort.weeklytraffic === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.weeklytraffic === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklyleases')" ng-if="show.weekly">
             Leases/&nbsp;&nbsp;<br>Week
-            <i ng-show="sort.weeklyleases == null" class="fa fa-sort"></i>
-            <i ng-show="sort.weeklyleases === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.weeklyleases === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.weeklyleases == null" class="fa fa-sort"></i>
+            <i ng-if="sort.weeklyleases === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.weeklyleases === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
             Units
-            <i ng-show="sort.units == null" class="fa fa-sort"></i>
-            <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.units == null" class="fa fa-sort"></i>
+            <i ng-if="sort.units === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.units === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')" ng-if="show.unitPercent">
             Unit %
-            <i ng-show="sort.unitPercent == null" class="fa fa-sort"></i>
-            <i ng-show="sort.unitPercent === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.unitPercent === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.unitPercent == null" class="fa fa-sort"></i>
+            <i ng-if="sort.unitPercent === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.unitPercent === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')" ng-if="show.sqft">
             Sqft
-            <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.sqft == null" class="fa fa-sort"></i>
+            <i ng-if="sort.sqft === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent">
             Rent
-            <i ng-show="sort.rent == null" class="fa fa-sort"></i>
-            <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.rent == null" class="fa fa-sort"></i>
+            <i ng-if="sort.rent === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.rent === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft">
             Rent/&nbsp;&nbsp;<br>Sqft
-            <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.mersqft == null" class="fa fa-sort"></i>
+            <i ng-if="sort.mersqft === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.mersqft === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
             Concess/&nbsp;<br>12 Mos.
-            <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
-            <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.concessions == null" class="fa fa-sort"></i>
+            <i ng-if="sort.concessions === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.concessions === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
             Net Eff.<Br> Rent
-            <i ng-show="sort.ner == null" class="fa fa-sort"></i>
-            <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.ner == null" class="fa fa-sort"></i>
+            <i ng-if="sort.ner === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft">
             NER/&nbsp;&nbsp;<br>Sqft
-            <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
+            <i ng-if="sort.nersqft == null" class="fa fa-sort"></i>
+            <i ng-if="sort.nersqft === true" class="fa fa-sort-down"></i>
+            <i ng-if="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
 
         <th  ng-if="roles[0] != 'Property Owner'">

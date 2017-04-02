@@ -1,4 +1,4 @@
-<div class="row" ng-show="localLoading" style="margin-bottom:0px !important;">
+<div class="row" ng-if="localLoading" style="margin-bottom:0px !important;">
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Dashboard</h2>
     </div>
@@ -8,7 +8,7 @@
         </button>
     </div>
 </div>
-<div ng-show="localLoading">
+<div ng-if="localLoading">
     <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
 </div>
 <style>
@@ -20,14 +20,14 @@
         }
     }
 </style>
-<div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
+<div ng-if="localLoading && myProperties.length == 0" style="text-align:center">
     <div class="alert alert-warning" role="alert"><b>This account does not currently have access to any properties. Please contact <A href="#/contactus">Contact Support</A> for more information.</b></div>
 
 </div>
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-if="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div class="row" ng-show="localLoading && myProperties.length > 0">
+<div class="row" ng-if="localLoading && myProperties.length > 0">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
             <div class="panel-heading">
