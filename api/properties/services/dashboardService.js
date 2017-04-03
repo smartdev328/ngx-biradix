@@ -213,7 +213,7 @@ module.exports = {
                                     }
                                 },
                                 owned: function(callbackp) {
-                                    PropertyService.search(user, {limit: 20, permission: ['PropertyManage'], ids: compids
+                                    PropertyService.search(user, {permission: ['PropertyManage'], ids: compids
                                         , select: "_id"
                                         , skipAmenities: true
                                     }, function(err, property) {

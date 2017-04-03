@@ -13,6 +13,7 @@ var AuditService = require('../../audit/services/auditService')
 var localCacheService = require('../../utilities/services/localcacheService')
 var cronService = require('../../utilities/services/cronService')
 var md5 = require('md5');
+var mongoose = require('mongoose')
 var redisService = require('../../utilities/services/redisService')
 var userBounceService = require('./userBounceService')
 
@@ -140,6 +141,7 @@ module.exports = {
 
             if (Operator.memberships.isadmin === true) {
                 if (criteria.ids) {
+                    criteria.ids = criteria.ids.map(function(x) {return mongoose.Types.ObjectId(x)})
                     query = query.where("_id").in(criteria.ids);
                 }
             }
@@ -147,6 +149,8 @@ module.exports = {
                 if (criteria.ids) {
                     all.permissions = _.intersection(all.permissions, criteria.ids);
                 }
+
+                all.permissions = all.permissions.map(function(x) {return mongoose.Types.ObjectId(x)})
 
                 query = query.where('_id').in(all.permissions);
             }
