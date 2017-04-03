@@ -10,6 +10,7 @@ var AuditService = require('../../audit/services/auditService')
 var async = require("async");
 var _ = require("lodash")
 var moment = require('moment');
+var mongoose = require('mongoose')
 ///////////////////////////
 var CompsService = require('./compsService')
 var PropertyHelperService = require('./propertyHelperService')
@@ -373,6 +374,7 @@ module.exports = {
             Operator.memberships.isadmin === true
             ||
             (Operator.permissions.indexOf('Properties/ViewAll') > -1 && criteria.permission.indexOf('PropertyView') > -1);
+
         async.parallel({
             permissions: function(callbackp) {
                 if (AllProperties) {
@@ -401,16 +403,12 @@ module.exports = {
         }, function(err, all) {
 
             t = (new Date()).getTime();
-            console.log('Property All is Done: ',(t-tStart) / 1000, "s");
+            //console.log('Property Run: (All): ',(t-tStart) / 1000, "s");
 
             var query = PropertySchema.find();
             if (criteria._id) {
                 criteria.ids = criteria.ids || [];
                 criteria.ids.push(criteria._id);
-            }
-
-            if (criteria.ids) {
-                criteria.ids = criteria.ids.map(function(x) {return x.toString()})
             }
 
             if (criteria.exclude) {
@@ -419,10 +417,12 @@ module.exports = {
 
             if (AllProperties) {
                 if (criteria.ids) {
+                    criteria.ids = criteria.ids.map(function(x) {return mongoose.Types.ObjectId(x)})
                     query = query.where("_id").in(criteria.ids);
                 }
 
                 if (criteria.exclude) {
+                    criteria.exclude = criteria.exclude.map(function(x) {return mongoose.Types.ObjectId(x)})
                     query = query.where("_id").nin(criteria.exclude);
                 }
             }
@@ -436,7 +436,7 @@ module.exports = {
                     _.remove(all.permissions, function(p) {return criteria.exclude.indexOf(p) > -1})
                 }
 
-
+                all.permissions = all.permissions.map(function(x) {return mongoose.Types.ObjectId(x)})
 
                 query = query.where('_id').in(all.permissions);
             }
@@ -485,7 +485,9 @@ module.exports = {
             tS = (new Date()).getTime();
             query.exec(function(err, props) {
                 t = (new Date()).getTime();
-                //console.log('Property Exec: ',(t-tS) / 1000, "s");
+                if ((t-tS) / 1000 > .1) {
+                    console.log('Long Property Run: (Exec): ', (t - tS) / 1000, "s", criteria, all.permissions);
+                }
 
                 var time = new Date();
                 if (props && props.length > 0) {
@@ -576,7 +578,7 @@ module.exports = {
                     })
 
                     t = (new Date()).getTime();
-                    //console.log('Property Loop is Done: ',(t-tS) / 1000, "s");
+                    //console.log('Property Run: (Loop): ',(t-tS) / 1000, "s");
                 }
 
 

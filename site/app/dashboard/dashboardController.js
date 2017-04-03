@@ -132,9 +132,12 @@ define([
 
         $scope.$watch('daterange', function(d,old) {
             if (!$scope.localLoading) return;
-            if(JSON.stringify(old) == JSON.stringify(d)) return;
+            var oldHash = old.selectedStartDate.format("MMDDYYYY") + old.selectedEndDate.format("MMDDYYYY")
+            var newHash = d.selectedStartDate.format("MMDDYYYY") + d.selectedEndDate.format("MMDDYYYY")
+            if(oldHash == newHash) return;
 
             $cookieSettingsService.saveDaterange($scope.daterange)
+            //console.log('from date')
             $scope.refreshGraphs();
         }, true);
 
@@ -150,6 +153,8 @@ define([
         }, true);
 
         $scope.refreshGraphs = function() {
+            if (!$scope.localLoading) return;
+            //console.log('refresh');
             $scope.selectedBedroom = $scope.bedroom.value;
             $cookieSettingsService.saveBedrooms($scope.selectedBedroom);
             $scope.loadProperty($scope.selectedProperty._id, true);
@@ -249,6 +254,7 @@ define([
 
                         }
                     } else {
+                        //console.log('loading changed 1');
                         $scope.localLoading = true;
                     }
 
@@ -289,6 +295,7 @@ define([
         });
 
         $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
+            //console.log('loaded');
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -327,6 +334,8 @@ define([
                     $scope.occData = resp.occData;
                     $scope.leasedData = resp.leasedData;
 
+                    //console.log('loading changed 2');
+
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
 
@@ -346,6 +355,7 @@ define([
                         } else {
                             $scope.selctedProperty = $scope.myProperties[0];
                             location.reload();
+
                         }
                     }
 

@@ -517,7 +517,7 @@ define([
                     }
                 });
 
-            window.setTimeout(function() {$scope.alertsAmenities()}, 60000);
+            window.setTimeout(function() {$scope.alertsProperties()}, 60000);
 
         }
     }]);
