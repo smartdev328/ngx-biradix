@@ -34,7 +34,7 @@ d.run(function() {
         })
 
         mongoose.Promise = global.Promise;
-        mongoose.connect(settings.MONGODB_URI);
+        mongoose.connect(settings.MONGODB_URI, {server: { poolSize: 20 }});
         var conn = mongoose.connection;
 
         conn.once('open', function () {
