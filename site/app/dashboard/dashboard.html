@@ -65,7 +65,7 @@
                 </span>
                         </Td>
                         <td style="width:50px" class="hidden-print" valign="top">
-                            <div class="btn-group action_dropdown pull-right hover-only" style="margin-right:-15px">
+                            <div id="profileDD" ng-class="{'btn-group' : true, action_dropdown : true, 'pull-right' : true, 'hover-only' : !isModalOpen('#profileDD')}" style="margin-right:-15px">
                                 <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                                     <span class="fa fa-table"></span> <span class="caret"></span>
                                 </button>
@@ -123,7 +123,7 @@
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
                             <Tr>
                                 <td style="text-align: center">
-                                    <toggle-switch checked="summary"></toggle-switch>&nbsp;
+                                    <toggle-switch checked="options.summary"></toggle-switch>&nbsp;
                                 </td>
                                 <Td>
                                     &nbsp;Group Comps
@@ -147,9 +147,9 @@
                             </Tr>
                             <Tr>
                                 <td style="text-align: center">
-                                    <select style="width:77px;font-weight: normal;font-size: 9pt;padding: 1px;" ng-model="nerScale">
-                                        <option value="ner" ng-selected="nerScale=='ner'">NER</option>
-                                        <option value="nersqft" ng-selected="nerScale=='nersqft'">NER/Sqft</option>
+                                    <select style="width:77px;font-weight: normal;font-size: 9pt;padding: 1px;" ng-model="options.nerScale">
+                                        <option value="ner" ng-selected="options.nerScale=='ner'">NER</option>
+                                        <option value="nersqft" ng-selected="options.nerScale=='nersqft'">NER/Sqft</option>
                                     </select>&nbsp;
                                 </td>
                                 <Td>
@@ -245,7 +245,7 @@
                     </div>
                 </span>
 
-                <div class="btn-group action_dropdown pull-right hidden-print hover-only" style="margin-right:-15px">
+                <div id="compsDD" ng-class="{'btn-group' : true, action_dropdown : true, 'pull-right' : true, 'hover-only' : !isModalOpen('#compsDD')}" style="margin-right:-15px">
                     <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>

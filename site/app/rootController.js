@@ -487,8 +487,12 @@ define([
 
         }
 
+        $rootScope.isModalOpen = function(el) {
+            return($(el).hasClass("open"))
+        }
+
         $scope.alertsProperties = function() {
-            $propertyService.search({limit: 10000, needsApproval:true, skipAmenities: true}).then(function (response) {
+            $propertyService.search({limit: 20, needsApproval:true, skipAmenities: true}).then(function (response) {
 
                     var a = _.find($rootScope.notifications, function(x) {return x.key == "properties"});
 
