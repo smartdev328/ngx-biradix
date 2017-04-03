@@ -486,7 +486,7 @@ module.exports = {
             query.exec(function(err, props) {
                 t = (new Date()).getTime();
                 if ((t-tS) / 1000 > .1) {
-                    console.log('Long Property Run: (Exec): ', (t - tS) / 1000, "s", criteria, all.permissions);
+                    console.log('Long Property Run: (Exec): ', (t - tS) / 1000, "s", criteria, all.permissions, props.length);
                 }
 
                 var time = new Date();
