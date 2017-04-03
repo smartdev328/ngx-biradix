@@ -15,19 +15,20 @@ define([
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
         $scope.filters = {searchDashboard : ""};
+        $scope.options = {};
         //window.renderable = true;
 
         $scope.localLoading = false;
 
         $scope.daterange=$cookieSettingsService.getDaterange();
 
-        $scope.summary = $cookieSettingsService.getSummary();
+        $scope.options.summary = $cookieSettingsService.getSummary();
 
         $scope.graphs = $cookieSettingsService.getGraphs();
 
         $scope.totals = $cookieSettingsService.getTotals();
 
-        $scope.nerScale = $cookieSettingsService.getNerScale();
+        $scope.options.nerScale = $cookieSettingsService.getNerScale();
 
         $scope.selectedBedroom = $cookieSettingsService.getBedrooms();
 
@@ -124,9 +125,9 @@ define([
         }
         /***************************/
 
-        $scope.$watch('nerScale', function(d) {
+        $scope.$watch('options.nerScale', function(d) {
             if (!$scope.localLoading) return;
-            $cookieSettingsService.saveNerScale($scope.nerScale)
+            $cookieSettingsService.saveNerScale($scope.options.nerScale)
             $scope.refreshGraphs();
         }, true);
 
@@ -141,9 +142,9 @@ define([
             $scope.refreshGraphs();
         }, true);
 
-        $scope.$watch('summary', function() {
+        $scope.$watch('options.summary', function() {
             if (!$scope.localLoading) return;
-            $cookieSettingsService.saveSummary($scope.summary)
+            $cookieSettingsService.saveSummary($scope.options.summary)
             $scope.refreshGraphs();
         }, true);
 
@@ -154,7 +155,7 @@ define([
 
         $scope.refreshGraphs = function() {
             if (!$scope.localLoading) return;
-            //console.log('refresh');
+
             $scope.selectedBedroom = $scope.bedroom.value;
             $cookieSettingsService.saveBedrooms($scope.selectedBedroom);
             $scope.loadProperty($scope.selectedProperty._id, true);
@@ -304,17 +305,17 @@ define([
                 }
                 $propertyService.dashboard(
                     defaultPropertyId
-                    , $scope.summary
+                    , $scope.options.summary
                     , $scope.selectedBedroom
                     , {
                         daterange: $scope.daterange.selectedRange,
                         start: $scope.daterange.selectedStartDate,
                         end: $scope.daterange.selectedEndDate
                         }
-                    ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.nerScale}
+                    ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.options.nerScale}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseDashboard(response.data,$scope.summary, $rootScope.me.settings.showLeases, $scope.nerScale, $scope.selectedBedroom);
+                    var resp = $propertyService.parseDashboard(response.data,$scope.options.summary, $rootScope.me.settings.showLeases, $scope.options.nerScale, $scope.selectedBedroom);
 
                     if (!trendsOnly) {
                         $scope.property = resp.property;
@@ -423,6 +424,7 @@ define([
             $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
 
         }
+
 
     }]);
 });

@@ -482,6 +482,12 @@ module.exports = {
                 }
             }
 
+            criteria.limit = criteria.limit || 100;
+
+            if (criteria.limit) {
+                query = query.limit(criteria.limit);
+            }
+
             tS = (new Date()).getTime();
             query.exec(function(err, props) {
                 t = (new Date()).getTime();
