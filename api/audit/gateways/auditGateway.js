@@ -23,9 +23,16 @@ Routes.get('/filters', function (req, res) {
         },
 
         properties: function(callbackp) {
-            getPropertiesAndComps(req, function(err,props,comps) {
-                callbackp(null, {subject:props,comps:comps})
-            });
+            if (req.user.memberships.isadmin !== true) {
+                getPropertiesAndComps(req, function (err, props, comps) {
+                    callbackp(null, {subject: props, comps: comps})
+                });
+            }
+            else {
+                PropertyService.search(req.user, {permission: ['PropertyManage'], select: '_id name', limit: 5000, skipAmenities: true}, function(err, properties) {
+                    callbackp(null, {subject: properties, comps: []})
+                })
+            }
         },
         audits: function(callbackp) {
             var audits = AuditService.audits;
@@ -42,8 +49,7 @@ Routes.get('/filters', function (req, res) {
         }
 
     }, function(err, all) {
-        debug.final = {audits:all.audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
-        res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps), debug : debug});
+        res.status(200).json({audits: all.audits, users: all.users, properties: all.properties.subject.concat(all.properties.comps)});
         all = null;
     })
 
