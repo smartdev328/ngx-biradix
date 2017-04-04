@@ -9,6 +9,9 @@
     },
     "EXCEL_URL": {
       "value": "http://biradixsheets.apphb.com/excel"
+    },
+    "NEW_RELIC_NAME": {
+      "value": "REVIEW"
     }
   },
 //  "scripts": {

@@ -1,3 +1,4 @@
+require ('newrelic');
 var settings = require('../config/settings')
 var errors = require("../config/error")
 var d= require("domain").create();
