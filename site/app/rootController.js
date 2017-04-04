@@ -158,7 +158,6 @@ define([
                     }
 
                     if ($scope.first && !$rootScope.me.passwordUpdated) {
-                        $scope.first = false;
 
                         if (!phantom) {
                             $timeout(function () {
@@ -168,7 +167,6 @@ define([
                         }
                     }
                     else if ($scope.first && $rootScope.me.bounceReason) {
-                        $scope.first = false;
 
                         if (!phantom) {
                             $timeout(function () {
@@ -176,6 +174,8 @@ define([
                             }, 2000)
                         }
                     }
+
+                    $scope.first = false;
 
                     if (callback) {
                         callback();
