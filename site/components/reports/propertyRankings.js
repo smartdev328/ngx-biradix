@@ -23,7 +23,7 @@ define([
                 $scope.reload = function() {
                     $scope.rankings = {}
                     $scope.report.forEach(function (fp) {
-                        fp.bathrooms = fp.bathrooms.trim();
+                        fp.bathrooms = (fp.bathrooms || '').toString().trim();
 
                         $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms] = $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms] || {};
 
