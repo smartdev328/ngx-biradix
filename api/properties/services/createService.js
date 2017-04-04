@@ -432,6 +432,8 @@ function errorCheck(property, modelErrors) {
     }
 
     property.floorplans.forEach(function(fp) {
+        fp.bathrooms = (fp.bathrooms || '').trim();
+
         if (typeof fp.bedrooms == 'undefined' || isNaN(fp.bedrooms) || parseInt(fp.bedrooms) < 0) {
             modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of bedrooms'});
         }
