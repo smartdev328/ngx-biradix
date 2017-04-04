@@ -78,7 +78,7 @@ define([
                     var fp = {};
                     var type = data[i][0].split("x");
                     fp.bedrooms = parseInt(type[0]);
-                    fp.bathrooms = type[1];
+                    fp.bathrooms = type[1].trim();
                     fp.description = data[i][1];
                     fp.units = parseInt(data[i][2]);
                     fp.sqft = parseInt(data[i][3]);
