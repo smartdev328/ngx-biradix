@@ -19,6 +19,7 @@ queues.getNotificationsQueue().consume(function(data,reply) {
                 limit: 10000,
                 permission: 'PropertyManage',
                 active: true
+                , skipAmenities: true
             }
 
             if (data.properties && data.properties.length > 0 && data.properties[0] != null) {
@@ -30,8 +31,6 @@ queues.getNotificationsQueue().consume(function(data,reply) {
             })
         }
     }, function(err, all) {
-        console.log(all.properties);
-
         if (all.properties.length > 0) {
             var final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
