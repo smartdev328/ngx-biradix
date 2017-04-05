@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-xs-6">
                     Zip <span class="required">*</span><br>
-                    <input type="text" class="form-control input-sm" ng-model="property.zip" input-mask="99999">
+                    <input type="text" class="form-control input-sm" ng-model="property.zip" input-mask="99999" ng-blur="checkDupe()">
                 </div>
             </div>
         </div>

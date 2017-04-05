@@ -462,7 +462,6 @@ var getHelpers = function(property, options, callback) {
             else {
                 GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, true, function (err, res, fromCache) {
                     // console.log(res[0].latitude, res[0].longitude);
-                    delete res[0];
 
                     if (!res || !res[0]) {
                         //retry in 5 seconds
