@@ -9,9 +9,10 @@ define([
     '../../components/reports/propertyStatus.js',
     '../../services/auditService',
     '../../services/progressService',
+    '../../services/reportingService',
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService) {
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -243,7 +244,7 @@ define([
             $scope.propertyNames.forEach(function(x,i) {$scope.propertyNames[i] = {description: 'Property: ' + x}});
             $scope.propertyIds =  _.pluck(properties,"id")
 
-            $propertyService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
+            $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
@@ -273,7 +274,7 @@ define([
             $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
 
-            $propertyService.reports(
+            $reportingService.reports(
                 $scope.compIds
                 , $scope.selected.Property._id
                 ,$scope.reportIds
