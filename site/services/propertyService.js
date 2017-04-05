@@ -3,6 +3,15 @@ define(['app'], function (app) {
     app.factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+        fac.checkDupe = function (criteria) {
+            return $http.post('/api/1.0/properties/checkDupe?bust=' + (new Date()).getTime(), criteria,  {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.notifications_test = function (properties,showLeases) {
             return $http.post('/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
                 properties:properties,

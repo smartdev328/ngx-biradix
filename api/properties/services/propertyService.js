@@ -458,6 +458,17 @@ module.exports = {
                 query = query.exists("orgid", false);
             }
 
+            if (criteria.geo) {
+                query = query.where({
+                        'loc': {
+                            $near: criteria.geo.loc,
+                            $maxDistance: criteria.geo.distance / 6371
+
+                        }
+                    }
+                )
+            }
+
             if (criteria.amenity) {
                 query = query.or([
                     {"community_amenities": criteria.amenity},
