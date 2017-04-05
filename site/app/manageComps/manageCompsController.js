@@ -107,26 +107,30 @@ define([
             };
 
             $scope.searchSelected = function (item, model, label) {
+                $scope.upsert(item);
+            }
+
+            $scope.upsert = function(prop) {
                 $scope.changed = true;
-                item.faded = true;
-                item.summary = $scope.getSummary(item);
+                prop.faded = true;
+                prop.summary = $scope.getSummary(prop);
 
                 var found = -1;
 
                 for(var i =0; i < $scope.comps.length; i++) {
-                      if ($scope.comps[i]._id.toString() == item._id.toString()) {
-                          found = i;
-                          $scope.comps[i] = item;
-                      }
+                    if ($scope.comps[i]._id.toString() == prop._id.toString()) {
+                        found = i;
+                        $scope.comps[i] = prop;
+                    }
                 }
 
                 if (found  == -1) {
-                    $scope.comps.push(item);
+                    $scope.comps.push(prop);
                     found = $scope.comps.length - 1;
                 }
                 window.setTimeout(function() {
                     $scope.transition(found,function() {
-                        item.faded = false;
+                        prop.faded = false;
                     },true);
 
                 }, 50);
@@ -212,17 +216,7 @@ define([
 
                     modalInstance.result.then(function (comp) {
                         //Send successfully
-                        comp.summary = $scope.getSummary(comp);
-                        comp.faded = true;
-                        $scope.comps.push(comp);
-                        $scope.search1 = "";
-                        $scope.changed = true;
-                        window.setTimeout(function() {
-                            $scope.transition($scope.comps.length - 1,function() {
-                                comp.faded = false;
-                            },true);
-
-                        }, 50);
+                        $scope.upsert(comp);
                     }, function () {
                         //Cancel
                     });

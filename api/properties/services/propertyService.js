@@ -462,7 +462,7 @@ module.exports = {
                 query = query.where({
                         'loc': {
                             $near: criteria.geo.loc,
-                            $maxDistance: criteria.geo.distance / 6371
+                            $maxDistance: criteria.geo.distance / 3963.2
 
                         }
                     }
@@ -607,7 +607,7 @@ module.exports = {
                             {
                             loc: {
                                 $near: prop.loc,
-                                $maxDistance: .1 / 6371
+                                $maxDistance: .1 / 3963.2
                             },
                                 _id : {$ne: prop._id},
                                 active:true

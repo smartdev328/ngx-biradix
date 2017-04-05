@@ -6,6 +6,7 @@ var expressJwt = require('express-jwt')
 var cookieParser = require('cookie-parser')
 var compression = require('compression')
 var redisService = require('../api/utilities/services/redisService')
+var newrelic = require("newrelic");
 
 module.exports = {
         init: function (app, domain) {
@@ -79,6 +80,12 @@ module.exports = {
                         if (!req.user || !req.user.active) {
                             return res.status(401).json('Unauthorized request');
                         }
+
+                        newrelic.addCustomParameters({
+                            "User": req.user.first + ' ' + req.user.last,
+                            "Email": req.user.email
+                        });
+
                         next();
                     });
 
