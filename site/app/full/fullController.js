@@ -8,69 +8,31 @@ define([
     '../../components/propertyProfile/floorplans',
     '../../components/propertyProfile/tableView',
     '../../components/googleMap/module',
-    '../../services/cookieSettingsService',
     '../../services/reportingService',
 
 ], function (app) {
 
-    app.controller('fullController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', '$stateParams','$cookies','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$stateParams,$cookies,$reportingService) {
+    app.controller('fullController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams','$cookies','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,$stateParams,$cookies,$reportingService) {
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         //window.renderable = true;
 
         $scope.localLoading = false;
 
-        $scope.daterange=$cookieSettingsService.getDaterange();
-
-        $scope.summary = $cookieSettingsService.getSummary();
-
-        $scope.graphs = $cookieSettingsService.getGraphs();
-
-        $scope.nerScale = $cookieSettingsService.getNerScale();
-
-        $scope.totals = $cookieSettingsService.getTotals();
-
-        $scope.selectedBedroom = $cookieSettingsService.getBedrooms();
-
-        $scope.orderByFp = "sqft";
-
-        if ($cookies.get("fp.o")) {
-            $scope.orderByFp = $cookies.get("fp.o");
-        }
-
-        $scope.show = $reportingService.getDefaultProfileFloorplanColumns($(window).width());
-        if ($cookies.get("fp.s")) {
-            $scope.show = JSON.parse($cookies.get("fp.s"));
-        }
-
-        $scope.orderByComp = "number";
-
-        if ($cookies.get("cmp.o")) {
-            $scope.orderByComp = $cookies.get("cmp.o");
-        }
-
-
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
 
-                $scope.showComp = $reportingService.getDefaultDashboardCompColumns($rootScope.me,$(window).width());
-                
-                if ($cookies.get("cmp.s")) {
-                    $scope.showComp = JSON.parse($cookies.get("cmp.s"));
-                }
+                $scope.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
+                $scope.profileSettings = $reportingService.getProfileSettings($(window).width());
+                $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 
                 $scope.compItems = 0;
-                for (var c in $scope.showComp) {
-                    if ($scope.showComp[c] === true) {
+                for (var c in $scope.dashboardSettings.show) {
+                    if ($scope.dashboardSettings.show[c] === true) {
                         $scope.compItems ++;
                     }
                 }
-                $scope.stretchComps = $scope.compItems >= 10 || ($scope.compItems >= 9 && $scope.showComp.weekly === true)
-
-                $scope.showProfile = $reportingService.getDefaultInfoRows($rootScope.me);
-                if ($cookies.get("pr.s")) {
-                    $scope.showProfile = JSON.parse($cookies.get("pr.s"));
-                }
+                $scope.stretchComps = $scope.compItems >= 10 || ($scope.compItems >= 9 && $scope.dashboardSettings.show.weekly === true)
 
                 me();
                 $scope.loadProperty($stateParams.id)
@@ -83,16 +45,16 @@ define([
 
                 $propertyService.full(
                     defaultPropertyId
-                    , $scope.summary
-                    , $scope.selectedBedroom
+                    , $scope.dashboardSettings.summary
+                    , $scope.dashboardSettings.selectedBedroom
                     , {
-                        daterange: $scope.daterange.selectedRange,
-                        start: $scope.daterange.selectedStartDate,
-                        end: $scope.daterange.selectedEndDate
+                        daterange: $scope.dashboardSettings.daterange.selectedRange,
+                        start: $scope.dashboardSettings.daterange.selectedStartDate,
+                        end: $scope.dashboardSettings.daterange.selectedEndDate
                         }
-                    ,{graphs: $scope.graphs, scale: $scope.nerScale }
+                    ,{graphs: $scope.profileSettings.graphs, scale: $scope.dashboardSettings.nerScale }
                 ).then(function (response) {
-                    var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.summary, $rootScope.me.settings.showLeases, $scope.nerScale, $scope.selectedBedroom);
+                    var resp = $propertyService.parseDashboard(response.data.dashboard,$scope.dashboardSettings.summary, $rootScope.me.settings.showLeases, $scope.dashboardSettings.nerScale, $scope.dashboardSettings.selectedBedroom);
 
                     window.document.title = resp.property.name + " - Profile + Comps | BI:Radix";
 
@@ -137,7 +99,7 @@ define([
 
                     var resp;
                     response.data.profiles.forEach(function(p) {
-                        resp = $propertyService.parseProfile(p,$scope.graphs,$rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.nerScale);
+                        resp = $propertyService.parseProfile(p,$scope.profileSettings.graphs,$rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.dashboardSettings.nerScale);
 
                         $scope.profiles.push({
                             lookups : resp.lookups,

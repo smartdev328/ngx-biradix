@@ -178,7 +178,7 @@
                    uib-popover="This graph/table does not include data for floor plans that have been manually excluded by the user from reporting and dashboard calculations."
                         ></i>
 
-                <daterange-picker daterange="daterange" class="pull-right" style="margin-right:-15px"></daterange-picker>
+                <daterange-picker daterange="settings.daterange" class="pull-right" style="margin-right:-15px"></daterange-picker>
                 <span class="pull-right hidden-xs" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Date Range: </span>
                 <br clear="all">
             </div>
@@ -252,15 +252,15 @@
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:220px;height:200px;overflow-y: auto" onclick="event.stopPropagation();">
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.description" ng-checked="show.description" ng-click="saveShow()"> Description</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.units" ng-checked="show.units" ng-click="saveShow()"> Units</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.unitPercent" ng-checked="show.unitPercent" ng-click="saveShow()"> Unit %</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.sqft" ng-checked="show.sqft" ng-click="saveShow()"> Sqft</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rent" ng-checked="show.rent" ng-click="saveShow()"> Rent</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.mersqft" ng-checked="show.mersqft" ng-click="saveShow()"> Rent / Sqft</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.concessions" ng-checked="show.concessions" ng-click="saveShow()"> Concessions / 12 Months</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="saveShow()"> Net Effective Rent</label></div></li>
-                        <li><div class="checkbox"><label><input type="checkbox" ng-model="show.nersqft" ng-checked="show.nersqft" ng-click="saveShow()"> Net Effective Rent / Sqft</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.description" ng-checked="settings.show.description" ng-click="saveShow()"> Description</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.units" ng-checked="settings.show.units" ng-click="saveShow()"> Units</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.unitPercent" ng-checked="settings.show.unitPercent" ng-click="saveShow()"> Unit %</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.sqft" ng-checked="settings.show.sqft" ng-click="saveShow()"> Sqft</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.rent" ng-checked="settings.show.rent" ng-click="saveShow()"> Rent</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.mersqft" ng-checked="settings.show.mersqft" ng-click="saveShow()"> Rent / Sqft</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.concessions" ng-checked="settings.show.concessions" ng-click="saveShow()"> Concessions / 12 Months</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.ner" ng-checked="settings.show.ner" ng-click="saveShow()"> Net Effective Rent</label></div></li>
+                        <li><div class="checkbox"><label><input type="checkbox" ng-model="settings.show.nersqft" ng-checked="settings.show.nersqft" ng-click="saveShow()"> Net Effective Rent / Sqft</label></div></li>
                         <li class="hidden-print"><div style="width:60px;margin:0px auto"><input type="button" class="btn btn-primary btn-xs" value="Reset All" ng-click="reset()"></div></li>
                     </ul>
                 </div>
@@ -268,7 +268,7 @@
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>
-                <property-floorplans comp="comp" order-by="orderByFp" show="show"></property-floorplans>
+                <property-floorplans comp="comp" order-by="settings.orderByFp" show="settings.show"></property-floorplans>
             </div>
         </div>
 

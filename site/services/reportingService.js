@@ -31,8 +31,57 @@ define([
             });
         }
 
-        fac.getDashboardSettings = function(me) {
+        fac.getDashboardSettings = function(me, width) {
+            var settings = {}
+            settings.daterange=$cookieSettingsService.getDaterange();
+            settings.summary = $cookieSettingsService.getSummary();
 
+            settings.totals = $cookieSettingsService.getTotals();
+
+            settings.nerScale = $cookieSettingsService.getNerScale();
+
+            settings.selectedBedroom = $cookieSettingsService.getBedrooms();
+
+            settings.orderByComp = "number";
+
+            if ($cookies.get("cmp.o")) {
+                settings.orderByComp = $cookies.get("cmp.o");
+            }
+
+            settings.show = fac.getDefaultDashboardCompColumns(me,width);
+
+            return settings;
+        }
+
+        fac.getProfileSettings = function(width) {
+            var settings = {}
+            settings.orderByFp = "sqft";
+
+            if ($cookies.get("fp.o")) {
+                settings.orderByFp = $cookies.get("fp.o");
+            }
+
+            settings.show = fac.getDefaultProfileFloorplanColumns(width);
+
+            if ($cookies.get("fp.s")) {
+                settings.show = JSON.parse($cookies.get("fp.s"));
+            }
+
+            settings.daterange=$cookieSettingsService.getDaterange();
+            settings.graphs=$cookieSettingsService.getGraphs();
+            settings.nerScale= $cookieSettingsService.getNerScale();
+
+            return settings;
+
+        }
+
+        fac.getInfoRows = function(me) {
+            var settings = fac.getDefaultInfoRows(fac.me);
+            if ($cookies.get("pr.s")) {
+                settings = JSON.parse($cookies.get("pr.s"));
+            }
+
+            return settings;
         }
 
         fac.getDefaultInfoRows = function(me) {
