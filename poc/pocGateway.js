@@ -80,26 +80,6 @@ function GitHubStatus(sha, state, description) {
 
 }
 
-routes.get('/hydrateRoles', function(req, res) {
-    AccessService.getRoles({tags: ['Admin','CM', 'RM', 'BM', 'Guest'], cache: false}, function (err, roles) {
-        OrgService.read(function(err, orgs) {
-            roles = JSON.parse(JSON.stringify(roles));
-            var org;
-            roles.forEach(function (r) {
-                r.orgid = r.orgid.toString();
-                org = _.find(orgs, function (o) {
-                    return o._id.toString() == r.orgid;
-                });
-                r.org = org;
-                AccessService.upsertOrgRole_read(r,function() {});
-            })
-
-
-        })
-    });
-
-    return res.status(200).json({done: true});
-})
 
 // routes.get('/viewall', function(req, res) {
 //

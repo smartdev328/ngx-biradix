@@ -15,7 +15,9 @@ var context = {ip: '127.0.0.1', user_agent: 'server'}
 module.exports = {
     init: function () {
         UserSchema.findOne({},function(err, usr) {
-            if (!usr) {
+            if (usr) {
+                OrgService.hydrateOrgRoles();
+            } else {
                 async.waterfall([
                     function(callbackw) {
                         CompaniesCreate(function(companies) {

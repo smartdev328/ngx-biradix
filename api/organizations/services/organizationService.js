@@ -3,8 +3,25 @@
 var OrganizationSchema= require('../schemas/organizationSchema')
 var AuditService = require('../../audit/services/auditService')
 var AccessService = require('../../access/services/accessService')
-
+var _ = require("lodash")
 module.exports = {
+    hydrateOrgRoles: function() {
+        var self = this;
+        AccessService.getRoles({tags: ['Admin','CM', 'RM', 'BM', 'Guest'], cache: false}, function (err, roles) {
+            self.read(function(err, orgs) {
+                roles = JSON.parse(JSON.stringify(roles));
+                var org;
+                roles.forEach(function (r) {
+                    r.orgid = r.orgid.toString();
+                    org = _.find(orgs, function (o) {
+                        return o._id.toString() == r.orgid;
+                    });
+                    r.org = org;
+                    AccessService.upsertOrgRole_read(r,function() {});
+                })
+            })
+        });
+    },
     read: function(callback) {
         var query = OrganizationSchema.find({})
         query = query.sort("name")
