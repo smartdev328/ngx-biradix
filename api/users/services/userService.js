@@ -100,33 +100,13 @@ module.exports = {
                     }
                 },
                 roles: function (callbackp) {
-                    tS = (new Date()).getTime();
-                    AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache: false},function(err, roles) {
-                        t = (new Date()).getTime();
-                        //console.log('Get Roles is Done: ',(t-tS) / 1000, "s");
-
+                    AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']},function(err, roles) {
                         callbackp(err, roles)
                     })
-                },
-                orgs: function(callbackp) {
-                    tS = (new Date()).getTime();
-                    OrgService.read(function (err, orgs) {
-                        t = (new Date()).getTime();
-                        //console.log('Get Orgs is Done: ',(t-tS) / 1000, "s");
-                        callbackp(null, orgs)
-                    });
                 }
             }, function(err, all) {
 
             all.roles = JSON.parse(JSON.stringify(all.roles));
-            var org;
-            all.roles.forEach(function (r) {
-                r.orgid = r.orgid.toString();
-                org = _.find(all.orgs, function (o) {
-                    return o._id.toString() == r.orgid;
-                });
-                r.org = org;
-            })
 
             t = (new Date()).getTime();
             //console.log('User All is Done: ',(t-tStart) / 1000, "s");
@@ -819,15 +799,10 @@ function getFullUser(usr, callback) {
                 });
             },
             roles: function(callbackp) {
-                AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache:false},function (err, roles) {
+                AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']},function (err, roles) {
                     callbackp(null, roles)
                 });
             },
-            orgs: function(callbackp) {
-                OrgService.read(function (err, orgs) {
-                    callbackp(null, orgs)
-                });
-            }
         }
         ,function(err, all) {
             delete usrobj.date;
@@ -844,21 +819,25 @@ function getFullUser(usr, callback) {
                 var final = _.filter(all.roles, function(x) {
                     return all.userroles.indexOf(x._id.toString()) > -1
                 })
+
+                final = JSON.parse(JSON.stringify(final));
+
                 usrobj.roles = _.pluck(final,'name');
 
                 if (final.length > 0) {
-                    usrobj.orgs = _.filter(all.orgs, function(x) {
-                        var o = _.find(final, function(y) {return y.orgid.toString() == x._id.toString()});
-
-                        if (o && usrobj.settings && usrobj.settings.defaultRole) {
-                            if (o._id.toString() == usrobj.settings.defaultRole) {
-                                x.isDefault = true;
+                    //Grab all orgs in all matching roles
+                    //Mark default if default
+                    usrobj.orgs = _.map(final, function(r) {
+                        if (usrobj.settings && usrobj.settings.defaultRole) {
+                            if (r._id.toString() == usrobj.settings.defaultRole) {
+                                t.isDefault = true;
                             }
-
                         }
-                        return o;
+                        return r.org
                     })
 
+
+                    //Sort By Default First
                     usrobj.orgs = _.sortBy(usrobj.orgs, function (n) {
                         if (n.isDefault && n.isDefault === true) {
                             return "-1";

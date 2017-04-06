@@ -422,11 +422,9 @@ function getHelpers(emailLower, callback) {
             }
         },
         roles : function(callbackp) {
-            AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache:false},callbackp);
+            AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']},callbackp);
         },
-        orgs: function(callbackp) {
-            OrgService.read(callbackp)
-        },
+
         memberships: function (callbackp) {
             AccessService.getAllMemberships({},callbackp)
         } ,
@@ -454,9 +452,6 @@ function removeOldRole(roleids, all, permissions) {
 
         userRoles = JSON.parse(JSON.stringify(userRoles));
 
-        userRoles.forEach(function(r) {
-            r.org = _.find(all.orgs, function(x) {return x._id.toString() == r.orgid.toString()});
-        })
 
     } else {
         throw new Error("Should not get here")
@@ -506,9 +501,6 @@ function updateNewRole(roleids, all, permissions) {
 
         userRoles = JSON.parse(JSON.stringify(userRoles));
 
-        userRoles.forEach(function(r) {
-            r.org = _.find(all.orgs, function(x) {return x._id.toString() == r.orgid.toString()});
-        })
     } else {
         throw new Error("Should not get here")
     }

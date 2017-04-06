@@ -33,7 +33,7 @@ module.exports = {
                 AccessService.getRoles({tags:[subjectid.toString()]}, callbackp);
             },
             CMroles: function(callbackp) {
-                AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache:false},function (err, roles) {
+                AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']},function (err, roles) {
                     callbackp(null, roles)
                 });
             },

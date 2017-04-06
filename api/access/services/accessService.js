@@ -1,11 +1,37 @@
    'use strict';
     var _ = require('lodash');
     var RoleSchema = require('../schemas/roleSchema')
+   var OrgRoleSchema_read = require('../schemas/orgRoleSchema_read')
     var MemberSchema = require('../schemas/memberSchema')
     var PermissionsSchema = require('../schemas/permissionsSchema')
     var localCacheService = require('../../utilities/services/localcacheService')
 
     module.exports = {
+        getOrgRoles: function(criteria, callback) {
+            var roles;
+
+            var modelErrors = [];
+            criteria = criteria || {};
+            var query = OrgRoleSchema_read.find({});
+
+            if (criteria.tags) {
+                query = query.where("tags").in(criteria.tags);
+            }
+
+            if (criteria.orgid) {
+                query = query.where("orgid").in(criteria.orgid);
+            }
+
+            query.exec(function(err, obj) {
+                if (err) {
+                    modelErrors.push({msg: 'Unexpected Error. Unable to get roles: ' + err});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                callback(null, obj);
+            })
+        },
         getRoles: function(criteria, callback) {
             var roles;
             var key = "roles" + JSON.stringify(criteria.tags);
@@ -43,6 +69,27 @@
                 }
                 callback(null, obj);
             })
+        },
+        orgUpdated: function(org, callback) {
+            var query = {orgid: org._id};
+            var update = {org: org};
+            var options = {new: true, multi: true};
+
+            OrgRoleSchema_read.update(query, update, options, function(err, saved) {
+                callback()
+            });
+        }
+        ,
+        upsertOrgRole_read : function(role, callback) {
+            var newrole = new OrgRoleSchema_read();
+            newrole.name = role.name;
+            newrole._id = role._id;
+            newrole.isadmin = role.isadmin;
+            newrole.orgid = role.orgid;
+            newrole.tags = role.tags;
+            newrole.org = role.org;
+
+            newrole.save(callback);
         },
         createRole: function (role, callback) {
             var modelErrors = [];

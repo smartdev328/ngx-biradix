@@ -2,6 +2,7 @@
 
 var OrganizationSchema= require('../schemas/organizationSchema')
 var AuditService = require('../../audit/services/auditService')
+var AccessService = require('../../access/services/accessService')
 
 module.exports = {
     read: function(callback) {
@@ -80,6 +81,8 @@ module.exports = {
                     })
                 }
 
+                AccessService.orgUpdated(saved, function() {});
+
                 return callback();
             });
 
@@ -145,6 +148,9 @@ module.exports = {
                     callback(modelErrors, null);
                     return;
                 };
+
+                org = JSON.parse(JSON.stringify(org));
+                defaultSettings(org);
 
                 callback(null, org);
 

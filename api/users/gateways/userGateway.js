@@ -123,7 +123,7 @@ userRoutes.post('/createGuest', function (req, res) {
                 })
 
             } else {
-                AccessService.getRoles({tags: ['Guest'], cache: false}, function (err, guests) {
+                AccessService.getOrgRoles({tags: ['Guest']}, function (err, guests) {
                     req.body.roleids = [guests[0]._id.toString()];
 
                     userCreateService.insert(req.user, req.context, req.body, req.basePath, function (errors, usr) {

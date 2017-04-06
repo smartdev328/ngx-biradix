@@ -1031,147 +1031,133 @@ var RolesCreate = function(Orgs, callback) {
     var GreystarBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Greystar._id}
     var GreystarPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Greystar._id}
 
-    var PeakLivingCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.PeakLiving._id}
-    var PeakLivingRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.PeakLiving._id}
-    var PeakLivingBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.PeakLiving._id}
-    var PeakLivingPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.PeakLiving._id}
-
-    var HarborCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Harbor._id}
-    var HarborRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Harbor._id}
-    var HarborBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Harbor._id}
-    var HarborPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Harbor._id}
-
     async.parallel({
         BiradixAdmin: function(callbackp) {
             AccessService.createRole(BiradixAdmin, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Biradix;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         Guest: function(callbackp) {
             AccessService.createRole(Guest, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Biradix;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         AllianceCM: function(callbackp) {
             AccessService.createRole(AllianceCM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Alliance;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         AllianceRM: function(callbackp) {
             AccessService.createRole(AllianceRM, function(err, role){
-                callbackp(null, role)
-            });
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Alliance;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))            });
         },
         AllianceBM: function(callbackp) {
             AccessService.createRole(AllianceBM, function(err, role){
-                callbackp(null, role)
-            });
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Alliance;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))            });
         },
         AlliancePO: function(callbackp) {
             AccessService.createRole(AlliancePO, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Alliance;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         DemoCM: function(callbackp) {
             AccessService.createRole(DemoCM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Demo;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         DemoRM: function(callbackp) {
             AccessService.createRole(DemoRM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Demo;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         DemoBM: function(callbackp) {
             AccessService.createRole(DemoBM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Demo;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         DemoPO: function(callbackp) {
             AccessService.createRole(DemoPO, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Demo;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         WoodCM: function(callbackp) {
             AccessService.createRole(WoodCM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Wood;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         WoodRM: function(callbackp) {
             AccessService.createRole(WoodRM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Wood;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         WoodBM: function(callbackp) {
             AccessService.createRole(WoodBM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Wood;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         WoodPO: function(callbackp) {
             AccessService.createRole(WoodPO, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Wood;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         GreystarCM: function(callbackp) {
             AccessService.createRole(GreystarCM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Greystar;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         GreystarRM: function(callbackp) {
             AccessService.createRole(GreystarRM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Greystar;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
         GreystarBM: function(callbackp) {
             AccessService.createRole(GreystarBM, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Greystar;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+
             });
         },
         GreystarPO: function(callbackp) {
             AccessService.createRole(GreystarPO, function(err, role){
-                callbackp(null, role)
+                role = JSON.parse(JSON.stringify(role));
+                role.org = Orgs.Greystar;
+                AccessService.upsertOrgRole_read(role, callbackp(null, role))
             });
         },
-        PeakLivingCM: function(callbackp) {
-            AccessService.createRole(PeakLivingCM, function(err, role){
-                callbackp(null, role)
-            });
-        },
-        PeakLivingRM: function(callbackp) {
-            AccessService.createRole(PeakLivingRM, function(err, role){
-                callbackp(null, role)
-            });
-        },
-        PeakLivingBM: function(callbackp) {
-            AccessService.createRole(PeakLivingBM, function(err, role){
-                callbackp(null, role)
-            });
-        },
-        PeakLivingPO: function(callbackp) {
-            AccessService.createRole(PeakLivingPO, function(err, role){
-                callbackp(null, role)
-            });
-        },
-        HarborCM: function(callbackp) {
-            AccessService.createRole(HarborCM, function(err, role){
-                callbackp(null, role)
-            });
-        },
-        HarborRM: function(callbackp) {
-            AccessService.createRole(HarborRM, function(err, role){
-                callbackp(null, role)
-            });
-        },
-        HarborBM: function(callbackp) {
-            AccessService.createRole(HarborBM, function(err, role){
-                callbackp(null, role)
-            });
-        },
-        HarborPO: function(callbackp) {
-            AccessService.createRole(HarborPO, function(err, role){
-                callbackp(null, role)
-            });
-        },        
+
 },function(err, roles) {callback(roles)})
 
 
@@ -1183,8 +1169,6 @@ var CompaniesCreate = function(callback) {
     var Greystar = {name: "Greystar", subdomain: 'greystar', logoBig: 'greystar.png', logoSmall: 'greystar-small.png'}
     var Wood = {name: "Wood Residential", subdomain: 'wood', logoBig: 'wood.png', logoSmall: 'wood-small.png'}
     var Alliance = {name: "Alliance Residential", subdomain: 'alliance', logoBig: 'biradix.png', logoSmall: 'biradix-small.png'}
-    var PeakLiving = {name: "Peak Living", subdomain: 'peakliving', logoBig: 'peakliving.png', logoSmall: 'peakliving-small.png'}
-    var Harbor = {name: "Harbor", subdomain: 'harbor', logoBig: 'harbor.png', logoSmall: 'harbor-small.png'}
 
     async.parallel({
         Biradix: function(callbackp)
@@ -1219,20 +1203,6 @@ var CompaniesCreate = function(callback) {
                 callbackp(err, org)
             });
         }
-    
-        ,
-        PeakLiving: function (callbackp) {
-            OrgService.create(PeakLiving, function (err, org) {
-                callbackp(err, org)
-            });
-        }
-
-        ,
-        Harbor: function (callbackp) {
-            OrgService.create(Harbor, function (err, org) {
-                callbackp(err, org)
-            });
-        }        
 
 },function(err, orgs) {
         if (err) {
@@ -1344,43 +1314,6 @@ var PermissionsCreate = function(roles, callback) {
         {executorid: roles.DemoRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
         {executorid: roles.DemoBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
 
-        {executorid: roles.PeakLivingCM._id, resource: "Users", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingRM._id, resource: "Users", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingBM._id, resource: "Users", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingCM._id, resource: "History", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingRM._id, resource: "History", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingBM._id, resource: "History", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingCM._id, resource: "Properties", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingRM._id, resource: "Properties", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingBM._id, resource: "Properties", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
-        {executorid: roles.PeakLivingBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
-
-        {executorid: roles.HarborCM._id, resource: "Users", allow: true, type: 'Execute'},
-        {executorid: roles.HarborRM._id, resource: "Users", allow: true, type: 'Execute'},
-        {executorid: roles.HarborBM._id, resource: "Users", allow: true, type: 'Execute'},
-        {executorid: roles.HarborCM._id, resource: "History", allow: true, type: 'Execute'},
-        {executorid: roles.HarborRM._id, resource: "History", allow: true, type: 'Execute'},
-        {executorid: roles.HarborBM._id, resource: "History", allow: true, type: 'Execute'},
-        {executorid: roles.HarborCM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
-        {executorid: roles.HarborRM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
-        {executorid: roles.HarborBM._id, resource: "Users/UpdateEmail", allow: true, type: 'Execute'},
-        {executorid: roles.HarborCM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
-        {executorid: roles.HarborRM._id, resource: "Users/Deactivate", allow: true, type: 'Execute'},
-        {executorid: roles.HarborCM._id, resource: "Settings/Default", allow: true, type: 'Execute'},
-        {executorid: roles.HarborCM._id, resource: "Properties", allow: true, type: 'Execute'},
-        {executorid: roles.HarborRM._id, resource: "Properties", allow: true, type: 'Execute'},
-        {executorid: roles.HarborBM._id, resource: "Properties", allow: true, type: 'Execute'},
-        {executorid: roles.HarborCM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
-        {executorid: roles.HarborRM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
-        {executorid: roles.HarborBM._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'},
     ];
 
     async.eachLimit(permissions, 10, function(permission, callbackp){
