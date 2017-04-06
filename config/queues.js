@@ -16,6 +16,16 @@ module.exports = {
         this.attachQListeners(queues[key], key);
     },
 
+
+    command: function(key,data,callback) {
+        exchange.publish(data,
+            {
+                key: key,
+                reply: callback
+            }
+        );
+    },
+
     query: function(key,data,callback) {
         exchange.publish(data,
             {
@@ -24,7 +34,6 @@ module.exports = {
             }
         );
     },
-    getExchange : function() {return exchange},
     connect : function(callback) {
         queue = jackrabbit(settings.CLOUDAMQP_URL)
             .on('connected', function() {

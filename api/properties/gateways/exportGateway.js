@@ -3,14 +3,12 @@ var async = require("async");
 var moment = require('moment')
 var phantom = require('phantom-render-stream');
 var request = require('request')
-var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
-var AuditService = require('../../audit/services/auditService')
 var organizationService = require('../../organizations/services/organizationService')
 var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
-var queues = require('../../../config/queues')
+var bus = require('../../../config/queues')
 var JSONB = require('json-buffer')
 var redisService = require('../../utilities/services/redisService')
 var error = require('../../../config/error')
@@ -197,32 +195,30 @@ module.exports = {
                 type: req.query.type,
                 propertyIds: req.query.propertyIds
             };
-            
-            queues.getExchange().publish(message,
-                {
-                    key: settings.PDF_REPORTING_QUEUE,
-                    reply: function (data) {
-                        console.log("Pdf Reporting Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
 
-                        if (!data.stream) {
-                            error.send(new Error(data.err),message);
-                            return res.status("200").send("There was an error generating this report. Please contact an administrator");
-                        }
+            bus.query(settings.PDF_REPORTING_QUEUE,
+                message,
+                function (data) {
+                    console.log("Pdf Reporting Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
 
-                        res.setHeader("content-type", "application/pdf");
-
-                        if (req.query.showFile) {
-                            res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
-                        }
-
-                        var stream = require('stream');
-                        var bufferStream = new stream.PassThrough();
-                        bufferStream.end(JSONB.parse(data.stream));
-                        bufferStream.pipe(res)
-
-                        data = null;
-
+                    if (!data.stream) {
+                        error.send(new Error(data.err),message);
+                        return res.status("200").send("There was an error generating this report. Please contact an administrator");
                     }
+
+                    res.setHeader("content-type", "application/pdf");
+
+                    if (req.query.showFile) {
+                        res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
+                    }
+
+                    var stream = require('stream');
+                    var bufferStream = new stream.PassThrough();
+                    bufferStream.end(JSONB.parse(data.stream));
+                    bufferStream.pipe(res)
+
+                    data = null;
+
                 }
             );
 
@@ -273,31 +269,28 @@ module.exports = {
 
                 };
 
-                queues.getExchange().publish(message,
-                    {
-                        key: settings.PDF_PROFILE_QUEUE,
-                        reply: function (data) {
-                            console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
-                            
-                            if (!data.stream) {
-                                error.send(new Error(data.err),message);
-                                return res.status("200").send("There was an error generating this report. Please contact an administrator");
-                            }
-                            
-                            res.setHeader("content-type", "application/pdf");
+                bus.query(settings.PDF_PROFILE_QUEUE,message,
+                    function (data) {
+                        console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
 
-                            if (query.showFile) {
-                                res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
-                            }
-
-                            var stream = require('stream');
-                            var bufferStream = new stream.PassThrough();
-                            bufferStream.end(JSONB.parse(data.stream));
-                            bufferStream.pipe(res)
-
-                            data = null;
-
+                        if (!data.stream) {
+                            error.send(new Error(data.err),message);
+                            return res.status("200").send("There was an error generating this report. Please contact an administrator");
                         }
+
+                        res.setHeader("content-type", "application/pdf");
+
+                        if (query.showFile) {
+                            res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
+                        }
+
+                        var stream = require('stream');
+                        var bufferStream = new stream.PassThrough();
+                        bufferStream.end(JSONB.parse(data.stream));
+                        bufferStream.pipe(res)
+
+                        data = null;
+
                     }
                 );
             });

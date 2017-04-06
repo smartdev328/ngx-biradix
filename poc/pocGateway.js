@@ -236,33 +236,6 @@ routes.get('/addorg', function(req, res) {
 
 });
 
-//routes.get('/error', function(req, res) {
-//    throw new Error('I am an error');
-//});
-//routes.get('/import', function(req, res) {
-//    queues.getExchange().publish({},
-//        {
-//            key: settings.IMPORT_QUEUE,
-//            reply: function () {
-//                res.status(200).send("OK");
-//            }
-//        }
-//    );
-//
-//})
-
-//routes.get('/importUsers', function(req, res) {
-//    queues.getExchange().publish({},
-//        {
-//            key: settings.IMPORT_USERS_QUEUE,
-//            reply: function () {
-//                res.status(200).send("OK");
-//            }
-//        }
-//    );
-//
-//})
-
 //routes.get('/fixPOs', function (req, res) {
 //
 //    AccessService.getRoles({tags:['PO_GROUP']}, function(err,roles) {

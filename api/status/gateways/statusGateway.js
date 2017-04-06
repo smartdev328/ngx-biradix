@@ -1,6 +1,6 @@
 'use strict';
 var settings = require('../../../config/settings')
-var queues = require('../../../config/queues')
+var bus = require('../../../config/queues')
 var express = require('express');
 var Routes = express.Router();
 var HerokuService = require("../../utilities/services/herokuService");
@@ -16,31 +16,24 @@ Routes.get('/restart', function (req, res) {
 });
 
 Routes.get('/rabbit', function (req, res) {
-    queues.getExchange().publish({test:true},
-        {
-            key: settings.WEB_STATUS_QUEUE,
-            reply: function (data) {
-                if (data.data.test !== true) {
-                    throw new Error("Rabbit result doesnt match");
-                }
-                res.status(200).send("OK");
+    bus.query(settings.WEB_STATUS_QUEUE,{test:true},
+        function (data) {
+            if (data.data.test !== true) {
+                throw new Error("Rabbit result doesnt match");
             }
+            res.status(200).send("OK");
         }
     );
 });
 
 Routes.get('/rabbitPhantom', function (req, res) {
-    queues.getExchange().publish({test:true},
-        {
-            key: settings.PHANTOM_STATUS_QUEUE,
-            reply: function (data) {
+    bus.query(settings.PHANTOM_STATUS_QUEUE,{test:true},
+        function (data) {
+            if (data.data.test !== true) {
 
-                if (data.data.test !== true) {
-
-                    throw new Error("Rabbit result doesnt match");
-                }
-                res.status(200).send("OK");
+                throw new Error("Rabbit result doesnt match");
             }
+            res.status(200).send("OK");
         }
     );
 });
