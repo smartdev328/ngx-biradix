@@ -7,6 +7,7 @@ define([
     '../../components/reports/propertyRankings.js',
     '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/propertyStatus.js',
+    '../../components/reports/propertyReport.js',
     '../../services/auditService',
     '../../services/progressService',
     '../../services/reportingService',
@@ -276,8 +277,7 @@ define([
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
-            $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
-            $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
+
 
             var options = {};
 
@@ -309,6 +309,11 @@ define([
 
                 $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
 
+                $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
+                $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
+                $scope.property_report = $scope.reportIds.indexOf("property_report") > -1;
+
+
                 if (!phantom) {
                     $scope.audit('report', 'Website');
                 }
@@ -320,6 +325,7 @@ define([
 
             });
         }
+
 
         $scope.pdf = function(showFile) {
 
