@@ -3,6 +3,7 @@ var PropertyHelperService = require('../../properties/services/propertyHelperSer
 var _ = require("lodash")
 var queues = require('../../../config/queues')
 var settings = require('../../../config/settings')
+var async = require("async");
 
 module.exports = {
     getProperties:  function(user, reports, proeprtyids, callback) {
@@ -129,11 +130,62 @@ module.exports = {
                 show: {}
             };
 
+            var optionsProfile = {
+                daterange: { daterange: "Today"},
+                show: {
+                    graphs: true,
+                    traffic: true,
+                    leases: true,
+                }
+            }
+
+
+            var profiles = [];
+
             queues.getExchange().publish({user: user, id: subjectid, options: options},
                 {
                     key: settings.DASHBOARD_QUEUE,
                     reply: function (data) {
-                        callback(data.dashboard);
+                        async.eachLimit(data.dashboard.comps, 10, function(comp, callbackp){
+
+                            queues.getExchange().publish({
+                                    user: user,
+                                    options: optionsProfile,
+                                    checkManaged: false,
+                                    subjectId: data.dashboard.property._id,
+                                    compId: comp._id
+                                },
+                                {
+                                    key: settings.PROFILE_QUEUE,
+                                    reply: function (data) {
+                                        profiles.push(data.profile);
+                                        callbackp();
+                                    }
+                                }
+                            );
+                        }, function(err) {
+
+                            profiles.forEach(function(c) {
+                                var comp = _.find(data.dashboard.comps, function (x) {
+                                    return x._id.toString() == c.property._id.toString()
+                                });
+
+                                c.orderNumber = 999;
+
+                                if (comp && typeof comp.orderNumber != 'undefined') {
+                                    c.orderNumber = comp.orderNumber;
+                                }
+                                c.name = comp.name;
+                            });
+
+                            profiles = _.sortByAll(profiles, ['orderNumber','name']);
+
+                            callback({dashboard: data.dashboard, profiles: profiles});
+                            data.dashboard = null;
+                            profiles = null;
+                            data = null;
+                        });
+
                     }
                 }
             );
