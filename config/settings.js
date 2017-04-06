@@ -34,6 +34,5 @@ module.exports = {
     PDF_WORKERS: process.env.PDF_WORKERS || 3,
     SEED_DEMO : process.env.SEED_DEMO == "1" || true,
     PROJECT_DIR : __dirname
-    //SKIPRABBIT : true
 
 }

@@ -43,7 +43,7 @@ Routes.post('/:id', function (req, res) {
 
                 },
                 function(callbackp) {
-                    individualReportsService.property_report(req.user, req.body.reports,req.params.id, comps, function(property_report) {
+                    individualReportsService.property_report(req.user, req.body.reports,req.params.id, comps, req.body.options.property_report, function(property_report) {
                         results.property_report = property_report;
                         callbackp();
                     });

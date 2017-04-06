@@ -1,4 +1,4 @@
-var queues = require("../../../config/queues")
+var bus = require("../../../config/queues")
 var settings = require("../../../config/settings")
 var PropertyService = require("../services/propertyService")
 var pdfService = require("../services/pdfService")
@@ -8,7 +8,7 @@ var phantom = require('phantom-render-stream');
 var AuditService = require('../../audit/services/auditService')
 var ProgressService = require('../../progress/services/progressService')
 
-queues.getPdfProfileQueue().consume(function(data,reply) {
+bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
     console.log(data.id + " pdf started");
     try {
         PropertyService.search(data.user, {_id: data.id, skipAmenities: true}, function (err, properties) {
@@ -124,9 +124,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
     }
 
 });
-
-
-queues.getPdfReportingQueue().consume(function(data,reply) {
+bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
     console.log(data.id + " reporting pdf started");
 
     try {
@@ -201,5 +199,3 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
 
 });
 
-queues.attachQListeners(queues.getPdfProfileQueue(), "Pdf Profile");
-queues.attachQListeners(queues.getPdfReportingQueue(), "Pdf Reporting");

@@ -165,7 +165,7 @@
                    uib-popover="This graph/table does not include data for floor plans that have been manually excluded by the user from reporting and dashboard calculations."
                         ></i>
 
-                <daterange-picker daterange="settings.daterange" class="pull-right" style="margin-right:-15px"></daterange-picker>
+                <daterange-picker ng-if="localLoading" daterange="settings.daterange" class="pull-right" style="margin-right:-15px"></daterange-picker>
                 <span class="pull-right hidden-xs" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Date Range: </span>
 
 

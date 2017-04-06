@@ -39,6 +39,10 @@ define([
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
+
+                $scope.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
+                $scope.profileSettings = $reportingService.getProfileSettings($(window).width());
+                $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
                 $scope.reload($stateParams.property == "1");
                 me();
             }
@@ -275,10 +279,30 @@ define([
             $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
 
+            var options = {};
+
+            if ($scope.reportIds.indexOf("property_report") > -1) {
+                options.property_report = {
+                    summary: $scope.dashboardSettings.summary,
+                    bedrooms: $scope.dashboardSettings.selectedBedroom,
+                    daterange: {
+                        daterange: $scope.dashboardSettings.daterange.selectedRange,
+                        start: $scope.dashboardSettings.daterange.selectedStartDate,
+                        end: $scope.dashboardSettings.daterange.selectedEndDate
+                    },
+                    show: {
+                        graphs: $scope.profileSettings.graphs
+                        , scale: $scope.dashboardSettings.nerScale
+                    },
+                    offset: moment().utcOffset()
+                }
+            }
+
             $reportingService.reports(
                 $scope.compIds
-                , $scope.selected.Property._id
+                ,$scope.selected.Property._id
                 ,$scope.reportIds
+                ,options
             ).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;

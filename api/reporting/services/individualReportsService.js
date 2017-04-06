@@ -1,7 +1,7 @@
 var PropertyService = require('../../properties/services/propertyService')
 var PropertyHelperService = require('../../properties/services/propertyHelperService')
 var _ = require("lodash")
-var queues = require('../../../config/queues')
+var bus = require('../../../config/queues')
 var settings = require('../../../config/settings')
 var async = require("async");
 
@@ -122,71 +122,65 @@ module.exports = {
             });
         }
     },
-    property_report: function(user,reports,subjectid, comps,callback) {
+    property_report: function(user,reports,subjectid, comps, options, callback) {
         if (reports.indexOf('property_report')  > -1) {
 
-            var options = {
-                daterange: { daterange: "Today"},
-                show: {}
-            };
-
-            var optionsProfile = {
-                daterange: { daterange: "Today"},
-                show: {
-                    graphs: true,
-                    traffic: true,
-                    leases: true,
-                }
-            }
-
+            var graphs = options.show.graphs;
+            options.show.graphs = true;
+            options.show.selectedBedroom = -1;
+            options.show.ner = true;
+            options.show.occupancy = true;
+            options.show.leased = true;
 
             var profiles = [];
 
-            queues.getExchange().publish({user: user, id: subjectid, options: options},
-                {
-                    key: settings.DASHBOARD_QUEUE,
-                    reply: function (data) {
-                        async.eachLimit(data.dashboard.comps, 10, function(comp, callbackp){
+            bus.query(
+                settings.DASHBOARD_QUEUE
+                , {user: user, id: subjectid, options: options}
+                , function (data) {
+                    async.eachLimit(data.dashboard.comps, 10, function(comp, callbackp){
+                        options.show.graphs = graphs;
+                        options.show.traffic = true;
+                        options.show.leases = true;
+                        options.show.bedrooms = true;
 
-                            queues.getExchange().publish({
-                                    user: user,
-                                    options: optionsProfile,
-                                    checkManaged: false,
-                                    subjectId: data.dashboard.property._id,
-                                    compId: comp._id
-                                },
-                                {
-                                    key: settings.PROFILE_QUEUE,
-                                    reply: function (data) {
-                                        profiles.push(data.profile);
-                                        callbackp();
-                                    }
-                                }
-                            );
-                        }, function(err) {
+                        bus.query(
+                            settings.PROFILE_QUEUE
+                            ,{
+                                user: user,
+                                options: options,
+                                checkManaged: false,
+                                subjectId: data.dashboard.property._id,
+                                compId: comp._id
+                            },
+                            function (data) {
+                                profiles.push(data.profile);
+                                callbackp();
+                            }
+                        );
+                    }, function(err) {
 
-                            profiles.forEach(function(c) {
-                                var comp = _.find(data.dashboard.comps, function (x) {
-                                    return x._id.toString() == c.property._id.toString()
-                                });
-
-                                c.orderNumber = 999;
-
-                                if (comp && typeof comp.orderNumber != 'undefined') {
-                                    c.orderNumber = comp.orderNumber;
-                                }
-                                c.name = comp.name;
+                        profiles.forEach(function(c) {
+                            var comp = _.find(data.dashboard.comps, function (x) {
+                                return x._id.toString() == c.property._id.toString()
                             });
 
-                            profiles = _.sortByAll(profiles, ['orderNumber','name']);
+                            c.orderNumber = 999;
 
-                            callback({dashboard: data.dashboard, profiles: profiles});
-                            data.dashboard = null;
-                            profiles = null;
-                            data = null;
+                            if (comp && typeof comp.orderNumber != 'undefined') {
+                                c.orderNumber = comp.orderNumber;
+                            }
+                            c.name = comp.name;
                         });
 
-                    }
+                        profiles = _.sortByAll(profiles, ['orderNumber','name']);
+
+                        callback({dashboard: data.dashboard, profiles: profiles});
+                        data.dashboard = null;
+                        profiles = null;
+                        data = null;
+                    });
+
                 }
             );
         } else {

@@ -4,98 +4,85 @@ var errors = require('./error')
 
 var queue;
 var exchange;
-var dashboard_queue;
-var profile_queue;
-var pdf_profile_queue;
-var pdf_reporting_queue;
-var web_status_queue;
-var phantom_status_queue;
-var history_compare_report_queue;
-var notifications_queue;
-var guests_queue;
-//var import_queue;
-//var import_users_queue;
+var queues = {};
 
 module.exports = {
+    handleCommand: function(key,consumer) {
+        queues[key].consume(consumer);
+        this.attachQListeners(queues[key], key);
+    },
+    handleQuery: function(key,consumer) {
+        queues[key].consume(consumer);
+        this.attachQListeners(queues[key], key);
+    },
+
+    query: function(key,data,callback) {
+        exchange.publish(data,
+            {
+                key: key,
+                reply: callback
+            }
+        );
+    },
     getExchange : function() {return exchange},
-    getDashboardQueue : function() {return dashboard_queue},
-    getProfileQueue : function() {return profile_queue},
-    getPdfProfileQueue : function() {return pdf_profile_queue},
-    getPdfReportingQueue : function() {return pdf_reporting_queue},
-    getWebStatusQueue : function() {return web_status_queue},
-    getPhantomStatusQueue : function() {return phantom_status_queue},
-    getHistoryCompareReportQueue : function() {return history_compare_report_queue},
-    getNotificationsQueue : function() {return notifications_queue},
-    getGuestsQueue : function() {return guests_queue},
-    //getImportQueue : function() {return import_queue},
-    //getImportUsersQueue : function() {return import_users_queue},
     connect : function(callback) {
+        queue = jackrabbit(settings.CLOUDAMQP_URL)
+            .on('connected', function() {
+                //wait a sec before consuming queues;
+                setTimeout(function() {
+                    exchange = queue.default();
+                    queues[settings.DASHBOARD_QUEUE] = exchange.queue({ name: settings.DASHBOARD_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+                    queues[settings.PROFILE_QUEUE] = exchange.queue({ name: settings.PROFILE_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
-        if (settings.SKIPRABBIT) {
-            console.log({ type: 'info', msg: 'skipped', service: 'rabbitmq' });
-            callback();
-            return;
-        }
-            queue = jackrabbit(settings.CLOUDAMQP_URL)
-                .on('connected', function() {
-                    //wait a sec before consuming queues;
-                    setTimeout(function() {
-                        exchange = queue.default();
-                        dashboard_queue = exchange.queue({ name: settings.DASHBOARD_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
-                        profile_queue = exchange.queue({ name: settings.PROFILE_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+                    queues[settings.PDF_PROFILE_QUEUE] = exchange.queue({ name: settings.PDF_PROFILE_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+                    queues[settings.PDF_REPORTING_QUEUE] = exchange.queue({ name: settings.PDF_REPORTING_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
-                        pdf_profile_queue = exchange.queue({ name: settings.PDF_PROFILE_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
-                        pdf_reporting_queue = exchange.queue({ name: settings.PDF_REPORTING_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+                    queues[settings.WEB_STATUS_QUEUE] = exchange.queue({ name: settings.WEB_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+                    queues[settings.PHANTOM_STATUS_QUEUE] = exchange.queue({ name: settings.PHANTOM_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
-                        web_status_queue = exchange.queue({ name: settings.WEB_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
-                        phantom_status_queue = exchange.queue({ name: settings.PHANTOM_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+                    queues[settings.HISTORY_COMPARE_REPORT_QUEUE] = exchange.queue({ name: settings.HISTORY_COMPARE_REPORT_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
-                        history_compare_report_queue = exchange.queue({ name: settings.HISTORY_COMPARE_REPORT_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
+                    queues[settings.NOTIFICATIONS_QUEUE] = exchange.queue({ name: settings.NOTIFICATIONS_QUEUE, prefetch: 1, durable: false });
 
-                        notifications_queue = exchange.queue({ name: settings.NOTIFICATIONS_QUEUE, prefetch: 1, durable: false });
+                    queues[settings.GUESTS_QUEUE] = exchange.queue({ name: settings.GUESTS_QUEUE, prefetch: 1, durable: false });
 
-                        guests_queue = exchange.queue({ name: settings.GUESTS_QUEUE, prefetch: 1, durable: false });
+                    console.log({ type: 'info', msg: 'connected', service: 'rabbitmq' });
 
-                        //import_queue = exchange.queue({ name: settings.IMPORT_QUEUE, prefetch: 1, durable: false});
-                        //import_users_queue = exchange.queue({ name: settings.IMPORT_USERS_QUEUE, prefetch: 1, durable: false});
+                    callback();
+                }, 1000);
 
-                        console.log({ type: 'info', msg: 'connected', service: 'rabbitmq' });
-
-                        callback();
-                    }, 1000);
-
-                })
-                .on('error', function(err) {
-                   errors.send(err);
-                })
-                .on('disconnected', function() {
-                   errors.send("Rabbit disconnected");
-                });
+            })
+            .on('error', function(err) {
+                errors.send(err);
+            })
+            .on('disconnected', function() {
+                errors.send("Rabbit disconnected");
+            });
 
     },
     attachQListeners: function(q, name) {
-    q.on('consuming', function() {
+        q.on('consuming', function() {
             q.consuming = true;
             console.log(name+ " Q Consuming");
         })
-        .on('close', function(err) {
-            errors.send(err);
-        })
-        .on('error', function(err) {
-            errors.send(err);
-        })
-        .on('ready', function() {
-            console.log(name+ " Q Ready");
-        })
-        .on('connected', function() {
-            console.log(name+ " Q Connected");
-        });
+            .on('close', function(err) {
+                errors.send(err);
+            })
+            .on('error', function(err) {
+                errors.send(err);
+            })
+            .on('ready', function() {
+                console.log(name+ " Q Ready");
+            })
+            .on('connected', function() {
+                console.log(name+ " Q Connected");
+            });
 
-    //check if the q is consuming in 20 seconds
-    setTimeout(function() {
-        isConsuming(q,name );
-    }, 20000)
-}
+        //check if the q is consuming in 20 seconds
+        setTimeout(function() {
+            isConsuming(q,name );
+        }, 20000)
+    }
 }
 
 

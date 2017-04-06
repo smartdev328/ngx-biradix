@@ -76,23 +76,19 @@ d.run(function() {
                 res.redirect('/#/dashboard2?id=' + req.params.propertyid)
             })
 
-            if (!settings.SKIPRABBIT) {
-                require('../api/status/consumers/webConsumer')
+            require('../api/status/consumers/webConsumer')
 
-                if (settings.RUN_DASHBOARD == "web") {
-                    require('../api/properties/consumers/dashboardConsumer');
-                    require('../api/properties/consumers/historyCompareConsumer');
-                    require('../api/properties/consumers/notificationsConsumer');
-                    require('../api/propertyusers/consumers/guestsConsumer');
-                }
+            if (settings.RUN_DASHBOARD == "web") {
+                require('../api/properties/consumers/dashboardConsumer');
+                require('../api/properties/consumers/historyCompareConsumer');
+                require('../api/properties/consumers/notificationsConsumer');
+                require('../api/propertyusers/consumers/guestsConsumer');
+            }
 
-                if (settings.RUN_PHANTOM == "web") {
-                    require('../api/properties/consumers/pdfConsumer')
-                    require('../api/status/consumers/phantomConsumer')
-                    require('../config/pdfHitCount');
-                }
-
-                //require('../poc/importConsumer');
+            if (settings.RUN_PHANTOM == "web") {
+                require('../api/properties/consumers/pdfConsumer')
+                require('../api/status/consumers/phantomConsumer')
+                require('../config/pdfHitCount');
             }
 
             var server = app.listen(settings.PORT, function () {

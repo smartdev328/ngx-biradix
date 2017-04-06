@@ -7,10 +7,11 @@ define([
     app.factory('$reportingService', ['$http','$cookies','$cookieSettingsService', function ($http,$cookies,$cookieSettingsService) {
         var fac = {};
 
-        fac.reports = function(compids, subjectid, reports) {
+        fac.reports = function(compids, subjectid, reports, options) {
             return $http.post('/api/1.0/reporting/' + subjectid + '?bust=' + (new Date()).getTime(), {
                 compids: compids,
                 reports: reports,
+                options: options,
             }, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
