@@ -988,13 +988,15 @@ module.exports = {
 
         //get all surveys of comps at once to be efficient
         SurveySchema.find().where("_id").in(surveyids).exec(function(err, surveys) {
+            var links;
+            var s;
             comps.forEach(function(comp) {
                 //match each survey to a comp
-                var links = _.find(subject.comps, function(x) {return x.id == comp._id})
+                links = _.find(subject.comps, function(x) {return x.id == comp._id})
 
                 //if there is a survey go here:
                 if (comp.survey) {
-                    var s = _.find(surveys, function (x) {
+                    s = _.find(surveys, function (x) {
                         return x._id == comp.survey.id
                     });
 

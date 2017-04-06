@@ -7,6 +7,7 @@ var DataPointsService = require('../services/dataPointsService')
 var CompsService = require('../services/compsService')
 var SurveyHelperService = require('../services/surveyHelperService')
 var error = require('../../../config/error')
+var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
@@ -18,11 +19,19 @@ module.exports = {
                 if (subjectId == compId) {
                     return callbackp();
                 }
+
+                var key = "view_" + user._id.toString()+"_"+subjectId;
+                var prop = localCacheService.get(key);
+
+                if (prop) {
+                    return callbackp(null,prop)
+                }
+
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView'], _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey"
                     , skipAmenities: true
                 }, function(err, property) {
-                    //console.log("Subject DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                    localCacheService.set(key, property[0], 2)
                     callbackp(err, property[0])
                 })
             },
@@ -41,6 +50,7 @@ module.exports = {
                 if (!checkManaged) {
                     return callbackp(null,false);
                 }
+
                 PropertyService.search(user, {limit: 1, permission: ['CompManage','PropertyManage'], _id: compId
                     , select: "_id"
                     , skipAmenities: true
