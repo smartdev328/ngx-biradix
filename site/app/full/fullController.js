@@ -8,10 +8,12 @@ define([
     '../../components/propertyProfile/floorplans',
     '../../components/propertyProfile/tableView',
     '../../components/googleMap/module',
-    '../../services/cookieSettingsService'
+    '../../services/cookieSettingsService',
+    '../../services/reportingService',
+
 ], function (app) {
 
-    app.controller('fullController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', '$stateParams','$cookies', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$stateParams,$cookies) {
+    app.controller('fullController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService', '$stateParams','$cookies','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$stateParams,$cookies,$reportingService) {
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         //window.renderable = true;
@@ -36,7 +38,7 @@ define([
             $scope.orderByFp = $cookies.get("fp.o");
         }
 
-        $scope.show = {description:true,units:true,unitPercent:true,sqft:true,rent:true,concessions:true,ner:true,nersqft:true,mersqft: false}
+        $scope.show = $reportingService.getDefaultProfileFloorplanColumns($(window).width());
         if ($cookies.get("fp.s")) {
             $scope.show = JSON.parse($cookies.get("fp.s"));
         }
@@ -51,20 +53,7 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
 
-                $scope.showComp = {
-                    units: true,
-                    unitPercent: false,
-                    occupancy: true,
-                    leased: $rootScope.me.settings.showLeases,
-                    renewal: $rootScope.me.settings.showRenewal,
-                    sqft: true,
-                    rent: true,
-                    concessions: true,
-                    ner: true,
-                    nersqft: true,
-                    mersqft: false,
-                    weekly:false
-                }
+                $scope.showComp = $reportingService.getDefaultDashboardCompColumns($rootScope.me,$(window).width());
                 
                 if ($cookies.get("cmp.s")) {
                     $scope.showComp = JSON.parse($cookies.get("cmp.s"));
@@ -78,24 +67,7 @@ define([
                 }
                 $scope.stretchComps = $scope.compItems >= 10 || ($scope.compItems >= 9 && $scope.showComp.weekly === true)
 
-                $scope.showProfile = {
-                    address: true,
-                    website: false,
-                    phone: true,
-                    email: false,
-                    name: false,
-                    const: true,
-                    built: true,
-                    ren: false,
-                    owner: true,
-                    mgmt: true,
-                    units: true,
-                    occ: true,
-                    leased: $rootScope.me.settings.showLeases,
-                    renewal: $rootScope.me.settings.showRenewal,
-                    traf: true,
-                    lease: true
-                }
+                $scope.showProfile = $reportingService.getDefaultInfoRows($rootScope.me);
                 if ($cookies.get("pr.s")) {
                     $scope.showProfile = JSON.parse($cookies.get("pr.s"));
                 }

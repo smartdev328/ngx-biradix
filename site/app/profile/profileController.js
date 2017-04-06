@@ -9,10 +9,11 @@ define([
     '../../services/progressService',
     '../../services/cookieSettingsService',
     '../../services/auditService',
-    '../../services/exportService'
+    '../../services/exportService',
+    '../../services/reportingService'
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
@@ -24,31 +25,7 @@ define([
         }
 
         $scope.defaultShow = function() {
-            $scope.show = {
-                description: true,
-                units: true,
-                unitPercent: true,
-                sqft: true,
-                rent: true,
-                concessions: true,
-                ner: true,
-                nersqft: true,
-                mersqft: false
-            }
-
-            var w = $(window).width();
-
-            if (w < 1024) {
-                $scope.show.rent = false;
-                $scope.show.concessions = false;
-                $scope.show.unitPercent = false;
-            }
-
-            if (w < 500) {
-                $scope.show.ner = false;
-                $scope.show.description = false;
-            }
-
+            $scope.show = $reportingService.getDefaultProfileFloorplanColumns($(window).width());
         }
 
         $scope.defaultShow();
@@ -64,30 +41,11 @@ define([
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
             $cookies.put('fp.o', $scope.orderByFp, {expires : expireDate})
-
-
         }
 
         /**********************************************/
         $scope.defaultShowProfile = function() {
-            $scope.showProfile = {
-                address: true,
-                website: false,
-                phone: true,
-                email: false,
-                name: false,
-                const: true,
-                built: true,
-                ren: false,
-                owner: true,
-                mgmt: true,
-                units: true,
-                occ: true,
-                leased: $rootScope.me.settings.showLeases,
-                renewal: $rootScope.me.settings.showRenewal,
-                traf: true,
-                lease: true
-            }
+            $scope.showProfile = $reportingService.getDefaultInfoRows($rootScope.me);
 
         }
 
@@ -349,6 +307,9 @@ define([
         }
 
         $scope.pdf = function(full) {
+            if (full) {
+                return $location.path("/reporting").search('property', '1');
+            }
 
             ngProgress.start();
 

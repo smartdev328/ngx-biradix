@@ -8,9 +8,10 @@ define([
     '../../services/exportService',
     '../../services/progressService',
     '../../services/auditService',
+    '../../services/reportingService',
 ], function (app,jstz) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr','$stateParams', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr,$stateParams) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService) {
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -40,40 +41,7 @@ define([
 
         /*************************************/
         $scope.defaultShow = function() {
-            $scope.show = {
-                units: true,
-                unitPercent: false,
-                occupancy: true,
-                leased: $rootScope.me.settings.showLeases,
-                renewal: $rootScope.me.settings.showRenewal,
-                sqft: true,
-                rent: true,
-                concessions: true,
-                ner: true,
-                nersqft: true,
-                mersqft: false,
-                weekly:false
-            }
-
-
-            var w = $(window).width();
-
-            if (w < 1175) {
-                $scope.show.rent = false;
-                $scope.show.concessions = false;
-            }
-
-            if (w < 1000) {
-                $scope.show.ner = false;
-            }
-
-            if (w < 500) {
-                $scope.show.sqft = false;
-                $scope.show.occupancy = false;
-                $scope.show.leased = false
-                $scope.show.renewal = false
-                $scope.show.units = false;
-            }
+            $scope.show = $reportingService.getDefaultDashboardCompColumns($rootScope.me,$(window).width());
         }
 
         $scope.reset = function() {
@@ -92,25 +60,7 @@ define([
         }
         /**********************************************/
         $scope.defaultShowProfile = function() {
-            $scope.showProfile = {
-                address: true,
-                website: false,
-                phone: true,
-                email: false,
-                name: false,
-                const: true,
-                built: true,
-                ren: false,
-                owner: true,
-                mgmt: true,
-                units: true,
-                occ: true,
-                leased: $rootScope.me.settings.showLeases,
-                renewal: $rootScope.me.settings.showRenewal,
-                traf: true,
-                lease: true
-            }
-
+            $scope.showProfile = $reportingService.getDefaultInfoRows($rootScope.me);
         }
 
         $scope.resetProfile = function() {
@@ -204,7 +154,7 @@ define([
                 $scope.defaultShowProfile();
 
                 if ($cookies.get("pr.s")) {
-                    //$scope.showProfile = JSON.parse($cookies.get("pr.s"));
+                    $scope.showProfile = JSON.parse($cookies.get("pr.s"));
                 }
 
                 $propertyService.search({
@@ -383,17 +333,7 @@ define([
         }
 
         $scope.pdf = function(full) {
-
-            ngProgress.start();
-
-
-            $('#export').prop('disabled', true);
-
-            $scope.progressId = _.random(1000000, 9999999);
-
-            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.graphs, $scope.totals, $scope.selectedBedroom);
-
-            window.setTimeout($scope.checkProgress, 500);
+            $location.path("/reporting").search('property', '1');
 
         }
 

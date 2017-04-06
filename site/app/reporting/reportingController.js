@@ -12,7 +12,7 @@ define([
     '../../services/reportingService',
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams) {
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -27,7 +27,7 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "property_report", name: "Property Report", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_report", name: "Property Report", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
@@ -39,12 +39,12 @@ define([
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-                $scope.reload();
+                $scope.reload($stateParams.property == "1");
                 me();
             }
         })
 
-        $scope.reload = function() {
+        $scope.reload = function(bRun) {
             $propertyService.search({
                 limit: 10000,
                 permission: 'PropertyManage',
@@ -91,7 +91,7 @@ define([
                 }
 
                 if ($scope.selected.Property || $scope.reportType) {
-                    $scope.loadComps()
+                    $scope.loadComps(bRun)
                 } else {
                     window.setTimeout(function () {
                         window.document.title = "Reporting | BI:Radix";
@@ -111,7 +111,7 @@ define([
             })
         }
 
-        $scope.loadComps = function() {
+        $scope.loadComps = function(bRun) {
 
             var compids = _.pluck($scope.selected.Property.comps,"id");
             var subjectid = $scope.selected.Property._id;
@@ -166,6 +166,8 @@ define([
 
 
 
+                    $scope.run();
+                } else if (bRun) {
                     $scope.run();
                 }
 
