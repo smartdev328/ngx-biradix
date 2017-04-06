@@ -35,7 +35,7 @@ module.exports = {
     floorplanRentName: function(fp) {
 
         if (typeof fp.concessionsOneTime != 'undefined') {
-            return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total, $" + fp.concessionsOneTime + " cons/one-time, $" + fp.concessionsOneTime + " cons/monthly)";
+            return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total, $" + fp.concessionsOneTime + " cons/one-time, $" + fp.concessionsMonthly + " cons/monthly)";
         }
         else {
             return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total)";
