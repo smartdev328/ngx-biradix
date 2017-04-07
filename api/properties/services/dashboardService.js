@@ -183,6 +183,9 @@ module.exports = {
                     compids = _.intersection(compids, options.compids);
                 }
 
+                //Make sure subejct is always there
+                compids = _.union(compids,[id]);
+
                 delete property[0].compids;
 
                 PropertyService.search(user, {

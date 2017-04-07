@@ -10,10 +10,11 @@ define([
     '../../services/cookieSettingsService',
     '../../services/auditService',
     '../../services/exportService',
-    '../../services/reportingService'
+    '../../services/reportingService',
+    '../../services/urlService',
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
@@ -260,13 +261,20 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
+            var data = {
+                timezone: moment().utcOffset(),
+                selectedStartDate: $scope.settings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.settings.daterange.selectedRange,
+                progressId: $scope.progressId,
+                compids: null
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
             var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
             url += "token=" + $cookies.get('token')
-            url += "&timezone=" + moment().utcOffset()
-            url += "&selectedStartDate=" + $scope.settings.daterange.selectedStartDate.format()
-            url += "&selectedEndDate=" + $scope.settings.daterange.selectedEndDate.format()
-            url += "&selectedRange=" + $scope.settings.daterange.selectedRange
-            url += "&progressId=" + $scope.progressId
+            url += "&key=" + key;
 
             $window.setTimeout($scope.checkProgress, 500);
 

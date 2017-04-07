@@ -9,9 +9,10 @@ define([
     '../../services/progressService',
     '../../services/auditService',
     '../../services/reportingService',
+    '../../services/urlService',
 ], function (app,jstz) {
 
-    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService) {
+    app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$exportService','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$exportService,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService) {
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -316,13 +317,20 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
+            var data = {
+                timezone: moment().utcOffset(),
+                selectedStartDate: $scope.settings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.settings.daterange.selectedRange,
+                progressId: $scope.progressId,
+                compids: null
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
             var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
             url += "token=" + $cookies.get('token')
-            url += "&timezone=" + moment().utcOffset()
-            url += "&selectedStartDate=" + $scope.settings.daterange.selectedStartDate.format()
-            url += "&selectedEndDate=" + $scope.settings.daterange.selectedEndDate.format()
-            url += "&selectedRange=" + $scope.settings.daterange.selectedRange
-            url += "&progressId=" + $scope.progressId
+            url += "&key=" + key;
 
             window.setTimeout($scope.checkProgress, 500);
 

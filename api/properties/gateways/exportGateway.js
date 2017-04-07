@@ -92,93 +92,97 @@ module.exports = {
 
         Routes.get('/:id/excel', function (req, res) {
 
-            var profiles = [];
-            req.body.show = {};
-            req.body.show.graphs = false;
-            req.body.show.ner = true;
-            req.body.show.occupancy = true;
-            req.body.show.leased = true;
-            req.body.show.bedrooms = true;
-            req.body.bedrooms = -1;
-            req.body.summary = false;
+            redisService.getByKey(req.query.key, function(err, result) {
+                var query = {};
 
-            req.body.daterange =
-            {
-                daterange: req.query.selectedRange,
-                start: req.query.selectedStartDate,
-                end: req.query.selectedEndDate
-            }
+                if (result) {
+                    query = JSON.parse(result);
+                }
 
-            queueService.getDashboard(req, function(err,dashboard) {
-                async.eachLimit(dashboard.comps, 1, function(comp, callbackp){
-                    req.body.show.traffic = true;
-                    req.body.show.leases = true;
-                    req.body.show.bedrooms = true;
+                var profiles = [];
+                req.body.show = {};
+                req.body.show.graphs = false;
+                req.body.show.ner = true;
+                req.body.show.occupancy = true;
+                req.body.show.leased = true;
+                req.body.show.bedrooms = true;
+                req.body.bedrooms = -1;
+                req.body.summary = false;
+                req.body.compids = query.compids;
 
-                    queueService.getProfile(req.user,req.body, false, dashboard.property._id, comp._id, function(err,profile) {
-                        profiles.push(profile)
-                        callbackp(err);
-                    })
-                }, function(err) {
+                req.body.daterange =
+                    {
+                        daterange: query.selectedRange,
+                        start: query.selectedStartDate,
+                        end: query.selectedEndDate
+                    }
 
-                    moment().utcOffset(req.query.timezone);
+                queueService.getDashboard(req, function (err, dashboard) {
+                    async.eachLimit(dashboard.comps, 1, function (comp, callbackp) {
+                        req.body.show.traffic = true;
+                        req.body.show.leases = true;
+                        req.body.show.bedrooms = true;
 
-                    var p = dashboard.property;
-                    var fileName = p.name.replace(/ /g, "_") + '_and_Comps_';
+                        queueService.getProfile(req.user, req.body, false, dashboard.property._id, comp._id, function (err, profile) {
+                            profiles.push(profile)
+                            callbackp(err);
+                        })
+                    }, function (err) {
 
-                    fileName += moment().format("MM_DD_YYYY");
+                        moment().utcOffset(query.timezone);
 
-                    fileName += ".xlsx";
+                        var p = dashboard.property;
+                        var fileName = p.name.replace(/ /g, "_") + '_and_Comps_';
 
-                    profiles.forEach(function(c) {
-                        var comp = _.find(dashboard.comps, function (x) {
-                            return x._id.toString() == c.property._id.toString()
+                        fileName += moment().format("MM_DD_YYYY");
+
+                        fileName += ".xlsx";
+
+                        profiles.forEach(function (c) {
+                            var comp = _.find(dashboard.comps, function (x) {
+                                return x._id.toString() == c.property._id.toString()
+                            });
+
+                            c.orderNumber = 999;
+
+                            if (comp && typeof comp.orderNumber != 'undefined') {
+                                c.orderNumber = comp.orderNumber;
+                            }
+                            c.name = comp.name;
                         });
 
-                        c.orderNumber = 999;
+                        profiles = _.sortByAll(profiles, ['orderNumber', 'name']);
 
-                        if (comp && typeof comp.orderNumber != 'undefined') {
-                            c.orderNumber = comp.orderNumber;
-                        }
-                        c.name = comp.name;
+                        var json = {
+                            fileName: fileName,
+                            dashboard: dashboard,
+                            profiles: profiles,
+                            utcOffset: query.timezone,
+                            settings: {
+                                showLeases: req.user.settings.showLeases
+                            }
+                        };
+
+                        var timer = new Date().getTime();
+                        var r = request.post(settings.EXCEL_URL, {
+                            json: json
+                        }).pipe(res)
+
+                        r.on('finish', function () {
+                            console.log("Excel AppHarbor for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                            if (query.progressId) {
+                                ProgressService.setComplete(query.progressId)
+                            }
+                            dashboard = null;
+                            profiles = null;
+                            r = null;
+                            json = null;
+                        })
+
                     });
 
-                    profiles = _.sortByAll(profiles, ['orderNumber','name']);
-
-                    var json = {fileName: fileName,dashboard: dashboard, profiles: profiles, utcOffset: req.query.timezone, settings: {
-                        showLeases: req.user.settings.showLeases
-                    }};
-
-                    //var email = {
-                    //    from: 'support@biradix.com',
-                    //    to: 'alex@viderman.com',
-                    //    subject: 'Excell Json',
-                    //    html: JSON.stringify(json)
-                    //};
-                    //
-                    //EmailService.send(email, function(emailError,status) {console.log(emailError,status)});
-
-                    var timer = new Date().getTime();
-                    var r = request.post(settings.EXCEL_URL, {
-                        json: json
-                    }).pipe(res)
-
-                    r.on('finish', function () {
-                        console.log("Excel AppHarbor for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
-                        if (req.query.progressId) {
-                            ProgressService.setComplete(req.query.progressId)
-                        }
-                        dashboard = null;
-                        profiles = null;
-                        r = null;
-                        json = null;
-                    })
-
-                });
-
-            })
-
-
+                })
+            });
         });
 
         Routes.get('/:id/reportsPdf', function (req, res) {

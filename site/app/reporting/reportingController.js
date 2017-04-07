@@ -11,9 +11,10 @@ define([
     '../../services/auditService',
     '../../services/progressService',
     '../../services/reportingService',
+    '../../services/urlService',
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -409,6 +410,38 @@ define([
 
             $scope.reportIds = reportIds;
         },true)
+
+
+        $scope.excel = function() {
+
+            ngProgress.start();
+
+            $('#export').prop('disabled', true);
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            var data = {
+                timezone: moment().utcOffset(),
+                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
+                progressId: $scope.progressId,
+                compids: $scope.compIds
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
+            var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?'
+            url += "token=" + $cookies.get('token')
+            url += "&key=" + key;
+
+            $window.setTimeout($scope.checkProgress, 500);
+
+            location.href = url;
+
+            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.settings.daterange.selectedRange});
+
+        }
 
     }]);
 });
