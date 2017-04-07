@@ -175,11 +175,16 @@ module.exports = {
                     return callback("Access Denied",null)
                 }
 
-                var compids = _.pluck(property[0].comps, "id");
+                var compids = _.map(property[0].comps, function(x) {return x.id.toString()});
+
+                if (options.compids) {
+                    compids = _.intersection(compids, options.compids);
+                }
+
                 delete property[0].compids;
 
                 PropertyService.search(user, {
-                    limit: 20,
+                    limit: 30,
                     permission: 'PropertyView',
                     ids: compids
                     ,

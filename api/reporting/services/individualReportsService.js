@@ -132,6 +132,7 @@ module.exports = {
             options.show.ner = true;
             options.show.occupancy = true;
             options.show.leased = true;
+            options.compids = comps;
 
             var profiles = [];
 
