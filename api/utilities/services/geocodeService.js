@@ -6,7 +6,7 @@ module.exports = {
     geocode: function (address, checkCache, callback) {
         //This is Stupid
         if (address.toLowerCase().indexOf("3404 brice knoll") > -1) {
-            return callback(null,[35.31786, -80.79281],true);
+            return callback(null,[35.372665, -80.789559],true);
         }
 
         redisService.get(address, function(err, result) {
