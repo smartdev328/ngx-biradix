@@ -139,6 +139,8 @@ module.exports = {
                 settings.DASHBOARD_QUEUE
                 , {user: user, id: subjectid, options: options}
                 , function (data) {
+                    console.log("Full Report for " + data.dashboard.property.name + " [dashboard only] " + ((new Date().getTime() - timer) / 1000) + "s");
+
                     async.eachLimit(data.dashboard.comps, 10, function(comp, callbackp){
                         options.show.graphs = graphs;
                         options.show.traffic = true;
