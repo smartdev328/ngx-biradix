@@ -124,6 +124,7 @@ module.exports = {
     },
     property_report: function(user,reports,subjectid, comps, options, callback) {
         if (reports.indexOf('property_report')  > -1) {
+            var timer = new Date().getTime();
 
             var graphs = options.show.graphs;
             options.show.graphs = true;
@@ -175,6 +176,7 @@ module.exports = {
 
                         profiles = _.sortByAll(profiles, ['orderNumber','name']);
 
+                        console.log("Full Report for " + profiles[0].property.name + " + "  + profiles.length + " comps: " + ((new Date().getTime() - timer) / 1000) + "s");
                         callback({dashboard: data.dashboard, profiles: profiles});
                         data.dashboard = null;
                         profiles = null;

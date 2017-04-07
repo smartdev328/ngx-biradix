@@ -226,6 +226,7 @@ module.exports = {
                                     PropertyService.search(user, {permission: ['PropertyManage'], ids: compids
                                         , select: "_id"
                                         , skipAmenities: true
+                                        , limit: 30
                                     }, function(err, property) {
 
                                         if (err || !property) {
@@ -240,6 +241,13 @@ module.exports = {
                                     })
                                 },
                                 shared : function(callbackp) {
+                                    var key = "shared_comps_" + id;
+                                    var shared = localCacheService.get(key);
+
+                                    if (shared) {
+                                        return callbackp(null,shared)
+                                    }
+
                                     //Get all Subjects for All Comps.
                                     //Calculate counts for comps in multiple subjects among the group
                                     CompsService.getSubjects(compids, {select: "_id name comps.id"}, function(err, subjects) {
@@ -265,7 +273,8 @@ module.exports = {
                                                 }
                                             })
                                         })
-                                        // console.log(shared);
+                                        localCacheService.set(key, shared, 30)
+
                                         callbackp(err, shared);
                                     })
                                 }
@@ -285,10 +294,7 @@ module.exports = {
                                     if (c._id.toString() == property[0]._id.toString()) {
                                         c.orderNumber = -1;
                                     }
-                                })
 
-
-                                all.comps.forEach(function(c) {
                                     c.canSurvey = true;
                                     c.otherSubjects = all.shared[c._id.toString()];
 
