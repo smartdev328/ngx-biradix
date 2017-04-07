@@ -29,8 +29,8 @@
     "sendgrid:starter",
     "heroku-redis:hobby-dev",
     "raygun:intro",
-    "logdna:quaco",
-    "rabbitmq-bigwig:pipkin"
+    "logdna:quaco"
+//    "rabbitmq-bigwig:pipkin"
   ],
   "buildpacks": [
     {

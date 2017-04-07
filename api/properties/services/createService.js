@@ -320,6 +320,7 @@ module.exports = {
                 n.save(function (err, prop) {
 
                     if (err) {
+                        console.log(err);
                         return callback([{msg:"Unable to create property. Please contact the administrator."}], null)
                     }
 
