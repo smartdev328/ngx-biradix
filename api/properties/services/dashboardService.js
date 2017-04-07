@@ -71,7 +71,7 @@ module.exports = {
                 })
             }
         }, function(err, all) {
-            console.log("Profile All Loop: " + (new Date().getTime() - timer) / 1000 + "s");
+            // console.log("Profile All Loop: " + (new Date().getTime() - timer) / 1000 + "s");
 
             if (err) {
                 return callback(err,null)
@@ -90,7 +90,7 @@ module.exports = {
                             hide: user.settings.hideUnlinked,
                             injectFloorplans: true
                         }, all.subject, comps, function() {
-                            console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
+                            // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
                             callbackp(null, comps)
                         })
                     },
@@ -103,7 +103,7 @@ module.exports = {
                             options.offset,
                             options.show,
                             function(points) {
-                                console.log("Profile getPoints: " + (new Date().getTime() - timer1) / 1000 + "s");
+                                // console.log("Profile getPoints: " + (new Date().getTime() - timer1) / 1000 + "s");
                                 callbackp(null, points)
                             })
                     }
@@ -140,6 +140,7 @@ module.exports = {
                         canSurvey = false;
                     }
 
+                    console.log("Profile done: " + (new Date().getTime() - timer) / 1000 + "s");
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
 
                     for (var s in all) {
