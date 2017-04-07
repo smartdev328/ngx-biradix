@@ -61,6 +61,11 @@ define([
                 $scope.myProperties = response.data.properties;
 
 
+                // $scope.debug = {
+                //     c: $cookies.getAll(),
+                // }
+                // return window.renderable = true;
+
                 var id = $rootScope.me.settings.defaultPropertyId;
 
                 if ($cookies.get("subjectId")) {
@@ -96,6 +101,7 @@ define([
                     })
                 }
 
+
                 if ($scope.selected.Property || $scope.reportType) {
                     $scope.loadComps(bRun)
                 } else {
@@ -118,7 +124,6 @@ define([
         }
 
         $scope.loadComps = function(bRun) {
-
             var compids = _.pluck($scope.selected.Property.comps,"id");
             var subjectid = $scope.selected.Property._id;
 
@@ -154,6 +159,8 @@ define([
                 })
                 $scope.localLoading = true;
 
+
+
                 if ($cookies.get("reportIds")) {
 
                     if (!_.isArray($cookies.get("reportIds"))) {
@@ -169,7 +176,6 @@ define([
                     $scope.items.forEach(function(x,i) {
                         $scope.items[i].selected = $cookies.get("compIds").indexOf(x.id) > -1
                     })
-
 
 
                     $scope.run();
@@ -338,16 +344,35 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
+            var data = {
+                compIds :  encodeURIComponent($scope.compIds),
+                reportIds:  encodeURIComponent($scope.reportIds),
+                progressId: $scope.progressId,
+                timezone: moment().utcOffset(),
+                type: $scope.reportType,
+                propertyIds:  encodeURIComponent($scope.propertyIds),
+                showFile: showFile,
+
+                Graphs: $scope.profileSettings.graphs,
+                Summary: $scope.dashboardSettings.graphs,
+                Scale: $scope.dashboardSettings.nerScale,
+                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
+                Totals: $scope.dashboardSettings.totals,
+                Bedrooms: $scope.dashboardSettings.selectedBedroom,
+                orderBy: $scope.profileSettings.orderByFp,
+                orderByC: $scope.dashboardSettings.orderByComp,
+                show: encodeURIComponent(JSON.stringify($scope.profileSettings.show)),
+                showC: encodeURIComponent(JSON.stringify($scope.dashboardSettings.show)),
+                showP: encodeURIComponent(JSON.stringify($scope.showProfile))
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
             var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/reportsPdf?'
             url += "token=" + $cookies.get('token')
-            url += "&compIds=" + $scope.compIds
-            url += "&reportIds=" + $scope.reportIds
-            url += "&progressId=" + $scope.progressId
-            url += "&timezone=" + moment().utcOffset()
-            url += "&type=" + $scope.reportType
-            url += "&propertyIds=" + $scope.propertyIds
-            url += "&showFile=" + showFile
-
+            url += "&key=" + key
 
             if (showFile === true) {
                 ngProgress.start();

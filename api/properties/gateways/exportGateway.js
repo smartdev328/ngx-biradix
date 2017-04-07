@@ -187,44 +187,66 @@ module.exports = {
 
         Routes.get('/:id/reportsPdf', function (req, res) {
             var timer = new Date().getTime();
-            var message = {
-                user: req.user,
-                id: req.params.id,
-                url : req.basePath,
-                timezone : req.query.timezone,
-                hostname : req.hostname,
-                progressId : req.query.progressId,
-                reportIds : req.query.reportIds,
-                compIds : req.query.compIds,
-                type: req.query.type,
-                propertyIds: req.query.propertyIds
-            };
+            redisService.getByKey(req.query.key, function(err, result) {
+                var query = {};
 
-            bus.query(settings.PDF_REPORTING_QUEUE,
-                message,
-                function (data) {
-                    console.log("Pdf Reporting Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
-
-                    if (!data.stream) {
-                        error.send(new Error(data.err),message);
-                        return res.status("200").send("There was an error generating this report. Please contact an administrator");
-                    }
-
-                    res.setHeader("content-type", "application/pdf");
-
-                    if (req.query.showFile) {
-                        res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
-                    }
-
-                    var stream = require('stream');
-                    var bufferStream = new stream.PassThrough();
-                    bufferStream.end(JSONB.parse(data.stream));
-                    bufferStream.pipe(res)
-
-                    data = null;
-
+                if (result) {
+                    query = JSON.parse(result);
                 }
-            );
+
+                var message = {
+                    user: req.user,
+                    id: req.params.id,
+                    url: req.basePath,
+                    timezone: req.query.timezone,
+                    hostname: req.hostname,
+                    progressId: query.progressId,
+                    reportIds: query.reportIds,
+                    compIds: query.compIds,
+                    type: query.type,
+                    propertyIds: query.propertyIds,
+
+                    Graphs : query.Graphs,
+                    Totals : query.Totals,
+                    Summary : query.Summary,
+                    Scale : query.Scale,
+                    Bedrooms: query.Bedrooms,
+                    selectedStartDate : query.selectedStartDate,
+                    selectedEndDate : query.selectedEndDate,
+                    selectedRange : query.selectedRange,
+                    orderBy : query.orderBy,
+                    show : query.show,
+                    orderByComp : query.orderByC,
+                    showComp : query.showC,
+                    showProfile : query.showP,
+                };
+
+                bus.query(settings.PDF_REPORTING_QUEUE,
+                    message,
+                    function (data) {
+                        console.log("Pdf Reporting Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+
+                        if (!data.stream) {
+                            error.send(new Error(data.err), message);
+                            return res.status("200").send("There was an error generating this report. Please contact an administrator");
+                        }
+
+                        res.setHeader("content-type", "application/pdf");
+
+                        if (query.showFile) {
+                            res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
+                        }
+
+                        var stream = require('stream');
+                        var bufferStream = new stream.PassThrough();
+                        bufferStream.end(JSONB.parse(data.stream));
+                        bufferStream.pipe(res)
+
+                        data = null;
+
+                    }
+                );
+            })
 
         });
 

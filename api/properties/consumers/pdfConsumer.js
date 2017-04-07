@@ -148,6 +148,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                 var url = data.url + "/#/reporting";
                 url = url.replace("https://","http://");
 
+
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "compIds", data.compIds),
@@ -155,6 +156,20 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "subjectId", data.id),
                     pdfService.getCookie(data.hostname, "type", data.type),
                     pdfService.getCookie(data.hostname, "propertyIds", data.propertyIds),
+
+                    pdfService.getCookie(data.hostname, "Graphs", data.Graphs),
+                    pdfService.getCookie(data.hostname, "Totals", data.Totals),
+                    pdfService.getCookie(data.hostname, "Summary", data.Summary),
+                    pdfService.getCookie(data.hostname, "Bedrooms", data.Bedrooms),
+                    pdfService.getCookie(data.hostname, "Scale", data.Scale),
+                    pdfService.getCookie(data.hostname, "selectedStartDate", data.selectedStartDate),
+                    pdfService.getCookie(data.hostname, "selectedEndDate", data.selectedEndDate),
+                    pdfService.getCookie(data.hostname, "selectedRange", data.selectedRange),
+                    pdfService.getCookie(data.hostname, "fp.o", data.orderBy),
+                    pdfService.getCookie(data.hostname, "fp.s", data.show),
+                    pdfService.getCookie(data.hostname, "cmp.o", data.orderByComp),
+                    pdfService.getCookie(data.hostname, "cmp.s", data.showComp),
+                    pdfService.getCookie(data.hostname, "pr.s", data.showProfile),
                 ];
 
                 options.cookies = cookies;
