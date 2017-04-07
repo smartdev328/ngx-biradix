@@ -131,8 +131,10 @@ module.exports = {
                         canSurvey = false;
                     }
 
-                    if (!all2.comps[0].survey || !all2.comps[0].survey.dateByOwner || (Date.now() - new Date(all2.comps[0].survey.dateByOwner).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
-                        canSurvey = true;
+                    if (all.modify) {
+                        if (!all2.comps[0].survey || !all2.comps[0].survey.dateByOwner || (Date.now() - new Date(all2.comps[0].survey.dateByOwner).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
+                            canSurvey = true;
+                        }
                     }
 
                     //Guests cannot survey properties they do not manage

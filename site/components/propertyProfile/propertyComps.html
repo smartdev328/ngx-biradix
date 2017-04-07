@@ -11,7 +11,7 @@
         <th style="width:25px;">
 
         </th>
-        <th style="width:25px;" class="hidden-print">
+        <th style="width:25px;" class="hidden-print hidden-report">
 
         </th>
         <th>
@@ -102,7 +102,7 @@
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
 
-        <th  ng-if="roles[0] != 'Property Owner'">
+        <th class="hidden-print hidden-report"  ng-if="roles[0] != 'Property Owner'">
             &nbsp;
         </th>
     </tr>
@@ -140,7 +140,7 @@
         <td  style="text-align:center; vertical-align: middle">
             <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;width:22px;text-align: center">
         </td>
-        <td style="text-align: center;vertical-align: middle; width:25px"  class="hidden-print">
+        <td style="text-align: center;vertical-align: middle; width:25px"  class="hidden-print hidden-report">
             <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
         </td>
         <td>
@@ -227,7 +227,7 @@
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
 
-        <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
+        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
             <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                 <div ng-class="{'btn-group': true, 'action_dropdown': true, 'dropup' : $index == comps.length - 1}">
                     <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
@@ -253,7 +253,7 @@
     </tr>
     <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
         <td style="text-align: center"></td>
-        <td style="text-align: center" class="hidden-print"></td>
+        <td style="text-align: center" class="hidden-print hidden-report"></td>
         <td  style="text-align:right;; width:25px">
             <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:12px;padding-top:2px;padding-left:5px" ng-click="toggleOpen(row)"></i>
         </td>
@@ -306,7 +306,7 @@
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
         </td>
-        <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
+        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
         </td>
     </tr>
@@ -366,7 +366,7 @@
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
         </td>
-        <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
+        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
         </td>
     </tr>
@@ -375,7 +375,7 @@
     <tr class="tfoot" ng-if="showTotals">
         <td style="text-align: center"></td>
         <td style="text-align: center"></td>
-        <td  style="text-align:center; width:25px" class="hidden-print">
+        <td  style="text-align:center; width:25px" class="hidden-print hidden-report">
         </td>
         <td>
             Totals / Averages
@@ -430,7 +430,7 @@
             <span ng-if="totalSurveys == 0">-</span>
             <span ng-if="totalSurveys > 0">${{totals.nersqft | number : 2}}</span>
         </td>
-        <td style="text-align:center" class="hidden-print" ng-if="roles[0] != 'Property Owner'">
+        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
         </td>
     </tr>
