@@ -141,7 +141,7 @@ module.exports = {
                 , function (data) {
                     console.log("Full Report for " + data.dashboard.property.name + " [dashboard only] " + ((new Date().getTime() - timer) / 1000) + "s");
 
-                    async.eachLimit(data.dashboard.comps, 1, function(comp, callbackp){
+                    async.eachLimit(data.dashboard.comps, 2, function(comp, callbackp){
                         options.show.graphs = graphs;
                         options.show.traffic = true;
                         options.show.leases = true;

@@ -140,7 +140,7 @@ module.exports = {
                         canSurvey = false;
                     }
 
-                    console.log("Profile done: " + (new Date().getTime() - timer) / 1000 + "s");
+                    // console.log("Profile done: " + (new Date().getTime() - timer) / 1000 + "s");
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
 
                     for (var s in all) {
