@@ -110,7 +110,7 @@ module.exports = {
             }
 
             queueService.getDashboard(req, function(err,dashboard) {
-                async.eachLimit(dashboard.comps, 10, function(comp, callbackp){
+                async.eachLimit(dashboard.comps, 1, function(comp, callbackp){
                     req.body.show.traffic = true;
                     req.body.show.leases = true;
                     req.body.show.bedrooms = true;

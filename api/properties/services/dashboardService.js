@@ -71,6 +71,7 @@ module.exports = {
                 })
             }
         }, function(err, all) {
+            console.log("Profile All Loop: " + (new Date().getTime() - timer) / 1000 + "s");
 
             if (err) {
                 return callback(err,null)
@@ -84,14 +85,17 @@ module.exports = {
 
                 async.parallel({
                     comps: function (callbackp) {
+                        var timer1 = new Date().getTime();
                         PropertyService.getLastSurveyStats({
                             hide: user.settings.hideUnlinked,
                             injectFloorplans: true
                         }, all.subject, comps, function() {
+                            console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
                             callbackp(null, comps)
                         })
                     },
                     points: function(callbackp) {
+                        var timer1 = new Date().getTime();
                         DataPointsService.getPoints(user.settings.hideUnlinked, all.subject, comps,
                             false,
                             -1,
@@ -99,10 +103,12 @@ module.exports = {
                             options.offset,
                             options.show,
                             function(points) {
+                                console.log("Profile getPoints: " + (new Date().getTime() - timer1) / 1000 + "s");
                                 callbackp(null, points)
                             })
                     }
                 }, function(err, all2) {
+
                     var daysSince;
                     all2.comps.forEach(function(c) {
                         if (c.survey) {

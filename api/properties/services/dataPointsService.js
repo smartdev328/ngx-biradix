@@ -60,7 +60,7 @@ module.exports = {
 
         var timer = new Date().getTime();
         query.exec(function(err, surveys) {
-            console.log("Downloading " + surveys.length + " surveys for points " + ((new Date().getTime() - timer) / 1000) + "s");
+            // console.log("Downloading " + surveys.length + " surveys for points " + ((new Date().getTime() - timer) / 1000) + "s");
             if (err) {
                 return callback({});
             }
