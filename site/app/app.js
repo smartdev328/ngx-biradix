@@ -90,7 +90,6 @@ define([
             .state('properties', AsyncRoute("/properties","properties","propertiesController","properties.html","loggedInView",{loggedIn: true}))
             .state('history', AsyncRoute("/history?property","history","historyController","history.html","loggedInView",{loggedIn: true}))
             .state('profile', AsyncRoute("/profile/:id","profile","profileController","profile.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
-            .state('full', AsyncRoute("/full/:id","full","fullController","full.html","loggedInView",{loggedIn: true}))
             .state('updateProfile', AsyncRoute("/updateProfile?password&notifications&settings","updateprofile","updateProfileController","updateProfile.html","loggedInView",{loggedIn: true}))
             .state('uploadSurveys', AsyncRoute("/uploadSurveys","uploadSurveys","uploadSurveysController","uploadSurveys.html","loggedInView",{loggedIn: true}))
             .state('amenities', AsyncRoute("/amenities","amenities","amenitiesController","amenities.html","loggedInView",{loggedIn: true}))

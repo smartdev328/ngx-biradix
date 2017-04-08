@@ -251,14 +251,6 @@ module.exports = {
         });
 
         Routes.get('/:id/pdf', function (req, res) {
-
-            //if (!req.query.showFile && req.headers["user-agent"].indexOf(" Edge/") > -1 && !req.headers["getcontentfeatures.dlna.org"]) {
-            //    res.setHeader("content-type", "application/pdf");
-            //    res.send(null);
-            //    return;
-            //}
-
-
             var timer = new Date().getTime();
 
             redisService.getByKey(req.query.key, function(err, result) {
@@ -277,20 +269,14 @@ module.exports = {
                     hostname : req.hostname,
                     id: req.params.id,
                     timezone : query.timezone,
-                    full : query.full,
                     Graphs : query.Graphs,
-                    Totals : query.Totals,
-                    Summary : query.Summary,
                     Scale : query.Scale,
-                    Bedrooms: query.Bedrooms,
                     selectedStartDate : query.selectedStartDate,
                     selectedEndDate : query.selectedEndDate,
                     selectedRange : query.selectedRange,
                     progressId : query.progressId,
                     orderBy : query.orderBy,
                     show : query.show,
-                    orderByComp : query.orderByC,
-                    showComp : query.showC,
                     showProfile : query.showP,
 
                 };

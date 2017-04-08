@@ -265,6 +265,9 @@ body {
         page-break-inside: avoid !important;
         position: relative !important;
     }
+    .panel-info {
+        width: 100%
+    }
 }
 
 .search .input-sm {

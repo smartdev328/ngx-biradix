@@ -16,15 +16,6 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                 var p = properties[0];
                 var fileName = p.name.replace(/ /g, "_");
 
-                if (data.full) {
-                    fileName += '_and_Comps';
-                }
-
-                //console.log(data.timezone, 'Naked: ',moment().format());
-                //console.log('Utc: ',moment().utc().format());
-                //console.log('Utc Offset: ',moment().utc().utcOffset(data.timezone).format());
-                //console.log('Add: ',moment().utc().add(data.timezone,"minute").format());
-
                 fileName += "_" + moment().utc().add(data.timezone, "minute").format("MM_DD_YYYY");
 
                 fileName += ".pdf";
@@ -33,26 +24,20 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
 
                 var render = phantom(options);
 
-                var url = data.url + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
+                var url = data.url + "/#/profile/" + p._id;
 
                 url = url.replace("https://","http://");
 
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "Graphs", data.Graphs),
-                    pdfService.getCookie(data.hostname, "Totals", data.Totals),
-                    pdfService.getCookie(data.hostname, "Summary", data.Summary),
-                    pdfService.getCookie(data.hostname, "Bedrooms", data.Bedrooms),
                     pdfService.getCookie(data.hostname, "Scale", data.Scale),
                     pdfService.getCookie(data.hostname, "selectedStartDate", data.selectedStartDate),
                     pdfService.getCookie(data.hostname, "selectedEndDate", data.selectedEndDate),
                     pdfService.getCookie(data.hostname, "selectedRange", data.selectedRange),
                     pdfService.getCookie(data.hostname, "fp.o", data.orderBy),
                     pdfService.getCookie(data.hostname, "fp.s", data.show),
-                    pdfService.getCookie(data.hostname, "cmp.o", data.orderByComp),
-                    pdfService.getCookie(data.hostname, "cmp.s", data.showComp),
                     pdfService.getCookie(data.hostname, "pr.s", data.showProfile),
-
                 ];
 
 

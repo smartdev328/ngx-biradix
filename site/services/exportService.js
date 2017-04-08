@@ -6,35 +6,29 @@ define([
     app.factory('$exportService', ['$http','$cookies','$urlService', function ($http,$cookies,$urlService) {
         var fac = {};
 
-        var getPdfUrl = function(full, showFile,propertyId,graphs, daterange, progressId, totals, bedrooms) {
+        var getPdfUrl = function(showFile,propertyId,graphs, daterange, progressId) {
             var url = '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
             
             var data = {
                 Graphs: graphs,
-                Summary: $cookies.get('Summary') || "true",
                 Scale: $cookies.get('Scale') || "ner",
                 selectedStartDate: daterange.selectedStartDate.format(),
                 selectedEndDate: daterange.selectedEndDate.format(),
                 selectedRange: daterange.selectedRange,
                 timezone: moment().utcOffset(),
                 progressId: progressId,
-                full: full,
                 showFile: showFile,
-                Totals: totals,
-                Bedrooms: bedrooms,
                 orderBy: ($cookies.get("fp.o") || ''),
                 show: encodeURIComponent($cookies.get("fp.s") || ''),
-                orderByC: ($cookies.get("cmp.o") || ''),
-                showC: encodeURIComponent($cookies.get("cmp.s") || ''),
                 showP: encodeURIComponent($cookies.get("pr.s") || '')
             }
             
             return {base:url, data: data};
         }
 
-        fac.print = function (propertyId, full, showFile, daterange, progressId, graphs, totals, bedrooms) {
-            var pdf = getPdfUrl(full, showFile,propertyId, graphs, daterange, progressId, totals, bedrooms);
+        fac.print = function (propertyId, showFile, daterange, progressId, graphs) {
+            var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId);
 
             //Has to be synchronous
             var key = $urlService.shorten(JSON.stringify(pdf.data));

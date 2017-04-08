@@ -295,7 +295,7 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, full,true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs, null, null);
+            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs);
 
             $window.setTimeout($scope.checkProgress, 500);
 
@@ -303,7 +303,7 @@ define([
 
 
         $scope.print = function() {
-            $exportService.print($scope.property._id, false,"", $scope.settings.daterange, "", $scope.settings.graphs, null, null);
+            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs);
         }
 
     }]);
