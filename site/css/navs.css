@@ -253,9 +253,6 @@ body {
         margin:10px 20px
     }
 
-    #page-content-wrapper {
-        position: inherit;
-    }
     .break-after
     {
         break-after: page !important;
@@ -272,6 +269,10 @@ body {
     }
     .panel-info {
         width: 100%
+    }
+
+    .left-print {
+        margin-left:-5px;
     }
 }
 
