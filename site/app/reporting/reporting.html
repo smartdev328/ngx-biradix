@@ -20,8 +20,8 @@
 <div ng-show="localLoading" class="hidden-print">
     <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
 </div>
-<div class="row">
-    <div class="col-xs-12">
+<div class="row"  style="position: relative !important;">
+    <div class="col-xs-12"  style="position: relative !important;">
         <div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
             <div class="alert alert-warning" role="alert"><b>There are no properties assigned to your account</b></div>
 
@@ -92,10 +92,10 @@
         </div>
 
 
-        <div class="row">
+        <div class="row" style="position: relative !important;">
             <cover-page options="coverPage"></cover-page>
 
-            <property-report ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="dashboardSettings" profile-settings="profileSettings" show-profile="showProfile"></property-report>
+            <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="dashboardSettings" profile-settings="profileSettings" show-profile="showProfile"></property-report>
 
             <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 
