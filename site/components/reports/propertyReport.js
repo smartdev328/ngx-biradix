@@ -69,7 +69,6 @@ define([
                     });
                 })
 
-                console.log($scope.profiles)
             },
             templateUrl: '/components/reports/propertyReport.html?bust=' + version
         };

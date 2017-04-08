@@ -12,6 +12,7 @@ define([
     '../../services/progressService',
     '../../services/reportingService',
     '../../services/urlService',
+    'css!../../components/reports/reporting'
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {

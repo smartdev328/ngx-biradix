@@ -1,136 +1,4 @@
 {{debug}}
-<style>
-
-    .maingrid.wrapper.panel .subtotal TD,
-    .maingrid.wrapper.panel .subtotal TD SPAN{
-        color:black !important;
-        font-weight: bold !important;
-    }
-
-    .fp-header  {
-        border-top:0px !important;
-        padding-top:5px !important;
-    }
-
-    .subject td {
-        font-weight: bold !important;
-        color:#4460a9 !important;
-    }
-
-    .maingrid.wrapper.panel .subtotal TD  {
-        padding-bottom:10px !important;
-    }
-
-    .maingrid.wrapper.panel .subtotal-padding TD {
-        padding-bottom:25px !important;
-    }
-
-    .maingrid.wrapper.panel .danger,
-    .subject td .danger
-    {
-        color:red !important;
-    }
-
-
-    @media print {
-
-        @page { margin: 5px; }
-        body {
-            margin:10px 20px
-        }
-
-        /*table { page-break-inside:auto; position:relative}*/
-        /*tr { page-break-before:avoid; page-break-after:auto;position:relative}*/
-        /*td{ border:solid 1px #CCCCCC;width:auto;position:relative}*/
-        /*thead { display:table-header-group;position:relative }*/
-        /*tfoot { display:table-footer-group;positioion:relative}*/
-
-        .panel-heading {
-            page-break-after: avoid !important;
-            break-after: avoid !important;
-            display: inline-block;
-        }
-
-        #page-content-wrapper {
-            padding: 0px !important;
-        }
-
-        .panel-info {
-            width: 1160px;
-            page-break-before: auto !important;
-            break-before: auto !important;
-            page-break-inside: auto  !important;
-            break-inside: auto !important;
-            display: inline-block;
-            margin-top:15px !important;
-        }
-
-        h4 {color:#4460a9 !important}
-
-        .fp-header-div {
-            position: relative;
-            display: inline-block;
-            page-break-before: always !important;
-            break-before: page !important;
-            break-inside: avoid !important;
-            page-break-inside: avoid !important;
-        }
-
-
-        .maingrid .header {
-            height:57px !important;
-        }
-
-        table,th {
-            position: relative !important;
-        }
-
-        TD .black {
-            color: #000 !important;
-        }
-
-        .fa-check:before {
-            color: #1E90FF !important;
-        }
-
-        *, :after, :before {
-            color:inherit !important;
-        }
-
-        .maingrid.wrapper.panel .subtotal TD,
-        .maingrid.wrapper.panel .subtotal TD SPAN{
-            color:black !important;
-            font-weight: bold !important;
-        }
-
-        .maingrid.wrapper.panel .danger{
-            color:red !important;
-        }
-
-        /*.break {*/
-        /*page-break-before: avoid !important;*/
-        /*break-before: avoid !important;*/
-        /*break-inside: auto !important;*/
-        /*page-break-inside: auto !important;*/
-        /*}*/
-
-        /*td,tr {*/
-        /*break-inside: auto !important;*/
-        /*page-break-inside: auto !important;*/
-        /*}*/
-
-    }
-
-    /*table,.page-content-wrapper, .row, communityamenities-report, locationamenities-report,fees-report, .panel,.panel-body,body,html {*/
-    /*position: relative !important;*/
-    /*}*/
-    /*.break*/
-    /*{*/
-    /*break-before: always;*/
-    /*page-break-before: always;*/
-    /*page-break-inside: avoid;*/
-    /*}*/
-</style>
 <div class="row hidden-print">
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Reporting</h2>
@@ -229,17 +97,17 @@
 
             <property-report ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="dashboardSettings" profile-settings="profileSettings" show-profile="showProfile"></property-report>
 
-            <rankings-report-summary ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
+            <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 
-            <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
+            <rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
 
-            <communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
+            <communityamenities-report class="report" ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
 
-            <locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
+            <locationamenities-report class="report" ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
 
-            <fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
+            <fees-report class="report" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
 
-            <property-status ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases"></property-status>
+            <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases"></property-status>
         </div>
     </div>
 </div>

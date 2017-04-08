@@ -1,0 +1,115 @@
+.maingrid.wrapper.panel .subtotal TD,
+.maingrid.wrapper.panel .subtotal TD SPAN{
+    color:black !important;
+    font-weight: bold !important;
+}
+
+.fp-header  {
+    border-top:0px !important;
+    padding-top:5px !important;
+}
+
+.subject td {
+    font-weight: bold !important;
+    color:#4460a9 !important;
+}
+
+.maingrid.wrapper.panel .subtotal TD  {
+    padding-bottom:10px !important;
+}
+
+.maingrid.wrapper.panel .subtotal-padding TD {
+    padding-bottom:25px !important;
+}
+
+.maingrid.wrapper.panel .danger,
+.subject td .danger
+{
+    color:red !important;
+}
+
+
+@media print {
+
+    @page { margin: 5px; }
+    body {
+        margin:10px 20px
+    }
+
+    .report .panel-heading {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        display: inline-block;
+    }
+
+    #page-content-wrapper {
+        padding: 0px !important;
+    }
+
+    .report .panel-info {
+        width: 1160px;
+        page-break-before: auto !important;
+        break-before: auto !important;
+        page-break-inside: auto  !important;
+        break-inside: auto !important;
+        display: inline-block;
+        margin-top:15px !important;
+    }
+
+    h4 {color:#4460a9 !important}
+
+    .report .fp-header-div {
+        position: relative;
+        display: inline-block;
+        page-break-before: always !important;
+        break-before: page !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+
+    .report .maingrid .header {
+        height:57px !important;
+    }
+
+    .report table,th {
+        position: relative !important;
+    }
+
+    TD .black {
+        color: #000 !important;
+    }
+
+    .fa-check:before {
+        color: #1E90FF !important;
+    }
+
+    *, :after, :before {
+        color:inherit !important;
+    }
+
+    .report .maingrid.wrapper.panel .subtotal TD,
+    .report .maingrid.wrapper.panel .subtotal TD SPAN{
+        color:black !important;
+        font-weight: bold !important;
+    }
+
+    .maingrid.wrapper.panel .danger{
+        color:red !important;
+    }
+
+    property-report .col-md-4 .col-sm-5 .col-lg-3 {
+        position: inherit;
+    }
+    .break2
+    {
+        break-before: always !important;
+        page-break-before: always !important;;
+        page-break-inside: avoid !important;;
+    }
+
+    .table-comps .hidden-report {
+        display:none;
+    }
+
+}
