@@ -270,7 +270,7 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                },600)
+                },1000)
 
 
             });
