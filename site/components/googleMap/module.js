@@ -105,7 +105,7 @@ define([
                             + "&size=" + $scope.options.printWidth + "x" + $scope.options.height
 
                         $scope.options.points.forEach(function(p) {
-                            $scope.staticUrl += "&markers=icon:https://biradixplatform-prod.herokuapp.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
+                            $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
                         })
 
                         if (!phantom) {
