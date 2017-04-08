@@ -328,7 +328,7 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                },2000)
+                },1000)
 
 
             });
