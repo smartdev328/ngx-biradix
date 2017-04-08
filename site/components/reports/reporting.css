@@ -31,11 +31,6 @@
 
 @media print {
 
-    @page { margin: 5px; }
-    body {
-        margin:10px 20px
-    }
-
     .report .panel-heading {
         /*page-break-after: avoid !important;*/
         /*break-after: avoid !important;*/
