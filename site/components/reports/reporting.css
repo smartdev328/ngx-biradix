@@ -37,34 +37,30 @@
     }
 
     .report .panel-heading {
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        display: inline-block;
-    }
-
-    #page-content-wrapper {
-        padding: 0px !important;
+        /*page-break-after: avoid !important;*/
+        /*break-after: avoid !important;*/
+        /*display: inline-block;*/
     }
 
     .report .panel-info {
-        width: 1160px;
-        page-break-before: auto !important;
-        break-before: auto !important;
-        page-break-inside: auto  !important;
-        break-inside: auto !important;
-        display: inline-block;
-        margin-top:15px !important;
+        /*width: 1160px;*/
+        /*page-break-before: auto !important;*/
+        /*break-before: auto !important;*/
+        /*page-break-inside: auto  !important;*/
+        /*break-inside: auto !important;*/
+        /*display: inline-block;*/
+        /*margin-top:15px !important;*/
     }
 
     h4 {color:#4460a9 !important}
 
     .report .fp-header-div {
-        position: relative;
-        display: inline-block;
-        page-break-before: always !important;
-        break-before: page !important;
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
+        /*position: relative;*/
+        /*display: inline-block;*/
+        /*page-break-before: always !important;*/
+        /*break-before: page !important;*/
+        /*break-inside: avoid !important;*/
+        /*page-break-inside: avoid !important;*/
     }
 
 
@@ -73,7 +69,7 @@
     }
 
     .report table,th {
-        position: relative !important;
+        /*position: relative !important;*/
     }
 
     TD .black {

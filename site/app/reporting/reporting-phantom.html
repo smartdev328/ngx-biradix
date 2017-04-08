@@ -2,14 +2,14 @@
 
 <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="dashboardSettings" profile-settings="profileSettings" show-profile="showProfile"></property-report>
 
-<rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
+<rankings-report-summary class="report break-before" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 
-<rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
+<rankings-report class="report break-before" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
 
-<communityamenities-report class="report" ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
+<communityamenities-report class="report break-before" ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
 
-<locationamenities-report class="report" ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
+<locationamenities-report class="report break-before" ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
 
-<fees-report class="report" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
+<fees-report class="report break-before" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
 
-<property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases"></property-status>
+<property-status class="report break-before" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases"></property-status>

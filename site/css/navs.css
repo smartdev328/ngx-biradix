@@ -257,6 +257,14 @@ body {
         page-break-after: always !important;
         page-break-inside: avoid !important;
     }
+
+    .break-before
+    {
+        break-before: page !important;
+        page-break-before: always !important;
+        page-break-inside: avoid !important;
+        position: relative !important;
+    }
 }
 
 .search .input-sm {
