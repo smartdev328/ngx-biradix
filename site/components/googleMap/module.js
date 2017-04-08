@@ -99,7 +99,7 @@ define([
                     if ($scope.options) {
                         $scope.options.points = $scope.options.points || [];
 
-                        $scope.staticUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + $scope.options.loc[0]
+                        $scope.staticUrl = "/i?center=" + $scope.options.loc[0]
                             + "," + $scope.options.loc[1]
                             + "&zoom=" + $scope.getZoom($scope.options.points)
                             + "&size=" + $scope.options.printWidth + "x" + $scope.options.height
