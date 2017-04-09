@@ -62,6 +62,14 @@
     .maingrid.wrapper.panel .danger{
         color:red !important;
     }
+
+    .table-comps .hidden-report {
+        display:none;
+    }
+
+    .col-md-4 .col-sm-5 .col-lg-3 {
+        position: relative;
+    }
 }
 
 .break2
@@ -73,10 +81,3 @@
     -webkit-region-break-before: always !important;
 }
 
-.table-comps .hidden-report {
-    display:none;
-}
-
-.col-md-4 .col-sm-5 .col-lg-3 {
-    position: relative;
-}

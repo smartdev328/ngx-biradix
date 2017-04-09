@@ -51,6 +51,10 @@ define([
 
             settings.show = fac.getDefaultDashboardCompColumns(me,width);
 
+            if ($cookies.get("cmp.s")) {
+                settings.show = JSON.parse($cookies.get("cmp.s"));
+            }
+
             return settings;
         }
 
