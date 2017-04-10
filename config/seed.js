@@ -77,17 +77,7 @@ module.exports = {
                         AssignProperties(users, properties, function() {
                             callbackw(null,users, roles, properties)
                         })
-                    },
-                    function(users, roles, properties, callbackw) {
-                        if (!settings.SEED_TEST) {
-                            return callbackw(null,users, roles, properties)
-                        }
-
-                        AssignProperties(users, properties, function() {
-                            callbackw(null,users, roles, properties)
-                        })
                     }
-
                 ], function(err) {
 
                 });
