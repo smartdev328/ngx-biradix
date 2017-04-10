@@ -830,7 +830,7 @@ function getFullUser(usr, callback) {
                     usrobj.orgs = _.map(final, function(r) {
                         if (usrobj.settings && usrobj.settings.defaultRole) {
                             if (r._id.toString() == usrobj.settings.defaultRole) {
-                                t.isDefault = true;
+                                r.isDefault = true;
                             }
                         }
                         return r.org
