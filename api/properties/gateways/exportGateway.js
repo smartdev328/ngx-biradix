@@ -18,13 +18,13 @@ var error = require('../../../config/error')
 
 module.exports = {
     init: function(Routes) {
-        Routes.get('/alliance', function(req, res) {
-            res.setHeader('Content-disposition', 'attachment; filename=alliance.csv');
+        Routes.get('/csvreport/:org', function(req, res) {
+            res.setHeader('Content-disposition', 'attachment; filename=' + req.params.org + '.csv');
             res.setHeader('Content-type', 'text/csv');
             res.write("Property,Subject/Comp,CompFor,UnitType,Date,Units,Units %,Sqft,Market Rent,Concess. / 12mo,Net Eff. Rent,NER/Sqft,Occupancy %,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built,Total Units\r\n")
 
             organizationService.read(function(err, orgs) {
-                var allianceid = _.find(orgs, function(x) {return x.subdomain == 'alliance'})._id;
+                var allianceid = _.find(orgs, function(x) {return x.subdomain == req.params.org})._id;
 
                 PropertyService.search(req.user, {limit: 10000, permission: 'PropertyManage', orgid: allianceid, active: true, select: "_id name survey zip active date totalUnits yearBuild address city state zip"}, function(err, props) {
                     async.eachLimit(props, 1, function(prop, callbackp){

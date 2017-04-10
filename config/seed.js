@@ -7,6 +7,7 @@ var UserCreateService = require('../api/users/services/userCreateService')
 var UserService = require('../api/users/services/userService')
 var OrgService = require('../api/organizations/services/organizationService')
 var PropertyService = require('../api/properties/services/propertyService')
+var propertyUsersService = require('../api/propertyusers/services/propertyUsersService')
 var CreateService = require('../api/properties/services/createService')
 var AmenityService = require('../api/amenities/services/amenityService')
 
@@ -63,6 +64,16 @@ module.exports = {
                         }
 
                         SurveysCreate(users, properties, function() {
+                            callbackw(null,users, roles, properties)
+                        })
+                    }
+                    ,
+                    function(users, roles, properties, callbackw) {
+                        if (!settings.SEED_TEST) {
+                            return callbackw(null,users, roles, properties)
+                        }
+
+                        AssignProperties(users, properties, function() {
                             callbackw(null,users, roles, properties)
                         })
                     }
@@ -948,7 +959,9 @@ var UsersCreate = function(roles, callback) {
     var Eugene = {email : "eugene@biradix.com", password: "BIradix11!!", first : "Eugene", last : "K", roleids: [roles.BiradixAdmin._id], passwordUpdated: true};
     var Blerim = {email : "blerim@biradix.com", password: "BIradix11!!", first : "Blerim", last : "Z", roleids: [roles.BiradixAdmin._id], passwordUpdated: true};
     var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleids: [roles.BiradixAdmin._id], legacty_hash: "", passwordUpdated: true};
-    // var Michelle = {email : "cue+michelle@elkconsulting.com", password: "Betchner321", first : "Michelle", last : "Betchner", roleids: [roles.GreystarCM._id]};
+    var TestAdmin = {email : "testadmin@biradix.com", password: "temppass!", first : "Test", last : "Admin", roleids: [roles.BiradixAdmin._id], passwordUpdated: true};
+    var TestDemo = {email : "testbm@biradix.com", password: "temppass!", first : "Test", last : "BM", roleids: [roles.DemoBM._id], passwordUpdated: true};
+
 
 
     UserCreateService.insert(null, context, System, null, function(errors, usr) {
@@ -985,18 +998,28 @@ var UsersCreate = function(roles, callback) {
                             callbackp(null, usr)
                         })
                     },
-                    // Michelle: function(callbackp) {
-                    //     if (!settings.SEED_DEMO) {
-                    //         return callbackp(null, null);
-                    //     }
-                    //     UserCreateService.insert(System, context, Michelle, null,function(usr) {
-                    //             callbackp(null, usr)
-                    //         },
-                    //         function(errors) {
-                    //             throw("Unable to seed: "+ errors[0].msg);
-                    //         }
-                    //     );
-                    //}
+                TestAdmin: function(callbackp) {
+                    if (!settings.SEED_TEST) {
+                        return callbackp(null, null);
+                    }
+                    UserCreateService.insert(System, context, TestAdmin, null,function(errors, usr) {
+                        if (errors) {
+                            throw("Unable to seed Blerim: " + errors[0].msg);
+                        }
+                        callbackp(null, usr)
+                    })
+                },
+                TestDemo: function(callbackp) {
+                    if (!settings.SEED_TEST) {
+                        return callbackp(null, null);
+                    }
+                    UserCreateService.insert(System, context, TestDemo, null,function(errors, usr) {
+                        if (errors) {
+                            throw("Unable to seed Blerim: " + errors[0].msg);
+                        }
+                        callbackp(null, usr)
+                    })
+                }
                 },function(err, users) {
                     users.System = System;
                     callback(users)
@@ -1243,6 +1266,12 @@ var CompaniesCreate = function(callback) {
     })
 
 
+}
+
+var AssignProperties = function(users, properties, callback) {
+    propertyUsersService.link(users.System,context,null,users.TestDemo._id, properties.Augustus._id, function() {});
+    propertyUsersService.link(users.System,context,null,users.TestDemo._id, properties.Aurelian._id, function() {});
+    callback();
 }
 
 var PermissionsCreate = function(roles, callback) {
