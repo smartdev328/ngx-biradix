@@ -77,6 +77,15 @@ module.exports = {
                         AssignProperties(users, properties, function() {
                             callbackw(null,users, roles, properties)
                         })
+                    },
+                    function(users, roles, properties, callbackw) {
+                        if (!settings.SEED_TEST) {
+                            return callbackw(null,users, roles, properties)
+                        }
+
+                        AssignProperties(users, properties, function() {
+                            callbackw(null,users, roles, properties)
+                        })
                     }
 
                 ], function(err) {
@@ -963,7 +972,6 @@ var UsersCreate = function(roles, callback) {
     var Alex = {email : "alex@biradix.com", password: "BIradix11!!", first : "Alex", last : "V", roleids: [roles.BiradixAdmin._id], legacty_hash: "", passwordUpdated: true};
     var TestAdmin = {email : "testadmin@biradix.com", password: "temppass!", first : "Test", last : "Admin", roleids: [roles.BiradixAdmin._id], passwordUpdated: true};
     var TestDemo = {email : "testbm@biradix.com", password: "temppass!", first : "Test", last : "BM", roleids: [roles.DemoBM._id], passwordUpdated: true};
-
 
     UserCreateService.insert(null, context, System, null, function(errors, usr) {
         if (errors) {

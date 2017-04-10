@@ -34,6 +34,5 @@ module.exports = {
     PDF_WORKERS: process.env.PDF_WORKERS || 3,
     SEED_DEMO : process.env.SEED_DEMO == "1" || true,
     SEED_TEST : (process.env.SEED_TEST || '0' )== "1",
-    PROJECT_DIR : __dirname,
-
+    PROJECT_DIR : __dirname
 }
