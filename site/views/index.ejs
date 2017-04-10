@@ -238,8 +238,12 @@
                         <a href  href ng-class="{'subnav' : true}" ng-click="test_error()"> - Throw an Error</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
-                        <a href  href ng-class="{'subnav' : true}" ng-click="alliance_report()"> - Alliance Report</a>
+                        <a href  href ng-class="{'subnav' : true}" ng-click="csv_report('alliance')"> - Alliance Report</a>
                     </li>
+                    <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
+                        <a href  href ng-class="{'subnav' : true}" ng-click="csv_report('wood')"> - Wood Report</a>
+                    </li>
+
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href="#/organizations"  href ng-class="{'active': sideNav == 'Organizations','subnav' : true}"> - Organizations</a>
                     </li>

@@ -407,8 +407,8 @@ define([
             a = b;
         }
 
-        $rootScope.alliance_report = function() {
-            var url = '/api/1.0/properties/alliance?'
+        $rootScope.csv_report = function(org) {
+            var url = '/api/1.0/properties/csvreport/'+org+'?'
             url += "token=" + $cookies.get('token')
             location.href = url;
         }
