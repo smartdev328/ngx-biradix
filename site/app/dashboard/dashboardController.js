@@ -196,8 +196,8 @@ define([
 
         $scope.changeProperty = function() {
             $scope.selectedBedroom = -1;
-            $scope.loadProperty($scope.selectedProperty._id);
-            $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty._id;
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null);
+            $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty ? $scope.selectedProperty._id : null;
             $authService.updateSettings($rootScope.me.settings).then(function() {
                 $rootScope.refreshToken();
             });
@@ -271,15 +271,12 @@ define([
                         return;
                     } else if (error.status == 400) {
                         if (!$scope.myProperties || $scope.myProperties.length == 0) {
-                            $scope.selctedProperty = null;
+                            $scope.setProperty(null)
                         } else {
-                            $scope.selctedProperty = $scope.myProperties[0];
-                            location.reload();
-
+                            $scope.setProperty($scope.myProperties[0])
                         }
-                    }
 
-                    toastr.error('Unable to access the system at this time. Please contact an administrator');
+                    }
 
                     $scope.localLoading = true;
                 });
