@@ -9,6 +9,13 @@ define([
     '../components/toggle/module',
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/coverPage',
+    '../../components/propertyProfile/about',
+    '../../components/propertyProfile/fees',
+    '../../components/propertyProfile/amenities',
+    '../../components/propertyProfile/floorplans',
+    '../../components/propertyProfile/tableView',
+    '../../components/propertyProfile/comps',
+    '../../components/googleMap/module',
     '../../services/amenityService',
 ], function (app) {
 

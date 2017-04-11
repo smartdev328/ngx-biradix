@@ -2,13 +2,6 @@
 define([
     'app',
     '../../services/propertyService',
-    '../../components/propertyProfile/comps',
-    '../../components/propertyProfile/about',
-    '../../components/propertyProfile/fees',
-    '../../components/propertyProfile/amenities',
-    '../../components/propertyProfile/floorplans',
-    '../../components/propertyProfile/tableView',
-    '../../components/googleMap/module',
 ], function (app) {
     app.directive('propertyReport', function () {
         return {

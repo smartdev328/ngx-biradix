@@ -1,11 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../components/propertyProfile/about',
-    '../../components/propertyProfile/fees',
-    '../../components/propertyProfile/amenities',
-    '../../components/propertyProfile/floorplans',
-    '../../components/propertyProfile/tableView',
     '../../services/progressService',
     '../../services/cookieSettingsService',
     '../../services/auditService',
