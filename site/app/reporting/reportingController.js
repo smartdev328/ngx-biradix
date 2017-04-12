@@ -63,7 +63,8 @@ define([
 
 
                 // $scope.debug = {
-                //     c: $cookies.getAll(),
+                //     a: 'test',
+                //     c: $cookies.get("compIds"),
                 // }
                 // return window.renderable = true;
 
@@ -355,7 +356,7 @@ define([
                 showFile: showFile,
 
                 Graphs: $scope.profileSettings.graphs,
-                Summary: $scope.dashboardSettings.graphs,
+                Summary: $scope.dashboardSettings.summary,
                 Scale: $scope.dashboardSettings.nerScale,
                 selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
                 selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),

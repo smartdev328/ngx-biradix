@@ -298,8 +298,53 @@ define([
 
         }
 
-        $scope.pdf = function(full) {
-            $location.path("/reporting").search('property', '1');
+        $scope.pdf = function(showFile) {
+
+            $scope.profileSettings = $reportingService.getProfileSettings($(window).width());
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            var data = {
+                compIds :  encodeURIComponent(_.map($scope.comps, function(x) {return x._id})),
+                reportIds:  encodeURIComponent(['property_report']),
+                progressId: $scope.progressId,
+                timezone: moment().utcOffset(),
+                type: 'single',
+                propertyIds:  'undefined',
+                showFile: showFile,
+
+                Graphs: $scope.profileSettings.graphs,
+                Summary: $scope.settings.summary,
+                Scale: $scope.settings.nerScale,
+                selectedStartDate: $scope.settings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.settings.daterange.selectedRange,
+                Totals: $scope.settings.totals,
+                Bedrooms: $scope.settings.selectedBedroom,
+                orderBy: $scope.profileSettings.orderByFp,
+                orderByC: $scope.settings.orderByComp,
+                show: encodeURIComponent(JSON.stringify($scope.profileSettings.show)),
+                showC: encodeURIComponent(JSON.stringify($scope.settings.show)),
+                showP: encodeURIComponent(JSON.stringify($scope.showProfile))
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
+            var url = '/api/1.0/properties/' + $scope.selectedProperty._id + '/reportsPdf?'
+            url += "token=" + $cookies.get('token')
+            url += "&key=" + key
+
+            if (showFile === true) {
+                ngProgress.start();
+
+                $('#export').prop('disabled', true);
+
+                window.setTimeout($scope.checkProgress, 500);
+                location.href = url;
+            }
+            else {
+                window.open(url);
+            }
 
         }
 

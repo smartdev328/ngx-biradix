@@ -198,7 +198,7 @@ module.exports = {
                     user: req.user,
                     id: req.params.id,
                     url: req.basePath,
-                    timezone: req.query.timezone,
+                    timezone: query.timezone,
                     hostname: req.hostname,
                     progressId: query.progressId,
                     reportIds: query.reportIds,
@@ -220,6 +220,7 @@ module.exports = {
                     showComp : query.showC,
                     showProfile : query.showP,
                 };
+
 
                 bus.query(settings.PDF_REPORTING_QUEUE,
                     message,
