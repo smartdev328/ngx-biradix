@@ -12,7 +12,7 @@
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a href ng-click="print(false)"><i class="fa fa-print fa-fw"></i> Print</a></li>
                 <li><a href ng-click="pdf(false)"><i class="fa fa-file-pdf-o fa-fw" style="color:#ed110a"></i> Export PDF</a></li>
-                <li ng-if="owner && $root.me.permissions.indexOf('Hide/ExtendedProfile') == -1"><a href ng-click="excel()"><i class="fa fa-file-excel-o fa-fw" style="color:#32742a"></i> Excel</a></li>
+                <li ng-if="owner && $root.me.permissions.indexOf('Hide/ExtendedProfile') == -1"><a href ng-click="excel()"><i class="fa fa-file-excel-o fa-fw" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
         <button ng-if="canSurvey && roles[0] != 'Property Owner'" uib-tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
