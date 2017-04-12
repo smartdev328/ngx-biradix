@@ -30,10 +30,10 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
@@ -64,7 +64,7 @@ define([
 
                 // $scope.debug = {
                 //     a: 'test',
-                //     c: $cookies.get("compIds"),
+                //     c: $cookies.get("reportIds"),
                 // }
                 // return window.renderable = true;
 
@@ -172,7 +172,7 @@ define([
                     }
 
                     $scope.reportItems.forEach(function(x,i) {
-                        $scope.reportItems[i].selected = $cookies.get("reportIds").indexOf(x.id) > -1
+                        $scope.reportItems[i].selected =$scope.reportIds.indexOf(x.id) > -1
                     })
 
                     $scope.items.forEach(function(x,i) {
