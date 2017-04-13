@@ -63,16 +63,17 @@
         color:red !important;
     }
 
-    .table-comps .hidden-report {
-        display:none;
-    }
-
     .col-md-4 .col-sm-5 .col-lg-3 {
         position: relative;
     }
 
     .no-margin-print {
         margin-bottom: 0px !important;
+    }
+
+    .stretched {
+        max-width:1168px;
+        margin-left:-18px !important;
     }
 }
 
@@ -85,3 +86,6 @@
     -webkit-region-break-before: always !important;
 }
 
+.table-comps .hidden-report {
+    display:none;
+}
