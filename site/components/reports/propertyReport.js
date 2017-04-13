@@ -19,6 +19,14 @@ define([
                 $scope.property = resp.property;
                 $scope.comps = resp.comps;
 
+                $scope.compItems = 0;
+                for (var c in $scope.dashboardSettings.show) {
+                    if ($scope.dashboardSettings.show[c] === true) {
+                        $scope.compItems ++;
+                    }
+                }
+                $scope.stretchComps = $scope.compItems >= 10 || ($scope.compItems >= 9 && $scope.dashboardSettings.show.weekly === true)
+
                 if ($scope.comps.length > 13) {
                     $scope.stretchComps = true;
                 }

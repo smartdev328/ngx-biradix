@@ -339,7 +339,7 @@ define([
             return $sce.trustAsHtml(s);
         }
         $scope.getLocation = function (val) {
-            return $propertyService.search({search: val, active: true, skipAmenities: true}).then(function (response) {
+            return $propertyService.search({search: val, active: true, skipAmenities: true, limit: 10}).then(function (response) {
                 return response.data.properties
             });
         };
