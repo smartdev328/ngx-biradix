@@ -1,9 +1,10 @@
 'use strict';
 define([
     'app',
+    '../../services/reportingService',
 ], function (app) {
 
-    app.controller('dashboard2Controller', ['$scope','$rootScope','$location','$propertyService', '$authService','ngProgress','toastr','$stateParams', function ($scope,$rootScope,$location,$propertyService,$authService,ngProgress,toastr,$stateParams) {
+    app.controller('dashboard2Controller', ['$scope','$rootScope','$location','$propertyService', '$authService','ngProgress','toastr','$stateParams','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,ngProgress,toastr,$stateParams,$reportingService) {
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -11,25 +12,7 @@ define([
         $scope.localLoading = false;
 
         $scope.defaultShowProfile = function() {
-            $scope.showProfile = {
-                address: true,
-                website: false,
-                phone: true,
-                email: false,
-                name: false,
-                const: true,
-                built: true,
-                ren: false,
-                owner: true,
-                mgmt: true,
-                units: true,
-                occ: true,
-                leased: true,
-                renewal: true,
-                traf: true,
-                lease: true
-            }
-
+            $scope.showProfile = $reportingService.getDefaultInfoRows(null);
         }
 
         //make sure me is loaded befor you search initially
@@ -39,7 +22,6 @@ define([
 
                 $scope.defaultShowProfile();
                 $scope.reload()
-
 
             }
         });
@@ -71,7 +53,7 @@ define([
             $scope.localLoading = false;
 
             $propertyService.search({
-                limit: 10000,
+                limit: 20,
                 permission: 'PropertyManage',
                 active: true,
                 select: "address city state zip website name survey phone email contactName constructionType yearBuilt yearRenovated owner management totalUnits"

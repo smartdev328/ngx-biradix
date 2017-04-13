@@ -368,7 +368,6 @@ A.gear:hover .fa-gear  {
 }
 
 @media print {
-
     #toast-container>.toast-error {
         background-color: #ffe1e1 !important;
         color: #f33 !important;

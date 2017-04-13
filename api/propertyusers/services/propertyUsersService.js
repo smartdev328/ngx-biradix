@@ -289,7 +289,7 @@ var updateGuestPermissionsForSubject = function(guestid, subjectid, callback) {
                     var SystemUser = System.user;
                     PropertyService.search(SystemUser, {ids:[subjectid], select: "name orgid"}, function(err, props) {
                         if (props[0].orgid) {
-                            AccessService.getRoles({orgid:props[0].orgid, tags: ['CM'] }, function(err, roles) {
+                            AccessService.getOrgRoles({orgid:props[0].orgid, tags: ['CM'] }, function(err, roles) {
                                 AccessService.createPermission({executorid: roles[0]._id ,resource: guestid,allow: true,type: 'UserManage'}, function () {
                                     callbackp();
                                 });

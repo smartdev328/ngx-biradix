@@ -9,6 +9,13 @@ define([
     '../components/toggle/module',
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/coverPage',
+    '../../components/propertyProfile/about',
+    '../../components/propertyProfile/fees',
+    '../../components/propertyProfile/amenities',
+    '../../components/propertyProfile/floorplans',
+    '../../components/propertyProfile/tableView',
+    '../../components/propertyProfile/comps',
+    '../../components/googleMap/module',
     '../../services/amenityService',
 ], function (app) {
 
@@ -332,7 +339,7 @@ define([
             return $sce.trustAsHtml(s);
         }
         $scope.getLocation = function (val) {
-            return $propertyService.search({search: val, active: true, skipAmenities: true}).then(function (response) {
+            return $propertyService.search({search: val, active: true, skipAmenities: true, limit: 10}).then(function (response) {
                 return response.data.properties
             });
         };

@@ -1,6 +1,9 @@
 {
   "name": "BI:Radix Platform 2",
   "env": {
+    "SEED_TEST": {
+      "value": "1"
+    },
     "SEED_DEMO": {
       "value": "1"
     },

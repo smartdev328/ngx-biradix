@@ -248,14 +248,31 @@ body {
 }
 
 @media print {
-    #page-content-wrapper {
-        position: inherit;
+    @page { margin: 5px; }
+    body {
+        margin:10px 20px
     }
+
     .break-after
     {
         break-after: page !important;
         page-break-after: always !important;
         page-break-inside: avoid !important;
+    }
+
+    .break-before
+    {
+        break-before: page !important;
+        page-break-before: always !important;
+        page-break-inside: avoid !important;
+        position: relative !important;
+    }
+    .panel-info {
+        width: 100%
+    }
+
+    .left-print {
+        margin-left:-3px;
     }
 }
 

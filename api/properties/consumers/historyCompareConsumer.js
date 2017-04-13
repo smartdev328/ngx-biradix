@@ -1,11 +1,12 @@
-var queues = require("../../../config/queues")
+var settings = require("../../../config/settings")
+var bus = require("../../../config/queues")
 var queueService = require('../services/queueService');
 var async = require("async");
 var _ = require("lodash");
 var moment = require("moment")
 var error = require('../../../config/error')
 
-queues.getHistoryCompareReportQueue().consume(function(data,reply) {
+bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
         async.parallel({
             current: function (callbackp) {
 
@@ -241,6 +242,5 @@ queues.getHistoryCompareReportQueue().consume(function(data,reply) {
         })
 });
 
-queues.attachQListeners(queues.getHistoryCompareReportQueue(), "History Compare");
 
 

@@ -1,6 +1,5 @@
 'use strict';
 var AccessService =  require('../services/accessService')
-var OrgService =  require('../../organizations/services/organizationService')
 var express = require('express');
 var routes = express.Router();
 var async = require("async");
@@ -14,10 +13,7 @@ routes.get("/roles", function(req, res) {
             })
         },
         allRoles: function(callbackp) {
-            AccessService.getRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest'], cache: false}, callbackp)
-        },
-        orgs: function(callbackp) {
-            OrgService.read(callbackp)
+            AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']}, callbackp)
         }
     },function(err, all) {
 
@@ -28,14 +24,11 @@ routes.get("/roles", function(req, res) {
 
         //Get all Allowed Role resource ids
         // Join on actual role to get name
-        // Join on orgid to get orgname
-        var role,org;
+        var role
         all.allowedRoles.forEach(function(al) {
             role = _.find(all.allRoles, function(x) {return x._id.toString() == al.toString()});
-            org = _.find(all.orgs, function(x) {return x._id.toString() == role.orgid.toString()});
-
             role = JSON.parse(JSON.stringify(role));
-            role.org = org.name;
+            role.org = role.org.name;
             response.push(role);
         })
 

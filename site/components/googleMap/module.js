@@ -99,13 +99,13 @@ define([
                     if ($scope.options) {
                         $scope.options.points = $scope.options.points || [];
 
-                        $scope.staticUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + $scope.options.loc[0]
+                        $scope.staticUrl = "/i?center=" + $scope.options.loc[0]
                             + "," + $scope.options.loc[1]
                             + "&zoom=" + $scope.getZoom($scope.options.points)
                             + "&size=" + $scope.options.printWidth + "x" + $scope.options.height
 
                         $scope.options.points.forEach(function(p) {
-                            $scope.staticUrl += "&markers=icon:https://biradixplatform-prod.herokuapp.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
+                            $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
                         })
 
                         if (!phantom) {

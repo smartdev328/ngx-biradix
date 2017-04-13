@@ -7,6 +7,8 @@ var redisService = require('../api/utilities/services/redisService')
 var error = require('../config/error')
 var settings = require('../config/settings')
 var jwt = require('jsonwebtoken');
+var request = require('request');
+var querystring = require('querystring');
 
 function sendError(req,res) {
     var context = req.body.context || {}
@@ -19,6 +21,11 @@ module.exports = (function() {
 
     var ui = express.Router();
 
+    ui.get('/i', function(req,res) {
+        var url = "https://maps.googleapis.com/maps/api/staticmap?" + querystring.stringify(req.query);
+        request.get(url).pipe(res);
+
+    })
     ui.get('/d/:id', function(req,res) {
         return res.redirect('/#/login?r=%2Fdashboard%3Fid=' + req.params.id + '%26s='+req.query.s);
 

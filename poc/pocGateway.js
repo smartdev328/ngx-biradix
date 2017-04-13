@@ -80,38 +80,31 @@ function GitHubStatus(sha, state, description) {
 
 }
 
-routes.get('/jasmine', function(req, res) {
-    userService.getSystemUser(function(obj) {
-        var SystemUser = obj.user;
+routes.get('/hydrateOrgRoles', function(req,res) {
+    OrgService.hydrateOrgRoles();
+    return res.status(200).json({done:true});
+})
 
-
-        userService.search(SystemUser,{_id: "5642c28855d27c0e003bbaf2" }, function(err, users) {
-            res.status(200).json(users);
-        })
-    });
-
-});
-
-routes.get('/viewall', function(req, res) {
-
-    AccessService.getRoles({tags: ['CM', 'RM', 'BM'], cache: false}, function(err, roles) {
-
-        var permissions = [];
-        roles.forEach(function(r) {
-            permissions.push({executorid: r._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'})
-        })
-
-        async.eachLimit(permissions, 10, function(permission, callbackp){
-            AccessService.createPermission(permission, function (err, perm) {
-                callbackp(err, perm)
-            });
-        }, function(err) {
-            return res.status(200).json(permissions);
-        });
-
-
-    });
-});
+// routes.get('/viewall', function(req, res) {
+//
+//     AccessService.getRoles({tags: ['CM', 'RM', 'BM'], cache: false}, function(err, roles) {
+//
+//         var permissions = [];
+//         roles.forEach(function(r) {
+//             permissions.push({executorid: r._id, resource: "Properties/ViewAll", allow: true, type: 'Execute'})
+//         })
+//
+//         async.eachLimit(permissions, 10, function(permission, callbackp){
+//             AccessService.createPermission(permission, function (err, perm) {
+//                 callbackp(err, perm)
+//             });
+//         }, function(err) {
+//             return res.status(200).json(permissions);
+//         });
+//
+//
+//     });
+// });
 
 routes.get('/addorg', function(req, res) {
     var name = req.query.name;
@@ -143,32 +136,46 @@ routes.get('/addorg', function(req, res) {
                 async.parallel({
                     CM: function (callbackp) {
                         AccessService.createRole(CM, function (err, role) {
+                            role = JSON.parse(JSON.stringify(role));
+                            role.org = org;
                             callbackp(null, role)
                         });
                     },
                     RM: function (callbackp) {
                         AccessService.createRole(RM, function (err, role) {
+                            role = JSON.parse(JSON.stringify(role));
+                            role.org = org;
                             callbackp(null, role)
                         });
                     },
                     BM: function (callbackp) {
                         AccessService.createRole(BM, function (err, role) {
+                            role = JSON.parse(JSON.stringify(role));
+                            role.org = org;
                             callbackp(null, role)
                         });
                     },
                     PO: function (callbackp) {
                         AccessService.createRole(PO, function (err, role) {
+                            role = JSON.parse(JSON.stringify(role));
+                            role.org = org;
+
                             callbackp(null, role)
                         });
                     },
                     Guest : function(callbackp) {
-                        AccessService.getRoles({tags: ['Guest'], cache: false}, function (err, roles) {
+                        AccessService.getOrgRoles({tags: ['Guest'], cache: false}, function (err, roles) {
 
                            callbackp(null,roles[0])
                         })
                     }
 
                 }, function (err, roles) {
+
+                    AccessService.upsertOrgRole_read(roles.CM,function() {});
+                    AccessService.upsertOrgRole_read(roles.RM,function() {});
+                    AccessService.upsertOrgRole_read(roles.BM,function() {});
+                    AccessService.upsertOrgRole_read(roles.PO,function() {});
 
 
                     var permissions = [
@@ -215,7 +222,6 @@ routes.get('/addorg', function(req, res) {
                         permissions.push({executorid: roles.RM._id, resource: prop._id.toString(), allow: true, type: 'PropertyView'})
                     })
 
-                    console.log(permissions);
                     async.eachLimit(permissions, 10, function (permission, callbackp) {
                         AccessService.createPermission(permission, function (err, perm) {
                             callbackp(err, perm)
@@ -235,33 +241,6 @@ routes.get('/addorg', function(req, res) {
     }) ;
 
 });
-
-//routes.get('/error', function(req, res) {
-//    throw new Error('I am an error');
-//});
-//routes.get('/import', function(req, res) {
-//    queues.getExchange().publish({},
-//        {
-//            key: settings.IMPORT_QUEUE,
-//            reply: function () {
-//                res.status(200).send("OK");
-//            }
-//        }
-//    );
-//
-//})
-
-//routes.get('/importUsers', function(req, res) {
-//    queues.getExchange().publish({},
-//        {
-//            key: settings.IMPORT_USERS_QUEUE,
-//            reply: function () {
-//                res.status(200).send("OK");
-//            }
-//        }
-//    );
-//
-//})
 
 //routes.get('/fixPOs', function (req, res) {
 //

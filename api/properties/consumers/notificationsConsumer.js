@@ -1,4 +1,4 @@
-var queues = require("../../../config/queues")
+var bus = require("../../../config/queues")
 var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 var propertyService = require('../services/propertyService');
@@ -9,7 +9,7 @@ var redisService = require('../../utilities/services/redisService')
 var BizEmailService = require('../../business/services/emailService')
 var error = require('../../../config/error')
 
-queues.getNotificationsQueue().consume(function(data,reply) {
+bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
     console.log(data.properties, " notifications started");
     async.parallel({
         properties : function(callbackp) {
@@ -156,7 +156,3 @@ queues.getNotificationsQueue().consume(function(data,reply) {
 
     });
 });
-
-queues.attachQListeners(queues.getNotificationsQueue(), "Notifications Compare");
-
-

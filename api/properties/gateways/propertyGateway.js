@@ -1,5 +1,4 @@
 'use strict';
-var settings = require("../../../config/settings")
 var express = require('express');
 var async = require("async");
 var _ = require("lodash")
@@ -12,7 +11,6 @@ var AmenityService = require('../../amenities/services/amenityService')
 /////////////////////
 var PropertyHelperService = require('../services/propertyHelperService')
 var CreateService = require('../services/createService')
-var queueService = require('../services/queueService');
 var GeocodeService = require('../../utilities/services/geocodeService')
 var EmailService = require('../../business/services/emailService')
 
@@ -65,126 +63,6 @@ Routes.get('/lookups', function (req, res) {
 
 });
 
-Routes.post('/group/reports', function (req, res) {
-
-    queueService.sendNotification(req.user, {properties: req.body.propertyids, showLeases: req.user.settings.showLeases, dontEmail: true}, function(response) {
-        res.status(200).json({"property_status" : response.data});
-    })
-
-
-});
-
-Routes.post('/:id/reports', function (req, res) {
-
-    var columns = "";
-    if (req.body.reports.indexOf('community_amenities') > -1) {
-        columns += " community_amenities";
-    }
-
-    if (req.body.reports.indexOf('location_amenities') > -1) {
-        columns += " location_amenities";
-    }
-
-    if (req.body.reports.indexOf('fees_deposits') > -1) {
-        columns += " fees";
-    }
-
-    if (req.body.reports.indexOf('property_rankings') > -1 || req.body.reports.indexOf('property_rankings_summary') > -1 || req.body.reports.indexOf('market_share') > -1) {
-        columns += " survey.id comps.floorplans address";
-    }
-
-    PropertyService.search(req.user, {
-        limit: 100,
-        permission: 'PropertyView',
-        ids: (req.body.compids || []).concat([req.params.id])
-        ,
-        select: "_id name" + columns
-    }, function(err, comps, lookups) {
-        var results = {};
-
-
-        if (req.body.reports.indexOf('community_amenities')  > -1) {
-            var compreport = [];
-            comps.forEach(function(c) {
-
-                c.community_amenities.forEach(function(a) {
-                    var v = _.find(lookups.amenities, function(x) {return x._id.toString() == a}).name;
-                    compreport.push([c.name, v]);
-                })
-            })
-
-            results.community_amenities = compreport
-
-        }
-
-        if (req.body.reports.indexOf('location_amenities')  > -1) {
-            var compreport = [];
-            comps.forEach(function(c) {
-
-                c.location_amenities.forEach(function(a) {
-                    var v = _.find(lookups.amenities, function(x) {return x._id.toString() == a}).name;
-                    compreport.push([c.name, v]);
-                })
-            })
-            results.location_amenities = compreport
-        }
-
-        if (req.body.reports.indexOf('fees_deposits')  > -1) {
-            var compreport = [];
-            comps.forEach(function(c) {
-                for (var f in c.fees) {
-                    compreport.push([c.name, lookups.fees[f], c.fees[f]]);
-                }
-
-            })
-            results.fees_deposits = compreport
-        }
-
-        async.parallel({
-            floorplans: function (callbackp) {
-                var surveyids = _.pluck(comps,"survey.id");
-                if (!surveyids || surveyids.length == 0) {
-                    callbackp(null, null)
-                } else {
-                    PropertyService.getSurvey({ids: surveyids,select: "propertyid floorplans"}, function(err, surveys) {
-                        var property_rankings = [];
-
-                        var allIncludedFloorplans = PropertyHelperService.flattenAllCompFloorplans(comps, req.params.id);
-                        surveys.forEach(function(s) {
-                            s.floorplans.forEach(function(fp) {
-                                var f = {fid: fp.id, id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft, ner: Math.round((fp.rent - (fp.concessions / 12)) * 100) / 100, nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100};
-
-                                var included = _.find(allIncludedFloorplans, function(x) {return x.toString() == fp.id.toString()})
-
-                                if (!included) {
-                                    f.excluded = true;
-                                }
-                                property_rankings.push(f)
-                            })
-                        })
-
-                        callbackp(null, property_rankings)
-                    });
-                }
-            },
-            market_share: function (callbackp) {
-                callbackp(null, null)
-            }
-        }, function(err, all) {
-
-            if (all.floorplans) {
-                results.floorplans = all.floorplans;
-            }
-
-            res.status(200).json(results);
-            all = null;
-            results = null;
-        });
-
-
-    });
-
-});
 
 Routes.post('/', function (req, res) {
     PropertyService.search(req.user, req.body, function(err, properties, lookups) {

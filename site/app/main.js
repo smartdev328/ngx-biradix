@@ -1,5 +1,6 @@
 requirejs.config({
     urlArgs: "bust=" + version,
+    waitSeconds: 30,
     map: {
         '*': {
             'css': '/libs/requirejs/css-min.js'
