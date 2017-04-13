@@ -80,6 +80,10 @@ function GitHubStatus(sha, state, description) {
 
 }
 
+routes.get('/hydrateOrgRoles', function(req,res) {
+    OrgService.hydrateOrgRoles();
+    return res.status(200).json({done:true});
+})
 
 // routes.get('/viewall', function(req, res) {
 //
