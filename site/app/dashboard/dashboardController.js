@@ -83,7 +83,12 @@ define([
         $scope.refreshGraphs = function() {
             if (!$scope.localLoading) return;
 
-            $scope.settings.selectedBedroom = $scope.bedroom.value;
+            if ($scope.bedroom) {
+                $scope.settings.selectedBedroom = $scope.bedroom.value;
+            } else {
+                $scope.settings.selectedBedroom = -1;
+            }
+
             $cookieSettingsService.saveBedrooms($scope.settings.selectedBedroom);
             $scope.loadProperty($scope.selectedProperty._id, true);
         }

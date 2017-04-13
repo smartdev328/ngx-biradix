@@ -7,7 +7,7 @@ var _ = require("lodash")
 module.exports = {
     hydrateOrgRoles: function() {
         var self = this;
-        AccessService.getRoles({tags: ['Admin','CM', 'RM', 'BM', 'Guest'], cache: false}, function (err, roles) {
+        AccessService.getRoles({tags: ['Admin','CM', 'RM', 'BM', 'Guest', 'PO'], cache: false}, function (err, roles) {
             self.read(function(err, orgs) {
                 roles = JSON.parse(JSON.stringify(roles));
                 var org;
