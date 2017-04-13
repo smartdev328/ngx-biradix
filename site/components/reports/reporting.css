@@ -72,7 +72,8 @@
     }
 
     .stretched {
-        max-width:1152px
+        max-width:1168px;
+        margin-left:-18px !important;
     }
 }
 
