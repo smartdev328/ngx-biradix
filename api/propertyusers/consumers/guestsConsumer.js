@@ -1,7 +1,9 @@
-var queues = require("../../../config/queues")
+var bus = require("../../../config/queues")
+var settings = require("../../../config/settings")
+
 var propertyUsersService = require("../services/propertyUsersService")
 
-queues.getGuestsQueue().consume(function(data,reply) {
+bus.handleCommand(settings.GUESTS_QUEUE, function(data,reply) {
     console.log(data.compid + " guests for comp started");
     try {
         propertyUsersService.updateGuestPermissionsForProperty(data.compid, function () {
@@ -15,6 +17,5 @@ queues.getGuestsQueue().consume(function(data,reply) {
     }
 });
 
-queues.attachQListeners(queues.getGuestsQueue(), "Guests");
 
 

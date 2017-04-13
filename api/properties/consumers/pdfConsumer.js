@@ -1,4 +1,4 @@
-var queues = require("../../../config/queues")
+var bus = require("../../../config/queues")
 var settings = require("../../../config/settings")
 var PropertyService = require("../services/propertyService")
 var pdfService = require("../services/pdfService")
@@ -8,22 +8,13 @@ var phantom = require('phantom-render-stream');
 var AuditService = require('../../audit/services/auditService')
 var ProgressService = require('../../progress/services/progressService')
 
-queues.getPdfProfileQueue().consume(function(data,reply) {
+bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
     console.log(data.id + " pdf started");
     try {
         PropertyService.search(data.user, {_id: data.id, skipAmenities: true}, function (err, properties) {
             UserService.getFullUser(data.user, function (full) {
                 var p = properties[0];
                 var fileName = p.name.replace(/ /g, "_");
-
-                if (data.full) {
-                    fileName += '_and_Comps';
-                }
-
-                //console.log(data.timezone, 'Naked: ',moment().format());
-                //console.log('Utc: ',moment().utc().format());
-                //console.log('Utc Offset: ',moment().utc().utcOffset(data.timezone).format());
-                //console.log('Add: ',moment().utc().add(data.timezone,"minute").format());
 
                 fileName += "_" + moment().utc().add(data.timezone, "minute").format("MM_DD_YYYY");
 
@@ -33,26 +24,20 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
 
                 var render = phantom(options);
 
-                var url = data.url + "/#/" + (data.full ? "full" : "profile") + "/" + p._id;
+                var url = data.url + "/#/profile/" + p._id;
 
                 url = url.replace("https://","http://");
 
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "Graphs", data.Graphs),
-                    pdfService.getCookie(data.hostname, "Totals", data.Totals),
-                    pdfService.getCookie(data.hostname, "Summary", data.Summary),
-                    pdfService.getCookie(data.hostname, "Bedrooms", data.Bedrooms),
                     pdfService.getCookie(data.hostname, "Scale", data.Scale),
                     pdfService.getCookie(data.hostname, "selectedStartDate", data.selectedStartDate),
                     pdfService.getCookie(data.hostname, "selectedEndDate", data.selectedEndDate),
                     pdfService.getCookie(data.hostname, "selectedRange", data.selectedRange),
                     pdfService.getCookie(data.hostname, "fp.o", data.orderBy),
                     pdfService.getCookie(data.hostname, "fp.s", data.show),
-                    pdfService.getCookie(data.hostname, "cmp.o", data.orderByComp),
-                    pdfService.getCookie(data.hostname, "cmp.s", data.showComp),
                     pdfService.getCookie(data.hostname, "pr.s", data.showProfile),
-
                 ];
 
 
@@ -124,9 +109,7 @@ queues.getPdfProfileQueue().consume(function(data,reply) {
     }
 
 });
-
-
-queues.getPdfReportingQueue().consume(function(data,reply) {
+bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
     console.log(data.id + " reporting pdf started");
 
     try {
@@ -150,6 +133,7 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
                 var url = data.url + "/#/reporting";
                 url = url.replace("https://","http://");
 
+
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "compIds", data.compIds),
@@ -157,6 +141,20 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
                     pdfService.getCookie(data.hostname, "subjectId", data.id),
                     pdfService.getCookie(data.hostname, "type", data.type),
                     pdfService.getCookie(data.hostname, "propertyIds", data.propertyIds),
+
+                    pdfService.getCookie(data.hostname, "Graphs", data.Graphs),
+                    pdfService.getCookie(data.hostname, "Totals", data.Totals),
+                    pdfService.getCookie(data.hostname, "Summary", data.Summary),
+                    pdfService.getCookie(data.hostname, "Bedrooms", data.Bedrooms),
+                    pdfService.getCookie(data.hostname, "Scale", data.Scale),
+                    pdfService.getCookie(data.hostname, "selectedStartDate", data.selectedStartDate),
+                    pdfService.getCookie(data.hostname, "selectedEndDate", data.selectedEndDate),
+                    pdfService.getCookie(data.hostname, "selectedRange", data.selectedRange),
+                    pdfService.getCookie(data.hostname, "fp.o", data.orderBy),
+                    pdfService.getCookie(data.hostname, "fp.s", data.show),
+                    pdfService.getCookie(data.hostname, "cmp.o", data.orderByComp),
+                    pdfService.getCookie(data.hostname, "cmp.s", data.showComp),
+                    pdfService.getCookie(data.hostname, "pr.s", data.showProfile),
                 ];
 
                 options.cookies = cookies;
@@ -201,5 +199,3 @@ queues.getPdfReportingQueue().consume(function(data,reply) {
 
 });
 
-queues.attachQListeners(queues.getPdfProfileQueue(), "Pdf Profile");
-queues.attachQListeners(queues.getPdfReportingQueue(), "Pdf Reporting");

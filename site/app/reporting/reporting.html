@@ -1,136 +1,4 @@
 {{debug}}
-<style>
-
-    .maingrid.wrapper.panel .subtotal TD,
-    .maingrid.wrapper.panel .subtotal TD SPAN{
-        color:black !important;
-        font-weight: bold !important;
-    }
-
-    .fp-header  {
-        border-top:0px !important;
-        padding-top:5px !important;
-    }
-
-    .subject td {
-        font-weight: bold !important;
-        color:#4460a9 !important;
-    }
-
-    .maingrid.wrapper.panel .subtotal TD  {
-        padding-bottom:10px !important;
-    }
-
-    .maingrid.wrapper.panel .subtotal-padding TD {
-        padding-bottom:25px !important;
-    }
-
-    .maingrid.wrapper.panel .danger,
-    .subject td .danger
-    {
-        color:red !important;
-    }
-
-
-    @media print {
-
-        @page { margin: 5px; }
-        body {
-            margin:10px 20px
-        }
-
-        /*table { page-break-inside:auto; position:relative}*/
-        /*tr { page-break-before:avoid; page-break-after:auto;position:relative}*/
-        /*td{ border:solid 1px #CCCCCC;width:auto;position:relative}*/
-        /*thead { display:table-header-group;position:relative }*/
-        /*tfoot { display:table-footer-group;positioion:relative}*/
-
-        .panel-heading {
-            page-break-after: avoid !important;
-            break-after: avoid !important;
-            display: inline-block;
-        }
-
-        #page-content-wrapper {
-            padding: 0px !important;
-        }
-
-        .panel-info {
-            width: 1160px;
-            page-break-before: auto !important;
-            break-before: auto !important;
-            page-break-inside: auto  !important;
-            break-inside: auto !important;
-            display: inline-block;
-            margin-top:15px !important;
-        }
-
-        h4 {color:#4460a9 !important}
-
-        .fp-header-div {
-            position: relative;
-            display: inline-block;
-            page-break-before: always !important;
-            break-before: page !important;
-            break-inside: avoid !important;
-            page-break-inside: avoid !important;
-        }
-
-
-        .maingrid .header {
-            height:57px !important;
-        }
-
-        table,th {
-            position: relative !important;
-        }
-
-        TD .black {
-            color: #000 !important;
-        }
-
-        .fa-check:before {
-            color: #1E90FF !important;
-        }
-
-        *, :after, :before {
-            color:inherit !important;
-        }
-
-        .maingrid.wrapper.panel .subtotal TD,
-        .maingrid.wrapper.panel .subtotal TD SPAN{
-            color:black !important;
-            font-weight: bold !important;
-        }
-
-        .maingrid.wrapper.panel .danger{
-            color:red !important;
-        }
-
-        /*.break {*/
-        /*page-break-before: avoid !important;*/
-        /*break-before: avoid !important;*/
-        /*break-inside: auto !important;*/
-        /*page-break-inside: auto !important;*/
-        /*}*/
-
-        /*td,tr {*/
-        /*break-inside: auto !important;*/
-        /*page-break-inside: auto !important;*/
-        /*}*/
-
-    }
-
-    /*table,.page-content-wrapper, .row, communityamenities-report, locationamenities-report,fees-report, .panel,.panel-body,body,html {*/
-    /*position: relative !important;*/
-    /*}*/
-    /*.break*/
-    /*{*/
-    /*break-before: always;*/
-    /*page-break-before: always;*/
-    /*page-break-inside: avoid;*/
-    /*}*/
-</style>
 <div class="row hidden-print">
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Reporting</h2>
@@ -142,7 +10,8 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a href ng-click="pdf('')"><i class="fa fa-print"></i> Print</a></li>
-                <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export Pdf</a></li>
+                <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export PDF</a></li>
+                <li><a href ng-click="excel()" ng-if="property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
 
@@ -151,8 +20,8 @@
 <div ng-show="localLoading" class="hidden-print">
     <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
 </div>
-<div class="row">
-    <div class="col-xs-12">
+<div class="row"  style="position: relative !important;">
+    <div class="col-xs-12"  style="position: relative !important;">
         <div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
             <div class="alert alert-warning" role="alert"><b>There are no properties assigned to your account</b></div>
 
@@ -223,20 +92,22 @@
         </div>
 
 
-        <div class="row">
+        <div class="row" style="position: relative !important;">
             <cover-page options="coverPage"></cover-page>
 
-            <rankings-report-summary ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
+            <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="dashboardSettings" profile-settings="profileSettings" show-profile="showProfile"></property-report>
 
-            <rankings-report ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
+            <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 
-            <communityamenities-report ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
+            <rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report>
 
-            <locationamenities-report ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
+            <communityamenities-report class="report" ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
 
-            <fees-report ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
+            <locationamenities-report class="report" ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
 
-            <property-status ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases"></property-status>
+            <fees-report class="report" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
+
+            <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases"></property-status>
         </div>
     </div>
 </div>

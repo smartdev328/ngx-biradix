@@ -50,10 +50,12 @@
 
 </head>
 <body ng-controller="rootController" ng-click="resetTimeout()" ng-keypress="resetTimeout()">
-    <div class="loading" style="display:block;width:100px;margin:50px auto">
+    <div ui-view="printView"></div>
+
+    <div class="loading hidden-print" style="display:block;width:100px;margin:50px auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
-    <div style="display:none" class="loggedout">
+    <div style="display:none" class="loggedout hidden-print">
         <div class="loggedout-main">
             <div class="loggedout-container clearfix">
                 <Center><a href="#/login"><img ng-src="/images/organizations/{{logoBig}}"></a><br /></Center>
@@ -65,7 +67,7 @@
         </div>
         <div class="small" style="width:50px;margin:10px auto" id="version_div">v{{version}}</div>
     </div>
-    <div style="display:none" class="loggedin">
+    <div style="display:none" class="loggedin hidden-print">
         <div class="visible-print-block print-header" style="padding:10px 0px 0px 10px">
             <img src="/images/organizations/biradix.png">
             <hr>

@@ -187,9 +187,9 @@ module.exports = {
     floorplansToSurvey : function(survey, floorplans, links, hide, nerPlaces) {
         getSurveyStats(floorplans, survey, links, hide, nerPlaces);
         survey.bedrooms = {};
-
+        var temp;
         for (var i = 0; i < 7; i++) {
-            var temp = _.filter(floorplans, function (x) {
+            temp = _.filter(floorplans, function (x) {
                 return x.bedrooms == i
             });
 

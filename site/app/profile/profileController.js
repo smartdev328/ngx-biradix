@@ -1,93 +1,35 @@
 'use strict';
 define([
     'app',
-    '../../components/propertyProfile/about',
-    '../../components/propertyProfile/fees',
-    '../../components/propertyProfile/amenities',
-    '../../components/propertyProfile/floorplans',
-    '../../components/propertyProfile/tableView',
     '../../services/progressService',
     '../../services/cookieSettingsService',
     '../../services/auditService',
-    '../../services/exportService'
+    '../../services/exportService',
+    '../../services/reportingService',
+    '../../services/urlService',
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
 
-        $scope.orderByFp = "sqft";
-
-        if ($cookies.get("fp.o")) {
-            $scope.orderByFp = $cookies.get("fp.o");
-        }
-
-        $scope.defaultShow = function() {
-            $scope.show = {
-                description: true,
-                units: true,
-                unitPercent: true,
-                sqft: true,
-                rent: true,
-                concessions: true,
-                ner: true,
-                nersqft: true,
-                mersqft: false
-            }
-
-            var w = $(window).width();
-
-            if (w < 1024) {
-                $scope.show.rent = false;
-                $scope.show.concessions = false;
-                $scope.show.unitPercent = false;
-            }
-
-            if (w < 500) {
-                $scope.show.ner = false;
-                $scope.show.description = false;
-            }
-
-        }
-
-        $scope.defaultShow();
-
-        if ($cookies.get("fp.s")) {
-            $scope.show = JSON.parse($cookies.get("fp.s"));
+       $scope.defaultShow = function() {
+            $scope.settings.show = $reportingService.getDefaultProfileFloorplanColumns($(window).width());
         }
 
         $scope.reset = function() {
             $scope.defaultShow();
             $cookies.remove('fp.s');
-            $scope.orderByFp = "sqft";
+            $scope.settings.orderByFp = "sqft";
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
-            $cookies.put('fp.o', $scope.orderByFp, {expires : expireDate})
-
-
+            $cookies.put('fp.o', $scope.settings.orderByFp, {expires : expireDate})
         }
 
         /**********************************************/
         $scope.defaultShowProfile = function() {
-            $scope.showProfile = {
-                address: true,
-                website: false,
-                phone: true,
-                email: false,
-                name: false,
-                const: true,
-                built: true,
-                ren: false,
-                owner: true,
-                mgmt: true,
-                units: true,
-                occ: true,
-                leased: $rootScope.me.settings.showLeases,
-                renewal: $rootScope.me.settings.showRenewal,
-                traf: true,
-                lease: true
-            }
+            $scope.showProfile = $reportingService.getDefaultInfoRows($rootScope.me);
 
         }
 
@@ -95,11 +37,8 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 me();
-                $scope.defaultShowProfile();
-
-                if ($cookies.get("pr.s")) {
-                    $scope.showProfile = JSON.parse($cookies.get("pr.s"));
-                }
+                $scope.settings = $reportingService.getProfileSettings($(window).width());
+                $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 
                 $scope.loadProperty($scope.propertyId)
             }
@@ -127,26 +66,15 @@ define([
         $scope.saveShow = function() {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
-            $cookies.put('fp.s', JSON.stringify($scope.show), {expires : expireDate})
+            $cookies.put('fp.s', JSON.stringify($scope.settings.show), {expires : expireDate})
         }
 
-        $scope.daterange=$cookieSettingsService.getDaterange();
-
-        $scope.$watch('daterange', function(d,old) {
+        $scope.$watch('settings.daterange', function(d,old) {
             if (!$scope.localLoading) return;
             if(JSON.stringify(old) == JSON.stringify(d)) return;
-            $cookieSettingsService.saveDaterange($scope.daterange)
+            $cookieSettingsService.saveDaterange($scope.settings.daterange)
             $scope.refreshGraphs();
         }, true);
-
-        $scope.settings = {
-            graphs: $cookieSettingsService.getGraphs(),
-            nerScale: $cookieSettingsService.getNerScale(),
-            totals: $cookieSettingsService.getTotals(),
-            selectedBedroom: $cookieSettingsService.getBedrooms()
-        };
-
-        $scope.settings.graphs = $cookieSettingsService.getGraphs();
 
         $scope.$watch('settings.graphs', function() {
             if (!$scope.localLoading) return;
@@ -181,9 +109,9 @@ define([
 
                 $propertyService.profile(defaultPropertyId
                     , {
-                        daterange: $scope.daterange.selectedRange,
-                        start: $scope.daterange.selectedStartDate,
-                        end: $scope.daterange.selectedEndDate
+                        daterange: $scope.settings.daterange.selectedRange,
+                        start: $scope.settings.daterange.selectedStartDate,
+                        end: $scope.settings.daterange.selectedEndDate
                     }
                     ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale}
                 ).then(function (response) {
@@ -235,9 +163,6 @@ define([
                     $scope.otherTable = resp.otherTable
 
                     if (!resp.canManage && $rootScope.me.roles[0] == 'Guest') {
-                        //Todo: Check if any comps for this are up to date, if none, restrict access
-
-                        var compids= _.map(resp.comp.comps,function(x) {return x.id.toString()});
 
                         $propertyService.search({select: "survey name", permission: ['PropertyManage'], skipAmenities: true}).then(function(response) {
                             var validSurveys = _.find(response.data.properties, function(x) {
@@ -301,7 +226,6 @@ define([
         };
 
         $scope.width = function() {
-
             return $(window).width()
         }
 
@@ -332,23 +256,33 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
+            var data = {
+                timezone: moment().utcOffset(),
+                selectedStartDate: $scope.settings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.settings.daterange.selectedRange,
+                progressId: $scope.progressId,
+                compids: null
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
             var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
             url += "token=" + $cookies.get('token')
-            url += "&timezone=" + moment().utcOffset()
-            url += "&selectedStartDate=" + $scope.daterange.selectedStartDate.format()
-            url += "&selectedEndDate=" + $scope.daterange.selectedEndDate.format()
-            url += "&selectedRange=" + $scope.daterange.selectedRange
-            url += "&progressId=" + $scope.progressId
+            url += "&key=" + key;
 
             $window.setTimeout($scope.checkProgress, 500);
 
             location.href = url;
 
-            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.daterange.selectedRange});
+            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.settings.daterange.selectedRange});
 
         }
 
         $scope.pdf = function(full) {
+            if (full) {
+                return $location.path("/reporting").search('property', '1');
+            }
 
             ngProgress.start();
 
@@ -356,16 +290,15 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, full,true, $scope.daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.totals, $scope.settings.selectedBedroom);
+            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs);
 
             $window.setTimeout($scope.checkProgress, 500);
 
         }
 
 
-        $scope.print = function(full) {
-
-            $exportService.print($scope.property._id, full,"", $scope.daterange, "", $scope.settings.graphs, $scope.settings.totals, $scope.settings.selectedBedroom);
+        $scope.print = function() {
+            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs);
         }
 
     }]);

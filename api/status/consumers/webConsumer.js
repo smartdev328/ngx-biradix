@@ -1,7 +1,6 @@
-var queues = require("../../../config/queues")
+var settings = require("../../../config/settings")
+var bus = require("../../../config/queues")
 
-queues.getWebStatusQueue().consume(function(data,reply) {
+bus.handleQuery(settings.WEB_STATUS_QUEUE, function(data,reply) {
      reply({data: data});
 });
-
-queues.attachQListeners(queues.getWebStatusQueue(), "Web Status");

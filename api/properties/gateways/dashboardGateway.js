@@ -9,58 +9,6 @@ module.exports = {
             res.status(200).json({success:true});
         })
 
-        Routes.post('/:id/full', function (req, res) {
-
-            var graphs = req.body.show.graphs;
-            var profiles = [];
-            req.body.show.graphs = true;
-            req.body.show.selectedBedroom = -1;
-            req.body.show.ner = true;
-            req.body.show.occupancy = true;
-            req.body.show.leased = true;
-
-            queueService.getDashboard(req, function(err,dashboard) {
-                if (err) {
-                    return res.status(400).send(err);
-                }
-                async.eachLimit(dashboard.comps, 10, function(comp, callbackp){
-                    req.body.show.graphs = graphs;
-                    req.body.show.traffic = true;
-                    req.body.show.leases = true;
-                    req.body.show.bedrooms = true;
-
-                    queueService.getProfile(req.user,req.body, false, dashboard.property._id, comp._id, function(err,profile) {
-                        profiles.push(profile)
-                        callbackp(err);
-                    })
-                }, function(err) {
-                    if (err) {
-                        return res.status(400).send(err);
-                    }
-
-                    profiles.forEach(function(c) {
-                        var comp = _.find(dashboard.comps, function (x) {
-                            return x._id.toString() == c.property._id.toString()
-                        });
-
-                        c.orderNumber = 999;
-
-                        if (comp && typeof comp.orderNumber != 'undefined') {
-                            c.orderNumber = comp.orderNumber;
-                        }
-                        c.name = comp.name;
-                    });
-
-                    profiles = _.sortByAll(profiles, ['orderNumber','name']);
-
-                    res.status(200).json({dashboard: dashboard, profiles: profiles});
-                    dashboard = null;
-                    profiles = null;
-                });
-
-            })
-
-        });
         Routes.post('/:id/profile', function (req, res) {
             queueService.getProfile(req.user, req.body, true, req.params.id, req.params.id, function(err,o) {
                 if (err) {

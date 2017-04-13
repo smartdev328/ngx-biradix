@@ -1,7 +1,8 @@
-var queues = require("../../../config/queues")
+var settings = require("../../../config/settings")
+var bus = require("../../../config/queues")
 var DashboardService = require("../services/dashboardService")
 
-queues.getDashboardQueue().consume(function(data,reply) {
+bus.handleQuery(settings.DASHBOARD_QUEUE, function(data,reply) {
     console.log(data.id + " dashboard started");
     try {
         DashboardService.getDashboard(data.user, data.id, data.options, function (err, dashboard) {
@@ -16,9 +17,7 @@ queues.getDashboardQueue().consume(function(data,reply) {
     }
 });
 
-queues.attachQListeners(queues.getDashboardQueue(), "Dashboard");
-
-queues.getProfileQueue().consume(function(data,reply) {
+bus.handleQuery(settings.PROFILE_QUEUE, function(data,reply) {
     //console.log(data.compId + " profile started: " + (new Date()));
     try {
         DashboardService.getProfile(data.user, data.options, data.checkManaged, data.subjectId, data.compId, function (err, profile) {
@@ -32,6 +31,4 @@ queues.getProfileQueue().consume(function(data,reply) {
         throw ex;
     }
 });
-
-queues.attachQListeners(queues.getDashboardQueue(), "Profile");
 

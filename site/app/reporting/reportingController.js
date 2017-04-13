@@ -7,11 +7,15 @@ define([
     '../../components/reports/propertyRankings.js',
     '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/propertyStatus.js',
+    '../../components/reports/propertyReport.js',
     '../../services/auditService',
     '../../services/progressService',
+    '../../services/reportingService',
+    '../../services/urlService',
+    'css!../../components/reports/reporting'
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -29,22 +33,25 @@ define([
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:false, group: "Individual Reports", type:"single"});
-
-
         $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
 
         $scope.propertyItems = [];
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-                $scope.reload();
+
+                $scope.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
+                $scope.profileSettings = $reportingService.getProfileSettings($(window).width());
+                $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
+                $scope.reload($stateParams.property == "1");
                 me();
             }
         })
 
-        $scope.reload = function() {
+        $scope.reload = function(bRun) {
             $propertyService.search({
                 limit: 10000,
                 permission: 'PropertyManage',
@@ -54,6 +61,12 @@ define([
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
 
+
+                // $scope.debug = {
+                //     a: 'test',
+                //     c: $cookies.get("reportIds"),
+                // }
+                // return window.renderable = true;
 
                 var id = $rootScope.me.settings.defaultPropertyId;
 
@@ -90,8 +103,9 @@ define([
                     })
                 }
 
+
                 if ($scope.selected.Property || $scope.reportType) {
-                    $scope.loadComps()
+                    $scope.loadComps(bRun)
                 } else {
                     window.setTimeout(function () {
                         window.document.title = "Reporting | BI:Radix";
@@ -111,8 +125,7 @@ define([
             })
         }
 
-        $scope.loadComps = function() {
-
+        $scope.loadComps = function(bRun) {
             var compids = _.pluck($scope.selected.Property.comps,"id");
             var subjectid = $scope.selected.Property._id;
 
@@ -148,6 +161,8 @@ define([
                 })
                 $scope.localLoading = true;
 
+
+
                 if ($cookies.get("reportIds")) {
 
                     if (!_.isArray($cookies.get("reportIds"))) {
@@ -157,7 +172,7 @@ define([
                     }
 
                     $scope.reportItems.forEach(function(x,i) {
-                        $scope.reportItems[i].selected = $cookies.get("reportIds").indexOf(x.id) > -1
+                        $scope.reportItems[i].selected =$scope.reportIds.indexOf(x.id) > -1
                     })
 
                     $scope.items.forEach(function(x,i) {
@@ -165,7 +180,8 @@ define([
                     })
 
 
-
+                    $scope.run();
+                } else if (bRun) {
                     $scope.run();
                 }
 
@@ -243,7 +259,7 @@ define([
             $scope.propertyNames.forEach(function(x,i) {$scope.propertyNames[i] = {description: 'Property: ' + x}});
             $scope.propertyIds =  _.pluck(properties,"id")
 
-            $propertyService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
+            $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
@@ -255,7 +271,7 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                },600)
+                },1000)
 
 
             });
@@ -270,18 +286,42 @@ define([
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
-            $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
-            $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
 
-            $propertyService.reports(
+
+            var options = {};
+
+            if ($scope.reportIds.indexOf("property_report") > -1) {
+                options.property_report = {
+                    summary: $scope.dashboardSettings.summary,
+                    bedrooms: $scope.dashboardSettings.selectedBedroom,
+                    daterange: {
+                        daterange: $scope.dashboardSettings.daterange.selectedRange,
+                        start: $scope.dashboardSettings.daterange.selectedStartDate,
+                        end: $scope.dashboardSettings.daterange.selectedEndDate
+                    },
+                    show: {
+                        graphs: $scope.profileSettings.graphs
+                        , scale: $scope.dashboardSettings.nerScale
+                    },
+                    offset: moment().utcOffset()
+                }
+            }
+
+            $reportingService.reports(
                 $scope.compIds
-                , $scope.selected.Property._id
+                ,$scope.selected.Property._id
                 ,$scope.reportIds
+                ,options
             ).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
                 $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
+
+                $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
+                $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
+                $scope.property_report = $scope.reportIds.indexOf("property_report") > -1;
+
 
                 if (!phantom) {
                     $scope.audit('report', 'Website');
@@ -289,11 +329,12 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                },600)
+                },1000)
 
 
             });
         }
+
 
         $scope.pdf = function(showFile) {
 
@@ -305,16 +346,35 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
+            var data = {
+                compIds :  encodeURIComponent($scope.compIds),
+                reportIds:  encodeURIComponent($scope.reportIds),
+                progressId: $scope.progressId,
+                timezone: moment().utcOffset(),
+                type: $scope.reportType,
+                propertyIds:  encodeURIComponent($scope.propertyIds),
+                showFile: showFile,
+
+                Graphs: $scope.profileSettings.graphs,
+                Summary: $scope.dashboardSettings.summary,
+                Scale: $scope.dashboardSettings.nerScale,
+                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
+                Totals: $scope.dashboardSettings.totals,
+                Bedrooms: $scope.dashboardSettings.selectedBedroom,
+                orderBy: $scope.profileSettings.orderByFp,
+                orderByC: $scope.dashboardSettings.orderByComp,
+                show: encodeURIComponent(JSON.stringify($scope.profileSettings.show)),
+                showC: encodeURIComponent(JSON.stringify($scope.dashboardSettings.show)),
+                showP: encodeURIComponent(JSON.stringify($scope.showProfile))
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
             var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/reportsPdf?'
             url += "token=" + $cookies.get('token')
-            url += "&compIds=" + $scope.compIds
-            url += "&reportIds=" + $scope.reportIds
-            url += "&progressId=" + $scope.progressId
-            url += "&timezone=" + moment().utcOffset()
-            url += "&type=" + $scope.reportType
-            url += "&propertyIds=" + $scope.propertyIds
-            url += "&showFile=" + showFile
-
+            url += "&key=" + key
 
             if (showFile === true) {
                 ngProgress.start();
@@ -377,6 +437,38 @@ define([
 
             $scope.reportIds = reportIds;
         },true)
+
+
+        $scope.excel = function() {
+
+            ngProgress.start();
+
+            $('#export').prop('disabled', true);
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            var data = {
+                timezone: moment().utcOffset(),
+                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
+                progressId: $scope.progressId,
+                compids: $scope.compIds
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
+            var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?'
+            url += "token=" + $cookies.get('token')
+            url += "&key=" + key;
+
+            $window.setTimeout($scope.checkProgress, 500);
+
+            location.href = url;
+
+            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.settings.daterange.selectedRange});
+
+        }
 
     }]);
 });

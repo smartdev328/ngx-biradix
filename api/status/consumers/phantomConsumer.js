@@ -1,7 +1,6 @@
-var queues = require("../../../config/queues")
+var bus = require("../../../config/queues")
+var settings = require("../../../config/settings")
 
-queues.getPhantomStatusQueue().consume(function(data,reply) {
+bus.handleQuery(settings.PHANTOM_STATUS_QUEUE, function(data,reply) {
      reply({data: data});
 });
-
-queues.attachQListeners(queues.getPhantomStatusQueue(), "Phantom Status");

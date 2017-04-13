@@ -58,6 +58,7 @@ d.run(function() {
             app.use(settings.API_PATH + 'audit/', require('../api/audit/gateways/auditGateway'));
             app.use(settings.API_PATH + 'amenities/', require('../api/amenities/gateways/amenitiesGateway'));
             app.use(settings.API_PATH + 'organizations/', require('../api/organizations/gateways/organizationsGateway'));
+            app.use(settings.API_PATH + 'reporting/', require('../api/reporting/gateways/reportingGateway'));
             app.use('/contact', require('../api/contact/gateways/contactGateway'));
             app.use('/progress', require('../api/progress/gateways/progressGateway'));
             app.use('/status', require('../api/status/gateways/statusGateway'));
@@ -75,23 +76,19 @@ d.run(function() {
                 res.redirect('/#/dashboard2?id=' + req.params.propertyid)
             })
 
-            if (!settings.SKIPRABBIT) {
-                require('../api/status/consumers/webConsumer')
+            require('../api/status/consumers/webConsumer')
 
-                if (settings.RUN_DASHBOARD == "web") {
-                    require('../api/properties/consumers/dashboardConsumer');
-                    require('../api/properties/consumers/historyCompareConsumer');
-                    require('../api/properties/consumers/notificationsConsumer');
-                    require('../api/propertyusers/consumers/guestsConsumer');
-                }
+            if (settings.RUN_DASHBOARD == "web") {
+                require('../api/properties/consumers/dashboardConsumer');
+                require('../api/properties/consumers/historyCompareConsumer');
+                require('../api/properties/consumers/notificationsConsumer');
+                require('../api/propertyusers/consumers/guestsConsumer');
+            }
 
-                if (settings.RUN_PHANTOM == "web") {
-                    require('../api/properties/consumers/pdfConsumer')
-                    require('../api/status/consumers/phantomConsumer')
-                    require('../config/pdfHitCount');
-                }
-
-                //require('../poc/importConsumer');
+            if (settings.RUN_PHANTOM == "web") {
+                require('../api/properties/consumers/pdfConsumer')
+                require('../api/status/consumers/phantomConsumer')
+                require('../config/pdfHitCount');
             }
 
             var server = app.listen(settings.PORT, function () {

@@ -7,6 +7,7 @@ var DataPointsService = require('../services/dataPointsService')
 var CompsService = require('../services/compsService')
 var SurveyHelperService = require('../services/surveyHelperService')
 var error = require('../../../config/error')
+var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
@@ -18,11 +19,19 @@ module.exports = {
                 if (subjectId == compId) {
                     return callbackp();
                 }
+
+                var key = "view_" + user._id.toString()+"_"+subjectId;
+                var prop = localCacheService.get(key);
+
+                if (prop) {
+                    return callbackp(null,prop)
+                }
+
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView'], _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey"
                     , skipAmenities: true
                 }, function(err, property) {
-                    //console.log("Subject DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                    localCacheService.set(key, property[0], 2)
                     callbackp(err, property[0])
                 })
             },
@@ -41,6 +50,7 @@ module.exports = {
                 if (!checkManaged) {
                     return callbackp(null,false);
                 }
+
                 PropertyService.search(user, {limit: 1, permission: ['CompManage','PropertyManage'], _id: compId
                     , select: "_id"
                     , skipAmenities: true
@@ -61,6 +71,7 @@ module.exports = {
                 })
             }
         }, function(err, all) {
+            // console.log("Profile All Loop: " + (new Date().getTime() - timer) / 1000 + "s");
 
             if (err) {
                 return callback(err,null)
@@ -74,14 +85,17 @@ module.exports = {
 
                 async.parallel({
                     comps: function (callbackp) {
+                        var timer1 = new Date().getTime();
                         PropertyService.getLastSurveyStats({
                             hide: user.settings.hideUnlinked,
                             injectFloorplans: true
                         }, all.subject, comps, function() {
+                            // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
                             callbackp(null, comps)
                         })
                     },
                     points: function(callbackp) {
+                        var timer1 = new Date().getTime();
                         DataPointsService.getPoints(user.settings.hideUnlinked, all.subject, comps,
                             false,
                             -1,
@@ -89,10 +103,12 @@ module.exports = {
                             options.offset,
                             options.show,
                             function(points) {
+                                // console.log("Profile getPoints: " + (new Date().getTime() - timer1) / 1000 + "s");
                                 callbackp(null, points)
                             })
                     }
                 }, function(err, all2) {
+
                     var daysSince;
                     all2.comps.forEach(function(c) {
                         if (c.survey) {
@@ -115,8 +131,10 @@ module.exports = {
                         canSurvey = false;
                     }
 
-                    if (!all2.comps[0].survey || !all2.comps[0].survey.dateByOwner || (Date.now() - new Date(all2.comps[0].survey.dateByOwner).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
-                        canSurvey = true;
+                    if (all.modify) {
+                        if (!all2.comps[0].survey || !all2.comps[0].survey.dateByOwner || (Date.now() - new Date(all2.comps[0].survey.dateByOwner).getTime()) / 1000 / 60 / 60 / 24 >= 15) {
+                            canSurvey = true;
+                        }
                     }
 
                     //Guests cannot survey properties they do not manage
@@ -124,6 +142,7 @@ module.exports = {
                         canSurvey = false;
                     }
 
+                    // console.log("Profile done: " + (new Date().getTime() - timer) / 1000 + "s");
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
 
                     for (var s in all) {
@@ -158,11 +177,19 @@ module.exports = {
                     return callback("Access Denied",null)
                 }
 
-                var compids = _.pluck(property[0].comps, "id");
+                var compids = _.map(property[0].comps, function(x) {return x.id.toString()});
+
+                if (options.compids) {
+                    compids = _.intersection(compids, options.compids);
+                }
+
+                //Make sure subejct is always there
+                compids = _.union(compids,[id]);
+
                 delete property[0].compids;
 
                 PropertyService.search(user, {
-                    limit: 20,
+                    limit: 30,
                     permission: 'PropertyView',
                     ids: compids
                     ,
@@ -216,6 +243,7 @@ module.exports = {
                                     PropertyService.search(user, {permission: ['PropertyManage'], ids: compids
                                         , select: "_id"
                                         , skipAmenities: true
+                                        , limit: 30
                                     }, function(err, property) {
 
                                         if (err || !property) {
@@ -230,6 +258,13 @@ module.exports = {
                                     })
                                 },
                                 shared : function(callbackp) {
+                                    var key = "shared_comps_" + id;
+                                    var shared = localCacheService.get(key);
+
+                                    if (shared) {
+                                        return callbackp(null,shared)
+                                    }
+
                                     //Get all Subjects for All Comps.
                                     //Calculate counts for comps in multiple subjects among the group
                                     CompsService.getSubjects(compids, {select: "_id name comps.id"}, function(err, subjects) {
@@ -255,7 +290,8 @@ module.exports = {
                                                 }
                                             })
                                         })
-                                        // console.log(shared);
+                                        localCacheService.set(key, shared, 30)
+
                                         callbackp(err, shared);
                                     })
                                 }
@@ -275,10 +311,7 @@ module.exports = {
                                     if (c._id.toString() == property[0]._id.toString()) {
                                         c.orderNumber = -1;
                                     }
-                                })
 
-
-                                all.comps.forEach(function(c) {
                                     c.canSurvey = true;
                                     c.otherSubjects = all.shared[c._id.toString()];
 
