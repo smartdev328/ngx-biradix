@@ -74,6 +74,10 @@
     .no-margin-print {
         margin-bottom: 0px !important;
     }
+
+    .streteched {
+        max-width:1132px
+    }
 }
 
 .break2
