@@ -3,3 +3,4 @@ bower_components
 ./newrelic_agent.log
 newrelic_agent.log
 idea
+dist
