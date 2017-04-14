@@ -1,9 +1,4 @@
-﻿'use strict';
-define([
-    'app',
-    'css!/components/filterlist/filterlist.css'
-    ], function (app) {
-    app.directive('filterPanel', function () {
+﻿angular.module('biradix.global').directive('filterPanel', function () {
         return {
             restrict: 'E',
             scope: {
@@ -285,7 +280,7 @@ define([
         }
     });
 
-    app.directive('filterList', function () {
+angular.module('biradix.global').directive('filterList', function () {
         return {
             restrict: 'E',
             scope: {
@@ -411,4 +406,4 @@ define([
             templateUrl: '/components/filterlist/filterlist.html?bust=' + version
         };
     })
-})
+

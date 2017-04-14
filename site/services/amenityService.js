@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.factory('$amenityService', ['$http','$cookies', function ($http,$cookies) {
+angular.module('biradix.global').factory('$amenityService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
         fac.search = function (criteria) {
@@ -43,4 +39,3 @@ define([
 
         return fac;
     }]);
-});

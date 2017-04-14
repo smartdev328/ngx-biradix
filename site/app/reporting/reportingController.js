@@ -8,10 +8,6 @@ define([
     '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/propertyStatus.js',
     '../../components/reports/propertyReport.js',
-    '../../services/auditService',
-    '../../services/progressService',
-    '../../services/reportingService',
-    '../../services/urlService',
     'css!../../components/reports/reporting'
 ], function (app) {
 

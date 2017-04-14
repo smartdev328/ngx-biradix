@@ -1,8 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../services/amenityService',
-    '../../services/propertyService',
     '../../services/propertyAmenityService',
     '../../services/gridService',
     '../../filters/skip/filter',

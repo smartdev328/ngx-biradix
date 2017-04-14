@@ -2,7 +2,6 @@
 define([
     'app',
     '../../components/dialog/module',
-    '../../services/auditService',
 ], function (app) {
 
     app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams) {

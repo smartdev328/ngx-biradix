@@ -3,7 +3,6 @@ define([
     'app',
     'async2',
     '../../services/userService.js',
-    '../../services/propertyService.js',
     '../../services/propertyUsersService.js',
 ], function (app,async2) {
      app.controller

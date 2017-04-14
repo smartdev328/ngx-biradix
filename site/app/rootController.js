@@ -1,12 +1,7 @@
 'use strict';
 define([
     'app',
-    '../services/authService',
-    '../services/propertyService',
     '../components/daterangepicker/module',
-    '../components/filterlist/module',
-    '../components/timeseries/module',
-    '../components/toggle/module',
     '../../components/propertyProfile/profile',
     '../../components/propertyProfile/coverPage',
     '../../components/propertyProfile/about',
@@ -15,8 +10,6 @@ define([
     '../../components/propertyProfile/floorplans',
     '../../components/propertyProfile/tableView',
     '../../components/propertyProfile/comps',
-    '../../components/googleMap/module',
-    '../../services/amenityService',
 ], function (app) {
 
     app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce','$amenityService', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce,$amenityService) {

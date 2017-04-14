@@ -1,5 +1,6 @@
 var concat = require('gulp-concat');
 var replace = require('gulp-replace');
+var uglify = require('gulp-uglify');
 var gulp = require('gulp');
 
 gulp.task('vendorsjs', function() {
@@ -31,5 +32,37 @@ gulp.task('vendorscss', function() {
     ])
         .pipe(concat('vendors.css'))
         .pipe(replace(/..\/fonts\//g,'/bower_components/font-awesome/fonts/'))
+        .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('globaljs', function() {
+    return gulp.src([
+          './site/modules/module.global.js'
+        , './site/components/timeseries/module.js'
+        , './site/components/toggle/module.js'
+        , './site/components/filterlist/module.js'
+        , './site/components/googleMap/module.js'
+
+        , './site/services/authService.js'
+        , './site/services/propertyService.js'
+        , './site/services/amenityService.js'
+
+        , './site/services/cookieSettingsService.js'
+        , './site/services/progressService.js'
+        , './site/services/auditService.js'
+        , './site/services/reportingService.js'
+        , './site/services/urlService.js'
+    ])
+        .pipe(concat('global.js'))
+        .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('globalcss', function() {
+    return gulp.src([
+        , './site/app/global.css'
+        , './site/components/toggle/style.css'
+        , './site/components/filterlist/filterlist.css'
+    ])
+        .pipe(concat('global.css'))
         .pipe(gulp.dest('./dist/'));
 });

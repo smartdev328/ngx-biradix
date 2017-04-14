@@ -2,7 +2,6 @@
 define([
     'app',
     '../../services/userService.js',
-    '../../services/propertyService.js',
     '../../services/propertyUsersService.js',
 ], function (app) {
      app.controller
