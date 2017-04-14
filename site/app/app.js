@@ -45,7 +45,6 @@ function AsyncRoute (url, path, controller,view, outlet, data) {
 }
 
 define([
-    '../components/ngProgress/module',
     'css!global'
 ], function () {
     var app = angular.module('Team', [
