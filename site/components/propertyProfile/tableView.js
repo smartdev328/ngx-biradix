@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.directive('tableView', function () {
+angular.module('biradix.global').directive('tableView', function () {
         return {
             restrict: 'E',
             scope: {
@@ -24,4 +20,3 @@ define([
             templateUrl: '/components/propertyProfile/tableView.html?bust=' + version
         };
     })
-})

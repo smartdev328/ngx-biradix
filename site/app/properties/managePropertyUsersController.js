@@ -1,8 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../services/userService.js',
-    '../../services/propertyUsersService.js',
 ], function (app) {
      app.controller
         ('managePropertyUsersController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr', function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr) {

@@ -1,10 +1,4 @@
-'use strict';
-define([
-    'app',
-    'css!/components/daterangepicker/daterangepicker-bs3',
-    '/components/daterangepicker/daterangepicker.js',
-], function (app) {
-    app.directive('daterangePicker', function () {
+angular.module('biradix.global').directive('daterangePicker', function () {
         return {
             restrict: 'E',
             scope: {
@@ -63,4 +57,4 @@ define([
             templateUrl: '/components/daterangepicker/daterangepicker.html?bust' + version
         };
     })
-})
+

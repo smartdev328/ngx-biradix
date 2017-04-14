@@ -1,8 +1,6 @@
 'use strict';
 define([
-    'app',
-    '../../services/userService.js',
-    '../../services/propertyUsersService.js',
+    'app'
 ], function (app) {
      app.controller
         ('surveySwapController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$dialog', function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$dialog) {

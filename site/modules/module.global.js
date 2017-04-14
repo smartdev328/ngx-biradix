@@ -1,1 +1,1 @@
-angular.module('biradix.global', []);
+angular.module('biradix.global',['ui.bootstrap']);

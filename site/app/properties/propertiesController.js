@@ -2,8 +2,6 @@
 define([
     'app',
     '../../filters/skip/filter',
-    '../../components/dialog/module',
-    '../../services/gridService',
 ], function (app) {
 
     app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$uibModal','$authService','$dialog','toastr','$gridService', function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr,$gridService) {

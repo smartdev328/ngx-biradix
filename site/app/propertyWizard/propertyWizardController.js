@@ -2,7 +2,6 @@
 define([
     'app',
     '../../components/inputmask/module.js',
-    '../../components/dialog/module.js',
 ], function (app) {
      app.controller
         ('propertyWizardController', ['$scope', '$uibModalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$uibModal','subjectid', function ($scope, $uibModalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$uibModal,subjectid) {

@@ -86,6 +86,8 @@
     -webkit-region-break-before: always !important;
 }
 
-.table-comps .hidden-report {
+property-report .table-comps .hidden-report {
     display:none;
 }
+
+

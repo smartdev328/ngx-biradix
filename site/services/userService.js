@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.factory('$userService', ['$http','$cookies', function ($http,$cookies) {
+angular.module('biradix.global').factory('$userService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
         fac.updateUsersForSettingsApply = function(criteria) {
@@ -88,4 +84,3 @@ define([
 
         return fac;
     }]);
-});

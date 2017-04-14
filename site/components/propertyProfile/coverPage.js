@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.directive('coverPage', function () {
+angular.module('biradix.global').directive('coverPage', function () {
         return {
             restrict: 'E',
             scope: {
@@ -14,4 +10,4 @@ define([
             templateUrl: '/components/propertyProfile/coverPage.html?bust=' + version
         };
     })
-})
+

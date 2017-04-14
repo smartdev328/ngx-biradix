@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../services/userService.js',
     '../../services/cronService.js',
 ], function (app) {
      app.controller

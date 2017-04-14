@@ -7,8 +7,7 @@ define([
     '../../components/reports/propertyRankings.js',
     '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/propertyStatus.js',
-    '../../components/reports/propertyReport.js',
-    'css!../../components/reports/reporting'
+    '../../components/reports/propertyReport.js'
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {

@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.factory('$gridService', [function () {
+angular.module('biradix.global').factory('$gridService', [function () {
         var fac = {};
 
         fac.toggle = function (obj, v, reset) {
@@ -63,4 +59,3 @@ define([
 
         return fac;
     }]);
-});
