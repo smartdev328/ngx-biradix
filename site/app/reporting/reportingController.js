@@ -246,7 +246,7 @@ define([
             var properties = _.filter($scope.propertyItems,function(x) {return x.selected == true});
 
             if ($scope.myProperties.length == 1) {
-                properties = [$scope.selected.Property._id];
+                properties = [$scope.selected.Property];
             }
 
             if (!properties.length) {
@@ -466,7 +466,7 @@ define([
 
             location.href = url;
 
-            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.settings.daterange.selectedRange});
+            $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.dashboardSettings.daterange.selectedRange});
 
         }
 
