@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec api/*/tests/*.js",
-    "postinstall": "bower install && npm test"
+    "postinstall": "bower install && gulp vendorsjs vendorscss && npm test"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,10 @@
     "ejs": "^2.4.2",
     "express": "^4.14.0",
     "express-jwt": "^3.4.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^2.1.2",
     "heroku-client": "^2.2.2",
     "ioredis": "^2.0.1",
     "jackrabbit": "^4.3.0",
