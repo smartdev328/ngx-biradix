@@ -76,7 +76,8 @@ gulp.task('globaljs', function() {
         , './site/app/rootController.js'
     ])
         .pipe(concat('global.js'))
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest('./dist/'))
+        .pipe(hashsum({dest: "./dist",json:true, filename: 'globaljs-hash.json'}));
 });
 
 gulp.task('globalcss', function() {
@@ -90,5 +91,6 @@ gulp.task('globalcss', function() {
         , './site/components/reports/reporting.css'
     ])
         .pipe(concat('global.css'))
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest('./dist/'))
+        .pipe(hashsum({dest: "./dist",json:true, filename: 'globalcss-hash.json'}));
 });

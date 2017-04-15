@@ -16,8 +16,8 @@
     <script src="/node_modules/phantomjs-polyfill/bind-polyfill.js"></script>
     <%}%>
 
-    <link href="/dist/global.css?v=<%=version%>" rel="stylesheet" type="text/css">
-    <script src="/dist/global.js?v=<%=version%>"></script>
+    <link href="/dist/global.css?v=<%=hashes.globalcss%>" rel="stylesheet" type="text/css">
+    <script src="/dist/global.js?v=<%=hashes.globaljs%>"></script>
 
     <script data-main="app/main.js?bust=<%=version%>" src="libs/requirejs/require-2.3.3.min.js"></script>
 
