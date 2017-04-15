@@ -84,15 +84,67 @@
                             <i class="fa fa-gear fa-2px"></i> Market Survey Summary Settings <i class="fa fa-chevron-right fa-2px"></i>
                         </Div>
                     </uib-accordion-heading>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 1
+                    <div class="row" style="padding:10px">
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Date Range<br>
+                            <daterange-picker daterange="dashboardSettings.daterange"></daterange-picker>
                         </div>
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 2
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Group Comps<br>
+                            <toggle-switch checked="dashboardSettings.summary"></toggle-switch>&nbsp;
                         </div>
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 3
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Measurement Scale<br>
+                            <select class="form-control" ng-model="dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            </select>&nbsp;
+                        </div>
+                        <br clear="all" class="visible-sm">
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Show<br>
+                            <select class="form-control" ng-model="dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            </select>&nbsp;
+                        </div>
+                        <br clear="all" class="visible-md">
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Property Info<br>
+                            <select class="form-control" ng-model="dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            </select>&nbsp;
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Dashboard Comparison<br>
+                            <select class="form-control" ng-model="dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            </select>&nbsp;
+                        </div>
+                        <br clear="all" class="visible-sm">
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Property Profile<br>
+                            <select class="form-control" ng-model="dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            </select>&nbsp;
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Competitors Sort Order<br>
+                            <select class="form-control" ng-model="dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            </select>&nbsp;
+                        </div>
+                        <br clear="all" class="visible-md">
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            Floorplan Sort Order<br>
+                            <select class="form-control" ng-model="dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            </select>&nbsp;
                         </div>
                     </div>
                 </div>
