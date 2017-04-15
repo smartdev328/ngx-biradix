@@ -318,11 +318,6 @@ define([
 
                 $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
 
-                $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
-                $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
-                $scope.property_report = $scope.reportIds.indexOf("property_report") > -1;
-
-
                 if (!phantom) {
                     $scope.audit('report', 'Website');
                 }
@@ -414,6 +409,10 @@ define([
         }
         $scope.$watch('reportItems', function() {
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
+
+            $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
+            $scope.rankings = reportIds.indexOf("property_rankings") > -1;
+            $scope.property_report = reportIds.indexOf("property_report") > -1;
 
             var diff = _.difference(reportIds,$scope.reportIds);
 
