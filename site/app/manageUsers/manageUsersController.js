@@ -1,10 +1,7 @@
 'use strict';
 define([
     'app',
-    '../../services/userService',
-    '../../services/gridService',
     '../../filters/skip/filter',
-    '../../components/dialog/module'
 ], function (app) {
 
     app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr) {

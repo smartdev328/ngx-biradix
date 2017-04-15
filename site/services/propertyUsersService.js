@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.factory('$propertyUsersService', ['$http','$cookies', function ($http,$cookies) {
+angular.module('biradix.global').factory('$propertyUsersService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
         fac.getPropertyAssignedUsers = function (propertyid) {
@@ -60,4 +56,3 @@ define([
         }
         return fac;
     }]);
-});

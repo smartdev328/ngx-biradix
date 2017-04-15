@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.factory('$auditService', ['$http','$cookies', function ($http,$cookies) {
+angular.module('biradix.global').factory('$auditService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
         fac.filters = function () {
@@ -43,4 +39,3 @@ define([
 
         return fac;
     }]);
-});

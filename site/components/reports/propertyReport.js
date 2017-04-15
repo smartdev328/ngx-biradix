@@ -1,7 +1,6 @@
 'use strict';
 define([
-    'app',
-    '../../services/propertyService',
+    'app'
 ], function (app) {
     app.directive('propertyReport', function () {
         return {

@@ -1,12 +1,8 @@
 'use strict';
 define([
     'app',
-    '../../services/amenityService',
-    '../../services/propertyService',
     '../../services/propertyAmenityService',
-    '../../services/gridService',
     '../../filters/skip/filter',
-    '../../components/dialog/module'
 ], function (app) {
 
     app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService','$propertyAmenityService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService,$propertyAmenityService) {

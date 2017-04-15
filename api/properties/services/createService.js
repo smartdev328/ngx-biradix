@@ -368,6 +368,7 @@ function errorCheck(property, modelErrors) {
     property.address = property.address || '';
     property.city = property.city || '';
     property.state = property.state || '';
+    property.zip = property.zip || '';
     property.constructionType = property.constructionType || '';
     property.owner = property.owner || '';
     property.management = property.management || '';
@@ -406,6 +407,10 @@ function errorCheck(property, modelErrors) {
 
     if (property.state == '' || property.state.length != 2) {
         modelErrors.push({param: 'state', msg : 'Please enter the Property State'});
+    }
+
+    if (property.zip == '' || property.zip.length != 5) {
+        modelErrors.push({param: 'zip', msg : 'Please enter the Property Zip'});
     }
 
     if (property.constructionType == '') {

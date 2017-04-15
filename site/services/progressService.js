@@ -1,6 +1,4 @@
-'use strict';
-define(['app'], function (app) {
-    app.factory('$progressService', ['$http', function ($http,$cookies) {
+angular.module('biradix.global').factory('$progressService', ['$http', function ($http,$cookies) {
         var fac = {};
 
         fac.isComplete = function (progressId, callback) {
@@ -19,4 +17,3 @@ define(['app'], function (app) {
 
         return fac;
     }]);
-});

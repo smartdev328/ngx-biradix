@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../components/dialog/module.js',
 ], function (app) {
      app.controller
         ('manageCompsController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$uibModal','$dialog', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService,$uibModal,$dialog) {

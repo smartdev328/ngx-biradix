@@ -1,11 +1,8 @@
 'use strict';
 define([
     'app',
-    'async2',
-    '../../services/userService.js',
-    '../../services/propertyService.js',
-    '../../services/propertyUsersService.js',
-], function (app,async2) {
+    'async',
+], function (app,async) {
      app.controller
         ('editUserController', ['$scope', '$uibModalInstance', 'userId', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$rootScope', function ($scope, $uibModalInstance, userId, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$rootScope) {
             $scope.user = {roles:[{propertyids:[]}]};
@@ -47,7 +44,7 @@ define([
                             $scope.user.roles[0].selectedRole = $scope.roles[0];
                         }
 
-                        async2.each($scope.user.roles, function(role, callback) {
+                        async.each($scope.user.roles, function(role, callback) {
                             $scope.getProps(role,true);
                             callback();
                         }, function (err) {
@@ -69,7 +66,7 @@ define([
 
                     $scope.originalRoles = _.map($scope.user.roles, function(x) {return x._id.toString()});
 
-                    async2.each($scope.user.roles, function(role, callback) {
+                    async.each($scope.user.roles, function(role, callback) {
                         role.propertyids = [];
 
                         $propertyUsersService.getUserAssignedProperties(userId).then(function (response) {

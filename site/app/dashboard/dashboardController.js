@@ -2,11 +2,6 @@
 define([
     'app',
     '../../components/jstimezonedetect/jstz.min',
-    '../../services/cookieSettingsService',
-    '../../services/progressService',
-    '../../services/auditService',
-    '../../services/reportingService',
-    '../../services/urlService',
 ], function (app,jstz) {
 
     app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService) {

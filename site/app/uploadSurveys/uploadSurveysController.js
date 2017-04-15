@@ -1,8 +1,8 @@
 'use strict';
 define([
     'app',
-    'async2'
-], function (app,async2) {
+    'async'
+], function (app,async) {
 
     app.controller('uploadSurveysController', ['$scope','$rootScope','$location','ngProgress','toastr','$propertyService', function ($scope,$rootScope,$location,ngProgress,toastr,$propertyService) {
         $scope.data = {};
@@ -200,7 +200,7 @@ define([
 
             $propertyService.getSurveyDates(property._id).then(function (response) {
                 var dates = _.pluck(response.data.survey,"date");
-                async2.eachSeries(surveys
+                async.eachSeries(surveys
                     , function (survey, callbackp) {
                         var inrange = _.find(dates, function(d) {
 

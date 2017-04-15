@@ -1,9 +1,4 @@
-'use strict';
-define([
-    'app',
-    phantom ? 'empty' : 'async!//maps.googleapis.com/maps/api/js?key=AIzaSyDSPRIxjN2eQGgXzcDVXHemAG5Lf9GVdgk&v=3.exp&libraries=places'
-], function (app) {
-    app.directive('googleMap', function () {
+angular.module('biradix.global').directive('googleMap', function () {
         return {
             restrict: 'E',
             scope: {
@@ -182,4 +177,3 @@ define([
             templateUrl: '/components/googleMap/googleMap.html?bust=' + version
         };
     })
-})

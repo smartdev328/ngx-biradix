@@ -1,6 +1,4 @@
-'use strict';
-define(['app'], function (app) {
-    app.factory('$cookieSettingsService', ['$cookies', function ($cookies) {
+angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', function ($cookies) {
         var fac = {};
 
         fac.getSurveyGuestOption = function (propertyid) {
@@ -135,4 +133,3 @@ define(['app'], function (app) {
 
         return fac;
     }]);
-});

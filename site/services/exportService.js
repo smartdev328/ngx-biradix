@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../services/urlService.js'
 ], function (app) {
     app.factory('$exportService', ['$http','$cookies','$urlService', function ($http,$cookies,$urlService) {
         var fac = {};

@@ -1,10 +1,4 @@
-
-'use strict';
-define([
-    'app',
-    '../../services/cookieSettingsService'
-], function (app) {
-    app.factory('$reportingService', ['$http','$cookies','$cookieSettingsService', function ($http,$cookies,$cookieSettingsService) {
+angular.module('biradix.global').factory('$reportingService', ['$http','$cookies','$cookieSettingsService', function ($http,$cookies,$cookieSettingsService) {
         var fac = {};
 
         fac.reports = function(compids, subjectid, reports, options) {
@@ -175,4 +169,3 @@ define([
 
         return fac;
     }]);
-});

@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.factory('$urlService', ['$http', function ($http,$cookies) {
+angular.module('biradix.global').factory('$urlService', ['$http', function ($http,$cookies) {
         var fac = {};
 
         fac.shorten = function (url) {
@@ -24,4 +20,3 @@ define([
 
         return fac;
     }]);
-});

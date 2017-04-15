@@ -1,9 +1,4 @@
-'use strict';
-define([
-    'app',
-    '../../services/gridService',
-], function (app) {
-    app.directive('propertyFloorplans', function () {
+angular.module('biradix.global').directive('propertyFloorplans', function () {
         return {
             restrict: 'E',
             scope: {
@@ -72,4 +67,3 @@ define([
             templateUrl: '/components/propertyProfile/propertyFloorplans.html?bust=' + version
         };
     })
-})
