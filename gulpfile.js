@@ -1,6 +1,7 @@
 var concat = require('gulp-concat');
 var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
+var hashsum = require("gulp-hashsum")
 var gulp = require('gulp');
 
 gulp.task('vendorsjs', function() {
@@ -21,7 +22,8 @@ gulp.task('vendorsjs', function() {
 
     ])
         .pipe(concat('vendors.js'))
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest('./dist/'))
+        .pipe(hashsum({dest: "./dist",json:true, filename: 'vendorsjs-hash.json'}));
 });
 
 gulp.task('vendorscss', function() {
@@ -34,7 +36,8 @@ gulp.task('vendorscss', function() {
     ])
         .pipe(concat('vendors.css'))
         .pipe(replace(/..\/fonts\//g,'/bower_components/font-awesome/fonts/'))
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest('./dist/'))
+        .pipe(hashsum({dest: "./dist",json:true, filename: 'vendorscss-hash.json'}));
 });
 
 gulp.task('globaljs', function() {

@@ -26,6 +26,7 @@
     "express-jwt": "^3.4.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
+    "gulp-hashsum": "^1.1.0",
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^2.1.2",
     "heroku-client": "^2.2.2",
