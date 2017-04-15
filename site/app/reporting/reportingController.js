@@ -266,7 +266,7 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                },1000)
+                },200)
 
 
             });
@@ -324,7 +324,7 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                },1000)
+                },$scope.property_report ? 1500 : 200)
 
 
             });
