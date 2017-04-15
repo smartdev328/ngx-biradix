@@ -1,12 +1,7 @@
 'use strict';
 define([
     'app',
-    '../../services/progressService',
-    '../../services/cookieSettingsService',
-    '../../services/auditService',
     '../../services/exportService',
-    '../../services/reportingService',
-    '../../services/urlService',
 ], function (app) {
 
     app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService) {

@@ -1,15 +1,8 @@
 requirejs.config({
     urlArgs: "bust=" + version,
     waitSeconds: 30,
-    map: {
-        '*': {
-            'css': '/libs/requirejs/css-min.js'
-        }
-    },
     paths: {
-        'async': '/libs/requirejs/async',
-        'highcharts': '/bower_components/highcharts-release/highcharts',
-        'async2': local ? '/bower_components/async/dist/async.min' : '//cdnjs.cloudflare.com/ajax/libs/async/1.5.2/async.min',
+        'async': '/bower_components/async/dist/async.min',
     }
 });
 
@@ -39,14 +32,7 @@ requirejs.onError = function (err) {
 require([
     'app'
 ], function (app) {
-
-    require([
-        'rootController',
-    ], function () {
-
-        angular.bootstrap(document, [app.name]);
-
-    });
+    angular.bootstrap(document, [app.name]);
 });
 
 

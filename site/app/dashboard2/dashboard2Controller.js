@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../services/reportingService',
 ], function (app) {
 
     app.controller('dashboard2Controller', ['$scope','$rootScope','$location','$propertyService', '$authService','ngProgress','toastr','$stateParams','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,ngProgress,toastr,$stateParams,$reportingService) {

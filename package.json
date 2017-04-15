@@ -1,11 +1,12 @@
 {
   "name": "BIRadix",
-  "version": "2.9.14",
+  "version": "2.9.17",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec api/*/tests/*.js",
-    "postinstall": "bower install && npm test"
+    "build": "gulp vendorsjs vendorscss globaljs globalcss",
+    "postinstall": "bower install && npm run build && npm test"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,11 @@
     "ejs": "^2.4.2",
     "express": "^4.14.0",
     "express-jwt": "^3.4.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-hashsum": "^1.1.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^2.1.2",
     "heroku-client": "^2.2.2",
     "ioredis": "^2.0.1",
     "jackrabbit": "^4.3.0",

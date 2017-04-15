@@ -1,9 +1,4 @@
-'use strict';
-define([
-    'app',
-    '../../services/gridService',
-], function (app) {
-    app.directive('propertyComps', function () {
+angular.module('biradix.global').directive('propertyComps', function () {
         return {
             restrict: 'E',
             scope: {
@@ -201,4 +196,3 @@ define([
             templateUrl: '/components/propertyProfile/propertyComps.html?bust=' + version
         };
     })
-})

@@ -9,44 +9,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script type="text/javascript">var version="<%=version%>"; var local=<%=local%>; var phantom = <%=phantom%>; var logoBig='<%=logoBig%>';</script>
 
-    <%if (local) {%>
-    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <script src="/bower_components/angular/angular.min.js"></script>
-    <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
-    <script src="/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-    <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src="/bower_components/lodash/lodash.min.js"></script>
-    <script src="/bower_components/moment/min/moment.min.js"></script>
-    <% } else {%>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular-cookies.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular-sanitize.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.3.0/ui-bootstrap-tpls.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-    <% }%>
-
-
-    <link href="components/angular-toastr/angular-toastr.min.css" rel="stylesheet" type="text/css">
-    <script src="components/angular-toastr/angular-toastr.tpls.min.js"></script>
+    <link href="/dist/vendors.css?v=<%=hashes.vendorscss%>" rel="stylesheet" type="text/css">
+    <script src="/dist/vendors.js?v=<%=hashes.vendorsjs%>"></script>
 
     <%if (phantom) {%>
     <script src="/node_modules/phantomjs-polyfill/bind-polyfill.js"></script>
     <%}%>
 
+    <link href="/dist/global.css?v=<%=hashes.globalcss%>" rel="stylesheet" type="text/css">
+    <script src="/dist/global.js?v=<%=hashes.globaljs%>"></script>
+
     <script data-main="app/main.js?bust=<%=version%>" src="libs/requirejs/require-2.3.3.min.js"></script>
+
+    <%if (!phantom) {%>
+    <script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyDSPRIxjN2eQGgXzcDVXHemAG5Lf9GVdgk&v=3.exp&libraries=places"></script>
+    <%}%>
 
 </head>
 <body ng-controller="rootController" ng-click="resetTimeout()" ng-keypress="resetTimeout()">

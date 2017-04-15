@@ -1,25 +1,4 @@
-'use strict';
-define([
-    'app',
-    '../services/authService',
-    '../services/propertyService',
-    '../components/daterangepicker/module',
-    '../components/filterlist/module',
-    '../components/timeseries/module',
-    '../components/toggle/module',
-    '../../components/propertyProfile/profile',
-    '../../components/propertyProfile/coverPage',
-    '../../components/propertyProfile/about',
-    '../../components/propertyProfile/fees',
-    '../../components/propertyProfile/amenities',
-    '../../components/propertyProfile/floorplans',
-    '../../components/propertyProfile/tableView',
-    '../../components/propertyProfile/comps',
-    '../../components/googleMap/module',
-    '../../services/amenityService',
-], function (app) {
-
-    app.controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce','$amenityService', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce,$amenityService) {
+angular.module('biradix.global').controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce','$amenityService', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce,$amenityService) {
 
         $scope.hasSessionStorage = true;
         try {
@@ -230,67 +209,59 @@ define([
         }
 
         $rootScope.swaptoLoggedIn = function(redirect) {
-            require([
-                'css!/css/navs',
-                'css!/css/grids'
-            ], function () {
-                $rootScope.getMe(function() {
-                    $rootScope.loggedIn = true;
-                    $('.loading').hide();
-                    $('.loggedout').hide();
-                    $('.loggedin').show();
 
-                    $('body').css("padding-top","0px")
+            $rootScope.getMe(function() {
+                $rootScope.loggedIn = true;
+                $('.loading').hide();
+                $('.loggedout').hide();
+                $('.loggedin').show();
 
-                    $rootScope.updateLogos();
+                $('body').css("padding-top","0px")
+
+                $rootScope.updateLogos();
 
 
-                    $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
-                    $timeout($rootScope.incrementTimeout, 1000);
+                $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
+                $timeout($rootScope.incrementTimeout, 1000);
 
-                    var ar = location.hash.split("login?r=");
-                    if (ar.length == 2 && $scope.hasSessionStorage) {
-                        $window.sessionStorage.redirect = decodeURIComponent(ar[1]);
-                    }
+                var ar = location.hash.split("login?r=");
+                if (ar.length == 2 && $scope.hasSessionStorage) {
+                    $window.sessionStorage.redirect = decodeURIComponent(ar[1]);
+                }
 
-                    if ($scope.hasSessionStorage && $window.sessionStorage.redirect) {
-                        var x = $window.sessionStorage.redirect;
-                        $window.sessionStorage.removeItem('redirect');
+                if ($scope.hasSessionStorage && $window.sessionStorage.redirect) {
+                    var x = $window.sessionStorage.redirect;
+                    $window.sessionStorage.removeItem('redirect');
 
-                        //Make sure we dont redirect to /login
-                        if (x.indexOf('/login') == -1) {
-                            if (x.indexOf("?") == -1) {
-                                $location.path(x)
-                            } else {
-                                var a = x.split('?')
-                                $location.path(a[0]).search(a[1]);
-                            }
+                    //Make sure we dont redirect to /login
+                    if (x.indexOf('/login') == -1) {
+                        if (x.indexOf("?") == -1) {
+                            $location.path(x)
                         } else {
-                            $location.path("/dashboard");
+                            var a = x.split('?')
+                            $location.path(a[0]).search(a[1]);
                         }
-
                     } else {
-                        if (redirect !== false) {
-                            $location.path("/dashboard");
-                        }
+                        $location.path("/dashboard");
                     }
 
+                } else {
+                    if (redirect !== false) {
+                        $location.path("/dashboard");
+                    }
+                }
 
-                });
-            })
+
+            });
 
         }
 
         $rootScope.swaptoLoggedOut = function() {
-            require([
-                'css!/app/login/loggedout'
-            ], function () {
-                $('.loading').hide();
-                $('.loggedout').show();
-                $('.loggedin').hide();
-                $('body').css("padding-top","10px")
-                $rootScope.loggedIn = false;
-            })
+            $('.loading').hide();
+            $('.loggedout').show();
+            $('.loggedin').hide();
+            $('body').css("padding-top","10px")
+            $rootScope.loggedIn = false;
         }
 
         //Local functions
@@ -534,4 +505,3 @@ define([
     }]);
 
 
-});

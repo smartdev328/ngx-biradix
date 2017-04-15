@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../services/gridService',
 ], function (app) {
     app.directive('rankingsReportSummary', function () {
         return {

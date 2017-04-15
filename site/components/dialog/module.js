@@ -1,6 +1,4 @@
-'use strict';
-define(['app'], function (app) {
-    app.factory('$dialog', ['$uibModal', function ($uibModal) {
+angular.module('biradix.global').factory('$dialog', ['$uibModal', function ($uibModal) {
             var svc = {};
 
             svc.confirm = function (msg,confirm,deny) {
@@ -30,4 +28,3 @@ define(['app'], function (app) {
 
             return svc;
         }]);
-});

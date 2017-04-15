@@ -44,17 +44,15 @@ function AsyncRoute (url, path, controller,view, outlet, data) {
     return r;
 }
 
-define([
-    '../components/ngProgress/module',
-    'css!global'
-], function () {
-    var app = angular.module('Team', [
+define([], function () {
+    var app = angular.module('Biradix', [
         , 'ui.router'
         , 'ui.bootstrap'
         , 'toastr'
         , 'ngCookies'
         , 'ngProgress'
         , 'ngSanitize'
+        , 'biradix.global'
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {

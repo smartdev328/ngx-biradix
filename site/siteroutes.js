@@ -9,6 +9,10 @@ var settings = require('../config/settings')
 var jwt = require('jsonwebtoken');
 var request = require('request');
 var querystring = require('querystring');
+var vendorsjshash = require('../dist/vendorsjs-hash.json');
+var vendorscsshash = require('../dist/vendorscss-hash.json');
+var globaljshash = require('../dist/globaljs-hash.json');
+var globalcsshash = require('../dist/globalcss-hash.json');
 
 function sendError(req,res) {
     var context = req.body.context || {}
@@ -84,7 +88,14 @@ module.exports = (function() {
                 return res.status(200).send("No data");
             }
 
-            res.render('index', {version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom, dyno: process.env.DYNO
+            var hashes = {
+                vendorsjs: vendorsjshash['vendors.js'],
+                vendorscss: vendorscsshash['vendors.css'],
+                globaljs: globaljshash['global.js'],
+                globalcss: globalcsshash['global.css'],
+            }
+
+            res.render('index', {hashes: hashes, version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom, dyno: process.env.DYNO
                 //nreum : newrelic.getBrowserTimingHeader()
             });
 

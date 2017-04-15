@@ -1,6 +1,4 @@
-'use strict';
-define(['app'], function (app) {
-    app.factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
+angular.module('biradix.global').factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
         fac.checkDupe = function (criteria) {
@@ -668,4 +666,3 @@ define(['app'], function (app) {
 
         return fac;
     }]);
-});
