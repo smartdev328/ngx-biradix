@@ -296,6 +296,18 @@ define([
             var options = {};
 
             if ($scope.reportIds.indexOf("property_report") > -1) {
+
+                //Only check options after we have ran a report
+                if (Object.keys($scope.runSettings).length) {
+                    $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
+                    $scope.liveSettings.showProfile = {};
+
+                    $scope.temp.showProfileItems.forEach(function(f) {
+                        $scope.liveSettings.showProfile[f.id] = f.selected;
+                    })
+
+                }
+
                 options.property_report = {
                     summary: $scope.liveSettings.dashboardSettings.summary,
                     bedrooms: $scope.liveSettings.dashboardSettings.selectedBedroom,
@@ -310,6 +322,7 @@ define([
                     },
                     offset: moment().utcOffset()
                 }
+
             }
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
@@ -320,6 +333,7 @@ define([
                 ,$scope.reportIds
                 ,options
             ).then(function(response) {
+                $scope.configureOptions();
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
@@ -456,6 +470,30 @@ define([
             location.href = url;
 
             $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.liveSettings.dashboardSettings.daterange.selectedRange});
+
+        }
+
+        $scope.configureOptions = function() {
+            $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showProfileItems = [
+                {id: "address", name: "Address", selected: $scope.liveSettings.showProfile.address},
+
+                {id: "website", name: "Website", selected: $scope.liveSettings.showProfile.website},
+                {id: "phone", name: "Phone", selected: $scope.liveSettings.showProfile.phone},
+                {id: "email", name: "Email", selected: $scope.liveSettings.showProfile.email},
+                {id: "contact", name: "Contact", selected: $scope.liveSettings.showProfile.contact},
+                {id: "const", name: "Construction", selected: $scope.liveSettings.showProfile.const},
+                {id: "built", name: "Year Built", selected: $scope.liveSettings.showProfile.built},
+                {id: "ren", name: "Year Renovated", selected: $scope.liveSettings.showProfile.ren},
+                {id: "owner", name: "Owner", selected: $scope.liveSettings.showProfile.owner},
+                {id: "mgmt", name: "Management", selected: $scope.liveSettings.showProfile.mgmt},
+                {id: "units", name: "Total Units", selected: $scope.liveSettings.showProfile.units},
+                {id: "occ", name: "Occupancy", selected: $scope.liveSettings.showProfile.occ},
+                {id: "leased", name: "Leased", selected: $scope.liveSettings.showProfile.leased},
+                {id: "renewal", name: "Renewal", selected: $scope.liveSettings.showProfile.renewal},
+                {id: "traf", name: "Traffic / Week", selected: $scope.liveSettings.showProfile.traf},
+                {id: "lease", name: "Leases / Week", selected: $scope.liveSettings.showProfile.lease},
+            ];
 
         }
 
