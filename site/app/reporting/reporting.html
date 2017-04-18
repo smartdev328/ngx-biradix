@@ -78,10 +78,10 @@
             </div>
 
             <uib-accordion ng-if="rankings || rankingsSummary || property_report" class="hidden-print">
-                <div ng-if="property_report" uib-accordion-group class="panel-default"  style="margin-bottom:-3px">
+                <div ng-if="property_report" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.property_report_open">
                     <uib-accordion-heading>
                         <Div style="padding:0px 10px">
-                            <i class="fa fa-gear fa-2px"></i> Market Survey Summary Settings <i class="fa fa-chevron-right fa-2px"></i>
+                            <i class="fa fa-gear fa-2px"></i> Report Preferences: Market Survey Summary <i ng-class="{fa : true, 'fa-chevron-right': !temp.property_report_open, 'fa-chevron-down': temp.property_report_open, 'fa-2px': true}"></i>
                         </Div>
                     </uib-accordion-heading>
                     <div class="row" style="padding:10px">
@@ -130,10 +130,10 @@
                         </div>
                     </div>
                 </div>
-                <div ng-if="rankingsSummary" uib-accordion-group class="panel-default"  style="margin-bottom:-3px">
+                <div ng-if="rankingsSummary" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_summary_open">
                     <uib-accordion-heading>
                         <Div style="padding:0px 10px">
-                            <i class="fa fa-gear fa-2px"></i> Property Rankings Settings <i class="fa fa-chevron-right fa-2px"></i>
+                            <i class="fa fa-gear fa-2px"></i> Report Preferences: Property Rankings <i ng-class="{fa : true, 'fa-chevron-right': !temp.rankings_summary_open, 'fa-chevron-down': temp.rankings_summary_open, 'fa-2px': true}"></i>
                         </Div>
                     </uib-accordion-heading>
                     <div class="row">
@@ -148,10 +148,10 @@
                         </div>
                     </div>
                 </div>
-                <div ng-if="rankings" uib-accordion-group class="panel-default"  style="margin-bottom:-3px">
+                <div ng-if="rankings" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_open">
                     <uib-accordion-heading>
                         <Div style="padding:0px 10px">
-                            <i class="fa fa-gear fa-2px"></i> Property Rankings (detailed) Settings <i class="fa fa-chevron-right fa-2px"></i>
+                            <i class="fa fa-gear fa-2px"></i> Report Preferences: Property Rankings (detailed) <i ng-class="{fa : true, 'fa-chevron-right': !temp.rankings_open, 'fa-chevron-down': temp.rankings_open, 'fa-2px': true}"></i>
                         </Div>
                     </uib-accordion-heading>
                     <div class="row">
