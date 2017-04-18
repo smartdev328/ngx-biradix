@@ -19,6 +19,7 @@ define([
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Reporting";
 
+        $scope.temp = {};
         $scope.liveSettings = {};
         $scope.runSettings = {};
 

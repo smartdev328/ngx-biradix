@@ -10,7 +10,9 @@ define([
                 me: '=',
                 dashboardSettings: '=',
                 profileSettings: '=',
-                showProfile: '='
+                showProfile: '=',
+                bedrooms: '=',
+                bedroom: '=',
             },
             controller: function ($scope,$propertyService) {
                 var resp = $propertyService.parseDashboard($scope.report.dashboard,$scope.dashboardSettings.summary, $scope.me.settings.showLeases, $scope.dashboardSettings.nerScale, $scope.dashboardSettings.selectedBedroom);
