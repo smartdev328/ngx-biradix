@@ -16,9 +16,11 @@ define([
         $scope.reportType = "";
 
         $rootScope.nav = "Reporting";
-
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Reporting";
+
+        $scope.liveSettings = {};
+        $scope.runSettings = {};
 
         $scope.propertyOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
@@ -38,9 +40,13 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
 
-                $scope.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
-                $scope.profileSettings = $reportingService.getProfileSettings($(window).width());
-                $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
+                if ($cookies.get("settings")) {
+                    $scope.liveSettings = JSON.parse($cookies.get("settings"))
+                } else {
+                    $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
+                    $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
+                    $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
+                }
                 $scope.reload($stateParams.property == "1");
                 me();
             }
@@ -58,8 +64,7 @@ define([
 
 
                 // $scope.debug = {
-                //     a: 'test',
-                //     c: $cookies.get("reportIds"),
+                //     c: JSON.parse($cookies.get("settings")),
                 // }
                 // return window.renderable = true;
 
@@ -254,6 +259,8 @@ define([
             $scope.propertyNames.forEach(function(x,i) {$scope.propertyNames[i] = {description: 'Property: ' + x}});
             $scope.propertyIds =  _.pluck(properties,"id")
 
+            $scope.runSettings = _.cloneDeep($scope.liveSettings);
+
             $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
@@ -281,26 +288,30 @@ define([
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
-
+            $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
+            $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
+            $scope.property_report = $scope.reportIds.indexOf("property_report") > -1;
 
             var options = {};
 
             if ($scope.reportIds.indexOf("property_report") > -1) {
                 options.property_report = {
-                    summary: $scope.dashboardSettings.summary,
-                    bedrooms: $scope.dashboardSettings.selectedBedroom,
+                    summary: $scope.liveSettings.dashboardSettings.summary,
+                    bedrooms: $scope.liveSettings.dashboardSettings.selectedBedroom,
                     daterange: {
-                        daterange: $scope.dashboardSettings.daterange.selectedRange,
-                        start: $scope.dashboardSettings.daterange.selectedStartDate,
-                        end: $scope.dashboardSettings.daterange.selectedEndDate
+                        daterange: $scope.liveSettings.dashboardSettings.daterange.selectedRange,
+                        start: $scope.liveSettings.dashboardSettings.daterange.selectedStartDate,
+                        end: $scope.liveSettings.dashboardSettings.daterange.selectedEndDate
                     },
                     show: {
-                        graphs: $scope.profileSettings.graphs
-                        , scale: $scope.dashboardSettings.nerScale
+                        graphs: $scope.liveSettings.profileSettings.graphs
+                        , scale: $scope.liveSettings.dashboardSettings.nerScale
                     },
                     offset: moment().utcOffset()
                 }
             }
+
+            $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
             $reportingService.reports(
                 $scope.compIds
@@ -344,20 +355,7 @@ define([
                 type: $scope.reportType,
                 propertyIds:  encodeURIComponent($scope.propertyIds),
                 showFile: showFile,
-
-                Graphs: $scope.profileSettings.graphs,
-                Summary: $scope.dashboardSettings.summary,
-                Scale: $scope.dashboardSettings.nerScale,
-                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
-                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
-                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
-                Totals: $scope.dashboardSettings.totals,
-                Bedrooms: $scope.dashboardSettings.selectedBedroom,
-                orderBy: $scope.profileSettings.orderByFp,
-                orderByC: $scope.dashboardSettings.orderByComp,
-                show: encodeURIComponent(JSON.stringify($scope.profileSettings.show)),
-                showC: encodeURIComponent(JSON.stringify($scope.dashboardSettings.show)),
-                showP: encodeURIComponent(JSON.stringify($scope.showProfile))
+                settings: $scope.runSettings
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
@@ -405,10 +403,6 @@ define([
         $scope.$watch('reportItems', function() {
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
-            $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
-            $scope.rankings = reportIds.indexOf("property_rankings") > -1;
-            $scope.property_report = reportIds.indexOf("property_report") > -1;
-
             var diff = _.difference(reportIds,$scope.reportIds);
 
             var oldReportType = $scope.reportType;
@@ -443,9 +437,9 @@ define([
 
             var data = {
                 timezone: moment().utcOffset(),
-                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
-                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
-                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
+                selectedStartDate: $scope.liveSettings.dashboardSettings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.liveSettings.dashboardSettings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.liveSettings.dashboardSettings.daterange.selectedRange,
                 progressId: $scope.progressId,
                 compids: $scope.compIds
             }
@@ -460,7 +454,7 @@ define([
 
             location.href = url;
 
-            $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.dashboardSettings.daterange.selectedRange});
+            $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.liveSettings.dashboardSettings.daterange.selectedRange});
 
         }
 

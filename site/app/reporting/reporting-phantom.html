@@ -1,7 +1,7 @@
 {{debug}}
 <cover-page options="coverPage"></cover-page>
 
-<property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="dashboardSettings" profile-settings="profileSettings" show-profile="showProfile"></property-report>
+<property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="runSettings.dashboardSettings" profile-settings="runSettings.profileSettings" show-profile="runSettings.showProfile"></property-report>
 
 <rankings-report-summary class="report break-before" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 

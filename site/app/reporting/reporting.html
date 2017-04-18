@@ -87,64 +87,40 @@
                     <div class="row" style="padding:10px">
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Date Range<br>
-                            <daterange-picker daterange="dashboardSettings.daterange"></daterange-picker>
+                            <daterange-picker daterange="liveSettings.dashboardSettings.daterange"></daterange-picker>
                         </div>
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Group Comps<br>
-                            <toggle-switch checked="dashboardSettings.summary"></toggle-switch>&nbsp;
+                            <toggle-switch checked="liveSettings.dashboardSettings.summary"></toggle-switch>&nbsp;
                         </div>
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Measurement Scale<br>
-                            <select class="form-control" ng-model="dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                            <select class="form-control" ng-model="liveSettings.dashboardSettings.nerScale">
+                                <option value="ner" ng-selected="liveSettings.dashboardSettings.nerScale=='ner'">NER</option>
+                                <option value="nersqft" ng-selected="liveSettings.dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
                             </select>&nbsp;
                         </div>
                         <br clear="all" class="visible-sm">
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Show<br>
-                            <select class="form-control" ng-model="dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>&nbsp;
                         </div>
                         <br clear="all" class="visible-md">
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Property Info<br>
-                            <select class="form-control" ng-model="dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>&nbsp;
                         </div>
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Dashboard Comparison<br>
-                            <select class="form-control" ng-model="dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>&nbsp;
                         </div>
                         <br clear="all" class="visible-sm">
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Property Profile<br>
-                            <select class="form-control" ng-model="dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>&nbsp;
                         </div>
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Competitors Sort Order<br>
-                            <select class="form-control" ng-model="dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>&nbsp;
                         </div>
                         <br clear="all" class="visible-md">
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Floorplan Sort Order<br>
-                            <select class="form-control" ng-model="dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>&nbsp;
                         </div>
                     </div>
                 </div>
@@ -203,7 +179,7 @@
         <div class="row" style="position: relative !important;">
             <cover-page options="coverPage"></cover-page>
 
-            <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="dashboardSettings" profile-settings="profileSettings" show-profile="showProfile"></property-report>
+            <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="runSettings.dashboardSettings" profile-settings="runSettings.profileSettings" show-profile="runSettings.showProfile"></property-report>
 
             <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
 
