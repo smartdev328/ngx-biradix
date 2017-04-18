@@ -306,6 +306,10 @@ define([
                         $scope.liveSettings.showProfile[f.id] = f.selected;
                     })
 
+                    $scope.temp.showCompItems.forEach(function(f) {
+                        $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
+                    })
+
                 }
 
                 options.property_report = {
@@ -493,6 +497,22 @@ define([
                 {id: "renewal", name: "Renewal", selected: $scope.liveSettings.showProfile.renewal},
                 {id: "traf", name: "Traffic / Week", selected: $scope.liveSettings.showProfile.traf},
                 {id: "lease", name: "Leases / Week", selected: $scope.liveSettings.showProfile.lease},
+            ];
+
+            $scope.temp.showCompOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showCompItems = [
+                {id: "occupancy", name: "Occupancy %", selected: $scope.liveSettings.dashboardSettings.show.occupancy},
+                {id: "leased", name: "Leased %", selected: $scope.liveSettings.dashboardSettings.show.leased},
+                {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.dashboardSettings.show.renewal},
+                {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.dashboardSettings.show.weekly},
+                {id: "units", name: "Units", selected: $scope.liveSettings.dashboardSettings.show.units},
+                {id: "unitPercent", name: "Unit %", selected: $scope.liveSettings.dashboardSettings.show.unitPercent},
+                {id: "sqft", name: "Sqft", selected: $scope.liveSettings.dashboardSettings.show.sqft},
+                {id: "rent", name: "Rent", selected: $scope.liveSettings.dashboardSettings.show.rent},
+                {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.mersqft},
+                {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.dashboardSettings.show.concessions},
+                {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.dashboardSettings.show.ner},
+                {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.nersqft},
             ];
 
         }
