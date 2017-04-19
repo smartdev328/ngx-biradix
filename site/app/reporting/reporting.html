@@ -98,7 +98,7 @@
                             <select class="form-control input-sm" ng-model="liveSettings.dashboardSettings.nerScale">
                                 <option value="ner" ng-selected="liveSettings.dashboardSettings.nerScale=='ner'">NER</option>
                                 <option value="nersqft" ng-selected="liveSettings.dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>&nbsp;
+                            </select>
                         </div>
                         <br clear="all" class="visible-sm">
                         <div class="col-xs-12 col-sm-4 col-md-3">
@@ -128,6 +128,19 @@
                         <br clear="all" class="visible-md visible-lg">
                         <div class="col-xs-12 col-sm-4 col-md-3">
                             Floorplan Sort Order<br>
+                            <div class="col-xs-6" style="padding-left: 0">
+                            <select
+                                    class="input-sm form-control"
+                                    ng-options="item.name for item in temp.floorPlanSortItems"
+                                    ng-model="temp.floorPlanSortSelected"
+                            ></select>
+                            </div>
+                            <div class="col-xs-6" style="padding-right:0">
+                                <label><input type="radio" name="floorPlanSort" value="asc" ng-model="temp.floorPlanSortDir"> <i class="fa fa-sort-amount-asc"></i> Asc</label>
+                                &nbsp;
+                                <label><input type="radio" name="floorPlanSort" value="desc" ng-model="temp.floorPlanSortDir"> <i class="fa fa-sort-amount-desc"></i> Desc</label>
+
+                            </div>
                         </div>
                     </div>
                 </div>

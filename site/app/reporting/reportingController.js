@@ -310,6 +310,8 @@ define([
                         $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
                     })
 
+                    $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
+
                 }
 
                 options.property_report = {
@@ -515,7 +517,38 @@ define([
                 {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.nersqft},
             ];
 
+            $scope.temp.floorPlanSortItems = [
+                {id: "description", name: "Description"},
+                {id: "units", name: "Units"},
+                {id: "unitPercent", name: "Unit %"},
+                {id: "sqft", name: "Sqft"},
+                {id: "rent", name: "Rent"},
+                {id: "mersqft", name: "Rent/Sqft"},
+                {id: "concessions", name: "Concess/12 Mos."},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+
+            var f = $scope.liveSettings.profileSettings.orderByFp.replace("-","");
+
+            $scope.temp.floorPlanSortSelected = _.find($scope.temp.floorPlanSortItems, function(x) {return x.id == f})
+
+            $scope.temp.floorPlanSortDir = $scope.liveSettings.profileSettings.orderByFp[0] == "-" ? "desc" : "asc";
+
+
+
         }
+
+        $scope.$watch("runSettings.profileSettings.orderByFp", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.floorPlanSortSelected = _.find($scope.temp.floorPlanSortItems, function(x) {return x.id == f})
+
+                $scope.temp.floorPlanSortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
 
     }]);
 });
