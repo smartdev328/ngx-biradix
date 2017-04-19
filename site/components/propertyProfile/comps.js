@@ -7,7 +7,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                 show: '=',
                 canSurvey: '=',
                 roles: '=',
-                showTotals:'='
+                showTotals:'=',
+                skipcookie: '='
             },
             controller: function ($scope, $gridService, $cookies, $sce) {
                 $scope.defaultSort = ""
@@ -187,9 +188,11 @@ angular.module('biradix.global').directive('propertyComps', function () {
                         $scope.orderBy = v;
                     }
 
-                    var expireDate = new Date();
-                    expireDate.setDate(expireDate.getDate() + 365);
-                    $cookies.put('cmp.o', $scope.orderBy, {expires : expireDate})
+                    if (!$scope.skipcookie) {
+                        var expireDate = new Date();
+                        expireDate.setDate(expireDate.getDate() + 365);
+                        $cookies.put('cmp.o', $scope.orderBy, {expires: expireDate})
+                    }
 
                 }
             },

@@ -310,7 +310,13 @@ define([
                         $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
                     })
 
+                    $scope.temp.showFloorplanItems.forEach(function(f) {
+                        $scope.liveSettings.profileSettings.show[f.id] = f.selected;
+                    })
+
                     $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
+
+                    $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
 
                 }
 
@@ -517,6 +523,19 @@ define([
                 {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.nersqft},
             ];
 
+            $scope.temp.showFloorplanOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showFloorplanItems = [
+                {id: "description", name: "Description", selected: $scope.liveSettings.profileSettings.show.description},
+                {id: "units", name: "Units", selected: $scope.liveSettings.profileSettings.show.units},
+                {id: "unitPercent", name: "Unit %", selected: $scope.liveSettings.profileSettings.show.unitPercent},
+                {id: "sqft", name: "Sqft", selected: $scope.liveSettings.profileSettings.show.sqft},
+                {id: "rent", name: "Rent", selected: $scope.liveSettings.profileSettings.show.rent},
+                {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.mersqft},
+                {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.profileSettings.show.concessions},
+                {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.profileSettings.show.ner},
+                {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.nersqft},
+            ];
+
             $scope.temp.floorPlanSortItems = [
                 {id: "description", name: "Description"},
                 {id: "units", name: "Units"},
@@ -528,14 +547,30 @@ define([
                 {id: "ner", name: "Net Eff. Rent"},
                 {id: "nersqft", name: "NER/Sqft"},
             ]
-
             var f = $scope.liveSettings.profileSettings.orderByFp.replace("-","");
-
             $scope.temp.floorPlanSortSelected = _.find($scope.temp.floorPlanSortItems, function(x) {return x.id == f})
-
             $scope.temp.floorPlanSortDir = $scope.liveSettings.profileSettings.orderByFp[0] == "-" ? "desc" : "asc";
 
-
+            $scope.temp.compSortItems = [
+                {id: "number", name: "Comp Order"},
+                {id: "name", name: "Name"},
+                {id: "occupancy", name: "Occ. %"},
+                {id: "leased", name: "Leased %"},
+                {id: "renewal", name: "Renewal %"},
+                {id: "weeklytraffic", name: "Traffic/Week"},
+                {id: "weeklyleases", name: "Leases/Week"},
+                {id: "units", name: "Units"},
+                {id: "unitPercent", name: "Unit %"},
+                {id: "sqft", name: "Sqft"},
+                {id: "rent", name: "Rent"},
+                {id: "mersqft", name: "Rent/Sqft"},
+                {id: "concessions", name: "Concess/12 Mos."},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+            var f = $scope.liveSettings.dashboardSettings.orderByComp.replace("-","");
+            $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f})
+            $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
 
         }
 
@@ -546,6 +581,17 @@ define([
                 $scope.temp.floorPlanSortSelected = _.find($scope.temp.floorPlanSortItems, function(x) {return x.id == f})
 
                 $scope.temp.floorPlanSortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
+
+        $scope.$watch("runSettings.dashboardSettings.orderByComp", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f})
+
+                $scope.temp.compSortDir = newValue[0] == "-" ? "desc" : "asc";
 
             }
         })

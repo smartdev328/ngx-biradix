@@ -71,116 +71,157 @@
 
                     </div>
 
+                    <style>
+                        uib-accordion .panel-heading  {
+                            border-left:0 !important;
+                            margin-top: 0px !important;
+                            margin-left:0px !important;
+                            padding-left:0px !important;
+                            padding:5px !important;
+                            background-color: #f5f5f5 !important;
+                        }
+
+                        uib-accordion .panel-body  {
+                            background-color: #f9f9f9 !important;
+                        }
+
+                        uib-accordion .panel {
+                            border-radius: 0px !important;
+                        }
+
+                        uib-accordion .panel-default {
+                            margin-bottom:-3px !important;;
+                            margin-left:4px !important;
+                            margin-right:4px !important;;
+                        }
+                    </style>
+                    <br clear="all">
+                    <uib-accordion ng-if="rankings || rankingsSummary || property_report" class="hidden-print" style="margin-top:15px">
+                        <div ng-if="property_report" uib-accordion-group class="panel-default" is-open="temp.property_report_open">
+                            <uib-accordion-heading>
+                                <Div>
+                                    <i class="fa fa-gear fa-2px"></i> Preferences: Market Survey Summary <i ng-class="{fa : true, 'fa-chevron-right': !temp.property_report_open, 'fa-chevron-down': temp.property_report_open, 'fa-2px': true}"></i>
+                                </Div>
+                            </uib-accordion-heading>
+                            <div class="row" style="padding:10px">
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Date Range<br>
+                                    <daterange-picker daterange="liveSettings.dashboardSettings.daterange"></daterange-picker>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Group Comps<br>
+                                    <toggle-switch checked="liveSettings.dashboardSettings.summary"></toggle-switch>&nbsp;
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Measurement Scale<br>
+                                    <select class="form-control input-sm" ng-model="liveSettings.dashboardSettings.nerScale">
+                                        <option value="ner" ng-selected="liveSettings.dashboardSettings.nerScale=='ner'">NER</option>
+                                        <option value="nersqft" ng-selected="liveSettings.dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
+                                    </select>
+                                </div>
+                                <br clear="all" class="visible-sm" style="line-height: 60px">
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Show<br>
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="bedroom.text for bedroom in temp.bedrooms"
+                                            ng-model="temp.bedroom"
+                                    ></select>
+                                </div>
+                                <br clear="all" class="visible-md visible-lg" style="line-height: 60px">
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Property Info<br>
+                                    <filter-list options="temp.showProfileOptions" items="temp.showProfileItems"></filter-list>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Dashboard Comparison<br>
+                                    <filter-list options="temp.showCompOptions" items="temp.showCompItems"></filter-list>
+                                </div>
+                                <br clear="all" class="visible-sm" style="line-height: 60px">
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Property Profile<br>
+                                    <filter-list options="temp.showFloorplanOptions" items="temp.showFloorplanItems"></filter-list>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Competitors Sort Order<br>
+                                    <div ng-class="{'col-xs-6': temp.compSortSelected.id != 'number', 'col-xs-12': temp.compSortSelected.id == 'number'}" style="padding-left: 0; padding-right:0">
+                                        <select
+                                                class="input-sm form-control"
+                                                ng-options="item.name for item in temp.compSortItems"
+                                                ng-model="temp.compSortSelected"
+                                        ></select>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-right:0;padding-left:5px;white-space: nowrap" ng-show="temp.compSortSelected.id != 'number'">
+                                        <label><input type="radio" name="compSort" value="asc" ng-model="temp.compSortDir"> <i class="fa fa-sort-amount-asc"></i> <span style="font-size:11px">Asc</span></label>
+
+                                        <label><input type="radio" name="compSort" value="desc" ng-model="temp.compSortDir"> <i class="fa fa-sort-amount-desc"></i> <span style="font-size:11px">Desc</span></label>
+
+                                    </div>
+                                </div>
+                                <br clear="all" class="visible-md visible-lg" style="line-height: 60px">
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Floorplan Sort Order<br>
+                                    <div class="col-xs-6" style="padding-left: 0; padding-right:0">
+                                        <select
+                                                class="input-sm form-control"
+                                                ng-options="item.name for item in temp.floorPlanSortItems"
+                                                ng-model="temp.floorPlanSortSelected"
+                                        ></select>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-right:0;padding-left:5px;white-space: nowrap">
+                                        <label><input type="radio" name="floorPlanSort" value="asc" ng-model="temp.floorPlanSortDir"> <i class="fa fa-sort-amount-asc"></i> <span style="font-size:11px">Asc</span></label>
+
+                                        <label><input type="radio" name="floorPlanSort" value="desc" ng-model="temp.floorPlanSortDir"> <i class="fa fa-sort-amount-desc"></i> <span style="font-size:11px">Desc</span></label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="rankingsSummary" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_summary_open">
+                            <uib-accordion-heading>
+                                <Div>
+                                    <i class="fa fa-gear fa-2px"></i> Preferences: Property Rankings <i ng-class="{fa : true, 'fa-chevron-right': !temp.rankings_summary_open, 'fa-chevron-down': temp.rankings_summary_open, 'fa-2px': true}"></i>
+                                </Div>
+                            </uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    Setting 1
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    Setting 2
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    Setting 3
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="rankings" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_open">
+                            <uib-accordion-heading>
+                                <Div>
+                                    <i class="fa fa-gear fa-2px"></i> Preferences: Property Rankings (detailed) <i ng-class="{fa : true, 'fa-chevron-right': !temp.rankings_open, 'fa-chevron-down': temp.rankings_open, 'fa-2px': true}"></i>
+                                </Div>
+                            </uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    Setting 1
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    Setting 2
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    Setting 3
+                                </div>
+                            </div>
+                        </div>
+                    </uib-accordion>
+
                     <div style="width:100px;margin:10px auto 0px auto" class="hidden-print" ng-if="myProperties.length > 0">
                         <button class="btn btm-sm btn-primary" ng-click="run()">Run Report</button>
                     </div>
                 </div>
             </div>
 
-            <uib-accordion ng-if="rankings || rankingsSummary || property_report" class="hidden-print">
-                <div ng-if="property_report" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.property_report_open">
-                    <uib-accordion-heading>
-                        <Div style="padding:0px 10px">
-                            <i class="fa fa-gear fa-2px"></i> Report Preferences: Market Survey Summary <i ng-class="{fa : true, 'fa-chevron-right': !temp.property_report_open, 'fa-chevron-down': temp.property_report_open, 'fa-2px': true}"></i>
-                        </Div>
-                    </uib-accordion-heading>
-                    <div class="row" style="padding:10px">
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Date Range<br>
-                            <daterange-picker daterange="liveSettings.dashboardSettings.daterange"></daterange-picker>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Group Comps<br>
-                            <toggle-switch checked="liveSettings.dashboardSettings.summary"></toggle-switch>&nbsp;
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Measurement Scale<br>
-                            <select class="form-control input-sm" ng-model="liveSettings.dashboardSettings.nerScale">
-                                <option value="ner" ng-selected="liveSettings.dashboardSettings.nerScale=='ner'">NER</option>
-                                <option value="nersqft" ng-selected="liveSettings.dashboardSettings.nerScale=='nersqft'">NER/Sqft</option>
-                            </select>
-                        </div>
-                        <br clear="all" class="visible-sm">
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Show<br>
-                            <select
-                                    class="input-sm form-control"
-                                    ng-options="bedroom.text for bedroom in temp.bedrooms"
-                                    ng-model="temp.bedroom"
-                            ></select>
-                        </div>
-                        <br clear="all" class="visible-md visible-lg">
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Property Info<br>
-                            <filter-list options="temp.showProfileOptions" items="temp.showProfileItems"></filter-list>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Dashboard Comparison<br>
-                            <filter-list options="temp.showCompOptions" items="temp.showCompItems"></filter-list>
-                        </div>
-                        <br clear="all" class="visible-sm">
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Property Profile<br>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Competitors Sort Order<br>
-                        </div>
-                        <br clear="all" class="visible-md visible-lg">
-                        <div class="col-xs-12 col-sm-4 col-md-3">
-                            Floorplan Sort Order<br>
-                            <div class="col-xs-6" style="padding-left: 0">
-                            <select
-                                    class="input-sm form-control"
-                                    ng-options="item.name for item in temp.floorPlanSortItems"
-                                    ng-model="temp.floorPlanSortSelected"
-                            ></select>
-                            </div>
-                            <div class="col-xs-6" style="padding-right:0">
-                                <label><input type="radio" name="floorPlanSort" value="asc" ng-model="temp.floorPlanSortDir"> <i class="fa fa-sort-amount-asc"></i> Asc</label>
-                                &nbsp;
-                                <label><input type="radio" name="floorPlanSort" value="desc" ng-model="temp.floorPlanSortDir"> <i class="fa fa-sort-amount-desc"></i> Desc</label>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div ng-if="rankingsSummary" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_summary_open">
-                    <uib-accordion-heading>
-                        <Div style="padding:0px 10px">
-                            <i class="fa fa-gear fa-2px"></i> Report Preferences: Property Rankings <i ng-class="{fa : true, 'fa-chevron-right': !temp.rankings_summary_open, 'fa-chevron-down': temp.rankings_summary_open, 'fa-2px': true}"></i>
-                        </Div>
-                    </uib-accordion-heading>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 1
-                        </div>
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 2
-                        </div>
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 3
-                        </div>
-                    </div>
-                </div>
-                <div ng-if="rankings" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_open">
-                    <uib-accordion-heading>
-                        <Div style="padding:0px 10px">
-                            <i class="fa fa-gear fa-2px"></i> Report Preferences: Property Rankings (detailed) <i ng-class="{fa : true, 'fa-chevron-right': !temp.rankings_open, 'fa-chevron-down': temp.rankings_open, 'fa-2px': true}"></i>
-                        </Div>
-                    </uib-accordion-heading>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 1
-                        </div>
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 2
-                        </div>
-                        <div class="col-xs-12 col-sm-3">
-                            Setting 3
-                        </div>
-                    </div>
-                </div>
-            </uib-accordion>
 
             <div class="panel panel-info hidden-print" ng-if="myProperties.length > 0 && !reports">
                 <div class="panel-heading">Results</div>
