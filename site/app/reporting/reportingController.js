@@ -45,7 +45,8 @@ define([
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
                     $scope.resetPropertyReportSettings(false);
-                    $scope.liveSettings.rankings = {orderBy : "nersqft"}
+                    $scope.resetRankingsSettings(false);
+                    $scope.resetRankingsSummarySettings(false);
                 }
                 $scope.reload($stateParams.property == "1");
                 me();
@@ -343,6 +344,12 @@ define([
                 }
             }
 
+            if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
+                if ($scope.temp.rankingSummarySortSelected) {
+                    $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
+                }
+            }
+
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
             $reportingService.reports(
@@ -351,9 +358,9 @@ define([
                 ,$scope.reportIds
                 ,options
             ).then(function(response) {
+                //Run these after the reports are ran
                 $scope.configurePropertyReportOptions();
-                $scope.configurePropertyRankingsSummaryOptions();
-                $scope.configurePropertyRankingsOptions();
+                $scope.configureRankingsOptions();
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
@@ -493,6 +500,76 @@ define([
 
         }
 
+
+        ////////////////////// Rankings Summary ////////////////////////////////
+        $scope.resetRankingsSummarySettings = function(configure) {
+            $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
+
+            $scope.configureRankingsSummaryOptions();
+        }
+
+
+        $scope.configureRankingsSummaryOptions = function() {
+            $scope.temp.rankingSummarySortItems = [
+                {id: "name", name: "Name"},
+                {id: "units", name: "Units"},
+                {id: "unitpercent", name: "Unit %"},
+                {id: "sqft", name: "Sqft"},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+            var f = $scope.liveSettings.rankingsSummary.orderBy.replace("-","");
+            $scope.temp.rankingSummarySortSelected = _.find($scope.temp.rankingSummarySortItems, function(x) {return x.id == f})
+            $scope.temp.rankingSummarySortDir = $scope.liveSettings.rankingsSummary.orderBy[0] == "-" ? "desc" : "asc";
+        }
+
+        $scope.$watch("runSettings.rankingsSummary.orderBy", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.rankingSummarySortSelected = _.find($scope.temp.rankingSummarySortItems, function(x) {return x.id == f})
+
+                $scope.temp.rankingSummarySortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
+
+        ////////////////////// Rankings ////////////////////////////////
+        $scope.resetRankingsSettings = function(configure) {
+            $scope.liveSettings.rankings = {orderBy: "nersqft"}
+
+            $scope.configureRankingsOptions();
+        }
+
+
+        $scope.configureRankingsOptions = function() {
+            $scope.temp.rankingSortItems = [
+                {id: "name", name: "Name"},
+                {id: "description", name: "Description"},
+                {id: "units", name: "Units"},
+                {id: "sqft", name: "Sqft"},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+            var f = $scope.liveSettings.rankings.orderBy.replace("-","");
+            $scope.temp.rankingSortSelected = _.find($scope.temp.rankingSortItems, function(x) {return x.id == f})
+            $scope.temp.rankingSortDir = $scope.liveSettings.rankings.orderBy[0] == "-" ? "desc" : "asc";
+        }
+
+        $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.rankingSortSelected = _.find($scope.temp.rankingSortItems, function(x) {return x.id == f})
+
+                $scope.temp.rankingSortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
+
+
+        ////////////////////// Property Report ////////////////////////////////
+
         $scope.configurePropertyReportOptions = function() {
             $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
             $scope.temp.showProfileItems = [
@@ -582,34 +659,15 @@ define([
 
         }
 
-        $scope.configurePropertyRankingsSummaryOptions = function() {
+        $scope.resetPropertyReportSettings = function(configure) {
+            $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
+            $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
+            $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
 
-        }
-        $scope.configurePropertyRankingsOptions = function() {
-            $scope.temp.rankingSortItems = [
-                {id: "name", name: "Name"},
-                {id: "description", name: "Description"},
-                {id: "units", name: "Units"},
-                {id: "sqft", name: "Sqft"},
-                {id: "ner", name: "Net Eff. Rent"},
-                {id: "nersqft", name: "NER/Sqft"},
-            ]
-            var f = $scope.liveSettings.rankings.orderBy.replace("-","");
-            $scope.temp.rankingSortSelected = _.find($scope.temp.rankingSortItems, function(x) {return x.id == f})
-            $scope.temp.rankingSortDir = $scope.liveSettings.rankings.orderBy[0] == "-" ? "desc" : "asc";
+            $scope.configurePropertyReportOptions();
         }
 
-        $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
-            if (oldValue && newValue) {
-                var f = newValue.replace("-","");
-
-                $scope.temp.rankingSortSelected = _.find($scope.temp.rankingSortItems, function(x) {return x.id == f})
-
-                $scope.temp.rankingSortDir = newValue[0] == "-" ? "desc" : "asc";
-
-            }
-        })
-
+        // Watchers from Components
         $scope.$watch("runSettings.profileSettings.orderByFp", function(newValue,oldValue) {
             if (oldValue && newValue) {
                 var f = newValue.replace("-","");
@@ -631,20 +689,6 @@ define([
 
             }
         })
-
-
-
-        $scope.resetPropertyReportSettings = function(configure) {
-            $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
-            $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
-            $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
-
-            if (configure) {
-                $scope.configurePropertyReportOptions();
-            }
-        }
-
-
 
     }]);
 });

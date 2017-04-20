@@ -96,7 +96,7 @@
                         }
                     </style>
                     <br clear="all">
-                    <uib-accordion ng-if="rankings || rankingsSummary || property_report" class="hidden-print" style="margin-top:15px">
+                    <uib-accordion ng-if="rankings || rankingsSummary || property_report" class="hidden-print" style="margin-top:15px" close-others="false">
                         <div ng-if="property_report" uib-accordion-group class="panel-default" is-open="temp.property_report_open">
                             <uib-accordion-heading>
                                 <Div>
@@ -213,14 +213,21 @@
                                 </Div>
                             </uib-accordion-heading>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-3">
-                                    Setting 1
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    Setting 2
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    Setting 3
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Sort Order<br>
+                                    <div class="col-xs-6" style="padding-left: 0; padding-right:0">
+                                        <select
+                                                class="input-sm form-control"
+                                                ng-options="item.name for item in temp.rankingSummarySortItems"
+                                                ng-model="temp.rankingSummarySortSelected"
+                                        ></select>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-right:0;padding-left:5px;white-space: nowrap">
+                                        <label><input type="radio" name="rankingSummarySortDir" value="asc" ng-model="temp.rankingSummarySortDir"> <i class="fa fa-sort-amount-asc"></i> <span style="font-size:11px">Asc</span></label>
+
+                                        <label><input type="radio" name="rankingSummarySortDir" value="desc" ng-model="temp.rankingSummarySortDir"> <i class="fa fa-sort-amount-desc"></i> <span style="font-size:11px">Desc</span></label>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -278,7 +285,7 @@
 
             <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="runSettings.dashboardSettings" profile-settings="runSettings.profileSettings" show-profile="runSettings.showProfile" bedrooms="temp.bedrooms" bedroom="temp.bedroom"></property-report>
 
-            <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings"></rankings-report-summary>
+            <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy"></rankings-report-summary>
 
             <rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankings.orderBy"></rankings-report>
 
