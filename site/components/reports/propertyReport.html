@@ -1,3 +1,9 @@
+<div class="row hidden-print" style="margin: 0px 0px 15px 0px;">
+    <div class="col-xs-12">
+        <h3 class="mainheader" style="font-size:20px">Competitor Summary</h3>
+        <hr style="border-color:#ddd;margin:0;margin-top:10px">
+    </div>
+</div>
 <div class="row break2" ng-if="!stretchComps">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
@@ -121,8 +127,7 @@
 <div class="row break2" ng-repeat="profile in profiles">
     <div class="row hidden-print" style="margin: 0px 0px 15px 0px;">
         <div class="col-xs-12">
-            <hr style="border-color:#ddd;margin:0;margin-bottom:10px">
-            <h3 class="mainheader">{{profile.property.name}}</h3>
+            <h3 class="mainheader" style="font-size:20px">{{profile.property.name}}</h3>
             <hr style="border-color:#ddd;margin:0;margin-top:10px">
         </div>
     </div>
