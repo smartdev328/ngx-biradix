@@ -90,7 +90,7 @@
                         }
 
                         uib-accordion .panel-default {
-                            margin-bottom:-3px !important;;
+                            margin-bottom:10px !important;;
                             margin-left:4px !important;
                             margin-right:4px !important;;
                         }
@@ -131,11 +131,11 @@
                                 </div>
                                 <br clear="all">
                                 <div class="col-xs-12 col-sm-4 col-md-3">
-                                    Group Comps<br>
+                                    Trends: Group Comps<br>
                                     <toggle-switch checked="liveSettings.dashboardSettings.summary"></toggle-switch>&nbsp;
                                 </div>
                                 <div class="col-xs-12 col-sm-4 col-md-3">
-                                    Show<br>
+                                    Trends: Show<br>
                                     <select
                                             class="input-sm form-control"
                                             ng-options="bedroom.text for bedroom in temp.bedrooms"
@@ -144,7 +144,7 @@
                                 </div>
 
                                 <div class="col-xs-12 col-sm-4 col-md-3">
-                                    Dashboard Comparison<br>
+                                    Competitors Columns<br>
                                     <filter-list options="temp.showCompOptions" items="temp.showCompItems"></filter-list>
                                 </div>
 
@@ -173,17 +173,17 @@
                                 <br clear="all">
 
                                 <div class="col-xs-12 col-sm-4 col-md-3">
-                                    Show Graphs<br>
+                                    Trends: Show Graphs<br>
                                     <toggle-switch checked="liveSettings.profileSettings.graphs"></toggle-switch>&nbsp;
                                 </div>
 
                                 <div class="col-xs-12 col-sm-4 col-md-3">
-                                    Property Profile<br>
+                                    Floor Plans Columns<br>
                                     <filter-list options="temp.showFloorplanOptions" items="temp.showFloorplanItems"></filter-list>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-4 col-md-3">
-                                    Floor plan Sort Order<br>
+                                    Floor Plans Sort Order<br>
                                     <div class="col-xs-6" style="padding-left: 0; padding-right:0">
                                         <select
                                                 class="input-sm form-control"
@@ -199,9 +199,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="text-align: end">
                                     <Br>
-                                    <button class="btn btn-warning btn-xs" ng-click="resetPropertyReportSettings(true)">Reset to default</button>
+                                    <button class="btn btn-warning btn-xs" ng-click="resetPropertyReportSettings(true)" style="font-size:10px">Reset to default</button>
                                 </div>
 
                             </div>

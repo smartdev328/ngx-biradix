@@ -637,7 +637,7 @@ define([
             $scope.temp.floorPlanSortDir = $scope.liveSettings.profileSettings.orderByFp[0] == "-" ? "desc" : "asc";
 
             $scope.temp.compSortItems = [
-                {id: "number", name: "Comp Order"},
+                {id: "number", name: "Comp Preference"},
                 {id: "name", name: "Name"},
                 {id: "occupancy", name: "Occ. %"},
                 {id: "leased", name: "Leased %"},
