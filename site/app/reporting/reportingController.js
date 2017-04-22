@@ -293,6 +293,7 @@ define([
             $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = $scope.reportIds.indexOf("property_report") > -1;
 
+
             var options = {};
 
             if ($scope.reportIds.indexOf("property_report") > -1) {
@@ -352,6 +353,7 @@ define([
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
+
             $reportingService.reports(
                 $scope.compIds
                 ,$scope.selected.Property._id
@@ -361,6 +363,7 @@ define([
                 //Run these after the reports are ran
                 $scope.configurePropertyReportOptions();
                 $scope.configureRankingsOptions();
+                $scope.configureRankingsSummaryOptions();
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
@@ -369,6 +372,7 @@ define([
                 if (!phantom) {
                     $scope.audit('report', 'Website');
                 }
+
 
                 window.setTimeout(function() {
                     window.renderable = true;
@@ -510,6 +514,9 @@ define([
 
 
         $scope.configureRankingsSummaryOptions = function() {
+            if (!$scope.liveSettings.rankingsSummary) {
+                return;
+            }
             $scope.temp.rankingSummarySortItems = [
                 {id: "name", name: "Name"},
                 {id: "units", name: "Units"},
@@ -536,6 +543,7 @@ define([
 
         ////////////////////// Rankings ////////////////////////////////
         $scope.resetRankingsSettings = function(configure) {
+
             $scope.liveSettings.rankings = {orderBy: "nersqft"}
 
             $scope.configureRankingsOptions();
@@ -543,6 +551,9 @@ define([
 
 
         $scope.configureRankingsOptions = function() {
+            if (!$scope.liveSettings.rankings) {
+                return;
+            }
             $scope.temp.rankingSortItems = [
                 {id: "name", name: "Name"},
                 {id: "description", name: "Description"},
@@ -571,6 +582,10 @@ define([
         ////////////////////// Property Report ////////////////////////////////
 
         $scope.configurePropertyReportOptions = function() {
+            if (!$scope.liveSettings.showProfile) {
+                return;
+            }
+
             $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
             $scope.temp.showProfileItems = [
                 {id: "address", name: "Address", selected: $scope.liveSettings.showProfile.address},
