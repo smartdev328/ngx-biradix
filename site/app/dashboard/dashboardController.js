@@ -321,8 +321,6 @@ define([
 
             }
 
-            console.log(data);
-
             var key = $urlService.shorten(JSON.stringify(data));
 
             var url = '/api/1.0/properties/' + $scope.selectedProperty._id + '/reportsPdf?'

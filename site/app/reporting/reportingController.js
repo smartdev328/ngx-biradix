@@ -402,8 +402,6 @@ define([
                 settings: $scope.runSettings
             }
 
-            console.log(data);
-
             var key = $urlService.shorten(JSON.stringify(data));
 
             var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/reportsPdf?'
