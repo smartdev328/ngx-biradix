@@ -64,10 +64,10 @@ define([
                 $scope.myProperties = response.data.properties;
 
 
-                // $scope.debug = {
-                //     c: JSON.parse($cookies.get("settings")),
-                // }
-                // return window.renderable = true;
+                $scope.debug = {
+                    c: JSON.parse($cookies.get("settings")),
+                }
+                return window.renderable = true;
 
                 var id = $rootScope.me.settings.defaultPropertyId;
 
