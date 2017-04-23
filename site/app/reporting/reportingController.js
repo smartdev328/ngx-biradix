@@ -11,6 +11,10 @@ define([
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {
+        $scope.debug = {
+            c: JSON.parse($cookies.get("settings")),
+        }
+        return window.renderable = true;
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -62,12 +66,6 @@ define([
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
-
-
-                $scope.debug = {
-                    c: JSON.parse($cookies.get("settings")),
-                }
-                return window.renderable = true;
 
                 var id = $rootScope.me.settings.defaultPropertyId;
 
