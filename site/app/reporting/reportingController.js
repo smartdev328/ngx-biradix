@@ -11,10 +11,10 @@ define([
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {
-        $scope.debug = {
-            c: JSON.parse($cookies.get("settings")),
-        }
-        return window.renderable = true;
+        // $scope.debug = {
+        //     c: JSON.parse($cookies.get("settings")),
+        // }
+        // return window.renderable = true;
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -401,6 +401,8 @@ define([
                 showFile: showFile,
                 settings: $scope.runSettings
             }
+
+            console.log(data);
 
             var key = $urlService.shorten(JSON.stringify(data));
 
