@@ -134,6 +134,17 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                 url = url.replace("https://","http://");
 
 
+                //Manually fix date ranges for now...
+                delete data.settings.dashboardSettings.daterange.Ranges;
+                delete data.settings.profileSettings.daterange.Ranges;
+
+                data.settings.dashboardSettings.daterange.selectedStartDate = (moment(data.settings.dashboardSettings.daterange.selectedStartDate._d).format());
+                data.settings.dashboardSettings.daterange.selectedEndDate = (moment(data.settings.dashboardSettings.daterange.selectedEndDate._d).format());
+
+                data.settings.profileSettings.daterange.selectedStartDate = (moment(data.settings.profileSettings.daterange.selectedStartDate._d).format());
+                data.settings.profileSettings.daterange.selectedEndDate = (moment(data.settings.profileSettings.daterange.selectedEndDate._d).format());
+
+
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "compIds", data.compIds),
@@ -145,8 +156,6 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                 ];
 
                 options.cookies = cookies;
-
-                console.log(data.settings);
 
 
                 var MemoryStream = require('memory-stream');
