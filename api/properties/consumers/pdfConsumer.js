@@ -144,9 +144,10 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "settings", encodeURIComponent(JSON.stringify(data.settings))),
                 ];
 
+                options.cookies = cookies;
+
                 console.log(options);
 
-                options.cookies = cookies;
 
                 var MemoryStream = require('memory-stream');
 
