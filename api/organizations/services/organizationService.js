@@ -79,7 +79,7 @@ module.exports = {
 
             var query = {_id: id};
             var update = {settings: settings};
-            var options = {};
+            var options = {new: true};
 
             OrganizationSchema.findOneAndUpdate(query, update, options, function (err, saved) {
 

@@ -17,7 +17,7 @@ module.exports = {
     init: function () {
         UserSchema.findOne({},function(err, usr) {
             if (usr) {
-                OrgService.hydrateOrgRoles();
+                // OrgService.hydrateOrgRoles();
             } else {
                 async.waterfall([
                     function(callbackw) {

@@ -74,22 +74,23 @@
             var query = {orgid: org._id};
             var update = {org: org};
             var options = {new: true, multi: true};
-
             OrgRoleSchema_read.update(query, update, options, function(err, saved) {
                 callback()
             });
         }
         ,
         upsertOrgRole_read : function(role, callback) {
-            var newrole = new OrgRoleSchema_read();
-            newrole.name = role.name;
-            newrole._id = role._id;
-            newrole.isadmin = role.isadmin;
-            newrole.orgid = role.orgid;
-            newrole.tags = role.tags;
-            newrole.org = role.org;
+            OrgRoleSchema_read.remove({ _id: role._id }, function() {
+                var newrole = new OrgRoleSchema_read();
+                newrole.name = role.name;
+                newrole._id = role._id;
+                newrole.isadmin = role.isadmin;
+                newrole.orgid = role.orgid;
+                newrole.tags = role.tags;
+                newrole.org = role.org;
 
-            newrole.save(callback);
+                newrole.save(callback);
+            })
         },
         createRole: function (role, callback) {
             var modelErrors = [];
