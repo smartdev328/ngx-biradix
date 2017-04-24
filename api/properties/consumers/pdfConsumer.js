@@ -141,9 +141,10 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "subjectId", data.id),
                     pdfService.getCookie(data.hostname, "type", data.type),
                     pdfService.getCookie(data.hostname, "propertyIds", data.propertyIds),
-
                     pdfService.getCookie(data.hostname, "settings", encodeURIComponent(JSON.stringify(data.settings))),
                 ];
+
+                console.log(options);
 
                 options.cookies = cookies;
 
