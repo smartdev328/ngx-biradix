@@ -146,7 +146,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
 
                 options.cookies = cookies;
 
-                console.log(options);
+                console.log(encodeURIComponent(JSON.stringify(data.settings)));
 
 
                 var MemoryStream = require('memory-stream');
