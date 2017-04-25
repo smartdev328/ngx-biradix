@@ -96,7 +96,7 @@
                         }
                     </style>
                     <br clear="all">
-                    <uib-accordion ng-if="rankings || rankingsSummary || property_report" class="hidden-print" style="margin-top:15px" close-others="false">
+                    <uib-accordion ng-if="reports && (rankings || rankingsSummary || property_report)" class="hidden-print" style="margin-top:15px" close-others="false">
                         <div ng-if="property_report" uib-accordion-group class="panel-default" is-open="temp.property_report_open">
                             <uib-accordion-heading>
                                 <Div>
@@ -105,7 +105,7 @@
                             </uib-accordion-heading>
                             <div class="row" style="padding:10px">
                                 <div class="col-xs-12">
-                                    <b>Shared</b>
+                                    <b>Common</b>
                                     <hr style="border-top-color:#ccc">
                                 </div>
                                 <br clear="all">

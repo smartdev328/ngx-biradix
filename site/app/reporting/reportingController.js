@@ -287,11 +287,6 @@ define([
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
-            $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
-            $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
-            $scope.property_report = $scope.reportIds.indexOf("property_report") > -1;
-
-
             var options = {};
 
             if ($scope.reportIds.indexOf("property_report") > -1) {
@@ -446,6 +441,10 @@ define([
         }
         $scope.$watch('reportItems', function() {
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
+
+            $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
+            $scope.rankings = reportIds.indexOf("property_rankings") > -1;
+            $scope.property_report = reportIds.indexOf("property_report") > -1;
 
             var diff = _.difference(reportIds,$scope.reportIds);
 
