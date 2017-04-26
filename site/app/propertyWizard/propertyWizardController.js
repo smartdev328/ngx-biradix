@@ -465,7 +465,7 @@ define([
                     if (state != "") {
                         $scope.property.state = $scope.getSelectedState(state)
                     }
-                    $scope.checkDupe();
+                    //$scope.checkDupe();
                 }
             }
 
@@ -480,24 +480,29 @@ define([
                     return;
                 }
 
-                $scope.dupeChecked = true;
 
-                $propertyService.checkDupe({
-                    address: $scope.property.address + ' ' + $scope.property.zip,
-                    exclude: [subjectid]
-                }).then(function (response) {
-                    if(response.data.property) {
-                        var p = response.data.property;
-                        $dialog.confirm('A property with this address already exists.<Br><Br><B>'+ p.name +'</B> is a property with address <i><b>' + p.address +'</b></i> with <b>'+p.totalUnits +' units</b>.<br><Br>Would you like to add this property?', function() {
+                window.setTimeout(function() {
 
-                            $uibModalInstance.close(p);
-                        }, function () {
 
-                        })
-                    };
-                }, function(error) {
+                    $propertyService.checkDupe({
+                        address: $scope.property.address + ' ' + $scope.property.zip,
+                        exclude: [subjectid]
+                    }).then(function (response) {
+                        if (response.data.property) {
+                            var p = response.data.property;
+                            // $scope.dupeChecked = true;
+                            $dialog.confirm('A property with this address already exists.<Br><Br><B>' + p.name + '</B> is a property with address <i><b>' + p.address + '</b></i> with <b>' + p.totalUnits + ' units</b>.<br><Br>Would you like to add this property?', function () {
 
-                })
+                                $uibModalInstance.close(p);
+                            }, function () {
+
+                            })
+                        }
+                        ;
+                    }, function (error) {
+
+                    })
+                },1000);
 
             }
 

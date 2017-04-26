@@ -9,13 +9,28 @@ define([
                 subject: '=',
                 comps: '=',
                 report: '=',
-                settings: '='
+                settings: '=',
+                orderBy: '='
             },
             controller: function ($scope,$gridService,$element) {
 
-                $scope.sort = {nersqft:false}
+
+                $scope.$watch("orderBy", function() {
+                    var v = $scope.orderBy;
+
+                    var dir = v[0] == '-';
+                    v = v.replace("-","");
+
+                    $scope.sort = {};
+                    $scope.sort[v] = dir;
+
+                    // $scope.debug = {
+                    //     o: $scope.orderBy,
+                    //     s: $scope.sort
+                    // }
+                }, true);
+
                 $scope.defaultSort = "nersqft";
-                $scope.orderBy = "nersqft";
 
                 $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms'])
 

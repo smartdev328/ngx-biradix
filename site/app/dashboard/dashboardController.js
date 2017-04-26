@@ -313,19 +313,12 @@ define([
                 propertyIds:  'undefined',
                 showFile: showFile,
 
-                Graphs: $scope.profileSettings.graphs,
-                Summary: $scope.settings.summary,
-                Scale: $scope.settings.nerScale,
-                selectedStartDate: $scope.settings.daterange.selectedStartDate.format(),
-                selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
-                selectedRange: $scope.settings.daterange.selectedRange,
-                Totals: $scope.settings.totals,
-                Bedrooms: $scope.settings.selectedBedroom,
-                orderBy: $scope.profileSettings.orderByFp,
-                orderByC: $scope.settings.orderByComp,
-                show: encodeURIComponent(JSON.stringify($scope.profileSettings.show)),
-                showC: encodeURIComponent(JSON.stringify($scope.settings.show)),
-                showP: encodeURIComponent(JSON.stringify($scope.showProfile))
+                settings: {
+                    profileSettings: $scope.profileSettings,
+                    dashboardSettings: $scope.settings,
+                    showProfile: $scope.showProfile
+                }
+
             }
 
             var key = $urlService.shorten(JSON.stringify(data));

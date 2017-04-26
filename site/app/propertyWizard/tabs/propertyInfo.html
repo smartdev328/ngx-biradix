@@ -17,7 +17,7 @@
         </div>
         <div class="col-sm-6">
             Address <span class="required">*</span><br>
-            <input type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2" placeholder="Enter address">
+            <input type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2" placeholder="Enter address" ng-blur="checkDupe()">
         </div>
     </div>
 

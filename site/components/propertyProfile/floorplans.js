@@ -4,7 +4,8 @@ angular.module('biradix.global').directive('propertyFloorplans', function () {
             scope: {
                 comp: '=',
                 orderBy: '=',
-                show: '='
+                show: '=',
+                skipcookie: '='
             },
             controller: function ($scope, $gridService, $cookies) {
 
@@ -58,9 +59,11 @@ angular.module('biradix.global').directive('propertyFloorplans', function () {
                         $scope.orderBy = v;
                     }
 
-                    var expireDate = new Date();
-                    expireDate.setDate(expireDate.getDate() + 365);
-                    $cookies.put('fp.o', $scope.orderBy, {expires : expireDate})
+                    if (!$scope.skipcookie) {
+                        var expireDate = new Date();
+                        expireDate.setDate(expireDate.getDate() + 365);
+                        $cookies.put('fp.o', $scope.orderBy, {expires: expireDate})
+                    }
 
                 }
             },

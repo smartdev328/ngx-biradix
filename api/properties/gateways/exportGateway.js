@@ -205,22 +205,8 @@ module.exports = {
                     compIds: query.compIds,
                     type: query.type,
                     propertyIds: query.propertyIds,
-
-                    Graphs : query.Graphs,
-                    Totals : query.Totals,
-                    Summary : query.Summary,
-                    Scale : query.Scale,
-                    Bedrooms: query.Bedrooms,
-                    selectedStartDate : query.selectedStartDate,
-                    selectedEndDate : query.selectedEndDate,
-                    selectedRange : query.selectedRange,
-                    orderBy : query.orderBy,
-                    show : query.show,
-                    orderByComp : query.orderByC,
-                    showComp : query.showC,
-                    showProfile : query.showP,
+                    settings : query.settings,
                 };
-
 
                 bus.query(settings.PDF_REPORTING_QUEUE,
                     message,

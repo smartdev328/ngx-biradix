@@ -11,14 +11,21 @@ define([
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {
+        // $scope.debug = {
+        //     c: JSON.parse($cookies.get("settings")),
+        // }
+        // return window.renderable = true;
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
 
         $rootScope.nav = "Reporting";
-
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Reporting";
+
+        $scope.temp = {};
+        $scope.liveSettings = {};
+        $scope.runSettings = {};
 
         $scope.propertyOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
@@ -38,9 +45,13 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
 
-                $scope.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
-                $scope.profileSettings = $reportingService.getProfileSettings($(window).width());
-                $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
+                if ($cookies.get("settings")) {
+                    $scope.liveSettings = JSON.parse($cookies.get("settings"))
+                } else {
+                    $scope.resetPropertyReportSettings(false);
+                    $scope.resetRankingsSettings(false);
+                    $scope.resetRankingsSummarySettings(false);
+                }
                 $scope.reload($stateParams.property == "1");
                 me();
             }
@@ -55,13 +66,6 @@ define([
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
-
-
-                // $scope.debug = {
-                //     a: 'test',
-                //     c: $cookies.get("reportIds"),
-                // }
-                // return window.renderable = true;
 
                 var id = $rootScope.me.settings.defaultPropertyId;
 
@@ -254,6 +258,8 @@ define([
             $scope.propertyNames.forEach(function(x,i) {$scope.propertyNames[i] = {description: 'Property: ' + x}});
             $scope.propertyIds =  _.pluck(properties,"id")
 
+            $scope.runSettings = _.cloneDeep($scope.liveSettings);
+
             $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
@@ -281,26 +287,65 @@ define([
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
 
-
-
             var options = {};
 
             if ($scope.reportIds.indexOf("property_report") > -1) {
+
+                //Only check options after we have ran a report
+                if (Object.keys($scope.runSettings).length && $scope.temp.bedroom) {
+                    $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
+                    $scope.liveSettings.showProfile = {};
+
+                    $scope.temp.showProfileItems.forEach(function(f) {
+                        $scope.liveSettings.showProfile[f.id] = f.selected;
+                    })
+
+                    $scope.temp.showCompItems.forEach(function(f) {
+                        $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
+                    })
+
+                    $scope.temp.showFloorplanItems.forEach(function(f) {
+                        $scope.liveSettings.profileSettings.show[f.id] = f.selected;
+                    })
+
+                    $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
+
+                    $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
+
+                }
+
+
                 options.property_report = {
-                    summary: $scope.dashboardSettings.summary,
-                    bedrooms: $scope.dashboardSettings.selectedBedroom,
+                    summary: $scope.liveSettings.dashboardSettings.summary,
+                    bedrooms: $scope.liveSettings.dashboardSettings.selectedBedroom,
                     daterange: {
-                        daterange: $scope.dashboardSettings.daterange.selectedRange,
-                        start: $scope.dashboardSettings.daterange.selectedStartDate,
-                        end: $scope.dashboardSettings.daterange.selectedEndDate
+                        daterange: $scope.liveSettings.dashboardSettings.daterange.selectedRange,
+                        start: $scope.liveSettings.dashboardSettings.daterange.selectedStartDate,
+                        end: $scope.liveSettings.dashboardSettings.daterange.selectedEndDate
                     },
                     show: {
-                        graphs: $scope.profileSettings.graphs
-                        , scale: $scope.dashboardSettings.nerScale
+                        graphs: $scope.liveSettings.profileSettings.graphs
+                        , scale: $scope.liveSettings.dashboardSettings.nerScale
                     },
                     offset: moment().utcOffset()
                 }
+
             }
+
+            if ($scope.reportIds.indexOf("property_rankings") > -1) {
+                if ($scope.temp.rankingSortSelected) {
+                    $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
+                }
+            }
+
+            if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
+                if ($scope.temp.rankingSummarySortSelected) {
+                    $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
+                }
+            }
+
+            $scope.runSettings = _.cloneDeep($scope.liveSettings);
+
 
             $reportingService.reports(
                 $scope.compIds
@@ -308,19 +353,19 @@ define([
                 ,$scope.reportIds
                 ,options
             ).then(function(response) {
+                //Run these after the reports are ran
+                $scope.configurePropertyReportOptions();
+                $scope.configureRankingsOptions();
+                $scope.configureRankingsSummaryOptions();
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
                 $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
 
-                $scope.rankingsSummary = $scope.reportIds.indexOf("property_rankings_summary") > -1;
-                $scope.rankings = $scope.reportIds.indexOf("property_rankings") > -1;
-                $scope.property_report = $scope.reportIds.indexOf("property_report") > -1;
-
-
                 if (!phantom) {
                     $scope.audit('report', 'Website');
                 }
+
 
                 window.setTimeout(function() {
                     window.renderable = true;
@@ -349,20 +394,7 @@ define([
                 type: $scope.reportType,
                 propertyIds:  encodeURIComponent($scope.propertyIds),
                 showFile: showFile,
-
-                Graphs: $scope.profileSettings.graphs,
-                Summary: $scope.dashboardSettings.summary,
-                Scale: $scope.dashboardSettings.nerScale,
-                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
-                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
-                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
-                Totals: $scope.dashboardSettings.totals,
-                Bedrooms: $scope.dashboardSettings.selectedBedroom,
-                orderBy: $scope.profileSettings.orderByFp,
-                orderByC: $scope.dashboardSettings.orderByComp,
-                show: encodeURIComponent(JSON.stringify($scope.profileSettings.show)),
-                showC: encodeURIComponent(JSON.stringify($scope.dashboardSettings.show)),
-                showP: encodeURIComponent(JSON.stringify($scope.showProfile))
+                settings: $scope.runSettings
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
@@ -410,6 +442,10 @@ define([
         $scope.$watch('reportItems', function() {
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
+            $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
+            $scope.rankings = reportIds.indexOf("property_rankings") > -1;
+            $scope.property_report = reportIds.indexOf("property_report") > -1;
+
             var diff = _.difference(reportIds,$scope.reportIds);
 
             var oldReportType = $scope.reportType;
@@ -444,9 +480,9 @@ define([
 
             var data = {
                 timezone: moment().utcOffset(),
-                selectedStartDate: $scope.dashboardSettings.daterange.selectedStartDate.format(),
-                selectedEndDate: $scope.dashboardSettings.daterange.selectedEndDate.format(),
-                selectedRange: $scope.dashboardSettings.daterange.selectedRange,
+                selectedStartDate: $scope.liveSettings.dashboardSettings.daterange.selectedStartDate.format(),
+                selectedEndDate: $scope.liveSettings.dashboardSettings.daterange.selectedEndDate.format(),
+                selectedRange: $scope.liveSettings.dashboardSettings.daterange.selectedRange,
                 progressId: $scope.progressId,
                 compids: $scope.compIds
             }
@@ -461,9 +497,210 @@ define([
 
             location.href = url;
 
-            $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.dashboardSettings.daterange.selectedRange});
+            $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.liveSettings.dashboardSettings.daterange.selectedRange});
 
         }
+
+
+        ////////////////////// Rankings Summary ////////////////////////////////
+        $scope.resetRankingsSummarySettings = function(configure) {
+            $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
+
+            $scope.configureRankingsSummaryOptions();
+        }
+
+
+        $scope.configureRankingsSummaryOptions = function() {
+            if (!$scope.liveSettings.rankingsSummary) {
+                return;
+            }
+            $scope.temp.rankingSummarySortItems = [
+                {id: "name", name: "Name"},
+                {id: "units", name: "Units"},
+                {id: "unitpercent", name: "Unit %"},
+                {id: "sqft", name: "Sqft"},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+            var f = $scope.liveSettings.rankingsSummary.orderBy.replace("-","");
+            $scope.temp.rankingSummarySortSelected = _.find($scope.temp.rankingSummarySortItems, function(x) {return x.id == f})
+            $scope.temp.rankingSummarySortDir = $scope.liveSettings.rankingsSummary.orderBy[0] == "-" ? "desc" : "asc";
+        }
+
+        $scope.$watch("runSettings.rankingsSummary.orderBy", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.rankingSummarySortSelected = _.find($scope.temp.rankingSummarySortItems, function(x) {return x.id == f})
+
+                $scope.temp.rankingSummarySortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
+
+        ////////////////////// Rankings ////////////////////////////////
+        $scope.resetRankingsSettings = function(configure) {
+
+            $scope.liveSettings.rankings = {orderBy: "nersqft"}
+
+            $scope.configureRankingsOptions();
+        }
+
+
+        $scope.configureRankingsOptions = function() {
+            if (!$scope.liveSettings.rankings) {
+                return;
+            }
+            $scope.temp.rankingSortItems = [
+                {id: "name", name: "Name"},
+                {id: "description", name: "Description"},
+                {id: "units", name: "Units"},
+                {id: "sqft", name: "Sqft"},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+            var f = $scope.liveSettings.rankings.orderBy.replace("-","");
+            $scope.temp.rankingSortSelected = _.find($scope.temp.rankingSortItems, function(x) {return x.id == f})
+            $scope.temp.rankingSortDir = $scope.liveSettings.rankings.orderBy[0] == "-" ? "desc" : "asc";
+        }
+
+        $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.rankingSortSelected = _.find($scope.temp.rankingSortItems, function(x) {return x.id == f})
+
+                $scope.temp.rankingSortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
+
+
+        ////////////////////// Property Report ////////////////////////////////
+
+        $scope.configurePropertyReportOptions = function() {
+            if (!$scope.liveSettings.showProfile) {
+                return;
+            }
+
+            $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showProfileItems = [
+                {id: "address", name: "Address", selected: $scope.liveSettings.showProfile.address},
+
+                {id: "website", name: "Website", selected: $scope.liveSettings.showProfile.website},
+                {id: "phone", name: "Phone", selected: $scope.liveSettings.showProfile.phone},
+                {id: "email", name: "Email", selected: $scope.liveSettings.showProfile.email},
+                {id: "contact", name: "Contact", selected: $scope.liveSettings.showProfile.contact},
+                {id: "const", name: "Construction", selected: $scope.liveSettings.showProfile.const},
+                {id: "built", name: "Year Built", selected: $scope.liveSettings.showProfile.built},
+                {id: "ren", name: "Year Renovated", selected: $scope.liveSettings.showProfile.ren},
+                {id: "owner", name: "Owner", selected: $scope.liveSettings.showProfile.owner},
+                {id: "mgmt", name: "Management", selected: $scope.liveSettings.showProfile.mgmt},
+                {id: "units", name: "Total Units", selected: $scope.liveSettings.showProfile.units},
+                {id: "occ", name: "Occupancy", selected: $scope.liveSettings.showProfile.occ},
+                {id: "leased", name: "Leased", selected: $scope.liveSettings.showProfile.leased},
+                {id: "renewal", name: "Renewal", selected: $scope.liveSettings.showProfile.renewal},
+                {id: "traf", name: "Traffic / Week", selected: $scope.liveSettings.showProfile.traf},
+                {id: "lease", name: "Leases / Week", selected: $scope.liveSettings.showProfile.lease},
+            ];
+
+            $scope.temp.showCompOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showCompItems = [
+                {id: "occupancy", name: "Occupancy %", selected: $scope.liveSettings.dashboardSettings.show.occupancy},
+                {id: "leased", name: "Leased %", selected: $scope.liveSettings.dashboardSettings.show.leased},
+                {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.dashboardSettings.show.renewal},
+                {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.dashboardSettings.show.weekly},
+                {id: "units", name: "Units", selected: $scope.liveSettings.dashboardSettings.show.units},
+                {id: "unitPercent", name: "Unit %", selected: $scope.liveSettings.dashboardSettings.show.unitPercent},
+                {id: "sqft", name: "Sqft", selected: $scope.liveSettings.dashboardSettings.show.sqft},
+                {id: "rent", name: "Rent", selected: $scope.liveSettings.dashboardSettings.show.rent},
+                {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.mersqft},
+                {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.dashboardSettings.show.concessions},
+                {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.dashboardSettings.show.ner},
+                {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.nersqft},
+            ];
+
+            $scope.temp.showFloorplanOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showFloorplanItems = [
+                {id: "description", name: "Description", selected: $scope.liveSettings.profileSettings.show.description},
+                {id: "units", name: "Units", selected: $scope.liveSettings.profileSettings.show.units},
+                {id: "unitPercent", name: "Unit %", selected: $scope.liveSettings.profileSettings.show.unitPercent},
+                {id: "sqft", name: "Sqft", selected: $scope.liveSettings.profileSettings.show.sqft},
+                {id: "rent", name: "Rent", selected: $scope.liveSettings.profileSettings.show.rent},
+                {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.mersqft},
+                {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.profileSettings.show.concessions},
+                {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.profileSettings.show.ner},
+                {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.nersqft},
+            ];
+
+            $scope.temp.floorPlanSortItems = [
+                {id: "description", name: "Description"},
+                {id: "units", name: "Units"},
+                {id: "unitPercent", name: "Unit %"},
+                {id: "sqft", name: "Sqft"},
+                {id: "rent", name: "Rent"},
+                {id: "mersqft", name: "Rent/Sqft"},
+                {id: "concessions", name: "Concess/12 Mos."},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+            var f = $scope.liveSettings.profileSettings.orderByFp.replace("-","");
+            $scope.temp.floorPlanSortSelected = _.find($scope.temp.floorPlanSortItems, function(x) {return x.id == f})
+            $scope.temp.floorPlanSortDir = $scope.liveSettings.profileSettings.orderByFp[0] == "-" ? "desc" : "asc";
+
+            $scope.temp.compSortItems = [
+                {id: "number", name: "Comp Preference"},
+                {id: "name", name: "Name"},
+                {id: "occupancy", name: "Occ. %"},
+                {id: "leased", name: "Leased %"},
+                {id: "renewal", name: "Renewal %"},
+                {id: "weeklytraffic", name: "Traffic/Week"},
+                {id: "weeklyleases", name: "Leases/Week"},
+                {id: "units", name: "Units"},
+                {id: "unitPercent", name: "Unit %"},
+                {id: "sqft", name: "Sqft"},
+                {id: "rent", name: "Rent"},
+                {id: "mersqft", name: "Rent/Sqft"},
+                {id: "concessions", name: "Concess/12 Mos."},
+                {id: "ner", name: "Net Eff. Rent"},
+                {id: "nersqft", name: "NER/Sqft"},
+            ]
+            var f = $scope.liveSettings.dashboardSettings.orderByComp.replace("-","");
+            $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f})
+            $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+
+        }
+
+        $scope.resetPropertyReportSettings = function(configure) {
+            $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
+            $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
+            $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
+
+            $scope.configurePropertyReportOptions();
+        }
+
+        // Watchers from Components
+        $scope.$watch("runSettings.profileSettings.orderByFp", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.floorPlanSortSelected = _.find($scope.temp.floorPlanSortItems, function(x) {return x.id == f})
+
+                $scope.temp.floorPlanSortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
+
+        $scope.$watch("runSettings.dashboardSettings.orderByComp", function(newValue,oldValue) {
+            if (oldValue && newValue) {
+                var f = newValue.replace("-","");
+
+                $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f})
+
+                $scope.temp.compSortDir = newValue[0] == "-" ? "desc" : "asc";
+
+            }
+        })
 
     }]);
 });
