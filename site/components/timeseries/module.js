@@ -5,8 +5,8 @@ angular.module('biradix.global').directive('timeSeries', function () {
             options: '='
         },
         controller: function ($scope, $element, $rootScope) {
-            $scope.$watch('options', function(){
-
+            $scope.$watch('options', function(a,b){
+                // console.log($scope.options);
                 if ($scope.options) {
                     window.setTimeout(function() {
                         var el = $($element).find('.visible-print-block')
@@ -98,7 +98,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                         };
                         el.highcharts(data);
                         el2.highcharts(data);
-                        $rootScope.$broadcast('timeseriesLoaded', true);
+                        $rootScope.$broadcast('timeseriesLoaded', $scope.options);
                     }, 0);
 
                 }

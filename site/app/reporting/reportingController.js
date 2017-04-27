@@ -367,9 +367,26 @@ define([
                 }
 
                 if ($scope.property_report) {
-                    $rootScope.$on('timeseriesLoaded', function (ready) {
+                    $scope.graphs = 0;
+                    $scope.total = 2;
+
+                    if ($rootScope.me.settings.showLeases) {
+                        $scope.total++;
+                    }
+
+                    if ($scope.runSettings.profileSettings.graphs) {
+                        $scope.total += (3*($scope.compIds.length + 1));
+                    }
+
+
+                    $rootScope.$on('timeseriesLoaded', function (event,data) {
                         // console.log('timesieres', (new Date()).getTime())
-                        window.renderable = true;
+                        $scope.graphs ++;
+
+                        if ($scope.graphs == $scope.total) {
+                            // console.log($scope.graphs, $scope.total, data);
+                            window.renderable = true;
+                        }
                     });
                 } else {
 
