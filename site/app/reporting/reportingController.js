@@ -10,7 +10,7 @@ define([
     '../../components/reports/propertyReport.js'
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$timeout', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$timeout) {
         // $scope.debug = {
         //     c: JSON.parse($cookies.get("settings")),
         // }
@@ -366,10 +366,18 @@ define([
                     $scope.audit('report', 'Website');
                 }
 
+                if ($scope.property_report) {
+                    $rootScope.$on('timeseriesLoaded', function (ready) {
+                        // console.log('timesieres', (new Date()).getTime())
+                        window.renderable = true;
+                    });
+                } else {
 
-                window.setTimeout(function() {
-                    window.renderable = true;
-                },$scope.property_report ? 200 : 200)
+                    window.setTimeout(function () {
+                        window.renderable = true;
+                        // console.log('Render', (new Date()).getTime())
+                    }, $scope.property_report ? 300 : 300)
+                }
 
 
             });
