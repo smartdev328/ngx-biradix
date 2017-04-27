@@ -472,7 +472,7 @@ var getHelpers = function(property, options, callback) {
                     if (!res || !res[0]) {
                         //retry in 5 seconds
                         setTimeout(function() {
-                            GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, true, function (err, res, fromCache) {
+                            GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, false, function (err, res, fromCache) {
                                 // console.log(res[0].latitude, res[0].longitude);
 
                                 if (!res || !res[0]) {
