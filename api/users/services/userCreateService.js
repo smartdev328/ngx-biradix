@@ -504,6 +504,9 @@ function updateNewRole(roleids, all, permissions) {
         userRoles = JSON.parse(JSON.stringify(userRoles));
 
     } else {
+        console.log(all.roles)
+        console.log(roleids)
+
         throw new Error("Should not get here")
     }
 

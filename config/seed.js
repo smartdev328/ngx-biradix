@@ -1062,117 +1062,119 @@ var RolesCreate = function(Orgs, callback) {
             AccessService.createRole(BiradixAdmin, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Biradix;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         Guest: function(callbackp) {
             AccessService.createRole(Guest, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Biradix;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         AllianceCM: function(callbackp) {
             AccessService.createRole(AllianceCM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Alliance;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         AllianceRM: function(callbackp) {
             AccessService.createRole(AllianceRM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Alliance;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))            });
+                AccessService.upsertOrgRole_read(role, callbackp)
+            });
         },
         AllianceBM: function(callbackp) {
             AccessService.createRole(AllianceBM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Alliance;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))            });
+                AccessService.upsertOrgRole_read(role, callbackp)
+            });
         },
         AlliancePO: function(callbackp) {
             AccessService.createRole(AlliancePO, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Alliance;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         DemoCM: function(callbackp) {
             AccessService.createRole(DemoCM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Demo;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         DemoRM: function(callbackp) {
             AccessService.createRole(DemoRM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Demo;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         DemoBM: function(callbackp) {
             AccessService.createRole(DemoBM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Demo;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         DemoPO: function(callbackp) {
             AccessService.createRole(DemoPO, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Demo;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         WoodCM: function(callbackp) {
             AccessService.createRole(WoodCM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Wood;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         WoodRM: function(callbackp) {
             AccessService.createRole(WoodRM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Wood;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         WoodBM: function(callbackp) {
             AccessService.createRole(WoodBM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Wood;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         WoodPO: function(callbackp) {
             AccessService.createRole(WoodPO, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Wood;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         GreystarCM: function(callbackp) {
             AccessService.createRole(GreystarCM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Greystar;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         GreystarRM: function(callbackp) {
             AccessService.createRole(GreystarRM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Greystar;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
         GreystarBM: function(callbackp) {
             AccessService.createRole(GreystarBM, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Greystar;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
 
             });
         },
@@ -1180,11 +1182,17 @@ var RolesCreate = function(Orgs, callback) {
             AccessService.createRole(GreystarPO, function(err, role){
                 role = JSON.parse(JSON.stringify(role));
                 role.org = Orgs.Greystar;
-                AccessService.upsertOrgRole_read(role, callbackp(null, role))
+                AccessService.upsertOrgRole_read(role, callbackp)
             });
         },
 
-},function(err, roles) {callback(roles)})
+},function(err, roles) {
+
+        if (err) {
+            throw new Error(err);
+        }
+        callback(roles)}
+        )
 
 
 }
