@@ -96,7 +96,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             },
                             series: $scope.options.data
                         };
-                        if (!gPhantom) {
+                        if (phantom) {
                             el.highcharts(data);
                         }
                         else {

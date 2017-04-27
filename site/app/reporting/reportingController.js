@@ -395,7 +395,7 @@ define([
                     window.setTimeout(function () {
                         window.renderable = true;
                         // console.log('Render', (new Date()).getTime())
-                    }, $scope.property_report ? 2500 : 300)
+                    }, $scope.property_report ? 2400 : 300)
                 // }
 
 
