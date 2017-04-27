@@ -369,7 +369,7 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                },$scope.property_report ? 100 : 100)
+                },$scope.property_report ? 200 : 200)
 
 
             });
