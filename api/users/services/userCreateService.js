@@ -454,6 +454,8 @@ function removeOldRole(roleids, all, permissions) {
 
 
     } else {
+        console.log(all.roles)
+        console.log(roleids)
         throw new Error("Should not get here")
     }
 

@@ -17,21 +17,25 @@ module.exports = {
     init: function () {
         UserSchema.findOne({},function(err, usr) {
             if (usr) {
+                console.log('No seed');
                 // OrgService.hydrateOrgRoles();
             } else {
                 async.waterfall([
                     function(callbackw) {
                         CompaniesCreate(function(companies) {
+                            console.log('Companies Seeded');
                             callbackw(null, companies)
                         })
                     },
                     function(companies, callbackw) {
                         RolesCreate(companies, function(roles) {
+                            console.log('Roles Seeded');
                             callbackw(null,roles, companies)
                         })
                     },
                     function(roles, companies, callbackw){
                         UsersCreate(roles, function(users) {
+                            console.log('Users Seeded');
                             callbackw(null,users, companies, roles)
                         });
                     },
