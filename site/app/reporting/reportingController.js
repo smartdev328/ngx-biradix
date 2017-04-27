@@ -48,9 +48,9 @@ define([
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
-                    $scope.resetPropertyReportSettings(false);
-                    $scope.resetRankingsSettings(false);
-                    $scope.resetRankingsSummarySettings(false);
+                    $scope.resetPropertyReportSettings(true);
+                    $scope.resetRankingsSettings(true);
+                    $scope.resetRankingsSummarySettings(true);
                 }
                 $scope.reload($stateParams.property == "1");
                 me();
@@ -290,29 +290,24 @@ define([
             var options = {};
 
             if ($scope.reportIds.indexOf("property_report") > -1) {
+                $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
+                $scope.liveSettings.showProfile = {};
 
-                //Only check options after we have ran a report
-                if (Object.keys($scope.runSettings).length && $scope.temp.bedroom) {
-                    $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
-                    $scope.liveSettings.showProfile = {};
+                $scope.temp.showProfileItems.forEach(function(f) {
+                    $scope.liveSettings.showProfile[f.id] = f.selected;
+                })
 
-                    $scope.temp.showProfileItems.forEach(function(f) {
-                        $scope.liveSettings.showProfile[f.id] = f.selected;
-                    })
+                $scope.temp.showCompItems.forEach(function(f) {
+                    $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
+                })
 
-                    $scope.temp.showCompItems.forEach(function(f) {
-                        $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
-                    })
+                $scope.temp.showFloorplanItems.forEach(function(f) {
+                    $scope.liveSettings.profileSettings.show[f.id] = f.selected;
+                })
 
-                    $scope.temp.showFloorplanItems.forEach(function(f) {
-                        $scope.liveSettings.profileSettings.show[f.id] = f.selected;
-                    })
+                $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
 
-                    $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
-
-                    $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
-
-                }
+                $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
 
 
                 options.property_report = {
@@ -467,11 +462,33 @@ define([
             $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: $scope.propertyNames.concat($scope.reportNames)});
         }
         $scope.$watch('reportItems', function() {
+
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
+
+            if (!$scope.property_report && reportIds.indexOf("property_report") > -1) {
+                $scope.temp.bedrooms = [
+                    {value: -1, text: 'Average'}
+                    ,{value: -2, text: 'All'}
+                    ,{value: 0, text: 'Studios'}
+                    ,{value: 1, text: '1 Bdrs.'}
+                    ,{value: 2, text: '2 Bdrs.'}
+                    ,{value: 3, text: '3 Bdrs.'}
+                    ,{value: 4, text: '4 Bdrs.'}
+                    ]
+
+                $scope.temp.bedroom = _.find($scope.temp.bedrooms, function(x) {return x.value == $scope.liveSettings.dashboardSettings.selectedBedroom});
+
+                if (!$scope.temp.bedroom) {
+                    $scope.temp.bedroom = $scope.temp.bedrooms[0];
+                }
+            }
+
 
             $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = reportIds.indexOf("property_report") > -1;
+
+
 
             var diff = _.difference(reportIds,$scope.reportIds);
 
