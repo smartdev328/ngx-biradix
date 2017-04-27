@@ -366,37 +366,37 @@ define([
                     $scope.audit('report', 'Website');
                 }
 
-                if ($scope.property_report) {
-                    $scope.graphs = 0;
-                    $scope.total = 3; // Map + NER + OCC
-
-                    if ($rootScope.me.settings.showLeases) {
-                        $scope.total++;
-                    }
-
-                    if ($scope.runSettings.profileSettings.graphs) {
-                        $scope.total += (3*($scope.compIds.length + 1));
-                    }
-
-
-                    $rootScope.$on('timeseriesLoaded', function (event,data) {
-                        // console.log('timesieres', (new Date()).getTime())
-                        $scope.graphs ++;
-
-                        // console.log($scope.graphs, $scope.total);
-
-                        if ($scope.graphs == $scope.total) {
-
-                            window.renderable = true;
-                        }
-                    });
-                } else {
+                // if ($scope.property_report) {
+                //     $scope.graphs = 0;
+                //     $scope.total = 3; // Map + NER + OCC
+                //
+                //     if ($rootScope.me.settings.showLeases) {
+                //         $scope.total++;
+                //     }
+                //
+                //     if ($scope.runSettings.profileSettings.graphs) {
+                //         $scope.total += (3*($scope.compIds.length + 1));
+                //     }
+                //
+                //
+                //     $rootScope.$on('timeseriesLoaded', function (event,data) {
+                //         // console.log('timesieres', (new Date()).getTime())
+                //         $scope.graphs ++;
+                //
+                //         // console.log($scope.graphs, $scope.total);
+                //
+                //         if ($scope.graphs == $scope.total) {
+                //
+                //             window.renderable = true;
+                //         }
+                //     });
+                // } else {
 
                     window.setTimeout(function () {
                         window.renderable = true;
                         // console.log('Render', (new Date()).getTime())
-                    }, $scope.property_report ? 300 : 300)
-                }
+                    }, $scope.property_report ? 2400 : 300)
+                // }
 
 
             });

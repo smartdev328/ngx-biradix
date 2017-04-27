@@ -96,9 +96,13 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             },
                             series: $scope.options.data
                         };
-                        el.highcharts(data);
-                        el2.highcharts(data);
-                        $rootScope.$broadcast('timeseriesLoaded');
+                        if (phantom) {
+                            el.highcharts(data);
+                        }
+                        else {
+                            el2.highcharts(data);
+                        }
+                        //$rootScope.$broadcast('timeseriesLoaded');
                     }, 0);
 
                 }
