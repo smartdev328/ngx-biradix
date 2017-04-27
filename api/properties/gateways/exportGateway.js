@@ -218,7 +218,7 @@ module.exports = {
                             return res.status("200").send("There was an error generating this report. Please contact an administrator");
                         }
 
-                        res.setHeader("content-type", "application/pdf");
+                        res.setHeader("Content-Type", "application/pdf");
 
                         if (query.showFile) {
                             res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
