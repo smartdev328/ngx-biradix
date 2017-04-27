@@ -368,7 +368,7 @@ define([
 
                 if ($scope.property_report) {
                     $scope.graphs = 0;
-                    $scope.total = 2;
+                    $scope.total = 3; // Map + NER + OCC
 
                     if ($rootScope.me.settings.showLeases) {
                         $scope.total++;
@@ -383,8 +383,10 @@ define([
                         // console.log('timesieres', (new Date()).getTime())
                         $scope.graphs ++;
 
+                        // console.log($scope.graphs, $scope.total);
+
                         if ($scope.graphs == $scope.total) {
-                            // console.log($scope.graphs, $scope.total, data);
+
                             window.renderable = true;
                         }
                     });
