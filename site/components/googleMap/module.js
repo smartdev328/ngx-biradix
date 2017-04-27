@@ -4,7 +4,7 @@ angular.module('biradix.global').directive('googleMap', function () {
             scope: {
                 options: '='
             },
-            controller: function ($scope, $element) {
+            controller: function ($scope, $element, $rootScope) {
 
                 $scope.phantom = phantom;
 
@@ -102,6 +102,8 @@ angular.module('biradix.global').directive('googleMap', function () {
                         $scope.options.points.forEach(function(p) {
                             $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
                         })
+
+                        $rootScope.$broadcast('timeseriesLoaded');
 
                         if (!phantom) {
                             if ($scope.aMarkers) {

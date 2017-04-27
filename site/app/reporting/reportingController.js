@@ -10,7 +10,7 @@ define([
     '../../components/reports/propertyReport.js'
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$timeout', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$timeout) {
         // $scope.debug = {
         //     c: JSON.parse($cookies.get("settings")),
         // }
@@ -366,10 +366,37 @@ define([
                     $scope.audit('report', 'Website');
                 }
 
+                if ($scope.property_report) {
+                    $scope.graphs = 0;
+                    $scope.total = 3; // Map + NER + OCC
 
-                window.setTimeout(function() {
-                    window.renderable = true;
-                },$scope.property_report ? 1500 : 200)
+                    if ($rootScope.me.settings.showLeases) {
+                        $scope.total++;
+                    }
+
+                    if ($scope.runSettings.profileSettings.graphs) {
+                        $scope.total += (3*($scope.compIds.length + 1));
+                    }
+
+
+                    $rootScope.$on('timeseriesLoaded', function (event,data) {
+                        // console.log('timesieres', (new Date()).getTime())
+                        $scope.graphs ++;
+
+                        // console.log($scope.graphs, $scope.total);
+
+                        if ($scope.graphs == $scope.total) {
+
+                            window.renderable = true;
+                        }
+                    });
+                } else {
+
+                    window.setTimeout(function () {
+                        window.renderable = true;
+                        // console.log('Render', (new Date()).getTime())
+                    }, $scope.property_report ? 300 : 300)
+                }
 
 
             });
