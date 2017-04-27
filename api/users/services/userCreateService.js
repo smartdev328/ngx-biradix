@@ -467,8 +467,6 @@ function updateNewRole(roleids, all, permissions) {
     if (!roleids.length) {
         return [];
     }
-    console.log(roleids);
-
     roleids = _.map(roleids, function(x) {return x.toString()});
 
     var userRoles = _.filter(all.roles, function(x) {return roleids.indexOf(x._id.toString()) > -1});

@@ -1188,6 +1188,7 @@ var RolesCreate = function(Orgs, callback) {
 
 },function(err, roles) {
 
+        console.log(roles);
         if (err) {
             throw new Error(err);
         }
