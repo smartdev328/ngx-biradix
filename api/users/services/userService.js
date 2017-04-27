@@ -824,18 +824,21 @@ function getFullUser(usr, callback) {
 
                 usrobj.roles = _.pluck(final,'name');
 
+
                 if (final.length > 0) {
                     //Grab all orgs in all matching roles
                     //Mark default if default
                     usrobj.orgs = _.map(final, function(r) {
                         if (usrobj.settings && usrobj.settings.defaultRole) {
                             if (r._id.toString() == usrobj.settings.defaultRole) {
-                                r.isDefault = true;
+                                r.org.isDefault = true;
                             }
                         }
                         return r.org
                     })
 
+                    // console.log(usrobj.settings);
+                    // console.log(usrobj.orgs);
 
                     //Sort By Default First
                     usrobj.orgs = _.sortBy(usrobj.orgs, function (n) {
