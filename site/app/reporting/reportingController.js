@@ -48,6 +48,9 @@ define([
                     $scope.resetRankingsSettings(true);
                     $scope.resetRankingsSummarySettings(true);
                 }
+
+                $scope.liveSettings.dashboardSettings.daterange.direction = "right";
+
                 $scope.reload($stateParams.property == "1");
                 me();
             }
