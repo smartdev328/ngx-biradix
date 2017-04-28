@@ -138,12 +138,14 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                 delete data.settings.dashboardSettings.daterange.Ranges;
                 delete data.settings.profileSettings.daterange.Ranges;
 
-                data.settings.dashboardSettings.daterange.selectedStartDate = (moment(data.settings.dashboardSettings.daterange.selectedStartDate._d).format());
-                data.settings.dashboardSettings.daterange.selectedEndDate = (moment(data.settings.dashboardSettings.daterange.selectedEndDate._d).format());
 
-                data.settings.profileSettings.daterange.selectedStartDate = (moment(data.settings.profileSettings.daterange.selectedStartDate._d).format());
-                data.settings.profileSettings.daterange.selectedEndDate = (moment(data.settings.profileSettings.daterange.selectedEndDate._d).format());
+                if (data.settings.dashboardSettings.daterange.selectedStartDate._d) {
+                    data.settings.dashboardSettings.daterange.selectedStartDate = (moment(data.settings.dashboardSettings.daterange.selectedStartDate._d).format());
+                    data.settings.dashboardSettings.daterange.selectedEndDate = (moment(data.settings.dashboardSettings.daterange.selectedEndDate._d).format());
 
+                    data.settings.profileSettings.daterange.selectedStartDate = (moment(data.settings.profileSettings.daterange.selectedStartDate._d).format());
+                    data.settings.profileSettings.daterange.selectedEndDate = (moment(data.settings.profileSettings.daterange.selectedEndDate._d).format());
+                }
 
                 var cookies = [
                     pdfService.getCookie(data.hostname, "token", full.token),
