@@ -11,10 +11,6 @@ define([
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$timeout', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$timeout) {
-        // $scope.debug = {
-        //     c: JSON.parse($cookies.get("settings")),
-        // }
-        // return window.renderable = true;
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -48,9 +44,9 @@ define([
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
-                    $scope.resetPropertyReportSettings(false);
-                    $scope.resetRankingsSettings(false);
-                    $scope.resetRankingsSummarySettings(false);
+                    $scope.resetPropertyReportSettings(true);
+                    $scope.resetRankingsSettings(true);
+                    $scope.resetRankingsSummarySettings(true);
                 }
                 $scope.reload($stateParams.property == "1");
                 me();
@@ -282,6 +278,7 @@ define([
 
         }
         $scope.singleReport = function() {
+
             $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
             $scope.compIds =  _.pluck($scope.selected.Comps,"id")
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
@@ -289,22 +286,22 @@ define([
 
             var options = {};
 
+
             if ($scope.reportIds.indexOf("property_report") > -1) {
 
-                //Only check options after we have ran a report
-                if (Object.keys($scope.runSettings).length && $scope.temp.bedroom) {
+                if (!phantom) {
                     $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
                     $scope.liveSettings.showProfile = {};
 
-                    $scope.temp.showProfileItems.forEach(function(f) {
+                    $scope.temp.showProfileItems.forEach(function (f) {
                         $scope.liveSettings.showProfile[f.id] = f.selected;
                     })
 
-                    $scope.temp.showCompItems.forEach(function(f) {
+                    $scope.temp.showCompItems.forEach(function (f) {
                         $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
                     })
 
-                    $scope.temp.showFloorplanItems.forEach(function(f) {
+                    $scope.temp.showFloorplanItems.forEach(function (f) {
                         $scope.liveSettings.profileSettings.show[f.id] = f.selected;
                     })
 
@@ -313,7 +310,6 @@ define([
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
 
                 }
-
 
                 options.property_report = {
                     summary: $scope.liveSettings.dashboardSettings.summary,
@@ -332,20 +328,22 @@ define([
 
             }
 
-            if ($scope.reportIds.indexOf("property_rankings") > -1) {
-                if ($scope.temp.rankingSortSelected) {
-                    $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
-                }
-            }
 
-            if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
-                if ($scope.temp.rankingSummarySortSelected) {
-                    $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
+            if (!phantom) {
+                if ($scope.reportIds.indexOf("property_rankings") > -1) {
+                    if ($scope.temp.rankingSortSelected) {
+                        $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
+                    }
+                }
+
+                if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
+                    if ($scope.temp.rankingSummarySortSelected) {
+                        $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
+                    }
                 }
             }
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
-
 
             $reportingService.reports(
                 $scope.compIds
@@ -366,37 +364,38 @@ define([
                     $scope.audit('report', 'Website');
                 }
 
-                // if ($scope.property_report) {
-                //     $scope.graphs = 0;
-                //     $scope.total = 3; // Map + NER + OCC
-                //
-                //     if ($rootScope.me.settings.showLeases) {
-                //         $scope.total++;
-                //     }
-                //
-                //     if ($scope.runSettings.profileSettings.graphs) {
-                //         $scope.total += (3*($scope.compIds.length + 1));
-                //     }
-                //
-                //
-                //     $rootScope.$on('timeseriesLoaded', function (event,data) {
-                //         // console.log('timesieres', (new Date()).getTime())
-                //         $scope.graphs ++;
-                //
-                //         // console.log($scope.graphs, $scope.total);
-                //
-                //         if ($scope.graphs == $scope.total) {
-                //
-                //             window.renderable = true;
-                //         }
-                //     });
-                // } else {
+                if ($scope.property_report) {
+                    $scope.graphs = 0;
+                    $scope.total = 3; // Map + NER + OCC
+
+                    if ($rootScope.me.settings.showLeases) {
+                        $scope.total++;
+                    }
+
+                    if ($scope.runSettings.profileSettings.graphs) {
+                        $scope.total += (3*($scope.compIds.length + 1));
+                    }
+
+
+                    $rootScope.$on('timeseriesLoaded', function (event,data) {
+                        // console.log('timesieres', (new Date()).getTime())
+                        $scope.graphs ++;
+
+                        //console.log($scope.graphs, $scope.total,(new Date()).getTime());
+
+                        if ($scope.graphs == $scope.total) {
+                            window.setTimeout(function () {
+                                window.renderable = true;
+                            }, 300)
+                        }
+                    });
+                } else {
 
                     window.setTimeout(function () {
                         window.renderable = true;
                         // console.log('Render', (new Date()).getTime())
                     }, $scope.property_report ? 2400 : 300)
-                // }
+                }
 
 
             });
@@ -467,11 +466,33 @@ define([
             $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: $scope.propertyNames.concat($scope.reportNames)});
         }
         $scope.$watch('reportItems', function() {
+
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
+
+            if (!$scope.property_report && reportIds.indexOf("property_report") > -1) {
+                $scope.temp.bedrooms = [
+                    {value: -1, text: 'Average'}
+                    ,{value: -2, text: 'All'}
+                    ,{value: 0, text: 'Studios'}
+                    ,{value: 1, text: '1 Bdrs.'}
+                    ,{value: 2, text: '2 Bdrs.'}
+                    ,{value: 3, text: '3 Bdrs.'}
+                    ,{value: 4, text: '4 Bdrs.'}
+                    ]
+
+                $scope.temp.bedroom = _.find($scope.temp.bedrooms, function(x) {return x.value == $scope.liveSettings.dashboardSettings.selectedBedroom});
+
+                if (!$scope.temp.bedroom) {
+                    $scope.temp.bedroom = $scope.temp.bedrooms[0];
+                }
+            }
+
 
             $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = reportIds.indexOf("property_report") > -1;
+
+
 
             var diff = _.difference(reportIds,$scope.reportIds);
 
