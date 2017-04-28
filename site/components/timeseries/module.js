@@ -102,7 +102,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                         else {
                             el2.highcharts(data);
                         }
-                        //$rootScope.$broadcast('timeseriesLoaded');
+                        $rootScope.$broadcast('timeseriesLoaded');
                     }, 0);
 
                 }

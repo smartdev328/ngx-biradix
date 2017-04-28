@@ -103,7 +103,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
                         })
 
-                        //$rootScope.$broadcast('timeseriesLoaded');
+                        $rootScope.$broadcast('timeseriesLoaded');
 
                         if (!phantom) {
                             if ($scope.aMarkers) {
