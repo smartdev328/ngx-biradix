@@ -644,6 +644,7 @@ module.exports = {
         })
     },
     updateActive : function(operator, property, context, revertedFromId, callback)  {
+        var self = this;
         var modelErrors = [];
 
         if (!property.id)
@@ -679,6 +680,35 @@ module.exports = {
                 }
 
                 AuditService.create({operator: operator, property: saved, type: 'property_status', revertedFromId : revertedFromId, description: saved.name + ': ' + (property.active ? "Inactive => Active" : "Active => Inactive"), context: context, data : [{description: "Previous: " + (property.active ? "Inactive" : "Active"), status: !property.active}]})
+
+                if (!property.active) {
+                    //Remove all Comps and remove it from all subjects
+                    var compids = _.map(old.comps, function(x) {return x.id.toString()});
+                    CompsService.getSubjects([property.id], {select: "_id"}, function (err, subjects) {
+                        var subjectids = _.map(subjects, function(x) {return x._id.toString()});
+
+                        _.remove(compids, function(x) {return x == property.id.toString()})
+                        _.remove(subjectids, function(x) {return x == property.id.toString()})
+
+                        // console.log(property.id);
+                        // console.log(compids);
+                        // console.log(subjectids);
+
+                        async.eachLimit(compids, 10, function(compid, callbackp){
+                            self.unlinkComp(operator,context,revertedFromId,property.id, compid, callbackp);
+                        }, function(err) {
+
+                        });
+
+                        async.eachLimit(subjectids, 10, function(subjectid, callbackp){
+                            self.unlinkComp(operator,context,revertedFromId,subjectid, property.id, callbackp);
+                        }, function(err) {
+
+                        });
+                    });
+
+
+                }
 
                 return callback(err, saved)
             })

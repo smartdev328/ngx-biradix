@@ -18,12 +18,13 @@ define([
                 'Today': [moment().startOf("day"), moment().endOf("day")],
                 'Week to Date': [moment().startOf("week"), moment().endOf("day")],
                 'Month to Date': [moment().startOf("month"), moment().endOf("day")],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment().endOf("day")],
-                'Last 90 Days': [moment().subtract(89, 'days'), moment().endOf("day")],
-                'Last Year': [moment().subtract(1, 'year'), moment().endOf("day")],
-                'Lifetime': [moment().subtract(30, 'year'), moment().endOf("day")],
+                '30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
+                '90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
+                '12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
+                'Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
+                'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
             },
-            selectedRange : "Last 30 Days",
+            selectedRange : "30 Days",
             selectedStartDate : null,
             selectedEndDate : null
         }
