@@ -1,5 +1,6 @@
 var PropertyService = require('../../properties/services/propertyService')
 var organizationService = require('../../organizations/services/organizationService')
+var queueService = require('./queueService');
 var _ = require("lodash")
 var async = require("async");
 var moment = require('moment')
