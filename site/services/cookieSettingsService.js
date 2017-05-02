@@ -110,6 +110,20 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
 
 
         fac.getDaterange = function () {
+            var r = $cookies.get('selectedRange') || "90 Days";
+
+            if (r == "Last 30 Days") {
+                r = "30 Days"
+            }
+            else
+            if (r == "Last 90 Days") {
+                r = "90 Days"
+            }
+            else
+            if (r == "Last Year") {
+                r = "Year-to-Date"
+            }
+
             return {
                 Ranges : {
                     '30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
@@ -118,7 +132,7 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
                     'Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
                     'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
                 },
-                selectedRange : $cookies.get('selectedRange') || "90 Days",
+                selectedRange : r,
                 selectedStartDate : moment($cookies.get('selectedStartDate')),
                 selectedEndDate : moment($cookies.get('selectedEndDate'))
             }
