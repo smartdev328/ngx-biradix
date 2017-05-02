@@ -6,6 +6,8 @@ var Routes = express.Router();
 /////////////////////////////////
 var userService = require('../../users/services/userService')
 var queueService = require('../services/queueService');
+var exportService = require('../services/exportService');
+var EmailService = require('../../business/services/emailService')
 
 // Routes.get('/test', function (req, res) {
 //     userService.getUsersForNotifications(function (err, users) {
@@ -34,6 +36,38 @@ Routes.get('/notifications', function (req, res) {
         }, function (err) {
             res.status(200).json({queued: users.length})
         });
+
+    });
+});
+
+Routes.get('/export', function (req, res) {
+    userService.getSystemUser(function (System) {
+        var SystemUser = System.user;
+        exportService.getCsv(SystemUser, 'wood', function(string) {
+
+            var email = {
+                to: "alex@biradix.com,eugene@biradix.com",
+                subject: 'BI:Radix - Wood Residential nightly data export',
+                logo : "https://wood.biradix.com/images/organizations/wood.png",
+                template : 'export.html',
+                templateData : { },
+                attachments: [
+                    {
+                        filename: 'biradix_wood_export.csv',
+                        content: string,
+                        contentType: 'text/csv'
+                    }
+                ]
+
+            };
+
+            EmailService.send(email,function(emailError,status) {
+                res.status(200).json({emailError: emailError, status: status})
+            })
+
+
+        })
+
 
     });
 });

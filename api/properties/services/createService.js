@@ -295,6 +295,17 @@ module.exports = {
                 ////////////////
 
                 var profileChanges = getProfileChanges(property, null, all);
+
+                var newName = "None"
+                if (property.orgid) {
+                    newName = _.find(all.orgs, function(x) {return x._id.toString() == property.orgid.toString()}).name
+                }
+
+                profileChanges.push({description:  "Company: " + newName });
+                // console.log(profileChanges);
+
+
+
                 var contactChanges = getContactChanges(property, null, all);
                 var feesChanges = getFeesChanges(property,null, all);
 

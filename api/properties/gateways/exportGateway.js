@@ -3,7 +3,6 @@ var async = require("async");
 var moment = require('moment')
 var phantom = require('phantom-render-stream');
 var request = require('request')
-var PropertyService = require('../services/propertyService')
 var ProgressService = require('../../progress/services/progressService')
 var organizationService = require('../../organizations/services/organizationService')
 var settings = require("../../../config/settings")
@@ -12,6 +11,7 @@ var bus = require('../../../config/queues')
 var JSONB = require('json-buffer')
 var redisService = require('../../utilities/services/redisService')
 var error = require('../../../config/error')
+var exportService = require('../services/exportService');
 
 
 module.exports = {
@@ -19,75 +19,11 @@ module.exports = {
         Routes.get('/csvreport/:org', function(req, res) {
             res.setHeader('Content-disposition', 'attachment; filename=' + req.params.org + '.csv');
             res.setHeader('Content-type', 'text/csv');
-            res.write("Property,Subject/Comp,CompFor,UnitType,Date,Units,Units %,Sqft,Market Rent,Concess. / 12mo,Net Eff. Rent,NER/Sqft,Occupancy %,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built,Total Units\r\n")
 
-            organizationService.read(function(err, orgs) {
-                var allianceid = _.find(orgs, function(x) {return x.subdomain == req.params.org})._id;
-
-                PropertyService.search(req.user, {limit: 10000, permission: 'PropertyManage', orgid: allianceid, active: true, select: "_id name survey zip active date totalUnits yearBuild address city state zip"}, function(err, props) {
-                    async.eachLimit(props, 1, function(prop, callbackp){
-
-                        queueService.getDashboard({
-                            user: req.user,
-                            params: {id: prop._id},
-                            body: {
-                                show: {
-
-                                },
-
-                                daterange: {
-
-                                }
-                            }
-                        }, function(err,dashboard) {
-                            var b, t;
-                            if (prop.totalUnits && prop.totalUnits > 0 && dashboard.comps.length > 1) {
-                                dashboard.comps.forEach(function(c, i) {
-                                    for (b in c.survey.bedrooms) {
-                                        t = c.survey.bedrooms[b];
-                                        res.write(CSVEncode(c.name));
-                                        res.write(',' + (i == 0 ? 'Subject' : 'Comp'));
-                                        res.write(',' + CSVEncode(prop.name))
-                                        res.write(',' + (b == 0 ? 'Studio' : b + ' Bdrs'))
-                                        res.write("," + moment(c.survey.date).utcOffset(-480).format("MM/DD/YYYY"));
-                                        res.write("," + t.totUnits);
-                                        res.write("," + Math.round(t.totUnits / c.survey.totUnits * 100 * 100) / 100);
-                                        res.write("," + t.sqft);
-                                        res.write("," + t.rent);
-                                        res.write("," + t.concessions);
-                                        res.write("," + t.ner);
-                                        res.write("," + t.nersqft);
-                                        res.write("," + Math.round(c.survey.occupancy * 100) / 100);
-                                        res.write("," + c.survey.weeklytraffic);
-                                        res.write("," + c.survey.weeklyleases);
-                                        res.write("," + c.address);
-                                        res.write("," + c.city);
-                                        res.write("," + c.state);
-                                        res.write("," + c.zip);
-                                        res.write("," + c.constructionType);
-                                        res.write("," + c.yearBuilt);
-                                        res.write("," + c.survey.totUnits);
-                                        res.write("\r\n")
-                                    }
-
-
-
-                                })
-                            }
-
-                            callbackp();
-                        });
-
-                    }, function() {
-                        res.end()
-                    })
-
-                })
-
+            exportService.getCsv(req.user, req.params.org, function(string) {
+                res.write(string);
+                res.end()
             })
-
-
-
         })
 
         Routes.get('/:id/excel', function (req, res) {
