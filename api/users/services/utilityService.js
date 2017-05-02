@@ -31,7 +31,7 @@ module.exports = {
 
     hashPassword: function (password, salt) {
         var bSalt = new Buffer(salt, 'base64');
-        return crypto.pbkdf2Sync(password, bSalt, 10000, 64).toString('base64');
+        return crypto.pbkdf2Sync(password, bSalt, 10000, 64,'sha1').toString('base64');
     },
     
     getOrgByUrl : function (orgs, base) {
