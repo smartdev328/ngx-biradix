@@ -26,6 +26,10 @@ module.exports = {
             subject: email.subject
         };
 
+        if (email.attachments) {
+            newemail.attachments = email.attachments;
+        }
+
         getData(email, function(html) {
             fs.readFile(settings.PROJECT_DIR +'/../api/business/templates/email.html', 'utf8', function (err,data) {
                 if (err) {

@@ -302,7 +302,7 @@ module.exports = {
                 }
 
                 profileChanges.push({description:  "Company: " + newName });
-                console.log(profileChanges);
+                // console.log(profileChanges);
 
 
 
