@@ -1,5 +1,6 @@
 'use strict';
 var express = require('express');
+var moment = require('moment');
 var async = require("async");
 var _ = require("lodash")
 var Routes = express.Router();
@@ -8,6 +9,7 @@ var userService = require('../../users/services/userService')
 var queueService = require('../services/queueService');
 var exportService = require('../services/exportService');
 var EmailService = require('../../business/services/emailService')
+var redisService = require('../../utilities/services/redisService')
 
 // Routes.get('/test', function (req, res) {
 //     userService.getUsersForNotifications(function (err, users) {
@@ -41,34 +43,57 @@ Routes.get('/notifications', function (req, res) {
 });
 
 Routes.get('/export', function (req, res) {
-    userService.getSystemUser(function (System) {
-        var SystemUser = System.user;
-        exportService.getCsv(SystemUser, 'wood', function(string) {
+    let key = "export_wood_nightly";
+    let dayofweek = moment().tz('America/Los_Angeles').format("dd");
+    let hourOfDay = moment().tz('America/Los_Angeles').format("HH");
 
-            var email = {
-                to: "alex@biradix.com,eugene@biradix.com",
-                subject: 'BI:Radix - Wood Residential nightly data export',
-                logo : "https://wood.biradix.com/images/organizations/wood.png",
-                template : 'export.html',
-                templateData : { },
-                attachments: [
-                    {
-                        filename: 'biradix_wood_export.csv',
-                        content: string,
-                        contentType: 'text/csv'
-                    }
-                ]
+    if (dayofweek == 'Fr' || dayofweek == 'Sa' ) {
+        return res.status(200).json(dayofweek +': Cannot run Fr nor Sa night');
+    }
 
-            };
+    if (hourOfDay != 23) {
+        return res.status(200).json(`${hourOfDay}: Can only run at 11 pm`);
+    }
 
-            EmailService.send(email,function(emailError,status) {
-                res.status(200).json({emailError: emailError, status: status})
+    redisService.get(key, (err, alreadysent) => {
+
+        if (alreadysent) {
+            return res.status(200).json(dayofweek + ': Already Sent');
+        }
+
+        redisService.set(key, "1", 60 * 12);
+
+        res.status(200).json(dayofweek +': Queued');
+
+        userService.getSystemUser(System => {
+            let SystemUser = System.user;
+            exportService.getCsv(SystemUser, 'wood', string => {
+
+                var email = {
+                    to: "alex@biradix.com",
+                    subject: 'BI:Radix - Wood Residential nightly data export',
+                    logo: "https://wood.biradix.com/images/organizations/wood.png",
+                    template: 'export.html',
+                    templateData: {},
+                    attachments: [
+                        {
+                            filename: 'biradix_wood_export.csv',
+                            content: string,
+                            contentType: 'text/csv'
+                        }
+                    ]
+
+                };
+
+                EmailService.send(email, (emailError, status) => {
+                    console.log('Wood export', emailError, status)
+                })
+
+
             })
 
 
-        })
-
-
+        });
     });
 });
 
