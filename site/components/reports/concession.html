@@ -8,7 +8,7 @@
     <table class="table table-condensed table-striped hidden-arrows" style="font-size:9pt">
     <tbody>
     <tr class="thead">
-        <th style="height:45px;border-right: 1px solid #ccc;text-align: center !important;vertical-align: middle" colspan="2">
+        <th style="height:45px;border-right: 1px solid #ccc;border-left: 1px solid #ccc;text-align: center !important;vertical-align: middle" colspan="2">
             Property
         </th>
         <th style="height:36px;text-align:right;border-right: 1px solid #ccc;vertical-align: middle" ng-repeat="date in report.dates">
@@ -20,7 +20,7 @@
     </tr>
 
     <tr ng-class="{'subject':property.orderNumber == -1}">
-        <Td rowspan="6" style="border-right:1px solid #ccc;text-align:center;vertical-align: middle;border-bottom:2px dashed #ccc !important;">
+        <Td rowspan="6" style="border-right:1px solid #ccc;border-left: 1px solid #ccc;text-align:center;vertical-align: middle;border-bottom:2px dashed #ccc !important;">
             {{property.name}}
         </Td>
         <td style="text-align: right;border-right:1px solid #ccc;">
