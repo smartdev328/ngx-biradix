@@ -61,9 +61,17 @@ module.exports = {
             return x.units
         });
 
-        var ret = _.sum(fps, function (x) {
-            return (x.rent - x.concessions / 12 ) * x.units / tot
-        })
+        var ret;
+
+        if (scale == "rent") {
+            ret = _.sum(fps, function (x) {
+                return x.rent * x.units / tot
+            })
+        } else {
+            ret = _.sum(fps, function (x) {
+                return (x.rent - x.concessions / 12 ) * x.units / tot
+            })
+        }
 
         if (scale == "nersqft") {
             var sqft = _.sum(fps, function (x) {

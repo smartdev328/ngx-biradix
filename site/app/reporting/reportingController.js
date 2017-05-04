@@ -30,7 +30,7 @@ define([
 
         $scope.reportItems = []
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "concession", name: "Concession", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "concession", name: "Concession", selected:$stateParams.property == "2", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
@@ -52,7 +52,7 @@ define([
                     $scope.resetConcessionSettings(true);
                 }
 
-                $scope.reload($stateParams.property == "1");
+                $scope.reload($stateParams.property == "1" || $stateParams.property == "2");
                 me();
             }
         })

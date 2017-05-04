@@ -138,6 +138,17 @@ module.exports = {
                     points[s.propertyid].traffic[dateKey] = s.weeklytraffic;
                 }
 
+                if (show.rent) {
+                    points[s.propertyid].rent = points[s.propertyid].rent || {};
+
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "rent");
+                    points[s.propertyid].rent[dateKey] = nerPoint;
+
+                    if (nerPoint.excluded) {
+                        excluded = true;
+                    }
+                }
+
                 if (show.ner) {
                     points[s.propertyid].ner = points[s.propertyid].ner || {};
 
@@ -180,6 +191,10 @@ module.exports = {
                         points[prop].leases = DataPointsHelperService.normailizePoints(points[prop].leases, offset, dr);
                     }
 
+                    if (show.rent) {
+                        points[prop].rent = DataPointsHelperService.normailizePoints(points[prop].rent, offset, dr, true);
+                    }
+
                     if (show.ner) {
                         points[prop].ner = DataPointsHelperService.normailizePoints(points[prop].ner, offset, dr, true);
 
@@ -205,6 +220,9 @@ module.exports = {
                 if (show.leases) {
                     points[prop].leases = DataPointsHelperService.objectToArray(points[prop].leases);
                 }
+                if (show.rent) {
+                    points[prop].rent = DataPointsHelperService.objectToArray(points[prop].rent);
+                }
                 if (show.ner) {
                     points[prop].ner = DataPointsHelperService.objectToArray(points[prop].ner);
 
@@ -224,6 +242,10 @@ module.exports = {
                 }
                 if (show.leases) {
                     points[prop].leases = DataPointsHelperService.extrapolateMissingPoints(points[prop].leases);
+                }
+
+                if (show.rent) {
+                    points[prop].rent = DataPointsHelperService.extrapolateMissingPoints(points[prop].rent, true);
                 }
 
                 if (show.ner) {
@@ -255,6 +277,10 @@ module.exports = {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leases');
                     }
 
+                    if (show.rent) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'rent', true);
+                    }
+
                     if (show.ner) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner', true);
                     }
@@ -284,6 +310,18 @@ module.exports = {
             }
 
             //Remove unit counts when not averaging points
+            if (show.rent) {
+                for (prop in points) {
+                    if (points[prop].rent) {
+                        points[prop].rent.forEach(function (p) {
+                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                                p.v = p.v.value;
+                            }
+                        });
+                    }
+                }
+            }
+
             if (show.ner) {
                 for (prop in points) {
                     if (points[prop].ner) {

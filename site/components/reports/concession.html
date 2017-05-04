@@ -5,8 +5,77 @@
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
     <div class="header" style="height:46px"></div>
-    <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+    <table class="table table-condensed table-striped hidden-arrows" style="font-size:9pt">
     <tbody>
+    <tr class="thead">
+        <th style="height:45px">
+            Property
+        </th>
+        <th style="height:45px">
+
+        </th>
+        <th style="height:36px;text-align:right" ng-repeat="date in report.dates">
+            {{date | date}}
+        </th>
+    </tr>
+    <tr ng-repeat-start="property in report.data" ng-if="false">
+
+    </tr>
+
+    <tr ng-class="{'subject':property.orderNumber == -1}">
+        <Td rowspan="6" style="border-right:1px solid #ccc;text-align:center;vertical-align: middle">
+            {{property.name}}
+        </Td>
+        <td style="text-align: right;border-right:1px solid #ccc;">
+            Market Rent
+        </td>
+        <td ng-repeat="date in report.dates" style="text-align: right">
+            {{property.points.rent[date] | currency : "$" : 0}}
+        </td>
+    </tr>
+    <tr ng-class="{'subject':property.orderNumber == -1}">
+        <td style="text-align: right;border-right:1px solid #ccc;">
+            One-Time Conc.
+        </td>
+        <td ng-repeat="date in report.dates" style="text-align: right">
+
+        </td>
+    </tr>
+    <tr ng-class="{'subject':property.orderNumber == -1}">
+        <td style="text-align: right;border-right:1px solid #ccc;">
+            Recurring Conc.
+        </td>
+        <td ng-repeat="date in report.dates" style="text-align: right">
+
+        </td>
+    </tr>
+    <tr ng-class="{'subject':property.orderNumber == -1}">
+        <td style="text-align: right;border-right:1px solid #ccc;">
+            Total Conc.
+        </td>
+        <td ng-repeat="date in report.dates" style="text-align: right">
+
+        </td>
+    </tr>
+    <tr ng-class="{'subject':property.orderNumber == -1}">
+        <td style="text-align: right;border-right:1px solid #ccc;">
+            NER
+        </td>
+        <td ng-repeat="date in report.dates" style="text-align: right">
+            {{property.points.ner[date] | currency : "$" : 0}}
+        </td>
+    </tr>
+    <tr ng-class="{'subject':property.orderNumber == -1}">
+        <td style="text-align: right;border-right:1px solid #ccc;" nowrap>
+            +/- Comp NER Avg.
+        </td>
+        <td ng-repeat="date in report.dates" style="text-align: right">
+
+        </td>
+    </tr>
+    <tr ng-repeat-end ng-if="false">
+
+    </tr>
 
     </tbody>
 
