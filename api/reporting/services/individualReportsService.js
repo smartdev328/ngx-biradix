@@ -254,7 +254,7 @@ module.exports = {
                     }
 
                     //We can only fir 15 dates on the screen
-                    dates = _.take(dates,15);
+                    dates = _.take(dates,13);
 
                     callback({data: response, dates: dates});
                     data = null;
