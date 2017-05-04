@@ -149,6 +149,17 @@ module.exports = {
                     }
                 }
 
+                if (show.concessions) {
+                    points[s.propertyid].concessions = points[s.propertyid].concessions || {};
+
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "concessions");
+                    points[s.propertyid].concessions[dateKey] = nerPoint;
+
+                    if (nerPoint.excluded) {
+                        excluded = true;
+                    }
+                }
+
                 if (show.ner) {
                     points[s.propertyid].ner = points[s.propertyid].ner || {};
 
@@ -195,6 +206,10 @@ module.exports = {
                         points[prop].rent = DataPointsHelperService.normailizePoints(points[prop].rent, offset, dr, true);
                     }
 
+                    if (show.concessions) {
+                        points[prop].concessions = DataPointsHelperService.normailizePoints(points[prop].concessions, offset, dr, true);
+                    }
+
                     if (show.ner) {
                         points[prop].ner = DataPointsHelperService.normailizePoints(points[prop].ner, offset, dr, true);
 
@@ -223,6 +238,9 @@ module.exports = {
                 if (show.rent) {
                     points[prop].rent = DataPointsHelperService.objectToArray(points[prop].rent);
                 }
+                if (show.concessions) {
+                    points[prop].concessions = DataPointsHelperService.objectToArray(points[prop].concessions);
+                }
                 if (show.ner) {
                     points[prop].ner = DataPointsHelperService.objectToArray(points[prop].ner);
 
@@ -246,6 +264,10 @@ module.exports = {
 
                 if (show.rent) {
                     points[prop].rent = DataPointsHelperService.extrapolateMissingPoints(points[prop].rent, true);
+                }
+
+                if (show.concessions) {
+                    points[prop].concessions = DataPointsHelperService.extrapolateMissingPoints(points[prop].concessions, true);
                 }
 
                 if (show.ner) {
@@ -281,6 +303,10 @@ module.exports = {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'rent', true);
                     }
 
+                    if (show.concessions) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'concessions', true);
+                    }
+
                     if (show.ner) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner', true);
                     }
@@ -314,6 +340,18 @@ module.exports = {
                 for (prop in points) {
                     if (points[prop].rent) {
                         points[prop].rent.forEach(function (p) {
+                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                                p.v = p.v.value;
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (show.concessions) {
+                for (prop in points) {
+                    if (points[prop].concessions) {
+                        points[prop].concessions.forEach(function (p) {
                             if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
                                 p.v = p.v.value;
                             }

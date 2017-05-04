@@ -202,6 +202,7 @@ module.exports = {
             options.show.selectedBedroom = -1;
             options.show.ner = true;
             options.show.rent = true;
+            options.show.concessions = true;
             options.show.occupancy = false;
             options.show.leased = false;
             options.show.sclae = "ner";
@@ -215,7 +216,7 @@ module.exports = {
 
                     var c;
                     var id;
-                    var rent, ner
+                    var rent, ner, concessions
                     for (id in data.dashboard.points) {
                         c = data.dashboard.comps.find(x => x._id.toString() == id.toString());
                         if (c) {
@@ -229,12 +230,18 @@ module.exports = {
                                 ner[x.d] = x.v;
                             })
 
+                            concessions = {};
+                            data.dashboard.points[id].concessions.forEach(x=> {
+                                concessions[x.d] = x.v;
+                            })
+
                             response.push({
                                 name: c.name,
                                 orderNumber : c.orderNumber,
                                 points: {
                                     rent: rent,
-                                    ner: ner
+                                    ner: ner,
+                                    concessions: concessions
                                 }
                             })
                         }

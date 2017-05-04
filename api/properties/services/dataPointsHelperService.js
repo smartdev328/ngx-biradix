@@ -67,6 +67,10 @@ module.exports = {
             ret = _.sum(fps, function (x) {
                 return x.rent * x.units / tot
             })
+        } else if (scale == "concessions") {
+            ret = _.sum(fps, function (x) {
+                return x.concessions * x.units / tot
+            })
         } else {
             ret = _.sum(fps, function (x) {
                 return (x.rent - x.concessions / 12 ) * x.units / tot
