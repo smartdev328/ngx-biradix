@@ -7,7 +7,8 @@ define([
     '../../components/reports/propertyRankings.js',
     '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/propertyStatus.js',
-    '../../components/reports/propertyReport.js'
+    '../../components/reports/propertyReport.js',
+    '../../components/reports/concession.js'
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$timeout', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$timeout) {
@@ -29,6 +30,7 @@ define([
 
         $scope.reportItems = []
         $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "concession", name: "Concession", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
@@ -47,9 +49,8 @@ define([
                     $scope.resetPropertyReportSettings(true);
                     $scope.resetRankingsSettings(true);
                     $scope.resetRankingsSummarySettings(true);
+                    $scope.resetConcessionSettings(true);
                 }
-
-                $scope.liveSettings.dashboardSettings.daterange.direction = "right";
 
                 $scope.reload($stateParams.property == "1");
                 me();
@@ -331,6 +332,17 @@ define([
 
             }
 
+            if ($scope.reportIds.indexOf("concession") > -1) {
+                options.concession = {
+                    daterange: {
+                        daterange: $scope.liveSettings.concession.daterange.selectedRange,
+                        start: $scope.liveSettings.concession.daterange.selectedStartDate,
+                        end: $scope.liveSettings.concession.daterange.selectedEndDate
+                    },
+                    offset: moment().utcOffset()
+                }
+            }
+
 
             if (!phantom) {
                 if ($scope.reportIds.indexOf("property_rankings") > -1) {
@@ -358,6 +370,7 @@ define([
                 $scope.configurePropertyReportOptions();
                 $scope.configureRankingsOptions();
                 $scope.configureRankingsSummaryOptions();
+                $scope.configureConcessionOptions();
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
@@ -494,6 +507,7 @@ define([
             $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = reportIds.indexOf("property_report") > -1;
+            $scope.concession = reportIds.indexOf("concession") > -1;
 
 
 
@@ -726,8 +740,32 @@ define([
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
             $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
             $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
+            $scope.liveSettings.dashboardSettings.daterange.direction = "right";
 
             $scope.configurePropertyReportOptions();
+        }
+
+        $scope.configureConcessionOptions = function() {
+
+        }
+        $scope.resetConcessionSettings = function(configure) {
+            $scope.liveSettings.concession = {
+                daterange: {
+                    Ranges : {
+                        '30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
+                        '90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
+                        '12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
+                        'Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
+                        'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
+                    },
+                    selectedRange : "90 Days",
+                    selectedStartDate : null,
+                    selectedEndDate : null,
+                    direction: "right"
+                }
+            }
+
+            $scope.configureConcessionOptions();
         }
 
         // Watchers from Components
