@@ -59,7 +59,7 @@
   },
   "private": true,
   "engines": {
-    "node": "4.8.2",
-    "npm": "4.4.4"
+    "node": "6.10.3",
+    "npm": "4.5.0"
   }
 }

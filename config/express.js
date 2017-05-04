@@ -19,17 +19,17 @@ module.exports = {
             }));
 
             var cacheTime = 86400000*7;     // 7 days
-            app.use(require('express').static(__dirname + '../../site/',{ maxAge: cacheTime }));
-            app.use('/bower_components',  require('express').static(__dirname + '../../bower_components/',{ maxAge: cacheTime }));
-            app.use('/dist',  require('express').static(__dirname + '../../dist/',{ maxAge: cacheTime }));
-            app.use('/node_modules',  require('express').static(__dirname + '../../node_modules/',{ maxAge: cacheTime }));
+            app.use(require('express').static(__dirname + '/../site/',{ maxAge: cacheTime }));
+            app.use('/bower_components',  require('express').static(__dirname + '/../bower_components/',{ maxAge: cacheTime }));
+            app.use('/dist',  require('express').static(__dirname + '/../dist/',{ maxAge: cacheTime }));
+            app.use('/node_modules',  require('express').static(__dirname + '/../node_modules/',{ maxAge: cacheTime }));
 
             app.use(error.getClient().expressHandler);
 
             app.use(cookieParser())
 
             app.set('view engine', 'ejs');
-            app.set('views', __dirname + '../../site/views')
+            app.set('views', __dirname + '/../site/views')
 
             //protect /api using middleware, allow /api/v/users/login and create to allow to authenticate
             app.use('/api', expressJwt(
