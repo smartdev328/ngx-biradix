@@ -70,7 +70,7 @@ Routes.get('/export', function (req, res) {
             exportService.getCsv(SystemUser, 'wood', string => {
 
                 var email = {
-                    to: "alex@biradix.com",
+                    to: "alex@biradix.com,eugene@biradix.com",
                     subject: 'BI:Radix - Wood Residential nightly data export',
                     logo: "https://wood.biradix.com/images/organizations/wood.png",
                     template: 'export.html',
