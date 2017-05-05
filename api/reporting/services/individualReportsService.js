@@ -242,7 +242,7 @@ module.exports = {
                                     rent: rent,
                                     ner: ner,
                                     concessions: concessions
-                                }
+                                },
                             })
                         }
 
@@ -250,15 +250,17 @@ module.exports = {
 
                     response = _.sortByAll(response, ['orderNumber','name']);
 
+                    response[response.length - 1].last= true;
+
                     var dates = Object.keys(response[0].points.rent).sort().reverse();
 
                     //Check last point and remove it if its an extrapolated point for today;
-                    if (dates.length > 1) {
-                        var diff = (dates[0] - dates[1]) / 1000 / 60 / 60 / 24; //Calc diff in days
-                        if (diff < 7) {
-                            dates.splice(0,1);
-                        }
-                    }
+                    // if (dates.length > 1) {
+                    //     var diff = (dates[0] - dates[1]) / 1000 / 60 / 60 / 24; //Calc diff in days
+                    //     if (diff < 7) {
+                    //         dates.splice(0,1);
+                    //     }
+                    // }
 
                     //We can only fir 15 dates on the screen
                     dates = _.take(dates,13);

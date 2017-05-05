@@ -150,7 +150,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
 
                 if (data.settings.concession) {
                     delete data.settings.concession.daterange.Ranges;
-                    if (data.settings.concession.daterange && data.settings.concession.daterange.selectedStartDate._d) {
+                    if (data.settings.concession.daterange.selectedStartDate && data.settings.concession.daterange.selectedStartDate._d) {
                         data.settings.concession.daterange.selectedStartDate = (moment(data.settings.concession.daterange.selectedStartDate._d).format());
                         data.settings.concession.daterange.selectedEndDate = (moment(data.settings.concession.daterange.selectedEndDate._d).format());
                     }
