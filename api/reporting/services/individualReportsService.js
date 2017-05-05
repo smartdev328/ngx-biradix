@@ -206,12 +206,14 @@ module.exports = {
             options.show.occupancy = false;
             options.show.leased = false;
             options.show.sclae = "ner";
+            options.show.averages = true;
             options.compids = comps;
 
             bus.query(
                 settings.DASHBOARD_QUEUE
                 , {user: user, id: subjectid, options: options}
                 , function (data) {
+
                     let response = [];
 
                     var c;
@@ -260,6 +262,39 @@ module.exports = {
 
                     }
 
+                    rent = {};
+                    data.dashboard.points.averages.rent.forEach(x=> {
+                        rent[x.d] = x.v;
+                    })
+
+                    ner = {};
+                    data.dashboard.points.averages.ner.forEach(x=> {
+                        ner[x.d] = x.v;
+                    })
+
+                    concessions = {};
+                    data.dashboard.points.averages.concessions.forEach(x=> {
+                        concessions[x.d] = x.v;
+                    })
+
+                    concessionsMonthly = {};
+                    data.dashboard.points.averages.concessionsMonthly.forEach(x=> {
+                        concessionsMonthly[x.d] = x.v;
+                    })
+
+                    concessionsOneTime = {};
+                    data.dashboard.points.averages.concessionsOneTime.forEach(x=> {
+                        concessionsOneTime[x.d] = x.v;
+                    })
+
+                    var averages =  {
+                        rent: rent,
+                        ner: ner,
+                        concessions: concessions,
+                        concessionsMonthly: concessionsMonthly,
+                        concessionsOneTime: concessionsOneTime
+                    };
+
                     response = _.sortByAll(response, ['orderNumber','name']);
 
                     response[response.length - 1].last= true;
@@ -277,7 +312,7 @@ module.exports = {
                     //We can only fir 15 dates on the screen
                     dates = _.take(dates,13);
 
-                    callback({data: response, dates: dates});
+                    callback({data: response, dates: dates, averages: averages});
                     data = null;
                 }
             );

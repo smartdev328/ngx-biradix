@@ -83,7 +83,7 @@
             <b><i>vs. Comp NER Avg.</i></b>
         </td>
         <td ng-repeat="date in report.dates" style="text-align: right;border-right: 1px solid #ccc" ng-class="{bottom_dashed: !property.last, bottom_solid: property.last}">
-
+            <b><i>{{(property.points.ner[date] - report.averages.ner[date])/ property.points.ner[date] | number : 2}}%</i></b>
         </td>
     </tr>
     <tr ng-repeat-end ng-if="false">
@@ -102,7 +102,7 @@
                 Market Rent
             </td>
             <td ng-repeat="date in report.dates" style="text-align: right;border-right: 1px solid #ccc;border-bottom:1px solid #ccc">
-
+                {{report.averages.rent[date] | currency : "$" : 0}}
             </td>
         </tr>
         <tr>
@@ -110,6 +110,9 @@
                 One-Time Conc.
             </td>
             <td ng-repeat="date in report.dates" style="text-align: right;border-right: 1px solid #ccc;border-bottom:1px solid #ccc">
+                <span ng-if="report.averages.concessionsOneTime[date] == null">-</span>
+                <span ng-if="report.averages.concessionsOneTime[date] != null">{{report.averages.concessionsOneTime[date] | currency : "$" : 0}}</span>
+
             </td>
         </tr>
         <tr>
@@ -117,7 +120,8 @@
                 Recurring Conc.
             </td>
             <td ng-repeat="date in report.dates" style="text-align: right;border-right: 1px solid #ccc;border-bottom:1px solid #ccc">
-
+                <span ng-if="report.averages.concessionsMonthly[date] == null">-</span>
+                <span ng-if="report.averages.concessionsMonthly[date] != null">{{report.averages.concessionsMonthly[date] | currency : "$" : 0}}</span>
             </td>
         </tr>
         <tr>
@@ -125,7 +129,7 @@
                 Total Conc.
             </td>
             <td ng-repeat="date in report.dates" style="text-align: right;border-right: 1px solid #ccc;border-bottom:1px solid #ccc">
-
+                {{report.averages.concessions[date] | currency : "$" : 0}}
             </td>
         </tr>
         <tr>
@@ -133,7 +137,7 @@
                 NER
             </td>
             <td ng-repeat="date in report.dates" style="text-align: right;border-right: 1px solid #ccc;border-bottom:1px solid #ccc">
-
+                {{report.averages.ner[date] | currency : "$" : 0}}
             </td>
         </tr>
         </tfoot>

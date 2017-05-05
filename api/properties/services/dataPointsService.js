@@ -301,11 +301,11 @@ module.exports = {
 
             }
 
-            if (summary || bedrooms == -2) {
+            if (summary || bedrooms == -2 || show.averages) {
                 newpoints = {averages:{}}
 
                 //Only Avergage if we want comps grouped
-                if (summary) {
+                if (summary || show.averages) {
                     if (show.occupancy) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy');
                     }
@@ -342,16 +342,15 @@ module.exports = {
                             DataPointsHelperService.getSummary(points, subject._id, newpoints, b.toString(), true);
                         }
                     });
+                }
 
-                    //If we dont want summary, put back other non-summary points
-                    if (!summary) {
-                        for (prop in points) {
-                            if (prop != subject._id.toString()) {
-                                newpoints[prop] = points[prop];
-                            }
+                //If we dont want summary, put back other non-summary points
+                if (!summary && (bedrooms == -2 || show.averages)) {
+                    for (prop in points) {
+                        if (prop != subject._id.toString()) {
+                            newpoints[prop] = points[prop];
                         }
                     }
-
                 }
 
 
