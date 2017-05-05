@@ -58,35 +58,54 @@ module.exports = {
         }
 
         var tot = _.sum(fps, function (x) {
+            if (scale == "concessionsMonthly" && (typeof x.concessionsMonthly == 'undefined' || x.concessionsMonthly == null || isNaN(x.concessionsMonthly)) ) {
+                return 0;
+            }
+            else
+            if (scale == "concessionsOneTime" && (typeof x.concessionsOneTime == 'undefined' || x.concessionsOneTime == null || isNaN(x.concessionsOneTime)) ) {
+                return 0;
+            }
+
             return x.units
         });
 
         var ret;
 
-        if (scale == "rent") {
-            ret = _.sum(fps, function (x) {
-                return x.rent * x.units / tot
-            })
-        } else if (scale == "concessions") {
-            ret = _.sum(fps, function (x) {
-                return x.concessions * x.units / tot
-            })
-        } else {
-            ret = _.sum(fps, function (x) {
-                return (x.rent - x.concessions / 12 ) * x.units / tot
-            })
-        }
+        if (tot > 0) {
 
-        if (scale == "nersqft") {
-            var sqft = _.sum(fps, function (x) {
+            if (scale == "rent") {
+                ret = _.sum(fps, function (x) {
+                    return x.rent * x.units / tot
+                })
+            } else if (scale == "concessions") {
+                ret = _.sum(fps, function (x) {
+                    return x.concessions * x.units / tot
+                })
+            } else if (scale == "concessionsMonthly") {
+                ret = _.sum(fps, function (x) {
+                    return (x.concessionsMonthly || 0) * x.units / tot
+                })
+            } else if (scale == "concessionsOneTime") {
+                ret = _.sum(fps, function (x) {
+                    return (x.concessionsOneTime || 0) * x.units / tot
+                })
+            } else {
+                ret = _.sum(fps, function (x) {
+                    return (x.rent - x.concessions / 12 ) * x.units / tot
+                })
+            }
 
-                var sqft = 1;
-                if (scale == "nersqft") {
-                    sqft = x.sqft;
-                }
-                return x.sqft * x.units / tot
-            })
-            ret = ret / sqft;
+            if (scale == "nersqft") {
+                var sqft = _.sum(fps, function (x) {
+
+                    var sqft = 1;
+                    if (scale == "nersqft") {
+                        sqft = x.sqft;
+                    }
+                    return x.sqft * x.units / tot
+                })
+                ret = ret / sqft;
+            }
         }
 
         return {value: tot == 0 ? null : ret, excluded: excluded, totalUnits: tot};

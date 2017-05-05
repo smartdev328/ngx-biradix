@@ -216,7 +216,7 @@ module.exports = {
 
                     var c;
                     var id;
-                    var rent, ner, concessions
+                    var rent, ner, concessions, concessionsMonthly,concessionsOneTime
                     for (id in data.dashboard.points) {
                         c = data.dashboard.comps.find(x => x._id.toString() == id.toString());
                         if (c) {
@@ -235,13 +235,25 @@ module.exports = {
                                 concessions[x.d] = x.v;
                             })
 
+                            concessionsMonthly = {};
+                            data.dashboard.points[id].concessionsMonthly.forEach(x=> {
+                                concessionsMonthly[x.d] = x.v;
+                            })
+
+                            concessionsOneTime = {};
+                            data.dashboard.points[id].concessionsOneTime.forEach(x=> {
+                                concessionsOneTime[x.d] = x.v;
+                            })
+
                             response.push({
                                 name: c.name,
                                 orderNumber : c.orderNumber,
                                 points: {
                                     rent: rent,
                                     ner: ner,
-                                    concessions: concessions
+                                    concessions: concessions,
+                                    concessionsMonthly: concessionsMonthly,
+                                    concessionsOneTime: concessionsOneTime
                                 },
                             })
                         }

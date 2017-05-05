@@ -51,7 +51,7 @@ module.exports = {
         }
 
         if (show.ner) {
-            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.bedrooms floorplans.bathrooms floorplans.sqft"
+            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.concessionsMonthly floorplans.concessionsOneTime floorplans.bedrooms floorplans.bathrooms floorplans.sqft"
         }
 
         query = query.select(select)
@@ -151,9 +151,24 @@ module.exports = {
 
                 if (show.concessions) {
                     points[s.propertyid].concessions = points[s.propertyid].concessions || {};
-
                     nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "concessions");
                     points[s.propertyid].concessions[dateKey] = nerPoint;
+
+                    if (nerPoint.excluded) {
+                        excluded = true;
+                    }
+
+                    points[s.propertyid].concessionsMonthly = points[s.propertyid].concessionsMonthly || {};
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "concessionsMonthly");
+                    points[s.propertyid].concessionsMonthly[dateKey] = nerPoint;
+
+                    if (nerPoint.excluded) {
+                        excluded = true;
+                    }
+
+                    points[s.propertyid].concessionsOneTime = points[s.propertyid].concessionsOneTime || {};
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "concessionsOneTime");
+                    points[s.propertyid].concessionsOneTime[dateKey] = nerPoint;
 
                     if (nerPoint.excluded) {
                         excluded = true;
@@ -208,6 +223,8 @@ module.exports = {
 
                     if (show.concessions) {
                         points[prop].concessions = DataPointsHelperService.normailizePoints(points[prop].concessions, offset, dr, true);
+                        points[prop].concessionsMonthly = DataPointsHelperService.normailizePoints(points[prop].concessionsMonthly, offset, dr, true);
+                        points[prop].concessionsOneTime = DataPointsHelperService.normailizePoints(points[prop].concessionsOneTime, offset, dr, true);
                     }
 
                     if (show.ner) {
@@ -240,6 +257,8 @@ module.exports = {
                 }
                 if (show.concessions) {
                     points[prop].concessions = DataPointsHelperService.objectToArray(points[prop].concessions);
+                    points[prop].concessionsMonthly = DataPointsHelperService.objectToArray(points[prop].concessionsMonthly);
+                    points[prop].concessionsOneTime = DataPointsHelperService.objectToArray(points[prop].concessionsOneTime);
                 }
                 if (show.ner) {
                     points[prop].ner = DataPointsHelperService.objectToArray(points[prop].ner);
@@ -268,6 +287,8 @@ module.exports = {
 
                 if (show.concessions) {
                     points[prop].concessions = DataPointsHelperService.extrapolateMissingPoints(points[prop].concessions, true);
+                    points[prop].concessionsMonthly = DataPointsHelperService.extrapolateMissingPoints(points[prop].concessionsMonthly, true);
+                    points[prop].concessionsOneTime = DataPointsHelperService.extrapolateMissingPoints(points[prop].concessionsOneTime, true);
                 }
 
                 if (show.ner) {
@@ -305,6 +326,8 @@ module.exports = {
 
                     if (show.concessions) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'concessions', true);
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'concessionsMonthly', true);
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'concessionsOneTime', true);
                     }
 
                     if (show.ner) {
@@ -352,6 +375,22 @@ module.exports = {
                 for (prop in points) {
                     if (points[prop].concessions) {
                         points[prop].concessions.forEach(function (p) {
+                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                                p.v = p.v.value;
+                            }
+                        });
+                    }
+
+                    if (points[prop].concessionsMonthly) {
+                        points[prop].concessionsMonthly.forEach(function (p) {
+                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                                p.v = p.v.value;
+                            }
+                        });
+                    }
+
+                    if (points[prop].concessionsOneTime) {
+                        points[prop].concessionsOneTime.forEach(function (p) {
                             if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
                                 p.v = p.v.value;
                             }
