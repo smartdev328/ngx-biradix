@@ -110,7 +110,7 @@ module.exports = {
 
         return {value: tot == 0 ? null : ret, excluded: excluded, totalUnits: tot};
     },
-    normailizePoints: function (points, offset, dr, weighted) {
+    normailizePoints: function (points, offset, dr, weighted, dontExtrapolate) {
         if (points == {}) {
             return {}
         }
@@ -161,9 +161,11 @@ module.exports = {
 
         //console.log(dr.end,moment.utc(dr.end).format(),moment.utc(dr.end).add(offset, "minute").format(),moment.utc(dr.end).add(offset, "minute").startOf("day").format());
 
-        var today = parseInt(moment.utc(dr.end).add(offset, "minute").startOf("day").subtract(offset, "minute").format('x'))
+        if (!dontExtrapolate) {
+            var today = parseInt(moment.utc(dr.end).add(offset, "minute").startOf("day").subtract(offset, "minute").format('x'))
 
-        ret[today] = first;
+            ret[today] = first;
+        }
 
         return ret;
     },

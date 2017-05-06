@@ -207,6 +207,7 @@ module.exports = {
             options.show.leased = false;
             options.show.sclae = "ner";
             options.show.averages = true;
+            options.show.dontExtrapolate = true;
             options.compids = comps;
 
             bus.query(
