@@ -139,12 +139,21 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                 delete data.settings.profileSettings.daterange.Ranges;
 
 
+
                 if (data.settings.dashboardSettings.daterange.selectedStartDate._d) {
                     data.settings.dashboardSettings.daterange.selectedStartDate = (moment(data.settings.dashboardSettings.daterange.selectedStartDate._d).format());
                     data.settings.dashboardSettings.daterange.selectedEndDate = (moment(data.settings.dashboardSettings.daterange.selectedEndDate._d).format());
 
                     data.settings.profileSettings.daterange.selectedStartDate = (moment(data.settings.profileSettings.daterange.selectedStartDate._d).format());
                     data.settings.profileSettings.daterange.selectedEndDate = (moment(data.settings.profileSettings.daterange.selectedEndDate._d).format());
+                }
+
+                if (data.settings.concession) {
+                    delete data.settings.concession.daterange.Ranges;
+                    if (data.settings.concession.daterange.selectedStartDate && data.settings.concession.daterange.selectedStartDate._d) {
+                        data.settings.concession.daterange.selectedStartDate = (moment(data.settings.concession.daterange.selectedStartDate._d).format());
+                        data.settings.concession.daterange.selectedEndDate = (moment(data.settings.concession.daterange.selectedEndDate._d).format());
+                    }
                 }
 
                 var cookies = [

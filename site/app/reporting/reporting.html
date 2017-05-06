@@ -96,7 +96,20 @@
                         }
                     </style>
                     <br clear="all">
-                    <uib-accordion ng-if="(rankings || rankingsSummary || property_report)" class="hidden-print" style="margin-top:15px" close-others="false">
+                    <uib-accordion ng-if="(rankings || rankingsSummary || property_report || concession)" class="hidden-print" style="margin-top:15px" close-others="false">
+                        <div ng-if="concession" uib-accordion-group class="panel-default" is-open="temp.concession_open">
+                            <uib-accordion-heading>
+                                <Div>
+                                    <i class="fa fa-gear fa-2px"></i> Preferences: Concessions <i ng-class="{fa : true, 'fa-chevron-right': !temp.concession_open, 'fa-chevron-down': temp.concession_open, 'fa-2px': true}"></i>
+                                </Div>
+                            </uib-accordion-heading>
+                            <div class="row" style="padding:10px">
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    Date Range<br>
+                                    <daterange-picker daterange="liveSettings.concession.daterange"></daterange-picker>
+                                </div>
+                            </div>
+                        </div>
                         <div ng-if="property_report" uib-accordion-group class="panel-default" is-open="temp.property_report_open">
                             <uib-accordion-heading>
                                 <Div>
@@ -284,6 +297,8 @@
             <cover-page options="coverPage"></cover-page>
 
             <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="runSettings.dashboardSettings" profile-settings="runSettings.profileSettings" show-profile="runSettings.showProfile" bedrooms="temp.bedrooms" bedroom="temp.bedroom"></property-report>
+
+            <concession class="report" ng-if="!reportLoading && reports && concession" report="reports.concession"></concession>
 
             <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy"></rankings-report-summary>
 

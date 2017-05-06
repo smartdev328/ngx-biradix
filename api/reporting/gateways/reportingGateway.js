@@ -49,6 +49,13 @@ Routes.post('/:id', function (req, res) {
                     });
 
                 },
+                function(callbackp) {
+                    individualReportsService.concession(req.user, req.body.reports,req.params.id, (req.body.compids || []), req.body.options.concession, function(concession) {
+                        results.concession = concession;
+                        callbackp();
+                    });
+
+                },
             ], function(err) {
                 callbackw(null,comps,lookups)
             });
