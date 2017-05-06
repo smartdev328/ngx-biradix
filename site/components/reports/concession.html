@@ -11,17 +11,21 @@
         border-right: 1px solid #ccc;
     }
 
+    .concessions .maingrid > table .thead {
+        border-bottom : 1px solid #ddd;
+    }
+
 </style>
-<div class="break2 panel panel-info">
+<div class="break2 panel panel-info concessions">
     <div class="panel-heading">Concessions Report</div>
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
-    <div class="header" style="height:47px"></div>
+    <div class="header" style="height:48px"></div>
     <table class="table table-condensed table-striped hidden-arrows" style="font-size:9pt">
     <tbody>
     <tr class="thead">
-        <th style="height:46px;text-align: center !important;vertical-align: middle">
+        <th style="height:46px;text-align: center !important;vertical-align: middle;">
             Property
         </th>
         <th style="height:46px;text-align: right !important;vertical-align: middle">
@@ -92,7 +96,7 @@
         </td>
         <td ng-repeat="date in report.dates" style="text-align: right;" ng-class="{'border_right' : $index != report.dates.length - 1, bottom_dashed: !property.last, bottom_solid: property.last}">
             <span ng-if="report.averages.ner[date] == null || property.points.ner[date] == null">-</span>
-            <span ng-if="report.averages.ner[date] != null && property.points.ner[date] != null"><b><i>{{(property.points.ner[date] - report.averages.ner[date])/ property.points.ner[date] | number : 2}}%</i></b></span>
+            <span ng-if="report.averages.ner[date] != null && property.points.ner[date] != null"><b><i>{{(property.points.ner[date] - report.averages.ner[date])/ property.points.ner[date] * 100 | number : 2}}%</i></b></span>
         </td>
     </tr>
     <tr ng-repeat-end ng-if="false">
