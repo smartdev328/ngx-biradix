@@ -43,6 +43,10 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
 
+                if ($rootScope.me.permissions.indexOf('Admin') == -1) {
+                    _.remove($scope.reportItems, function(x) {return x.id == 'concessions'})
+                }
+
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
