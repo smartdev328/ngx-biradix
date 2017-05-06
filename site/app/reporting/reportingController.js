@@ -44,7 +44,7 @@ define([
             if ($rootScope.me) {
 
                 if ($rootScope.me.permissions.indexOf('Admin') == -1) {
-                    _.remove($scope.reportItems, function(x) {return x.id == 'concessions'})
+                    _.remove($scope.reportItems, function(x) {return x.id == 'concession'})
                 }
 
                 if ($cookies.get("settings")) {
