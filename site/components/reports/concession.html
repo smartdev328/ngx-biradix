@@ -102,7 +102,7 @@
         </td>
         <td ng-repeat="date in report.dates" style="text-align: right;" ng-class="{'border_right' : true, bottom_dashed: !property.last, bottom_solid: property.last}">
             <span ng-if="report.averages.ner[date] == null || property.points.ner[date] == null">-</span>
-            <span ng-if="report.averages.ner[date] != null && property.points.ner[date] != null"><b><i>{{(property.points.ner[date] - report.averages.ner[date])/ report.averages.ner[date] * 100 | number : 2}}%</i></b></span>
+            <span ng-if="report.averages.ner[date] != null && property.points.ner[date] != null"><b><i>{{(property.points.ner[date].toFixed(0) - report.averages.ner[date].toFixed(0))/ report.averages.ner[date].toFixed(0) * 100 | number : 2}}%</i></b></span>
         </td>
     </tr>
     <tr ng-repeat-end ng-if="false">
