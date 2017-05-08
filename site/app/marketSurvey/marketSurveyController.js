@@ -1,16 +1,11 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-     app.controller
-        ('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options','$userService','$propertyUsersService','$cookieSettingsService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService) {
+angular.module('biradix.global').controller('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options','$userService','$propertyUsersService','$cookieSettingsService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
 
 
             if (!$rootScope.loggedIn) {
-                $location.path('/login')
+                return $location.path('/login')
             }
 
             ga('set', 'title', "/marketSurvey");
@@ -903,4 +898,3 @@ define([
     }]);
 
 
-});

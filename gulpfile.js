@@ -74,6 +74,7 @@ gulp.task('globaljs', function() {
         , './site/components/propertyProfile/comps.js'
 
         , './site/app/rootController.js'
+        , './site/app/marketSurvey/marketSurveyController.js'
     ])
         .pipe(concat('global.js'))
         .pipe(gulp.dest('./dist/'))

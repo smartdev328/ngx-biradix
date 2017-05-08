@@ -85,7 +85,7 @@ define([
             }
 
             $cookieSettingsService.saveBedrooms($scope.settings.selectedBedroom);
-            $scope.loadProperty($scope.selectedProperty._id, true);
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true);
         }
 
         $scope.first = true;
