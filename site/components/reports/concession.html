@@ -38,7 +38,7 @@
 
         </th>
 
-        <th style="text-align:right;vertical-align: middle" ng-repeat="date in report.dates">
+        <th style="text-align:right;vertical-align: middle" ng-repeat="date in report.dates" nowrap>
             <i style="font-size:11px">Week of</i><Br>
             {{date | date : 'MMM d'}}
         </th>
@@ -100,7 +100,7 @@
         <td style="text-align: right;border-right:1px solid #ccc;" nowrap ng-class="{bottom_dashed: !property.last, bottom_solid: property.last}">
             <b><i>vs. Comp NER Avg.</i></b>
         </td>
-        <td ng-repeat="date in report.dates" style="text-align: right;" ng-class="{'border_right' : true, bottom_dashed: !property.last, bottom_solid: property.last}">
+        <td ng-repeat="date in report.dates" style="text-align: right;" ng-class="{'border_right' : true, bottom_dashed: !property.last, bottom_solid: property.last}" nowrap>
             <span ng-if="report.averages.ner[date] == null || property.points.ner[date] == null">-</span>
             <span ng-if="report.averages.ner[date] != null && property.points.ner[date] != null"><b><i>{{(property.points.ner[date].toFixed(0) - report.averages.ner[date].toFixed(0))/ report.averages.ner[date].toFixed(0) * 100 | number : 2}}%</i></b></span>
         </td>
