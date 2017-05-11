@@ -256,6 +256,10 @@
                             </uib-accordion-heading>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Columns<br>
+                                    <filter-list options="temp.showRankingsOptions" items="temp.showRankingsItems"></filter-list>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Sort Order<br>
                                     <div class="col-xs-6" style="padding-left: 0; padding-right:0">
                                         <select
@@ -306,7 +310,7 @@
 
             <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy" show="liveSettings.rankingsSummary.show"></rankings-report-summary>
 
-            <rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankings.orderBy"></rankings-report>
+            <rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankings.orderBy" show="liveSettings.rankings.show"></rankings-report>
 
             <communityamenities-report class="report" ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
 

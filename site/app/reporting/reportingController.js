@@ -353,6 +353,10 @@ define([
                     if ($scope.temp.rankingSortSelected) {
                         $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
                     }
+
+                    $scope.temp.showRankingsItems.forEach(function (f) {
+                        $scope.liveSettings.rankings.show[f.id] = f.selected;
+                    })
                 }
 
                 if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
@@ -640,6 +644,15 @@ define([
 
             $scope.liveSettings.rankings = {orderBy: "nersqft"}
 
+            $scope.liveSettings.rankings.show = {
+                units: true,
+                sqft: true,
+                runrate: false,
+                runratesqft: false,
+                ner: true,
+                nersqft: true
+            }
+
             $scope.configureRankingsOptions();
         }
 
@@ -648,11 +661,24 @@ define([
             if (!$scope.liveSettings.rankings) {
                 return;
             }
+
+            $scope.temp.showRankingsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showRankingsItems = [
+                {id: "units", name: "Units", selected: $scope.liveSettings.rankings.show.units},
+                {id: "sqft", name: "Sqft", selected: $scope.liveSettings.rankings.show.sqft},
+                {id: "runrate", name: "Run Rate", selected: $scope.liveSettings.rankings.show.runrate},
+                {id: "runratesqft", name: "Run Rate / Sqft", selected: $scope.liveSettings.rankings.show.runratesqft},
+                {id: "ner", name: "Net Eff. Rent", selected: $scope.liveSettings.rankings.show.ner},
+                {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.liveSettings.rankings.show.nersqft},
+            ];
+
             $scope.temp.rankingSortItems = [
                 {id: "name", name: "Name"},
                 {id: "description", name: "Description"},
                 {id: "units", name: "Units"},
                 {id: "sqft", name: "Sqft"},
+                {id: "runrate", name: "Run Rate"},
+                {id: "runratesqft", name: "Run Rate/Sqft"},
                 {id: "ner", name: "Net Eff. Rent"},
                 {id: "nersqft", name: "NER/Sqft"},
             ]
