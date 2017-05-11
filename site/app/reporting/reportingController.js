@@ -34,8 +34,8 @@ define([
         $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:false, group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:false, group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
 
         $scope.propertyItems = [];
@@ -43,9 +43,9 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
 
-                if ($rootScope.me.permissions.indexOf('Admin') == -1) {
-                    _.remove($scope.reportItems, function(x) {return x.id == 'concession'})
-                }
+                // if ($rootScope.me.permissions.indexOf('Admin') == -1) {
+                //     _.remove($scope.reportItems, function(x) {return x.id == 'concession'})
+                // }
 
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
@@ -56,7 +56,7 @@ define([
                     $scope.resetConcessionSettings(true);
                 }
 
-                $scope.reload($stateParams.property == "1" || $stateParams.property == "2");
+                $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
                 me();
             }
         })
@@ -359,6 +359,10 @@ define([
                     if ($scope.temp.rankingSummarySortSelected) {
                         $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
                     }
+
+                    $scope.temp.showRankingsSummaryItems.forEach(function (f) {
+                        $scope.liveSettings.rankingsSummary.show[f.id] = f.selected;
+                    })
                 }
             }
 
@@ -575,6 +579,16 @@ define([
         $scope.resetRankingsSummarySettings = function(configure) {
             $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
 
+            $scope.liveSettings.rankingsSummary.show = {
+                units: true,
+                unitPercent: true,
+                sqft: true,
+                runrate: false,
+                runratesqft: false,
+                ner: true,
+                nersqft: true
+            }
+
             $scope.configureRankingsSummaryOptions();
         }
 
@@ -583,12 +597,26 @@ define([
             if (!$scope.liveSettings.rankingsSummary) {
                 return;
             }
+
+            $scope.temp.showRankingsSummaryOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showRankingsSummaryItems = [
+                {id: "units", name: "Units", selected: $scope.liveSettings.rankingsSummary.show.units},
+                {id: "unitPercent", name: "Unit %", selected: $scope.liveSettings.rankingsSummary.show.unitPercent},
+                {id: "sqft", name: "Sqft", selected: $scope.liveSettings.rankingsSummary.show.sqft},
+                {id: "runrate", name: "Run Rate", selected: $scope.liveSettings.rankingsSummary.show.runrate},
+                {id: "runratesqft", name: "Run Rate / Sqft", selected: $scope.liveSettings.rankingsSummary.show.runratesqft},
+                {id: "ner", name: "Net Eff. Rent", selected: $scope.liveSettings.rankingsSummary.show.ner},
+                {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.liveSettings.rankingsSummary.show.nersqft},
+            ];
+
             $scope.temp.rankingSummarySortItems = [
                 {id: "name", name: "Name"},
                 {id: "units", name: "Units"},
                 {id: "unitpercent", name: "Unit %"},
                 {id: "sqft", name: "Sqft"},
                 {id: "ner", name: "Net Eff. Rent"},
+                {id: "runrate", name: "Run Rate"},
+                {id: "runratesqft", name: "Run Rate/Sqft"},
                 {id: "nersqft", name: "NER/Sqft"},
             ]
             var f = $scope.liveSettings.rankingsSummary.orderBy.replace("-","");

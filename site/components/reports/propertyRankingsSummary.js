@@ -10,7 +10,8 @@ define([
                 comps: '=',
                 report: '=',
                 settings: '=',
-                orderBy: '='
+                orderBy: '=',
+                show:'='
             },
             controller: function ($scope,$gridService,$element) {
 
@@ -55,7 +56,9 @@ define([
                                 units: fp.units,
                                 sqft: fp.sqft,
                                 ner: fp.ner,
-                                nersqft: fp.nersqft
+                                nersqft: fp.nersqft,
+                                runrate: fp.runrate,
+                                runratesqft: fp.runratesqft
                             };
 
 
@@ -84,7 +87,10 @@ define([
                                     units: fp.units,
                                     sqft: fp.sqft * fp.units,
                                     ner: fp.ner * fp.units,
-                                    nersqft: fp.nersqft * fp.units
+                                    nersqft: fp.nersqft * fp.units,
+                                    runrate: fp.runrate * fp.units,
+                                    runratesqft: fp.runratesqft * fp.units
+
                                 };
 
                                 $scope.rankings[fp.bedrooms].floorplans.push(p);
@@ -93,6 +99,9 @@ define([
                                 p.sqft += (fp.sqft * fp.units);
                                 p.ner += (fp.ner * fp.units);
                                 p.nersqft += (fp.nersqft * fp.units);
+                                p.runrate += (fp.runrate * fp.units);
+                                p.runratesqft += (fp.runratesqft * fp.units);
+
                             }
 
                             var s = _.find($scope.summary, function(x) {return x.id == fp.id.toString() })
@@ -107,7 +116,9 @@ define([
                                     units: fp.units,
                                     sqft: fp.sqft * fp.units,
                                     ner: fp.ner * fp.units,
-                                    nersqft: fp.nersqft * fp.units
+                                    nersqft: fp.nersqft * fp.units,
+                                    runrate: fp.runrate * fp.units,
+                                    runratesqft: fp.runratesqft * fp.units
                                 };
 
                                 $scope.summary.push(s);
@@ -116,6 +127,9 @@ define([
                                 s.sqft += (fp.sqft * fp.units);
                                 s.ner += (fp.ner * fp.units);
                                 s.nersqft += (fp.nersqft * fp.units);
+                                s.runrate += (fp.runrate * fp.units);
+                                s.runratesqft += (fp.runratesqft * fp.units);
+
                             }
 
                             $scope.rankings[fp.bedrooms].summary = $scope.rankings[fp.bedrooms].summary || {};
@@ -123,12 +137,16 @@ define([
                             $scope.rankings[fp.bedrooms].summary.totalsqft = ($scope.rankings[fp.bedrooms].summary.totalsqft || 0) + fp.units * fp.sqft;
                             $scope.rankings[fp.bedrooms].summary.totalner = ($scope.rankings[fp.bedrooms].summary.totalner || 0) + fp.units * fp.ner;
                             $scope.rankings[fp.bedrooms].summary.totalnersqft = ($scope.rankings[fp.bedrooms].summary.totalnersqft || 0) + fp.units * fp.nersqft;
+                            $scope.rankings[fp.bedrooms].summary.totalrunrate = ($scope.rankings[fp.bedrooms].summary.totalrunrate || 0) + fp.units * fp.runrate;
+                            $scope.rankings[fp.bedrooms].summary.totalrunratesqft = ($scope.rankings[fp.bedrooms].summary.totalrunratesqft || 0) + fp.units * fp.runratesqft;
 
                             $scope.totals.units = ($scope.totals.units || 0) + fp.units;
                             $scope.totals.totalsqft = ($scope.totals.totalsqft || 0) + fp.units * fp.sqft;
                             $scope.totals.totalner = ($scope.totals.totalner || 0) + fp.units * fp.ner;
                             $scope.totals.totalnersqft = ($scope.totals.totalnersqft || 0) + fp.units * fp.nersqft;
 
+                            $scope.totals.totalrunrate = ($scope.totals.totalrunrate || 0) + fp.units * fp.runrate;
+                            $scope.totals.totalrunratesqft = ($scope.totals.totalrunratesqft || 0) + fp.units * fp.runratesqft;
 
                         }
                     })
@@ -140,10 +158,15 @@ define([
                             $scope.rankings[fp].summary.sqft = $scope.rankings[fp].summary.totalsqft / $scope.rankings[fp].summary.units;
                             $scope.rankings[fp].summary.ner = $scope.rankings[fp].summary.totalner / $scope.rankings[fp].summary.units;
                             $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.ner / $scope.rankings[fp].summary.sqft;
+                            $scope.rankings[fp].summary.runrate = $scope.rankings[fp].summary.totalrunrate / $scope.rankings[fp].summary.units;
+                            $scope.rankings[fp].summary.runratesqft = $scope.rankings[fp].summary.runrate / $scope.rankings[fp].summary.sqft;
+
                             $scope.rankings[fp].floorplans.forEach(function (f) {
                                 f.sqft = f.sqft / f.units;
                                 f.ner = f.ner / f.units;
                                 f.nersqft = f.ner / f.sqft;
+                                f.runrate = f.runrate / f.units;
+                                f.runratesqft = f.runrate / f.sqft;
                                 f.unitpercent = f.units / $scope.rankings[fp].summary.units * 100;
 
                             })
@@ -157,12 +180,17 @@ define([
                         f.sqft = Math.round(f.sqft / f.units);
                         f.ner = f.ner / f.units;
                         f.nersqft = f.ner / f.sqft;
+                        f.runrate = f.runrate / f.units;
+                        f.runratesqft = f.runrate / f.sqft;
                         f.unitpercent = f.units / $scope.totals.units * 100;
                     })
 
                     $scope.totals.sqft = $scope.totals.totalsqft / $scope.totals.units;
                     $scope.totals.ner = $scope.totals.totalner / $scope.totals.units;
                     $scope.totals.nersqft = $scope.totals.ner / $scope.totals.sqft;
+                    $scope.totals.runrate = $scope.totals.totalrunrate / $scope.totals.units;
+                    $scope.totals.runratesqft = $scope.totals.runrate / $scope.totals.sqft;
+
                     $scope.totals.unitsTotal = $scope.totals.units;
                     $scope.totals.unitpercent = 100;
                     $scope.totals.units = $scope.totals.units / $scope.summary.length;

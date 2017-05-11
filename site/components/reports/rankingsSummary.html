@@ -13,31 +13,57 @@
             <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('units')" style="min-width:60px">
+        <th class="center sortable" ng-click="toggleSort('units')" style="min-width:60px" ng-if="show.units">
             Units
             <i ng-show="sort.units == null" class="fa fa-sort"></i>
             <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('unitpercent')" style="min-width:60px">
+        <th class="center sortable" ng-click="toggleSort('unitpercent')" style="min-width:60px" ng-if="show.unitPercent">
             Unit %
             <i ng-show="sort.unitpercent == null" class="fa fa-sort"></i>
             <i ng-show="sort.unitpercent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.unitpercent === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px">
+        <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px" ng-if="show.sqft">
             Sqft
             <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('ner')" style="min-width:70px">
+        <th class="center sortable" ng-click="toggleSort('runrate')" style="min-width:70px" ng-if="show.runrate">
+            Run Rate
+
+            <i class="fa fa-info-circle hidden-print" style="font-size:12px"
+               popover-trigger="'mouseenter'"
+               popover-placement="bottom"
+               uib-popover="Run Rate is market rent, minus recurring concessions, and excluding upfront concessions."
+            ></i>
+
+            <i ng-show="sort.runrate == null" class="fa fa-sort"></i>
+            <i ng-show="sort.runrate === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.runrate === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('runratesqft')" style="min-width:80px" ng-if="show.runratesqft">
+            Run Rate/<Br>Sqft
+
+            <i class="fa fa-info-circle hidden-print" style="font-size:12px"
+               popover-trigger="'mouseenter'"
+               popover-placement="bottom"
+               uib-popover="Run Rate is market rent, minus recurring concessions, and excluding upfront concessions."
+            ></i>
+
+            <i ng-show="sort.runratesqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.runratesqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.runratesqft === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('ner')" style="min-width:70px" ng-if="show.ner">
             Net Eff.<br>&nbsp;Rent
             <i ng-show="sort.ner == null" class="fa fa-sort"></i>
             <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('nersqft')" style="min-width:70px">
+        <th class="center sortable" ng-click="toggleSort('nersqft')" style="min-width:70px" ng-if="show.nersqft">
             NER/&nbsp;<Br>Sqft
             <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
@@ -64,19 +90,25 @@
         <td>
             {{fp.name}}
         </td>
-        <td class="center">
+        <td class="center" ng-if="show.units">
             {{fp.units}}
         </td>
-        <td class="center">
+        <td class="center" ng-if="show.unitPercent">
             {{fp.unitpercent == 100 ? '100' : (fp.unitpercent | number : 1)}}%
         </td>
-        <td class="center">
+        <td class="center" ng-if="show.sqft">
             {{fp.sqft | number : 0}}
         </td>
-        <td class="center">
+        <td class="center"  ng-if="show.runrate">
+            {{fp.runrate | currency : "$" : 0}}
+        </td>
+        <td class="center" ng-if="show.runratesqft">
+            {{fp.runratesqft | currency}}
+        </td>
+        <td class="center" ng-if="show.ner">
             {{fp.ner | currency : "$" : 0}}
         </td>
-        <td class="center">
+        <td class="center" ng-if="show.nersqft">
             {{fp.nersqft | currency}}
         </td>
     </tr>
@@ -85,19 +117,25 @@
         <td>
             <div style="color:black !important;">Averages</div>
         </td>
-        <td class="center black">
+        <td class="center black" ng-if="show.units">
             <div style="color:black !important;">{{totals.units  | number : 0}}</div>
         </td>
-        <td class="center black">
+        <td class="center black" ng-if="show.unitPercent">
             <div style="color:black !important;">{{totals.unitpercent  | number : 0}}%</div>
         </td>
-        <td class="center black">
+        <td class="center black" ng-if="show.sqft">
             <div style="color:black !important;">{{totals.sqft | number : 0}}</div>
         </td>
-        <td class="center black">
+        <td class="center black" ng-if="show.runrate">
+            <div style="color:black !important;">{{totals.runrate | currency : "$" : 0}}</div>
+        </td>
+        <td class="center black" ng-if="show.runratesqft">
+            <div style="color:black !important;">{{totals.runratesqft | currency}}</div>
+        </td>
+        <td class="center black" ng-if="show.ner">
             <div style="color:black !important;">{{totals.ner | currency : "$" : 0}}</div>
         </td>
-        <td class="center black">
+        <td class="center black" ng-if="show.nersqft">
             <div style="color:black !important;">{{totals.nersqft | currency}}</div>
         </td>
     </tr>
@@ -123,19 +161,25 @@
             <td>
                 {{fp.name}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.units">
                 {{fp.units}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.unitPercent">
                 {{fp.unitpercent == 100 ? '100' : (fp.unitpercent | number : 1)}}%
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.sqft">
                 {{fp.sqft | number : 0}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.runrate">
+                {{fp.runrate | currency : "$" : 0}}
+            </td>
+            <td class="center" ng-if="show.runratesqft">
+                {{fp.runratesqft | currency}}
+            </td>
+            <td class="center" ng-if="show.ner">
                 {{fp.ner | currency : "$" : 0}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.nersqft">
                 {{fp.nersqft | currency}}
             </td>
         </tr>
@@ -143,19 +187,25 @@
             <td>
                 <div style="color:black !important;">Averages</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.units">
                 <div style="color:black !important;">{{value.summary.units  | number : 0}}</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.unitPercent">
                 <div style="color:black !important;">100%</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.sqft">
                 <div style="color:black !important;">{{value.summary.sqft | number : 0}}</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.runrate">
+                <div style="color:black !important;">{{value.summary.runrate | currency : "$" : 0}}</div>
+            </td>
+            <td class="center black" ng-if="show.runratesqft">
+                <div style="color:black !important;">{{value.summary.runratesqft | currency}}</div>
+            </td>
+            <td class="center black" ng-if="show.ner">
                 <div style="color:black !important;">{{value.summary.ner | currency : "$" : 0}}</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.nersqft">
                 <div style="color:black !important;">{{value.summary.nersqft | currency}}</div>
             </td>
         </tr>
