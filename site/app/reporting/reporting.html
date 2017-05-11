@@ -302,7 +302,7 @@
 
             <property-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.property_report && property_report" report="reports.property_report" me="me" dashboard-settings="runSettings.dashboardSettings" profile-settings="runSettings.profileSettings" show-profile="runSettings.showProfile" bedrooms="temp.bedrooms" bedroom="temp.bedroom"></property-report>
 
-            <concession class="report" ng-if="!reportLoading && reports && concession" report="reports.concession"></concession>
+            <concession class="report" ng-if="!reportLoading && reports && reports.concession && concession" report="reports.concession"></concession>
 
             <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy" show="liveSettings.rankingsSummary.show"></rankings-report-summary>
 
