@@ -112,6 +112,12 @@ module.exports = {
                             , nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100
                             , runrate:  Math.round((fp.rent - (fp.concessionsMonthly || 0)) * 100) / 100
                             , runratesqft:  Math.round((fp.rent - (fp.concessionsMonthly || 0)) / fp.sqft * 100) / 100
+                            , rent: fp.rent
+                            , mersqft: Math.round(fp.rent / fp.sqft * 100) / 100
+                            , concessionsMonthly: fp.concessionsMonthly
+                            , concessionsOneTime: fp.concessionsOneTime
+                            , concessions: fp.concessions
+
                         };
 
                         var included = _.find(allIncludedFloorplans, function(x) {return x.toString() == fp.id.toString()})

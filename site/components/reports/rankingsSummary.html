@@ -3,7 +3,7 @@
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
-    <div class="header" style="height:46px"></div>
+    <div class="header" style="height:47px"></div>
     <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <tbody>
     <tr class="thead">
@@ -32,12 +32,12 @@
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
         <th class="center sortable" ng-click="toggleSort('runrate')" style="min-width:70px" ng-if="show.runrate">
-            Run Rate
+            Recur. Rate
 
             <i class="fa fa-info-circle hidden-print" style="font-size:12px"
                popover-trigger="'mouseenter'"
                popover-placement="bottom"
-               uib-popover="Run Rate is market rent, minus recurring concessions, and excluding upfront concessions."
+               uib-popover="Recurring Rent is market rent, minus recurring concessions, and excluding upfront concessions."
             ></i>
 
             <i ng-show="sort.runrate == null" class="fa fa-sort"></i>
@@ -45,12 +45,12 @@
             <i ng-show="sort.runrate === false" class="fa fa-sort-up"></i>
         </th>
         <th class="center sortable" ng-click="toggleSort('runratesqft')" style="min-width:80px" ng-if="show.runratesqft">
-            Run Rate/<Br>Sqft
+            Recur. Rate/<Br>Sqft
 
             <i class="fa fa-info-circle hidden-print" style="font-size:12px"
                popover-trigger="'mouseenter'"
                popover-placement="bottom"
-               uib-popover="Run Rate is market rent, minus recurring concessions, and excluding upfront concessions."
+               uib-popover="Recurring Rent is market rent, minus recurring concessions, and excluding upfront concessions."
             ></i>
 
             <i ng-show="sort.runratesqft == null" class="fa fa-sort"></i>

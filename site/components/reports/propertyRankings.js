@@ -55,6 +55,11 @@ define([
                                 nersqft: fp.nersqft,
                                 runrate: fp.runrate,
                                 runratesqft: fp.runratesqft,
+                                rent: fp.rent,
+                                mersqft: fp.mersqft
+                                , concessionsMonthly: fp.concessionsMonthly
+                                , concessionsOneTime: fp.concessionsOneTime
+                                , concessions: fp.concessions
                             };
 
 
@@ -83,6 +88,18 @@ define([
 
                             $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalrunratesqft = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalrunratesqft || 0) + fp.units * fp.runratesqft;
 
+                            $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalrent = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalrent || 0) + fp.units * fp.rent;
+
+                            $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalmersqft = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalmersqft || 0) + fp.units * fp.mersqft;
+
+                            $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalconcessions = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalconcessions || 0) + fp.units * fp.concessions;
+
+                            if (typeof fp.concessionsMonthly != 'undefined' && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+                                $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.unitsDetailed = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.unitsDetailed || 0) + fp.units;
+                                $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalconcessionsMonthly = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalconcessionsMonthly || 0) + fp.units * fp.concessionsMonthly;
+                                $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalconcessionsOneTime = ($scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].summary.totalconcessionsOneTime || 0) + fp.units * fp.concessionsOneTime;
+                            }
+
                         }
                     })
 
@@ -96,8 +113,18 @@ define([
                             $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.ner / $scope.rankings[fp].summary.sqft;
                             $scope.rankings[fp].summary.runrate = $scope.rankings[fp].summary.totalrunrate / $scope.rankings[fp].summary.units;
                             $scope.rankings[fp].summary.runratesqft = $scope.rankings[fp].summary.runrate / $scope.rankings[fp].summary.sqft;
+                            $scope.rankings[fp].summary.rent = $scope.rankings[fp].summary.totalrent / $scope.rankings[fp].summary.units;
+                            $scope.rankings[fp].summary.mersqft = $scope.rankings[fp].summary.rent / $scope.rankings[fp].summary.sqft;
+                            $scope.rankings[fp].summary.concessions = $scope.rankings[fp].summary.totalconcessions / $scope.rankings[fp].summary.units;
+
+                            if ($scope.rankings[fp].summary.unitsDetailed && $scope.rankings[fp].summary.unitsDetailed > 0) {
+                                $scope.rankings[fp].summary.concessionsMonthly = $scope.rankings[fp].summary.totalconcessionsMonthly / $scope.rankings[fp].summary.unitsDetailed;
+                                $scope.rankings[fp].summary.concessionsOneTime = $scope.rankings[fp].summary.totalconcessionsOneTime / $scope.rankings[fp].summary.unitsDetailed;
+                            }
 
                             $scope.rankings[fp].summary.units = $scope.rankings[fp].summary.units / $scope.rankings[fp].floorplans.length;
+
+
                         }
                     }
 
