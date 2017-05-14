@@ -4,7 +4,7 @@
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
-    <div class="header" style="height:46px"></div>
+    <div class="header" style="height:47px"></div>
     <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
     <tbody>
     <tr class="thead">
@@ -20,25 +20,81 @@
             <i ng-show="sort.description === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.description === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('units')" style="min-width:60px">
+        <th class="center sortable" ng-click="toggleSort('units')" style="min-width:60px" ng-if="show.units">
             Units
             <i ng-show="sort.units == null" class="fa fa-sort"></i>
             <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px">
+        <th class="center sortable" ng-click="toggleSort('sqft')" style="min-width:60px" ng-if="show.sqft">
             Sqft
             <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('ner')" style="min-width:70px">
+        <th class="center sortable" ng-click="toggleSort('rent')" style="min-width:60px" ng-if="show.rent">
+            Rent
+            <i ng-show="sort.rent == null" class="fa fa-sort"></i>
+            <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('mersqft')" style="min-width:60px" ng-if="show.mersqft">
+            Rent/<Br>Sqft
+            <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('concessionsOneTime')" style="min-width:70px" ng-if="show.concessionsOneTime">
+            One Time<br>Concess.
+            <i ng-show="sort.concessionsOneTime == null" class="fa fa-sort"></i>
+            <i ng-show="sort.concessionsOneTime === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.concessionsOneTime === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('concessionsMonthly')" style="min-width:70px" ng-if="show.concessionsMonthly">
+            Recur.<br>Concess.
+            <i ng-show="sort.concessionsMonthly == null" class="fa fa-sort"></i>
+            <i ng-show="sort.concessionsMonthly === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.concessionsMonthly === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('concessions')" style="min-width:70px" ng-if="show.concessions">
+            Total<br>Concess.
+            <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
+            <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('runrate')" style="min-width:75px" ng-if="show.runrate">
+            Recur. Rent
+
+            <i class="fa fa-info-circle hidden-print" style="font-size:12px"
+               popover-trigger="'mouseenter'"
+               popover-placement="bottom"
+               uib-popover="Recurring Rent is market rent, minus recurring concessions, and excluding upfront concessions."
+            ></i>
+
+            <i ng-show="sort.runrate == null" class="fa fa-sort"></i>
+            <i ng-show="sort.runrate === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.runrate === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('runratesqft')" style="min-width:85px" ng-if="show.runratesqft">
+            Recur. Rent/<Br>Sqft
+
+            <i class="fa fa-info-circle hidden-print" style="font-size:12px"
+               popover-trigger="'mouseenter'"
+               popover-placement="bottom"
+               uib-popover="Recurring Rent is market rent, minus recurring concessions, and excluding upfront concessions."
+            ></i>
+
+            <i ng-show="sort.runratesqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.runratesqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.runratesqft === false" class="fa fa-sort-up"></i>
+        </th>
+        <th class="center sortable" ng-click="toggleSort('ner')" style="min-width:70px" ng-if="show.ner">
             Net Eff.<br>&nbsp;Rent
             <i ng-show="sort.ner == null" class="fa fa-sort"></i>
             <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
-        <th class="center sortable" ng-click="toggleSort('nersqft')" style="min-width:70px">
+        <th class="center sortable" ng-click="toggleSort('nersqft')" style="min-width:70px" ng-if="show.nersqft">
             NER/&nbsp;<Br>Sqft
             <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
@@ -46,7 +102,7 @@
         </th>
     </tr>
 
-        <tr ng-repeat-start="(key,value) in rankings" ng-if="false">
+    <tr ng-repeat-start="(key,value) in rankings" ng-if="false">
 
         </tr>
         <tr>
@@ -71,16 +127,39 @@
             <td>
                 {{fp.description || '-'}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.units">
                 {{fp.units}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.sqft">
                 {{fp.sqft}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.rent">
+                {{fp.rent | currency : "$" : 0}}
+            </td>
+            <td class="center" ng-if="show.mersqft">
+                {{fp.mersqft | currency}}
+            </td>
+            <td class="center" ng-if="show.concessionsOneTime">
+                <span ng-if="fp.concessionsOneTime == null">-</span>
+                <span ng-if="fp.concessionsOneTime != null">{{fp.concessionsOneTime | currency : "$" : 0}}</span>
+            </td>
+            <td class="center" ng-if="show.concessionsMonthly">
+                <span ng-if="fp.concessionsMonthly == null">-</span>
+                <span ng-if="fp.concessionsMonthly != null">{{fp.concessionsMonthly | currency : "$" : 0}}</span>
+            </td>
+            <td class="center" ng-if="show.concessions">
+                {{fp.concessions | currency : "$" : 0}}
+            </td>
+            <td class="center" ng-if="show.runrate">
+                {{fp.runrate | currency : "$" : 0}}
+            </td>
+            <td class="center" ng-if="show.runratesqft">
+                {{fp.runratesqft | currency}}
+            </td>
+            <td class="center" ng-if="show.ner">
                 {{fp.ner | currency : "$" : 0}}
             </td>
-            <td class="center">
+            <td class="center" ng-if="show.nersqft">
                 {{fp.nersqft | currency}}
             </td>
         </tr>
@@ -91,16 +170,39 @@
             <td class="black">
                 &nbsp;
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.units">
                 <div style="color:black !important;">{{value.summary.units  | number : 0}}</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.sqft">
                 <div style="color:black !important;">{{value.summary.sqft | number : 0}}</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.rent">
+                <div style="color:black !important;">{{value.summary.rent | currency : "$" : 0}}</div>
+            </td>
+            <td class="center black" ng-if="show.mersqft">
+                <div style="color:black !important;">{{value.summary.mersqft | currency}}</div>
+            </td>
+            <td class="center black" ng-if="show.concessionsOneTime">
+                <div style="color:black !important;" ng-if="value.summary.concessionsOneTime == null">-</div>
+                <div style="color:black !important;" ng-if="value.summary.concessionsOneTime != null">{{value.summary.concessionsOneTime | currency : "$" : 0}}</div>
+            </td>
+            <td class="center black" ng-if="show.concessionsMonthly">
+                <div style="color:black !important;" ng-if="value.summary.concessionsMonthly == null">-</div>
+                <div style="color:black !important;" ng-if="value.summary.concessionsMonthly != null">{{value.summary.concessionsMonthly | currency : "$" : 0}}</div>
+            </td>
+            <td class="center black" ng-if="show.concessions">
+                <div style="color:black !important;">{{value.summary.concessions | currency : "$" : 0}}</div>
+            </td>
+            <td class="center black" ng-if="show.runrate">
+                <div style="color:black !important;">{{value.summary.runrate | currency : "$" : 0}}</div>
+            </td>
+            <td class="center black" ng-if="show.runratesqft">
+                <div style="color:black !important;">{{value.summary.runratesqft | currency}}</div>
+            </td>
+            <td class="center black" ng-if="show.ner">
                 <div style="color:black !important;">{{value.summary.ner | currency : "$" : 0}}</div>
             </td>
-            <td class="center black">
+            <td class="center black" ng-if="show.nersqft">
                 <div style="color:black !important;">{{value.summary.nersqft | currency}}</div>
             </td>
         </tr>

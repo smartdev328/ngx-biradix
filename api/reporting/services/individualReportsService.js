@@ -106,8 +106,19 @@ module.exports = {
 
                 var allIncludedFloorplans = PropertyHelperService.flattenAllCompFloorplans(comps,subjectid);
                 surveys.forEach(function(s) {
-                    s.floorplans.forEach(function(fp) {
-                        var f = {fid: fp.id, id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft, ner: Math.round((fp.rent - (fp.concessions / 12)) * 100) / 100, nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100};
+                    s.floorplans.forEach(function(fp,i) {
+                        var f = {fid: fp.id, id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft
+                            , ner: Math.round((fp.rent - (fp.concessions / 12)) * 100) / 100
+                            , nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100
+                            , runrate:  Math.round((fp.rent - (fp.concessionsMonthly || 0)) * 100) / 100
+                            , runratesqft:  Math.round((fp.rent - (fp.concessionsMonthly || 0)) / fp.sqft * 100) / 100
+                            , rent: fp.rent
+                            , mersqft: Math.round(fp.rent / fp.sqft * 100) / 100
+                            , concessionsMonthly: fp.concessionsMonthly
+                            , concessionsOneTime: fp.concessionsOneTime
+                            , concessions: fp.concessions
+
+                        };
 
                         var included = _.find(allIncludedFloorplans, function(x) {return x.toString() == fp.id.toString()})
 
