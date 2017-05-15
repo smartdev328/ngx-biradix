@@ -58,7 +58,12 @@ define([
                                 ner: fp.ner,
                                 nersqft: fp.nersqft,
                                 runrate: fp.runrate,
-                                runratesqft: fp.runratesqft
+                                runratesqft: fp.runratesqft,
+                                rent: fp.rent,
+                                mersqft: fp.mersqft
+                                , concessionsMonthly: fp.concessionsMonthly
+                                , concessionsOneTime: fp.concessionsOneTime
+                                , concessions: fp.concessions
                             };
 
 
@@ -89,9 +94,19 @@ define([
                                     ner: fp.ner * fp.units,
                                     nersqft: fp.nersqft * fp.units,
                                     runrate: fp.runrate * fp.units,
-                                    runratesqft: fp.runratesqft * fp.units
-
+                                    runratesqft: fp.runratesqft * fp.units,
+                                    rent: fp.rent* fp.units,
+                                    mersqft: fp.mersqft * fp.units,
+                                    concessions: fp.concessions * fp.units
                                 };
+
+                                if (typeof fp.concessionsMonthly != 'undefined' && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+                                    p.concessionsMonthly = fp.concessionsMonthly * fp.units;
+                                    p.concessionsOneTime = fp.concessionsOneTime * fp.units;
+                                    p.unitsDetailed = fp.units;
+                                } else {
+                                    p.unitsDetailed = 0;
+                                }
 
                                 $scope.rankings[fp.bedrooms].floorplans.push(p);
                             } else {
@@ -101,14 +116,25 @@ define([
                                 p.nersqft += (fp.nersqft * fp.units);
                                 p.runrate += (fp.runrate * fp.units);
                                 p.runratesqft += (fp.runratesqft * fp.units);
+                                p.rent += (fp.rent * fp.units);
+                                p.mersqft += (fp.mersqft * fp.units);
+                                p.concessions += (fp.concessions * fp.units);
 
+                                if (typeof fp.concessionsMonthly != 'undefined' && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+                                    p.concessionsMonthly = p.concessionsMonthly || 0;
+                                    p.concessionsOneTime = p.concessionsOneTime || 0;
+                                    p.concessionsMonthly += fp.concessionsMonthly * fp.units;
+                                    p.concessionsOneTime += fp.concessionsOneTime * fp.units;
+                                    p.unitsDetailed += fp.units;
+                                }
                             }
 
                             var s = _.find($scope.summary, function(x) {return x.id == fp.id.toString() })
 
-                            if (!s) {
 
-                                s = {
+
+                            if (!s) {
+                                 s = {
                                     id: fp.id.toString(),
                                     name: f.name,
                                     description : f.address,
@@ -118,8 +144,21 @@ define([
                                     ner: fp.ner * fp.units,
                                     nersqft: fp.nersqft * fp.units,
                                     runrate: fp.runrate * fp.units,
-                                    runratesqft: fp.runratesqft * fp.units
+                                    runratesqft: fp.runratesqft * fp.units,
+                                    rent: fp.rent * fp.units,
+                                    mersqft: fp.mersqft * fp.units,
+                                    concessions: fp.concessions * fp.units,
                                 };
+
+
+                                if (typeof fp.concessionsMonthly != 'undefined' && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+                                    s.concessionsMonthly = fp.concessionsMonthly * fp.units;
+                                    s.concessionsOneTime = fp.concessionsOneTime * fp.units;
+                                    s.unitsDetailed = fp.units;
+                                } else {
+                                    s.unitsDetailed = 0;
+                                }
+
 
                                 $scope.summary.push(s);
                             } else {
@@ -129,8 +168,21 @@ define([
                                 s.nersqft += (fp.nersqft * fp.units);
                                 s.runrate += (fp.runrate * fp.units);
                                 s.runratesqft += (fp.runratesqft * fp.units);
+                                s.rent += (fp.rent * fp.units);
+                                s.mersqft += (fp.mersqft * fp.units);
+                                s.concessions += (fp.concessions * fp.units);
+
+
+                                if (typeof fp.concessionsMonthly != 'undefined' && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+                                    s.concessionsMonthly = s.concessionsMonthly || 0;
+                                    s.concessionsOneTime = s.concessionsOneTime || 0;
+                                    s.concessionsMonthly += (fp.concessionsMonthly * fp.units);
+                                    s.concessionsOneTime += (fp.concessionsOneTime * fp.units);
+                                    s.unitsDetailed += fp.units;
+                                }
 
                             }
+
 
                             $scope.rankings[fp.bedrooms].summary = $scope.rankings[fp.bedrooms].summary || {};
                             $scope.rankings[fp.bedrooms].summary.units = ($scope.rankings[fp.bedrooms].summary.units || 0) + fp.units;
@@ -139,17 +191,36 @@ define([
                             $scope.rankings[fp.bedrooms].summary.totalnersqft = ($scope.rankings[fp.bedrooms].summary.totalnersqft || 0) + fp.units * fp.nersqft;
                             $scope.rankings[fp.bedrooms].summary.totalrunrate = ($scope.rankings[fp.bedrooms].summary.totalrunrate || 0) + fp.units * fp.runrate;
                             $scope.rankings[fp.bedrooms].summary.totalrunratesqft = ($scope.rankings[fp.bedrooms].summary.totalrunratesqft || 0) + fp.units * fp.runratesqft;
+                            $scope.rankings[fp.bedrooms].summary.totalrent = ($scope.rankings[fp.bedrooms].summary.totalrent || 0) + fp.units * fp.rent;
+                            $scope.rankings[fp.bedrooms].summary.totalmersqft = ($scope.rankings[fp.bedrooms].summary.totalmersqft || 0) + fp.units * fp.mersqft;
+                            $scope.rankings[fp.bedrooms].summary.totalconcessions = ($scope.rankings[fp.bedrooms].summary.totalconcessions || 0) + fp.units * fp.concessions;
+
+                            if (typeof fp.concessionsMonthly != 'undefined' && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+                                $scope.rankings[fp.bedrooms].summary.unitsDetailed = ($scope.rankings[fp.bedrooms].summary.unitsDetailed || 0) + fp.units;
+                                $scope.rankings[fp.bedrooms].summary.totalconcessionsMonthly = ($scope.rankings[fp.bedrooms].summary.totalconcessionsMonthly || 0) + fp.units * fp.concessionsMonthly;
+                                $scope.rankings[fp.bedrooms].summary.totalconcessionsOneTime = ($scope.rankings[fp.bedrooms].summary.totalconcessionsOneTime || 0) + fp.units * fp.concessionsOneTime;
+                            }
 
                             $scope.totals.units = ($scope.totals.units || 0) + fp.units;
                             $scope.totals.totalsqft = ($scope.totals.totalsqft || 0) + fp.units * fp.sqft;
                             $scope.totals.totalner = ($scope.totals.totalner || 0) + fp.units * fp.ner;
                             $scope.totals.totalnersqft = ($scope.totals.totalnersqft || 0) + fp.units * fp.nersqft;
-
                             $scope.totals.totalrunrate = ($scope.totals.totalrunrate || 0) + fp.units * fp.runrate;
                             $scope.totals.totalrunratesqft = ($scope.totals.totalrunratesqft || 0) + fp.units * fp.runratesqft;
+                            $scope.totals.totalrent = ($scope.totals.totalrent || 0) + fp.units * fp.rent;
+                            $scope.totals.totalmersqft = ($scope.totals.totalmersqft || 0) + fp.units * fp.mersqft;
+                            $scope.totals.totalconcessions = ($scope.totals.totalconcessions || 0) + fp.units * fp.concessions;
+
+                            if (typeof fp.concessionsMonthly != 'undefined' && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+                                $scope.totals.unitsDetailed = ($scope.totals.unitsDetailed || 0) + fp.units;
+                                $scope.totals.totalconcessionsMonthly = ($scope.totals.totalconcessionsMonthly || 0) + fp.units * fp.concessionsMonthly;
+                                $scope.totals.totalconcessionsOneTime = ($scope.totals.totalconcessionsOneTime || 0) + fp.units * fp.concessionsOneTime;
+                            }
 
                         }
                     })
+
+
 
                     for (var fp in $scope.rankings) {
                         if (!$scope.rankings[fp].summary) {
@@ -160,6 +231,14 @@ define([
                             $scope.rankings[fp].summary.nersqft = $scope.rankings[fp].summary.ner / $scope.rankings[fp].summary.sqft;
                             $scope.rankings[fp].summary.runrate = $scope.rankings[fp].summary.totalrunrate / $scope.rankings[fp].summary.units;
                             $scope.rankings[fp].summary.runratesqft = $scope.rankings[fp].summary.runrate / $scope.rankings[fp].summary.sqft;
+                            $scope.rankings[fp].summary.rent = $scope.rankings[fp].summary.totalrent / $scope.rankings[fp].summary.units;
+                            $scope.rankings[fp].summary.mersqft = $scope.rankings[fp].summary.rent / $scope.rankings[fp].summary.sqft;
+                            $scope.rankings[fp].summary.concessions = $scope.rankings[fp].summary.totalconcessions / $scope.rankings[fp].summary.units;
+
+                            if ($scope.rankings[fp].summary.unitsDetailed && $scope.rankings[fp].summary.unitsDetailed > 0) {
+                                $scope.rankings[fp].summary.concessionsMonthly = $scope.rankings[fp].summary.totalconcessionsMonthly / $scope.rankings[fp].summary.unitsDetailed;
+                                $scope.rankings[fp].summary.concessionsOneTime = $scope.rankings[fp].summary.totalconcessionsOneTime / $scope.rankings[fp].summary.unitsDetailed;
+                            }
 
                             $scope.rankings[fp].floorplans.forEach(function (f) {
                                 f.sqft = f.sqft / f.units;
@@ -168,6 +247,14 @@ define([
                                 f.runrate = f.runrate / f.units;
                                 f.runratesqft = f.runrate / f.sqft;
                                 f.unitpercent = f.units / $scope.rankings[fp].summary.units * 100;
+                                f.rent = f.rent / f.units;
+                                f.mersqft = f.rent / f.sqft;
+                                f.concessions = f.concessions / f.units;
+
+                                if (f.unitsDetailed && f.unitsDetailed > 0) {
+                                    f.concessionsMonthly = f.concessionsMonthly / f.unitsDetailed;
+                                    f.concessionsOneTime = f.concessionsOneTime / f.unitsDetailed;
+                                }
 
                             })
 
@@ -183,6 +270,15 @@ define([
                         f.runrate = f.runrate / f.units;
                         f.runratesqft = f.runrate / f.sqft;
                         f.unitpercent = f.units / $scope.totals.units * 100;
+                        f.rent = f.rent / f.units;
+                        f.mersqft = f.rent / f.sqft;
+                        f.concessions = f.concessions / f.units;
+
+
+                        if (f.unitsDetailed && f.unitsDetailed > 0) {
+                            f.concessionsMonthly = f.concessionsMonthly / f.unitsDetailed;
+                            f.concessionsOneTime = f.concessionsOneTime / f.unitsDetailed;
+                        }
                     })
 
                     $scope.totals.sqft = $scope.totals.totalsqft / $scope.totals.units;
@@ -190,6 +286,15 @@ define([
                     $scope.totals.nersqft = $scope.totals.ner / $scope.totals.sqft;
                     $scope.totals.runrate = $scope.totals.totalrunrate / $scope.totals.units;
                     $scope.totals.runratesqft = $scope.totals.runrate / $scope.totals.sqft;
+                    $scope.totals.rent = $scope.totals.totalrent / $scope.totals.units;
+                    $scope.totals.mersqft = $scope.totals.rent / $scope.totals.sqft;
+                    $scope.totals.concessions = $scope.totals.totalconcessions / $scope.totals.units;
+
+
+                    if ($scope.totals.unitsDetailed && $scope.totals.unitsDetailed > 0) {
+                        $scope.totals.concessionsMonthly = $scope.totals.totalconcessionsMonthly / $scope.totals.unitsDetailed;
+                        $scope.totals.concessionsOneTime = $scope.totals.totalconcessionsOneTime / $scope.totals.unitsDetailed;
+                    }
 
                     $scope.totals.unitsTotal = $scope.totals.units;
                     $scope.totals.unitpercent = 100;
