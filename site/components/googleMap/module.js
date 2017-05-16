@@ -92,6 +92,11 @@ angular.module('biradix.global').directive('googleMap', function () {
                 $scope.$watch('options', function(){
 
                     if ($scope.options) {
+
+                        if (!phantom) {
+                            $scope.error = typeof google === 'undefined';
+                        }
+
                         $scope.options.points = $scope.options.points || [];
 
                         $scope.staticUrl = "/i?center=" + $scope.options.loc[0]
@@ -105,7 +110,7 @@ angular.module('biradix.global').directive('googleMap', function () {
 
                         $rootScope.$broadcast('timeseriesLoaded');
 
-                        if (!phantom) {
+                        if (!phantom && !$scope.error) {
                             if ($scope.aMarkers) {
 
                                 for (var i = 0; i < $scope.aMarkers.length; i++) {

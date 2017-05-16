@@ -793,7 +793,7 @@ define([
                 {id: "sqft", name: "Sqft"},
                 {id: "rent", name: "Rent"},
                 {id: "mersqft", name: "Rent/Sqft"},
-                {id: "concessions", name: "Concess/12 Mos."},
+                {id: "concessions", name: "Total Concessions"},
                 {id: "ner", name: "Net Eff. Rent"},
                 {id: "nersqft", name: "NER/Sqft"},
             ]
@@ -814,7 +814,7 @@ define([
                 {id: "sqft", name: "Sqft"},
                 {id: "rent", name: "Rent"},
                 {id: "mersqft", name: "Rent/Sqft"},
-                {id: "concessions", name: "Concess/12 Mos."},
+                {id: "concessions", name: "Total Concessions"},
                 {id: "ner", name: "Net Eff. Rent"},
                 {id: "nersqft", name: "NER/Sqft"},
             ]
