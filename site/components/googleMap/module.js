@@ -97,7 +97,9 @@ angular.module('biradix.global').directive('googleMap', function () {
 
                         if (!phantom) {
                             $scope.error = typeof google === 'undefined';
-                            global_error({stack: 'Google maps not available, showing static map'},{location: location.href});
+                            if ($scope.error) {
+                                global_error({stack: 'Google maps not available, showing static map'}, {location: location.href});
+                            }
                         }
 
                         $scope.options.points = $scope.options.points || [];
