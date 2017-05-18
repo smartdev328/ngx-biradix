@@ -1,10 +1,19 @@
 {{debug}}
+<style>
+    .dropdown-menu>li.no-hover>a:focus, .dropdown-menu>li.no-hover>a:hover {
+        background-color:white
+    }
+
+    .dropdown-menu>li.bold>a {
+        font-weight:bold !important;
+    }
+</style>
 <div class="row hidden-print">
-    <div class="col-xs-7 col-sm-7">
+    <div class="pull-left">
         <h2 class="mainheader">Reporting</h2>
     </div>
-    <div class="col-xs-5 col-sm-5 hidden-print" ng-if="reports && !noReports && !reportLoading">
-        <div class="btn-group pull-right" style="padding-bottom:10px">
+    <div class="hidden-print pull-right" ng-if="reports && !noReports && !reportLoading">
+        <div class="btn-group" style="padding-bottom:10px">
             <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
             </button>
@@ -14,7 +23,23 @@
                 <li><a href ng-click="excel()" ng-if="property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
+    </div>
 
+    <div class="hidden-print pull-right">
+        <div class="btn-group" style="padding-bottom:10px;padding-right:10px">
+            <button uib-tooltip="My Saved/Shared Reports" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "my">
+                <i class="fa fa-save visible-xs-inline"></i> <span class="hidden-xs">My Reports</span> <span class="caret" style="color:white !important;"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <li class="no-hover bold"><a>My Saved Reports</a></li>
+                <li><a href>Properties Lifetime&nbsp;&nbsp;<i class="fa fa-pencil"></i></a></li>
+                <li><a href>Portfolio Phoenix&nbsp;&nbsp;<i class="fa fa-pencil"></i></a></li>
+                <li><a href>Concessions vs Amenities&nbsp;&nbsp;<i class="fa fa-pencil"></i></a></li>
+                <li class="no-hover bold"><a>Alliance Reports</a></li>
+                <li class="no-hover"><a>None</a></li>
+
+            </ul>
+        </div>
     </div>
 </div>
 <div ng-show="localLoading" class="hidden-print">
@@ -34,33 +59,14 @@
                 <div class="panel-heading">Criteria</div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 col-sm-6">
-                            Saved Reports
-                            <select
-                                    class="form-control input-sm hidden-print"
-                                    style="font-size:12px"
-                            >
-                                <option>None</option>
-                                <optgroup label="My Reports">
-                                    <option>Run Rate 5/15</option>
-                                    <option>Concessions</option>
-                                    <option>Market Survey Lifetime</option>
-                                </optgroup>
-                                <optgroup label="Alliance Reports">
-                                    <option>BM Report</option>
-                                    <option>Amenties Compare</option>
-                                    <option>NER Submarket</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            Selected Reports:<Br>
+                        <div class="col-sm-4">
+                            Reports:<Br>
                             <div>
                                 <filter-list options="reportOptions" items="reportItems"></filter-list>
                             </div>
                         </div>
 
-                        <div class="col-md-3 col-sm-6" ng-if="reportType=='single' || reportType=='multiple'">
+                        <div class="col-sm-4" ng-if="reportType=='single' || reportType=='multiple'">
                             <Span ng-if="reportType=='single'">Property</Span><Span ng-if="reportType=='multiple'">Properties</Span>:<Br>
                             <div ng-show="myProperties.length == 1"><h4 style="margin:4px 0px 0px 0px;color: #4460a9;">{{selected.Property.name}}</h4></div>
                             <div class="visible-print"><h4 style="margin:0px">{{selected.Property.name}}</h4></div>
@@ -76,7 +82,7 @@
                             <filter-list options="propertyOptions" items="propertyItems"  ng-if="myProperties.length > 1 && reportType=='multiple'"></filter-list>
                         </div>
 
-                        <div class="col-md-3 col-sm-6" ng-if="reportType=='single'">
+                        <div class="col-sm-4" ng-if="reportType=='single'">
                             Comps:<Br>
                             <div ng-if="items.length == 0" style="text-align:center">
                                 <div class="alert alert-warning" role="alert"><b>There are no comps assigned to this property</b></div>
@@ -300,8 +306,8 @@
 
                     <div class="hidden-print" ng-if="myProperties.length > 0">
                         <center>
-                        <button class="btn btn-sm btn-primary" ng-click="run()">Run Report</button>
-                        <button class="btn btn-sm btn-warning" ng-if="reportIds.length > 0">Save Report</button>
+                            <button class="btn btn-sm btn-primary" ng-click="run()">Run Report</button>
+                            <button class="btn btn-sm btn-warning" ng-if="reportIds.length > 0">Save Report</button>
                         </center>
                     </div>
                 </div>
