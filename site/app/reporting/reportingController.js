@@ -11,7 +11,7 @@ define([
     '../../components/reports/concession.js'
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$timeout', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$timeout) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal) {
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -878,6 +878,35 @@ define([
 
             }
         })
+
+        $scope.saveReport = function() {
+
+            require([
+                '/app/reporting/saveReportController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/reporting/saveReport.html?bust=' + version,
+                    controller: 'saveReportController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        settings: function () {
+                            return $scope.liveSettings;
+                        },
+                        reportIds: function () {
+                            return $scope.reportIds;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
 
     }]);
 });
