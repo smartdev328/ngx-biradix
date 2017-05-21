@@ -11,7 +11,7 @@ define([
     '../../components/reports/concession.js'
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService) {
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -57,9 +57,46 @@ define([
                 }
 
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
+
+                $scope.loadSaved();
+
                 me();
             }
         })
+
+        $scope.loadReport = function(report) {
+            $scope.currentReport = report;
+
+            $scope.liveSettings = report.settings;
+
+            $scope.reportIds = report.reportIds;
+
+            $scope.reportType = report.type;
+
+            $scope.reportItems.forEach(function(x,i) {
+                $scope.reportItems[i].selected =$scope.reportIds.indexOf(x.id) > -1
+            })
+
+            for (var key in $scope.liveSettings) {
+                if ($scope.liveSettings[key].daterange) {
+                    $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
+                }
+            }
+
+            $scope.reportsChanged();
+
+
+            $scope.run();
+        }
+
+        $scope.loadSaved = function() {
+            $saveReportService.read().then(function (response) {
+                    $scope.savedReports = response.data.reports;
+                },
+                function (error) {
+                    toastr.error("Unable to load saved reports. Please contact the administrator.");
+                });
+        }
 
         $scope.reload = function(bRun) {
             $propertyService.search({
@@ -494,6 +531,10 @@ define([
             $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: $scope.propertyNames.concat($scope.reportNames)});
         }
         $scope.$watch('reportItems', function() {
+            $scope.reportsChanged();
+        },true)
+
+        $scope.reportsChanged = function() {
 
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
@@ -506,7 +547,7 @@ define([
                     ,{value: 2, text: '2 Bdrs.'}
                     ,{value: 3, text: '3 Bdrs.'}
                     ,{value: 4, text: '4 Bdrs.'}
-                    ]
+                ]
 
                 $scope.temp.bedroom = _.find($scope.temp.bedrooms, function(x) {return x.value == $scope.liveSettings.dashboardSettings.selectedBedroom});
 
@@ -544,7 +585,7 @@ define([
             }
 
             $scope.reportIds = reportIds;
-        },true)
+        }
 
 
         $scope.excel = function() {
@@ -896,12 +937,19 @@ define([
                         },
                         reportIds: function () {
                             return $scope.reportIds;
+                        },
+                        type: function() {
+                            return $scope.reportType;
+                        },
+                        currentReport: function() {
+                            return $scope.currentReport;
                         }
                     }
                 });
 
-                modalInstance.result.then(function () {
-
+                modalInstance.result.then(function (newReport) {
+                    $scope.savedReports.push(newReport);
+                    $scope.currentReport = newReport;
                 }, function (from) {
                     //Cancel
                 });

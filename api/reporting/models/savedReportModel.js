@@ -8,8 +8,9 @@ var s = new Schema({
     orgid: {type: Schema.Types.ObjectId, index:true},
     date: {type: Date, index:true},
     settings : Object,
-    reportids: Array,
-    name: String
+    reportIds: Array,
+    name: String,
+    type: String
 });
 
 module.exports = mongoose.model('SavedReport', s);
