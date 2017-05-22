@@ -50,10 +50,6 @@ define([
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
-                    $scope.resetPropertyReportSettings(true);
-                    $scope.resetRankingsSettings(true);
-                    $scope.resetRankingsSummarySettings(true);
-                    $scope.resetConcessionSettings(true);
                 }
 
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
@@ -532,6 +528,12 @@ define([
             $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: $scope.propertyNames.concat($scope.reportNames)});
         }
         $scope.$watch('reportItems', function() {
+            $scope.reports = null;
+            $scope.resetPropertyReportSettings(true);
+            $scope.resetRankingsSettings(true);
+            $scope.resetRankingsSummarySettings(true);
+            $scope.resetConcessionSettings(true);
+
             $scope.reportsChanged();
         },true)
 
