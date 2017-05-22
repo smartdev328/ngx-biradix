@@ -9,6 +9,11 @@
         <h2 class="mainheader" ng-if="!currentReport">Reporting</h2>
         <h2 class="mainheader" ng-if="currentReport">Reporting: {{currentReport.name}}</h2>
     </div>
+    <div class="hidden-print pull-right" ng-if="!reports || noReports || reportLoading">
+        <button uib-tooltip="Please run report" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="opacity: .5;cursor: not-allowed">
+            <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
+        </button>
+    </div>
     <div class="hidden-print pull-right" ng-if="reports && !noReports && !reportLoading">
         <div class="btn-group" style="padding-bottom:10px">
             <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
@@ -27,7 +32,7 @@
             <button uib-tooltip="My Saved/Shared Reports" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "my">
                 <i class="fa fa-save visible-xs-inline"></i> <span class="hidden-xs">My Reports</span> <span class="caret" style="color:white !important;"></span>
             </button>
-            <div class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:220px">
+            <div class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:300px">
                 <Table border="0" style="margin:0px 0px 0px 10px;width:90%">
                     <tr style="border-bottom:1px dotted #ccc">
                         <Td  colspan="100%" style="font-size:12px"><B>My Saved Reports</B></Td>
@@ -36,18 +41,18 @@
                         <td style="width:15px">
 
                         </td>
-                        <Td style="font-size:13px" colspan="3">
+                        <Td style="font-size:12pt" colspan="3">
                             None
                         </Td>
                     </tr>
                     <tr class="hover" ng-repeat="report in savedReports | orderBy : 'name'">
-                        <td style="width:15px">
+                        <td style="width:15px"  ng-click="loadReport(report)">
 
                         </td>
-                        <Td>
-                            <a href style="font-size:13px;color:#333" ng-click="loadReport(report)">{{report.name}}</a>
+                        <Td ng-click="loadReport(report)">
+                            <a href uib-tooltip="{{report.name}}" style="font-size:12pt;color:#333;width:240px;overflow: hidden;white-space: nowrap;display:block;text-overflow: ellipsis">{{report.name}}</a>
                         </Td>
-                        <td style="width:15px">
+                        <td style="width:15px" ng-click="loadReport(report)">
 
                         </td>
 
@@ -62,7 +67,7 @@
                         <td style="width:15px">
 
                         </td>
-                        <Td style="font-size:13px" colspan="3">
+                        <Td style="font-size:12pt" colspan="3">
                             None
                         </Td>
                     </tr>

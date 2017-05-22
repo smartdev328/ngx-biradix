@@ -65,9 +65,10 @@ define([
         })
 
         $scope.loadReport = function(report) {
+
             $scope.currentReport = report;
 
-            $scope.liveSettings = report.settings;
+            $scope.liveSettings = report.settings || {};
 
             $scope.reportIds = report.reportIds;
 
