@@ -6,7 +6,7 @@ var EmailService = require('./emailService')
 module.exports = {
     geocode: function (address, checkCache, callback) {
         //This is Stupid
-        if (address.toLowerCase().indexOf("3404 brice knoll") > -1) {
+        if (address.toLowerCase().indexOf("3404 brice knoll") > -1 || address.toLowerCase().indexOf("7304 brice knoll") > -1) {
             return callback(null,[{latitude: 35.372665,longitude: -80.789559}],true);
         }
 
