@@ -43,17 +43,28 @@ define([
                 $uibModalInstance.dismiss('cancel');
             };
 
-            $scope.save = function() {
+            $scope.save = function(bOverride) {
 
                 $('button.contact-submit').prop('disabled', true);
 
+                $scope.report.override = bOverride
+
                 $saveReportService.upsert($scope.report).then(function (response) {
                         $('button.contact-submit').prop('disabled', false);
-                        if (response.data.errors) {
+                        if (response.data.existing) {
+                            $dialog.confirm('<b>' +  $scope.report.name +'</b> already exists. By saving this report, you will override the existing one. To save a new report, please change the name of the report. Are you sure you want to update the existing report?', function() {
+                                $scope.save(true);
+                            }, function() {})
+                        }
+                        else if (response.data.errors) {
                             toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
                         }
                         else {
-                            toastr.success("<B>" + $scope.report.name + "</B> saved successfully.");
+                            if (bOverride) {
+                                toastr.success("<B>" + $scope.report.name + "</B> report updated successfully.");
+                            } else {
+                                toastr.success("<B>" + $scope.report.name + "</B> report saved successfully.");
+                            }
                             $uibModalInstance.close(response.data.report);
                         }
                     },

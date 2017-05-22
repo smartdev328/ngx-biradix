@@ -951,7 +951,11 @@ define([
                 });
 
                 modalInstance.result.then(function (newReport) {
+
+                    _.remove($scope.savedReports, function(x) {return x._id == newReport._id});
+
                     $scope.savedReports.push(newReport);
+
                     $scope.currentReport = newReport;
                 }, function (from) {
                     //Cancel

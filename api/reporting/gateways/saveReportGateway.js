@@ -11,8 +11,8 @@ Routes.get('/', (req,res) => {
 })
 
 Routes.post('/upsert', (req,res) => {
-    saveReportService.upsert( req.user, req.context, req.body, (errors, report) => {
-        res.status(200).json({errors : errors, report: report});
+    saveReportService.upsert( req.user, req.context, req.body, (errors, report, existing) => {
+        res.status(200).json({errors : errors, report: report, existing: existing});
     })
 });
 

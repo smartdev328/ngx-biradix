@@ -1,4 +1,6 @@
 var savedReportModel = require("../models/savedReportModel")
+var auditService = require('../../audit/services/auditService')
+
 module.exports = {
     read: (operator,callback) => {
         var query = savedReportModel.find({ownerid: operator._id});
@@ -14,26 +16,39 @@ module.exports = {
             return callback(modelErrors, null);
         }
 
-        var n = new savedReportModel();
+        savedReportModel.findOne({ownerid: operator._id, name: new RegExp('^'+report.name+'$', "i")}, (err, existing) => {
 
-        n.name = report.name;
-        n.settings = report.settings;
-        n.date = new Date();
-        n.reportIds = report.reportIds;
-        n.ownerid = operator._id;
-        n.orgid = null;
-        n.type = report.type;
-
-         n.save((err, report) => {
-
-            if (err) {
-                modelErrors.push({msg: 'Unexpected Error. Unable to save report.'});
-                callback(modelErrors, null);
-                return;
+            if (existing && !report.override) {
+                return callback(null, null, true);
             }
 
-            callback(null, report);
+            var n = existing;
 
+            if (!existing) {
+               n = new savedReportModel();
+            }
+
+            n.name = report.name;
+            n.settings = report.settings;
+            n.date = new Date();
+            n.reportIds = report.reportIds;
+            n.ownerid = operator._id;
+            n.orgid = null;
+            n.type = report.type;
+
+            n.save((err, report) => {
+
+                if (err) {
+                    modelErrors.push({msg: 'Unexpected Error. Unable to save report.'});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                auditService.create({user: operator, operator: operator,type: existing ? 'report_overriden' : 'report_saved', description: report.name, context: context, adminOnly: report})
+
+                callback(null, report);
+
+            });
         });
 
 
