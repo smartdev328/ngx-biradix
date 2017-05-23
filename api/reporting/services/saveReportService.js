@@ -36,6 +36,8 @@ module.exports = {
             n.orgid = null;
             n.type = report.type;
 
+            data = report.reportNames;
+
             n.save((err, report) => {
 
                 if (err) {
@@ -44,7 +46,7 @@ module.exports = {
                     return;
                 }
 
-                auditService.create({user: operator, operator: operator,type: existing ? 'report_overriden' : 'report_saved', description: report.name, context: context, adminOnly: report})
+                auditService.create({user: operator, operator: operator,type: existing ? 'report_overriden' : 'report_saved', description: report.name, context: context, adminOnly: report, data: data})
 
                 callback(null, report);
 

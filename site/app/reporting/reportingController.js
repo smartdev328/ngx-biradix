@@ -50,6 +50,10 @@ define([
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
+                    $scope.configurePropertyReportOptions();
+                    $scope.configureRankingsOptions();
+                    $scope.configureRankingsSummaryOptions();
+                    $scope.configureConcessionOptions();
                 }
 
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
@@ -529,15 +533,15 @@ define([
         }
         $scope.$watch('reportItems', function() {
             $scope.reports = null;
-            $scope.resetPropertyReportSettings(true);
-            $scope.resetRankingsSettings(true);
-            $scope.resetRankingsSummarySettings(true);
-            $scope.resetConcessionSettings(true);
-
             $scope.reportsChanged();
         },true)
 
         $scope.reportsChanged = function() {
+
+            $scope.configurePropertyReportOptions();
+            $scope.configureRankingsOptions();
+            $scope.configureRankingsSummaryOptions();
+            $scope.configureConcessionOptions();
 
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
@@ -624,7 +628,7 @@ define([
 
 
         ////////////////////// Rankings Summary ////////////////////////////////
-        $scope.resetRankingsSummarySettings = function(configure) {
+        $scope.resetRankingsSummarySettings = function() {
             $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
 
             $scope.liveSettings.rankingsSummary.show = {
@@ -642,13 +646,13 @@ define([
                 nersqft: true
             }
 
-            $scope.configureRankingsSummaryOptions();
+
         }
 
 
         $scope.configureRankingsSummaryOptions = function() {
             if (!$scope.liveSettings.rankingsSummary) {
-                return;
+                $scope.resetRankingsSummarySettings();
             }
 
             $scope.temp.showRankingsSummaryOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
@@ -699,7 +703,7 @@ define([
         })
 
         ////////////////////// Rankings ////////////////////////////////
-        $scope.resetRankingsSettings = function(configure) {
+        $scope.resetRankingsSettings = function() {
 
             $scope.liveSettings.rankings = {orderBy: "nersqft"}
 
@@ -717,13 +721,12 @@ define([
                 nersqft: true
             }
 
-            $scope.configureRankingsOptions();
         }
 
 
         $scope.configureRankingsOptions = function() {
             if (!$scope.liveSettings.rankings) {
-                return;
+                $scope.resetRankingsSettings();
             }
 
             $scope.temp.showRankingsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
@@ -777,7 +780,7 @@ define([
 
         $scope.configurePropertyReportOptions = function() {
             if (!$scope.liveSettings.showProfile) {
-                return;
+                $scope.resetPropertyReportSettings()
             }
 
             $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
@@ -868,19 +871,21 @@ define([
 
         }
 
-        $scope.resetPropertyReportSettings = function(configure) {
+        $scope.resetPropertyReportSettings = function() {
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
             $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
             $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
             $scope.liveSettings.dashboardSettings.daterange.direction = "right";
 
-            $scope.configurePropertyReportOptions();
         }
 
         $scope.configureConcessionOptions = function() {
-
+            if (!$scope.liveSettings.concession) {
+                $scope.resetConcessionSettings()
+            }
         }
-        $scope.resetConcessionSettings = function(configure) {
+
+        $scope.resetConcessionSettings = function() {
             $scope.liveSettings.concession = {
                 daterange: {
                     Ranges : {
@@ -896,8 +901,6 @@ define([
                     direction: "right"
                 }
             }
-
-            $scope.configureConcessionOptions();
         }
 
         // Watchers from Components
@@ -946,6 +949,9 @@ define([
                         },
                         currentReport: function() {
                             return $scope.currentReport;
+                        },
+                        reportNames: function() {
+                            return $scope.reportNames;
                         }
                     }
                 });
