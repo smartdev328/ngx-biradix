@@ -1,5 +1,8 @@
 {{debug}}
 <style>
+    tr.padding td {
+        padding: 2px 0px;
+    }
     tr.hover:hover {
         background-color: #f5f5f5;
     }
@@ -35,22 +38,22 @@
             <div class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:300px">
                 <Table border="0" style="margin:0px 0px 0px 10px;width:90%">
                     <tr style="border-bottom:1px dotted #ccc">
-                        <Td  colspan="100%" style="font-size:13pt"><B>My Saved Reports</B></Td>
+                        <Td  colspan="100%"><B>My Saved Reports</B></Td>
                     </tr>
-                    <tr ng-if="!savedReports || savedReports.length == 0">
+                    <tr ng-if="!savedReports || savedReports.length == 0" class="padding">
                         <td style="width:15px">
 
                         </td>
-                        <Td style="font-size:12pt" colspan="3">
+                        <Td colspan="3">
                             None
                         </Td>
                     </tr>
-                    <tr class="hover" ng-repeat="report in savedReports | orderBy : 'name'">
+                    <tr class="hover padding" ng-repeat="report in savedReports | orderBy : 'name'">
                         <td style="width:15px"  ng-click="loadReport(report)">
 
                         </td>
                         <Td ng-click="loadReport(report)">
-                            <a href uib-tooltip="{{report.name}}" style="font-size:12pt;color:#333;width:240px;overflow: hidden;white-space: nowrap;display:block;text-overflow: ellipsis">{{report.name}}</a>
+                            <a href uib-tooltip="{{report.name}}" style="color:#333;width:240px;overflow: hidden;white-space: nowrap;display:block;text-overflow: ellipsis">{{report.name}}</a>
                         </Td>
                         <td style="width:15px" ng-click="loadReport(report)">
 
@@ -61,13 +64,13 @@
                         </td>
                     </tr>
                     <tr style="border-bottom:1px dotted #ccc">
-                        <Td  colspan="100%" style="padding-top:10px;font-size:13pt"><B>{{$root.me.orgs[0].name}} Reports</B></Td>
+                        <Td  colspan="100%" style="padding-top:10px;"><B>{{$root.me.orgs[0].name}} Reports</B></Td>
                     </tr>
-                    <tr>
+                    <tr class="padding">
                         <td style="width:15px">
 
                         </td>
-                        <Td style="font-size:12pt" colspan="3">
+                        <Td colspan="3">
                             None
                         </Td>
                     </tr>

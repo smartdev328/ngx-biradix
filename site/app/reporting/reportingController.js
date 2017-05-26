@@ -68,9 +68,13 @@ define([
 
             $scope.currentReport = report;
 
-            $scope.liveSettings = report.settings || {};
+            if (report.settings) {
+                $scope.liveSettings = _.cloneDeep(report.settings);
+            } else {
+                $scope.liveSettings = {};
+            }
 
-            $scope.reportIds = report.reportIds;
+            $scope.reportIds = _.cloneDeep(report.reportIds);
 
             $scope.reportType = report.type;
 
@@ -525,11 +529,24 @@ define([
         }
 
         $scope.audit = function(type, where) {
-            $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: $scope.compNames.concat($scope.reportNames)});
+            var data =$scope.compNames.concat($scope.reportNames);
+
+            if ($scope.currentReport) {
+                data.unshift({description: 'Saved Report: ' + $scope.currentReport.name})
+            }
+
+            $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: data});
         }
 
         $scope.auditMultiple = function(type, where) {
-            $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: $scope.propertyNames.concat($scope.reportNames)});
+
+            var data = $scope.propertyNames.concat($scope.reportNames);
+
+            if ($scope.currentReport) {
+                data.unshift({description: 'Saved Report: ' + $scope.currentReport.name})
+            }
+
+            $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: data});
         }
         $scope.$watch('reportItems', function() {
             $scope.reports = null;
