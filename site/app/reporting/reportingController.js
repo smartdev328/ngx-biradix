@@ -68,6 +68,8 @@ define([
 
             $scope.currentReport = report;
 
+            console.log(report.settings.dashboardSettings.show);
+
             if (report.settings) {
                 $scope.liveSettings = _.cloneDeep(report.settings);
             } else {
@@ -323,23 +325,14 @@ define([
 
             });
 
-
-
-
         }
-        $scope.singleReport = function() {
 
-            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
-            $scope.compIds =  _.pluck($scope.selected.Comps,"id")
-            $scope.compNames =  _.pluck($scope.selected.Comps,"name")
-            $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
-
-            var options = {};
-
-
+        $scope.UItoSettings = function() {
+            if (phantom) {
+                return;
+            }
             if ($scope.reportIds.indexOf("property_report") > -1) {
 
-                if (!phantom) {
                     $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
                     $scope.liveSettings.showProfile = {};
 
@@ -359,8 +352,42 @@ define([
 
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
 
+            }
+
+            if ($scope.reportIds.indexOf("property_rankings") > -1) {
+                if ($scope.temp.rankingSortSelected) {
+                    $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
                 }
 
+                $scope.temp.showRankingsItems.forEach(function (f) {
+                    $scope.liveSettings.rankings.show[f.id] = f.selected;
+                })
+            }
+
+            if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
+                if ($scope.temp.rankingSummarySortSelected) {
+                    $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
+                }
+
+                $scope.temp.showRankingsSummaryItems.forEach(function (f) {
+                    $scope.liveSettings.rankingsSummary.show[f.id] = f.selected;
+                })
+            }
+
+        }
+
+        $scope.singleReport = function() {
+
+            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
+            $scope.compIds =  _.pluck($scope.selected.Comps,"id")
+            $scope.compNames =  _.pluck($scope.selected.Comps,"name")
+            $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
+
+            var options = {};
+
+            $scope.UItoSettings();
+
+            if ($scope.reportIds.indexOf("property_report") > -1) {
                 options.property_report = {
                     summary: $scope.liveSettings.dashboardSettings.summary,
                     bedrooms: $scope.liveSettings.dashboardSettings.selectedBedroom,
@@ -375,7 +402,6 @@ define([
                     },
                     offset: moment().utcOffset()
                 }
-
             }
 
             if ($scope.reportIds.indexOf("concession") > -1) {
@@ -390,27 +416,7 @@ define([
             }
 
 
-            if (!phantom) {
-                if ($scope.reportIds.indexOf("property_rankings") > -1) {
-                    if ($scope.temp.rankingSortSelected) {
-                        $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
-                    }
 
-                    $scope.temp.showRankingsItems.forEach(function (f) {
-                        $scope.liveSettings.rankings.show[f.id] = f.selected;
-                    })
-                }
-
-                if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
-                    if ($scope.temp.rankingSummarySortSelected) {
-                        $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
-                    }
-
-                    $scope.temp.showRankingsSummaryItems.forEach(function (f) {
-                        $scope.liveSettings.rankingsSummary.show[f.id] = f.selected;
-                    })
-                }
-            }
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
@@ -944,6 +950,8 @@ define([
         })
 
         $scope.saveReport = function() {
+
+            $scope.UItoSettings();
 
             require([
                 '/app/reporting/saveReportController.js'

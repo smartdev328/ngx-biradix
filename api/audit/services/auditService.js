@@ -34,7 +34,7 @@ var audits  = [
     {key: 'report_pdf', value: 'Report PDF', group: 'Reporting'},
     {key: 'show_unlinked', value: 'Exclude Setting', group: 'Reporting', admin: true},
     {key: 'report_saved', value: 'New Report Created', group: 'Reporting'},
-    {key: 'report_overriden', value: 'Existing Report Overridden', group: 'Reporting'},
+    {key: 'report_overriden', value: 'Saved Report Updated', group: 'Reporting'},
 
 
     {key: 'property_status', value: 'Updated Property Status', undo: true, group: 'Property'},

@@ -40,6 +40,8 @@ define([
                 type: type
             }
 
+            console.log($scope.report.settings.dashboardSettings.show)
+
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
