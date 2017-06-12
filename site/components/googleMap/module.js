@@ -186,6 +186,6 @@ angular.module('biradix.global').directive('googleMap', function () {
 
 
             },
-            templateUrl: '/components/googleMap/googleMap.html?bust=' + version
+            template: '<div class="hidden-print"></div><img class="visible-print-block" width="300" height="300" ng-src="{{::staticUrl}}"><div ng-if="error" style="margin: 0px auto; width:300px;"><img width="300" height="300" ng-src="{{::staticUrl}}"></div>'
         };
     })
