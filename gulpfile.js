@@ -73,6 +73,8 @@ gulp.task('globaljs', function() {
         , './site/components/propertyProfile/tableView.js'
         , './site/components/propertyProfile/comps.js'
 
+        , './site/components/jstimezonedetect/jstz.min.js'
+
         , './site/app/rootController.js'
         , './site/app/marketSurvey/marketSurveyController.js'
     ])
