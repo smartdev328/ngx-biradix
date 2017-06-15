@@ -947,6 +947,51 @@ define([
             }
         })
 
+        $scope.saveReport = function() {
+
+            $scope.UItoSettings();
+
+            require([
+                '/app/reporting/saveReportController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/reporting/saveReport.html?bust=' + version,
+                    controller: 'saveReportController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        settings: function () {
+                            return $scope.liveSettings;
+                        },
+                        reportIds: function () {
+                            return $scope.reportIds;
+                        },
+                        type: function() {
+                            return $scope.reportType;
+                        },
+                        currentReport: function() {
+                            return $scope.currentReport;
+                        },
+                        reportNames: function() {
+                            return $scope.reportNames;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (newReport) {
+
+                    _.remove($scope.savedReports, function(x) {return x._id == newReport._id});
+
+                    $scope.savedReports.push(newReport);
+
+                    $scope.currentReport = newReport;
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
+
         $scope.editReport = function(report) {
 
             require([
