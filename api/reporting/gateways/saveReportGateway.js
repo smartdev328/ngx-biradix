@@ -16,5 +16,19 @@ Routes.post('/upsert', (req,res) => {
     })
 });
 
+Routes.post('/update', (req,res) => {
+    saveReportService.update( req.user, req.context, req.body, (errors, report) => {
+        res.status(200).json({errors : errors, report: report});
+    })
+});
+
+
+Routes.delete('/:reportId', (req,res) => {
+    saveReportService.remove( req.user, req.context, req.params.reportId, (errors) => {
+        res.status(200).json({errors : errors});
+    })
+});
+
+
 
 module.exports = Routes;

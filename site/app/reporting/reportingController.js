@@ -68,8 +68,6 @@ define([
 
             $scope.currentReport = report;
 
-            console.log(report.settings.dashboardSettings.show);
-
             if (report.settings) {
                 $scope.liveSettings = _.cloneDeep(report.settings);
             } else {
@@ -949,45 +947,44 @@ define([
             }
         })
 
-        $scope.saveReport = function() {
-
-            $scope.UItoSettings();
+        $scope.editReport = function(report) {
 
             require([
-                '/app/reporting/saveReportController.js'
+                '/app/reporting/editReportController.js'
             ], function () {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/app/reporting/saveReport.html?bust=' + version,
-                    controller: 'saveReportController',
+                    templateUrl: '/app/reporting/editReport.html?bust=' + version,
+                    controller: 'editReportController',
                     size: "md",
                     keyboard: false,
                     backdrop: 'static',
                     resolve: {
-                        settings: function () {
-                            return $scope.liveSettings;
-                        },
-                        reportIds: function () {
-                            return $scope.reportIds;
-                        },
-                        type: function() {
-                            return $scope.reportType;
-                        },
-                        currentReport: function() {
-                            return $scope.currentReport;
-                        },
-                        reportNames: function() {
-                            return $scope.reportNames;
+                        report: function () {
+                            return report;
                         }
                     }
                 });
 
-                modalInstance.result.then(function (newReport) {
+                modalInstance.result.then(function (reply) {
 
-                    _.remove($scope.savedReports, function(x) {return x._id == newReport._id});
+                    _.remove($scope.savedReports, function(x) {return x._id == reply.newReport._id});
 
-                    $scope.savedReports.push(newReport);
+                    var current = false;
+                    if ($scope.currentReport && $scope.currentReport._id.toString() == reply.newReport._id.toString()) {
+                        current = true;
+                    }
 
-                    $scope.currentReport = newReport;
+                    if (!reply.deleted) {
+                        $scope.savedReports.push(reply.newReport);
+
+                        if (current) {
+                            $scope.currentReport = reply.newReport;
+                        }
+                    } else {
+                        if (current) {
+                            delete $scope.currentReport;
+                        }
+                    }
                 }, function (from) {
                     //Cancel
                 });
