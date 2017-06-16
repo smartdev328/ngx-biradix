@@ -7,6 +7,21 @@
 <div class="modal-body">
     Name:<Br>
     <input class="form-control input-sm" ng-model="report.name"><Br>
-    <button class=" btn btn-success btn-large contact-submit" type="button" ng-click="save()">Update</button>
-    <button class=" btn btn-danger btn-large contact-submit pull-right" type="button" ng-click="delete()"><i class="fa fa-trash" style="color:white"></i> Delete</button>
+
+
+</div>
+
+<div class="modal-footer" style="text-align: left">
+    <div class="row">
+        <div class="col-sm-2">
+
+        </div>
+        <div class="col-xs-10 col-sm-8" style="text-align: center">
+            <button class=" btn btn-success btn-large contact-submit" type="button" ng-click="save()">Save</button>
+        </div>
+        <div class="col-xs-2 col-sm-2">
+            <button class=" btn btn-danger btn-large contact-submit pull-right" type="button" ng-click="delete()" uib-tooltip="Delete Report"><i class="fa fa-trash" style="color:white"></i></button>
+        </div>
+    </div>
+
 </div>

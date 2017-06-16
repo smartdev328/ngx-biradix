@@ -35,7 +35,9 @@ define([
                             $('button.contact-submit').prop('disabled', false);
                             toastr.error("Unable to delete report. Please contact the administrator.");
                         });
-                }, function() {})
+                }, function() {
+                    $('button.contact-submit').prop('disabled', false);
+                })
 
             }
 
