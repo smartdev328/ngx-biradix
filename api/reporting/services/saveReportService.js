@@ -1,10 +1,48 @@
 var savedReportModel = require("../models/savedReportModel")
 var auditService = require('../../audit/services/auditService')
+var userService = require('../../users/services/userService')
 
 module.exports = {
     read: (operator,callback) => {
-        var query = savedReportModel.find({ownerid: operator._id});
-        query.exec(callback);
+        var query = savedReportModel.find({$or: [{ownerid: operator._id}, {orgid : operator.orgs[0]._id}]});
+        query.exec((err, reports) => {
+
+            reports = JSON.parse(JSON.stringify(reports));
+
+            var sharedUserIds = [];
+
+            reports.forEach(report => {
+                if (report.orgid) {
+                    sharedUserIds.push(report.ownerid);
+                }
+            })
+
+            if (!sharedUserIds.length) {
+                callback(err, reports);
+            } else {
+                userService.getSystemUser(System => {
+                    let SystemUser = System.user;
+                    let user;
+
+                    userService.search(SystemUser, {ids: sharedUserIds}, (usererrors, users) => {
+
+                        reports.forEach(report => {
+                            if (report.orgid) {
+                               user = users.filter(x=> x._id == report.ownerid);
+
+                               if (user && user.length) {
+                                   report.owner = users[0].name;
+                               }
+                            }
+                        })
+
+                        callback(err, reports);
+                    })
+
+                });
+            }
+
+        });
     },
     remove: (operator, context, reportId, callback) => {
         var modelErrors = [];
@@ -106,10 +144,14 @@ module.exports = {
             n.date = new Date();
             n.reportIds = report.reportIds;
             n.ownerid = operator._id;
-            n.orgid = null;
+            n.orgid = report.share === true ? operator.orgs[0]._id : null;
             n.type = report.type;
 
             data = report.reportNames;
+
+            if (n.orgid) {
+                data.push({description: 'Shared with Organization'})
+            }
 
             n.save((err, report) => {
 

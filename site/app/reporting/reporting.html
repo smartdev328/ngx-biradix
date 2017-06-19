@@ -40,7 +40,7 @@
                     <tr style="border-bottom:1px dotted #ccc">
                         <Td  colspan="100%"><B>My Saved Reports</B></Td>
                     </tr>
-                    <tr ng-if="!savedReports || savedReports.length == 0" class="padding">
+                    <tr ng-if="!savedReports || (savedReports | filter : {orgid: '!'}).length == 0" class="padding">
                         <td style="width:15px">
 
                         </td>
@@ -48,7 +48,7 @@
                             None
                         </Td>
                     </tr>
-                    <tr class="hover padding" ng-repeat="report in savedReports | orderBy : 'name'">
+                    <tr class="hover padding" ng-repeat="report in savedReports | orderBy : 'name' | filter : {orgid: '!'}">
                         <td style="width:15px"  ng-click="loadReport(report)">
 
                         </td>
@@ -66,13 +66,28 @@
                     <tr style="border-bottom:1px dotted #ccc">
                         <Td  colspan="100%" style="padding-top:10px;"><B>{{$root.me.orgs[0].name}} Reports</B></Td>
                     </tr>
-                    <tr class="padding">
+                    <tr ng-if="!savedReports || (savedReports | filter : {orgid: '!!'}).length == 0" class="padding">
                         <td style="width:15px">
 
                         </td>
                         <Td colspan="3">
                             None
                         </Td>
+                    </tr>
+                    <tr class="hover padding" ng-repeat="report in savedReports | orderBy : 'name' | filter : {orgid: '!!'}">
+                        <td style="width:15px"  ng-click="loadReport(report)">
+
+                        </td>
+                        <Td ng-click="loadReport(report)">
+                            <a href uib-tooltip="{{report.name}} (Shared by: {{report.owner}})" style="color:#333;width:240px;overflow: hidden;white-space: nowrap;display:block;text-overflow: ellipsis">{{report.name}}</a>
+                        </Td>
+                        <td style="width:15px" ng-click="loadReport(report)">
+
+                        </td>
+
+                        <td valign="middle" style="text-align: right;padding-right:5px">
+                            <a href ng-click="editReport(report)"><i class="fa fa-pencil" style="font-size:12px"></i></a>
+                        </td>
                     </tr>
                 </Table>
 

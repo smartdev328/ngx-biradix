@@ -37,7 +37,8 @@ define([
                 reportIds: reportIds,
                 reportNames: reportNames,
                 settings: copyOfSettings,
-                type: type
+                type: type,
+                share: currentReport && currentReport.orgid ? true : false
             }
 
             $scope.cancel = function () {
