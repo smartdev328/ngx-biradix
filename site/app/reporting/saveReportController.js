@@ -54,7 +54,15 @@ define([
                 $saveReportService.upsert($scope.report).then(function (response) {
                         $('button.contact-submit').prop('disabled', false);
                         if (response.data.existing) {
-                            $dialog.confirm('Report <b>' +  $scope.report.name +'</b> already exists. Are you sure you want to update the existing report?<br><br>To save a new report, please click "No" and change the name of the report. <br><br>', function() {
+
+                            var msg = "";
+                            if ($scope.report.share === true) {
+                                msg = 'A shared report <b>' +  $scope.report.name +'</b> already exists. Are you sure you want to update the existing report?<br><br>To save a new report, please click "No" and change the name of the report. <br><br>'
+                            } else {
+                                msg = 'Report <b>' +  $scope.report.name +'</b> already exists. Are you sure you want to update the existing report?<br><br>To save a new report, please click "No" and change the name of the report. <br><br>'
+                            }
+
+                            $dialog.confirm(msg, function() {
                                 $scope.save(true);
                             }, function() {})
                         }
