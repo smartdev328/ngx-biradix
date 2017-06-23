@@ -6,6 +6,13 @@ angular.module('biradix.global').directive('daterangePicker', function () {
                 width: '='
             },
             controller: function ($scope, $element) {
+                $scope.$watch("daterange", function(newdate) {
+                    if (newdate.reload) {
+                        newdate.reload = false;
+                        $scope.populate();
+                    }
+
+                }, true)
 
                 $scope.populate = function() {
                     if ($scope.daterange.selectedRange == "Custom Range") {

@@ -85,6 +85,7 @@ define([
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {
                     $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
+                    $scope.liveSettings[key].daterange.reload = true;
                 }
             }
 
@@ -245,10 +246,8 @@ define([
             $scope.noReports = false;
             $scope.noProperties = false;
 
-            $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
-            var reportNames = _.clone($scope.reportNames);
-            $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
 
+            $scope.reportNamesChanged();
 
             if ($scope.reportIds.length == 0) {
                 $scope.noReports = true;
@@ -263,7 +262,7 @@ define([
 
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
-                    reports: [{name: $scope.selected.Property.name, items : reportNames}],
+                    reports: [{name: $scope.selected.Property.name, items : $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
                 }
 
@@ -273,7 +272,7 @@ define([
                 var properties =  _.pluck(_.filter($scope.propertyItems,function(x) {return x.selected == true}),"name");
                 var reports = [];
 
-                reportNames.forEach(function(r) {
+                $scope.reportNames2.forEach(function(r) {
                     reports.push({name:r, items : properties})
                 })
 
@@ -555,7 +554,15 @@ define([
         $scope.$watch('reportItems', function() {
             $scope.reports = null;
             $scope.reportsChanged();
+            $scope.reportNamesChanged();
+
         },true)
+
+        $scope.reportNamesChanged = function() {
+            $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
+            $scope.reportNames2 = _.clone($scope.reportNames);
+            $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
+        }
 
         $scope.reportsChanged = function() {
 
