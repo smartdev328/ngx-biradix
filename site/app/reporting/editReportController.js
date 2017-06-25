@@ -10,6 +10,7 @@ define([
             ga('send', 'pageview');
 
             $scope.report = _.cloneDeep(report);
+            $scope.report.share = report.orgid ? true : false;
 
 
             $scope.cancel = function () {
@@ -54,7 +55,7 @@ define([
                         else {
                             toastr.success("<B>" + $scope.report.name + "</B> report updated successfully.");
 
-                            $uibModalInstance.close({newReport: response.data.report,deleted: false});
+                            $uibModalInstance.close({newReport: response.data.report == null ? report : response.data.report,deleted: response.data.report == null});
                         }
                     },
                     function (error) {

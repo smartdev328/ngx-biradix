@@ -31,16 +31,25 @@ module.exports = {
 
         var modelErrors = [];
 
-        savedReportModel.findOne({ownerid: operator._id, _id: report._id}, (err, existing) => {
+        var existingQuery;
+
+        if (operator.roles['0'] == 'Corporate Admin') {
+            existingQuery = {orgid: operator.orgs[0]._id, _id: report._id};
+        } else {
+            existingQuery = {ownerid: operator._id, _id: report._id};
+        }
+
+
+        savedReportModel.findOne(existingQuery, (err, existing) => {
             if (!existing) {
                 modelErrors.push({param: 'name', msg : 'Unable to find report to update.'});
                 return callback(modelErrors, null);
             }
 
 
-            let dupeQuery = {ownerid: operator._id, name: new RegExp('^'+report.name+'$', "i")};
+            let dupeQuery = {ownerid: existing.ownerid, name: new RegExp('^'+report.name+'$', "i")};
 
-            if (existing.orgid) {
+            if (report.share) {
                 dupeQuery = {orgid: existing.orgid, name: new RegExp('^'+report.name+'$', "i")};
             }
 
@@ -48,7 +57,13 @@ module.exports = {
             savedReportModel.findOne(dupeQuery, (err, dupe) => {
 
                 if (dupe && dupe._id.toString() != report._id.toString()) {
-                    modelErrors.push({param: 'name', msg : 'A report with the same name already exists. Please use a unique name.'});
+
+                    if (report.share) {
+                        modelErrors.push({param: 'name', msg : 'A shared report with the same name already exists. Please use a unique name.'});
+                    } else {
+                        modelErrors.push({param: 'name', msg : 'A non-shared report with the same name already exists. Please use a unique name.'});
+                    }
+
                     return callback(modelErrors, null);
                 }
 
@@ -59,7 +74,14 @@ module.exports = {
                     oldname = existing.name;
                 }
 
+                var oldshared = !!existing.orgid;
+                var newshared = report.share;
+                if (oldshared != newshared) {
+                    bChanged = true;
+                }
+
                 existing.name = report.name;
+                existing.orgid = report.share === true ? operator.orgs[0]._id : null;
 
                 existing.save((err, report) => {
 
@@ -70,20 +92,42 @@ module.exports = {
                     }
 
                     if (bChanged) {
+                        var description = '';
+                        if (oldname && oldname != report.name) {
+                            description = "Name: " + oldname + " => " + report.name;
+                        }
+
+                        if (oldshared != newshared) {
+                            if (description) {
+                                description += ", ";
+                            }
+
+                            description += " Shared with Organzation: ";
+
+                            if (oldshared) {
+                                description += "Yes => No"
+                            }
+                            else {
+                                description += "No => Yes"
+                            }
+                        }
 
                         auditService.create({
                             user: operator,
                             operator: operator,
                             type: 'report_updated',
-                            description: oldname + " => " + report.name,
+                            description: description,
                             context: context
                         })
                     }
 
                     read(operator,(error, reports) => {
-                        let newReport = reports.filter(x=>x._id== report._id)[0];
+                        let newReport = reports.filter(x=>x._id== report._id)
 
-                        callback(null, newReport);
+                        if (newReport.length ==0) {
+                            return callback(null, null);
+                        }
+                        callback(null, newReport[0]);
                     })
 
 
@@ -112,7 +156,7 @@ module.exports = {
 
         savedReportModel.findOne(dupeQuery, (err, existing) => {
 
-            if (existing && report.share && existing.ownerid.toString() != operator._id.toString() && operator.roles['0'] != 'Corporate Admin' && operator.roles['0'] != 'Site Admin') {
+            if (existing && report.share && existing.ownerid.toString() != operator._id.toString() && operator.roles['0'] != 'Corporate Admin') {
                 modelErrors.push({param: 'name', msg : 'A shared report with this name already exists in your organization. Unable to update shared report.'});
                 return callback(modelErrors, null);
             }

@@ -85,12 +85,12 @@
 
                         </td>
 
-                        <td valign="middle" style="text-align: right;padding-right:5px">
-                            <a href ng-click="editReport(report)" ng-if="report.ownerid.toString() == me._id.toString() || me.roles[0] == 'Corporate Admin' || me.roles[0] == 'Site Admin'"><i class="fa fa-pencil" style="font-size:12px"></i></a>
+                        <td valign="middle" style="text-align: right;padding-right:5px" nowrap>
+                            <i class="fa fa-user" style="font-size:12px" ng-if="report.ownerid.toString() == me._id.toString()" uib-tooltip="You shared this report"></i>
+                            <a href ng-click="editReport(report)" ng-if="report.ownerid.toString() == me._id.toString() || me.roles[0] == 'Corporate Admin'" uib-tooltip="Edit"><i class="fa fa-pencil" style="font-size:12px"></i></a>
                         </td>
                     </tr>
                 </Table>
-
             </div>
         </div>
     </div>
