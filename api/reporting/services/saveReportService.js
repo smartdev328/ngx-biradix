@@ -33,7 +33,7 @@ module.exports = {
 
         var existingQuery;
 
-        if (operator.roles['0'] == 'Corporate Admin') {
+        if (operator.roles['0'] == 'Corporate Manager') {
             existingQuery = {orgid: operator.orgs[0]._id, _id: report._id};
         } else {
             existingQuery = {ownerid: operator._id, _id: report._id};
@@ -156,7 +156,7 @@ module.exports = {
 
         savedReportModel.findOne(dupeQuery, (err, existing) => {
 
-            if (existing && report.share && existing.ownerid.toString() != operator._id.toString() && operator.roles['0'] != 'Corporate Admin') {
+            if (existing && report.share && existing.ownerid.toString() != operator._id.toString() && operator.roles['0'] != 'Corporate Manager') {
                 modelErrors.push({param: 'name', msg : 'A shared report with this name already exists in your organization. Unable to update shared report.'});
                 return callback(modelErrors, null);
             }
