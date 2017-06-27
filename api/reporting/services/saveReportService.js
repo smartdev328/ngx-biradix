@@ -34,7 +34,7 @@ module.exports = {
         var existingQuery;
 
         if (operator.roles['0'] == 'Corporate Manager') {
-            existingQuery = {orgid: operator.orgs[0]._id, _id: report._id};
+            existingQuery = {_id: report._id};
         } else {
             existingQuery = {ownerid: operator._id, _id: report._id};
         }
