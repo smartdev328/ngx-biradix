@@ -309,9 +309,13 @@ module.exports = {
 
                     response = _.sortByAll(response, ['orderNumber','name']);
 
-                    response[response.length - 1].last= true;
+                    var dates = [];
 
-                    var dates = Object.keys(response[0].points.rent).sort().reverse();
+                    if (response.length > 0) {
+                        response[response.length - 1].last = true;
+                        dates = Object.keys(response[0].points.rent).sort().reverse();
+                    }
+
 
                     //Check last point and remove it if its an extrapolated point for today;
                     // if (dates.length > 1) {
