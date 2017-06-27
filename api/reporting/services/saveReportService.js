@@ -231,15 +231,12 @@ function read(operator, callback) {
 
                 userService.search(SystemUser, {ids: sharedUserIds}, (usererrors, users) => {
 
-                    console.log(sharedUserIds);
-                    console.log(users);
-
                     reports.forEach(report => {
                         if (report.orgid) {
                             user = users.filter(x=> x._id == report.ownerid);
 
                             if (user && user.length) {
-                                report.owner = users[0].name;
+                                report.owner = user[0].name;
                             }
                         }
                     })
