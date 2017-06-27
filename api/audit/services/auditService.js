@@ -33,7 +33,10 @@ var audits  = [
     {key: 'report_print', value: 'Report Print', group: 'Reporting'},
     {key: 'report_pdf', value: 'Report PDF', group: 'Reporting'},
     {key: 'show_unlinked', value: 'Exclude Setting', group: 'Reporting', admin: true},
-
+    {key: 'report_saved', value: 'New Report Created', group: 'Reporting'},
+    {key: 'report_overriden', value: 'Saved Report Updated', group: 'Reporting'},
+    {key: 'report_deleted', value: 'Saved Report Deleted', group: 'Reporting'},
+    {key: 'report_updated', value: 'Saved Report Updated', group: 'Reporting'},
 
     {key: 'property_status', value: 'Updated Property Status', undo: true, group: 'Property'},
 
@@ -112,6 +115,7 @@ module.exports = {
         n.context = audit.context;
         n.type = audit.type;
         n.description = audit.description;
+        n.adminOnly = audit.adminOnly;
         n.date = new Date().toISOString();
 
         if (audit.revertedFromId) {

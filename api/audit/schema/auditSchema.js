@@ -30,7 +30,8 @@ var s = new Schema({
     },
     reverted : Boolean,
     revertedFromId : Schema.Types.ObjectId,
-    data : Object
+    data : Object,
+    adminOnly : Object
 });
 
 module.exports = mongoose.model('Audit', s);

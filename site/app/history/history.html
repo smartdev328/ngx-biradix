@@ -93,6 +93,7 @@
                     <h4>More Info</h4>
                     <input class="form-control input-sm" value="{{row.context.ip}}"><Br>
                     <input class="form-control input-sm" value="{{row.context.user_agent}}"><Br>
+                    <textarea class="form-control input-sm" ng-if="me.permissions.indexOf('Admin') > -1 && row.adminOnly" style="height:150px">{{row.adminOnly}}</textarea>
                 </div>
             </td>
         </tr>

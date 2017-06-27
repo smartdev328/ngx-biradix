@@ -108,9 +108,8 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
             $cookies.put('Scale', graphs, {expires : expireDate})
         }
 
-
-        fac.getDaterange = function () {
-            var r = $cookies.get('selectedRange') || "90 Days";
+        fac.defaultDateObject = function(selectedRange,selectedStartDate,selectedEndDate) {
+            var r = selectedRange || "90 Days";
 
             if (r == "Last 30 Days") {
                 r = "30 Days"
@@ -133,9 +132,14 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
                     'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
                 },
                 selectedRange : r,
-                selectedStartDate : moment($cookies.get('selectedStartDate')),
-                selectedEndDate : moment($cookies.get('selectedEndDate'))
+                selectedStartDate : moment(selectedStartDate),
+                selectedEndDate : moment(selectedEndDate)
             }
+
+        }
+
+        fac.getDaterange = function () {
+            return fac.defaultDateObject($cookies.get('selectedRange'),$cookies.get('selectedStartDate'),$cookies.get('selectedEndDate'))
         }
 
         fac.saveDaterange = function (daterange) {

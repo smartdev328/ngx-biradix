@@ -58,6 +58,7 @@ gulp.task('globaljs', function() {
         , './site/services/progressService.js'
         , './site/services/auditService.js'
         , './site/services/reportingService.js'
+        , './site/services/saveReportService.js'
         , './site/services/urlService.js'
         , './site/services/gridService.js'
         , './site/services/userService.js'

@@ -11,7 +11,7 @@ define([
     '../../components/reports/concession.js'
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$timeout', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$timeout) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService) {
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -50,16 +50,59 @@ define([
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
-                    $scope.resetPropertyReportSettings(true);
-                    $scope.resetRankingsSettings(true);
-                    $scope.resetRankingsSummarySettings(true);
-                    $scope.resetConcessionSettings(true);
+                    $scope.configurePropertyReportOptions();
+                    $scope.configureRankingsOptions();
+                    $scope.configureRankingsSummaryOptions();
+                    $scope.configureConcessionOptions();
                 }
 
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
+
+                $scope.loadSaved();
+
                 me();
             }
         })
+
+        $scope.loadReport = function(report) {
+
+            $scope.currentReport = report;
+
+            if (report.settings) {
+                $scope.liveSettings = _.cloneDeep(report.settings);
+            } else {
+                $scope.liveSettings = {};
+            }
+
+            $scope.reportIds = _.cloneDeep(report.reportIds);
+
+            $scope.reportType = report.type;
+
+            $scope.reportItems.forEach(function(x,i) {
+                $scope.reportItems[i].selected =$scope.reportIds.indexOf(x.id) > -1
+            })
+
+            for (var key in $scope.liveSettings) {
+                if ($scope.liveSettings[key].daterange) {
+                    $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
+                    $scope.liveSettings[key].daterange.reload = true;
+                }
+            }
+
+            $scope.reportsChanged();
+
+
+            $scope.run();
+        }
+
+        $scope.loadSaved = function() {
+            $saveReportService.read().then(function (response) {
+                    $scope.savedReports = response.data.reports;
+                },
+                function (error) {
+                    toastr.error("Unable to load saved reports. Please contact the administrator.");
+                });
+        }
 
         $scope.reload = function(bRun) {
             $propertyService.search({
@@ -203,10 +246,8 @@ define([
             $scope.noReports = false;
             $scope.noProperties = false;
 
-            $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
-            var reportNames = _.clone($scope.reportNames);
-            $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
 
+            $scope.reportNamesChanged();
 
             if ($scope.reportIds.length == 0) {
                 $scope.noReports = true;
@@ -221,7 +262,7 @@ define([
 
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
-                    reports: [{name: $scope.selected.Property.name, items : reportNames}],
+                    reports: [{name: $scope.selected.Property.name, items : $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
                 }
 
@@ -231,7 +272,7 @@ define([
                 var properties =  _.pluck(_.filter($scope.propertyItems,function(x) {return x.selected == true}),"name");
                 var reports = [];
 
-                reportNames.forEach(function(r) {
+                $scope.reportNames2.forEach(function(r) {
                     reports.push({name:r, items : properties})
                 })
 
@@ -281,23 +322,14 @@ define([
 
             });
 
-
-
-
         }
-        $scope.singleReport = function() {
 
-            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
-            $scope.compIds =  _.pluck($scope.selected.Comps,"id")
-            $scope.compNames =  _.pluck($scope.selected.Comps,"name")
-            $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
-
-            var options = {};
-
-
+        $scope.UItoSettings = function() {
+            if (phantom) {
+                return;
+            }
             if ($scope.reportIds.indexOf("property_report") > -1) {
 
-                if (!phantom) {
                     $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
                     $scope.liveSettings.showProfile = {};
 
@@ -317,8 +349,42 @@ define([
 
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
 
+            }
+
+            if ($scope.reportIds.indexOf("property_rankings") > -1) {
+                if ($scope.temp.rankingSortSelected) {
+                    $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
                 }
 
+                $scope.temp.showRankingsItems.forEach(function (f) {
+                    $scope.liveSettings.rankings.show[f.id] = f.selected;
+                })
+            }
+
+            if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
+                if ($scope.temp.rankingSummarySortSelected) {
+                    $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
+                }
+
+                $scope.temp.showRankingsSummaryItems.forEach(function (f) {
+                    $scope.liveSettings.rankingsSummary.show[f.id] = f.selected;
+                })
+            }
+
+        }
+
+        $scope.singleReport = function() {
+
+            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
+            $scope.compIds =  _.pluck($scope.selected.Comps,"id")
+            $scope.compNames =  _.pluck($scope.selected.Comps,"name")
+            $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
+
+            var options = {};
+
+            $scope.UItoSettings();
+
+            if ($scope.reportIds.indexOf("property_report") > -1) {
                 options.property_report = {
                     summary: $scope.liveSettings.dashboardSettings.summary,
                     bedrooms: $scope.liveSettings.dashboardSettings.selectedBedroom,
@@ -333,7 +399,6 @@ define([
                     },
                     offset: moment().utcOffset()
                 }
-
             }
 
             if ($scope.reportIds.indexOf("concession") > -1) {
@@ -348,27 +413,7 @@ define([
             }
 
 
-            if (!phantom) {
-                if ($scope.reportIds.indexOf("property_rankings") > -1) {
-                    if ($scope.temp.rankingSortSelected) {
-                        $scope.liveSettings.rankings.orderBy = ($scope.temp.rankingSortDir == "desc" ? "-" : "") + $scope.temp.rankingSortSelected.id;
-                    }
 
-                    $scope.temp.showRankingsItems.forEach(function (f) {
-                        $scope.liveSettings.rankings.show[f.id] = f.selected;
-                    })
-                }
-
-                if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
-                    if ($scope.temp.rankingSummarySortSelected) {
-                        $scope.liveSettings.rankingsSummary.orderBy = ($scope.temp.rankingSummarySortDir == "desc" ? "-" : "") + $scope.temp.rankingSummarySortSelected.id;
-                    }
-
-                    $scope.temp.showRankingsSummaryItems.forEach(function (f) {
-                        $scope.liveSettings.rankingsSummary.show[f.id] = f.selected;
-                    })
-                }
-            }
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
@@ -487,13 +532,44 @@ define([
         }
 
         $scope.audit = function(type, where) {
-            $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: $scope.compNames.concat($scope.reportNames)});
+            var data =$scope.compNames.concat($scope.reportNames);
+
+            if ($scope.currentReport) {
+                data.unshift({description: 'Saved Report: ' + $scope.currentReport.name})
+            }
+
+            $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: data});
         }
 
         $scope.auditMultiple = function(type, where) {
-            $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: $scope.propertyNames.concat($scope.reportNames)});
+
+            var data = $scope.propertyNames.concat($scope.reportNames);
+
+            if ($scope.currentReport) {
+                data.unshift({description: 'Saved Report: ' + $scope.currentReport.name})
+            }
+
+            $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: data});
         }
         $scope.$watch('reportItems', function() {
+            $scope.reports = null;
+            $scope.reportsChanged();
+            $scope.reportNamesChanged();
+
+        },true)
+
+        $scope.reportNamesChanged = function() {
+            $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
+            $scope.reportNames2 = _.clone($scope.reportNames);
+            $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
+        }
+
+        $scope.reportsChanged = function() {
+
+            $scope.configurePropertyReportOptions();
+            $scope.configureRankingsOptions();
+            $scope.configureRankingsSummaryOptions();
+            $scope.configureConcessionOptions();
 
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
@@ -506,7 +582,7 @@ define([
                     ,{value: 2, text: '2 Bdrs.'}
                     ,{value: 3, text: '3 Bdrs.'}
                     ,{value: 4, text: '4 Bdrs.'}
-                    ]
+                ]
 
                 $scope.temp.bedroom = _.find($scope.temp.bedrooms, function(x) {return x.value == $scope.liveSettings.dashboardSettings.selectedBedroom});
 
@@ -544,7 +620,7 @@ define([
             }
 
             $scope.reportIds = reportIds;
-        },true)
+        }
 
 
         $scope.excel = function() {
@@ -580,7 +656,7 @@ define([
 
 
         ////////////////////// Rankings Summary ////////////////////////////////
-        $scope.resetRankingsSummarySettings = function(configure) {
+        $scope.resetRankingsSummarySettings = function() {
             $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
 
             $scope.liveSettings.rankingsSummary.show = {
@@ -598,13 +674,13 @@ define([
                 nersqft: true
             }
 
-            $scope.configureRankingsSummaryOptions();
+
         }
 
 
         $scope.configureRankingsSummaryOptions = function() {
             if (!$scope.liveSettings.rankingsSummary) {
-                return;
+                $scope.resetRankingsSummarySettings();
             }
 
             $scope.temp.showRankingsSummaryOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
@@ -655,7 +731,7 @@ define([
         })
 
         ////////////////////// Rankings ////////////////////////////////
-        $scope.resetRankingsSettings = function(configure) {
+        $scope.resetRankingsSettings = function() {
 
             $scope.liveSettings.rankings = {orderBy: "nersqft"}
 
@@ -673,13 +749,12 @@ define([
                 nersqft: true
             }
 
-            $scope.configureRankingsOptions();
         }
 
 
         $scope.configureRankingsOptions = function() {
             if (!$scope.liveSettings.rankings) {
-                return;
+                $scope.resetRankingsSettings();
             }
 
             $scope.temp.showRankingsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
@@ -733,7 +808,7 @@ define([
 
         $scope.configurePropertyReportOptions = function() {
             if (!$scope.liveSettings.showProfile) {
-                return;
+                $scope.resetPropertyReportSettings()
             }
 
             $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
@@ -824,19 +899,21 @@ define([
 
         }
 
-        $scope.resetPropertyReportSettings = function(configure) {
+        $scope.resetPropertyReportSettings = function() {
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
             $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
             $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
             $scope.liveSettings.dashboardSettings.daterange.direction = "right";
 
-            $scope.configurePropertyReportOptions();
         }
 
         $scope.configureConcessionOptions = function() {
-
+            if (!$scope.liveSettings.concession) {
+                $scope.resetConcessionSettings()
+            }
         }
-        $scope.resetConcessionSettings = function(configure) {
+
+        $scope.resetConcessionSettings = function() {
             $scope.liveSettings.concession = {
                 daterange: {
                     Ranges : {
@@ -852,8 +929,6 @@ define([
                     direction: "right"
                 }
             }
-
-            $scope.configureConcessionOptions();
         }
 
         // Watchers from Components
@@ -878,6 +953,95 @@ define([
 
             }
         })
+
+        $scope.saveReport = function() {
+
+            $scope.UItoSettings();
+
+            require([
+                '/app/reporting/saveReportController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/reporting/saveReport.html?bust=' + version,
+                    controller: 'saveReportController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        settings: function () {
+                            return $scope.liveSettings;
+                        },
+                        reportIds: function () {
+                            return $scope.reportIds;
+                        },
+                        type: function() {
+                            return $scope.reportType;
+                        },
+                        currentReport: function() {
+                            return $scope.currentReport;
+                        },
+                        reportNames: function() {
+                            return $scope.reportNames;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (newReport) {
+
+                    _.remove($scope.savedReports, function(x) {return x._id == newReport._id});
+
+                    $scope.savedReports.push(newReport);
+
+                    $scope.currentReport = newReport;
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
+
+        $scope.editReport = function(report) {
+
+            require([
+                '/app/reporting/editReportController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/reporting/editReport.html?bust=' + version,
+                    controller: 'editReportController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        report: function () {
+                            return report;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (reply) {
+
+                    _.remove($scope.savedReports, function(x) {return x._id == reply.newReport._id});
+
+                    var current = false;
+                    if ($scope.currentReport && $scope.currentReport._id.toString() == reply.newReport._id.toString()) {
+                        current = true;
+                    }
+
+                    if (!reply.deleted) {
+                        $scope.savedReports.push(reply.newReport);
+
+                        if (current) {
+                            $scope.currentReport = reply.newReport;
+                        }
+                    } else {
+                        if (current) {
+                            delete $scope.currentReport;
+                        }
+                    }
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
 
     }]);
 });
