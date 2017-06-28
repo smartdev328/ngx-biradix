@@ -41,6 +41,15 @@ module.exports = {
             callback();
         });
     },
+    updateGuestStatsLastCompleted: function(guestid, propertyid, callback) {
+        var query = {_id: guestid, "guestStats.propertyid" : propertyid};
+        var update = {"guestStats.$.lastCompleted" :  new Date()};
+        var options = {new: true};
+
+        UserSchema.findOneAndUpdate(query, update, options, function (err, saved) {
+            callback();
+        });
+    },
     removeGuestStats: function(guestid, propertyid, callback) {
         var query = {_id: guestid};
         var update = {$pull: {guestStats: {propertyid: propertyid.toString()}}};

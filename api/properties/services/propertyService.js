@@ -16,7 +16,7 @@ var CompsService = require('./compsService')
 var PropertyHelperService = require('./propertyHelperService')
 var SurveyHelperService = require('./surveyHelperService')
 var guestQueueService = require('../../propertyusers/services/guestsQueueService')
-
+var userService = require('../../users/services/userService')
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -891,6 +891,11 @@ module.exports = {
                         context: context,
                         data: data
                     })
+
+                    if (operator.roles[0] == 'Guest') {
+                        console.log('Updating survey as guest')
+                        userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
+                    }
                 });
             });
         });
@@ -1017,6 +1022,11 @@ module.exports = {
                     context: context,
                     data: data
                 })
+
+                if (operator.roles[0] == 'Guest') {
+                    console.log('Creating survey as guest')
+                    userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
+                }
             });
         });
 
