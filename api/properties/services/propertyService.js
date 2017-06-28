@@ -270,7 +270,6 @@ module.exports = {
         var update = {$pull: {comps : {id : ObjectId(compid)}}};
 
 
-        // return callback([{msg: 'Test'}])
 
         PropertySchema.findOne({_id: compid}, function(err,comp) {
             if (!comp) {
@@ -290,6 +289,11 @@ module.exports = {
                 if (!isLinked) {
                     return callback([{msg: 'Unable to remove comp, it is not currently attached to subject property.'}])
                 }
+
+
+
+                // return callback([{msg: 'Test'}])
+
                 PropertySchema.update(query, update, function (err, saved) {
                     AuditService.create({
                         operator: operator,
@@ -319,7 +323,8 @@ module.exports = {
 
                     guestQueueService.updateGuestPermissionsForProperty(compid, function() {});
 
-                    removePermissionsAfterUnlink(compid, subjectid);
+                    removeRMBMPermissionsAfterUnlink(compid, subjectid);
+                    removeCMPermissionsAfterUnlink(compid, subjectid, subj.orgid);
 
                     return callback(err, saved)
                 })
@@ -1084,7 +1089,33 @@ module.exports = {
     }
 }
 
-function removePermissionsAfterUnlink (compid, subjectid) {
+function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
+    CompsService.getSubjects([compid], {select: "_id name orgid"}, (err, subjects) => {
+        //See if the comp to be removed has anymore subjects assigned to the same org;
+       var subjectssameorg = _.filter(subjects, function(x) {return x.orgid && x.orgid.toString() == orgid && x._id.toString() != subjectid.toString()})
+
+        //no other subjects have this comp for the org, remove compmanage permission from CMs so they dont see it in ActivityHistory
+        if (subjectssameorg.length == 0) {
+            AccessService.getRoles({tags: ['CM'], orgid: orgid}, (err, roles) => {
+                let role = roles[0];
+
+                AccessService.searchPermissions({types: ['CompManage'], resource: compid, executorid: role._id}, (err, permissions) => {
+
+                    if (permissions && permissions.length > 0) {
+                        // console.log(role, permissions);
+
+                        AccessService.deletePermissionByIds([permissions[0]._id], () => {})
+                    }
+                });
+
+            });
+        }
+
+
+    });
+}
+
+function removeRMBMPermissionsAfterUnlink (compid, subjectid) {
     AccessService.searchPermissions({types: ['CompManage'], resource: compid}, (err, permissions) => {
         var executorids = _.map(permissions, function(x) {return x.executorid})
 
