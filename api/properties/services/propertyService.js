@@ -269,6 +269,9 @@ module.exports = {
         var query = {_id: new ObjectId(subjectid)};
         var update = {$pull: {comps : {id : ObjectId(compid)}}};
 
+
+        // return callback([{msg: 'Test'}])
+
         PropertySchema.findOne({_id: compid}, function(err,comp) {
             if (!comp) {
                 return callback([{msg: 'Unable to find property'}])
@@ -315,6 +318,8 @@ module.exports = {
                     })
 
                     guestQueueService.updateGuestPermissionsForProperty(compid, function() {});
+
+                    removePermissionsAfterUnlink(compid, subjectid);
 
                     return callback(err, saved)
                 })
@@ -1077,4 +1082,26 @@ module.exports = {
             return callback();
         })
     }
+}
+
+function removePermissionsAfterUnlink (compid, subjectid) {
+    AccessService.searchPermissions({types: ['CompManage'], resource: compid}, (err, permissions) => {
+        var executorids = _.map(permissions, function(x) {return x.executorid})
+
+        AccessService.getRoles({ids: executorids, tags: [subjectid.toString()]}, (err, roles) => {
+            // console.log(roles);
+            var roleids = _.map(roles, function(x) {return x._id.toString()})
+
+            var permissionstodelete = _.filter(permissions, function(x) {return roleids.indexOf(x.executorid.toString()) > -1})
+
+            var permissionidstodelete = _.map(permissionstodelete, function(x) {return x._id});
+
+            // console.log(permissionstodelete);
+            //console.log(permissionidstodelete);
+
+            if (permissionidstodelete.length > 0) {
+                AccessService.deletePermissionByIds(permissionidstodelete, () => {})
+            }
+        })
+    })
 }

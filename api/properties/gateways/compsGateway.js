@@ -92,6 +92,7 @@ module.exports = {
 
                             });
                         }, function(err) {
+                            //return res.status(401).json("Unauthorized request");
                             var order = [];
                             req.body.compids.forEach(function(x, i) {
                                order.push({compid: x, orderNumber: i});

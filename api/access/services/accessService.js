@@ -57,6 +57,11 @@
                 query = query.where("orgid").in(criteria.orgid);
             }
 
+            if (criteria.ids) {
+                query = query.where("_id").in(criteria.ids);
+            }
+
+
             query.exec(function(err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to get roles: ' + err});
@@ -282,7 +287,21 @@
                 callback(null, obj);
             });
         },
+        deletePermissionByIds: function(ids, callback) {
+            var modelErrors = [];
 
+            var criteria = {_id: {$in: ids}};
+
+            PermissionsSchema.remove(criteria,function (err, obj) {
+                if (err) {
+                    modelErrors.push({msg: 'Unexpected Error. Unable to delete permission: ' + err});
+                    callback(modelErrors, null);
+                    return;
+                }
+
+                callback(null, obj);
+            });
+        },
         deletePermission: function(permission, callback) {
             var modelErrors = [];
 
