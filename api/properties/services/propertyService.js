@@ -1104,7 +1104,7 @@ function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
         //See if the comp to be removed has anymore subjects assigned to the same org;
        var subjectssameorg = _.filter(subjects, function(x) {return x.orgid && x.orgid.toString() == orgid && x._id.toString() != subjectid.toString()})
 
-        console.log('Subjects Same Org', orgid, subjectssameorg);
+        // console.log('Subjects Same Org', orgid, subjectssameorg);
         //no other subjects have this comp for the org, remove compmanage permission from CMs so they dont see it in ActivityHistory
         if (subjectssameorg.length == 0) {
             AccessService.getRoles({tags: ['CM'], orgid: orgid}, (err, roles) => {
@@ -1112,12 +1112,14 @@ function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
 
                 AccessService.searchPermissions({types: ['CompManage'], resource: compid, executorid: role._id}, (err, permissions) => {
 
-                    console.log('CM Permission', role, permissions);
+                    // console.log('CM Permission', role, permissions);
 
                     if (permissions && permissions.length > 0) {
 
+                        let permissionidstodelete = _.map(permissions, function(x) {return x._id});
 
-                        AccessService.deletePermissionByIds([permissions[0]._id], () => {})
+
+                        AccessService.deletePermissionByIds(permissionidstodelete, () => {})
                     }
                 });
 
