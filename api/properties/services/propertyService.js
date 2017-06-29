@@ -1112,8 +1112,10 @@ function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
 
                 AccessService.searchPermissions({types: ['CompManage'], resource: compid, executorid: role._id}, (err, permissions) => {
 
+                    console.log('CM Permission', role, permissions);
+
                     if (permissions && permissions.length > 0) {
-                        // console.log(role, permissions);
+
 
                         AccessService.deletePermissionByIds([permissions[0]._id], () => {})
                     }
