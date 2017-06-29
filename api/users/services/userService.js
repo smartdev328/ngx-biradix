@@ -32,9 +32,9 @@ module.exports = {
            callback();
         });
     },
-    updateGuestStatsLastEmailed: function(guestid, propertyid, callback) {
+    updateGuestStatsLastEmailed: function(guestid, propertyid, sender, callback) {
         var query = {_id: guestid, "guestStats.propertyid" : propertyid};
-        var update = {"guestStats.$.lastEmailed" :  new Date()};
+        var update = {"guestStats.$.lastEmailed" :  new Date(), "guestStats.$.sender" : sender};
         var options = {new: true};
 
         UserSchema.findOneAndUpdate(query, update, options, function (err, saved) {

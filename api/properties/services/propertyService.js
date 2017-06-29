@@ -17,6 +17,7 @@ var PropertyHelperService = require('./propertyHelperService')
 var SurveyHelperService = require('./surveyHelperService')
 var guestQueueService = require('../../propertyusers/services/guestsQueueService')
 var userService = require('../../users/services/userService')
+var EmailService = require('../../business/services/emailService')
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -895,6 +896,7 @@ module.exports = {
                     if (operator.roles[0] == 'Guest') {
                         console.log('Updating survey as guest')
                         userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
+                        emailOriginatorGuestSurvey(operator,id, subject.name);
                     }
                 });
             });
@@ -1026,6 +1028,7 @@ module.exports = {
                 if (operator.roles[0] == 'Guest') {
                     console.log('Creating survey as guest')
                     userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
+                    emailOriginatorGuestSurvey(operator,id, subject.name);
                 }
             });
         });
@@ -1104,7 +1107,7 @@ function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
         //See if the comp to be removed has anymore subjects assigned to the same org;
        var subjectssameorg = _.filter(subjects, function(x) {return x.orgid && x.orgid.toString() == orgid && x._id.toString() != subjectid.toString()})
 
-        console.log('Subjects Same Org', orgid, subjectssameorg);
+        // console.log('Subjects Same Org', orgid, subjectssameorg);
         //no other subjects have this comp for the org, remove compmanage permission from CMs so they dont see it in ActivityHistory
         if (subjectssameorg.length == 0) {
             AccessService.getRoles({tags: ['CM'], orgid: orgid}, (err, roles) => {
@@ -1112,12 +1115,12 @@ function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
 
                 AccessService.searchPermissions({types: ['CompManage'], resource: compid, executorid: role._id}, (err, permissions) => {
 
-                    console.log('CM Permission', role, permissions);
+                    // console.log('CM Permission', role, permissions);
 
                     if (permissions && permissions.length > 0) {
 
                         let permissionidstodelete = _.map(permissions, function(x) {return x._id});
-                        console.log('CM Permission Delete', permissionidstodelete);
+                        // console.log('CM Permission Delete', permissionidstodelete);
 
                         AccessService.deletePermissionByIds(permissionidstodelete, () => {})
                     }
@@ -1150,4 +1153,30 @@ function removeRMBMPermissionsAfterUnlink (compid, subjectid) {
             }
         })
     })
+}
+
+function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
+    if (guest.guestStats) {
+        let stat = guest.guestStats.find(x=>x.sender && x.propertyid.toString() == propertyid.toString());
+
+        if (stat) {
+            var email = {
+                to: stat.sender.email,
+                bcc: 'eugene@biradix.com',
+                logo: "https://platform.biradix.com/images/organizations/" + stat.sender.logo,
+                subject: guest.first + " " + guest.last + " updated " + propertyname +" market survey",
+                template: 'guest_survey.html',
+                templateData: {
+                    first:stat.sender.first,
+                    guest: guest.first + " " + guest.last,
+                    property:propertyname,
+                }
+            }
+
+            EmailService.send(email,function(emailError,status) {
+                console.log(status);
+            });
+        }
+
+    }
 }
