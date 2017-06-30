@@ -15,7 +15,6 @@
     border-bottom: 2px solid #ddd;
 }
 
-
 @media all and (min-width: 0px) and (max-width: 530px) {
     .grid-limit {
         float:right !important;
@@ -43,7 +42,9 @@
     margin-top: 5px !important;
 }
 
-.maingrid .sortable {
+.maingrid .sortable,
+.sortablegrid .sortable
+{
     cursor: pointer;
 }
 
@@ -51,9 +52,10 @@
     width:15px;
 }
 
+.sortablegrid .fa-sort,
 .maingrid > table th .fa-sort,
-.maingrid > table th .fa-filter{
-    color:#E0E0E0
+.maingrid > table th .fa-filter {
+    color:#E0E0E0 !important;
 }
 
 
