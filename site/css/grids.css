@@ -10,7 +10,9 @@
     border-bottom: 1px solid #ccc;
 }
 
-.maingrid > table .thead {
+.maingrid > table .thead,
+.sortablegrid .thead
+{
     background-color: #f9f9f9 !important;
     border-bottom: 2px solid #ddd;
 }

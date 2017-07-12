@@ -2,7 +2,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
-            $scope.sort = "sqft";
+            $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
                 return $location.path('/login')
@@ -907,17 +907,25 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
             }
 
             $scope.toggleSort = function(field, defaultAsc) {
+
                 var ar = $scope.sort.split("-");
-                var currentfield;
-                var asc;
-                if (ar.length == 2) {
-                    currentfield = ar[1];
-                    asc = false;
-                } else {
-                    currentfield = ar[0];
-                    asc = true;
+                var currentfield = "";
+                var asc = false;
+
+                if ($scope.sort != "") {
+                    if (ar.length == 2) {
+                        currentfield = ar[1];
+                        asc = false;
+                    } else {
+                        currentfield = ar[0];
+                        asc = true;
+                    }
                 }
 
+                if (currentfield == field && asc != defaultAsc) {
+                    $scope.sort = "";
+                }
+                else
                 if (currentfield == field && asc) {
                     $scope.sort = "-" + field;
                 }
