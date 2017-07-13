@@ -16,7 +16,8 @@ var CompsService = require('./compsService')
 var PropertyHelperService = require('./propertyHelperService')
 var SurveyHelperService = require('./surveyHelperService')
 var guestQueueService = require('../../propertyusers/services/guestsQueueService')
-
+var userService = require('../../users/services/userService')
+var EmailService = require('../../business/services/emailService')
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -269,6 +270,8 @@ module.exports = {
         var query = {_id: new ObjectId(subjectid)};
         var update = {$pull: {comps : {id : ObjectId(compid)}}};
 
+
+
         PropertySchema.findOne({_id: compid}, function(err,comp) {
             if (!comp) {
                 return callback([{msg: 'Unable to find property'}])
@@ -287,6 +290,11 @@ module.exports = {
                 if (!isLinked) {
                     return callback([{msg: 'Unable to remove comp, it is not currently attached to subject property.'}])
                 }
+
+
+
+                // return callback([{msg: 'Test'}])
+
                 PropertySchema.update(query, update, function (err, saved) {
                     AuditService.create({
                         operator: operator,
@@ -315,6 +323,9 @@ module.exports = {
                     })
 
                     guestQueueService.updateGuestPermissionsForProperty(compid, function() {});
+
+                    removeRMBMPermissionsAfterUnlink(compid, subjectid);
+                    removeCMPermissionsAfterUnlink(compid, subjectid, subj.orgid);
 
                     return callback(err, saved)
                 })
@@ -881,6 +892,12 @@ module.exports = {
                         context: context,
                         data: data
                     })
+
+                    if (operator.roles[0] == 'Guest') {
+                        console.log('Updating survey as guest')
+                        userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
+                        emailOriginatorGuestSurvey(operator,id, subject.name);
+                    }
                 });
             });
         });
@@ -1007,6 +1024,12 @@ module.exports = {
                     context: context,
                     data: data
                 })
+
+                if (operator.roles[0] == 'Guest') {
+                    console.log('Creating survey as guest')
+                    userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
+                    emailOriginatorGuestSurvey(operator,id, subject.name);
+                }
             });
         });
 
@@ -1076,5 +1099,84 @@ module.exports = {
             });
             return callback();
         })
+    }
+}
+
+function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
+    CompsService.getSubjects([compid], {select: "_id name orgid"}, (err, subjects) => {
+        //See if the comp to be removed has anymore subjects assigned to the same org;
+       var subjectssameorg = _.filter(subjects, function(x) {return x.orgid && x.orgid.toString() == orgid && x._id.toString() != subjectid.toString()})
+
+        // console.log('Subjects Same Org', orgid, subjectssameorg);
+        //no other subjects have this comp for the org, remove compmanage permission from CMs so they dont see it in ActivityHistory
+        if (subjectssameorg.length == 0) {
+            AccessService.getRoles({tags: ['CM'], orgid: orgid}, (err, roles) => {
+                let role = roles[0];
+
+                AccessService.searchPermissions({types: ['CompManage'], resource: compid, executorid: role._id}, (err, permissions) => {
+
+                    // console.log('CM Permission', role, permissions);
+
+                    if (permissions && permissions.length > 0) {
+
+                        let permissionidstodelete = _.map(permissions, function(x) {return x._id});
+                        // console.log('CM Permission Delete', permissionidstodelete);
+
+                        AccessService.deletePermissionByIds(permissionidstodelete, () => {})
+                    }
+                });
+
+            });
+        }
+
+
+    });
+}
+
+function removeRMBMPermissionsAfterUnlink (compid, subjectid) {
+    AccessService.searchPermissions({types: ['CompManage'], resource: compid}, (err, permissions) => {
+        var executorids = _.map(permissions, function(x) {return x.executorid})
+
+        AccessService.getRoles({ids: executorids, tags: [subjectid.toString()]}, (err, roles) => {
+            // console.log(roles);
+            var roleids = _.map(roles, function(x) {return x._id.toString()})
+
+            var permissionstodelete = _.filter(permissions, function(x) {return roleids.indexOf(x.executorid.toString()) > -1})
+
+            var permissionidstodelete = _.map(permissionstodelete, function(x) {return x._id});
+
+            // console.log(permissionstodelete);
+            //console.log(permissionidstodelete);
+
+            if (permissionidstodelete.length > 0) {
+                AccessService.deletePermissionByIds(permissionidstodelete, () => {})
+            }
+        })
+    })
+}
+
+function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
+    if (guest.guestStats) {
+        let stat = guest.guestStats.find(x=>x.sender && x.propertyid.toString() == propertyid.toString());
+
+        if (stat) {
+            var email = {
+                to: stat.sender.email,
+                bcc: 'eugene@biradix.com',
+                logo: "https://platform.biradix.com/images/organizations/" + stat.sender.logo,
+                subject: guest.first + " " + guest.last + " updated " + propertyname +" market survey",
+                template: 'guest_survey.html',
+                templateData: {
+                    first:stat.sender.first,
+                    guest: guest.first + " " + guest.last,
+                    property:propertyname,
+                }
+            }
+
+            EmailService.send(email,function(emailError,status) {
+                console.log(status);
+            });
+        }
+
     }
 }

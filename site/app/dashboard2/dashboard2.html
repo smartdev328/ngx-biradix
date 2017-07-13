@@ -76,12 +76,8 @@
             </div>
             <div class="panel-body">
                 <hr>
-                Hello {{$root.me.first}},<Br>
-                <Br>
-                Please complete the <A href ng-click="marketSurvey(selectedProperty._id)">Market Survey</A> for <B>{{selectedProperty.name}}</B> to gain access to the comparative data of the following properties:<br>
-                <Br>
-                <div class="alert alert-success" role="alert" ng-if="canAccess">Your Market Survey is up to date! You may access the comparative data below.</div>
-                <div class="alert alert-danger" role="alert" ng-if="!canAccess">Your Market Survey is <b>NOT</b> up to date! Please complete the survey to gain access.</div>
+                <div class="alert alert-success" role="alert" ng-if="canAccess">Your Market Survey is up to date! You have access to the comparative data below.</div>
+                <div class="alert alert-warning" role="alert" ng-if="!canAccess">Your Market Survey is <b>not</b> up to date! Please complete a <A href ng-click="marketSurvey(selectedProperty._id)">Market Survey</A> for {{selectedProperty.name}} to gain access to the comparative data of the following properties below.</div>
                 <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
                     <tbody>
                     <tr class="thead">

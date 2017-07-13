@@ -26,7 +26,10 @@
     <div class="panel-heading">Concessions Report</div>
     <div class="panel-body">
         <hr>
-        <div class="maingrid wrapper panel" style="overflow-x:auto">
+        <div ng-if="!report.dates || report.dates.length == 0"  class="alert alert-warning" role="alert">
+            <b>No data available in selected date range.</b>
+        </div>
+        <div class="maingrid wrapper panel" style="overflow-x:auto" ng-if="report.dates && report.dates.length > 0">
     <div class="header" style="height:48px"></div>
     <table class="table table-condensed table-striped hidden-arrows" style="font-size:9pt">
     <tbody>
