@@ -41,6 +41,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             comp.sqft = comp.survey.sqft == null ? -1 : comp.survey.sqft;
                             comp.rent = comp.survey.rent == null ? -1 : comp.survey.rent;
                             comp.mersqft = comp.survey.mersqft == null ? -1 : comp.survey.mersqft;
+                            comp.runrate = comp.survey.runrate == null ? -1 : comp.survey.runrate;
+                            comp.runratesqft = comp.survey.runratesqft == null ? -1 : comp.survey.runratesqft;
                             comp.concessions = comp.survey.concessions == null ? -1 : comp.survey.concessions;
                             comp.ner = comp.survey.ner == null ? -1 : comp.survey.ner;
                             comp.nersqft = comp.survey.nersqft == null ? -1 : comp.survey.nersqft;
@@ -75,6 +77,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                                 $scope.totals.concessions = ($scope.totals.concessions || 0)+  comp.survey.concessions * comp.units;
                                 $scope.totals.ner = ($scope.totals.ner || 0)+  comp.survey.ner * comp.units;
                                 $scope.totals.nersqft = ($scope.totals.nersqft || 0)+  comp.survey.nersqft * comp.units;
+                                $scope.totals.runrate = ($scope.totals.runrate || 0)+  comp.survey.runrate * comp.units;
+                                $scope.totals.runratesqft = ($scope.totals.runratesqft || 0)+  comp.survey.runratesqft * comp.units;
                             }
 
                             comp.survey.floorplans.forEach(function(fp,i) {
@@ -130,6 +134,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             $scope.totals.concessions = ($scope.totals.concessions || 0) / $scope.totals.units;
                             $scope.totals.ner = ($scope.totals.ner || 0) / $scope.totals.units;
                             $scope.totals.nersqft = ($scope.totals.ner || 0) / $scope.totals.sqft;
+                            $scope.totals.runrate = ($scope.totals.runrate || 0) / $scope.totals.units;
+                            $scope.totals.runratesqft = ($scope.totals.runrate || 0) / $scope.totals.sqft;
                             $scope.totals.units = ($scope.totals.units || 0) / $scope.totalSurveys;
 
                         }
