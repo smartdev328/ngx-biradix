@@ -70,7 +70,7 @@ Routes.get('/export_wood_lifetime', function (req, res) {
                 if (number_rows > 1) {
                     var friendly_date = moment(date).tz('America/Los_Angeles').add(-1,"day").format("MM_DD_YYYY");
                     var email = {
-                        to: "alex@biradix.com, cue@biradix.com",
+                        to: "alex@biradix.com, eugene@biradix.com",
                         bcc: "",
                         subject: 'BI:Radix - Wood Residential data export ' + friendly_date,
                         logo: "https://wood.biradix.com/images/organizations/wood.png",
