@@ -64,7 +64,7 @@ Routes.get('/export_wood_lifetime', function (req, res) {
         async.eachLimit(dates, 1, (date, callbackp) => {
             let number_rows = 0;
 
-            exportService.getCsv(SystemUser, 'demo', date, string => {
+            exportService.getCsv(SystemUser, 'wood', date, string => {
                 number_rows = string.trim().split('\r\n').length;
                 //Do not send empty files
                 if (number_rows > 1) {
