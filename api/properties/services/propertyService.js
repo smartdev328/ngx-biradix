@@ -1162,7 +1162,7 @@ function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
         if (stat) {
             var email = {
                 to: stat.sender.email,
-                bcc: 'eugene@biradix.com',
+                bcc: 'surveyswapemails@biradix.com',
                 logo: "https://platform.biradix.com/images/organizations/" + stat.sender.logo,
                 subject: guest.first + " " + guest.last + " updated " + propertyname +" market survey",
                 template: 'guest_survey.html',

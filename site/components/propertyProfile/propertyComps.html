@@ -84,13 +84,38 @@
             <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:75px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
-            <div style="text-align:right;padding-right:25px">Total</div>Concess.
+            Total&nbsp;&nbsp;&nbsp;<Br>Concess.
             <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
             <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
-            Net Eff.<Br> Rent
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('runrate')" ng-if="show.runrate">
+            Recur.&nbsp;&nbsp;<span class="hidden-print">&nbsp;&nbsp;</span><Br>Rent
+
+            <i class="fa fa-info-circle hidden-print" style="font-size:12px"
+               popover-trigger="'mouseenter'"
+               popover-placement="bottom"
+               uib-popover="Recurring Rent is market rent, minus recurring concessions, and excluding upfront concessions."
+            ></i>
+
+            <i ng-show="sort.runrate == null" class="fa fa-sort"></i>
+            <i ng-show="sort.runrate === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.runrate === false" class="fa fa-sort-up"></i>
+        </th>
+        <th style="min-width:100px;text-align: right" class="sortable" ng-click="toggleSort('runratesqft')" ng-if="show.runratesqft">
+            Recur. Rent/&nbsp;&nbsp;<br>Sqft
+            <i class="fa fa-info-circle hidden-print" style="font-size:12px"
+               popover-trigger="'mouseenter'"
+               popover-placement="bottom"
+               uib-popover="Recurring Rent is market rent, minus recurring concessions, and excluding upfront concessions."
+            ></i>
+
+            <i ng-show="sort.runratesqft == null" class="fa fa-sort"></i>
+            <i ng-show="sort.runratesqft === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.runratesqft === false" class="fa fa-sort-up"></i>
+        </th>
+        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
+            Net Eff.&nbsp;&nbsp;<Br> Rent
             <i ng-show="sort.ner == null" class="fa fa-sort"></i>
             <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
@@ -101,7 +126,6 @@
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
         </th>
-
         <th class="hidden-print hidden-report"  ng-if="roles[0] != 'Property Owner'">
             &nbsp;
         </th>
@@ -220,13 +244,18 @@
         <td style="text-align: right" ng-if="show.concessions"  class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}</span>
         </td>
+        <td style="text-align: right" ng-if="show.runrate" class="pad">
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.runrate == null ? "-" : "$" + comp.survey.runrate}}</span>
+        </td>
+        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.runratesqft == null ? "-" : "$" + (comp.survey.runratesqft  | number : 2)}}</span>
+        </td>
         <td style="text-align: right" ng-if="show.ner" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}</span>
         </td>
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
         </td>
-
         <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
             <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                 <div ng-class="{'btn-group': true, 'action_dropdown': true, 'dropup' : $index == comps.length - 1}">
@@ -300,12 +329,20 @@
         <td style="text-align: right" ng-if="show.concessions" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.concessions == null ? "-" : "$" + row.concessions}}</span>
         </td>
+        <td style="text-align: right" ng-if="show.runrate" class="pad">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.runrate == null ? "-" : "$" + row.runrate}}</span>
+        </td>
+        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.runratesqft == null ? "-" : "$" + (row.runratesqft | number : 2)}}</span>
+        </td>
         <td style="text-align: right" ng-if="show.ner" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.ner == null ? "-" : "$" + row.ner}}</span>
         </td>
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
         </td>
+
+
         <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
         </td>
@@ -360,12 +397,19 @@
         <td style="text-align: right" ng-if="show.concessions" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
         </td>
+        <td style="text-align: right" ng-if="show.runrate" class="pad">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runrate == null ? "-" : "$" + fp.runrate}}</span>
+        </td>
+        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runratesqft == null ? "-" : "$" + (fp.runratesqft | number : 2)}}</span>
+        </td>
         <td style="text-align: right" ng-if="show.ner" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.ner == null ? "-" : "$" + fp.ner}}</span>
         </td>
         <td style="text-align: right" ng-if="show.nersqft" class="pad">
             <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
         </td>
+
         <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
         </td>
@@ -422,6 +466,14 @@
             <span ng-if="totalSurveys == 0">-</span>
             <span ng-if="totalSurveys > 0">${{totals.concessions | number : 0}}</span>
         </td>
+        <td style="text-align: right" ng-if="show.runrate" class="pad">
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">${{totals.runrate | number : 0}}</span>
+        </td>
+        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+            <span ng-if="totalSurveys == 0">-</span>
+            <span ng-if="totalSurveys > 0">${{totals.runratesqft | number : 2}}</span>
+        </td>
         <td style="text-align: right" ng-if="show.ner" class="pad">
             <span ng-if="totalSurveys == 0">-</span>
             <span ng-if="totalSurveys > 0">${{totals.ner | number : 0}}</span>
@@ -430,6 +482,7 @@
             <span ng-if="totalSurveys == 0">-</span>
             <span ng-if="totalSurveys > 0">${{totals.nersqft | number : 2}}</span>
         </td>
+
         <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
         </td>

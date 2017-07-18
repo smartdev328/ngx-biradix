@@ -843,6 +843,8 @@ define([
                 {id: "sqft", name: "Sqft", selected: $scope.liveSettings.dashboardSettings.show.sqft},
                 {id: "rent", name: "Rent", selected: $scope.liveSettings.dashboardSettings.show.rent},
                 {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.mersqft},
+                {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.dashboardSettings.show.runrate},
+                {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.runratesqft},
                 {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.dashboardSettings.show.concessions},
                 {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.dashboardSettings.show.ner},
                 {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.nersqft},
@@ -856,6 +858,8 @@ define([
                 {id: "sqft", name: "Sqft", selected: $scope.liveSettings.profileSettings.show.sqft},
                 {id: "rent", name: "Rent", selected: $scope.liveSettings.profileSettings.show.rent},
                 {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.mersqft},
+                {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.profileSettings.show.runrate},
+                {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.runratesqft},
                 {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.profileSettings.show.concessions},
                 {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.profileSettings.show.ner},
                 {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.nersqft},
@@ -871,6 +875,8 @@ define([
                 {id: "concessions", name: "Total Concessions"},
                 {id: "ner", name: "Net Eff. Rent"},
                 {id: "nersqft", name: "NER/Sqft"},
+                {id: "runrate", name: "Recur. Rent"},
+                {id: "runratesqft", name: "Recur. Rent/Sqft"},
             ]
             var f = $scope.liveSettings.profileSettings.orderByFp.replace("-","");
             $scope.temp.floorPlanSortSelected = _.find($scope.temp.floorPlanSortItems, function(x) {return x.id == f})
@@ -892,6 +898,8 @@ define([
                 {id: "concessions", name: "Total Concessions"},
                 {id: "ner", name: "Net Eff. Rent"},
                 {id: "nersqft", name: "NER/Sqft"},
+                {id: "runrate", name: "Recur. Rent"},
+                {id: "runratesqft", name: "Recur. Rent/Sqft"},
             ]
             var f = $scope.liveSettings.dashboardSettings.orderByComp.replace("-","");
             $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f})

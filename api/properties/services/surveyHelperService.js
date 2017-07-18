@@ -48,7 +48,7 @@ module.exports = {
                         //Send Email
                         var email = {
                             to: guest.email,
-                            bcc: 'eugene@biradix.com',
+                            bcc: 'surveyswapemails@biradix.com',
                             logo: base + "/images/organizations/biradix.png",
                             subject: operator.first + ' ' + operator.last + " is asking for some information about " + property.name,
                             template: 'swap.html',
@@ -206,6 +206,10 @@ module.exports = {
             fp.ner = Math.round(fp.rent - (fp.concessions / 12))
             fp.nersqft = Math.round(fp.ner / fp.sqft * 100) / 100
             fp.mersqft = Math.round(fp.rent / fp.sqft * 100) / 100
+
+            fp.runrate = Math.round((fp.rent - (fp.concessionsMonthly || 0)) * 100) / 100;
+            fp.runratesqft = Math.round((fp.rent - (fp.concessionsMonthly || 0)) / fp.sqft * 100) / 100
+
             if (links.excluded === true && hide) {
                 links.floorplans = links.floorplans.map(function (x) {
                     return x.toString()
@@ -219,6 +223,8 @@ module.exports = {
                     delete fp.ner;
                     delete fp.nersqft;
                     delete fp.mersqft;
+                    delete fp.runrate;
+                    delete fp.runratesqft;
                 }
             }
         })
@@ -274,13 +280,22 @@ var  getSurveyStats = function(floorplans, survey, links, hide, nerPlaces) {
         survey.concessions = _.sum(fps, function (fp) {
                 return (fp.concessions) * fp.units
             }) / totUnits;
+
+        survey.runrate = _.sum(fps, function (fp) {
+                return (fp.rent - (fp.concessionsMonthly || 0)) * fp.units
+            }) / totUnits
+
+
         survey.ner = survey.rent - (survey.concessions / 12)
         survey.nersqft = Math.round(survey.ner / survey.sqft * 100) / 100
         survey.mersqft = Math.round(survey.rent / survey.sqft * 100) / 100
+        survey.runratesqft = Math.round(survey.runrate / survey.sqft * 100) / 100
+
 
         if (!nerPlaces) {
             survey.ner = Math.round(survey.ner);
             survey.rent = Math.round(survey.rent);
+            survey.runrate = Math.round(survey.runrate);
         }        
         survey.sqft = Math.round(survey.sqft);
         survey.concessions = Math.round(survey.concessions);
