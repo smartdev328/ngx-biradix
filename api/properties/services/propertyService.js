@@ -18,6 +18,7 @@ var SurveyHelperService = require('./surveyHelperService')
 var guestQueueService = require('../../propertyusers/services/guestsQueueService')
 var userService = require('../../users/services/userService')
 var EmailService = require('../../business/services/emailService')
+var escapeStringRegexp = require('escape-string-regexp');
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -496,7 +497,7 @@ module.exports = {
 
             if (criteria.select !== '*') {
                 if (criteria.search != '') {
-                    var s = new RegExp(criteria.search, "i")
+                    var s = new RegExp(escapeStringRegexp(criteria.search), "i")
                     query = query.or([{'name': s}, {'address': s}, {'city': s}, {'state': s}]);
                     query = query.select(criteria.select || '_id name address city state zip');
                 } else {

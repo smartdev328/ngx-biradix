@@ -23,6 +23,7 @@
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.4.2",
+    "escape-string-regexp": "^1.0.5",
     "express": "^4.14.0",
     "express-jwt": "^3.4.0",
     "gulp": "^3.9.1",
