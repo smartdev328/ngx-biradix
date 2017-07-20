@@ -28,6 +28,7 @@ module.exports = {
                             body: {
                                 show: {},
                                 skipPoints : true,
+                                injectFloorplans: false,
                                 surveyDateStart: endDate == null ? null : '1970-1-1',
                                 surveyDateEnd: endDate,
                                 daterange: {}
