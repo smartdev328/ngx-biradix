@@ -43,7 +43,7 @@ Routes.get('/notifications', function (req, res) {
 });
 
 Routes.get('/export_wood_lifetime', function (req, res) {
-    let key = "export_wood_lifetime";
+    let key = "export_wood_lifetime2";
 
     redisService.get(key, (err, alreadysent) => {
 
@@ -81,8 +81,8 @@ Routes.get('/export_wood_lifetime', function (req, res) {
                     if (number_rows > 1) {
                         var friendly_date = moment(date).tz('America/Los_Angeles').add(-1, "day").format("MM_DD_YYYY");
                         var email = {
-                            to: "alex@biradix.com, eugene@biradix.com",
-                            bcc: "",
+                            to: "BI_Radi.nvvrgyasj45hb348@u.box.com",
+                            bcc: "eugene@biradix.com",
                             subject: 'BI:Radix - Wood Residential data export ' + friendly_date,
                             logo: "https://wood.biradix.com/images/organizations/wood.png",
                             template: 'export.html',
