@@ -25,6 +25,17 @@ define([
         }
 
         $scope.saveShow = function() {
+            var c = 0;
+            for (var x in $scope.settings.show) {
+                if ($scope.settings.show[x] === true) {
+                    c++;
+                }
+            }
+
+            if (c > 13) {
+                toastr.warning("Warning! You have selected <b>" + c + "</b> columns for your competitor report. Having over 13 columns will not Print/Export correctly.")
+            }
+
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
             $cookies.put('cmp.s', JSON.stringify($scope.settings.show), {expires : expireDate})

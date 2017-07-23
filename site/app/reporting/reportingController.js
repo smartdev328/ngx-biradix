@@ -907,6 +907,31 @@ define([
 
         }
 
+        $scope.$watch("temp.showCompItems", function(n,o) {
+
+            var c = 0;
+            n.forEach(function(x) {
+                if (x.selected === true) {
+                    c++;
+                }
+            });
+
+            var c2 = 0;
+            o.forEach(function(x) {
+                if (x.selected === true) {
+                    c2++;
+                }
+            });
+
+            if (c == c2) {
+                return;
+            }
+
+            if (c > 13) {
+                toastr.warning("Warning! You have selected <b>" + c + "</b> columns for your competitor report. Having over 13 columns will not Print/Export correctly.")
+            }
+        }, true);
+
         $scope.resetPropertyReportSettings = function() {
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
             $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
