@@ -27,6 +27,7 @@ define([
                 else if (reportIds.indexOf("concession") > -1 && k == "concession") {}
                 else if (reportIds.indexOf("property_rankings_summary") > -1 && k == "rankingsSummary") {}
                 else if (reportIds.indexOf("property_rankings") > -1 && k == "rankings") {}
+                else if (reportIds.indexOf("property_status") > -1 && k == "propertyStatus") {}
                 else {
                     delete copyOfSettings[k];
                 }

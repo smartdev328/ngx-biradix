@@ -54,6 +54,7 @@ define([
                     $scope.configureRankingsOptions();
                     $scope.configureRankingsSummaryOptions();
                     $scope.configureConcessionOptions();
+                    $scope.configurePropertyStatusOptions();
                 }
 
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
@@ -299,6 +300,8 @@ define([
                 return;
             }
 
+            $scope.UItoSettingsMultiple();
+
             $scope.propertyNames =  _.pluck(properties,"name")
             $scope.propertyNames.forEach(function(x,i) {$scope.propertyNames[i] = {description: 'Property: ' + x}});
             $scope.propertyIds =  _.pluck(properties,"id")
@@ -306,6 +309,9 @@ define([
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
             $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
+
+                $scope.configurePropertyStatusOptions();
+
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
@@ -371,6 +377,18 @@ define([
                 })
             }
 
+        }
+
+        $scope.UItoSettingsMultiple = function() {
+            if (phantom) {
+                return;
+            }
+
+            if ($scope.reportIds.indexOf("property_status") > -1) {
+                $scope.temp.showPropertyStatusItems.forEach(function (f) {
+                    $scope.liveSettings.propertyStatus.show[f.id] = f.selected;
+                })
+            }
         }
 
         $scope.singleReport = function() {
@@ -570,6 +588,7 @@ define([
             $scope.configureRankingsOptions();
             $scope.configureRankingsSummaryOptions();
             $scope.configureConcessionOptions();
+            $scope.configurePropertyStatusOptions();
 
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
@@ -592,6 +611,7 @@ define([
             }
 
 
+            $scope.property_status = reportIds.indexOf("property_status") > -1;
             $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = reportIds.indexOf("property_report") > -1;
@@ -654,6 +674,52 @@ define([
 
         }
 
+        ////////////////////// Property Status ////////////////////////////////
+        $scope.resetPropertyStatusSettings = function() {
+            $scope.liveSettings.propertyStatus = {}
+
+            $scope.liveSettings.propertyStatus.show = {
+                occupancy: true,
+                leased: $rootScope.me.settings.showLeases,
+                units: true,
+                sqft: true,
+                rent: true,
+                runrate: false,
+                runratesqft: false,
+                ner: true,
+                nersqft: true,
+                nersqftweek: true,
+                nersqftmonth: true,
+                last_updated: true
+            }
+        }
+
+        $scope.configurePropertyStatusOptions = function() {
+            if (!$scope.liveSettings.propertyStatus) {
+                $scope.resetPropertyStatusSettings();
+            }
+
+            $scope.temp.showPropertyStatusOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showPropertyStatusItems = [
+                {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.propertyStatus.show.occupancy},
+                {id: "leased", name: "Leased %", selected: $scope.liveSettings.propertyStatus.show.leased},
+                {id: "units", name: "Units", selected: $scope.liveSettings.propertyStatus.show.units},
+                {id: "sqft", name: "Sqft", selected: $scope.liveSettings.propertyStatus.show.sqft},
+                {id: "rent", name: "Rent", selected: $scope.liveSettings.propertyStatus.show.rent},
+                {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.propertyStatus.show.runrate},
+                {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.propertyStatus.show.runratesqft},
+                {id: "ner", name: "Net Eff. Rent", selected: $scope.liveSettings.propertyStatus.show.ner},
+                {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.liveSettings.propertyStatus.show.nersqft},
+                {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.liveSettings.propertyStatus.show.nersqftweek},
+                {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.liveSettings.propertyStatus.show.nersqftmonth},
+                {id: "last_updated", name: "Last Updated", selected: $scope.liveSettings.propertyStatus.show.last_updated},
+            ];
+
+            if (!$rootScope.me.settings.showLeases) {
+                _.remove($scope.temp.showPropertyStatusItems, function(x) {return x.id == 'leased'})
+            }
+
+        }
 
         ////////////////////// Rankings Summary ////////////////////////////////
         $scope.resetRankingsSummarySettings = function() {
@@ -990,6 +1056,7 @@ define([
         $scope.saveReport = function() {
 
             $scope.UItoSettings();
+            $scope.UItoSettingsMultiple();
 
             require([
                 '/app/reporting/saveReportController.js'

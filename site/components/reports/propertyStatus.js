@@ -7,7 +7,8 @@ define([
             restrict: 'E',
             scope: {
                 report: '=',
-                showLeases: '='
+                showLeases: '=',
+                show: '='
             },
             controller: function ($scope) {
             },

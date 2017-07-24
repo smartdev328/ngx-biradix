@@ -31,6 +31,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                                 ner: c.survey.ner,
                                 rent: c.survey.rent,
                                 nersqft: c.survey.nersqft,
+                                runrate: c.survey.runrate,
+                                runratesqft: c.survey.runratesqft,
                                 totUnits: c.survey.totUnits,
                                 date: c.survey.date,
                                 occupancy: c.survey.occupancy,
@@ -79,6 +81,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                                 sqft: c.survey.sqft,
                                 ner: c.survey.ner,
                                 rent: c.survey.rent,
+                                runrate: c.survey.runrate,
+                                runratesqft: c.survey.runratesqft,
                                 nersqft: c.survey.nersqft,
                                 totUnits: c.survey.totUnits,
                                 date: c.survey.date,
@@ -132,6 +136,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                                 sqft: c.survey.sqft,
                                 ner: c.survey.ner,
                                 rent: c.survey.rent,
+                                runrate: c.survey.runrate,
+                                runratesqft: c.survey.runratesqft,
                                 nersqft: c.survey.nersqft,
                                 totUnits: c.survey.totUnits,
                                 date: c.survey.date,
@@ -177,6 +183,9 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     totalrow.ner = (totalrow.ner || 0) + (p.ner * p.totUnits);
                     totalrow.nersqft = (totalrow.nersqft || 0) + (p.nersqft * p.totUnits);
 
+                    totalrow.runrate = (totalrow.runrate || 0) + (p.runrate * p.totUnits);
+                    totalrow.runratesqft = (totalrow.runratesqft || 0) + (p.runratesqft * p.totUnits);
+
                     if (p.leased !== '') {
                         // not weighted
                         totalrow.leased = (totalrow.leased || 0) + (p.leased * 1);
@@ -221,6 +230,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                 totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
                 totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
                 totalrow.nersqft = Math.round(totalrow.ner / totalrow.sqft * 100) / 100;
+                totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
+                totalrow.runratesqft = Math.round(totalrow.runrate / totalrow.sqft * 100) / 100;
 
                 if (totalrow.lastweeknersqftTotalUnits) {
                     totalrow.lastweeknersqftpercent = Math.round(totalrow.lastweeknersqftpercent / totalrow.lastweeknersqftTotalUnits * 10) / 10;
