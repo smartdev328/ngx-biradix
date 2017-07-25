@@ -16,6 +16,12 @@
                     <th ng-if="show.leased && showLeases" style="text-align: right">
                         Leased %
                     </th>
+                    <th ng-if="show.weekly" style="text-align: right">
+                        Traffic/<Br>Week
+                    </th>
+                    <th ng-if="show.weekly" style="text-align: right">
+                        Leases/<Br>Week
+                    </th>
                     <th ng-if="show.units" style="text-align: right">
                         Units
                     </th>
@@ -24,6 +30,9 @@
                     </th>
                     <th ng-if="show.rent" style="text-align: right">
                         Rent
+                    </th>
+                    <th ng-if="show.concessions" style="text-align: right">
+                        Total<br>Concess.
                     </th>
                     <th ng-if="show.runrate" style="text-align: right">
                         Recur.<Br>Rent
@@ -43,6 +52,9 @@
                     <th ng-if="show.nersqftmonth" style="text-align: right">
                         NER/Sqft<Br>vs Last Month
                     </th>
+                    <th ng-if="show.nersqftyear" style="text-align: right">
+                        NER/Sqft<Br>vs Last Year
+                    </th>                    
                     <th ng-if="show.last_updated" style="text-align: right">
                         Last<Br>
                         Updated
@@ -60,6 +72,12 @@
                     <td style="text-align:right" ng-if="show.leased && showLeases">
                         {{row.leased != "" ? row.leased + "%" : "-"}}
                     </td>
+                    <td ng-if="show.weekly" style="text-align:right">
+                        {{row.weeklytraffic | number : 0}}
+                    </td>
+                    <td ng-if="show.weekly" style="text-align:right">
+                        {{row.weeklyleases | number : 0}}
+                    </td>
                     <td ng-if="show.units" style="text-align:right">
                         {{row.totUnits | number : 0}}
                     </td>
@@ -68,6 +86,9 @@
                     </td>
                     <td ng-if="show.rent" style="text-align:right">
                         ${{row.rent | number : 0}}
+                    </td>
+                    <td ng-if="show.concessions" style="text-align:right">
+                        ${{row.concessions | number : 0}}
                     </td>
                     <td ng-if="show.runrate" style="text-align:right">
                         ${{row.runrate | number : 0}}
@@ -93,6 +114,12 @@
                         <span ng-if="row.lastmonthnersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastmonthnersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
+                    <td ng-if="show.nersqftyear" style="text-align:right">
+                        <span ng-if="row.lastyearnersqftpercent > 0">{{row.lastyearnersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
+                        <span ng-if="row.lastyearnersqftpercent < 0">{{row.lastyearnersqftpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
+                        <span ng-if="row.lastyearnersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
+                        <span ng-if="row.lastyearnersqftpercent === ''">&nbsp;&nbsp;</span>
+                    </td>                    
                     <td ng-if="show.last_updated" style="text-align:right">
                         <span ng-class="{'danger':row.tier == 'danger'}">{{row.date}}</span>
                     </td>

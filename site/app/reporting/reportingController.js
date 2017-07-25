@@ -512,6 +512,22 @@ define([
                 }
             }
 
+            if ($scope.property_status) {
+                var c = 0;
+                var n;
+                for (n in $scope.runSettings.propertyStatus.show){
+
+                    if ($scope.runSettings.propertyStatus.show[n] === true) {
+                        c++;
+                    }
+                }
+
+                if (c > 13) {
+                    toastr.error("<B>Unable to Print/Export Report!</B><Br><Br>You have selected <b>" + c + "</b> columns for your Property Status report. Having over <u>13</u> columns will not fit in Print/Export.")
+
+                    return;
+                }
+            }
 
             if ($scope.reportType == "single") {
                 $scope.audit('report_pdf','Pdf');
@@ -708,7 +724,10 @@ define([
                 nersqft: true,
                 nersqftweek: true,
                 nersqftmonth: true,
-                last_updated: true
+                nersqftyear: false,
+                last_updated: true,
+                weekly: false,
+                concessions: false
             }
         }
 
@@ -721,15 +740,18 @@ define([
             $scope.temp.showPropertyStatusItems = [
                 {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.propertyStatus.show.occupancy},
                 {id: "leased", name: "Leased %", selected: $scope.liveSettings.propertyStatus.show.leased},
+                {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.propertyStatus.show.weekly},
                 {id: "units", name: "Units", selected: $scope.liveSettings.propertyStatus.show.units},
                 {id: "sqft", name: "Sqft", selected: $scope.liveSettings.propertyStatus.show.sqft},
                 {id: "rent", name: "Rent", selected: $scope.liveSettings.propertyStatus.show.rent},
+                {id: "concessions", name: "Total Concession", selected: $scope.liveSettings.propertyStatus.show.concessions},
                 {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.propertyStatus.show.runrate},
                 {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.propertyStatus.show.runratesqft},
                 {id: "ner", name: "Net Eff. Rent", selected: $scope.liveSettings.propertyStatus.show.ner},
                 {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.liveSettings.propertyStatus.show.nersqft},
                 {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.liveSettings.propertyStatus.show.nersqftweek},
                 {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.liveSettings.propertyStatus.show.nersqftmonth},
+                {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $scope.liveSettings.propertyStatus.show.nersqftyear},
                 {id: "last_updated", name: "Last Updated", selected: $scope.liveSettings.propertyStatus.show.last_updated},
             ];
 
