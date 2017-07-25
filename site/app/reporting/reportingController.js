@@ -495,6 +495,24 @@ define([
 
         $scope.pdf = function(showFile) {
 
+            if ($scope.property_report) {
+                var c = 0;
+                var n;
+                for (n in $scope.runSettings.dashboardSettings.show){
+
+                    if ($scope.runSettings.dashboardSettings.show[n] === true) {
+                        c++;
+                    }
+                }
+
+                if (c > 13) {
+                    toastr.error("<B>Unable to Print/Export Report!</B><Br><Br>You have selected <b>" + c + "</b> columns for your competitor report. Having over <u>13</u> columns will not fit in Print/Export.")
+
+                    return;
+                }
+            }
+
+
             if ($scope.reportType == "single") {
                 $scope.audit('report_pdf','Pdf');
             } else {
@@ -972,31 +990,6 @@ define([
             $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
 
         }
-
-        $scope.$watch("temp.showCompItems", function(n,o) {
-
-            var c = 0;
-            n.forEach(function(x) {
-                if (x.selected === true) {
-                    c++;
-                }
-            });
-
-            var c2 = 0;
-            o.forEach(function(x) {
-                if (x.selected === true) {
-                    c2++;
-                }
-            });
-
-            if (c == c2) {
-                return;
-            }
-
-            if (c > 13) {
-                toastr.warning("Warning! You have selected <b>" + c + "</b> columns for your competitor report. Having over 13 columns will not Print/Export correctly.")
-            }
-        }, true);
 
         $scope.resetPropertyReportSettings = function() {
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
