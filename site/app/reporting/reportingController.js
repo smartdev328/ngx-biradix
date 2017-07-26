@@ -916,7 +916,7 @@ define([
 
         $scope.configurePropertyReportOptions = function() {
             if (!$scope.liveSettings.showProfile) {
-                $scope.resetPropertyReportSettings()
+                $scope.resetPropertyReportSettings(false)
             }
 
             $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
@@ -1015,11 +1015,18 @@ define([
 
         }
 
-        $scope.resetPropertyReportSettings = function() {
+        $scope.resetPropertyReportSettings = function(rebind) {
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
             $scope.liveSettings.profileSettings = $reportingService.getProfileSettings($(window).width());
             $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
             $scope.liveSettings.dashboardSettings.daterange.direction = "right";
+
+
+            if (rebind) {
+                $scope.liveSettings.dashboardSettings.daterange.reload = true;
+                $scope.configurePropertyReportOptions();
+                $scope.temp.bedroom = $scope.temp.bedrooms[0];
+            }
 
         }
 
