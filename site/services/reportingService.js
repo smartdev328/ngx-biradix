@@ -75,7 +75,7 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
         }
 
         fac.getInfoRows = function(me) {
-            var settings = fac.getDefaultInfoRows(fac.me);
+            var settings = fac.getDefaultInfoRows(me);
             if ($cookies.get("pr.s")) {
                 settings = JSON.parse($cookies.get("pr.s"));
             }
