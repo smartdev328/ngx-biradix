@@ -42,77 +42,77 @@ Routes.get('/notifications', function (req, res) {
     });
 });
 
-Routes.get('/export_wood_lifetime', function (req, res) {
-    let key = "export_wood_lifetime2";
-
-    redisService.get(key, (err, alreadysent) => {
-
-        if (alreadysent) {
-            return res.status(200).json('Already Sent');
-        }
-
-        redisService.set(key, "1", 60 * 24 * 100);
-
-        let dates = [];
-        let dates_sent = [];
-
-        let date1 = moment().tz('America/Los_Angeles').startOf("year").subtract(1, "year");
-
-        while (date1.day() !== 1) {
-            date1.add(1, 'day');
-        }
-
-        while (date1.format("x") < moment().format("x")) {
-            dates.push(date1.format());
-            date1.add(7, 'day');
-        }
-
-        res.status(200).json(dates_sent);
-
-        userService.getSystemUser(System => {
-            let SystemUser = System.user;
-
-            async.eachLimit(dates, 1, (date, callbackp) => {
-                let number_rows = 0;
-
-                exportService.getCsv(SystemUser, 'wood', date, string => {
-                    number_rows = string.trim().split('\r\n').length;
-                    //Do not send empty files
-                    if (number_rows > 1) {
-                        var friendly_date = moment(date).tz('America/Los_Angeles').add(-1, "day").format("MM_DD_YYYY");
-                        var email = {
-                            to: "BI_Radi.nvvrgyasj45hb348@u.box.com",
-                            bcc: "eugene@biradix.com",
-                            subject: 'BI:Radix - Wood Residential data export ' + friendly_date,
-                            logo: "https://wood.biradix.com/images/organizations/wood.png",
-                            template: 'export.html',
-                            templateData: {},
-                            attachments: [
-                                {
-                                    filename: 'biradix_wood_export_' + friendly_date + '.csv',
-                                    content: string,
-                                    contentType: 'text/csv'
-                                }
-                            ]
-
-                        };
-
-                        EmailService.send(email, (emailError, status) => {
-                            console.log('Wood export', emailError, status)
-                        })
-
-                        dates_sent.push(date);
-                    }
-                    callbackp();
-                })
-            }, function (err) {
-
-            });
-        });
-    });
-
-
-});
+// Routes.get('/export_wood_lifetime', function (req, res) {
+//     let key = "export_wood_lifetime2";
+//
+//     redisService.get(key, (err, alreadysent) => {
+//
+//         if (alreadysent) {
+//             return res.status(200).json('Already Sent');
+//         }
+//
+//         redisService.set(key, "1", 60 * 24 * 100);
+//
+//         let dates = [];
+//         let dates_sent = [];
+//
+//         let date1 = moment().tz('America/Los_Angeles').startOf("year").subtract(1, "year");
+//
+//         while (date1.day() !== 1) {
+//             date1.add(1, 'day');
+//         }
+//
+//         while (date1.format("x") < moment().format("x")) {
+//             dates.push(date1.format());
+//             date1.add(7, 'day');
+//         }
+//
+//         res.status(200).json(dates_sent);
+//
+//         userService.getSystemUser(System => {
+//             let SystemUser = System.user;
+//
+//             async.eachLimit(dates, 1, (date, callbackp) => {
+//                 let number_rows = 0;
+//
+//                 exportService.getCsv(SystemUser, 'wood', date, string => {
+//                     number_rows = string.trim().split('\r\n').length;
+//                     //Do not send empty files
+//                     if (number_rows > 1) {
+//                         var friendly_date = moment(date).tz('America/Los_Angeles').add(-1, "day").format("MM_DD_YYYY");
+//                         var email = {
+//                             to: "BI_Radi.nvvrgyasj45hb348@u.box.com",
+//                             bcc: "eugene@biradix.com",
+//                             subject: 'BI:Radix - Wood Residential data export ' + friendly_date,
+//                             logo: "https://wood.biradix.com/images/organizations/wood.png",
+//                             template: 'export.html',
+//                             templateData: {},
+//                             attachments: [
+//                                 {
+//                                     filename: 'biradix_wood_export_' + friendly_date + '.csv',
+//                                     content: string,
+//                                     contentType: 'text/csv'
+//                                 }
+//                             ]
+//
+//                         };
+//
+//                         EmailService.send(email, (emailError, status) => {
+//                             console.log('Wood export', emailError, status)
+//                         })
+//
+//                         dates_sent.push(date);
+//                     }
+//                     callbackp();
+//                 })
+//             }, function (err) {
+//
+//             });
+//         });
+//     });
+//
+//
+// });
 
 Routes.get('/export', function (req, res) {
     let key = "export_wood_nightly";

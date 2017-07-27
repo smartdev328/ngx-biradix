@@ -299,6 +299,18 @@ define([
 
         $scope.pdf = function(showFile) {
 
+            var c = 0;
+            for (var x in $scope.settings.show) {
+                if ($scope.settings.show[x] === true) {
+                    c++;
+                }
+            }
+
+            if (c > 13) {
+                toastr.error("<B>Unable to Print/Export Report!</B><Br><Br>You have selected <b>" + c + "</b> columns for your competitor report. Having over <u>13</u> columns will not fit in Print/Export.")
+                return;
+            }
+
             $scope.profileSettings = $reportingService.getProfileSettings($(window).width());
 
             $scope.progressId = _.random(1000000, 9999999);

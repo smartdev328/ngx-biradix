@@ -76,7 +76,7 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
 
         fac.getGraphs = function () {
             try {
-                return JSON.parse($cookies.get('Graphs') || "false")
+                return JSON.parse($cookies.get('Graphs') || "true")
             } catch(ex) {
                 return true;
             }
