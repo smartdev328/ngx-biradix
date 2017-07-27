@@ -750,10 +750,10 @@ define([
                 {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.propertyStatus.show.runratesqft},
                 {id: "ner", name: "Net Eff. Rent", selected: $scope.liveSettings.propertyStatus.show.ner},
                 {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.liveSettings.propertyStatus.show.nersqft},
-                {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.liveSettings.propertyStatus.show.nervscompavg},
                 {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.liveSettings.propertyStatus.show.nersqftweek},
                 {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.liveSettings.propertyStatus.show.nersqftmonth},
                 {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $scope.liveSettings.propertyStatus.show.nersqftyear},
+                {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.liveSettings.propertyStatus.show.nervscompavg},
                 {id: "last_updated", name: "Last Updated", selected: $scope.liveSettings.propertyStatus.show.last_updated},
             ];
 
