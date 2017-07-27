@@ -953,7 +953,7 @@ define([
                 {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.mersqft},
                 {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.dashboardSettings.show.runrate},
                 {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.runratesqft},
-                {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.dashboardSettings.show.concessions},
+                {id: "concessions", name: "Total Concessions", selected: $scope.liveSettings.dashboardSettings.show.concessions},
                 {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.dashboardSettings.show.ner},
                 {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.nersqft},
             ];
@@ -968,7 +968,7 @@ define([
                 {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.mersqft},
                 {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.profileSettings.show.runrate},
                 {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.runratesqft},
-                {id: "concessions", name: "Concessions / 12 Months", selected: $scope.liveSettings.profileSettings.show.concessions},
+                {id: "concessions", name: "Total Concessions", selected: $scope.liveSettings.profileSettings.show.concessions},
                 {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.profileSettings.show.ner},
                 {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.profileSettings.show.nersqft},
             ];
