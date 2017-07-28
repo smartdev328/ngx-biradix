@@ -45,11 +45,10 @@ module.exports = (function() {
         }
 
         jwt.verify(req.cookies.token, settings.SECRET, function(err, decoded) {
-
             if (!decoded) {
                 return sendError(req,res);
             }
-            redisService.getByKey(decoded, function(err, result) {
+            redisService.getByKey(decoded.data, function(err, result) {
                 if (result) {
                     req.user = result;
                 }

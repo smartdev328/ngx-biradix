@@ -21,7 +21,7 @@
     "highcharts-release": "~4.2.7",
     "jquery": "2.1.4",
     "lodash": "3.10.0",
-    "moment": "2.13.0",
+    "moment": "2.18.1",
     "async": "1.5.2"
   },
   "resolutions": {

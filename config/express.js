@@ -44,6 +44,7 @@ module.exports = {
                             token =  req.query.token;
                         }
 
+
                         return token;
                     }
                 }
@@ -75,7 +76,8 @@ module.exports = {
             //Middleware to insure session token is not hi-jacked by looking at user agent
             app.use(function (req, res, next) {
                 if (req.user) {
-                    redisService.getByKey(req.user, function(err, result) {
+                    redisService.getByKey(req.user.data, function(err, result) {
+
                         req.user = result;
 
                         if (!req.user || !req.user.active) {

@@ -353,7 +353,7 @@ module.exports = {
                 return callback(modelErrors,false);
             }
 
-                var token = jwt.sign({id: usr._id}, settings.SECRET, { expiresIn: 30 * 60 });
+                var token = jwt.sign({data: {id: usr._id}}, settings.SECRET, { expiresIn: 30 * 60 });
 
                 getFullUser(usr, function(resp) {
                     var org = UtilityService.getOrgByUrl(resp.user.orgs, base);
@@ -871,7 +871,7 @@ function getFullUser(usr, callback) {
                 var key = md5(JSON.stringify(usrobj));
                 redisService.set(JSON.stringify(usrobj),usrobj,minutesToExpire);
 
-                var token = jwt.sign(key, settings.SECRET, {expiresIn: minutesToExpire * 60});
+                var token = jwt.sign({data: key}, settings.SECRET, {expiresIn: minutesToExpire * 60});
 
                 var operator = _.clone(usrobj);
 
