@@ -312,7 +312,7 @@ module.exports = {
                 }
                 else {
                     UserSchema.findOne({
-                        _id: decoded.id
+                        _id: decoded.data.id
                     }, function(err, usr) {
                         if (usr) {
                             callback(usr);
