@@ -51,7 +51,7 @@
     "nodemailer": "^4.0.1",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "password-generator": "^2.1.0",
-    "phantom-render-stream": "^2.2.0",
+    "phantom-render-stream": "^1.7.1",
     "phantomjs-polyfill": "0.0.2",
     "raygun": "^0.9.1",
     "request": "^2.81.0",
