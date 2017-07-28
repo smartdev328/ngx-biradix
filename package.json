@@ -31,7 +31,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^2.1.2",
     "heroku-client": "^2.2.2",
-    "ioredis": "^3.1.2",
+    "ioredis": "^2.5.0",
     "jackrabbit": "^4.3.0",
     "json-buffer": "^3.0.0",
     "jsonwebtoken": "^7.4.1",
