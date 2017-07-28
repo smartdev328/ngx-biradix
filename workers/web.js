@@ -94,7 +94,7 @@ d.run(function() {
 
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
-                //
+
                 //var moment = require('moment-timezone');
                 //console.log(moment("2015-11-08T18:07:52.005Z").tz("America/Los_Angeles").format("MMM DD"));
                 //var userService = require("../api/users/services/userService");

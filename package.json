@@ -31,7 +31,6 @@
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^2.1.2",
     "heroku-client": "^2.2.2",
-    "ioredis": "^2.5.0",
     "jackrabbit": "^4.3.0",
     "json-buffer": "^3.0.0",
     "jsonwebtoken": "^7.4.1",
@@ -54,6 +53,7 @@
     "phantom-render-stream": "^1.7.1",
     "phantomjs-polyfill": "0.0.2",
     "raygun": "^0.9.1",
+    "redis": "^2.7.1",
     "request": "^2.81.0",
     "xlsjs": "^0.7.6"
   },
