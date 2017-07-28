@@ -12,7 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "angular": "1.5.9",
-    "angular-bootstrap": "2.3.0",
+    "angular-bootstrap": "2.4.0",
     "angular-cookies": "1.5.9",
     "angular-sanitize": "1.5.9",
     "angular-ui-router": "~0.2.15",

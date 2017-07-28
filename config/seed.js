@@ -665,7 +665,7 @@ var getSurveyRecurring = function(date, property, occupancy, weeklytraffic, week
             property.floorplans[i / 3].rent = rents[i];
             property.floorplans[i / 3].concessionsOneTime = rents[i + 1];
             property.floorplans[i / 3].concessionsMonthly = rents[i + 2];
-
+            property.floorplans[i / 3].concessions = property.floorplans[i / 3].concessionsOneTime + property.floorplans[i / 3].concessionsMonthly * 12;
         }
     })
 
