@@ -95,6 +95,25 @@ var SurveysCreate = function(users, properties, callback) {
     var date = moment().subtract(1,"year").add(1,"day");
 
     async.series([
+        //point 0 for test properties
+        function(callbacks){
+            var surveys = [];
+
+            var dateTemp = moment().subtract(1,"year").add(1,"day").subtract(1,"week");
+
+            var rents = [ 1000, 1000, 2000, 2000, 3000, 3000, 4000, 4000 ];
+            surveys.push(getSurvey(dateTemp, properties.Test1, 90, 10, 10, rents));
+
+            rents = [ 1500, 0, 3000, 0 ];
+            surveys.push(getSurvey(dateTemp, properties.Test2, 90, 10, 10, rents));
+
+            rents = [ 4000, 500, 500, 8000, 1000, 1000 ];
+            surveys.push(getSurveyRecurring(dateTemp, properties.Test3, 90, 10, 10, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
         //point 1
         function(callbacks){
             var surveys = [];
@@ -540,6 +559,16 @@ var SurveysCreate = function(users, properties, callback) {
             rents = [ 873, 0, 920, 0, 1060, 0, 1273, 0, 1170, 0, 1167, 0, 1285, 0, 1250, 0 ];
             surveys.push(getSurvey(date, properties.Probus, 94, 60, 23, rents));
 
+            rents = [ 750, 750, 1500, 1500, 2500, 2500, 2700, 2700 ];
+            surveys.push(getSurvey(date, properties.Test1, 90, 10, 10, rents));
+
+            rents = [ 1000, 0, 2000, 1000 ];
+            surveys.push(getSurvey(date, properties.Test2, 90, 10, 10, rents));
+
+            rents = [ 3000, 1000, 1000, 6000, 1000, 2000 ];
+            surveys.push(getSurveyRecurring(date, properties.Test3, 90, 10, 10, rents));
+
+
             insertPoints(users.System, surveys, function() {
                 callbacks(null);
             })
@@ -600,6 +629,15 @@ var SurveysCreate = function(users, properties, callback) {
             rents = [ 970, 0, 1010, 0, 1164, 0, 1315, 0, 1148, 0, 1097, 0, 1336, 0, 1200, 0 ];
             surveys.push(getSurvey(date, properties.Probus, 93, 44, 7, rents));
 
+            rents = [ 500, 1000, 1000, 1000, 2000, 2000, 2200, 2000 ];
+            surveys.push(getSurvey(date, properties.Test1, 90, 10, 10, rents));
+
+            rents = [ 500, 0, 1000, 1000 ];
+            surveys.push(getSurvey(date, properties.Test2, 90, 10, 10, rents));
+
+            rents = [ 2000, 400, 200, 4000, 400, 400 ];
+            surveys.push(getSurveyRecurring(date, properties.Test3, 90, 10, 10, rents));
+
             insertPoints(users.System, surveys, function() {
                 callbacks(null);
             })
@@ -618,6 +656,28 @@ var insertPoints = function(System, surveys, callback) {
     }, function(err) {
         callback();
     });
+}
+
+var getSurveyRecurring = function(date, property, occupancy, weeklytraffic, weeklyleases, rents) {
+    rents.forEach(function(r, i) {
+
+        if (i % 3 == 0) {
+            property.floorplans[i / 3].rent = rents[i];
+            property.floorplans[i / 3].concessionsOneTime = rents[i + 1];
+            property.floorplans[i / 3].concessionsMonthly = rents[i + 2];
+
+        }
+    })
+
+    return {
+        date: date.format(),
+        propertyid:property._id,
+        occupancy: occupancy,
+        weeklytraffic : weeklytraffic,
+        weeklyleases: weeklyleases,
+        floorplans: property.floorplans
+
+    };
 }
 
 var getSurvey = function(date, property, occupancy, weeklytraffic, weeklyleases, rents) {
@@ -869,80 +929,162 @@ var PropertiesCreate = function(System, companies,callback) {
         , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
     }
 
+    var Test1 = { name: 'Test property 1', address: '7135 E Camelback Rd', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(480) 751-2200', owner: 'Fox Concept', management: 'Fancy Smiths', yearBuilt: 2005, orgid: companies.Demo._id, constructionType: 'Garden', notes: '', fees: {
+        application_fee : '$50',
+        lease_terms: '12 months',
+        short_term_premium: '$400',
+        refundable_security_deposit: '$200',
+        administrative_fee: '$200',
+        non_refundable_pet_deposit: '$200',
+        pet_deposit: '$200',
+        pet_rent: '$25,$50'
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 10, sqft: 1000, amenities: []},
+        {bedrooms:1, bathrooms: '1', description: '', units: 10, sqft: 1200, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 10, sqft: 2000, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 10, sqft: 2200, amenities: []},
+    ]
+        , community_amenities: []
+        , location_amenities: []
+    }
+
+    var Test2 = { name: 'Test property 2', address: '7025 E Via Soleri Dr', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(480) 398-8200', owner: 'Zues Inc', management: 'Apollo', yearBuilt: 2007, orgid: companies.Demo._id, constructionType: 'Garden', notes: '', fees: {
+        application_fee : '$75',
+        lease_terms: '3-13 months',
+        short_term_premium: '$200',
+        refundable_security_deposit: '$400',
+        administrative_fee: '$300',
+        non_refundable_pet_deposit: '$400',
+        pet_deposit: '$200',
+        pet_rent: '$30'
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 30, sqft: 500, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 30, sqft: 1000, amenities: []},
+    ]
+        , community_amenities: []
+        , location_amenities: []
+    }
+
+    var Test3 = { name: 'Test property 3', address: '7157 E Rancho Vista Dr', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(480) 874-9900', owner: 'Titan', management: 'Aphrodite', yearBuilt: 2011, orgid: companies.Demo._id, constructionType: 'Mid-Rise', notes: '', fees: {
+        application_fee : '$100',
+        lease_terms: '6 months',
+        short_term_premium: '$250',
+        refundable_security_deposit: '$600',
+        administrative_fee: '$400',
+        non_refundable_pet_deposit: '$500',
+        pet_deposit: '$300',
+        pet_rent: '$45'
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 20, sqft: 1000, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 20, sqft: 2000, amenities: []},
+    ]
+        , community_amenities: []
+        , location_amenities: []
+    }
     async.parallel({
-            Aurelian: function (callbackp) {
-                CreateService.create(System, context, Aurelian, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+        Aurelian: function (callbackp) {
+            CreateService.create(System, context, Aurelian, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Augustus: function (callbackp) {
-                CreateService.create(System, context,Augustus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Augustus: function (callbackp) {
+            CreateService.create(System, context,Augustus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Nero: function (callbackp) {
-                CreateService.create(System, context,Nero, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Nero: function (callbackp) {
+            CreateService.create(System, context,Nero, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Marcus: function (callbackp) {
-                CreateService.create(System, context,Marcus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Marcus: function (callbackp) {
+            CreateService.create(System, context,Marcus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Geta: function (callbackp) {
-                CreateService.create(System, context,Geta, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Geta: function (callbackp) {
+            CreateService.create(System, context,Geta, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Titus: function (callbackp) {
-                CreateService.create(System, context,Titus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Titus: function (callbackp) {
+            CreateService.create(System, context,Titus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Probus: function (callbackp) {
-                CreateService.create(System, context,Probus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Probus: function (callbackp) {
+            CreateService.create(System, context,Probus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            }
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Test1: function (callbackp) {
+            CreateService.create(System, context,Test1, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
+                    }
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Test2: function (callbackp) {
+            CreateService.create(System, context,Test2, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
+                    }
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Test3: function (callbackp) {
+            CreateService.create(System, context,Test3, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
+                    }
+                    callbackp(null, prop)
+                }
+            );
+        }
         },function(err, props) {
             var links = [];
             for (var prop in props) {
                 for (var prop2 in props) {
-                    if (props[prop]._id.toString() != props[prop2]._id.toString() ) {
+                    if (props[prop]._id.toString() != props[prop2]._id.toString() && ['Test1','Test2','Test3'].indexOf(prop) == -1 && ['Test1','Test2','Test3'].indexOf(prop2) == -1 ) {
                         links.push({subjectid: props[prop]._id, compid: props[prop2]._id})
                     }
                 }
 
             }
+
+        links.push({subjectid: props['Test1']._id, compid: props['Test2']._id});
+        links.push({subjectid: props['Test1']._id, compid: props['Test3']._id});
 
             async.eachLimit(links, 10, function(link, callbackp){
                 PropertyService.linkComp(System, context, null, link.subjectid, link.compid, function (err, l) {
