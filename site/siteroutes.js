@@ -94,7 +94,11 @@ module.exports = (function() {
                 globalcss: globalcsshash['global.css'],
             }
 
-            res.render('index', {hashes: hashes, version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom, dyno: process.env.DYNO
+            res.render('index', {hashes: hashes, version: packages.version
+                , logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom
+                , dyno: process.env.DYNO
+                , maintenance: settings.MAINTENANCE_MODE
+
                 //nreum : newrelic.getBrowserTimingHeader()
             });
 

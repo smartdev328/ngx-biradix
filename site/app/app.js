@@ -82,6 +82,8 @@ define([], function () {
             .state('password_invalid', AsyncRoute("/password/invalid","passwordOff","passwordOffController","invalid.html","loggedOutView",{loggedIn: false}))
             .state('password_reset', AsyncRoute("/password/reset/:token","passwordOff","resetController","reset.html","loggedOutView",{loggedIn: false}))
 
+            .state('maintenance', AsyncRoute("/maintenance","login","loginController","maintenance.html","loggedOutView",{loggedIn: false}))
+
             .state('dashboard', AsyncRoute("/dashboard?id&s","dashboard","dashboardController","dashboard.html","loggedInView",{loggedIn: true}))
             .state('dashboard2', AsyncRoute("/dashboard2?id","dashboard2","dashboard2Controller","dashboard2.html","loggedInView",{loggedIn: true}))
             .state('manageUsers', AsyncRoute("/manageusers","manageUsers","manageUsersController","manageUsers.html","loggedInView",{loggedIn: true}))
@@ -115,6 +117,11 @@ define([], function () {
             $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
                 //Cancel all popups
                 $uibModalStack.dismissAll('cancel');
+
+                if ($rootScope.loggedIn && maintenance === true && toState.url.indexOf('maintenance') == -1) {
+                    $rootScope.logoff();
+                    return event.preventDefault();
+                }
 
                 if (toState.data && toState.data.loggedIn === true && !$rootScope.loggedIn) {
                     var ar = location.href.split("#");

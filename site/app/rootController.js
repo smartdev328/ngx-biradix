@@ -49,6 +49,12 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
                 $authService.refreshToken($cookies.get('token'), function (usr, status) {
 
                     if (usr) {
+
+                        if (usr.maintenance === true) {
+                            $rootScope.logoff();
+                            return;
+                        }
+
                         $rootScope.me = usr;
                         $rootScope.reload = false;
 
@@ -137,6 +143,12 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
 
             $authService.me($cookies.get('token'), function (usr, status) {
                 if (usr) {
+
+                    if (usr.maintenance === true) {
+                        $rootScope.logoff();
+                        return;
+                    }
+
                     $rootScope.me = usr;
 
                     if ($scope.first) {

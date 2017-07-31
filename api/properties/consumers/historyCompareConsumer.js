@@ -80,6 +80,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                 surveyDateStart: start.format(),
                 surveyDateEnd: end.format()
             };
+
             var req = {user: data.user, params: {id: data.id}, body: options}
 
             queueService.getDashboard(req, function (err, dashboard) {
@@ -194,6 +195,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
             var req = {user: data.user, params: {id: data.id}, body: options}
 
             queueService.getDashboard(req, function (err, dashboard) {
+
+                console.log(dashboard.comps);
                 //console.log(data.id + " history compare ended");
 
                 if (!dashboard || dashboard == null) {
@@ -299,7 +302,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     totalrow.lastmonthnersqftTotalUnits = (totalrow.lastmonthnersqftTotalUnits || 0) + p.totUnits;
                 }
 
-                if (p.nersqft && lastyear && lastyear.lastyear) {
+                if (p.nersqft && lastyear && lastyear.nersqft) {
                     p.lastyearnersqftpercent = Math.round((p.nersqft - lastyear.nersqft) / lastyear.nersqft * 100 * 10) / 10;
 
                     totalrow.lastyearnersqftpercent = (totalrow.lastyearnersqftpercent || 0) + (p.lastyearnersqftpercent * p.totUnits);

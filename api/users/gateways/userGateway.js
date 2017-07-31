@@ -102,6 +102,7 @@ userRoutes.get('/me', function (req, res) {
         obj = null;
 
         req.user.version = packages.version;
+        req.user.maintenance = settings.MAINTENANCE_MODE;
         res.status(200).json(req.user);
     })
 
@@ -338,6 +339,7 @@ module.exports = userRoutes;
 function getToken(usr, res) {
     UserService.getFullUser(usr, function(resp) {
         resp.user.version = packages.version;
+        resp.user.maintenance = settings.MAINTENANCE_MODE;
         delete resp.operator;
         res.status(200).json(resp);
         resp = null;
