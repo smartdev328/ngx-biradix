@@ -83,7 +83,7 @@ define([
                         toastr.warning('There are no users that require updates to this setting.');
                         return
                     } else {
-                        $dialog.confirm('Are you sure you want to apply <B>' + setting +': ' + value +'</B> to: <B>' + resp.data.users.join(', ') +'</B>"?', function() {
+                        $dialog.confirm('Are you sure you want to apply <B>' + setting +': ' + JSON.stringify(value).replace(/,/ig,', ') +'</B> to: <B>' + resp.data.users.join(', ') +'</B>"?', function() {
 
                             $userService.updateUsersForSettingsApply({
                                 orgid: organization._id,
