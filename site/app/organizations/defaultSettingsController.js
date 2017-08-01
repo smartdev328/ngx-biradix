@@ -15,13 +15,35 @@ define([
 
             $scope.nots = $cronService.getOptions($scope.organization.settings.how_often.default_value);
 
+            $scope.columnsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.columnsItems = [
+                {id: "occupancy", name: "Occ. %", selected: $scope.organization.settings.notification_columns.default_value.occupancy},
+                {id: "leased", name: "Leased %", selected: $scope.organization.settings.notification_columns.default_value.leased},
+                {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.organization.settings.notification_columns.default_value.weekly},
+                {id: "units", name: "Units", selected: $scope.organization.settings.notification_columns.default_value.units},
+                {id: "sqft", name: "Sqft", selected: $scope.organization.settings.notification_columns.default_value.sqft},
+                {id: "rent", name: "Rent", selected: $scope.organization.settings.notification_columns.default_value.rent},
+                {id: "concessions", name: "Total Concession", selected: $scope.organization.settings.notification_columns.default_value.concessions},
+                {id: "runrate", name: "Recurring Rent", selected: $scope.organization.settings.notification_columns.default_value.runrate},
+                {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.organization.settings.notification_columns.default_value.runratesqft},
+                {id: "ner", name: "Net Eff. Rent", selected: $scope.organization.settings.notification_columns.default_value.ner},
+                {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.organization.settings.notification_columns.default_value.nersqft},
+                {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.organization.settings.notification_columns.default_value.nersqftweek},
+                {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.organization.settings.notification_columns.default_value.nersqftmonth},
+                {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $scope.organization.settings.notification_columns.default_value.nersqftyear},
+                {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.organization.settings.notification_columns.default_value.nervscompavg},
+                {id: "last_updated", name: "Last Updated", selected: $scope.organization.settings.notification_columns.default_value.last_updated},
+            ];            
+
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
 
             $scope.save = function() {
                 $scope.organization.settings.how_often.default_value = $cronService.getCron($scope.nots);
-
+                $scope.columnsItems.forEach(function (f) {
+                    $scope.organization.settings.notification_columns.default_value[f.id] = f.selected;
+                })
                 ngProgress.start();
                 $organizationsService.updateDefaultSettings($scope.organization).then(function (response) {
                     if (response.data.errors) {
@@ -39,6 +61,14 @@ define([
 
             $scope.apply = function(setting) {
                 $scope.organization.settings.how_often.default_value = $cronService.getCron($scope.nots);
+
+                $scope.organization.settings.notification_columns.default_value = {};
+
+                $scope.columnsItems.forEach(function (f) {
+                    $scope.organization.settings.notification_columns.default_value[f.id] = f.selected;
+                })
+
+
                 $('button.apply').prop('disabled', true);
                 ngProgress.start();
                 var value = $scope.organization.settings[setting].default_value;
@@ -90,6 +120,16 @@ define([
                     ngProgress.complete();
                 });
             }
+
+            $scope.$watch("columnsItems", function(n, o) {
+                var o = _.map(o, function(x) {return x.selected.toString()}).join(',')
+                var n = _.map(n, function(x) {return x.selected.toString()}).join(',')
+
+                if (n != o) {
+                    $scope.organization.settings.notification_columns.configured=true
+                }
+
+            }, true);
 
     }]);
 

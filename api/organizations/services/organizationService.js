@@ -214,4 +214,27 @@ function defaultSettings(org) {
             configured: false,
             default_value: false
         };
+
+    org.settings.notification_columns = org.settings.notification_columns || {
+        allow: true,
+        configured: false,
+        default_value: {
+            occupancy: true,
+            leased: true,
+            units: true,
+            sqft: true,
+            rent: true,
+            runrate: false,
+            runratesqft: false,
+            ner: true,
+            nersqft: true,
+            nersqftweek: true,
+            nersqftmonth: true,
+            nersqftyear: false,
+            last_updated: true,
+            weekly: false,
+            concessions: false,
+            nervscompavg : false
+        }
+    }
 }
