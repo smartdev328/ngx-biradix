@@ -45,11 +45,10 @@ module.exports = (function() {
         }
 
         jwt.verify(req.cookies.token, settings.SECRET, function(err, decoded) {
-
             if (!decoded) {
                 return sendError(req,res);
             }
-            redisService.getByKey(decoded, function(err, result) {
+            redisService.getByKey(decoded.data, function(err, result) {
                 if (result) {
                     req.user = result;
                 }
@@ -95,7 +94,11 @@ module.exports = (function() {
                 globalcss: globalcsshash['global.css'],
             }
 
-            res.render('index', {hashes: hashes, version: packages.version, logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom, dyno: process.env.DYNO
+            res.render('index', {hashes: hashes, version: packages.version
+                , logoBig: org.logoBig, logoSmall : org.logoSmall, local: local, phantom: phantom
+                , dyno: process.env.DYNO
+                , maintenance: settings.MAINTENANCE_MODE
+
                 //nreum : newrelic.getBrowserTimingHeader()
             });
 

@@ -6,6 +6,14 @@ define([
 
     app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams) {
 
+        if (maintenance === true && $location.path().indexOf('maintenance') == -1) {
+            return $location.path("/maintenance")
+        }
+
+        $scope.reload = function() {
+            window.location.href= '/';
+        }
+
         $scope.hasSessionStorage = true;
         try {
             window.sessionStorage;

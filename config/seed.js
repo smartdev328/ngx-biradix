@@ -1,5 +1,6 @@
 var async = require("async");
-var moment = require("moment");
+var moment = require("moment-timezone");
+var _ = require("lodash");
 var settings = require("./settings");
 var UserSchema = require('../api/users/schemas/userSchema')
 var AccessService = require('../api/access/services/accessService')
@@ -92,453 +93,42 @@ module.exports = {
 }
 
 var SurveysCreate = function(users, properties, callback) {
-    var date = moment().subtract(1,"year").add(1,"day");
+    var date = moment();
 
     async.series([
-        //point 1
+        //point 17
         function(callbacks){
             var surveys = [];
 
-            var rents = [ 760, 0, 860, 0, 1030, 0, 1065, 0, 1245, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,96.1, 53, 17, rents));
+            var rents = [ 1019, 0, 1181, 0, 1196, 0, 1133, 0, 1428, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,92.5, 43, 3, rents));
 
-            rents = [ 800, 762, 824, 784, 850, 817, 926, 926, 937, 937, 948, 948, 992, 992, 1350, 670 ];
-            surveys.push(getSurvey(date, properties.Augustus, 93, 63, 25, rents));
+            rents = [ 899, 764, 996, 846, 898, 538, 1027, 872, 902, 541, 945, 567, 1081, 648, 1340, 1072 ];
+            surveys.push(getSurvey(date, properties.Augustus, 92.4, 42, 6, rents));
 
-            rents = [ 820, 701, 845, 721, 950, 831, 1032, 741, 992, 912, 1046, 962, 926, 851, 1275, 1173 ];
-            surveys.push(getSurvey(date, properties.Nero, 96, 32, 18, rents));
+            rents = [ 908, 771, 1018, 865, 987, 592, 1278, 1086, 989, 593, 1045, 627, 1067, 853, 1093, 1093 ];
+            surveys.push(getSurvey(date, properties.Nero, 91, 22, 9, rents));
 
-            rents = [ 645, 0, 645, 0, 738, 0, 980, 0, 1034, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 92, 43, 22, rents));
+            rents = [ 744, 0, 759, 0, 862, 0, 1145, 0, 1087, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 91.2, 32, 10, rents));
 
-            rents = [ 650, 0, 925, 0, 986, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 93, 99, 16, rents));
+            rents = [ 700, 0, 1089, 0, 1277, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 92.5, 45, 9, rents));
 
-            rents = [  675, 0, 715, 0, 795, 0, 805, 0, 970, 0, 1056, 0, 1197, 0, 1075, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 93.9, 65, 14, rents));
+            rents = [ 731, 0, 909, 0, 879, 0, 930, 0, 786, 0, 771, 0, 986, 0, 1065, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 87, 44, 7, rents));
 
-            rents = [  815, 0, 830, 0, 904, 0, 1043, 0, 987, 0, 1103, 0, 1206, 0, 1300, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 97, 51, 12, rents));
+            rents = [ 970, 0, 1010, 0, 1164, 0, 1315, 0, 1148, 0, 1097, 0, 1336, 0, 1200, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 93, 44, 7, rents));
 
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 2
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
+            rents = [ 500, 1000, 1000, 1000, 2000, 2000, 2200, 2000 ];
+            surveys.push(getSurvey(date, properties.Test1, 75, 15, 9, rents));
 
-            var rents = [ 865, 0, 965, 0, 1060, 0, 1097, 0, 1276, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,95.2, 56, 18, rents));
+            rents = [ 500, 0, 1000, 1000 ];
+            surveys.push(getSurvey(date, properties.Test2, 90, 30, 10, rents));
 
-            rents = [ 840, 772, 855, 786, 870, 800, 937, 862, 910, 837, 950, 874, 930, 855, 1320, 700 ];
-            surveys.push(getSurvey(date, properties.Augustus, 92.4, 55, 21, rents));
-
-            rents = [ 848, 780, 875, 805, 975, 897, 1040, 956, 981, 902, 1060, 975, 978, 899, 1199, 1103 ];
-            surveys.push(getSurvey(date, properties.Nero, 92.3, 35, 24, rents));
-
-            rents = [ 651, 0, 651, 0, 745, 0, 998, 0, 1002, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 93, 45, 25, rents));
-
-            rents = [ 675, 0, 900, 0, 1023, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 91, 58, 24, rents));
-
-            rents = [  670, 0, 719, 0, 800, 0, 827, 0, 950, 0, 975, 0, 990, 0, 1099, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 94, 57, 22, rents));
-
-            rents = [  823, 0, 854, 0, 937, 0, 1074, 0, 970, 0, 1004, 0, 1102, 0, 1250, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 96.2, 57, 22, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 3
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 865, 0, 965, 0, 1020, 0, 1055, 0, 1200, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,94.2, 59, 19, rents));
-
-            rents = [ 856, 787, 872, 802, 887, 816, 955, 878, 890, 818, 920, 846, 948, 872, 1346, 750 ];
-            surveys.push(getSurvey(date, properties.Augustus, 93.1, 58, 22, rents));
-
-            rents = [ 864, 794, 892, 820, 994, 914, 1060, 975, 1000, 920, 1081, 994, 997, 917, 1222, 1124 ];
-            surveys.push(getSurvey(date, properties.Nero, 93.1, 38, 25, rents));
-
-            rents = [ 657, 0, 657, 0, 752, 0, 1017, 0, 1012, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 92, 48, 26, rents));
-
-            rents = [ 681, 0, 909, 0, 1033, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 90, 61, 25, rents));
-
-            rents = [  650, 0, 700, 0, 808, 0, 843, 0, 899, 0, 915, 0, 970, 0, 1109, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 93.4, 60, 23, rents));
-
-            rents = [  831, 0, 862, 0, 946, 0, 1095, 0, 979, 0, 1024, 0, 1113, 0, 1210, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 95, 60, 23, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 4
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 874, 0, 975, 0, 1031, 0, 1066, 0, 1212, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,93.2, 51, 15, rents));
-
-            rents = [ 873, 742, 889, 755, 904, 768, 974, 827, 865, 735, 938, 797, 923, 784, 1372, 1166 ];
-            surveys.push(getSurvey(date, properties.Augustus, 93.1, 50, 18, rents));
-
-            rents = [ 881, 748, 909, 772, 1013, 861, 1081, 918, 912, 775, 1001, 850, 967, 821, 1246, 1059 ];
-            surveys.push(getSurvey(date, properties.Nero, 91.0, 30, 21, rents));
-
-            rents = [ 664, 0, 664, 0, 760, 0, 1028, 0, 1023, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 91, 40, 22, rents));
-
-            rents = [ 688, 0, 919, 0, 1044, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 89, 53, 21, rents));
-
-            rents = [  657, 0, 707, 0, 817, 0, 852, 0, 880, 0, 897, 0, 965, 0, 1120, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 92.4, 52, 19, rents));
-
-            rents = [  840, 0, 871, 0, 956, 0, 1106, 0, 989, 0, 1044, 0, 1124, 0, 1198, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 91.5, 52, 19, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 5
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 901, 0, 1005, 0, 1075, 0, 1105, 0, 1249, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,92.2, 43, 11, rents));
-
-            rents = [ 890, 756, 906, 770, 922, 783, 993, 844, 882, 749, 956, 812, 941, 799, 1399, 1189 ];
-            surveys.push(getSurvey(date, properties.Augustus, 94.1, 42, 14, rents));
-
-            rents = [ 898, 763, 927, 787, 1033, 878, 1102, 936, 930, 790, 1021, 867, 986, 838, 1270, 1397 ];
-            surveys.push(getSurvey(date, properties.Nero, 89.5, 22, 17, rents));
-
-            rents = [ 684, 0, 684, 0, 783, 0, 1059, 0, 1054, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 90, 32, 18, rents));
-
-            rents = [ 709, 0, 947, 0, 1076, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 88, 45, 17, rents));
-
-            rents = [ 677, 0, 729, 0, 842, 0, 878, 0, 870, 0, 880, 0, 940, 0, 1131, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 92, 44, 15, rents));
-
-            rents = [ 866, 0, 898, 0, 985, 0, 1140, 0, 1090, 0, 1156, 0, 1245, 0, 1209, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 90.1, 44, 15, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 6
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 929, 0, 1036, 0, 1108, 0, 1139, 0, 1287, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,94.2, 43, 11, rents));
-
-            rents = [ 890, 623, 906, 634, 922, 645, 993, 695, 882, 617, 956, 669, 941, 658, 1399, 979 ];
-            surveys.push(getSurvey(date, properties.Augustus, 92.6, 45, 17, rents));
-
-            rents = [ 898, 628, 927, 648, 1033, 723, 1102, 771, 930, 651, 1021, 714, 986, 690, 1270, 889 ];
-            surveys.push(getSurvey(date, properties.Nero, 91.5, 25, 20, rents));
-
-            rents = [ 705, 0, 705, 0, 776, 0, 1091, 0, 1086, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus,  92, 35, 21, rents));
-
-            rents = [ 731, 0, 976, 0, 1066, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 91, 48, 20, rents));
-
-            rents = [ 720, 0, 775, 0, 876, 0, 1002, 0, 833, 0, 865, 0, 912, 0, 1142, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 94.5, 47, 18, rents));
-
-            rents = [ 892, 0, 925, 0, 976, 0, 1175, 0, 1123, 0, 1179, 0, 1257, 0, 1221, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 92.1, 47, 18, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 7
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 911, 0, 1016, 0, 1157, 0, 1167, 0, 1262, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,96.2, 49, 17, rents));
-
-            rents = [ 890, 534, 906, 543, 922, 553, 993, 595, 882, 529, 956, 573, 941, 564, 1399, 839 ];
-            surveys.push(getSurvey(date, properties.Augustus, 94.6, 48, 20, rents));
-
-            rents = [ 898, 538, 927, 556, 1033, 619, 1102, 661, 930, 558, 1021, 714, 986, 591, 1143, 685 ];
-            surveys.push(getSurvey(date, properties.Nero, 93.5, 28, 23, rents));
-
-            rents = [ 691, 0, 691, 0, 761, 0, 1070, 0, 1065, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 94, 38, 24, rents));
-
-            rents = [ 717, 0, 957, 0, 1045, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 93, 51, 23, rents));
-
-            rents = [ 706, 0, 760, 0, 859, 0, 982, 0, 817, 0, 882, 0, 884, 0, 1119, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 92.5, 50, 21, rents));
-
-            rents = [ 875, 0, 907, 0, 957, 0, 1152, 0, 1101, 0, 1202, 0, 1219, 0, 1257, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 90.1, 50, 21, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 8
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 893, 0, 996, 0, 1198, 0, 1234, 0, 1237, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,94.7, 52, 20, rents));
-
-            rents = [ 898, 538, 915, 732, 931, 558, 973, 973, 890, 534, 927, 556, 950, 570, 1343, 1141 ];
-            surveys.push(getSurvey(date, properties.Augustus, 95.6, 51, 23, rents));
-
-            rents = [ 906, 543, 936, 748, 1043, 625, 1212, 1212, 939, 563, 990, 594, 995, 597, 1097, 932 ];
-            surveys.push(getSurvey(date, properties.Nero, 94.5, 31, 26, rents));
-
-            rents = [ 678, 0, 678, 0, 746, 0, 1049, 0, 1044, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 95, 41, 27, rents));
-
-            rents = [ 703, 0, 938, 0, 1025, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 94, 54, 26, rents));
-
-            rents = [ 692, 0, 745, 0, 842, 0, 963, 0, 801, 0, 899, 0, 857, 0, 1096, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 93.5, 53, 24, rents));
-
-            rents = [ 858, 0, 889, 0, 938, 0, 1129, 0, 1079, 0, 1226, 0, 1182, 0, 1230, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 91.6, 53, 24, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 9
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 920, 0, 1026, 0, 1234, 0, 1272, 0, 1275, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,92.6, 55, 23, rents));
-
-            rents = [ 906, 543, 924, 739, 940, 564, 953, 953, 898, 538, 899, 539, 959, 575, 1289, 1095 ];
-            surveys.push(getSurvey(date, properties.Augustus, 93.6, 54, 26, rents));
-
-            rents = [ 915, 549, 945, 756, 1053, 631, 1187, 1187, 948, 568, 960, 576, 1004, 602, 1053, 895 ];
-            surveys.push(getSurvey(date, properties.Nero, 92.5, 34, 29, rents));
-
-            rents = [ 699, 0, 712, 0, 769, 0, 1081, 0, 1076, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 92.4, 44, 30, rents));
-
-            rents = [ 725, 0, 985, 0, 1056, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 92, 57, 29, rents));
-
-            rents = [ 713, 0, 783, 0, 868, 0, 992, 0, 826, 0, 916, 0, 865, 0, 1106, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 91.5, 56, 27, rents));
-
-            rents = [ 884, 0, 934, 0, 967, 0, 1163, 0, 1112, 0, 1250, 0, 1193, 0, 1242, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 91, 56, 27, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 10
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 948, 0, 1057, 0, 1272, 0, 1311, 0, 1357, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,93.5, 60, 26, rents));
-
-            rents = [ 915, 549, 933, 746, 949, 569, 981, 981, 940, 564, 960, 576, 978, 586, 1301, 1105 ];
-            surveys.push(getSurvey(date, properties.Augustus, 94.2, 59, 29, rents));
-
-            rents = [ 924, 554, 954, 763, 1063, 637, 1222, 1222, 957, 574, 979, 587, 1014, 608, 1063, 903 ];
-            surveys.push(getSurvey(date, properties.Nero, 92.5, 39, 32, rents));
-
-            rents = [ 720, 0, 727, 0, 793, 0, 1114, 0, 1109, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus,  93.5, 49, 33, rents));
-
-            rents = [ 747, 0, 1005, 0, 1088, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 94.2, 62, 32, rents));
-
-            rents = [ 770, 0, 819, 0, 940, 0, 1050, 0, 851, 0, 934, 0, 873, 0, 1117, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 92, 61, 30, rents));
-
-            rents = [ 911, 0, 953, 0, 997, 0, 1198, 0, 1146, 0, 1275, 0, 1204, 0, 1297, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 92, 61, 30, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 11
-        function(callbacks){
-            var surveys = [];
-            date = date.add(1,"month");
-
-            var rents = [ 977, 0, 1089, 0, 1272, 0, 1311, 0, 1357, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,94.3, 65, 29, rents));
-
-            rents = [ 924, 554, 942, 753, 958, 574, 1010, 1010, 967, 580, 1014, 608, 1067, 640, 1314, 1116 ];
-            surveys.push(getSurvey(date, properties.Augustus, 95, 64, 32, rents));
-
-            rents = [ 933, 559, 963, 770, 1052, 631, 1258, 1258, 966, 579, 998, 598, 1034, 620, 1073, 912 ];
-            surveys.push(getSurvey(date, properties.Nero, 92.5, 44, 35, rents));
-
-            rents = [ 742, 0, 727, 0, 793, 0, 1114, 0, 1109, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus,  94.7, 54, 36, rents));
-
-            rents = [ 770, 0, 1005, 0, 1088, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 94.2, 67, 35, rents));
-
-            rents = [ 830, 0, 870, 0, 998, 0, 1090, 0, 890, 0, 998, 0, 1023, 0, 1128, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 94, 66, 33, rents));
-
-            rents = [ 950, 0, 975, 0, 997, 0, 1198, 0, 1146, 0, 1300, 0, 1216, 0, 1325, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 93.5, 66, 33, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 12
-        function(callbacks){
-            var surveys = [];
-            date = date.add(15,"day");
-
-            var rents = [ 977, 0, 1100, 0, 1285, 0, 1325, 0, 1412, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,95.6, 70, 32, rents));
-
-            rents = [ 877, 526, 951, 760, 948, 568, 1040, 884, 976, 585, 1050, 630, 1101, 660, 1327, 663 ];
-            surveys.push(getSurvey(date, properties.Augustus, 96.5, 69, 35, rents));
-
-            rents = [ 886, 531, 972, 777, 1041, 624, 1295, 1100, 927, 556, 1017, 610, 982, 589, 1083, 541 ];
-            surveys.push(getSurvey(date, properties.Nero, 93.5, 49, 38, rents));
-
-            rents = [ 742, 0, 735, 0, 801, 0, 1126, 0, 1154, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 95.7, 59, 39, rents));
-
-            rents = [ 770, 0, 1016, 0, 1099, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 96.3, 72, 38, rents));
-
-            rents = [ 830, 0, 879, 0, 1008, 0, 1101, 0, 945, 0, 998, 0, 1067, 0, 1105, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 95, 71, 36, rents));
-
-            rents = [ 950, 0, 985, 0, 1007, 0, 1210, 0, 1192, 0, 1261, 0, 1240, 0, 1350, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 93, 71, 36, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 13
-        function(callbacks){
-            var surveys = [];
-            date = date.add(15,"day");
-
-            var rents = [ 997, 0, 1122, 0, 1311, 0, 1352, 0, 1441, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,96.6, 75, 35, rents));
-
-            rents = [ 833, 499, 960, 768, 938, 562, 1071, 910, 936, 561, 1071, 642, 1045, 627, 1340, 670 ];
-            surveys.push(getSurvey(date, properties.Augustus, 94.7, 74, 38, rents));
-
-            rents = [ 841, 504, 981, 784, 1030, 618, 1333, 1133, 889, 533, 1006, 603, 932, 559, 1093, 546 ];
-            surveys.push(getSurvey(date, properties.Nero, 94.5, 54, 41, rents));
-
-            rents = [ 757, 0, 750, 0, 818, 0, 1149, 0, 1143, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 96.7, 64, 42, rents));
-
-            rents = [ 800, 0, 1090, 0, 1250, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 95.4, 77, 41, rents));
-
-            rents = [ 847, 0, 897, 0, 1029, 0, 1124, 0, 967, 0, 1003, 0, 1070, 0, 1082, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 96, 76, 39, rents));
-
-            rents = [ 969, 0, 1005, 0, 1028, 0, 1235, 0, 1181, 0, 1198, 0, 1230, 0, 1323, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 93, 76, 39, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 14
-        function(callbacks){
-            var surveys = [];
-            date = date.add(7,"day");
-
-            var rents = [ 988, 0, 1145, 0, 1204, 0, 1250, 0, 1470, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,94.6, 67, 27, rents));
-
-            rents = [ 849, 509, 969, 775, 928, 556, 1060, 901, 890, 534, 990, 594, 1076, 645, 1340, 670 ];
-            surveys.push(getSurvey(date, properties.Augustus, 92.7, 66, 30, rents));
-
-            rents = [ 857, 514, 990, 792, 1019, 611, 1319, 1121, 906, 543, 1006, 603, 959, 575, 1093, 546 ];
-            surveys.push(getSurvey(date, properties.Nero, 92.5, 46, 33, rents));
-
-            rents = [ 750, 0, 735, 0, 835, 0, 1172, 0, 1143, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 92.1, 56, 34, rents));
-
-            rents = [ 830, 0, 1143, 0, 1238, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 93.4, 69, 33, rents));
-
-            rents = [ 790, 0, 850, 0, 900, 0, 976, 0, 830, 0, 896, 0, 997, 0, 1060, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 95, 68, 31, rents));
-
-            rents = [ 900, 0, 910, 0, 1049, 0, 1260, 0, 1181, 0, 1204, 0, 1260, 0, 1276, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 94, 68, 31, rents));
-
-            insertPoints(users.System, surveys, function() {
-                callbacks(null);
-            })
-        },
-        //point 15
-        function(callbacks){
-            var surveys = [];
-            date = date.add(7,"day");
-
-            var rents = [ 998, 0, 1157, 0, 1178, 0, 1201, 0, 1456, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,93.2, 59, 19, rents));
-
-            rents = [ 865, 519, 978, 782, 918, 550, 1049, 891, 868, 520, 945, 567, 1020, 612, 1340, 670 ];
-            surveys.push(getSurvey(date, properties.Augustus, 90.7, 58, 22, rents));
-
-            rents = [ 874, 524, 999, 799, 1008, 604, 1305, 1109, 924, 554, 1006, 603, 987, 592, 1093, 546 ];
-            surveys.push(getSurvey(date, properties.Nero, 90.5, 38, 25, rents));
-
-            rents = [ 728, 0, 743, 0, 844, 0, 1184, 0, 1132, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 90.2, 48, 26, rents));
-
-            rents = [ 750, 0, 1130, 0, 1251, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 93.4, 61, 25, rents));
-
-            rents = [ 800, 0, 846, 0, 909, 0, 986, 0, 801, 0, 820, 0, 978, 0, 1038, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 92, 60, 23, rents));
-
-            rents = [ 873, 0, 920, 0, 1060, 0, 1273, 0, 1170, 0, 1167, 0, 1285, 0, 1250, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 94, 60, 23, rents));
+            rents = [ 2000, 400, 200, 4000, 400, 400 ];
+            surveys.push(getSurveyRecurring(date, properties.Test3, 60, 5, 2, rents));
 
             insertPoints(users.System, surveys, function() {
                 callbacks(null);
@@ -547,7 +137,7 @@ var SurveysCreate = function(users, properties, callback) {
         //point 16
         function(callbacks){
             var surveys = [];
-            date = date.add(7,"day");
+            date = date.subtract(7,"day");
 
             var rents = [ 1008, 0, 1169, 0, 1150, 0, 1176, 0, 1442, 0 ];
             surveys.push(getSurvey(date, properties.Aurelian,93.7, 51, 11, rents));
@@ -574,31 +164,481 @@ var SurveysCreate = function(users, properties, callback) {
                 callbacks(null);
             })
         },
-        //point 17
+        //point 15
         function(callbacks){
             var surveys = [];
-            date = date.add(7,"day");
+            date = date.subtract(7,"day");
 
-            var rents = [ 1019, 0, 1181, 0, 1196, 0, 1133, 0, 1428, 0 ];
-            surveys.push(getSurvey(date, properties.Aurelian,92.5, 43, 3, rents));
+            var rents = [ 998, 0, 1157, 0, 1178, 0, 1201, 0, 1456, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,93.2, 59, 19, rents));
 
-            rents = [ 899, 764, 996, 846, 898, 538, 1027, 872, 902, 541, 945, 567, 1081, 648, 1340, 1072 ];
-            surveys.push(getSurvey(date, properties.Augustus, 92.4, 42, 6, rents));
+            rents = [ 865, 519, 978, 782, 918, 550, 1049, 891, 868, 520, 945, 567, 1020, 612, 1340, 670 ];
+            surveys.push(getSurvey(date, properties.Augustus, 90.7, 58, 22, rents));
 
-            rents = [ 908, 771, 1018, 865, 987, 592, 1278, 1086, 989, 593, 1045, 627, 1067, 853, 1093, 1093 ];
-            surveys.push(getSurvey(date, properties.Nero, 91, 22, 9, rents));
+            rents = [ 874, 524, 999, 799, 1008, 604, 1305, 1109, 924, 554, 1006, 603, 987, 592, 1093, 546 ];
+            surveys.push(getSurvey(date, properties.Nero, 90.5, 38, 25, rents));
 
-            rents = [ 744, 0, 759, 0, 862, 0, 1145, 0, 1087, 0 ];
-            surveys.push(getSurvey(date, properties.Marcus, 91.2, 32, 10, rents));
+            rents = [ 728, 0, 743, 0, 844, 0, 1184, 0, 1132, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 90.2, 48, 26, rents));
 
-            rents = [ 700, 0, 1089, 0, 1277, 0 ];
-            surveys.push(getSurvey(date, properties.Geta, 92.5, 45, 9, rents));
+            rents = [ 750, 0, 1130, 0, 1251, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 93.4, 61, 25, rents));
 
-            rents = [ 731, 0, 909, 0, 879, 0, 930, 0, 786, 0, 771, 0, 986, 0, 1065, 0 ];
-            surveys.push(getSurvey(date, properties.Titus, 87, 44, 7, rents));
+            rents = [ 800, 0, 846, 0, 909, 0, 986, 0, 801, 0, 820, 0, 978, 0, 1038, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 92, 60, 23, rents));
 
-            rents = [ 970, 0, 1010, 0, 1164, 0, 1315, 0, 1148, 0, 1097, 0, 1336, 0, 1200, 0 ];
-            surveys.push(getSurvey(date, properties.Probus, 93, 44, 7, rents));
+            rents = [ 873, 0, 920, 0, 1060, 0, 1273, 0, 1170, 0, 1167, 0, 1285, 0, 1250, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 94, 60, 23, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 14
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(7,"day");
+
+            var rents = [ 988, 0, 1145, 0, 1204, 0, 1250, 0, 1470, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,94.6, 67, 27, rents));
+
+            rents = [ 849, 509, 969, 775, 928, 556, 1060, 901, 890, 534, 990, 594, 1076, 645, 1340, 670 ];
+            surveys.push(getSurvey(date, properties.Augustus, 92.7, 66, 30, rents));
+
+            rents = [ 857, 514, 990, 792, 1019, 611, 1319, 1121, 906, 543, 1006, 603, 959, 575, 1093, 546 ];
+            surveys.push(getSurvey(date, properties.Nero, 92.5, 46, 33, rents));
+
+            rents = [ 750, 0, 735, 0, 835, 0, 1172, 0, 1143, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 92.1, 56, 34, rents));
+
+            rents = [ 830, 0, 1143, 0, 1238, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 93.4, 69, 33, rents));
+
+            rents = [ 790, 0, 850, 0, 900, 0, 976, 0, 830, 0, 896, 0, 997, 0, 1060, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 95, 68, 31, rents));
+
+            rents = [ 900, 0, 910, 0, 1049, 0, 1260, 0, 1181, 0, 1204, 0, 1260, 0, 1276, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 94, 68, 31, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 13
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(14,"day");
+
+            var rents = [ 997, 0, 1122, 0, 1311, 0, 1352, 0, 1441, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,96.6, 75, 35, rents));
+
+            rents = [ 833, 499, 960, 768, 938, 562, 1071, 910, 936, 561, 1071, 642, 1045, 627, 1340, 670 ];
+            surveys.push(getSurvey(date, properties.Augustus, 94.7, 74, 38, rents));
+
+            rents = [ 841, 504, 981, 784, 1030, 618, 1333, 1133, 889, 533, 1006, 603, 932, 559, 1093, 546 ];
+            surveys.push(getSurvey(date, properties.Nero, 94.5, 54, 41, rents));
+
+            rents = [ 757, 0, 750, 0, 818, 0, 1149, 0, 1143, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 96.7, 64, 42, rents));
+
+            rents = [ 800, 0, 1090, 0, 1250, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 95.4, 77, 41, rents));
+
+            rents = [ 847, 0, 897, 0, 1029, 0, 1124, 0, 967, 0, 1003, 0, 1070, 0, 1082, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 96, 76, 39, rents));
+
+            rents = [ 969, 0, 1005, 0, 1028, 0, 1235, 0, 1181, 0, 1198, 0, 1230, 0, 1323, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 93, 76, 39, rents));
+
+            rents = [ 750, 750, 1500, 1500, 2500, 2500, 2700, 2700 ];
+            surveys.push(getSurvey(date, properties.Test1, 50, 10, 3, rents));
+
+            rents = [ 1000, 0, 2000, 1000 ];
+            surveys.push(getSurvey(date, properties.Test2, 60, 20, 70, rents));
+
+            rents = [ 3000, 1000, 1000, 6000, 1000, 2000 ];
+            surveys.push(getSurveyRecurring(date, properties.Test3, 45, 8, 4, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 12
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(14,"day");
+
+            var rents = [ 977, 0, 1100, 0, 1285, 0, 1325, 0, 1412, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,95.6, 70, 32, rents));
+
+            rents = [ 877, 526, 951, 760, 948, 568, 1040, 884, 976, 585, 1050, 630, 1101, 660, 1327, 663 ];
+            surveys.push(getSurvey(date, properties.Augustus, 96.5, 69, 35, rents));
+
+            rents = [ 886, 531, 972, 777, 1041, 624, 1295, 1100, 927, 556, 1017, 610, 982, 589, 1083, 541 ];
+            surveys.push(getSurvey(date, properties.Nero, 93.5, 49, 38, rents));
+
+            rents = [ 742, 0, 735, 0, 801, 0, 1126, 0, 1154, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 95.7, 59, 39, rents));
+
+            rents = [ 770, 0, 1016, 0, 1099, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 96.3, 72, 38, rents));
+
+            rents = [ 830, 0, 879, 0, 1008, 0, 1101, 0, 945, 0, 998, 0, 1067, 0, 1105, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 95, 71, 36, rents));
+
+            rents = [ 950, 0, 985, 0, 1007, 0, 1210, 0, 1192, 0, 1261, 0, 1240, 0, 1350, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 93, 71, 36, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 11
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 977, 0, 1089, 0, 1272, 0, 1311, 0, 1357, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,94.3, 65, 29, rents));
+
+            rents = [ 924, 554, 942, 753, 958, 574, 1010, 1010, 967, 580, 1014, 608, 1067, 640, 1314, 1116 ];
+            surveys.push(getSurvey(date, properties.Augustus, 95, 64, 32, rents));
+
+            rents = [ 933, 559, 963, 770, 1052, 631, 1258, 1258, 966, 579, 998, 598, 1034, 620, 1073, 912 ];
+            surveys.push(getSurvey(date, properties.Nero, 92.5, 44, 35, rents));
+
+            rents = [ 742, 0, 727, 0, 793, 0, 1114, 0, 1109, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus,  94.7, 54, 36, rents));
+
+            rents = [ 770, 0, 1005, 0, 1088, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 94.2, 67, 35, rents));
+
+            rents = [ 830, 0, 870, 0, 998, 0, 1090, 0, 890, 0, 998, 0, 1023, 0, 1128, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 94, 66, 33, rents));
+
+            rents = [ 950, 0, 975, 0, 997, 0, 1198, 0, 1146, 0, 1300, 0, 1216, 0, 1325, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 93.5, 66, 33, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 10
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 948, 0, 1057, 0, 1272, 0, 1311, 0, 1357, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,93.5, 60, 26, rents));
+
+            rents = [ 915, 549, 933, 746, 949, 569, 981, 981, 940, 564, 960, 576, 978, 586, 1301, 1105 ];
+            surveys.push(getSurvey(date, properties.Augustus, 94.2, 59, 29, rents));
+
+            rents = [ 924, 554, 954, 763, 1063, 637, 1222, 1222, 957, 574, 979, 587, 1014, 608, 1063, 903 ];
+            surveys.push(getSurvey(date, properties.Nero, 92.5, 39, 32, rents));
+
+            rents = [ 720, 0, 727, 0, 793, 0, 1114, 0, 1109, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus,  93.5, 49, 33, rents));
+
+            rents = [ 747, 0, 1005, 0, 1088, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 94.2, 62, 32, rents));
+
+            rents = [ 770, 0, 819, 0, 940, 0, 1050, 0, 851, 0, 934, 0, 873, 0, 1117, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 92, 61, 30, rents));
+
+            rents = [ 911, 0, 953, 0, 997, 0, 1198, 0, 1146, 0, 1275, 0, 1204, 0, 1297, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 92, 61, 30, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 9
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 920, 0, 1026, 0, 1234, 0, 1272, 0, 1275, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,92.6, 55, 23, rents));
+
+            rents = [ 906, 543, 924, 739, 940, 564, 953, 953, 898, 538, 899, 539, 959, 575, 1289, 1095 ];
+            surveys.push(getSurvey(date, properties.Augustus, 93.6, 54, 26, rents));
+
+            rents = [ 915, 549, 945, 756, 1053, 631, 1187, 1187, 948, 568, 960, 576, 1004, 602, 1053, 895 ];
+            surveys.push(getSurvey(date, properties.Nero, 92.5, 34, 29, rents));
+
+            rents = [ 699, 0, 712, 0, 769, 0, 1081, 0, 1076, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 92.4, 44, 30, rents));
+
+            rents = [ 725, 0, 985, 0, 1056, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 92, 57, 29, rents));
+
+            rents = [ 713, 0, 783, 0, 868, 0, 992, 0, 826, 0, 916, 0, 865, 0, 1106, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 91.5, 56, 27, rents));
+
+            rents = [ 884, 0, 934, 0, 967, 0, 1163, 0, 1112, 0, 1250, 0, 1193, 0, 1242, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 91, 56, 27, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 8
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 893, 0, 996, 0, 1198, 0, 1234, 0, 1237, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,94.7, 52, 20, rents));
+
+            rents = [ 898, 538, 915, 732, 931, 558, 973, 973, 890, 534, 927, 556, 950, 570, 1343, 1141 ];
+            surveys.push(getSurvey(date, properties.Augustus, 95.6, 51, 23, rents));
+
+            rents = [ 906, 543, 936, 748, 1043, 625, 1212, 1212, 939, 563, 990, 594, 995, 597, 1097, 932 ];
+            surveys.push(getSurvey(date, properties.Nero, 94.5, 31, 26, rents));
+
+            rents = [ 678, 0, 678, 0, 746, 0, 1049, 0, 1044, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 95, 41, 27, rents));
+
+            rents = [ 703, 0, 938, 0, 1025, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 94, 54, 26, rents));
+
+            rents = [ 692, 0, 745, 0, 842, 0, 963, 0, 801, 0, 899, 0, 857, 0, 1096, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 93.5, 53, 24, rents));
+
+            rents = [ 858, 0, 889, 0, 938, 0, 1129, 0, 1079, 0, 1226, 0, 1182, 0, 1230, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 91.6, 53, 24, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 7
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 911, 0, 1016, 0, 1157, 0, 1167, 0, 1262, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,96.2, 49, 17, rents));
+
+            rents = [ 890, 534, 906, 543, 922, 553, 993, 595, 882, 529, 956, 573, 941, 564, 1399, 839 ];
+            surveys.push(getSurvey(date, properties.Augustus, 94.6, 48, 20, rents));
+
+            rents = [ 898, 538, 927, 556, 1033, 619, 1102, 661, 930, 558, 1021, 714, 986, 591, 1143, 685 ];
+            surveys.push(getSurvey(date, properties.Nero, 93.5, 28, 23, rents));
+
+            rents = [ 691, 0, 691, 0, 761, 0, 1070, 0, 1065, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 94, 38, 24, rents));
+
+            rents = [ 717, 0, 957, 0, 1045, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 93, 51, 23, rents));
+
+            rents = [ 706, 0, 760, 0, 859, 0, 982, 0, 817, 0, 882, 0, 884, 0, 1119, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 92.5, 50, 21, rents));
+
+            rents = [ 875, 0, 907, 0, 957, 0, 1152, 0, 1101, 0, 1202, 0, 1219, 0, 1257, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 90.1, 50, 21, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 6
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 929, 0, 1036, 0, 1108, 0, 1139, 0, 1287, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,94.2, 43, 11, rents));
+
+            rents = [ 890, 623, 906, 634, 922, 645, 993, 695, 882, 617, 956, 669, 941, 658, 1399, 979 ];
+            surveys.push(getSurvey(date, properties.Augustus, 92.6, 45, 17, rents));
+
+            rents = [ 898, 628, 927, 648, 1033, 723, 1102, 771, 930, 651, 1021, 714, 986, 690, 1270, 889 ];
+            surveys.push(getSurvey(date, properties.Nero, 91.5, 25, 20, rents));
+
+            rents = [ 705, 0, 705, 0, 776, 0, 1091, 0, 1086, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus,  92, 35, 21, rents));
+
+            rents = [ 731, 0, 976, 0, 1066, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 91, 48, 20, rents));
+
+            rents = [ 720, 0, 775, 0, 876, 0, 1002, 0, 833, 0, 865, 0, 912, 0, 1142, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 94.5, 47, 18, rents));
+
+            rents = [ 892, 0, 925, 0, 976, 0, 1175, 0, 1123, 0, 1179, 0, 1257, 0, 1221, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 92.1, 47, 18, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 5
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 901, 0, 1005, 0, 1075, 0, 1105, 0, 1249, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,92.2, 43, 11, rents));
+
+            rents = [ 890, 756, 906, 770, 922, 783, 993, 844, 882, 749, 956, 812, 941, 799, 1399, 1189 ];
+            surveys.push(getSurvey(date, properties.Augustus, 94.1, 42, 14, rents));
+
+            rents = [ 898, 763, 927, 787, 1033, 878, 1102, 936, 930, 790, 1021, 867, 986, 838, 1270, 1397 ];
+            surveys.push(getSurvey(date, properties.Nero, 89.5, 22, 17, rents));
+
+            rents = [ 684, 0, 684, 0, 783, 0, 1059, 0, 1054, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 90, 32, 18, rents));
+
+            rents = [ 709, 0, 947, 0, 1076, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 88, 45, 17, rents));
+
+            rents = [ 677, 0, 729, 0, 842, 0, 878, 0, 870, 0, 880, 0, 940, 0, 1131, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 92, 44, 15, rents));
+
+            rents = [ 866, 0, 898, 0, 985, 0, 1140, 0, 1090, 0, 1156, 0, 1245, 0, 1209, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 90.1, 44, 15, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 4
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 874, 0, 975, 0, 1031, 0, 1066, 0, 1212, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,93.2, 51, 15, rents));
+
+            rents = [ 873, 742, 889, 755, 904, 768, 974, 827, 865, 735, 938, 797, 923, 784, 1372, 1166 ];
+            surveys.push(getSurvey(date, properties.Augustus, 93.1, 50, 18, rents));
+
+            rents = [ 881, 748, 909, 772, 1013, 861, 1081, 918, 912, 775, 1001, 850, 967, 821, 1246, 1059 ];
+            surveys.push(getSurvey(date, properties.Nero, 91.0, 30, 21, rents));
+
+            rents = [ 664, 0, 664, 0, 760, 0, 1028, 0, 1023, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 91, 40, 22, rents));
+
+            rents = [ 688, 0, 919, 0, 1044, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 89, 53, 21, rents));
+
+            rents = [  657, 0, 707, 0, 817, 0, 852, 0, 880, 0, 897, 0, 965, 0, 1120, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 92.4, 52, 19, rents));
+
+            rents = [  840, 0, 871, 0, 956, 0, 1106, 0, 989, 0, 1044, 0, 1124, 0, 1198, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 91.5, 52, 19, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 3
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 865, 0, 965, 0, 1020, 0, 1055, 0, 1200, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,94.2, 59, 19, rents));
+
+            rents = [ 856, 787, 872, 802, 887, 816, 955, 878, 890, 818, 920, 846, 948, 872, 1346, 750 ];
+            surveys.push(getSurvey(date, properties.Augustus, 93.1, 58, 22, rents));
+
+            rents = [ 864, 794, 892, 820, 994, 914, 1060, 975, 1000, 920, 1081, 994, 997, 917, 1222, 1124 ];
+            surveys.push(getSurvey(date, properties.Nero, 93.1, 38, 25, rents));
+
+            rents = [ 657, 0, 657, 0, 752, 0, 1017, 0, 1012, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 92, 48, 26, rents));
+
+            rents = [ 681, 0, 909, 0, 1033, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 90, 61, 25, rents));
+
+            rents = [  650, 0, 700, 0, 808, 0, 843, 0, 899, 0, 915, 0, 970, 0, 1109, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 93.4, 60, 23, rents));
+
+            rents = [  831, 0, 862, 0, 946, 0, 1095, 0, 979, 0, 1024, 0, 1113, 0, 1210, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 95, 60, 23, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 2
+        function(callbacks){
+            var surveys = [];
+            date = date.subtract(4,"weeks");
+
+            var rents = [ 865, 0, 965, 0, 1060, 0, 1097, 0, 1276, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,95.2, 56, 18, rents));
+
+            rents = [ 840, 772, 855, 786, 870, 800, 937, 862, 910, 837, 950, 874, 930, 855, 1320, 700 ];
+            surveys.push(getSurvey(date, properties.Augustus, 92.4, 55, 21, rents));
+
+            rents = [ 848, 780, 875, 805, 975, 897, 1040, 956, 981, 902, 1060, 975, 978, 899, 1199, 1103 ];
+            surveys.push(getSurvey(date, properties.Nero, 92.3, 35, 24, rents));
+
+            rents = [ 651, 0, 651, 0, 745, 0, 998, 0, 1002, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 93, 45, 25, rents));
+
+            rents = [ 675, 0, 900, 0, 1023, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 91, 58, 24, rents));
+
+            rents = [  670, 0, 719, 0, 800, 0, 827, 0, 950, 0, 975, 0, 990, 0, 1099, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 94, 57, 22, rents));
+
+            rents = [  823, 0, 854, 0, 937, 0, 1074, 0, 970, 0, 1004, 0, 1102, 0, 1250, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 96.2, 57, 22, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 1
+        function(callbacks){
+            var surveys = [];
+
+            date = date.subtract(4,"weeks");
+
+
+            var rents = [ 760, 0, 860, 0, 1030, 0, 1065, 0, 1245, 0 ];
+            surveys.push(getSurvey(date, properties.Aurelian,96.1, 53, 17, rents));
+
+            rents = [ 800, 762, 824, 784, 850, 817, 926, 926, 937, 937, 948, 948, 992, 992, 1350, 670 ];
+            surveys.push(getSurvey(date, properties.Augustus, 93, 63, 25, rents));
+
+            rents = [ 820, 701, 845, 721, 950, 831, 1032, 741, 992, 912, 1046, 962, 926, 851, 1275, 1173 ];
+            surveys.push(getSurvey(date, properties.Nero, 96, 32, 18, rents));
+
+            rents = [ 645, 0, 645, 0, 738, 0, 980, 0, 1034, 0 ];
+            surveys.push(getSurvey(date, properties.Marcus, 92, 43, 22, rents));
+
+            rents = [ 650, 0, 925, 0, 986, 0 ];
+            surveys.push(getSurvey(date, properties.Geta, 93, 99, 16, rents));
+
+            rents = [  675, 0, 715, 0, 795, 0, 805, 0, 970, 0, 1056, 0, 1197, 0, 1075, 0 ];
+            surveys.push(getSurvey(date, properties.Titus, 93.9, 65, 14, rents));
+
+            rents = [  815, 0, 830, 0, 904, 0, 1043, 0, 987, 0, 1103, 0, 1206, 0, 1300, 0 ];
+            surveys.push(getSurvey(date, properties.Probus, 97, 51, 12, rents));
+
+            insertPoints(users.System, surveys, function() {
+                callbacks(null);
+            })
+        },
+        //point 0 for test properties
+        function(callbacks){
+            var surveys = [];
+
+            var dateTemp = moment().subtract(53,"week");
+
+            var rents = [ 1000, 1000, 2000, 2000, 3000, 3000, 4000, 4000 ];
+            surveys.push(getSurvey(dateTemp, properties.Test1, 25, 5, 1, rents));
+
+            rents = [ 1500, 0, 3000, 0 ];
+            surveys.push(getSurvey(dateTemp, properties.Test2, 30, 10, 5, rents));
+
+            rents = [ 4000, 500, 500, 8000, 1000, 1000 ];
+            surveys.push(getSurveyRecurring(dateTemp, properties.Test3, 30, 12, 6, rents));
 
             insertPoints(users.System, surveys, function() {
                 callbacks(null);
@@ -618,6 +658,28 @@ var insertPoints = function(System, surveys, callback) {
     }, function(err) {
         callback();
     });
+}
+
+var getSurveyRecurring = function(date, property, occupancy, weeklytraffic, weeklyleases, rents) {
+    rents.forEach(function(r, i) {
+
+        if (i % 3 == 0) {
+            property.floorplans[i / 3].rent = rents[i];
+            property.floorplans[i / 3].concessionsOneTime = rents[i + 1];
+            property.floorplans[i / 3].concessionsMonthly = rents[i + 2];
+            property.floorplans[i / 3].concessions = property.floorplans[i / 3].concessionsOneTime + property.floorplans[i / 3].concessionsMonthly * 12;
+        }
+    })
+
+    return {
+        date: date.format(),
+        propertyid:property._id,
+        occupancy: occupancy,
+        weeklytraffic : weeklytraffic,
+        weeklyleases: weeklyleases,
+        floorplans: property.floorplans
+
+    };
 }
 
 var getSurvey = function(date, property, occupancy, weeklytraffic, weeklyleases, rents) {
@@ -869,80 +931,162 @@ var PropertiesCreate = function(System, companies,callback) {
         , location_amenities: ["Near Retail", "Visibility", "Access to Parks"]
     }
 
+    var Test1 = { name: 'Test property 1', address: '7135 E Camelback Rd', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(480) 751-2200', owner: 'Fox Concept', management: 'Fancy Smiths', yearBuilt: 2005, orgid: companies.Demo._id, constructionType: 'Garden', notes: '', fees: {
+        application_fee : '$50',
+        lease_terms: '12 months',
+        short_term_premium: '$400',
+        refundable_security_deposit: '$200',
+        administrative_fee: '$200',
+        non_refundable_pet_deposit: '$200',
+        pet_deposit: '$200',
+        pet_rent: '$25,$50'
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 10, sqft: 1000, amenities: []},
+        {bedrooms:1, bathrooms: '1', description: '', units: 10, sqft: 1200, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 10, sqft: 2000, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 10, sqft: 2200, amenities: []},
+    ]
+        , community_amenities: []
+        , location_amenities: []
+    }
+
+    var Test2 = { name: 'Test property 2', address: '7025 E Via Soleri Dr', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(480) 398-8200', owner: 'Zues Inc', management: 'Apollo', yearBuilt: 2007, orgid: companies.Demo._id, constructionType: 'Garden', notes: '', fees: {
+        application_fee : '$75',
+        lease_terms: '3-13 months',
+        short_term_premium: '$200',
+        refundable_security_deposit: '$400',
+        administrative_fee: '$300',
+        non_refundable_pet_deposit: '$400',
+        pet_deposit: '$200',
+        pet_rent: '$30'
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 30, sqft: 500, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 30, sqft: 1000, amenities: []},
+    ]
+        , community_amenities: []
+        , location_amenities: []
+    }
+
+    var Test3 = { name: 'Test property 3', address: '7157 E Rancho Vista Dr', city: 'Scottsdale', state: 'AZ', zip: '85251', phone: '(480) 874-9900', owner: 'Titan', management: 'Aphrodite', yearBuilt: 2011, orgid: companies.Demo._id, constructionType: 'Mid-Rise', notes: '', fees: {
+        application_fee : '$100',
+        lease_terms: '6 months',
+        short_term_premium: '$250',
+        refundable_security_deposit: '$600',
+        administrative_fee: '$400',
+        non_refundable_pet_deposit: '$500',
+        pet_deposit: '$300',
+        pet_rent: '$45'
+    }, floorplans: [
+        {bedrooms:1, bathrooms: '1', description: '', units: 20, sqft: 1000, amenities: []},
+        {bedrooms:2, bathrooms: '2', description: '', units: 20, sqft: 2000, amenities: []},
+    ]
+        , community_amenities: []
+        , location_amenities: []
+    }
     async.parallel({
-            Aurelian: function (callbackp) {
-                CreateService.create(System, context, Aurelian, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+        Aurelian: function (callbackp) {
+            CreateService.create(System, context, Aurelian, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Augustus: function (callbackp) {
-                CreateService.create(System, context,Augustus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Augustus: function (callbackp) {
+            CreateService.create(System, context,Augustus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Nero: function (callbackp) {
-                CreateService.create(System, context,Nero, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Nero: function (callbackp) {
+            CreateService.create(System, context,Nero, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Marcus: function (callbackp) {
-                CreateService.create(System, context,Marcus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Marcus: function (callbackp) {
+            CreateService.create(System, context,Marcus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Geta: function (callbackp) {
-                CreateService.create(System, context,Geta, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Geta: function (callbackp) {
+            CreateService.create(System, context,Geta, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Titus: function (callbackp) {
-                CreateService.create(System, context,Titus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Titus: function (callbackp) {
+            CreateService.create(System, context,Titus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            },
-            Probus: function (callbackp) {
-                CreateService.create(System, context,Probus, function (err, prop) {
-                        if (err) {
-                            throw("Unable to seed: " + err[0].msg);
-                        }
-                        callbackp(null, prop)
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Probus: function (callbackp) {
+            CreateService.create(System, context,Probus, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
                     }
-                );
-            }
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Test1: function (callbackp) {
+            CreateService.create(System, context,Test1, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
+                    }
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Test2: function (callbackp) {
+            CreateService.create(System, context,Test2, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
+                    }
+                    callbackp(null, prop)
+                }
+            );
+        },
+        Test3: function (callbackp) {
+            CreateService.create(System, context,Test3, function (err, prop) {
+                    if (err) {
+                        throw("Unable to seed: " + err[0].msg);
+                    }
+                    callbackp(null, prop)
+                }
+            );
+        }
         },function(err, props) {
             var links = [];
             for (var prop in props) {
                 for (var prop2 in props) {
-                    if (props[prop]._id.toString() != props[prop2]._id.toString() ) {
+                    if (props[prop]._id.toString() != props[prop2]._id.toString() && ['Test1','Test2','Test3'].indexOf(prop) == -1 && ['Test1','Test2','Test3'].indexOf(prop2) == -1 ) {
                         links.push({subjectid: props[prop]._id, compid: props[prop2]._id})
                     }
                 }
 
             }
+
+        links.push({subjectid: props['Test1']._id, compid: props['Test2']._id});
+        links.push({subjectid: props['Test1']._id, compid: props['Test3']._id});
 
             async.eachLimit(links, 10, function(link, callbackp){
                 PropertyService.linkComp(System, context, null, link.subjectid, link.compid, function (err, l) {

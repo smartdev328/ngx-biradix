@@ -10,7 +10,7 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
         var refreshFactor = 1;
 
         $rootScope.version = version;
-        $rootScope.logoBig = logoBig;
+        $rootScope.logoBig = logoBig + '?';
 
         if ($cookies.get('token')) {
             $rootScope.loggedIn = true;
@@ -49,6 +49,12 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
                 $authService.refreshToken($cookies.get('token'), function (usr, status) {
 
                     if (usr) {
+
+                        if (usr.maintenance === true) {
+                            $rootScope.logoff();
+                            return;
+                        }
+
                         $rootScope.me = usr;
                         $rootScope.reload = false;
 
@@ -137,6 +143,12 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
 
             $authService.me($cookies.get('token'), function (usr, status) {
                 if (usr) {
+
+                    if (usr.maintenance === true) {
+                        $rootScope.logoff();
+                        return;
+                    }
+
                     $rootScope.me = usr;
 
                     if ($scope.first) {
@@ -200,7 +212,7 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
             }
 
             $('.logoBig').each(function(l) {
-                this.src = "/images/organizations/" + org.logoBig
+                this.src = "/images/organizations/" + org.logoBig + "?"
             })
 
             $('.logoSmall').each(function(l) {
