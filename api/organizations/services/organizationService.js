@@ -239,7 +239,7 @@ function defaultSettings(org) {
         configured: false,
         default_value: {
             occupancy: true,
-            leased: true,
+            leased: false,
             units: true,
             sqft: true,
             rent: true,

@@ -545,7 +545,6 @@ module.exports = {
     updateSettings : function(Operator, user, settings, context, callback)  {
         var modelErrors = [];
 
-
         if (!user._id)
         {
             modelErrors.push({msg : 'Invalid user id.'});
@@ -595,6 +594,20 @@ module.exports = {
                 if (notsDescription) {
                     notsDescription += " Updated";
                 }
+
+                var found = false;
+                for (var c in usr.settings.notification_columns) {
+                    if (usr.settings.notification_columns[c] !== settings.notification_columns[c]) {
+                        found = true;
+                    }
+                }
+
+                if (found) {
+                    if (notsDescription) {
+                        notsDescription += ", ";
+                    }
+                    notsDescription += "Columns";
+                }
             }
 
             var reminderDescription = "";
@@ -634,12 +647,10 @@ module.exports = {
             }
 
             usr.settings = settings
-            // usr.markModified("settings.reminders");
-            // usr.markModified("settings.tz");
 
                 var query = {_id: usr._id};
                 var update = {settings: settings};
-                var options = {};
+                var options = {new:true};
 
             UserSchema.findOneAndUpdate(query, update, options, function (err, usr) {
                 if (err) {
@@ -948,7 +959,7 @@ function defaultSettings(user, orgSettings) {
 
     user.settings.notification_columns = user.settings.notification_columns || {
         occupancy: true,
-        leased: true,
+        leased: user.settings.showLeases,
         units: true,
         sqft: true,
         rent: true,
@@ -964,4 +975,5 @@ function defaultSettings(user, orgSettings) {
         concessions: false,
         nervscompavg: false
     }
+
 }

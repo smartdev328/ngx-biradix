@@ -82,7 +82,7 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:410px" id="notificationsPanel">
+        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:430px" id="notificationsPanel">
             <div class="panel-heading">Notifications</div>
             <div class="panel-body">
 
@@ -135,6 +135,14 @@
                             <Br clear="all">
                         </td>
                     </tr>
+                    <tr>
+                        <Td style="padding-top: 10px">
+                            Include columns:
+                        </Td>
+                        <Td style="padding-top: 10px">
+                            <filter-list options="columnsOptions" items="columnsItems"></filter-list>
+                        </Td>
+                    </tr>
                 </Table>
                     <div>
                     <hr>
@@ -159,7 +167,7 @@
     </div>
 
     <div class="col-md-6">
-        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:410px" id="settingsPanel">
+        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:430px" id="settingsPanel">
             <div class="panel-heading">Settings</div>
             <div class="panel-body">
                 <div>
