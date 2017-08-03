@@ -41,9 +41,21 @@ define([
 
             $scope.save = function() {
                 $scope.organization.settings.how_often.default_value = $cronService.getCron($scope.nots);
+                var c= 0;
                 $scope.columnsItems.forEach(function (f) {
                     $scope.organization.settings.notification_columns.default_value[f.id] = f.selected;
+
+                    if (f.selected === true) {
+                        c++;
+                    }
                 })
+
+                if (c > 13) {
+                    toastr.error("<B>Unable to Update Notification Settings!</B><Br><Br>You have selected <b>" + c + "</b> columns for your competitor report. Having over <u>13</u> columns will not fit in the property status update.")
+
+                    return;
+                }
+
                 ngProgress.start();
                 $organizationsService.updateDefaultSettings($scope.organization).then(function (response) {
                     if (response.data.errors) {
@@ -64,9 +76,20 @@ define([
 
                 $scope.organization.settings.notification_columns.default_value = {};
 
+                var c= 0;
                 $scope.columnsItems.forEach(function (f) {
                     $scope.organization.settings.notification_columns.default_value[f.id] = f.selected;
+
+                    if (f.selected === true) {
+                        c++;
+                    }
                 })
+
+                if (c > 13) {
+                    toastr.error("<B>Unable to Update Notification Settings!</B><Br><Br>You have selected <b>" + c + "</b> columns for your competitor report. Having over <u>13</u> columns will not fit in the property status update.")
+
+                    return;
+                }
 
 
                 $('button.apply').prop('disabled', true);
@@ -94,13 +117,13 @@ define([
                                 ngProgress.complete();
 
                                 if (resp.data.bad.length == 0) {
-                                    toastr.success('<B>' + resp.data.good.join(', ') + '</B> where updated with <B>' + setting + ': ' + value + '</B>');
+                                    toastr.success('<B>' + resp.data.good.join(', ') + '</B> where updated with <B>' + setting + ': ' + JSON.stringify(value).replace(/,/ig,', ') + '</B>');
                                 } else
                                     if (resp.data.good.length == 0) {
-                                    toastr.error('<B>' + resp.data.bad.join(', ') + '</B> where NOT updated with <B>' + setting + ': ' + value + '</B>');
+                                    toastr.error('<B>' + resp.data.bad.join(', ') + '</B> where NOT updated with <B>' + setting + ': ' + JSON.stringify(value).replace(/,/ig,', ') + '</B>');
                                 }
                                 else {
-                                        toastr.error('<B>' + resp.data.bad.join(', ') + '</B> where NOT updated, <B>' + resp.data.good.join(', ') + '</B> where updated with <B>' + setting + ': ' + value + '</B>');
+                                        toastr.error('<B>' + resp.data.bad.join(', ') + '</B> where NOT updated, <B>' + resp.data.good.join(', ') + '</B> where updated with <B>' + setting + ': ' + JSON.stringify(value).replace(/,/ig,', ') + '</B>');
                                     }
 
                             }, function (err) {

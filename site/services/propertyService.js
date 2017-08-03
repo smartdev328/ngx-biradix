@@ -10,10 +10,11 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.notifications_test = function (properties,showLeases) {
+        fac.notifications_test = function (properties,showLeases,notification_columns) {
             return $http.post('/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
                 properties:properties,
-                showLeases: showLeases
+                showLeases: showLeases,
+                notification_columns: notification_columns
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;

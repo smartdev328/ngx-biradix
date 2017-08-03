@@ -27,7 +27,8 @@ Routes.get('/notifications', function (req, res) {
                     if (full.operator.roles[0] != 'Guest') {
                         queueService.sendNotification(full.operator, {
                             properties: full.operator.settings.notifications.props,
-                            showLeases: full.operator.settings.showLeases
+                            showLeases: full.operator.settings.showLeases,
+                            notification_columns: full.operator.settings.notification_columns
                         }, function () {
                         })
                     }

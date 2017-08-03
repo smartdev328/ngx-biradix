@@ -196,7 +196,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
 
             queueService.getDashboard(req, function (err, dashboard) {
 
-                console.log(dashboard.comps);
+                //console.log(dashboard.comps);
                 //console.log(data.id + " history compare ended");
 
                 if (!dashboard || dashboard == null) {

@@ -124,6 +124,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                             unsub: unsub,
                             when: when,
                             showLeases: data.showLeases,
+                            show: data.notification_columns,
                             dashboardBase : dashboardBase
                         }
 

@@ -4,7 +4,7 @@ var bus = require('../../../config/queues')
 module.exports = {
     sendNotification: function(user, options, callback) {
         var timer = new Date().getTime();
-        bus.query(settings.NOTIFICATIONS_QUEUE,{user: user, properties: options.properties, showLeases: options.showLeases, dontEmail: options.dontEmail},
+        bus.query(settings.NOTIFICATIONS_QUEUE,{user: user, properties: options.properties, showLeases: options.showLeases, dontEmail: options.dontEmail, notification_columns: options.notification_columns},
             function (data) {
                 console.log("Send Notifications for " + user._id + ": " + (new Date().getTime() - timer) + "ms");
                 callback(data);

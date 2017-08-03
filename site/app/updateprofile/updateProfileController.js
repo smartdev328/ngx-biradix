@@ -278,11 +278,28 @@ define([
             }
 
             $scope.sendReport = function() {
+
+                var c= 0;
+                var notification_columns = {};
+                $scope.columnsItems.forEach(function (f) {
+                    notification_columns[f.id] = f.selected;
+
+                    if (f.selected === true) {
+                        c++;
+                    }
+                })
+
+                if (c > 13) {
+                    toastr.error("<B>Unable to Update Notification Settings!</B><Br><Br>You have selected <b>" + c + "</b> columns for your competitor report. Having over <u>13</u> columns will not fit in the property status update.")
+
+                    return;
+                }
+
                 var properties= [];
                 if (!$scope.nots.all) {
                     properties = _.pluck(_.filter($scope.propertyItems, function(x) {return x.selected === true}),"id");
                 }
-                $propertyService.notifications_test(properties,$rootScope.me.settings.showLeases);
+                $propertyService.notifications_test(properties,$rootScope.me.settings.showLeases,notification_columns);
                 toastr.success('Your request for a notifications report has been submitted. Please allow up to 5 minutes to receive your report.');
             }
         }]);
