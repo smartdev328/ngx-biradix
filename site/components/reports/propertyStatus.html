@@ -125,8 +125,8 @@
                     </td>
                     <td ng-if="show.nervscompavg" style="text-align:right">
                         <span ng-if="$index == block.length - 1"></span>
-                        <span ng-if="$index != block.length - 1 && row.nervscompavg != null">{{row.nervscompavg | number : 2}}%</span>
-                        <span ng-if="$index != block.length - 1 && row.nervscompavg == null">-</span>
+                        <span ng-if="$index != block.length - 1 && row.nervscompavg != ''">{{row.nervscompavg | number : 2}}%</span>
+                        <span ng-if="$index != block.length - 1 && row.nervscompavg == ''">-</span>
                     </td>
                     <td ng-if="show.last_updated" style="text-align:right">
                         <span ng-class="{'danger':row.tier == 'danger'}">{{row.date}}</span>
