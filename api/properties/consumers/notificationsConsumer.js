@@ -103,6 +103,14 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                             if (typeof y.lastweeknersqftpercent == "undefined") {
                                 y.lastweeknersqftpercent = "";
                             }
+
+                            if (typeof y.lastyearnersqftpercent == "undefined") {
+                                y.lastyearnersqftpercent = "";
+                            }
+
+                            if (typeof y.nervscompavg == "undefined" || y.nervscompavg == null) {
+                                y.nervscompavg = "";
+                            }
                         })
                     })
 
@@ -129,6 +137,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                         }
 
                     }
+
 
                     if (data.dontEmail) {
                         reply({done: true, data: final});
