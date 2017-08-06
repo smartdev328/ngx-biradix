@@ -77,6 +77,30 @@ define([
 
                     $scope.propertyOptions = { panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Excluded Properties", labelSelected: "Included Properties", searchLabel: "Properties" }
 
+                    $scope.columnsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+                    $scope.columnsItems = [
+                        {id: "occupancy", name: "Occ. %", selected: $rootScope.me.settings.notification_columns.occupancy},
+                        {id: "leased", name: "Leased %", selected: $rootScope.me.settings.notification_columns.leased},
+                        {id: "weekly", name: "Traffic & Leases / Week", selected: $rootScope.me.settings.notification_columns.weekly},
+                        {id: "units", name: "Units", selected: $rootScope.me.settings.notification_columns.units},
+                        {id: "sqft", name: "Sqft", selected: $rootScope.me.settings.notification_columns.sqft},
+                        {id: "rent", name: "Rent", selected: $rootScope.me.settings.notification_columns.rent},
+                        {id: "concessions", name: "Total Concession", selected: $rootScope.me.settings.notification_columns.concessions},
+                        {id: "runrate", name: "Recurring Rent", selected: $rootScope.me.settings.notification_columns.runrate},
+                        {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $rootScope.me.settings.notification_columns.runratesqft},
+                        {id: "ner", name: "Net Eff. Rent", selected: $rootScope.me.settings.notification_columns.ner},
+                        {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $rootScope.me.settings.notification_columns.nersqft},
+                        {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $rootScope.me.settings.notification_columns.nersqftweek},
+                        {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $rootScope.me.settings.notification_columns.nersqftmonth},
+                        {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $rootScope.me.settings.notification_columns.nersqftyear},
+                        {id: "nervscompavg", name: "NER vs Comp Avg", selected: $rootScope.me.settings.notification_columns.nervscompavg},
+                        {id: "last_updated", name: "Last Updated", selected: $rootScope.me.settings.notification_columns.last_updated},
+                    ];
+
+                    if (!$rootScope.me.settings.showLeases) {
+                        _.remove($scope.columnsItems, function(x) {return x.id == 'leased'})
+                    }
+
                     $propertyService.search({
                         limit: 10000,
                         permission: 'PropertyManage',
@@ -178,6 +202,24 @@ define([
                     }
 
                     $rootScope.me.settings.notifications.cron = $cronService.getCron($scope.nots);
+
+                    var c= 0;
+                    $scope.columnsItems.forEach(function (f) {
+                        $rootScope.me.settings.notification_columns[f.id] = f.selected;
+
+                        if (f.selected === true) {
+                            c++;
+                        }
+                    })
+
+                    if (c > 13) {
+                        toastr.error("<B>Unable to Update Notification Settings!</B><Br><Br>You have selected <b>" + c + "</b> columns for your competitor report. Having over <u>13</u> columns will not fit in the property status update.")
+
+                        return;
+                    }
+
+
+
                 }
 
                 $('button.contact-submit').prop('disabled', true);
@@ -236,11 +278,28 @@ define([
             }
 
             $scope.sendReport = function() {
+
+                var c= 0;
+                var notification_columns = {};
+                $scope.columnsItems.forEach(function (f) {
+                    notification_columns[f.id] = f.selected;
+
+                    if (f.selected === true) {
+                        c++;
+                    }
+                })
+
+                if (c > 13) {
+                    toastr.error("<B>Unable to Update Notification Settings!</B><Br><Br>You have selected <b>" + c + "</b> columns for your competitor report. Having over <u>13</u> columns will not fit in the property status update.")
+
+                    return;
+                }
+
                 var properties= [];
                 if (!$scope.nots.all) {
                     properties = _.pluck(_.filter($scope.propertyItems, function(x) {return x.selected === true}),"id");
                 }
-                $propertyService.notifications_test(properties,$rootScope.me.settings.showLeases);
+                $propertyService.notifications_test(properties,$rootScope.me.settings.showLeases,notification_columns);
                 toastr.success('Your request for a notifications report has been submitted. Please allow up to 5 minutes to receive your report.');
             }
         }]);

@@ -545,7 +545,6 @@ module.exports = {
     updateSettings : function(Operator, user, settings, context, callback)  {
         var modelErrors = [];
 
-
         if (!user._id)
         {
             modelErrors.push({msg : 'Invalid user id.'});
@@ -595,6 +594,20 @@ module.exports = {
                 if (notsDescription) {
                     notsDescription += " Updated";
                 }
+
+                var found = false;
+                for (var c in usr.settings.notification_columns) {
+                    if (usr.settings.notification_columns[c] !== settings.notification_columns[c]) {
+                        found = true;
+                    }
+                }
+
+                if (found) {
+                    if (notsDescription) {
+                        notsDescription += ", ";
+                    }
+                    notsDescription += "Columns";
+                }
             }
 
             var reminderDescription = "";
@@ -634,12 +647,10 @@ module.exports = {
             }
 
             usr.settings = settings
-            // usr.markModified("settings.reminders");
-            // usr.markModified("settings.tz");
 
                 var query = {_id: usr._id};
                 var update = {settings: settings};
-                var options = {};
+                var options = {new:true};
 
             UserSchema.findOneAndUpdate(query, update, options, function (err, usr) {
                 if (err) {
@@ -725,6 +736,8 @@ module.exports = {
 
     },
     getUsersForSettingsApply : function(operator, orgid, setting, value, callback) {
+        var found;
+        var c;
         this.search(operator, {orgid: orgid, select: "first last settings"}, function (err, users) {
             users.forEach(function(u) {
                 defaultSettings(u,u.roles[0].org.settings);
@@ -777,6 +790,19 @@ module.exports = {
                             u.remove = true;
                         }  else {
                             u.settings.monthlyConcessions = value;
+                        }
+                        break;
+                    case 'notification_columns':
+                        found = false;
+                        for(c in value) {
+                            if (u.settings.notification_columns[c] !== value[c]) {
+                                found = true;
+                            }
+                        }
+                        if (found) {
+                            u.settings.notification_columns = value;
+                        } else {
+                            u.remove = true;
                         }
                         break;
                     default:
@@ -930,4 +956,24 @@ function defaultSettings(user, orgSettings) {
 
     user.settings.reminders = user.settings.reminders || {};
     user.settings.reminders.on = typeof user.settings.reminders.on == 'undefined' ? orgSettings.reminders.default_value : user.settings.reminders.on;
+
+    user.settings.notification_columns = user.settings.notification_columns || {
+        occupancy: true,
+        leased: user.settings.showLeases,
+        units: true,
+        sqft: true,
+        rent: true,
+        runrate: false,
+        runratesqft: false,
+        ner: true,
+        nersqft: true,
+        nersqftweek: true,
+        nersqftmonth: true,
+        nersqftyear: false,
+        last_updated: true,
+        weekly: false,
+        concessions: false,
+        nervscompavg: false
+    }
+
 }

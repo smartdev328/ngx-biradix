@@ -92,6 +92,24 @@
             </tr>
             <tr>
                 <td>
+                    &nbsp;&nbsp; - Columns
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.notification_columns.allow" click-fn="notification_columns.settings.all_properties.configured = true"></toggle-switch>
+                </td>
+                <td>
+                    <filter-list options="columnsOptions" items="columnsItems"></filter-list>
+                </td>
+                <td style="border-left:1px solid #ccc;padding-left:15px">
+                    <input type="checkbox" ng-model="organization.settings.notification_columns.configured">
+                </td>
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('notification_columns')"><i class="fa fa-exchange"></i> Apply</button>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
                     Property Reminders
                 </td>
                 <td>

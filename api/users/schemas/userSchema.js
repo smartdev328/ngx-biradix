@@ -35,7 +35,8 @@ var UserSchema = new Schema({
         showRenewal: Boolean,
         tz: String,
         monthlyConcessions: Boolean,
-        defaultRole: String
+        defaultRole: String,
+        notification_columns: {}
     },
     passwordUpdated: Boolean,
     bounceReason: String,

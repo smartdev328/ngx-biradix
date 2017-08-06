@@ -103,6 +103,14 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                             if (typeof y.lastweeknersqftpercent == "undefined") {
                                 y.lastweeknersqftpercent = "";
                             }
+
+                            if (typeof y.lastyearnersqftpercent == "undefined") {
+                                y.lastyearnersqftpercent = "";
+                            }
+
+                            if (typeof y.nervscompavg == "undefined" || y.nervscompavg == null) {
+                                y.nervscompavg = "";
+                            }
                         })
                     })
 
@@ -124,10 +132,12 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                             unsub: unsub,
                             when: when,
                             showLeases: data.showLeases,
+                            show: data.notification_columns,
                             dashboardBase : dashboardBase
                         }
 
                     }
+
 
                     if (data.dontEmail) {
                         reply({done: true, data: final});

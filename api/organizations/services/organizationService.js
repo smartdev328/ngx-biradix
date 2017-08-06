@@ -44,6 +44,8 @@ module.exports = {
             var d;
             var f;
             var data = []
+            var c;
+            var found;
             for (var s in org.settings) {
                 var o = org.settings[s];
                 var n = settings[s];
@@ -65,12 +67,29 @@ module.exports = {
                         f = true;
                     }
 
-                    if (o.default_value != n.default_value) {
-                        if (f) {
-                            d+= ", ";
+                    if (s == "notification_columns") {
+                        found = {};
+                        for (c in o.default_value) {
+                            if (o.default_value[c] !== n.default_value[c]) {
+                                found[c] = o.default_value[c].toString()+' => '+ n.default_value[c].toString();
+                            }
                         }
-                        d += ("Default: " + o.default_value + " => " + n.default_value);
-                        f = true;
+                        if (Object.keys(found).length > 0) {
+                            if (f) {
+                                d += ", ";
+                            }
+                            d += ("Default: " + JSON.stringify(found));
+                            f = true;
+                        }
+
+                    } else {
+                        if (JSON.stringify(o.default_value) != JSON.stringify(n.default_value)) {
+                            if (f) {
+                                d += ", ";
+                            }
+                            d += ("Default: " + JSON.stringify(o.default_value) + " => " + JSON.stringify(n.default_value));
+                            f = true;
+                        }
                     }
 
                     data.push({description: d})
@@ -214,4 +233,27 @@ function defaultSettings(org) {
             configured: false,
             default_value: false
         };
+
+    org.settings.notification_columns = org.settings.notification_columns || {
+        allow: true,
+        configured: false,
+        default_value: {
+            occupancy: true,
+            leased: false,
+            units: true,
+            sqft: true,
+            rent: true,
+            runrate: false,
+            runratesqft: false,
+            ner: true,
+            nersqft: true,
+            nersqftweek: true,
+            nersqftmonth: true,
+            nersqftyear: false,
+            last_updated: true,
+            weekly: false,
+            concessions: false,
+            nervscompavg : false
+        }
+    }
 }

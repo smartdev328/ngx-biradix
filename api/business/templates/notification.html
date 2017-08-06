@@ -9,39 +9,90 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         <th style="border-bottom:2px solid #ddd;text-align:left">
             Property
         </th>
+        {% if show.occupancy %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             Occ. %
         </th>
-        {% if showLeases %}
+        {% endif %}
+        {% if showLeases && show.leased %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             Leased %
         </th>
         {% endif %}
+        {% if show.weekly %}
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            Traffic/<Br>Week
+        </th>
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            Leases/<Br>Week
+        </th>
+        {% endif %}
+        {% if show.units %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             Units
         </th>
+        {% endif %}
+        {% if show.sqft %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             Sqft
         </th>
+        {% endif %}
+        {% if show.rent %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             Rent
         </th>
+        {% endif %}
+        {% if show.concessions %}
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            Total<br>Concess.
+        </th>
+        {% endif %}
+        {% if show.runrate %}
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            Recur.<Br>Rent
+        </th>
+        {% endif %}
+        {% if show.runratesqft %}
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            Recur. Rent<Br>/Sqft
+        </th>
+        {% endif %}
+        {% if show.ner %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             NER
         </th>
+        {% endif %}
+        {% if show.nersqft %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             NER/Sqft
         </th>
+        {% endif %}
+        {% if show.nersqftweek %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             NER/Sqft<Br>vs Last Week
         </th>
+        {% endif %}
+        {% if show.nersqftmonth %}
         <th style="border-bottom:2px solid #ddd;;text-align:right">
             NER/Sqft<Br>vs Last Month
         </th>
+        {% endif %}
+        {% if show.nersqftyear %}
+        <th style="border-bottom:2px solid #ddd;;text-align:right">
+            NER/Sqft<Br>vs Last Year
+        </th>
+        {% endif %}
+        {% if show.nervscompavg %}
+        <th style="border-bottom:2px solid #ddd;;text-align:right">
+            NER<Br>vs Comp Avg
+        </th>
+        {% endif %}
+        {% if show.last_updated %}
         <th style="border-bottom:2px solid #ddd;;text-align:right">
             Last<Br>
             Updated
         </th>
+        {% endif %}
     </tr>
     {% for block in data %}
     {% for row in block %}
@@ -60,10 +111,12 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {{row.name}}
             {% endif %}
         </Td>
+        {% if show.occupancy %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.occupancy | formatNumber : 1}}%
         </Td>
-        {% if showLeases %}
+        {% endif %}
+        {% if showLeases && show.leased %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {% if row.leased != "" %}
             {{row.leased | formatNumber : 1}}%
@@ -72,22 +125,56 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             {% endif %}
         </Td>
         {% endif %}
+        {% if show.weekly %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {{row.weeklytraffic | formatNumber : 0}}
+        </Td>
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {{row.weeklyleases | formatNumber : 0}}
+        </Td>
+        {% endif %}
+        {% if show.units %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.totUnits | formatNumber : 0}}
         </Td>
+        {% endif %}
+        {% if show.sqft %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {{row.sqft | formatNumber : 0}}
         </Td>
+        {% endif %}
+        {% if show.rent %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             ${{row.rent | formatNumber : 0}}
         </Td>
+        {% endif %}
+        {% if show.concessions %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            ${{row.concessions | formatNumber : 0}}
+        </Td>
+        {% endif %}
+        {% if show.runrate %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            ${{row.runrate | formatNumber : 0}}
+        </Td>
+        {% endif %}
+        {% if show.runratesqft %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            ${{row.runratesqft | formatNumber : 2}}
+        </Td>
+        {% endif %}
+        {% if show.ner %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             ${{row.ner | formatNumber : 0}}
         </Td>
+        {% endif %}
+        {% if show.nersqft %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             ${{row.nersqft | formatNumber : 2}}
         </Td>
-        <Td style="vertical-align:top !important;text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
+        {% endif %}
+        {% if show.nersqftweek %}
+        <Td style="vertical-align:middle !important;text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.lastweeknersqftpercent > 0%}
         color:green;
         {% elsif row.lastweeknersqftpercent < 0 %}
@@ -104,7 +191,9 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             &nbsp;&nbsp;
             {% endif%}
         </Td>
-        <Td style="vertical-align:top !important;text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
+        {% endif %}
+        {% if show.nersqftmonth %}
+        <Td style="vertical-align:middle !important;text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.lastmonthnersqftpercent > 0%}
         color:green;
         {% elsif row.lastmonthnersqftpercent < 0 %}
@@ -121,6 +210,47 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             &nbsp;&nbsp;
             {% endif%}
         </Td>
+        {% endif %}
+        {% if show.nersqftyear %}
+        <Td style="vertical-align:middle !important;text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
+        {% if row.lastyearnersqftpercent > 0%}
+        color:green;
+        {% elsif row.lastyearnersqftpercent < 0 %}
+        color:red;
+        {% endif%}
+        " nowrap>
+            {% if row.lastyearnersqftpercent > 0%}
+            {{row.lastyearnersqftpercent | formatNumber : 1 }}% <img src= "https://platform.biradix.com/images/up.png?v=1" height="14" align="top">
+            {% elsif row.lastyearnersqftpercent < 0 %}
+            {{row.lastyearnersqftpercent | formatNumber : 1 }}% <img src= "https://platform.biradix.com/images/down.png?v=1" height="14" align="top">
+            {% elsif row.lastyearnersqftpercent != "" %}
+            0% <img src= "https://platform.biradix.com/images/nochange.png?v=1" height="14" align="top">
+            {% else %}
+            &nbsp;&nbsp;
+            {% endif%}
+        </Td>
+        {% endif %}
+        {% if show.nervscompavg %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
+        {% if row.tier == 'danger'%}
+        color:red;
+        {% elsif row.tier == 'warning' %}
+        color:orange;
+        {% endif %}
+        ">
+            {% if forloop.last %}
+                &nbsp;
+            {% else %}
+                {%if row.nervscompavg != '' %}
+                    {{row.nervscompavg | formatNumber : 2}}%
+                {% else %}
+                    -
+                {% endif %}
+            {% endif %}
+
+        </Td>
+        {% endif %}
+        {% if show.last_updated %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
         {% if row.tier == 'danger'%}
         color:red;
@@ -130,6 +260,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         ">
             {{row.date}}
         </Td>
+        {% endif %}
     </tr>
     {% endfor %}
     <tr>

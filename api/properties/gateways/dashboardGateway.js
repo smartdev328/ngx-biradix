@@ -5,7 +5,7 @@ var _ = require("lodash")
 module.exports = {
     init: function(Routes) {
         Routes.post('/notifications_test', function (req, res) {
-            queueService.sendNotification(req.user, {properties: req.body.properties, showLeases: req.body.showLeases}, function() {})
+            queueService.sendNotification(req.user, req.body, function() {})
             res.status(200).json({success:true});
         })
 
