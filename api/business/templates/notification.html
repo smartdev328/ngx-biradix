@@ -231,13 +231,7 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         </Td>
         {% endif %}
         {% if show.nervscompavg %}
-        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}
-        {% if row.tier == 'danger'%}
-        color:red;
-        {% elsif row.tier == 'warning' %}
-        color:orange;
-        {% endif %}
-        ">
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {% if forloop.last %}
                 &nbsp;
             {% else %}
