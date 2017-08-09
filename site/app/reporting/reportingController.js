@@ -40,12 +40,11 @@ define([
 
         $scope.propertyItems = [];
 
+        $scope.localLoading = false;
+
+        $scope.meLoaded = false;
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-
-                // if ($rootScope.me.permissions.indexOf('Admin') == -1) {
-                //     _.remove($scope.reportItems, function(x) {return x.id == 'concession'})
-                // }
 
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
@@ -60,6 +59,8 @@ define([
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
 
                 $scope.loadSaved();
+
+                $scope.meLoaded = true;
 
                 me();
             }
