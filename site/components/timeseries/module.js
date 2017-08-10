@@ -2,9 +2,33 @@ angular.module('biradix.global').directive('timeSeries', function () {
     return {
         restrict: 'E',
         scope: {
-            options: '='
+            options: '=',
+            cbLegendClicked: '&',
+            legendUpdated: '='
         },
         controller: function ($scope, $element, $rootScope) {
+
+            $scope.$watch('legendUpdated', function(a,b){
+
+                if ($scope.legendUpdated) {
+                    var el2 = $($element).find('.hidden-print-block')
+
+                    el2.highcharts().series.forEach(function(s) {
+
+                        if (s.name == $scope.legendUpdated.name && s.visible != $scope.legendUpdated.visible) {
+
+                            if(s.visible) {
+                                s.hide();
+                            }
+                            else {
+                                s.show();
+                            }
+                        }
+                    })
+
+                }
+            }, true);
+
             $scope.$watch('options', function(a,b){
                 // console.log($scope.options);
                 if ($scope.options) {
@@ -19,7 +43,17 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             },
                             plotOptions: {
                                 series: {
-                                    animation: !phantom
+                                    animation: !phantom,
+                                    events: {
+                                        legendItemClick: function () {
+
+                                            if ($scope.cbLegendClicked) {
+                                                var name = this.name;
+                                                var visible =  !this.visible;
+                                                $scope.cbLegendClicked({legend : {name: name, visible: visible}});
+                                            }
+                                        }
+                                    }
                                 },
                                 spline: {
                                     marker: {

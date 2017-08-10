@@ -392,6 +392,9 @@ define([
 
         }
 
+        $scope.cbLegendClicked = function(legend) {
+            $scope.legendUpdated = legend;
+        }
 
     }]);
 });
