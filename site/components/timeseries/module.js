@@ -82,6 +82,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                     var s = "<span>" + moment(this.x).format("MMM DD, YYYY") + "</span><br/>";
 
                                     var series = this.points[0].series.chart.series;
+
                                     var x = this.x;
 
                                     var sortedPoints = series.sort(function(a, b){
@@ -104,11 +105,15 @@ angular.module('biradix.global').directive('timeSeries', function () {
 
                                     var y;
                                     sortedPoints.forEach(function(p) {
-                                        y = _.find(p.data,function(z) {return z.x == x});
+                                        if (p.visible) {
+                                            y = _.find(p.data, function (z) {
+                                                return z.x == x
+                                            });
 
-                                        if (y) {
-                                            y = y.y;
-                                            s += '<span style="color:' + p.color + ';">\u25CF</span> ' + p.name + ': <b>' + $scope.options.prefix + y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                            if (y) {
+                                                y = y.y;
+                                                s += '<span style="color:' + p.color + ';">\u25CF</span> ' + p.name + ': <b>' + $scope.options.prefix + y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                            }
                                         }
 
                                     })
