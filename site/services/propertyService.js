@@ -319,6 +319,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             })
 
 
+            var min, max;
+
             if (hasPoints) {
 
                 if (!summary && !selectedBedroom == -2 && ls.length == 0 && series.length > 1) {
@@ -331,13 +333,19 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     // })
                 }
 
-                var min = _.min(series, function (x) {
+                min = _.min(series, function (x) {
                     return x._min
                 })._min;
-                var max = _.max(series, function (x) {
+                max = _.max(series, function (x) {
                     return x._max
                 })._max;
 
+                if (defaultMin == 80 && defaultMax == 100) {
+
+                } else {
+                    min = null;
+                    max = null;
+                }
             }
             else
             {

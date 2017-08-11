@@ -72,8 +72,8 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 title: {
                                     text: $scope.options.title
                                 },
-                                // min: $scope.options.min,
-                                // max: $scope.options.max
+                                min: $scope.options.min,
+                                max: $scope.options.max
                             },
                             tooltip: {
                                 shared: true,
@@ -136,12 +136,14 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             },
                             series: $scope.options.data
                         };
-                        if (phantom) {
+
+                         if (phantom) {
                             el.highcharts(data);
                         }
                         else {
                             el2.highcharts(data);
                         }
+
                         $rootScope.$broadcast('timeseriesLoaded');
                     }, 0);
 
