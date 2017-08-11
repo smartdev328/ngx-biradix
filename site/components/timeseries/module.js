@@ -39,7 +39,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                         var data = {
                             chart: {
                                 type: 'spline',
-                                ignoreHiddenSeries : false
+                                ignoreHiddenSeries : true
                             },
                             plotOptions: {
                                 series: {
@@ -51,6 +51,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                                 var name = this.name;
                                                 var visible =  !this.visible;
                                                 $scope.cbLegendClicked({legend : {name: name, visible: visible}});
+
                                             }
                                         }
                                     }
@@ -71,8 +72,8 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 title: {
                                     text: $scope.options.title
                                 },
-                                min: $scope.options.min,
-                                max: $scope.options.max
+                                // min: $scope.options.min,
+                                // max: $scope.options.max
                             },
                             tooltip: {
                                 shared: true,
