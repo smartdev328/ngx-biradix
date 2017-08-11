@@ -340,12 +340,13 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     return x._max
                 })._max;
 
-                if (defaultMin == 80 && defaultMax == 100) {
-
-                } else {
+                //Do not set min and max if there any points, let it auto resize
+                // if (defaultMin == 80 && defaultMax == 100) {
+                //
+                // } else {
                     min = null;
                     max = null;
-                }
+                //}
             }
             else
             {
