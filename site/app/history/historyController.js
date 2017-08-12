@@ -3,7 +3,7 @@ define([
     'app',
 ], function (app) {
 
-    app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams) {
+    app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams','$propertyService', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams,$propertyService) {
         window.setTimeout(function() {window.document.title = "Activity History | BI:Radix";},1500)
 
         $rootScope.nav = "";
@@ -32,12 +32,27 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
+        $scope.autocomplete = function(search,callback) {
+            $propertyService.search({
+                limit: $scope.showInList,
+                permission: ['PropertyManage','CompManage'],
+                active: true,
+                search:search
+                , skipAmenities: true
+            }).then(function (response) {
+                callback(response.data.properties)
+            }, function (error) {
+                callback([]);
+            })
+
+        }
+
         $scope.reload = function () {
             $scope.localLoading = false;
 
             var types = _.pluck(_.filter($scope.typeItems,function(x) {return x.selected == true}),"id");
             var users = _.pluck(_.filter($scope.userItems,function(x) {return x.selected == true}),"id");
-            var properties = _.pluck(_.filter($scope.propertyItems,function(x) {return x.selected == true}),"id");
+            var properties = _.pluck($scope.propertyItems,"id");
 
             $auditService.search({
                 skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage
@@ -102,16 +117,34 @@ define([
                         $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || '') + x.name});
 
 
-                        var selected;
-                        response.data.properties.forEach(function (a) {
-                            selected = false;
-                            if ($stateParams.property && a._id.toString() == $stateParams.property) {
-                                selected = true;
-                            }
-                            $scope.propertyItems.push({id: a._id, name: a.name, selected: selected})
-                        })
+                        //$stateParams.property
 
-                        $scope.reload();
+                        if (!$stateParams.property) {
+
+                            $scope.reload();
+                        } else {
+
+                            $propertyService.search({
+                                limit: 1,
+                                permission: ['PropertyManage','CompManage'],
+                                active: true,
+                                _id: $stateParams.property
+                                , skipAmenities: true
+                            }).then(function (response) {
+
+                                if (response.data.properties || response.data.properties.length > 0) {
+                                    $scope.propertyItems.push({id: $stateParams.property, name: response.data.properties[0].name})
+                                }
+
+                                $scope.reload();
+
+                            }, function (error) {
+                                $scope.reload();
+                            })
+
+
+
+                        }
                     },
                     function (error) {
                         $scope.localLoading = true;
