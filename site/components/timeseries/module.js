@@ -13,9 +13,12 @@ angular.module('biradix.global').directive('timeSeries', function () {
                 if ($scope.legendUpdated) {
                     var el2 = $($element).find('.hidden-print-block')
 
-                    el2.highcharts().series.forEach(function(s) {
+                    var chart = el2.highcharts();
+                    chart.series.forEach(function(s) {
 
                         if (s.name == $scope.legendUpdated.name && s.visible != $scope.legendUpdated.visible) {
+
+                            $scope.calcExtremes(chart, s.name);
 
                             if(s.visible) {
                                 s.hide();
@@ -28,6 +31,31 @@ angular.module('biradix.global').directive('timeSeries', function () {
 
                 }
             }, true);
+
+            $scope.calcExtremes = function(chart, name) {
+                var min = 0;
+                var max = 0;
+                var temp;
+                var foundmin = false;
+                var foundmax = false;
+                chart.series.forEach(function(s) {
+                    if (s.visible && name != s.name || !s.visible && name == s.name) {
+                        temp = Math.floor(_.min(s.processedYData));
+                        if (temp < min || !foundmin) {
+                            min = temp;
+                            foundmin = true;
+                        }
+
+                        temp = Math.ceil(_.max(s.processedYData));
+                        if (temp > max || !foundmax) {
+                            max = temp;
+                            foundmax = true;
+                        }
+                    }
+                })
+
+                chart.yAxis[0].setExtremes(min, max);
+            }
 
             $scope.$watch('options', function(a,b){
                 // console.log($scope.options);
@@ -47,12 +75,17 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                     events: {
                                         legendItemClick: function () {
 
+                                            var name = this.name;
                                             if ($scope.cbLegendClicked) {
-                                                var name = this.name;
+
                                                 var visible =  !this.visible;
                                                 $scope.cbLegendClicked({legend : {name: name, visible: visible}});
 
                                             }
+
+                                            $scope.calcExtremes(this.chart, name);
+
+
                                         }
                                     }
                                 },
@@ -72,8 +105,8 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 title: {
                                     text: $scope.options.title
                                 },
-                                min: $scope.options.min,
-                                max: $scope.options.max
+                                // min: $scope.options.min,
+                                // max: $scope.options.max
                             },
                             tooltip: {
                                 shared: true,
@@ -137,12 +170,15 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             series: $scope.options.data
                         };
 
+                        var chart;
                          if (phantom) {
-                            el.highcharts(data);
+                            chart = el.highcharts(data);
                         }
                         else {
-                            el2.highcharts(data);
+                             chart = el2.highcharts(data);
                         }
+
+                        chart.highcharts().yAxis[0].setExtremes($scope.options.min, $scope.options.max);
 
                         $rootScope.$broadcast('timeseriesLoaded');
                     }, 0);

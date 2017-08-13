@@ -344,8 +344,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 // if (defaultMin == 80 && defaultMax == 100) {
                 //
                 // } else {
-                    min = null;
-                    max = null;
+                //     min = null;
+                //     max = null;
                 //}
             }
             else
