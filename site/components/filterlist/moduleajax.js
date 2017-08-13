@@ -8,7 +8,7 @@
             },
             controller: function ($scope, $filter, $element) {
                 $scope.version = version;
-                $scope.items = [];
+                $scope.filters = {search: ""}
 
                 $scope.output = function () {
 
@@ -44,14 +44,20 @@
                 }, true)
 
 
-                $scope.search("", function(items) {
-                    items.forEach(function(i) {
-                        $scope.items.push({id: i._id, name: i.name})
+                $scope.performSearch = function() {
+                    $scope.search($scope.filters.search, function (items) {
+                        $scope.items = [];
+                        items.forEach(function (i) {
+                            $scope.items.push({id: i._id, name: i.name})
+                        })
+
+                        $scope.hideSelected();
+
                     })
+                }
 
-                    $scope.hideSelected();
+                $scope.performSearch();
 
-                })
 
             },
             templateUrl: '/components/filterlist/filterlistajax.html?bust=' + version
