@@ -2,9 +2,61 @@ angular.module('biradix.global').directive('timeSeries', function () {
     return {
         restrict: 'E',
         scope: {
-            options: '='
+            options: '=',
+            cbLegendClicked: '&',
+            legendUpdated: '='
         },
         controller: function ($scope, $element, $rootScope) {
+
+            $scope.$watch('legendUpdated', function(a,b){
+
+                if ($scope.legendUpdated) {
+                    var el2 = $($element).find('.hidden-print-block')
+
+                    var chart = el2.highcharts();
+                    chart.series.forEach(function(s) {
+
+                        if (s.name == $scope.legendUpdated.name && s.visible != $scope.legendUpdated.visible) {
+
+                            $scope.calcExtremes(chart, s.name);
+
+                            if(s.visible) {
+                                s.hide();
+                            }
+                            else {
+                                s.show();
+                            }
+                        }
+                    })
+
+                }
+            }, true);
+
+            $scope.calcExtremes = function(chart, name) {
+                var min = 0;
+                var max = 0;
+                var temp;
+                var foundmin = false;
+                var foundmax = false;
+                chart.series.forEach(function(s) {
+                    if (s.visible && name != s.name || !s.visible && name == s.name) {
+                        temp = Math.floor(_.min(s.processedYData));
+                        if (temp < min || !foundmin) {
+                            min = temp;
+                            foundmin = true;
+                        }
+
+                        temp = Math.ceil(_.max(s.processedYData));
+                        if (temp > max || !foundmax) {
+                            max = temp;
+                            foundmax = true;
+                        }
+                    }
+                })
+
+                chart.yAxis[0].setExtremes(min, max);
+            }
+
             $scope.$watch('options', function(a,b){
                 // console.log($scope.options);
                 if ($scope.options) {
@@ -15,11 +67,27 @@ angular.module('biradix.global').directive('timeSeries', function () {
                         var data = {
                             chart: {
                                 type: 'spline',
-                                ignoreHiddenSeries : false
+                                ignoreHiddenSeries : true
                             },
                             plotOptions: {
                                 series: {
-                                    animation: !phantom
+                                    animation: !phantom,
+                                    events: {
+                                        legendItemClick: function () {
+
+                                            var name = this.name;
+                                            if ($scope.cbLegendClicked) {
+
+                                                var visible =  !this.visible;
+                                                $scope.cbLegendClicked({legend : {name: name, visible: visible}});
+
+                                            }
+
+                                            $scope.calcExtremes(this.chart, name);
+
+
+                                        }
+                                    }
                                 },
                                 spline: {
                                     marker: {
@@ -37,8 +105,8 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 title: {
                                     text: $scope.options.title
                                 },
-                                min: $scope.options.min,
-                                max: $scope.options.max
+                                // min: $scope.options.min,
+                                // max: $scope.options.max
                             },
                             tooltip: {
                                 shared: true,
@@ -47,6 +115,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                     var s = "<span>" + moment(this.x).format("MMM DD, YYYY") + "</span><br/>";
 
                                     var series = this.points[0].series.chart.series;
+
                                     var x = this.x;
 
                                     var sortedPoints = series.sort(function(a, b){
@@ -69,11 +138,15 @@ angular.module('biradix.global').directive('timeSeries', function () {
 
                                     var y;
                                     sortedPoints.forEach(function(p) {
-                                        y = _.find(p.data,function(z) {return z.x == x});
+                                        if (p.visible) {
+                                            y = _.find(p.data, function (z) {
+                                                return z.x == x
+                                            });
 
-                                        if (y) {
-                                            y = y.y;
-                                            s += '<span style="color:' + p.color + ';">\u25CF</span> ' + p.name + ': <b>' + $scope.options.prefix + y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                            if (y) {
+                                                y = y.y;
+                                                s += '<span style="color:' + p.color + ';">\u25CF</span> ' + p.name + ': <b>' + $scope.options.prefix + y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
+                                            }
                                         }
 
                                     })
@@ -96,12 +169,17 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             },
                             series: $scope.options.data
                         };
-                        if (phantom) {
-                            el.highcharts(data);
+
+                        var chart;
+                         if (phantom) {
+                            chart = el.highcharts(data);
                         }
                         else {
-                            el2.highcharts(data);
+                             chart = el2.highcharts(data);
                         }
+
+                        chart.highcharts().yAxis[0].setExtremes($scope.options.min, $scope.options.max);
+
                         $rootScope.$broadcast('timeseriesLoaded');
                     }, 0);
 

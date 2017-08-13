@@ -261,7 +261,16 @@ define([
                     if($stateParams.s == "1" && !$scope.surveyPopped) {
                         $rootScope.marketSurvey(defaultPropertyId,null, {trackReminders : true});
                         $scope.surveyPopped =  true;
-                        $auditService.create({type: 'tracking_reminder_clicked', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name});
+                        if ($scope.property) {
+                            $auditService.create({type: 'tracking_reminder_clicked',
+                                property: {
+                                    id: $scope.property._id,
+                                    name: $scope.property.name,
+                                    orgid: $scope.property.orgid
+                                },
+                                description: $scope.property.name
+                            });
+                        }
                     }
 
                 }, function(error) {
@@ -383,6 +392,9 @@ define([
 
         }
 
+        $scope.cbLegendClicked = function(legend) {
+            $scope.legendUpdated = legend;
+        }
 
     }]);
 });
