@@ -32,7 +32,7 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
-        $scope.autocomplete = function(search,callback) {
+        $scope.autocompleteproperties = function(search,callback) {
             $propertyService.search({
                 limit: $scope.showInList,
                 permission: ['PropertyManage','CompManage'],
