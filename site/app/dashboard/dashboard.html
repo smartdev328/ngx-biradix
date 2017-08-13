@@ -190,16 +190,16 @@
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <time-series options="nerData"></time-series>
+                    <time-series options="nerData" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></time-series>
                     <hr>
                     <Br>
-                    <time-series options="occData" ng-if="!me.settings.showLeases"></time-series>
-                    <div class="row" style="margin-left:-25px" ng-if="me.settings.showLeases">
+                    <time-series options="occData" ng-if="!me.settings.showLeases" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></time-series>
+                    <div class="row" style="margin-left:-25px" ng-if="me.settings.showLeases" cb-legend-clicked="cbLegendClicked(legend)">
                         <div class="col-xs-6">
-                            <time-series options="occData"></time-series>
+                            <time-series options="occData" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></time-series>
                         </div>
                         <div class="col-xs-6">
-                            <time-series options="leasedData"></time-series>
+                            <time-series options="leasedData" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></time-series>
                         </div>
                     </div>
                 </div>
