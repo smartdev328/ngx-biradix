@@ -8,7 +8,7 @@
             },
             controller: function ($scope, $filter, $element) {
                 $scope.version = version;
-                $scope.filters = {search: ""}
+                $scope.filters = {search: "", checkAll : true}
 
                 $scope.output = function () {
 
@@ -43,6 +43,13 @@
                     $scope.hideSelected();
                 }, true)
 
+                $scope.$watch("items", function() {
+                    if ($scope.items && $scope.items.length > 0) {
+                        $scope.filters.checkAll = false;
+                    } else {
+                        $scope.filters.checkAll = true;
+                    }
+                }, true)
 
                 $scope.performSearch = function() {
                     $scope.search($scope.filters.search, function (items) {
@@ -55,6 +62,13 @@
 
                     })
                 }
+
+                $scope.small = $(window).width() <= 550
+
+                $scope.$on('size', function (e, size) {
+                    $scope.small = size <= 550;
+
+                });
 
                 $scope.performSearch();
 
@@ -127,6 +141,8 @@
                     })
                     $scope.moveChecked(!state);
                 }
+
+
 
             },
             templateUrl: '/components/filterlist/filterlistajax.html?bust=' + version
