@@ -35,6 +35,8 @@
 
                     _.remove($scope.items, function(x) {return _.find($scope.model, function(y) {return y.id == x.id})})
 
+                    $scope.items = _.sortBy($scope.items, function(x) {return x.name});
+                    $scope.model = _.sortBy($scope.model, function(x) {return x.name});
                     $scope.updateAvailableGroups();
                 }
 
