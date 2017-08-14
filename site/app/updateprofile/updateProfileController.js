@@ -55,6 +55,10 @@ define([
 
                     $scope.settings.tz = _.find($scope.timezones, function(x) {return x.id == $rootScope.me.settings.tz});
 
+                    if (!$scope.settings.tz) {
+                        $scope.settings.tz = $scope.timezones[0];
+                    }
+
 
 
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
