@@ -19,7 +19,7 @@
                     <label><input type="checkbox" checked ng-click="item.checked = true; moveChecked(true)"> {{::item.name}}</label>
                 </div>
             </div>
-            <hr style="margin: 0px 20px 5px 20px">
+            <hr style="margin: 0px 15px 5px 15px;background-color:#444">
             <div ng-repeat="(key, value) in groupsAvailable">
                 <b ng-if="key != 'undefined'">{{::key}}</b>
                 <div ng-repeat="item in value" class="checkbox-row">
