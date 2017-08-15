@@ -7,7 +7,6 @@ var UserSchema= require('../schemas/userSchema')
 var UtilityService = require('./utilityService')
 var EmailService = require('../../business/services/emailService')
 var settings = require('../../../config/settings')
-var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
 var AuditService = require('../../audit/services/auditService')
 var localCacheService = require('../../utilities/services/localcacheService')
@@ -16,8 +15,42 @@ var md5 = require('md5');
 var mongoose = require('mongoose')
 var redisService = require('../../utilities/services/redisService')
 var userBounceService = require('./userBounceService')
+var escapeStringRegexp = require('escape-string-regexp');
+
 
 module.exports = {
+
+    rebuildSearch: function(id) {
+        var _this = this;
+
+        getSysemUser(systemUser => {
+            let System = systemUser.user;
+            _this.search(System, {ids: id ? [id] : null}, (err,users) => {
+
+                async.eachLimit(users,10,(user,callbackp)=> {
+                    let search = user.name + ',' + user.email;
+
+                    user.roles.forEach(x=> {
+                        search += ',' + x.name
+                        search += ',' + x.org.name
+                    })
+
+                    var query = {_id: user._id};
+                    var update = {"search" :  search};
+                    var options = {new: true};
+
+                    UserSchema.findOneAndUpdate(query, update, options, function (err, saved) {
+                        callbackp();
+                    });
+
+
+                }, err => {
+
+                })
+            })
+
+        });
+    },
 
     defaultSettings: function(user, orgSettings) {
         return defaultSettings(user,orgSettings);
@@ -87,6 +120,7 @@ module.exports = {
 
     },
     search: function(Operator,criteria, callback) {
+
         var tStart = (new Date()).getTime();
         var t, tS;
         //if you pass in fields to select you are overwritting the default
@@ -150,6 +184,11 @@ module.exports = {
 
             if (criteria.active) {
                 query = query.where('active').eq(criteria.active);
+            }
+
+            if (criteria.search && criteria.search != '') {
+                var s = new RegExp(escapeStringRegexp(criteria.search), "i")
+                query = query.or([{'search': s}]);
             }
 
             if (criteria.custom) {
