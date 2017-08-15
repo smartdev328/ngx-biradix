@@ -88,7 +88,7 @@ define([
             $scope.localLoading = false;
 
             var types = _.pluck(_.filter($scope.typeItems,function(x) {return x.selected == true}),"id");
-            var users = _.pluck(_.filter($scope.userItems,function(x) {return x.selected == true}),"id");
+            var users = _.pluck($scope.userItems,"id");
             var properties = _.pluck($scope.propertyItems,"id");
 
             $auditService.search({
