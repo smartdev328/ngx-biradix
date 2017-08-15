@@ -29,14 +29,17 @@
 
                 $scope.updateAvailableGroups = function() {
                     $scope.groupsAvailable = _.groupBy($scope.items, function(i) {return i['group']})
+
+                    //console.log($scope.items, $scope.groupsAvailable);
                 }
 
                 $scope.hideSelected = function() {
 
                     _.remove($scope.items, function(x) {return _.find($scope.model, function(y) {return y.id == x.id})})
 
-                    $scope.items = _.sortBy($scope.items, function(x) {return x.name});
-                    $scope.model = _.sortBy($scope.model, function(x) {return x.name});
+
+                    $scope.items = _.sortBy($scope.items, function(x) {return (x.group || '') + x.name});
+                    $scope.model = _.sortBy($scope.model, function(x) {return (x.group || '') + x.name});
                     $scope.updateAvailableGroups();
                 }
 
@@ -57,7 +60,7 @@
                     $scope.search($scope.filters.search, function (items) {
                         $scope.items = [];
                         items.forEach(function (i) {
-                            $scope.items.push({id: i._id, name: i.name})
+                            $scope.items.push({id: i._id || i.id, name: i.name, group: i.group})
                         })
 
                         $scope.hideSelected();

@@ -18,10 +18,6 @@ var _ = require('lodash')
 Routes.get('/filters', function (req, res) {
     var debug = {};
     async.parallel({
-        users: function(callbackp) {
-                UserService.search(req.user, {}, callbackp)
-        },
-
         audits: function(callbackp) {
             var audits = AuditService.audits;
 
@@ -37,7 +33,7 @@ Routes.get('/filters', function (req, res) {
         }
 
     }, function(err, all) {
-        res.status(200).json({audits: all.audits, users: all.users});
+        res.status(200).json({audits: all.audits});
         all = null;
     })
 

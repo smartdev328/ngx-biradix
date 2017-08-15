@@ -3,7 +3,9 @@ define([
     'app',
 ], function (app) {
 
-    app.controller('historyController', ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams','$propertyService', function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams,$propertyService) {
+    app.controller('historyController'
+        , ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams','$propertyService','$userService',
+            function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams,$propertyService,$userService) {
         window.setTimeout(function() {window.document.title = "Activity History | BI:Radix";},1500)
 
         $rootScope.nav = "";
@@ -32,9 +34,44 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
+        $scope.autocompleteusers = function(search,callback) {
+            $userService.search({
+                limit: 100,
+                active: true,
+                search:search
+            }).then(function (response) {
+                var u,u2;
+                var items = [];
+
+
+                response.data.users.forEach(function (a) {
+                    u = {id: a._id, name: a.name};
+                    if ($rootScope.me.permissions.indexOf('Admin') > -1) {
+                        a.roles.forEach(function (r) {
+                            u2 = _.cloneDeep(u);
+                            if (r.name == "Guest") {
+                                u2.group = "Guests";
+                            } else {
+                                u2.group = r.org.name;
+                            }
+                            items.push(u2);
+                        })
+
+                    } else {
+                        items.push(u)
+                    }
+                })
+
+                callback(items)
+            }, function (error) {
+                callback([]);
+            })
+
+        }
+
         $scope.autocompleteproperties = function(search,callback) {
             $propertyService.search({
-                limit: $scope.showInList,
+                limit: 100,
                 permission: ['PropertyManage','CompManage'],
                 active: true,
                 search:search
@@ -94,26 +131,7 @@ define([
                             $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group})
                         })
 
-                        var u,u2;
-                        response.data.users.forEach(function (a) {
-                            u = {id: a._id, name: a.name, selected: false};
-                            if ($rootScope.me.permissions.indexOf('Admin') > -1) {
-                                a.roles.forEach(function (r) {
-                                    u2 = _.cloneDeep(u);
-                                    if (r.name == "Guest") {
-                                        u2.group = "Guests";
-                                    } else {
-                                        u2.group = r.org.name;
-                                    }
-                                    $scope.userItems.push(u2);
-                                })
 
-                            } else {
-                                $scope.userItems.push(u)
-                            }
-                        })
-
-                        $scope.userItems = _.sortBy($scope.userItems, function(x) {return (x.group || '') + x.name});
                         $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || '') + x.name});
 
 

@@ -40,7 +40,8 @@ var UserSchema = new Schema({
     },
     passwordUpdated: Boolean,
     bounceReason: String,
-    guestStats: Array
+    guestStats: Array,
+    search: String
 });
 
 module.exports = mongoose.model('User', UserSchema);

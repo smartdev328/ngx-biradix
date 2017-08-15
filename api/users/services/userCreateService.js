@@ -6,9 +6,9 @@ var UserSchema= require('../schemas/userSchema')
 var UtilityService = require('./utilityService')
 var userBounceService = require('./userBounceService')
 var EmailService = require('../../business/services/emailService')
-var OrgService = require('../../organizations/services/organizationService')
 var AccessService = require('../../access/services/accessService')
 var AuditService = require('../../audit/services/auditService')
+var UserService = require('./userService')
 
 module.exports = {
     updateMe : function(operator, context, user, callback)  {
@@ -69,6 +69,8 @@ module.exports = {
                 }
 
                 callback(null,usr);
+
+                UserService.rebuildSearch(operator._id);
             });
 
         })
@@ -201,6 +203,8 @@ module.exports = {
                     } else {
                         callback(null, usr);
                     }
+
+                    UserService.rebuildSearch(usr._id);
                 });
             })
 
@@ -336,6 +340,8 @@ module.exports = {
 
                     //Done
                     callback(null,usr);
+
+                    UserService.rebuildSearch(usr._id);
                 })
             });
         });
