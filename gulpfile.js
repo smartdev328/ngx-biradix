@@ -46,6 +46,7 @@ gulp.task('globaljs', function() {
         , './site/components/timeseries/module.js'
         , './site/components/toggle/module.js'
         , './site/components/filterlist/module.js'
+        , './site/components/filterlist/moduleajax.js'
         , './site/components/googleMap/module.js'
         , './site/components/daterangepicker/module.js'
         , './site/components/ngEnter/module.js'
