@@ -596,6 +596,10 @@ var getUserAssignedProperties = function(operator, userid, callback) {
         },
         //all proeprties the operator can manage
         operatorAllowed : function(callbackp) {
+            if (operator.memberships && operator.memberships.isadmin) {
+                return callbackp(null,[]);
+            }
+
             var tS = (new Date()).getTime();
             AccessService.getPermissions(operator,['PropertyManage','CompManage'],function(resourceids) {
 
