@@ -130,7 +130,7 @@
                                 <i class="fa fa-long-arrow-right" style="font-size: 10px;"></i>&nbsp;Only include these properties:&nbsp;
                             </div>
                             <div ng-if="!nots.all" style="padding-top:5px;float:left;width:200px">
-                                <filter-list options="propertyOptions" items="propertyItems"></filter-list>
+                                <filter-list-ajax options="propertyOptions" model="propertyItems.items" search="autocompleteproperties"></filter-list-ajax>
                             </div>
                             <Br clear="all">
                         </td>

@@ -105,36 +105,52 @@ define([
                         _.remove($scope.columnsItems, function(x) {return x.id == 'leased'})
                     }
 
-                    $propertyService.search({
-                        limit: 10000,
-                        permission: 'PropertyManage',
-                        active: true
-                        , skipAmenities: true
-                    }).then(function (response) {
-                        //$scope.myProperties = response.data.properties;
+                    $scope.propertyItems = {items: []};
+
+                    if ($rootScope.me.settings.notifications.props.length == 0) {
                         $scope.notificationsLoaded = true;
+                    }
+                    else {
+                        $propertyService.search({
+                            permission: ['PropertyManage'],
+                            active: true,
+                            ids: $rootScope.me.settings.notifications.props
+                            , skipAmenities: true
+                        }).then(function (response) {
 
-                        $scope.propertyItems = [];
+                            if (response.data.properties || response.data.properties.length > 0) {
+                                response.data.properties.forEach(function(p) {
+                                    $scope.propertyItems.items.push({id: p._id, name: p.name})
+                                })
 
-                        response.data.properties.forEach(function(a) {
-                            var selected = true;
-                            if (!$scope.nots.all) {
-                                selected = $rootScope.me.settings.notifications.props.indexOf(a._id.toString()) > -1;
                             }
-                            $scope.propertyItems.push({id: a._id, name: a.name, selected: selected})
+
+
+                            $scope.notificationsLoaded = true;
+
+                        }, function (error) {
+                            $scope.notificationsLoaded = true;
                         })
+                    }
 
-                    }, function (error) {
-                        if (error.status == 401) {
-                            $rootScope.logoff();
-                            return;
-                        }
-
-                        toastr.error('Unable to retrieve your properties. Please contact an administrator');
-                    })
                     unbind();
                 }
             })
+
+            $scope.autocompleteproperties = function(search,callback) {
+                $propertyService.search({
+                    limit: 100,
+                    permission: ['PropertyManage'],
+                    active: true,
+                    search:search
+                    , skipAmenities: true
+                }).then(function (response) {
+                    callback(response.data.properties)
+                }, function (error) {
+                    callback([]);
+                })
+
+            }
 
             $scope.submit = function (user) {
                 $('button.contact-submit').prop('disabled', true);
@@ -202,7 +218,7 @@ define([
                     if ($scope.nots.all === true) {
                         $rootScope.me.settings.notifications.props = [];
                     } else {
-                        $rootScope.me.settings.notifications.props = _.pluck(_.filter($scope.propertyItems, function(x) {return x.selected === true}),"id")
+                        $rootScope.me.settings.notifications.props = _.pluck($scope.propertyItems.items,"id")
                     }
 
                     $rootScope.me.settings.notifications.cron = $cronService.getCron($scope.nots);
@@ -301,7 +317,7 @@ define([
 
                 var properties= [];
                 if (!$scope.nots.all) {
-                    properties = _.pluck(_.filter($scope.propertyItems, function(x) {return x.selected === true}),"id");
+                    properties = _.pluck($scope.propertyItems.items,"id");
                 }
                 $propertyService.notifications_test(properties,$rootScope.me.settings.showLeases,notification_columns);
                 toastr.success('Your request for a notifications report has been submitted. Please allow up to 5 minutes to receive your report.');
