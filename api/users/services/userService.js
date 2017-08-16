@@ -204,6 +204,9 @@ module.exports = {
 
             query = query.sort("-date");
 
+            if (criteria.limit) {
+                query = query.limit(criteria.limit);
+            }
 
             query.exec(function(err, users) {
 
