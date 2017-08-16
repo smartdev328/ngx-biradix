@@ -56,6 +56,20 @@
                     }
                 }, true)
 
+                $scope.autocompletedelay = 300;
+
+                $scope.searchChanged = function() {
+                    $scope.last = (new Date()).getTime();
+                    window.setTimeout($scope.checkSearch, $scope.autocompletedelay);
+                }
+
+                $scope.checkSearch = function() {
+                    var ms = (new Date()).getTime() - $scope.last;
+                    if (ms >= $scope.autocompletedelay) {
+                        $scope.performSearch();
+                    }
+                }
+
                 $scope.performSearch = function() {
                     $scope.search($scope.filters.search, function (items) {
                         $scope.items = [];

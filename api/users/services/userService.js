@@ -31,7 +31,6 @@ module.exports = {
                     let search = user.name + ',' + user.email;
 
                     user.roles.forEach(x=> {
-                        search += ',' + x.name
                         search += ',' + x.org.name
                     })
 
