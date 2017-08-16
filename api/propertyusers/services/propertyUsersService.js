@@ -578,8 +578,8 @@ var getUserAssignedProperties = function(operator, userid, callback) {
     async.parallel({
         //user assigned direct proprties
         userAssigned  : function(callbackp) {
+            var tS = (new Date()).getTime();
             AccessService.searchPermissions({types:['PropertyManage'], executorid : userid},function(err, obj) {
-
                 var propertyids;
 
                 if (obj && !err) {
@@ -589,13 +589,20 @@ var getUserAssignedProperties = function(operator, userid, callback) {
                 }
                 callbackp(err, _.uniq(propertyids))
 
+                var t = (new Date()).getTime();
+                console.log('Get userAssigned in getUserAssignedProperties ('+userid+'): ',(t-tS) / 100, "s");
+
             })
         },
         //all proeprties the operator can manage
         operatorAllowed : function(callbackp) {
+            var tS = (new Date()).getTime();
             AccessService.getPermissions(operator,['PropertyManage','CompManage'],function(resourceids) {
 
                 callbackp(null,_.uniq(resourceids))
+
+                var t = (new Date()).getTime();
+                console.log('Get operatorAllowed in getUserAssignedProperties ('+operator._id+'): ',(t-tS) / 100, "s");
 
             })
         }

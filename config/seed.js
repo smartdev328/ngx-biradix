@@ -19,7 +19,7 @@ module.exports = {
         UserSchema.findOne({},function(err, usr) {
             if (usr) {
                 console.log('No seed');
-                //UserService.rebuildSearch(null);
+                UserService.rebuildSearch(null);
                 // OrgService.hydrateOrgRoles();
             } else {
                 async.waterfall([
