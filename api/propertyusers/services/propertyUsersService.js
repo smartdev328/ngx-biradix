@@ -590,7 +590,7 @@ var getUserAssignedProperties = function(operator, userid, callback) {
                 callbackp(err, _.uniq(propertyids))
 
                 var t = (new Date()).getTime();
-                console.log('Get userAssigned in getUserAssignedProperties ('+userid+'): ',(t-tS) / 100, "s");
+                console.log('Get userAssigned in getUserAssignedProperties ('+userid+'): ',(t-tS) / 1000, "s");
 
             })
         },
@@ -606,7 +606,7 @@ var getUserAssignedProperties = function(operator, userid, callback) {
                 callbackp(null,_.uniq(resourceids))
 
                 var t = (new Date()).getTime();
-                console.log('Get operatorAllowed in getUserAssignedProperties ('+operator._id+'): ',(t-tS) / 100, "s");
+                console.log('Get operatorAllowed in getUserAssignedProperties ('+operator._id+'): ',(t-tS) / 1000, "s");
 
             })
         }
