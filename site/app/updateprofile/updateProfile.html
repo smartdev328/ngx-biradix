@@ -92,10 +92,10 @@
 
                 <div ng-show="notificationsLoaded">
                 <hr>
-                    <B>Send me regular property status updates:</B> <toggle-switch checked="me.settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                    <button class=" btn btn-warning btn-xs" style="font-style: italic;margin-left:20px;font-size:10px" type="button" ng-if="me.settings.notifications.on === true" ng-click="sendReport()">Send Now</button><Br>
+                    <B>Send me regular property status updates:</B> <toggle-switch checked="settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                    <button class=" btn btn-warning btn-xs" style="font-style: italic;margin-left:20px;font-size:10px" type="button" ng-if="settings.notifications.on === true" ng-click="sendReport()">Send Now</button><Br>
                 <br>
-                <Table ng-if="me.settings.notifications.on === true" style="margin-left:20px;margin-bottom:15px">
+                <Table ng-if="settings.notifications.on === true" style="margin-left:20px;margin-bottom:15px">
                     <Tr>
                         <Td colspan="2">
                             How Often:&nbsp;
@@ -146,7 +146,7 @@
                 </Table>
                     <div>
                     <hr>
-                    <B>Send me property update reminders:</B> <toggle-switch checked="me.settings.reminders.on" disabled="!me.orgs[0].settings.reminders.allow" popover="me.orgs[0].settings.reminders.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                    <B>Send me property update reminders:</B> <toggle-switch checked="settings.reminders.on" disabled="!me.orgs[0].settings.reminders.allow" popover="me.orgs[0].settings.reminders.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
                     <i class="fa fa-info-circle"
                        style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
                        popover-trigger="'mouseenter'"
@@ -172,7 +172,7 @@
             <div class="panel-body">
                 <div>
                     <hr>
-                    <B>Show "Leased %" information:</B> <toggle-switch checked="me.settings.showLeases" disabled="!me.orgs[0].settings.leased.allow" popover="me.orgs[0].settings.leased.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                    <B>Show "Leased %" information:</B> <toggle-switch checked="settings.showLeases" disabled="!me.orgs[0].settings.leased.allow" popover="me.orgs[0].settings.leased.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
 
                     <i class="fa fa-info-circle"
                        style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
@@ -186,7 +186,7 @@
 
                     <Br>
                     <Br>
-                    <B>Show "Renewal %" information:</B> <toggle-switch checked="me.settings.showRenewal" disabled="!me.orgs[0].settings.renewal.allow" popover="me.orgs[0].settings.renewal.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                    <B>Show "Renewal %" information:</B> <toggle-switch checked="settings.showRenewal" disabled="!me.orgs[0].settings.renewal.allow" popover="me.orgs[0].settings.renewal.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
 
                     <i class="fa fa-info-circle"
                        style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"

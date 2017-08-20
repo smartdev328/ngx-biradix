@@ -21,7 +21,9 @@ define([
             ];
 
 
-            $scope.settings = {tz: $scope.timezones[0]}
+            $scope.settings = {
+                tz: $scope.timezones[0]
+            }
 
 
             var unbind = $rootScope.$watch("me", function(x) {
@@ -59,7 +61,10 @@ define([
                         $scope.settings.tz = $scope.timezones[0];
                     }
 
-
+                    $scope.settings.showLeases = $rootScope.me.settings.showLeases;
+                    $scope.settings.showRenewal = $rootScope.me.settings.showRenewal;
+                    $scope.settings.notifications = {on: $rootScope.me.settings.notifications.on}
+                    $scope.settings.reminders = {on: $rootScope.me.settings.reminders.on}
 
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
 
@@ -223,6 +228,9 @@ define([
 
                     $rootScope.me.settings.notifications.cron = $cronService.getCron($scope.nots);
 
+                    $rootScope.me.settings.notifications.on = $scope.settings.notifications.on;
+                    $rootScope.me.settings.reminders.on = $scope.settings.reminders.on;
+
                     var c= 0;
                     $scope.columnsItems.forEach(function (f) {
                         $rootScope.me.settings.notification_columns[f.id] = f.selected;
@@ -270,7 +278,9 @@ define([
             $scope.saveSettings = function() {
 
                 $rootScope.me.settings.tz = $scope.settings.tz.id;
-                //console.log($rootScope.me.settings.notifications);
+                $rootScope.me.settings.showLeases = $scope.settings.showLeases;
+                $rootScope.me.settings.showRenewal = $scope.settings.showRenewal;
+
 
                 $('button.contact-submit').prop('disabled', true);
                 ngProgress.start();
@@ -319,7 +329,7 @@ define([
                 if (!$scope.nots.all) {
                     properties = _.pluck($scope.propertyItems.items,"id");
                 }
-                $propertyService.notifications_test(properties,$rootScope.me.settings.showLeases,notification_columns);
+                $propertyService.notifications_test(properties,$scope.settings.showLeases,notification_columns);
                 toastr.success('Your request for a notifications report has been submitted. Please allow up to 5 minutes to receive your report.');
             }
         }]);

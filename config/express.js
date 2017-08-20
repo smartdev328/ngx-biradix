@@ -43,8 +43,6 @@ module.exports = {
                         } else if (req.query && req.query.token) {
                             token =  req.query.token;
                         }
-
-
                         return token;
                     }
                 }
@@ -76,6 +74,12 @@ module.exports = {
             //Middleware to insure session token is not hi-jacked by looking at user agent
             app.use(function (req, res, next) {
                 if (req.user) {
+
+                    //Backwards compatibility;
+                    if (!req.user.id && typeof req.user == "string" && req.user.length == 32) {
+                        req.user = {data: req.user};
+                    }
+
                     redisService.getByKey(req.user.data, function(err, result) {
 
                         req.user = result;
