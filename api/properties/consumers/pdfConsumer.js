@@ -110,16 +110,19 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
 
 });
 bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
-    console.log(data.id + " reporting pdf started");
+    console.log(data.propertyIds, " reporting pdf started");
 
     try {
-        PropertyService.search(data.user, {_id: data.id, skipAmenities: true}, function (err, properties) {
+        PropertyService.search(data.user, {_id: data.id, skipAmenities: true, limit : 1}, function (err, properties) {
             UserService.getFullUser(data.user, function (full) {
-                var p = properties[0];
-                var fileName = p.name.replace(/ /g, "_");
+
+                var fileName = "";
 
                 if (data.type == "multiple") {
                     fileName = "Portfolio"
+                } else {
+                    var p = properties[0];
+                    fileName = p.name.replace(/ /g, "_");
                 }
 
                 fileName += "_Report_" + moment().utc().add(data.timezone, "minute").format("MM_DD_YYYY");
@@ -160,7 +163,6 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "compIds", data.compIds),
                     pdfService.getCookie(data.hostname, "reportIds", data.reportIds),
-                    pdfService.getCookie(data.hostname, "subjectId", data.id),
                     pdfService.getCookie(data.hostname, "type", data.type),
                     pdfService.getCookie(data.hostname, "propertyIds", data.propertyIds),
                     pdfService.getCookie(data.hostname, "settings", encodeURIComponent(JSON.stringify(data.settings))),
@@ -182,7 +184,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
 
                     var JSONB = require('json-buffer')
 
-                    console.log(data.id + " pdf reporting ended");
+                    console.log(data.propertyIds, " pdf reporting ended");
                     reply({stream: JSONB.stringify(newBuffer), filename: fileName});
                     full = null;
                     cookies = null;

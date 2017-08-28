@@ -111,7 +111,7 @@
         <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
             <img src="/images/squares.gif" style="width:100px">
         </div>
-        <div class="row" ng-if="localLoading && myProperties.length > 0">
+        <div class="row" ng-if="localLoading">
             <div class="panel panel-info hidden-print">
                 <div class="panel-heading">Criteria</div>
                 <div class="panel-body">
@@ -125,7 +125,7 @@
 
                         <div class="col-sm-4" ng-if="reportType=='single' || reportType=='multiple'">
                             <Span ng-if="reportType=='single'">Property</Span><Span ng-if="reportType=='multiple'">Properties</Span>:<Br>
-                            <div ng-show="myProperties.length == 1"><h4 style="margin:4px 0px 0px 0px;color: #4460a9;">{{selected.Property.name}}</h4></div>
+                            <!--<div ng-show="myProperties.length == 1"><h4 style="margin:4px 0px 0px 0px;color: #4460a9;">{{selected.Property.name}}</h4></div>-->
                             <div class="visible-print"><h4 style="margin:0px">{{selected.Property.name}}</h4></div>
                             <select ng-if="myProperties.length > 1 && reportType=='single'"
                                     class="form-control input-sm hidden-print"
@@ -136,7 +136,7 @@
                             >
                             </select>
 
-                            <filter-list options="propertyOptions" items="propertyItems"  ng-if="myProperties.length > 1 && reportType=='multiple'"></filter-list>
+                            <filter-list-ajax options="propertyOptions" model="propertyItems.items"  search="autocompleteproperties"  ng-if="reportType=='multiple'"></filter-list-ajax>
                         </div>
 
                         <div class="col-sm-4" ng-if="reportType=='single'">
@@ -374,7 +374,7 @@
                         </div>
                     </uib-accordion>
 
-                    <div class="hidden-print" ng-if="myProperties.length > 0">
+                    <div class="hidden-print">
                         <center>
                             <button class="btn btn-sm btn-primary" ng-click="run()">Run Report</button>
                             <button class="btn btn-sm btn-warning" ng-if="reportIds.length > 0" ng-click="saveReport()">Save Report</button>
@@ -385,7 +385,7 @@
 
 
 
-            <div class="panel panel-info hidden-print" ng-if="myProperties.length > 0 && !reports">
+            <div class="panel panel-info hidden-print" ng-if="!reports">
                 <div class="panel-heading">Results</div>
                 <div class="panel-body">
                     <div ng-show="reportLoading" style="display:block;width:40px;margin:50px auto">

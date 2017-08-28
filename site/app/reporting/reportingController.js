@@ -24,7 +24,7 @@ define([
         $scope.liveSettings = {};
         $scope.runSettings = {};
 
-        $scope.propertyOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
+        $scope.propertyOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
@@ -37,8 +37,6 @@ define([
         $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
-
-        $scope.propertyItems = [];
 
         $scope.localLoading = false;
 
@@ -106,7 +104,70 @@ define([
                 });
         }
 
+        $scope.autocompleteproperties = function(search,callback) {
+            $propertyService.search({
+                limit: 100,
+                permission: ['PropertyManage'],
+                active: true,
+                search:search
+                , skipAmenities: true
+            }).then(function (response) {
+                callback(response.data.properties)
+            }, function (error) {
+                callback([]);
+            })
+
+        }
+
         $scope.reload = function(bRun) {
+            $scope.propertyItems = {items: []};
+
+
+            //For Printing
+            if ($cookies.get("reportIds")) {
+
+                if (!_.isArray($cookies.get("reportIds"))) {
+                    $scope.reportIds = $cookies.get("reportIds").split(",");
+                } else {
+                    $scope.reportIds = $cookies.get("reportIds");
+                }
+
+                $scope.reportItems.forEach(function (x, i) {
+                    $scope.reportItems[i].selected = $scope.reportIds.indexOf(x.id) > -1
+                })
+
+                if (!_.isArray($cookies.get("propertyIds"))) {
+                    $scope.propertyIds = $cookies.get("propertyIds").split(",");
+                } else {
+                    $scope.propertyIds = $cookies.get("propertyIds");
+                }
+
+                if ($cookies.get("type")) {
+                    $scope.reportType = $cookies.get("type");
+                }
+
+
+                //$scope.debug = {r: $scope.reportIds,t: $scope.reportType, p: $scope.propertyIds, i: $scope.propertyItems};
+                //window.renderable = true;
+                $propertyService.search({
+                    limit: 10000, permission: 'PropertyManage', select : "_id name", ids: $scope.propertyIds, sort: "name"
+                    , skipAmenities: true
+                }).then(function (response) {
+                    response.data.properties.forEach(function(p) {
+                        $scope.propertyItems.items.push({id: p._id, name: p.name});
+                    })
+                    $scope.run();
+                });
+
+            }
+
+            window.setTimeout(function () {
+                window.document.title = "Reporting | BI:Radix";
+            }, 1500);
+            $scope.localLoading = true;
+        }
+
+        $scope.reload_old = function(bRun) {
             $propertyService.search({
                 limit: 10000,
                 permission: 'PropertyManage',
@@ -271,7 +332,7 @@ define([
                 $scope.singleReport();
             } else {
 
-                var properties =  _.pluck(_.filter($scope.propertyItems,function(x) {return x.selected == true}),"name");
+                var properties =  _.pluck($scope.propertyItems.items,"name");
                 var reports = [];
 
                 $scope.reportNames2.forEach(function(r) {
@@ -289,11 +350,7 @@ define([
 
         }
         $scope.multipleReport = function() {
-            var properties = _.filter($scope.propertyItems,function(x) {return x.selected == true});
-
-            if ($scope.myProperties.length == 1) {
-                properties = [$scope.selected.Property];
-            }
+            var properties = $scope.propertyItems.items;
 
             if (!properties.length) {
                 $scope.noProperties = true;
@@ -551,7 +608,7 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/reportsPdf?'
+            var url = '/api/1.0/properties/reportsPdf?'
             url += "token=" + $cookies.get('token')
             url += "&key=" + key
 
