@@ -11,15 +11,21 @@ var exportService = require('../services/exportService');
 var EmailService = require('../../business/services/emailService')
 var redisService = require('../../utilities/services/redisService')
 
-// Routes.get('/test', function (req, res) {
-//     userService.getUsersForNotifications(function (err, users) {
-//         res.status(200).json({users: users})
-//
-//     });
-// });
+Routes.get('/test', function (req, res) {
+    userService.getUsersForNotifications(true, function (err, users) {
+        async.eachLimit(users, 10, function (user, callbackp) {
+            userService.getFullUser(user, function(full) {
+                callbackp()
+            });
+        }, function (err) {
+            res.status(200).json({queued: users.length})
+        });
+
+    });
+});
 
 Routes.get('/notifications', function (req, res) {
-    userService.getUsersForNotifications(function (err, users) {
+    userService.getUsersForNotifications(false, function (err, users) {
         async.eachLimit(users, 10, function (user, callbackp) {
             userService.getFullUser(user, function(full) {
                 full.operator.settings.notifications.last = new Date();
