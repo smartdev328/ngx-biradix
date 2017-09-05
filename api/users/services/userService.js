@@ -551,7 +551,7 @@ module.exports = {
     notificatonSent : function(callback) {
 
     },
-    getUsersForNotifications : function(callback) {
+    getUsersForNotifications : function(isTest, callback) {
         var _this = this;
         getSysemUser(function(system) {
             _this.search(system.user,{active:true, select: "_id settings first last email bounceReason active" }, function(err,users) {
@@ -568,10 +568,12 @@ module.exports = {
                     if (isNaN(hoursSinceLast)) {
                         hoursSinceLast = 24 * 7;
                     }
+
+
                     //console.log(hoursSinceLast)
                     return  s.on == false // remove "Off"
-                        || hoursSinceLast < 24 // remove anything alfready sent within 24 hours
-                        || !cronService.isAllowed(s.cron) // remove when cron is not allowed
+                        || (hoursSinceLast < 24 && !isTest) // remove anything already sent within 24 hours
+                        || (!cronService.isAllowed(s.cron)  && !isTest) // remove when cron is not allowed
                         || x.bounceReason
                         || x.roles[0].tags[0] == 'Guest'
                         || !x.active
