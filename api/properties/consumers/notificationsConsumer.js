@@ -144,9 +144,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                     } else {
                         BizEmailService.send(email, function (emailError, status) {
 
-                            if (emailError) {
-                                throw Error(emailError)
-                            }
+                            console.log("NOTS: (send status)", status);
 
                             reply({done: true});
                         })

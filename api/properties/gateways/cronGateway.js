@@ -11,15 +11,37 @@ var exportService = require('../services/exportService');
 var EmailService = require('../../business/services/emailService')
 var redisService = require('../../utilities/services/redisService')
 
-// Routes.get('/test', function (req, res) {
-//     userService.getUsersForNotifications(function (err, users) {
-//         res.status(200).json({users: users})
-//
-//     });
-// });
+Routes.get('/test', function (req, res) {
+    userService.getUsersForNotifications(true, function (err, users) {
+        res.status(200).json({queued: users.length})
+        console.log('NOTS: ', {queued: users.length});
+
+        async.eachLimit(users, 11, function (user, callbackp) {
+            userService.getFullUser(user, function(full) {
+                if (full.operator.roles[0] != 'Guest') {
+                    queueService.sendNotification(full.operator, {
+                        properties: full.operator.settings.notifications.props,
+                        showLeases: full.operator.settings.showLeases,
+                        notification_columns: full.operator.settings.notification_columns,
+                        dontEmail: true
+                    }, function () {
+                        callbackp()
+                    })
+                } else {
+                    callbackp()
+                }
+            });
+        }, function (err) {
+
+        });
+
+    });
+});
 
 Routes.get('/notifications', function (req, res) {
-    userService.getUsersForNotifications(function (err, users) {
+    userService.getUsersForNotifications(false, function (err, users) {
+        res.status(200).json({queued: users.length})
+
         async.eachLimit(users, 10, function (user, callbackp) {
             userService.getFullUser(user, function(full) {
                 full.operator.settings.notifications.last = new Date();
@@ -30,14 +52,17 @@ Routes.get('/notifications', function (req, res) {
                             showLeases: full.operator.settings.showLeases,
                             notification_columns: full.operator.settings.notification_columns
                         }, function () {
+                            callbackp()
                         })
+                    } else {
+                        callbackp()
                     }
-                    callbackp()
+
                 });
             })
 
         }, function (err) {
-            res.status(200).json({queued: users.length})
+
         });
 
     });

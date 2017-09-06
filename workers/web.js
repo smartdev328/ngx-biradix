@@ -74,6 +74,7 @@ d.run(function() {
 
             app.get('/g/:propertyid/:token', function (req, res) {
                 res.cookie('token', req.params.token);
+                res.cookie('tokenDate', "");
                 res.redirect('/#/dashboard2?id=' + req.params.propertyid)
             })
 
