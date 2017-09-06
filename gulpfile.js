@@ -19,6 +19,7 @@ gulp.task('vendorsjs', function() {
         , './site/components/ngProgress/ngProgress.min.js'
         , './site/components/angular-toastr/angular-toastr.tpls.min.js'
         , './site/components/daterangepicker/daterangepicker.js'
+        , './site/components/select/customSelect.js'
 
     ])
         .pipe(concat('vendors.js'))
@@ -33,6 +34,7 @@ gulp.task('vendorscss', function() {
         , './site/components/angular-toastr/angular-toastr.min.css'
         , './site/components/ngProgress/ngProgress.css'
         , './site/components/daterangepicker/daterangepicker-bs3.css'
+        , './site/components/select/style.css'
     ])
         .pipe(concat('vendors.css'))
         .pipe(replace(/..\/fonts\//g,'/bower_components/font-awesome/fonts/'))

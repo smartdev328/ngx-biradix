@@ -125,16 +125,13 @@
 
                         <div class="col-sm-4" ng-if="reportType=='single' || reportType=='multiple'">
                             <Span ng-if="reportType=='single'">Property</Span><Span ng-if="reportType=='multiple'">Properties</Span>:<Br>
-                            <!--<div ng-show="myProperties.length == 1"><h4 style="margin:4px 0px 0px 0px;color: #4460a9;">{{selected.Property.name}}</h4></div>-->
-                            <div class="visible-print"><h4 style="margin:0px">{{selected.Property.name}}</h4></div>
-                            <select ng-if="myProperties.length > 1 && reportType=='single'"
-                                    class="form-control input-sm hidden-print"
-                                    ng-change="changeProperty()"
-                                    ng-model="selected.Property"
-                                    ng-options="item.name for item in myProperties"
-                                    style="font-size:12px"
-                            >
-                            </select>
+                            <div ng-show="myProperties.length == 1 && reportType=='single'"><h4 style="margin:4px 0px 0px 0px;color: #4460a9;">{{selected.Property.name}}</h4></div>
+                            <div ng-show="reportType=='single'" class="visible-print"><h4 style="margin:0px">{{selected.Property.name}}</h4></div>
+                            <div ng-if="myProperties.length > 1 && reportType=='single'"
+                                 custom-select="f.name for f in searchAsync($searchTerm)"
+                                 custom-select-options="{ 'async': true }"
+                                 ng-model="selected.Property" autofocus
+                            ></div>
 
                             <filter-list-ajax options="propertyOptions" model="propertyItems.items"  search="autocompleteproperties"  ng-if="reportType=='multiple'"></filter-list-ajax>
                         </div>

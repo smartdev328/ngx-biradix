@@ -53,6 +53,7 @@ define([], function () {
         , 'ngProgress'
         , 'ngSanitize'
         , 'biradix.global'
+        , 'AxelSoft'
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {

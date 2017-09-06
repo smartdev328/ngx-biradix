@@ -11,7 +11,9 @@ define([
     '../../components/reports/concession.js'
 ], function (app) {
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService', function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q'
+        , function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService,$q) {
+
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -111,6 +113,7 @@ define([
                 active: true,
                 search:search
                 , skipAmenities: true
+                , select: "name comps.id"
             }).then(function (response) {
                 callback(response.data.properties)
             }, function (error) {
@@ -167,12 +170,12 @@ define([
             $scope.localLoading = true;
         }
 
-        $scope.reload_old = function(bRun) {
+        $scope.loadSingle = function(callback) {
             $propertyService.search({
-                limit: 10000,
+                limit: 2,
                 permission: 'PropertyManage',
                 active: true,
-                select: "_id name comps.id comps.orderNumber orgid address"
+                select: "_id name comps.id comps.orderNumber"
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
@@ -181,24 +184,6 @@ define([
 
                 if ($cookies.get("subjectId")) {
                     id = $cookies.get("subjectId");
-                }
-
-                if ($cookies.get("propertyIds")) {
-                    $scope.propertyIds = $cookies.get("propertyIds");
-                }
-
-                $scope.myProperties.forEach(function (a) {
-                    var sel = false;
-
-                    if ($scope.propertyIds) {
-                        sel = $scope.propertyIds.indexOf(a._id) > -1
-                    }
-
-                    $scope.propertyItems.push({id: a._id, name: a.name, selected: sel})
-                })
-
-                if ($cookies.get("type")) {
-                    $scope.reportType = $cookies.get("type");
                 }
 
                 if (!$scope.myProperties || $scope.myProperties.length == 0) {
@@ -211,30 +196,22 @@ define([
                         return x._id.toString() == id
                     })
                 }
-
-
-                if ($scope.selected.Property || $scope.reportType) {
-                    $scope.loadComps(bRun)
-                } else {
-                    window.setTimeout(function () {
-                        window.document.title = "Reporting | BI:Radix";
-                    }, 1500);
-                    $scope.localLoading = true;
-                }
-
-
-            }, function (error) {
-                window.renderable = true;
-                if (error.status == 401) {
-                    $rootScope.logoff();
-                    return;
-                }
-
-                $scope.localLoading = true;
-            })
+                callback();
+            });
         }
 
-        $scope.loadComps = function(bRun) {
+        $scope.searchAsync = function (term) {
+
+            var deferred = $q.defer();
+
+            $scope.autocompleteproperties(term, function(result) {
+                deferred.resolve(result);
+            })
+
+            return deferred.promise;
+        };
+
+        $scope.loadComps = function() {
             var compids = _.pluck($scope.selected.Property.comps,"id");
             var subjectid = $scope.selected.Property._id;
 
@@ -269,30 +246,6 @@ define([
                     }
                 })
                 $scope.localLoading = true;
-
-
-
-                if ($cookies.get("reportIds")) {
-
-                    if (!_.isArray($cookies.get("reportIds"))) {
-                        $scope.reportIds = $cookies.get("reportIds").split(",");
-                    } else {
-                        $scope.reportIds = $cookies.get("reportIds");
-                    }
-
-                    $scope.reportItems.forEach(function(x,i) {
-                        $scope.reportItems[i].selected =$scope.reportIds.indexOf(x.id) > -1
-                    })
-
-                    $scope.items.forEach(function(x,i) {
-                        $scope.items[i].selected = $cookies.get("compIds").indexOf(x.id) > -1
-                    })
-
-
-                    $scope.run();
-                } else if (bRun) {
-                    $scope.run();
-                }
 
             })
 
@@ -668,6 +621,14 @@ define([
 
         },true)
 
+            $scope.$watch('selected.Property', function() {
+                if ($scope.selected.Property) {
+                    $scope.changeProperty();
+                }
+
+            },true)
+
+
         $scope.reportNamesChanged = function() {
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
             $scope.reportNames2 = _.clone($scope.reportNames);
@@ -732,6 +693,13 @@ define([
             }
 
             $scope.reportIds = reportIds;
+
+
+            if ($scope.reportType == "single" && oldReportType != $scope.reportType) {
+                $scope.loadSingle(function() {
+
+                });
+            }
         }
 
 
