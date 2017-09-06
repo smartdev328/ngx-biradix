@@ -16,7 +16,7 @@ Routes.get('/test', function (req, res) {
         res.status(200).json({queued: users.length})
         console.log('NOTS: ', {queued: users.length});
 
-        async.eachLimit(users, 10, function (user, callbackp) {
+        async.eachLimit(users, 11, function (user, callbackp) {
             userService.getFullUser(user, function(full) {
                 if (full.operator.roles[0] != 'Guest') {
                     queueService.sendNotification(full.operator, {
