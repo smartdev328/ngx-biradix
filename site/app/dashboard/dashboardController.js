@@ -330,7 +330,7 @@ define([
                 progressId: $scope.progressId,
                 timezone: moment().utcOffset(),
                 type: 'single',
-                propertyIds:  'undefined',
+                propertyIds: encodeURIComponent([$scope.selectedProperty._id]),
                 showFile: showFile,
 
                 settings: {
@@ -343,7 +343,7 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = '/api/1.0/properties/' + $scope.selectedProperty._id + '/reportsPdf?'
+            var url = '/api/1.0/properties/reportsPdf?'
             url += "token=" + $cookies.get('token')
             url += "&key=" + key
 
