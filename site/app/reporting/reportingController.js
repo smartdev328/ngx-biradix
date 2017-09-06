@@ -149,17 +149,30 @@ define([
                     $scope.reportType = $cookies.get("type");
                 }
 
+                // $scope.debug = {r: $scope.reportIds,t: $scope.reportType, p: $scope.propertyIds, i: $scope.propertyItems};
+                // window.renderable = true;
 
-                //$scope.debug = {r: $scope.reportIds,t: $scope.reportType, p: $scope.propertyIds, i: $scope.propertyItems};
-                //window.renderable = true;
+
                 $propertyService.search({
-                    limit: 10000, permission: 'PropertyManage', select : "_id name", ids: $scope.propertyIds, sort: "name"
-                    , skipAmenities: true
+                    limit: 10000,
+                    permission: 'PropertyManage',
+                    select: "_id name comps.id comps.orderNumber",
+                    ids: $scope.propertyIds,
+                    sort: "name"
+                    ,
+                    skipAmenities: true
                 }).then(function (response) {
-                    response.data.properties.forEach(function(p) {
-                        $scope.propertyItems.items.push({id: p._id, name: p.name});
-                    })
-                    $scope.run();
+
+                    if ($scope.reportType == 'single') {
+                        $scope.selected.Property = response.data.properties[0];
+                    } else {
+                        response.data.properties.forEach(function (p) {
+                            $scope.propertyItems.items.push({id: p._id, name: p.name});
+                        })
+                        $scope.run();
+                    }
+
+
                 });
 
             }
@@ -215,6 +228,14 @@ define([
             var compids = _.pluck($scope.selected.Property.comps,"id");
             var subjectid = $scope.selected.Property._id;
 
+            if ($cookies.get("compIds")) {
+                if (!_.isArray($cookies.get("compIds"))) {
+                    compids = $cookies.get("compIds").split(",");
+                } else {
+                    compids = $cookies.get("compIds");
+                }
+            }
+
             window.setTimeout(function() {window.document.title = $scope.selected.Property.name + " - Reporting | BI:Radix";},1500);
             $scope.reportLoading = false;
             $scope.noReports = false;
@@ -246,6 +267,10 @@ define([
                     }
                 })
                 $scope.localLoading = true;
+
+                if ($cookies.get("compIds")) {
+                    $scope.run();
+                }
 
             })
 
@@ -623,6 +648,7 @@ define([
 
             $scope.$watch('selected.Property', function() {
                 if ($scope.selected.Property) {
+                    $scope.propertyIds = [$scope.selected.Property._id];
                     $scope.changeProperty();
                 }
 
