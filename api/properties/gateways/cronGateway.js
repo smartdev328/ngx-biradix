@@ -13,12 +13,24 @@ var redisService = require('../../utilities/services/redisService')
 
 Routes.get('/test', function (req, res) {
     userService.getUsersForNotifications(true, function (err, users) {
+        res.status(200).json({queued: users.length})
+        console.log('NOTS: ', {queued: users.length});
+
         async.eachLimit(users, 10, function (user, callbackp) {
             userService.getFullUser(user, function(full) {
+                if (full.operator.roles[0] != 'Guest') {
+                    queueService.sendNotification(full.operator, {
+                        properties: full.operator.settings.notifications.props,
+                        showLeases: full.operator.settings.showLeases,
+                        notification_columns: full.operator.settings.notification_columns,
+                        dontEmail: true
+                    }, function () {
+                    })
+                }
                 callbackp()
             });
         }, function (err) {
-            res.status(200).json({queued: users.length})
+
         });
 
     });
