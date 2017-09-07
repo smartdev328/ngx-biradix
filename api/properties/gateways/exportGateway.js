@@ -121,7 +121,7 @@ module.exports = {
             });
         });
 
-        Routes.get('/:id/reportsPdf', function (req, res) {
+        Routes.get('/reportsPdf', function (req, res) {
             var timer = new Date().getTime();
             redisService.getByKey(req.query.key, function(err, result) {
                 var query = {};
@@ -132,7 +132,6 @@ module.exports = {
 
                 var message = {
                     user: req.user,
-                    id: req.params.id,
                     url: req.basePath,
                     timezone: query.timezone,
                     hostname: req.hostname,
