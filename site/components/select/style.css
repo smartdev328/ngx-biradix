@@ -27,7 +27,7 @@
 	display: none !important;
 }
 .custom-select > a.dropdown-toggle {
-	border-radius: 0;
+	border-radius: 2px !important;
 	line-height: 28px;
 	box-shadow: none;
 	background: #ffffff;
@@ -78,12 +78,13 @@
 	display: block;
 	width: 13px;
 	height: 100%;
+	color: #1E90FF;
 }
 .custom-select > a.dropdown-toggle > b:before {
 	content: "\f0d7";
 	display: inline-block;
 	font-family: FontAwesome;
-	font-size: 12px;
+	font-size: 11px;
 	position: relative;
 	top: -1px;
 	left: 1px;
