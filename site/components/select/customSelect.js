@@ -40,6 +40,18 @@
 		return target;
 	}
 
+	function formatSearch(value, search) {
+
+		if (search) {
+            var regex = new RegExp(search, "i");
+            if (value.search(regex) != -1) {
+                value =  value.replace(regex, "<b>$&</b>");
+            }
+		}
+
+		return value;
+	}
+
 	var module = angular.module('AxelSoft', []);
 
 	module.value('customSelectDefaults', {
@@ -89,9 +101,10 @@
 					focusedIndex = -1,
 						matchMap = {};
 
-				var itemTemplate = elem.html().trim() || '{{' + (match[2] || match[1]) + '}}',
+				var itemTemplate = elem.html().trim() || '<span ng-bind-html="formatSearch(' + (match[2] || match[1]) + ',searchTerm) | sanitize"></span>';
 
-					dropdownTemplate =
+
+				var dropdownTemplate =
 					'<a class="dropdown-toggle" data-toggle="dropdown" href ng-class="{ disabled: disabled }">' +
 						'<span>{{displayText}}</span>' +
 						'<b></b>' +
@@ -383,6 +396,7 @@
 					};
 
 					childScope.format = format;
+                    childScope.formatSearch = formatSearch;
 
 					setDisplayText();
 				}

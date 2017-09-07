@@ -114,6 +114,7 @@ define([
                 search:search
                 , skipAmenities: true
                 , select: "name comps.id"
+                , sort: "name"
             }).then(function (response) {
                 callback(response.data.properties)
             }, function (error) {
