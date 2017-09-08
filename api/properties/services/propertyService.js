@@ -381,6 +381,7 @@ module.exports = {
         }
 
         criteria.search = (criteria.search || '').trim();
+        criteria.searchName = (criteria.searchName || '').trim();
 
         var AllProperties =
             Operator.memberships.isadmin === true
@@ -499,6 +500,10 @@ module.exports = {
                 if (criteria.search != '') {
                     var s = new RegExp(escapeStringRegexp(criteria.search), "i")
                     query = query.or([{'name': s}, {'address': s}, {'city': s}, {'state': s}]);
+                    query = query.select(criteria.select || '_id name address city state zip');
+                } else if (criteria.searchName != '') {
+                    var s = new RegExp(escapeStringRegexp(criteria.searchName), "i")
+                    query = query.or([{'name': s}]);
                     query = query.select(criteria.select || '_id name address city state zip');
                 } else {
                     query = query.select(criteria.select || '_id name');
