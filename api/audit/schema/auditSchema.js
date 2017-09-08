@@ -34,4 +34,6 @@ var s = new Schema({
     adminOnly : Object
 });
 
+s.index({"type": 1,"date": 1});
+
 module.exports = mongoose.model('Audit', s);
