@@ -206,9 +206,28 @@ define([
                 else if (!id) {
                     $scope.selected.Property = $scope.myProperties[0];
                 } else {
+
                     $scope.selected.Property = _.find($scope.myProperties, function (x) {
                         return x._id.toString() == id
                     })
+
+                    if (!$scope.selected.Property) {
+                        $propertyService.search({
+                            limit: 1,
+                            _id: id,
+                            permission: 'PropertyManage',
+                            active: true,
+                            select: "_id name comps.id comps.orderNumber"
+                            , skipAmenities: true
+                        }).then(function (response) {
+                            $scope.selected.Property = response.data.properties[0];
+                            $scope.myProperties.push($scope.selected.Property);
+                            $scope.myProperties = _.sortBy($scope.myProperties, function(x) {return x.name});
+                            callback();
+                        });
+
+                        return;
+                    }
                 }
                 callback();
             });
