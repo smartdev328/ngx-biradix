@@ -111,11 +111,14 @@ define([
                 limit: 100,
                 permission: ['PropertyManage'],
                 active: true,
-                search:search
+                searchName:search
                 , skipAmenities: true
                 , select: "name comps.id"
                 , sort: "name"
             }).then(function (response) {
+
+                response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
+
                 callback(response.data.properties)
             }, function (error) {
                 callback([]);
