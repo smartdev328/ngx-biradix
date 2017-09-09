@@ -300,7 +300,7 @@ define([
         }
 
         $scope.changeProperty = function() {
-            $scope.localLoading = false;
+            //$scope.localLoading = false;
             $scope.loadComps();
         }
 
