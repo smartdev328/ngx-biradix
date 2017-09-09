@@ -152,7 +152,7 @@
 					}
 					childScope.$apply(function () {
 						lastSearch = '';
-						childScope.searchTerm = '';
+						//childScope.searchTerm = '';
 					});
 					
 					focusedIndex = -1;
@@ -193,7 +193,7 @@
 						case 9: // Tab
 						case 13: // Enter
 							selectFromInput();
-							childScope.searchTerm = undefined;
+							//childScope.searchTerm = undefined;
 							break;
 						case 40: // Down
 							focusFirst();
