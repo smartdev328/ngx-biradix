@@ -1030,7 +1030,8 @@ define([
                         runratesqft :false,
                         ner : true,
                         nersqft :true
-                    }
+                    },
+                    group : true
                 }
             }
             
