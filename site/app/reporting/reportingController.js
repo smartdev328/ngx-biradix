@@ -8,6 +8,7 @@ define([
     '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/propertyStatus.js',
     '../../components/reports/propertyReport.js',
+    '../../components/reports/trendsReport.js',
     '../../components/reports/concession.js'
 ], function (app) {
 
@@ -38,6 +39,7 @@ define([
         $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
+        $scope.reportItems.push({id: "trends", name: "Trend Analysis", selected:false, group: "Individual Reports", type:"single"});
         $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
 
         $scope.localLoading = false;
@@ -49,6 +51,7 @@ define([
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
+                    $scope.configureTrendsOptions();
                     $scope.configurePropertyReportOptions();
                     $scope.configureRankingsOptions();
                     $scope.configureRankingsSummaryOptions();
@@ -501,6 +504,7 @@ define([
                 ,options
             ).then(function(response) {
                 //Run these after the reports are ran
+                $scope.configureTrendsOptions();
                 $scope.configurePropertyReportOptions();
                 $scope.configureRankingsOptions();
                 $scope.configureRankingsSummaryOptions();
@@ -686,6 +690,7 @@ define([
 
         $scope.reportsChanged = function() {
 
+            $scope.configureTrendsOptions();
             $scope.configurePropertyReportOptions();
             $scope.configureRankingsOptions();
             $scope.configureRankingsSummaryOptions();
@@ -718,6 +723,7 @@ define([
             $scope.rankings = reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = reportIds.indexOf("property_report") > -1;
             $scope.concession = reportIds.indexOf("concession") > -1;
+            $scope.trends = reportIds.indexOf("trends") > -1;
 
 
 
@@ -987,6 +993,47 @@ define([
         })
 
 
+            ////////////////////// Property Report ////////////////////////////////
+
+            $scope.configureTrendsOptions = function() {
+                if (!$scope.liveSettings.trends) {
+                    $scope.resetTrendsSettings(false)
+                }
+
+                $scope.temp.showTrendsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+                $scope.temp.showTrendsItems = [
+                    {id: "occupancy", name: "Occupancy %", selected: $scope.liveSettings.trends.show.occupancy},
+                    {id: "leased", name: "Leased %", selected: $scope.liveSettings.trends.show.leased},
+                    {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.trends.show.renewal},
+                    {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.trends.show.weekly},
+                    {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.trends.show.mersqft},
+                    {id: "concessions", name: "Total Concessions", selected: $scope.liveSettings.trends.show.concessions},
+                    {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.trends.show.runrate},
+                    {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.trends.show.runratesqft},
+                    {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.trends.show.ner},
+                    {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.trends.show.nersqft},
+                ];
+
+            }
+
+            $scope.resetTrendsSettings = function(rebind) {
+
+                $scope.liveSettings.trends = {
+                    show: {
+                        occupancy :true,
+                        leased :false,
+                        renewal :false,
+                        weekly : false,
+                        mersqft :false,
+                        concessions : false,
+                        runrate: false,
+                        runratesqft :false,
+                        ner : true,
+                        nersqft :true
+                    }
+                }
+            }
+            
         ////////////////////// Property Report ////////////////////////////////
 
         $scope.configurePropertyReportOptions = function() {

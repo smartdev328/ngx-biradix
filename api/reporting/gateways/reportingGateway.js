@@ -56,6 +56,11 @@ Routes.post('/:id', function (req, res) {
                     });
 
                 },
+                function(callbackp) {
+                    results.trends = {};
+                    callbackp();
+
+                },
             ], function(err) {
                 callbackw(null,comps,lookups)
             });

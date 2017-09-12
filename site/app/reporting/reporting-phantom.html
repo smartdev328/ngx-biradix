@@ -15,4 +15,6 @@
 
 <fees-report class="report break-before" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
 
+<trends-report  class="report break-before" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="::runSettings.trends"></trends-report>
+
 <property-status class="report break-before" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="liveSettings.propertyStatus.show"></property-status>
