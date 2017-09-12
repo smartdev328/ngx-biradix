@@ -15,8 +15,11 @@ Routes.get('/test', function (req, res) {
     userService.getUsersForNotifications(true, function (err, users) {
         res.status(200).json({queued: users.length})
         console.log('NOTS: ', {queued: users.length});
-
-        async.eachLimit(users, 11, function (user, callbackp) {
+        let count = 0;
+        async.eachLimit(users, 3, function (user, callbackp) {
+            if (count > 3) {
+                return callbackp();
+            }
             userService.getFullUser(user, function(full) {
                 if (full.operator.roles[0] != 'Guest') {
                     queueService.sendNotification(full.operator, {
@@ -25,6 +28,7 @@ Routes.get('/test', function (req, res) {
                         notification_columns: full.operator.settings.notification_columns,
                         dontEmail: true
                     }, function () {
+                        count++;
                         callbackp()
                     })
                 } else {
@@ -42,7 +46,15 @@ Routes.get('/notifications', function (req, res) {
     userService.getUsersForNotifications(false, function (err, users) {
         res.status(200).json({queued: users.length})
 
-        async.eachLimit(users, 10, function (user, callbackp) {
+        console.log('NOTS: ', {queued: users.length});
+
+        let count = 0;
+
+        async.eachLimit(users, 5, function (user, callbackp) {
+            if (count > 300) {
+                return callbackp();
+            }
+
             userService.getFullUser(user, function(full) {
                 full.operator.settings.notifications.last = new Date();
                 userService.updateSettings(full.operator, full.operator, full.operator.settings, {ip: '127.0.0.1', user_agent: 'server'}, function () {
@@ -52,6 +64,7 @@ Routes.get('/notifications', function (req, res) {
                             showLeases: full.operator.settings.showLeases,
                             notification_columns: full.operator.settings.notification_columns
                         }, function () {
+                            count++;
                             callbackp()
                         })
                     } else {
