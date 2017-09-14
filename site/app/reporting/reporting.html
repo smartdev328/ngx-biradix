@@ -364,12 +364,28 @@
                             </uib-accordion-heading>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
-                                    Property Metrics<br>
-                                    <filter-list options="temp.showTrendsOptions" items="temp.showTrendsItems"></filter-list>
+                                    Date Range<br>
+                                    <daterange-picker daterange="liveSettings.trends.daterange1"></daterange-picker>
                                 </div>
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
-                                    Group Comps<br>
-                                    <toggle-switch checked="liveSettings.trends.group"></toggle-switch>&nbsp;
+                                    Compare To<br>
+                                    <div ng-if="liveSettings.trends.daterange1.selectedRange == 'Lifetime'">
+                                        <b><i>No Compare</i></b>
+                                    </div>
+                                    <table style="width:100%" ng-if="liveSettings.trends.daterange1.selectedRange != 'Lifetime'">
+                                        <tr>
+                                            <Td>
+                                                <input type="checkbox" ng-model="liveSettings.trends.daterange2.enabled">
+                                            </Td>
+                                            <Td style="width:100%;padding-left:5px">
+                                                <daterange-picker daterange="liveSettings.trends.daterange2"></daterange-picker>
+                                            </Td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Property Metrics<br>
+                                    <filter-list options="temp.showTrendsOptions" items="temp.showTrendsItems"></filter-list>
                                 </div>
                             </div>
                         </div>

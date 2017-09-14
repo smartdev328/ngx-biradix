@@ -12,6 +12,15 @@ angular.module('biradix.global').directive('daterangePicker', function () {
                         $scope.reload();
                     }
 
+                    if (newdate.enabled === false) {
+                        $($element.find('div')).css("opacity","0.5");
+                        $($element.find('div')).css( 'pointer-events', 'none' );
+                    }
+                    else
+                    if (newdate.enabled === true) {
+                        $($element.find('div')).css("opacity","1");
+                        $($element.find('div')).css( 'pointer-events', 'auto' );
+                    }
                 }, true)
 
                 $scope.populate = function() {
