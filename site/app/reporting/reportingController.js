@@ -439,6 +439,12 @@ define([
                 })
             }
 
+            if ($scope.reportIds.indexOf("trends") > -1) {
+                $scope.temp.showTrendsItems.forEach(function (f) {
+                    $scope.liveSettings.trends.show[f.id] = f.selected;
+                })
+            }
+
         }
 
         $scope.UItoSettingsMultiple = function() {
@@ -492,7 +498,23 @@ define([
                 }
             }
 
-
+            if ($scope.reportIds.indexOf("trends") > -1) {
+                options.trends = {
+                    daterange1: {
+                        daterange: $scope.liveSettings.trends.daterange1.selectedRange,
+                        start: $scope.liveSettings.trends.daterange1.selectedStartDate,
+                        end: $scope.liveSettings.trends.daterange1.selectedEndDate
+                    },
+                    daterange2: {
+                        daterange: $scope.liveSettings.trends.daterange2.selectedRange,
+                        start: $scope.liveSettings.trends.daterange2.selectedStartDate,
+                        end: $scope.liveSettings.trends.daterange2.selectedEndDate,
+                        enabled: $scope.liveSettings.trends.daterange2.enabled
+                    },
+                    offset: moment().utcOffset(),
+                    show: $scope.liveSettings.trends.show
+                }
+            }
 
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
@@ -1030,8 +1052,7 @@ define([
                         runratesqft :false,
                         ner : true,
                         nersqft :true
-                    },
-                    compareTo: true
+                    }
                 }
 
                 $scope.liveSettings.trends.daterange1 = {

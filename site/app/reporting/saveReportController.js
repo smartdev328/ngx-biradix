@@ -11,14 +11,28 @@ define([
 
             var copyOfSettings = _.cloneDeep(settings);
 
-            for (var k in copyOfSettings) {
-                if (copyOfSettings[k].daterange) {
-                    copyOfSettings[k].daterange = {
-                        selectedRange: copyOfSettings[k].daterange.selectedRange,
-                        selectedStartDate: copyOfSettings[k].daterange.selectedStartDate ? moment(copyOfSettings[k].daterange.selectedStartDate._d).format() : null,
-                        selectedEndDate: copyOfSettings[k].daterange.selectedEndDate ? moment(copyOfSettings[k].daterange.selectedEndDate._d).format() : null
+
+            $scope.fix = function(daterange) {
+                if (daterange) {
+                    daterange = {
+                        selectedRange: daterange.selectedRange,
+                        selectedStartDate: daterange.selectedStartDate ? moment(daterange.selectedStartDate._d).format() : null,
+                        selectedEndDate: daterange.selectedEndDate ? moment(daterange.selectedEndDate._d).format() : null,
+                        enabled: daterange.enabled
                     }
                 }
+
+                return daterange;
+            }
+
+            for (var k in copyOfSettings) {
+
+                var d = $scope.fix(copyOfSettings[k].daterange);
+                if (d) {copyOfSettings[k].daterange = d}
+                d = $scope.fix(copyOfSettings[k].daterange1);
+                if (d) {copyOfSettings[k].daterange1 = d}
+                d = $scope.fix(copyOfSettings[k].daterange2);
+                if (d) {copyOfSettings[k].daterange2 = d}
 
                 if (reportIds.indexOf("property_report") > -1 &&
                     (
@@ -28,10 +42,13 @@ define([
                 else if (reportIds.indexOf("property_rankings_summary") > -1 && k == "rankingsSummary") {}
                 else if (reportIds.indexOf("property_rankings") > -1 && k == "rankings") {}
                 else if (reportIds.indexOf("property_status") > -1 && k == "propertyStatus") {}
+                else if (reportIds.indexOf("trends") > -1 && k == "trends") {}
                 else {
                     delete copyOfSettings[k];
                 }
             }
+
+            console.log(copyOfSettings);
 
             $scope.report = {
                 name: currentReport ? currentReport.name : '',
