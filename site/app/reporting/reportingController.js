@@ -94,10 +94,12 @@ define([
                 }
             }
 
-            $scope.reportsChanged();
+            $scope.reportsChanged(true, function() {
+                $scope.run();
+            });
 
 
-            $scope.run();
+
         }
 
         $scope.loadSaved = function() {
@@ -235,6 +237,7 @@ define([
                         return;
                     }
                 }
+
                 callback();
             });
         }
@@ -710,7 +713,7 @@ define([
             $scope.reportNames.forEach(function(x,i) {$scope.reportNames[i] = {description: 'Report: ' + x}});
         }
 
-        $scope.reportsChanged = function() {
+        $scope.reportsChanged = function(load, callback) {
 
             $scope.configureTrendsOptions();
             $scope.configurePropertyReportOptions();
@@ -771,11 +774,16 @@ define([
 
             $scope.reportIds = reportIds;
 
-
-            if ($scope.reportType == "single" && oldReportType != $scope.reportType) {
+            if (load || ($scope.reportType == "single" && oldReportType != $scope.reportType)) {
                 $scope.loadSingle(function() {
-
+                    if (callback) {
+                        callback();
+                    }
                 });
+            } else {
+                if (callback) {
+                    callback();
+                }
             }
         }
 
