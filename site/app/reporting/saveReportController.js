@@ -9,46 +9,7 @@ define([
             ga('set', 'page', "/saveReport");
             ga('send', 'pageview');
 
-            var copyOfSettings = _.cloneDeep(settings);
-
-
-            $scope.fix = function(daterange) {
-                if (daterange) {
-                    daterange = {
-                        selectedRange: daterange.selectedRange,
-                        selectedStartDate: daterange.selectedStartDate ? moment(daterange.selectedStartDate._d).format() : null,
-                        selectedEndDate: daterange.selectedEndDate ? moment(daterange.selectedEndDate._d).format() : null,
-                        enabled: daterange.enabled
-                    }
-                }
-
-                return daterange;
-            }
-
-            for (var k in copyOfSettings) {
-
-                var d = $scope.fix(copyOfSettings[k].daterange);
-                if (d) {copyOfSettings[k].daterange = d}
-                d = $scope.fix(copyOfSettings[k].daterange1);
-                if (d) {copyOfSettings[k].daterange1 = d}
-                d = $scope.fix(copyOfSettings[k].daterange2);
-                if (d) {copyOfSettings[k].daterange2 = d}
-
-                if (reportIds.indexOf("property_report") > -1 &&
-                    (
-                        k == "dashboardSettings" || k == "profileSettings" || k == "showProfile"
-                    )) {}
-                else if (reportIds.indexOf("concession") > -1 && k == "concession") {}
-                else if (reportIds.indexOf("property_rankings_summary") > -1 && k == "rankingsSummary") {}
-                else if (reportIds.indexOf("property_rankings") > -1 && k == "rankings") {}
-                else if (reportIds.indexOf("property_status") > -1 && k == "propertyStatus") {}
-                else if (reportIds.indexOf("trends") > -1 && k == "trends") {}
-                else {
-                    delete copyOfSettings[k];
-                }
-            }
-
-            console.log(copyOfSettings);
+            var copyOfSettings = $saveReportService.cleanSettings(settings, reportIds);
 
             $scope.report = {
                 name: currentReport ? currentReport.name : '',

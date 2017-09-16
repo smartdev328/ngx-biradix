@@ -633,7 +633,7 @@ define([
                 type: $scope.reportType,
                 propertyIds:  encodeURIComponent($scope.propertyIds),
                 showFile: showFile,
-                settings: $scope.runSettings
+                settings: $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds)
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
