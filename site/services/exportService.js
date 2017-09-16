@@ -30,18 +30,17 @@ define([
             var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId);
 
             //Has to be synchronous
-            $urlService.shortenAsync(JSON.stringify(pdf.data), function(key) {
-                var url = pdf.base + "&key=" + key;
+            var key = $urlService.shorten(JSON.stringify(pdf.data));
+            var url = pdf.base + "&key=" + key;
 
-                url += "&bust=" + (new Date()).getTime();
+            url += "&bust=" + (new Date()).getTime();
 
-                if (showFile === true) {
-                    location.href = url;
-                }
-                else {
-                    window.open(url);
-                }
-            });
+            if (showFile === true) {
+                location.href = url;
+            }
+            else {
+                window.open(url);
+            }
         }
 
         return fac;

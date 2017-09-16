@@ -610,24 +610,23 @@ define([
                 settings: $scope.runSettings
             }
 
-            $urlService.shortenAsync(JSON.stringify(data), function(key) {
+            var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = '/api/1.0/properties/reportsPdf?'
-                url += "token=" + $cookies.get('token')
-                url += "&key=" + key
+            var url = '/api/1.0/properties/reportsPdf?'
+            url += "token=" + $cookies.get('token')
+            url += "&key=" + key
 
-                if (showFile === true) {
-                    ngProgress.start();
+            if (showFile === true) {
+                ngProgress.start();
 
-                    $('#export').prop('disabled', true);
+                $('#export').prop('disabled', true);
 
-                    window.setTimeout($scope.checkProgress, 500);
-                    location.href = url;
-                }
-                else {
-                    window.open(url);
-                }
-            });
+                window.setTimeout($scope.checkProgress, 500);
+                location.href = url;
+            }
+            else {
+                window.open(url);
+            }
 
         }
 
@@ -778,22 +777,17 @@ define([
                 compids: $scope.compIds
             }
 
-            $urlService.shortenAsync(JSON.stringify(data), function(key) {
+            var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?'
-                url += "token=" + $cookies.get('token')
-                url += "&key=" + key;
+            var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?'
+            url += "token=" + $cookies.get('token')
+            url += "&key=" + key;
 
-                $window.setTimeout($scope.checkProgress, 500);
+            $window.setTimeout($scope.checkProgress, 500);
 
-                location.href = url;
+            location.href = url;
 
-                $auditService.create({
-                    type: 'excel_profile',
-                    property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name},
-                    description: $scope.selected.Property.name + ' - ' + $scope.liveSettings.dashboardSettings.daterange.selectedRange
-                });
-            });
+            $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.liveSettings.dashboardSettings.daterange.selectedRange});
 
         }
 

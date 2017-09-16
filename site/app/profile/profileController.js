@@ -260,19 +260,17 @@ define([
                 compids: null
             }
 
-            $urlService.shortenAsync(JSON.stringify(data), function(key) {
-                var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
-                url += "token=" + $cookies.get('token')
-                url += "&key=" + key;
+            var key = $urlService.shorten(JSON.stringify(data));
 
-                $window.setTimeout($scope.checkProgress, 500);
+            var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
+            url += "token=" + $cookies.get('token')
+            url += "&key=" + key;
 
-                location.href = url;
+            $window.setTimeout($scope.checkProgress, 500);
 
-                $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.settings.daterange.selectedRange});
-            });
+            location.href = url;
 
-
+            $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.settings.daterange.selectedRange});
 
         }
 
