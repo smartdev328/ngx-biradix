@@ -25,6 +25,10 @@ angular.module('biradix.global').directive('daterangePicker', function () {
 
                 $scope.populate = function() {
                     if ($scope.daterange.selectedRange == "Custom Range") {
+                        if(typeof $scope.daterange.selectedStartDate == 'string') {
+                            $scope.daterange.selectedStartDate = moment($scope.daterange.selectedStartDate);
+                            $scope.daterange.selectedEndDate = moment($scope.daterange.selectedEndDate);
+                        }
                         $scope.value = $scope.daterange.selectedStartDate.format('MM/DD/YY') + ' - ' + $scope.daterange.selectedEndDate.format('MM/DD/YY')
                     }
                     else {

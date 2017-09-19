@@ -92,6 +92,17 @@ define([
                     $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
                     $scope.liveSettings[key].daterange.reload = true;
                 }
+
+                if ($scope.liveSettings[key].daterange1) {
+                    $scope.liveSettings[key].daterange1 = $scope.defaultTrendsDateRange1($scope.liveSettings[key].daterange1.selectedRange,$scope.liveSettings[key].daterange1.selectedStartDate,$scope.liveSettings[key].daterange1.selectedEndDate)
+                    $scope.liveSettings[key].daterange1.reload = true;
+
+                    $scope.liveSettings[key].daterange1.daterange2 = {
+                        selectedRange: $scope.liveSettings[key].daterange2.selectedRange,
+                        selectedStartDate: $scope.liveSettings[key].daterange2.selectedStartDate,
+                        selectedEndDate: $scope.liveSettings[key].daterange2.selectedEndDate
+                    }
+                }
             }
 
             $scope.reportsChanged(true, function() {
@@ -1046,6 +1057,23 @@ define([
 
             }
 
+            $scope.defaultTrendsDateRange1 = function(selectedRange, selectedStartDate, selectedEndDate) {
+                return {
+                    Ranges : {
+                        'Last 30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
+                        'Last 90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
+                        'Last 12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
+                        'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
+                        'Previous Month': [moment().subtract(1, 'month').startOf("month"), moment().subtract(1, 'month').endOf("month")],
+                        'This Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
+                    },
+                    selectedRange : selectedRange,
+                    selectedStartDate : selectedStartDate,
+                    selectedEndDate : selectedEndDate,
+                    direction : "right"
+                }
+            }
+
             $scope.resetTrendsSettings = function(rebind) {
 
                 $scope.liveSettings.trends = {
@@ -1063,27 +1091,10 @@ define([
                     }
                 }
 
-                $scope.liveSettings.trends.daterange1 = {
-                    Ranges : {
-                        'Last 30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
-                        'Last 90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
-                        'Last 12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
-                        'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
-                        'Previous Month': [moment().subtract(1, 'month').startOf("month"), moment().subtract(1, 'month').endOf("month")],
-                        'This Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
-                    },
-                    selectedRange : 'Last 90 Days',
-                    direction : "right"
-                }
+                $scope.liveSettings.trends.daterange1 = $scope.defaultTrendsDateRange1('Last 90 Days', null, null);
 
-                $scope.liveSettings.trends.daterange2 = {
-                    Ranges : {
-                        'Previous 90 Days': [moment().subtract(180, 'days').startOf("day"), moment().subtract(91, 'days').endOf("day")],
-                    },
-                    selectedRange : 'Previous 90 Days',
-                    direction : "right",
-                    enabled: true
-                }
+                $scope.liveSettings.trends.daterange2 = {enabled: true}
+                $scope.updateTrendsDaterange2('Last 90 Days');
 
                 if (rebind) {
                     $scope.liveSettings.trends.daterange1.reload = true;
@@ -1092,95 +1103,120 @@ define([
                 }
             }
 
+            $scope.updateTrendsDaterange2 = function(selectedRange) {
+                $scope.liveSettings.trends.daterange1.daterange2 = $scope.liveSettings.trends.daterange1.daterange2 || {};
+
+                switch (selectedRange) {
+                    case "Last 30 Days":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous 30 Days': [moment().subtract(60, 'days').startOf("day"), moment().subtract(31, 'days').endOf("day")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous 30 Days',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "Last 90 Days":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous 90 Days': [moment().subtract(180, 'days').startOf("day"), moment().subtract(91, 'days').endOf("day")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous 90 Days',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "Last 12 Months":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous 12 Months': [moment().subtract(2, 'year').startOf("day"), moment().subtract(1, 'year').subtract(1,'day').endOf("day")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous 12 Months',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "Lifetime":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
+                            },
+                            selectedRange : 'Lifetime',
+                            direction : "right",
+                            enabled: false,
+                            reload: true
+                        }
+                        break;
+                    case "Previous Month":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Same Month - Previous Year': [moment().subtract(1, 'month').subtract(1, 'year').startOf("month"), moment().subtract(1, 'month').subtract(1, 'year').endOf("month")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Same Month - Previous Year',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "This Year-to-Date":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous Year-To-Date': [moment().subtract(1,'year').startOf("year"), moment().subtract(1,'year').endOf("day")],
+                                'Previous Year': [moment().subtract(1,'year').startOf("year"), moment().subtract(1,'year').endOf("year")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous Year-To-Date',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "Custom Range":
+
+                        if(typeof $scope.liveSettings.trends.daterange1.selectedStartDate == 'string') {
+                            $scope.liveSettings.trends.daterange1.selectedStartDate = moment($scope.liveSettings.trends.daterange1.selectedStartDate);
+                            $scope.liveSettings.trends.daterange1.selectedEndDate = moment($scope.liveSettings.trends.daterange1.selectedEndDate);
+                        }
+
+                        var days = $scope.liveSettings.trends.daterange1.selectedEndDate.diff($scope.liveSettings.trends.daterange1.selectedStartDate, 'days');
+
+                        var start = moment($scope.liveSettings.trends.daterange1.selectedStartDate.format());
+                        var end = moment($scope.liveSettings.trends.daterange1.selectedStartDate.format());
+
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                            },
+                            selectedRange : 'Custom Range',
+                            selectedStartDate : $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate || start.subtract(1 + days, 'day'),
+                            selectedEndDate : $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate || end.subtract(1, 'day'),
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                }
+            }
+
             $scope.$watch("liveSettings.trends.daterange1", function(newValue,oldValue) {
 
-                if (newValue.selectedRange != oldValue.selectedRange) {
-                    switch (newValue.selectedRange) {
-                        case "Last 30 Days":
-                            $scope.liveSettings.trends.daterange2 = {
-                                Ranges : {
-                                    'Previous 30 Days': [moment().subtract(60, 'days').startOf("day"), moment().subtract(31, 'days').endOf("day")],
-                                },
-                                selectedRange : 'Previous 30 Days',
-                                direction : "right",
-                                enabled: $scope.liveSettings.trends.daterange2.enabled,
-                                reload: true
-                            }
-                            break;
-                        case "Last 90 Days":
-                            $scope.liveSettings.trends.daterange2 = {
-                                Ranges : {
-                                    'Previous 90 Days': [moment().subtract(180, 'days').startOf("day"), moment().subtract(91, 'days').endOf("day")],
-                                },
-                                selectedRange : 'Previous 90 Days',
-                                direction : "right",
-                                enabled: $scope.liveSettings.trends.daterange2.enabled,
-                                reload: true
-                            }
-                            break;
-                        case "Last 12 Months":
-                            $scope.liveSettings.trends.daterange2 = {
-                                Ranges : {
-                                    'Previous 12 Months': [moment().subtract(2, 'year').startOf("day"), moment().subtract(1, 'year').subtract(1,'day').endOf("day")],
-                                },
-                                selectedRange : 'Previous 12 Months',
-                                direction : "right",
-                                enabled: $scope.liveSettings.trends.daterange2.enabled,
-                                reload: true
-                            }
-                            break;
-                        case "Lifetime":
-                            $scope.liveSettings.trends.daterange2 = {
-                                Ranges : {
-                                    'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
-                                },
-                                selectedRange : 'Lifetime',
-                                direction : "right",
-                                enabled: false,
-                                reload: true
-                            }
-                            break;
-                        case "Previous Month":
-                            $scope.liveSettings.trends.daterange2 = {
-                                Ranges : {
-                                    'Same Month - Previous Year': [moment().subtract(1, 'month').subtract(1, 'year').startOf("month"), moment().subtract(1, 'month').subtract(1, 'year').endOf("month")],
-                                },
-                                selectedRange : 'Same Month - Previous Year',
-                                direction : "right",
-                                enabled: $scope.liveSettings.trends.daterange2.enabled,
-                                reload: true
-                            }
-                            break;
-                        case "This Year-to-Date":
-                            $scope.liveSettings.trends.daterange2 = {
-                                Ranges : {
-                                    'Previous Year-To-Date': [moment().subtract(1,'year').startOf("year"), moment().subtract(1,'year').endOf("day")],
-                                    'Previous Year': [moment().subtract(1,'year').startOf("year"), moment().subtract(1,'year').endOf("year")],
-                                },
-                                selectedRange : 'Previous Year-To-Date',
-                                direction : "right",
-                                enabled: $scope.liveSettings.trends.daterange2.enabled,
-                                reload: true
-                            }
-                            break;
-                        case "Custom Range":
-                            var days = $scope.liveSettings.trends.daterange1.selectedEndDate.diff($scope.liveSettings.trends.daterange1.selectedStartDate, 'days');
 
-                            var start = moment($scope.liveSettings.trends.daterange1.selectedStartDate.format());
-                            var end = moment($scope.liveSettings.trends.daterange1.selectedStartDate.format());
-
-                            $scope.liveSettings.trends.daterange2 = {
-                                Ranges : {
-                                },
-                                selectedRange : 'Custom Range',
-                                selectedStartDate : start.subtract(1 + days, 'day'),
-                                selectedEndDate : end.subtract(1, 'day'),
-                                direction : "right",
-                                enabled: $scope.liveSettings.trends.daterange2.enabled,
-                                reload: true
-                            }
-                            break;
-                    }
+                if (newValue && oldValue && newValue.selectedRange != oldValue.selectedRange) {
+                    $scope.updateTrendsDaterange2(newValue.selectedRange)
                 }
             }, true);
             
