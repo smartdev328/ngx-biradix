@@ -1212,11 +1212,16 @@ define([
                             reload: true
                         }
                         break;
+
                 }
+
+
+                window.setTimeout(function() {
+                    delete $scope.liveSettings.trends.daterange1.daterange2;
+                }, 1000)
             }
 
             $scope.$watch("liveSettings.trends.daterange1", function(newValue,oldValue) {
-
 
                 if (newValue && oldValue && newValue.selectedRange != oldValue.selectedRange) {
                     $scope.updateTrendsDaterange2(newValue.selectedRange)
