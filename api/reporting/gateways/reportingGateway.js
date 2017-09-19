@@ -57,7 +57,13 @@ Routes.post('/:id', function (req, res) {
 
                 },
                 function(callbackp) {
-                    results.trends = {};
+                    individualReportsService.trends(req.user, req.body.reports,req.params.id, (req.body.compids || []), req.body.options.trends, function(trends) {
+                        results.trends = trends;
+                        callbackp();
+                    });
+
+                },
+                function(callbackp) {
                     callbackp();
 
                 },

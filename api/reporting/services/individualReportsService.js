@@ -132,7 +132,8 @@ module.exports = {
                 callback(property_rankings)
             });
         }
-    },
+    }
+    ,
     property_report: function(user,reports,subjectid, comps, options, callback) {
         if (reports.indexOf('property_report')  > -1) {
             var timer = new Date().getTime();
@@ -336,4 +337,68 @@ module.exports = {
             callback(null);
         }
     }
+    ,
+    trends: function(user,reports,subjectid, comps, options, callback) {
+        if (reports.indexOf('trends')  > -1) {
+
+            options.show = {};
+            options.summary = true;
+            options.show.graphs = true;
+            options.show.selectedBedroom = -1;
+            options.show.ner = true;
+            options.show.rent = false;
+            options.show.concessions = false;
+            options.show.occupancy = false;
+            options.show.leased = false;
+            options.show.sclae = "ner";
+            options.show.averages = true;
+            options.compids = comps;
+
+            async.parallel({
+                date1 : function(callbackp) {
+                    var options1 = _.cloneDeep(options);
+                    options1.daterange = options1.daterange1;
+                    delete options1.daterange1;
+                    delete options1.daterange2;
+
+                    bus.query(
+                        settings.DASHBOARD_QUEUE
+                        , {user: user, id: subjectid, options: options1}
+                        , function (data) {
+
+                            callbackp(null,data.dashboard);
+                            data = null;
+                        }
+                    );
+                },
+                date2 : function(callbackp) {
+
+                    if (options.daterange2.enabled === false) {
+                        return callbackp(null,null);
+                    }
+
+                    var options1 = _.cloneDeep(options);
+                    options1.daterange = options1.daterange2;
+                    delete options1.daterange1;
+                    delete options1.daterange2;
+
+                    bus.query(
+                        settings.DASHBOARD_QUEUE
+                        , {user: user, id: subjectid, options: options1}
+                        , function (data) {
+
+                            callbackp(null,data.dashboard);
+                            data = null;
+                        }
+                    );
+                }
+            }, function(err,all) {
+                callback(all);
+            })
+
+        } else {
+            callback(null);
+        }
+    }
+
 }
