@@ -90,7 +90,7 @@
                         </td>
 
                         <td valign="middle" style="text-align: right;padding-right:5px" nowrap>
-                            <i class="fa fa-user" style="font-size:12px;margin-right:2px" ng-if="report.ownerid.toString() == me._id.toString()" uib-tooltip="You shared this report" tooltip-placement="left"></i>
+                            <i class="fa fa-user" style="font-size:12px;margin-right:2px" ng-if="report.ownerid.toString() == me._id.toString()" uib-tooltip="You shared this report" tooltip-append-to-body="true"></i>
                             <a href ng-click="editReport(report)" ng-if="report.ownerid.toString() == me._id.toString() || me.roles[0] == 'Corporate Manager'" uib-tooltip="Edit"><i class="fa fa-pencil" style="font-size:12px"></i></a>
                         </td>
                     </tr>

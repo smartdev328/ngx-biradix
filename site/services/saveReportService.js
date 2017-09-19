@@ -3,13 +3,35 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
 
     var fix = function(daterange) {
         if (daterange) {
+
+            var start = null;
+            if (daterange.selectedStartDate) {
+                if (daterange.selectedStartDate._isUTC) {
+                    start = moment(daterange.selectedStartDate._d).subtract(daterange.selectedStartDate._offset, 'minute').format();;
+                } else {
+                    start = moment(daterange.selectedStartDate._d).format();
+                }
+            }
+
+            var end = null;
+            if (daterange.selectedEndDate) {
+                if (daterange.selectedEndDate._isUTC) {
+                    end = moment(daterange.selectedEndDate._d).subtract(daterange.selectedEndDate._offset, 'minute').format();;
+                } else {
+                    end = moment(daterange.selectedEndDate._d).format();
+                }
+            }
+
             daterange = {
                 selectedRange: daterange.selectedRange,
-                selectedStartDate: daterange.selectedStartDate ? moment(daterange.selectedStartDate._d).format() : null,
-                selectedEndDate: daterange.selectedEndDate ? moment(daterange.selectedEndDate._d).format() : null,
+                selectedStartDate: start,
+                selectedEndDate: end,
                 enabled: daterange.enabled
             }
+
         }
+
+
 
         return daterange;
     }

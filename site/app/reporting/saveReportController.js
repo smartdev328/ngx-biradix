@@ -20,6 +20,8 @@ define([
                 share: currentReport && currentReport.orgid ? true : false
             }
 
+
+
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };

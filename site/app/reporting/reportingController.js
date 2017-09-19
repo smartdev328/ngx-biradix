@@ -102,6 +102,8 @@ define([
                         selectedStartDate: $scope.liveSettings[key].daterange2.selectedStartDate,
                         selectedEndDate: $scope.liveSettings[key].daterange2.selectedEndDate
                     }
+
+                    $scope.updateTrendsDaterange2($scope.liveSettings[key].daterange1.selectedRange);
                 }
             }
 
@@ -1132,6 +1134,7 @@ define([
                             enabled: $scope.liveSettings.trends.daterange2.enabled,
                             reload: true
                         }
+
                         break;
                     case "Last 12 Months":
                         $scope.liveSettings.trends.daterange2 = {
