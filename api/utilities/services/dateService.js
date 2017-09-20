@@ -1,5 +1,24 @@
 var moment = require('moment')
+var WEEK = 7 * 24 * 60 * 60 * 1000;
+
 module.exports = {
+    getAllMondaysInDateRange : function(daterange, offset) {
+        var range = this.convertRangeToParts(daterange,offset);
+
+        var monday = parseInt(moment(range.start).utc().add(offset, "minute").day("Monday").startOf("day").subtract(offset, "minute").format('x'))
+
+
+        var results = [];
+
+        while (monday < moment(range.end).format("x")) {
+            results.push(monday);
+            monday += WEEK;
+        }
+
+        return results;
+
+    },
+
     convertRangeToParts: function (daterange,offset) {
 
         daterange = daterange || {daterange:'90 Days'};

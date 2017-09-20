@@ -1,5 +1,6 @@
 var PropertyService = require('../../properties/services/propertyService')
 var PropertyHelperService = require('../../properties/services/propertyHelperService')
+var dateService = require('../../utilities/services/dateService')
 var _ = require("lodash")
 var bus = require('../../../config/queues')
 var settings = require('../../../config/settings')
@@ -366,7 +367,9 @@ module.exports = {
                         , {user: user, id: subjectid, options: options1}
                         , function (data) {
 
-                            callbackp(null,data.dashboard);
+                            var mondays = dateService.getAllMondaysInDateRange(options1.daterange, options1.offset);
+
+                            callbackp(null,{mondays: mondays, dashboard: data.dashboard});
                             data = null;
                         }
                     );
@@ -387,12 +390,17 @@ module.exports = {
                         , {user: user, id: subjectid, options: options1}
                         , function (data) {
 
-                            callbackp(null,data.dashboard);
+                            var mondays = dateService.getAllMondaysInDateRange(options1.daterange, options1.offset);
+
+                            callbackp(null,{mondays: mondays, dashboard: data.dashboard});
                             data = null;
                         }
                     );
                 }
             }, function(err,all) {
+
+                //TODO: Get only the points that have at least 1 point between the 4 lines
+
                 callback(all);
             })
 
