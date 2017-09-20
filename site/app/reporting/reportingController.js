@@ -1208,7 +1208,7 @@ define([
                             selectedStartDate : $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate || start.subtract(1 + days, 'day'),
                             selectedEndDate : $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate || end.subtract(1, 'day'),
                             direction : "right",
-                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            enabled: false,
                             reload: true
                         }
                         break;
