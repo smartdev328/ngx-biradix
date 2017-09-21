@@ -2,6 +2,7 @@ var PropertyService = require('../../properties/services/propertyService')
 var PropertyHelperService = require('../../properties/services/propertyHelperService')
 var dateService = require('../../utilities/services/dateService')
 var _ = require("lodash")
+var moment = require("moment")
 var bus = require('../../../config/queues')
 var settings = require('../../../config/settings')
 var async = require("async");
@@ -400,6 +401,84 @@ module.exports = {
             }, function(err,all) {
 
                 //TODO: Get only the points that have at least 1 point between the 4 lines
+                var max = all.date1.mondays.length;
+
+                if (options.daterange2.enabled !== false && all.date2.mondays.length > max) {
+                    max = all.date2.mondays.length;
+                }
+
+                let points = [];
+                let i = 0;
+                let point = {};
+                while(i < max) {
+                    point = {}
+                    if (all.date1.mondays.length > i) {
+                        point.day1date = all.date1.mondays[i];
+                        point.day1datef = moment(point.day1date).format();
+                    }
+
+                    if (options.daterange2.enabled !==false && all.date2.mondays.length > i) {
+                        point.day2date = all.date2.mondays[i];
+                        point.day2datef = moment(point.day2date).format();
+                    }
+                    i++;
+                    points.push(point);
+                }
+
+                let d;
+                points.forEach(p=> {
+                    if (p.day1date) {
+                        if (all.date1.dashboard.points.averages.ner && all.date1.dashboard.points.averages.ner.length > 0) {
+
+                            d = _.find(all.date1.dashboard.points.averages.ner, x => {
+                                return x.d == p.day1date
+                            })
+                            if (d) {
+                                p.day1neraverages = d.v;
+                            }
+                        }
+
+                        if (all.date1.dashboard.points[subjectid] && all.date1.dashboard.points[subjectid].ner.length > 0) {
+                            d = _.find(all.date1.dashboard.points[subjectid].ner, x => {
+                                return x.d == p.day1date
+                            })
+                            if (d) {
+                                p.day1neraversubject = d.v;
+                            }
+                        }
+                    }
+
+                    if (p.day2date) {
+                        if (all.date2.dashboard.points.averages.ner && all.date2.dashboard.points.averages.ner.length > 0) {
+                            d = _.find(all.date2.dashboard.points.averages.ner, x => {
+                                return x.d == p.day2date
+                            })
+
+                            if (d) {
+                                p.day2neraverages = d.v;
+                            }
+                        }
+
+                        if (all.date2.dashboard.points[subjectid] && all.date2.dashboard.points[subjectid].ner.length > 0) {
+                            d = _.find(all.date2.dashboard.points[subjectid].ner, x => {
+                                return x.d == p.day2date
+                            })
+                            if (d) {
+                                p.day2neraversubject = d.v;
+                            }
+                        }
+                    }
+                })
+
+                _.remove(points, x=> {
+                    var remove = typeof x.day1neraverages == 'undefined' && typeof x.day1neraversubject == 'undefined'
+                        && typeof x.day2neraverages == 'undefined' && typeof x.day2neraversubject == 'undefined';
+                    return remove;
+                });
+
+                delete all.date1.mondays;
+                delete all.date2.mondays;
+                all.dates = points;
 
                 callback(all);
             })
