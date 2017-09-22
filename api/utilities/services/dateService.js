@@ -61,7 +61,7 @@ module.exports = {
             case "Lifetime":
                 return {start: moment().utc().add(offset,"minute").add(-30, "year").startOf("day").subtract(offset,"minute").format(), end: moment().utc().add(offset,"minute").endOf("day").subtract(offset,"minute").format()}
             default:
-                return {start: daterange.start, end: daterange.end}
+                return {start: daterange.start, end: moment(daterange.end).utc().add(offset,"minute").endOf("day").subtract(offset,"minute").format()}
         }
     }
 }
