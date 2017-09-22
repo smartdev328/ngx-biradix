@@ -44,8 +44,8 @@ define([
                             var d1subject = {name: $scope.report.date1.dashboard.property.name, data:[]};
                             var d1scomps = {name: 'Comp Average', data:[]};
 
-                            var d2subject = {name: $scope.report.date1.dashboard.property.name + ' Compare', data:[]};
-                            var d2scomps = {name: 'Comp Average Compare', data:[]};
+                            var d2subject = {name: $scope.report.date1.dashboard.property.name + ' Compare', data:[],dashStyle: 'longdash'};
+                            var d2scomps = {name: 'Comp Average Compare', data:[],dashStyle: 'longdash'};
 
                             $scope.report.dates.forEach(function(d) {
                                 d1subject.data.push(d.day1nersubject ? {y: Math.round(d.day1nersubject * 100) / 100, custom: d.day1date} : null)

@@ -400,6 +400,7 @@ module.exports = {
                 }
             }, function(err,all) {
 
+                // pick series with the most number of mondays for maximum number of joined datapoints
                 var max = all.date1.mondays.length;
 
                 if (options.daterange2.enabled !== false && all.date2.mondays.length > max) {
@@ -409,14 +410,17 @@ module.exports = {
                 let points = [];
                 let i = 0;
                 let point = {};
+
                 while(i < max) {
                     point = {}
                     if (all.date1.mondays.length > i) {
+                        console.log("Day 1", i);
                         point.day1date = all.date1.mondays[i];
                         point.day1datef = moment(point.day1date).format();
                     }
 
                     if (options.daterange2.enabled !==false && all.date2.mondays.length > i) {
+                        console.log("Day 2", i);
                         point.day2date = all.date2.mondays[i];
                         point.day2datef = moment(point.day2date).format();
                     }
