@@ -790,7 +790,7 @@ define([
             if (load || ($scope.reportType == "single" && oldReportType != $scope.reportType)) {
                 $scope.loadSingle(function() {
                     if (callback) {
-                        callback();
+                        window.setTimeout(callback,600)
                     }
                 });
             } else {

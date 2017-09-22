@@ -400,7 +400,6 @@ module.exports = {
                 }
             }, function(err,all) {
 
-                //TODO: Get only the points that have at least 1 point between the 4 lines
                 var max = all.date1.mondays.length;
 
                 if (options.daterange2.enabled !== false && all.date2.mondays.length > max) {
@@ -433,6 +432,7 @@ module.exports = {
                             d = _.find(all.date1.dashboard.points.averages.ner, x => {
                                 return x.d == p.day1date
                             })
+
                             if (d) {
                                 p.day1neraverages = d.v;
                             }
@@ -443,7 +443,7 @@ module.exports = {
                                 return x.d == p.day1date
                             })
                             if (d) {
-                                p.day1neraversubject = d.v;
+                                p.day1nersubject = d.v;
                             }
                         }
                     }
@@ -464,20 +464,23 @@ module.exports = {
                                 return x.d == p.day2date
                             })
                             if (d) {
-                                p.day2neraversubject = d.v;
+                                p.day2nersubject = d.v;
                             }
                         }
                     }
                 })
 
                 _.remove(points, x=> {
-                    var remove = typeof x.day1neraverages == 'undefined' && typeof x.day1neraversubject == 'undefined'
-                        && typeof x.day2neraverages == 'undefined' && typeof x.day2neraversubject == 'undefined';
+                    var remove = typeof x.day1neraverages == 'undefined' && typeof x.day1nersubject == 'undefined'
+                        && typeof x.day2neraverages == 'undefined' && typeof x.day2nersubject == 'undefined';
                     return remove;
                 });
 
                 delete all.date1.mondays;
-                delete all.date2.mondays;
+
+                if (all.date2) {
+                    delete all.date2.mondays;
+                }
                 all.dates = points;
 
                 callback(all);
