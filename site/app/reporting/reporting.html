@@ -90,7 +90,7 @@
                         </td>
 
                         <td valign="middle" style="text-align: right;padding-right:5px" nowrap>
-                            <i class="fa fa-user" style="font-size:12px;margin-right:2px" ng-if="report.ownerid.toString() == me._id.toString()" uib-tooltip="You shared this report" tooltip-placement="left"></i>
+                            <i class="fa fa-user" style="font-size:12px;margin-right:2px" ng-if="report.ownerid.toString() == me._id.toString()" uib-tooltip="You shared this report" tooltip-append-to-body="true"></i>
                             <a href ng-click="editReport(report)" ng-if="report.ownerid.toString() == me._id.toString() || me.roles[0] == 'Corporate Manager'" uib-tooltip="Edit"><i class="fa fa-pencil" style="font-size:12px"></i></a>
                         </td>
                     </tr>
@@ -175,7 +175,7 @@
                         }
                     </style>
                     <br clear="all">
-                    <uib-accordion ng-if="(rankings || rankingsSummary || property_report || concession || property_status)" class="hidden-print" style="margin-top:15px" close-others="false">
+                    <uib-accordion ng-if="(rankings || rankingsSummary || property_report || concession || property_status || trends)" class="hidden-print" style="margin-top:15px" close-others="false">
                         <div ng-if="concession" uib-accordion-group class="panel-default" is-open="temp.concession_open">
                             <uib-accordion-heading>
                                 <Div>
@@ -356,6 +356,39 @@
                                 </div>
                             </div>
                         </div>
+                        <div ng-if="trends" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.trends_open">
+                            <uib-accordion-heading>
+                                <Div>
+                                    <i class="fa fa-gear fa-2px"></i> Preferences: Trend Analysis <i ng-class="{fa : true, 'fa-chevron-right': !temp.trends_open, 'fa-chevron-down': temp.trends_open, 'fa-2px': true}"></i>
+                                </Div>
+                            </uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Date Range<br>
+                                    <daterange-picker daterange="liveSettings.trends.daterange1"></daterange-picker>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Compare To<br>
+                                    <div ng-if="liveSettings.trends.daterange1.selectedRange == 'Lifetime'">
+                                        <b><i>No Compare</i></b>
+                                    </div>
+                                    <table style="width:100%" ng-if="liveSettings.trends.daterange1.selectedRange != 'Lifetime'">
+                                        <tr>
+                                            <Td>
+                                                <input type="checkbox" ng-model="liveSettings.trends.daterange2.enabled">
+                                            </Td>
+                                            <Td style="width:100%;padding-left:5px">
+                                                <daterange-picker daterange="liveSettings.trends.daterange2"></daterange-picker>
+                                            </Td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Property Metrics<br>
+                                    <filter-list options="temp.showTrendsOptions" items="temp.showTrendsItems"></filter-list>
+                                </div>
+                            </div>
+                        </div>
                         <div ng-if="property_status" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.property_status_open">
                             <uib-accordion-heading>
                                 <Div>
@@ -412,6 +445,8 @@
             <locationamenities-report class="report" ng-if="!reportLoading && reports && reports.location_amenities" report="reports.location_amenities" subject="selected.Property" comps="selected.Comps"></locationamenities-report>
 
             <fees-report class="report" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
+
+            <trends-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="runSettings.trends"></trends-report>
 
             <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="liveSettings.propertyStatus.show"></property-status>
         </div>

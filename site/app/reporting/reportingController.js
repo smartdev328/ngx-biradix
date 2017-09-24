@@ -8,6 +8,7 @@ define([
     '../../components/reports/propertyRankingsSummary.js',
     '../../components/reports/propertyStatus.js',
     '../../components/reports/propertyReport.js',
+    '../../components/reports/trendsReport.js',
     '../../components/reports/concession.js'
 ], function (app) {
 
@@ -31,14 +32,6 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
 
         $scope.reportItems = []
-        $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "concession", name: "Concessions", selected:$stateParams.property == "2", group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
-        $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
 
         $scope.localLoading = false;
 
@@ -46,9 +39,30 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
 
+                $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "concession", name: "Concessions", selected:$stateParams.property == "2", group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
+
+                if ($rootScope.me.roles.indexOf('Site Admin') > -1) {
+                    $scope.reportItems.push({
+                        id: "trends",
+                        name: "Trend Analysis",
+                        selected: false,
+                        group: "Individual Reports",
+                        type: "single"
+                    });
+                }
+                $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
+
+
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
                 } else {
+                    $scope.configureTrendsOptions();
                     $scope.configurePropertyReportOptions();
                     $scope.configureRankingsOptions();
                     $scope.configureRankingsSummaryOptions();
@@ -89,10 +103,28 @@ define([
                     $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
                     $scope.liveSettings[key].daterange.reload = true;
                 }
+
+                if ($scope.liveSettings[key].daterange1) {
+                    $scope.liveSettings[key].daterange1 = $scope.defaultTrendsDateRange1($scope.liveSettings[key].daterange1.selectedRange,$scope.liveSettings[key].daterange1.selectedStartDate,$scope.liveSettings[key].daterange1.selectedEndDate)
+                    $scope.liveSettings[key].daterange1.reload = true;
+
+                    $scope.liveSettings[key].daterange1.daterange2 = {
+                        selectedRange: $scope.liveSettings[key].daterange2.selectedRange,
+                        selectedStartDate: $scope.liveSettings[key].daterange2.selectedStartDate,
+                        selectedEndDate: $scope.liveSettings[key].daterange2.selectedEndDate,
+                        enabled: $scope.liveSettings[key].daterange2.enabled
+                    }
+
+                    $scope.updateTrendsDaterange2($scope.liveSettings[key].daterange1.selectedRange);
+                }
             }
 
             $scope.reportsChanged(true, function() {
-                $scope.run();
+                if($scope.compIds && $scope.compIds.length) {
+                    $scope.run()
+                } else {
+                    $scope.waitForComps = true;
+                }
             });
 
 
@@ -294,7 +326,8 @@ define([
                 })
                 $scope.localLoading = true;
 
-                if ($cookies.get("compIds")) {
+                if ($cookies.get("compIds") || $scope.waitForComps === true) {
+                    delete $scope.waitForComps;
                     $scope.run();
                 }
 
@@ -439,6 +472,12 @@ define([
                 })
             }
 
+            if ($scope.reportIds.indexOf("trends") > -1) {
+                $scope.temp.showTrendsItems.forEach(function (f) {
+                    $scope.liveSettings.trends.show[f.id] = f.selected;
+                })
+            }
+
         }
 
         $scope.UItoSettingsMultiple = function() {
@@ -464,18 +503,22 @@ define([
 
             $scope.UItoSettings();
 
+
+            $scope.runSettings = _.cloneDeep($scope.liveSettings);
+            $scope.cleanSettings = $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds);
+
             if ($scope.reportIds.indexOf("property_report") > -1) {
                 options.property_report = {
-                    summary: $scope.liveSettings.dashboardSettings.summary,
-                    bedrooms: $scope.liveSettings.dashboardSettings.selectedBedroom,
+                    summary: $scope.cleanSettings.dashboardSettings.summary,
+                    bedrooms: $scope.cleanSettings.dashboardSettings.selectedBedroom,
                     daterange: {
-                        daterange: $scope.liveSettings.dashboardSettings.daterange.selectedRange,
-                        start: $scope.liveSettings.dashboardSettings.daterange.selectedStartDate,
-                        end: $scope.liveSettings.dashboardSettings.daterange.selectedEndDate
+                        daterange: $scope.cleanSettings.dashboardSettings.daterange.selectedRange,
+                        start: $scope.cleanSettings.dashboardSettings.daterange.selectedStartDate,
+                        end: $scope.cleanSettings.dashboardSettings.daterange.selectedEndDate
                     },
                     show: {
-                        graphs: $scope.liveSettings.profileSettings.graphs
-                        , scale: $scope.liveSettings.dashboardSettings.nerScale
+                        graphs: $scope.cleanSettings.profileSettings.graphs
+                        , scale: $scope.cleanSettings.dashboardSettings.nerScale
                     },
                     offset: moment().utcOffset()
                 }
@@ -484,18 +527,33 @@ define([
             if ($scope.reportIds.indexOf("concession") > -1) {
                 options.concession = {
                     daterange: {
-                        daterange: $scope.liveSettings.concession.daterange.selectedRange,
-                        start: $scope.liveSettings.concession.daterange.selectedStartDate,
-                        end: $scope.liveSettings.concession.daterange.selectedEndDate
+                        daterange: $scope.cleanSettings.concession.daterange.selectedRange,
+                        start: $scope.cleanSettings.concession.daterange.selectedStartDate,
+                        end: $scope.cleanSettings.concession.daterange.selectedEndDate
                     },
                     offset: moment().utcOffset()
                 }
             }
 
+            if ($scope.reportIds.indexOf("trends") > -1) {
+                options.trends = {
+                    daterange1: {
+                        daterange: $scope.cleanSettings.trends.daterange1.selectedRange,
+                        start: $scope.cleanSettings.trends.daterange1.selectedStartDate,
+                        end: $scope.cleanSettings.trends.daterange1.selectedEndDate
+                    },
+                    daterange2: {
+                        daterange: $scope.cleanSettings.trends.daterange2.selectedRange,
+                        start: $scope.cleanSettings.trends.daterange2.selectedStartDate,
+                        end: $scope.cleanSettings.trends.daterange2.selectedEndDate,
+                        enabled: $scope.cleanSettings.trends.daterange2.enabled
+                    },
+                    offset: moment().utcOffset(),
+                    show: $scope.cleanSettings.trends.show
+                }
 
+            }
 
-
-            $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
             $reportingService.reports(
                 $scope.compIds
@@ -504,6 +562,7 @@ define([
                 ,options
             ).then(function(response) {
                 //Run these after the reports are ran
+                $scope.configureTrendsOptions();
                 $scope.configurePropertyReportOptions();
                 $scope.configureRankingsOptions();
                 $scope.configureRankingsSummaryOptions();
@@ -607,7 +666,7 @@ define([
                 type: $scope.reportType,
                 propertyIds:  encodeURIComponent($scope.propertyIds),
                 showFile: showFile,
-                settings: $scope.runSettings
+                settings: $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds)
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
@@ -689,6 +748,7 @@ define([
 
         $scope.reportsChanged = function(load, callback) {
 
+            $scope.configureTrendsOptions();
             $scope.configurePropertyReportOptions();
             $scope.configureRankingsOptions();
             $scope.configureRankingsSummaryOptions();
@@ -721,6 +781,7 @@ define([
             $scope.rankings = reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = reportIds.indexOf("property_report") > -1;
             $scope.concession = reportIds.indexOf("concession") > -1;
+            $scope.trends = reportIds.indexOf("trends") > -1;
 
 
 
@@ -995,6 +1056,198 @@ define([
         })
 
 
+            ////////////////////// Property Report ////////////////////////////////
+
+            $scope.configureTrendsOptions = function() {
+                if (!$scope.liveSettings.trends) {
+                    $scope.resetTrendsSettings(false)
+                }
+
+                $scope.temp.showTrendsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+                $scope.temp.showTrendsItems = [
+                    {id: "occupancy", name: "Occupancy %", selected: $scope.liveSettings.trends.show.occupancy},
+                    {id: "leased", name: "Leased %", selected: $scope.liveSettings.trends.show.leased},
+                    {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.trends.show.renewal},
+                    {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.trends.show.weekly},
+                    {id: "mersqft", name: "Rent / Sqft", selected: $scope.liveSettings.trends.show.mersqft},
+                    {id: "concessions", name: "Total Concessions", selected: $scope.liveSettings.trends.show.concessions},
+                    {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.trends.show.runrate},
+                    {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.trends.show.runratesqft},
+                    {id: "ner", name: "Net Effective Rent", selected: $scope.liveSettings.trends.show.ner},
+                    {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.trends.show.nersqft},
+                ];
+
+            }
+
+            $scope.defaultTrendsDateRange1 = function(selectedRange, selectedStartDate, selectedEndDate) {
+                return {
+                    Ranges : {
+                        'Last 30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
+                        'Last 90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
+                        'Last 12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
+                        'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
+                        'Previous Month': [moment().subtract(1, 'month').startOf("month"), moment().subtract(1, 'month').endOf("month")],
+                        'This Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
+                    },
+                    selectedRange : selectedRange,
+                    selectedStartDate : selectedStartDate,
+                    selectedEndDate : selectedEndDate,
+                    direction : "right"
+                }
+            }
+
+            $scope.resetTrendsSettings = function(rebind) {
+
+                $scope.liveSettings.trends = {
+                    show: {
+                        occupancy :true,
+                        leased :false,
+                        renewal :false,
+                        weekly : false,
+                        mersqft :false,
+                        concessions : false,
+                        runrate: false,
+                        runratesqft :false,
+                        ner : true,
+                        nersqft :true
+                    }
+                }
+
+                $scope.liveSettings.trends.daterange1 = $scope.defaultTrendsDateRange1('Last 90 Days', null, null);
+
+                $scope.liveSettings.trends.daterange2 = {enabled: true}
+                $scope.updateTrendsDaterange2('Last 90 Days');
+
+                if (rebind) {
+                    $scope.liveSettings.trends.daterange1.reload = true;
+                    $scope.liveSettings.trends.daterange2.reload = true;
+                    $scope.configureTrendsOptions();
+                }
+            }
+
+            $scope.updateTrendsDaterange2 = function(selectedRange) {
+                $scope.liveSettings.trends.daterange1.daterange2 = $scope.liveSettings.trends.daterange1.daterange2 || {};
+
+                switch (selectedRange) {
+                    case "Last 30 Days":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous 30 Days': [moment().subtract(60, 'days').startOf("day"), moment().subtract(31, 'days').endOf("day")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous 30 Days',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "Last 90 Days":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous 90 Days': [moment().subtract(180, 'days').startOf("day"), moment().subtract(91, 'days').endOf("day")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous 90 Days',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+
+                        break;
+                    case "Last 12 Months":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous 12 Months': [moment().subtract(2, 'year').startOf("day"), moment().subtract(1, 'year').subtract(1,'day').endOf("day")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous 12 Months',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "Lifetime":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
+                            },
+                            selectedRange : 'Lifetime',
+                            direction : "right",
+                            enabled: false,
+                            reload: true
+                        }
+                        break;
+                    case "Previous Month":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Same Month - Previous Year': [moment().subtract(1, 'month').subtract(1, 'year').startOf("month"), moment().subtract(1, 'month').subtract(1, 'year').endOf("month")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Same Month - Previous Year',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "This Year-to-Date":
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                                'Previous Year-To-Date': [moment().subtract(1,'year').startOf("year"), moment().subtract(1,'year').endOf("day")],
+                                'Previous Year': [moment().subtract(1,'year').startOf("year"), moment().subtract(1,'year').endOf("year")],
+                            },
+                            selectedRange : $scope.liveSettings.trends.daterange1.daterange2.selectedRange || 'Previous Year-To-Date',
+                            selectedStartDate: $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate,
+                            selectedEndDate: $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate,
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange2.enabled,
+                            reload: true
+                        }
+                        break;
+                    case "Custom Range":
+
+                        if(typeof $scope.liveSettings.trends.daterange1.selectedStartDate == 'string') {
+                            $scope.liveSettings.trends.daterange1.selectedStartDate = moment($scope.liveSettings.trends.daterange1.selectedStartDate);
+                            $scope.liveSettings.trends.daterange1.selectedEndDate = moment($scope.liveSettings.trends.daterange1.selectedEndDate);
+                        }
+
+                        var days = $scope.liveSettings.trends.daterange1.selectedEndDate.diff($scope.liveSettings.trends.daterange1.selectedStartDate, 'days');
+
+                        var start = moment($scope.liveSettings.trends.daterange1.selectedStartDate.format());
+                        var end = moment($scope.liveSettings.trends.daterange1.selectedStartDate.format());
+
+                        $scope.liveSettings.trends.daterange2 = {
+                            Ranges : {
+                            },
+                            selectedRange : 'Custom Range',
+                            selectedStartDate : $scope.liveSettings.trends.daterange1.daterange2.selectedStartDate || start.subtract(1 + days, 'day'),
+                            selectedEndDate : $scope.liveSettings.trends.daterange1.daterange2.selectedEndDate || end.subtract(1, 'day'),
+                            direction : "right",
+                            enabled: $scope.liveSettings.trends.daterange1.daterange2.enabled || false,
+                            reload: true
+                        }
+                        break;
+
+                }
+
+
+                window.setTimeout(function() {
+                    delete $scope.liveSettings.trends.daterange1.daterange2;
+                }, 1000)
+            }
+
+            $scope.$watch("liveSettings.trends.daterange1", function(newValue,oldValue) {
+
+                if (newValue && oldValue && newValue.selectedRange != oldValue.selectedRange) {
+                    $scope.updateTrendsDaterange2(newValue.selectedRange)
+                }
+            }, true);
+            
         ////////////////////// Property Report ////////////////////////////////
 
         $scope.configurePropertyReportOptions = function() {

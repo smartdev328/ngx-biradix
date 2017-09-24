@@ -9,29 +9,7 @@ define([
             ga('set', 'page', "/saveReport");
             ga('send', 'pageview');
 
-            var copyOfSettings = _.cloneDeep(settings);
-
-            for (var k in copyOfSettings) {
-                if (copyOfSettings[k].daterange) {
-                    copyOfSettings[k].daterange = {
-                        selectedRange: copyOfSettings[k].daterange.selectedRange,
-                        selectedStartDate: copyOfSettings[k].daterange.selectedStartDate ? moment(copyOfSettings[k].daterange.selectedStartDate._d).format() : null,
-                        selectedEndDate: copyOfSettings[k].daterange.selectedEndDate ? moment(copyOfSettings[k].daterange.selectedEndDate._d).format() : null
-                    }
-                }
-
-                if (reportIds.indexOf("property_report") > -1 &&
-                    (
-                        k == "dashboardSettings" || k == "profileSettings" || k == "showProfile"
-                    )) {}
-                else if (reportIds.indexOf("concession") > -1 && k == "concession") {}
-                else if (reportIds.indexOf("property_rankings_summary") > -1 && k == "rankingsSummary") {}
-                else if (reportIds.indexOf("property_rankings") > -1 && k == "rankings") {}
-                else if (reportIds.indexOf("property_status") > -1 && k == "propertyStatus") {}
-                else {
-                    delete copyOfSettings[k];
-                }
-            }
+            var copyOfSettings = $saveReportService.cleanSettings(settings, reportIds);
 
             $scope.report = {
                 name: currentReport ? currentReport.name : '',
@@ -41,6 +19,8 @@ define([
                 type: type,
                 share: currentReport && currentReport.orgid ? true : false
             }
+
+
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');

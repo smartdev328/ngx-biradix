@@ -1,6 +1,8 @@
 var PropertyService = require('../../properties/services/propertyService')
 var PropertyHelperService = require('../../properties/services/propertyHelperService')
+var dateService = require('../../utilities/services/dateService')
 var _ = require("lodash")
+var moment = require("moment")
 var bus = require('../../../config/queues')
 var settings = require('../../../config/settings')
 var async = require("async");
@@ -132,7 +134,8 @@ module.exports = {
                 callback(property_rankings)
             });
         }
-    },
+    }
+    ,
     property_report: function(user,reports,subjectid, comps, options, callback) {
         if (reports.indexOf('property_report')  > -1) {
             var timer = new Date().getTime();
@@ -336,4 +339,160 @@ module.exports = {
             callback(null);
         }
     }
+    ,
+    trends: function(user,reports,subjectid, comps, options, callback) {
+        if (reports.indexOf('trends')  > -1) {
+
+            options.show = {};
+            options.summary = true;
+            options.show.graphs = true;
+            options.show.selectedBedroom = -1;
+            options.show.ner = true;
+            options.show.rent = false;
+            options.show.concessions = false;
+            options.show.occupancy = false;
+            options.show.leased = false;
+            options.show.sclae = "ner";
+            options.show.averages = true;
+            options.compids = comps;
+
+            async.parallel({
+                date1 : function(callbackp) {
+                    var options1 = _.cloneDeep(options);
+                    options1.daterange = options1.daterange1;
+                    delete options1.daterange1;
+                    delete options1.daterange2;
+
+                    bus.query(
+                        settings.DASHBOARD_QUEUE
+                        , {user: user, id: subjectid, options: options1}
+                        , function (data) {
+
+                            var mondays = dateService.getAllMondaysInDateRange(options1.daterange, options1.offset);
+
+                            callbackp(null,{mondays: mondays, dashboard: data.dashboard});
+                            data = null;
+                        }
+                    );
+                },
+                date2 : function(callbackp) {
+
+                    if (options.daterange2.enabled === false) {
+                        return callbackp(null,null);
+                    }
+
+                    var options1 = _.cloneDeep(options);
+                    options1.daterange = options1.daterange2;
+                    delete options1.daterange1;
+                    delete options1.daterange2;
+
+                    bus.query(
+                        settings.DASHBOARD_QUEUE
+                        , {user: user, id: subjectid, options: options1}
+                        , function (data) {
+
+                            var mondays = dateService.getAllMondaysInDateRange(options1.daterange, options1.offset);
+
+                            callbackp(null,{mondays: mondays, dashboard: data.dashboard});
+                            data = null;
+                        }
+                    );
+                }
+            }, function(err,all) {
+
+                // pick series with the most number of mondays for maximum number of joined datapoints
+                var max = all.date1.mondays.length;
+
+                if (options.daterange2.enabled !== false && all.date2.mondays.length > max) {
+                    max = all.date2.mondays.length;
+                }
+
+                let points = [];
+                let i = 0;
+                let point = {};
+
+                while(i < max) {
+                    point = {}
+                    if (all.date1.mondays.length > i) {
+                        console.log("Day 1", i);
+                        point.day1date = all.date1.mondays[i];
+                        point.day1datef = moment(point.day1date).format();
+                    }
+
+                    if (options.daterange2.enabled !==false && all.date2.mondays.length > i) {
+                        console.log("Day 2", i);
+                        point.day2date = all.date2.mondays[i];
+                        point.day2datef = moment(point.day2date).format();
+                    }
+                    i++;
+                    points.push(point);
+                }
+
+                let d;
+                points.forEach(p=> {
+                    if (p.day1date) {
+                        if (all.date1.dashboard.points.averages.ner && all.date1.dashboard.points.averages.ner.length > 0) {
+
+                            d = _.find(all.date1.dashboard.points.averages.ner, x => {
+                                return x.d == p.day1date
+                            })
+
+                            if (d) {
+                                p.day1neraverages = d.v;
+                            }
+                        }
+
+                        if (all.date1.dashboard.points[subjectid] && all.date1.dashboard.points[subjectid].ner.length > 0) {
+                            d = _.find(all.date1.dashboard.points[subjectid].ner, x => {
+                                return x.d == p.day1date
+                            })
+                            if (d) {
+                                p.day1nersubject = d.v;
+                            }
+                        }
+                    }
+
+                    if (p.day2date) {
+                        if (all.date2.dashboard.points.averages.ner && all.date2.dashboard.points.averages.ner.length > 0) {
+                            d = _.find(all.date2.dashboard.points.averages.ner, x => {
+                                return x.d == p.day2date
+                            })
+
+                            if (d) {
+                                p.day2neraverages = d.v;
+                            }
+                        }
+
+                        if (all.date2.dashboard.points[subjectid] && all.date2.dashboard.points[subjectid].ner.length > 0) {
+                            d = _.find(all.date2.dashboard.points[subjectid].ner, x => {
+                                return x.d == p.day2date
+                            })
+                            if (d) {
+                                p.day2nersubject = d.v;
+                            }
+                        }
+                    }
+                })
+
+                _.remove(points, x=> {
+                    var remove = typeof x.day1neraverages == 'undefined' && typeof x.day1nersubject == 'undefined'
+                        && typeof x.day2neraverages == 'undefined' && typeof x.day2nersubject == 'undefined';
+                    return remove;
+                });
+
+                delete all.date1.mondays;
+
+                if (all.date2) {
+                    delete all.date2.mondays;
+                }
+                all.dates = points;
+
+                callback(all);
+            })
+
+        } else {
+            callback(null);
+        }
+    }
+
 }
