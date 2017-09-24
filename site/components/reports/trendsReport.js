@@ -85,11 +85,12 @@ define([
                             var d2subject = {name: "(" + d2 + ") " + $scope.report.date1.dashboard.property.name, data:[],dashStyle: 'longdash', color: '#7CB5EC'};
                             var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'longdash', color: "#434348"};
 
+                            var metric = 'ner';
                             $scope.report.dates.forEach(function(d) {
-                                d1subject.data.push(d.day1nersubject ? {y: Math.round(d.day1nersubject * 100) / 100, custom: d.day1date} : null)
-                                d1scomps.data.push(d.day1neraverages ? {y: Math.round(d.day1neraverages * 100) / 100, custom: d.day1date} : null)
-                                d2subject.data.push(d.day2nersubject ? {y: Math.round(d.day2nersubject * 100) / 100, custom: d.day2date} : null)
-                                d2scomps.data.push(d.day2neraverages ? {y: Math.round(d.day2neraverages * 100) / 100, custom: d.day2date} : null)
+                                d1subject.data.push(d.points[metric].day1subject ? {y: Math.round(d.points[metric].day1subject * 100) / 100, custom: d.day1date} : null)
+                                d1scomps.data.push(d.points[metric].day1averages ? {y: Math.round(d.points[metric].day1averages * 100) / 100, custom: d.day1date} : null)
+                                d2subject.data.push(d.points[metric].day2subject ? {y: Math.round(d.points[metric].day2subject * 100) / 100, custom: d.day2date} : null)
+                                d2scomps.data.push(d.points[metric].day2averages ? {y: Math.round(d.points[metric].day2averages * 100) / 100, custom: d.day2date} : null)
 
                             })
 
