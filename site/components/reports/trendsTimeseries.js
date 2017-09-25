@@ -191,6 +191,7 @@ define([
                                     text: '',
                                 },
                                 xAxis: {
+                                    crosshair: true,
                                     allowDecimals: false,
                                     categries: [0, 1,2, 3, 4, 5, 6, 7, 8, 9 , 10],
                                     labels: {
@@ -277,6 +278,24 @@ define([
                             }
                             else {
                                 chart = el2.highcharts(data);
+
+                                el2.bind('mousemove touchmove touchstart', function (e) {
+                                    var chart,
+                                        point,
+                                        i,
+                                        event;
+
+                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                        chart = Highcharts.charts[i];
+                                        event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                                        point = chart.series[0].searchPoint(event, true); // Get the hovered point
+
+                                        if (point) {
+                                            point.onMouseOver();
+                                            point.series.chart.xAxis[0].drawCrosshair(e, point);
+                                        }
+                                    }
+                                });
                             }
 
                             if (typeof $scope.options.min != 'undefined') {
@@ -291,8 +310,9 @@ define([
 
 
             },
-            template: '<div ng-style="{\'height\': $scope.options.height + \'px\', \'width\': $scope.options.printWidth + \'px\'}" class="visible-print-block"></div>\n' +
-            '        <div ng-style="{\'height\': $scope.options.height + \'px\'}" class="hidden-print-block"></div>'
+            template:
+                `<div ng-style="{'height': options.height + 'px', 'width': options.printWidth + 'px'}" class="visible-print-block"></div>
+                    <div ng-style="{'height': options.height + 'px'}" class="hidden-print-block"></div>`
         };
     })
 })
