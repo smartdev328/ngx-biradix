@@ -433,8 +433,13 @@ module.exports = {
                     points.push(point);
                 }
 
-                extractSeries(points, all, subjectid, 'ner');
-                extractSeries(points, all, subjectid, 'occupancy');
+                if (show.ner) {
+                    extractSeries(points, all, subjectid, 'ner');
+                }
+
+                if (show.occupancy) {
+                    extractSeries(points, all, subjectid, 'occupancy');
+                }
 
                 //remove all points with no values at all
                 var a,b;

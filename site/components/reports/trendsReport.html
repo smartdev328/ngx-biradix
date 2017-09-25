@@ -2,7 +2,7 @@
     <div class="panel-heading">Trend Analysis</div>
     <div class="panel-body">
         <hr>
-        <div ng-style="{'height': options.height + 'px', 'width': options.printWidth + 'px'}" class="visible-print-block"></div>
-        <div ng-style="{'height': options.height + 'px'}" class="hidden-print-block"></div>
+        <trends-time-series options="options.ner" settings="settings" report="report" ng-if="settings.show.ner" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+        <trends-time-series options="options.occupancy" settings="settings" report="report" ng-if="settings.show.occupancy"cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
     </div>
 </div>
