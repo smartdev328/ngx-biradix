@@ -203,7 +203,7 @@ define([
                                 },
                                 yAxis: {
                                     title: {
-                                        text: $scope.options.title
+                                        text: ""
                                     },
                                     // min: $scope.$scope.options.min,
                                     // max: $scope.$scope.options.max
@@ -309,6 +309,7 @@ define([
 
             },
             template:
+                "<h3>{{options.title}}</h3>"+
                 "<div ng-style=\"{'height': options.height + 'px', 'width': options.printWidth + 'px'}\" class=\"visible-print-block\"></div>"+
                 "<div ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>"
         };
