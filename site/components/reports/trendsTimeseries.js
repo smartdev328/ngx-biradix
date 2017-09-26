@@ -108,8 +108,8 @@ define([
                             var d1subject = {name: "(" + d1 + ") " + $scope.report.date1.dashboard.property.name, data:[], color: '#7CB5EC'};
                             var d1scomps = {name: "(" + d1 + ") " + 'Comps', data:[], color: "#434348"};
 
-                            var d2subject = {name: "(" + d2 + ") " + $scope.report.date1.dashboard.property.name, data:[],dashStyle: 'longdash', color: '#7CB5EC'};
-                            var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'longdash', color: "#434348"};
+                            var d2subject = {name: "(" + d2 + ") " + $scope.report.date1.dashboard.property.name, data:[],dashStyle: 'shortdash', color: '#7CB5EC'};
+                            var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'shortdash', color: "#434348"};
 
 
                             $scope.report.dates.forEach(function(d) {
@@ -155,6 +155,7 @@ define([
 
                             var el = $($element).find('.visible-print-block')
                             var el2 = $($element).find('.hidden-print-block')
+                            var container = $("#timeseries-container")
 
                             var data = {
                                 chart: {
@@ -267,7 +268,7 @@ define([
                                     align: 'left',
                                     verticalAlign: 'bottom',
                                     borderWidth: 0,
-                                    symbolWidth: 60
+                                    //symbolWidth: 60
                                 },
                                 series: data
                             };
@@ -279,7 +280,7 @@ define([
                             else {
                                 chart = el2.highcharts(data);
 
-                                el2.bind('mousemove touchmove touchstart', function (e) {
+                                container.bind('mousemove touchmove touchstart', function (e) {
                                     var chart,
                                         point,
                                         i,
@@ -298,9 +299,7 @@ define([
                                 });
                             }
 
-                            if (typeof $scope.options.min != 'undefined') {
-                                chart.highcharts().yAxis[0].setExtremes($scope.options.min, $scope.options.max);
-                            }
+                            $scope.calcExtremes(chart.highcharts());
 
                         }, 0);
 
@@ -311,8 +310,8 @@ define([
 
             },
             template:
-                `<div ng-style="{'height': options.height + 'px', 'width': options.printWidth + 'px'}" class="visible-print-block"></div>
-                    <div ng-style="{'height': options.height + 'px'}" class="hidden-print-block"></div>`
+                "<div ng-style=\"{'height': options.height + 'px', 'width': options.printWidth + 'px'}\" class=\"visible-print-block\"></div>"+
+                "<div ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>"
         };
     })
 })

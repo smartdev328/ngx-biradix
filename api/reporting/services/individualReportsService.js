@@ -351,17 +351,19 @@ module.exports = {
             options.show.selectedBedroom = -1;
 
             options.show.ner = show.ner;
-            options.show.rent = false;
-            options.show.concessions = false;
+            options.show.rent = show.rent;
+            options.show.concessions = show.concessions;
             options.show.occupancy = show.occupancy;
-            options.show.leased = false;
-            options.show.renewal = false;
-            options.show.leases = false;
-            options.show.traffic = false;
+            options.show.leased = show.leased;
+            options.show.renewal = show.renewal;
+            options.show.leases = show.leases;
+            options.show.traffic = show.traffic;
 
             options.show.scale = "ner";
             options.show.averages = true;
             options.compids = comps;
+
+            console.log(show);
 
             async.parallel({
                 date1 : function(callbackp) {
@@ -441,6 +443,25 @@ module.exports = {
                     extractSeries(points, all, subjectid, 'occupancy');
                 }
 
+                if (show.leased) {
+                    extractSeries(points, all, subjectid, 'leased');
+                }
+
+                if (show.renewal) {
+                    extractSeries(points, all, subjectid, 'renewal');
+                }
+
+                if (show.traffic) {
+                    extractSeries(points, all, subjectid, 'traffic');
+                }
+
+                if (show.leases) {
+                    extractSeries(points, all, subjectid, 'leases');
+                }
+
+                if (show.concessions) {
+                    extractSeries(points, all, subjectid, 'concessions');
+                }
                 //remove all points with no values at all
                 var a,b;
                 _.remove(points, x=> {
