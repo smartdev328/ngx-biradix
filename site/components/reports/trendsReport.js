@@ -12,6 +12,10 @@ define([
             },
             controller: function ($scope,$element) {
 
+                Highcharts.Pointer.prototype.reset = function () {
+                    return undefined;
+                };
+
                 $scope.cbLegendClicked = function(legend) {
                     $scope.legendUpdated = legend;
                 }
@@ -20,14 +24,15 @@ define([
                     $scope.options = {};
                     if ($scope.report) {
 
-                        $scope.options.ner = {height:300, printWidth:800, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'ner', title: "Net Effective Rent $"}
-                        $scope.options.occupancy = {height:300, printWidth:800, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'occupancy', title: "Occupancy %"}
+                        var height = 200;
+                        $scope.options.ner = {height:height, printWidth:800, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'ner', title: "Net Effective Rent $"}
+                        $scope.options.occupancy = {height:height, printWidth:800, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'occupancy', title: "Occupancy %"}
 
-                        $scope.options.leased = {height:300, printWidth:800, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'leased', title: "Leased %"}
-                        $scope.options.renewal = {height:300, printWidth:800, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'renewal', title: "Renewal %"}
-                        $scope.options.traffic = {height:300, printWidth:800, prefix: '', suffix: '', decimalPlaces: 0, metric: 'traffic', title: "Traffic / Week"}
-                        $scope.options.leases = {height:300, printWidth:800, prefix: '', suffix: '', decimalPlaces: 0, metric: 'leases', title: "Leases / Week"}
-                        $scope.options.concessions = {height:300, printWidth:800, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'concessions', title: "Total Concessions $"}
+                        $scope.options.leased = {height:height, printWidth:800, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'leased', title: "Leased %"}
+                        $scope.options.renewal = {height:height, printWidth:800, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'renewal', title: "Renewal %"}
+                        $scope.options.traffic = {height:height, printWidth:800, prefix: '', suffix: '', decimalPlaces: 0, metric: 'traffic', title: "Traffic / Week"}
+                        $scope.options.leases = {height:height, printWidth:800, prefix: '', suffix: '', decimalPlaces: 0, metric: 'leases', title: "Leases / Week"}
+                        $scope.options.concessions = {height:height, printWidth:800, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'concessions', title: "Total Concessions $"}
 
                     }
 

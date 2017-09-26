@@ -217,27 +217,27 @@ define([
 
                                         var x = this.x;
 
-                                        var sortedPoints = series.sort(function(a, b){
-                                            var ay = _.find(a.data,function(z) {return z.x == x});
-                                            var by = _.find(b.data,function(z) {return z.x == x});
-
-                                            if (ay) {
-                                                ay = ay.y
-                                            } else {
-                                                ay = 0;
-                                            }
-
-                                            if (by) {
-                                                by = by.y
-                                            } else {
-                                                by = 0;
-                                            }
-                                            return ((ay > by) ? -1 : ((ay < by) ? 1 : 0));
-                                        });
+                                        // var sortedPoints = series.sort(function(a, b){
+                                        //     var ay = _.find(a.data,function(z) {return z.x == x});
+                                        //     var by = _.find(b.data,function(z) {return z.x == x});
+                                        //
+                                        //     if (ay) {
+                                        //         ay = ay.y
+                                        //     } else {
+                                        //         ay = 0;
+                                        //     }
+                                        //
+                                        //     if (by) {
+                                        //         by = by.y
+                                        //     } else {
+                                        //         by = 0;
+                                        //     }
+                                        //     return ((ay > by) ? -1 : ((ay < by) ? 1 : 0));
+                                        // });
 
                                         var y;
                                         var d;
-                                        sortedPoints.forEach(function(p) {
+                                        series.forEach(function(p) {
                                             if (p.visible) {
                                                 y = _.find(p.data, function (z) {
                                                     return z.x == x
@@ -246,7 +246,6 @@ define([
                                                 if (y) {
                                                     d = moment(y.custom).format("MMM DD, YYYY")
                                                     y = y.y;
-
 
                                                     if (y) {
                                                         s += '<span style="color:' + p.color + ';">\u25CF</span> ' + p.name + ' - <i>' + d + '</i>: <b>' + $scope.options.prefix + y.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix + '</b><br/>';
@@ -264,11 +263,10 @@ define([
                                     enabled: false
                                 },
                                 legend: {
-                                    layout: 'horizontal',
-                                    align: 'left',
-                                    verticalAlign: 'bottom',
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'top',
                                     borderWidth: 0,
-                                    //symbolWidth: 60
                                 },
                                 series: data
                             };
@@ -293,6 +291,7 @@ define([
 
                                         if (point) {
                                             point.onMouseOver();
+                                            //point.series.chart.tooltip.refresh(point); // Show the tooltip
                                             point.series.chart.xAxis[0].drawCrosshair(e, point);
                                         }
                                     }

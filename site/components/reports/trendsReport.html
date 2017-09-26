@@ -1,14 +1,25 @@
+<style>
+    #timeseries-container HR {
+        border-color: #ccc !important
+    }
+</style>
 <div class="break2 panel panel-info">
     <div class="panel-heading">Trend Analysis</div>
     <div class="panel-body">
-        <hr>
         <div id="timeseries-container">
+            <hr ng-if="settings.show.occupancy">
             <trends-time-series options="options.occupancy" settings="settings" report="report" ng-if="settings.show.occupancy" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.leased">
             <trends-time-series options="options.leased" settings="settings" report="report" ng-if="settings.show.leased" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.renewal">
             <trends-time-series options="options.renewal" settings="settings" report="report" ng-if="settings.show.renewal" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.traffic">
             <trends-time-series options="options.traffic" settings="settings" report="report" ng-if="settings.show.traffic" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.leases">
             <trends-time-series options="options.leases" settings="settings" report="report" ng-if="settings.show.leases" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.concessions">
             <trends-time-series options="options.concessions" settings="settings" report="report" ng-if="settings.show.concessions" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.ner">
             <trends-time-series options="options.ner" settings="settings" report="report" ng-if="settings.show.ner" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
 
         </div>
