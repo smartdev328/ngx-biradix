@@ -47,13 +47,13 @@ define([
                     var foundmax = false;
                     chart.series.forEach(function(s) {
                         if (s.visible && name != s.name || !s.visible && name == s.name) {
-                            temp = Math.floor(_.min(_.filter(s.processedYData, function(x) {return x != null})));
+                            temp = _.min(_.filter(s.processedYData, function(x) {return x != null}));
                             if (temp < min || !foundmin) {
                                 min = temp;
                                 foundmin = true;
                             }
 
-                            temp = Math.ceil(_.max(s.processedYData));
+                            temp = _.max(s.processedYData);
                             if (temp > max || !foundmax) {
                                 max = temp;
                                 foundmax = true;
@@ -286,13 +286,16 @@ define([
 
                                     for (i = 0; i < Highcharts.charts.length; i = i + 1) {
                                         chart = Highcharts.charts[i];
-                                        event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                                        point = chart.series[0].searchPoint(event, true); // Get the hovered point
 
-                                        if (point) {
-                                            point.onMouseOver();
-                                            //point.series.chart.tooltip.refresh(point); // Show the tooltip
-                                            point.series.chart.xAxis[0].drawCrosshair(e, point);
+                                        if (chart.pointer) {
+                                            event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                                            point = chart.series[0].searchPoint(event, true); // Get the hovered point
+
+                                            if (point) {
+                                                point.onMouseOver();
+                                                //point.series.chart.tooltip.refresh(point); // Show the tooltip
+                                                point.series.chart.xAxis[0].drawCrosshair(e, point);
+                                            }
                                         }
                                     }
                                 });
@@ -309,7 +312,7 @@ define([
 
             },
             template:
-                "<h3>{{options.title}}</h3>"+
+                "<h4>{{options.title}}</h4>"+
                 "<div ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
                 "<div ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>"
         };

@@ -16,7 +16,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
 
             var criteria = {
                 select:"_id name",
-                limit: 10000,
+                limit: 200,
                 permission: 'PropertyManage',
                 active: true
                 , skipAmenities: true

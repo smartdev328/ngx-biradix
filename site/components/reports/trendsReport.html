@@ -21,6 +21,8 @@
             <trends-time-series options="options.concessions" settings="settings" report="report" ng-if="settings.show.concessions" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
             <hr ng-if="settings.show.ner">
             <trends-time-series options="options.ner" settings="settings" report="report" ng-if="settings.show.ner" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.nersqft">
+            <trends-time-series options="options.nersqft" settings="settings" report="report" ng-if="settings.show.nersqft" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
 
         </div>
     </div>

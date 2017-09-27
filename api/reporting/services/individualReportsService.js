@@ -351,7 +351,7 @@ module.exports = {
             options.show.selectedBedroom = -1;
 
             options.show.ner = show.ner;
-            options.show.rent = show.rent;
+            options.show.nersqft = show.nersqft;
             options.show.concessions = show.concessions;
             options.show.occupancy = show.occupancy;
             options.show.leased = show.leased;
@@ -359,6 +359,7 @@ module.exports = {
             options.show.leases = show.leases;
             options.show.traffic = show.traffic;
 
+            options.show.rent = false;
             options.show.scale = "ner";
             options.show.averages = true;
             options.compids = comps;
@@ -437,6 +438,10 @@ module.exports = {
 
                 if (show.ner) {
                     extractSeries(points, all, subjectid, 'ner');
+                }
+
+                if (show.nersqft) {
+                    extractSeries(points, all, subjectid, 'nersqft');
                 }
 
                 if (show.occupancy) {
