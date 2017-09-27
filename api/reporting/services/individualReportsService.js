@@ -358,8 +358,8 @@ module.exports = {
             options.show.renewal = show.renewal;
             options.show.leases = show.leases;
             options.show.traffic = show.traffic;
+            options.show.rent = show.rent;
 
-            options.show.rent = false;
             options.show.scale = "ner";
             options.show.averages = true;
             options.compids = comps;
@@ -438,6 +438,10 @@ module.exports = {
 
                 if (show.ner) {
                     extractSeries(points, all, subjectid, 'ner');
+                }
+
+                if (show.rent) {
+                    extractSeries(points, all, subjectid, 'rent');
                 }
 
                 if (show.nersqft) {

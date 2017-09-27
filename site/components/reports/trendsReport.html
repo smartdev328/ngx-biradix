@@ -17,6 +17,8 @@
             <trends-time-series options="options.traffic" settings="settings" report="report" ng-if="settings.show.traffic" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
             <hr ng-if="settings.show.leases">
             <trends-time-series options="options.leases" settings="settings" report="report" ng-if="settings.show.leases" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.rent">
+            <trends-time-series options="options.rent" settings="settings" report="report" ng-if="settings.show.rent" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
             <hr ng-if="settings.show.concessions">
             <trends-time-series options="options.concessions" settings="settings" report="report" ng-if="settings.show.concessions" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
             <hr ng-if="settings.show.ner">

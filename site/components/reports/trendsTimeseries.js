@@ -287,7 +287,7 @@ define([
                                     for (i = 0; i < Highcharts.charts.length; i = i + 1) {
                                         chart = Highcharts.charts[i];
 
-                                        if (chart.pointer) {
+                                        if (chart) {
                                             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
                                             point = chart.series[0].searchPoint(event, true); // Get the hovered point
 

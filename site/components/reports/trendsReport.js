@@ -29,6 +29,7 @@ define([
 
                         $scope.options.nersqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'nersqft', title: "Net Effective Rent / Sqft $"}
                         $scope.options.ner = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'ner', title: "Net Effective Rent $"}
+                        $scope.options.rent = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'rent', title: "Rent $"}
                         $scope.options.occupancy = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'occupancy', title: "Occupancy %"}
 
                         $scope.options.leased = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'leased', title: "Leased %"}
