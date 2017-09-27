@@ -310,7 +310,7 @@ define([
             },
             template:
                 "<h3>{{options.title}}</h3>"+
-                "<div ng-style=\"{'height': options.height + 'px', 'width': '90%'}\" class=\"visible-print-block\"></div>"+
+                "<div ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
                 "<div ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>"
         };
     })
