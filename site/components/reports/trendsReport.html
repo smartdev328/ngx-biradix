@@ -19,8 +19,15 @@
             <trends-time-series options="options.leases" settings="settings" report="report" ng-if="settings.show.leases" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
             <hr ng-if="settings.show.rent">
             <trends-time-series options="options.rent" settings="settings" report="report" ng-if="settings.show.rent" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.rentsqft">
+            <trends-time-series options="options.rentsqft" settings="settings" report="report" ng-if="settings.show.rentsqft" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>            
             <hr ng-if="settings.show.concessions">
             <trends-time-series options="options.concessions" settings="settings" report="report" ng-if="settings.show.concessions" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.runrate">
+            <trends-time-series options="options.runrate" settings="settings" report="report" ng-if="settings.show.runrate" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <hr ng-if="settings.show.runratesqft">
+            <trends-time-series options="options.runratesqft" settings="settings" report="report" ng-if="settings.show.runratesqft" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+
             <hr ng-if="settings.show.ner">
             <trends-time-series options="options.ner" settings="settings" report="report" ng-if="settings.show.ner" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
             <hr ng-if="settings.show.nersqft">

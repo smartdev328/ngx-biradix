@@ -359,6 +359,10 @@ module.exports = {
             options.show.leases = show.leases;
             options.show.traffic = show.traffic;
             options.show.rent = show.rent;
+            options.show.rentsqft = show.rentsqft;
+            options.show.runrate = show.runrate;
+            options.show.runratesqft = show.runratesqft;
+
 
             options.show.scale = "ner";
             options.show.averages = true;
@@ -444,6 +448,18 @@ module.exports = {
                     extractSeries(points, all, subjectid, 'rent');
                 }
 
+                if (show.rentsqft) {
+                    extractSeries(points, all, subjectid, 'rentsqft');
+                }
+
+                if (show.runrate) {
+                    extractSeries(points, all, subjectid, 'runrate');
+                }
+
+                if (show.runratesqft) {
+                    extractSeries(points, all, subjectid, 'runratesqft');
+                }                
+                
                 if (show.nersqft) {
                     extractSeries(points, all, subjectid, 'nersqft');
                 }
