@@ -50,7 +50,7 @@ module.exports = {
             select += " weeklytraffic"
         }
 
-        if (show.ner) {
+        if (show.ner || show.rent || show.rentsqft || show.nersqft || show.concessions || show.runrate || show.runratesqft) {
             select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.concessionsMonthly floorplans.concessionsOneTime floorplans.bedrooms floorplans.bathrooms floorplans.sqft"
         }
 

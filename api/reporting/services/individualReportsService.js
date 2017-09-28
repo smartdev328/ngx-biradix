@@ -368,7 +368,6 @@ module.exports = {
             options.show.averages = true;
             options.compids = comps;
 
-            console.log(show);
 
             async.parallel({
                 date1 : function(callbackp) {

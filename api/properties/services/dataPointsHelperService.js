@@ -77,6 +77,7 @@ module.exports = {
                 ret = _.sum(fps, function (x) {
                     return x.rent * x.units / tot
                 })
+
             } else if (scale == "runrate") {
                 ret = _.sum(fps, function (x) {
                     return (x.rent - (x.concessionsMonthly || 0)) * x.units / tot

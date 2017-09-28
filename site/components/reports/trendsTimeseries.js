@@ -157,6 +157,8 @@ define([
                             var el2 = $($element).find('.hidden-print-block')
                             var container = $("#timeseries-container")
 
+                            var isMobile = $(window).width() < 600;
+
                             var data = {
                                 chart: {
                                     type: 'spline',
@@ -263,9 +265,9 @@ define([
                                     enabled: false
                                 },
                                 legend: {
-                                    layout: 'vertical',
-                                    align: 'right',
-                                    verticalAlign: 'top',
+                                    layout: isMobile ? 'horizontal' :  'vertical',
+                                    align: isMobile ? 'left' :'right',
+                                    verticalAlign: isMobile ? 'bottom' : 'top',
                                     borderWidth: 0,
                                 },
                                 series: data
@@ -290,6 +292,18 @@ define([
                                         if (chart) {
                                             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
                                             point = chart.series[0].searchPoint(event, true); // Get the hovered point
+
+                                            if (!point && chart.series.length > 1) {
+                                                point = chart.series[1].searchPoint(event, true); // Get the hovered point
+                                            }
+
+                                            if (!point && chart.series.length > 2) {
+                                                point = chart.series[2].searchPoint(event, true); // Get the hovered point
+                                            }
+
+                                            if (!point && chart.series.length > 3) {
+                                                point = chart.series[3].searchPoint(event, true); // Get the hovered point
+                                            }
 
                                             if (point) {
                                                 point.onMouseOver();
