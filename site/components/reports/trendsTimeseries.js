@@ -112,11 +112,11 @@ define([
                             var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'shortdash', color: "#434348"};
 
 
-                            $scope.report.dates.forEach(function(d) {
-                                d1subject.data.push(d.points[$scope.options.metric].day1subject ? {y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date} : null)
-                                d1scomps.data.push(d.points[$scope.options.metric].day1averages ? {y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date} : null)
-                                d2subject.data.push(d.points[$scope.options.metric].day2subject ? {y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date} : null)
-                                d2scomps.data.push(d.points[$scope.options.metric].day2averages ? {y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date} : null)
+                            $scope.report.dates.forEach(function(d,i) {
+                                d1subject.data.push(d.points[$scope.options.metric].day1subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date} : {x:i,y:0,custom: d.day1date})
+                                d1scomps.data.push(d.points[$scope.options.metric].day1averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date} : {x:i,y:0,custom: d.day1date})
+                                d2subject.data.push(d.points[$scope.options.metric].day2subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date} : {x:i,y:0,custom: d.day1date})
+                                d2scomps.data.push(d.points[$scope.options.metric].day2averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date} : {x:i,y:0,custom: d.day1date})
 
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined' && (typeof $scope.options.min == 'undefined' || d.points[$scope.options.metric].day1subject <  $scope.options.min)) {
                                     $scope.options.min = d.points[$scope.options.metric].day1subject;
@@ -152,6 +152,7 @@ define([
                                 data.push(d2subject);
                                 data.push(d2scomps);
                             }
+
 
                             var el = $($element).find('.visible-print-block')
                             var el2 = $($element).find('.hidden-print-block')
@@ -206,9 +207,7 @@ define([
                                 yAxis: {
                                     title: {
                                         text: ""
-                                    },
-                                    // min: $scope.$scope.options.min,
-                                    // max: $scope.$scope.options.max
+                                    }
                                 },
                                 tooltip: {
                                     shared: true,
@@ -218,24 +217,6 @@ define([
                                         var series = this.points[0].series.chart.series;
 
                                         var x = this.x;
-
-                                        // var sortedPoints = series.sort(function(a, b){
-                                        //     var ay = _.find(a.data,function(z) {return z.x == x});
-                                        //     var by = _.find(b.data,function(z) {return z.x == x});
-                                        //
-                                        //     if (ay) {
-                                        //         ay = ay.y
-                                        //     } else {
-                                        //         ay = 0;
-                                        //     }
-                                        //
-                                        //     if (by) {
-                                        //         by = by.y
-                                        //     } else {
-                                        //         by = 0;
-                                        //     }
-                                        //     return ((ay > by) ? -1 : ((ay < by) ? 1 : 0));
-                                        // });
 
                                         var y;
                                         var d;
@@ -307,7 +288,6 @@ define([
 
                                             if (point) {
                                                 point.onMouseOver();
-                                                //point.series.chart.tooltip.refresh(point); // Show the tooltip
                                                 point.series.chart.xAxis[0].drawCrosshair(e, point);
                                             }
                                         }
