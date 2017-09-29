@@ -113,10 +113,10 @@ define([
 
 
                             $scope.report.dates.forEach(function(d,i) {
-                                d1subject.data.push(d.points[$scope.options.metric].day1subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date} : {x:i,y:0,custom: d.day1date})
-                                d1scomps.data.push(d.points[$scope.options.metric].day1averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date} : {x:i,y:0,custom: d.day1date})
-                                d2subject.data.push(d.points[$scope.options.metric].day2subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date} : {x:i,y:0,custom: d.day1date})
-                                d2scomps.data.push(d.points[$scope.options.metric].day2averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date} : {x:i,y:0,custom: d.day1date})
+                                d1subject.data.push(d.points[$scope.options.metric].day1subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date} : null)
+                                d1scomps.data.push(d.points[$scope.options.metric].day1averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date} : null)
+                                d2subject.data.push(d.points[$scope.options.metric].day2subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date} : null)
+                                d2scomps.data.push(d.points[$scope.options.metric].day2averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date} : null)
 
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined' && (typeof $scope.options.min == 'undefined' || d.points[$scope.options.metric].day1subject <  $scope.options.min)) {
                                     $scope.options.min = d.points[$scope.options.metric].day1subject;
@@ -265,33 +265,52 @@ define([
                                     var chart,
                                         point,
                                         i,
+                                        j,
                                         event;
+
+                                    var points = [];
 
                                     for (i = 0; i < Highcharts.charts.length; i = i + 1) {
                                         chart = Highcharts.charts[i];
 
                                         if (chart) {
                                             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                                            point = chart.series[0].searchPoint(event, true); // Get the hovered point
 
-                                            if (!point && chart.series.length > 1) {
-                                                point = chart.series[1].searchPoint(event, true); // Get the hovered point
+                                            for(j =0;j<3;j++) {
+                                                if (chart.series.length > j) {
+                                                    point = chart.series[j].searchPoint(event, true); // Get the hovered point
+                                                    if (point) {
+                                                        points.push({i: i, x: point.x, point: point})
+                                                    }
+
+                                                }
                                             }
 
-                                            if (!point && chart.series.length > 2) {
-                                                point = chart.series[2].searchPoint(event, true); // Get the hovered point
-                                            }
-
-                                            if (!point && chart.series.length > 3) {
-                                                point = chart.series[3].searchPoint(event, true); // Get the hovered point
-                                            }
-
-                                            if (point) {
-                                                point.onMouseOver();
-                                                point.series.chart.xAxis[0].drawCrosshair(e, point);
-                                            }
+                                            // if (point) {
+                                            //     // point.onMouseOver();
+                                            //     // point.series.chart.xAxis[0].drawCrosshair(e, point);
+                                            // }
                                         }
                                     }
+
+                                    var min = 999
+                                    points.forEach(function(p) {
+                                        if (p.x < min) {
+                                            min = p.x;
+                                        }
+                                    })
+
+                                    if (min < 999) {
+                                        var found = {};
+                                        points.forEach(function(p) {
+                                            if (p.x == min && !found[p.i]) {
+                                                p.point.onMouseOver();
+                                                p.point.series.chart.xAxis[0].drawCrosshair(e, p.point);
+                                                found[p.i] = true;
+                                            }
+                                        })
+                                    }
+
                                 });
                             }
 
