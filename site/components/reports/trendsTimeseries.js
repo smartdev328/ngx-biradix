@@ -113,9 +113,16 @@ define([
 
 
                             $scope.report.dates.forEach(function(d,i) {
+                                if (d.points[$scope.options.metric].day1subject)
                                 d1subject.data.push(d.points[$scope.options.metric].day1subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date} : null)
+
+                                if (d.points[$scope.options.metric].day1averages)
                                 d1scomps.data.push(d.points[$scope.options.metric].day1averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date} : null)
+
+                                if (d.points[$scope.options.metric].day2subject)
                                 d2subject.data.push(d.points[$scope.options.metric].day2subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date} : null)
+
+                                if (d.points[$scope.options.metric].day2averages)
                                 d2scomps.data.push(d.points[$scope.options.metric].day2averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date} : null)
 
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined' && (typeof $scope.options.min == 'undefined' || d.points[$scope.options.metric].day1subject <  $scope.options.min)) {
@@ -152,7 +159,6 @@ define([
                                 data.push(d2subject);
                                 data.push(d2scomps);
                             }
-
 
                             var el = $($element).find('.visible-print-block')
                             var el2 = $($element).find('.hidden-print-block')
@@ -276,8 +282,9 @@ define([
                                         if (chart) {
                                             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
 
+                                            point = null;
                                             for(j =0;j<3;j++) {
-                                                if (chart.series.length > j) {
+                                                if (chart.series.length > j && !point) {
                                                     point = chart.series[j].searchPoint(event, true); // Get the hovered point
                                                     if (point) {
                                                         points.push({i: i, x: point.x, point: point})
@@ -294,6 +301,7 @@ define([
                                     }
 
                                     var min = 999
+
                                     points.forEach(function(p) {
                                         if (p.x < min) {
                                             min = p.x;
