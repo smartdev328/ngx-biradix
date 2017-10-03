@@ -12,9 +12,9 @@ define([
             },
             controller: function ($scope,$element) {
 
-                Highcharts.Pointer.prototype.reset = function () {
-                    return undefined;
-                };
+                // Highcharts.Pointer.prototype.reset = function () {
+                //     return undefined;
+                // };
 
                 $scope.cbLegendClicked = function(legend) {
                     $scope.legendUpdated = legend;
