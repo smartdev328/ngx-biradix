@@ -178,6 +178,12 @@ angular.module('biradix.global').directive('timeSeries', function () {
                              chart = el2.highcharts(data);
                         }
 
+                        Highcharts.charts.forEach(function(chart) {
+                            if (chart && !$("#" + chart.container.id).length) {
+                                chart.destroy();
+                            }
+                        })
+
                         chart.highcharts().yAxis[0].setExtremes($scope.options.min, $scope.options.max);
 
                         $rootScope.$broadcast('timeseriesLoaded');

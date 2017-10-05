@@ -266,7 +266,6 @@ define([
                             }
                             else {
                                 chart = el2.highcharts(data);
-
                                 container.bind('mousemove touchmove touchstart', function (e) {
                                     var chart,
                                         point,
@@ -276,8 +275,11 @@ define([
 
                                     var points = [];
 
+
+
                                     for (i = 0; i < Highcharts.charts.length; i = i + 1) {
                                         chart = Highcharts.charts[i];
+
 
                                         if (chart) {
                                             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
@@ -321,6 +323,12 @@ define([
 
                                 });
                             }
+
+                            Highcharts.charts.forEach(function(chart) {
+                                if (chart && !$("#" + chart.container.id).length) {
+                                    chart.destroy();
+                                }
+                            })
 
                             $scope.calcExtremes(chart.highcharts());
 
