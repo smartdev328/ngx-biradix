@@ -15,6 +15,7 @@ define([
             },
             controller: function ($scope, $element) {
 
+
                 $scope.$watch('legendUpdated', function (a, b) {
 
                     if ($scope.legendUpdated) {
@@ -169,7 +170,10 @@ define([
                             var data = {
                                 chart: {
                                     type: 'spline',
-                                    ignoreHiddenSeries : true
+                                    ignoreHiddenSeries : true,
+                                    marginLeft: 40, // Keep all charts left aligned
+                                    spacingTop: 20,
+                                    spacingBottom: 20
                                 },
                                 plotOptions: {
                                     series: {
@@ -198,10 +202,13 @@ define([
                                     }
                                 },
                                 title: {
-                                    text: '',
+                                    text: $scope.options.title,
+                                    align: 'left',
+                                    margin: 0,
+                                    x: 30
                                 },
                                 xAxis: {
-                                    crosshair: true,
+                                    crosshair: false,
                                     allowDecimals: false,
                                     categries: [0, 1,2, 3, 4, 5, 6, 7, 8, 9 , 10],
                                     labels: {
@@ -266,71 +273,113 @@ define([
                             }
                             else {
                                 chart = el2.highcharts(data);
-                                // container.bind('mousemove touchmove touchstart', function (e) {
-                                //     var chart,
-                                //         point,
-                                //         i,
-                                //         j,
-                                //         event;
-                                //
-                                //     var points = [];
-                                //
-                                //
-                                //     var clientX = 0;
-                                //
-                                //     for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-                                //         chart = Highcharts.charts[i];
-                                //
-                                //
-                                //         if (chart && chart.pointer) {
-                                //             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-                                //
-                                //             // console.log(event);
-                                //             clientX = event.clientX;
-                                //             point = null;
-                                //             for(j =0;j<=3;j++) {
-                                //                 if (chart.series.length > j) {
-                                //                     point = chart.series[j].searchPoint(event, true); // Get the hovered point
-                                //                     if (point) {
-                                //                         points.push({i: i, x: point.x, point: point})
-                                //                     }
-                                //
-                                //                 }
-                                //             }
-                                //         }
-                                //     }
-                                //
-                                //     var min = 999
-                                //     var mindist = 99999;
-                                //
-                                //     points.forEach(function(p) {
-                                //         // console.log(p.point.clientX - clientX);
-                                //         if (Math.abs(p.point.clientX - clientX) < mindist) {
-                                //             mindist = Math.abs(p.point.clientX - clientX);
-                                //             min = p.x;
-                                //         }
-                                //     })
-                                //
-                                //     // console.log(min, clientX, e);
-                                //
-                                //     // if (min < 999) {
-                                //     //     var found = {};
-                                //     //     points.forEach(function(p) {
-                                //     //         if (p.x == min && !found[p.i]) {
-                                //     //             p.point.onMouseOver();
-                                //     //             p.point.series.chart.xAxis[0].drawCrosshair(e, p.point);
-                                //     //             found[p.i] = true;
-                                //     //         }
-                                //     //     })
-                                //     // }
-                                //
-                                // });
+                                container.bind('mouseout', function (e) {
+
+                                    var chart,
+                                        point,
+                                        i,
+                                        j
+                                        ;
+
+                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                        chart = Highcharts.charts[i];
+
+
+                                        if (chart && chart.pointer) {
+
+                                            for(j =0;j<=3;j++) {
+                                                if (chart.series.length > j) {
+                                                    chart.series[j].points.forEach(function(point) {
+                                                        if (point.state == 'hover') {
+                                                            point.series.chart.tooltip.hide();
+                                                            point.onMouseOut();
+
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                                container.bind('mousemove touchmove touchstart', function (e) {
+                                    var chart,
+                                        point,
+                                        i,
+                                        j,
+                                        event;
+
+                                    var points = [];
+
+
+                                    var clientX = 0;
+
+                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                        chart = Highcharts.charts[i];
+
+                                        // if (chart) {
+                                        //     chart.xAxis[0].update({
+                                        //         crosshair: true
+                                        //     });
+                                        // }
+
+                                        if (chart && chart.pointer) {
+                                            event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+
+                                            // console.log(event);
+                                            clientX = event.clientX;
+                                            point = null;
+                                            for(j =0;j<=3;j++) {
+                                                if (chart.series.length > j) {
+                                                    point = chart.series[j].searchPoint(event, true); // Get the hovered point
+                                                    if (point) {
+                                                        points.push({i: i, x: point.x, point: point})
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    var min = 999
+                                    var mindist = 99999;
+
+                                    points.forEach(function(p) {
+                                        // console.log(p.point.clientX - clientX);
+                                        if (Math.abs(p.point.clientX - clientX) < mindist) {
+                                            mindist = Math.abs(p.point.clientX - clientX);
+                                            min = p.x;
+                                        }
+                                    })
+
+                                    //console.log(min);
+                                    //console.log(points);
+
+                                    if (min < 999) {
+                                        var found = {};
+                                        points.forEach(function(p) {
+                                            if (p.x == min && !found[p.i]) {
+                                                //console.log(p);
+                                                p.point.onMouseOver();
+                                                found[p.i] = true;
+                                            }
+                                        })
+                                    }
+
+                                });
                             }
 
                             Highcharts.charts.forEach(function(chart) {
                                 if (chart && !$("#" + chart.container.id).length) {
                                     chart.destroy();
                                 }
+
+                                if (chart && chart.pointer) {
+                                    chart.pointer.reset = function () {
+                                        return undefined
+                                    };
+                                }
+
                             })
 
                             $scope.calcExtremes(chart.highcharts());
@@ -344,7 +393,7 @@ define([
 
             },
             template:
-                "<h4>{{options.title}}</h4>"+
+                // "<h4>{{options.title}}</h4>"+
                 "<div ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
                 "<div ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>"
         };
