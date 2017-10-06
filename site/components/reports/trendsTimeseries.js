@@ -281,12 +281,12 @@ define([
                                         chart = Highcharts.charts[i];
 
 
-                                        if (chart) {
+                                        if (chart && chart.pointer) {
                                             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
 
                                             point = null;
                                             for(j =0;j<3;j++) {
-                                                if (chart.series.length > j && !point) {
+                                                if (chart.series.length > j) {
                                                     point = chart.series[j].searchPoint(event, true); // Get the hovered point
                                                     if (point) {
                                                         points.push({i: i, x: point.x, point: point})
