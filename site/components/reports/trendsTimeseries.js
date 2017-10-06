@@ -266,62 +266,65 @@ define([
                             }
                             else {
                                 chart = el2.highcharts(data);
-                                container.bind('mousemove touchmove touchstart', function (e) {
-                                    var chart,
-                                        point,
-                                        i,
-                                        j,
-                                        event;
-
-                                    var points = [];
-
-
-
-                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-                                        chart = Highcharts.charts[i];
-
-
-                                        if (chart && chart.pointer) {
-                                            event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-
-                                            point = null;
-                                            for(j =0;j<3;j++) {
-                                                if (chart.series.length > j) {
-                                                    point = chart.series[j].searchPoint(event, true); // Get the hovered point
-                                                    if (point) {
-                                                        points.push({i: i, x: point.x, point: point})
-                                                    }
-
-                                                }
-                                            }
-
-                                            // if (point) {
-                                            //     // point.onMouseOver();
-                                            //     // point.series.chart.xAxis[0].drawCrosshair(e, point);
-                                            // }
-                                        }
-                                    }
-
-                                    var min = 999
-
-                                    points.forEach(function(p) {
-                                        if (p.x < min) {
-                                            min = p.x;
-                                        }
-                                    })
-
-                                    if (min < 999) {
-                                        var found = {};
-                                        points.forEach(function(p) {
-                                            if (p.x == min && !found[p.i]) {
-                                                p.point.onMouseOver();
-                                                p.point.series.chart.xAxis[0].drawCrosshair(e, p.point);
-                                                found[p.i] = true;
-                                            }
-                                        })
-                                    }
-
-                                });
+                                // container.bind('mousemove touchmove touchstart', function (e) {
+                                //     var chart,
+                                //         point,
+                                //         i,
+                                //         j,
+                                //         event;
+                                //
+                                //     var points = [];
+                                //
+                                //
+                                //     var clientX = 0;
+                                //
+                                //     for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                //         chart = Highcharts.charts[i];
+                                //
+                                //
+                                //         if (chart && chart.pointer) {
+                                //             event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                                //
+                                //             // console.log(event);
+                                //             clientX = event.clientX;
+                                //             point = null;
+                                //             for(j =0;j<=3;j++) {
+                                //                 if (chart.series.length > j) {
+                                //                     point = chart.series[j].searchPoint(event, true); // Get the hovered point
+                                //                     if (point) {
+                                //                         points.push({i: i, x: point.x, point: point})
+                                //                     }
+                                //
+                                //                 }
+                                //             }
+                                //         }
+                                //     }
+                                //
+                                //     var min = 999
+                                //     var mindist = 99999;
+                                //
+                                //     points.forEach(function(p) {
+                                //         // console.log(p.point.clientX - clientX);
+                                //         if (Math.abs(p.point.clientX - clientX) < mindist) {
+                                //             mindist = Math.abs(p.point.clientX - clientX);
+                                //             min = p.x;
+                                //         }
+                                //     })
+                                //
+                                //     // console.log(min, clientX, e);
+                                //
+                                //     // if (min < 999) {
+                                //     //     var found = {};
+                                //     //     points.forEach(function(p) {
+                                //     //         if (p.x == min && !found[p.i]) {
+                                //     //             p.point.onMouseOver();
+                                //     //             p.point.series.chart.xAxis[0].drawCrosshair(e, p.point);
+                                //     //             found[p.i] = true;
+                                //     //         }
+                                //     //     })
+                                //     // }
+                                //
+                                // });
                             }
 
                             Highcharts.charts.forEach(function(chart) {
