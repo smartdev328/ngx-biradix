@@ -1,8 +1,25 @@
+<style>
+    #timeseries-container HR {
+        border-color: #ccc !important
+    }
+</style>
 <div class="break2 panel panel-info">
     <div class="panel-heading">Trend Analysis</div>
     <div class="panel-body">
-        <hr>
-        <div ng-style="{'height': options.height + 'px', 'width': options.printWidth + 'px'}" class="visible-print-block"></div>
-        <div ng-style="{'height': options.height + 'px'}" class="hidden-print-block"></div>
+        <div id="timeseries-container">
+            <trends-time-series options="options.occupancy" settings="settings" report="report" ng-if="settings.show.occupancy" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.leased" settings="settings" report="report" ng-if="settings.show.leased" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.renewal" settings="settings" report="report" ng-if="settings.show.renewal" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.traffic" settings="settings" report="report" ng-if="settings.show.traffic" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.leases" settings="settings" report="report" ng-if="settings.show.leases" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.rent" settings="settings" report="report" ng-if="settings.show.rent" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.rentsqft" settings="settings" report="report" ng-if="settings.show.rentsqft" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.concessions" settings="settings" report="report" ng-if="settings.show.concessions" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.runrate" settings="settings" report="report" ng-if="settings.show.runrate" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.runratesqft" settings="settings" report="report" ng-if="settings.show.runratesqft" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.ner" settings="settings" report="report" ng-if="settings.show.ner" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+            <trends-time-series options="options.nersqft" settings="settings" report="report" ng-if="settings.show.nersqft" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
+
+        </div>
     </div>
 </div>

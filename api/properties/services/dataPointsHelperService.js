@@ -73,9 +73,14 @@ module.exports = {
 
         if (tot > 0) {
 
-            if (scale == "rent") {
+            if (scale == "rent" || scale == "rentsqft") {
                 ret = _.sum(fps, function (x) {
                     return x.rent * x.units / tot
+                })
+
+            } else if (scale == "runrate") {
+                ret = _.sum(fps, function (x) {
+                    return (x.rent - (x.concessionsMonthly || 0)) * x.units / tot
                 })
             } else if (scale == "concessions") {
                 ret = _.sum(fps, function (x) {
@@ -95,13 +100,8 @@ module.exports = {
                 })
             }
 
-            if (scale == "nersqft") {
+            if (scale == "nersqft" || scale == "rentsqft" || scale == "runratesqft") {
                 var sqft = _.sum(fps, function (x) {
-
-                    var sqft = 1;
-                    if (scale == "nersqft") {
-                        sqft = x.sqft;
-                    }
                     return x.sqft * x.units / tot
                 })
                 ret = ret / sqft;

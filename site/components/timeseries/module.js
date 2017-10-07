@@ -40,13 +40,13 @@ angular.module('biradix.global').directive('timeSeries', function () {
                 var foundmax = false;
                 chart.series.forEach(function(s) {
                     if (s.visible && name != s.name || !s.visible && name == s.name) {
-                        temp = Math.floor(_.min(s.processedYData));
+                        temp = _.min(s.processedYData);
                         if (temp < min || !foundmin) {
                             min = temp;
                             foundmin = true;
                         }
 
-                        temp = Math.ceil(_.max(s.processedYData));
+                        temp = _.max(s.processedYData);
                         if (temp > max || !foundmax) {
                             max = temp;
                             foundmax = true;
@@ -177,6 +177,12 @@ angular.module('biradix.global').directive('timeSeries', function () {
                         else {
                              chart = el2.highcharts(data);
                         }
+
+                        Highcharts.charts.forEach(function(chart) {
+                            if (chart && !$("#" + chart.container.id).length) {
+                                chart.destroy();
+                            }
+                        })
 
                         chart.highcharts().yAxis[0].setExtremes($scope.options.min, $scope.options.max);
 
