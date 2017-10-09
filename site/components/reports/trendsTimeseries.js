@@ -203,9 +203,9 @@ define([
                                 },
                                 title: {
                                     text: $scope.options.title,
-                                    align: 'center',
+                                    align: 'left',
                                     margin: 0,
-                                    // x: 40
+                                    x: 55
                                 },
                                 xAxis: {
                                     crosshair: false,
@@ -266,7 +266,7 @@ define([
                                 legend: {
                                     layout: isMobile ? 'horizontal' :  'vertical',
                                     align: isMobile ? 'left' :'right',
-                                    verticalAlign: isMobile ? 'bottom' : 'top',
+                                    verticalAlign: isMobile ? 'bottom' : 'middle',
                                     borderWidth: 0,
                                 },
                                 series: data
