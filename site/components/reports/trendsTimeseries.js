@@ -171,7 +171,7 @@ define([
                                 chart: {
                                     type: 'spline',
                                     ignoreHiddenSeries : true,
-                                    marginLeft: 50, // Keep all charts left aligned
+                                    marginLeft: 65, // Keep all charts left aligned
                                     spacingTop: 20,
                                     spacingBottom: 20
                                 },
@@ -203,9 +203,9 @@ define([
                                 },
                                 title: {
                                     text: $scope.options.title,
-                                    align: 'left',
+                                    align: 'center',
                                     margin: 0,
-                                    x: 40
+                                    // x: 40
                                 },
                                 xAxis: {
                                     crosshair: false,
@@ -220,6 +220,11 @@ define([
                                 yAxis: {
                                     title: {
                                         text: ""
+                                    },
+                                    labels: {
+                                        formatter: function () {
+                                            return $scope.options.prefix + this.value.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix;
+                                        }
                                     }
                                 },
                                 tooltip: {

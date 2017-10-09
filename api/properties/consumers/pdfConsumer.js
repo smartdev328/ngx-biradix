@@ -112,8 +112,11 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
 bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
     console.log(data.propertyIds, " reporting pdf started");
 
+    let propertyId = data.propertyIds.toString().length == 24 ? data.propertyIds : null;
+
+
     try {
-        PropertyService.search(data.user, {_id: data.id, skipAmenities: true, limit : 1}, function (err, properties) {
+        PropertyService.search(data.user, {_id: propertyId, skipAmenities: true, limit : 1}, function (err, properties) {
             UserService.getFullUser(data.user, function (full) {
 
                 var fileName = "";

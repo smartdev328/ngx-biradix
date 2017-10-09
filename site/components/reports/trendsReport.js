@@ -24,22 +24,22 @@ define([
                     $scope.options = {};
                     if ($scope.report) {
 
-                        var height = 260;
+                        var height = 320;
                         var printWidth = 1200;
 
-                        $scope.options.nersqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'nersqft', title: "Net Effective Rent / Sqft $"}
-                        $scope.options.ner = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'ner', title: "Net Effective Rent $"}
-                        $scope.options.rent = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'rent', title: "Rent $"}
-                        $scope.options.rentsqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'rentsqft', title: "Rent / Sqft $"}
-                        $scope.options.runrate = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'runrate', title: "Recurring Rent $"}
-                        $scope.options.runratesqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'runratesqft', title: "Recurring Rent / Sqft $"}
+                        $scope.options.nersqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'nersqft', title: "Net Effective Rent / Sqft"}
+                        $scope.options.ner = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'ner', title: "Net Effective Rent"}
+                        $scope.options.rent = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'rent', title: "Rent"}
+                        $scope.options.rentsqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'rentsqft', title: "Rent / Sqft"}
+                        $scope.options.runrate = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'runrate', title: "Recurring Rent"}
+                        $scope.options.runratesqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'runratesqft', title: "Recurring Rent / Sqft"}
                         $scope.options.occupancy = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'occupancy', title: "Occupancy %"}
 
                         $scope.options.leased = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'leased', title: "Leased %"}
                         $scope.options.renewal = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'renewal', title: "Renewal %"}
                         $scope.options.traffic = {height:height, printWidth:printWidth, prefix: '', suffix: '', decimalPlaces: 0, metric: 'traffic', title: "Traffic / Week"}
                         $scope.options.leases = {height:height, printWidth:printWidth, prefix: '', suffix: '', decimalPlaces: 0, metric: 'leases', title: "Leases / Week"}
-                        $scope.options.concessions = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'concessions', title: "Total Concessions $"}
+                        $scope.options.concessions = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'concessions', title: "Total Concessions"}
 
                     }
 
