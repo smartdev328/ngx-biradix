@@ -62,6 +62,11 @@ define([
                         }
                     })
 
+                    if (min == Infinity) {
+                        min = 0;
+                        max = $scope.options.emptyMaxX;
+                    }
+
                     chart.yAxis[0].setExtremes(min, max);
                 }
                 $scope.$watch('report', function(a,b){
