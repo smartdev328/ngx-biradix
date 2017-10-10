@@ -606,7 +606,7 @@ define([
                     window.setTimeout(function () {
                         window.renderable = true;
                         // console.log('Render', (new Date()).getTime())
-                    }, $scope.trends ? 1500 :  300)
+                    }, $scope.trends ? 2000 :  300)
                 }
 
 
