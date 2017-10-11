@@ -3,7 +3,7 @@ define([
     'app',
 ], function (app) {
      app.controller
-        ('editFloorplanController', ['$scope', '$uibModalInstance', 'fp','toastr','unitItems','unitAmenityOptions','values','addAmenityGlobal','$dialog', function ($scope, $uibModalInstance, fp, toastr,unitItems,unitAmenityOptions,values,addAmenityGlobal,$dialog) {
+        ('editFloorplanController', ['$scope', '$uibModalInstance', 'fp','toastr','unitItems','unitAmenityOptions','values','addAmenityGlobal','$dialog','toastr', function ($scope, $uibModalInstance, fp, toastr,unitItems,unitAmenityOptions,values,addAmenityGlobal,$dialog,$toastr) {
 
             $scope.edit = false;
 
@@ -85,6 +85,12 @@ define([
 
             $scope.saveFloorplan = function() {
                 if ($scope.edit) {
+
+                    if (typeof $scope.fpCopy.bedrooms != 'undefined' && !isNaN($scope.fpCopy.bedrooms) && parseInt($scope.fpCopy.bedrooms) > 6) {
+                        toastr.error("More than 6 bedrooms or bathrooms aren't supported")
+                        return;
+                    }
+
                     fp.bedrooms = $scope.fpCopy.bedrooms;
                     fp.bathrooms = $scope.fpCopy.bathrooms;
 
