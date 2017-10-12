@@ -176,7 +176,7 @@ define([
                                 chart: {
                                     type: 'spline',
                                     ignoreHiddenSeries : true,
-                                    marginLeft: 75, // Keep all charts left aligned
+                                    marginLeft: 65, // Keep all charts left aligned
                                     spacingTop: 20,
                                     spacingBottom: 20
                                 },
@@ -210,7 +210,7 @@ define([
                                     text: $scope.options.title,
                                     align: 'left',
                                     margin: 0,
-                                    x: 65
+                                    x: 55
                                 },
                                 xAxis: {
                                     crosshair: false,

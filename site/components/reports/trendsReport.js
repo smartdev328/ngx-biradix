@@ -39,7 +39,7 @@ define([
                         $scope.options.renewal = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'renewal', title: "Renewal %", emptyMaxX: 100}
                         $scope.options.traffic = {height:height, printWidth:printWidth, prefix: '', suffix: '', decimalPlaces: 0, metric: 'traffic', title: "Traffic / Week", emptyMaxX: 10}
                         $scope.options.leases = {height:height, printWidth:printWidth, prefix: '', suffix: '', decimalPlaces: 0, metric: 'leases', title: "Leases / Week", emptyMaxX: 10}
-                        $scope.options.concessions = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'concessions', title: "Total Concessions", emptyMaxX: 1000}
+                        $scope.options.concessions = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'concessions', title: "Total Concessions", emptyMaxX: 1000}
 
                     }
 
