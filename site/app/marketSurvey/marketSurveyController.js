@@ -437,7 +437,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             } else {
 
                                 var er = "";
-                                if (!$scope.isValid($scope.survey.occupancy,true,true)) {
+                                if (!$scope.isValid($scope.survey.occupancy,false,true,0,100)) {
                                     er = '<b>Warning:</b> Occupancy must be between 0% and 100%';
                                 }
 
@@ -765,7 +765,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 })
 
 
-                if (!$scope.isValid($scope.survey.occupancy,true,true)) {
+                if (!$scope.isValid($scope.survey.occupancy,false,true,0,100)) {
                     isSuccess = false;
                     error = 'Occupancy';
                     $('#occupancy').parent().addClass("has-error");

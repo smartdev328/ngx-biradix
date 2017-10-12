@@ -845,7 +845,7 @@ module.exports = {
                 }
 
                 if (lastsurvey.occupancy !== survey.occupancy) {
-                    data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + survey.occupancy + "%"})
+                    data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == 'undefined' || lastsurvey.occupancy == null ? 'N/A' : lastsurvey.occupancy + '%') + " => " + (typeof survey.occupancy == 'undefined' || survey.occupancy == null ? 'N/A' : survey.occupancy + "%")})
                 }
 
                 if (lastsurvey.leased !== survey.leased) {
@@ -983,7 +983,7 @@ module.exports = {
             }
 
             if (lastsurvey.occupancy !== n.occupancy) {
-                data.push({description: "Occupancy: " + lastsurvey.occupancy + "% => " + n.occupancy + "%"})
+                data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == 'undefined' || lastsurvey.occupancy == null ? 'N/A' : lastsurvey.occupancy + '%') + " => " + (typeof survey.occupancy == 'undefined' || survey.occupancy == null ? 'N/A' : survey.occupancy + "%")})
             }
             if (lastsurvey.leased !== n.leased) {
                 data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + "%") + " => " + (typeof n.leased == 'undefined' || n.leased == null ? 'N/A' : n.leased + "%")})

@@ -251,10 +251,18 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                 p.leased = "";
             }
 
+            if (typeof p.occupancy === 'undefined' || p.occupancy == null) {
+                p.occupancy = "";
+            }
+
             if (p.totUnits) {
                 totalrow.count = (totalrow.count || 0) + 1;
                 totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
-                totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * 1); // not weighted
+
+                if (p.occupancy) {
+                    totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * 1); // not weighted
+                }
+
                 totalrow.sqft = (totalrow.sqft || 0) + (p.sqft * p.totUnits);
                 totalrow.rent = (totalrow.rent || 0) + (p.rent * p.totUnits);
                 totalrow.ner = (totalrow.ner || 0) + (p.ner * p.totUnits);
