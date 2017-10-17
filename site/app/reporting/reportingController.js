@@ -47,7 +47,6 @@ define([
                 $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
                 $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
 
-                if ($rootScope.me.roles.indexOf('Site Admin') > -1) {
                     $scope.reportItems.push({
                         id: "trends",
                         name: "Trend Analysis",
@@ -55,7 +54,6 @@ define([
                         group: "Individual Reports",
                         type: "single"
                     });
-                }
                 $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
 
 
