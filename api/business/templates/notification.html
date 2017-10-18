@@ -113,7 +113,11 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         </Td>
         {% if show.occupancy %}
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {% if row.occupancy != "" %}
             {{row.occupancy | formatNumber : 1}}%
+            {% else %}
+            -
+            {% endif %}
         </Td>
         {% endif %}
         {% if showLeases && show.leased %}

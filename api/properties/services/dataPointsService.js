@@ -242,11 +242,13 @@ module.exports = {
             })
 
             //console.log(points["5577c0f1541b40040baaa5eb"].occupancy)
-            for (prop in points) {
 
+            var i = 0;
+            for (prop in points) {
+                i++;
                 if (show.graphs === true) {
                     if (show.occupancy) {
-                        points[prop].occupancy = DataPointsHelperService.normailizePoints(points[prop].occupancy, offset, dr, false, show.dontExtrapolate);
+                        points[prop].occupancy = DataPointsHelperService.normailizePoints(points[prop].occupancy, offset, dr, false, show.dontExtrapolate, i == 1);
                     }
                     if (show.leased && points[prop].leased) {
                         points[prop].leased = DataPointsHelperService.normailizePoints(points[prop].leased, offset, dr, false, show.dontExtrapolate);

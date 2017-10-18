@@ -110,7 +110,7 @@ module.exports = {
 
         return {value: tot == 0 ? null : ret, excluded: excluded, totalUnits: tot};
     },
-    normailizePoints: function (points, offset, dr, weighted, dontExtrapolate) {
+    normailizePoints: function (points, offset, dr, weighted, dontExtrapolate, debug) {
         if (points == {}) {
             return {}
         }
@@ -132,9 +132,19 @@ module.exports = {
         while (parseInt(minDate) < nextMonday) {
             rangePoints = [];
 
+            // if (debug) {
+            //     console.log(moment(monday).format(), moment(nextMonday).format());
+            // }
+
             for (d in points) {
                 if (parseInt(d) >= monday && parseInt(d) < nextMonday) {
-                    rangePoints.push(points[d])
+                    // if (debug) {
+                    //     console.log(points[d])
+                    // }
+
+                    if (points[d] != null) {
+                        rangePoints.push(points[d])
+                    }
                 }
             }
 

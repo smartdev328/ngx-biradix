@@ -70,7 +70,7 @@
                         {{row.name}}
                     </td>
                     <td ng-if="show.occupancy" style="text-align:right">
-                        {{row.occupancy}}%
+                        {{row.occupancy != "" && row.occupancy != null ? row.occupancy + "%" : "-"}}
                     </td>
                     <td style="text-align:right" ng-if="show.leased && showLeases">
                         {{row.leased != "" ? row.leased + "%" : "-"}}

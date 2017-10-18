@@ -367,31 +367,32 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             var table = [];
 
             var tr, ls, surveyid, leased, renewal, n, row;
-            occupancy.data[0].data.forEach(function(o) {
-                tr = _.find(pts['traffic'], function(x) {return x.d == o[0]})
-                ls = _.find(pts['leases'], function(x) {return x.d == o[0]})
-                surveyid = _.find(surveys, function(x,y) {return y == o[0]})
+
+            pts.occupancy.forEach(function(o) {
+                tr = _.find(pts['traffic'], function(x) {return x.d == o.d})
+                ls = _.find(pts['leases'], function(x) {return x.d == o.d})
+                surveyid = _.find(surveys, function(x,y) {return y == o.d})
 
                 if (showLeases) {
-                    leased = _.find(pts['leased'], function(x) {return x.d == o[0]})
+                    leased = _.find(pts['leased'], function(x) {return x.d == o.d})
                 } else {
                     leased = null;
                 }
 
                 if (showRenewal) {
-                    renewal = _.find(pts['renewal'], function(x) {return x.d == o[0]})
+                    renewal = _.find(pts['renewal'], function(x) {return x.d == o.d})
                 } else {
                     renewal = null;
                 }
 
 
-                if (!tr.f) {
+                if (!o.f) {
 
-                    row = {d: o[0], occ: o[1], traffic: tr.v, leases: ls.v, surveyid: surveyid}
+                    row = {d: o.d, occ: o.v, traffic: tr.v, leases: ls.v, surveyid: surveyid}
 
                     nerColumns.forEach(function (k) {
                         n = _.find(pts[k], function (x) {
-                            return x.d == o[0]
+                            return x.d == o.d
                         })
 
                         row[k] = n.v

@@ -39,7 +39,7 @@
           {{item.d | date: 'MM/dd/yyyy'}} <i class="fa fa-edit hidden-print" ng-if="survey" ng-click="marketsurvey(propertyid,item.surveyid)" style="cursor:pointer" uib-tooltip="Edit this Survey"></i>
         </td>
         <td class="center" ng-if="columns.indexOf('occupancy') > -1">
-            {{item.occ| number : 1}}%
+            {{item.occ != null ? ((item.occ | number : 1) + '%') : '-'}}
         </td>
         <td class="center" ng-if="columns.indexOf('leased') > -1">
             {{item.leased != null ? ((item.leased | number : 1) + '%') : '-'}}
