@@ -261,6 +261,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
 
                 if (p.occupancy) {
                     totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * 1); // not weighted
+                    totalrow.occupancyCount = (totalrow.occupancyCount || 0) + 1; // not weighted
                 }
 
                 totalrow.sqft = (totalrow.sqft || 0) + (p.sqft * p.totUnits);
@@ -327,7 +328,10 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
         }
 
         if (totalrow.totUnits && totalrow.totUnits > 0) {
-            totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.count * 10) / 10; // not weighted
+
+            if (totalrow.occupancyCount) {
+                totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.occupancyCount * 10) / 10; // not weighted
+            }
             totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
             totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
             totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
