@@ -349,6 +349,7 @@ module.exports = {
             options.summary = true;
             options.show.graphs = true;
             options.show.selectedBedroom = -1;
+            options.show.dontExtrapolate = !options.graphs;
 
             options.show.ner = show.ner;
             options.show.nersqft = show.nersqft;

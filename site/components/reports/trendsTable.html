@@ -1,0 +1,46 @@
+<h4>{{options.title}}</h4>
+<Br clear="all">
+<div class="maingrid wrapper panel" style="overflow-x:auto">
+    <table class="table table-condensed table-striped" style="font-size:9pt">
+        <tbody>
+        <tr>
+            <td>
+
+            </td>
+            <Td>
+                <B>{{report.date1.dashboard.property.name}}</B><Br>
+                {{d1}}
+            </Td>
+            <Td>
+                <B>Comp Avg.</B><Br>
+                {{d1}}
+            </Td>
+            <Td ng-if="report.date2">
+                <B>{{report.date1.dashboard.property.name}}</B><Br>
+                {{d2}}
+            </Td>
+            <Td ng-if="report.date2">
+                <B>Comp Avg.</B><Br>
+                {{d2}}
+            </Td>
+        </tr>
+        <tr ng-repeat="date in report.dates">
+            <Td>
+                Week {{$index + 1}}
+            </Td>
+            <td>
+                <div ng-if="date.points[options.metric].day1subject != null">{{options.prefix}}{{date.points[options.metric].day1subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
+            </td>
+            <Td>
+                <div ng-if="date.points[options.metric].day1averages != null">{{options.prefix}}{{date.points[options.metric].day1averages.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
+            </Td>
+            <Td ng-if="report.date2">
+                <div ng-if="date.points[options.metric].day2subject != null">{{options.prefix}}{{date.points[options.metric].day2subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
+            </Td>
+            <Td ng-if="report.date2">
+                <div ng-if="date.points[options.metric].day2averages != null">{{options.prefix}}{{date.points[options.metric].day2averages.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
+            </Td>
+        </tr>
+        </tbody>
+    </table>
+</div>

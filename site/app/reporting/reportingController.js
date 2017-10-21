@@ -547,7 +547,8 @@ define([
                         enabled: $scope.cleanSettings.trends.daterange2.enabled
                     },
                     offset: moment().utcOffset(),
-                    show: $scope.cleanSettings.trends.show
+                    show: $scope.cleanSettings.trends.show,
+                    graphs: $scope.cleanSettings.trends.graphs
                 }
 
             }
@@ -1040,6 +1041,11 @@ define([
             var f = $scope.liveSettings.rankings.orderBy.replace("-","");
             $scope.temp.rankingSortSelected = _.find($scope.temp.rankingSortItems, function(x) {return x.id == f})
             $scope.temp.rankingSortDir = $scope.liveSettings.rankings.orderBy[0] == "-" ? "desc" : "asc";
+
+
+            if (typeof $scope.liveSettings.trends.graphs == 'undefined') {
+                $scope.liveSettings.trends.graphs = true;
+            }
         }
 
         $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
@@ -1114,6 +1120,8 @@ define([
                         nersqft :true
                     }
                 }
+
+                $scope.liveSettings.trends.graphs = true;
 
                 $scope.liveSettings.trends.daterange1 = $scope.defaultTrendsDateRange1('Last 90 Days', null, null);
 

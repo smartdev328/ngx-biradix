@@ -110,6 +110,8 @@ define([
                                 d2 = d2s + "-" + d2e;
                             }
 
+                            $scope.d1 = d1;
+                            $scope.d2 = d2;
 
                             var d1subject = {name: "(" + d1 + ") " + $scope.report.date1.dashboard.property.name, data:[], color: '#7CB5EC'};
                             var d1scomps = {name: "(" + d1 + ") " + 'Comps', data:[], color: "#434348"};
@@ -165,6 +167,7 @@ define([
                                 data.push(d2subject);
                                 data.push(d2scomps);
                             }
+
 
                             var el = $($element).find('.visible-print-block')
                             var el2 = $($element).find('.hidden-print-block')
@@ -277,122 +280,127 @@ define([
                                 series: data
                             };
 
-                            var chart;
-                            if (phantom) {
-                                chart = el.highcharts(data);
-                            }
-                            else {
-                                chart = el2.highcharts(data);
-                                container.bind('mouseout', function (e) {
 
-                                    var chart,
-                                        point,
-                                        i,
-                                        j
+                            if ($scope.settings.graphs) {
+                                var chart;
+                                if (phantom) {
+                                    chart = el.highcharts(data);
+                                }
+                                else {
+                                    chart = el2.highcharts(data);
+                                    container.bind('mouseout', function (e) {
+
+                                        var chart,
+                                            point,
+                                            i,
+                                            j
                                         ;
 
-                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-                                        chart = Highcharts.charts[i];
+                                        for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                            chart = Highcharts.charts[i];
 
 
-                                        if (chart && chart.pointer) {
+                                            if (chart && chart.pointer) {
 
-                                            for(j =0;j<=3;j++) {
-                                                if (chart.series.length > j) {
-                                                    chart.series[j].points.forEach(function(point) {
-                                                        if (point.state == 'hover') {
-                                                            point.series.chart.tooltip.hide();
-                                                            point.onMouseOut();
+                                                for (j = 0; j <= 3; j++) {
+                                                    if (chart.series.length > j) {
+                                                        chart.series[j].points.forEach(function (point) {
+                                                            if (point.state == 'hover') {
+                                                                point.series.chart.tooltip.hide();
+                                                                point.onMouseOut();
 
-                                                        }
-                                                    });
+                                                            }
+                                                        });
 
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-                                container.bind('mousemove touchmove touchstart', function (e) {
-                                    var chart,
-                                        point,
-                                        i,
-                                        j,
-                                        event;
-
-                                    var points = [];
-
-
-                                    var clientX = 0;
-
-                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-                                        chart = Highcharts.charts[i];
-
-                                        // if (chart) {
-                                        //     chart.xAxis[0].update({
-                                        //         crosshair: true
-                                        //     });
-                                        // }
-
-                                        if (chart && chart.pointer) {
-                                            event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-
-                                            // console.log(event);
-                                            clientX = event.clientX;
-                                            point = null;
-                                            for(j =0;j<=3;j++) {
-                                                if (chart.series.length > j) {
-                                                    point = chart.series[j].searchPoint(event, true); // Get the hovered point
-                                                    if (point) {
-                                                        points.push({i: i, x: point.x, point: point})
                                                     }
-
                                                 }
                                             }
                                         }
-                                    }
+                                    });
+                                    container.bind('mousemove touchmove touchstart', function (e) {
+                                        var chart,
+                                            point,
+                                            i,
+                                            j,
+                                            event;
 
-                                    var min = 999
-                                    var mindist = 99999;
+                                        var points = [];
 
-                                    points.forEach(function(p) {
-                                        // console.log(p.point.clientX - clientX);
-                                        if (Math.abs(p.point.clientX - clientX) < mindist) {
-                                            mindist = Math.abs(p.point.clientX - clientX);
-                                            min = p.x;
+
+                                        var clientX = 0;
+
+                                        for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                            chart = Highcharts.charts[i];
+
+                                            // if (chart) {
+                                            //     chart.xAxis[0].update({
+                                            //         crosshair: true
+                                            //     });
+                                            // }
+
+                                            if (chart && chart.pointer) {
+                                                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+
+                                                // console.log(event);
+                                                clientX = event.clientX;
+                                                point = null;
+                                                for (j = 0; j <= 3; j++) {
+                                                    if (chart.series.length > j) {
+                                                        point = chart.series[j].searchPoint(event, true); // Get the hovered point
+                                                        if (point) {
+                                                            points.push({i: i, x: point.x, point: point})
+                                                        }
+
+                                                    }
+                                                }
+                                            }
                                         }
-                                    })
 
-                                    //console.log(min);
-                                    //console.log(points);
+                                        var min = 999
+                                        var mindist = 99999;
 
-                                    if (min < 999) {
-                                        var found = {};
-                                        points.forEach(function(p) {
-                                            if (p.x == min && !found[p.i]) {
-                                                //console.log(p);
-                                                p.point.onMouseOver();
-                                                found[p.i] = true;
+                                        points.forEach(function (p) {
+                                            // console.log(p.point.clientX - clientX);
+                                            if (Math.abs(p.point.clientX - clientX) < mindist) {
+                                                mindist = Math.abs(p.point.clientX - clientX);
+                                                min = p.x;
                                             }
                                         })
+
+                                        //console.log(min);
+                                        //console.log(points);
+
+                                        if (min < 999) {
+                                            var found = {};
+                                            points.forEach(function (p) {
+                                                if (p.x == min && !found[p.i]) {
+                                                    //console.log(p);
+                                                    p.point.onMouseOver();
+                                                    found[p.i] = true;
+                                                }
+                                            })
+                                        }
+
+                                    });
+                                }
+
+                                Highcharts.charts.forEach(function (chart) {
+                                    if (chart && !$("#" + chart.container.id).length) {
+                                        chart.destroy();
                                     }
 
-                                });
+                                    if (chart && chart.pointer) {
+                                        chart.pointer.reset = function () {
+                                            return undefined
+                                        };
+                                    }
+
+                                })
+
+                                $scope.calcExtremes(chart.highcharts());
                             }
 
-                            Highcharts.charts.forEach(function(chart) {
-                                if (chart && !$("#" + chart.container.id).length) {
-                                    chart.destroy();
-                                }
-
-                                if (chart && chart.pointer) {
-                                    chart.pointer.reset = function () {
-                                        return undefined
-                                    };
-                                }
-
-                            })
-
-                            $scope.calcExtremes(chart.highcharts());
+                                $scope.trendsTable = '/components/reports/trendsTable.html?bust=' + version;
 
                         }, 0);
 
@@ -403,9 +411,9 @@ define([
 
             },
             template:
-                // "<h4>{{options.title}}</h4>"+
-                "<div ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
-                "<div ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>"
+                "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
+                "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>" +
+                "<div ng-if='!settings.graphs' ng-include=\"trendsTable\"></div>"
         };
     })
 })
