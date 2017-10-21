@@ -120,19 +120,49 @@ define([
                             var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'shortdash', color: "#434348"};
 
 
+                            $scope.averages = {
+                                day1subject : 0,
+                                day1subjectcount : 0,
+                                day1averages: 0,
+                                day1averagescount : 0,
+                                day2subject : 0,
+                                day2subjectcount : 0,
+                                day2averages: 0,
+                                day2averagescount : 0,                                
+                            }
                             $scope.report.dates.forEach(function(d,i) {
-                                if (d.points[$scope.options.metric].day1subject)
-                                d1subject.data.push(d.points[$scope.options.metric].day1subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date} : null)
 
-                                if (d.points[$scope.options.metric].day1averages)
-                                d1scomps.data.push(d.points[$scope.options.metric].day1averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date} : null)
+                                if (typeof d.points[$scope.options.metric].day1subject != 'undefined') {
+                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date});
+                                    $scope.averages.day1subjectcount++;
+                                    $scope.averages.day1subject+=d.points[$scope.options.metric].day1subject;
+                                } else {
+                                    d1subject.data.push(null);
+                                }
 
-                                if (d.points[$scope.options.metric].day2subject)
-                                d2subject.data.push(d.points[$scope.options.metric].day2subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date} : null)
+                                if (typeof d.points[$scope.options.metric].day1averages != 'undefined') {
+                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date});
+                                    $scope.averages.day1averagescount++;
+                                    $scope.averages.day1averages+=d.points[$scope.options.metric].day1averages;
+                                } else {
+                                    d1subject.data.push(null);
+                                }
 
-                                if (d.points[$scope.options.metric].day2averages)
-                                d2scomps.data.push(d.points[$scope.options.metric].day2averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date} : null)
+                                if (typeof d.points[$scope.options.metric].day2subject != 'undefined') {
+                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date});
+                                    $scope.averages.day2subjectcount++;
+                                    $scope.averages.day2subject+=d.points[$scope.options.metric].day2subject;
+                                } else {
+                                    d1subject.data.push(null);
+                                }
 
+                                if (typeof d.points[$scope.options.metric].day2averages != 'undefined') {
+                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date});
+                                    $scope.averages.day2averagescount++;
+                                    $scope.averages.day2averages+=d.points[$scope.options.metric].day2averages;
+                                } else {
+                                    d1subject.data.push(null);
+                                }
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined' && (typeof $scope.options.min == 'undefined' || d.points[$scope.options.metric].day1subject <  $scope.options.min)) {
                                     $scope.options.min = d.points[$scope.options.metric].day1subject;
                                 }
@@ -160,6 +190,22 @@ define([
                                 }
 
                             })
+
+                            if ($scope.averages.day1subjectcount > 0) {
+                                $scope.averages.day1subject /= $scope.averages.day1subjectcount;
+                            }
+
+                            if ($scope.averages.day1averagescount > 0) {
+                                $scope.averages.day1averages /= $scope.averages.day1averagescount;
+                            }
+
+                            if ($scope.averages.day2subjectcount > 0) {
+                                $scope.averages.day2subject /= $scope.averages.day2subjectcount;
+                            }
+
+                            if ($scope.averages.day2averagescount > 0) {
+                                $scope.averages.day2averages /= $scope.averages.day2averagescount;
+                            }                            
 
                             var data = [d1subject,d1scomps];
 
