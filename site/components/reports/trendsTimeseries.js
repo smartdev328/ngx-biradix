@@ -110,6 +110,8 @@ define([
                                 d2 = d2s + "-" + d2e;
                             }
 
+                            $scope.d1 = d1;
+                            $scope.d2 = d2;
 
                             var d1subject = {name: "(" + d1 + ") " + $scope.report.date1.dashboard.property.name, data:[], color: '#7CB5EC'};
                             var d1scomps = {name: "(" + d1 + ") " + 'Comps', data:[], color: "#434348"};
@@ -118,19 +120,49 @@ define([
                             var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'shortdash', color: "#434348"};
 
 
+                            $scope.averages = {
+                                day1subject : 0,
+                                day1subjectcount : 0,
+                                day1averages: 0,
+                                day1averagescount : 0,
+                                day2subject : 0,
+                                day2subjectcount : 0,
+                                day2averages: 0,
+                                day2averagescount : 0,                                
+                            }
                             $scope.report.dates.forEach(function(d,i) {
-                                if (d.points[$scope.options.metric].day1subject)
-                                d1subject.data.push(d.points[$scope.options.metric].day1subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date} : null)
 
-                                if (d.points[$scope.options.metric].day1averages)
-                                d1scomps.data.push(d.points[$scope.options.metric].day1averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date} : null)
+                                if (typeof d.points[$scope.options.metric].day1subject != 'undefined') {
+                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date, week: d.w});
+                                    $scope.averages.day1subjectcount++;
+                                    $scope.averages.day1subject+=d.points[$scope.options.metric].day1subject;
+                                } else {
+                                    d1subject.data.push(null);
+                                }
 
-                                if (d.points[$scope.options.metric].day2subject)
-                                d2subject.data.push(d.points[$scope.options.metric].day2subject ? {x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date} : null)
+                                if (typeof d.points[$scope.options.metric].day1averages != 'undefined') {
+                                    d1scomps.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date, week: d.w});
+                                    $scope.averages.day1averagescount++;
+                                    $scope.averages.day1averages+=d.points[$scope.options.metric].day1averages;
+                                } else {
+                                    d1scomps.data.push(null);
+                                }
 
-                                if (d.points[$scope.options.metric].day2averages)
-                                d2scomps.data.push(d.points[$scope.options.metric].day2averages ? {x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date} : null)
+                                if (typeof d.points[$scope.options.metric].day2subject != 'undefined') {
+                                    d2subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date, week: d.w});
+                                    $scope.averages.day2subjectcount++;
+                                    $scope.averages.day2subject+=d.points[$scope.options.metric].day2subject;
+                                } else {
+                                    d2subject.data.push(null);
+                                }
 
+                                if (typeof d.points[$scope.options.metric].day2averages != 'undefined') {
+                                    d2scomps.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date, week: d.w});
+                                    $scope.averages.day2averagescount++;
+                                    $scope.averages.day2averages+=d.points[$scope.options.metric].day2averages;
+                                } else {
+                                    d2scomps.data.push(null);
+                                }
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined' && (typeof $scope.options.min == 'undefined' || d.points[$scope.options.metric].day1subject <  $scope.options.min)) {
                                     $scope.options.min = d.points[$scope.options.metric].day1subject;
                                 }
@@ -159,12 +191,29 @@ define([
 
                             })
 
+                            if ($scope.averages.day1subjectcount > 0) {
+                                $scope.averages.day1subject /= $scope.averages.day1subjectcount;
+                            }
+
+                            if ($scope.averages.day1averagescount > 0) {
+                                $scope.averages.day1averages /= $scope.averages.day1averagescount;
+                            }
+
+                            if ($scope.averages.day2subjectcount > 0) {
+                                $scope.averages.day2subject /= $scope.averages.day2subjectcount;
+                            }
+
+                            if ($scope.averages.day2averagescount > 0) {
+                                $scope.averages.day2averages /= $scope.averages.day2averagescount;
+                            }                            
+
                             var data = [d1subject,d1scomps];
 
                             if ($scope.report.date2) {
                                 data.push(d2subject);
                                 data.push(d2scomps);
                             }
+
 
                             var el = $($element).find('.visible-print-block')
                             var el2 = $($element).find('.hidden-print-block')
@@ -218,7 +267,24 @@ define([
                                     categries: [0, 1,2, 3, 4, 5, 6, 7, 8, 9 , 10],
                                     labels: {
                                         formatter: function () {
-                                            return 'Week: ' + (this.value + 1);
+                                            var series = this.chart.series;
+                                            var x = this.value;
+                                            var y;
+                                            var week;
+
+                                            series.forEach(function(p) {
+                                                if (p.visible) {
+                                                    y = _.find(p.data, function (z) {
+                                                        return z.x == x && typeof z.week != 'undefined' && z.week > 0
+                                                    });
+
+                                                    if (y) {
+                                                        week = y.week;
+
+                                                    }
+                                                }
+                                            });
+                                            return 'Week: ' + week;
                                         }
                                     }
                                 },
@@ -235,7 +301,7 @@ define([
                                 tooltip: {
                                     shared: true,
                                     formatter: function() {
-                                        var s = "<span>Week "+(this.x + 1)+"</span><br/>";
+                                        var s = "<span>Week ";
 
                                         var series = this.points[0].series.chart.series;
 
@@ -243,6 +309,7 @@ define([
 
                                         var y;
                                         var d;
+                                        var first = true;
                                         series.forEach(function(p) {
                                             if (p.visible) {
                                                 y = _.find(p.data, function (z) {
@@ -250,6 +317,11 @@ define([
                                                 });
 
                                                 if (y) {
+
+                                                    if (first) {
+                                                       s += y.week +"</span><br/>";
+                                                       first = false;
+                                                    }
                                                     d = moment(y.custom).format("MMM DD, YYYY")
                                                     y = y.y;
 
@@ -277,122 +349,127 @@ define([
                                 series: data
                             };
 
-                            var chart;
-                            if (phantom) {
-                                chart = el.highcharts(data);
-                            }
-                            else {
-                                chart = el2.highcharts(data);
-                                container.bind('mouseout', function (e) {
 
-                                    var chart,
-                                        point,
-                                        i,
-                                        j
+                            if ($scope.settings.graphs) {
+                                var chart;
+                                if (phantom) {
+                                    chart = el.highcharts(data);
+                                }
+                                else {
+                                    chart = el2.highcharts(data);
+                                    container.bind('mouseout', function (e) {
+
+                                        var chart,
+                                            point,
+                                            i,
+                                            j
                                         ;
 
-                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-                                        chart = Highcharts.charts[i];
+                                        for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                            chart = Highcharts.charts[i];
 
 
-                                        if (chart && chart.pointer) {
+                                            if (chart && chart.pointer) {
 
-                                            for(j =0;j<=3;j++) {
-                                                if (chart.series.length > j) {
-                                                    chart.series[j].points.forEach(function(point) {
-                                                        if (point.state == 'hover') {
-                                                            point.series.chart.tooltip.hide();
-                                                            point.onMouseOut();
+                                                for (j = 0; j <= 3; j++) {
+                                                    if (chart.series.length > j) {
+                                                        chart.series[j].points.forEach(function (point) {
+                                                            if (point.state == 'hover') {
+                                                                point.series.chart.tooltip.hide();
+                                                                point.onMouseOut();
 
-                                                        }
-                                                    });
+                                                            }
+                                                        });
 
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-                                container.bind('mousemove touchmove touchstart', function (e) {
-                                    var chart,
-                                        point,
-                                        i,
-                                        j,
-                                        event;
-
-                                    var points = [];
-
-
-                                    var clientX = 0;
-
-                                    for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-                                        chart = Highcharts.charts[i];
-
-                                        // if (chart) {
-                                        //     chart.xAxis[0].update({
-                                        //         crosshair: true
-                                        //     });
-                                        // }
-
-                                        if (chart && chart.pointer) {
-                                            event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-
-                                            // console.log(event);
-                                            clientX = event.clientX;
-                                            point = null;
-                                            for(j =0;j<=3;j++) {
-                                                if (chart.series.length > j) {
-                                                    point = chart.series[j].searchPoint(event, true); // Get the hovered point
-                                                    if (point) {
-                                                        points.push({i: i, x: point.x, point: point})
                                                     }
-
                                                 }
                                             }
                                         }
-                                    }
+                                    });
+                                    container.bind('mousemove touchmove touchstart', function (e) {
+                                        var chart,
+                                            point,
+                                            i,
+                                            j,
+                                            event;
 
-                                    var min = 999
-                                    var mindist = 99999;
+                                        var points = [];
 
-                                    points.forEach(function(p) {
-                                        // console.log(p.point.clientX - clientX);
-                                        if (Math.abs(p.point.clientX - clientX) < mindist) {
-                                            mindist = Math.abs(p.point.clientX - clientX);
-                                            min = p.x;
+
+                                        var clientX = 0;
+
+                                        for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                                            chart = Highcharts.charts[i];
+
+                                            // if (chart) {
+                                            //     chart.xAxis[0].update({
+                                            //         crosshair: true
+                                            //     });
+                                            // }
+
+                                            if (chart && chart.pointer) {
+                                                event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+
+                                                // console.log(event);
+                                                clientX = event.clientX;
+                                                point = null;
+                                                for (j = 0; j <= 3; j++) {
+                                                    if (chart.series.length > j) {
+                                                        point = chart.series[j].searchPoint(event, true); // Get the hovered point
+                                                        if (point) {
+                                                            points.push({i: i, x: point.x, point: point})
+                                                        }
+
+                                                    }
+                                                }
+                                            }
                                         }
-                                    })
 
-                                    //console.log(min);
-                                    //console.log(points);
+                                        var min = 999
+                                        var mindist = 99999;
 
-                                    if (min < 999) {
-                                        var found = {};
-                                        points.forEach(function(p) {
-                                            if (p.x == min && !found[p.i]) {
-                                                //console.log(p);
-                                                p.point.onMouseOver();
-                                                found[p.i] = true;
+                                        points.forEach(function (p) {
+                                            // console.log(p.point.clientX - clientX);
+                                            if (Math.abs(p.point.clientX - clientX) < mindist) {
+                                                mindist = Math.abs(p.point.clientX - clientX);
+                                                min = p.x;
                                             }
                                         })
+
+                                        //console.log(min);
+                                        //console.log(points);
+
+                                        if (min < 999) {
+                                            var found = {};
+                                            points.forEach(function (p) {
+                                                if (p.x == min && !found[p.i]) {
+                                                    //console.log(p);
+                                                    p.point.onMouseOver();
+                                                    found[p.i] = true;
+                                                }
+                                            })
+                                        }
+
+                                    });
+                                }
+
+                                Highcharts.charts.forEach(function (chart) {
+                                    if (chart && !$("#" + chart.container.id).length) {
+                                        chart.destroy();
                                     }
 
-                                });
+                                    if (chart && chart.pointer) {
+                                        chart.pointer.reset = function () {
+                                            return undefined
+                                        };
+                                    }
+
+                                })
+
+                                $scope.calcExtremes(chart.highcharts());
                             }
 
-                            Highcharts.charts.forEach(function(chart) {
-                                if (chart && !$("#" + chart.container.id).length) {
-                                    chart.destroy();
-                                }
-
-                                if (chart && chart.pointer) {
-                                    chart.pointer.reset = function () {
-                                        return undefined
-                                    };
-                                }
-
-                            })
-
-                            $scope.calcExtremes(chart.highcharts());
+                                $scope.trendsTable = '/components/reports/trendsTable.html?bust=' + version;
 
                         }, 0);
 
@@ -403,9 +480,9 @@ define([
 
             },
             template:
-                // "<h4>{{options.title}}</h4>"+
-                "<div ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
-                "<div ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>"
+                "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
+                "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>" +
+                "<div ng-if='!settings.graphs' ng-include=\"trendsTable\"></div>"
         };
     })
 })

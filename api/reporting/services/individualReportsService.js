@@ -349,6 +349,7 @@ module.exports = {
             options.summary = true;
             options.show.graphs = true;
             options.show.selectedBedroom = -1;
+            options.show.dontExtrapolate = !options.graphs;
 
             options.show.ner = show.ner;
             options.show.nersqft = show.nersqft;
@@ -425,7 +426,7 @@ module.exports = {
                 let point = {};
 
                 while(i < max) {
-                    point = {}
+                    point = {w: i+1};
                     if (all.date1.mondays.length > i) {
                         point.day1date = all.date1.mondays[i];
                         point.day1datef = moment(point.day1date).format();
