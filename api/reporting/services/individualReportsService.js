@@ -426,7 +426,7 @@ module.exports = {
                 let point = {};
 
                 while(i < max) {
-                    point = {}
+                    point = {w: i+1};
                     if (all.date1.mondays.length > i) {
                         point.day1date = all.date1.mondays[i];
                         point.day1datef = moment(point.day1date).format();

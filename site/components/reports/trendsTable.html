@@ -30,7 +30,7 @@
             || date.points[options.metric].day2averages != null
             ">
             <Td>
-                Week {{$index + 1}} - <i>{{date.day1date | date : 'shortDate'}}</i>
+                Week {{date.w}} - <i>{{date.day1date | date : 'shortDate'}}</i>
             </Td>
             <td>
                 <div ng-if="date.points[options.metric].day1subject != null">{{options.prefix}}{{date.points[options.metric].day1subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
@@ -39,7 +39,7 @@
                 <div ng-if="date.points[options.metric].day1averages != null">{{options.prefix}}{{date.points[options.metric].day1averages.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </Td>
             <Td ng-if="report.date2">
-                Week {{$index + 1}} - <i>{{date.day2date | date : 'shortDate'}}</i>
+                Week {{date.w}} - <i>{{date.day2date | date : 'shortDate'}}</i>
             </Td>
             <Td ng-if="report.date2">
                 <div ng-if="date.points[options.metric].day2subject != null">{{options.prefix}}{{date.points[options.metric].day2subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>

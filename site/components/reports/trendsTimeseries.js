@@ -133,7 +133,7 @@ define([
                             $scope.report.dates.forEach(function(d,i) {
 
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined') {
-                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date});
+                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date, week: d.w});
                                     $scope.averages.day1subjectcount++;
                                     $scope.averages.day1subject+=d.points[$scope.options.metric].day1subject;
                                 } else {
@@ -141,27 +141,27 @@ define([
                                 }
 
                                 if (typeof d.points[$scope.options.metric].day1averages != 'undefined') {
-                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date});
+                                    d1scomps.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1averages * 100) / 100, custom: d.day1date, week: d.w});
                                     $scope.averages.day1averagescount++;
                                     $scope.averages.day1averages+=d.points[$scope.options.metric].day1averages;
                                 } else {
-                                    d1subject.data.push(null);
+                                    d1scomps.data.push(null);
                                 }
 
                                 if (typeof d.points[$scope.options.metric].day2subject != 'undefined') {
-                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date});
+                                    d2subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2subject * 100) / 100, custom: d.day2date, week: d.w});
                                     $scope.averages.day2subjectcount++;
                                     $scope.averages.day2subject+=d.points[$scope.options.metric].day2subject;
                                 } else {
-                                    d1subject.data.push(null);
+                                    d2subject.data.push(null);
                                 }
 
                                 if (typeof d.points[$scope.options.metric].day2averages != 'undefined') {
-                                    d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date});
+                                    d2scomps.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day2averages * 100) / 100, custom: d.day2date, week: d.w});
                                     $scope.averages.day2averagescount++;
                                     $scope.averages.day2averages+=d.points[$scope.options.metric].day2averages;
                                 } else {
-                                    d1subject.data.push(null);
+                                    d2scomps.data.push(null);
                                 }
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined' && (typeof $scope.options.min == 'undefined' || d.points[$scope.options.metric].day1subject <  $scope.options.min)) {
                                     $scope.options.min = d.points[$scope.options.metric].day1subject;
@@ -267,7 +267,24 @@ define([
                                     categries: [0, 1,2, 3, 4, 5, 6, 7, 8, 9 , 10],
                                     labels: {
                                         formatter: function () {
-                                            return 'Week: ' + (this.value + 1);
+                                            var series = this.chart.series;
+                                            var x = this.value;
+                                            var y;
+                                            var week;
+
+                                            series.forEach(function(p) {
+                                                if (p.visible) {
+                                                    y = _.find(p.data, function (z) {
+                                                        return z.x == x && typeof z.week != 'undefined' && z.week > 0
+                                                    });
+
+                                                    if (y) {
+                                                        week = y.week;
+
+                                                    }
+                                                }
+                                            });
+                                            return 'Week: ' + week;
                                         }
                                     }
                                 },
@@ -284,7 +301,7 @@ define([
                                 tooltip: {
                                     shared: true,
                                     formatter: function() {
-                                        var s = "<span>Week "+(this.x + 1)+"</span><br/>";
+                                        var s = "<span>Week ";
 
                                         var series = this.points[0].series.chart.series;
 
@@ -292,6 +309,7 @@ define([
 
                                         var y;
                                         var d;
+                                        var first = true;
                                         series.forEach(function(p) {
                                             if (p.visible) {
                                                 y = _.find(p.data, function (z) {
@@ -299,6 +317,11 @@ define([
                                                 });
 
                                                 if (y) {
+
+                                                    if (first) {
+                                                       s += y.week +"</span><br/>";
+                                                       first = false;
+                                                    }
                                                     d = moment(y.custom).format("MMM DD, YYYY")
                                                     y = y.y;
 
