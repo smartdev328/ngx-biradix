@@ -318,7 +318,7 @@ define([
 
                                                 if (y) {
 
-                                                    if (first) {
+                                                    if (first && y.week) {
                                                        s += y.week +"</span><br/>";
                                                        first = false;
                                                     }
