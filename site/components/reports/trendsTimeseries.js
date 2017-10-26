@@ -219,8 +219,6 @@ define([
                             var el2 = $($element).find('.hidden-print-block')
                             var container = $("#timeseries-container")
 
-                            var isMobile = $(window).width() < 600;
-
                             var data = {
                                 chart: {
                                     type: 'spline',
@@ -341,12 +339,27 @@ define([
                                     enabled: false
                                 },
                                 legend: {
-                                    layout: isMobile ? 'horizontal' :  'vertical',
-                                    align: isMobile ? 'left' :'right',
-                                    verticalAlign: isMobile ? 'bottom' : 'middle',
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'middle',
                                     borderWidth: 0,
                                 },
-                                series: data
+                                series: data,
+
+                                responsive: {
+                                    rules: [{
+                                        condition: {
+                                            maxWidth: 800
+                                        },
+                                        chartOptions: {
+                                            legend: {
+                                                layout: 'horizontal',
+                                                align: 'left',
+                                                verticalAlign: 'bottom'
+                                            }
+                                        }
+                                    }]
+                                }
                             };
 
 
