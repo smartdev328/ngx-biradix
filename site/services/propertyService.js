@@ -256,6 +256,10 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     lines.push({key: b.toString(), name: "(" + (b == 0 ? "Studios" : b + " Bdrs.") + ") Comp Average" , prop: 'averages'})
                 }
 
+                if (Object.keys(bedrooms).length == 0) {
+                    lines.push({key: -1, name: comps[0].name, prop: comps[0]._id})
+                }
+
 
             }
             else
