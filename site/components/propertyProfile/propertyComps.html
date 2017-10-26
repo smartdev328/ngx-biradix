@@ -426,7 +426,8 @@
         </td>
         <td style="text-align: right" ng-if="show.occupancy" class="pad">
             <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">{{totals.occupancy | number : 1}}%</span>
+            <span ng-if="!totals.unitsOccupancy">-</span>
+            <span ng-if="totals.unitsOccupancy">{{totals.occupancy | number : 1}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.leased" class="pad">
             <span ng-if="!totals.unitsLeased">-</span>
