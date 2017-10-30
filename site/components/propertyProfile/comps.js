@@ -120,31 +120,31 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             if (!$scope.totals.unitsOccupancy) {
                                 $scope.totals.occupancy = 0
                             } else {
-                                $scope.totals.occupancy = ($scope.totals.occupancy || 0) / $scope.totals.unitsOccupancy;
+                                $scope.totals.occupancy = Math.round(($scope.totals.occupancy || 0) / $scope.totals.unitsOccupancy * 10) / 10;
                             }
 
                             if (!$scope.totals.unitsLeased) {
                                 $scope.totals.leased = 0
                             } else {
-                                $scope.totals.leased = ($scope.totals.leased || 0) / $scope.totals.unitsLeased;
+                                $scope.totals.leased = Math.round(($scope.totals.leased || 0) / $scope.totals.unitsLeased * 10) / 10;
                             }
 
                             if (!$scope.totals.unitsRenewal) {
                                 $scope.totals.renewal = 0
                             } else {
-                                $scope.totals.renewal = ($scope.totals.renewal || 0) / $scope.totals.unitsRenewal;
+                                $scope.totals.renewal = Math.round(($scope.totals.renewal || 0) / $scope.totals.unitsRenewal * 10) / 10;
                             }
 
                             $scope.totals.weeklytraffic = ($scope.totals.weeklytraffic || 0) / $scope.totals.units;
                             $scope.totals.weeklyleases = ($scope.totals.weeklyleases || 0) / $scope.totals.units;
                             $scope.totals.unitPercent = 100;
                             $scope.totals.rent = ($scope.totals.rent || 0) / $scope.totals.units;
-                            $scope.totals.mersqft = ($scope.totals.rent || 0) / $scope.totals.sqft;
+                            $scope.totals.mersqft = ($scope.totals.mersqft || 0) / $scope.totals.units;
                             $scope.totals.concessions = ($scope.totals.concessions || 0) / $scope.totals.units;
                             $scope.totals.ner = ($scope.totals.ner || 0) / $scope.totals.units;
-                            $scope.totals.nersqft = ($scope.totals.ner || 0) / $scope.totals.sqft;
+                            $scope.totals.nersqft = ($scope.totals.nersqft || 0) / $scope.totals.units;
                             $scope.totals.runrate = ($scope.totals.runrate || 0) / $scope.totals.units;
-                            $scope.totals.runratesqft = ($scope.totals.runrate || 0) / $scope.totals.sqft;
+                            $scope.totals.runratesqft = ($scope.totals.runratesqft || 0) / $scope.totals.units;
                             $scope.totals.units = ($scope.totals.units || 0) / $scope.totalSurveys;
 
                         }

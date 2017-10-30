@@ -427,15 +427,15 @@
         <td style="text-align: right" ng-if="show.occupancy" class="pad">
             <span ng-if="totalSurveys == 0">-</span>
             <span ng-if="!totals.unitsOccupancy">-</span>
-            <span ng-if="totals.unitsOccupancy">{{totals.occupancy | number : 1}}%</span>
+            <span ng-if="totals.unitsOccupancy">{{totals.occupancy}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.leased" class="pad">
             <span ng-if="!totals.unitsLeased">-</span>
-            <span ng-if="totals.unitsLeased">{{totals.leased | number : 1}}%</span>
+            <span ng-if="totals.unitsLeased">{{totals.leased}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.renewal" class="pad">
             <span ng-if="!totals.unitsRenewal">-</span>
-            <span ng-if="totals.unitsRenewal">{{totals.renewal | number : 1}}%</span>
+            <span ng-if="totals.unitsRenewal">{{totals.renewal}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
             <span ng-if="totalSurveys == 0">-</span>
