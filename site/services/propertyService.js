@@ -256,6 +256,10 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     lines.push({key: b.toString(), name: "(" + (b == 0 ? "Studios" : b + " Bdrs.") + ") Comp Average" , prop: 'averages'})
                 }
 
+                if (Object.keys(bedrooms).length == 0) {
+                    lines.push({key: -1, name: comps[0].name, prop: comps[0]._id})
+                }
+
 
             }
             else
@@ -513,28 +517,28 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
 
             var scaleDecimals = 0;
-            var scaleText = "Net Eff. Rent $";
+            var scaleText = "Net Eff. Rent";
 
             if (scale == "nersqft") {
                 scaleDecimals = 2;
-                scaleText = "Net Eff. Rent / Sqft $";
+                scaleText = "Net Eff. Rent / Sqft";
             }
 
             var ner = fac.extractSeries(profile.points, keys,labels,0,1000,scaleDecimals, [resp.property], false);
 
             var occ ;
-            var title = 'Occupancy %';
+            var title = 'Occupancy';
             var points = ['occupancy'];
             var labels = ['Occupancy %'];
 
             if (showLeases) {
-                title += " / Leased %";
+                title += " / Leased";
                 points.push('leased');
                 labels.push('Leased %');
             }
 
             if (showRenewal) {
-                title += " / Renewal %";
+                title += " / Renewal";
                 points.push('renewal');
                 labels.push('Renewal %');
             }
@@ -545,7 +549,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 occ.min = occ.min * .9;
             }
 
-            resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
+            resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
 
 
             var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
@@ -645,11 +649,11 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
 
             var scaleDecimals = 0;
-            var scaleText = "Net Eff. Rent (" + resp.bedroom.text + ") $";
+            var scaleText = "Net Eff. Rent (" + resp.bedroom.text + ")";
 
             if (scale == "nersqft") {
                 scaleDecimals = 2;
-                scaleText = "Net Eff. Rent / Sqft (" + resp.bedroom.text + ") $";
+                scaleText = "Net Eff. Rent / Sqft (" + resp.bedroom.text + ")";
             }
 
             resp.points = {excluded: dashboard.points.excluded};
@@ -663,8 +667,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             if (showLeases) {
                 printWidth = 380;
             }
-            resp.occData = {height:300, printWidth:printWidth, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Occupancy %', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
-            resp.leasedData = {height:300, printWidth:printWidth, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Leased %', marker: false, data: leased.data, min: (summary ? leased.min : 80), max: (summary ? leased.max : 100)};
+            resp.occData = {height:300, printWidth:printWidth, decimalPlaces: 0, prefix:'',suffix:'%',title: 'Occupancy', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
+            resp.leasedData = {height:300, printWidth:printWidth, decimalPlaces: 0, prefix:'',suffix:'%',title: 'Leased', marker: false, data: leased.data, min: (summary ? leased.min : 80), max: (summary ? leased.max : 100)};
 
             return resp;
         }

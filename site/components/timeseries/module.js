@@ -67,7 +67,8 @@ angular.module('biradix.global').directive('timeSeries', function () {
                         var data = {
                             chart: {
                                 type: 'spline',
-                                ignoreHiddenSeries : true
+                                ignoreHiddenSeries : true,
+                                marginLeft: 75, // Keep all charts left aligned
                             },
                             plotOptions: {
                                 series: {
@@ -105,8 +106,11 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 title: {
                                     text: $scope.options.title
                                 },
-                                // min: $scope.options.min,
-                                // max: $scope.options.max
+                                labels: {
+                                    formatter: function () {
+                                        return $scope.options.prefix + this.value.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix;
+                                    }
+                                }
                             },
                             tooltip: {
                                 shared: true,

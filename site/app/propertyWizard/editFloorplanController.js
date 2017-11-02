@@ -84,13 +84,47 @@ define([
             };
 
             $scope.saveFloorplan = function() {
+                $('#bedrooms').parent().removeClass("has-error");
+                $('#sqft').parent().removeClass("has-error");
+                $('#units').parent().removeClass("has-error");
+
+                if (typeof $scope.fpCopy.bedrooms == 'undefined' || $scope.fpCopy.bedrooms == null || isNaN($scope.fpCopy.bedrooms) || parseInt($scope.fpCopy.bedrooms) < 0) {
+                    toastr.error("Please make sure there are no blanks and no negative values for number of bedrooms");
+                    $('#bedrooms').parent().addClass("has-error");
+                    return;
+                }
+
+                if (typeof $scope.fpCopy.bedrooms != 'undefined' && !isNaN($scope.fpCopy.bedrooms) && parseInt($scope.fpCopy.bedrooms) > 6) {
+                    toastr.error("Please make sure there are no more than 6 bedrooms")
+                    $('#bedrooms').parent().addClass("has-error");
+                    return;
+                }
+
+                if (typeof $scope.fpCopy.bathrooms == 'undefined' || $scope.fpCopy.bathrooms == null || isNaN($scope.fpCopy.bathrooms) || parseInt($scope.fpCopy.bathrooms) < 0) {
+                    toastr.error("Please make sure there are no blanks and no negative values for number of bathrooms");
+                    $('#bedrooms').parent().addClass("has-error");
+                    return;
+                }
+
+                if (typeof $scope.fpCopy.bathrooms != 'undefined' && !isNaN($scope.fpCopy.bathrooms) && parseInt($scope.fpCopy.bedrooms) > 9) {
+                    toastr.error("Please make sure there are no more than 9 bathrooms")
+                    $('#bedrooms').parent().addClass("has-error");
+                    return;
+                }
+
+                if (typeof $scope.fpCopy.sqft == 'undefined' || $scope.fpCopy.sqft == null || isNaN($scope.fpCopy.sqft) || parseInt($scope.fpCopy.sqft) < 0) {
+                    toastr.error("Please make sure there are no blanks and no negative values for square feet");
+                    $('#sqft').parent().addClass("has-error");
+                    return;
+                }
+
+                if (typeof $scope.fpCopy.units == 'undefined' || $scope.fpCopy.units == null || isNaN($scope.fpCopy.units) || parseInt($scope.fpCopy.units) < 0) {
+                    toastr.error("Please make sure there are no blanks and no negative values for number of units");
+                    $('#units').parent().addClass("has-error");
+                    return;
+                }
+
                 if ($scope.edit) {
-
-                    if (typeof $scope.fpCopy.bedrooms != 'undefined' && !isNaN($scope.fpCopy.bedrooms) && parseInt($scope.fpCopy.bedrooms) > 6) {
-                        toastr.error("More than 6 bedrooms or bathrooms aren't supported")
-                        return;
-                    }
-
                     fp.bedrooms = $scope.fpCopy.bedrooms;
                     fp.bathrooms = $scope.fpCopy.bathrooms;
 
