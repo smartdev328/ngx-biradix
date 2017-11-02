@@ -118,7 +118,7 @@ define([
                     return;
                 }
 
-                if (typeof $scope.fpCopy.units == 'undefined' || $scope.fpCopy.sqft == units || isNaN($scope.fpCopy.units) || parseInt($scope.fpCopy.units) < 0) {
+                if (typeof $scope.fpCopy.units == 'undefined' || $scope.fpCopy.units == null || isNaN($scope.fpCopy.units) || parseInt($scope.fpCopy.units) < 0) {
                     toastr.error("Please make sure there are no blanks and no negative values for number of units");
                     $('#units').parent().addClass("has-error");
                     return;
