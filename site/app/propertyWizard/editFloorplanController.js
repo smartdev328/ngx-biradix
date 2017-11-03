@@ -106,7 +106,7 @@ define([
                     return;
                 }
 
-                if (typeof $scope.fpCopy.bathrooms != 'undefined' && !isNaN($scope.fpCopy.bathrooms) && parseInt($scope.fpCopy.bedrooms) > 9) {
+                if (typeof $scope.fpCopy.bathrooms != 'undefined' && !isNaN($scope.fpCopy.bathrooms) && parseInt($scope.fpCopy.bathrooms) > 9) {
                     toastr.error("Please make sure there are no more than 9 bathrooms")
                     $('#bedrooms').parent().addClass("has-error");
                     return;
