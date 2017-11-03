@@ -12,7 +12,7 @@
     </div>
     <div ng-show="!loading">
         <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit()">
-            <filter-list options="userOptions" items="users"></filter-list>
+            <filter-list-ajax options="userOptions" model="users" search="autocompleteusers"></filter-list-ajax>
             <br>
             <Br>
             <div style="margin:0px auto;width:75px">

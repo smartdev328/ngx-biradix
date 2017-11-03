@@ -7,7 +7,7 @@ define([
 
             $scope.property = property;
             $scope.users = [];
-            $scope.userOptions = { hideSearch: true, dropdown: false, dropdownDirection : 'left', searchLabel: "Users" }
+            $scope.userOptions = { dropdown: false, dropdownDirection : 'left', searchLabel: "Users" }
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
@@ -20,18 +20,38 @@ define([
 
             $scope.loading = true;
 
+            $scope.autocompleteusers = function(search,callback) {
+                $userService.search({
+                    limit: 100,
+                    active: true, orgid: property.orgid, roleTypes:['RM','BM','PO'],
+                    search:search
+                }).then(function (response) {
+                    var u,u2;
+                    var items = [];
+
+
+                    response.data.users.forEach(function (a) {
+                        u = {id: a._id, name: a.name};
+                        items.push(u)
+                    })
+
+                    callback(items)
+                }, function (error) {
+                    callback([]);
+                })
+
+            }
+
             $propertyUsersService.getPropertyAssignedUsers(property._id).then(function (response) {
 
                     var users = response.data.users;
 
-                    $userService.search({active: true, orgid: property.orgid, roleTypes:['RM','BM','PO']}).then(function (response) {
+
+                    $userService.search({active: true, orgid: property.orgid, roleTypes:['RM','BM','PO'], ids: users}).then(function (response) {
                             response.data.users.forEach(function(u) {
-                                $scope.users.push({id: u._id, name: u.name, selected: users.indexOf(u._id.toString()) > -1});
+                                $scope.users.push({id: u._id, name: u.name});
                             });
 
-                            $scope.users = _.sortBy($scope.users, function(x) {return (x.group || '') + x.name});
-
-                            $scope.userOptions.hideSearch =  $scope.users.length < 10;
                             $scope.loading = false;
                         },
                         function (error) {
@@ -46,7 +66,7 @@ define([
 
 
             $scope.save = function() {
-                var users  = _.pluck(_.filter($scope.users, function(x) {return x.selected == true}),"id");
+                var users  = _.pluck($scope.users,"id");
                 $propertyUsersService.setUsersForProperty(property._id,users)
                 $uibModalInstance.close();
 
