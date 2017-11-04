@@ -8,8 +8,6 @@ require ('newrelic');
 var jwt = require('jsonwebtoken');
 var settings = require('../config/settings')
 var errors = require("../config/error")
-var userService = require("../api/users/services/userService");
-var propertyService = require("../api/properties/services/propertyService");
 
 var d= require("domain").create();
 
@@ -78,19 +76,7 @@ d.run(function() {
             app.get('/g/:propertyid/:token', function (req, res) {
                 jwt.verify(req.params.token, settings.SECRET, function(err, decoded) {
                     if (err) {
-                           userService.getSystemUser(function (system) {
-                               propertyService.search(system.user,{_id: req.params.propertyid}, function(err, props) {
-                                   res.cookie('token', "");
-                                   res.cookie('tokenDate', "");
-
-                                   if (props && props.length == 1) {
-                                       res.redirect('/#/expired?name=' + encodeURIComponent(props[0].name));
-                                   } else {
-                                       res.redirect('/#/login');
-                                   }
-
-                               })
-                           })
+                        res.redirect('/#/expired');
                     }
                     else {
                         res.cookie('token', req.params.token);
