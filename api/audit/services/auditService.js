@@ -17,6 +17,7 @@ var audits  = [
     {key: 'user_notifications', value:  'Notification Settings Updated', undo: false, group: 'User'},
     {key: 'user_reminders', value:  'Reminder Settings Updated', undo: false, group: 'User'},
     {key: 'user_leased', value:  'Leased Settings Updated', undo: false, group: 'User'},
+    {key: 'user_atr', value:  'ATR Settings Updated', undo: false, group: 'User'},
     {key: 'user_renewal', value:  'Renewal Settings Updated', undo: false, group: 'User'},
     {key: 'user_concessions', value:  'Detailed Concessions', undo: false, group: 'User'},
     {key: 'user_created', value: 'User Created', group: 'User'},

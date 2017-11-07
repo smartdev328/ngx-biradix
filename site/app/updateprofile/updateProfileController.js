@@ -62,6 +62,7 @@ define([
                     }
 
                     $scope.settings.showLeases = $rootScope.me.settings.showLeases;
+                    $scope.settings.showATR = $rootScope.me.settings.showATR;
                     $scope.settings.showRenewal = $rootScope.me.settings.showRenewal;
                     $scope.settings.notifications = {on: $rootScope.me.settings.notifications.on}
                     $scope.settings.reminders = {on: $rootScope.me.settings.reminders.on}
@@ -89,7 +90,8 @@ define([
                     $scope.columnsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
                     $scope.columnsItems = [
                         {id: "occupancy", name: "Occ. %", selected: $rootScope.me.settings.notification_columns.occupancy},
-                        {id: "leased", name: "Leased %", selected: $rootScope.me.settings.notification_columns.leased},
+                        {id: "leased", name: "Leased %", selected: $rootScope.me.settings.notification_columns.leased || false},
+                        {id: "atr", name: "ATR %", selected: $rootScope.me.settings.notification_columns.atr || false},
                         {id: "weekly", name: "Traffic & Leases / Week", selected: $rootScope.me.settings.notification_columns.weekly},
                         {id: "units", name: "Units", selected: $rootScope.me.settings.notification_columns.units},
                         {id: "sqft", name: "Sqft", selected: $rootScope.me.settings.notification_columns.sqft},
@@ -108,6 +110,10 @@ define([
 
                     if (!$rootScope.me.settings.showLeases) {
                         _.remove($scope.columnsItems, function(x) {return x.id == 'leased'})
+                    }
+
+                    if (!$rootScope.me.settings.showATR) {
+                        _.remove($scope.columnsItems, function(x) {return x.id == 'atr'})
                     }
 
                     $scope.propertyItems = {items: []};
@@ -279,6 +285,7 @@ define([
 
                 $rootScope.me.settings.tz = $scope.settings.tz.id;
                 $rootScope.me.settings.showLeases = $scope.settings.showLeases;
+                $rootScope.me.settings.showATR = $scope.settings.showATR;
                 $rootScope.me.settings.showRenewal = $scope.settings.showRenewal;
 
 

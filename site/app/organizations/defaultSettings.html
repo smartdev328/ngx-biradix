@@ -151,6 +151,23 @@
             </tr>
             <tr>
                 <td>
+                    Show ATR %
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.atr.allow" click-fn="organization.settings.atr.configured = true"></toggle-switch>
+                </td>
+                <td>
+                    <toggle-switch checked="organization.settings.atr.default_value" click-fn="organization.settings.atr.configured = true"></toggle-switch>
+                </td>
+                <td style="border-left:1px solid #ccc;padding-left:15px">
+                    <input type="checkbox" ng-model="organization.settings.atr.configured">
+                </td>
+                <td>
+                    <button class="btn btn-xs btn-primary apply" ng-click="apply('atr')"><i class="fa fa-exchange"></i> Apply</button>
+                </td>
+            </tr>            
+            <tr>
+                <td>
                     Show Renewal %
                 </td>
                 <td>

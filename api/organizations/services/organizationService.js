@@ -228,6 +228,11 @@ function defaultSettings(org) {
             configured: false,
             default_value: false
         };
+    org.settings.atr = org.settings.atr || {
+        allow: true,
+        configured: false,
+        default_value: false
+    };
     org.settings.detailed_concessions = org.settings.detailed_concessions || {
             allow: true,
             configured: false,
@@ -240,6 +245,7 @@ function defaultSettings(org) {
         default_value: {
             occupancy: true,
             leased: false,
+            atr: false,
             units: true,
             sqft: true,
             rent: true,
