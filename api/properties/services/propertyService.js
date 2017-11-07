@@ -832,6 +832,7 @@ module.exports = {
                 copy.floorplans = lastsurvey.floorplans;
                 copy.occupancy = lastsurvey.occupancy;
                 copy.leased = lastsurvey.leased;
+                copy.atr = lastsurvey.atr;
                 copy.renewal = lastsurvey.renewal;
                 copy.weeklyleases = lastsurvey.weeklyleases;
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
@@ -850,6 +851,10 @@ module.exports = {
 
                 if (lastsurvey.leased !== survey.leased) {
                     data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + '%') + " => " + (typeof survey.leased == 'undefined' || survey.leased == null ? 'N/A' : survey.leased + "%")})
+                }
+
+                if (lastsurvey.atr !== survey.atr) {
+                    data.push({description: "ATR: " + (typeof lastsurvey.atr == 'undefined' || lastsurvey.atr == null ? 'N/A' : lastsurvey.atr + '') + " => " + (typeof survey.atr == 'undefined' || survey.atr == null ? 'N/A' : survey.atr + "")})
                 }
 
                 if (lastsurvey.renewal !== survey.renewal) {
@@ -878,6 +883,7 @@ module.exports = {
                 lastsurvey.floorplans = survey.floorplans;
                 lastsurvey.occupancy = survey.occupancy;
                 lastsurvey.leased = survey.leased;
+                lastsurvey.atr = survey.atr;
                 lastsurvey.renewal = survey.renewal;
                 lastsurvey.weeklyleases = survey.weeklyleases;
                 lastsurvey.weeklytraffic = survey.weeklytraffic;
@@ -964,6 +970,7 @@ module.exports = {
             n.propertyid = id;
             n.occupancy = survey.occupancy;
             n.leased = survey.leased;
+            n.atr = survey.atr;
             n.renewal = survey.renewal;
             n.weeklyleases = survey.weeklyleases;
             n.weeklytraffic = survey.weeklytraffic;
@@ -988,6 +995,10 @@ module.exports = {
             if (lastsurvey.leased !== n.leased) {
                 data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + "%") + " => " + (typeof n.leased == 'undefined' || n.leased == null ? 'N/A' : n.leased + "%")})
             }
+            if (lastsurvey.atr !== n.atr) {
+                data.push({description: "ATR: " + (typeof lastsurvey.atr == 'undefined' || lastsurvey.atr == null ? 'N/A' : lastsurvey.atr + "") + " => " + (typeof n.atr == 'undefined' || n.atr == null ? 'N/A' : n.atr + "")})
+            }
+
             if (lastsurvey.renewal !== n.renewal) {
                 data.push({description: "Renewal: " + (typeof lastsurvey.renewal == 'undefined' || lastsurvey.renewal == null ? 'N/A' : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == 'undefined' || n.renewal == null ? 'N/A' : n.renewal + "%")})
             }
@@ -1084,6 +1095,7 @@ module.exports = {
 
                         comp.survey.occupancy = s.occupancy;
                         comp.survey.leased = s.leased;
+                        comp.survey.atr = s.atr;
                         comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;

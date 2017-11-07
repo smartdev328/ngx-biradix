@@ -89,6 +89,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             fp.rent = fp.rent || ''
                             fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : '';
                         })
+                        $scope.survey.atr = $scope.survey.atr || '';
                         $scope.survey.leased = $scope.survey.leased || '';
                         $scope.survey.renewal = $scope.survey.renewal || '';
                         $scope.survey.occupancy = $scope.survey.occupancy || '';
@@ -105,6 +106,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 if (s && s.length > 0) {
                                     s = s[0];
                                     $scope.survey.leased = s.leased;
+                                    $scope.survey.atr = s.atr;
                                     $scope.survey.renewal = s.renewal;
                                     $scope.survey.occupancy = s.occupancy;
                                     $scope.survey.weeklytraffic = s.weeklytraffic
@@ -388,6 +390,42 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                             }
                             $scope.survey.leasedupdated = $scope.survey.leased != $scope.originalSurvey.leased;;
+                            break;
+                        case "atr":
+                            $scope.atrWarning = false;
+                            if (!state) {
+                                $scope.survey.atr = $scope.originalSurvey.atr;
+                                window.setTimeout(function() {
+                                    //$('#leased')[0].focus();
+                                    //$('#leased')[0].select();
+                                    $('#atr').parent().removeClass("has-error");
+                                }, 300);
+                            } else {
+                                var er = "";
+
+                                if (!$scope.isValid($scope.survey.atr, false, false)) {
+                                    er = '<b>Warning:</b> ATR must be 0 or greater, no decimals';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function() {
+                                        //$('#leased')[0].focus();
+                                        //$('#leased')[0].select();
+                                        $('#atr').parent().addClass("has-error");
+                                    }, 300);
+                                    return;
+                                }
+
+                                if ($scope.originalSurvey.atr && $scope.originalSurvey.atr > 0 && $scope.survey.atr) {
+                                    var percent = Math.abs((parseInt($scope.survey.atr) - parseInt($scope.originalSurvey.atr)) / parseInt($scope.originalSurvey.atr) * 100);
+                                    if (percent >= 10) {
+                                        $scope.atrWarning = true;
+                                    }
+                                }
+
+                            }
+                            $scope.survey.atrupdated = $scope.survey.atr != $scope.originalSurvey.atr;;
                             break;
                         case "renewal":
                             $scope.renewalWarning = false;
@@ -787,6 +825,12 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     isSuccess = false;
                     error = 'Leased';
                     $('#leased').parent().addClass("has-error");
+                }
+
+                if (!$scope.isValid($scope.survey.atr,false,false)) {
+                    isSuccess = false;
+                    error = 'ATR';
+                    $('#atr').parent().addClass("has-error");
                 }
 
                 if (!$scope.isValid($scope.survey.renewal,false,true,0,150)) {
