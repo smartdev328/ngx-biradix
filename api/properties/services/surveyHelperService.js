@@ -139,16 +139,13 @@ module.exports = {
                             leased: survey.leased,
                             renewal: survey.renewal,
                             atr: survey.atr,
+                            atr_percent: survey.atr_percent,
                             ner: ner,
                             weeklyleases: survey.weeklyleases,
                             weeklytraffic: survey.weeklytraffic,
                             notes: survey.notes,
                             date: survey.date,
                             dateByOwner : dateByOwner
-                        }
-
-                        if (s.atr && totUnits > 0) {
-                            s.atr_percent =  Math.round(s.atr / totUnits * 100 * 10) / 10
                         }
 
                         var query = {_id: propertyid};

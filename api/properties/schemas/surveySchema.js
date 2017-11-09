@@ -10,6 +10,7 @@ var s = new Schema({
     },
     leased: Number,
     atr: Number,
+    atr_percent: Number,
     renewal: Number,
     occupancy: Number,
     weeklytraffic: Number,

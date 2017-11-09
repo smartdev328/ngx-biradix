@@ -833,6 +833,7 @@ module.exports = {
                 copy.occupancy = lastsurvey.occupancy;
                 copy.leased = lastsurvey.leased;
                 copy.atr = lastsurvey.atr;
+                copy.atr_percent = lastsurvey.atr_percent;
                 copy.renewal = lastsurvey.renewal;
                 copy.weeklyleases = lastsurvey.weeklyleases;
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
@@ -884,6 +885,14 @@ module.exports = {
                 lastsurvey.occupancy = survey.occupancy;
                 lastsurvey.leased = survey.leased;
                 lastsurvey.atr = survey.atr;
+
+                var totUnits = _.sum(survey.floorplans, function (fp) {
+                    return fp.units
+                });
+                if (typeof lastsurvey.atr != null && lastsurvey.atr != null && totUnits > 0) {
+                    lastsurvey.atr_percent = Math.round(survey.atr / totUnits * 100 * 10) / 10;
+                }
+
                 lastsurvey.renewal = survey.renewal;
                 lastsurvey.weeklyleases = survey.weeklyleases;
                 lastsurvey.weeklytraffic = survey.weeklytraffic;
@@ -959,6 +968,9 @@ module.exports = {
             lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || 'N/A';
             lastsurvey.floorplans = lastsurvey.floorplans || [];
 
+
+
+
             var n = new SurveySchema();
 
             if (survey._id) {
@@ -971,6 +983,14 @@ module.exports = {
             n.occupancy = survey.occupancy;
             n.leased = survey.leased;
             n.atr = survey.atr;
+
+            var totUnits = _.sum(survey.floorplans, function (fp) {
+                return fp.units
+            });
+            if (typeof n.atr != null && n.atr != null && totUnits > 0) {
+                n.atr_percent = Math.round(survey.atr / totUnits * 100 * 10) / 10;
+            }
+
             n.renewal = survey.renewal;
             n.weeklyleases = survey.weeklyleases;
             n.weeklytraffic = survey.weeklytraffic;
@@ -1096,13 +1116,10 @@ module.exports = {
                         comp.survey.occupancy = s.occupancy;
                         comp.survey.leased = s.leased;
                         comp.survey.atr = s.atr;
+                        comp.survey.atr_percent = s.atr_percent;
                         comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
-
-                        if (comp.survey.atr && comp.totalUnits > 0) {
-                            comp.survey.atr_percent =  Math.round(comp.survey.atr / comp.totalUnits * 100 * 10) / 10
-                        }
 
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide, options.nerPlaces);
                     }

@@ -39,7 +39,7 @@ module.exports = {
         }
 
         if (show.atr) {
-            select += " atr"
+            select += " atr_percent"
         }
 
         if (show.renewal) {
@@ -127,9 +127,9 @@ module.exports = {
                     points[s.propertyid].leased[dateKey] = s.leased;
                 }
 
-                if (show.atr && s.atr != null) {
+                if (show.atr && s.atr_percent != null) {
                     points[s.propertyid].atr = points[s.propertyid].atr || {};
-                    points[s.propertyid].atr[dateKey] = s.atr;
+                    points[s.propertyid].atr[dateKey] = s.atr_percent;
                 }
 
                 if (show.renewal && s.renewal != null) {

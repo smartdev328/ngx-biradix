@@ -18,6 +18,10 @@
         <th class="center" ng-if="columns.indexOf('renewal') > -1">
             Renewal
         </th>
+
+        <th class="center" ng-if="columns.indexOf('atr') > -1">
+            ATR %
+        </th>
         <th class="center" ng-if="columns.indexOf('traffic') > -1">
             Traffic / Week
         </th>
@@ -47,6 +51,11 @@
         <td class="center" ng-if="columns.indexOf('renewal') > -1">
             {{item.renewal != null ? ((item.renewal | number : 1) + '%') : '-'}}
         </td>
+
+        <td class="center" ng-if="columns.indexOf('atr') > -1">
+            {{item.atr != null ? ((item.atr | number : 1) + '%') : '-'}}
+        </td>
+
         <td class="center" ng-if="columns.indexOf('traffic') > -1">
             {{item.traffic| number : 0}}
         </td>

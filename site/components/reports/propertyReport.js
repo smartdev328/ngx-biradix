@@ -51,11 +51,15 @@ define([
                     $scope.columns.push('renewal');
                 }
 
+                if ($scope.me.settings.showATR) {
+                    $scope.columns.push('atr');
+                }
+
                 $scope.columns.push('leases');
                 $scope.columns.push('traffic');
 
                 $scope.report.profiles.forEach(function(p) {
-                    resp = $propertyService.parseProfile(p,$scope.profileSettings.graphs,$scope.me.settings.showLeases, $scope.me.settings.showRenewal, $scope.dashboardSettings.nerScale);
+                    resp = $propertyService.parseProfile(p,$scope.profileSettings.graphs,$scope.me.settings.showLeases, $scope.me.settings.showRenewal, $scope.dashboardSettings.nerScale,$scope.me.settings.showATR);
 
                     $scope.profiles.push({
                         lookups : resp.lookups,

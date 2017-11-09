@@ -367,10 +367,10 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
 
-        var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases, showRenewal) {
+        var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases, showRenewal, showATR) {
             var table = [];
 
-            var tr, ls, surveyid, leased, renewal, n, row;
+            var tr, ls, surveyid, leased, renewal, n, row, atr;
 
             pts.occupancy.forEach(function(o) {
                 tr = _.find(pts['traffic'], function(x) {return x.d == o.d})
@@ -389,6 +389,11 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     renewal = null;
                 }
 
+                if (showATR) {
+                    atr = _.find(pts['atr'], function(x) {return x.d == o.d})
+                } else {
+                    atr = null;
+                }
 
                 if (!o.f) {
 
@@ -410,6 +415,10 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                         row.renewal = renewal.v;
                     }
 
+                    if (atr) {
+                        row.atr = atr.v;
+                    }
+
                     table.push(row);
                 }
             } )
@@ -419,7 +428,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return table;
 
         }
-        fac.parseProfile = function(profile, graphs, showLeases, showRenewal, scale) {
+        fac.parseProfile = function(profile, graphs, showLeases, showRenewal, scale, showATR) {
 
             var resp = {};
             resp.lookups = profile.lookups;
@@ -543,6 +552,12 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 labels.push('Renewal %');
             }
 
+            if (showATR) {
+                title += " / ATR %";
+                points.push('atr');
+                labels.push('ATR %');
+            }
+
             occ = fac.extractSeries(profile.points, points,labels,80,100,1, [resp.property], false);
 
             if ((showRenewal || showLeases) && occ.min > 0) {
@@ -560,7 +575,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             if (pts && !graphs) {
                 resp.nerKeys = keys;
-                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases, showRenewal);
+                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases, showRenewal, showATR);
             }
 
             return resp;

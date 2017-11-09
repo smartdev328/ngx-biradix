@@ -108,10 +108,10 @@ define([
                         start: $scope.settings.daterange.selectedStartDate,
                         end: $scope.settings.daterange.selectedEndDate
                     }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale}
+                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale, atr: $rootScope.me.settings.showATR}
                 ).then(function (response) {
 
-                    var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale);
+                    var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
 
                     $scope.columns = ['occupancy'];
 
@@ -121,7 +121,9 @@ define([
                     if ($rootScope.me.settings.showRenewal) {
                         $scope.columns.push('renewal');
                     }
-
+                    if ($rootScope.me.settings.showATR) {
+                        $scope.columns.push('atr');
+                    }
                     $scope.columns.push('leases');
                     $scope.columns.push('traffic');
 
