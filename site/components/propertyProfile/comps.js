@@ -48,7 +48,7 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             comp.nersqft = comp.survey.nersqft == null ? -1 : comp.survey.nersqft;
                             comp.occupancy = comp.survey.occupancy == null ? -1 : comp.survey.occupancy;
                             comp.leased = comp.survey.leased == null ? -1 : comp.survey.leased;
-                            comp.atr_percent = comp.survey.atr == null || comp.totalUnits == 0 ? -1 : (comp.survey.atr / comp.totalUnits * 100);
+                            comp.atr_percent = comp.survey.atr_percent == null ? -1 : comp.survey.atr_percent;
                             comp.renewal = comp.survey.renewal == null ? -1 : comp.survey.renewal;
                             comp.weeklytraffic = comp.survey.weeklytraffic == null ? -1 : comp.survey.weeklytraffic;
                             comp.weeklyleases = comp.survey.weeklyleases == null ? -1 : comp.survey.weeklyleases;

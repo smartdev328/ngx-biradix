@@ -223,10 +223,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
             }
 
             $scope.doneLoading = function() {
+                $scope.survey.totalUnits = 0;
 
                 $scope.survey.floorplans.forEach(function(fp) {
                     fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ?  fp.concessionsOneTime : '';
                     fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ?  fp.concessionsMonthly : '';
+
+                    $scope.survey.totalUnits += fp.units;
 
                 })
 
@@ -331,10 +334,10 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     }
                 }
 
-
-                if (!allowDecimal && field.toString().indexOf('.') > -1) {
+                if (!allowDecimal && (field || '').toString().indexOf('.') > -1) {
                     return false;
                 }
+
 
                 if (typeof field !== 'undefined' && field != null && !isNaN(field)) {
                     if (typeof min !== 'undefined' && parseFloat(field) < min) {
@@ -403,8 +406,8 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             } else {
                                 var er = "";
 
-                                if (!$scope.isValid($scope.survey.atr, false, false)) {
-                                    er = '<b>Warning:</b> ATR must be 0 or greater, no decimals';
+                                if (!$scope.isValid($scope.survey.atr, false, false, 0, $scope.survey.totalUnits)) {
+                                    er = '<b>Warning:</b> Apartments to Rent value must be between 0 and total number of units and cannot be a decimal value';
                                 }
 
                                 if (er.length > 0) {
@@ -827,7 +830,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     $('#leased').parent().addClass("has-error");
                 }
 
-                if (!$scope.isValid($scope.survey.atr,false,false)) {
+                if (!$scope.isValid($scope.survey.atr,false,false, 0, $scope.survey.totalUnits)) {
                     isSuccess = false;
                     error = 'ATR';
                     $('#atr').parent().addClass("has-error");

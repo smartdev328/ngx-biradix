@@ -146,6 +146,11 @@ module.exports = {
                             date: survey.date,
                             dateByOwner : dateByOwner
                         }
+
+                        if (s.atr && totUnits > 0) {
+                            s.atr_percent =  Math.round(s.atr / totUnits * 100 * 10) / 10
+                        }
+
                         var query = {_id: propertyid};
                         var update = {survey: s, $unset: {needsSurvey: ""}};
                         var options = {new: true};

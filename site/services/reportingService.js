@@ -99,6 +99,7 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
                 occ: true,
                 leased: me ? me.settings.showLeases : true,
                 renewal: me ? me.settings.showRenewal : true,
+                atr: me ? me.settings.showATR : false,
                 traf: true,
                 lease: true
             }

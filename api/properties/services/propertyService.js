@@ -1099,6 +1099,11 @@ module.exports = {
                         comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
+
+                        if (comp.survey.atr && comp.totalUnits > 0) {
+                            comp.survey.atr_percent =  Math.round(comp.survey.atr / comp.totalUnits * 100 * 10) / 10
+                        }
+
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide, options.nerPlaces);
                     }
 
