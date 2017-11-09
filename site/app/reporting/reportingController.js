@@ -857,7 +857,8 @@ define([
 
             $scope.liveSettings.propertyStatus.show = {
                 occupancy: true,
-                leased: $rootScope.me.settings.showLeases,
+                leased: $rootScope.me.settings.showLeases || false,
+                atr: $rootScope.me.settings.showATR || false,
                 units: true,
                 sqft: true,
                 rent: true,
@@ -883,7 +884,8 @@ define([
             $scope.temp.showPropertyStatusOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
             $scope.temp.showPropertyStatusItems = [
                 {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.propertyStatus.show.occupancy},
-                {id: "leased", name: "Leased %", selected: $scope.liveSettings.propertyStatus.show.leased},
+                {id: "leased", name: "Leased %", selected: $scope.liveSettings.propertyStatus.show.leased || false},
+                {id: "atr", name: "ATR %", selected: $scope.liveSettings.propertyStatus.show.atr || false},
                 {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.propertyStatus.show.weekly},
                 {id: "units", name: "Units", selected: $scope.liveSettings.propertyStatus.show.units},
                 {id: "sqft", name: "Sqft", selected: $scope.liveSettings.propertyStatus.show.sqft},

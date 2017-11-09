@@ -25,6 +25,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
 
                 try {
                     dashboard.comps.forEach(function (c, i) {
+
                         report.push({
                             name: c.name,
                             _id: c._id,
@@ -38,6 +39,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
                             leased: c.survey.leased,
+                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? c.survey.atr / c.survey.totUnits * 100 : null,
                             tier: c.survey.tier,
                             weeklytraffic: c.survey.weeklytraffic,
                             weeklyleases: c.survey.weeklyleases,
@@ -108,6 +110,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
                             leased: c.survey.leased,
+                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? c.survey.atr / c.survey.totUnits * 100 : null,
                             tier: c.survey.tier
                         });
                     })
@@ -163,6 +166,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
                             leased: c.survey.leased,
+                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? c.survey.atr / c.survey.totUnits * 100 : null,
                             tier: c.survey.tier
                         });
                     })
@@ -220,6 +224,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
                             leased: c.survey.leased,
+                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? c.survey.atr / c.survey.totUnits * 100 : null,
                             tier: c.survey.tier
                         });
                     })
@@ -249,6 +254,10 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
 
             if (typeof p.leased === 'undefined') {
                 p.leased = "";
+            }
+
+            if (typeof p.atr_percent === 'undefined' || p.atr_percent == null) {
+                p.atr_percent = "";
             }
 
             if (typeof p.occupancy === 'undefined' || p.occupancy == null) {
@@ -284,6 +293,11 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     totalrow.leasedUnits = (totalrow.leasedUnits || 0) + 1;
                 }
 
+                if (p.atr_percent !== '') {
+                    // not weighted
+                    totalrow.atr_percent = (totalrow.atr_percent || 0) + (p.atr_percent * 1);
+                    totalrow.atrUnits = (totalrow.atrUnits || 0) + 1;
+                }
                 //}
 
                 var lastweek = _.find(all.lastweek, function (x) {
@@ -325,6 +339,12 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
             totalrow.leased = Math.round(totalrow.leased / totalrow.leasedUnits * 10) / 10;
         } else {
             totalrow.leased = "";
+        }
+
+        if (totalrow.atrUnits && totalrow.atrUnits > 0) {
+            totalrow.atr_percent = Math.round(totalrow.atr_percent / totalrow.atrUnits * 10) / 10;
+        } else {
+            totalrow.atr_percent = "";
         }
 
         if (totalrow.totUnits && totalrow.totUnits > 0) {

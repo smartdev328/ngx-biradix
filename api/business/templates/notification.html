@@ -19,6 +19,11 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
             Leased %
         </th>
         {% endif %}
+        {% if show.atr %}
+        <th style="border-bottom:2px solid #ddd;text-align:right">
+            ATR %
+        </th>
+        {% endif %}
         {% if show.weekly %}
         <th style="border-bottom:2px solid #ddd;text-align:right">
             Traffic/<Br>Week
@@ -124,6 +129,15 @@ You are currently set to receive this update {{when}}. If you wish to modify thi
         <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
             {% if row.leased != "" %}
             {{row.leased | formatNumber : 1}}%
+            {% else %}
+            -
+            {% endif %}
+        </Td>
+        {% endif %}
+        {% if show.atr %}
+        <Td style="text-align: right;{% if forloop.last %}border-top: 1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">
+            {% if row.atr_percent != "" %}
+            {{row.atr_percent | formatNumber : 1}}%
             {% else %}
             -
             {% endif %}

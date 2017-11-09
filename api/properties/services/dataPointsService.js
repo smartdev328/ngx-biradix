@@ -38,6 +38,10 @@ module.exports = {
             select += " leased"
         }
 
+        if (show.atr) {
+            select += " atr"
+        }
+
         if (show.renewal) {
             select += " renewal"
         }
@@ -121,6 +125,11 @@ module.exports = {
                 if (show.leased && s.leased != null) {
                     points[s.propertyid].leased = points[s.propertyid].leased || {};
                     points[s.propertyid].leased[dateKey] = s.leased;
+                }
+
+                if (show.atr && s.atr != null) {
+                    points[s.propertyid].atr = points[s.propertyid].atr || {};
+                    points[s.propertyid].atr[dateKey] = s.atr;
                 }
 
                 if (show.renewal && s.renewal != null) {
@@ -253,6 +262,9 @@ module.exports = {
                     if (show.leased && points[prop].leased) {
                         points[prop].leased = DataPointsHelperService.normailizePoints(points[prop].leased, offset, dr, false, show.dontExtrapolate);
                     }
+                    if (show.atr && points[prop].atr) {
+                        points[prop].atr = DataPointsHelperService.normailizePoints(points[prop].atr, offset, dr, false, show.dontExtrapolate);
+                    }
                     if (show.renewal && points[prop].renewal) {
                         points[prop].renewal = DataPointsHelperService.normailizePoints(points[prop].renewal, offset, dr, false, show.dontExtrapolate);
                     }                    
@@ -305,6 +317,9 @@ module.exports = {
                 if (show.leased) {
                     points[prop].leased = DataPointsHelperService.objectToArray(points[prop].leased);
                 }
+                if (show.atr) {
+                    points[prop].atr = DataPointsHelperService.objectToArray(points[prop].atr);
+                }
                 if (show.renewal) {
                     points[prop].renewal = DataPointsHelperService.objectToArray(points[prop].renewal);
                 }                
@@ -348,6 +363,9 @@ module.exports = {
                     }
                     if (show.leased) {
                         points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].leased);
+                    }
+                    if (show.atr) {
+                        points[prop].atr = DataPointsHelperService.extrapolateMissingPoints(points[prop].atr);
                     }
                     if (show.traffic) {
                         points[prop].traffic = DataPointsHelperService.extrapolateMissingPoints(points[prop].traffic);
@@ -398,6 +416,9 @@ module.exports = {
                     }
                     if (show.leased) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased');
+                    }
+                    if (show.atr) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'atr');
                     }
                     if (show.traffic) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic');

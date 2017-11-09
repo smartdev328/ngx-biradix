@@ -138,6 +138,7 @@ module.exports = {
                             occupancy: survey.occupancy,
                             leased: survey.leased,
                             renewal: survey.renewal,
+                            atr: survey.atr,
                             ner: ner,
                             weeklyleases: survey.weeklyleases,
                             weeklytraffic: survey.weeklytraffic,
