@@ -15,6 +15,7 @@ define([
                 bedroom: '=',
             },
             controller: function ($scope,$propertyService) {
+
                 var resp = $propertyService.parseDashboard($scope.report.dashboard,$scope.dashboardSettings.summary, $scope.me.settings.showLeases, $scope.dashboardSettings.nerScale, $scope.dashboardSettings.selectedBedroom);
 
                 $scope.property = resp.property;

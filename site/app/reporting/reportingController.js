@@ -906,6 +906,10 @@ define([
                 _.remove($scope.temp.showPropertyStatusItems, function(x) {return x.id == 'leased'})
             }
 
+            if (!$rootScope.me.settings.showATR) {
+                _.remove($scope.temp.showPropertyStatusItems, function(x) {return x.id == 'atr'})
+            }
+
         }
 
         ////////////////////// Rankings Summary ////////////////////////////////
@@ -1284,6 +1288,7 @@ define([
                 {id: "occ", name: "Occupancy", selected: $scope.liveSettings.showProfile.occ},
                 {id: "leased", name: "Leased", selected: $scope.liveSettings.showProfile.leased},
                 {id: "renewal", name: "Renewal", selected: $scope.liveSettings.showProfile.renewal},
+                {id: "atr", name: "ATR %", selected: $scope.liveSettings.showProfile.atr},
                 {id: "traf", name: "Traffic / Week", selected: $scope.liveSettings.showProfile.traf},
                 {id: "lease", name: "Leases / Week", selected: $scope.liveSettings.showProfile.lease},
             ];
@@ -1291,8 +1296,9 @@ define([
             $scope.temp.showCompOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
             $scope.temp.showCompItems = [
                 {id: "occupancy", name: "Occupancy %", selected: $scope.liveSettings.dashboardSettings.show.occupancy},
-                {id: "leased", name: "Leased %", selected: $scope.liveSettings.dashboardSettings.show.leased},
-                {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.dashboardSettings.show.renewal},
+                {id: "leased", name: "Leased %", selected: $scope.liveSettings.dashboardSettings.show.leased || false},
+                {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.dashboardSettings.show.renewal || false},
+                {id: "atr", name: "ATR %", selected: $scope.liveSettings.dashboardSettings.show.atr || false},
                 {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.dashboardSettings.show.weekly},
                 {id: "units", name: "Units", selected: $scope.liveSettings.dashboardSettings.show.units},
                 {id: "unitPercent", name: "Unit %", selected: $scope.liveSettings.dashboardSettings.show.unitPercent},
@@ -1344,6 +1350,7 @@ define([
                 {id: "occupancy", name: "Occ. %"},
                 {id: "leased", name: "Leased %"},
                 {id: "renewal", name: "Renewal %"},
+                {id: "atr", name: "ATR %"},
                 {id: "weeklytraffic", name: "Traffic/Week"},
                 {id: "weeklyleases", name: "Leases/Week"},
                 {id: "units", name: "Units"},
