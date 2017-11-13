@@ -359,8 +359,8 @@
                                     <i ng-if="atrWarning" class="fa fa-info-circle" style="color:orange"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
-                                       uib-popover="ATR has changed by more than 10% since the last market survey"
-
+                                       uib-popover="ATR % has changed by more than 10% since the last market survey"
+                                       popover-append-to-body="true"
                                     ></i>
                                 </div>
                                 <Br ng-if="$root.me.settings.showATR || survey.atr">

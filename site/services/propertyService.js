@@ -370,52 +370,56 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases, showRenewal, showATR) {
             var table = [];
 
-            var tr, ls, surveyid, leased, renewal, n, row, atr;
+            var tr, ls, surveyid, leased, renewal, n, row, atr, o;
 
-            pts.occupancy.forEach(function(o) {
-                tr = _.find(pts['traffic'], function(x) {return x.d == o.d})
-                ls = _.find(pts['leases'], function(x) {return x.d == o.d})
-                surveyid = _.find(surveys, function(x,y) {return y == o.d})
+            pts.traffic.forEach(function(tr) {
+                o = _.find(pts['occupancy'], function(x) {return x.d == tr.d})
+                ls = _.find(pts['leases'], function(x) {return x.d == tr.d})
+                surveyid = _.find(surveys, function(x,y) {return y == tr.d})
 
                 if (showLeases) {
-                    leased = _.find(pts['leased'], function(x) {return x.d == o.d})
+                    leased = _.find(pts['leased'], function(x) {return x.d == tr.d})
                 } else {
                     leased = null;
                 }
 
                 if (showRenewal) {
-                    renewal = _.find(pts['renewal'], function(x) {return x.d == o.d})
+                    renewal = _.find(pts['renewal'], function(x) {return x.d == tr.d})
                 } else {
                     renewal = null;
                 }
 
                 if (showATR) {
-                    atr = _.find(pts['atr'], function(x) {return x.d == o.d})
+                    atr = _.find(pts['atr'], function(x) {return x.d == tr.d})
                 } else {
                     atr = null;
                 }
 
-                if (!o.f) {
+                if (!tr.f) {
 
-                    row = {d: o.d, occ: o.v, traffic: tr.v, leases: ls.v, surveyid: surveyid}
+                    row = {d: tr.d, traffic: tr.v, leases: ls.v, surveyid: surveyid}
 
                     nerColumns.forEach(function (k) {
                         n = _.find(pts[k], function (x) {
-                            return x.d == o.d
+                            return x.d == tr.d
                         })
 
                         row[k] = n.v
                     })
 
-                    if (leased) {
+                    if (o && !o.f) {
+                        row.occ = o.v;
+                    }
+
+                    if (leased && !leased.f) {
                         row.leased = leased.v;
                     }
 
-                    if (renewal) {
+                    if (renewal && !renewal.f) {
                         row.renewal = renewal.v;
                     }
 
-                    if (atr) {
+                    if (atr && !atr.f) {
                         row.atr = atr.v;
                     }
 

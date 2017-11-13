@@ -835,6 +835,13 @@ module.exports = {
                             u.settings.showLeases = value;
                         }
                         break;
+                    case 'atr':
+                        if (u.settings.showATR == value) {
+                            u.remove = true;
+                        }  else {
+                            u.settings.showATR = value;
+                        }
+                        break;
                     case 'renewal':
                         if (u.settings.showRenewal == value) {
                             u.remove = true;

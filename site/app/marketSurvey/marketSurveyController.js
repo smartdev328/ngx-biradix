@@ -107,6 +107,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                     s = s[0];
                                     $scope.survey.leased = s.leased;
                                     $scope.survey.atr = s.atr;
+                                    $scope.survey.atr_percent = s.atr_percent;
                                     $scope.survey.renewal = s.renewal;
                                     $scope.survey.occupancy = s.occupancy;
                                     $scope.survey.weeklytraffic = s.weeklytraffic
@@ -420,8 +421,11 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                     return;
                                 }
 
-                                if ($scope.originalSurvey.atr && $scope.originalSurvey.atr > 0 && $scope.survey.atr) {
-                                    var percent = Math.abs((parseInt($scope.survey.atr) - parseInt($scope.originalSurvey.atr)) / parseInt($scope.originalSurvey.atr) * 100);
+                                if ($scope.originalSurvey.atr_percent && $scope.originalSurvey.atr_percent > 0 && typeof $scope.survey.atr != 'undefined' && $scope.survey.atr != null ) {
+
+                                    $scope.survey.atr_percent = Math.round($scope.survey.atr / $scope.survey.totalUnits * 100 * 10) / 10
+
+                                    var percent = Math.abs((parseInt($scope.survey.atr_percent) - parseInt($scope.originalSurvey.atr_percent)) / parseInt($scope.originalSurvey.atr_percent) * 100);
                                     if (percent >= 10) {
                                         $scope.atrWarning = true;
                                     }

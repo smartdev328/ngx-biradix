@@ -597,7 +597,7 @@ define([
                         if ($scope.graphs == $scope.total) {
                             window.setTimeout(function () {
                                 window.renderable = true;
-                            }, 300)
+                            }, 600)
                         }
                     });
                 } else {
