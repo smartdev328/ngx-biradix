@@ -890,7 +890,9 @@ module.exports = {
                     return fp.units
                 });
                 if (typeof lastsurvey.atr != null && lastsurvey.atr != null && totUnits > 0) {
-                    lastsurvey.atr_percent = Math.round(survey.atr / totUnits * 100 * 10) / 10;
+                    lastsurvey.atr_percent = Math.round(lastsurvey.atr / totUnits * 100 * 10) / 10;
+                } else {
+                    lastsurvey.atr_percent = undefined;
                 }
 
                 lastsurvey.renewal = survey.renewal;
@@ -989,6 +991,8 @@ module.exports = {
             });
             if (typeof n.atr != null && n.atr != null && totUnits > 0) {
                 n.atr_percent = Math.round(survey.atr / totUnits * 100 * 10) / 10;
+            } else {
+                delete n.atr_percent;
             }
 
             n.renewal = survey.renewal;

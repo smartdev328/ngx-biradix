@@ -364,8 +364,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             if (!state) {
                                 $scope.survey.leased = $scope.originalSurvey.leased;
                                 window.setTimeout(function() {
-                                    //$('#leased')[0].focus();
-                                    //$('#leased')[0].select();
                                     $('#leased').parent().removeClass("has-error");
                                 }, 300);
                             } else {
@@ -378,11 +376,8 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#leased')[0].focus();
-                                        //$('#leased')[0].select();
                                         $('#leased').parent().addClass("has-error");
                                     }, 300);
-                                    return;
                                 }
 
                                 if ($scope.originalSurvey.leased && $scope.originalSurvey.leased > 0 && $scope.survey.leased) {
@@ -400,8 +395,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             if (!state) {
                                 $scope.survey.atr = $scope.originalSurvey.atr;
                                 window.setTimeout(function() {
-                                    //$('#leased')[0].focus();
-                                    //$('#leased')[0].select();
                                     $('#atr').parent().removeClass("has-error");
                                 }, 300);
                             } else {
@@ -414,18 +407,15 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#leased')[0].focus();
-                                        //$('#leased')[0].select();
                                         $('#atr').parent().addClass("has-error");
                                     }, 300);
-                                    return;
                                 }
 
                                 if ($scope.originalSurvey.atr_percent && $scope.originalSurvey.atr_percent > 0 && typeof $scope.survey.atr != 'undefined' && $scope.survey.atr != null ) {
 
                                     $scope.survey.atr_percent = Math.round($scope.survey.atr / $scope.survey.totalUnits * 100 * 10) / 10
 
-                                    var percent = Math.abs((parseInt($scope.survey.atr_percent) - parseInt($scope.originalSurvey.atr_percent)) / parseInt($scope.originalSurvey.atr_percent) * 100);
+                                    var percent = Math.abs((parseInt($scope.survey.atr_percent) - parseInt($scope.originalSurvey.atr_percent)));
                                     if (percent >= 10) {
                                         $scope.atrWarning = true;
                                     }
@@ -439,9 +429,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             if (!state) {
                                 $scope.survey.renewal = $scope.originalSurvey.renewal;
                                 window.setTimeout(function() {
-                                    //$('#renewal')[0].focus();
-                                    //$('#renewal')[0].select();
-                                    $('#renewal').parent().removeClass("has-error");
+                                     $('#renewal').parent().removeClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
@@ -453,11 +441,8 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#renewal')[0].focus();
-                                        //$('#renewal')[0].select();
                                         $('#renewal').parent().addClass("has-error");
                                     }, 300);
-                                    return;
                                 }
 
                                 if ($scope.originalSurvey.renewal && $scope.originalSurvey.renewal > 0 && $scope.survey.renewal) {
