@@ -550,23 +550,28 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             var points = ['occupancy'];
             var labels = ['Occupancy %'];
             var axis = [0];
+            var title1 = 'Occupancy';
+            var title2 = '';
 
             if (showLeases) {
                 points.push('leased');
                 labels.push('Leased %');
                 axis.push(0);
+                title1 += ' / Leased';
             }
 
             if (showRenewal) {
                 points.push('renewal');
                 labels.push('Renewal %');
                 axis.push(0);
+                title1 += ' / Renewal';
             }
 
             if (showATR) {
                 points.push('atr');
                 labels.push('ATR %');
                 axis.push(1);
+                title2 = 'ATR';
             }
 
             occ = fac.extractSeries(profile.points, points,labels,axis,80,100,1, [resp.property], false);
@@ -575,6 +580,12 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 occ.min = occ.min * .9;
                 occ.extremes[0].min *= .9;
             }
+
+            if (occ.extremes[1]) {
+                occ.extremes[0].title = title1;
+                occ.extremes[1].title = title2;
+            }
+
 
             resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100), extremes: occ.extremes};
 

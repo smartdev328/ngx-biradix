@@ -77,6 +77,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             0: {
                                 min: $scope.options.min,
                                 max: $scope.options.max,
+                                title: $scope.options.title
                             }
                         }
                     }
@@ -87,7 +88,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                     for(var i in $scope.options.extremes) {
                         y = {
                             title: {
-                                text: $scope.options.title
+                                text: $scope.options.extremes[i].title
                             },
                             labels: {
                                 formatter: function () {
@@ -103,6 +104,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                         yAxis.push(y);
 
                     }
+
                     window.setTimeout(function() {
                         var el = $($element).find('.visible-print-block')
                         var el2 = $($element).find('.hidden-print-block')
