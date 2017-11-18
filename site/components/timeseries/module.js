@@ -62,8 +62,6 @@ angular.module('biradix.global').directive('timeSeries', function () {
                     }
                 })
 
-                console.log(extremes);
-
                 extremes.forEach(function(ex,i) {
                     chart.yAxis[i].setExtremes(ex.min, ex.max);
                 })

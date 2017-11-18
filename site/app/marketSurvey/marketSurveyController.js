@@ -410,10 +410,10 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                         $('#atr').parent().addClass("has-error");
                                     }, 300);
                                 }
+                                $scope.survey.atr_percent = Math.round($scope.survey.atr / $scope.survey.totalUnits * 100 * 10) / 10
+
 
                                 if ($scope.originalSurvey.atr_percent && $scope.originalSurvey.atr_percent > 0 && typeof $scope.survey.atr != 'undefined' && $scope.survey.atr != null ) {
-
-                                    $scope.survey.atr_percent = Math.round($scope.survey.atr / $scope.survey.totalUnits * 100 * 10) / 10
 
                                     var percent = Math.abs((parseInt($scope.survey.atr_percent) - parseInt($scope.originalSurvey.atr_percent)));
                                     if (percent >= 10) {
@@ -832,7 +832,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 }
 
                 if (isSuccess) {
-
                     if (surveyid) {
                         $scope.success();
                         return;
@@ -842,6 +841,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                     $('button.contact-submit').prop('disabled', true);
                     ngProgress.start();
+
                     $propertyService.getSurveyWarnings(id, $scope.survey).then(function(resp) {
                         $('button.contact-submit').prop('disabled', false);
                         ngProgress.complete();

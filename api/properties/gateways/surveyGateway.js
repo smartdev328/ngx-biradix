@@ -93,11 +93,11 @@ module.exports = {
                                 }
                             }
 
-                            if (n.atr && o.atr != null && o.atr != '' && typeof o.atr != 'undefined') {
-                                percent = Math.abs((parseFloat(n.atr || 0) - parseFloat(o.atr || 0)) / parseFloat(n.atr) * 100);
+                            if (n.atr_percent && o.atr_percent != null && o.atr_percent != '' && typeof o.atr_percent != 'undefined') {
+                                percent = Math.abs((parseFloat(n.atr_percent || 0) - parseFloat(o.atr_percent || 0)));
 
                                 if (percent >= 10) {
-                                    errors.push({msg: 'ATR has changed by more than 10% since last survey'});
+                                    errors.push({msg: 'ATR % has changed by more than 10% since last survey'});
                                 }
                             }
 
