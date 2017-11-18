@@ -113,7 +113,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             chart: {
                                 type: 'spline',
                                 ignoreHiddenSeries : true,
-                                marginLeft: 75, // Keep all charts left aligned
+                                marginLeft: 75 + ($scope.options.additionalMargin || 0), // Keep all charts left aligned
                             },
                             plotOptions: {
                                 series: {

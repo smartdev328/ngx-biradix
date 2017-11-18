@@ -552,12 +552,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             var axis = [0];
             var title1 = 'Occupancy';
             var title2 = '';
+            var count = 1;
 
             if (showLeases) {
                 points.push('leased');
                 labels.push('Leased %');
                 axis.push(0);
                 title1 += ' / Leased';
+                count++;
             }
 
             if (showRenewal) {
@@ -565,6 +567,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 labels.push('Renewal %');
                 axis.push(0);
                 title1 += ' / Renewal';
+                count++;
             }
 
             if (showATR) {
@@ -581,13 +584,25 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 occ.extremes[0].min *= .9;
             }
 
+            if (occ.extremes[0].max > 100) {
+                occ.extremes[0].max = 100;
+            }
+
             if (occ.extremes[1]) {
                 occ.extremes[0].title = title1;
                 occ.extremes[1].title = title2;
+                if (occ.extremes[1].max > 100) {
+                    occ.extremes[1].max = 100;
+                }
             }
 
+            console.log(occ.extremes);
 
-            resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100), extremes: occ.extremes};
+            resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, extremes: occ.extremes};
+
+            if (count > 2) {
+                resp.occData.additionalMargin = 10;
+            }
 
 
             var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],[0,0],0,10,0, [resp.property], false);
