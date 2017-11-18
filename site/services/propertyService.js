@@ -596,8 +596,6 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 }
             }
 
-            console.log(occ.extremes);
-
             resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, extremes: occ.extremes};
 
             if (count > 2) {
