@@ -18,7 +18,7 @@
     "angular-ui-router": "~0.2.15",
     "bootstrap": "3.3.7",
     "font-awesome": "4.4.0",
-    "highcharts-release": "^5.0.14",
+    "highcharts-release": "^6.0.3",
     "jquery": "2.1.4",
     "lodash": "3.10.0",
     "moment": "2.18.1",

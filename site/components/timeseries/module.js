@@ -47,7 +47,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                 var y;
                 chart.series.forEach(function(s) {
                     if (s.visible && name != s.name || !s.visible && name == s.name) {
-                        y = s.options.yAxis;
+                        y = s.options.yAxis || 0;
                         temp = _.min(s.processedYData);
                         if (temp < extremes[y].min || !extremes[y].foundmin) {
                             extremes[y].min = temp;
@@ -98,7 +98,13 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             endOnTick : false
                         };
 
+                        if (i == 0) {
+
+                        }
+                        else
                         if (i == 1) {
+                            y.gridLineWidth = 0;
+                            y.tickLength = 0;
                             y.opposite = true;
                         }
 

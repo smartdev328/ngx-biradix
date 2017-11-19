@@ -579,10 +579,10 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             occ = fac.extractSeries(profile.points, points,labels,axis,80,100,1, [resp.property], false);
 
-            if ((showRenewal || showLeases) && occ.min > 0) {
-                occ.min = occ.min * .9;
-                occ.extremes[0].min *= .9;
-            }
+            // if ((showRenewal || showLeases) && occ.min > 0) {
+            //     occ.min = occ.min * .9;
+            //     occ.extremes[0].min *= .9;
+            // }
 
             if (occ.extremes[0].max > 100) {
                 occ.extremes[0].max = 100;
