@@ -333,6 +333,10 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     if (typeof field === 'undefined' || field === '' || field === null || isNaN(field)) {
                         return false;
                     }
+                } else {
+                    if (isNaN(field)) {
+                        return false;
+                    }
                 }
 
                 if (!allowDecimal && (field || '').toString().indexOf('.') > -1) {

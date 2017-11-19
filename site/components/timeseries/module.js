@@ -94,7 +94,8 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 formatter: function () {
                                     return $scope.options.prefix + this.value.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix;
                                 }
-                            }
+                            },
+                            endOnTick : false
                         };
 
                         if (i == 1) {
