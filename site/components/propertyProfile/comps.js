@@ -48,7 +48,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             comp.nersqft = comp.survey.nersqft == null ? -1 : comp.survey.nersqft;
                             comp.occupancy = comp.survey.occupancy == null ? -1 : comp.survey.occupancy;
                             comp.leased = comp.survey.leased == null ? -1 : comp.survey.leased;
-                            comp.renewal = comp.survey.leased == null ? -1 : comp.survey.leased;
+                            comp.atr_percent = comp.survey.atr_percent == null ? -1 : comp.survey.atr_percent;
+                            comp.renewal = comp.survey.renewal == null ? -1 : comp.survey.renewal;
                             comp.weeklytraffic = comp.survey.weeklytraffic == null ? -1 : comp.survey.weeklytraffic;
                             comp.weeklyleases = comp.survey.weeklyleases == null ? -1 : comp.survey.weeklyleases;
 
@@ -66,6 +67,11 @@ angular.module('biradix.global').directive('propertyComps', function () {
                                 if (typeof comp.survey.leased != 'undefined' && comp.survey.leased != null) {
                                     $scope.totals.leased = ($scope.totals.leased || 0) + comp.survey.leased * 1;
                                     $scope.totals.unitsLeased = ($scope.totals.unitsLeased || 0) +  1;
+                                }
+
+                                if (typeof comp.atr_percent != 'undefined' && comp.atr_percent != null && comp.atr_percent > -1) {
+                                    $scope.totals.atr_percent = ($scope.totals.atr_percent || 0) + comp.atr_percent  * 1;
+                                    $scope.totals.unitsAtr = ($scope.totals.unitsAtr || 0) +  1;
                                 }
 
                                 if (typeof comp.survey.renewal != 'undefined' && comp.survey.renewal != null) {
@@ -127,6 +133,12 @@ angular.module('biradix.global').directive('propertyComps', function () {
                                 $scope.totals.leased = 0
                             } else {
                                 $scope.totals.leased = Math.round(($scope.totals.leased || 0) / $scope.totals.unitsLeased * 10) / 10;
+                            }
+
+                            if (!$scope.totals.unitsAtr) {
+                                $scope.totals.atr_percent = 0
+                            } else {
+                                $scope.totals.atr_percent = Math.round(($scope.totals.atr_percent || 0) / $scope.totals.unitsAtr * 10) / 10;
                             }
 
                             if (!$scope.totals.unitsRenewal) {

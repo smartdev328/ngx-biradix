@@ -33,33 +33,85 @@ angular.module('biradix.global').directive('timeSeries', function () {
             }, true);
 
             $scope.calcExtremes = function(chart, name) {
-                var min = 0;
-                var max = 0;
                 var temp;
-                var foundmin = false;
-                var foundmax = false;
+
+                var extremes = [];
+                for(var i in $scope.options.extremes) {
+                    extremes[i] = {
+                        min: 0,
+                        max: 0,
+                        foundmin: false,
+                        foundmax: false
+                    }
+                }
+                var y;
                 chart.series.forEach(function(s) {
                     if (s.visible && name != s.name || !s.visible && name == s.name) {
+                        y = s.options.yAxis || 0;
                         temp = _.min(s.processedYData);
-                        if (temp < min || !foundmin) {
-                            min = temp;
-                            foundmin = true;
+                        if (temp < extremes[y].min || !extremes[y].foundmin) {
+                            extremes[y].min = temp;
+                            extremes[y].foundmin = true;
                         }
 
                         temp = _.max(s.processedYData);
-                        if (temp > max || !foundmax) {
-                            max = temp;
-                            foundmax = true;
+                        if (temp > extremes[y].max || !extremes[y].foundmax) {
+                            extremes[y].max = temp;
+                            extremes[y].foundmax = true;
                         }
                     }
                 })
 
-                chart.yAxis[0].setExtremes(min, max);
+                extremes.forEach(function(ex,i) {
+                    chart.yAxis[i].setExtremes(ex.min, ex.max);
+                })
+
             }
 
             $scope.$watch('options', function(a,b){
                 // console.log($scope.options);
                 if ($scope.options) {
+
+                    if (!$scope.options.extremes) {
+                        $scope.options.extremes = {
+                            0: {
+                                min: $scope.options.min,
+                                max: $scope.options.max,
+                                title: $scope.options.title
+                            }
+                        }
+                    }
+
+                    var yAxis = [];
+
+                    var y;
+                    for(var i in $scope.options.extremes) {
+                        y = {
+                            title: {
+                                text: $scope.options.extremes[i].title
+                            },
+                            labels: {
+                                formatter: function () {
+                                    return $scope.options.prefix + this.value.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix;
+                                }
+                            },
+                            endOnTick : false
+                        };
+
+                        if (i == 0) {
+
+                        }
+                        else
+                        if (i == 1) {
+                            y.gridLineWidth = 0;
+                            y.tickLength = 0;
+                            y.opposite = true;
+                        }
+
+                        yAxis.push(y);
+
+                    }
+
                     window.setTimeout(function() {
                         var el = $($element).find('.visible-print-block')
                         var el2 = $($element).find('.hidden-print-block')
@@ -68,7 +120,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             chart: {
                                 type: 'spline',
                                 ignoreHiddenSeries : true,
-                                marginLeft: 75, // Keep all charts left aligned
+                                marginLeft: 75 + ($scope.options.additionalMargin || 0), // Keep all charts left aligned
                             },
                             plotOptions: {
                                 series: {
@@ -102,16 +154,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             xAxis: {
                                 type: 'datetime'
                             },
-                            yAxis: {
-                                title: {
-                                    text: $scope.options.title
-                                },
-                                labels: {
-                                    formatter: function () {
-                                        return $scope.options.prefix + this.value.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix;
-                                    }
-                                }
-                            },
+                            yAxis: yAxis,
                             tooltip: {
                                 shared: true,
                                 xDateFormat: "%b %d, %Y",
@@ -188,7 +231,9 @@ angular.module('biradix.global').directive('timeSeries', function () {
                             }
                         })
 
-                        chart.highcharts().yAxis[0].setExtremes($scope.options.min, $scope.options.max);
+                        for(var i in $scope.options.extremes) {
+                            chart.highcharts().yAxis[i].setExtremes($scope.options.extremes[i].min, $scope.options.extremes[i].max);
+                        }
 
                         $rootScope.$broadcast('timeseriesLoaded');
                     }, 0);

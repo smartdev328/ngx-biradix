@@ -32,6 +32,7 @@ var UserSchema = new Schema({
         notifications: {},
         reminders: {},
         showLeases: Boolean,
+        showATR: Boolean,
         showRenewal: Boolean,
         tz: String,
         monthlyConcessions: Boolean,

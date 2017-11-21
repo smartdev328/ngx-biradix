@@ -89,6 +89,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             fp.rent = fp.rent || ''
                             fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : '';
                         })
+                        $scope.survey.atr = $scope.survey.atr || '';
                         $scope.survey.leased = $scope.survey.leased || '';
                         $scope.survey.renewal = $scope.survey.renewal || '';
                         $scope.survey.occupancy = $scope.survey.occupancy || '';
@@ -104,9 +105,11 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 var s = response.data.survey;
                                 if (s && s.length > 0) {
                                     s = s[0];
-                                    $scope.survey.leased = s.leased;
-                                    $scope.survey.renewal = s.renewal;
-                                    $scope.survey.occupancy = s.occupancy;
+                                    $scope.survey.leased = s.leased || '';
+                                    $scope.survey.atr = s.atr || '';
+                                    $scope.survey.atr_percent = s.atr_percent || '';
+                                    $scope.survey.renewal = s.renewal || '';
+                                    $scope.survey.occupancy = s.occupancy || '';
                                     $scope.survey.weeklytraffic = s.weeklytraffic
                                     $scope.survey.weeklyleases = s.weeklyleases
                                     $scope.survey.notes = s.notes;
@@ -221,10 +224,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
             }
 
             $scope.doneLoading = function() {
+                $scope.survey.totalUnits = 0;
 
                 $scope.survey.floorplans.forEach(function(fp) {
                     fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ?  fp.concessionsOneTime : '';
                     fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ?  fp.concessionsMonthly : '';
+
+                    $scope.survey.totalUnits += fp.units;
 
                 })
 
@@ -322,19 +328,27 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
             $scope.isValid  = function(field, required, allowDecimal, min, max) {
 
+                if (typeof field === 'undefined') {
+                    return false;
+                }
+
                 if (required) {
 
-                    if (typeof field === 'undefined' || field === '' || field === null || isNaN(field)) {
+                    if (field === '' || field === null || isNaN(field)) {
+                        return false;
+                    }
+                } else {
+                    if (field !== '' && field !== null && isNaN(field)) {
                         return false;
                     }
                 }
 
-
-                if (!allowDecimal && field.toString().indexOf('.') > -1) {
+                if (!allowDecimal && (field || '').toString().indexOf('.') > -1) {
                     return false;
                 }
 
-                if (typeof field !== 'undefined' && field != null && !isNaN(field)) {
+
+                if (field != '' && field != null && !isNaN(field)) {
                     if (typeof min !== 'undefined' && parseFloat(field) < min) {
                         return false;
                     }
@@ -358,8 +372,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             if (!state) {
                                 $scope.survey.leased = $scope.originalSurvey.leased;
                                 window.setTimeout(function() {
-                                    //$('#leased')[0].focus();
-                                    //$('#leased')[0].select();
                                     $('#leased').parent().removeClass("has-error");
                                 }, 300);
                             } else {
@@ -372,11 +384,8 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#leased')[0].focus();
-                                        //$('#leased')[0].select();
                                         $('#leased').parent().addClass("has-error");
                                     }, 300);
-                                    return;
                                 }
 
                                 if ($scope.originalSurvey.leased && $scope.originalSurvey.leased > 0 && $scope.survey.leased) {
@@ -389,14 +398,46 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             }
                             $scope.survey.leasedupdated = $scope.survey.leased != $scope.originalSurvey.leased;;
                             break;
+                        case "atr":
+                            $scope.atrWarning = false;
+                            if (!state) {
+                                $scope.survey.atr = $scope.originalSurvey.atr;
+                                window.setTimeout(function() {
+                                    $('#atr').parent().removeClass("has-error");
+                                }, 300);
+                            } else {
+                                var er = "";
+
+                                if (!$scope.isValid($scope.survey.atr, false, false, 0, $scope.survey.totalUnits)) {
+                                    er = '<b>Warning:</b> Apartments to Rent value must be between 0 and total number of units and cannot be a decimal value';
+                                }
+
+                                if (er.length > 0) {
+                                    toastr.warning(er);
+                                    window.setTimeout(function() {
+                                        $('#atr').parent().addClass("has-error");
+                                    }, 300);
+                                }
+                                $scope.survey.atr_percent = Math.round($scope.survey.atr / $scope.survey.totalUnits * 100 * 10) / 10
+
+
+                                if ($scope.originalSurvey.atr_percent && $scope.originalSurvey.atr_percent > 0 && typeof $scope.survey.atr != 'undefined' && $scope.survey.atr != null ) {
+
+                                    var percent = Math.abs((parseInt($scope.survey.atr_percent) - parseInt($scope.originalSurvey.atr_percent)));
+                                    if (percent >= 10) {
+                                        $scope.atrWarning = true;
+                                    }
+                                }
+
+                            }
+                            $scope.survey.atrupdated = $scope.survey.atr != $scope.originalSurvey.atr;;
+                            break;
                         case "renewal":
                             $scope.renewalWarning = false;
                             if (!state) {
                                 $scope.survey.renewal = $scope.originalSurvey.renewal;
                                 window.setTimeout(function() {
-                                    //$('#renewal')[0].focus();
-                                    //$('#renewal')[0].select();
-                                    $('#renewal').parent().removeClass("has-error");
+                                     $('#renewal').parent().removeClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
@@ -408,11 +449,8 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 if (er.length > 0) {
                                     toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#renewal')[0].focus();
-                                        //$('#renewal')[0].select();
                                         $('#renewal').parent().addClass("has-error");
                                     }, 300);
-                                    return;
                                 }
 
                                 if ($scope.originalSurvey.renewal && $scope.originalSurvey.renewal > 0 && $scope.survey.renewal) {
@@ -789,6 +827,12 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     $('#leased').parent().addClass("has-error");
                 }
 
+                if (!$scope.isValid($scope.survey.atr,false,false, 0, $scope.survey.totalUnits)) {
+                    isSuccess = false;
+                    error = 'ATR';
+                    $('#atr').parent().addClass("has-error");
+                }
+
                 if (!$scope.isValid($scope.survey.renewal,false,true,0,150)) {
                     isSuccess = false;
                     error = 'Renewal';
@@ -796,7 +840,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 }
 
                 if (isSuccess) {
-
                     if (surveyid) {
                         $scope.success();
                         return;
@@ -806,6 +849,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                     $('button.contact-submit').prop('disabled', true);
                     ngProgress.start();
+
                     $propertyService.getSurveyWarnings(id, $scope.survey).then(function(resp) {
                         $('button.contact-submit').prop('disabled', false);
                         ngProgress.complete();

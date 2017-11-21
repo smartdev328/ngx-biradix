@@ -184,6 +184,7 @@
 
 
 
+
                     <Br>
                     <Br>
                     <B>Show "Renewal %" information:</B> <toggle-switch checked="settings.showRenewal" disabled="!me.orgs[0].settings.renewal.allow" popover="me.orgs[0].settings.renewal.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
@@ -194,6 +195,20 @@
                        popover-placement="top"
                        uib-popover='Turning this option ON will result in "Renewal %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Renewal %" value when doing market surveys. Note: Data for Renewal % will only be shown if it exists for a property.'
                     ></i>
+
+                    <Br>
+                    <Br>
+                    <B>Show "ATR %" information:</B> <toggle-switch checked="settings.showATR" disabled="!me.orgs[0].settings.atr.allow" popover="me.orgs[0].settings.atr.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+
+                    <i class="fa fa-info-circle"
+                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="top"
+                       popover-append-to-body="true"
+                       uib-popover='Turning this option ON will result in Apartments to Rent ("ATR %") field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "ATR" value when doing market surveys. Note: Data for ATR % will only be shown if it exists for a property.'
+                    ></i>
+
+
                     <Br>
                     <Br>
                     <B>Timezone:</B>

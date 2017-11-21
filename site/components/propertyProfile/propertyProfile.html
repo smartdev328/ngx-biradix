@@ -119,6 +119,16 @@
             {{property.survey.renewal == null ? "N/A" : property.survey.renewal + '%'}}
         </td>
     </tr>
+
+    <tr ng-if="show.atr">
+        <td>
+            <b>ATR %:</b>
+        </td>
+        <td>
+            {{property.survey.atr_percent == null ? "N/A" : property.survey.atr_percent + '%'}}
+        </td>
+    </tr>
+
     <tr ng-if="show.traf">
         <td>
             <b>Traffic/Wk:</b>

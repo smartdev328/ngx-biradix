@@ -19,6 +19,7 @@ define([
             $scope.columnsItems = [
                 {id: "occupancy", name: "Occ. %", selected: $scope.organization.settings.notification_columns.default_value.occupancy},
                 {id: "leased", name: "Leased %", selected: $scope.organization.settings.notification_columns.default_value.leased},
+                {id: "atr", name: "ATR %", selected: $scope.organization.settings.notification_columns.default_value.atr},
                 {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.organization.settings.notification_columns.default_value.weekly},
                 {id: "units", name: "Units", selected: $scope.organization.settings.notification_columns.default_value.units},
                 {id: "sqft", name: "Sqft", selected: $scope.organization.settings.notification_columns.default_value.sqft},

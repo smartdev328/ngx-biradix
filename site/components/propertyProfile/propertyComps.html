@@ -41,6 +41,18 @@
             <i ng-show="sort.renewal === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.renewal === false" class="fa fa-sort-up"></i>
         </th>
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('atr_percent')" ng-if="show.atr">
+            ATR %
+            <i class="fa fa-info-circle"
+               popover-trigger="'mouseenter'"
+               popover-placement="top"
+               uib-popover="Apartments to Rent % (ATR %) is the number of Vacant Available and On-Notice units divided by total units of the property."
+               popover-append-to-body="true"
+            ></i>
+            <i ng-show="sort.atr == null" class="fa fa-sort"></i>
+            <i ng-show="sort.atr === true" class="fa fa-sort-down"></i>
+            <i ng-show="sort.atr === false" class="fa fa-sort-up"></i>
+        </th>
         <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly">
             Traffic/&nbsp;&nbsp;<br>Week
             <i ng-show="sort.weeklytraffic == null" class="fa fa-sort"></i>
@@ -220,6 +232,9 @@
         <td style="text-align: right" ng-if="show.renewal" class="pad">
             {{comp.survey.renewal == null ? "-" : comp.survey.renewal + '%'}}
         </td>
+        <td style="text-align: right" ng-if="show.atr" class="pad">
+            {{comp.atr_percent < 0 ? "-" : comp.atr_percent + '%'}}
+        </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
             {{comp.survey.weeklytraffic == null ? "-" : comp.survey.weeklytraffic}}
         </td>
@@ -305,6 +320,9 @@
         <td style="text-align: right" ng-if="show.renewal" class="pad">
             -
         </td>
+        <td style="text-align: right" ng-if="show.atr" class="pad">
+            -
+        </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
             -
         </td>
@@ -373,6 +391,9 @@
         <td style="text-align: right" ng-if="show.renewal" class="pad">
             -
         </td>
+        <td style="text-align: right" ng-if="show.atr" class="pad">
+            -
+        </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
             -
         </td>
@@ -436,6 +457,10 @@
         <td style="text-align: right" ng-if="show.renewal" class="pad">
             <span ng-if="!totals.unitsRenewal">-</span>
             <span ng-if="totals.unitsRenewal">{{totals.renewal}}%</span>
+        </td>
+        <td style="text-align: right" ng-if="show.atr" class="pad">
+            <span ng-if="!totals.unitsAtr">-</span>
+            <span ng-if="totals.unitsAtr">{{totals.atr_percent}}%</span>
         </td>
         <td style="text-align: right" ng-if="show.weekly" class="pad">
             <span ng-if="totalSurveys == 0">-</span>

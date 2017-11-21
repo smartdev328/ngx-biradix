@@ -243,7 +243,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return name
         }
 
-        fac.extractSeries = function(p, ks, ls, defaultMin, defaultMax, decinalPlaces, allComps, summary, selectedBedroom, bedrooms) {
+        fac.extractSeries = function(p, ks, ls, axis, defaultMin, defaultMax, decinalPlaces, allComps, summary, selectedBedroom, bedrooms) {
             var series = [];
             var hasPoints = false;
             var comps = allComps;
@@ -285,7 +285,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             var data;
             var v;
             lines.forEach(function(c, lineIndex) {
-                s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0};
+                s = {data:[], name: c.name, _max: 0,  _min: 99999, _last : 0, yAxis: axis[lineIndex]};
                 data = [];
                 if (p[c.prop] && p[c.prop][c.key]) {
                     data = p[c.prop][c.key];
@@ -325,18 +325,25 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             var min, max;
 
+            var uniqueAxis = _.unique(axis);
+            var extremes = {};
+
+            min = defaultMin;
+            max = defaultMax;
+
+            uniqueAxis.forEach(function(i) {
+                extremes[i] = {};
+                extremes[i].min = defaultMin;
+                extremes[i].max = defaultMax;
+            })
+
             if (hasPoints) {
 
                 if (!summary && !selectedBedroom == -2 && ls.length == 0 && series.length > 1) {
                     series = _.sortBy(series, function (x) {
                         return -x._last
                     })
-
-                    // series.forEach(function (x, i) {
-                    //     x.name = (i + 1) + ". " + x.name
-                    // })
                 }
-
                 min = _.min(series, function (x) {
                     return x._min
                 })._min;
@@ -344,22 +351,20 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     return x._max
                 })._max;
 
-                //Do not set min and max if there any points, let it auto resize
-                // if (defaultMin == 80 && defaultMax == 100) {
-                //
-                // } else {
-                //     min = null;
-                //     max = null;
-                //}
-            }
-            else
-            {
-                min = defaultMin;
-                max = defaultMax;
-            }
+                var axisseries;
 
+                uniqueAxis.forEach(function(i) {
+                    axisseries = _.filter(series, function(s) {return s.yAxis == i});
 
-            return {data: series, min: min, max: max};
+                    extremes[i].min = _.min(axisseries, function (x) {
+                        return x._min
+                    })._min;
+                    extremes[i].max = _.max(axisseries, function (x) {
+                        return x._max
+                    })._max;
+                });
+            }
+            return {data: series, min: min, max: max, extremes: extremes};
         }
 
 
@@ -367,47 +372,60 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";
         }
 
-        var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases, showRenewal) {
+        var extractTableViews = function(surveys, occupancy, pts, nerColumns, showLeases, showRenewal, showATR) {
             var table = [];
 
-            var tr, ls, surveyid, leased, renewal, n, row;
+            var tr, ls, surveyid, leased, renewal, n, row, atr, o;
 
-            pts.occupancy.forEach(function(o) {
-                tr = _.find(pts['traffic'], function(x) {return x.d == o.d})
-                ls = _.find(pts['leases'], function(x) {return x.d == o.d})
-                surveyid = _.find(surveys, function(x,y) {return y == o.d})
+            pts.traffic.forEach(function(tr) {
+                o = _.find(pts['occupancy'], function(x) {return x.d == tr.d})
+                ls = _.find(pts['leases'], function(x) {return x.d == tr.d})
+                surveyid = _.find(surveys, function(x,y) {return y == tr.d})
 
                 if (showLeases) {
-                    leased = _.find(pts['leased'], function(x) {return x.d == o.d})
+                    leased = _.find(pts['leased'], function(x) {return x.d == tr.d})
                 } else {
                     leased = null;
                 }
 
                 if (showRenewal) {
-                    renewal = _.find(pts['renewal'], function(x) {return x.d == o.d})
+                    renewal = _.find(pts['renewal'], function(x) {return x.d == tr.d})
                 } else {
                     renewal = null;
                 }
 
+                if (showATR) {
+                    atr = _.find(pts['atr'], function(x) {return x.d == tr.d})
+                } else {
+                    atr = null;
+                }
 
-                if (!o.f) {
+                if (!tr.f) {
 
-                    row = {d: o.d, occ: o.v, traffic: tr.v, leases: ls.v, surveyid: surveyid}
+                    row = {d: tr.d, traffic: tr.v, leases: ls.v, surveyid: surveyid}
 
                     nerColumns.forEach(function (k) {
                         n = _.find(pts[k], function (x) {
-                            return x.d == o.d
+                            return x.d == tr.d
                         })
 
                         row[k] = n.v
                     })
 
-                    if (leased) {
+                    if (o && !o.f) {
+                        row.occ = o.v;
+                    }
+
+                    if (leased && !leased.f) {
                         row.leased = leased.v;
                     }
 
-                    if (renewal) {
+                    if (renewal && !renewal.f) {
                         row.renewal = renewal.v;
+                    }
+
+                    if (atr && !atr.f) {
+                        row.atr = atr.v;
                     }
 
                     table.push(row);
@@ -419,7 +437,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return table;
 
         }
-        fac.parseProfile = function(profile, graphs, showLeases, showRenewal, scale) {
+        fac.parseProfile = function(profile, graphs, showLeases, showRenewal, scale, showATR) {
 
             var resp = {};
             resp.lookups = profile.lookups;
@@ -501,6 +519,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             var keys = ['ner'];
             var labels = ['Entire Property'];
+            var axis = [0];
 
             var pts = profile.points[resp.property._id];
 
@@ -509,6 +528,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     if (!isNaN(p)) {
                         keys.push(p)
                         labels.push(p + ' Bedrooms')
+                        axis.push(0);
                     }
                 }
 
@@ -524,35 +544,66 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 scaleText = "Net Eff. Rent / Sqft";
             }
 
-            var ner = fac.extractSeries(profile.points, keys,labels,0,1000,scaleDecimals, [resp.property], false);
+            var ner = fac.extractSeries(profile.points, keys,labels,axis,0,1000,scaleDecimals, [resp.property], false);
 
             var occ ;
-            var title = 'Occupancy';
             var points = ['occupancy'];
             var labels = ['Occupancy %'];
+            var axis = [0];
+            var title1 = 'Occupancy';
+            var title2 = '';
+            var count = 1;
 
             if (showLeases) {
-                title += " / Leased";
                 points.push('leased');
                 labels.push('Leased %');
+                axis.push(0);
+                title1 += ' / Leased';
+                count++;
             }
 
             if (showRenewal) {
-                title += " / Renewal";
                 points.push('renewal');
                 labels.push('Renewal %');
+                axis.push(0);
+                title1 += ' / Renewal';
+                count++;
             }
 
-            occ = fac.extractSeries(profile.points, points,labels,80,100,1, [resp.property], false);
-
-            if ((showRenewal || showLeases) && occ.min > 0) {
-                occ.min = occ.min * .9;
+            if (showATR) {
+                points.push('atr');
+                labels.push('ATR %');
+                axis.push(1);
+                title2 = 'ATR';
             }
 
-            resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, min: (resp.summary ? occ.min : occ.min), max: (resp.summary ? occ.max : 100)};
+            occ = fac.extractSeries(profile.points, points,labels,axis,80,100,1, [resp.property], false);
+
+            // if ((showRenewal || showLeases) && occ.min > 0) {
+            //     occ.min = occ.min * .9;
+            //     occ.extremes[0].min *= .9;
+            // }
+
+            if (occ.extremes[0].max > 100) {
+                occ.extremes[0].max = 100;
+            }
+
+            if (occ.extremes[1]) {
+                occ.extremes[0].title = title1;
+                occ.extremes[1].title = title2;
+                if (occ.extremes[1].max > 100) {
+                    occ.extremes[1].max = 100;
+                }
+            }
+
+            resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, extremes: occ.extremes};
+
+            if (count > 2) {
+                resp.occData.additionalMargin = 10;
+            }
 
 
-            var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],0,10,0, [resp.property], false);
+            var other = fac.extractSeries(profile.points, ['traffic','leases'],['Traffic/Wk','Leases/Wk'],[0,0],0,10,0, [resp.property], false);
 
             resp.nerData = {height:300, printWidth:800, decimalPlaces: scaleDecimals, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
 
@@ -560,7 +611,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             if (pts && !graphs) {
                 resp.nerKeys = keys;
-                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases, showRenewal);
+                resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases, showRenewal, showATR);
             }
 
             return resp;
@@ -657,9 +708,9 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             }
 
             resp.points = {excluded: dashboard.points.excluded};
-            var ner = fac.extractSeries(dashboard.points, ['ner'],[],0,1000,scaleDecimals, resp.comps, summary, selectedBedroom, bedrooms);
-            var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],80,100,1, resp.comps, summary);
-            var leased = fac.extractSeries(dashboard.points, ['leased'],[],80,100,1, resp.comps, summary);
+            var ner = fac.extractSeries(dashboard.points, ['ner'],[],[0],0,1000,scaleDecimals, resp.comps, summary, selectedBedroom, bedrooms);
+            var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],[0],80,100,1, resp.comps, summary);
+            var leased = fac.extractSeries(dashboard.points, ['leased'],[],[0],80,100,1, resp.comps, summary);
 
             resp.nerData = {height:300, printWidth:800, decimalPlaces: scaleDecimals, prefix:'$',suffix:'', title: scaleText, marker: true, data: ner.data, min: ner.min, max: ner.max};
 

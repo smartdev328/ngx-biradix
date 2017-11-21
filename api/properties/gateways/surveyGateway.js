@@ -93,6 +93,14 @@ module.exports = {
                                 }
                             }
 
+                            if (n.atr_percent && o.atr_percent != null && o.atr_percent != '' && typeof o.atr_percent != 'undefined') {
+                                percent = Math.abs((parseFloat(n.atr_percent || 0) - parseFloat(o.atr_percent || 0)));
+
+                                if (percent >= 10) {
+                                    errors.push({msg: 'ATR % has changed by more than 10% since last survey'});
+                                }
+                            }
+
                             var fpNer =false;
                             n.floorplans.forEach(function(fp) {
                                 var old = _.find(o.floorplans, function(x) {return x.id.toString() == fp.id.toString() });

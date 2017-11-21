@@ -138,6 +138,8 @@ module.exports = {
                             occupancy: survey.occupancy,
                             leased: survey.leased,
                             renewal: survey.renewal,
+                            atr: survey.atr,
+                            atr_percent: survey.atr_percent,
                             ner: ner,
                             weeklyleases: survey.weeklyleases,
                             weeklytraffic: survey.weeklytraffic,
@@ -145,6 +147,7 @@ module.exports = {
                             date: survey.date,
                             dateByOwner : dateByOwner
                         }
+
                         var query = {_id: propertyid};
                         var update = {survey: s, $unset: {needsSurvey: ""}};
                         var options = {new: true};

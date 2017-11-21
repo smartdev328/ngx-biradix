@@ -671,6 +671,15 @@ module.exports = {
                 leasesDescription = "Off => On";
             }
 
+            var atrDescription = "";
+            if (usr.settings.showATR == true && settings.showATR == false) {
+                atrDescription = "On => Off";
+            }
+            else
+            if (usr.settings.showATR == false && settings.showATR == true) {
+                atrDescription = "Off => On";
+            }
+
             var renewalDescription = "";
             if (usr.settings.showRenewal == true && settings.showRenewal == false) {
                 renewalDescription = "On => Off";
@@ -688,6 +697,7 @@ module.exports = {
             if (usr.settings.monthlyConcessions == false && settings.monthlyConcessions == true) {
                 concessionsDescription = "Off => On";
             }
+
 
             usr.settings = settings
 
@@ -716,6 +726,10 @@ module.exports = {
 
                 if (leasesDescription) {
                     AuditService.create({operator: Operator, user: usr, type: 'user_leased', description: usr.first + ' ' + usr.last + ': ' + leasesDescription, context: context})
+                }
+
+                if (atrDescription) {
+                    AuditService.create({operator: Operator, user: usr, type: 'user_atr', description: usr.first + ' ' + usr.last + ': ' + atrDescription, context: context})
                 }
 
                 if (renewalDescription) {
@@ -819,6 +833,13 @@ module.exports = {
                             u.remove = true;
                         }  else {
                             u.settings.showLeases = value;
+                        }
+                        break;
+                    case 'atr':
+                        if (u.settings.showATR == value) {
+                            u.remove = true;
+                        }  else {
+                            u.settings.showATR = value;
                         }
                         break;
                     case 'renewal':
@@ -986,11 +1007,12 @@ function getSysemUser (callback) {
 
 function defaultSettings(user, orgSettings) {
  //   orgSettings = orgSettings || { detailed_concessions : {}, leased: {}, renewal : {}, how_often: { default_value: "* * * * 2"}, updates: {}, reminders: {}};
- //   console.log(orgSettings);
+    //console.log(orgSettings);
     user.settings = user.settings || {};
     user.settings.monthlyConcessions = user.settings.monthlyConcessions || orgSettings.detailed_concessions.default_value;
     user.settings.showLeases = user.settings.showLeases || orgSettings.leased.default_value;
     user.settings.showRenewal = user.settings.showRenewal || orgSettings.renewal.default_value;
+    user.settings.showATR = user.settings.showATR || orgSettings.atr.default_value;
     user.settings.notifications = user.settings.notifications || {};
     user.settings.notifications.cron = user.settings.notifications.cron || orgSettings.how_often.default_value
     user.settings.notifications.props = user.settings.notifications.props || [];
@@ -1003,6 +1025,7 @@ function defaultSettings(user, orgSettings) {
     user.settings.notification_columns = user.settings.notification_columns || {
         occupancy: true,
         leased: user.settings.showLeases,
+        atr: user.settings.showATR,
         units: true,
         sqft: true,
         rent: true,
