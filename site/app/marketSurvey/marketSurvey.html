@@ -341,7 +341,7 @@
                             <td style="text-align: right"  valign="top">
 
                                 <div class="form-group" ng-if="$root.me.settings.showATR || survey.atr">
-                                    <input type="number" class="form-control input-sm survey-value" ng-model="survey.atr" ng-enter="next('atr','atr')" id="atr" onclick="select()" ng-change="clear('atr')" ng-keydown="pressed('atr','atr', $event)" ng-blur="updateDone('atr',true)">
+                                    <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.atr" ng-enter="next('atr','atr')" id="atr" onclick="select()" ng-change="clear('atr')" ng-keydown="pressed('atr','atr', $event)" ng-blur="updateDone('atr',true)">
                                 </div>
                                 <Br ng-if="$root.me.settings.showATR || survey.atr">
                                 <div class="form-group">

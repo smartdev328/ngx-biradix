@@ -105,11 +105,11 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 var s = response.data.survey;
                                 if (s && s.length > 0) {
                                     s = s[0];
-                                    $scope.survey.leased = s.leased;
-                                    $scope.survey.atr = s.atr;
-                                    $scope.survey.atr_percent = s.atr_percent;
-                                    $scope.survey.renewal = s.renewal;
-                                    $scope.survey.occupancy = s.occupancy;
+                                    $scope.survey.leased = s.leased || '';
+                                    $scope.survey.atr = s.atr || '';
+                                    $scope.survey.atr_percent = s.atr_percent || '';
+                                    $scope.survey.renewal = s.renewal || '';
+                                    $scope.survey.occupancy = s.occupancy || '';
                                     $scope.survey.weeklytraffic = s.weeklytraffic
                                     $scope.survey.weeklyleases = s.weeklyleases
                                     $scope.survey.notes = s.notes;
@@ -328,13 +328,17 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
             $scope.isValid  = function(field, required, allowDecimal, min, max) {
 
+                if (typeof field === 'undefined') {
+                    return false;
+                }
+
                 if (required) {
 
-                    if (typeof field === 'undefined' || field === '' || field === null || isNaN(field)) {
+                    if (field === '' || field === null || isNaN(field)) {
                         return false;
                     }
                 } else {
-                    if (typeof field !== 'undefined' && field !== '' && field !== null && isNaN(field)) {
+                    if (field !== '' && field !== null && isNaN(field)) {
                         return false;
                     }
                 }
@@ -344,7 +348,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 }
 
 
-                if (typeof field !== 'undefined' && field != null && !isNaN(field)) {
+                if (field != '' && field != null && !isNaN(field)) {
                     if (typeof min !== 'undefined' && parseFloat(field) < min) {
                         return false;
                     }
