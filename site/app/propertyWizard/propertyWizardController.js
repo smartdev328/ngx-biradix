@@ -81,7 +81,7 @@ define([
                 {label:'Amenities', template: 'amenities.html'},
                 {label:'Fees/Deposits', template: 'feesDeposits.html'},
                 {label:'Floor Plans', template: 'floorplans.html'},
-                {label:'Contact/Notes', template: 'notes.html'},
+                {label:'More', template: 'notes.html'},
             ]
 
 
