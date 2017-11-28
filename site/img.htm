@@ -1,0 +1,73 @@
+<html>
+<head>
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+Add image(s) before submit: <input type='file' id="fileUpload" multiple /><br>
+<Br>
+<div id="images">
+
+</div>
+<input type="Button" value="Upload to Server" id="upload">
+<hr>
+<img id="full">
+<Script>
+    $("#upload").hide();
+    var globalI = 0;
+    function remove(i) {
+        $("#preview" + i).remove();
+
+        if (!$(".preview").length) {
+            $("#upload").hide();
+        }
+    }
+
+    function download(i) {
+        var canvas = $("#p_canvas"+i)[0];
+
+        var dt = canvas.toDataURL('image/jpeg');
+        $("#full").attr("src",dt);
+    }
+    function readImage() {
+        if ( this.files) {
+            var FR = {}
+            var h = 100;
+            var h2 = 828;
+            for (var i = 0; i < this.files.length; i++) {
+                FR[globalI] = new FileReader();
+                FR[globalI].customUploadIndex = globalI;
+                FR[globalI].onload = function (e) {
+                    $("#upload").show();
+                    var _this = this;
+                    var img = new Image();
+                    img.addEventListener("load", function (e2) {
+                        var w = img.width / img.height * h;
+                        var w2 = img.width / img.height * 1200;
+                        var canvas = '<div class="preview" id="preview'+_this.customUploadIndex+'"><input type="button" value="Delete" onclick="remove('+_this.customUploadIndex+')"> <input type="button" value="Large" onclick="download('+_this.customUploadIndex+')"><canvas id="canvas'+_this.customUploadIndex+'" width="' + w + '" height="' + h + '"></canvas><canvas style="display:none" id="p_canvas'+_this.customUploadIndex+'" width="' + w2 + '" height="' + h2 + '"></canvas><br><Br></div>';
+                        $("#images").append(canvas);
+
+                        var context = $("#canvas"+_this.customUploadIndex)[0].getContext("2d");
+                        context.drawImage(img, 0, 0, w, h);
+                        context = $("#p_canvas"+_this.customUploadIndex)[0].getContext("2d");
+                        context.drawImage(img, 0, 0, w2, h2);
+
+
+                        img = null;
+                    });
+                    img.src = e.target.result;
+                };
+
+                FR[globalI].readAsDataURL(this.files[i]);
+                globalI++;
+            }
+        }
+    }
+
+    $("#fileUpload").change("change", readImage, false);
+</Script>
+</body>
+</html>
