@@ -7,17 +7,19 @@
 </head>
 
 <body>
-Add image(s) before submit: <input type='file' id="fileUpload" multiple /><br>
+Add image(s) before submit: <input type='file' id="fileUpload" multiple accept=".jpg, .jpeg, .png, .gif" /><br>
 <Br>
-<div id="images">
+<div id="images" style="max-height:300px;overflow-y: auto;max-width:300px;overflow-x: hidden">
 
 </div>
-<input type="Button" value="Upload to Server" id="upload">
+<input type="Button" value="Upload to Server" id="upload"><Br>
+<Div id="errors"></Div>
 <hr>
 <img id="full">
 <Script>
     $("#upload").hide();
     var globalI = 0;
+    var dts = {}
     function remove(i) {
         $("#preview" + i).remove();
 
@@ -27,34 +29,48 @@ Add image(s) before submit: <input type='file' id="fileUpload" multiple /><br>
     }
 
     function download(i) {
-        var canvas = $("#p_canvas"+i)[0];
 
-        var dt = canvas.toDataURL('image/jpeg');
-        $("#full").attr("src",dt);
+        $("#full").attr("src",dts[i]);
     }
     function readImage() {
         if ( this.files) {
             var FR = {}
-            var h = 100;
-            var h2 = 828;
+
             for (var i = 0; i < this.files.length; i++) {
                 FR[globalI] = new FileReader();
                 FR[globalI].customUploadIndex = globalI;
+                FR[globalI].fileName = this.files[i].name;
+
                 FR[globalI].onload = function (e) {
                     $("#upload").show();
                     var _this = this;
                     var img = new Image();
-                    img.addEventListener("load", function (e2) {
+                    img.addEventListener("error", function () {
+                        $("#errors").append("<b style='color:red'>" + _this.fileName +" is not a valid image.</b><Br>");
+                    });
+                    img.addEventListener("load", function () {
+
+                        if (img.width < 100 || img.height < 100) {
+                            $("#errors").append("<b style='color:red'>" + _this.fileName +" ("+img.width+"x"+img.height+") did not meet minimum width requirement 100x100 requirement.</b><Br>");
+                            return
+                        }
+
+                        var h = 720;
+
+                        if (h > img.height) {
+                            h = img.height;
+                        }
                         var w = img.width / img.height * h;
-                        var w2 = img.width / img.height * 1200;
-                        var canvas = '<div class="preview" id="preview'+_this.customUploadIndex+'"><input type="button" value="Delete" onclick="remove('+_this.customUploadIndex+')"> <input type="button" value="Large" onclick="download('+_this.customUploadIndex+')"><canvas id="canvas'+_this.customUploadIndex+'" width="' + w + '" height="' + h + '"></canvas><canvas style="display:none" id="p_canvas'+_this.customUploadIndex+'" width="' + w2 + '" height="' + h2 + '"></canvas><br><Br></div>';
+                        var canvas = '<div class="preview" id="preview'+_this.customUploadIndex+'"><img id="full'+_this.customUploadIndex+'" height="75"><Br><input type="button" value="Delete" onclick="remove('+_this.customUploadIndex+')"> <input type="button" value="Large" onclick="download('+_this.customUploadIndex+')"><canvas style="display:none" id="p_canvas'+_this.customUploadIndex+'" width="' + w + '" height="' + h + '"></canvas><hr></div>';
                         $("#images").append(canvas);
 
-                        var context = $("#canvas"+_this.customUploadIndex)[0].getContext("2d");
-                        context.drawImage(img, 0, 0, w, h);
-                        context = $("#p_canvas"+_this.customUploadIndex)[0].getContext("2d");
-                        context.drawImage(img, 0, 0, w2, h2);
 
+                        var $canvas = $("#p_canvas"+_this.customUploadIndex)[0];
+                        var context = $canvas.getContext("2d");
+                        context.drawImage(img, 0, 0, w, h);
+
+                        dts[_this.customUploadIndex] = $canvas.toDataURL('image/jpeg');
+                        $("#full"+_this.customUploadIndex).attr("src",dts[_this.customUploadIndex]);
 
                         img = null;
                     });
