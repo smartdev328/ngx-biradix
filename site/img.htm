@@ -72,6 +72,9 @@ Add image(s) before submit: <input type='file' id="fileUpload" multiple accept="
                         dts[_this.customUploadIndex] = $canvas.toDataURL('image/jpeg');
                         $("#full"+_this.customUploadIndex).attr("src",dts[_this.customUploadIndex]);
 
+                        $canvas.remove();
+                        $canvas = null;
+
                         img = null;
                     });
                     img.src = e.target.result;
