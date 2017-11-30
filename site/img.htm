@@ -19,7 +19,8 @@ Add image(s) before submit: <input type='file' id="fileUpload" multiple accept="
 <Script>
     $("#upload").hide();
     var globalI = 0;
-    var dts = {}
+    var FR = {}
+    var images = {};
     function remove(i) {
         $("#preview" + i).remove();
 
@@ -30,12 +31,29 @@ Add image(s) before submit: <input type='file' id="fileUpload" multiple accept="
 
     function download(i) {
 
-        $("#full").attr("src",dts[i]);
+        var img = images[i];
+        var h = 720;
+
+        if (h > img.height) {
+            h = img.height;
+        }
+        var w = img.width / img.height * h;
+
+        var $canvas = $("#p_canvas")[0];
+
+        if ($canvas) {
+            $canvas.remove();
+        }
+        $("#images").append('<canvas style="display:none" id="p_canvas" width="' + w + '" height="' + h + '"></canvas>');
+        $canvas = $("#p_canvas")[0];
+        var context = $canvas.getContext("2d");
+        context.drawImage(img, 0, 0, w, h);
+
+        $("#full").attr("src",$canvas.toDataURL('image/jpeg'));
+
     }
     function readImage() {
         if ( this.files) {
-            var FR = {}
-
             for (var i = 0; i < this.files.length; i++) {
                 FR[globalI] = new FileReader();
                 FR[globalI].customUploadIndex = globalI;
@@ -55,27 +73,9 @@ Add image(s) before submit: <input type='file' id="fileUpload" multiple accept="
                             return
                         }
 
-                        var h = 720;
-
-                        if (h > img.height) {
-                            h = img.height;
-                        }
-                        var w = img.width / img.height * h;
-                        var canvas = '<div class="preview" id="preview'+_this.customUploadIndex+'"><img id="full'+_this.customUploadIndex+'" height="75"><Br><input type="button" value="Delete" onclick="remove('+_this.customUploadIndex+')"> <input type="button" value="Large" onclick="download('+_this.customUploadIndex+')"><canvas style="display:none" id="p_canvas'+_this.customUploadIndex+'" width="' + w + '" height="' + h + '"></canvas><hr></div>';
-                        $("#images").append(canvas);
-
-
-                        var $canvas = $("#p_canvas"+_this.customUploadIndex)[0];
-                        var context = $canvas.getContext("2d");
-                        context.drawImage(img, 0, 0, w, h);
-
-                        dts[_this.customUploadIndex] = $canvas.toDataURL('image/jpeg');
-                        $("#full"+_this.customUploadIndex).attr("src",dts[_this.customUploadIndex]);
-
-                        $canvas.remove();
-                        $canvas = null;
-
-                        img = null;
+                        var preview = '<div class="preview" id="preview'+_this.customUploadIndex+'"><img src="'+img.src+'" height="75"><Br><input type="button" value="Delete" onclick="remove('+_this.customUploadIndex+')"> <input type="button" value="Large" onclick="download('+_this.customUploadIndex+')"><hr></div>';
+                        $("#images").append(preview);
+                        images[_this.customUploadIndex] = img;
                     });
                     img.src = e.target.result;
                 };
