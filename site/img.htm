@@ -91,8 +91,8 @@ Add image(s) before submit: <input type='file' id="fileUpload" multiple accept="
                     });
                     img.addEventListener("load", function () {
 
-                        if (img.width < 100 || img.height < 100) {
-                            $("#errors").append("<b style='color:red'>" + _this.fileName +" ("+img.width+"x"+img.height+") did not meet minimum width requirement 100x100 requirement.</b><Br>");
+                        if (img.width < 120 || img.height < 120) {
+                            $("#errors").append("<b style='color:red'>" + _this.fileName +" ("+img.width+"x"+img.height+") did not meet minimum width requirement 120x120 requirement.</b><Br>");
                             return
                         }
 

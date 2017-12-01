@@ -3,17 +3,20 @@ function getImage(img, height, degrees, isSquare) {
     var canvasWidth = height;
     var canvasHeight = height;
 
-    if (!isSquare) {
-        if (canvasHeight > img.height) {
-            canvasHeight = img.height;
-        }
-        canvasWidth = img.width / img.height * canvasHeight;
+    var h = img.height;
+    var w = img.width;
 
+    if (!isSquare) {
         if (degrees == 90 || degrees == 270) {
-            var temp = canvasWidth;
-            canvasWidth = canvasHeight;
-            canvasHeight = temp;
+            w = img.height;
+            h = img.width;
         }
+        if (canvasHeight > h) {
+            canvasHeight = h;
+        }
+        canvasWidth = w / h * canvasHeight;
+
+
     }
 
     var offscreenCanvas = document.createElement('canvas');
@@ -25,14 +28,13 @@ function getImage(img, height, degrees, isSquare) {
     var newHeight;
 
 
-    if (img.width > img.height) {
-        newHeight = height;
-        newWidth = newHeight * img.width / img.height;
+    if (w > h) {
+        newHeight = canvasHeight;
+        newWidth = newHeight * w / h;
     }
     else {
-        newWidth = height
-        newHeight = newWidth * img.height / img.width;
-
+        newWidth = canvasWidth
+        newHeight = newWidth * h / w;
     }
 
 
@@ -48,12 +50,16 @@ function getImage(img, height, degrees, isSquare) {
         }
     }
 
-    context.translate(height/2,height/2);
+    context.translate(canvasWidth/2,canvasHeight/2);
 
     // rotate the canvas to the specified degrees
     context.rotate(degrees*Math.PI/180);
 
-    context.drawImage(img,offsetX - height/2,offsetY - height/2,newWidth,newHeight)
+    if (!isSquare && (degrees == 270 || degrees == 90)) {
+        context.drawImage(img,offsetX - canvasHeight/2,offsetY - canvasWidth/2,newHeight, newWidth)
+    } else {
+        context.drawImage(img,offsetX - canvasWidth/2,offsetY - canvasHeight/2,newWidth, newHeight)
+    }
 
     return offscreenCanvas.toDataURL('image/jpeg');
 
