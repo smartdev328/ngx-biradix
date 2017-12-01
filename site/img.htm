@@ -4,66 +4,89 @@
             src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
+    <script src="lib.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <style>
+        .modal-dialog {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .modal-content {
+            margin: 0 auto;
+        }
+
+        .preview {
+            margin: 10px;
+            float:left;
+            position:relative;
+        }
+
+        .preview .delete {
+            position: absolute;
+            top:10px;
+            right:10px;
+            color:white;
+            cursor: pointer;
+        }
+
+        .preview .view {
+            position: absolute;
+            top:10px;
+            left:10px;
+            color:white;
+            cursor: pointer;
+        }
+
+        #images img {border-radius: 20px}
+    </style>
 </head>
 
 <body>
 Add image(s) before submit: <input type='file' id="fileUpload" multiple accept=".jpg, .jpeg, .png, .gif" /><br>
 <Br>
-<div id="images" style="max-height:300px;overflow-y: auto;max-width:300px;overflow-x: hidden">
+<div id="images" style="height:300px;overflow: auto;width:100%">
 
 </div>
 <input type="Button" value="Upload to Server" id="upload"><Br>
 <Div id="errors"></Div>
 <hr>
-<img id="full">
 <Script>
     $("#upload").hide();
     var globalI = 0;
     var FR = {}
     var images = {};
-    function remove(i) {
-        $("#preview" + i).remove();
 
-        if (!$(".preview").length) {
-            $("#upload").hide();
-        }
-    }
 
-    function download(i) {
-
-        var img = images[i];
-        var h = 720;
-
-        if (h > img.height) {
-            h = img.height;
-        }
-        var w = img.width / img.height * h;
-
-        var $canvas = $("#p_canvas")[0];
-
-        if ($canvas) {
-            $canvas.remove();
-        }
-        $("#images").append('<canvas style="display:none" id="p_canvas" width="' + w + '" height="' + h + '"></canvas>');
-        $canvas = $("#p_canvas")[0];
-        var context = $canvas.getContext("2d");
-        context.drawImage(img, 0, 0, w, h);
-
-        $("#full").attr("src",$canvas.toDataURL('image/jpeg'));
-
-    }
     function readImage() {
         if ( this.files) {
             for (var i = 0; i < this.files.length; i++) {
+
+
+                if (this.files[i].size > 20 * 1024 * 1024) {
+                    $("#errors").append("<b style='color:red'>" + this.files[i].name +" exceeds 20MB limit.</b><Br>");
+                    continue;
+                }
+
                 FR[globalI] = new FileReader();
                 FR[globalI].customUploadIndex = globalI;
                 FR[globalI].fileName = this.files[i].name;
 
                 FR[globalI].onload = function (e) {
-                    $("#upload").show();
+
+                    this.orientation = getOrientation(e.target.result);
+
                     var _this = this;
                     var img = new Image();
-                    img.addEventListener("error", function () {
+                    img.addEventListener("error", function (e) {
                         $("#errors").append("<b style='color:red'>" + _this.fileName +" is not a valid image.</b><Br>");
                     });
                     img.addEventListener("load", function () {
@@ -73,20 +96,65 @@ Add image(s) before submit: <input type='file' id="fileUpload" multiple accept="
                             return
                         }
 
-                        var preview = '<div class="preview" id="preview'+_this.customUploadIndex+'"><img src="'+img.src+'" height="75"><Br><input type="button" value="Delete" onclick="remove('+_this.customUploadIndex+')"> <input type="button" value="Large" onclick="download('+_this.customUploadIndex+')"><hr></div>';
-                        $("#images").append(preview);
+                        _this.rotate = 0;
+
+                        if (_this.orientation == 6) {
+                            _this.rotate = 90;
+                        }
+                        else
+                        if (_this.orientation == 8) {
+                            _this.rotate = 270;
+                        }
+                        else
+                        if (_this.orientation == 3) {
+                            _this.rotate = 180;
+                        }
+
+                        var thumb = new Image();
+                        thumb.src = getImage(img,120,_this.rotate, true);
+
+                        var div = document.createElement('div');
+                        div.id = "preview_" + _this.customUploadIndex;
+                        div.className = "preview";
+
+                        $("#images").append(div);
+                        $("#" + div.id).append(thumb);
+                        $("#" + div.id).append('<div class="delete" onclick="remove('+_this.customUploadIndex+')"><i class="fa fa-trash"></i></div>');
+                        $("#" + div.id).append('<div class="view" onclick="view('+_this.customUploadIndex+')"><i class="fa fa-search"></i></div>');
+
                         images[_this.customUploadIndex] = img;
                     });
-                    img.src = e.target.result;
+
+
+
+                    arrayBufferToBase64(e.target.result, function(data) {
+                        img.src = "data:image/jpg;base64,"+data;
+                    })
+
                 };
 
-                FR[globalI].readAsDataURL(this.files[i]);
+                FR[globalI].readAsArrayBuffer(this.files[i]);
                 globalI++;
             }
         }
     }
 
     $("#fileUpload").change("change", readImage, false);
+
+
 </Script>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" onclick='$("#myModal").modal("hide")'>
+
+        <!-- Modal content-->
+        <div class="modal-content" style="border-radius:0">
+            <div class="modal-body" style="padding:0px">
+
+            </div>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>
