@@ -1,0 +1,50 @@
+uploader .file-input-wrapper {
+    width: 300px;
+    height: 40px;
+    overflow: hidden;
+    position: relative;
+}
+uploader .file-input-wrapper > input[type="file"] {
+    font-size: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+}
+uploader .file-input-wrapper > button {
+    display: inline-block;
+    width:300px;
+}
+
+uploader .gallery {
+    height:300px;overflow: auto;width:100%;
+    border:1px solid #ccc;
+    border-radius: 2px;
+}
+
+uploader .preview {
+    margin: 10px;
+    float:left;
+    position:relative;
+}
+
+uploader .preview img {border-radius: 20px}
+
+uploader .preview .delete {
+    position: absolute;
+    top:10px;
+    right:10px;
+    cursor: pointer;
+}
+
+uploader .preview .view {
+    position: absolute;
+    top:10px;
+    left:10px;
+    cursor: pointer;
+}
+
+uploader .preview .fa {
+    color: white;
+    text-shadow: 3px 3px 16px #272634;
+}

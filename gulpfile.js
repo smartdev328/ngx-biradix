@@ -53,6 +53,7 @@ gulp.task('globaljs', function() {
         , './site/components/daterangepicker/module.js'
         , './site/components/ngEnter/module.js'
         , './site/components/dialog/module.js'
+        , './site/components/uploader/module.js'
 
         , './site/services/authService.js'
         , './site/services/propertyService.js'
@@ -96,6 +97,7 @@ gulp.task('globalcss', function() {
         , './site/components/toggle/style.css'
         , './site/components/filterlist/filterlist.css'
         , './site/components/reports/reporting.css'
+        , './site/components/uploader/styles.css'
     ])
         .pipe(concat('global.css'))
         .pipe(gulp.dest('./dist/'))

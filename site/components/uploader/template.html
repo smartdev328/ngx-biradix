@@ -1,0 +1,14 @@
+<div class="file-input-wrapper">
+    <button class="btn btn-primary">Choose image file(s) to upload</button>
+    <input type='file' id="fileUpload" multiple accept=".jpg, .jpeg, .png, .gif"
+           onchange="angular.element(this).scope().readImage(this)"/>
+</div>
+
+<div class="gallery">
+    <div ng-repeat="fileReader in FileReaders" ng-if="fileReader.custom && fileReader.custom.thumb" class="preview">
+        <img ng-src="{{fileReader.custom.thumb}}">
+
+        <div class="delete" ng-click="fileReader.custom = null"><i class="fa fa-trash"></i></div>
+        <div class="view"><i class="fa fa-search"></i></div>
+    </div>
+</div>

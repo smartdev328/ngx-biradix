@@ -6,6 +6,10 @@ define([
      app.controller
         ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService) {
 
+            $scope.input = {
+                maxFileSizeMB : 20,
+                thumbHeight: 120
+            }
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
             $rootScope.sideMenu = true;
