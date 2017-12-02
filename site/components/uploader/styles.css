@@ -3,6 +3,8 @@ uploader .file-input-wrapper {
     height: 40px;
     overflow: hidden;
     position: relative;
+    margin:10px auto;
+
 }
 uploader .file-input-wrapper > input[type="file"] {
     font-size: 200px;
@@ -19,9 +21,9 @@ uploader .file-input-wrapper > button {
 uploader .gallery {
     height:420px;
     overflow: auto;
-    width:580px;
     border:1px solid #ccc;
     border-radius: 2px;
+    margin:8px;
 }
 
 uploader .preview {

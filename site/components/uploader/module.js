@@ -5,9 +5,10 @@ angular.module('biradix.global').directive('uploader', function () {
             input: '=',
             output: '=',
         },
-        controller: function ($scope, $element,toastr) {
+        controller: function ($scope, $element,toastr, $uibModal) {
             $scope.globalIndex = 0;
             $scope.FileReaders = [];
+            $scope.canUpload = false;
 
             $scope.readImage = function(upload) {
                 if ( upload.files) {
@@ -27,6 +28,7 @@ angular.module('biradix.global').directive('uploader', function () {
 
                         $scope.FileReaders[$scope.globalIndex].readAsArrayBuffer(upload.files[i]);
                         $scope.globalIndex++;
+                        $scope.canUpload = true;
 
 
                     }
@@ -56,12 +58,14 @@ angular.module('biradix.global').directive('uploader', function () {
                 var img = new Image();
                 img.addEventListener("error", function (e) {
                     toastr.error("<B>" + _fileReader.custom.fileName +"</B> is not a valid image.");
+                    _fileReader.custom = null;
                 });
 
                 img.addEventListener("load", function () {
 
                     if (img.width < $scope.input.thumbHeight || img.height < $scope.input.thumbHeight) {
                         toastr.error("<B>" + _fileReader.custom.fileName +"</B> ("+img.width+"x"+img.height+") did not meet minimum requirement of "+$scope.input.thumbHeight+"x"+$scope.input.thumbHeight+".");
+                        _fileReader.custom = null;
                         return
                     }
                     _fileReader.custom.thumb = $scope.getImage(img,$scope.input.thumbHeight,_fileReader.custom.rotate, true);;
@@ -171,6 +175,33 @@ angular.module('biradix.global').directive('uploader', function () {
                 }
 
                 return offscreenCanvas.toDataURL('image/jpeg');
+
+            }
+
+            $scope.remove = function(index) {
+                $scope.FileReaders[index].custom = null;
+                $scope.canUpload = _.find($scope.FileReaders, function(x) {return x.custom && x.custom.thumb})
+            }
+
+            $scope.view = function(index) {
+
+                $uibModal.open({
+                    template: '<div><a href ng-click="cancel()"><img ng-src="{{src}}" style="width:100%"></a></div>',
+                    size: "lg",
+                    backdrop: 'static',
+                    keyboard: true,
+                    resolve: {
+                        src: function () {
+                            return $scope.getImage($scope.FileReaders[index].custom.image,$scope.input.fullHeight,$scope.FileReaders[index].custom.rotate, false);
+                        },
+                    },
+                    controller: function($scope, $uibModalInstance,src){
+                        $scope.src = src;
+                        $scope.cancel = function () {
+                            $uibModalInstance.dismiss('cancel');
+                        };
+                    }
+                });
 
             }
         },

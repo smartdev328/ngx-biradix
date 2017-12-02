@@ -802,8 +802,32 @@ define([
                     });
 
                 });
-            }            
+            }
 
+            $scope.upload = function() {
+
+                $uibModal.open({
+                    template: '<div class="modal-header">\n' +
+                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>\n' +
+                    '        <h2 class="modal-title">Upload Pictures</h2>\n' +
+                    '    </div>' +
+                    '<uploader input="input"></uploader><br>',
+                    size: "mg",
+                    backdrop: 'static',
+                    keyboard: false,
+                    controller: function($scope, $uibModalInstance){
+                        $scope.input = {
+                            maxFileSizeMB : 20,
+                            thumbHeight: 120,
+                            fullHeight: 1080
+                        }
+                        $scope.cancel = function () {
+                            $uibModalInstance.dismiss('cancel');
+                        };
+                    }
+                });
+
+            }
         }]);
 
 });
