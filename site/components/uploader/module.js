@@ -68,7 +68,7 @@ angular.module('biradix.global').directive('uploader', function () {
                         _fileReader.custom = null;
                         return
                     }
-                    _fileReader.custom.thumb = $scope.getImage(img,$scope.input.thumbHeight,_fileReader.custom.rotate, true);;
+                    _fileReader.custom.thumb = $scope.getImage(img,$scope.input.thumbHeight,_fileReader.custom.rotate, true).src;
                     _fileReader.custom.image = img;
                 });
 
@@ -174,7 +174,9 @@ angular.module('biradix.global').directive('uploader', function () {
                     context.drawImage(img,offsetX - canvasWidth/2,offsetY - canvasHeight/2,newWidth, newHeight)
                 }
 
-                return offscreenCanvas.toDataURL('image/jpeg');
+
+
+                return { src : offscreenCanvas.toDataURL('image/jpeg'), width: newWidth, height: newHeight}
 
             }
 
@@ -185,18 +187,40 @@ angular.module('biradix.global').directive('uploader', function () {
 
             $scope.view = function(index) {
 
+                var image = $scope.getImage($scope.FileReaders[index].custom.image,$scope.input.fullHeight,$scope.FileReaders[index].custom.rotate, false);
+                var w = image.width;
+                var h = image.height;
+
+                if (image.width > 900) {
+                    w = 900;
+                    h = w * image.height / image.width;
+                }
+
+                if (w > window.outerWidth) {
+                    h = h * window.outerWidth / w;
+                    w = window.outerWidth;
+                }
+
+                if (h > window.outerHeight) {
+                    w = w * window.outerHeight / h;
+                    h = window.outerHeight;
+                }
                 $uibModal.open({
-                    template: '<div><a href ng-click="cancel()"><img ng-src="{{src}}" style="width:100%"></a></div>',
+                    template: '<div style="position: relative">' +
+                    '<div ng-click="cancel()" style="position: absolute;top:10px;right:10px;text-shadow: 3px 3px 16px #272634;cursor:pointer"><i class="fa fa-3x fa-times" style="color:white !important;"></i></div>' +
+                    '<a href ng-click="cancel()"><img ng-src="{{image.src}}" style="width:'+w+'px;margin: 0px auto;display:block"></a></div>',
                     size: "lg",
                     backdrop: 'static',
                     keyboard: true,
                     resolve: {
-                        src: function () {
-                            return $scope.getImage($scope.FileReaders[index].custom.image,$scope.input.fullHeight,$scope.FileReaders[index].custom.rotate, false);
+                        image: function () {
+                            return image;
                         },
                     },
-                    controller: function($scope, $uibModalInstance,src){
-                        $scope.src = src;
+                    controller: function($scope, $uibModalInstance,image){
+
+                        $scope.image = image;
+
                         $scope.cancel = function () {
                             $uibModalInstance.dismiss('cancel');
                         };

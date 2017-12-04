@@ -1,15 +1,14 @@
 <div class="file-input-wrapper">
-    <button class="btn btn-primary">Choose image file(s) to upload</button>
+    <button class="btn btn-primary">Add image file(s) to upload</button>
     <input type='file' id="fileUpload" multiple accept=".jpg, .jpeg, .png, .gif"
            onchange="angular.element(this).scope().readImage(this)"/>
 </div>
 
 <div class="gallery">
     <div ng-repeat="fileReader in FileReaders" ng-if="fileReader.custom && fileReader.custom" class="preview">
-        <img ng-if="fileReader.custom.thumb" ng-src="{{fileReader.custom.thumb}}">
+        <img ng-if="fileReader.custom.thumb" ng-src="{{fileReader.custom.thumb}}" ng-click="view(fileReader.custom.uploadIndex)">
 
         <div ng-if="fileReader.custom.thumb" class="delete" ng-click="remove(fileReader.custom.uploadIndex)"><i class="fa fa-trash"></i></div>
-        <div ng-if="fileReader.custom.thumb" class="view" ng-click="view(fileReader.custom.uploadIndex)"><i class="fa fa-search"></i></div>
 
         <div ng-if="!fileReader.custom.thumb">
             <img src="/images/squares.gif" style="width:120px">

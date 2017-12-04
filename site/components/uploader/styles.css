@@ -26,10 +26,17 @@ uploader .gallery {
     margin:8px;
 }
 
+@media (max-width: 486px) {
+    uploader .gallery {
+        width: 308px;
+        margin: 0px auto;
+    }
+}
 uploader .preview {
     margin: 10px;
     float:left;
     position:relative;
+    cursor:zoom-in;
 }
 
 uploader .preview img {border-radius: 20px}
@@ -38,13 +45,6 @@ uploader .preview .delete {
     position: absolute;
     top:10px;
     right:10px;
-    cursor: pointer;
-}
-
-uploader .preview .view {
-    position: absolute;
-    top:10px;
-    left:10px;
     cursor: pointer;
 }
 
