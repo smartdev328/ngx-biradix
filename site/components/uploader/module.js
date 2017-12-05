@@ -8,17 +8,19 @@ angular.module('biradix.global').directive('uploader', function () {
         controller: function ($scope, $element,toastr, $uibModal) {
             $scope.FileReaders = [];
             $scope.canUpload = false;
+            $scope.canDelete = true;
             $scope.loading = false;
             $scope.uploads = [];
 
             $scope.readImage = function(upload) {
                 $scope.canUpload = false;
+                $scope.canDelete = false;
                 $scope.loading = false;
-
+                var URL = window.URL || window.webkitURL;
                 var reader = new FileReader();
                 var files = [];
                 Array.prototype.push.apply( files, upload.files );
-                var globalIndex = 0;
+                var globalIndex = $scope.uploads.length;
 
                 files.forEach(function() {
                     $scope.uploads.push({
@@ -32,6 +34,7 @@ angular.module('biradix.global').directive('uploader', function () {
                     if (single_file === undefined) {
                         $("#fileUpload").val('');
                         $scope.checkCanUpload();
+                        $scope.canDelete = true;
                         return;
                     }
 
@@ -83,27 +86,25 @@ angular.module('biradix.global').directive('uploader', function () {
                                 if (img.width < $scope.input.thumbHeight || img.height < $scope.input.thumbHeight) {
                                     toastr.error("<B>" + newUpload.fileName +"</B> ("+img.width+"x"+img.height+") did not meet minimum requirement of "+$scope.input.thumbHeight+"x"+$scope.input.thumbHeight+".");
                                     $scope.uploads.splice(globalIndex, 1);
+                                    URL.revokeObjectURL( img.src );
+                                    img = null;
                                     process_one();
                                     return
                                 }
 
                                 globalIndex++;
                                 newUpload.loaded = true
-                                newUpload.thumb = $scope.getImage(img,$scope.input.thumbHeight,newUpload.rotate, true).src;
-                                newUpload.image = img;
+                                newUpload.thumb = $scope.getImage(img,$scope.input.thumbHeight,newUpload.rotate, true, false).src;
+                                newUpload.image = $scope.getImage(img,$scope.input.fullHeight,newUpload.rotate, false, true);
+
+                                URL.revokeObjectURL( img.src );
+                                img = null;
 
                                 // process next at the end
                                 process_one();
                             });
 
-                            $scope.arrayBufferToBase64(e.target.result, function(data) {
-                                img.src = "data:image/jpg;base64,"+data;
-
-                                e.target.result = null;
-                                data = null;
-                                delete data;
-                                delete e.target;
-                            })
+                            img.src = URL.createObjectURL( file );
 
                         };
 
@@ -166,7 +167,7 @@ angular.module('biradix.global').directive('uploader', function () {
                 reader.readAsDataURL(blob);
             }
 
-            $scope.getImage = function(img, height, degrees, isSquare) {
+            $scope.getImage = function(img, height, degrees, isSquare, getCanvas) {
 
                 var canvasWidth = height;
                 var canvasHeight = height;
@@ -231,18 +232,27 @@ angular.module('biradix.global').directive('uploader', function () {
 
 
 
-                var ret = { src : offscreenCanvas.toDataURL('image/jpeg'), width: newWidth, height: newHeight}
+                var ret;
 
-                context = null;
-                offscreenCanvas = null;
-                delete context;
-                delete offscreenCanvas;
+
+                if (!getCanvas) {
+                    ret = { src : offscreenCanvas.toDataURL('image/jpeg'), width: newWidth, height: newHeight};
+                    offscreenCanvas = null;
+                    delete context;
+                    delete offscreenCanvas;
+                } else {
+                    ret = { canvas : offscreenCanvas, width: newWidth, height: newHeight};
+                    context = null;
+                    delete context;
+                }
 
                 return ret;
 
             }
 
             $scope.remove = function(index) {
+                $scope.uploads[index].image = null;
+                delete $scope.uploads[index].image;
                 $scope.uploads.splice(index, 1);
                 $scope.checkCanUpload();
             }
@@ -254,7 +264,7 @@ angular.module('biradix.global').directive('uploader', function () {
 
             $scope.view = function(index) {
 
-                var image = $scope.getImage($scope.uploads[index].image,$scope.input.fullHeight,$scope.uploads[index].rotate, false);
+                var image = $scope.uploads[index].image;
                 var w = image.width;
                 var h = image.height;
 
@@ -277,7 +287,7 @@ angular.module('biradix.global').directive('uploader', function () {
                     '<div ng-click="cancel()" style="position: absolute;top:10px;right:10px;text-shadow: 3px 3px 16px #272634;cursor:pointer"><i class="fa fa-3x fa-times" style="color:white !important;"></i></div>' +
                     '<a href ng-click="cancel()"><img ng-src="{{image.src}}" style="width:'+w+'px;margin: 0px auto;display:block"></a></div>',
                     size: "lg",
-                    backdrop: 'static',
+                    backdrop: true,
                     keyboard: true,
                     resolve: {
                         image: function () {
@@ -285,8 +295,7 @@ angular.module('biradix.global').directive('uploader', function () {
                         },
                     },
                     controller: function($scope, $uibModalInstance,image){
-
-                        $scope.image = image;
+                        $scope.image = {src: image.canvas.toDataURL('image/jpeg')};
 
                         $scope.cancel = function () {
                             $uibModalInstance.dismiss('cancel');

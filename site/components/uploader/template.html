@@ -1,20 +1,15 @@
-<div class="file-input-wrapper">
+<div class="file-input-wrapper" ng-show="canDelete">
     <button class="btn btn-primary">Add image file(s) to upload</button>
     <input type='file' id="fileUpload" multiple accept=".jpg, .jpeg, .png, .gif"
            onchange="angular.element(this).scope().readImage(this)"/>
 </div>
 
 <div class="gallery">
-
-    <div ng-show="loading" style="margin:0px auto;width:120px;">
-        <img src="/images/squares.gif" style="width:120px;height:120px">
-    </div>
-
-    <div ng-show="!loading">
+    <div>
         <div ng-repeat="upload in uploads" class="preview">
         <img ng-show="upload.loaded" ng-src="{{upload.thumb}}" ng-click="view($index)">
 
-        <div ng-show="upload.loaded" class="delete" ng-click="remove($index)"><i class="fa fa-trash"></i></div>
+        <div ng-show="upload.loaded && canDelete" class="delete" ng-click="remove($index)"><i class="fa fa-trash"></i></div>
 
         <div ng-show="!upload.loaded">
             <img src="/images/squares.gif" style="width:120px">
@@ -24,5 +19,5 @@
 </div>
 
 <div style="text-align: center">
-    <button class="btn btn-success" ng-disabled="!canUpload">Upload</button>
+    <button class="btn btn-success" ng-disabled="!canUpload">Upload<span ng-if="uploads.length > 0"> {{uploads.length}} image<span ng-if="uploads.length > 1">s</span></span></button>
 </div>
