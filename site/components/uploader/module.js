@@ -6,98 +6,147 @@ angular.module('biradix.global').directive('uploader', function () {
             output: '=',
         },
         controller: function ($scope, $element,toastr, $uibModal) {
-            $scope.globalIndex = 0;
             $scope.FileReaders = [];
             $scope.canUpload = false;
+            $scope.loading = false;
+            $scope.uploads = [];
 
             $scope.readImage = function(upload) {
-                if ( upload.files) {
-                    for (var i = 0; i < upload.files.length; i++) {
-                        if (upload.files[i].size > $scope.input.maxFileSizeMB * 1024 * 1024) {
-                            toastr.error("<B>" + upload.files[i].name +"</B> exceeds <B>"+$scope.input.maxFileSizeMB+"MB</B> limit.");
-                            continue;
+                $scope.canUpload = false;
+                $scope.loading = false;
+
+                var reader = new FileReader();
+                var files = [];
+                Array.prototype.push.apply( files, upload.files );
+                var globalIndex = 0;
+
+                files.forEach(function() {
+                    $scope.uploads.push({
+                        loaded : false
+                    });
+                })
+
+                function process_one() {
+                    var single_file = files.pop();
+
+                    if (single_file === undefined) {
+                        $("#fileUpload").val('');
+                        $scope.checkCanUpload();
+                        return;
+                    }
+
+                    (function dummy_function(file) {
+
+                        if (file.size > $scope.input.maxFileSizeMB * 1024 * 1024) {
+                            toastr.error("<B>" + file.name +"</B> exceeds <B>"+$scope.input.maxFileSizeMB+"MB</B> limit.");
+                            $scope.uploads.splice(globalIndex, 1);
+                            process_one();
+                            return;
                         }
 
-                        $scope.FileReaders[$scope.globalIndex] = new FileReader();
-                        $scope.FileReaders[$scope.globalIndex].custom = {
-                            uploadIndex : $scope.globalIndex,
-                            fileName : upload.files[i].name
+                        reader.onload = function (e) {
+
+                            var newUpload = {
+                                fileName : file.name,
+                                loaded : false
+                            }
+
+                            $scope.uploads[globalIndex] = newUpload;
+
+                            newUpload.orientation = $scope.getOrientation(e.target.result);
+
+                            newUpload.rotate = 0;
+
+                            if (newUpload.orientation == 6) {
+                                newUpload.rotate = 90;
+                            }
+                            else
+                            if (newUpload.orientation == 8) {
+                                newUpload.rotate = 270;
+                            }
+                            else
+                            if (newUpload.orientation == 3) {
+                                newUpload.rotate = 180;
+                            }
+
+                            var img = new Image();
+                            img.addEventListener("error", function (e) {
+                                toastr.error("<B>" + newUpload.fileName +"</B> is not a valid image.");
+                                $scope.uploads.splice(globalIndex, 1);
+
+                                // process next at the end
+                                process_one();
+                            });
+
+                            img.addEventListener("load", function () {
+
+                                if (img.width < $scope.input.thumbHeight || img.height < $scope.input.thumbHeight) {
+                                    toastr.error("<B>" + newUpload.fileName +"</B> ("+img.width+"x"+img.height+") did not meet minimum requirement of "+$scope.input.thumbHeight+"x"+$scope.input.thumbHeight+".");
+                                    $scope.uploads.splice(globalIndex, 1);
+                                    process_one();
+                                    return
+                                }
+
+                                globalIndex++;
+                                newUpload.loaded = true
+                                newUpload.thumb = $scope.getImage(img,$scope.input.thumbHeight,newUpload.rotate, true).src;
+                                newUpload.image = img;
+
+                                // process next at the end
+                                process_one();
+                            });
+
+                            $scope.arrayBufferToBase64(e.target.result, function(data) {
+                                img.src = "data:image/jpg;base64,"+data;
+
+                                e.target.result = null;
+                                data = null;
+                                delete data;
+                                delete e.target;
+                            })
+
                         };
 
-                        $scope.FileReaders[$scope.globalIndex].onload = $scope.fileReaderLoaded;
-
-                        $scope.FileReaders[$scope.globalIndex].readAsArrayBuffer(upload.files[i]);
-                        $scope.globalIndex++;
-                        $scope.canUpload = true;
-
-
-                    }
-
+                        reader.readAsArrayBuffer(file);
+                    })(single_file);
                 }
+
+                process_one();
             }
-
-            $scope.fileReaderLoaded = function(e) {
-                this.custom.orientation = $scope.getOrientation(e.target.result);
-
-                this.custom.rotate = 0;
-
-                if (this.custom.orientation == 6) {
-                    this.custom.rotate = 90;
-                }
-                else
-                if (this.custom.orientation == 8) {
-                    this.custom.rotate = 270;
-                }
-                else
-                if (this.custom.orientation == 3) {
-                    this.custom.rotate = 180;
-                }
-
-                var _fileReader = this;
-
-                var img = new Image();
-                img.addEventListener("error", function (e) {
-                    toastr.error("<B>" + _fileReader.custom.fileName +"</B> is not a valid image.");
-                    _fileReader.custom = null;
-                });
-
-                img.addEventListener("load", function () {
-
-                    if (img.width < $scope.input.thumbHeight || img.height < $scope.input.thumbHeight) {
-                        toastr.error("<B>" + _fileReader.custom.fileName +"</B> ("+img.width+"x"+img.height+") did not meet minimum requirement of "+$scope.input.thumbHeight+"x"+$scope.input.thumbHeight+".");
-                        _fileReader.custom = null;
-                        return
-                    }
-                    _fileReader.custom.thumb = $scope.getImage(img,$scope.input.thumbHeight,_fileReader.custom.rotate, true).src;
-                    _fileReader.custom.image = img;
-                });
-
-                $scope.arrayBufferToBase64(e.target.result, function(data) {
-                    img.src = "data:image/jpg;base64,"+data;
-                })
-            }
-
 
             $scope.getOrientation = function(arrayBuffer) {
                 var view = new DataView(arrayBuffer);
                 if (view.getUint16(0, false) != 0xFFD8) return -2;
                 var length = view.byteLength, offset = 2;
+                var little, tags, i , ret, marker;
                 while (offset < length) {
-                    var marker = view.getUint16(offset, false);
+                    marker = view.getUint16(offset, false);
                     offset += 2;
                     if (marker == 0xFFE1) {
-                        if (view.getUint32(offset += 2, false) != 0x45786966) return -1;
-                        var little = view.getUint16(offset += 6, false) == 0x4949;
+                        if (view.getUint32(offset += 2, false) != 0x45786966) {
+                            view = null;
+                            delete view;
+                            return -1;
+                        }
+                        little = view.getUint16(offset += 6, false) == 0x4949;
                         offset += view.getUint32(offset + 4, little);
-                        var tags = view.getUint16(offset, little);
+                        tags = view.getUint16(offset, little);
                         offset += 2;
-                        for (var i = 0; i < tags; i++)
-                            if (view.getUint16(offset + (i * 12), little) == 0x0112)
-                                return (view.getUint16(offset + (i * 12) + 8, little));
+                        for (i = 0; i < tags; i++)
+                            if (view.getUint16(offset + (i * 12), little) == 0x0112) {
+                                ret = (view.getUint16(offset + (i * 12) + 8, little));
+                                view = null;
+                                delete view;
+                                return ret;
+
+                            }
                     }
                     else if ((marker & 0xFF00) != 0xFF00) break;
                     else offset += view.getUint16(offset, false);
                 }
+                view = null;
+                delete view;
+
                 return -1;
             }
 
@@ -107,6 +156,12 @@ angular.module('biradix.global').directive('uploader', function () {
                 reader.onload = function(evt){
                     var dataurl = evt.target.result;
                     callback(dataurl.substr(dataurl.indexOf(',')+1));
+                    reader = null;
+                    blob = null;
+                    buffer = null;
+                    delete buffer;
+                    delete reader;
+                    delete blob;
                 };
                 reader.readAsDataURL(blob);
             }
@@ -176,18 +231,30 @@ angular.module('biradix.global').directive('uploader', function () {
 
 
 
-                return { src : offscreenCanvas.toDataURL('image/jpeg'), width: newWidth, height: newHeight}
+                var ret = { src : offscreenCanvas.toDataURL('image/jpeg'), width: newWidth, height: newHeight}
+
+                context = null;
+                offscreenCanvas = null;
+                delete context;
+                delete offscreenCanvas;
+
+                return ret;
 
             }
 
             $scope.remove = function(index) {
-                $scope.FileReaders[index].custom = null;
-                $scope.canUpload = _.find($scope.FileReaders, function(x) {return x.custom && x.custom.thumb})
+                $scope.uploads.splice(index, 1);
+                $scope.checkCanUpload();
             }
+
+            $scope.checkCanUpload = function () {
+                $scope.canUpload = $scope.uploads.length > 0;
+            }
+
 
             $scope.view = function(index) {
 
-                var image = $scope.getImage($scope.FileReaders[index].custom.image,$scope.input.fullHeight,$scope.FileReaders[index].custom.rotate, false);
+                var image = $scope.getImage($scope.uploads[index].image,$scope.input.fullHeight,$scope.uploads[index].rotate, false);
                 var w = image.width;
                 var h = image.height;
 

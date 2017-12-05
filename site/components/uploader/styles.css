@@ -36,7 +36,7 @@ uploader .preview {
     margin: 10px;
     float:left;
     position:relative;
-    cursor:zoom-in;
+    cursor: pointer;
 }
 
 uploader .preview img {border-radius: 20px}
