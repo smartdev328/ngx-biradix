@@ -21,3 +21,10 @@
 <div style="text-align: center">
     <button class="btn btn-success" ng-disabled="!canUpload">Upload<span ng-if="uploads.length > 0"> {{uploads.length}} image<span ng-if="uploads.length > 1">s</span></span></button>
 </div>
+
+<div class="uploader-overlay" ng-show="options.showPreview" ng-click="options.showPreview = false;">
+    <div class="content">
+        <div ng-click="options.showPreview = false;" class="upload-close"><i class="fa fa-times fa-3x"></i></div>
+        <img class="large" ng-src = "{{previewSrc}}">
+    </div>
+</div>

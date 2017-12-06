@@ -12,6 +12,10 @@ angular.module('biradix.global').directive('uploader', function () {
             $scope.loading = false;
             $scope.uploads = [];
 
+            $scope.options = {
+                showPreview : false
+            }
+
             $scope.readImage = function(upload) {
                 $scope.canUpload = false;
                 $scope.canDelete = false;
@@ -264,44 +268,15 @@ angular.module('biradix.global').directive('uploader', function () {
 
             $scope.view = function(index) {
 
-                var image = $scope.uploads[index].image;
-                var w = image.width;
-                var h = image.height;
+                window.setTimeout(function() {
+                    $(document.body).append($('.uploader-overlay').detach());
+                })
 
-                if (image.width > 900) {
-                    w = 900;
-                    h = w * image.height / image.width;
-                }
+                $scope.previewSrc = $scope.uploads[index].image.canvas.toDataURL('image/jpeg');
+                $scope.options.showPreview = true;
 
-                if (w > window.outerWidth) {
-                    h = h * window.outerWidth / w;
-                    w = window.outerWidth;
-                }
 
-                if (h > window.outerHeight) {
-                    w = w * window.outerHeight / h;
-                    h = window.outerHeight;
-                }
-                $uibModal.open({
-                    template: '<div style="position: relative">' +
-                    '<div ng-click="cancel()" style="position: absolute;top:10px;right:10px;text-shadow: 3px 3px 16px #272634;cursor:pointer"><i class="fa fa-3x fa-times" style="color:white !important;"></i></div>' +
-                    '<a href ng-click="cancel()"><img ng-src="{{image.src}}" style="width:'+w+'px;margin: 0px auto;display:block"></a></div>',
-                    size: "lg",
-                    backdrop: true,
-                    keyboard: true,
-                    resolve: {
-                        image: function () {
-                            return image;
-                        },
-                    },
-                    controller: function($scope, $uibModalInstance,image){
-                        $scope.image = {src: image.canvas.toDataURL('image/jpeg')};
 
-                        $scope.cancel = function () {
-                            $uibModalInstance.dismiss('cancel');
-                        };
-                    }
-                });
 
             }
         },
