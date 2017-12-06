@@ -255,8 +255,8 @@ angular.module('biradix.global').directive('uploader', function () {
             }
 
             $scope.remove = function(index) {
-                $scope.uploads[index].image = null;
-                delete $scope.uploads[index].image;
+                $scope.uploads[index].image = "";
+                $scope.uploads[index].thumb = "";
                 $scope.uploads.splice(index, 1);
                 $scope.checkCanUpload();
             }
@@ -265,6 +265,11 @@ angular.module('biradix.global').directive('uploader', function () {
                 $scope.canUpload = $scope.uploads.length > 0;
             }
 
+
+            $scope.closeView = function() {
+                $scope.options.showPreview = false;
+                $scope.previewSrc = "";
+            }
 
             $scope.view = function(index) {
 

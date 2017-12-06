@@ -19,7 +19,7 @@ uploader .file-input-wrapper > button {
 }
 
 uploader .gallery {
-    height:420px;
+    height:422px;
     overflow: auto;
     border:1px solid #ccc;
     border-radius: 2px;
