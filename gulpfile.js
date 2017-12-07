@@ -67,6 +67,7 @@ gulp.task('globaljs', function() {
         , './site/services/gridService.js'
         , './site/services/userService.js'
         , './site/services/propertyUsersService.js'
+        , './site/services/mediaService.js'
 
         , './site/components/propertyProfile/coverPage.js'
         , './site/components/propertyProfile/profile.js'

@@ -6,7 +6,7 @@ angular.module('biradix.global').directive('uploader', function () {
             output: '=',
             done: '&'
         },
-        controller: function ($scope, $element,toastr) {
+        controller: function ($scope, $element,toastr,$mediaService) {
             $scope.FileReaders = [];
             $scope.canUpload = false;
             $scope.canDelete = true;
@@ -295,8 +295,22 @@ angular.module('biradix.global').directive('uploader', function () {
                     return
                 }
 
-                $scope.output.push(single_file.fileName);
-                window.setTimeout($scope.upload,1000);
+                $mediaService.uploadImage({
+                    image: single_file.image.canvas.toDataURL('image/jpeg'),
+                    width: single_file.image.width,
+                    height: single_file.image.height
+                }).then(function (response) {
+                    $scope.output.push(response.data.image);
+                    $scope.upload();
+
+                }, function (err) {
+                    $scope.uploads.push(single_file);
+                    $scope.canDelete = true;
+                    $scope.uploading = false;
+
+                    toastr.error("Unable to upload <B>" + single_file.fileName +"</B>. Please try again or contact the administrator.");
+                });
+
 
 
             }

@@ -15,6 +15,12 @@
     },
     "NEW_RELIC_NAME": {
       "value": "REVIEW"
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "value": "AKIAIJYUKH672WP4XUXQ"
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "value": "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"
     }
   },
 //  "scripts": {

@@ -806,7 +806,7 @@ define([
 
             $scope.upload = function() {
 
-                $uibModal.open({
+                var modalInstance = $uibModal.open({
                     template: '<div class="modal-header">\n' +
                     '<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>\n' +
                     '        <h2 class="modal-title">Upload Pictures</h2>\n' +
@@ -827,10 +827,19 @@ define([
                         };
 
                         $scope.done = function() {
-                            console.log($scope.output)
-                            $uibModalInstance.close();
+                            toastr.success("<B>" + $scope.output.length +" image(s)</B> uploaded successfully!");
+                            $uibModalInstance.close($scope.output);
                         }
                     }
+                });
+
+                modalInstance.result.then(function (newMedia) {
+                    //Send successfully
+                    $scope.property.media = $scope.property.media || [];
+                    $scope.property.media = $scope.property.media.concat(newMedia);
+
+                }, function () {
+                    //Cancel
                 });
 
             }

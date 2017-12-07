@@ -61,6 +61,7 @@ d.run(function() {
             app.use(settings.API_PATH + 'organizations/', require('../api/organizations/gateways/organizationsGateway'));
             app.use(settings.API_PATH + 'reporting/', require('../api/reporting/gateways/reportingGateway'));
             app.use(settings.API_PATH + 'reporting/save/', require('../api/reporting/gateways/saveReportGateway'));
+            app.use(settings.API_PATH + 'media/images/', require('../api/media/gateways/imagesGateway'));
             app.use('/contact', require('../api/contact/gateways/contactGateway'));
             app.use('/progress', require('../api/progress/gateways/progressGateway'));
             app.use('/status', require('../api/status/gateways/statusGateway'));
