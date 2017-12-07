@@ -21,6 +21,9 @@
     },
     "AWS_SECRET_ACCESS_KEY": {
       "value": "dfxEIKDk9fODbkY8XwWqbGaR8RiipRzJT/bWQvxj"
+    },
+    "AWS_S3_BUCKET_IMAGES": {
+      "value": "biradix-nonprod-mediastore"
     }
   },
 //  "scripts": {
