@@ -811,11 +811,12 @@ define([
                     '<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>\n' +
                     '        <h2 class="modal-title">Upload Pictures</h2>\n' +
                     '    </div>' +
-                    '<uploader input="input"></uploader><br>',
+                    '<uploader input="input" output="output" done="done()"></uploader><br>',
                     size: "mg",
                     backdrop: 'static',
                     keyboard: false,
                     controller: function($scope, $uibModalInstance){
+                        $scope.output = [];
                         $scope.input = {
                             maxFileSizeMB : 20,
                             thumbHeight: 120,
@@ -824,6 +825,11 @@ define([
                         $scope.cancel = function () {
                             $uibModalInstance.dismiss('cancel');
                         };
+
+                        $scope.done = function() {
+                            console.log($scope.output)
+                            $uibModalInstance.close();
+                        }
                     }
                 });
 

@@ -21,7 +21,8 @@
 </div>
 
 <div style="text-align: center">
-    <button class="btn btn-success" ng-disabled="!canUpload">Upload<span ng-if="uploads.length > 0"> {{uploads.length}} image<span ng-if="uploads.length > 1">s</span></span></button>
+    <button class="btn btn-success" ng-disabled="!canUpload" ng-if="!uploading" ng-click="upload()">Upload<span ng-if="uploads.length > 0"> {{uploads.length}} image<span ng-if="uploads.length > 1">s</span></span></button>
+    <button class="btn btn-success" ng-disabled="true" ng-if="uploading">Uploading: {{uploads.length}} image<span ng-if="uploads.length > 1">s</span> to go</button>
 </div>
 
 <div class="uploader-overlay" ng-show="options.showPreview" ng-click="closeView()">

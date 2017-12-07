@@ -4,13 +4,16 @@ angular.module('biradix.global').directive('uploader', function () {
         scope: {
             input: '=',
             output: '=',
+            done: '&'
         },
-        controller: function ($scope, $element,toastr, $uibModal) {
+        controller: function ($scope, $element,toastr) {
             $scope.FileReaders = [];
             $scope.canUpload = false;
             $scope.canDelete = true;
             $scope.loading = false;
             $scope.uploads = [];
+            $scope.uploading = false;
+            $scope.output = [];
 
             $scope.options = {
                 showPreview : false
@@ -279,8 +282,21 @@ angular.module('biradix.global').directive('uploader', function () {
 
                 $scope.previewSrc = $scope.uploads[index].image.canvas.toDataURL('image/jpeg');
                 $scope.options.showPreview = true;
+            }
 
+            $scope.upload = function() {
+                $scope.canDelete = false;
+                $scope.uploading = true;
 
+                var single_file = $scope.uploads.pop();
+
+                if (!single_file) {
+                    $scope.done();
+                    return
+                }
+
+                $scope.output.push(single_file.fileName);
+                window.setTimeout($scope.upload,1000);
 
 
             }
