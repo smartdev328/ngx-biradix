@@ -28,9 +28,8 @@
 <b class="panel-heading">Property Pictures</b><Br>
 <div class="row">
     <div class="col-sm-12" style="text-align: center">
-        <div style="border:1px solid #ccc" ng-if="property.media && property.media.length > 0">
-        <img ng-src="{{property.media[0].url}}" style="max-width:100%">
-        </div>
-        <a href ng-click="upload()">Click here to upload pictures</a>
+        <img ng-src="{{property.media[0].url}}" style="max-height:200px;max-width:100%;border:1px solid #aaa" ng-if="property.media && property.media.length > 0"><Br>
+        <Br>
+        <a href ng-click="upload()">Click here to upload<span ng-if="property.media.length > 0"> additional</span> pictures</a><Br>
     </div>
 </div>
