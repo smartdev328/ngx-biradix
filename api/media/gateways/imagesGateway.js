@@ -8,8 +8,11 @@ var uuid = require("node-uuid");
 Routes.post('/', function (req, res) {
     var s3Bucket = new AWS.S3( { params: {Bucket: settings.AWS_S3_BUCKET_IMAGES} } );
     var buf = new Buffer(req.body.image.replace(/^data:image\/\w+;base64,/, ""),'base64')
-    var file = "temp_" + uuid.v1() + ".jpg";
-    var url = "https://s3.amazonaws.com/"+settings.AWS_S3_BUCKET_IMAGES+"/" + file;
+
+    var file = uuid.v1() + ".jpg";
+    var path = "/";
+    var url = "https://" + settings.AWS_S3_CDN_IMAGES + path + file;
+
     var data = {
         ACL: 'public-read',
         Key: file,

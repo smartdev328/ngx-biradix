@@ -24,6 +24,9 @@
     },
     "AWS_S3_BUCKET_IMAGES": {
       "value": "biradix-nonprod-mediastore"
+    },
+    "AWS_S3_CDN_IMAGES": {
+      "value": "d138dweu4olq2b.cloudfront.net"
     }
   },
 //  "scripts": {
