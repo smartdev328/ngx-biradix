@@ -26,6 +26,7 @@ Routes.post('/', function (req, res) {
         } else {
             return res.status(200).json({
                 image: {
+                    name: req.body.name,
                     url : url,
                     width: req.body.width,
                     height: req.body.height

@@ -804,6 +804,8 @@ define([
                 });
             }
 
+            $scope.gallery_options = {show: false};
+
             $scope.upload = function() {
 
                 var modalInstance = $uibModal.open({

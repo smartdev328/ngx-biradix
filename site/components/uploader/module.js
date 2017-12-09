@@ -298,7 +298,8 @@ angular.module('biradix.global').directive('uploader', function () {
                 $mediaService.uploadImage({
                     image: single_file.image.canvas.toDataURL('image/jpeg'),
                     width: single_file.image.width,
-                    height: single_file.image.height
+                    height: single_file.image.height,
+                    name: single_file.fileName
                 }).then(function (response) {
                     $scope.output.push(response.data.image);
                     $scope.upload();
