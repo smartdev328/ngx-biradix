@@ -726,7 +726,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
         fac.getFullProperty = function(id) {
             return fac.search({limit: 1, permission: ['PropertyManage','CompManage'], _id: id
-                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid floorplans totalUnits community_amenities location_amenities"
+                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid floorplans totalUnits community_amenities location_amenities media"
             });
         }
 

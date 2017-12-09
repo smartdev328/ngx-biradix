@@ -634,6 +634,7 @@ function populateSchema(property, n, all) {
     n.totalUnits = property.totalUnits;
     n.location_amenities = property.location_amenities;
     n.community_amenities = property.community_amenities;
+    n.media = property.media;
 
 }
 
