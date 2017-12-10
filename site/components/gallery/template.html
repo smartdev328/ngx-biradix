@@ -3,4 +3,13 @@
         <div class="upload-close" ng-click="closeView()"><i class="fa fa-times fa-3x"></i></div>
         <img ng-click="next()" class="large" ng-src = "{{images[index].url}}">
     </div>
+
+    <div class="thumbcontainer">
+        <div class="thumbs">
+            <div ng-repeat="image in images"
+                 ng-class="{'thumb': true, 'selected': $index == index }"
+                 style="background: url('{{image.url}}');"
+                 ng-click="select($index)"></div>
+        </div>
+    </div>
 </div>

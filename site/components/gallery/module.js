@@ -17,10 +17,17 @@ angular.module('biradix.global').directive('gallery', function () {
 
             $scope.next = function() {
                 if ($scope.index >= $scope.images.length - 1) {
-                    $scope.index = 0;
+                    $scope.select(0);
                 } else {
-                    $scope.index ++;
+                    $scope.select($scope.index + 1);
                 }
+            }
+
+            $scope.select = function(i) {
+                $scope.index = i;
+
+
+                $(".gallery-overlay .thumbs").animate({scrollLeft: 105 * i}, 800);
             }
         },
         templateUrl: '/components/gallery/template.html?bust=' + version

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BI:Radix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <Style>
+        gallery .overlay {
+            display:none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        gallery .overlay .content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            text-align: center;
+        }
+
+        gallery .overlay .content .large {
+            height: auto;
+            max-height: calc(100% - 110px);
+            max-width: calc(100% - 100px);
+            position: relative;
+            display: block;
+            margin: 0 auto 0 auto;
+            top: 0;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            vertical-align: middle;
+            border:1px solid #ddd;
+        }
+
+
+        gallery .thumbs {
+            width: 450px;
+            overflow: auto;
+            white-space: nowrap;
+            margin:0px auto;
+            -ms-overflow-style: none;
+            overflow: -moz-scrollbars-none;
+            height:105px;
+        }
+
+        gallery .thumbs::-webkit-scrollbar {
+            display: none;
+        }
+
+        gallery .thumbs .thumb {
+            border:1px solid #ccc;
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+        }
+
+        gallery .thumbcontainer {
+            width:100%;position: absolute;bottom:0;z-index: 10000
+        }
+    </Style>
+
+
+</head>
+<body onload='$("gallery .overlay").show();'>
+<gallery>
+    <A href="javascript:void(0)" onclick='$("gallery .overlay").show();'>Show</A>
+    <div class="overlay">
+        <div class="content">
+            <img class="large" src = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg">
+        </div>
+        <div class="thumbcontainer">
+            <div class="thumbs">
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div><div class="cell" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+                <div class="thumb" style="background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg'); background-size: contain"></div>
+            </div>
+        </div>
+    </div>
+</gallery>
+</body>
+</html>
