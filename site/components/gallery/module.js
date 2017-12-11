@@ -9,7 +9,11 @@ angular.module('biradix.global').directive('gallery', function () {
             $(document.body).append($('.gallery-overlay').detach());
         },
         controller: function ($scope, $element,toastr) {
-            $scope.index = 0;
+
+
+            $scope.$watch("options.show", function() {
+                $scope.index = 0;
+            }, true)
 
             $scope.closeView = function() {
                 $scope.options.show = false;
@@ -26,8 +30,13 @@ angular.module('biradix.global').directive('gallery', function () {
             $scope.select = function(i) {
                 $scope.index = i;
 
+                var scroll = 105 * (i - 1.5);
 
-                $(".gallery-overlay .thumbs").animate({scrollLeft: 105 * i}, 800);
+                if (scroll < 0) {
+                    scroll = 0;
+                }
+
+                $(".gallery-overlay .thumbs").animate({scrollLeft: scroll}, 800);
             }
         },
         templateUrl: '/components/gallery/template.html?bust=' + version
