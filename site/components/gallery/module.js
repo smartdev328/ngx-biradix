@@ -12,7 +12,7 @@ angular.module('biradix.global').directive('gallery', function () {
 
 
             $scope.$watch("options.show", function() {
-                $scope.index = 0;
+                $scope.select(0);
             }, true)
 
             $scope.closeView = function() {

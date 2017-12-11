@@ -22,7 +22,7 @@
 
 <div style="text-align: center">
     <button class="btn btn-success" ng-disabled="!canUpload" ng-if="!uploading" ng-click="upload()">Upload<span ng-if="uploads.length > 0"> {{uploads.length}} image<span ng-if="uploads.length > 1">s</span></span></button>
-    <button class="btn btn-success" ng-disabled="true" ng-if="uploading">Uploading: {{uploads.length}} image<span ng-if="uploads.length > 1">s</span> to go</button>
+    <button class="btn btn-success" ng-disabled="true" ng-if="uploading"><i class="fa fa-circle-o-notch fa-spin fa-fw" style="color:white"></i> Uploading: {{uploads.length}} image<span ng-if="uploads.length > 1">s</span> to go</button>
 </div>
 
 <div class="uploader-overlay" ng-show="options.showPreview" ng-click="closeView()">
