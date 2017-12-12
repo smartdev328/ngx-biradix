@@ -36,7 +36,7 @@ angular.module('biradix.global').directive('uploader', function () {
                 })
 
                 function process_one() {
-                    var single_file = files.pop();
+                    var single_file = files.shift();
 
                     if (single_file === undefined) {
                         $("#fileUpload").val('');
@@ -288,7 +288,7 @@ angular.module('biradix.global').directive('uploader', function () {
                 $scope.canDelete = false;
                 $scope.uploading = true;
 
-                var single_file = $scope.uploads.pop();
+                var single_file = $scope.uploads.shift();
 
                 if (!single_file) {
                     $scope.done();
@@ -305,7 +305,7 @@ angular.module('biradix.global').directive('uploader', function () {
                     $scope.upload();
 
                 }, function (err) {
-                    $scope.uploads.push(single_file);
+                    $scope.uploads.unshift(single_file);
                     $scope.canDelete = true;
                     $scope.uploading = false;
 

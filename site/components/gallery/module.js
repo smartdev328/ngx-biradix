@@ -63,6 +63,14 @@ angular.module('biradix.global').directive('gallery', function () {
                 }
             }
 
+            $scope.previous = function() {
+                if ($scope.index == 0) {
+                    $scope.select($scope.images.length - 1);
+                } else {
+                    $scope.select($scope.index - 1);
+                }
+            }
+
             $scope.select = function(i) {
                 if ($scope.canClick == false) {
                     return;
