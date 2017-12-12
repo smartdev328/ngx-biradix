@@ -20,7 +20,7 @@ angular.module('biradix.global').directive('gallery', function () {
                         $scope.attachment = false;
                         window.setTimeout(function() {
                             $scope.canClick = true;
-                        }, 200)
+                        }, 100)
 
                     }
                     if( e.type == "mousemove" && $scope.attachment == true ){
@@ -36,7 +36,7 @@ angular.module('biradix.global').directive('gallery', function () {
                     $scope.attachment = false;
                     window.setTimeout(function() {
                         $scope.canClick = true;
-                    }, 200)
+                    }, 100)
                 });
             }
 
