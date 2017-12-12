@@ -276,6 +276,10 @@ angular.module('biradix.global').directive('uploader', function () {
 
             $scope.view = function(index) {
 
+                if ($scope.uploads[index].uploading) {
+                    return;
+                }
+
                 window.setTimeout(function() {
                     $(document.body).append($('.uploader-overlay').detach());
                 })
@@ -288,12 +292,14 @@ angular.module('biradix.global').directive('uploader', function () {
                 $scope.canDelete = false;
                 $scope.uploading = true;
 
-                var single_file = $scope.uploads.shift();
+                var single_file = $scope.uploads[0];
 
                 if (!single_file) {
                     $scope.done();
                     return
                 }
+
+                single_file.uploading = true;
 
                 $mediaService.uploadImage({
                     image: single_file.image.canvas.toDataURL('image/jpeg'),
@@ -302,10 +308,11 @@ angular.module('biradix.global').directive('uploader', function () {
                     name: single_file.fileName
                 }).then(function (response) {
                     $scope.output.push(response.data.image);
+                    $scope.uploads.shift();
                     $scope.upload();
 
                 }, function (err) {
-                    $scope.uploads.unshift(single_file);
+                    single_file.uploading = false;
                     $scope.canDelete = true;
                     $scope.uploading = false;
 

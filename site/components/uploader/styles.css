@@ -39,6 +39,11 @@ uploader .preview {
     cursor: pointer;
 }
 
+uploader .preview.disabled {
+    cursor: default;
+    opacity: .5;
+}
+
 uploader .preview img {border-radius: 20px}
 
 uploader .preview .delete {
@@ -46,6 +51,12 @@ uploader .preview .delete {
     top:10px;
     right:10px;
     cursor: pointer;
+}
+
+uploader .preview .loading {
+    position: absolute;
+    top:34px;
+    left:21px;
 }
 
 uploader .preview .fa {

@@ -8,10 +8,11 @@
 
 <div class="gallery">
     <div>
-        <div ng-repeat="upload in uploads" class="preview">
+        <div ng-repeat="upload in uploads" ng-class="{'preview': true, 'disabled' : upload.uploading}">
         <img ng-show="upload.loaded" ng-src="{{upload.thumb}}" ng-click="view($index)">
 
-        <div ng-show="upload.loaded && canDelete" class="delete" ng-click="remove($index)"><i class="fa fa-trash"></i></div>
+        <div ng-show="upload.loaded && canDelete && !upload.uploading" class="delete" ng-click="remove($index)"><i class="fa fa-trash"></i></div>
+            <div ng-show="upload.uploading" class="loading"><i class="fa fa-circle-o-notch fa-spin fa-fw fa-4x"></i></div>
 
         <div ng-show="!upload.loaded">
             <img src="/images/squares.gif" style="width:120px">
