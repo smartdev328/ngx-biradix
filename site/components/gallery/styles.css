@@ -95,7 +95,7 @@
 .gallery-overlay .content .gallery-right {
     position: fixed;
     right: calc(50% - 370px);
-    top: calc(50% - 50px);
+    top: calc(50% - 70px);
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     z-index: 10000 !important;
@@ -108,7 +108,7 @@
     cursor: pointer;
     position: fixed;
     left: calc(50% - 370px);
-    top: calc(50% - 50px);
+    top: calc(50% - 70px);
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     z-index: 10000 !important;
