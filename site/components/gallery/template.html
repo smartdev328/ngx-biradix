@@ -3,7 +3,7 @@
         <div class="gallery-close" ng-click="closeView()"><i class="fa fa-times fa-3x"></i></div>
         <div class="gallery-left" ng-click="previous()"><i class="fa fa-angle-left fa-4x"></i></div>
         <div class="gallery-right" ng-click="next()"><i class="fa fa-angle-right fa-4x"></i></div>
-        <img class="large" ng-src = "{{images[index].url}}">
+        <img class="large" ng-src = "{{images[index].url}}" ng-click="imageClick($event)">
     </div>
 
     <div class="thumbcontainer">

@@ -85,6 +85,20 @@ angular.module('biradix.global').directive('gallery', function () {
 
                 $(".gallery-overlay .thumbs").animate({scrollLeft: scroll}, 800);
             }
+
+            $scope.imageClick = function ($event) {
+
+                var clickX = $event.clientX;
+                var centerX = parseInt($event.target.offsetLeft + $event.target.offsetWidth / 2);
+
+                var dir = 'Next'
+                if (clickX < centerX) {
+                    $scope.previous();
+                } else {
+                    $scope.next();
+                }
+
+            }
         },
         templateUrl: '/components/gallery/template.html?bust=' + version
     }
