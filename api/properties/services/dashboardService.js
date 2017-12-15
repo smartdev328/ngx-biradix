@@ -28,7 +28,7 @@ module.exports = {
                 }
 
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView'], _id: subjectId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey media"
                     , skipAmenities: true
                 }, function(err, property) {
                     localCacheService.set(key, property[0], 2)
@@ -37,7 +37,7 @@ module.exports = {
             },
             comp: function (callbackp) {
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView','PropertyManage','CompManage'], _id: compId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey media"
                 }, function(err, property, lookups) {
                     if (err || !property || property.length == 0) {
                         return callbackp('Unable to find property')
