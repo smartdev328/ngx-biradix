@@ -159,12 +159,12 @@
     }
 
     .gallery-overlay .content .gallery-left {
-        top: 50%;
+        top: calc(50% + 25px);
         left: 15px;
     }
 
     .gallery-overlay .content .gallery-right {
-        top: 50%;
+        top: calc(50% + 25px);
         right:15px;
     }
 
