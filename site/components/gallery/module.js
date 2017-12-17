@@ -84,6 +84,8 @@ angular.module('biradix.global').directive('gallery', function () {
                     scroll = 0;
                 }
 
+                $scope.options = $scope.options || {};
+
                 $scope.options.gallery = false;
 
                 $(".gallery-overlay .thumbs").animate({scrollLeft: scroll}, 800);
