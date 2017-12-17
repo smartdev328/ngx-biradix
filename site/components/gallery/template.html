@@ -1,12 +1,21 @@
 <div class="gallery-overlay" ng-show="options.show">
-    <div class="content">
-        <div class="gallery-close" ng-click="closeView()"><i class="fa fa-times fa-3x"></i></div>
+    <hr>
+    <div class="gallery-gallery" ng-click="options.gallery = true" ng-if="!options.gallery">
+        <i class="fa fa-th fa-2x" style="float: left"></i>
+        <div style="float:left;margin-left:10px">Gallery View</div>
+    </div>
+    <div class="gallery-single" ng-click="options.gallery = false" ng-if="options.gallery">
+        <i class="fa fa-photo fa-2x" style="float: left"></i>
+        <div style="float:left;margin-left:10px">Single View</div>
+    </div>
+    <div class="gallery-close" ng-click="closeView()"><i class="fa fa-times fa-2x"></i></div>
+    <div class="content" ng-if="!options.gallery">
         <div class="gallery-left" ng-click="previous()"><i class="fa fa-angle-left fa-4x"></i></div>
         <div class="gallery-right" ng-click="next()"><i class="fa fa-angle-right fa-4x"></i></div>
         <img class="large" ng-src = "{{images[index].url}}" ng-click="imageClick($event)">
     </div>
 
-    <div class="thumbcontainer">
+    <div class="thumbcontainer" ng-if="!options.gallery">
         <div class="thumbs">
             <div ng-repeat="image in images"
                  ng-class="{'thumb': true, 'selected': $index == index }"
@@ -14,4 +23,12 @@
                  ng-click="select($index)"></div>
         </div>
     </div>
+
+
+    <div class="gallerycontainer" ng-if="options.gallery">
+        <div ng-repeat="image in images"
+             ng-class="{'thumb': true, 'selected': $index == index }"
+             style="background: url('{{image.url}}');"
+             ng-click="select($index)"></div>
+   </div>
 </div>

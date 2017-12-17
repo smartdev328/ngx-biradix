@@ -15,10 +15,10 @@
 
 .gallery-overlay .content {
     position: fixed;
-    top: 0;
+    top: 25px;
     left: 0;
     width: 100%;
-    height: calc(100% - 150px);
+    height: calc(100% - 175px);
     z-index: 9999;
     text-align: center;
 }
@@ -58,7 +58,9 @@
     display: none;
 }
 
-.gallery-overlay .thumbs .thumb {
+.gallery-overlay .thumbs .thumb,
+.gallery-overlay .gallerycontainer .thumb
+{
     border:1px solid #ccc;
     display: inline-block;
     width: 150px;
@@ -69,8 +71,8 @@
     cursor:pointer
 }
 
-.gallery-overlay .thumbs .thumb.selected {
-    border-color: #1E90FF
+.gallery-overlay .selected {
+    border-color: #1E90FF !important;
 }
 
 .gallery-overlay .thumbcontainer {
@@ -85,11 +87,22 @@
 
 }
 
-.gallery-overlay .content .gallery-close .fa {
+.gallery-overlay .gallery-close{
     position: fixed;
-    right: 0;
-    padding: 20px;
+    right: 10px;
+    top: 3px;
     z-index: 10000 !important;
+
+}
+
+.gallery-overlay .gallery-gallery,
+.gallery-overlay .gallery-single {
+    position: fixed;
+    left: 10px;
+    top: 3px;
+    z-index: 10000 !important;
+    color:white;
+    cursor:pointer;
 
 }
 
@@ -116,6 +129,18 @@
     background-color: rgba(0,0,0,0.6);
     padding: 5px 10px;
     border-radius: 5px;
+}
+
+.gallery-overlay .gallerycontainer {
+    height:100%;
+    max-width:640px;
+    overflow: auto;
+    margin:0px auto;
+    text-align: left;
+}
+
+.gallery-overlay HR{
+    margin-top: 25px;
 }
 
 @media screen and (max-width:767px){

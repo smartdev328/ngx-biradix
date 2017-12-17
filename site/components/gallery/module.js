@@ -8,6 +8,7 @@ angular.module('biradix.global').directive('gallery', function () {
         link: function($scope) {
             $scope.attachment = false;
             $scope.canClick = true;
+            $scope.options.gallery = false;
 
             $.fn.attachDragger = function(){
                 var lastPosition, position, difference;
@@ -82,6 +83,8 @@ angular.module('biradix.global').directive('gallery', function () {
                 if (scroll < 0) {
                     scroll = 0;
                 }
+
+                $scope.options.gallery = false;
 
                 $(".gallery-overlay .thumbs").animate({scrollLeft: scroll}, 800);
             }
