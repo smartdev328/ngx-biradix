@@ -168,5 +168,9 @@
         right:15px;
     }
 
+    .gallery-overlay .gallerycontainer {
+        width: 310px;
+    }
+
 }
 
