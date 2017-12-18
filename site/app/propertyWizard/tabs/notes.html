@@ -28,9 +28,10 @@
 <b class="panel-heading">Property Pictures</b><Br>
 <div class="row">
     <div class="col-sm-12" style="text-align: center">
-        <a href ng-click="gallery_options.show = true"><img ng-src="{{property.media[0].url}}" style="max-height:400px;max-width:400px;border:1px solid #aaa" ng-if="property.media && property.media.length > 0"></a><Br>
+        <a href ng-click="gallery_options.admin = false; gallery_options.show = true"><img ng-src="{{property.media[0].url}}" style="max-height:400px;max-width:400px;border:1px solid #aaa" ng-if="property.media && property.media.length > 0"></a><Br>
         <Br>
-        <a href ng-click="upload()">Click here to upload<span ng-if="property.media.length > 0"> additional</span> pictures</a><Br>
+        <a href ng-click="upload()" class="btn btn-warning">Upload<span ng-if="property.media.length > 0"> additional</span> pictures</a>
+        <a href ng-click="gallery_options.admin = true; gallery_options.show = true" class="btn btn-danger" ng-if="property.media.length > 0">Edit pictures</a><Br>
         <gallery options="gallery_options" images="property.media"></gallery>
     </div>
 </div>

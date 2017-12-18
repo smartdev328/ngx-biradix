@@ -1,8 +1,8 @@
 <div class="file-input-wrapper">
-    <button class="btn btn-primary" ng-disabled="!canUpload && uploads.length > 0">Add image file(s) to upload</button>
+    <button class="btn btn-primary" ng-disabled="(!canUpload && uploads.length > 0) || uploading">Add image file(s) to upload</button>
     <input type='file' id="fileUpload" multiple accept=".jpg, .jpeg, .png, .gif"
            onchange="angular.element(this).scope().readImage(this)"
-           ng-disabled="!canUpload && uploads.length > 0"
+           ng-disabled="(!canUpload && uploads.length > 0) || uploading"
     />
 </div>
 
@@ -12,7 +12,7 @@
         <img ng-show="upload.loaded" ng-src="{{upload.thumb}}" ng-click="view($index)">
 
         <div ng-show="upload.loaded && canDelete && !upload.uploading" class="delete" ng-click="remove($index)"><i class="fa fa-trash"></i></div>
-            <div ng-show="upload.uploading" class="loading"><i class="fa fa-circle-o-notch fa-spin fa-fw fa-4x"></i></div>
+        <div ng-show="upload.uploading" class="loading"><i class="fa fa-circle-o-notch fa-spin fa-fw fa-4x"></i></div>
 
         <div ng-show="!upload.loaded">
             <img src="/images/squares.gif" style="width:120px">

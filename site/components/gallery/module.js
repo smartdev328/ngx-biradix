@@ -86,7 +86,12 @@ angular.module('biradix.global').directive('gallery', function () {
 
                 $scope.options = $scope.options || {};
 
-                $scope.options.gallery = false;
+                if (!$scope.options.admin) {
+                    $scope.options.gallery = false;
+                }
+                else {
+                    $scope.options.gallery = true;
+                }
 
                 $(".gallery-overlay .thumbs").animate({scrollLeft: scroll}, 800);
             }
@@ -103,6 +108,16 @@ angular.module('biradix.global').directive('gallery', function () {
                     $scope.next();
                 }
 
+            }
+
+            $scope.remove = function(i) {
+                $scope.images.splice(i,1);
+
+                if ($scope.index > $scope.images.length - 1 ) {
+                    $scope.index = $scope.images.length - 1;
+                }
+
+                $scope.select($scope.index);
             }
         },
         templateUrl: '/components/gallery/template.html?bust=' + version

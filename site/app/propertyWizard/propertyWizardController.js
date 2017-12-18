@@ -804,7 +804,7 @@ define([
                 });
             }
 
-            $scope.gallery_options = {show: false};
+            $scope.gallery_options = {show: false, allowAdmin : true};
 
             $scope.upload = function() {
 
