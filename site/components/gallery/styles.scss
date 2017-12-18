@@ -1,3 +1,6 @@
+$highlight-color : #1E90FF;
+$icon-size: 30;
+
 .gallery-overlay {
     position: fixed;
     top: 0;
@@ -79,7 +82,7 @@
 }
 
 .gallery-overlay .selected {
-    border-color: #1E90FF !important;
+    border-color: $highlight-color !important;
 }
 
 .gallery-overlay .thumbcontainer {
@@ -92,6 +95,11 @@
     color: white !important;;
     cursor: pointer !important;
 
+}
+
+.gallery-overlay .gallery-toolbar .fa{
+    font-size: $icon-size + px;
+    padding-top:5px;
 }
 
 .gallery-overlay .gallery-toolbar{
@@ -114,6 +122,13 @@
     font-size:17px;
     margin-left:10px
 }
+
+.gallery-overlay .gallery-toolbar .button.admin,
+.gallery-overlay .gallery-toolbar .button.admin .fa
+{
+    color: $highlight-color !important;
+}
+
 
 .gallery-overlay .content .gallery-right {
     position: fixed;
@@ -182,4 +197,3 @@
     }
 
 }
-

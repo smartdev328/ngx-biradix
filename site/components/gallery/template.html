@@ -1,7 +1,7 @@
 <div class="gallery-overlay" ng-show="options.show">
     <hr>
     <div class="gallery-toolbar">
-        <div class="gallery-gallery button" ng-click="options.admin = true;options.gallery = true" ng-if="options.allowAdmin">
+        <div ng-class="{'gallery-gallery' : true, 'button' : true, 'admin' : options.admin}" ng-click="options.admin = !options.admin;options.gallery = true" ng-if="options.allowAdmin">
             <i class="fa fa-wrench fa-3x" style="float: left"></i>
             <div class="button-text">Admin</div>
         </div>

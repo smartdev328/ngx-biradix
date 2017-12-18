@@ -2,7 +2,10 @@ var concat = require('gulp-concat');
 var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var hashsum = require("gulp-hashsum")
+var sass = require('gulp-sass');
+var merge = require('merge-stream');
 var gulp = require('gulp');
+
 
 gulp.task('vendorsjs', function() {
     return gulp.src([
@@ -90,8 +93,17 @@ gulp.task('globaljs', function() {
         .pipe(hashsum({dest: "./dist",json:true, filename: 'globaljs-hash.json'}));
 });
 
-gulp.task('globalcss', function() {
+gulp.task('sass', function () {
     return gulp.src([
+        './site/components/gallery/styles.scss'
+        ])
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('globalcss', function() {
+
+    var cssStream = gulp.src([
         , './site/app/global.css'
         , './site/app/login/loggedout.css'
         , './site/css/navs.css'
@@ -100,8 +112,13 @@ gulp.task('globalcss', function() {
         , './site/components/filterlist/filterlist.css'
         , './site/components/reports/reporting.css'
         , './site/components/uploader/styles.css'
-        , './site/components/gallery/styles.css'
-    ])
+    ]);;
+
+    var sassStream = gulp.src([
+        './site/components/gallery/styles.scss'
+    ]).pipe(sass().on('error', sass.logError));
+
+    return merge(cssStream,sassStream)
         .pipe(concat('global.css'))
         .pipe(gulp.dest('./dist/'))
         .pipe(hashsum({dest: "./dist",json:true, filename: 'globalcss-hash.json'}));
