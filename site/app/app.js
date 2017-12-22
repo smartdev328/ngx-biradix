@@ -50,10 +50,12 @@ define([], function () {
         , 'ui.bootstrap'
         , 'toastr'
         , 'ngCookies'
+        , 'ngAnimate'
         , 'ngProgress'
         , 'ngSanitize'
         , 'biradix.global'
         , 'AxelSoft'
+        , 'ngDragDrop'
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {

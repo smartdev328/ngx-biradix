@@ -35,8 +35,15 @@
     <div class="gallerycontainer" ng-if="options.gallery">
         <div ng-repeat="image in images"
              ng-class="{'thumb': true, 'selected': $index == index, 'admin' : options.admin }"
-             style="background: url('{{image.url}}');"
-             ng-click="select($index)">
+             ng-style="{'background-image':'url({{image.url}})'}"
+             ng-click="select($index)"
+             data-drop="options.admin"
+             data-drag="options.admin"
+             ng-model="images"
+             jqyoui-droppable="{index: {{$index}}}"
+             jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}"
+             data-jqyoui-options="{revert: 'invalid'}"
+             data-direction="{{image.jqyouiDirection}}">
 
             <i class="fa fa-trash delete" ng-show="options.admin" ng-click="remove($index)"></i>
         </div>

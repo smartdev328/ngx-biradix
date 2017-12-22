@@ -10,12 +10,15 @@ var gulp = require('gulp');
 gulp.task('vendorsjs', function() {
     return gulp.src([
           './bower_components/jquery/dist/jquery.min.js'
+        , './bower_components/jquery-ui/jquery-ui.min.js'
         , './bower_components/bootstrap/dist/js/bootstrap.min.js'
         , './bower_components/angular/angular.min.js'
         , './bower_components/angular-cookies/angular-cookies.min.js'
+        , './bower_components/angular-animate/angular-animate.min.js'
         , './bower_components/angular-sanitize/angular-sanitize.min.js'
         , './bower_components/angular-ui-router/release/angular-ui-router.min.js'
         , './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
+        , './bower_components/angular-dragdrop/src/angular-dragdrop.min.js'
         , './bower_components/lodash/lodash.min.js'
         , './bower_components/moment/min/moment.min.js'
         , './bower_components/highcharts-release/highcharts.js'
@@ -23,6 +26,7 @@ gulp.task('vendorsjs', function() {
         , './site/components/angular-toastr/angular-toastr.tpls.min.js'
         , './site/components/daterangepicker/daterangepicker.js'
         , './site/components/select/customSelect.js'
+        , './site/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js'
 
     ])
         .pipe(concat('vendors.js'))

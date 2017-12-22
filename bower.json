@@ -12,17 +12,20 @@
   "license": "MIT",
   "dependencies": {
     "angular": "1.5.9",
+    "angular-animate": "1.5.9",
     "angular-bootstrap": "2.4.0",
     "angular-cookies": "1.5.9",
+    "angular-dragdrop": "~1.0.13",
     "angular-sanitize": "1.5.9",
     "angular-ui-router": "~0.2.15",
+    "async": "1.5.2",
     "bootstrap": "3.3.7",
     "font-awesome": "4.4.0",
     "highcharts-release": "^6.0.3",
     "jquery": "2.1.4",
+    "jquery-ui": "~1.12.1",
     "lodash": "3.10.0",
-    "moment": "2.18.1",
-    "async": "1.5.2"
+    "moment": "2.18.1"
   },
   "resolutions": {
     "angular": "1.5.9"

@@ -78,7 +78,8 @@ $icon-size: 30;
     margin-top:5px;
     text-align:right;
     padding:5px;
-    cursor:default;
+    cursor: move !important;
+    position: relative;
 }
 
 .gallery-overlay .selected {

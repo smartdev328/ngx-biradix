@@ -8,6 +8,7 @@ angular.module('biradix.global').directive('gallery', function () {
         link: function($scope) {
             $scope.attachment = false;
             $scope.canClick = true;
+            $scope.options = $scope.options || {};
             $scope.options.gallery = false;
 
             $.fn.attachDragger = function(){
