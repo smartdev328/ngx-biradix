@@ -65,7 +65,8 @@ $icon-size: 30;
 .gallery-overlay .gallerycontainer .thumb
 {
     border:1px solid #ccc;
-    display: inline-block;
+    display: block;
+    float:left;
     width: 150px;
     height: 150px;
     background-size: cover !important;
@@ -197,4 +198,8 @@ $icon-size: 30;
         width: 310px;
     }
 
+}
+
+.ui-draggable-dragging {
+    position:absolute !important;
 }
