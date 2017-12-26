@@ -1,19 +1,32 @@
 <div class="gallery-overlay" ng-show="options.show">
     <hr>
     <div class="gallery-toolbar">
-        <div ng-class="{'gallery-gallery' : true, 'button' : true, 'admin' : options.admin}" ng-click="options.admin = !options.admin;options.gallery = true" ng-if="options.allowAdmin">
+        <div ng-class="{'gallery-gallery' : true, 'button' : true, 'admin' : options.admin}" ng-click="options.admin = !options.admin;options.gallery = true" ng-if="options.allowAdmin && !options.admin">
             <i class="fa fa-wrench fa-3x" style="float: left"></i>
-            <div class="button-text">Admin</div>
+            <div class="button-text">Edit</div>
         </div>
-        <div class="gallery-gallery button" ng-click="options.gallery = true" ng-if="!options.gallery">
+        <div class="gallery-gallery button" ng-click="options.gallery = true" ng-if="!options.gallery && !options.admin">
             <i class="fa fa-th-large fa-3x" style="float: left"></i>
             <div class="button-text">Gallery View</div>
         </div>
-        <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.gallery">
+        <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.gallery && !options.admin">
             <i class="fa fa-photo fa-3x" style="float: left"></i>
             <div class="button-text">Single View</div>
         </div>
-        <div class="gallery-close button" ng-click="closeView()"><i class="fa fa-times fa-3x"></i></div>
+        <div class="gallery-single button" ng-click="closeView()" ng-if="!options.admin">
+            <i class="fa fa-times fa-3x" style="float: left"></i>
+            <div class="button-text">Close</div>
+        </div>
+
+        <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.admin">
+            <i class="fa fa-save fa-3x" style="float: left"></i>
+            <div class="button-text">Save</div>
+        </div>
+
+        <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.admin">
+            <i class="fa fa-times fa-3x" style="float: left"></i>
+            <div class="button-text">Cancel</div>
+        </div>
 
     </div>
     <div class="content" ng-if="!options.gallery">
@@ -32,16 +45,24 @@
     </div>
 
 
-    <ul class="gallerycontainer" ng-if="options.gallery" ui-sortable="sortableOptions">
+    <ul class="gallerycontainer" ng-if="options.gallery && options.admin" ui-sortable="sortableOptions" ng-model="images">
         <li ng-repeat="image in images"
-             ng-class="{'thumb': true, 'selected': $index == index, 'admin' : options.admin }"
+             ng-class="{'thumb': true, 'admin' : true }"
              ng-style="{'background-image':'url({{image.url}})'}"
-             ng-click="select($index)"
-
-             ng-model="images"
             >
 
             <i class="fa fa-trash delete" ng-show="options.admin" ng-click="remove($index)"></i>
         </li>
    </ul>
+
+    <ul class="gallerycontainer" ng-if="options.gallery && !options.admin">
+        <li ng-repeat="image in images"
+            ng-class="{'thumb': true, 'selected': $index == index, 'nonadmin' : true}"
+            ng-style="{'background-image':'url({{image.url}})'}"
+            ng-click="select($index)"
+        >
+
+
+        </li>
+    </ul>
 </div>

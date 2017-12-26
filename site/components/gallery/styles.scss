@@ -79,8 +79,31 @@ $icon-size: 30;
     margin-top:5px;
     text-align:right;
     padding:5px;
-    cursor: move !important;
+    //cursor: move !important;
+
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+    cursor: url('/images/draggable.png');
+
     position: relative;
+}
+
+.gallery-overlay .gallerycontainer .thumb.admin:hover {
+    box-shadow: 0px 0px 11px 1px white;
+}
+.gallery-overlay .gallerycontainer .thumb.admin:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+    cursor: url('/images/grab.png');
+    box-shadow: inherit !important;
+}
+
+.gallery-overlay .gallerycontainer .thumb.nonadmin {
+    margin-top:5px;
+    cursor: pointer !important;
 }
 
 .gallery-overlay .selected {
@@ -163,6 +186,7 @@ $icon-size: 30;
     overflow: auto;
     margin:0px auto;
     text-align: left;
+    padding: 5px !important;
 }
 
 .gallery-overlay HR{
