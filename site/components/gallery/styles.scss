@@ -71,12 +71,12 @@ $icon-size: 30;
     height: 150px;
     background-size: cover !important;
     background-position: center !important;
-    margin-right:5px;
+    margin-right:10px;
     cursor:pointer
 }
 
 .gallery-overlay .gallerycontainer .thumb.admin {
-    margin-top:5px;
+    margin-top:10px;
     text-align:right;
     padding:5px;
     //cursor: move !important;
@@ -86,23 +86,22 @@ $icon-size: 30;
     cursor: -moz-grab;
     cursor: -webkit-grab;
     cursor: url('/images/draggable.png');
-
     position: relative;
 }
 
 .gallery-overlay .gallerycontainer .thumb.admin:hover {
-    box-shadow: 0px 0px 11px 1px white;
+    box-shadow: 0px 0px 11px 1px $highlight-color;
 }
 .gallery-overlay .gallerycontainer .thumb.admin:active {
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
     cursor: url('/images/grab.png');
-    box-shadow: inherit !important;
+    box-shadow: 0px 0px 11px 1px $highlight-color;
 }
 
 .gallery-overlay .gallerycontainer .thumb.nonadmin {
-    margin-top:5px;
+    margin-top:10px;
     cursor: pointer !important;
 }
 
@@ -182,11 +181,11 @@ $icon-size: 30;
 
 .gallery-overlay .gallerycontainer {
     height:100%;
-    max-width:640px;
+    max-width:660px;
     overflow: auto;
     margin:0px auto;
     text-align: left;
-    padding: 5px !important;
+    padding: 10px !important;
 }
 
 .gallery-overlay HR{
@@ -219,7 +218,7 @@ $icon-size: 30;
     }
 
     .gallery-overlay .gallerycontainer {
-        width: 310px;
+        width: 340px;
     }
 
 }

@@ -49,21 +49,25 @@ angular.module('biradix.global').directive('gallery', function () {
         controller: function ($scope, $element,toastr) {
 
 
-            // $scope.sortableOptions = {
-            //     update: function (e, ui) {
-            //         var logEntry = $scope.images.map(function (i) {
-            //             return i.value;
-            //         }).join(', ');
-            //         $scope.sortingLog.push('Update: ' + logEntry);
-            //     },
-            //     stop: function (e, ui) {
-            //         // this callback has the changed model
-            //         var logEntry = $scope.images.map(function (i) {
-            //             return i.value;
-            //         }).join(', ');
-            //         $scope.sortingLog.push('Stop: ' + logEntry);
-            //     }
-            // };
+            $scope.sortableOptions = {
+                tolerance: "pointer",
+                // sort: function( event, ui ) {
+                //     console.log(ui);
+                // }
+                // update: function (e, ui) {
+                //     var logEntry = $scope.images.map(function (i) {
+                //         return i.value;
+                //     }).join(', ');
+                //     $scope.sortingLog.push('Update: ' + logEntry);
+                // },
+                // stop: function (e, ui) {
+                //     // this callback has the changed model
+                //     var logEntry = $scope.images.map(function (i) {
+                //         return i.value;
+                //     }).join(', ');
+                //     $scope.sortingLog.push('Stop: ' + logEntry);
+                // }
+            };
 
             $scope.$watch("options.show", function() {
                 $scope.select(0);
