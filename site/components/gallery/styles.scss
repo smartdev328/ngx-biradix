@@ -103,7 +103,9 @@ $icon-size: 30;
     position: relative;
 }
 
-.gallery-overlay .gallerycontainer .thumb.admin:hover {
+.gallery-overlay .gallerycontainer .thumb.admin:hover,
+.gallery-overlay .gallerycontainer .thumb.admin:active,
+.gallery-overlay .gallerycontainer .thumb.admin:focus {
     box-shadow: 0px 0px 11px 1px $highlight-color;
 }
 .gallery-overlay .gallerycontainer .thumb.admin:active {
@@ -211,6 +213,13 @@ $icon-size: 30;
 
 .gallery-overlay HR{
     margin-top: 50px;
+}
+
+
+.gallerycontainer .fa.default {
+    float:left;
+    padding-top:5px;
+    cursor: default !important;
 }
 
 @media screen and (max-width:767px){

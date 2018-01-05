@@ -8,6 +8,7 @@ define([
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
+        $scope.r = Math.round(Math.random()*1);
 
        $scope.defaultShow = function() {
             $scope.settings.show = $reportingService.getDefaultProfileFloorplanColumns($(window).width());

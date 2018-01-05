@@ -2,7 +2,7 @@
     <hr>
     <div class="gallery-toolbar">
         <div ng-class="{'gallery-gallery' : true, 'button' : true, 'admin' : options.admin}" ng-click="options.admin = !options.admin;options.gallery = true" ng-if="options.allowAdmin && !options.admin">
-            <i class="fa fa-wrench fa-3x" style="float: left"></i>
+            <i class="fa fa-pencil fa-3x" style="float: left"></i>
             <div class="button-text">Edit</div>
         </div>
         <div class="gallery-gallery button" ng-click="options.gallery = true" ng-if="!options.gallery && !options.admin">
@@ -19,8 +19,8 @@
         </div>
 
         <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.admin">
-            <i class="fa fa-save fa-3x" style="float: left"></i>
-            <div class="button-text">Save</div>
+            <i class="fa fa-check fa-3x" style="float: left"></i>
+            <div class="button-text">Done</div>
         </div>
 
         <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.admin">
@@ -53,7 +53,11 @@
              ng-class="{'thumb': true, 'admin' : true }"
              ng-style="{'background-image':'url({{image.url}})'}"
             >
-
+            <i class="fa fa-photo default" ng-show="options.admin" ng-if="$index == 0"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               uib-popover="The default profile picture"
+            ></i>
             <i class="fa fa-trash delete" ng-show="options.admin" ng-click="remove($index)"></i>
         </li>
    </ul>
