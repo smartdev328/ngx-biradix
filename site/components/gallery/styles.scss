@@ -106,7 +106,7 @@ $icon-size: 30;
 .gallery-overlay .gallerycontainer .thumb.admin:hover,
 .gallery-overlay .gallerycontainer .thumb.admin:active,
 .gallery-overlay .gallerycontainer .thumb.admin:focus {
-    box-shadow: 0px 0px 11px 1px $highlight-color;
+    box-shadow: 0px 0px 11px 1px $highlight-color !important;
 }
 .gallery-overlay .gallerycontainer .thumb.admin:active {
     cursor: grabbing;
