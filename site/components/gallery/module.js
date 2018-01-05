@@ -44,7 +44,9 @@ angular.module('biradix.global').directive('gallery', function () {
 
             $(document.body).append($('.gallery-overlay').detach());
 
-            $(".gallery-overlay .thumbs").attachDragger();
+            window.setTimeout(function() {
+                $(".gallery-overlay .thumbcontainer .thumbs").attachDragger();
+            },100);
         },
         controller: function ($scope, $element,toastr) {
 

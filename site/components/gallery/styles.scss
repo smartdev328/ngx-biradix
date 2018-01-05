@@ -61,6 +61,20 @@ $icon-size: 30;
     display: none;
 }
 
+.gallery-overlay .thumbcontainer .thumb {
+    float: none !important;
+    display: inline-block !important;
+}
+
+.gallery_tooltip {
+    position: absolute;
+    top: 53px;
+    color: $highlight-color;
+    font-size: 13px;
+    right: 0;
+    cursor: default !important;
+}
+
 .gallery-overlay .thumbs .thumb,
 .gallery-overlay .gallerycontainer .thumb
 {
@@ -116,9 +130,16 @@ $icon-size: 30;
 .gallery-overlay .fa {
     text-shadow: 3px 3px 16px #272634 !important;;
     z-index: 10000 !important;
-    color: white !important;;
-    cursor: pointer !important;
+    color: white;
+    cursor: pointer;
 
+}
+
+.gallery_tooltip .fa{
+    font-size: 14px !important;
+    color: yellow !important;;
+    padding-top:inherit !important;
+    cursor: default !important;
 }
 
 .gallery-overlay .gallery-toolbar .fa{
@@ -181,7 +202,7 @@ $icon-size: 30;
 
 .gallery-overlay .gallerycontainer {
     height:100%;
-    max-width:660px;
+    max-width:677px;
     overflow: auto;
     margin:0px auto;
     text-align: left;
@@ -218,7 +239,7 @@ $icon-size: 30;
     }
 
     .gallery-overlay .gallerycontainer {
-        width: 340px;
+        width: 357px;
     }
 
 }
