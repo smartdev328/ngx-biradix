@@ -48,7 +48,7 @@ angular.module('biradix.global').directive('gallery', function () {
                 $(".gallery-overlay .thumbcontainer .thumbs").attachDragger();
             },100);
         },
-        controller: function ($scope, $element,toastr) {
+        controller: function ($scope, $element,toastr,$dialog) {
 
 
             $scope.sortableOptions = {
@@ -79,6 +79,14 @@ angular.module('biradix.global').directive('gallery', function () {
 
                 if (oldvalue === true && newvalue == false) {
                     $scope.select($scope.index);
+                }
+            }, true)
+
+            $scope.$watch("options.admin", function(newvalue, oldvalue) {
+
+                if (oldvalue === false && newvalue == true) {
+                    $scope.copy = _.cloneDeep($scope.images);
+                    $scope.copyIndex = $scope.index;
                 }
             }, true)
 
@@ -164,13 +172,47 @@ angular.module('biradix.global').directive('gallery', function () {
             }
 
             $scope.remove = function(i) {
-                $scope.images.splice(i,1);
+                $scope.copy.splice(i,1);
 
-                if ($scope.index > $scope.images.length - 1 ) {
-                    $scope.index = $scope.images.length - 1;
+                if ($scope.copyIndex > $scope.copy.length - 1 ) {
+                    $scope.copyIndex = $scope.copy.length - 1;
                 }
 
-                $scope.select($scope.index);
+                // $scope.select($scope.copyIndex);
+            }
+
+            $scope.save = function() {
+                var changed = JSON.stringify($scope.copy) != JSON.stringify($scope.images);
+                if (!changed) {
+                    $scope.options.gallery = false;
+                    $scope.options.admin = false
+                }
+                else {
+                    $dialog.confirm('You have made changes to your pictures. Are you sure you want to apply them?<Br><Br>Note: Your changes will not be saved until you save your property.', function () {
+                        $scope.images = _.cloneDeep($scope.copy);
+                        $scope.index = $scope.copyIndex;
+                        $scope.select($scope.index);
+                        $scope.options.gallery = false;
+                        $scope.options.admin = false
+                    }, function () {
+                    });
+                }
+            }
+
+            $scope.cancel = function() {
+
+                var changed = JSON.stringify($scope.copy) != JSON.stringify($scope.images);
+                if (!changed) {
+                    $scope.options.gallery = false;
+                    $scope.options.admin = false
+                }
+                else {
+                    $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                        $scope.options.gallery = false;
+                        $scope.options.admin = false
+                    }, function () {
+                    });
+                }
             }
         },
         templateUrl: '/components/gallery/template.html?bust=' + version
