@@ -3,6 +3,12 @@
         padding: 2px 6px 2px 0px
     }
 </style>
+<div ng-if="property.media.length > 0" style="margin-bottom:20px;text-align:center">
+    <img ng-click="gallery_options.show = true" ng-src="{{property.media[0].url}}"
+         ng-style="{margin:'0px auto', cursor:'pointer', border: '1px solid #aaa', 'max-width' : '100%', 'max-height' : '300px'}"
+    >
+    <gallery options="gallery_options" images="property.media"></gallery>
+</div>
 <address style="margin-bottom:5px" ng-if="show.address">
     {{property.address}}<br>
     {{property.city}}, {{property.state}}  {{property.zip}} <br>

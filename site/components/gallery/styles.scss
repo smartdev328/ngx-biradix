@@ -1,5 +1,5 @@
 $highlight-color : #1E90FF;
-$icon-size: 30;
+$icon-size: 20;
 
 .gallery-overlay {
     position: fixed;
@@ -146,14 +146,13 @@ $icon-size: 30;
 
 .gallery-overlay .gallery-toolbar .fa{
     font-size: $icon-size + px;
-    padding-top:5px;
+    padding-top:10px;
 }
 
 .gallery-overlay .gallery-toolbar{
     position: fixed;
     right: 10px;
     top: 3px;
-    color:white;
     cursor:pointer;
 }
 
@@ -167,7 +166,8 @@ $icon-size: 30;
     float: left;
     padding-top: 9px;
     font-size:17px;
-    margin-left:10px
+    margin-left:10px;
+    color:white;
 }
 
 .gallery-overlay .gallery-toolbar .button.admin,
@@ -229,7 +229,9 @@ $icon-size: 30;
     }
 
     .gallery-overlay .content .large {
-        max-width: calc(100% - 50px)
+        max-width: calc(100% - 50px);
+        max-height: calc(100% - 130px);
+        top: calc(50% - 50px)
     }
 
     .gallery-overlay .content {
@@ -238,12 +240,12 @@ $icon-size: 30;
     }
 
     .gallery-overlay .content .gallery-left {
-        top: calc(50% + 30px);
+        top: calc(50% - 15px);
         left: 15px;
     }
 
     .gallery-overlay .content .gallery-right {
-        top: calc(50% + 30px);
+        top: calc(50% - 15px);
         right:15px;
     }
 

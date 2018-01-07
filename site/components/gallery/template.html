@@ -18,18 +18,23 @@
             <div class="button-text">Close</div>
         </div>
 
-        <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.admin">
-            <i class="fa fa-check fa-3x" style="float: left"></i>
-            <div class="button-text">Done</div>
+        <div class="gallery-single button" ng-if="options.admin">
+            <i class="fa fa-check fa-3x" style="float: left" ng-click="options.gallery = false;options.admin = false" ></i>
+            <div class="button-text"
+                 ng-click="options.gallery = false;options.admin = false"
+
+            >Done</div>
+
+            <div uib-popover-popup="" content="Drag and drop to re-order" class="popover ng-scope ng-isolate-scope bottom fade in bottom-right" tooltip-animation-class="fade" uib-tooltip-classes="" ng-class="{ in: isOpen }" style="top: 24px; left: -114px;cursor:default !important;">
+                <div class="popover-inner">
+                    <div class="popover-content ng-binding" ng-bind="content">Drag and drop to re-order</div>
+                </div>
+            </div>
         </div>
 
         <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.admin">
             <i class="fa fa-times fa-3x" style="float: left"></i>
             <div class="button-text">Cancel</div>
-        </div>
-
-        <div class="gallery_tooltip" ng-if="options.admin">
-            <i class="fa fa-lightbulb-o"></i> Drag and drop to re-order
         </div>
     </div>
     <div class="content" ng-if="!options.gallery">
@@ -38,7 +43,7 @@
         <img class="large" ng-src = "{{images[index].url}}" ng-click="imageClick($event)">
     </div>
 
-    <div class="thumbcontainer" ng-if="!options.gallery">
+    <div class="thumbcontainer" ng-show="!options.gallery">
         <ul class="thumbs">
             <li ng-repeat="image in images"
                  ng-class="{'thumb': true, 'selected': $index == index }"

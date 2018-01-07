@@ -75,6 +75,13 @@ angular.module('biradix.global').directive('gallery', function () {
                 $scope.select(0);
             }, true)
 
+            $scope.$watch("options.gallery", function(newvalue, oldvalue) {
+
+                if (oldvalue === true && newvalue == false) {
+                    $scope.select($scope.index);
+                }
+            }, true)
+
             $scope.closeView = function() {
                 $scope.options.show = false;
             }
@@ -116,7 +123,30 @@ angular.module('biradix.global').directive('gallery', function () {
                     $scope.options.gallery = true;
                 }
 
-                $(".gallery-overlay .thumbs").animate({scrollLeft: scroll}, 800);
+                $scope.scroll = scroll;
+
+                if ($scope.scrolling) {
+                    $scope.scrollmore = true;
+                }
+
+                $scope.animate();
+            }
+
+
+            $scope.animate = function() {
+
+                if (!$scope.scrolling) {
+                    $scope.scrolling = true;
+                    $(".gallery-overlay .thumbs").animate({scrollLeft: $scope.scroll}, 800, function() {
+                        $scope.scrolling = false;
+
+                        if ($scope.scrollmore) {
+                            $scope.scrollmore = false;
+                            $scope.animate();
+                        }
+                    });
+                }
+
             }
 
             $scope.imageClick = function ($event) {

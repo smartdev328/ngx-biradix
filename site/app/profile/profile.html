@@ -80,24 +80,8 @@
             </div>
             <div class="panel-body">
                 <hr>
-
-                <div ng-if="r == 0 && property.media.length > 0" style="margin-bottom:20px;text-align:center">
-                    <img ng-click="gallery_options.show = true" ng-src="{{property.media[0].url}}"
-                         ng-style="{margin:'0px auto', cursor:'pointer', border: '1px solid #aaa', 'max-width' : '100%', 'max-height' : '300px'}"
-                    >
-                    <gallery options="gallery_options" images="property.media"></gallery>
-                </div>
-
                 <property-profile property="property" show="showProfile"></property-profile>
             </div>
-        </div>
-
-
-        <div ng-if="r == 1 && property.media.length > 0" style="margin-bottom:20px;text-align:center">
-            <img ng-click="gallery_options.show = true" ng-src="{{property.media[0].url}}"
-                 ng-style="{margin:'0px auto', cursor:'pointer', border: '1px solid #aaa', 'max-width' : '100%', 'max-height' : '300px'}"
-                >
-            <gallery options="gallery_options" images="property.media"></gallery>
         </div>
 
         <div class="panel panel-info" ng-show="property.community_am.length > 0">
