@@ -60,6 +60,11 @@ var audits  = [
     {key: 'property_floorplan_updated', value: 'Floor plan Updated', undo: true, group: 'Property'},
     {key: 'property_floorplan_amenities_updated', value: 'Floor plan Amenities Updated', undo: true, group: 'Property'},
 
+    {key: 'property_pictures_added', value: 'Picture Added', undo: true, group: 'Property'},
+    {key: 'property_pictures_removed', value: 'Picture Removed', undo: true, group: 'Property'},
+    {key: 'property_pictures_order', value: 'Picture order Updated', undo: true, group: 'Property'},
+
+
     {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
     {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
     {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},

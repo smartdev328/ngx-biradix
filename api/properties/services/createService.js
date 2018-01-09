@@ -60,6 +60,10 @@ module.exports = {
                     var floorplansUpdatedChanges = getFloorplansUpdatedChanges(property,n, all);
                     var floorplansAmenitiesUpdatedChanges = getFloorplansAmenitiesUpdatedChanges(property,n, all);
 
+                    var picturesAddedChanges = getPicturesAddedChanges(property,n, all);
+                    var picturesRemovedChanges = getPicturesRemovedChanges(property,n, all);
+
+
                     //Get Comps so that we can un-link them and re-link them to get all the new permissions
                     var comps = _.pluck(n.comps,"id").map(function(x) {return x.toString()});
                     _.remove(comps,function(x) {return x == property._id.toString()});
@@ -217,6 +221,14 @@ module.exports = {
                                 AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
                             })
 
+                            picturesAddedChanges.forEach(function(change) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_added', description: prop.name + ": " + change.description, context: context, data: [change]})
+                            })
+
+                            picturesRemovedChanges.forEach(function(change) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
+                            })
+
                             if (reLinkComps && comps.length > 0) {
                                 //Unlink all comps async
                                 async.eachLimit(comps, 10, function (compid, callbackp) {
@@ -312,9 +324,10 @@ module.exports = {
                 var amenitiesChanges = getAmenitiesChanges(property,n, all,"community_amenities", "Community");
                 amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
 
-               var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
+                var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
+                var picturesAddedChanges = getPicturesAddedChanges(property,n, all);
 
-                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges);
+                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesAddedChanges);
 
 
                 var n = new PropertySchema();
@@ -787,6 +800,21 @@ function getFloorplansAddedChanges(property, n, all) {
     return changes;
 }
 
+function getPicturesAddedChanges(property, n, all) {
+    var changes = [];
+
+    property.media.forEach(function(m) {
+        if (!n) {
+            changes.push({media: m, description: m.name || 'N/A'})
+        }
+        else if (!_.find(n.media, function(x) {return x.url.toString() == m.url.toString()})) {
+             changes.push({media: m, description: m.name || 'N/A'})
+        }
+    })
+
+    return changes;
+}
+
 function getFloorplansRemovedChanges(property, n, all) {
     var changes = [];
 
@@ -794,6 +822,18 @@ function getFloorplansRemovedChanges(property, n, all) {
         if (!_.find(property.floorplans, function(x) {return x.id.toString() == fp.id.toString()})) {
             n.needsSurvey = true;
             changes.push({old_value: fp, description: PropertyHelperService.floorplanName(fp)})
+        }
+    })
+
+    return changes;
+}
+
+function getPicturesRemovedChanges(property, n, all) {
+    var changes = [];
+
+    n.media.forEach(function(m) {
+        if (!_.find(property.media, function(x) {return x.url.toString() == m.url.toString()})) {
+            changes.push({old_value: m, description: m.name || 'N/A'})
         }
     })
 

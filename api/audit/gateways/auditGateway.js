@@ -142,6 +142,18 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             })
                             break;
+                        case "property_pictures_added":
+                            propertyPicturesCreatedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
+                        case "property_pictures_removed":
+                            propertyPicturesRemovedUndo(req,o, function(err) {
+                                errors = err || [];
+                                callbacks(null)
+                            })
+                            break;
                         case "property_floorplan_amenities_updated":
                             propertyFloorplanAmenitiesUpdatedUndo(req,o, function(err) {
                                 errors = err || [];
@@ -422,6 +434,40 @@ function propertyAmenitiesUndo(req, o, callback) {
         });
     })
 
+}
+
+function propertyPicturesCreatedUndo (req, o, callback) {
+    AmenitiesService.search({}, function(err, amenities) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
+            var property = props[0];
+            _.remove(property.media, function (m) {
+                return m.url.toString() == o.data[0].media.url.toString()
+            });
+
+            PropertyHelperService.fixAmenities(property,amenities);
+
+            CreateService.update(req.user, req.context, o._id, property, {skipGeo: true}, callback);
+        });
+    });
+}
+
+function propertyPicturesRemovedUndo  (req, o, callback) {
+    AmenitiesService.search({}, function(err, amenities) {
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
+            var property = props[0];
+            var oldmedia = o.data[0].old_value;
+
+            property.media.push(oldmedia);
+
+            PropertyHelperService.fixAmenities(property,amenities);
+
+            // console.log(property);
+            // callback([{msg: 'test'}]);
+            // return;
+
+            CreateService.update(req.user,req.context, o._id,property, {skipGeo: true},callback);
+        });
+    });
 }
 
 function propertyFloorplanCreatedUndo (req, o, callback) {
