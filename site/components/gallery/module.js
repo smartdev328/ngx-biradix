@@ -4,6 +4,7 @@ angular.module('biradix.global').directive('gallery', function () {
         scope: {
             options: '=',
             images: '=',
+            orderchanged: '='
         },
         link: function($scope) {
             $scope.attachment = false;
@@ -56,12 +57,13 @@ angular.module('biradix.global').directive('gallery', function () {
                 // sort: function( event, ui ) {
                 //     console.log(ui);
                 // }
-                // update: function (e, ui) {
-                //     var logEntry = $scope.images.map(function (i) {
-                //         return i.value;
-                //     }).join(', ');
-                //     $scope.sortingLog.push('Update: ' + logEntry);
-                // },
+                update: function (e, ui) {
+                    // var logEntry = $scope.images.map(function (i) {
+                    //     return i.value;
+                    // }).join(', ');
+                    // $scope.sortingLog.push('Update: ' + logEntry);
+                    $scope.orderchanged = true;
+                },
                 // stop: function (e, ui) {
                 //     // this callback has the changed model
                 //     var logEntry = $scope.images.map(function (i) {

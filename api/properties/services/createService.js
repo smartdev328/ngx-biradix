@@ -115,6 +115,7 @@ module.exports = {
                         }
                     }
 
+                    var original_media = _.cloneDeep(n.media);
 
                     populateSchema(property, n, all);
 
@@ -228,6 +229,10 @@ module.exports = {
                             picturesRemovedChanges.forEach(function(change) {
                                 AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
                             })
+
+                            if (property.pictureorderchanged) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_order', description: prop.name + ": Pictures re-ordered", context: context, data: [{old_value: original_media, new_value: property.media}]})
+                            }
 
                             if (reLinkComps && comps.length > 0) {
                                 //Unlink all comps async

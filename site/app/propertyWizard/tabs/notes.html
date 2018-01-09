@@ -31,6 +31,6 @@
         <a href ng-click="gallery_options.admin = false; gallery_options.show = true"><img ng-src="{{property.media[0].url}}" ng-style="{border: '1px solid #aaa', 'max-width' : '100%', 'max-height' : '300px'}" ng-if="property.media && property.media.length > 0"></a><Br>
         <Br>
         <a href ng-click="upload()" class="btn btn-warning">Upload<span ng-if="property.media.length > 0"> additional</span> pictures</a>
-        <gallery options="gallery_options" images="property.media"></gallery>
+        <gallery options="gallery_options" images="property.media" orderchanged="property.pictureorderchanged"></gallery>
     </div>
 </div>

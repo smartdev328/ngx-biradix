@@ -62,7 +62,7 @@ var audits  = [
 
     {key: 'property_pictures_added', value: 'Picture Added', undo: true, group: 'Property'},
     {key: 'property_pictures_removed', value: 'Picture Removed', undo: true, group: 'Property'},
-    {key: 'property_pictures_order', value: 'Picture order Updated', undo: true, group: 'Property'},
+    {key: 'property_pictures_order', value: 'Picture order Updated', undo: false, group: 'Property'},
 
 
     {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
