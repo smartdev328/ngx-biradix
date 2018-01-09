@@ -1273,8 +1273,8 @@ define([
 
             $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
             $scope.temp.showProfileItems = [
+                {id: "picture", name: "Picture", selected: $scope.liveSettings.showProfile.picture},
                 {id: "address", name: "Address", selected: $scope.liveSettings.showProfile.address},
-
                 {id: "website", name: "Website", selected: $scope.liveSettings.showProfile.website},
                 {id: "phone", name: "Phone", selected: $scope.liveSettings.showProfile.phone},
                 {id: "email", name: "Email", selected: $scope.liveSettings.showProfile.email},

@@ -79,12 +79,16 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
             if ($cookies.get("pr.s")) {
                 settings = JSON.parse($cookies.get("pr.s"));
             }
+            if (typeof settings.picture == 'undefined') {
+                settings.picture = true;
+            }
 
             return settings;
         }
 
         fac.getDefaultInfoRows = function(me) {
             return {
+                picture: true,
                 address: true,
                 website: false,
                 phone: true,

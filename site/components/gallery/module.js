@@ -118,8 +118,8 @@ angular.module('biradix.global').directive('gallery', function () {
 
                 var scroll = 155 * (i - 1.5);
 
-                if (scroll < 0) {
-                    scroll = 0;
+                if (scroll <= 0) {
+                    scroll = 40;
                 }
 
                 $scope.options = $scope.options || {};
