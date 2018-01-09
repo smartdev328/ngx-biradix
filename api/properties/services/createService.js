@@ -805,10 +805,10 @@ function getPicturesAddedChanges(property, n, all) {
 
     property.media.forEach(function(m) {
         if (!n) {
-            changes.push({media: m, description: m.name || 'N/A'})
+            changes.push({media: m, description: m.name || 'N/A', picture: m.url})
         }
         else if (!_.find(n.media, function(x) {return x.url.toString() == m.url.toString()})) {
-             changes.push({media: m, description: m.name || 'N/A'})
+             changes.push({media: m, description: m.name || 'N/A', picture: m.url})
         }
     })
 
@@ -833,7 +833,7 @@ function getPicturesRemovedChanges(property, n, all) {
 
     n.media.forEach(function(m) {
         if (!_.find(property.media, function(x) {return x.url.toString() == m.url.toString()})) {
-            changes.push({old_value: m, description: m.name || 'N/A'})
+            changes.push({old_value: m, description: m.name || 'N/A', picture: m.url})
         }
     })
 

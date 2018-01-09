@@ -85,8 +85,9 @@
                 <h4 ng-if="row.data && (row.data[0].description || row.data.length > 1)">Details</h4>
                 <ul ng-if="row.data">
                     <li ng-repeat="subrow in row.data" ng-if="subrow.description">
-                        <span ng-if="!subrow.date">{{subrow.description}}</span>
+                        <span ng-if="!subrow.date && !subrow.picture">{{subrow.description}}</span>
                         <span ng-if="subrow.date">{{subrow.description}} {{subrow.date | date: 'MM/dd/yyyy'}}</span>
+                        <img ng-if="subrow.picture" ng-src="{{subrow.picture}}" style="max-width:150px;border:1px solid #ccc">
                     </li>
                 </ul>
                 <div ng-if="me.permissions.indexOf('History/MoreInfo') > -1">
