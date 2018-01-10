@@ -74,6 +74,14 @@ angular.module('biradix.global').directive('gallery', function () {
             };
 
             $scope.$watch("options.show", function() {
+                if ($scope.options.admin) {
+                    $scope.options.gallery = true;
+                    $scope.copy = _.cloneDeep($scope.images);
+                    $scope.copyIndex = $scope.index;
+                } else {
+                    $scope.options.gallery = false;
+                }
+
                 $scope.select(0);
             }, true)
 
@@ -84,13 +92,13 @@ angular.module('biradix.global').directive('gallery', function () {
                 }
             }, true)
 
-            $scope.$watch("options.admin", function(newvalue, oldvalue) {
-
-                if (oldvalue === false && newvalue == true) {
-                    $scope.copy = _.cloneDeep($scope.images);
-                    $scope.copyIndex = $scope.index;
-                }
-            }, true)
+            // $scope.$watch("options.admin", function(newvalue, oldvalue) {
+            //
+            //     if (oldvalue === false && newvalue == true) {
+            //         $scope.copy = _.cloneDeep($scope.images);
+            //         $scope.copyIndex = $scope.index;
+            //     }
+            // }, true)
 
             $scope.closeView = function() {
                 $scope.options.show = false;
@@ -188,6 +196,7 @@ angular.module('biradix.global').directive('gallery', function () {
                 if (!changed) {
                     $scope.options.gallery = false;
                     $scope.options.admin = false
+                    $scope.closeView();
                 }
                 else {
                     $dialog.confirm('You have made changes to your pictures. Are you sure you want to apply them?<Br><Br>Note: Your changes will not be saved until you save your property.', function () {
@@ -195,7 +204,8 @@ angular.module('biradix.global').directive('gallery', function () {
                         $scope.index = $scope.copyIndex;
                         $scope.select($scope.index);
                         $scope.options.gallery = false;
-                        $scope.options.admin = false
+                        $scope.options.admin = false;
+                        $scope.closeView();
                     }, function () {
                     });
                 }
@@ -207,11 +217,13 @@ angular.module('biradix.global').directive('gallery', function () {
                 if (!changed) {
                     $scope.options.gallery = false;
                     $scope.options.admin = false
+                    $scope.closeView();
                 }
                 else {
                     $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
                         $scope.options.gallery = false;
                         $scope.options.admin = false
+                        $scope.closeView();
                     }, function () {
                     });
                 }
