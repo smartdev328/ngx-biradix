@@ -10,6 +10,8 @@ define([
                 $location.path('/login')
             }
 
+            $scope.mediaIndex = 0;
+
             $scope.changed = false;
 
             $scope.startWatchingChanges = function() {
@@ -839,11 +841,39 @@ define([
                     //Send successfully
                     $scope.property.media = $scope.property.media || [];
                     $scope.property.media = $scope.property.media.concat(newMedia);
+                    $scope.gallery_options.admin = true;
+                    $scope.gallery_options.show = true
 
                 }, function () {
                     //Cancel
                 });
 
+            }
+
+            $scope.mediaPrevious = function() {
+                $scope.mediaIndex-=1;
+                if ($scope.mediaIndex < 0) {
+                    $scope.mediaIndex = $scope.property.media.length - 1;
+                }
+            }
+
+            $scope.mediaNext = function() {
+                $scope.mediaIndex+=1;
+                if ($scope.mediaIndex > $scope.property.media.length - 1) {
+                    $scope.mediaIndex = 0;
+                }
+            }
+
+            $scope.imageClick = function ($event) {
+                var clickX = $event.clientX;
+                var centerX = parseInt($event.target.offsetLeft + $event.target.offsetWidth / 2);
+
+                var dir = 'Next'
+                if (clickX < centerX) {
+                    $scope.mediaPrevious();
+                } else {
+                    $scope.mediaNext();
+                }
             }
         }]);
 

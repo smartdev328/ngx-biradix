@@ -213,7 +213,8 @@ angular.module('biradix.global').directive('gallery', function () {
 
             $scope.cancel = function() {
 
-                var changed = JSON.stringify($scope.copy) != JSON.stringify($scope.images);
+                var changed = JSON.stringify(_.pluck($scope.copy,"url")) != JSON.stringify(_.pluck($scope.images,"url"));
+
                 if (!changed) {
                     $scope.options.gallery = false;
                     $scope.options.admin = false
