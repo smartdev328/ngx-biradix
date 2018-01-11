@@ -831,30 +831,20 @@ function getPicturesChanges(property, n, all) {
     var removed = _.difference(old, updated);
     var added = _.difference(updated, old);
 
-    if (added.length == 1) {
-        changes.description = "1 picture Added";
-    }
-    else
-    if (added.length > 1) {
-        changes.description = added.length + " pictures Added";
+    if (added.length >= 1) {
+        changes.description = added.length + " picture(s) added";
     }
 
     added.forEach(function(x) {
         changes.data.push({picture: x})
     })
 
-    if (removed.length == 1) {
+
+    if (removed.length >= 1) {
         if (changes.description) {
             changes.description += ", "
         }
-        changes.descripion += "1 picture Removed";
-    }
-    else
-    if (removed.length > 1) {
-        if (changes.description) {
-            changes.description += ", "
-        }
-        changes.description += removed.length + " pictures Removed";
+        changes.description += removed.length + " picture(s) removed";
     }
 
     removed.forEach(function(x) {
