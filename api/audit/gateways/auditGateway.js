@@ -142,14 +142,8 @@ Routes.post('/undo', function (req, res) {
                                 callbacks(null)
                             })
                             break;
-                        case "property_pictures_added":
-                            propertyPicturesCreatedUndo(req,o, function(err) {
-                                errors = err || [];
-                                callbacks(null)
-                            })
-                            break;
-                        case "property_pictures_removed":
-                            propertyPicturesRemovedUndo(req,o, function(err) {
+                        case "property_pictures":
+                            propertyPicturesUndo(req,o, function(err) {
                                 errors = err || [];
                                 callbacks(null)
                             })
@@ -436,13 +430,27 @@ function propertyAmenitiesUndo(req, o, callback) {
 
 }
 
-function propertyPicturesCreatedUndo (req, o, callback) {
+function propertyPicturesUndo (req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
         PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
-            _.remove(property.media, function (m) {
-                return m.url.toString() == o.data[0].media.url.toString()
-            });
+            property.media = property.media || [];
+
+            console.log(property.media);
+            o.data.forEach(function(d) {
+                if (!d.deleted) {
+                    _.remove(property.media, function(x) {return x.url == d.picture})
+                } else {
+                    if (!_.find(property.media, function(x) {return x.url == d.picture})) {
+                        property.media.push(d.old_value)
+                    }
+                }
+            })
+
+            // console.log(o.data)
+            // console.log(property.media);
+            // callback([{msg: 'test'}]);
+            // return;
 
             PropertyHelperService.fixAmenities(property,amenities);
 
@@ -451,24 +459,7 @@ function propertyPicturesCreatedUndo (req, o, callback) {
     });
 }
 
-function propertyPicturesRemovedUndo  (req, o, callback) {
-    AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
-            var property = props[0];
-            var oldmedia = o.data[0].old_value;
 
-            property.media.push(oldmedia);
-
-            PropertyHelperService.fixAmenities(property,amenities);
-
-            // console.log(property);
-            // callback([{msg: 'test'}]);
-            // return;
-
-            CreateService.update(req.user,req.context, o._id,property, {skipGeo: true},callback);
-        });
-    });
-}
 
 function propertyFloorplanCreatedUndo (req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {

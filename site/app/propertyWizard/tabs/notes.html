@@ -42,7 +42,7 @@
         </div>
 
         <Br>
-        <a href ng-click="upload()" ng-if="property.media.length == 0" class="btn btn-warning">Upload pictures</a>
+        <a href ng-click="upload()" ng-if="!property.media || property.media.length == 0" class="btn btn-warning">Upload pictures</a>
         <gallery options="gallery_options" images="property.media" orderchanged="property.pictureorderchanged"></gallery>
     </div>
 </div>

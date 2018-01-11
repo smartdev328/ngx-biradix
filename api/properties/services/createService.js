@@ -60,9 +60,9 @@ module.exports = {
                     var floorplansUpdatedChanges = getFloorplansUpdatedChanges(property,n, all);
                     var floorplansAmenitiesUpdatedChanges = getFloorplansAmenitiesUpdatedChanges(property,n, all);
 
-                    var picturesAddedChanges = getPicturesAddedChanges(property,n, all);
-                    var picturesRemovedChanges = getPicturesRemovedChanges(property,n, all);
+                    var picturesChanges = getPicturesChanges(property,n, all);
 
+                    // return callback([{msg: "Test"}], null)
 
                     //Get Comps so that we can un-link them and re-link them to get all the new permissions
                     var comps = _.pluck(n.comps,"id").map(function(x) {return x.toString()});
@@ -222,13 +222,11 @@ module.exports = {
                                 AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
                             })
 
-                            picturesAddedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_added', description: prop.name + ": " + change.description, context: context, data: [change]})
-                            })
 
-                            picturesRemovedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
-                            })
+                            if (picturesChanges.data.length > 0) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures', description: prop.name + ": " + picturesChanges.description, context: context, data: picturesChanges.data})
+                            }
+
 
                             if (property.pictureorderchanged) {
                                 AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_order', description: prop.name + ": Pictures re-ordered", context: context, data: [{old_value: original_media, new_value: property.media}]})
@@ -330,9 +328,9 @@ module.exports = {
                 amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
 
                 var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
-                var picturesAddedChanges = getPicturesAddedChanges(property,n, all);
+                var picturesChanges = getPicturesChanges(property,n, all);
 
-                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesAddedChanges);
+                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesChanges.data);
 
 
                 var n = new PropertySchema();
@@ -805,21 +803,6 @@ function getFloorplansAddedChanges(property, n, all) {
     return changes;
 }
 
-function getPicturesAddedChanges(property, n, all) {
-    var changes = [];
-
-    property.media.forEach(function(m) {
-        if (!n) {
-            changes.push({media: m, description: m.name || 'N/A', picture: m.url})
-        }
-        else if (!_.find(n.media, function(x) {return x.url.toString() == m.url.toString()})) {
-             changes.push({media: m, description: m.name || 'N/A', picture: m.url})
-        }
-    })
-
-    return changes;
-}
-
 function getFloorplansRemovedChanges(property, n, all) {
     var changes = [];
 
@@ -833,17 +816,54 @@ function getFloorplansRemovedChanges(property, n, all) {
     return changes;
 }
 
-function getPicturesRemovedChanges(property, n, all) {
-    var changes = [];
 
-    n.media.forEach(function(m) {
-        if (!_.find(property.media, function(x) {return x.url.toString() == m.url.toString()})) {
-            changes.push({old_value: m, description: m.name || 'N/A', picture: m.url})
+function getPicturesChanges(property, n, all) {
+    var changes = {data:[],description:""};
+
+    var old =  [];
+
+    if (n) {
+        old = _.map(n.media, function(x) {return x.url});
+    }
+
+    var updated = _.map(property.media, function(x) {return x.url});
+
+    var removed = _.difference(old, updated);
+    var added = _.difference(updated, old);
+
+    if (added.length == 1) {
+        changes.description = "1 picture Added";
+    }
+    else
+    if (added.length > 1) {
+        changes.description = added.length + " pictures Added";
+    }
+
+    added.forEach(function(x) {
+        changes.data.push({picture: x})
+    })
+
+    if (removed.length == 1) {
+        if (changes.description) {
+            changes.description += ", "
         }
+        changes.descripion += "1 picture Removed";
+    }
+    else
+    if (removed.length > 1) {
+        if (changes.description) {
+            changes.description += ", "
+        }
+        changes.description += removed.length + " pictures Removed";
+    }
+
+    removed.forEach(function(x) {
+        changes.data.push({picture: x, deleted: true, old_value: _.find(n.media, function(y) { return y.url == x })})
     })
 
     return changes;
 }
+
 
 function getFloorplansUpdatedChanges(property, n, all) {
     var changes = [];
