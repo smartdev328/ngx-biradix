@@ -22,7 +22,8 @@ Routes.post('/', function (req, res) {
     };
     s3Bucket.putObject(data, function(err, data){
         if (err) {
-            throw new error(err);
+            console.log(err);
+            throw new Error(err);
         } else {
             return res.status(200).json({
                 image: {
