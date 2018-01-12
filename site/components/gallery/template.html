@@ -1,0 +1,76 @@
+<div class="gallery-overlay" ng-show="options.show">
+    <hr>
+    <div class="gallery-toolbar">
+        <div class="gallery-gallery button" ng-click="options.gallery = true" ng-if="!options.gallery && !options.admin">
+            <i class="fa fa-th-large fa-3x" style="float: left"></i>
+            <div class="button-text">Gallery View</div>
+        </div>
+        <div class="gallery-single button" ng-click="options.gallery = false;options.admin = false" ng-if="options.gallery && !options.admin">
+            <i class="fa fa-photo fa-3x" style="float: left"></i>
+            <div class="button-text">Single View</div>
+        </div>
+        <div class="gallery-single button" ng-click="closeView()" ng-if="!options.admin">
+            <i class="fa fa-times fa-3x" style="float: left"></i>
+            <div class="button-text">Close</div>
+        </div>
+
+        <div class="gallery-single button" ng-if="options.admin">
+            <i class="fa fa-check fa-3x" style="float: left" ng-click="save()" ></i>
+            <div class="button-text"
+                 ng-click="save()"
+
+            >Done</div>
+
+            <div uib-popover-popup="" content="Drag and drop to re-order" class="popover ng-scope ng-isolate-scope bottom fade in bottom-right" tooltip-animation-class="fade" uib-tooltip-classes="" ng-class="{ in: isOpen }" style="top: 31px; left: -114px;cursor:default !important;">
+                <div class="popover-inner">
+                    <div class="popover-content ng-binding" ng-bind="content">Drag and drop to re-order</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gallery-single button" ng-click="cancel()" ng-if="options.admin">
+            <i class="fa fa-times fa-3x" style="float: left"></i>
+            <div class="button-text">Cancel</div>
+        </div>
+    </div>
+    <div class="content" ng-if="!options.gallery">
+        <div class="gallery-left" ng-click="previous()"><i class="fa fa-angle-left fa-4x"></i></div>
+        <div class="gallery-right" ng-click="next()"><i class="fa fa-angle-right fa-4x"></i></div>
+        <img class="large" ng-src = "{{images[index].url}}" ng-click="imageClick($event)">
+    </div>
+
+    <div class="thumbcontainer" ng-show="!options.gallery">
+        <ul class="thumbs">
+            <li ng-repeat="image in images"
+                 ng-class="{'thumb': true, 'selected': $index == index }"
+                 style="background: url('{{image.url}}');"
+                 ng-click="select($index)"></li>
+        </ul>
+    </div>
+
+
+    <ul class="gallerycontainer" ng-if="options.gallery && options.admin" ui-sortable="sortableOptions" ng-model="copy">
+        <li ng-repeat="image in copy"
+             ng-class="{'thumb': true, 'admin' : true }"
+             ng-style="{'background-image':'url({{image.url}})'}"
+            >
+            <i class="fa fa-photo default" ng-show="options.admin" ng-if="$index == 0"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               uib-popover="The default profile picture"
+            ></i>
+            <i class="fa fa-trash delete" ng-show="options.admin" ng-click="remove($index)"></i>
+        </li>
+   </ul>
+
+    <ul class="gallerycontainer" ng-if="options.gallery && !options.admin">
+        <li ng-repeat="image in images"
+            ng-class="{'thumb': true, 'selected': $index == index, 'nonadmin' : true}"
+            ng-style="{'background-image':'url({{image.url}})'}"
+            ng-click="select($index)"
+        >
+
+
+        </li>
+    </ul>
+</div>

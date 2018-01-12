@@ -1,0 +1,36 @@
+<div class="file-input-wrapper">
+    <button class="btn btn-primary" ng-disabled="(!canUpload && uploads.length > 0) || uploading">Add image file(s) to upload</button>
+    <input type='file' id="fileUpload" multiple accept=".jpg, .jpeg, .png, .gif"
+           onchange="angular.element(this).scope().readImage(this)"
+           ng-disabled="(!canUpload && uploads.length > 0) || uploading"
+    />
+</div>
+
+<div class="gallery">
+    <div>
+        <div ng-repeat="upload in uploads" ng-class="{'preview': true, 'disabled' : upload.uploading}">
+        <img ng-show="upload.loaded" ng-src="{{upload.thumb}}" ng-click="view($index)">
+
+        <div ng-show="upload.loaded && canDelete && !upload.uploading" class="delete" ng-click="remove($index)"><i class="fa fa-trash"></i></div>
+        <div ng-show="upload.uploading" class="loading"><i class="fa fa-circle-o-notch fa-spin fa-fw fa-4x"></i></div>
+
+        <div ng-show="!upload.loaded">
+            <img src="/images/squares.gif" style="width:120px">
+        </div>
+    </div>
+    </div>
+</div>
+
+<div style="text-align: center">
+    <i style="font-size:9pt">By uploading any photos to BI:Radix (the "Content"), you represent and warrant that you own and control or otherwise have the unconditional right to upload the Content to BI:Radix and to use such Content</i><Br>
+    <Br>
+    <button class="btn btn-success" ng-disabled="!canUpload" ng-if="!uploading" ng-click="upload()">Upload<span ng-if="uploads.length > 0"> {{uploads.length}} image<span ng-if="uploads.length > 1">s</span></span></button>
+    <button class="btn btn-success" ng-disabled="true" ng-if="uploading"><i class="fa fa-circle-o-notch fa-spin fa-fw" style="color:white"></i> Uploading: {{uploads.length}} image<span ng-if="uploads.length > 1">s</span> to go</button>
+</div>
+
+<div class="uploader-overlay" ng-show="options.showPreview" ng-click="closeView()">
+    <div class="content">
+        <div class="upload-close"><i class="fa fa-times fa-3x"></i></div>
+        <img class="large" ng-src = "{{previewSrc}}">
+    </div>
+</div>

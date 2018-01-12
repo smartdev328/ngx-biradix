@@ -68,6 +68,7 @@
                                     <span class="fa fa-table"></span> <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px;height:200px;overflow-y: auto" onclick="event.stopPropagation();">
+                                    <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.picture" ng-checked="showProfile.picture" ng-click="saveShowProfile()"> Picture</label></div></li>
                                     <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.address" ng-checked="showProfile.address" ng-click="saveShowProfile()"> Address</label></div></li>
                                     <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.website" ng-checked="showProfile.website" ng-click="saveShowProfile()"> Website</label></div></li>
                                     <li><div class="checkbox"><label><input type="checkbox" ng-model="showProfile.phone" ng-checked="showProfile.phone" ng-click="saveShowProfile()"> Phone</label></div></li>

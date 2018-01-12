@@ -5,7 +5,6 @@ define([
 ], function (app) {
      app.controller
         ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService) {
-
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
             $rootScope.sideMenu = true;

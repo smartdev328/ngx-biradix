@@ -24,3 +24,25 @@
         <textarea class="form-control  input-sm" ng-model="property.notes" style="height:150px"></textarea>
     </div>
 </div>
+<Br>
+<b class="panel-heading">Property Pictures</b><Br>
+<div class="row">
+    <div class="col-sm-12" style="text-align: center">
+        <div ng-if="property.media && property.media.length > 0" style="position: relative;background-color:black;padding:10px;height:320px;white-space: nowrap;" ng-mouseover="showPictureData = true" ng-mouseleave="showPictureData = false">
+            <span style="display: inline-block;height: 100%;vertical-align: middle;"></span>
+            <img ng-src="{{property.media[mediaIndex || 0].url}}" ng-style="{border: '1px solid #aaa', 'max-width' : 'calc(100% - 10px)', 'max-height' : '300px'}" ng-click="imageClick($event)">
+
+            <div ng-if="true || showPictureData" style="position: absolute;top:5px;left:5px;color:white;background-color: rgba(0, 0, 0, 0.6);padding:5px;border-radius:5px;font-weight:bold;font-size:15px;"><i>{{mediaIndex + 1}} of {{property.media.length}}</i></div>
+            <div ng-if="true || showPictureData" style="position: absolute;top:5px;right:5px;color:white;background-color: rgba(0, 0, 0, 0.6);padding:5px;border-radius:5px;"><a href ng-click="upload();" style="color:white;;font-weight:bold;font-size:15px;">Add Pictures</a></div>
+            <div ng-if="true || showPictureData"  style="position: absolute;bottom:5px;left:5px;background-color: rgba(0, 0, 0, 0.6);padding:5px;border-radius:5px"><a href ng-click="gallery_options.admin = false; gallery_options.show = true" style="color:white;;font-weight:bold;font-size:15px;">Preview</a></div>
+            <div ng-if="true || showPictureData"  style="position: absolute;bottom:5px;right:5px;background-color: rgba(0, 0, 0, 0.6);padding:5px;border-radius:5px;"><a href ng-click="gallery_options.admin = true; gallery_options.show = true" style="color:white;font-weight:bold;font-size:15px;">Edit</a></div>
+
+            <div ng-if="true || showPictureData"  style="position: absolute;top:calc(50% - 20px);left:5px;background-color: rgba(0, 0, 0, 0.6);padding:5px;border-radius:5px"><a href ng-click="mediaPrevious();" style="color:white;font-weight:bold;"><i class="fa fa-angle-left fa-3x" style="color:white;font-size: 2em;"></i></a></div>
+            <div ng-if="true || showPictureData"  style="position: absolute;top:calc(50% - 20px);right:5px;background-color: rgba(0, 0, 0, 0.6);padding:5px;border-radius:5px"><a href ng-click="mediaNext();" style="color:white;font-weight:bold;"><i class="fa fa-angle-right fa-3x" style="color:white;font-size: 2em;"></i></a></div>
+        </div>
+
+        <Br>
+        <a href ng-click="upload()" ng-if="!property.media || property.media.length == 0" class="btn btn-warning">Upload pictures</a>
+        <gallery options="gallery_options" images="property.media" orderchanged="property.pictureorderchanged"></gallery>
+    </div>
+</div>

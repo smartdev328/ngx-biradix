@@ -54,6 +54,7 @@ define([], function () {
         , 'ngSanitize'
         , 'biradix.global'
         , 'AxelSoft'
+        , 'ui.sortable'
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {

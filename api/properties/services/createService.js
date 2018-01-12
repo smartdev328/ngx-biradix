@@ -60,6 +60,10 @@ module.exports = {
                     var floorplansUpdatedChanges = getFloorplansUpdatedChanges(property,n, all);
                     var floorplansAmenitiesUpdatedChanges = getFloorplansAmenitiesUpdatedChanges(property,n, all);
 
+                    var picturesChanges = getPicturesChanges(property,n, all);
+
+                    // return callback([{msg: "Test"}], null)
+
                     //Get Comps so that we can un-link them and re-link them to get all the new permissions
                     var comps = _.pluck(n.comps,"id").map(function(x) {return x.toString()});
                     _.remove(comps,function(x) {return x == property._id.toString()});
@@ -111,6 +115,7 @@ module.exports = {
                         }
                     }
 
+                    var original_media = _.cloneDeep(n.media);
 
                     populateSchema(property, n, all);
 
@@ -217,6 +222,16 @@ module.exports = {
                                 AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
                             })
 
+
+                            if (picturesChanges.data.length > 0) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures', description: prop.name + ": " + picturesChanges.description, context: context, data: picturesChanges.data})
+                            }
+
+
+                            if (property.pictureorderchanged) {
+                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_pictures_order', description: prop.name + ": Pictures re-ordered", context: context, data: [{old_value: original_media, new_value: property.media}]})
+                            }
+
                             if (reLinkComps && comps.length > 0) {
                                 //Unlink all comps async
                                 async.eachLimit(comps, 10, function (compid, callbackp) {
@@ -312,9 +327,10 @@ module.exports = {
                 var amenitiesChanges = getAmenitiesChanges(property,n, all,"community_amenities", "Community");
                 amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
 
-               var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
+                var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
+                var picturesChanges = getPicturesChanges(property,n, all);
 
-                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges);
+                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesChanges.data);
 
 
                 var n = new PropertySchema();
@@ -634,6 +650,7 @@ function populateSchema(property, n, all) {
     n.totalUnits = property.totalUnits;
     n.location_amenities = property.location_amenities;
     n.community_amenities = property.community_amenities;
+    n.media = property.media;
 
 }
 
@@ -798,6 +815,45 @@ function getFloorplansRemovedChanges(property, n, all) {
 
     return changes;
 }
+
+
+function getPicturesChanges(property, n, all) {
+    var changes = {data:[],description:""};
+
+    var old =  [];
+
+    if (n) {
+        old = _.map(n.media, function(x) {return x.url});
+    }
+
+    var updated = _.map(property.media, function(x) {return x.url});
+
+    var removed = _.difference(old, updated);
+    var added = _.difference(updated, old);
+
+    if (added.length >= 1) {
+        changes.description = added.length + " picture(s) added";
+    }
+
+    added.forEach(function(x) {
+        changes.data.push({picture: x})
+    })
+
+
+    if (removed.length >= 1) {
+        if (changes.description) {
+            changes.description += ", "
+        }
+        changes.description += removed.length + " picture(s) removed";
+    }
+
+    removed.forEach(function(x) {
+        changes.data.push({picture: x, deleted: true, old_value: _.find(n.media, function(y) { return y.url == x })})
+    })
+
+    return changes;
+}
+
 
 function getFloorplansUpdatedChanges(property, n, all) {
     var changes = [];

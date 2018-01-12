@@ -64,7 +64,8 @@ var s = new Schema({
     location_amenities: Array,
     community_amenities: Array,
     comps: Array,
-    survey: {}
+    survey: {},
+    media: []
 
 });
 

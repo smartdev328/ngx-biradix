@@ -2,11 +2,15 @@ var concat = require('gulp-concat');
 var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var hashsum = require("gulp-hashsum")
+var sass = require('gulp-sass');
+var merge = require('merge-stream');
 var gulp = require('gulp');
+
 
 gulp.task('vendorsjs', function() {
     return gulp.src([
           './bower_components/jquery/dist/jquery.min.js'
+        , './bower_components/jquery-ui/jquery-ui.min.js'
         , './bower_components/bootstrap/dist/js/bootstrap.min.js'
         , './bower_components/angular/angular.min.js'
         , './bower_components/angular-cookies/angular-cookies.min.js'
@@ -16,10 +20,12 @@ gulp.task('vendorsjs', function() {
         , './bower_components/lodash/lodash.min.js'
         , './bower_components/moment/min/moment.min.js'
         , './bower_components/highcharts-release/highcharts.js'
+        , './bower_components/angular-ui-sortable/sortable.min.js'
         , './site/components/ngProgress/ngProgress.min.js'
         , './site/components/angular-toastr/angular-toastr.tpls.min.js'
         , './site/components/daterangepicker/daterangepicker.js'
         , './site/components/select/customSelect.js'
+        , './site/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js'
 
     ])
         .pipe(concat('vendors.js'))
@@ -53,6 +59,8 @@ gulp.task('globaljs', function() {
         , './site/components/daterangepicker/module.js'
         , './site/components/ngEnter/module.js'
         , './site/components/dialog/module.js'
+        , './site/components/uploader/module.js'
+        , './site/components/gallery/module.js'
 
         , './site/services/authService.js'
         , './site/services/propertyService.js'
@@ -66,6 +74,7 @@ gulp.task('globaljs', function() {
         , './site/services/gridService.js'
         , './site/services/userService.js'
         , './site/services/propertyUsersService.js'
+        , './site/services/mediaService.js'
 
         , './site/components/propertyProfile/coverPage.js'
         , './site/components/propertyProfile/profile.js'
@@ -87,8 +96,17 @@ gulp.task('globaljs', function() {
         .pipe(hashsum({dest: "./dist",json:true, filename: 'globaljs-hash.json'}));
 });
 
-gulp.task('globalcss', function() {
+gulp.task('sass', function () {
     return gulp.src([
+        './site/components/gallery/styles.scss'
+        ])
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('globalcss', function() {
+
+    var cssStream = gulp.src([
         , './site/app/global.css'
         , './site/app/login/loggedout.css'
         , './site/css/navs.css'
@@ -96,7 +114,14 @@ gulp.task('globalcss', function() {
         , './site/components/toggle/style.css'
         , './site/components/filterlist/filterlist.css'
         , './site/components/reports/reporting.css'
-    ])
+        , './site/components/uploader/styles.css'
+    ]);;
+
+    var sassStream = gulp.src([
+        './site/components/gallery/styles.scss'
+    ]).pipe(sass().on('error', sass.logError));
+
+    return merge(cssStream,sassStream)
         .pipe(concat('global.css'))
         .pipe(gulp.dest('./dist/'))
         .pipe(hashsum({dest: "./dist",json:true, filename: 'globalcss-hash.json'}));

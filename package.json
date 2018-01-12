@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.11.15",
+  "version": "2.12.35",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^1.5.2",
+    "aws-sdk": "^2.166.0",
     "body-parser": "^1.17.2",
     "bower": "^1.8.0",
     "chai": "^3.5.0",
@@ -29,6 +30,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-hashsum": "^1.1.0",
     "gulp-replace": "^0.5.4",
+    "gulp-sass": "^3.1.0",
     "gulp-uglify": "^2.1.2",
     "heroku-client": "^2.2.2",
     "jackrabbit": "^4.3.0",
@@ -39,6 +41,7 @@
     "md5": "^2.2.1",
     "memory-cache": "^0.2.0",
     "memory-stream": "0.0.3",
+    "merge-stream": "^1.0.1",
     "mocha": "^3.4.2",
     "mock-require": "^2.0.2",
     "moment": "^2.18.1",

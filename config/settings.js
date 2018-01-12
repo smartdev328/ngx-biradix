@@ -36,4 +36,6 @@ module.exports = {
     SEED_TEST : (process.env.SEED_TEST || '0' )== "1",
     PROJECT_DIR : __dirname,
     MAINTENANCE_MODE : (process.env.MAINTENANCE_MODE || '0' )== "1",
+    AWS_S3_BUCKET_IMAGES: process.env.AWS_S3_BUCKET_IMAGES || "biradix-nonprod-mediastore",
+    AWS_S3_CDN_IMAGES: process.env.AWS_S3_CDN_IMAGES || "d138dweu4olq2b.cloudfront.net",
 }

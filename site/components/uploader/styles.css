@@ -1,0 +1,119 @@
+uploader .file-input-wrapper {
+    width: 300px;
+    height: 40px;
+    overflow: hidden;
+    position: relative;
+    margin:10px auto;
+
+}
+uploader .file-input-wrapper > input[type="file"] {
+    font-size: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+}
+uploader .file-input-wrapper > button {
+    display: inline-block;
+    width:300px;
+}
+
+uploader .gallery {
+    height:422px;
+    overflow: auto;
+    border:1px solid #ccc;
+    border-radius: 2px;
+    margin:8px;
+}
+
+@media (max-width: 486px) {
+    uploader .gallery {
+        width: 308px;
+        margin: 0px auto;
+    }
+}
+uploader .preview {
+    margin: 10px;
+    float:left;
+    position:relative;
+    cursor: pointer;
+}
+
+uploader .preview.disabled {
+    cursor: default;
+    opacity: .5;
+}
+
+uploader .preview img {border-radius: 20px}
+
+uploader .preview .delete {
+    position: absolute;
+    top:10px;
+    right:10px;
+    cursor: pointer;
+}
+
+uploader .preview .loading {
+    position: absolute;
+    top:34px;
+    left:21px;
+}
+
+uploader .preview .fa {
+    color: white;
+    text-shadow: 3px 3px 16px #272634;
+}
+
+.uploader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.uploader-overlay .content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    text-align: center;
+}
+
+.uploader-overlay .content .large {
+    height: auto;
+    max-height: calc(100% - 50px);
+    max-width: calc(100% - 50px);
+    position: relative;
+    display: block;
+    margin: 0 auto 0 auto;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    vertical-align: middle;
+    border:1px solid #ddd;
+}
+
+.uploader-overlay .content .upload-close .fa {
+    color: white;
+    cursor: pointer;
+    position: fixed;
+    right: 0;
+    padding: 20px;
+    text-shadow: 3px 3px 16px #272634;
+}

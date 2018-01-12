@@ -10,6 +10,8 @@ define([
                 $location.path('/login')
             }
 
+            $scope.mediaIndex = 0;
+
             $scope.changed = false;
 
             $scope.startWatchingChanges = function() {
@@ -81,7 +83,7 @@ define([
                 {label:'Amenities', template: 'amenities.html'},
                 {label:'Fees/Deposits', template: 'feesDeposits.html'},
                 {label:'Floor Plans', template: 'floorplans.html'},
-                {label:'Contact/Notes', template: 'notes.html'},
+                {label:'More', template: 'notes.html'},
             ]
 
 
@@ -802,8 +804,77 @@ define([
                     });
 
                 });
-            }            
+            }
 
+            $scope.gallery_options = {show: false, allowAdmin : true};
+
+            $scope.upload = function() {
+
+                var modalInstance = $uibModal.open({
+                    template: '<div class="modal-header">\n' +
+                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>\n' +
+                    '        <h2 class="modal-title">Upload Pictures</h2>\n' +
+                    '    </div>' +
+                    '<uploader input="input" output="output" done="done()"></uploader><br>',
+                    size: "mg",
+                    backdrop: 'static',
+                    keyboard: false,
+                    controller: function($scope, $uibModalInstance){
+                        $scope.output = [];
+                        $scope.input = {
+                            maxFileSizeMB : 20,
+                            thumbHeight: 120,
+                            fullHeight: 1080
+                        }
+                        $scope.cancel = function () {
+                            $uibModalInstance.dismiss('cancel');
+                        };
+
+                        $scope.done = function() {
+                            toastr.success("<B>" + $scope.output.length +" image(s)</B> uploaded successfully!");
+                            $uibModalInstance.close($scope.output);
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (newMedia) {
+                    //Send successfully
+                    $scope.property.media = $scope.property.media || [];
+                    $scope.property.media = $scope.property.media.concat(newMedia);
+                    $scope.gallery_options.admin = true;
+                    $scope.gallery_options.show = true
+
+                }, function () {
+                    //Cancel
+                });
+
+            }
+
+            $scope.mediaPrevious = function() {
+                $scope.mediaIndex-=1;
+                if ($scope.mediaIndex < 0) {
+                    $scope.mediaIndex = $scope.property.media.length - 1;
+                }
+            }
+
+            $scope.mediaNext = function() {
+                $scope.mediaIndex+=1;
+                if ($scope.mediaIndex > $scope.property.media.length - 1) {
+                    $scope.mediaIndex = 0;
+                }
+            }
+
+            $scope.imageClick = function ($event) {
+                var clickX = $event.clientX;
+                var centerX = parseInt($event.target.offsetLeft + $event.target.offsetWidth / 2);
+
+                var dir = 'Next'
+                if (clickX < centerX) {
+                    $scope.mediaPrevious();
+                } else {
+                    $scope.mediaNext();
+                }
+            }
         }]);
 
 });
