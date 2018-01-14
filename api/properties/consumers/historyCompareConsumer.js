@@ -39,7 +39,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
                             leased: c.survey.leased,
-                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? c.survey.atr / c.survey.totUnits * 100 : null,
+                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? Math.round(c.survey.atr / c.survey.totUnits * 100 * 10) / 10 : null,
                             tier: c.survey.tier,
                             weeklytraffic: c.survey.weeklytraffic,
                             weeklyleases: c.survey.weeklyleases,
@@ -110,7 +110,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
                             leased: c.survey.leased,
-                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? c.survey.atr / c.survey.totUnits * 100 : null,
+                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? Math.round(c.survey.atr / c.survey.totUnits * 100 * 10) / 10 : null,
                             tier: c.survey.tier
                         });
                     })
@@ -166,7 +166,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
                             leased: c.survey.leased,
-                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? c.survey.atr / c.survey.totUnits * 100 : null,
+                            atr_percent : c.survey.atr && c.survey.totUnits > 0 ? Math.round(c.survey.atr / c.survey.totUnits * 100 * 10) / 10 : null,
                             tier: c.survey.tier
                         });
                     })
@@ -252,7 +252,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
         report.forEach(function (p, i) {
             //if (i > 0) {
 
-            if (typeof p.leased === 'undefined') {
+            if (typeof p.leased === 'undefined' || p.leased == null) {
                 p.leased = "";
             }
 
