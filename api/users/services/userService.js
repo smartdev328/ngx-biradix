@@ -145,6 +145,30 @@ module.exports = {
                     AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']},function(err, roles) {
                         callbackp(err, roles)
                     })
+                },
+                rolesSearchUserIds: function(callbackp) {
+                    if (!criteria.roleTypes && ! criteria.orgid) {
+                        return callbackp(null, null);
+                    }
+                    var search = {};
+
+                    if (criteria.roleTypes) {
+                        search.tags = criteria.roleTypes;
+                    }
+
+                    if (criteria.orgid) {
+                        search.orgid = criteria.orgid;
+                    }
+
+                    //Get all roles that are vieable to the user if we need to filter by either orgid or roles in that org or guests
+                    AccessService.getOrgRoles(search, function (err, roles) {
+                        var roleids = _.map(roles, function(x) {return x._id.toString()});
+                        //Get all users assigned to those roles
+                        AccessService.getAllMemberships({roleids: roleids}, function(err, memberships) {
+                            var userids = _.map(memberships, function(x) {return x.userid.toString()});
+                            callbackp(null, userids)
+                        });
+                    });
                 }
             }, function(err, all) {
 
@@ -159,6 +183,18 @@ module.exports = {
             if (criteria._id) {
                 criteria.ids = criteria.ids || [];
                 criteria.ids.push(criteria._id);
+            }
+
+            //If we are searching by role or org:
+            if (all.rolesSearchUserIds) {
+                //If we already have a list of ids we want to filter by, make sure its in the allowed list of role or org
+                if (criteria.ids) {
+                    criteria.ids = _.intersection(all.rolesSearchUserIds, criteria.ids);
+                }
+                else {
+                    //Not filtering by ids, filter only by users in role or org
+                    criteria.ids = all.rolesSearchUserIds;
+                }
             }
 
             if (Operator.memberships.isadmin === true) {
@@ -263,19 +299,20 @@ module.exports = {
                                 roles = _.filter(all.roles, function (r) { return memberships.indexOf(r._id) > -1})
 
                                 if (roles && roles.length > 0) {
-                                    //filter users by role types from criteria
-                                    if (criteria.roleTypes && !_.find(roles, function (x) {
-                                            return criteria.roleTypes.indexOf(x.tags[0]) > -1
-                                        })) {
-                                        x.deleted = true;
-                                    }
-
-                                    //filter users by role orgid from criteria
-                                    if (criteria.orgid && !_.find(roles, function (x) {
-                                            return criteria.orgid.toString() == x.orgid.toString()
-                                        })) {
-                                        x.deleted = true;
-                                    }
+                                    //This is now handled before permissions
+                                    // //filter users by role types from criteria
+                                    // if (criteria.roleTypes && !_.find(roles, function (x) {
+                                    //         return criteria.roleTypes.indexOf(x.tags[0]) > -1
+                                    //     })) {
+                                    //     x.deleted = true;
+                                    // }
+                                    //
+                                    // //filter users by role orgid from criteria
+                                    // if (criteria.orgid && !_.find(roles, function (x) {
+                                    //         return criteria.orgid.toString() == x.orgid.toString()
+                                    //     })) {
+                                    //     x.deleted = true;
+                                    // }
 
                                     if (x.settings && x.settings.defaultRole && roles.length > 1) {
                                         roles = _.sortBy(roles, function (n) {
