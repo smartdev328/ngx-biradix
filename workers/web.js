@@ -132,14 +132,16 @@ d.run(function() {
                 //    console.log(start1.format(), end1.format());
                 //}
 
-                //if (workerId == 1) {
-                //    var userService = require("../api/users/services/userService");
-                //    userService.getSystemUser(function (user) {
-                //        var queueService = require('../api/properties/services/queueService');
-                //
-                //        queueService.sendNotification(user.user, ["5642bae5ff18a018187b2c5c","5642bab9ff18a018187b07fb"], function() {
-                //        })
-                //
+                // if (workerId == 1) {
+                //     var userService = require("../api/users/services/userService");
+                //     userService.getSystemUser(function (obj) {
+                //         var SystemUser = obj.user;
+                //         userService.search(SystemUser, {roleTypes: ['Guest','RM','BM'], ids: ['59fa02d92d119d3bd494e4b6']}, function (err, obj) {
+                //             console.log(obj);
+                //         });
+                //     });
+                // }
+
 
                     // var PropertyAmenityService = require("../api/propertyamenities/services/propertyAmenityService");
                     // var userService = require("../api/users/services/userService");

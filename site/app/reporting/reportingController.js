@@ -324,7 +324,7 @@ define([
                 })
                 $scope.localLoading = true;
 
-                if ($cookies.get("compIds") || $scope.waitForComps === true) {
+                if ($cookies.get("reportIds") || $scope.waitForComps === true) {
                     delete $scope.waitForComps;
                     $scope.run();
                 }
