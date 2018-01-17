@@ -719,7 +719,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 printWidth = 380;
             }
             resp.occData = {height:300, printWidth:printWidth, decimalPlaces: 0, prefix:'',suffix:'%',title: 'Occupancy', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
-            resp.leasedData = {height:300, printWidth:printWidth, decimalPlaces: 0, prefix:'',suffix:'%',title: 'Leased', marker: false, data: leased.data, min: (summary ? leased.min : 0), max: (summary ? leased.max : 100)};
+            resp.leasedData = {height:300, printWidth:printWidth, decimalPlaces: 0, prefix:'',suffix:'%',title: 'Leased', marker: false, data: leased.data, min: (summary ? leased.min : leased.min), max: (summary ? leased.max : leased.max)};
 
             return resp;
         }
