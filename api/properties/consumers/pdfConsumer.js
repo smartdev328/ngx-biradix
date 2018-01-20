@@ -4,9 +4,9 @@ var PropertyService = require("../services/propertyService")
 var pdfService = require("../services/pdfService")
 var UserService = require('../../users/services/userService')
 var moment = require('moment')
-var phantom = require('phantom-render-stream');
 var AuditService = require('../../audit/services/auditService')
 var ProgressService = require('../../progress/services/progressService')
+var JSONB = require('json-buffer')
 
 bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
     console.log(data.id + " pdf started");
@@ -19,10 +19,6 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                 fileName += "_" + moment().utc().add(data.timezone, "minute").format("MM_DD_YYYY");
 
                 fileName += ".pdf";
-
-                var options = pdfService.getDefaultOptions()
-
-                var render = phantom(options);
 
                 var url = data.url + "/#/profile/" + p._id;
 
@@ -57,44 +53,17 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     context: data.context
                 })
 
-
-                options.cookies = cookies;
-
-                var MemoryStream = require('memory-stream');
-
-                var ws = new MemoryStream();
-
-
-                ws.on('finish', function () {
-                    var newBuffer = Buffer.concat(ws.buffer);
+                pdfService.getPdf(url,cookies, function(buffer) {
                     if (data.progressId) {
                         ProgressService.setComplete(data.progressId)
                     }
 
-                    var JSONB = require('json-buffer')
-
                     console.log(data.id + " pdf ended");
-                    reply({stream: JSONB.stringify(newBuffer), filename: fileName});
+                    reply({stream: JSONB.stringify(buffer), filename: fileName});
                     full = null;
                     cookies = null;
-                    r = null;
-                    render = null;
-                    options = null;
                     properties = null;
-                    newBuffer = null;
-
-                    settings.PDF_HIT_COUNT++;
-                    ;
-                });
-
-
-                console.log('I am about to render');
-
-                var r = render(url, options).on('error', function(err) {
-                    console.log('I errored: ', err.toString());
-                    reply({stream: null, err: err.toString()});
-
-                }).pipe(ws);
+                })
 
 
 
@@ -132,10 +101,6 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
 
                 fileName += ".pdf";
 
-                var options = pdfService.getDefaultOptions();
-
-                var render = phantom(options);
-
                 var url = data.url + "/#/reporting";
                 url = url.replace("https://","http://");
 
@@ -148,40 +113,17 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "settings", encodeURIComponent(JSON.stringify(data.settings))),
                 ];
 
-                options.cookies = cookies;
-
-
-                var MemoryStream = require('memory-stream');
-
-                var ws = new MemoryStream();
-
-
-                ws.on('finish', function () {
-                    var newBuffer = Buffer.concat(ws.buffer);
+                pdfService.getPdf(url,cookies, function(buffer) {
                     if (data.progressId) {
                         ProgressService.setComplete(data.progressId)
                     }
 
-                    var JSONB = require('json-buffer')
-
                     console.log(data.propertyIds, " pdf reporting ended");
-                    reply({stream: JSONB.stringify(newBuffer), filename: fileName});
+                    reply({stream: JSONB.stringify(buffer), filename: fileName});
                     full = null;
                     cookies = null;
-                    r = null;
-                    render = null;
-                    options = null;
                     properties = null;
-                    newBuffer = null;
-                    settings.PDF_HIT_COUNT++;
-                    ;
-                });
-
-                var r = render(url, options).on('error', function(err) {
-                    console.log('I errored: ', err.toString());
-                    reply({stream: null, err: err.toString()});
-
-                }).pipe(ws);
+                })
             });
         });
     }

@@ -156,3 +156,7 @@
     border-top: inherit !important;
 }
 
+@media print {
+    .table {border-collapse: separate !important}
+    .maingrid.wrapper.panel .tfoot td {border-top:inherit}
+}
