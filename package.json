@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.13.7",
+  "version": "2.13.8",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -53,8 +53,7 @@
     "nodemailer": "^4.0.1",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "password-generator": "^2.1.0",
-    "phantom-render-stream": "^1.7.1",
-    "phantomjs-polyfill": "0.0.2",
+    "puppeteer": "^1.0.0",
     "raygun": "^0.9.1",
     "redis": "^2.7.1",
     "request": "^2.81.0",
