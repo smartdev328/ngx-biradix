@@ -1,7 +1,6 @@
 var _ = require("lodash")
 var async = require("async");
 var moment = require('moment')
-var phantom = require('phantom-render-stream');
 var request = require('request')
 var ProgressService = require('../../progress/services/progressService')
 var organizationService = require('../../organizations/services/organizationService')
