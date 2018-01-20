@@ -1,5 +1,5 @@
 var puppeteer = require('puppeteer');
-
+var browser;
 module.exports = {
     getCookie : function(hostname,name,value) {
         return   {
@@ -13,11 +13,25 @@ module.exports = {
         }
     },
 
-    getPdf : function(url, cookies, callback) {
+    getBrowser : function(callback) {
+        if (browser) {
+            return callback(browser);
+        }
         puppeteer.launch({
             headless: true,
             args: ['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox']
-        }).then((browser) => {
+        }).then((newBrowser) => {
+            browser = newBrowser;
+            callback(browser);
+            browser.on("disconnected", () => {
+                browser = null;
+                console.log('disconnected');
+            })
+        });
+    },
+    getPdf : function(url, cookies, callback) {
+
+        this.getBrowser(browser => {
             browser.newPage().then(page => {
                 page.setUserAgent("PhantomJS").then(()=>
                     page.setCookie(...cookies)
@@ -28,7 +42,7 @@ module.exports = {
                                         .then(()=>page.pdf({format: "A4", printBackground: true})
                                             .then((pdf) => {
                                                 callback(pdf)
-                                                browser.close();
+                                                page.close();
                                             })
                                         )
                                     )
@@ -38,7 +52,6 @@ module.exports = {
                 )
 
             });
-        });
-
+        })
     }
 }
