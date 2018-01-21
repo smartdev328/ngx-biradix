@@ -39,20 +39,20 @@ module.exports = {
                     .then(()=>page.setCookie(...cookies)
                         .then(()=>page.emulateMedia('print')
                             .then(()=> {
-                                // console.log("Before Goto: " + (new Date().getTime() - timer) + "ms");
-                                //     timer = new Date().getTime();
+                                console.log("PDF Variables: " + (new Date().getTime() - timer) + "ms");
+                                    timer = new Date().getTime();
                                 page.goto(url)
                                         .then(()=> {
-                                            console.log("After Goto: " + (new Date().getTime() - timer) + "ms");
+                                            console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
                                             timer = new Date().getTime();
                                             page.waitForFunction('window.renderable == true')
                                                     .then(()=> {
-                                                        // console.log("Before PDF: " + (new Date().getTime() - timer) + "ms");
-                                                        // timer = new Date().getTime();
+                                                        console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
+                                                        timer = new Date().getTime();
 
                                                         page.pdf({format: "A4", printBackground: true})
                                                                 .then((pdf) => {
-                                                                    console.log("After PDF: " + (new Date().getTime() - timer) + "ms");
+                                                                    console.log("PDF Print: " + (new Date().getTime() - timer) + "ms");
                                                                     callback(pdf)
                                                                     page.close();
                                                                 })
