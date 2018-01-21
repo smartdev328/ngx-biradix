@@ -19,7 +19,7 @@ module.exports = {
         }
         puppeteer.launch({
             headless: true,
-            args: ['--disable-gpu', '--no-sandbox', '--disable-setuid-sandbox']
+            args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox']
         }).then((newBrowser) => {
             browser = newBrowser;
             callback(browser);
