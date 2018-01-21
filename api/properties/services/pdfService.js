@@ -30,26 +30,40 @@ module.exports = {
         });
     },
     getPdf : function(url, cookies, callback) {
-
+        var timer = new Date().getTime();
         this.getBrowser(browser => {
+            // console.log("Got Browser: " + (new Date().getTime() - timer) + "ms");
+            // timer = new Date().getTime();
             browser.newPage().then(page => {
-                page.setUserAgent("PhantomJS").then(()=>
-                    page.setCookie(...cookies)
+                page.setUserAgent("PhantomJS")
+                    .then(()=>page.setCookie(...cookies)
                         .then(()=>page.emulateMedia('print')
-                            .then(()=>page.goto(url,{waitUntil: 'networkidle0'})
-                                // .then(()=>page.addStyleTag({content : "@media print {.table {border-collapse: separate !important}} .maingrid.wrapper.panel .tfoot td {border-top:inherit}"})
-                                    .then(()=> page.waitForFunction('window.renderable == true')
-                                        .then(()=>page.pdf({format: "A4", printBackground: true})
-                                            .then((pdf) => {
-                                                callback(pdf)
-                                                page.close();
-                                            })
+                            .then(()=> {
+                                // console.log("Before Goto: " + (new Date().getTime() - timer) + "ms");
+                                //     timer = new Date().getTime();
+                                page.goto(url)
+                                        .then(()=> {
+                                            console.log("After Goto: " + (new Date().getTime() - timer) + "ms");
+                                            timer = new Date().getTime();
+                                            page.waitForFunction('window.renderable == true')
+                                                    .then(()=> {
+                                                        // console.log("Before PDF: " + (new Date().getTime() - timer) + "ms");
+                                                        // timer = new Date().getTime();
+
+                                                        page.pdf({format: "A4", printBackground: true})
+                                                                .then((pdf) => {
+                                                                    console.log("After PDF: " + (new Date().getTime() - timer) + "ms");
+                                                                    callback(pdf)
+                                                                    page.close();
+                                                                })
+                                                        }
+                                                    )
+                                            }
                                         )
-                                    )
-                                // )
+                                    }
+                                )
                             )
                         )
-                )
 
             });
         })
