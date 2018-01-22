@@ -17,7 +17,7 @@ module.exports = {
         if (browser) {
             return callback(browser);
         }
-        puppeteer.launch({
+        puppeteer.connect({
             browserWSEndpoint: 'wss://chrome.browserless.io'
             // headless: true,
             // args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
