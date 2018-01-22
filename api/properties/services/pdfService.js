@@ -1,5 +1,6 @@
 var puppeteer = require('puppeteer');
 var browser;
+var settings = require("../../../config/settings")
 module.exports = {
     getCookie : function(hostname,name,value) {
         return   {
@@ -13,27 +14,42 @@ module.exports = {
         }
     },
 
-    getBrowser : function(callback) {
+    getBrowser : function(url, callback) {
         if (browser) {
             return callback(browser);
         }
-        puppeteer.connect({
-            browserWSEndpoint: 'wss://chrome.browserless.io'
-            // headless: true,
-            // args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
-            // slowMo: 0
-        }).then((newBrowser) => {
-            browser = newBrowser;
-            callback(browser);
-            browser.on("disconnected", () => {
-                browser = null;
-                console.log('disconnected');
-            })
-        });
+
+        if (url.indexOf("localhost") > -1) {
+            puppeteer.launch({
+                headless: true,
+                args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
+                slowMo: 0
+            }).then((newBrowser) => {
+                browser = newBrowser;
+                callback(browser);
+                browser.on("disconnected", () => {
+                    browser = null;
+                    console.log('disconnected');
+                })
+            });
+        }
+        else {
+            puppeteer.connect({
+                browserWSEndpoint: 'wss://chrome.browserless.io?token=' + settings.BROWSERLESS_IO_KEY
+            }).then((newBrowser) => {
+                browser = newBrowser;
+                callback(browser);
+                browser.on("disconnected", () => {
+                    browser = null;
+                    console.log('disconnected');
+                })
+            });
+        }
+
     },
     getPdf : function(url, cookies, callback) {
         var timer = new Date().getTime();
-        this.getBrowser(browser => {
+        this.getBrowser(url,browser => {
             // console.log("Got Browser: " + (new Date().getTime() - timer) + "ms");
             // timer = new Date().getTime();
             browser.newPage().then(page => {

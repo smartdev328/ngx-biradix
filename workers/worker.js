@@ -46,6 +46,8 @@ d.run(function() {
                 require('../api/properties/consumers/historyCompareConsumer');
                 require('../api/properties/consumers/notificationsConsumer');
                 require('../api/propertyusers/consumers/guestsConsumer');
+                require('../api/properties/consumers/pdfConsumer')
+                require('../api/status/consumers/phantomConsumer')
             }
 
         }
