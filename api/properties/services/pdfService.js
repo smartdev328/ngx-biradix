@@ -46,7 +46,7 @@ module.exports = {
                                         .then(()=> {
                                             console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
                                             timer = new Date().getTime();
-                                            page.waitFor(1500)
+                                            page.waitForFunction('window.renderable == true')
                                                     .then(()=> {
                                                         console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
                                                         timer = new Date().getTime();
