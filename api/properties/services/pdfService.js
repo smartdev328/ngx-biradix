@@ -19,7 +19,8 @@ module.exports = {
         }
         puppeteer.launch({
             headless: true,
-            args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox']
+            args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
+            slowMo: 0
         }).then((newBrowser) => {
             browser = newBrowser;
             callback(browser);
@@ -45,7 +46,7 @@ module.exports = {
                                         .then(()=> {
                                             console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
                                             timer = new Date().getTime();
-                                            page.waitForFunction('window.renderable == true')
+                                            page.waitFor(1500)
                                                     .then(()=> {
                                                         console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
                                                         timer = new Date().getTime();
