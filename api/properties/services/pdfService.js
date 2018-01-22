@@ -18,9 +18,10 @@ module.exports = {
             return callback(browser);
         }
         puppeteer.launch({
-            headless: true,
-            args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
-            slowMo: 0
+            browserWSEndpoint: 'wss://chrome.browserless.io'
+            // headless: true,
+            // args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
+            // slowMo: 0
         }).then((newBrowser) => {
             browser = newBrowser;
             callback(browser);
