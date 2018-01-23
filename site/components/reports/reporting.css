@@ -9,6 +9,9 @@
     padding-top:5px !important;
 }
 
+.table > tbody > tr.thead + tr td.fp-header:first-child  {
+    border-top: 2px solid #ddd !important;
+}
 .subject td {
     font-weight: bold !important;
     color:#4460a9 !important;
