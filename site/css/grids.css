@@ -172,4 +172,8 @@
         padding-bottom:0px;
     }
 
+    .maingrid.wrapper.panel .tfoot {
+        border-top: 2px solid #ddd;
+    }
+
 }
