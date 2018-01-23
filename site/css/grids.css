@@ -14,7 +14,7 @@
 .sortablegrid .thead
 {
     background-color: #f9f9f9 !important;
-    border-bottom: 2px solid #ddd;
+    /*border-bottom: 2px solid #ddd;*/
 }
 
 @media all and (min-width: 0px) and (max-width: 530px) {
@@ -156,7 +156,20 @@
     border-top: inherit !important;
 }
 
+.table > tbody > tr.thead + tr td {
+    border-top: 0px !important;
+}
+
 @media print {
     .table {border-collapse: separate !important}
     .maingrid.wrapper.panel .tfoot td {border-top:inherit}
+
+    .table > tbody > tr.thead + tr td {
+        border-top: 2px solid #ddd !important
+    }
+
+    .maingrid.wrapper.panel {
+        padding-bottom:0px;
+    }
+
 }
