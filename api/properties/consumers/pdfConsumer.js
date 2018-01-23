@@ -7,6 +7,7 @@ var moment = require('moment')
 var AuditService = require('../../audit/services/auditService')
 var ProgressService = require('../../progress/services/progressService')
 var JSONB = require('json-buffer')
+var errors = require("../../../config/error")
 
 bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
     console.log(data.id + " pdf started");
@@ -53,13 +54,21 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     context: data.context
                 })
 
-                pdfService.getPdf(url,cookies, function(buffer) {
+                pdfService.getPdf(url,cookies, function(err,buffer) {
                     if (data.progressId) {
                         ProgressService.setComplete(data.progressId)
                     }
 
                     console.log(data.id + " pdf ended");
-                    reply({stream: JSONB.stringify(buffer), filename: fileName});
+
+                    if (err) {
+                        console.log('I failed render');
+                        reply({stream: null, err: err});
+                        errors.send(err);
+                    }
+                    else {
+                        reply({stream: JSONB.stringify(buffer), filename: fileName});
+                    }
                     full = null;
                     cookies = null;
                     properties = null;
@@ -113,13 +122,20 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "settings", encodeURIComponent(JSON.stringify(data.settings))),
                 ];
 
-                pdfService.getPdf(url,cookies, function(buffer) {
+                pdfService.getPdf(url,cookies, function(err,buffer) {
                     if (data.progressId) {
                         ProgressService.setComplete(data.progressId)
                     }
 
                     console.log(data.propertyIds, " pdf reporting ended");
-                    reply({stream: JSONB.stringify(buffer), filename: fileName});
+                    if (err) {
+                        console.log('I failed render', err);
+                        reply({stream: null, err: err});
+                        errors.send(err);
+                    }
+                    else {
+                        reply({stream: JSONB.stringify(buffer), filename: fileName});
+                    }
                     full = null;
                     cookies = null;
                     properties = null;

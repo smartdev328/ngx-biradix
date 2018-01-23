@@ -3,17 +3,17 @@
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
-            <div class="header" style="height:47px"></div>
+            <div class="header" style="height:47px !important;"></div>
             <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
                 <tbody>
                 <tr class="thead">
-        <th style="height:45px;max-height:45px">
+        <th style="height:45px">
             Community Amenities
         </th>
-        <th class="center"  style="height:45px;max-height:45px">
+        <th class="center">
             <div style="max-height:34px;overflow-y:visible">{{subject.name}}</div>
         </th>
-        <th ng-repeat="comp in comps" class="center"  style="height:45px;max-height:45px">
+        <th ng-repeat="comp in comps" class="center">
             <div style="max-height:34px;overflow-y:visible">{{comp.name}}</div>
         </th>
     </tr>

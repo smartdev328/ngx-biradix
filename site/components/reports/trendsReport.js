@@ -25,7 +25,7 @@ define([
                     if ($scope.report) {
 
                         var height = 300;
-                        var printWidth = 1200;
+                        var printWidth = 1100;
 
                         $scope.options.nersqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'nersqft', title: "Net Effective Rent / Sqft", emptyMaxX: 1}
                         $scope.options.ner = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'ner', title: "Net Effective Rent", emptyMaxX: 1000}

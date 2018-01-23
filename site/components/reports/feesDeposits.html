@@ -3,18 +3,18 @@
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
-            <div class="header" style="height:47px"></div>
+            <div class="header" style="height:47px !important;"></div>
             <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
                 <tbody>
                 <tr class="thead">
-                    <th style="height:45px;max-height:45px">
+                    <th style="height:45px;">
             Fees / Deposits
         </th>
         <th>
-            <div style="max-height:34px;overflow-y:visible">{{subject.name}}</div>
+            <div style="overflow-y:visible">{{subject.name}}</div>
         </th>
         <th ng-repeat="comp in comps">
-            <div style="max-height:34px;overflow-y:visible">{{comp.name}}</div>
+            <div style="overflow-y:visible">{{comp.name}}</div>
         </th>
     </tr>
         <tr ng-repeat-start="amenity in uniqueAmenities">

@@ -493,7 +493,7 @@ define([
 
             },
             template:
-                "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px', 'width': '85%'}\" class=\"visible-print-block\"></div>"+
+                "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px', 'width': options.printWidth + 'px'}\" class=\"visible-print-block\"></div>"+
                 "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>" +
                 "<div ng-if='!settings.graphs' ng-include=\"trendsTable\"></div>"
         };

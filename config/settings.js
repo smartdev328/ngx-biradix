@@ -25,17 +25,14 @@ module.exports = {
     GUESTS_QUEUE : "jobs.propertyusers.guests",
     IMPORT_QUEUE : "jobs.temp.import",
     IMPORT_USERS_QUEUE : "jobs.temp.importUsers",
-    RUN_PHANTOM : process.env.RUN_PHANTOM || "web",
     RUN_DASHBOARD : process.env.RUN_DASHBOARD || "web",
     HEROKU_API_KEY : process.env.HEROKU_API_KEY,
     HEROKU_APP : process.env.HEROKU_APP || "birdaixplatform-dev",
-    PDF_HIT_COUNT: 0,
-    PDF_HIT_RESTART: process.env.PDF_HIT_RESTART || 2,
-    PDF_WORKERS: process.env.PDF_WORKERS || 3,
     SEED_DEMO : process.env.SEED_DEMO == "1" || true,
     SEED_TEST : (process.env.SEED_TEST || '0' )== "1",
     PROJECT_DIR : __dirname,
     MAINTENANCE_MODE : (process.env.MAINTENANCE_MODE || '0' )== "1",
     AWS_S3_BUCKET_IMAGES: process.env.AWS_S3_BUCKET_IMAGES || "biradix-nonprod-mediastore",
     AWS_S3_CDN_IMAGES: process.env.AWS_S3_CDN_IMAGES || "d138dweu4olq2b.cloudfront.net",
+    BROWSERLESS_IO_KEY : process.env.BROWSERLESS_IO_KEY || "4ce2ee59-f647-4371-8412-aeb846bfb536"
 }

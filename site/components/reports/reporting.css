@@ -9,6 +9,9 @@
     padding-top:5px !important;
 }
 
+.table > tbody > tr.thead + tr td.fp-header:first-child  {
+    border-top: 2px solid #ddd !important;
+}
 .subject td {
     font-weight: bold !important;
     color:#4460a9 !important;
@@ -58,6 +61,11 @@
         color:black !important;
         font-weight: bold !important;
     }
+
+    .report .maingrid.wrapper.panel .subtotal TD {
+        border-top: 2px solid #aaa;
+    }
+
 
     .maingrid.wrapper.panel .danger{
         color:red !important;
