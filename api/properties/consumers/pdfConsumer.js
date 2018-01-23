@@ -7,6 +7,7 @@ var moment = require('moment')
 var AuditService = require('../../audit/services/auditService')
 var ProgressService = require('../../progress/services/progressService')
 var JSONB = require('json-buffer')
+var errors = require("../../../config/error")
 
 bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
     console.log(data.id + " pdf started");
@@ -63,6 +64,7 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     if (err) {
                         console.log('I failed render');
                         reply({stream: null, err: err});
+                        errors.send(err);
                     }
                     else {
                         reply({stream: JSONB.stringify(buffer), filename: fileName});
@@ -129,6 +131,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     if (err) {
                         console.log('I failed render', err);
                         reply({stream: null, err: err});
+                        errors.send(err);
                     }
                     else {
                         reply({stream: JSONB.stringify(buffer), filename: fileName});
