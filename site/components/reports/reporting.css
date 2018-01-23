@@ -60,6 +60,7 @@
     .report .maingrid.wrapper.panel .subtotal TD SPAN{
         color:black !important;
         font-weight: bold !important;
+        border-top: 2px solid #aaa;
     }
 
     .maingrid.wrapper.panel .danger{

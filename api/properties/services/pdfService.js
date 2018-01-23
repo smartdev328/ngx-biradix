@@ -15,9 +15,9 @@ module.exports = {
     },
 
     getBrowser : function(url, callback) {
-        if (browser) {
-            return callback(browser);
-        }
+        // if (browser) {
+        //     return callback(browser);
+        // }
 
         if (url.indexOf("localhost") > -1) {
             puppeteer.launch({
@@ -26,30 +26,34 @@ module.exports = {
                 slowMo: 0
             }).then((newBrowser) => {
                 browser = newBrowser;
-                callback(browser);
-                browser.on("disconnected", () => {
-                    browser = null;
-                    console.log('disconnected');
-                })
-            });
+                callback(null,browser);
+                // browser.on("disconnected", () => {
+                //     browser = null;
+                //     console.log('disconnected');
+                // })
+            }).catch(err=> {callback(err,null);})
         }
         else {
             puppeteer.connect({
                 browserWSEndpoint: 'wss://chrome.browserless.io?token=' + settings.BROWSERLESS_IO_KEY
             }).then((newBrowser) => {
                 browser = newBrowser;
-                callback(browser);
-                browser.on("disconnected", () => {
-                    browser = null;
-                    console.log('disconnected');
-                })
-            });
+                callback(null,browser);
+                // browser.on("disconnected", () => {
+                //     browser = null;
+                //     console.log('disconnected');
+                // })
+            }).catch(err=> {callback(err,null);})
         }
 
     },
     getPdf : function(url, cookies, callback) {
         var timer = new Date().getTime();
-        this.getBrowser(url,browser => {
+        this.getBrowser(url,(err,browser) => {
+
+            if (err) {
+                return callback(err,null);
+            }
             // console.log("Got Browser: " + (new Date().getTime() - timer) + "ms");
             // timer = new Date().getTime();
             browser.newPage().then(page => {
@@ -57,33 +61,30 @@ module.exports = {
                     .then(()=>page.setCookie(...cookies)
                         .then(()=>page.emulateMedia('print')
                             .then(()=> {
-                                console.log("PDF Variables: " + (new Date().getTime() - timer) + "ms");
+                                    console.log("PDF Variables: " + (new Date().getTime() - timer) + "ms");
                                     timer = new Date().getTime();
-                                page.goto(url)
+                                    page.goto(url)
                                         .then(()=> {
-                                            console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
-                                            timer = new Date().getTime();
-                                            page.waitForFunction('window.renderable == true')
+                                                console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
+                                                timer = new Date().getTime();
+                                                page.waitForFunction('window.renderable == true')
                                                     .then(()=> {
-                                                        console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
-                                                        timer = new Date().getTime();
+                                                            console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
+                                                            timer = new Date().getTime();
 
-                                                        page.pdf({format: "A4", printBackground: true})
+                                                            page.pdf({format: "A4", printBackground: true})
                                                                 .then((pdf) => {
                                                                     console.log("PDF Print: " + (new Date().getTime() - timer) + "ms");
-                                                                    callback(pdf)
-                                                                    page.close();
-                                                                })
+                                                                    callback(null,pdf)
+                                                                    browser.close();
+                                                                }).catch(err=> {callback(err,null);})
                                                         }
-                                                    )
-                                            }
-                                        )
-                                    }
-                                )
-                            )
-                        )
-
-            });
+                                                    ).catch(err=> {callback(err,null);})
+                                            }).catch(err=> {callback(err,null);})
+                                }).catch(err=> {callback(err,null);})
+                        ).catch(err=> {callback(err,null);})
+                    ).catch(err=> {callback(err,null);})
+            }).catch(err=> {callback(err,null);})
         })
     }
 }
