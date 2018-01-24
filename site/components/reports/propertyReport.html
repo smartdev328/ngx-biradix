@@ -190,12 +190,14 @@
             </div>
             <div class="panel-body">
                 <hr>
-                <div  ng-if="profileSettings.graphs">
+                <div ng-if="profileSettings.graphs">
                     <time-series options="profile.nerData"></time-series>
+                    <hr style="margin:10px 0px 20px 0px !important;">
                 </div>
 
                 <div ng-if="!profileSettings.graphs">
                     <table-view data="profile.otherTable" columns="profile.nerKeys"></table-view>
+                    <div style="margin:10px 0px 20px 0px !important;"></div>
                 </div>
 
                 <hr>

@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.directive('rankingsReport', function () {
+angular.module('biradix.global').directive('rankingsReport', function () {
         return {
             restrict: 'E',
             scope: {
@@ -167,5 +163,3 @@ define([
             templateUrl: '/components/reports/rankings.html?bust=' + version
         };
     })
-
-})

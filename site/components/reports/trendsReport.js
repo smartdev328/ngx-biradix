@@ -1,9 +1,4 @@
-'use strict';
-define([
-    'app',
-    './trendsTimeseries.js'
-], function (app) {
-    app.directive('trendsReport', function () {
+angular.module('biradix.global').directive('trendsReport', function () {
         return {
             restrict: 'E',
             scope: {
@@ -48,5 +43,3 @@ define([
             templateUrl: '/components/reports/trendsReport.html?bust=' + version
         };
     })
-
-})

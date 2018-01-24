@@ -1,15 +1,6 @@
 'use strict';
 define([
-    'app',
-    '../../components/reports/communityAmenities.js',
-    '../../components/reports/locationAmenities.js',
-    '../../components/reports/feesDeposits.js',
-    '../../components/reports/propertyRankings.js',
-    '../../components/reports/propertyRankingsSummary.js',
-    '../../components/reports/propertyStatus.js',
-    '../../components/reports/propertyReport.js',
-    '../../components/reports/trendsReport.js',
-    '../../components/reports/concession.js'
+    'app'
 ], function (app) {
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q'
@@ -70,7 +61,9 @@ define([
 
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
 
-                $scope.loadSaved();
+                if (!phantom) {
+                    $scope.loadSaved();
+                }
 
                 $scope.meLoaded = true;
 
