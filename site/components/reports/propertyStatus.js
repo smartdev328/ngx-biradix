@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.directive('propertyStatus', function () {
+angular.module('biradix.global').directive('propertyStatus', function () {
         return {
             restrict: 'E',
             scope: {
@@ -15,5 +11,3 @@ define([
             templateUrl: '/components/reports/propertyStatus.html?bust=' + version
         };
     })
-
-})

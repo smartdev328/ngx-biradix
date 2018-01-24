@@ -89,7 +89,18 @@ gulp.task('globaljs', function() {
         , './site/components/jstimezonedetect/jstz.min.js'
 
         , './site/app/rootController.js'
-        , './site/app/marketSurvey/marketSurveyController.js'
+        , './site/app/marketSurvey/marketSurveyController.js',
+
+
+        './site/components/reports/communityAmenities.js',
+        './site/components/reports/locationAmenities.js',
+        './site/components/reports/feesDeposits.js',
+        './site/components/reports/propertyRankings.js',
+        './site/components/reports/propertyRankingsSummary.js',
+        './site/components/reports/propertyStatus.js',
+        './site/components/reports/propertyReport.js',
+        './site/components/reports/trendsReport.js',
+        './site/components/reports/concession.js'        
     ])
         .pipe(concat('global.js'))
         .pipe(gulp.dest('./dist/'))

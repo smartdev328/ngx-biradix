@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app'
-], function (app) {
-    app.directive('concession', function () {
+angular.module('biradix.global').directive('concession', function () {
         return {
             restrict: 'E',
             scope: {
@@ -16,5 +12,3 @@ define([
             templateUrl: '/components/reports/concession.html?bust=' + version
         };
     })
-
-})

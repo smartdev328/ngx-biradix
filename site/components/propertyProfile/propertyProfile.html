@@ -3,7 +3,7 @@
         padding: 2px 6px 2px 0px
     }
 </style>
-<div ng-if="show.picture && property.media.length > 0" style="margin-bottom:20px;text-align:center">
+<div ng-if="show.picture && property.media.length > 0 && !phantom" style="margin-bottom:20px;text-align:center">
     <img ng-click="gallery_options.show = true" ng-src="{{property.media[0].url}}"
          ng-style="{margin:'0px auto', cursor:'pointer', border: '1px solid #aaa', 'max-width' : '100%', 'max-height' : '300px'}"
     >

@@ -58,32 +58,47 @@ module.exports = {
             // timer = new Date().getTime();
             browser.newPage().then(page => {
                 page.setUserAgent("PhantomJS")
-                    .then(()=>page.setCookie(...cookies)
-                        .then(()=>page.emulateMedia('print')
-                            .then(()=> {
-                                    console.log("PDF Variables: " + (new Date().getTime() - timer) + "ms");
-                                    timer = new Date().getTime();
-                                    page.goto(url)
-                                        .then(()=> {
-                                                console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
-                                                timer = new Date().getTime();
-                                                page.waitForFunction('window.renderable == true')
-                                                    .then(()=> {
-                                                            console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
-                                                            timer = new Date().getTime();
+                    .then(()=>page.setCookie(...cookies)).catch(err=> {callback(err,null);})
+                    .then(()=>page.emulateMedia('print')).catch(err=> {callback(err,null);})
+                    .then(()=> {
+                        page.setRequestInterception(true)
 
-                                                            page.pdf({format: "A4", printBackground: true})
-                                                                .then((pdf) => {
-                                                                    console.log("PDF Print: " + (new Date().getTime() - timer) + "ms");
-                                                                    callback(null,pdf)
-                                                                    browser.close();
-                                                                }).catch(err=> {callback(err,null);})
-                                                        }
-                                                    ).catch(err=> {callback(err,null);})
+                        page.on('request', interceptedRequest => {
+
+                            if (
+                                interceptedRequest.url().indexOf("www.google-analytics") > -1
+                                ||
+                                interceptedRequest.url().indexOf("images/squares.gif") > -1
+                            ) {
+                                interceptedRequest.abort();
+                            }
+                            else {
+                                // console.log(interceptedRequest.url());
+                                interceptedRequest.continue();
+                            }
+                        });
+                    }).catch(err=> {callback(err,null);})
+                    .then(()=> {
+                        console.log("PDF Variables: " + (new Date().getTime() - timer) + "ms");
+                        timer = new Date().getTime();
+                        page.goto(url)
+                            .then(()=> {
+                                console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
+                                timer = new Date().getTime();
+                                page.waitForFunction('window.renderable == true')
+                                    .then(()=> {
+                                        console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
+                                        timer = new Date().getTime();
+
+                                        page.pdf({format: "A4", printBackground: true})
+                                            .then((pdf) => {
+                                                console.log("PDF Print: " + (new Date().getTime() - timer) + "ms");
+                                                callback(null,pdf)
+                                                browser.close();
                                             }).catch(err=> {callback(err,null);})
-                                }).catch(err=> {callback(err,null);})
-                        ).catch(err=> {callback(err,null);})
-                    ).catch(err=> {callback(err,null);})
+                                    }).catch(err=> {callback(err,null);})
+                            }).catch(err=> {callback(err,null);})
+                    }).catch(err=> {callback(err,null);})
             }).catch(err=> {callback(err,null);})
         })
     }

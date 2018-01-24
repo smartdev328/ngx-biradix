@@ -10,6 +10,7 @@ angular.module('biradix.global').directive('propertyProfile', function () {
                 if ($scope.show && typeof $scope.show == "string") {
                     $scope.show = JSON.parse($scope.show);
                 }
+                $scope.phantom = phantom;
             },
             templateUrl: '/components/propertyProfile/propertyProfile.html?bust=' + version
         };
