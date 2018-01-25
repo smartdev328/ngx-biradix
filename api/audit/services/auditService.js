@@ -263,6 +263,13 @@ function QueryBuilder (criteria, userids, propertyids, compids) {
     }
 
 
+    if (criteria.search) {
+        query = query.or([
+            {"description": {$regex: new RegExp(criteria.search, "i")}},
+            {"data.description": {$regex: new RegExp(criteria.search, "i")}},
+        ])
+    }
+
 
     return query;
 }

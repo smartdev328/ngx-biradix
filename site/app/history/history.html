@@ -36,10 +36,13 @@
                     ng-options="item for item in limits">
             </select>
         </div>
-
+        <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
+            Search: <Br>
+            <input type="text" class="form-control input-sm" ng-model="options.search">
+        </div>
         <div class="col-xs-1" style="height:55px">
             <br>
-            <button class="btn btn-primary btn-sm" ng-click="reload()">Filter</button>
+            <button class="btn btn-primary btn-sm" ng-click="resetPager()">Filter</button>
         </div>
     </div>
 
