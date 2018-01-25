@@ -108,6 +108,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             + "," + $scope.options.loc[1]
                             + "&zoom=" + $scope.getZoom($scope.options.points)
                             + "&size=" + $scope.options.printWidth + "x" + $scope.options.height
+                            + "&key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU"
 
                         $scope.options.points.forEach(function(p) {
                             $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];

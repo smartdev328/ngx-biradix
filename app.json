@@ -10,6 +10,9 @@
     "mode": {
       "value": "production"
     },
+    "NODE_ENV": {
+      "value": "production"
+    },
     "EXCEL_URL": {
       "value": "http://biradixsheets.apphb.com/excel"
     },
