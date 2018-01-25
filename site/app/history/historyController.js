@@ -31,6 +31,7 @@ define([
             selectedEndDate : null
         }
 
+        $scope.options = {search : ""};
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
@@ -96,6 +97,7 @@ define([
                 , types: types
                 , users: users
                 , properties: properties
+                , search: $scope.options.search
                 , daterange :
                 {
                     daterange: $scope.daterange.selectedRange,
