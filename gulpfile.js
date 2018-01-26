@@ -100,6 +100,7 @@ gulp.task('globaljs', function() {
         './site/components/reports/propertyStatus.js',
         './site/components/reports/propertyReport.js',
         './site/components/reports/trendsReport.js',
+        './site/components/reports/trendsTimeseries.js',
         './site/components/reports/concession.js'        
     ])
         .pipe(concat('global.js'))
