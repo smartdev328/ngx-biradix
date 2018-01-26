@@ -1,9 +1,4 @@
-'use strict';
-define([
-    'app'
-], function (app) {
-
-    app.directive('trendsTimeSeries', function () {
+angular.module('biradix.global').directive('trendsTimeSeries', function () {
         return {
             restrict: 'E',
             scope: {
@@ -498,5 +493,4 @@ define([
                 "<div ng-if='!settings.graphs' ng-include=\"trendsTable\"></div>"
         };
     })
-})
 
