@@ -144,10 +144,12 @@ $icon-size: 20;
     z-index: 1052 !important;
     color: white;
     cursor: pointer;
+}
+
+.gallery-overlay .gallerycontainer .fa {
     padding:5px;
     border-radius:5px;
     background-color: rgba(0, 0, 0, 0.6);
-
 }
 
 .gallery_tooltip .fa{
