@@ -83,7 +83,8 @@ define([
                 {label:'Amenities', template: 'amenities.html'},
                 {label:'Fees/Deposits', template: 'feesDeposits.html'},
                 {label:'Floor Plans', template: 'floorplans.html'},
-                {label:'More', template: 'notes.html'},
+                {label:'Pictures', template: 'pictures.html'},
+                {label:'Other', template: 'notes.html'},
             ]
 
 
@@ -831,7 +832,7 @@ define([
                         };
 
                         $scope.done = function() {
-                            toastr.success("<B>" + $scope.output.length +" image(s)</B> uploaded successfully!");
+                            toastr.success("<B>" + $scope.output.length +" image(s)</B> uploaded successfully!",{positionClass: 'toast-bottom-right'});
                             $uibModalInstance.close($scope.output);
                         }
                     }
@@ -841,8 +842,11 @@ define([
                     //Send successfully
                     $scope.property.media = $scope.property.media || [];
                     $scope.property.media = $scope.property.media.concat(newMedia);
-                    $scope.gallery_options.admin = true;
-                    $scope.gallery_options.show = true
+
+                    if ($scope.property.media.length > 1) {
+                        $scope.gallery_options.admin = true;
+                        $scope.gallery_options.show = true
+                    }
 
                 }, function () {
                     //Cancel

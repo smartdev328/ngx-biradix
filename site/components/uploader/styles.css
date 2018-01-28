@@ -64,6 +64,15 @@ uploader .preview .fa {
     text-shadow: 3px 3px 16px #272634;
 }
 
+uploader .preview .fa.fa-trash {
+    padding:5px;
+    border-radius:5px;
+    background-color: rgba(0, 0, 0, 0.6);
+
+}
+
+
+
 .uploader-overlay {
     position: fixed;
     top: 0;

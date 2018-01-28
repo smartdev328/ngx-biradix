@@ -53,6 +53,7 @@ angular.module('biradix.global').directive('gallery', function () {
 
 
             $scope.sortableOptions = {
+                items: "li:not(.not-sortable)",
                 tolerance: "pointer",
                 // sort: function( event, ui ) {
                 //     console.log(ui);
@@ -228,6 +229,13 @@ angular.module('biradix.global').directive('gallery', function () {
                     }, function () {
                     });
                 }
+            }
+
+            $scope.fakeThumbs = function() {
+                if ($scope.copy.length < 12) {
+                    return new Array(12-$scope.copy.length);
+                }
+                return [];
             }
         },
         templateUrl: '/components/gallery/template.html?bust=' + version

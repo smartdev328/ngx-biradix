@@ -61,6 +61,11 @@
             ></i>
             <i class="fa fa-trash delete" ng-show="options.admin" ng-click="remove($index)"></i>
         </li>
+        <li ng-repeat="i in fakeThumbs() track by $index"
+            ng-class="{'thumb': true, 'admin' : true,'not-sortable': true,'fake':true }"
+        >
+
+        </li>
    </ul>
 
     <ul class="gallerycontainer" ng-if="options.gallery && !options.admin">
