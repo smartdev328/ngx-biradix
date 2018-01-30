@@ -50,6 +50,7 @@
                 <div class="navbar-header" style="padding:5px 0px 10px 0px">
                     <a href="#/dashboard" class="hidden-sm"><img src="/images/organizations/<%=logoBig%>" class="logoBig" style="height:41px"></a>
                     <a href="#/dashboard" class="visible-sm"><img src="/images/organizations/<%=logoSmall%>" class="logoSmall" style="height:41px"></a>
+                    <span ng-if="env" style="color:red;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;">{{env}}</span>
                 </div>
 
                 <div class="pull-right" style="padding:15px 15px 0px 0px">
@@ -113,6 +114,7 @@
             <div class="container-fluid" id="mobile-nav"  style="margin-left:0px">
                 <div class="nav navbar-nav" style="padding:2px 0px 0px 10px;">
                     <a href="#/dashboard" class="hidden-sm"><img src="/images/organizations/<%=logoBig%>" class="logoBig" style="height:41px"></a>
+                    <span ng-if="env" style="color:red;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;">{{env}}</span>
                     <button type="button" style="padding: 5px 10px 7px 10px;margin-right:10px;margin-top:2px" class="pull-right" ng-click="toggle()">
                         <i class="fa fa-bars"></i>
                     </button>

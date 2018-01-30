@@ -167,7 +167,7 @@
                        ng-if="row.bounceReason"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
-                       uib-popover="Undeliverable: {{row.bounceReason}}"
+                       uib-popover-html="bouncePopup(row)"
                     ></i>
                 </td>
                 <td ng-show="show.role">{{row.role}}</td>

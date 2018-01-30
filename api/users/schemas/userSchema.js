@@ -41,6 +41,7 @@ var UserSchema = new Schema({
     },
     passwordUpdated: Boolean,
     bounceReason: String,
+    bounceDate: String,
     guestStats: Array,
     search: String
 });

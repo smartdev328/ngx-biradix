@@ -51,7 +51,6 @@
     <hr>
 </h2>
 
-<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
@@ -81,7 +80,7 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
             <table>
-                <tr>
+                <tr ng-if="me.permissions.indexOf('Admin') > -1">
                     <td class="center">
                         <input type="checkbox" ng-model="showActive" ng-click="calcActive()" id="showActive">
                     </td>
@@ -90,7 +89,7 @@
                     </Td>
                 </tr>
 
-                <tr>
+                <tr ng-if="me.permissions.indexOf('Admin') > -1">
                     <td class="center">
                         <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
                     </td>
