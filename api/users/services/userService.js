@@ -99,6 +99,7 @@ module.exports = {
             , function(err, user) {
                 if (user) {
                     user.bounceReason = reason;
+                    user.bounceDate = new Date();
                     user.save(function(err, newUser) {
 
                         getSysemUser(function(systemUser) {
@@ -234,7 +235,7 @@ module.exports = {
 
                 query = query.select(criteria.select);
             } else {
-                query = query.select('_id first last email active date bounceReason settings.defaultRole');
+                query = query.select('_id first last email active date bounceReason bounceDate settings.defaultRole');
             }
 
             query = query.sort("-date");

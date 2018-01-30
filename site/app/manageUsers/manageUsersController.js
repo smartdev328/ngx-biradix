@@ -129,6 +129,18 @@ define([
 
         }
 
+        $scope.bouncePopup = function(user) {
+            var str  = '<b>Undeliverable:</b> ' + user.bounceReason + '<br>';
+
+            if (user.bounceDate) {
+                str += '<B>Last Attempt:</B> ' + moment(new Date(user.bounceDate)).format("MM/DD/YYYY HH:MM") + '<br>'
+            }
+
+            return str;
+
+
+        }
+
         $scope.resetPager = function () {
             $scope.currentPage = 1;
         }

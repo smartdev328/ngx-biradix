@@ -134,7 +134,7 @@ define([
                         })
 
 
-                        $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || '') + x.name});
+                        $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || '') + x.name.toLowerCase()});
 
 
                         //$stateParams.property
