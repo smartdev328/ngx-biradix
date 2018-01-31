@@ -536,6 +536,20 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
             window.setTimeout(function() {$scope.alertsProperties()}, 60000);
 
         }
+
+    $rootScope.bouncePopup = function(user) {
+        var str  = '<b>Undeliverable:</b> ' + user.email + '<br>';
+
+        str += '<B>Error:</B> ' + user.bounceReason + '<br>'
+
+        if (user.bounceDate) {
+            str += '<B>Last Attempt:</B> ' + moment(new Date(user.bounceDate)).format("MM/DD/YYYY HH:MM") + '<br>'
+        }
+
+        return str;
+
+
+    }
     }]);
 
 
