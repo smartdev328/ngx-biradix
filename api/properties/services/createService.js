@@ -28,7 +28,7 @@ module.exports = {
             return;
         }
 
-        getHelpers(property, options, function(err, all) {
+        getHelpers(operator, property, options, function(err, all) {
             if (err) {
                 return callback([{msg: err}], null)
             }
@@ -277,7 +277,7 @@ module.exports = {
             return;
         }
 
-        getHelpers(property, {}, function(err, all)
+        getHelpers(operator, property, {}, function(err, all)
             {
                 if (err) {
                     return callback([{msg:err}],null)
@@ -485,7 +485,7 @@ function errorCheck(property, modelErrors) {
     })
 }
 
-var getHelpers = function(property, options, callback) {
+var getHelpers = function(operator, property, options, callback) {
     async.parallel({
         geo: function (callbackp) {
 
@@ -493,16 +493,24 @@ var getHelpers = function(property, options, callback) {
                 callbackp(null,{latitude:property.loc[0], longitude: property.loc[1]});
             }
             else {
-                GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, true, function (err, res, fromCache) {
+                var address = property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip;
+                GeocodeService.geocode(address, true, function (err, res, fromCache) {
                     // console.log(res[0].latitude, res[0].longitude);
+                    console.log("GEOCODE: 1 [error] ", address, ': ', err)
+                    console.log("GEOCODE: 1 [result] ", address, ': ', res)
+                    console.log("GEOCODE: 1 [fromCache] ", address, ': ', fromCache)
 
-                    if (!res || !res[0]) {
+                    if (!res || !res[0] || !res[0].latitude) {
                         //retry in 5 seconds
                         setTimeout(function() {
-                            GeocodeService.geocode(property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip, false, function (err, res, fromCache) {
+                            GeocodeService.geocode(address, false, function (err, res, fromCache) {
                                 // console.log(res[0].latitude, res[0].longitude);
 
-                                if (!res || !res[0]) {
+                                console.log("GEOCODE: 2 [error] ", address, ': ', err)
+                                console.log("GEOCODE: 2 [result] ", address, ': ', res)
+                                console.log("GEOCODE: 2 [fromCache] ", address, ': ', fromCache)
+
+                                if (!res || !res[0] || !res[0].latitude) {
 
                                     var email = {
                                         to: "alex@biradix.com,eugene@biradix.com",
@@ -513,7 +521,8 @@ var getHelpers = function(property, options, callback) {
                                             debug: JSON.stringify({
                                                 err: err,
                                                 res: res,
-                                                address: property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip
+                                                address: property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip,
+                                                user: operator
                                             })
                                         }
                                     };
