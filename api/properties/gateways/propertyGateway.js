@@ -166,10 +166,11 @@ Routes.post('/checkDupe', function(req, res) {
             PropertyService.search(req.user, {
                 limit: 1,
                 "active":true,
-                "geo":{"loc": [geo[0].latitude, geo[0].longitude], "distance": 0.1},
+                "geo":{"loc": [geo[0].latitude, geo[0].longitude], "distance": .1},
                 select: "name address city state zip totalUnits",
                 exclude: req.body.exclude
             }, function(err, props) {
+                console.log([geo[0].latitude, geo[0].longitude], props.length);
                 if (props && props[0]) {
 
                     var email = {
@@ -178,18 +179,10 @@ Routes.post('/checkDupe', function(req, res) {
                         logo: "https://platform.biradix.com/images/organizations/biradix.png",
                         template: 'debug.html',
                         templateData: {
-                            debug: JSON.stringify({
-                                user: req.user,
-                            }) + "<hr>" +
-                            JSON.stringify({
-                                adddress: req.body.address,
-                            }) + "<hr>"+
-                            JSON.stringify({
-                                subject: req.body.exclude,
-                            }) + "<hr>"+
-                            JSON.stringify({
-                                property: props[0]
-                            }) + "<hr>"
+                            debug: '<hr>User: ' + req.user.first + ' ' + req.user.last + " ("+ req.user.email +")<hr> \
+                            Search Address: "+req.body.address+"<hr> \
+                            Subject Property id: "+req.body.exclude+"<hr> \
+                            Existing Duplicate Property: "+props[0].name+"<hr>"
                         }
                     };
 

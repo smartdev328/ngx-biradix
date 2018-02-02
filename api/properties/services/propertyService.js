@@ -472,14 +472,17 @@ module.exports = {
             }
 
             if (criteria.geo) {
-                query = query.where({
+
+                var loc =
+                    {
                         'loc': {
                             $near: criteria.geo.loc,
-                            $maxDistance: criteria.geo.distance / 3963.2
-
+                            $maxDistance: criteria.geo.distance / 3963.2 //covert miles to radians
                         }
                     }
-                )
+
+
+                query = query.where(loc);
             }
 
             if (criteria.amenity) {

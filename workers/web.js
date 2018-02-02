@@ -169,10 +169,18 @@ d.run(function() {
                     // userService.getSystemUser(function (obj) {
                     //     var SystemUser = obj.user;
                     //
-                    //     userService.search(SystemUser, {}, function(err, users) {
-                    //         //console.log(users);
-                    //     })
+                    //     var PropertyService = require('../api/properties/services/propertyService')
+                    //     PropertyService.search(SystemUser, {
+                    //         limit: 10,
+                    //         "active":true,
+                    //         "geo":{"loc": [ 29.781522, -95.787601 ], "distance": 3},
+                    //         select: "name address city state zip totalUnits",
+                    //     }, function(err, props) {
+                    //         console.log(props);
+                    //     });
                     // });
+
+
                 }
 
 

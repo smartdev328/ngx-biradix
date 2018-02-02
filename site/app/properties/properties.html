@@ -82,7 +82,7 @@
             <table>
                 <tr ng-if="me.permissions.indexOf('Admin') > -1">
                     <td class="center">
-                        <input type="checkbox" ng-model="showActive" ng-click="calcActive()" id="showActive">
+                        <input type="checkbox" ng-model="options.showActive" ng-click="calcActive()" id="showActive">
                     </td>
                     <Td>
                         &nbsp;<label for="showActive" style="font-weight: normal">Active</label>
@@ -91,7 +91,7 @@
 
                 <tr ng-if="me.permissions.indexOf('Admin') > -1">
                     <td class="center">
-                        <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
+                        <input type="checkbox" ng-model="options.showInactive" ng-click="calcActive()" id="showInactive">
                     </td>
                     <Td>
                         &nbsp;<label for="showInactive" style="font-weight: normal">Inactive</label>

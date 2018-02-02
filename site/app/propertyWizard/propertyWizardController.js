@@ -483,6 +483,9 @@ define([
                     return;
                 }
 
+                if (!$scope.property.address) {
+                    return;
+                }
 
                 window.setTimeout(function() {
 

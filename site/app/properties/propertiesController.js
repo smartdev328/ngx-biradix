@@ -22,8 +22,11 @@ define([
         $scope.searchable = ['name', 'address', 'city', 'state', 'zip', 'company'];
         $scope.search['active'] = true;
 
-        $scope.showInactive = false;
-        $scope.showActive = true;
+        $scope.options = {
+            showInactive: false,
+            showActive: true
+        }
+
         $scope.adjustToSize = function(size) {
             var isTiny = size < 967;
             var isMedium  = size < 1167;
@@ -35,7 +38,7 @@ define([
                 city: !isMedium,
                 state: !isMedium,
                 zip: !isMedium,
-                active:  $scope.showInactive,
+                active:  $scope.options.showInactive,
                 totalUnits: true,
                 occupancy: true,
                 ner: !isMedium,
@@ -53,17 +56,17 @@ define([
         });
 
         $scope.calcActive = function() {
-            if ($scope.showActive === $scope.showInactive) {
+            if ($scope.options.showActive === $scope.options.showInactive) {
                 delete $scope.search.active;
             }
             else
             {
-                $scope.search.active = $scope.showActive;
+                $scope.search.active = $scope.options.showActive;
             }
 
             $scope.resetPager();
 
-            $scope.show.active =  $scope.showInactive;
+            $scope.show.active =  $scope.options.showInactive;
         }
         $scope.toggleOpen = function(row) {
             row.open = !(row.open || false);
