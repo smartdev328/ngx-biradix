@@ -438,20 +438,28 @@ define([
                 }
             });
 
-            $scope.placeToAddress = function(place) {
+            $scope.placeToAddress = function(place, from) {
                 if (place.formatted_phone_number) {
                     $scope.property.phone = place.formatted_phone_number;
                 }
 
                 if (place.address_components) {
                     var state = "";
+                    $scope.property.address = "";
                     place.address_components.forEach(function (c) {
                         switch (c.types[0]) {
                             case "street_number":
-                                $scope.property.address = c.short_name;
+                                if ($scope.property.address) {
+                                    $scope.property.address = c.short_name + " " + $scope.property.address;
+                                } else {
+                                    $scope.property.address = c.short_name;
+                                }
                                 break;
                             case "route":
-                                $scope.property.address += " " + c.long_name;
+                                if ($scope.property.address) {
+                                    $scope.property.address += " ";
+                                }
+                                $scope.property.address += c.long_name;
                                 break;
                             case "postal_code":
                                 $scope.property.zip = c.short_name;
@@ -468,8 +476,13 @@ define([
                     if (state != "") {
                         $scope.property.state = $scope.getSelectedState(state)
                     }
-                    //$scope.checkDupe();
+
+                    //ONly check dupe from here from places, not address auto compelte to prevent dupe
+                    if (from == 1) {
+                        $scope.checkDupe();
+                    }
                 }
+
             }
 
             $scope.dupeChecked = false;
@@ -483,11 +496,15 @@ define([
                     return;
                 }
 
+                if (!$scope.property.address) {
+                    return;
+                }
 
                 window.setTimeout(function() {
 
 
                     $propertyService.checkDupe({
+                        name: $scope.property.name,
                         address: $scope.property.address + ' ' + $scope.property.zip,
                         exclude: [subjectid]
                     }).then(function (response) {
@@ -526,7 +543,7 @@ define([
 
                 google.maps.event.addListener(autocomplete2, 'place_changed', function () {
                     var place = autocomplete2.getPlace();
-                    $scope.placeToAddress(place);
+                    $scope.placeToAddress(place,2);
                     var address = _.cloneDeep($scope.property.address);
                     $scope.googleBlur('#autocomplete2',address)
                 });
@@ -540,7 +557,7 @@ define([
                     var place = autocomplete.getPlace();
                     $scope.googleBlur('#autocomplete',place.name)
                     $scope.property.name=place.name;
-                    $scope.placeToAddress(place);
+                    $scope.placeToAddress(place,1);
                 });
             }
 
