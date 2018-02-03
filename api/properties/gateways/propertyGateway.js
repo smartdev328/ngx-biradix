@@ -173,24 +173,30 @@ Routes.post('/checkDupe', function(req, res) {
                 console.log([geo[0].latitude, geo[0].longitude], props.length);
                 if (props && props[0]) {
 
-                    var email = {
-                        to: "alex@biradix.com,eugene@biradix.com",
-                        subject: "Duplicate Comp Match",
-                        logo: "https://platform.biradix.com/images/organizations/biradix.png",
-                        template: 'debug.html',
-                        templateData: {
-                            debug: '<hr>User: ' + req.user.first + ' ' + req.user.last + " ("+ req.user.email +")<hr> \
-                            Search Address: "+req.body.address+"<hr> \
-                            Subject Property id: "+req.body.exclude+"<hr> \
-                            Existing Duplicate Property: "+props[0].name+"<hr>"
-                        }
-                    };
+                    PropertyService.search(req.user, {
+                        limit: 1,
+                        select: "name address city state zip totalUnits",
+                        ids: req.body.exclude
+                    }, function(err, subjects) {
+                        var email = {
+                            to: "alex@biradix.com,eugene@biradix.com",
+                            subject: "Duplicate Comp Match",
+                            logo: "https://platform.biradix.com/images/organizations/biradix.png",
+                            template: 'debug.html',
+                            templateData: {
+                                debug: '<hr>User: ' + req.user.first + ' ' + req.user.last + " (" + req.user.email + ")<hr> \
+                            New Property: " + req.body.name + " (" + req.body.address + ")<hr> \
+                            Subject Property: " + subjects[0].name + "(" + req.body.exclude + ")<hr> \
+                            Existing Duplicate Property: " + props[0].name + " (" + props[0]._id + ")<hr>"
+                            }
+                        };
 
 
-                    EmailService.send(email, function (emailError, status) {
-                    })
+                        EmailService.send(email, function (emailError, status) {
+                        })
 
-                    return res.status(200).json({property: props[0]});
+                        return res.status(200).json({property: props[0]});
+                    });
                 } else {
                     return res.status(200).json({property: null});
                 }
