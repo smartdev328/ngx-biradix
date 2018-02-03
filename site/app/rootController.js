@@ -18,10 +18,6 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
             $scope.env = "This is QA";
         }
         else
-        if (loc.indexOf('//demo.biradix.com') > -1) {
-            $scope.env = "This is DEMO";
-        }
-        else
         if (loc.indexOf('//biradixplatform-qa-pr-') > -1) {
             $scope.env = "This is PR";
         }
