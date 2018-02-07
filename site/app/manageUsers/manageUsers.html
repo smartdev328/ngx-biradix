@@ -64,7 +64,14 @@
                         Inactive
                     </Td>
                 </tr>
-
+                <tr>
+                    <td class="center">
+                        <input type="checkbox" ng-model="undeliverableOnly" ng-click="calcUndeliverable()" id="undeliverableOnly">
+                    </td>
+                    <Td>
+                        Undeliverable
+                    </Td>
+                </tr>
                 <tr>
                     <Td colspan="100%">
                         <hr style="margin: 10px 0px">
@@ -83,7 +90,6 @@
                         {{role.name}}
                     </Td>
                 </tr>
-
             </table>
         </div>
     </div>
@@ -99,6 +105,7 @@
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.email" ng-checked="show.email" ng-click="columnsChanged=true"> Email</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.role" ng-checked="show.role" ng-click="columnsChanged=true"> Role</label></div></li>
             <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+            <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.customPropertiesLimit" ng-checked="show.customPropertiesLimit" ng-click="columnsChanged=true"> Custom Prop.</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools" ng-click="columnsChanged=true"> Actions</label></div></li>
         </ul>
@@ -151,6 +158,12 @@
                     <div class="pull-right" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
                     <div class="pull-right" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
                 </th>
+                <th ng-show="show.customPropertiesLimit" class="sortable" ng-click="toggleSort('customPropertiesLimit')" style="min-width:92px">
+                    <div class="pull-left">Custom Prop.</div>
+                    <div class="pull-right" ng-show="sort.customPropertiesLimit == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.customPropertiesLimit === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.customPropertiesLimit === false"><i class="fa fa-sort-up"></i></div>
+                </th>
                 <th ng-show="show.active" class="center">
                     Active
                 </th>
@@ -172,6 +185,7 @@
                 </td>
                 <td ng-show="show.role">{{row.role}}</td>
                 <td ng-show="show.company">{{row.company}}</td>
+                <td ng-show="show.customPropertiesLimit">{{row.customPropertiesLimit}}</td>
                 <td ng-show="show.active" class="center">
                     <span class="fa fa-check fa-2x" ng-show="row.active"></span>
                     <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ccc"></span>

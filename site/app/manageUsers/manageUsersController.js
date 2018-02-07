@@ -40,6 +40,7 @@ define([
 
         $scope.showInactive = false;
         $scope.showActive = true;
+        $scope.undeliverableOnly = false;
 
 
         $scope.adjustToSize = function(size) {
@@ -52,6 +53,7 @@ define([
                 email: !isTiny,
                 role: true,
                 company: siteAdmin,
+                custom: false,
                 active: $scope.showInactive,
                 tools: true
             }
@@ -78,6 +80,18 @@ define([
             $scope.show.active =  $scope.showInactive;
         }
 
+        $scope.calcUndeliverable = function() {
+            if (!$scope.undeliverableOnly) {
+                delete $scope.search.undeliverable;
+            }
+            else
+            {
+                $scope.search.undeliverable = true;
+            }
+
+            $scope.resetPager();
+        }
+
         /////////////////////////////
         $scope.reload = function () {
             $scope.localLoading = false;
@@ -91,6 +105,8 @@ define([
                     roles = _.uniq(_.map(x.roles, function(y) {return y.name}));
                     x.role = roles.join(", ")
                     x.company = _.map(x.roles, function(y) {return y.org.name}).join(", ")
+                    x.undeliverable = !!x.bounceReason;
+                    x.customPropertiesLimit = x.customPropertiesLimit || 0;
 
                     $scope.roles = $scope.roles.concat(roles);
                 })
