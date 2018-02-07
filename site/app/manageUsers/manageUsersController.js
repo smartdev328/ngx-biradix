@@ -326,5 +326,43 @@ define([
             });
         }
 
+        $scope.pressed = function(row,event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                $scope.updateCustom(row);
+            }
+        }
+
+        $scope.updateCustom = function(u) {
+            if (u.customPropertiesLimit == u.old_customPropertiesLimit) {
+                u.edit = false;
+                return;
+            }
+
+            $userService.setCustomPropertiesLimit(u._id, u.customPropertiesLimit).then(function (response) {
+
+                    if (response.data.errors) {
+                        toastr.error( _.pluck(response.data.errors,'msg').join("<br>"));
+                    }
+                    else {
+                        toastr.success(u.name + " custom property limit has been updated.");
+                        u.edit = false;
+                    }
+
+                    ngProgress.reset();
+                },
+                function (error) {
+                    toastr.error("Unable to update custom property limit. Please contact the administrator.");
+                    ngProgress.reset();
+                }
+            )
+        }
+
+        $scope.focus_box = function(id) {
+            window.setTimeout(function() {
+                $("#" + id).select();
+                $("#" + id).focus();
+            }, 300)
+        }
     }]);
 });
