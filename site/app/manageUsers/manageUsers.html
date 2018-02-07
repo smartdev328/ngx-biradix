@@ -65,14 +65,6 @@
                     </Td>
                 </tr>
                 <tr>
-                    <td class="center">
-                        <input type="checkbox" ng-model="undeliverableOnly" ng-click="calcUndeliverable()" id="undeliverableOnly">
-                    </td>
-                    <Td>
-                        Undeliverable
-                    </Td>
-                </tr>
-                <tr>
                     <Td colspan="100%">
                         <hr style="margin: 10px 0px">
                     </Td>
@@ -185,7 +177,7 @@
                 </td>
                 <td ng-show="show.role">{{row.role}}</td>
                 <td ng-show="show.company">{{row.company}}</td>
-                <td ng-if="!row.edit" ng-show="show.customPropertiesLimit"><span style="cursor:cell" ng-dblclick="row.edit= true;row.old_customPropertiesLimit = row.customPropertiesLimit;focus_box('edit_'+ row._id)">{{row.customPropertiesLimit}}</span></td>
+                <td ng-if="!row.edit" ng-show="show.customPropertiesLimit" style="cursor:cell" ng-dblclick="row.edit= true;row.old_customPropertiesLimit = row.customPropertiesLimit;focus_box('edit_'+ row._id)">{{row.customPropertiesLimit}}</td>
                 <td ng-if="row.edit" style="cursor:default;white-space: nowrap">
                     <input type="number" ng-model="row.customPropertiesLimit" class="form-control" ng-keydown="pressed(row,$event)" style="width:50px" id="edit_{{row._id}}">
                     <A href ng-click="updateCustom(row)"><i class="fa fa-check fa-2x" style="color:lightgreen"></i> Save</A>
