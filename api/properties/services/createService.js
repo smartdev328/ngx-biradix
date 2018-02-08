@@ -309,6 +309,11 @@ module.exports = {
                 })
                 ////////////////
 
+                //Custom Properties need explicit access since they are not in org of creator
+                if (property.isCustom) {
+                    permissions.push({executorid: operator._id.toString(), allow: true, type: 'PropertyManage'})
+                }
+
                 var profileChanges = getProfileChanges(property, null, all);
 
                 var newName = "None"
