@@ -344,6 +344,10 @@ module.exports = {
                 n.needsApproval = true;
                 n.needsSurvey = true;
 
+                if (property.isCustom) {
+                    n.custom = {owner: {name: operator.first + ' ' + operator.last, id: operator._id}}
+                }
+
                 n.save(function (err, prop) {
 
                     if (err) {
@@ -351,7 +355,13 @@ module.exports = {
                         return callback([{msg:"Unable to create property. Please contact the administrator."}], null)
                     }
 
-                    AuditService.create({operator: operator, property: prop, type: 'property_created', description: prop.name, context: context, data: changes})
+                    var type = 'property_created';
+
+                    if (property.isCustom) {
+                        type = 'property_created_custom'
+                    }
+
+                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes})
 
                     if (permissions.length > 0 ) {
                         permissions.forEach(function(x) {

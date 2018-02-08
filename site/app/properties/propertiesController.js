@@ -43,7 +43,8 @@ define([
                 occupancy: true,
                 ner: !isMedium,
                 company: false,
-                tools : true
+                tools : true,
+                owner : false
             }
         }
 
@@ -139,12 +140,21 @@ define([
         $scope.reload = function (callback) {
             $scope.localLoading = false;
             $propertyService.search({
-                limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber needsSurvey"
+                limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber needsSurvey custom"
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.data = response.data.properties;
 
+                $scope.customCount = 0;
+
                 $scope.data.forEach(function(p) {
+                    if (p.custom && p.custom.owner && p.custom.owner.name) {
+                        p.owner = p.custom.owner.name;
+
+                        if (p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
+                            $scope.customCount++;
+                        }
+                    }
                     //For propert sorting
                     if (p.survey){
                         if (p.survey.occupancy != null) {
@@ -163,6 +173,10 @@ define([
                         $scope.toggleOpen(p);
                     }
                 })
+
+                if ($scope.customCount >= $rootScope.me.customPropertiesLimit) {
+                    $scope.customLimitReached = true;
+                }
                 $scope.localLoading = true;
 
                 if (callback) {
@@ -389,7 +403,7 @@ define([
             });
         }
 
-        $scope.edit = function (id, isComp, subject) {
+        $scope.edit = function (id, isComp, subject, isCustom) {
             var subjectid = subject ? subject._id : null;
 
             require([
@@ -410,6 +424,9 @@ define([
                         },
                         subjectid: function() {
                             return subjectid;
+                        },
+                        isCustom : function() {
+                            return isCustom
                         }
                     }
                 });

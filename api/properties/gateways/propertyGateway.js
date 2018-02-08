@@ -127,6 +127,11 @@ Routes.put('/', function(req,res) {
     if (req.orgid) {
         permission = "Properties/Create"
     }
+
+    if (req.isCustom) {
+        permission = "Properties/Custom"
+    }
+
     AccessService.canAccess(req.user,permission, function(canAccess) {
         if (!canAccess) {
             return res.status(401).json("Unauthorized request");

@@ -4,7 +4,7 @@ define([
     '../../components/inputmask/module.js',
 ], function (app) {
      app.controller
-        ('propertyWizardController', ['$scope', '$uibModalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$uibModal','subjectid', function ($scope, $uibModalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$uibModal,subjectid) {
+        ('propertyWizardController', ['$scope', '$uibModalInstance', 'id', 'isComp', 'isCustom', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$uibModal','subjectid', function ($scope, $uibModalInstance, id, isComp, isCustom, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$uibModal,subjectid) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -70,6 +70,10 @@ define([
                     title = "Edit Property"
                 }
 
+                if (isCustom) {
+                    title += " (Custom)"
+                }
+
                 if ($scope.property.name) {
                     title += ": " + $scope.property.name;
                 }
@@ -107,7 +111,7 @@ define([
             }
 
             $scope.changeStep(0);
-            $scope.property = {fees: {}, floorplans: [] }
+            $scope.property = {fees: {}, floorplans: [], isCustom: isCustom }
 
             $scope.constructionTypes = ['Garden','Highrise','Midrise','Platform','Wrap']
             $scope.states = [

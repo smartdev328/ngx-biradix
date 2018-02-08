@@ -55,11 +55,25 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
-    <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Create') > -1">
-        <button type="button" class="btn btn-default dropdown-toggle btn-sm"ng-click="edit(null,false)">
+    <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Create') > -1" style="margin-right:10px">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm"ng-click="edit(null,false, null, false)">
             <span class="fa fa-plus"></span> Add Property
         </button>
     </div>
+
+    <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Custom') > -1">
+        <button ng-disabled="customLimitReached" type="button" class="btn btn-default dropdown-toggle btn-sm" ng-click="edit(null,false, null, true)">
+            <span class="fa fa-plus"></span> Add Custom Property
+        </button>
+    </div>
+
+    <i class="fa fa-lock pull-left"
+       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+       popover-trigger="'mouseenter'"
+       popover-placement="top"
+       uib-popover="Your have reached your limit of custom properties. Please contact support to increase your limit."
+       ng-if="customLimitReached"
+    ></i>
 
     <div class="btn-group action_dropdown pull-right">
         <button type="button" class="btn btn-default dropdown-toggle btn-sm"
@@ -133,6 +147,7 @@
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="columnsChanged=true"> Net Eff. Rent</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+            <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.company" ng-click="columnsChanged=true"> Owner</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools" ng-click="columnsChanged=true"> Actions</label></div></li>
         </ul>
     </div>
@@ -211,12 +226,18 @@
             <th ng-show="show.active" class="center">
                 Active
             </th>
-            <th ng-show="show.company" style="cursor:pointer;min-width:92px;width:120px" ng-click="toggleSort('company')">
+            <th ng-show="show.company" style="cursor:pointer;min-width:60px;width:60px" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>
                 <div class="pull-right" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
                 <div class="pull-right" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
+                <th ng-show="show.owner" style="cursor:pointer;min-width:75px;width:75px" ng-click="toggleSort('owner')">
+                    <div class="pull-left">Owner</div>
+                    <div class="pull-right" ng-show="sort.owner == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.owner === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.owner === false"><i class="fa fa-sort-up"></i></div>
+                </th>
             <th ng-show="show.tools" class="center"></th>
         </tr>
 
@@ -257,6 +278,7 @@
                 <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ddd"></span>
             </td>
             <td ng-show="show.company">{{row.company || '-'}}</td>
+            <td ng-show="show.owner">{{row.owner}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">
@@ -333,7 +355,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <li><a href ng-if="comp.canEdit" ng-click="edit(comp._id, true, row)"><span class="fa fa-building fa-fw"></span> Edit Comp</a></li>
+                            <li><a href ng-if="comp.canEdit" ng-click="edit(comp._id, true, row, false)"><span class="fa fa-building fa-fw"></span> Edit Comp</a></li>
                             <li><a href ng-if="!comp.canEdit" style="cursor: not-allowed;" popover-trigger="'mouseenter'"
                                    popover-placement="left"
                                    popover-title="This property is managed by a BI:Radix user."
