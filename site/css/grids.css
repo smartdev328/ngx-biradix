@@ -181,3 +181,19 @@
     }
 
 }
+
+td.triangle {
+    position: relative;
+}
+td.triangle:after  {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    display: block;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-top: 12px solid #32CD32;
+}

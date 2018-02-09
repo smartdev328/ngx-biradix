@@ -24,7 +24,9 @@ define([
 
         $scope.options = {
             showInactive: false,
-            showActive: true
+            showActive: true,
+            showCustom : true,
+            showShared: true
         }
 
         $scope.adjustToSize = function(size) {
@@ -69,6 +71,19 @@ define([
 
             $scope.show.active =  $scope.options.showInactive;
         }
+
+        $scope.calcCustom = function() {
+            if ($scope.options.showCustom === $scope.options.showShared) {
+                delete $scope.search.isCustom;
+            }
+            else
+            {
+                $scope.search.isCustom = $scope.options.showCustom;
+            }
+
+            $scope.resetPager();
+        }
+
         $scope.toggleOpen = function(row) {
             row.open = !(row.open || false);
 
@@ -148,7 +163,9 @@ define([
                 $scope.customCount = 0;
 
                 $scope.data.forEach(function(p) {
+                    p.isCustom = false;
                     if (p.custom && p.custom.owner && p.custom.owner.name) {
+                        p.isCustom = true;
                         p.owner = p.custom.owner.name;
 
                         if (p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
