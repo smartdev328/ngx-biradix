@@ -454,6 +454,12 @@ module.exports = {
                 query = query.where('_id').in(all.permissions);
             }
 
+            if (Operator.memberships.isadmin !== true) {
+                query = query.and([
+                    { $or : [{ "custom.owner": { $exists: false } }, {"custom.owner.id" : Operator._id}]}
+                    ]);
+            }
+
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
             }
