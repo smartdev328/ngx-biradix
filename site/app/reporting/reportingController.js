@@ -50,6 +50,7 @@ define([
 
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
+                    $scope.fixDates();
                 } else {
                     $scope.configureTrendsOptions();
                     $scope.configurePropertyReportOptions();
@@ -89,6 +90,18 @@ define([
                 $scope.reportItems[i].selected =$scope.reportIds.indexOf(x.id) > -1
             })
 
+            $scope.fixDates();
+
+            $scope.reportsChanged(true, function() {
+                if($scope.compIds && $scope.compIds.length) {
+                    $scope.run()
+                } else {
+                    $scope.waitForComps = true;
+                }
+            });
+        }
+
+        $scope.fixDates = function() {
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {
                     $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
@@ -109,17 +122,6 @@ define([
                     $scope.updateTrendsDaterange2($scope.liveSettings[key].daterange1.selectedRange);
                 }
             }
-
-            $scope.reportsChanged(true, function() {
-                if($scope.compIds && $scope.compIds.length) {
-                    $scope.run()
-                } else {
-                    $scope.waitForComps = true;
-                }
-            });
-
-
-
         }
 
         $scope.loadSaved = function() {
