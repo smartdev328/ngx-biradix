@@ -185,7 +185,11 @@
 td.triangle {
     position: relative;
 }
-td.triangle:after  {
+
+div.triangle {
+    width:0px;
+}
+div.triangle:after  {
     content: "";
     position: absolute;
     top: 0;
