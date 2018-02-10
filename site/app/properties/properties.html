@@ -270,7 +270,7 @@
         </tr>
 
         <tr ng-repeat-start="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
-            <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
+            <td style="text-align: center"><i ng-show = "row.comps.length > 0 && (!row.isCustom || row.orgid)" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
             <td ng-show="show.name" ng-class="{'triangle' : row.isCustom}" >
@@ -323,12 +323,12 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                             <li><a href ng-click="edit(row._id, false)"><span class="fa fa-building fa-fw"></span> Edit Property</a></li>
-                            <li><a href ng-click="addComp(row)"><span class="fa fa-building-o fa-fw"></span> Manage Comps</a></li>
+                            <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="addComp(row)"><span class="fa fa-building-o fa-fw"></span> Manage Comps</a></li>
                             <li ng-if="row.orgid"><a href ng-click="manageUsers(row)"><span class="fa fa-users fa-fw"></span> Assign Users</a></li>
                             <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check fa-fw"></span> Activate</a></li>
                             <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times fa-fw"></span> De-activate</a></li>
-                            <li><a href ng-click="dashboard(row._id)" ><span class="fa fa-list fa-fw"></span> View Dashboard</a></li>
-                            <li><a href ng-click="editLink(row, row)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
+                            <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="dashboard(row._id)" ><span class="fa fa-list fa-fw"></span> View Dashboard</a></li>
+                            <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="editLink(row, row)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
                         </ul>
                     </div>
                 </div>
@@ -341,7 +341,7 @@
                 </div>
             </td>
         </tr>
-        <tr ng-if="row.open && row.compsLoaded && row.fullcomps.length == 0">
+        <tr ng-if="row.open && row.compsLoaded && row.fullcomps.length == 0 && (!row.isCustom || row.orgid)">
             <td colspan="100%">
                 <Br><div class="alert alert-warning" role="alert">There are currently no comps added to this property.
                     <a href ng-click="addComp(row)"><span class="fa fa-building-o"></span> Manage Comps</a>

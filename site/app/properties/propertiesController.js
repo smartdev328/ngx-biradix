@@ -168,7 +168,8 @@ define([
                         p.isCustom = true;
                         p.owner = p.custom.owner.name;
 
-                        if (p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
+                        //Only count subjects
+                        if (p.orgid && p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
                             $scope.customCount++;
                         }
                     }

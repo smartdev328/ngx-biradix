@@ -60,7 +60,7 @@ define([
                 limit: 20,
                 permission: 'PropertyManage',
                 ids: [id],
-                select: "_id name comps.id comps.orderNumber"
+                select: "_id name custom comps.id comps.orderNumber"
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.subject = response.data.properties[0]
@@ -209,6 +209,9 @@ define([
                             },
                             subjectid: function() {
                                 return $scope.subject._id;
+                            },
+                            isCustom: function() {
+                                return !!$scope.subject.custom.owner;
                             }
                         }
                     });

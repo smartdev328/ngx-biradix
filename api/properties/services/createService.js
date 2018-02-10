@@ -285,32 +285,37 @@ module.exports = {
 
                 populateAmenitiesandFloorplans(property, all);
 
-                //if org of property is provided, assign manage to all CMs for that org
-                //this is our implict assignment
-                var CMs = [];
-                if (property.orgid) {
-
-                    CMs = _.filter(all.roles, function(x) {return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1})
-                }
-
-                //and assign view opermissions to all non admins and not POs
-                var viewers = _.filter(all.roles, function(x) {
-                    return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1})
-
-
-                /////////////Assign all permisions to viewers and CMS
                 var permissions = [];
-                viewers.forEach(function(x) {
-                    permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
-                })
+                //Skip all permission logic if custom property
+                if (!property.isCustom) {
+                    //if org of property is provided, assign manage to all CMs for that org
+                    //this is our implict assignment
+                    var CMs = [];
+                    if (property.orgid) {
 
-                CMs.forEach(function(x) {
-                    permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
-                })
-                ////////////////
+                        CMs = _.filter(all.roles, function (x) {
+                            return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1
+                        })
+                    }
 
-                //Custom Properties need explicit access since they are not in org of creator
-                if (property.isCustom) {
+                    //and assign view opermissions to all non admins and not POs
+                    var viewers = _.filter(all.roles, function (x) {
+                        return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1
+                    })
+
+
+                    /////////////Assign all permisions to viewers and CMS
+                    viewers.forEach(function (x) {
+                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
+                    })
+
+                    CMs.forEach(function (x) {
+                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
+                    })
+                    ////////////////
+                }
+                else {
+                    //Custom Properties need explicit access since they are not in org of creator
                     permissions.push({executorid: operator._id.toString(), allow: true, type: 'PropertyManage'})
                 }
 
