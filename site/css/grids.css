@@ -187,7 +187,9 @@ td.triangle {
 }
 
 div.triangle {
-    width:0px;
+    position:absolute;
+    top:0px;
+    width:8px;
 }
 div.triangle:after  {
     content: "";

@@ -278,7 +278,7 @@
                      popover-trigger="'mouseenter'"
                      popover-placement="top"
                      popover-append-to-body="true"
-                     uib-popover="Custom Property"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
 
                 ></div>
                 <A href="#/profile/{{row._id}}">{{row.name}}</A>
@@ -353,7 +353,15 @@
             <td></td>
             <td ng-show="show.rownumber"></td>
             <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name"><A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
+            <td ng-show="show.name" ng-class="{'triangle' : comp.isCustom}">
+                <div class="triangle" ng-if="comp.isCustom"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="top"
+                     popover-append-to-body="true"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+
+                ></div>
+                <A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:1px;color:orange"
                    ng-if="comp.needsSurvey"

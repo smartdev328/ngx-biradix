@@ -455,9 +455,16 @@ module.exports = {
             }
 
             if (Operator.memberships.isadmin !== true) {
+                //If its a custom property, only return it for owners and admins
                 query = query.and([
                     { $or : [{ "custom.owner": { $exists: false } }, {"custom.owner.id" : Operator._id}]}
                     ]);
+            }
+
+            if (criteria.hideCustomComps) {
+                query = query.and([
+                    { $or : [{ "custom.owner": { $exists: false } }, { "orgid": { $exists: true } }]}
+                ]);
             }
 
             if (criteria.active != null) {
