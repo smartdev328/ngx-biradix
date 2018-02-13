@@ -190,6 +190,7 @@ div.triangle {
     position:absolute;
     top:0px;
     width:8px;
+    height:12px;
     left:0px;
 }
 div.triangle.profile {
