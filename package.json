@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.15.9",
+  "version": "2.15.10",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -48,7 +48,8 @@
     "moment-timezone": "^0.5.13",
     "mongoose": "4.11.4",
     "newrelic": "^2.0.1",
-    "node-geocoder": "^3.21.1",
+    "node-geocoder": "^3.22.0",
+    "node-sass": "^4.7.2",
     "node-uuid": "^1.4.8",
     "nodemailer": "^4.0.1",
     "nodemailer-sendgrid-transport": "^0.2.0",

@@ -99,12 +99,19 @@ define([
                 active: true,
                 search:search
                 , skipAmenities: true
+                ,hideCustomComps:true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
+                $scope.splitProperties();
             }, function (error) {
 
             })
 
+        }
+
+        $scope.splitProperties = function() {
+            $scope.sharedMyProperties = _.filter($scope.myProperties, function(x) {return !(x.custom && x.custom.owner)})
+            $scope.cutomMyProperties = _.filter($scope.myProperties, function(x) {return (x.custom && x.custom.owner)})
         }
 
         //make sure me is loaded befor you search initially
@@ -130,8 +137,11 @@ define([
                     permission: 'PropertyManage',
                     active: true
                     , skipAmenities: true
+                    , select: "name custom"
+                    ,hideCustomComps:true
                 }).then(function (response) {
                     $scope.myProperties = response.data.properties;
+                    $scope.splitProperties();
 
                     if ($scope.first) {
                         $scope.initialLength = $scope.myProperties.length;

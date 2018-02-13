@@ -182,7 +182,7 @@
 
 }
 
-td.triangle {
+td.triangle, li.triangle {
     position: relative;
 }
 
@@ -192,6 +192,13 @@ div.triangle {
     width:8px;
     left:0px;
 }
+div.triangle.profile {
+    top:-10px;
+    height:10px;
+    width:10px;
+    left:-12px;
+}
+
 div.triangle:after  {
     content: "";
     position: absolute;
@@ -203,4 +210,10 @@ div.triangle:after  {
     border-right: 12px solid transparent;
     border-bottom: 12px solid transparent;
     border-top: 12px solid #32CD32;
+}
+
+div.triangle.profile:after  {
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-top: 20px solid #32CD32;
 }

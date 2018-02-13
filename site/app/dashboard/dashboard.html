@@ -40,7 +40,14 @@
             <div class="panel-heading">
                 <table style="width:100%">
                     <tr>
-                        <Td style="height:30px">
+                        <Td style="height:30px" class="triangle">
+                            <div class="triangle profile"
+                                 popover-trigger="'mouseenter'"
+                                 popover-placement="right"
+                                 popover-append-to-body="true"
+                                 uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                                 ng-if="property.custom.owner"
+                            ></div>
                             <span ng-if="initialLength == 1" class="pull-left" style="color: #4460a9 !important;">{{property.name}}</span>
 
                             <span ng-if="initialLength > 1" class="dropdown pull-left" style="color: #4460a9 !important;">
@@ -57,7 +64,19 @@
                         </div>
 
                         <ul class="multi-col-list">
-                            <li ng-repeat="property in myProperties"><A href ng-click="setProperty(property)">{{::property.name}}</A></li>
+                            <li ng-if="cutomMyProperties.length > 0" style="font-weight:800">My Custom Properties</li>
+                            <li ng-if="cutomMyProperties.length > 0" ng-repeat="property in cutomMyProperties" class="triangle">
+                <div class="triangle"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="right"
+                     popover-append-to-body="true"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+
+                ></div>
+                                <A href ng-click="setProperty(property)">{{::property.name}}</A>
+                            </li>
+                            <li ng-if="cutomMyProperties.length > 0 && sharedMyProperties.length > 0" style="font-weight:800">Shared Properties</li>
+                            <li ng-if="sharedMyProperties.length > 0" ng-repeat="property in sharedMyProperties"><A href ng-click="setProperty(property)">{{::property.name}}</A></li>
                         </ul>
                     </div>
                 </span>
