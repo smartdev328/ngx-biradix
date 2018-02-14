@@ -60,7 +60,9 @@
 
                             <span ng-if="initialLength > 1" class="dropdown pull-left" style="color: #4460a9 !important;">
                     <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit; color: #4460a9 !important;">{{property.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
-                    <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:310px;overflow-y:auto">
+                    <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;margin-top:10px">
+                        <div style="max-height:315px;overflow-y:auto;position:relative">
+                        <div style="margin:10px" ng-if="!showSearch"></div>
                         <div style="margin:10px" ng-if="showSearch">
                             <input type="text" class="form-control input-sm"
                                    placeholder="Search Properties"
@@ -70,7 +72,7 @@
                             >
                             <i class="fa fa-search form-control-feedback" style="color:#ccc;top:10px;right:10px"></i>
                         </div>
-                        <Table border="0" style="margin:-10px 0px 0px 10px;width:95%;color:#333 !important;">
+                        <Table border="0" style="margin:-10px 0px 10px 10px;width:95%;color:#333 !important;">
                             <tr ng-if="cutomMyProperties.length > 0" style="border-bottom:1px dotted #ccc">
                                 <Td  colspan="100%" style="padding-top:10px;"><B>My Custom Properties</B></Td>
                             </tr>
@@ -87,9 +89,6 @@
                                 <Td ng-click="loadReport(report)" >
                                     <a href ng-click="setProperty(property)" style="font-size:13px;font-weight: 400;">{{property.name}}</a>
                                 </Td>
-                                <td style="width:15px" ng-click="setProperty(property)">
-
-                                </td>
                             </tr>
                             <tr ng-if="sharedMyProperties.length > 0" style="border-bottom:1px dotted #ccc">
                                 <Td  colspan="100%" style="padding-top:10px;"><B>{{$root.me.orgs[0].name}} Properties</B></Td>
@@ -100,13 +99,9 @@
                                 <Td ng-click="loadReport(report)" >
                                     <a href ng-click="setProperty(property)" style="font-size:13px;font-weight: 400">{{property.name}}</a>
                                 </Td>
-                                <td style="width:15px" ng-click="setProperty(property)">
-
-                                </td>
                             </tr>
                         </Table>
-
-
+                        </div>
                     </div>
                 </span>
                         </Td>
