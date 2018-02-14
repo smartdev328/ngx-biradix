@@ -14,6 +14,8 @@ define([
 
             $scope.changed = false;
 
+            $scope.isCustom = isCustom;
+
             $scope.startWatchingChanges = function() {
                 window.setTimeout(function() {
                     $scope.$watch("property", function (newValue, oldValue) {
@@ -400,6 +402,9 @@ define([
                 if (id) {
                     $propertyService.getFullProperty(id).then(function (response) {
                         $scope.property = response.data.properties[0];
+                        isCustom = $scope.property.custom && $scope.property.custom.owner;
+                        $scope.isCustom = isCustom;
+
                         $scope.localLoading = true;
 
                         $scope.property.state = $scope.getSelectedState($scope.property.state)

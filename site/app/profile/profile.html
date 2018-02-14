@@ -42,7 +42,14 @@
             <div class="panel-heading">
                 <table style="width:100%">
                     <tr>
-                        <Td style="height:32px">
+                        <Td style="height:32px" class="triangle">
+                            <div class="triangle profile"
+                                 popover-trigger="'mouseenter'"
+                                 popover-placement="right"
+                                 popover-append-to-body="true"
+                                 uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                                 ng-if="property.custom.owner"
+                            ></div>
                             <span class="pull-left">{{property.name}}</span>
                         </Td>
                         <td style="width:50px" class="hidden-print" valign="top">

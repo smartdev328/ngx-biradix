@@ -21,6 +21,13 @@
 </div>
 <div ng-show="localLoading">
     <div class="modal-header">
+        <div class="triangle profile" ng-if="isCustom"
+             popover-trigger="'mouseenter'"
+             popover-placement="bottom"
+             popover-append-to-body="true"
+             uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+             style="left:0px;top:0px;height:20px"
+        ></div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">{{getTitle()}}</h2>
     </div>

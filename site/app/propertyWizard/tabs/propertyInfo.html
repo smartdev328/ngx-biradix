@@ -77,7 +77,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-6" ng-show="$root.me.permissions.indexOf('Org/Assign') > -1">
+        <div class="col-sm-6" ng-show="!isCustom && $root.me.permissions.indexOf('Org/Assign') > -1">
             Company<br>
             <select class="form-control input-sm"  ng-options="company.name for company in lookups.orgs" ng-model="property.orgid">
             </select>
