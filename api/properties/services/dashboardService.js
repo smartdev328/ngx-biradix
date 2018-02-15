@@ -193,7 +193,7 @@ module.exports = {
                     permission: 'PropertyView',
                     ids: compids
                     ,
-                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt"
+                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt media custom"
                     , skipAmenities: true
                 }, function(err, comps) {
 
