@@ -88,7 +88,7 @@
                         <div class="form-group has-feedback has-feedback-left search">
                             <input type="text" class="form-control input-sm"
                                    placeholder="Search Properties"
-                                   uib-typeahead="props.summary for props in getLocation($viewValue)"
+                                   uib-typeahead="props.summary for props in getLocation($viewValue,true,flase)"
                                    typeahead-on-select="searchSelected($item, $model, $label)"
                                    typeahead-template-url="customTemplate.html"
                                    ng-model="searches.search1"
@@ -145,7 +145,7 @@
                 <div class="form-group has-feedback has-feedback-left search">
                     <input type="text" class="form-control input-sm"
                            placeholder="Search Properties"
-                           uib-typeahead="props.summary for props in getLocation($viewValue)"
+                           uib-typeahead="props.summary for props in getLocation($viewValue,true,false)"
                            typeahead-on-select="searchSelected($item, $model, $label)"
                            typeahead-template-url="customTemplate.html"
                            ng-model="searches.search1"

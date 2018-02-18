@@ -64,6 +64,7 @@ define([
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.subject = response.data.properties[0]
+                $scope.isCustom = !!($scope.subject.custom && $scope.subject.custom.owner);
 
                 var compids = _.map($scope.subject.comps,function(x) {return x.id.toString()});
 
@@ -100,7 +101,7 @@ define([
 
             $scope.getLocation = function (val) {
                 var compids = _.map($scope.comps,function(x) {return x._id.toString()});
-                return $propertyService.search({search: val, active: true, exclude: [id]}).then(function (response) {
+                return $propertyService.search({search: val, active: true, exclude: [id], hideCustom: !$scope.isCustom}).then(function (response) {
                     return response.data.properties
                 });
             };
@@ -211,7 +212,7 @@ define([
                                 return $scope.subject._id;
                             },
                             isCustom: function() {
-                                return !!$scope.subject.custom.owner;
+                                return $scope.isCustom;
                             }
                         }
                     });

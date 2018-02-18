@@ -467,6 +467,14 @@ module.exports = {
                 ]);
             }
 
+            if (criteria.hideCustom) {
+                query = query.where("custom.owner").exists(false);
+            }
+
+            if (criteria.customOnly) {
+                query = query.where("custom.owner").exists(true);
+            }
+
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
             }

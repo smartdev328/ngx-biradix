@@ -7,7 +7,16 @@
 <div class="row break2" ng-if="!stretchComps">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading">{{property.name}}</div>
+            <div class="panel-heading triangle-parent">
+                <div class="triangle reporting"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="right"
+                     popover-append-to-body="true"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                     ng-if="property.custom.owner"
+                ></div>
+                {{property.name}}
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-profile property="property" show="showProfile"></property-profile>
@@ -64,7 +73,15 @@
 <div class="row break2" ng-if="stretchComps">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading">{{property.name}}</div>
+            <div class="panel-heading triangle-parent">
+                <div class="triangle reporting"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="right"
+                     popover-append-to-body="true"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                     ng-if="property.custom.owner"
+                ></div>
+                {{property.name}}</div>
             <div class="panel-body">
                 <hr>
                 <property-profile property="property" show="showProfile"></property-profile>
@@ -133,7 +150,15 @@
     </div>
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
-            <div class="panel-heading">{{profile.property.name}}</div>
+            <div class="panel-heading triangle-parent">
+                <div class="triangle reporting"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="right"
+                     popover-append-to-body="true"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                     ng-if="property.custom.owner"
+                ></div>
+                {{profile.property.name}}</div>
             <div class="panel-body">
                 <hr>
                 <property-profile property="profile.property" show="showProfile"></property-profile>

@@ -119,6 +119,8 @@ define([
                         criteria.orgid = role.selectedRole.orgid;
                     }
 
+                    criteria.hideCustom = true;
+
                     $propertyService.search(criteria).then(function (response) {
                         role.properties = [];
 

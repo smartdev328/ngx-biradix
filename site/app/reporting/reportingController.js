@@ -140,7 +140,8 @@ define([
                 active: true,
                 searchName:search
                 , skipAmenities: true
-                , select: "name comps.id"
+                , hideCustomComps: true
+                , select: "name comps.id custom"
                 , sort: "name"
             }).then(function (response) {
 
@@ -187,8 +188,9 @@ define([
                 $propertyService.search({
                     limit: 10000,
                     permission: 'PropertyManage',
-                    select: "_id name comps.id comps.orderNumber",
+                    select: "_id name comps.id comps.orderNumber custom",
                     ids: $scope.propertyIds,
+                    hideCustomComps: true,
                     sort: "name"
                     ,
                     skipAmenities: true
@@ -218,8 +220,9 @@ define([
             $propertyService.search({
                 limit: 2,
                 permission: 'PropertyManage',
+                hideCustomComps: true,
                 active: true,
-                select: "_id name comps.id comps.orderNumber"
+                select: "_id name comps.id comps.orderNumber custom"
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;
@@ -247,7 +250,7 @@ define([
                             _id: id,
                             permission: 'PropertyManage',
                             active: true,
-                            select: "_id name comps.id comps.orderNumber"
+                            select: "_id name comps.id comps.orderNumber custom"
                             , skipAmenities: true
                         }).then(function (response) {
                             $scope.selected.Property = response.data.properties[0];
@@ -355,6 +358,7 @@ define([
 
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
+                    isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
                     reports: [{name: $scope.selected.Property.name, items : $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
                 }

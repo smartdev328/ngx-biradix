@@ -155,6 +155,7 @@ define([
                     active: true,
                     search:search
                     , skipAmenities: true
+                    , hideCustom : true
                 }).then(function (response) {
                     callback(response.data.properties)
                 }, function (error) {

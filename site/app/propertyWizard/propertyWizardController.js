@@ -506,7 +506,8 @@ define([
                 }
 
                 //Only check for creatinng comps
-                if (id || !isComp) {
+                //Do not check for custom properties
+                if (id || !isComp || isCustom) {
                     return;
                 }
 
