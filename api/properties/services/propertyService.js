@@ -71,7 +71,12 @@ module.exports = {
     },
     getPropertiesForReminders: function(callback) {
         var query = PropertySchema.find(
-            {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
+            {
+                active: true,
+                orgid: {$exists : true},
+                date : {$lte : moment().subtract(9,"day").format()},
+                "custom.owner": { $exists: false }
+            }
         );
         query.select("name orgid survey.id survey.occupancy survey.ner date comps.id totalUnits")
         query.exec(function(err, properties) {

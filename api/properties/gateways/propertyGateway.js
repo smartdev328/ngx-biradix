@@ -173,7 +173,8 @@ Routes.post('/checkDupe', function(req, res) {
                 "active":true,
                 "geo":{"loc": [geo[0].latitude, geo[0].longitude], "distance": .1},
                 select: "name address city state zip totalUnits",
-                exclude: req.body.exclude
+                exclude: req.body.exclude,
+                hideCustom: true
             }, function(err, props) {
                 console.log([geo[0].latitude, geo[0].longitude], props.length);
                 if (props && props[0]) {
