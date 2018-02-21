@@ -146,6 +146,9 @@ define([
             }).then(function (response) {
 
                 response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
+                response.data.properties.forEach(function(p) {
+                    p.isCustom = !!(p.custom && p.custom.owner);
+                })
 
                 callback(response.data.properties)
             }, function (error) {
@@ -196,6 +199,10 @@ define([
                     skipAmenities: true
                 }).then(function (response) {
 
+                    response.data.properties.forEach(function(p) {
+                        p.isCustom = !!(p.custom && p.custom.owner);
+                    })
+
                     if ($scope.reportType == 'single') {
                         $scope.selected.Property = response.data.properties[0];
                     } else {
@@ -225,6 +232,9 @@ define([
                 select: "_id name comps.id comps.orderNumber custom"
                 , skipAmenities: true
             }).then(function (response) {
+                response.data.properties.forEach(function(p) {
+                    p.isCustom = !!(p.custom && p.custom.owner);
+                })
                 $scope.myProperties = response.data.properties;
 
                 var id = $rootScope.me.settings.defaultPropertyId;
@@ -253,6 +263,9 @@ define([
                             select: "_id name comps.id comps.orderNumber custom"
                             , skipAmenities: true
                         }).then(function (response) {
+                            response.data.properties.forEach(function(p) {
+                                p.isCustom = !!(p.custom && p.custom.owner);
+                            })
                             $scope.selected.Property = response.data.properties[0];
                             $scope.myProperties.push($scope.selected.Property);
                             $scope.myProperties = _.sortBy($scope.myProperties, function(x) {return x.name});
