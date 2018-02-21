@@ -97,3 +97,9 @@
     color: #337ab7;
 
 }
+
+
+.filter-list .disabled {
+    text-decoration: line-through;
+    cursor: not-allowed !important;
+}

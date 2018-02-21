@@ -5,7 +5,7 @@
     <div ng-repeat="(key, value) in groups">
         <b ng-if="key != 'undefined'" class="unselectable">{{key}}</b>
         <div ng-repeat="item in value"
-             ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused}"
+             ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused, 'disabled' : item.disabled}"
              ng-click="clk($event,item)"
         >
             <input type="text" style="width:0px;height:18px;border:0;padding:0" value="{{::item.name}}">{{::item.name}}

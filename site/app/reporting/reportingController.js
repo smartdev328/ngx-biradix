@@ -141,6 +141,7 @@ define([
                 searchName:search
                 , skipAmenities: true
                 , hideCustomComps: true
+                , hideCustom: ($scope.reportType == "multiple") // no custom properties for group reports
                 , select: "name comps.id custom"
                 , sort: "name"
             }).then(function (response) {
@@ -148,7 +149,17 @@ define([
                 response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
                 response.data.properties.forEach(function(p) {
                     p.isCustom = !!(p.custom && p.custom.owner);
+
+                    //For group reports and people with custom properties, add a group to multi dropdown
+                    if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
+                        p.group = $rootScope.me.orgs[0].name + " Properties"
+                    }
                 })
+
+                if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
+                    response.data.properties.push({id:0, name: "N/A For This Report", group : " My Custom Properties", disabled: true  })
+                }
+
 
                 callback(response.data.properties)
             }, function (error) {
@@ -206,9 +217,12 @@ define([
                     if ($scope.reportType == 'single') {
                         $scope.selected.Property = response.data.properties[0];
                     } else {
+                        var item;
                         response.data.properties.forEach(function (p) {
-                            $scope.propertyItems.items.push({id: p._id, name: p.name});
+                            item = {id: p._id, name: p.name};
+                            $scope.propertyItems.items.push(item);
                         })
+
                         $scope.run();
                     }
 
