@@ -100,6 +100,6 @@
 
 
 .filter-list .disabled {
-    text-decoration: line-through;
+    font-style: italic;
     cursor: not-allowed !important;
 }
