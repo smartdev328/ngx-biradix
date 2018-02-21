@@ -285,6 +285,21 @@ define([
             var deferred = $q.defer();
 
             $scope.autocompleteproperties(term, function(result) {
+                result = _.sortByOrder(result, ["isCustom","name"], [false, true]);
+                var found = {};
+                result.forEach(function(r) {
+                    if (r.isCustom) {
+                        if (!found["My Custom Properties"]) {
+                            r.group = "My Custom Properties";
+                            found["My Custom Properties"] = true;
+                        }
+                    } else {
+                        if (!found[$rootScope.me.orgs[0].name + " Properties"]) {
+                            r.group = $rootScope.me.orgs[0].name + " Properties";
+                            found[$rootScope.me.orgs[0].name + " Properties"] = true;
+                        }
+                    }
+                })
                 deferred.resolve(result);
             })
 

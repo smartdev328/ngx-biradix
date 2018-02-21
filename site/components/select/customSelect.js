@@ -114,11 +114,20 @@
 							'<input class="' + attrs.selectClass + '" type="text" autocomplete="off" ng-model="searchTerm" placeholder="Search" />' +
 						'</div>' +
 						'<ul role="menu">' +
-							'<li role="presentation" ng-repeat="' + valueName + ' in matches' + trackByExpr + '">' +
+							'<li ng-repeat-start="' + valueName + ' in matches' + trackByExpr + '" ng-if="false"></li>' +
+							'<li class="group" ng-if="' + valueName + '.group">{{' + valueName + '.group}}</li>' +
+							'<li class="triangle" role="presentation">' +
+								'                <div class="triangle" ng-if="' + valueName + '.isCustom"\n' +
+                    '                     popover-trigger="\'mouseenter\'"\n' +
+                    '                     popover-placement="top"\n' +
+                    '                     popover-append-to-body="true"\n' +
+                    '                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"\n' +
+                    '                ></div>' +
 								'<a role="menuitem" tabindex="-1" href ng-click="select(' + valueName + ')">' +
 									itemTemplate +
 								'</a>' +
 							'</li>' +
+                    		'<li ng-repeat-end ng-if="false"></li>' +
 							'<li ng-hide="matches.length" class="empty-result" stop-propagation="click">' +
 								'<em class="muted">' +
 									'<span ng-hide="searchTerm">{{emptyListText}}</span>' +
