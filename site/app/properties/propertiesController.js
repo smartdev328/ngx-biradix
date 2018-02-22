@@ -176,7 +176,8 @@ define([
                         p.owner = p.custom.owner.name;
 
                         //Only count subjects
-                        if (p.orgid && p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
+                        console.log(p.active, p.custom, p.orgid);
+                        if (p.active && p.orgid && p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
                             $scope.customCount++;
                         }
                     }
@@ -201,7 +202,10 @@ define([
 
                 if ($scope.customCount >= $rootScope.me.customPropertiesLimit) {
                     $scope.customLimitReached = true;
+                } else {
+                    $scope.customLimitReached = false;
                 }
+
                 $scope.localLoading = true;
 
                 if (callback) {
@@ -418,6 +422,7 @@ define([
                             } else {
                                 toastr.warning(property.name + " has been deleted. ");
                             }
+                            $scope.reload();
                         }
 
                         ngProgress.reset();
