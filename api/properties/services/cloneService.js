@@ -6,6 +6,7 @@ var PropertyService = require('../services/propertyService')
 var PropertyHelperService = require('../services/propertyHelperService')
 var AmenitiesService = require('../../amenities/services/amenityService')
 var CreateService = require('../services/createService')
+var SurveyHelperService = require('../services/surveyHelperService')
 
 module.exports = {
     cloneCustom(operator, context, property, orgid, callback) {
@@ -34,7 +35,27 @@ module.exports = {
             PropertyHelperService.fixAmenities(newProperty,amenities);
 
             CreateService.create(operator,  context, newProperty, function (err, newprop) {
-                callback(newprop._id);
+                SurveyHelperService.getAllSurveys(property._id, function(err,surveys) {
+                    var newSurvey;
+                    async.each(surveys, function(survey, callbacks) {
+                        newSurvey = JSON.parse(JSON.stringify(survey));
+                        delete newSurvey._id;
+
+                        newSurvey.floorplans.forEach(function(fp) {
+                            if (fp.id && fp_map[fp.id]) {
+                                fp.id = fp_map[fp.id];
+                            }
+                        })
+
+                        PropertyService.createSurvey(operator,context,null,newprop._id,newSurvey,function(err, created) {
+                            callbacks();
+                        })
+                    }, function() {
+                        callback(newprop._id);
+                    })
+
+                })
+
             });
         });
     },

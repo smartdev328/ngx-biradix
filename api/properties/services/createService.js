@@ -352,6 +352,10 @@ module.exports = {
                 n.comps = [];
                 n.date = Date.now();
                 n.needsApproval = true;
+
+                if (property.isCustom) {
+                    n.needsApproval = false;
+                }
                 n.needsSurvey = true;
 
                 if (property.isCustom) {

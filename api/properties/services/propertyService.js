@@ -667,7 +667,8 @@ module.exports = {
                                 $maxDistance: .1 / 3963.2
                             },
                                 _id : {$ne: prop._id},
-                                active:true
+                                active:true,
+                                "custom.owner" : {$exists: false}
                         }).select("_id name loc").exec(function(err, dupes) {
                             prop.dupes = _.map(dupes, function(x) {return x.name}).join(", ");
                             callbackp();

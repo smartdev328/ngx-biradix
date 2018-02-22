@@ -99,6 +99,10 @@ module.exports = {
         SurveySchema.find({propertyid: propertyid,date:{$gt:new Date(dateStart), $lte:new Date(dateEnd)}}).sort('-date').limit(1).exec(callback);
 
     },
+    getAllSurveys: function(propertyid,callback) {
+        SurveySchema.find({propertyid: propertyid}).sort('date').exec(callback);
+
+    },
     updateLastSurvey: function(propertyid, callback) {
         SurveySchema.find({propertyid: propertyid, doneByOwner: true}).sort('-date').limit(1).exec(function (err, ownersurveys) {
             var dateByOwner = null;
