@@ -176,7 +176,6 @@ define([
                         p.owner = p.custom.owner.name;
 
                         //Only count subjects
-                        console.log(p.active, p.custom, p.orgid);
                         if (p.active && p.orgid && p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
                             $scope.customCount++;
                         }
