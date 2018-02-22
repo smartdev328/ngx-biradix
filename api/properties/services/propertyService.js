@@ -272,6 +272,7 @@ module.exports = {
         })
     },
     unlinkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
+        var self = this;
         var ObjectId = require('mongoose').Types.ObjectId;
         var query = {_id: new ObjectId(subjectid)};
         var update = {$pull: {comps : {id : ObjectId(compid)}}};
@@ -332,6 +333,16 @@ module.exports = {
 
                     removeRMBMPermissionsAfterUnlink(compid, subjectid);
                     removeCMPermissionsAfterUnlink(compid, subjectid, subj.orgid);
+
+                    //If removing a custom comp and no other subjects, mark it inactive
+                    if (comp.custom && comp.custom.owner) {
+                        CompsService.getSubjects([comp._id], {select: "_id"}, function (err, subjects) {
+                            _.remove(subjects, function(x) {return x._id.toString() == comp._id.toString()});
+                            if (subjects.length == 0) {
+                                self.updateActive(operator, {id: comp._id, active: false}, context, null, () => {}) ;
+                            }
+                        });
+                    }
 
                     return callback(err, saved)
                 })

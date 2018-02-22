@@ -400,6 +400,35 @@ define([
             }, function() {})
         }
 
+        $scope.toggleDelete = function (property) {
+
+            $dialog.confirm('Are you sure you want to ' + (!property.active ? "un-delete" : "delete") + ' "' + property.name + '"?', function() {
+                ngProgress.start();
+
+                $propertyService.setActive(!property.active, property._id).then(function (response) {
+
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                        }
+                        else {
+                            property.active = !property.active;
+
+                            if (property.active) {
+                                toastr.success(property.name + " has been un-deleted.");
+                            } else {
+                                toastr.warning(property.name + " has been deleted. ");
+                            }
+                        }
+
+                        ngProgress.reset();
+                    },
+                    function (error) {
+                        toastr.error("Unable to update property. Please contact the administrator.");
+                        ngProgress.reset();
+                    });
+
+            }, function() {})
+        }
         $scope.editLink = function (subject, comp) {
             require([
                 '/app/floorplanLinks/floorplanLinksController.js'
