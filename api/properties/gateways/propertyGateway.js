@@ -99,9 +99,10 @@ Routes.get('/:id/approve', function (req, res) {
 
 Routes.put('/:id/active', function (req, res) {
     AccessService.canAccess(req.user,"Properties/Deactivate", function(canAccess) {
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
+        //You can now deactivate custom proeprties.. need more logic here at some point to secure this properly
+        // if (!canAccess) {
+        //     return res.status(401).json("Unauthorized request");
+        // }
         var property = {};
         property.id = req.params.id;
         property.active = req.body.active;
