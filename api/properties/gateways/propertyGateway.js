@@ -6,8 +6,10 @@ var Routes = express.Router();
 /////////////////////////////////
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
+var CloneService = require('../services/cloneService')
 var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
+var saveCompsService = require('../services/saveCompsService')
 /////////////////////
 var PropertyHelperService = require('../services/propertyHelperService')
 var CreateService = require('../services/createService')
@@ -96,6 +98,28 @@ Routes.get('/:id/approve', function (req, res) {
         });
     })
 })
+
+Routes.post('/:id/clone', function (req, res) {
+    PropertyService.search(req.user, {
+        limit: 100,
+        permission: 'PropertyView',
+        ids: [req.params.id],
+        select: "*"}, function(err, subject) {
+        CloneService.cloneCustom(req.user,req.context,subject[0],req.user.orgs[0]._id, function(id) {
+            if (req.body.comps) {
+                var compIds = _.map(subject[0].comps, function(x) {return x.id});
+                saveCompsService.saveComps(req.user,req.context,id,compIds, function() {
+                    return res.status(200).json({id: id});
+                })
+            }
+            else {
+                return res.status(200).json({id: id});
+            }
+        })
+
+    });
+
+});
 
 Routes.put('/:id/active', function (req, res) {
     AccessService.canAccess(req.user,"Properties/Deactivate", function(canAccess) {

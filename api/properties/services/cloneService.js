@@ -63,7 +63,7 @@ module.exports = {
         var self = this;
         if (subject.custom && subject.custom.owner) {
             PropertyService.search(operator, {
-                limit: 20,
+                limit: 100,
                 permission: 'PropertyView',
                 ids: compids,
                 select: "*"}, function(err, comps) {

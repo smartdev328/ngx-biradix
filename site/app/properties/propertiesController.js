@@ -660,5 +660,33 @@ define([
             }, function() {})
         }
 
+        $scope.clone = function(property) {
+
+            require([
+                '/app/properties/cloneController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/properties/clone.html?bust=' + version,
+                    controller: 'cloneController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        property: function () {
+                            return property;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    toastr.success("Custom property copied successfully");
+                    $scope.reload();
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
+
+
     }]);
 });

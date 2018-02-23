@@ -1,9 +1,7 @@
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
+var saveCompsService = require('../services/saveCompsService')
 var CompService = require('../services/compsService')
-var CloneService = require('../services/cloneService')
-var _ = require("lodash");
-var async = require("async");
 
 module.exports = {
     init: function(Routes) {
@@ -66,56 +64,9 @@ module.exports = {
 
                 req.body.compids = req.body.compids || [];
 
-                PropertyService.search(req.user, {
-                        limit: 20,
-                        permission: 'PropertyManage',
-                        ids: [req.params.id],
-                        select: "_id comps.id custom"}, function(err, comps) {
-
-                    CloneService.getClonedComps(req.user, req.context,comps[0],req.body.compids, function(updatedCompIds) {
-                        var old = _.map(comps[0].comps, function(x) {return x.id.toString()});
-
-                        //Do not try to remove yourself as a comp;
-                        _.remove(old,function(x) {return x == req.params.id.toString()});
-
-                        var added = _.difference(updatedCompIds, old);
-                        var removed = _.difference(old, updatedCompIds);
-
-
-                        async.eachLimit(added, 10, function(id, callbackp){
-                            PropertyService.linkComp(req.user, req.context, null, req.params.id, id, function (err, newLink) {
-                                callbackp();
-
-                            });
-                        }, function(err) {
-                            async.eachLimit(removed, 10, function(id, callbackp){
-                                PropertyService.unlinkComp(req.user, req.context, null, req.params.id, id, function (err, newLink) {
-                                    callbackp();
-
-                                });
-                            }, function(err) {
-                                //return res.status(401).json("Unauthorized request");
-                                var order = [];
-                                updatedCompIds.forEach(function(x, i) {
-                                    order.push({compid: x, orderNumber: i});
-                                });
-                                async.eachLimit(order, 10, function(o, callbackp){
-                                    CompService.saveCompOrder(req.params.id, o.compid, o.orderNumber, function (err, newLink) {
-                                        callbackp();
-                                    });
-                                }, function(err) {
-                                    return res.status(200).json({success: true});
-                                });
-
-                            });
-                        });
-                        // console.log('Added: ', added);
-                        // console.log('Removed: ', removed);
-                    })
-
+                saveCompsService.saveComps(req.user,req.context,req.params.id,req.body.compids, function() {
+                    return res.status(200).json({success: true});
                 })
-
-
             })
         })
 
