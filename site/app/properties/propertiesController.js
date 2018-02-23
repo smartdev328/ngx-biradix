@@ -626,7 +626,7 @@ define([
         $scope.needsApproval = [];
 
         $scope.getNeedsApproval = function() {
-            $propertyService.search({limit: 10000, needsApproval:true, skipAmenities: true}).then(function (response) {
+            $propertyService.search({limit: 10000, needsApproval:true, skipAmenities: true, hideCustom: true}).then(function (response) {
                     $scope.needsApproval = response.data.properties;
 
                 },

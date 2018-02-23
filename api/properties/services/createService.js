@@ -277,10 +277,19 @@ module.exports = {
             return;
         }
 
-        getHelpers(operator, property, {}, function(err, all)
+        var skipGeo = false;
+        if (property.loc && property.loc[0] && property.loc[1]) {
+            skipGeo = true;
+        }
+
+        getHelpers(operator, property, {skipGeo: skipGeo}, function(err, all)
             {
                 if (err) {
                     return callback([{msg:err}],null)
+                }
+
+                if (skipGeo) {
+                    all.geo = {latitude: property.loc[0], longitude: property.loc[1]};
                 }
 
                 populateAmenitiesandFloorplans(property, all);

@@ -680,7 +680,8 @@ module.exports = {
                                 {
                                     name: {$regex: new RegExp("^"+prop.name+"$", "i")},
                                     _id : {$ne: prop._id},
-                                    active:true
+                                    active:true,
+                                    "custom.owner" : {$exists: false}
                                 }).select("_id name loc").exec(function(err, dupes) {
                                 prop.dupeName = dupes.length > 0;
                                 callbackp();

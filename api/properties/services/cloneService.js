@@ -69,7 +69,7 @@ module.exports = {
                 select: "*"}, function(err, comps) {
 
                 var newcompids = [];
-                async.each(compids, function(compid, callbacks) {
+                async.eachSeries(compids, function(compid, callbacks) {
 
                     var comp = _.find(comps, function(x) {return x._id.toString() == compid.toString()});
                     if (comp.custom && comp.custom.owner) {

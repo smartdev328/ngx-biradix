@@ -500,7 +500,7 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
         }
 
         $scope.alertsProperties = function() {
-            $propertyService.search({limit: 20, needsApproval:true, skipAmenities: true}).then(function (response) {
+            $propertyService.search({limit: 20, needsApproval:true, skipAmenities: true, hideCustom: true}).then(function (response) {
 
                     var a = _.find($rootScope.notifications, function(x) {return x.key == "properties"});
 

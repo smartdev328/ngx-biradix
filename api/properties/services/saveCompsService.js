@@ -13,6 +13,7 @@ module.exports = {
             select: "_id comps.id custom"}, function(err, comps) {
 
             CloneService.getClonedComps(operator, context,comps[0],compIds, function(updatedCompIds) {
+
                 var old = _.map(comps[0].comps, function(x) {return x.id.toString()});
 
                 //Do not try to remove yourself as a comp;
