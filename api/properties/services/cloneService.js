@@ -7,6 +7,7 @@ var PropertyHelperService = require('../services/propertyHelperService')
 var AmenitiesService = require('../../amenities/services/amenityService')
 var CreateService = require('../services/createService')
 var SurveyHelperService = require('../services/surveyHelperService')
+var S3Service = require('../../media/services/s3Service')
 
 module.exports = {
     cloneCustom(operator, context, property, orgid, callback) {
@@ -34,29 +35,37 @@ module.exports = {
         AmenitiesService.search({}, function(err, amenities) {
             PropertyHelperService.fixAmenities(newProperty,amenities);
 
-            CreateService.create(operator,  context, newProperty, function (err, newprop) {
-                SurveyHelperService.getAllSurveys(property._id, function(err,surveys) {
-                    var newSurvey;
-                    async.each(surveys, function(survey, callbacks) {
-                        newSurvey = JSON.parse(JSON.stringify(survey));
-                        delete newSurvey._id;
+            async.eachSeries(property.media, function(image, callbacks) {
+                S3Service.copyImage(image, function(err, newImage) {
+                    newProperty.media.push(newImage);
+                    callbacks();
+                })
+            }, function() {
+                CreateService.create(operator,  context, newProperty, function (err, newprop) {
+                    SurveyHelperService.getAllSurveys(property._id, function(err,surveys) {
+                        var newSurvey;
+                        async.each(surveys, function(survey, callbacks) {
+                            newSurvey = JSON.parse(JSON.stringify(survey));
+                            delete newSurvey._id;
 
-                        newSurvey.floorplans.forEach(function(fp) {
-                            if (fp.id && fp_map[fp.id]) {
-                                fp.id = fp_map[fp.id];
-                            }
+                            newSurvey.floorplans.forEach(function(fp) {
+                                if (fp.id && fp_map[fp.id]) {
+                                    fp.id = fp_map[fp.id];
+                                }
+                            })
+
+                            PropertyService.createSurvey(operator,context,null,newprop._id,newSurvey,function(err, created) {
+                                callbacks();
+                            })
+                        }, function() {
+                            callback(newprop._id);
                         })
 
-                        PropertyService.createSurvey(operator,context,null,newprop._id,newSurvey,function(err, created) {
-                            callbacks();
-                        })
-                    }, function() {
-                        callback(newprop._id);
                     })
 
-                })
+                });
+            })
 
-            });
         });
     },
     getClonedComps(operator, context, subject, compids, callback) {

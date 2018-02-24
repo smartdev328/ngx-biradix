@@ -114,6 +114,18 @@ d.run(function() {
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
                 if (workerId == 1) {
 
+                    // var s3Service = require("../api/media/services/s3Service")
+                    //
+                    // var source =         {
+                    //     "name" : "shutterstock_682989595.jpg",
+                    //     "url" : "https://d138dweu4olq2b.cloudfront.net/92918600-19ac-11e8-ae5b-11a3309deeac.jpg",
+                    //     "width" : 1620,
+                    //     "height" : 1080
+                    // };
+                    // s3Service.copyImage(source, function(err,image) {
+                    //     console.log(err,image)
+                    // })
+
                     setTimeout(function() {
                         require('../config/seed').init();
                     }, 30000)
@@ -181,7 +193,7 @@ d.run(function() {
                     // });
 
 
-                }
+                        }
 
 
 
