@@ -13,7 +13,7 @@ var audits  = [
     {key: 'login_as', value: 'Login As', group: 'User', admin: true},
     {key: 'password_updated', value: 'Password Updated', group: 'User'},
     {key: 'reset_password', value: 'Password Reset', group: 'User'},
-    {key: 'user_custom', value:  'User Custom Limit', undo: false, group: 'User', admin: true},
+    {key: 'user_custom', value:  'Custom Property Limit Updated', undo: false, group: 'User', admin: true},
     {key: 'user_status', value:  'User Status Updated', undo: true, group: 'User'},
     {key: 'user_notifications', value:  'Notification Settings Updated', undo: false, group: 'User'},
     {key: 'user_reminders', value:  'Reminder Settings Updated', undo: false, group: 'User'},

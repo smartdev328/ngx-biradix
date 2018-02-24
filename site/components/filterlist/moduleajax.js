@@ -74,7 +74,7 @@
                     $scope.search($scope.filters.search, function (items) {
                         $scope.items = [];
                         items.forEach(function (i) {
-                            $scope.items.push({id: i._id || i.id, name: i.name, group: i.group, disabled : i.disabled})
+                            $scope.items.push({id: i._id || i.id, name: i.name, group: i.group, disabled : i.disabled, isCustom: i.isCustom})
                         })
 
                         $scope.hideSelected();
