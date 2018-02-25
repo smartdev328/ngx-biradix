@@ -4,7 +4,7 @@ define([
     '../../components/inputmask/module.js',
 ], function (app) {
      app.controller
-        ('propertyWizardController', ['$scope', '$uibModalInstance', 'id', 'isComp', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$uibModal','subjectid', function ($scope, $uibModalInstance, id, isComp, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$uibModal,subjectid) {
+        ('propertyWizardController', ['$scope', '$uibModalInstance', 'id', 'isComp', 'isCustom', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$uibModal','subjectid', function ($scope, $uibModalInstance, id, isComp, isCustom, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$uibModal,subjectid) {
 
             if (!$rootScope.loggedIn) {
                 $location.path('/login')
@@ -13,6 +13,8 @@ define([
             $scope.mediaIndex = 0;
 
             $scope.changed = false;
+
+            $scope.isCustom = isCustom;
 
             $scope.startWatchingChanges = function() {
                 window.setTimeout(function() {
@@ -70,6 +72,10 @@ define([
                     title = "Edit Property"
                 }
 
+                if (isCustom) {
+                    title += " (Custom)"
+                }
+
                 if ($scope.property.name) {
                     title += ": " + $scope.property.name;
                 }
@@ -107,7 +113,12 @@ define([
             }
 
             $scope.changeStep(0);
-            $scope.property = {fees: {}, floorplans: [] }
+            $scope.property = {fees: {}, floorplans: [], isCustom: isCustom }
+
+            //Custom subjects get assigned to owners org only.
+            if (isCustom && !isComp) {
+                $scope.property.orgid = $rootScope.me.orgs[0]._id;
+            }
 
             $scope.constructionTypes = ['Garden','Highrise','Midrise','Platform','Wrap']
             $scope.states = [
@@ -391,6 +402,9 @@ define([
                 if (id) {
                     $propertyService.getFullProperty(id).then(function (response) {
                         $scope.property = response.data.properties[0];
+                        isCustom = $scope.property.custom && $scope.property.custom.owner;
+                        $scope.isCustom = isCustom;
+
                         $scope.localLoading = true;
 
                         $scope.property.state = $scope.getSelectedState($scope.property.state)
@@ -492,7 +506,8 @@ define([
                 }
 
                 //Only check for creatinng comps
-                if (id || !isComp) {
+                //Do not check for custom properties
+                if (id || !isComp || isCustom) {
                     return;
                 }
 

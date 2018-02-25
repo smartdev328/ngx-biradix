@@ -97,3 +97,9 @@
     color: #337ab7;
 
 }
+
+
+.filter-list .disabled {
+    font-style: italic;
+    cursor: not-allowed !important;
+}

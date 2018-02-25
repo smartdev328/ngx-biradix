@@ -23,7 +23,9 @@
 
 </style>
 <div class="break2 panel panel-info concessions">
-    <div class="panel-heading">Concessions Report</div>
+    <div class="panel-heading">Concessions Report
+        <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
+    </div>
     <div class="panel-body">
         <hr>
         <div ng-if="!report.dates || report.dates.length == 0"  class="alert alert-warning" role="alert">

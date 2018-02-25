@@ -1,3 +1,11 @@
+<style>
+    tr.padding td {
+        padding: 2px 0px;
+    }
+    tr.hover:hover {
+        background-color: #f5f5f5;
+    }
+</style>
 <div class="row" ng-show="localLoading" style="margin-bottom:0px !important;">
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Dashboard</h2>
@@ -40,12 +48,21 @@
             <div class="panel-heading">
                 <table style="width:100%">
                     <tr>
-                        <Td style="height:30px">
+                        <Td style="height:30px" class="triangle">
+                            <div class="triangle profile"
+                                 popover-trigger="'mouseenter'"
+                                 popover-placement="right"
+                                 popover-append-to-body="true"
+                                 uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                                 ng-if="property.custom.owner"
+                            ></div>
                             <span ng-if="initialLength == 1" class="pull-left" style="color: #4460a9 !important;">{{property.name}}</span>
 
                             <span ng-if="initialLength > 1" class="dropdown pull-left" style="color: #4460a9 !important;">
                     <A href class="dropdown-toggle" data-toggle="dropdown" style="font-size: inherit; color: #4460a9 !important;">{{property.name}}<span class="caret" style="border-top:6px dashed !important;border-right: 6px solid transparent !important;;border-left: 6px solid transparent !important;margin-left:4px"></span></A>
-                    <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;max-height:310px;overflow-y:auto">
+                    <div class="dropdown-menu dropdown-menu-left"  style="padding: 0px;width:300px;margin-top:10px">
+                        <div style="max-height:315px;overflow-y:auto;position:relative">
+                        <div style="margin:10px" ng-if="!showSearch"></div>
                         <div style="margin:10px" ng-if="showSearch">
                             <input type="text" class="form-control input-sm"
                                    placeholder="Search Properties"
@@ -55,10 +72,36 @@
                             >
                             <i class="fa fa-search form-control-feedback" style="color:#ccc;top:10px;right:10px"></i>
                         </div>
+                        <Table border="0" style="margin:-10px 0px 10px 10px;width:95%;color:#333 !important;">
+                            <tr ng-if="cutomMyProperties.length > 0" style="border-bottom:1px dotted #ccc">
+                                <Td  colspan="100%" style="padding-top:10px;"><B>My Custom Properties</B></Td>
+                            </tr>
 
-                        <ul class="multi-col-list">
-                            <li ng-repeat="property in myProperties"><A href ng-click="setProperty(property)">{{::property.name}}</A></li>
-                        </ul>
+                            <tr class="hover padding" ng-repeat="property in cutomMyProperties">
+                                <td style="width:15px"  ng-click="setProperty(property)"class="triangle">
+                                    <div class="triangle"
+                                         popover-trigger="'mouseenter'"
+                                         popover-placement="right"
+                                         popover-append-to-body="true"
+                                         uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                                    ></div>
+                                </td>
+                                <Td ng-click="loadReport(report)" >
+                                    <a href ng-click="setProperty(property)" style="font-size:13px;font-weight: 400;">{{property.name}}</a>
+                                </Td>
+                            </tr>
+                            <tr ng-if="sharedMyProperties.length > 0" style="border-bottom:1px dotted #ccc">
+                                <Td  colspan="100%" style="padding-top:10px;"><B>{{$root.me.orgs[0].name}} Properties</B></Td>
+                            </tr>
+                            <tr class="hover padding" ng-repeat="property in sharedMyProperties">
+                                <td style="width:15px"  ng-click="setProperty(property)">
+                                 </td>
+                                <Td ng-click="loadReport(report)" >
+                                    <a href ng-click="setProperty(property)" style="font-size:13px;font-weight: 400">{{property.name}}</a>
+                                </Td>
+                            </tr>
+                        </Table>
+                        </div>
                     </div>
                 </span>
                         </Td>

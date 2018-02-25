@@ -140,11 +140,26 @@ define([
                 active: true,
                 searchName:search
                 , skipAmenities: true
-                , select: "name comps.id"
+                , hideCustomComps: true
+                , hideCustom: ($scope.reportType == "multiple") // no custom properties for group reports
+                , select: "name comps.id custom"
                 , sort: "name"
             }).then(function (response) {
 
                 response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
+                response.data.properties.forEach(function(p) {
+                    p.isCustom = !!(p.custom && p.custom.owner);
+
+                    //For group reports and people with custom properties, add a group to multi dropdown
+                    if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
+                        p.group = $rootScope.me.orgs[0].name + " Properties"
+                    }
+                })
+
+                if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
+                    response.data.properties.push({id:0, name: "N/A For This Report", group : " My Custom Properties", disabled: true  })
+                }
+
 
                 callback(response.data.properties)
             }, function (error) {
@@ -187,19 +202,27 @@ define([
                 $propertyService.search({
                     limit: 10000,
                     permission: 'PropertyManage',
-                    select: "_id name comps.id comps.orderNumber",
+                    select: "_id name comps.id comps.orderNumber custom",
                     ids: $scope.propertyIds,
+                    hideCustomComps: true,
                     sort: "name"
                     ,
                     skipAmenities: true
                 }).then(function (response) {
 
+                    response.data.properties.forEach(function(p) {
+                        p.isCustom = !!(p.custom && p.custom.owner);
+                    })
+
                     if ($scope.reportType == 'single') {
                         $scope.selected.Property = response.data.properties[0];
                     } else {
+                        var item;
                         response.data.properties.forEach(function (p) {
-                            $scope.propertyItems.items.push({id: p._id, name: p.name});
+                            item = {id: p._id, name: p.name};
+                            $scope.propertyItems.items.push(item);
                         })
+
                         $scope.run();
                     }
 
@@ -218,10 +241,14 @@ define([
             $propertyService.search({
                 limit: 2,
                 permission: 'PropertyManage',
+                hideCustomComps: true,
                 active: true,
-                select: "_id name comps.id comps.orderNumber"
+                select: "_id name comps.id comps.orderNumber custom"
                 , skipAmenities: true
             }).then(function (response) {
+                response.data.properties.forEach(function(p) {
+                    p.isCustom = !!(p.custom && p.custom.owner);
+                })
                 $scope.myProperties = response.data.properties;
 
                 var id = $rootScope.me.settings.defaultPropertyId;
@@ -247,9 +274,12 @@ define([
                             _id: id,
                             permission: 'PropertyManage',
                             active: true,
-                            select: "_id name comps.id comps.orderNumber"
+                            select: "_id name comps.id comps.orderNumber custom"
                             , skipAmenities: true
                         }).then(function (response) {
+                            response.data.properties.forEach(function(p) {
+                                p.isCustom = !!(p.custom && p.custom.owner);
+                            })
                             $scope.selected.Property = response.data.properties[0];
                             $scope.myProperties.push($scope.selected.Property);
                             $scope.myProperties = _.sortBy($scope.myProperties, function(x) {return x.name});
@@ -269,6 +299,21 @@ define([
             var deferred = $q.defer();
 
             $scope.autocompleteproperties(term, function(result) {
+                result = _.sortByOrder(result, ["isCustom","name"], [false, true]);
+                var found = {};
+                result.forEach(function(r) {
+                    if (r.isCustom) {
+                        if (!found["My Custom Properties"]) {
+                            r.group = "My Custom Properties";
+                            found["My Custom Properties"] = true;
+                        }
+                    } else {
+                        if (!found[$rootScope.me.orgs[0].name + " Properties"]) {
+                            r.group = $rootScope.me.orgs[0].name + " Properties";
+                            found[$rootScope.me.orgs[0].name + " Properties"] = true;
+                        }
+                    }
+                })
                 deferred.resolve(result);
             })
 
@@ -355,6 +400,7 @@ define([
 
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
+                    isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
                     reports: [{name: $scope.selected.Property.name, items : $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
                 }

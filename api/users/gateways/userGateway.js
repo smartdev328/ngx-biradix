@@ -270,6 +270,26 @@ userRoutes.get('/loginAs/:userid', function (req, res) {
     });
 })
 
+userRoutes.put('/:id/customPropertiesLimit', function (req, res) {
+    AccessService.canAccess(req.user,"Admin", function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+        var user = {};
+        user.id = req.params.id;
+        user.customPropertiesLimit = req.body.customPropertiesLimit;
+
+        UserService.updateCustomPropertiesLimit(req.user, user, req.context, function (err, newusr) {
+            if (err) {
+                return res.status(200).json({success: false, errors: err});
+            }
+            else {
+                return res.status(200).json({success: true});
+            }
+        });
+    })
+})
+
 userRoutes.put('/:id/active', function (req, res) {
     AccessService.canAccess(req.user,"Users/Deactivate", function(canAccess) {
         if (!canAccess) {

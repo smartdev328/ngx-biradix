@@ -13,6 +13,7 @@ var audits  = [
     {key: 'login_as', value: 'Login As', group: 'User', admin: true},
     {key: 'password_updated', value: 'Password Updated', group: 'User'},
     {key: 'reset_password', value: 'Password Reset', group: 'User'},
+    {key: 'user_custom', value:  'Custom Property Limit Updated', undo: false, group: 'User', admin: true},
     {key: 'user_status', value:  'User Status Updated', undo: true, group: 'User'},
     {key: 'user_notifications', value:  'Notification Settings Updated', undo: false, group: 'User'},
     {key: 'user_reminders', value:  'Reminder Settings Updated', undo: false, group: 'User'},
@@ -51,6 +52,7 @@ var audits  = [
 
     {key: 'links_updated', value: 'Comped Floor Plans Updated', undo: true, group: 'Property'},
     {key: 'property_created', value: 'Property Created', group: 'Property'},
+    {key: 'property_created_custom', value: 'Property Created (Custom)', group: 'Property'},
     {key: 'property_profile_updated', value: 'Profile Updated', undo: true, group: 'Property'},
     {key: 'property_contact_updated', value: 'Contact/Notes Updated', undo: true, group: 'Property'},
     {key: 'property_fees_updated', value: 'Fees/Deposits Updated', undo: true, group: 'Property'},

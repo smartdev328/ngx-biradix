@@ -24,7 +24,9 @@ define([
 
         $scope.options = {
             showInactive: false,
-            showActive: true
+            showActive: true,
+            showCustom : true,
+            showShared: true
         }
 
         $scope.adjustToSize = function(size) {
@@ -43,7 +45,8 @@ define([
                 occupancy: true,
                 ner: !isMedium,
                 company: false,
-                tools : true
+                tools : true,
+                owner : false
             }
         }
 
@@ -68,6 +71,19 @@ define([
 
             $scope.show.active =  $scope.options.showInactive;
         }
+
+        $scope.calcCustom = function() {
+            if ($scope.options.showCustom === $scope.options.showShared) {
+                delete $scope.search.isCustom;
+            }
+            else
+            {
+                $scope.search.isCustom = $scope.options.showCustom;
+            }
+
+            $scope.resetPager();
+        }
+
         $scope.toggleOpen = function(row) {
             row.open = !(row.open || false);
 
@@ -79,7 +95,7 @@ define([
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
                 $propertyService.search({
-                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid needsSurvey survey.dateByOwner", ids: compids
+                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid needsSurvey survey.dateByOwner custom", ids: compids
                     , skipAmenities: true
                 }).then(function (response) {
                     $propertyService.search({
@@ -95,6 +111,12 @@ define([
 
                         var comp;
                         row.fullcomps.forEach(function (p) {
+
+                            p.isCustom = false;
+                            if (p.custom && p.custom.owner && p.custom.owner.name) {
+                                p.isCustom = true;
+                            }
+
                             //For propert sorting
                             if (p.survey) {
                                 if (p.survey.occupancy != null) {
@@ -139,12 +161,25 @@ define([
         $scope.reload = function (callback) {
             $scope.localLoading = false;
             $propertyService.search({
-                limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber needsSurvey"
+                limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber needsSurvey custom"
                 , skipAmenities: true
+                , hideCustomComps: true
             }).then(function (response) {
                 $scope.data = response.data.properties;
 
+                $scope.customCount = 0;
+
                 $scope.data.forEach(function(p) {
+                    p.isCustom = false;
+                    if (p.custom && p.custom.owner && p.custom.owner.name) {
+                        p.isCustom = true;
+                        p.owner = p.custom.owner.name;
+
+                        //Only count subjects
+                        if (p.active && p.orgid && p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
+                            $scope.customCount++;
+                        }
+                    }
                     //For propert sorting
                     if (p.survey){
                         if (p.survey.occupancy != null) {
@@ -163,6 +198,13 @@ define([
                         $scope.toggleOpen(p);
                     }
                 })
+
+                if ($scope.customCount >= $rootScope.me.customPropertiesLimit) {
+                    $scope.customLimitReached = true;
+                } else {
+                    $scope.customLimitReached = false;
+                }
+
                 $scope.localLoading = true;
 
                 if (callback) {
@@ -361,6 +403,36 @@ define([
             }, function() {})
         }
 
+        $scope.toggleDelete = function (property) {
+
+            $dialog.confirm('Are you sure you want to ' + (!property.active ? "un-delete" : "delete") + ' "' + property.name + '"?', function() {
+                ngProgress.start();
+
+                $propertyService.setActive(!property.active, property._id).then(function (response) {
+
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
+                        }
+                        else {
+                            property.active = !property.active;
+
+                            if (property.active) {
+                                toastr.success(property.name + " has been un-deleted.");
+                            } else {
+                                toastr.warning(property.name + " has been deleted. ");
+                            }
+                            $scope.reload();
+                        }
+
+                        ngProgress.reset();
+                    },
+                    function (error) {
+                        toastr.error("Unable to update property. Please contact the administrator.");
+                        ngProgress.reset();
+                    });
+
+            }, function() {})
+        }
         $scope.editLink = function (subject, comp) {
             require([
                 '/app/floorplanLinks/floorplanLinksController.js'
@@ -389,7 +461,7 @@ define([
             });
         }
 
-        $scope.edit = function (id, isComp, subject) {
+        $scope.edit = function (id, isComp, subject, isCustom) {
             var subjectid = subject ? subject._id : null;
 
             require([
@@ -410,6 +482,9 @@ define([
                         },
                         subjectid: function() {
                             return subjectid;
+                        },
+                        isCustom : function() {
+                            return isCustom
                         }
                     }
                 });
@@ -551,7 +626,7 @@ define([
         $scope.needsApproval = [];
 
         $scope.getNeedsApproval = function() {
-            $propertyService.search({limit: 10000, needsApproval:true, skipAmenities: true}).then(function (response) {
+            $propertyService.search({limit: 10000, needsApproval:true, skipAmenities: true, hideCustom: true}).then(function (response) {
                     $scope.needsApproval = response.data.properties;
 
                 },
@@ -584,6 +659,34 @@ define([
 
             }, function() {})
         }
+
+        $scope.clone = function(property) {
+
+            require([
+                '/app/properties/cloneController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/properties/clone.html?bust=' + version,
+                    controller: 'cloneController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        property: function () {
+                            return property;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    toastr.success("Custom property copied successfully");
+                    $scope.reload();
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
+
 
     }]);
 });

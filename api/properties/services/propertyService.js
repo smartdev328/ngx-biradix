@@ -71,7 +71,12 @@ module.exports = {
     },
     getPropertiesForReminders: function(callback) {
         var query = PropertySchema.find(
-            {active: true, orgid: {$exists : true}, date : {$lte : moment().subtract(9,"day").format()}}
+            {
+                active: true,
+                orgid: {$exists : true},
+                date : {$lte : moment().subtract(9,"day").format()},
+                "custom.owner": { $exists: false }
+            }
         );
         query.select("name orgid survey.id survey.occupancy survey.ner date comps.id totalUnits")
         query.exec(function(err, properties) {
@@ -267,6 +272,7 @@ module.exports = {
         })
     },
     unlinkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
+        var self = this;
         var ObjectId = require('mongoose').Types.ObjectId;
         var query = {_id: new ObjectId(subjectid)};
         var update = {$pull: {comps : {id : ObjectId(compid)}}};
@@ -327,6 +333,16 @@ module.exports = {
 
                     removeRMBMPermissionsAfterUnlink(compid, subjectid);
                     removeCMPermissionsAfterUnlink(compid, subjectid, subj.orgid);
+
+                    //If removing a custom comp and no other subjects, mark it inactive
+                    if (comp.custom && comp.custom.owner) {
+                        CompsService.getSubjects([comp._id], {select: "_id"}, function (err, subjects) {
+                            _.remove(subjects, function(x) {return x._id.toString() == comp._id.toString()});
+                            if (subjects.length == 0) {
+                                self.updateActive(operator, {id: comp._id, active: false}, context, null, () => {}) ;
+                            }
+                        });
+                    }
 
                     return callback(err, saved)
                 })
@@ -454,6 +470,27 @@ module.exports = {
                 query = query.where('_id').in(all.permissions);
             }
 
+            if (Operator.memberships.isadmin !== true) {
+                //If its a custom property, only return it for owners and admins
+                query = query.and([
+                    { $or : [{ "custom.owner": { $exists: false } }, {"custom.owner.id" : Operator._id}]}
+                    ]);
+            }
+
+            if (criteria.hideCustomComps) {
+                query = query.and([
+                    { $or : [{ "custom.owner": { $exists: false } }, { "orgid": { $exists: true } }]}
+                ]);
+            }
+
+            if (criteria.hideCustom) {
+                query = query.where("custom.owner").exists(false);
+            }
+
+            if (criteria.customOnly) {
+                query = query.where("custom.owner").exists(true);
+            }
+
             if (criteria.active != null) {
                 query = query.where("active").equals(criteria.active);
             }
@@ -503,13 +540,13 @@ module.exports = {
                 if (criteria.search != '') {
                     var s = new RegExp(escapeStringRegexp(criteria.search), "i")
                     query = query.or([{'name': s}, {'address': s}, {'city': s}, {'state': s}]);
-                    query = query.select(criteria.select || '_id name address city state zip');
+                    query = query.select(criteria.select || '_id name address city state zip custom');
                 } else if (criteria.searchName != '') {
                     var s = new RegExp(escapeStringRegexp(criteria.searchName), "i")
                     query = query.or([{'name': s}]);
-                    query = query.select(criteria.select || '_id name address city state zip');
+                    query = query.select(criteria.select || '_id name address city state zip custom');
                 } else {
-                    query = query.select(criteria.select || '_id name');
+                    query = query.select(criteria.select || '_id name custom');
                 }
             }
 
@@ -630,7 +667,8 @@ module.exports = {
                                 $maxDistance: .1 / 3963.2
                             },
                                 _id : {$ne: prop._id},
-                                active:true
+                                active:true,
+                                "custom.owner" : {$exists: false}
                         }).select("_id name loc").exec(function(err, dupes) {
                             prop.dupes = _.map(dupes, function(x) {return x.name}).join(", ");
                             callbackp();
@@ -642,7 +680,8 @@ module.exports = {
                                 {
                                     name: {$regex: new RegExp("^"+prop.name+"$", "i")},
                                     _id : {$ne: prop._id},
-                                    active:true
+                                    active:true,
+                                    "custom.owner" : {$exists: false}
                                 }).select("_id name loc").exec(function(err, dupes) {
                                 prop.dupeName = dupes.length > 0;
                                 callbackp();

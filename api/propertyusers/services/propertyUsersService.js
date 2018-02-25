@@ -209,17 +209,27 @@ module.exports = {
                 })
             }
         }, function(err, all) {
-            async.eachLimit(all.differences.removed, 10, function(propertyid, callbackp){
-                unLinkPropertyFromUser(operator,context,revertedFromId,userid, propertyid, callbackp)
+            //Get all custom ids
+            PropertyService.search(operator,
+                {   customOnly: true, limit:10000,
+                    permission:['PropertyManage','CompManage'], ids: all.differences.removed
+                }, function(err, properties) {
+                var customIds = _.map(properties, function(x) {return x._id.toString()});
+                //Do not remove custom ids in any set properties for user operation
+                all.differences.removed = _.difference(all.differences.removed, customIds);
+                async.eachLimit(all.differences.removed, 10, function(propertyid, callbackp){
+                    unLinkPropertyFromUser(operator,context,revertedFromId,userid, propertyid, callbackp)
 
-            }, function(err) {
-                async.eachLimit(all.differences.added, 10, function(propertyid, callbackp){
-                    LinkPropertyWithUser(operator,context,revertedFromId,userid, propertyid, callbackp)
                 }, function(err) {
+                    async.eachLimit(all.differences.added, 10, function(propertyid, callbackp){
+                        LinkPropertyWithUser(operator,context,revertedFromId,userid, propertyid, callbackp)
+                    }, function(err) {
 
-                    callback();
+                        callback();
+                    });
                 });
-            });
+            })
+
         });
     },
     getUserAssignedProperties : function(operator, userid, callback) {

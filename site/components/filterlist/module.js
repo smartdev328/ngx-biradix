@@ -15,6 +15,10 @@
                 $scope.current = null;
 
                 $scope.clk = function($event, item) {
+                    if (item.disabled) {
+                        return;
+                    }
+
                     $scope.current = item;
                     if ($scope.shiftStarted) {
                         $scope.selectBetween($scope.shiftStarted, item);
@@ -43,7 +47,10 @@
                     $scope.resetChecked();
 
                     if (item1.id == item2.id) {
-                        item1.checked = true;
+
+                        if (!item1.disabled) {
+                            item1.checked = true;
+                        }
                         return;
                     }
 
@@ -56,7 +63,9 @@
                             }
 
                             if (started || item.id == item1.id || item.id == item2.id) {
-                                item.checked = true;
+                                if (!item1.disabled) {
+                                    item.checked = true;
+                                }
                             }
                         })
                     }
@@ -76,7 +85,9 @@
                         var group;
                         for(group in $scope.groups) {
                             $scope.groups[group].forEach(function (item) {
-                                item.checked = true;
+                                if (!item1.disabled) {
+                                    item.checked = true;
+                                }
                             })
                         }
                         $scope.selectAll = !$scope.selectAll;
@@ -107,7 +118,7 @@
                     if ($event.keyCode == 38) {
                         var prev = $scope.getPrevious($event,1);
 
-                        if (!prev) {
+                        if (!prev || prev.disabled) {
                             return;
                         }
 
@@ -116,7 +127,9 @@
                         }
                         else {
                             $scope.resetChecked();
-                            prev.checked = true;
+                            if (!prev.disabled) {
+                                prev.checked = true;
+                            }
                         }
                         $scope.current = prev;
                     }
@@ -125,7 +138,7 @@
                     if ($event.keyCode == 33) {
                         var prev = $scope.getPrevious($event,3);
 
-                        if (!prev) {
+                        if (!prev || prev.disabled) {
                             return;
                         }
 
@@ -134,7 +147,9 @@
                         }
                         else {
                             $scope.resetChecked();
-                            prev.checked = true;
+                            if (!prev.disabled) {
+                                prev.checked = true;
+                            }
                         }
                         $scope.current = prev;
                     }
@@ -143,7 +158,7 @@
                     if ($event.keyCode == 40) {
                         var next = $scope.getNext($event,1);
 
-                        if (!next) {
+                        if (!next || next.disabled) {
                             return;
                         }
 
@@ -152,7 +167,9 @@
                         }
                         else {
                             $scope.resetChecked();
-                            next.checked = true;
+                            if (!next.disabled) {
+                                next.checked = true;
+                            }
                         }
 
                         $scope.current = next;
@@ -163,7 +180,7 @@
                         $event.preventDefault();
                         var next = $scope.getNext($event,3);
 
-                        if (!next) {
+                        if (!next || next.disabled) {
                             return;
                         }
 
@@ -172,7 +189,10 @@
                         }
                         else {
                             $scope.resetChecked();
-                            next.checked = true;
+                            if (!next.disabled) {
+                                next.checked = true;
+                            }
+
                         }
 
                         $scope.current = next;

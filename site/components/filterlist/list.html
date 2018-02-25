@@ -15,7 +15,7 @@
             <div ng-repeat="(key, value) in groups">
                 <b ng-if="key != 'undefined'">{{::key}}</b>
                 <div ng-repeat="item in value" class="checkbox-row">
-                    <label><input type="checkbox" ng-model="item.selected"> {{::item.name}}</label>
+                    <label><input type="checkbox" ng-model="item.selected" ng-disabled="item.disabled"> {{::item.name}}</label>
                 </div>
             </div>
         </div>

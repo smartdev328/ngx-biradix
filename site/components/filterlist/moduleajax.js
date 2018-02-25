@@ -74,7 +74,7 @@
                     $scope.search($scope.filters.search, function (items) {
                         $scope.items = [];
                         items.forEach(function (i) {
-                            $scope.items.push({id: i._id || i.id, name: i.name, group: i.group})
+                            $scope.items.push({id: i._id || i.id, name: i.name, group: i.group, disabled : i.disabled, isCustom: i.isCustom})
                         })
 
                         $scope.hideSelected();
@@ -156,7 +156,12 @@
                     }
 
                     ar.forEach(function(item) {
-                        item.checked = true;
+                        if (item.disabled) {
+                            item.checked = false;
+                        }
+                        else {
+                            item.checked = true;
+                        }
                     })
                     $scope.moveChecked(!state);
                 }

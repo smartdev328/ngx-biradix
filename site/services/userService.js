@@ -37,6 +37,15 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
             });
         }
 
+    fac.setCustomPropertiesLimit = function (userId,customPropertiesLimit) {
+        return $http.put('/api/1.0/users/' + userId + '/customPropertiesLimit'+ '?bust=' + (new Date()).getTime(), { customPropertiesLimit: customPropertiesLimit}, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
+
         fac.setActive = function (active, userId) {
             return $http.put('/api/1.0/users/' + userId + '/active'+ '?bust=' + (new Date()).getTime(), { active: active}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

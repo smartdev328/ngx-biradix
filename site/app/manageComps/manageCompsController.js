@@ -60,10 +60,11 @@ define([
                 limit: 20,
                 permission: 'PropertyManage',
                 ids: [id],
-                select: "_id name comps.id comps.orderNumber"
+                select: "_id name custom comps.id comps.orderNumber"
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.subject = response.data.properties[0]
+                $scope.isCustom = !!($scope.subject.custom && $scope.subject.custom.owner);
 
                 var compids = _.map($scope.subject.comps,function(x) {return x.id.toString()});
 
@@ -100,7 +101,7 @@ define([
 
             $scope.getLocation = function (val) {
                 var compids = _.map($scope.comps,function(x) {return x._id.toString()});
-                return $propertyService.search({search: val, active: true, exclude: [id]}).then(function (response) {
+                return $propertyService.search({search: val, active: true, exclude: [id], hideCustom: !$scope.isCustom}).then(function (response) {
                     return response.data.properties
                 });
             };
@@ -209,6 +210,9 @@ define([
                             },
                             subjectid: function() {
                                 return $scope.subject._id;
+                            },
+                            isCustom: function() {
+                                return $scope.isCustom;
                             }
                         }
                     });

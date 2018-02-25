@@ -5,9 +5,15 @@
     <div ng-repeat="(key, value) in groups">
         <b ng-if="key != 'undefined'" class="unselectable">{{key}}</b>
         <div ng-repeat="item in value"
-             ng-class="{'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused}"
+             ng-class="{'triangle-parent':true,'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused, 'disabled' : item.disabled}"
              ng-click="clk($event,item)"
         >
+            <div ng-if="item.isCustom" class="triangle"
+                 popover-trigger="'mouseenter'"
+                 popover-placement="right"
+                 popover-append-to-body="true"
+                 uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+            ></div>
             <input type="text" style="width:0px;height:18px;border:0;padding:0" value="{{::item.name}}">{{::item.name}}
         </div>
     </div>
