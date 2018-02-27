@@ -369,6 +369,10 @@ module.exports = {
 
                 if (property.isCustom) {
                     n.custom = {owner: {name: operator.first + ' ' + operator.last, id: operator._id}}
+
+                    if (n.name.indexOf('Custom ') != 0) {
+                        n.name = "Custom " + n.name.trim();
+                    }
                 }
 
                 n.save(function (err, prop) {
