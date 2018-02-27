@@ -47,7 +47,7 @@
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "mongoose": "4.11.4",
-    "newrelic": "^2.0.1",
+    "newrelic": "^2.8.0",
     "node-geocoder": "^3.22.0",
     "node-sass": "^4.7.2",
     "node-uuid": "^1.4.8",
