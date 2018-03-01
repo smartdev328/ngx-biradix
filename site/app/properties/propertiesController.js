@@ -226,13 +226,13 @@ define([
             if ($rootScope.me) {
                 if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                     $scope.getNeedsApproval();
-
-                    siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
-
-                    $scope.adjustToSize($(window).width());
-                    $scope.reload();
-                    me();
                 }
+                siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
+
+
+                $scope.adjustToSize($(window).width());
+                $scope.reload();
+                me();
             }
         })
 
