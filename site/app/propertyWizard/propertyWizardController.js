@@ -526,7 +526,7 @@ define([
                         if (response.data.property) {
                             var p = response.data.property;
                             // $scope.dupeChecked = true;
-                            $dialog.confirm('A property with this address already exists.<Br><Br><B>' + p.name + '</B> is a property with address <i><b>' + p.address + '</b></i> with <b>' + p.totalUnits + ' units</b>.<br><Br>Would you like to add this property?', function () {
+                            $dialog.confirm('We have detected a property with this address already exists. We recommend you add this existing property instead of creating a new one:<Br><Br>Name: <B>' + p.name + '</B><br>Units: <b>' + p.totalUnits + '</b><br>Address: <b>' + p.address + '</b><br><Br>If the property name has changed or it has been renovated, you will be able to make any necessary updates after adding it as a comp.<Br><br>Add existing property as comp?', function () {
 
                                 $uibModalInstance.close(p);
                             }, function () {
