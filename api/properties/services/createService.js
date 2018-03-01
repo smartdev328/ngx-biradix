@@ -277,37 +277,56 @@ module.exports = {
             return;
         }
 
-        getHelpers(operator, property, {}, function(err, all)
+        var skipGeo = false;
+        if (property.loc && property.loc[0] && property.loc[1]) {
+            skipGeo = true;
+        }
+
+        getHelpers(operator, property, {skipGeo: skipGeo}, function(err, all)
             {
                 if (err) {
                     return callback([{msg:err}],null)
                 }
 
-                populateAmenitiesandFloorplans(property, all);
-
-                //if org of property is provided, assign manage to all CMs for that org
-                //this is our implict assignment
-                var CMs = [];
-                if (property.orgid) {
-
-                    CMs = _.filter(all.roles, function(x) {return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1})
+                if (skipGeo) {
+                    all.geo = {latitude: property.loc[0], longitude: property.loc[1]};
                 }
 
-                //and assign view opermissions to all non admins and not POs
-                var viewers = _.filter(all.roles, function(x) {
-                    return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1})
+                populateAmenitiesandFloorplans(property, all);
 
-
-                /////////////Assign all permisions to viewers and CMS
                 var permissions = [];
-                viewers.forEach(function(x) {
-                    permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
-                })
+                //Skip all permission logic if custom property
+                if (!property.isCustom) {
+                    //if org of property is provided, assign manage to all CMs for that org
+                    //this is our implict assignment
+                    var CMs = [];
+                    if (property.orgid) {
 
-                CMs.forEach(function(x) {
-                    permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
-                })
-                ////////////////
+                        CMs = _.filter(all.roles, function (x) {
+                            return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1
+                        })
+                    }
+
+                    //and assign view opermissions to all non admins and not POs
+                    var viewers = _.filter(all.roles, function (x) {
+                        return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1
+                    })
+
+
+                    /////////////Assign all permisions to viewers and CMS
+                    viewers.forEach(function (x) {
+                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
+                    })
+
+                    CMs.forEach(function (x) {
+                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
+                    })
+                    ////////////////
+                }
+                else {
+                    //Custom Properties need explicit access since they are not in org of creator
+                    permissions.push({executorid: operator._id.toString(), allow: true, type: 'PropertyManage'})
+                }
 
                 var profileChanges = getProfileChanges(property, null, all);
 
@@ -342,7 +361,19 @@ module.exports = {
                 n.comps = [];
                 n.date = Date.now();
                 n.needsApproval = true;
+
+                if (property.isCustom) {
+                    n.needsApproval = false;
+                }
                 n.needsSurvey = true;
+
+                if (property.isCustom) {
+                    n.custom = {owner: {name: operator.first + ' ' + operator.last, id: operator._id}}
+
+                    if (n.name.indexOf('Custom ') != 0) {
+                        n.name = "Custom " + n.name.trim();
+                    }
+                }
 
                 n.save(function (err, prop) {
 
@@ -351,7 +382,13 @@ module.exports = {
                         return callback([{msg:"Unable to create property. Please contact the administrator."}], null)
                     }
 
-                    AuditService.create({operator: operator, property: prop, type: 'property_created', description: prop.name, context: context, data: changes})
+                    var type = 'property_created';
+
+                    if (property.isCustom) {
+                        type = 'property_created_custom'
+                    }
+
+                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes})
 
                     if (permissions.length > 0 ) {
                         permissions.forEach(function(x) {

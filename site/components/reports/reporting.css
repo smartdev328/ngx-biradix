@@ -98,4 +98,8 @@ property-report .table-comps .hidden-report {
     display:none;
 }
 
+.custom_property {
+    font-weight:normal;font-size:16px !important;color:#32CD32 !important;
+    float:right !important;
+}
 

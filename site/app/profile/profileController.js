@@ -148,6 +148,7 @@ define([
 
                     $scope.coverPage = {
                         date: moment().format("MMM Do, YYYY"),
+                        isCustom: $scope.property.custom && $scope.property.custom.owner,
                         reports: [{name: $scope.property.name, items : ['Property Profile']}],
                         org: $rootScope.me.orgs[0]
                     }

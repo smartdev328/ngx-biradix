@@ -71,7 +71,14 @@
                 </div>
 
                 <script type="text/ng-template" id="customTemplate.html">
-                    <a>
+                    <a class="triangle">
+                        <div class="triangle" ng-if="match.model.custom.owner"
+                             popover-trigger="'mouseenter'"
+                             popover-placement="left"
+                             popover-append-to-body="true"
+                             uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+
+                        ></div>
                         <span ng-bind-html="match.label | sanitize2 | uibTypeaheadHighlight:query"></span>
                     </a>
                 </script>
@@ -81,7 +88,7 @@
                         <div class="form-group has-feedback has-feedback-left search">
                             <input type="text" class="form-control input-sm"
                                    placeholder="Search Properties"
-                                   uib-typeahead="props.summary for props in getLocation($viewValue)"
+                                   uib-typeahead="props.summary for props in getLocation($viewValue,true,flase)"
                                    typeahead-on-select="searchSelected($item, $model, $label)"
                                    typeahead-template-url="customTemplate.html"
                                    ng-model="searches.search1"
@@ -133,19 +140,12 @@
             </div><!-- /.container-fluid -->
         </nav>
 
-        <script type="text/ng-template" id="TypeAheadTemplate.html">
-            <a>
-                <img ng-src="http://upload.wikimedia.org/wikipedia/commons/thumb/{{match.model.flag}}" width="16">
-                <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
-            </a>
-        </script>
-
         <nav class="navbar header-nav navbar-fixed-top hidden-print" style="margin-top:52px;padding:20px 10px 0px 10px;display:none;z-index:1" id="searchBar">
             <div style="float:left;width:90%">
                 <div class="form-group has-feedback has-feedback-left search">
                     <input type="text" class="form-control input-sm"
                            placeholder="Search Properties"
-                           uib-typeahead="props.summary for props in getLocation($viewValue)"
+                           uib-typeahead="props.summary for props in getLocation($viewValue,true,false)"
                            typeahead-on-select="searchSelected($item, $model, $label)"
                            typeahead-template-url="customTemplate.html"
                            ng-model="searches.search1"

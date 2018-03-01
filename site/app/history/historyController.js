@@ -78,6 +78,18 @@ define([
                 search:search
                 , skipAmenities: true
             }).then(function (response) {
+
+                response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
+                response.data.properties.forEach(function(p) {
+                    p.isCustom = !!(p.custom && p.custom.owner);
+
+                    if (p.isCustom) {
+                        p.group = " My Custom Properties"
+                    } else {
+                        p.group = $rootScope.me.orgs[0].name + " Properties"
+                    }
+                })
+
                 callback(response.data.properties)
             }, function (error) {
                 callback([]);

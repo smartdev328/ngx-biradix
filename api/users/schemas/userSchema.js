@@ -43,7 +43,8 @@ var UserSchema = new Schema({
     bounceReason: String,
     bounceDate: String,
     guestStats: Array,
-    search: String
+    search: String,
+    customPropertiesLimit: Number
 });
 
 module.exports = mongoose.model('User', UserSchema);

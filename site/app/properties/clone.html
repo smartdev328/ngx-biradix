@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">Copy Custom Property: {{property.name}}</h2>
+    <hr>
+</div>
+
+<div class="modal-body">
+    <div>
+        Are you sure you want to create a custom copy of <b>{{property.name}}</b>?<Br>
+        <Br>
+        <input type="checkbox" ng-model="comps" id="include_comps"> <label for="include_comps">Include associated comps</label>
+        <i class="fa fa-info-circle" style="font-size:14px"
+           popover-trigger="'mouseenter'"
+           popover-placement="right"
+           uib-popover="Check this box if you want to also create custom copies of the current comps associated with the subject property you are copying."
+        ></i>
+        <Br>
+        <Br>
+    </div>
+        <div style="margin:0px auto;width:200px">
+            <button class=" btn btn-success btn-large contact-submit" type="button" ng-click="save()" style="width:95px">Yes</button>
+            <button class=" btn btn-default btn-large contact-submit" type="button" ng-click="cancel()" style="width:95px">No</button>
+        </div>
+</div>

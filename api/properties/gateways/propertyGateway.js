@@ -6,8 +6,10 @@ var Routes = express.Router();
 /////////////////////////////////
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
+var CloneService = require('../services/cloneService')
 var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
+var saveCompsService = require('../services/saveCompsService')
 /////////////////////
 var PropertyHelperService = require('../services/propertyHelperService')
 var CreateService = require('../services/createService')
@@ -97,11 +99,59 @@ Routes.get('/:id/approve', function (req, res) {
     })
 })
 
+Routes.post('/:id/clone', function (req, res) {
+    PropertyService.search(req.user, {
+        limit: 100,
+        permission: 'PropertyView',
+        ids: [req.params.id],
+        select: "*"}, function(err, subject) {
+            CloneService.cloneCustom(req.user,req.context,subject[0],req.user.orgs[0]._id, function(id) {
+            if (req.body.comps) {
+                // subject[0].comps = _.sortByAll(subject[0].comps, ['orderNumber','name']);
+                //remove subject as comp
+                _.remove(subject[0].comps, function(x) {return x.id.toString() == req.params.id});
+                //Get only ids
+                var compIds = _.map(subject[0].comps, function(x) {return x.id});
+
+                //Lookup comps to get name so we can sort by name if no order is available.
+                PropertyService.search(req.user, {
+                    limit: 100,
+                    permission: 'PropertyView',
+                    ids: compIds,
+                    select: "name"}, function(err, comps) {
+                        var comp;
+                        //Join to get name
+                        subject[0].comps.forEach(c=> {
+                            comp = _.find(comps,function(x) {return x._id.toString() == c.id.toString()});
+                            c.name = comp.name;
+                            delete c.floorplans;
+                        })
+                        //Sort by order number, and name if no order
+                        subject[0].comps = _.sortByAll(subject[0].comps, ['orderNumber','name']);
+
+                        //Get ids in the correct order now.
+                        compIds = _.map(subject[0].comps, function(x) {return x.id});
+
+                        saveCompsService.saveComps(req.user, req.context, id, compIds, function () {
+                            return res.status(200).json({id: id});
+                        })
+                });
+            }
+            else {
+                return res.status(200).json({id: id});
+            }
+        })
+
+    });
+
+});
+
 Routes.put('/:id/active', function (req, res) {
     AccessService.canAccess(req.user,"Properties/Deactivate", function(canAccess) {
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
+        //You can now deactivate custom proeprties.. need more logic here at some point to secure this properly
+        // if (!canAccess) {
+        //     return res.status(401).json("Unauthorized request");
+        // }
         var property = {};
         property.id = req.params.id;
         property.active = req.body.active;
@@ -127,6 +177,11 @@ Routes.put('/', function(req,res) {
     if (req.orgid) {
         permission = "Properties/Create"
     }
+
+    if (req.isCustom) {
+        permission = "Properties/Custom"
+    }
+
     AccessService.canAccess(req.user,permission, function(canAccess) {
         if (!canAccess) {
             return res.status(401).json("Unauthorized request");
@@ -168,7 +223,8 @@ Routes.post('/checkDupe', function(req, res) {
                 "active":true,
                 "geo":{"loc": [geo[0].latitude, geo[0].longitude], "distance": .1},
                 select: "name address city state zip totalUnits",
-                exclude: req.body.exclude
+                exclude: req.body.exclude,
+                hideCustom: true
             }, function(err, props) {
                 console.log([geo[0].latitude, geo[0].longitude], props.length);
                 if (props && props[0]) {

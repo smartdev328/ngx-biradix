@@ -181,3 +181,54 @@
     }
 
 }
+
+td.triangle, li.triangle, a.triangle, div.triangle-parent {
+    position: relative;
+}
+
+div.triangle {
+    position:absolute;
+    top:0px;
+    width:12px;
+    height:12px;
+    left:0px;
+}
+
+div.triangle.profile {
+    top:-10px;
+    height:15px;
+    width:20px;
+    left:-12px;
+}
+
+div.triangle.reporting {
+    top:-1px;
+    height:15px;
+    width:20px;
+    left:2px;
+}
+
+div.triangle:after  {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    display: block;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-top: 12px solid #32CD32;
+}
+
+div.triangle.profile:after  {
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-top: 20px solid #32CD32;
+}
+
+div.triangle.reporting:after  {
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-top: 20px solid #32CD32;
+}

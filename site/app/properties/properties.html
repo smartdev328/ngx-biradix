@@ -55,9 +55,27 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
-    <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Create') > -1">
-        <button type="button" class="btn btn-default dropdown-toggle btn-sm"ng-click="edit(null,false)">
+    <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Create') > -1" style="margin-right:10px">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm"ng-click="edit(null,false, null, false)">
             <span class="fa fa-plus"></span> Add Property
+        </button>
+    </div>
+
+    <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Custom') > -1">
+        <button ng-if="!customLimitReached" type="button" class="btn btn-default dropdown-toggle btn-sm" ng-click="edit(null,false, null, true)">
+            <div class="triangle"></div>
+            <span class="fa fa-plus"></span> Add Custom Property
+        </button>
+
+        <button ng-if="customLimitReached"
+                style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
+                popover-trigger="'mouseenter'"
+                popover-placement="bottom"
+                popover-title="Your have reached your limit of custom properties."
+                uib-popover="Please contact support to increase your limit."
+                type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
+            <div class="triangle"></div>
+            <i class="fa fa-lock"></i> Add Custom Property
         </button>
     </div>
 
@@ -81,6 +99,11 @@
         <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
             <table>
                 <tr ng-if="me.permissions.indexOf('Admin') > -1">
+                    <th colspan="2">
+                        Active Status:
+                    </th>
+                </tr>
+                <tr ng-if="me.permissions.indexOf('Admin') > -1">
                     <td class="center">
                         <input type="checkbox" ng-model="options.showActive" ng-click="calcActive()" id="showActive">
                     </td>
@@ -97,15 +120,34 @@
                         &nbsp;<label for="showInactive" style="font-weight: normal">Inactive</label>
                     </Td>
                 </tr>
+                <tr>
+                    <th colspan="2">
+                        Properties:
+                    </th>
+                </tr>
+                <tr>
+                    <td class="center">
+                        <input type="checkbox" ng-model="options.showCustom" ng-click="calcCustom()" id="showCustom">
+                    </td>
+                    <Td>
+                        &nbsp;<label for="showCustom" style="font-weight: normal">Custom</label>
+                    </Td>
+                </tr>
 
                 <tr>
-                    <td>
+                    <td class="center">
+                        <input type="checkbox" ng-model="options.showShared" ng-click="calcCustom()" id="showShared">
+                    </td>
+                    <Td>
+                        &nbsp;<label for="showShared" style="font-weight: normal">{{$root.me.orgs[0].name}}</label>
+                    </Td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:2px !important;font-size:11px;height:25px"
                         ng-change="resetPager()"
                         ng-options="item for item in limits">
                         </select>
-                    </td>
-                    <Td>
                         &nbsp;Rows
                     </Td>
                 </tr>
@@ -133,6 +175,7 @@
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="columnsChanged=true"> Net Eff. Rent</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+            <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.owner" ng-click="columnsChanged=true"> Owner</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.tools" ng-checked="show.tools" ng-click="columnsChanged=true"> Actions</label></div></li>
         </ul>
     </div>
@@ -211,20 +254,34 @@
             <th ng-show="show.active" class="center">
                 Active
             </th>
-            <th ng-show="show.company" style="cursor:pointer;min-width:92px;width:120px" ng-click="toggleSort('company')">
+            <th ng-show="show.company" style="cursor:pointer;min-width:60px;width:60px" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>
                 <div class="pull-right" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
                 <div class="pull-right" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
+                <th ng-show="show.owner" style="cursor:pointer;min-width:75px;width:75px" ng-click="toggleSort('owner')">
+                    <div class="pull-left">Owner</div>
+                    <div class="pull-right" ng-show="sort.owner == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.owner === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.owner === false"><i class="fa fa-sort-up"></i></div>
+                </th>
             <th ng-show="show.tools" class="center"></th>
         </tr>
 
         <tr ng-repeat-start="row in filtered = (data | orderBy : orderBy | filter: search | filter : searchFilter) | skip : pageStart() - 1 | limitTo : limit">
-            <td style="text-align: center"><i ng-show = "row.comps.length > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
+            <td style="text-align: center"><i ng-show = "row.comps.length > 0 && (!row.isCustom || row.orgid)" ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(row)"></i></td>
             <td ng-show="show.rownumber">{{pageStart() + $index}}.</td>
             <td ng-show="show.date">{{row.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name" ><A href="#/profile/{{row._id}}">{{row.name}}</A>
+            <td ng-show="show.name" ng-class="{'triangle' : row.isCustom}" >
+                <div class="triangle" ng-if="row.isCustom"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="top"
+                     popover-append-to-body="true"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+
+                ></div>
+                <A href="#/profile/{{row._id}}">{{row.name}}</A>
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:1px;color:orange"
                    ng-if="row.needsSurvey"
@@ -257,6 +314,7 @@
                 <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ddd"></span>
             </td>
             <td ng-show="show.company">{{row.company || '-'}}</td>
+            <td ng-show="show.owner">{{row.owner}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">
@@ -265,12 +323,24 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                             <li><a href ng-click="edit(row._id, false)"><span class="fa fa-building fa-fw"></span> Edit Property</a></li>
-                            <li><a href ng-click="addComp(row)"><span class="fa fa-building-o fa-fw"></span> Manage Comps</a></li>
-                            <li ng-if="row.orgid"><a href ng-click="manageUsers(row)"><span class="fa fa-users fa-fw"></span> Assign Users</a></li>
-                            <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check fa-fw"></span> Activate</a></li>
-                            <li ng-if="me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times fa-fw"></span> De-activate</a></li>
-                            <li><a href ng-click="dashboard(row._id)" ><span class="fa fa-list fa-fw"></span> View Dashboard</a></li>
-                            <li><a href ng-click="editLink(row, row)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
+                            <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="addComp(row)"><span class="fa fa-building-o fa-fw"></span> Manage Comps</a></li>
+                            <li ng-if="!row.isCustom && row.orgid"><a href ng-click="manageUsers(row)"><span class="fa fa-users fa-fw"></span> Assign Users</a></li>
+                            <li ng-if="!row.isCustom && me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check fa-fw"></span> Activate</a></li>
+                            <li ng-if="!row.isCustom && me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-times fa-fw"></span> De-activate</a></li>
+
+                            <li ng-if="row.isCustom && !row.active"><a href ng-click="toggleDelete(row)" style="text-decoration:none"><span class="fa fa-check fa-fw"></span> Un-delete</a></li>
+                            <li ng-if="row.isCustom && row.active"><a href ng-click="toggleDelete(row)"  style="text-decoration:none"><span class="fa fa-times fa-fw"></span> Delete</a></li>
+
+                            <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="dashboard(row._id)" ><span class="fa fa-list fa-fw"></span> View Dashboard</a></li>
+                            <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="editLink(row, row)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
+                            <li ng-if="me.permissions.indexOf('Properties/Custom') > -1 && !customLimitReached"><a href ng-click="clone(row)"><span class="fa fa-copy fa-fw"></span> Create Custom Copy</a></li>
+                            <li ng-if="me.permissions.indexOf('Properties/Custom') > -1 && customLimitReached"><a href="javascript:void(0)"
+                                                                                                                  style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
+                                                                                                                  popover-trigger="'mouseenter'"
+                                                                                                                  popover-placement="bottom"
+                                                                                                                  popover-title="Your have reached your limit of custom properties."
+                                                                                                                  uib-popover="Please contact support to increase your limit."
+                            ><span class="fa fa-copy fa-fw"></span> Create Custom Copy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -283,7 +353,7 @@
                 </div>
             </td>
         </tr>
-        <tr ng-if="row.open && row.compsLoaded && row.fullcomps.length == 0">
+        <tr ng-if="row.open && row.compsLoaded && row.fullcomps.length == 0 && (!row.isCustom || row.orgid)">
             <td colspan="100%">
                 <Br><div class="alert alert-warning" role="alert">There are currently no comps added to this property.
                     <a href ng-click="addComp(row)"><span class="fa fa-building-o"></span> Manage Comps</a>
@@ -295,7 +365,15 @@
             <td></td>
             <td ng-show="show.rownumber"></td>
             <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name"><A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
+            <td ng-show="show.name" ng-class="{'triangle' : comp.isCustom}">
+                <div class="triangle" ng-if="comp.isCustom"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="top"
+                     popover-append-to-body="true"
+                     uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+
+                ></div>
+                <A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:1px;color:orange"
                    ng-if="comp.needsSurvey"
@@ -333,7 +411,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <li><a href ng-if="comp.canEdit" ng-click="edit(comp._id, true, row)"><span class="fa fa-building fa-fw"></span> Edit Comp</a></li>
+                            <li><a href ng-if="comp.canEdit" ng-click="edit(comp._id, true, row, false)"><span class="fa fa-building fa-fw"></span> Edit Comp</a></li>
                             <li><a href ng-if="!comp.canEdit" style="cursor: not-allowed;" popover-trigger="'mouseenter'"
                                    popover-placement="left"
                                    popover-title="This property is managed by a BI:Radix user."
@@ -341,7 +419,7 @@
                             ><i class="fa fa-lock fa-fw"></i> Edit Comp</a></li>
                             <li><a href ng-click="addComp(row)"><span class="fa fa-times fa-fw"></span> Remove Comp</a></li>
                             <li><a href ng-click="editLink(row, comp)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
-                            <li><a href ng-click="surveySwap(comp)" ng-if="!comp.orgid"><span class="fa fa-exchange fa-fw"></span> Survey Swap</a></li>
+                            <li ng-if="!comp.isCustom"><a href ng-click="surveySwap(comp)" ng-if="!comp.orgid"><span class="fa fa-exchange fa-fw"></span> Survey Swap</a></li>
                         </ul>
                     </div>
                 </div>

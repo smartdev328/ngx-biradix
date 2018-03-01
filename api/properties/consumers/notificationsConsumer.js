@@ -20,6 +20,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                 permission: 'PropertyManage',
                 active: true
                 , skipAmenities: true
+                , hideCustom: true
             }
 
             if (data.properties && data.properties.length > 0 && data.properties[0] != null) {

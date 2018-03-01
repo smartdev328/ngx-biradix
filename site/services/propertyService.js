@@ -1,6 +1,15 @@
 angular.module('biradix.global').factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+    fac.clone = function (id, comps) {
+        return $http.post('/api/1.0/properties/' + id + '/clone'+ '?bust=' + (new Date()).getTime(), {comps: comps}, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
+
         fac.checkDupe = function (criteria) {
             return $http.post('/api/1.0/properties/checkDupe?bust=' + (new Date()).getTime(), criteria,  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
@@ -146,6 +155,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 return response;
             });
         }
+
 
         fac.Approve = function (id) {
             return $http.get('/api/1.0/properties/' + id + '/approve'+ '?bust=' + (new Date()).getTime(), {
@@ -726,7 +736,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
         fac.getFullProperty = function(id) {
             return fac.search({limit: 1, permission: ['PropertyManage','CompManage'], _id: id
-                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid floorplans totalUnits community_amenities location_amenities media"
+                , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid floorplans totalUnits community_amenities location_amenities media custom"
             });
         }
 

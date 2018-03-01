@@ -235,7 +235,7 @@ module.exports = {
 
                 query = query.select(criteria.select);
             } else {
-                query = query.select('_id first last email active date bounceReason bounceDate settings.defaultRole');
+                query = query.select('_id first last email active date bounceReason bounceDate customPropertiesLimit settings.defaultRole');
             }
 
             query = query.sort("-date");
@@ -784,6 +784,57 @@ module.exports = {
             });
 
         })
+
+    },
+    updateCustomPropertiesLimit : function(operator, user, context, callback)  {
+        var modelErrors = [];
+
+        if (!user.id)
+        {
+            modelErrors.push({msg : 'Invalid user id.'});
+        }
+
+        if (typeof user.customPropertiesLimit === 'undefined'  || user.customPropertiesLimit === null || isNaN(user.customPropertiesLimit))
+        {
+            modelErrors.push({param: 'active', msg : 'Missing limit.'});
+        }
+
+        if (user.customPropertiesLimit < 0 || user.customPropertiesLimit > 999)
+        {
+            modelErrors.push({param: 'active', msg : 'Limit must be between 0 and 999'});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        var query = {_id: user.id};
+        var update = {customPropertiesLimit: user.customPropertiesLimit};
+        var options = {new: false};
+
+
+
+        UserSchema.findOneAndUpdate(query, update, options, function(err, old) {
+
+            if (err) {
+                modelErrors.push({msg : 'Unable to update user.'});
+                callback(modelErrors, null);
+                return;
+            }
+
+            if (user.customPropertiesLimit > 0 && (old.customPropertiesLimit || 0) == 0) {
+                AccessService.createPermission({executorid: old._id, resource: "Properties/Custom", allow: true, type: 'Execute'}, function (err, perm) {});
+            }
+            else
+            if (user.customPropertiesLimit == 0) {
+                AccessService.deletePermission({executorid: old._id, resource: "Properties/Custom", type: 'Execute'}, function (err, perm) {});
+            }
+
+            AuditService.create({operator: operator, user: old, type: 'user_custom', revertedFromId : null, description: old.first + ' ' + old.last + ': ' + (old.customPropertiesLimit || 0) + ' => ' + user.customPropertiesLimit, context: context})
+
+            return callback(err, old)
+        })
+
 
     },
     updateActive : function(operator, user, context, revertedFromId, callback)  {
