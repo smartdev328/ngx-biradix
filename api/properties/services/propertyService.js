@@ -967,58 +967,50 @@ module.exports = {
             });
         });
     },
-    createSurvey: function(operator,context,revertedFromId, id, survey, callback) {
-
-        var compFloorplans = _.pluck(survey.floorplans,"id");
-
-        var subject;
+    createSurvey: function(operator, context, revertedFromId, id, survey, callback) {
+        let compFloorplans = _.pluck(survey.floorplans, "id");
+        let subject;
 
         async.waterfall([
-            function(callbackw){
-                //if we pass in the date, pick last survey before the date
-                PropertySchema.findOne({_id: id}, function (err, prop) {
+            function(callbackw) {
+                // if we pass in the date, pick last survey before the date
+                PropertySchema.findOne({_id: id}, function(err, prop) {
                     subject = prop;
-                    callbackw(null, (prop.survey ? prop.survey.id : null), survey.date)
-                })
+                    callbackw(null, (prop.survey ? prop.survey.id : null), survey.date);
+                });
             },
             function(surveyid, date, callbackw) {
                 if (date) {
-                    SurveySchema.findOne({date:{$lt : date},propertyid:subject._id}, function(err, lastsurvey) {
-                        callbackw(null,lastsurvey)
-                    })
-                }
-                else
-                if (surveyid) {
-                    SurveySchema.findOne({_id:surveyid}, function(err, lastsurvey) {
-                        callbackw(null,lastsurvey)
-                    })
+                    SurveySchema.findOne({date: {$lt: date}, propertyid: subject._id}, function(err, lastsurvey) {
+                        callbackw(null, lastsurvey);
+                    });
+                } else if (surveyid) {
+                    SurveySchema.findOne({_id: surveyid}, function(err, lastsurvey) {
+                        callbackw(null, lastsurvey);
+                    });
                 } else {
-                    callbackw(null,{})
+                    callbackw(null, {});
                 }
             },
             function(lastsurvey, callbackw) {
                 SurveyHelperService.getSubjectExclusions(id, compFloorplans, function(exclusions) {
-                    callbackw(null,lastsurvey,exclusions)
-                })
-            }
-        ], function(err,lastsurvey, exclusions ) {
-
+                    callbackw(null, lastsurvey, exclusions);
+                });
+            },
+        ], function(err, lastsurvey, exclusions ) {
             if (!lastsurvey) {
-                lastsurvey = {}
+                lastsurvey = {};
             }
 
-            lastsurvey.occupancy = lastsurvey.occupancy || 'N/A';
-            lastsurvey.weeklyleases = lastsurvey.weeklyleases || 'N/A';
-            lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || 'N/A';
+            lastsurvey.occupancy = lastsurvey.occupancy || "N/A";
+            lastsurvey.weeklyleases = lastsurvey.weeklyleases || "N/A";
+            lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || "N/A";
             lastsurvey.floorplans = lastsurvey.floorplans || [];
 
-
-
-
-            var n = new SurveySchema();
+            let n = new SurveySchema();
 
             if (survey._id) {
-                n._id = survey._id
+                n._id = survey._id;
             }
             n.floorplans = survey.floorplans;
             n.location_amenities = survey.location_amenities || [];
@@ -1028,9 +1020,10 @@ module.exports = {
             n.leased = survey.leased;
             n.atr = survey.atr;
 
-            var totUnits = _.sum(survey.floorplans, function (fp) {
-                return fp.units
+            let totUnits = _.sum(survey.floorplans, function (fp) {
+                return fp.units;
             });
+
             if (typeof n.atr != null && n.atr != null && totUnits > 0) {
                 n.atr_percent = Math.round(survey.atr / totUnits * 100 * 10) / 10;
             } else {
@@ -1048,32 +1041,31 @@ module.exports = {
                 n.doneByOwner = true;
             }
 
-            var data = [{description: "Survey Date: ", date: n.date, id: n._id}];
-
+            let data = [{description: "Survey Date: ", date: n.date, id: n._id}];
 
             if (lastsurvey.notes !== n.notes) {
-                data.push({description: "Notes: " + (typeof lastsurvey.notes == 'undefined' || lastsurvey.notes == null || lastsurvey.notes == '' ? 'N/A' : lastsurvey.notes ) + " => " + (typeof n.notes == 'undefined' || n.notes == null || n.notes == '' ? 'N/A' : n.notes )})
+                data.push({description: "Notes: " + (typeof lastsurvey.notes == "undefined" || lastsurvey.notes == null || lastsurvey.notes == "" ? "N/A" : lastsurvey.notes ) + " => " + (typeof n.notes == "undefined" || n.notes == null || n.notes == "" ? "N/A" : n.notes )});
             }
 
             if (lastsurvey.occupancy !== n.occupancy) {
-                data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == 'undefined' || lastsurvey.occupancy == null ? 'N/A' : lastsurvey.occupancy + '%') + " => " + (typeof survey.occupancy == 'undefined' || survey.occupancy == null ? 'N/A' : survey.occupancy + "%")})
+                data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == "undefined" || lastsurvey.occupancy == null ? "N/A" : lastsurvey.occupancy + "%") + " => " + (typeof survey.occupancy == "undefined" || survey.occupancy == null ? "N/A" : survey.occupancy + "%")});
             }
             if (lastsurvey.leased !== n.leased) {
-                data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + "%") + " => " + (typeof n.leased == 'undefined' || n.leased == null ? 'N/A' : n.leased + "%")})
+                data.push({description: "Leased: " + (typeof lastsurvey.leased == "undefined" || lastsurvey.leased == null ? "N/A" : lastsurvey.leased + "%") + " => " + (typeof n.leased == "undefined" || n.leased == null ? "N/A" : n.leased + "%")});
             }
             if (lastsurvey.atr !== n.atr) {
-                data.push({description: "ATR: " + (typeof lastsurvey.atr == 'undefined' || lastsurvey.atr == null ? 'N/A' : lastsurvey.atr + "") + " => " + (typeof n.atr == 'undefined' || n.atr == null ? 'N/A' : n.atr + "")})
+                data.push({description: "ATR: " + (typeof lastsurvey.atr == "undefined" || lastsurvey.atr == null ? "N/A" : lastsurvey.atr + "") + " => " + (typeof n.atr == "undefined" || n.atr == null ? "N/A" : n.atr + "")});
             }
 
             if (lastsurvey.renewal !== n.renewal) {
-                data.push({description: "Renewal: " + (typeof lastsurvey.renewal == 'undefined' || lastsurvey.renewal == null ? 'N/A' : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == 'undefined' || n.renewal == null ? 'N/A' : n.renewal + "%")})
+                data.push({description: "Renewal: " + (typeof lastsurvey.renewal == "undefined" || lastsurvey.renewal == null ? "N/A" : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == "undefined" || n.renewal == null ? "N/A" : n.renewal + "%")});
             }
             if (lastsurvey.weeklyleases !== n.weeklyleases) {
-                data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + n.weeklyleases })
+                data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + n.weeklyleases});
             }
 
             if (lastsurvey.weeklytraffic !== n.weeklytraffic) {
-                data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + n.weeklytraffic })
+                data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + n.weeklytraffic});
             }
 
             n.floorplans.forEach(function(fp) {
@@ -1081,13 +1073,14 @@ module.exports = {
                     fp.description = "";
                 }
 
-                var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
+                let oldfp = _.find(lastsurvey.floorplans, function(x) {
+                    return x.id == fp.id;
+                });
 
                 if (!oldfp) {
-                    data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp) })
-                }
-                else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
-                    data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp) })
+                    data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp)});
+                } else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
+                    data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp)});
                 }
             })
 
@@ -1095,23 +1088,25 @@ module.exports = {
                 data[0].id=created._id;
 
                 SurveyHelperService.updateLastSurvey(subject._id, function() {
-                    callback(err, created)
+                    callback(err, created);
                 })
 
-                AuditService.create({
-                    operator: operator,
-                    property: subject,
-                    type: 'survey_created',
-                    revertedFromId: revertedFromId,
-                    description: subject.name + ": " + (data.length -1) + " update(s)",
-                    context: context,
-                    data: data
-                })
+                if (!survey.skipAudit) {
+                    AuditService.create({
+                        operator: operator,
+                        property: subject,
+                        type: "survey_created",
+                        revertedFromId: revertedFromId,
+                        description: subject.name + ": " + (data.length - 1) + " update(s)",
+                        context: context,
+                        data: data,
+                    });
+                };
 
-                if (operator.roles[0] == 'Guest') {
-                    console.log('Creating survey as guest')
-                    userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
-                    emailOriginatorGuestSurvey(operator,id, subject.name);
+                if (operator.roles[0] == "Guest") {
+                    console.log("Creating survey as guest")
+                    userService.updateGuestStatsLastCompleted(operator._id, id, () => {});
+                    emailOriginatorGuestSurvey(operator, id, subject.name);
                 }
             });
         });

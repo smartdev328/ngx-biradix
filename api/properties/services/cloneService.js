@@ -57,6 +57,7 @@ module.exports = {
                     async.each(surveys, function(survey, callbacks) {
                         newSurvey = JSON.parse(JSON.stringify(survey));
                         delete newSurvey._id;
+                        newSurvey.skipAudit = true;
 
                         newSurvey.floorplans.forEach(function(fp) {
                             if (fp.id && fpMap[fp.id]) {

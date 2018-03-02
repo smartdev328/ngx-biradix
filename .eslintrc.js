@@ -3,7 +3,7 @@ module.exports = {
     "rules": {
         "linebreak-style": ["error", "windows"],
         "quotes": ["error", "double"],
-        "max-len" : ["error", { "code": 160 }],
+        "max-len" : ["error", { "code": 320 }],
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }]
     },
     "parserOptions": {
