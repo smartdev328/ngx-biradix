@@ -1,86 +1,92 @@
-'use strict';
-var async = require("async");
-var _ = require("lodash")
-var uuid = require('node-uuid');
-var PropertyService = require('../services/propertyService')
-var PropertyHelperService = require('../services/propertyHelperService')
-var AmenitiesService = require('../../amenities/services/amenityService')
-var CreateService = require('../services/createService')
-var SurveyHelperService = require('../services/surveyHelperService')
-var S3Service = require('../../media/services/s3Service')
+"use strict";
+
+const async = require("async");
+const _ = require("lodash");
+const uuid = require("node-uuid");
+const PropertyService = require("../services/propertyService");
+const PropertyHelperService = require("../services/propertyHelperService");
+const AmenitiesService = require("../../amenities/services/amenityService");
+const CreateService = require("../services/createService");
+const SurveyHelperService = require("../services/surveyHelperService");
+const S3Service = require("../../media/services/s3Service");
 
 module.exports = {
-    cloneCustom(operator, context, property, orgid, callback) {
-        var fp_map = {};
-        var newid;
+    copyImages: function(operator, context, propertyId, media, amenities) {
+        PropertyService.search(operator, {limit: 1, permission: "PropertyManage", ids: [propertyId], select: "*"},
+            function(err, comps) {
+            let property = JSON.parse(JSON.stringify(comps[0]));
+            async.eachSeries(media, function(image, callbacks) {
+                S3Service.copyImage(image, function(err, newImage) {
+                    property.media.push(newImage);
+                    callbacks();
+                });
+            }, function() {
+                PropertyHelperService.fixAmenities(property, amenities);
+                CreateService.update(operator, context, property._id, property, {skipGeo: true}, function() {});
+            });
+        });
+    },
+    cloneCustom: function(operator, context, property, orgid, callback) {
+        let self = this;
+        let fpMap = {};
+        let newid;
         property.floorplans.forEach(function(fp) {
             newid = uuid.v1();
-            fp_map[fp.id] = newid;
+            fpMap[fp.id] = newid;
             fp.id = newid;
-        })
+        });
 
-
-        var newProperty = _.cloneDeep(property);
+        let newProperty = _.cloneDeep(property);
         newProperty.isCustom = true;
 
         if (orgid) {
             newProperty.orgid = orgid;
-        }
-        else {
+        } else {
             delete newProperty.orgid;
         }
         newProperty.comps = [];
         newProperty.media = [];
 
         AmenitiesService.search({}, function(err, amenities) {
-            PropertyHelperService.fixAmenities(newProperty,amenities);
+            PropertyHelperService.fixAmenities(newProperty, amenities);
 
-            async.eachSeries(property.media, function(image, callbacks) {
-                S3Service.copyImage(image, function(err, newImage) {
-                    newProperty.media.push(newImage);
-                    callbacks();
-                })
-            }, function() {
-                CreateService.create(operator,  context, newProperty, function (err, newprop) {
-                    SurveyHelperService.getAllSurveys(property._id, function(err,surveys) {
-                        var newSurvey;
-                        async.each(surveys, function(survey, callbacks) {
-                            newSurvey = JSON.parse(JSON.stringify(survey));
-                            delete newSurvey._id;
+            CreateService.create(operator, context, newProperty, function(err, newprop) {
+                self.copyImages(operator, context, newprop._id, property.media, amenities);
+                SurveyHelperService.getAllSurveys(property._id, function(err, surveys) {
+                    let newSurvey;
+                    async.each(surveys, function(survey, callbacks) {
+                        newSurvey = JSON.parse(JSON.stringify(survey));
+                        delete newSurvey._id;
 
-                            newSurvey.floorplans.forEach(function(fp) {
-                                if (fp.id && fp_map[fp.id]) {
-                                    fp.id = fp_map[fp.id];
-                                }
-                            })
+                        newSurvey.floorplans.forEach(function(fp) {
+                            if (fp.id && fpMap[fp.id]) {
+                                fp.id = fpMap[fp.id];
+                            }
+                        });
 
-                            PropertyService.createSurvey(operator,context,null,newprop._id,newSurvey,function(err, created) {
-                                callbacks();
-                            })
-                        }, function() {
-                            callback(newprop._id);
-                        })
-
-                    })
-
+                        PropertyService.createSurvey(operator, context, null, newprop._id, newSurvey, function(err, created) {
+                            callbacks();
+                        });
+                    }, function() {
+                        callback(newprop._id);
+                    });
                 });
-            })
-
+            });
         });
     },
-    getClonedComps(operator, context, subject, compids, callback) {
-        var self = this;
+    getClonedComps: function(operator, context, subject, compids, callback) {
+        let self = this;
         if (subject.custom && subject.custom.owner) {
             PropertyService.search(operator, {
-                limit: 100,
-                permission: 'PropertyView',
-                ids: compids,
-                select: "*"}, function(err, comps) {
-
-                var newcompids = [];
+            limit: 100,
+            permission: "PropertyView",
+            ids: compids,
+            select: "*"}, function(err, comps) {
+                let newcompids = [];
                 async.eachSeries(compids, function(compid, callbacks) {
-
-                    var comp = _.find(comps, function(x) {return x._id.toString() == compid.toString()});
+                    let comp = _.find(comps, function(x) {
+                        return x._id.toString() == compid.toString();
+                    });
                     if (comp.custom && comp.custom.owner) {
                         newcompids.push(compid);
                         callbacks();
@@ -88,19 +94,14 @@ module.exports = {
                         self.cloneCustom(operator, context, comp, null, function(newCompId) {
                             newcompids.push(newCompId);
                             callbacks();
-                        })
-
+                        });
                     }
                 }, function() {
                     return callback(newcompids);
-                })
-
-
-
+                });
             });
         } else {
             return callback(compids);
         }
-
-    }
-}
+    },
+};
