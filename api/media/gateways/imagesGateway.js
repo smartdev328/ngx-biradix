@@ -1,6 +1,6 @@
 "use strict";
 const express = require("express");
-const Routes = express.Router();
+const Routes = new express.Router();
 const settings = require("../../../config/settings");
 const AWS = require("aws-sdk");
 const uuid = require("node-uuid");
