@@ -383,103 +383,117 @@ module.exports = {
                     })
                 }
             })
-            callback(err,surveys)
+            callback(err, surveys);
         })
     },
     search: function(Operator, criteria, callback) {
-        var tStart = (new Date()).getTime();
-        var t, tS;
-        var ObjectId = require('mongoose').Types.ObjectId;
-        criteria.permission = criteria.permission || ['PropertyView'];
+        // let tStart = (new Date()).getTime();
+        let t;
+        let tS;
+        let ObjectId = require("mongoose").Types.ObjectId;
+        criteria.permission = criteria.permission || ["PropertyView"];
 
         if (!criteria.permission.length) {
             criterma.permission = [criteria.permission];
         }
 
-        criteria.search = (criteria.search || '').trim();
-        criteria.searchName = (criteria.searchName || '').trim();
+        criteria.search = (criteria.search || "").trim();
+        criteria.searchName = (criteria.searchName || "").trim();
 
-        var AllProperties =
+        let AllProperties =
             Operator.memberships.isadmin === true
             ||
-            (Operator.permissions.indexOf('Properties/ViewAll') > -1 && criteria.permission.indexOf('PropertyView') > -1);
+            (Operator.permissions.indexOf("Properties/ViewAll") > -1 && criteria.permission.indexOf("PropertyView") > -1);
 
         async.parallel({
             permissions: function(callbackp) {
                 if (AllProperties) {
-                    callbackp(null,[]);
+                    callbackp(null, []);
                 } else {
                     AccessService.getPermissions(Operator, criteria.permission, function(permissions) {
-                        callbackp(null, permissions)
+                        callbackp(null, permissions);
                     });
                 }
             },
             orgs: function(callbackp) {
-                OrgService.read(function (err, orgs) {
-                    callbackp(null, orgs)
+                OrgService.read(function(err, orgs) {
+                    callbackp(null, orgs);
                 });
             },
 
             amenities: function(callbackp) {
                 if (criteria.skipAmenities) {
-                    callbackp(null,[]);
+                    callbackp(null, []);
                 } else {
-                    AmenityService.search({active: true}, function (err, amenities) {
-                        callbackp(err, amenities)
-                    })
+                    AmenityService.search({active: true}, function(err, amenities) {
+                        callbackp(err, amenities);
+                    });
                 }
-        }
+        },
         }, function(err, all) {
-
             t = (new Date()).getTime();
-            //console.log('Property Run: (All): ',(t-tStart) / 1000, "s");
+            // console.log('Property Run: (All): ',(t-tStart) / 1000, "s");
 
-            var query = PropertySchema.find();
+            let query = PropertySchema.find();
             if (criteria._id) {
                 criteria.ids = criteria.ids || [];
                 criteria.ids.push(criteria._id);
             }
 
             if (criteria.exclude) {
-                criteria.exclude = criteria.exclude.map(function(x) {return x.toString()})
+                criteria.exclude = criteria.exclude.map(function(x) {
+                    return x.toString();
+                });
+            }
+
+            if (criteria.ids) {
+                criteria.ids = criteria.ids.map(function(x) {
+                    return x.toString();
+                });
             }
 
             if (AllProperties) {
                 if (criteria.ids) {
-                    criteria.ids = criteria.ids.map(function(x) {return mongoose.Types.ObjectId(x)})
+                    criteria.ids = criteria.ids.map(function(x) {
+                        return new mongoose.Types.ObjectId(x);
+                    });
                     query = query.where("_id").in(criteria.ids);
                 }
 
                 if (criteria.exclude) {
-                    criteria.exclude = criteria.exclude.map(function(x) {return mongoose.Types.ObjectId(x)})
+                    criteria.exclude = criteria.exclude.map(function(x) {
+                        return new mongoose.Types.ObjectId(x);
+                    });
                     query = query.where("_id").nin(criteria.exclude);
                 }
-            }
-            else {
-
+            } else {
                 if (criteria.ids) {
                     all.permissions = _.intersection(all.permissions, criteria.ids);
                 }
 
                 if (criteria.exclude) {
-                    _.remove(all.permissions, function(p) {return criteria.exclude.indexOf(p) > -1})
+                    _.remove(all.permissions, function(p) {
+                        return criteria.exclude.indexOf(p) > -1;
+                    });
                 }
 
-                all.permissions = all.permissions.map(function(x) {return mongoose.Types.ObjectId(x)})
+                all.permissions = all.permissions.map(function(x) {
+                    return new mongoose.Types.ObjectId(x);
+                });
 
-                query = query.where('_id').in(all.permissions);
+                query = query.where("_id").in(all.permissions);
             }
 
             if (Operator.memberships.isadmin !== true) {
-                //If its a custom property, only return it for owners and admins
+                // If its a custom property, only return it for owners and admins
                 query = query.and([
-                    { $or : [{ "custom.owner": { $exists: false } }, {"custom.owner.id" : Operator._id}]}
+                    {$or: [{"custom.owner": {$exists: false}}, {"custom.owner.id": Operator._id}]},
                     ]);
             }
 
             if (criteria.hideCustomComps) {
                 query = query.and([
-                    { $or : [{ "custom.owner": { $exists: false } }, { "orgid": { $exists: true } }]}
+                    {$or: [{"custom.owner": {$exists: false}}, {"orgid": {$exists: true}}]},
                 ]);
             }
 
@@ -499,7 +513,7 @@ module.exports = {
                 criteria.select = "id name loc"
                 query = query.where("needsApproval").equals(true);
             }
-            
+
             if (criteria.orgid != null) {
                 query = query.where("orgid").equals(criteria.orgid);
             }
@@ -509,13 +523,12 @@ module.exports = {
             }
 
             if (criteria.geo) {
-
-                var loc =
+                let loc =
                     {
-                        'loc': {
+                        "loc": {
                             $near: criteria.geo.loc,
-                            $maxDistance: criteria.geo.distance / 3963.2 //covert miles to radians
-                        }
+                            $maxDistance: criteria.geo.distance / 3963.2, // covert miles to radians
+                        },
                     }
 
 
@@ -531,7 +544,7 @@ module.exports = {
                     {"floorplans.amenities": criteria.amenity},
                     {"floorplans.amenities": new ObjectId(criteria.amenity)},
 
-                ])
+                ]);
             }
 
             query = query.sort(criteria.sort || "name");

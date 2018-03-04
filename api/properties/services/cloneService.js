@@ -12,7 +12,7 @@ const S3Service = require("../../media/services/s3Service");
 
 module.exports = {
     copyImages: function(operator, context, propertyId, media, amenities) {
-        PropertyService.search(operator, {limit: 1, permission: "PropertyView", ids: [propertyId], select: "*"},
+        PropertyService.search(operator, {limit: 1, permission: "PropertyManage", ids: [propertyId], select: "*"},
             function(err, comps) {
             let property = JSON.parse(JSON.stringify(comps[0]));
             async.eachSeries(media, function(image, callbacks) {

@@ -257,21 +257,18 @@ module.exports = {
                 });
              })
         });
-
     },
     create: function(operator, context, property, callback) {
-
         var modelErrors = [];
 
         errorCheck(property, modelErrors);
-
 
         if (modelErrors.length > 0) {
             callback(modelErrors, null);
             return;
         }
 
-        var skipGeo = false;
+        let skipGeo = false;
         if (property.loc && property.loc[0] && property.loc[1]) {
             skipGeo = true;
         }
@@ -289,10 +286,10 @@ module.exports = {
                 populateAmenitiesandFloorplans(property, all);
 
                 var permissions = [];
-                //Skip all permission logic if custom property
+                // Skip all permission logic if custom property
                 if (!property.isCustom) {
-                    //if org of property is provided, assign manage to all CMs for that org
-                    //this is our implict assignment
+                    // if org of property is provided, assign manage to all CMs for that org
+                    // this is our implict assignment
                     var CMs = [];
                     if (property.orgid) {
 
@@ -301,25 +298,23 @@ module.exports = {
                         })
                     }
 
-                    //and assign view opermissions to all non admins and not POs
+                    // and assign view opermissions to all non admins and not POs
                     var viewers = _.filter(all.roles, function (x) {
                         return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1
                     })
 
 
-                    /////////////Assign all permisions to viewers and CMS
+                    // Assign all permisions to viewers and CMS
                     viewers.forEach(function (x) {
                         permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
                     })
 
                     CMs.forEach(function (x) {
                         permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
-                    })
-                    ////////////////
-                }
-                else {
-                    //Custom Properties need explicit access since they are not in org of creator
-                    permissions.push({executorid: operator._id.toString(), allow: true, type: 'PropertyManage'})
+                    });
+                } else {
+                    // Custom Properties need explicit access since they are not in org of creator
+                    permissions.push({executorid: operator._id.toString(), allow: true, type: "PropertyManage"});
                 }
 
                 var profileChanges = getProfileChanges(property, null, all);
@@ -329,10 +324,8 @@ module.exports = {
                     newName = _.find(all.orgs, function(x) {return x._id.toString() == property.orgid.toString()}).name
                 }
 
-                profileChanges.push({description:  "Company: " + newName });
+                profileChanges.push({description: "Company: " + newName});
                 // console.log(profileChanges);
-
-
 
                 var contactChanges = getContactChanges(property, null, all);
                 var feesChanges = getFeesChanges(property,null, all);
@@ -379,7 +372,7 @@ module.exports = {
                     var type = 'property_created';
 
                     if (property.isCustom) {
-                        type = 'property_created_custom'
+                        type = 'property_created_custom';
                     }
 
                     AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes})
@@ -394,30 +387,28 @@ module.exports = {
                     AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'BM_GROUP']}, function(){});
                     AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'PO_GROUP']}, function(){});
 
-                    async.eachLimit(permissions, 10, function(permission, callbackp){
-                        AccessService.createPermission(permission, function (err, perm) {
-                            callbackp(err, perm)
+                    async.eachLimit(permissions, 10, function(permission, callbackp) {
+                        AccessService.createPermission(permission, function(err, perm) {
+                            callbackp(err, perm);
                         });
                     }, function(err) {
-                        //link to yourself to treat yourself as a comp
+                        // link to yourself to treat yourself as a comp
                         CompsService.linkComp(null,null,null,false,prop._id, prop._id,function() {
                             if (!err) {
                                 callback(null, prop);
                             } else {
                                 callback([{msg: err}], prop);
                             }
-                        })
+                        });
                     });
                 });
-
             }
         );
-
     },
 }
 
 function isValidString(s) {
-    return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s)
+    return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s);
 }
 
 function errorCheck(property, modelErrors) {

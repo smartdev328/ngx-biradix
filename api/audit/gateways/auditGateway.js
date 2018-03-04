@@ -143,9 +143,9 @@ Routes.post('/undo', function (req, res) {
                             })
                             break;
                         case "property_pictures":
-                            propertyPicturesUndo(req,o, function(err) {
+                            propertyPicturesUndo(req, o, function(err) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             })
                             break;
                         case "property_floorplan_amenities_updated":
@@ -429,18 +429,31 @@ function propertyAmenitiesUndo(req, o, callback) {
     });
 };
 
+/**
+ * Undo pictures update.
+ * @param {object} req - Express request object.
+ * @param {object} o - Audit history full item.
+ * @param {function} callback - Callback function.
+ */
 function propertyPicturesUndo(req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
-        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
-            var property = props[0];
+        PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ["CompManage", "PropertyManage"]}, function (er, props) {
+            if (err || props.length == 0) {
+                return callback([{msg: "Access to property denied"}], null);
+            }
+            let property = props[0];
             property.media = property.media || [];
 
             o.data.forEach(function(d) {
                 if (!d.deleted) {
-                    _.remove(property.media, function(x) {return x.url == d.picture})
+                    _.remove(property.media, function(x) {
+                        return x.url == d.picture;
+                    });
                 } else {
-                    if (!_.find(property.media, function(x) {return x.url == d.picture})) {
-                        property.media.push(d.old_value)
+                    if (!_.find(property.media, function(x) {
+                        return x.url == d.picture;
+                    })) {
+                        property.media.push(d.old_value);
                     }
                 }
             })
@@ -450,7 +463,7 @@ function propertyPicturesUndo(req, o, callback) {
             // callback([{msg: 'test'}]);
             // return;
 
-            PropertyHelperService.fixAmenities(property,amenities);
+            PropertyHelperService.fixAmenities(property, amenities);
 
             CreateService.update(req.user, req.context, o._id, property, {skipGeo: true}, callback);
         });
