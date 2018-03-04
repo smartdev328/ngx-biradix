@@ -12,7 +12,7 @@ const S3Service = require("../../media/services/s3Service");
 
 module.exports = {
     copyImages: function(operator, context, propertyId, media, amenities) {
-        PropertyService.search(operator, {limit: 1, permission: "PropertyManage", ids: [propertyId], select: "*"},
+        PropertyService.search(operator, {limit: 1, permission: "PropertyView", ids: [propertyId], select: "*"},
             function(err, comps) {
             let property = JSON.parse(JSON.stringify(comps[0]));
             async.eachSeries(media, function(image, callbacks) {
@@ -51,7 +51,11 @@ module.exports = {
             PropertyHelperService.fixAmenities(newProperty, amenities);
 
             CreateService.create(operator, context, newProperty, function(err, newprop) {
-                self.copyImages(operator, context, newprop._id, property.media, amenities);
+                // Give it a seconds for permissions to propogate
+                setTimeout(()=> {
+                    self.copyImages(operator, context, newprop._id, property.media, amenities);
+                }, 1000);
+
                 SurveyHelperService.getAllSurveys(property._id, function(err, surveys) {
                     let newSurvey;
                     async.each(surveys, function(survey, callbacks) {

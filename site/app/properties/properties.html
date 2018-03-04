@@ -334,6 +334,7 @@
                             <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="editLink(row, row)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
                             <li ng-if="me.permissions.indexOf('Properties/Custom') > -1 && !customLimitReached"><a href ng-click="clone(row)"><span class="fa fa-copy fa-fw"></span> Create Custom Copy</a></li>
                             <li ng-if="me.permissions.indexOf('Properties/Custom') > -1 && customLimitReached"><a href="javascript:void(0)"
+                                                                                                                  onclick="event.preventDefault();event.stopPropagation()"
                                                                                                                   style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
                                                                                                                   popover-trigger="'mouseenter'"
                                                                                                                   popover-placement="bottom"
