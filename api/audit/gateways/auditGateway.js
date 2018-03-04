@@ -426,17 +426,15 @@ function propertyAmenitiesUndo(req, o, callback) {
 
             CreateService.update(req.user,req.context, o._id,property, {skipGeo: true},callback);
         });
-    })
+    });
+};
 
-}
-
-function propertyPicturesUndo (req, o, callback) {
+function propertyPicturesUndo(req, o, callback) {
     AmenitiesService.search({}, function(err, amenities) {
         PropertyService.search(req.user, {_id: o.property.id, select: "*", permission: ['CompManage','PropertyManage']}, function (er, props) {
             var property = props[0];
             property.media = property.media || [];
 
-            console.log(property.media);
             o.data.forEach(function(d) {
                 if (!d.deleted) {
                     _.remove(property.media, function(x) {return x.url == d.picture})

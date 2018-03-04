@@ -1,27 +1,24 @@
-'use strict';
-var PropertySchema= require('../schemas/propertySchema')
-var async = require("async");
-var _ = require("lodash")
-var uuid = require('node-uuid');
-var moment = require('moment');
-var AuditService = require('../../audit/services/auditService')
-var CompsService = require('./compsService')
-var PropertyService = require('./propertyService')
-var PropertyHelperService = require('./propertyHelperService')
-var GeocodeService = require('../../utilities/services/geocodeService')
-var AccessService = require('../../access/services/accessService')
-var AmenityService = require('../../amenities/services/amenityService')
-var OrganizationService = require('../../organizations/services/organizationService')
-var EmailService = require('../../business/services/emailService')
-var PropertyUsersService = require('../../propertyusers/services/propertyUsersService')
+"use strict";
+const PropertySchema= require("../schemas/propertySchema");
+const async = require("async");
+const _ = require("lodash");
+const uuid = require("node-uuid");
+const AuditService = require("../../audit/services/auditService");
+const CompsService = require("./compsService");
+const PropertyService = require("./propertyService");
+const PropertyHelperService = require("./propertyHelperService");
+const GeocodeService = require("../../utilities/services/geocodeService");
+const AccessService = require("../../access/services/accessService");
+const AmenityService = require("../../amenities/services/amenityService");
+const OrganizationService = require("../../organizations/services/organizationService");
+const EmailService = require("../../business/services/emailService");
+const PropertyUsersService = require("../../propertyusers/services/propertyUsersService");
 
 module.exports = {
     update: function(operator, context,revertedFromId, property, options, callback) {
-
-        var modelErrors = [];
+        let modelErrors = [];
 
         errorCheck(property, modelErrors);
-
 
         if (modelErrors.length > 0) {
             callback(modelErrors, null);
@@ -30,23 +27,20 @@ module.exports = {
 
         getHelpers(operator, property, options, function(err, all) {
             if (err) {
-                return callback([{msg: err}], null)
+                return callback([{msg: err}], null);
             }
 
             populateAmenitiesandFloorplans(property, all);
 
-            var permissions = [];
-            var removePermissions = [];
+            let permissions = [];
+            let removePermissions = [];
 
-            PropertySchema.findOne({_id:property._id}, function(err, n) {
-
+            PropertySchema.findOne({_id: property._id}, function(err, n) {
                 if (err || !n) {
                     return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                 }
 
-
-
-                //Check if we can update orgs
+                // Check if we can update orgs
                 AccessService.canAccess(operator,"Properties/Create", function(canAccess) {
 
                     var profileChanges = getProfileChanges(property, n, all);
@@ -64,7 +58,7 @@ module.exports = {
 
                     // return callback([{msg: "Test"}], null)
 
-                    //Get Comps so that we can un-link them and re-link them to get all the new permissions
+                    // Get Comps so that we can un-link them and re-link them to get all the new permissions
                     var comps = _.pluck(n.comps,"id").map(function(x) {return x.toString()});
                     _.remove(comps,function(x) {return x == property._id.toString()});
 

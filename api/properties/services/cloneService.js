@@ -22,7 +22,7 @@ module.exports = {
                 });
             }, function() {
                 PropertyHelperService.fixAmenities(property, amenities);
-                CreateService.update(operator, context, property._id, property, {skipGeo: true}, function() {});
+                CreateService.update(operator, context, null, property, {skipGeo: true}, function() {});
             });
         });
     },
