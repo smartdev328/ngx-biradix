@@ -4,9 +4,9 @@ import * as redisService from "../../../api/utilities/services/redisService";
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", (req: express.Request, res: express.Response) => {
     if (req.body.url) {
-        let key;
+        let key: string;
         key = md5(req.body.url);
 
         redisService.set(req.body.url, req.body.url, 30);
