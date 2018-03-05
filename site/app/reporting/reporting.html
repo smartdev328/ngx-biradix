@@ -36,13 +36,13 @@
 
     <div class="hidden-print pull-right">
         <div class="btn-group" style="padding-bottom:10px;padding-right:10px">
-            <button uib-tooltip="My Saved/Shared Reports" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "my">
+            <button uib-tooltip="My Custom/Shared Reports" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "my">
                 <i class="fa fa-save visible-xs-inline"></i> <span class="hidden-xs">My Reports</span> <span class="caret" style="color:white !important;"></span>
             </button>
             <div class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:300px">
                 <Table border="0" style="margin:0px 0px 0px 10px;width:90%">
                     <tr style="border-bottom:1px dotted #ccc">
-                        <Td  colspan="100%"><B>My Saved Reports</B></Td>
+                        <Td  colspan="100%"><B>My Custom Reports</B></Td>
                     </tr>
                     <tr ng-if="!savedReports || (savedReports | filter : {orgid: '!'}).length == 0" class="padding">
                         <td style="width:15px">

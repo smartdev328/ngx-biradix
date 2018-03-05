@@ -35,7 +35,6 @@ define([
                 $saveReportService.upsert($scope.report).then(function (response) {
                         $('button.contact-submit').prop('disabled', false);
                         if (response.data.existing) {
-
                             var msg = "";
                             if ($scope.report.share === true) {
                                 msg = 'A shared report <b>' +  $scope.report.name +'</b> already exists. Are you sure you want to update the existing report?<br><br>To save a new report, please click "No" and change the name of the report. <br><br>'
@@ -48,24 +47,22 @@ define([
                             }, function() {})
                         }
                         else if (response.data.errors) {
-                            toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                            toastr.error(_.pluck(response.data.errors, "msg").join("<br>"));
                         }
                         else {
                             if (bOverride) {
-                                toastr.success("<B>" + $scope.report.name + "</B> report updated successfully.");
+                                toastr.success("<B>" + $scope.report.name + "</B> custom report template updated successfully.");
                             } else {
-                                toastr.success("<B>" + $scope.report.name + "</B> report saved successfully.");
+                                toastr.success("<B>" + $scope.report.name + "</B> custom report template saved successfully.");
                             }
                             $uibModalInstance.close(response.data.report);
                         }
                     },
-                    function (error) {
+                    function(error) {
                         $('button.contact-submit').prop('disabled', false);
                         toastr.error("Unable to save report. Please contact the administrator.");
                     });
 
             }
-
-
         }]);
 });

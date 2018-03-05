@@ -42,15 +42,15 @@ define([
                 zip: !isMedium,
                 active:  $scope.options.showInactive,
                 totalUnits: true,
-                occupancy: true,
-                ner: !isMedium,
-                company: false,
+                occupancy: false,
+                ner: false,
+                company: siteAdmin,
                 tools : true,
                 owner : false
             }
         }
 
-        $scope.adjustToSize($(window).width());
+
 
         $scope.$on('size', function(e,size) {
             if (!$scope.columnsChanged) {
@@ -220,14 +220,19 @@ define([
             })
         }
 
-        $scope.reload();
+        var siteAdmin;
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                     $scope.getNeedsApproval();
-                    me();
                 }
+                siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
+
+
+                $scope.adjustToSize($(window).width());
+                $scope.reload();
+                me();
             }
         })
 

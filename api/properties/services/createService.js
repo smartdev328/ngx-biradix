@@ -1,27 +1,24 @@
-'use strict';
-var PropertySchema= require('../schemas/propertySchema')
-var async = require("async");
-var _ = require("lodash")
-var uuid = require('node-uuid');
-var moment = require('moment');
-var AuditService = require('../../audit/services/auditService')
-var CompsService = require('./compsService')
-var PropertyService = require('./propertyService')
-var PropertyHelperService = require('./propertyHelperService')
-var GeocodeService = require('../../utilities/services/geocodeService')
-var AccessService = require('../../access/services/accessService')
-var AmenityService = require('../../amenities/services/amenityService')
-var OrganizationService = require('../../organizations/services/organizationService')
-var EmailService = require('../../business/services/emailService')
-var PropertyUsersService = require('../../propertyusers/services/propertyUsersService')
+"use strict";
+const PropertySchema= require("../schemas/propertySchema");
+const async = require("async");
+const _ = require("lodash");
+const uuid = require("node-uuid");
+const AuditService = require("../../audit/services/auditService");
+const CompsService = require("./compsService");
+const PropertyService = require("./propertyService");
+const PropertyHelperService = require("./propertyHelperService");
+const GeocodeService = require("../../utilities/services/geocodeService");
+const AccessService = require("../../access/services/accessService");
+const AmenityService = require("../../amenities/services/amenityService");
+const OrganizationService = require("../../organizations/services/organizationService");
+const EmailService = require("../../business/services/emailService");
+const PropertyUsersService = require("../../propertyusers/services/propertyUsersService");
 
 module.exports = {
     update: function(operator, context,revertedFromId, property, options, callback) {
-
-        var modelErrors = [];
+        let modelErrors = [];
 
         errorCheck(property, modelErrors);
-
 
         if (modelErrors.length > 0) {
             callback(modelErrors, null);
@@ -30,23 +27,20 @@ module.exports = {
 
         getHelpers(operator, property, options, function(err, all) {
             if (err) {
-                return callback([{msg: err}], null)
+                return callback([{msg: err}], null);
             }
 
             populateAmenitiesandFloorplans(property, all);
 
-            var permissions = [];
-            var removePermissions = [];
+            let permissions = [];
+            let removePermissions = [];
 
-            PropertySchema.findOne({_id:property._id}, function(err, n) {
-
+            PropertySchema.findOne({_id: property._id}, function(err, n) {
                 if (err || !n) {
                     return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                 }
 
-
-
-                //Check if we can update orgs
+                // Check if we can update orgs
                 AccessService.canAccess(operator,"Properties/Create", function(canAccess) {
 
                     var profileChanges = getProfileChanges(property, n, all);
@@ -64,7 +58,7 @@ module.exports = {
 
                     // return callback([{msg: "Test"}], null)
 
-                    //Get Comps so that we can un-link them and re-link them to get all the new permissions
+                    // Get Comps so that we can un-link them and re-link them to get all the new permissions
                     var comps = _.pluck(n.comps,"id").map(function(x) {return x.toString()});
                     _.remove(comps,function(x) {return x == property._id.toString()});
 
@@ -263,21 +257,18 @@ module.exports = {
                 });
              })
         });
-
     },
     create: function(operator, context, property, callback) {
-
         var modelErrors = [];
 
         errorCheck(property, modelErrors);
-
 
         if (modelErrors.length > 0) {
             callback(modelErrors, null);
             return;
         }
 
-        var skipGeo = false;
+        let skipGeo = false;
         if (property.loc && property.loc[0] && property.loc[1]) {
             skipGeo = true;
         }
@@ -295,10 +286,10 @@ module.exports = {
                 populateAmenitiesandFloorplans(property, all);
 
                 var permissions = [];
-                //Skip all permission logic if custom property
+                // Skip all permission logic if custom property
                 if (!property.isCustom) {
-                    //if org of property is provided, assign manage to all CMs for that org
-                    //this is our implict assignment
+                    // if org of property is provided, assign manage to all CMs for that org
+                    // this is our implict assignment
                     var CMs = [];
                     if (property.orgid) {
 
@@ -307,25 +298,23 @@ module.exports = {
                         })
                     }
 
-                    //and assign view opermissions to all non admins and not POs
+                    // and assign view opermissions to all non admins and not POs
                     var viewers = _.filter(all.roles, function (x) {
                         return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1
                     })
 
 
-                    /////////////Assign all permisions to viewers and CMS
+                    // Assign all permisions to viewers and CMS
                     viewers.forEach(function (x) {
                         permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
                     })
 
                     CMs.forEach(function (x) {
                         permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
-                    })
-                    ////////////////
-                }
-                else {
-                    //Custom Properties need explicit access since they are not in org of creator
-                    permissions.push({executorid: operator._id.toString(), allow: true, type: 'PropertyManage'})
+                    });
+                } else {
+                    // Custom Properties need explicit access since they are not in org of creator
+                    permissions.push({executorid: operator._id.toString(), allow: true, type: "PropertyManage"});
                 }
 
                 var profileChanges = getProfileChanges(property, null, all);
@@ -335,10 +324,8 @@ module.exports = {
                     newName = _.find(all.orgs, function(x) {return x._id.toString() == property.orgid.toString()}).name
                 }
 
-                profileChanges.push({description:  "Company: " + newName });
+                profileChanges.push({description: "Company: " + newName});
                 // console.log(profileChanges);
-
-
 
                 var contactChanges = getContactChanges(property, null, all);
                 var feesChanges = getFeesChanges(property,null, all);
@@ -385,7 +372,7 @@ module.exports = {
                     var type = 'property_created';
 
                     if (property.isCustom) {
-                        type = 'property_created_custom'
+                        type = 'property_created_custom';
                     }
 
                     AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes})
@@ -400,30 +387,28 @@ module.exports = {
                     AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'BM_GROUP']}, function(){});
                     AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'PO_GROUP']}, function(){});
 
-                    async.eachLimit(permissions, 10, function(permission, callbackp){
-                        AccessService.createPermission(permission, function (err, perm) {
-                            callbackp(err, perm)
+                    async.eachLimit(permissions, 10, function(permission, callbackp) {
+                        AccessService.createPermission(permission, function(err, perm) {
+                            callbackp(err, perm);
                         });
                     }, function(err) {
-                        //link to yourself to treat yourself as a comp
+                        // link to yourself to treat yourself as a comp
                         CompsService.linkComp(null,null,null,false,prop._id, prop._id,function() {
                             if (!err) {
                                 callback(null, prop);
                             } else {
                                 callback([{msg: err}], prop);
                             }
-                        })
+                        });
                     });
                 });
-
             }
         );
-
     },
 }
 
 function isValidString(s) {
-    return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s)
+    return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s);
 }
 
 function errorCheck(property, modelErrors) {

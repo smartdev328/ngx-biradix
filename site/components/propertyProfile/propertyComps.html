@@ -283,11 +283,13 @@
                                                       uib-tooltip="{{surveyTooltip(comp)}}"><i class="fa fa-edit fa-fw"></i> New Market Survey</a></li>
 
                         <li ng-if="!comp.canSurvey"><a href
+                                                       onclick="event.preventDefault();event.stopPropagation()"
+                                                       style="cursor: not-allowed;opacity: 0.5;"
                                                        popover-trigger="'mouseenter'"
                                                        popover-placement="left"
                                                        popover-title="This property is managed by a BI:Radix user."
                                                        uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
-                        ><i class="fa fa-lock fa-fw" style="cursor: not-allowed;"></i> New Market Survey</a></li>
+                        ><i class="fa fa-lock fa-fw"></i> New Market Survey</a></li>
                         <li><A href="#/history?property={{comp._id}}"><i class="fa fa-history fa-fw"></i> Activity History</A></li>
                     </ul>
                 </div>
