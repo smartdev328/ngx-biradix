@@ -1,118 +1,128 @@
-'use strict';
-var async = require("async");
-var _ = require("lodash")
-var AccessService = require('../../access/services/accessService')
-var PropertyService = require('../../properties/services/propertyService')
-var UserService = require('../../users/services/userService')
-var AuditService = require('../../audit/services/auditService')
-var moment = require("moment-timezone");
-var CompService = require('../../properties/services/compsService')
+"use strict";
+const async = require("async");
+const _ = require("lodash");
+const AccessService = require("../../access/services/accessService");
+const PropertyService = require("../../properties/services/propertyService");
+const UserService = require("../../users/services/userService");
+const AuditService = require("../../audit/services/auditService");
+const moment = require("moment-timezone");
+const CompService = require("../../properties/services/compsService");
 
 module.exports = {
-    removeAllGuests : function(operator,context, propertyid, callback) {
-        getPropertyAssignedUsers(operator, propertyid, ['Guest'], function (err, userids) {
-            async.eachLimit(userids, 10, function(userid, callbackp){
-                unLinkPropertyFromUser(operator,context,null,userid, propertyid, callbackp)
+    removeAllGuests: function(operator, context, propertyid, callback) {
+        getPropertyAssignedUsers(operator, propertyid, ["Guest"], function(err, userids) {
+            async.eachLimit(userids, 10, function(userid, callbackp) {
+                unLinkPropertyFromUser(operator, context, null, userid, propertyid, callbackp);
             }, function(err) {
                 callback();
             });
-        }, true)
+        }, true);
     },
-
     getPropertiesForReminders: function(operator, callback) {
         PropertyService.getPropertiesForReminders(function(properties) {
-
-            async.eachLimit(properties,20, function(property, callbackp) {
-                getPropertyAssignedUsers(operator, property._id, ['RM','BM'], function(err, userids) {
+            async.eachLimit(properties, 20, function(property, callbackp) {
+                getPropertyAssignedUsers(operator, property._id, ["RM", "BM"], function(err, userids) {
                     property.userids = userids;
                     callbackp();
                 });
             }, function(err) {
-                //Remove all properties without users assigned to them
-                _.remove(properties, function(x) {return !x.userids || !x.userids.length})
+                // Remove all properties without users assigned to them
+                _.remove(properties, function(x) {
+                    return !x.userids || !x.userids.length;
+                });
 
-                //Get all userids
-                var userids = [];
+                // Get all userids
+                let userids = [];
                 properties.forEach(function(p) {
                     userids = userids.concat(p.userids);
-                })
+                });
 
-                UserService.search(operator,{select:"_id first last email bounceReason active settings",ids:userids}, function(err, users) {
-
+                UserService.search(operator, {select: "_id first last email bounceReason active settings", ids: userids}, function(err, users) {
                     users.forEach(function(u) {
-                        UserService.defaultSettings(u,u.roles[0].org.settings);
-                        u.settings.tz = u.settings.tz || 'America/Los_Angeles';
-                    })
+                        UserService.defaultSettings(u, u.roles[0].org.settings);
+                        u.settings.tz = u.settings.tz || "America/Los_Angeles";
+                    });
 
                     properties.forEach(function(p) {
                         p.users = [];
-                        //join full user on ids
+                        // join full user on ids
                         p.userids.forEach(function(u) {
-                            p.users.push(_.find(users, function(x) {return x._id.toString() == u.toString()}));
-                        })
+                            p.users.push(_.find(users, function(x) {
+                                return x._id.toString() == u.toString();
+                            }));
+                        });
 
-                        //remove bounced or reminders off users
-                        _.remove(p.users, function(x) {return x.active === false || x.bounceReason || (x.settings && x.settings.reminders && x.settings.reminders.on === false)});
+                        // remove bounced or reminders off users
+                        _.remove(p.users, function(x) {
+                            return x.active === false || x.bounceReason || (x.settings && x.settings.reminders && x.settings.reminders.on === false);
+                        });
+
                         delete p.userids;
-                    })
+                    });
 
-                    //Remove all properties without users assigned to them (again)
-                    _.remove(properties, function(x) {return !x.users || !x.users.length})
+                    // Remove all properties without users assigned to them (again)
+                    _.remove(properties, function(x) {
+                        return !x.users || !x.users.length;
+                    });
 
-                    //Get all compids
-                    var compids = [];
+                    // Get all compids
+                    let compids = [];
                     properties.forEach(function(p) {
                         compids = compids.concat(p.compids);
-                    })
+                    });
 
-
-                    PropertyService.getCompsForReminders(compids,function(comps) {
+                    PropertyService.getCompsForReminders(compids, function(comps) {
                         properties.forEach(function(p) {
                             p.comps = [];
-                            //join full comp on ids
+                            // join full comp on ids
                             p.compids.forEach(function(u) {
-                                p.comps.push(_.find(comps, function(x) {return x._id.toString() == u.toString()}));
-                            })
+                                p.comps.push(_.find(comps, function(x) {
+                                    return x._id.toString() == u.toString();
+                                }));
+                            });
 
                             delete p.compids;
-                        })
+                        });
 
-                        var final = [];
+                        let final = [];
 
-                        //Get final unique list of good userids so we can build their properties
-                        var finaluserids = [];
+                        // Get final unique list of good userids so we can build their properties
+                        let finaluserids = [];
                         properties.forEach(function(p) {
-                            finaluserids = finaluserids.concat(_.map(p.users,"_id"));
-                        })
+                            finaluserids = finaluserids.concat(_.map(p.users, "_id"));
+                        });
 
                         finaluserids = _.uniq(finaluserids);
 
-                        //for each unique users, get all the properties they are assigned to
+                        // for each unique users, get all the properties they are assigned to
                         finaluserids.forEach(function(userid) {
-                            var propertyusers = _.filter(properties, function(p) { return _.find(p.users, function(pu) { return pu._id.toString() == userid})});
+                            let propertyusers = _.filter(properties, function(p) {
+                                return _.find(p.users, function(pu) {
+                                    return pu._id.toString() == userid;
+                                    });
+                                });
 
-                            //Sort by subject first, then alpahabetically
+                            // Sort by subject first, then alpahabetically
                             propertyusers.forEach(function(p) {
-                                p.comps = _.sortBy(p.comps, function (n) {
-
+                                p.comps = _.sortBy(p.comps, function(n) {
                                     if (n._id.toString() == p._id.toString()) {
                                         return "-1";
                                     }
                                     return n.name;
-                                })
-                            })
+                                });
+                            });
 
-
-                            final.push({user: _.find(users, function(x) {return x._id.toString() == userid.toString()}), properties: propertyusers});
-
+                            final.push({user: _.find(users, function(x) {
+                                return x._id.toString() == userid.toString();
+                            }), properties: propertyusers});
                         });
 
                         final.forEach(function(f) {
-                            f.logo ='https://' + f.user.roles[0].org.subdomain + ".biradix.com/images/organizations/" + f.user.roles[0].org.logoBig;
-                            f.unsub ='https://' + f.user.roles[0].org.subdomain + ".biradix.com/u";
-                            f.dashboardBase ='https://' + f.user.roles[0].org.subdomain + ".biradix.com/d/";
+                            f.logo ="https://" + f.user.roles[0].org.subdomain + ".biradix.com/images/organizations/" + f.user.roles[0].org.logoBig;
+                            f.unsub ="https://" + f.user.roles[0].org.subdomain + ".biradix.com/u";
+                            f.dashboardBase ="https://" + f.user.roles[0].org.subdomain + ".biradix.com/d/";
 
-                            //Fix last survey date to users timezone
+                            // Fix last survey date to users timezone
                             f.properties.forEach(function(p) {
                                 p.users = null;
                                 delete p.users;
@@ -127,29 +137,25 @@ module.exports = {
                                     if (!c.date) {
                                         c.dateUser = "Never";
                                     } else {
-                                        c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD")
-
+                                        c.dateUser = moment(c.date).tz(f.user.settings.tz).format("M/DD");
                                     }
 
-                                    if (typeof c.ner == 'undefined') {
-                                        c.nerUser = "";
+                                    if (typeof c.ner == "undefined" || c.ner == null) {
+                                        c.nerUser = "-";
                                     } else {
                                         c.nerUser = "$" + c.ner.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                     }
 
-                                    if (typeof c.occupancy == 'undefined') {
-                                        c.occupancyUser = "";
+                                    if (typeof c.occupancy == "undefined" || c.occupancy == null) {
+                                        c.occupancyUser = "-";
                                     } else {
-                                        c.occupancyUser = c.occupancy + "%";
+                                        c.occupancyUser = c.occupancy.toFixed(1) + "%";
                                     }
-
-                                })
+                                });
 
                                 f.user.roles = null;
                                 delete f.user.roles;
                                 delete f.user.active;
-
-
                             });
                         })
 

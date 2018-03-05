@@ -1,101 +1,94 @@
-'use strict';
-var PropertySchema= require('../schemas/propertySchema')
-var SurveySchema= require('../schemas/surveySchema')
-var async = require("async");
-var _ = require("lodash")
-var moment = require('moment');
-var CompsService = require('./compsService')
-var userService = require('../../users/services/userService')
-var EmailService = require('../../business/services/emailService')
-var AuditService = require('../../audit/services/auditService')
+"use strict";
+const PropertySchema= require("../schemas/propertySchema");
+const SurveySchema= require("../schemas/surveySchema");
+const _ = require("lodash");
+const CompsService = require("./compsService");
+const userService = require("../../users/services/userService");
+const EmailService = require("../../business/services/emailService");
+const AuditService = require("../../audit/services/auditService");
 
 module.exports = {
-    emailGuest: function (operator, context, base, propertyid, guestid, callback) {
-
-
-        PropertySchema.find({_id:propertyid}, function(err, properties) {
+    emailGuest: function(operator, context, base, propertyid, guestid, callback) {
+        PropertySchema.find({_id: propertyid}, function(err, properties) {
             if (!properties || properties.length != 1) {
-                return callback([{msg: 'Unable to locate Property. Please contact the Administrator'}])
+                return callback([{msg: "Unable to locate Property. Please contact the Administrator"}]);
             }
-            var property = properties[0];
+            let property = properties[0];
 
-            //Get user / Check that primarySubject exists
+            // Get user / Check that primarySubject exists
             userService.getUserById(guestid, function(err, guest) {
                 if (!guest) {
-                    return callback([{msg: 'Unable to locate Contact. Please contact the Administrator'}])
+                    return callback([{msg: "Unable to locate Contact. Please contact the Administrator"}]);
                 }
 
                 if (!guest.guestStats) {
-                    return callback([{msg: 'This Contact is not properly configured. Please re-add this Contact or contact the Administrator'}])
+                    return callback([{msg: "This Contact is not properly configured. Please re-add this Contact or contact the Administrator"}]);
                 }
 
-                var guestStatComp = _.find(guest.guestStats, function(x) {return x.propertyid == propertyid})
+                let guestStatComp = _.find(guest.guestStats, function(x) {
+                    return x.propertyid == propertyid;
+                });
 
                 if (!guestStatComp) {
-                    return callback([{msg: 'This Contact is not properly configured. Please re-add this Contact or contact the Administrator'}])
+                    return callback([{msg: "This Contact is not properly configured. Please re-add this Contact or contact the Administrator"}]);
                 }
 
-                //Get subjects, exclude yourself
-                CompsService.getSubjects([propertyid], {select: "_id name"}, function (err, subjects) {
-                    _.remove(subjects, function(x) {return x._id.toString() == propertyid});
+                // Get subjects, exclude yourself
+                CompsService.getSubjects([propertyid], {select: "_id name"}, function(err, subjects) {
+                    _.remove(subjects, function(x) {
+                        return x._id.toString() == propertyid;
+                    });
 
-                    var SubjectNames = _.map(subjects, function(x) {return x.name});
+                    let SubjectNames = _.map(subjects, function(x) {
+                        return x.name;
+                    });
 
                     // SubjectNames = _.take(SubjectNames,1);
-                    //Create Login Token that expires in 30 days.
+                    // Create Login Token that expires in 30 days.
                     guest.minutesToExpire = 60 * 24 * 30;
                     userService.getFullUser(guest, function(full) {
-                        //Send Email
-                        var email = {
+                        // Send Email
+                        let email = {
                             to: guest.email,
-                            bcc: 'surveyswapemails@biradix.com',
+                            bcc: "surveyswapemails@biradix.com",
                             logo: base + "/images/organizations/biradix.png",
-                            subject: operator.first + ' ' + operator.last + " is asking for some information about " + property.name,
-                            template: 'swap.html',
+                            subject: operator.first + " " + operator.last + " is asking for some information about " + property.name,
+                            template: "swap.html",
                             templateData: {
                                 first: guest.first,
                                 comp: property.name,
                                 subjects: SubjectNames,
-                                link: base + '/g/' + property._id.toString() + '/' + full.token,
-                                operator: operator.first + ' ' + operator.last
-                            }
-                        }
+                                link: base + "/g/" + property._id.toString() + "/" + full.token,
+                                operator: operator.first + " " + operator.last,
+                            },
+                        };
 
                         // email.to = 'alex@biradix.com';
                         // email.bcc = '';
 
-                        EmailService.send(email,function(emailError,status) {
+                        EmailService.send(email, function(emailError, status) {
                             console.log(status);
 
-                            if (emailError || !status || !status.message || status.message != 'success') {
-                                return callback([{msg: 'Unable to deliver mesage to Contact. Please contact the Administrator'}])
+                            if (emailError || !status || !status.message || status.message != "success") {
+                                return callback([{msg: "Unable to deliver mesage to Contact. Please contact the Administrator"}]);
                             }
-                            //Activity History
-                            var data = [{description: "Subjects: " + SubjectNames.join(", ")}];
+                            // Activity History
+                            let data = [{description: "Subjects: " + SubjectNames.join(", ")}];
 
+                            AuditService.create({operator: operator, property: property, user: guest, type: "survey_emailed", description: `Property: ${property.name}, User: ${guest.first} ${guest.last}`, data: data});
 
-                            AuditService.create({operator: operator, property: property, user: guest, type: 'survey_emailed', description: property.name + " => " + guest.first + ' ' + guest.last, data : data})
-
-                            //Update Last Emailed
-                            userService.updateGuestStatsLastEmailed(guestid, propertyid, {first: operator.first, last: operator.last, email: operator.email, logo: operator.orgs[0].logoBig }, function() {
-                                callback(null)
+                            // Update Last Emailed
+                            userService.updateGuestStatsLastEmailed(guestid, propertyid, {first: operator.first, last: operator.last, email: operator.email, logo: operator.orgs[0].logoBig}, function() {
+                                callback(null);
                             });
-                        })
-                    })
-
-
-
-
+                        });
+                    });
                 });
-
-            })
-
-        })
-
-
+            });
+        });
     },
     getSurveyBeforeDate: function(propertyid, dateStart,dateEnd, callback) {
-        //console.log({propertyid: propertyid,date:{$gt:dateStart, $lte:dateEnd}});
+        // console.log({propertyid: propertyid,date:{$gt:dateStart, $lte:dateEnd}});
         SurveySchema.find({propertyid: propertyid,date:{$gt:new Date(dateStart), $lte:new Date(dateEnd)}}).sort('-date').limit(1).exec(callback);
 
     },
