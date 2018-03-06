@@ -850,7 +850,7 @@ module.exports = {
                 }
 
                 SurveyHelperService.updateLastSurvey(prop._id, function() {
-                    callback(null)
+                    callback(null);
                 })
 
                 AuditService.create({
@@ -860,28 +860,20 @@ module.exports = {
                     revertedFromId: revertedFromId,
                     description: prop.name,
                     context: context,
-                    data: data
-                })
-
-            })
-
-
-
-
+                    data: data,
+                });
+            });
         });
-
     },
     updateSurvey: function(operator,context,revertedFromId, id, surveyid, survey, callback) {
+        let property;
 
-        var compFloorplans = _.pluck(survey.floorplans,"id");
+        standardizeOptionalFields(survey);
 
-        var property;
-
-        PropertySchema.findOne({_id:id}, function(err, subject) {
+        PropertySchema.findOne({_id: id}, function(err, subject) {
             property = subject;
-            SurveySchema.findOne({_id: surveyid}, function (err, lastsurvey) {
-
-                 var copy = {};
+            SurveySchema.findOne({_id: surveyid}, function(err, lastsurvey) {
+                let copy = {};
                 copy.propertyid = lastsurvey.propertyid;
                 copy._id = lastsurvey._id;
                 copy.floorplans = lastsurvey.floorplans;
@@ -894,44 +886,44 @@ module.exports = {
                 copy.weeklytraffic = lastsurvey.weeklytraffic;
                 copy.notes = lastsurvey.notes;
 
+                standardizeOptionalFields(copy);
 
-                var data = [{description: "Survey Date: ", date: lastsurvey.date, survey: copy}];
+                let data = [{description: "Survey Date: ", date: lastsurvey.date, survey: copy}];
 
-                if (lastsurvey.notes !== survey.notes) {
+                if (copy.notes !== survey.notes) {
                     data.push({description: "Notes: " + (typeof lastsurvey.notes == 'undefined' || lastsurvey.notes == null || lastsurvey.notes == '' ? 'N/A' : lastsurvey.notes ) + " => " + (typeof survey.notes == 'undefined' || survey.notes == null || survey.notes == '' ? 'N/A' : survey.notes )})
                 }
 
-                if (lastsurvey.occupancy !== survey.occupancy) {
+                if (copy.occupancy !== survey.occupancy) {
                     data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == 'undefined' || lastsurvey.occupancy == null ? 'N/A' : lastsurvey.occupancy + '%') + " => " + (typeof survey.occupancy == 'undefined' || survey.occupancy == null ? 'N/A' : survey.occupancy + "%")})
                 }
 
-                if (lastsurvey.leased !== survey.leased) {
+                if (copy.leased !== survey.leased) {
                     data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + '%') + " => " + (typeof survey.leased == 'undefined' || survey.leased == null ? 'N/A' : survey.leased + "%")})
                 }
 
-                if (lastsurvey.atr !== survey.atr) {
+                if (copy.atr !== survey.atr) {
                     data.push({description: "ATR: " + (typeof lastsurvey.atr == 'undefined' || lastsurvey.atr == null ? 'N/A' : lastsurvey.atr + '') + " => " + (typeof survey.atr == 'undefined' || survey.atr == null ? 'N/A' : survey.atr + "")})
                 }
 
-                if (lastsurvey.renewal !== survey.renewal) {
-                    data.push({description: "Renewal: " + (typeof lastsurvey.renewal == 'undefined' || lastsurvey.renewal == null ? 'N/A' : lastsurvey.renewal + '%') + " => " + (typeof survey.renewal == 'undefined' || survey.renewal == null ? 'N/A' : survey.renewal + "%")})
+                if (copy.renewal !== survey.renewal) {
+                    data.push({description: "Renewal: " + (typeof copy.renewal == "undefined" || copy.renewal == null ? "N/A" : copy.renewal + "%") + " => " + (typeof survey.renewal == "undefined" || survey.renewal == null ? "N/A" : survey.renewal + "%")});
                 }
 
-                if (lastsurvey.weeklyleases !== survey.weeklyleases) {
+                if (copy.weeklyleases !== survey.weeklyleases) {
                     data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + survey.weeklyleases })
                 }
 
-                if (lastsurvey.weeklytraffic !== survey.weeklytraffic) {
+                if (copy.weeklytraffic !== survey.weeklytraffic) {
                     data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + survey.weeklytraffic })
                 }
 
                 survey.floorplans.forEach(function(fp) {
-                    var oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
+                    let oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
 
                     if (!oldfp) {
-                        data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp) })
-                    }
-                    else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
+                        data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp)});
+                    } else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                         data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp) })
                     }
                 })
@@ -941,9 +933,10 @@ module.exports = {
                 lastsurvey.leased = survey.leased;
                 lastsurvey.atr = survey.atr;
 
-                var totUnits = _.sum(survey.floorplans, function (fp) {
-                    return fp.units
+                let totUnits = _.sum(survey.floorplans, function(fp) {
+                    return fp.units;
                 });
+
                 if (typeof lastsurvey.atr != null && lastsurvey.atr != null && totUnits > 0) {
                     lastsurvey.atr_percent = Math.round(lastsurvey.atr / totUnits * 100 * 10) / 10;
                 } else {
@@ -983,6 +976,7 @@ module.exports = {
     createSurvey: function(operator, context, revertedFromId, id, survey, callback) {
         let compFloorplans = _.pluck(survey.floorplans, "id");
         let subject;
+        standardizeOptionalFields(survey);
 
         async.waterfall([
             function(callbackw) {
@@ -1013,9 +1007,12 @@ module.exports = {
         ], function(err, lastsurvey, exclusions ) {
             if (!lastsurvey) {
                 lastsurvey = {};
+            } else {
+                lastsurvey = JSON.parse(JSON.stringify(lastsurvey));
             }
 
-            lastsurvey.occupancy = lastsurvey.occupancy || "N/A";
+            standardizeOptionalFields(lastsurvey);
+
             lastsurvey.weeklyleases = lastsurvey.weeklyleases || "N/A";
             lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || "N/A";
             lastsurvey.floorplans = lastsurvey.floorplans || [];
@@ -1191,6 +1188,19 @@ module.exports = {
     },
 }
 
+function standardizeOptionalField(object, property) {
+    if (typeof object[property] == "undefined" || object[property] == null || object[property].toString().trim() === "") {
+        object[property] = null;
+    }
+}
+
+function standardizeOptionalFields(survey) {
+    standardizeOptionalField(survey, "atr");
+    standardizeOptionalField(survey, "occupancy");
+    standardizeOptionalField(survey, "leased");
+    standardizeOptionalField(survey, "renewal");
+}
+
 function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
     CompsService.getSubjects([compid], {select: "_id name orgid"}, (err, subjects) => {
         //See if the comp to be removed has anymore subjects assigned to the same org;
@@ -1266,6 +1276,5 @@ function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
                 console.log(status);
             });
         }
-
     }
 }
