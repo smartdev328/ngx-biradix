@@ -229,7 +229,6 @@ define([
                 }
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
-
                 $scope.adjustToSize($(window).width());
                 $scope.reload();
                 me();
@@ -466,20 +465,20 @@ define([
             });
         }
 
-        $scope.edit = function (id, isComp, subject, isCustom) {
+        $scope.edit = function(id, isComp, subject, isCustom) {
             var subjectid = subject ? subject._id : null;
 
             require([
-                '/app/propertyWizard/propertyWizardController.js'
-            ], function () {
+                "/app/propertyWizard/propertyWizardController.js",
+            ], function() {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/app/propertyWizard/propertyWizard.html?bust='+version,
-                    controller: 'propertyWizardController',
+                    templateUrl: "/app/propertyWizard/propertyWizard.html?bust="+version,
+                    controller: "propertyWizardController",
                     size: "md",
                     keyboard: false,
-                    backdrop: 'static',
+                    backdrop: "static",
                     resolve: {
-                        id: function () {
+                        id: function() {
                             return id;
                         },
                         isComp: function() {
@@ -488,22 +487,22 @@ define([
                         subjectid: function() {
                             return subjectid;
                         },
-                        isCustom : function() {
-                            return isCustom
-                        }
-                    }
+                        isCustom: function() {
+                            return isCustom;
+                        },
+                    },
                 });
 
-                modalInstance.result.then(function (comp) {
-                    //Send successfully
+                modalInstance.result.then(function(comp) {
+                    // Send successfully
                     $scope.reload(function() {
-                        //after we reload, we need to update the reference to our subject since it got new data from ajax
+                        // after we reload, we need to update the reference to our subject since it got new data from ajax
 
                         subject = _.find($scope.data, function(x) {
-                            return x._id.toString() == subjectid
+                            return x._id.toString() == subjectid;
                         });
 
-                        //if we successfully added a comp for a subject, toggle open the comps in the ui for the subject
+                        // if we successfully added a comp for a subject, toggle open the comps in the ui for the subject
                         if (isComp) {
                             if (subject.open) {
                                 $scope.toggleOpen(subject);
@@ -511,8 +510,8 @@ define([
                             $scope.toggleOpen(subject);
                         }
                     });
-                }, function () {
-                    //Cancel
+                }, function() {
+                    // Cancel
                 });
             });
         }

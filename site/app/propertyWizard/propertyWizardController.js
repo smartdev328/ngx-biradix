@@ -1,13 +1,12 @@
-'use strict';
+"use strict";
 define([
-    'app',
-    '../../components/inputmask/module.js',
-], function (app) {
-     app.controller
-        ('propertyWizardController', ['$scope', '$uibModalInstance', 'id', 'isComp', 'isCustom', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$dialog','$amenityService','$uibModal','subjectid', function ($scope, $uibModalInstance, id, isComp, isCustom, ngProgress, $rootScope, toastr, $location, $propertyService,$dialog,$amenityService,$uibModal,subjectid) {
-
+    "app",
+    "../../components/inputmask/module.js",
+], function(app) {
+    app.controller("propertyWizardController", ["$scope", "$uibModalInstance", "id", "isComp", "isCustom", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "$amenityService", "$uibModal", "subjectid",
+    function($scope, $uibModalInstance, id, isComp, isCustom, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, $amenityService, $uibModal, subjectid) {
             if (!$rootScope.loggedIn) {
-                $location.path('/login')
+                $location.path("/login");
             }
 
             $scope.mediaIndex = 0;
@@ -19,11 +18,9 @@ define([
             $scope.startWatchingChanges = function() {
                 window.setTimeout(function() {
                     $scope.$watch("property", function (newValue, oldValue) {
-
                         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
                             $scope.changed = true;
                         }
-
                     }, true);
 
                     $scope.$watch("communityItems", function (newValue, oldValue) {
@@ -37,7 +34,7 @@ define([
                             $scope.changed = true;
                         }
                     }, true);
-                },1000);
+                }, 1000);
             }
 
             $scope.cancel = function () {
@@ -715,7 +712,7 @@ define([
                             newProp = response.data.property;
                             toastr.success($scope.property.name + ' created successfully');
 
-                            $uibModalInstance.close(newProp);                           
+                            $uibModalInstance.close(newProp);
 
                         }
 
