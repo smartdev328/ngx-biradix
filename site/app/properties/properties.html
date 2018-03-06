@@ -202,11 +202,11 @@
                 <div class="pull-right" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.name" class="sortable" ng-click="toggleSort('name')">
+            <th ng-show="show.name" class="sortable" ng-click="toggleSort('name_lower')">
                 <div class="pull-left">Name</div>
-                <div class="pull-right" ng-show="sort.name == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-right" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-right" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-right" ng-show="sort.name_lower == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-right" ng-show="sort.name_lower === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-right" ng-show="sort.name_lower === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.address" class="sortable" ng-click="toggleSort('address')">
                 <div class="pull-left">Address</div>
