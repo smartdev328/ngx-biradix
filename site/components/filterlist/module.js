@@ -332,13 +332,15 @@ angular.module('biradix.global').directive('filterList', function () {
                     $scope.search();
                 }, true);
 
-                $scope.$watch('items', function() {
-
+                $scope.$watch("items", function() {
                     if ($scope.options) {
+                        $scope.items = _.sortBy($scope.items, function(x) {
+                            return (x.group || "") + x.name.toLowerCase();
+                        });
                         $scope.search();
 
                         if ($scope.items) {
-                            $scope.items.forEach(function (i) {
+                            $scope.items.forEach(function(i) {
                                 if (!i.selected) {
                                     $scope.filters.checkAll = false;
                                 }

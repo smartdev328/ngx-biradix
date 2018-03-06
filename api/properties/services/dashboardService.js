@@ -85,17 +85,17 @@ module.exports = {
 
                 async.parallel({
                     comps: function (callbackp) {
-                        var timer1 = new Date().getTime();
+                        // var timer1 = new Date().getTime();
                         PropertyService.getLastSurveyStats({
                             hide: user.settings.hideUnlinked,
-                            injectFloorplans: true
+                            injectFloorplans: true,
                         }, all.subject, comps, function() {
                             // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
-                            callbackp(null, comps)
-                        })
+                            callbackp(null, comps);
+                        });
                     },
                     points: function(callbackp) {
-                        var timer1 = new Date().getTime();
+                        // var timer1 = new Date().getTime();
                         DataPointsService.getPoints(user.settings.hideUnlinked, all.subject, comps,
                             false,
                             -1,
@@ -104,12 +104,11 @@ module.exports = {
                             options.show,
                             function(points) {
                                 // console.log("Profile getPoints: " + (new Date().getTime() - timer1) / 1000 + "s");
-                                callbackp(null, points)
-                            })
-                    }
+                                callbackp(null, points);
+                            });
+                    },
                 }, function(err, all2) {
-
-                    var daysSince;
+                    let daysSince;
                     all2.comps.forEach(function(c) {
                         if (c.survey) {
                             delete c.floorplans;
@@ -124,9 +123,9 @@ module.exports = {
                         }
                     })
 
-                    //console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                    // console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
 
-                    var canSurvey = all.modify;
+                    let canSurvey = all.modify;
                     if (!all.owner && all.comp.p.orgid) {
                         canSurvey = false;
                     }
@@ -157,48 +156,47 @@ module.exports = {
                     all2 = null;
                 });
             }
-
         });
-
     },
 
-    getDashboard: function(user,id,options,callback) {
+    getDashboard: function(user, id, options, callback) {
         options.injectFloorplans = options.injectFloorplans === false ? false : true;
-        var timer = new Date().getTime();
-        PropertyService.search(user, {limit: 1, permission: 'PropertyManage', _id: id
-            , select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps media custom"
-            , skipAmenities: true
+        // var timer = new Date().getTime();
+        PropertyService.search(user, {limit: 1,
+            permission: "PropertyManage",
+            _id: id,
+            select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps media custom",
+            skipAmenities: true,
         }, function(err, property) {
             if (err) {
-                return callback(err,null)
+                return callback(err, null);
             } else {
-
                 if (property.length == 0) {
-                    return callback("Access Denied",null)
+                    return callback("Access Denied", null);
                 }
 
-                var compids = _.map(property[0].comps, function(x) {return x.id.toString()});
+                let compids = _.map(property[0].comps, function(x) {
+                    return x.id.toString();
+                });
 
                 if (options.compids) {
                     compids = _.intersection(compids, options.compids);
                 }
 
-                //Make sure subejct is always there
-                compids = _.union(compids,[id]);
+                // Make sure subejct is always there
+                compids = _.union(compids, [id]);
 
                 delete property[0].compids;
 
                 PropertyService.search(user, {
                     limit: 30,
-                    permission: 'PropertyView',
-                    ids: compids
-                    ,
-                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt media custom"
-                    , skipAmenities: true
+                    permission: "PropertyView",
+                    ids: compids,
+                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt media custom",
+                    skipAmenities: true,
                 }, function(err, comps) {
-
-                    //pre-comupte a lookup for datest by owner for locks
-                    var datesByOner = {};
+                    // pre-comupte a lookup for datest by owner for locks
+                    let datesByOner = {};
 
                     comps.forEach(function(c) {
                         if (c.survey && c.survey.dateByOwner) {
@@ -207,96 +205,88 @@ module.exports = {
                     })
 
                     if (err) {
-                        return callback(err,null)
+                        return callback(err, null);
                     } else {
-
-                        //If we pass in a surveyDate, dont use the last survey date in comps.survey.id
-                        //Instead get the last survey older then the date given
-                        updateCompSurveyIdsByDate(comps,options.surveyDateStart,options.surveyDateEnd, function() {
+                        // If we pass in a surveyDate, dont use the last survey date in comps.survey.id
+                        // Instead get the last survey older then the date given
+                        updateCompSurveyIdsByDate(comps, options.surveyDateStart, options.surveyDateEnd, function() {
                             async.parallel({
-                                comps: function (callbackp) {
+                                comps: function(callbackp) {
                                     PropertyService.getLastSurveyStats({
                                         hide: user.settings.hideUnlinked,
                                         injectFloorplans: options.injectFloorplans,
-                                        nerPlaces : options.nerPlaces
+                                        nerPlaces: options.nerPlaces,
                                     }, property[0], comps, function() {
-                                        callbackp(null, comps)
-                                    })
+                                        callbackp(null, comps);
+                                    });
                                 },
                                 points: function(callbackp) {
                                     if (options.skipPoints) {
-                                        callbackp(null, null)
-                                    }
-                                    else {
+                                        callbackp(null, null);
+                                    } else {
                                         DataPointsService.getPoints(user.settings.hideUnlinked, property[0], comps,
                                             options.summary,
                                             options.bedrooms,
                                             options.daterange,
                                             options.offset,
                                             options.show,
-                                            function (points) {
-                                                callbackp(null, points)
-                                            })
+                                            function(points) {
+                                                callbackp(null, points);
+                                            });
                                     }
                                 },
                                 owned: function(callbackp) {
-                                    PropertyService.search(user, {permission: ['PropertyManage'], ids: compids
-                                        , select: "_id"
-                                        , skipAmenities: true
-                                        , limit: 30
+                                    PropertyService.search(user, {permission: ["PropertyManage"], ids: compids,
+                                        select: "_id",
+                                        skipAmenities: true,
+                                        limit: 30,
                                     }, function(err, property) {
-
                                         if (err || !property) {
                                             error.send(err, {property: property, compids: compids, id: id});
 
-                                            return callbackp(err, [])
+                                            return callbackp(err, []);
                                         }
 
-
-                                        property.push({ _id: id }) // add subject to the list of owned
-                                        callbackp(err, property)
-                                    })
+                                        property.push({_id: id}); // add subject to the list of owned
+                                        callbackp(err, property);
+                                    });
                                 },
-                                shared : function(callbackp) {
-                                    var key = "shared_comps_" + id;
-                                    var shared = localCacheService.get(key);
+                                shared: function(callbackp) {
+                                    let key = "shared_comps_" + id;
+                                    let shared = localCacheService.get(key);
 
                                     if (shared) {
-                                        return callbackp(null,shared)
+                                        return callbackp(null, shared);
                                     }
 
-                                    //Get all Subjects for All Comps.
-                                    //Calculate counts for comps in multiple subjects among the group
+                                    // Get all Subjects for All Comps.
+                                    // Calculate counts for comps in multiple subjects among the group
                                     CompsService.getSubjects(compids, {select: "_id name comps.id"}, function(err, subjects) {
-
-
                                         if (err || !subjects) {
                                             error.send(err, {subjects: subjects, compids: compids, id: id});
 
                                             return callbackp(err, {})
                                         }
 
-                                        var shared = {};
+                                        let shared = {};
 
                                         subjects.forEach(function(x) {
                                             x.comps.forEach(function(y) {
-                                                //Do not count yourself as a comp or current subject as a comp
+                                                // Do not count yourself as a comp or current subject as a comp
                                                 if (y.id.toString() != x._id.toString() && id.toString() != x._id.toString() ) {
-
                                                     if (!shared[y.id.toString()]) {
                                                         shared[y.id.toString()] = [];
                                                     }
                                                     shared[y.id.toString()].push(x.name);
                                                 }
-                                            })
-                                        })
-                                        localCacheService.set(key, shared, 30)
+                                            });
+                                        });
+                                        localCacheService.set(key, shared, 30);
 
                                         callbackp(err, shared);
-                                    })
-                                }
+                                    });
+                                },
                             }, function(err, all) {
-
                                 var comp;
 
                                 all.comps.forEach(function(c) {

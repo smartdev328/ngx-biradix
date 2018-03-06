@@ -1,86 +1,77 @@
-'use strict';
-var PropertyUsersService =  require('../services/propertyUsersService')
-var express = require('express');
-var routes = express.Router();
-var async = require("async");
-var _ = require("lodash");
-var userService = require("../../users/services/userService");
-var moment = require("moment-timezone");
-var redisService = require('../../utilities/services/redisService')
+"use strict";
+const PropertyUsersService = require("../services/propertyUsersService");
+const express = require("express");
+const routes = new express.Router();
+const async = require("async");
+const userService = require("../../users/services/userService");
+const moment = require("moment-timezone");
+const redisService = require("../../utilities/services/redisService");
 
-routes.get('/reminders_test', function(req, res) {
+routes.get("/reminders_test", function(req, res) {
     userService.getSystemUser(function(obj) {
-        var SystemUser = obj.user;
-        PropertyUsersService.getPropertiesForReminders(SystemUser,function(properties) {
-
+        let SystemUser = obj.user;
+        PropertyUsersService.getPropertiesForReminders(SystemUser, function(properties) {
             return res.status(200).json(properties);
-        })
-    })
-})
+        });
+    });
+});
 
-routes.get('/reminders', function (req, res) {
+routes.get("/reminders", function(req, res) {
+    let key = "reminders_sent_new";
+    let dayofweek = moment().tz("America/Los_Angeles").format("dd");
 
-    var key = "reminders_sent_new";
-    var dayofweek = moment().tz('America/Los_Angeles').format("dd");
-
-    if (dayofweek != 'Th') {
-        return res.status(200).json(dayofweek +': Can only run this on Thursday');
+    if (dayofweek != "Th") {
+        return res.status(200).json(dayofweek +": Can only run this on Thursday");
     }
 
     redisService.get(key, function(err, alreadysent) {
-
         if (alreadysent) {
-            return res.status(200).json(dayofweek +': Already Sent');
+            return res.status(200).json(dayofweek + ": Already Sent");
         }
 
         redisService.set(key, "1", 60 * 24);
 
-        res.status(200).json(dayofweek +': Queued');
+        res.status(200).json(dayofweek + ": Queued");
 
         userService.getSystemUser(function(obj) {
-            var SystemUser = obj.user;
-            PropertyUsersService.getPropertiesForReminders(SystemUser,function(properties) {
-
-                async.eachLimit(properties,2, function(property, callbackp) {
-                        var email = {
+            let SystemUser = obj.user;
+            PropertyUsersService.getPropertiesForReminders(SystemUser, function(properties) {
+                async.eachLimit(properties, 2, function(property, callbackp) {
+                        let email = {
+                            // to: "alex@biradix.com",
                             to: property.user.email,
-                            bcc: '<cue@biradix.com>',
+                            bcc: "<cue@biradix.com>",
                             logo: property.logo,
                             width: 700,
-                            subject: "Property update reminder",
-                            template: 'reminder.html',
+                            subject: "UPDATE REMINDER: Market Survey",
+                            template: "reminder.html",
                             templateData: {
                                 data: property,
                                 unsub: property.unsub,
-                                dashboardBase: property.dashboardBase
-                            }
-
-                        }
+                                dashboardBase: property.dashboardBase,
+                            },
+                        };
 
                         // setTimeout(callbackp,1000);
 
-                        var BizEmailService = require('../../business/services/emailService')
+                        let BizEmailService = require("../../business/services/emailService");
 
-                        BizEmailService.send(email, function (emailError, status) {
+                        BizEmailService.send(email, function(emailError, status) {
+                            console.log("REMINDER EMAIL: ", status);
 
                             if (emailError) {
-                                throw Error(emailError)
+                                throw Error(emailError);
                             }
 
-                            setTimeout(callbackp,1000);
-
-                        })
+                            setTimeout(callbackp, 1000);
+                        });
                     }, function(err) {
 
                     }
                 );
-
-            })
-        })
-
-    })
-
-
-
+            });
+        });
+    });
 });
+
 module.exports = routes;

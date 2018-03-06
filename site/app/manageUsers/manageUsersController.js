@@ -1,11 +1,13 @@
-'use strict';
+"use strict";
 define([
-    'app',
-    '../../filters/skip/filter',
-], function (app) {
-
-    app.controller('manageUsersController', ['$scope','$rootScope','$location','$userService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr', function ($scope,$rootScope,$location,$userService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr) {
-        window.setTimeout(function() {window.document.title = "Manage Users | BI:Radix";},1500);
+    "app",
+    "../../filters/skip/filter",
+], function(app) {
+    app.controller("manageUsersController", ["$scope", "$rootScope", "$location", "$userService", "$authService", "ngProgress", "$dialog", "$uibModal", "$gridService", "toastr",
+    function($scope, $rootScope, $location, $userService, $authService, ngProgress, $dialog, $uibModal, $gridService, toastr) {
+        window.setTimeout(function() {
+            window.document.title = "Manage Users | BI:Radix";
+            }, 1500);
 
         $rootScope.nav = "";
 
@@ -16,36 +18,33 @@ define([
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-                siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
+                siteAdmin = $rootScope.me.roles.indexOf("Site Admin") > -1;
                 $scope.adjustToSize($(window).width());
 
                 $scope.reload();
 
                 me();
             }
-        })
+        });
 
-        var isTiny = $(window).width() < 500;
-
-        //Grid Options
+        // Grid Options
         $scope.data = [];
-        $scope.limits = [10,50,100,500]
+        $scope.limits = [10, 50, 100, 500];
         $scope.limit = 50;
-        $scope.sort = {date:false}
-        $scope.search = {}
-        $scope.filters = {active:true}
+        $scope.sort = {date: false};
+        $scope.search = {};
+        $scope.filters = {active: true};
         $scope.defaultSort = "-date";
-        $scope.searchable = ['name', 'email', 'role', 'company'];
-        $scope.search['active'] = true;
+        $scope.searchable = ["name", "email", "role", "company"];
+        $scope.search["active"] = true;
 
         $scope.showInactive = false;
         $scope.showActive = true;
-        $scope.undeliverableOnly = false;
-
+        $scope.showDeliverable = true;
+        $scope.showUndeliverable = true;
 
         $scope.adjustToSize = function(size) {
             var isTiny = size < 967;
-            var isMedium = size < 1167;
             $scope.show = {
                 rownumber: siteAdmin,
                 date: false,
@@ -55,9 +54,9 @@ define([
                 company: siteAdmin,
                 custom: false,
                 active: $scope.showInactive,
-                tools: true
-            }
-        }
+                tools: true,
+            };
+        };
 
 
         $scope.$on('size', function(e,size) {
@@ -69,31 +68,24 @@ define([
         $scope.calcActive = function() {
             if ($scope.showActive === $scope.showInactive) {
                 delete $scope.search.active;
-            }
-            else
-            {
+            } else {
                 $scope.search.active = $scope.showActive;
             }
 
             $scope.resetPager();
-
-            $scope.show.active =  $scope.showInactive;
         }
 
         $scope.calcUndeliverable = function() {
-            if (!$scope.undeliverableOnly) {
+            if ($scope.showDeliverable === $scope.showUndeliverable) {
                 delete $scope.search.undeliverable;
-            }
-            else
-            {
-                $scope.search.undeliverable = true;
+            } else {
+                $scope.search.undeliverable = $scope.showUndeliverable;
             }
 
             $scope.resetPager();
         }
 
-        /////////////////////////////
-        $scope.reload = function () {
+        $scope.reload = function() {
             $scope.localLoading = false;
             $userService.search().then(function (response) {
                 $scope.data = response.data.users;

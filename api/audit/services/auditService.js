@@ -1,88 +1,83 @@
-'use strict';
-var AuditSchema= require('../schema/auditSchema')
-var async = require("async");
-var _ = require("lodash")
-var moment = require("moment")
-var PaginationService = require('../../utilities/services/paginationService')
-var DateService = require('../../utilities/services/dateService')
-var error = require("../../../config/error");
+"use strict";
+const AuditSchema= require("../schema/auditSchema");
+const _ = require("lodash");
+const PaginationService = require("../../utilities/services/paginationService");
+const DateService = require("../../utilities/services/dateService");
 
-var audits  = [
-    {key: 'login_failed', value: 'Login Failed', group: 'User'},
-    {key: 'login_succeeded', value: 'Login Succeeded', group: 'User'},
-    {key: 'login_as', value: 'Login As', group: 'User', admin: true},
-    {key: 'password_updated', value: 'Password Updated', group: 'User'},
-    {key: 'reset_password', value: 'Password Reset', group: 'User'},
-    {key: 'user_custom', value:  'Custom Property Limit Updated', undo: false, group: 'User', admin: true},
-    {key: 'user_status', value:  'User Status Updated', undo: true, group: 'User'},
-    {key: 'user_notifications', value:  'Notification Settings Updated', undo: false, group: 'User'},
-    {key: 'user_reminders', value:  'Reminder Settings Updated', undo: false, group: 'User'},
-    {key: 'user_leased', value:  'Leased Settings Updated', undo: false, group: 'User'},
-    {key: 'user_atr', value:  'ATR Settings Updated', undo: false, group: 'User'},
-    {key: 'user_renewal', value:  'Renewal Settings Updated', undo: false, group: 'User'},
-    {key: 'user_concessions', value:  'Detailed Concessions', undo: false, group: 'User'},
-    {key: 'user_created', value: 'User Created', group: 'User'},
-    {key: 'user_updated', value: 'User Updated', undo: true, group: 'User'},
-    {key: 'user_assigned', value: 'User Assigned to Property', undo: true, group: 'User'},
-    {key: 'user_unassigned', value: 'User Unassigned from Property', undo: true, group: 'User'},
-    {key: 'user_bounced', value: 'User Email Undeliverable', group: 'User'},
+let audits = [
+    {key: "login_failed", value: "Login Failed", group: "User"},
+    {key: "login_succeeded", value: "Login Succeeded", group: "User"},
+    {key: "login_as", value: "Login As", group: "User", admin: true},
+    {key: "password_updated", value: "Password Updated", group: "User"},
+    {key: "reset_password", value: "Password Reset", group: "User"},
+    {key: "user_custom", value: "Custom Property Limit Updated", undo: false, group: "User", admin: true},
+    {key: "user_status", value: "User Status Updated", undo: true, group: "User"},
+    {key: "user_notifications", value: "Notification Settings Updated", undo: false, group: "User"},
+    {key: "user_reminders", value: "Reminder Settings Updated", undo: false, group: "User"},
+    {key: "user_leased", value: "Leased Settings Updated", undo: false, group: "User"},
+    {key: "user_atr", value: "ATR Settings Updated", undo: false, group: "User"},
+    {key: "user_renewal", value: "Renewal Settings Updated", undo: false, group: "User"},
+    {key: "user_concessions", value: "Detailed Concessions", undo: false, group: "User"},
+    {key: "user_created", value: "User Created", group: "User"},
+    {key: "user_updated", value: "User Updated", undo: true, group: "User"},
+    {key: "user_assigned", value: "User Assigned to Property", undo: true, group: "User"},
+    {key: "user_unassigned", value: "User Unassigned from Property", undo: true, group: "User"},
+    {key: "user_bounced", value: "User Email Undeliverable", group: "User"},
 
-    {key: 'property_profile', value: 'Profile Viewed', excludeDefault: true, group: 'Reporting'},
-    {key: 'pdf_profile', value: 'PDF Profile', group: 'Reporting'},
-    {key: 'print_profile', value: 'Print Profile', group: 'Reporting'},
-    {key: 'excel_profile', value: 'Excel Profile', group: 'Reporting'},
-    {key: 'report', value: 'Report', group: 'Reporting'},
-    {key: 'report_print', value: 'Report Print', group: 'Reporting'},
-    {key: 'report_pdf', value: 'Report PDF', group: 'Reporting'},
-    {key: 'show_unlinked', value: 'Exclude Setting', group: 'Reporting', admin: true},
-    {key: 'report_saved', value: 'New Report Created', group: 'Reporting'},
-    {key: 'report_overriden', value: 'Saved Report Replaced', group: 'Reporting'},
-    {key: 'report_deleted', value: 'Saved Report Deleted', group: 'Reporting'},
-    {key: 'report_updated', value: 'Saved Report Updated', group: 'Reporting'},
+    {key: "property_profile", value: "Profile Viewed", excludeDefault: true, group: "Reporting"},
+    {key: "pdf_profile", value: "PDF Profile", group: "Reporting"},
+    {key: "print_profile", value: "Print Profile", group: "Reporting"},
+    {key: "excel_profile", value: "Excel Profile", group: "Reporting"},
+    {key: "report", value: "Report", group: "Reporting"},
+    {key: "report_print", value: "Report Print", group: "Reporting"},
+    {key: "report_pdf", value: "Report PDF", group: "Reporting"},
+    {key: "show_unlinked", value: "Exclude Setting", group: "Reporting", admin: true},
+    {key: "report_saved", value: "New Report Created", group: "Reporting"},
+    {key: "report_overriden", value: "Saved Report Replaced", group: "Reporting"},
+    {key: "report_deleted", value: "Saved Report Deleted", group: "Reporting"},
+    {key: "report_updated", value: "Saved Report Updated", group: "Reporting"},
 
-    {key: 'property_status', value: 'Updated Property Status', undo: true, group: 'Property'},
+    {key: "property_status", value: "Updated Property Status", undo: true, group: "Property"},
 
-    {key: 'comp_linked', value: 'Comp Added', undo: true, group: 'Property'},
-    {key: 'comp_unlinked', value: 'Comp Removed', undo: true, group: 'Property'},
+    {key: "comp_linked", value: "Comp Added", undo: true, group: "Property"},
+    {key: "comp_unlinked", value: "Comp Removed", undo: true, group: "Property"},
 
-    {key: 'property_linked', value: 'Property Added as a Comp', group: 'Property'},
-    {key: 'property_unlinked', value: 'Property Removed as a Comp', group: 'Property'},
-    {key: 'property_approved', value: 'Property Approved', group: 'Property', admin: true},
+    {key: "property_linked", value: "Property Added as a Comp", group: "Property"},
+    {key: "property_unlinked", value: "Property Removed as a Comp", group: "Property"},
+    {key: "property_approved", value: "Property Approved", group: "Property", admin: true},
 
+    {key: "links_updated", value: "Comped Floor Plans Updated", undo: true, group: "Property"},
+    {key: "property_created", value: "Property Created", group: "Property"},
+    {key: "property_created_custom", value: "Property Created (Custom)", group: "Property"},
+    {key: "property_profile_updated", value: "Profile Updated", undo: true, group: "Property"},
+    {key: "property_contact_updated", value: "Contact/Notes Updated", undo: true, group: "Property"},
+    {key: "property_fees_updated", value: "Fees/Deposits Updated", undo: true, group: "Property"},
+    {key: "property_amenities_updated", value: "Amenities Updated", undo: true, group: "Property"},
+    {key: "property_floorplan_created", value: "Floor plan Created", undo: true, group: "Property"},
+    {key: "property_floorplan_removed", value: "Floor plan Removed", undo: true, group: "Property"},
+    {key: "property_floorplan_updated", value: "Floor plan Updated", undo: true, group: "Property"},
+    {key: "property_floorplan_amenities_updated", value: "Floor plan Amenities Updated", undo: true, group: "Property"},
 
-    {key: 'links_updated', value: 'Comped Floor Plans Updated', undo: true, group: 'Property'},
-    {key: 'property_created', value: 'Property Created', group: 'Property'},
-    {key: 'property_created_custom', value: 'Property Created (Custom)', group: 'Property'},
-    {key: 'property_profile_updated', value: 'Profile Updated', undo: true, group: 'Property'},
-    {key: 'property_contact_updated', value: 'Contact/Notes Updated', undo: true, group: 'Property'},
-    {key: 'property_fees_updated', value: 'Fees/Deposits Updated', undo: true, group: 'Property'},
-    {key: 'property_amenities_updated', value: 'Amenities Updated', undo: true, group: 'Property'},
-    {key: 'property_floorplan_created', value: 'Floor plan Created', undo: true, group: 'Property'},
-    {key: 'property_floorplan_removed', value: 'Floor plan Removed', undo: true, group: 'Property'},
-    {key: 'property_floorplan_updated', value: 'Floor plan Updated', undo: true, group: 'Property'},
-    {key: 'property_floorplan_amenities_updated', value: 'Floor plan Amenities Updated', undo: true, group: 'Property'},
+    {key: "property_pictures", value: "Pictures Updated", undo: true, group: "Property"},
+    {key: "property_pictures_order", value: "Picture order Updated", undo: false, group: "Property"},
 
-    {key: 'property_pictures', value: 'Pictures Updated', undo: true, group: 'Property'},
-    {key: 'property_pictures_order', value: 'Picture order Updated', undo: false, group: 'Property'},
+    {key: "survey_created", value: "Market Survey Added", undo: true, group: "Market Survey"},
+    {key: "survey_deleted", value: "Market Survey Deleted", undo: true, group: "Market Survey"},
+    {key: "survey_updated", value: "Market Survey Updated", undo: true, group: "Market Survey"},
+    {key: "survey_emailed", value: "Market Survey Swap Emailed", undo: false, group: "Market Survey"},
 
+    {key: "amenity_created", value: "Amenity Created", group: "Amenity", admin: true},
+    {key: "amenity_updated", value: "Amenity Updated/Approved", group: "Amenity", admin: true},
+    {key: "amenity_aliases_updated", value: "Amenity Aliases Updated", group: "Amenity", admin: true},
+    {key: "amenity_deleted", value: "Amenity Deleted", group: "Amenity", admin: true, undo: true},
+    {key: "amenity_undeleted", value: "Amenity Undeleted", group: "Amenity", admin: true, undo: true},
+    {key: "amenity_mapped", value: "Amenity Mapped as Alias", group: "Amenity", admin: true, undo: true},
+    {key: "amenity_unmapped", value: "Amenity Unmapped as Alias", group: "Amenity", admin: true, undo: true},
 
-    {key: 'survey_created', value: 'Market Survey Added', undo: true, group: 'Market Survey'},
-    {key: 'survey_deleted', value: 'Market Survey Deleted', undo: true, group: 'Market Survey'},
-    {key: 'survey_updated', value: 'Market Survey Updated', undo: true, group: 'Market Survey'},
-    {key: 'survey_emailed', value: 'Market Survey Swap Emailed', undo: false, group: 'Market Survey'},
+    {key: "tracking_reminder_clicked", value: "Reminder Email Clicked", group: "Tracking", admin: true},
+    {key: "tracking_reminder_survey", value: "Reminder Email Survey", group: "Tracking", admin: true},
 
-    {key: 'amenity_created', value: 'Amenity Created', group: 'Amenity', admin: true},
-    {key: 'amenity_updated', value: 'Amenity Updated/Approved', group: 'Amenity', admin: true},
-    {key: 'amenity_aliases_updated', value: 'Amenity Aliases Updated', group: 'Amenity', admin: true},
-    {key: 'amenity_deleted', value: 'Amenity Deleted', group: 'Amenity', admin: true, undo: true},
-    {key: 'amenity_undeleted', value: 'Amenity Undeleted', group: 'Amenity', admin: true, undo: true},
-    {key: 'amenity_mapped', value: 'Amenity Mapped as Alias', group: 'Amenity', admin: true, undo: true},
-    {key: 'amenity_unmapped', value: 'Amenity Unmapped as Alias', group: 'Amenity', admin: true, undo: true},
-
-    {key: 'tracking_reminder_clicked', value: 'Reminder Email Clicked', group: 'Tracking', admin: true},
-    {key: 'tracking_reminder_survey', value: 'Reminder Email Survey', group: 'Tracking', admin: true},
-
-    {key: 'org_default_settings', value: 'Default Settings Updated', group: 'Tracking', admin: true},
+    {key: "org_default_settings", value: "Default Settings Updated", group: "Tracking", admin: true},
 
 ];
 

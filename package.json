@@ -1,12 +1,13 @@
 {
   "name": "BIRadix",
-  "version": "2.15.36",
+  "version": "2.15.43",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec api/*/tests/*.js",
-    "build": "gulp vendorsjs vendorscss globaljs globalcss",
-    "postinstall": "bower install && npm run build && npm test"
+    "build": "tsc && gulp vendorsjs vendorscss globaljs globalcss",
+    "postinstall": "bower install && npm run build && npm test",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",
@@ -15,6 +16,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.11.1",
+    "@types/md5": "^2.1.32",
+    "@types/node": "^9.4.6",
     "async": "^1.5.2",
     "aws-sdk": "^2.166.0",
     "body-parser": "^1.17.2",
@@ -58,6 +62,8 @@
     "raygun": "^0.9.1",
     "redis": "^2.7.1",
     "request": "^2.81.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2",
     "xlsjs": "^0.7.6"
   },
   "private": true,

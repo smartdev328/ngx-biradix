@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 define([
-    'app',
-    '../../filters/skip/filter',
+    "app",
+    "../../filters/skip/filter",
 ], function (app) {
 
-    app.controller('propertiesController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$uibModal','$authService','$dialog','toastr','$gridService', function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr,$gridService) {
+    app.controller("propertiesController", ["$scope","$rootScope","$location","$propertyService","ngProgress","$uibModal","$authService","$dialog","toastr","$gridService", function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr,$gridService) {
         window.setTimeout(function() {window.document.title = "Manage Properties | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -12,26 +12,28 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "Properties";
 
-        //Grid Options
+        // Grid Options
         $scope.data = [];
-        $scope.limits = [10,50,100,500]
+        $scope.limits = [10, 50, 100, 500];
         $scope.limit = 50;
-        $scope.sort = {name:false}
+        $scope.sort = {name_lower: false};
+        $scope.orderBy = "name_lower";
+        $scope.defaultSort = "name_lower";
+
         $scope.search = {}
-        $scope.defaultSort = "name";
-        $scope.searchable = ['name', 'address', 'city', 'state', 'zip', 'company'];
-        $scope.search['active'] = true;
+        $scope.searchable = ["name", "address", "city", "state", "zip", "company"];
+        $scope.search["active"] = true;
 
         $scope.options = {
             showInactive: false,
             showActive: true,
-            showCustom : true,
-            showShared: true
-        }
+            showCustom: true,
+            showShared: true,
+        };
 
         $scope.adjustToSize = function(size) {
             var isTiny = size < 967;
-            var isMedium  = size < 1167;
+            var isMedium = size < 1167;
             $scope.show = {
                 rownumber: false,
                 date: false,
@@ -40,17 +42,15 @@ define([
                 city: !isMedium,
                 state: !isMedium,
                 zip: !isMedium,
-                active:  $scope.options.showInactive,
+                active: $scope.options.showInactive,
                 totalUnits: true,
                 occupancy: false,
                 ner: false,
                 company: siteAdmin,
-                tools : true,
-                owner : false
-            }
+                tools: true,
+                owner: false,
+            };
         }
-
-
 
         $scope.$on('size', function(e,size) {
             if (!$scope.columnsChanged) {
@@ -69,7 +69,7 @@ define([
 
             $scope.resetPager();
 
-            $scope.show.active =  $scope.options.showInactive;
+            $scope.show.active = $scope.options.showInactive;
         }
 
         $scope.calcCustom = function() {
@@ -156,32 +156,35 @@ define([
 
             }
 
-        }
-        /////////////////////////////
-        $scope.reload = function (callback) {
+        };
+
+        $scope.reload = function(callback) {
             $scope.localLoading = false;
             $propertyService.search({
-                limit: 10000, permission: 'PropertyManage', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber needsSurvey custom"
-                , skipAmenities: true
-                , hideCustomComps: true
-            }).then(function (response) {
+                limit: 10000,
+                permission: "PropertyManage",
+                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber needsSurvey custom",
+                skipAmenities: true,
+                hideCustomComps: true,
+            }).then(function(response) {
                 $scope.data = response.data.properties;
 
                 $scope.customCount = 0;
 
                 $scope.data.forEach(function(p) {
+                    p.name_lower = p.name.toLowerCase();
                     p.isCustom = false;
                     if (p.custom && p.custom.owner && p.custom.owner.name) {
                         p.isCustom = true;
                         p.owner = p.custom.owner.name;
 
-                        //Only count subjects
+                        // Only count subjects
                         if (p.active && p.orgid && p.custom.owner.id.toString() == $rootScope.me._id.toString()) {
                             $scope.customCount++;
                         }
                     }
-                    //For propert sorting
-                    if (p.survey){
+                    // For propert sorting
+                    if (p.survey) {
                         if (p.survey.occupancy != null) {
                             p.occupancy = p.survey.occupancy;
                         }
@@ -228,7 +231,6 @@ define([
                     $scope.getNeedsApproval();
                 }
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
-
 
                 $scope.adjustToSize($(window).width());
                 $scope.reload();
@@ -466,20 +468,20 @@ define([
             });
         }
 
-        $scope.edit = function (id, isComp, subject, isCustom) {
+        $scope.edit = function(id, isComp, subject, isCustom) {
             var subjectid = subject ? subject._id : null;
 
             require([
-                '/app/propertyWizard/propertyWizardController.js'
-            ], function () {
+                "/app/propertyWizard/propertyWizardController.js",
+            ], function() {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/app/propertyWizard/propertyWizard.html?bust='+version,
-                    controller: 'propertyWizardController',
+                    templateUrl: "/app/propertyWizard/propertyWizard.html?bust="+version,
+                    controller: "propertyWizardController",
                     size: "md",
                     keyboard: false,
-                    backdrop: 'static',
+                    backdrop: "static",
                     resolve: {
-                        id: function () {
+                        id: function() {
                             return id;
                         },
                         isComp: function() {
@@ -488,22 +490,22 @@ define([
                         subjectid: function() {
                             return subjectid;
                         },
-                        isCustom : function() {
-                            return isCustom
-                        }
-                    }
+                        isCustom: function() {
+                            return isCustom;
+                        },
+                    },
                 });
 
-                modalInstance.result.then(function (comp) {
-                    //Send successfully
+                modalInstance.result.then(function(comp) {
+                    // Send successfully
                     $scope.reload(function() {
-                        //after we reload, we need to update the reference to our subject since it got new data from ajax
+                        // after we reload, we need to update the reference to our subject since it got new data from ajax
 
                         subject = _.find($scope.data, function(x) {
-                            return x._id.toString() == subjectid
+                            return x._id.toString() == subjectid;
                         });
 
-                        //if we successfully added a comp for a subject, toggle open the comps in the ui for the subject
+                        // if we successfully added a comp for a subject, toggle open the comps in the ui for the subject
                         if (isComp) {
                             if (subject.open) {
                                 $scope.toggleOpen(subject);
@@ -511,8 +513,8 @@ define([
                             $scope.toggleOpen(subject);
                         }
                     });
-                }, function () {
-                    //Cancel
+                }, function() {
+                    // Cancel
                 });
             });
         }
