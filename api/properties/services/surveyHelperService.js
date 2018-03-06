@@ -75,7 +75,7 @@ module.exports = {
                             // Activity History
                             let data = [{description: "Subjects: " + SubjectNames.join(", ")}];
 
-                            AuditService.create({operator: operator, property: property, user: guest, type: "survey_emailed", description: `Property: ${property.name}, User: ${guest.first} ${guest.last}`, data: data});
+                            AuditService.create({operator: operator, property: property, user: guest, type: "survey_emailed", description: `Property: ${property.name}, User: ${guest.first} ${guest.last} <${guest.email}>`, data: data});
 
                             // Update Last Emailed
                             userService.updateGuestStatsLastEmailed(guestid, propertyid, {first: operator.first, last: operator.last, email: operator.email, logo: operator.orgs[0].logoBig}, function() {
