@@ -1097,8 +1097,8 @@ module.exports = {
                 }
             })
 
-            n.save(function (err, created) {
-                data[0].id=created._id;
+            n.save(function(err, created) {
+                data[0].id = created._id;
 
                 SurveyHelperService.updateLastSurvey(subject._id, function() {
                     callback(err, created);
@@ -1123,31 +1123,28 @@ module.exports = {
                 }
             });
         });
-
-
-
     },
     getLastSurveyStats: function(options,subject, comps, callback) {
-        var surveyids = _.pluck(comps,"survey.id");
+        let surveyids = _.pluck(comps, "survey.id");
 
-        //get all surveys of comps at once to be efficient
+        // get all surveys of comps at once to be efficient
         SurveySchema.find().where("_id").in(surveyids).exec(function(err, surveys) {
-            var links;
-            var s;
+            let links;
+            let s;
             comps.forEach(function(comp) {
-                //match each survey to a comp
-                links = _.find(subject.comps, function(x) {return x.id == comp._id})
+                // match each survey to a comp
+                links = _.find(subject.comps, function(x) {return x.id == comp._id});
 
-                //if there is a survey go here:
+                // if there is a survey go here:
                 if (comp.survey) {
-                    s = _.find(surveys, function (x) {
-                        return x._id == comp.survey.id
+                    s = _.find(surveys, function(x) {
+                        return x._id == comp.survey.id;
                     });
 
                     if (s) {
                         delete comp.survey.id;
                         comp.survey.date = s.date;
-                        var daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
+                        let daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
                         if (daysSince >= 15) {
                             comp.survey.tier = "danger";
                         } else if (daysSince >= 8) {
@@ -1157,14 +1154,14 @@ module.exports = {
                         comp.survey.days = daysSince;
 
                         if (options.injectFloorplans) {
-                            //Inject any actual floorplans into the survey that are not in the last survey
-                            comp.floorplans.forEach(function (cfp) {
-                                if (!_.find(s.floorplans, function (sfp) {
-                                        return sfp.id.toString() == cfp.id.toString()
+                            // Inject any actual floorplans into the survey that are not in the last survey
+                            comp.floorplans.forEach(function(cfp) {
+                                if (!_.find(s.floorplans, function(sfp) {
+                                        return sfp.id.toString() == cfp.id.toString();
                                     })) {
                                     s.floorplans.push(cfp);
                                 }
-                            })
+                            });
                         }
 
                         comp.survey.occupancy = s.occupancy;
@@ -1177,23 +1174,21 @@ module.exports = {
 
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide, options.nerPlaces);
                     }
-
                 } else {
-                    //No surveys at all, create a fake survey with current floorplan data but no rent data
+                    // No surveys at all, create a fake survey with current floorplan data but no rent data
                     comp.survey = {};
                     comp.survey.tier = "danger";
 
                     if (options.injectFloorplans) {
                         SurveyHelperService.floorplansToSurvey(comp.survey, comp.floorplans, links, options.hide, options.nerPlaces);
-                    }
-                    else {
+                    } else {
                         SurveyHelperService.floorplansToSurvey(comp.survey, [], links, options.hide, options.nerPlaces);
                     }
                 }
             });
             return callback();
-        })
-    }
+        });
+    },
 }
 
 function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {
