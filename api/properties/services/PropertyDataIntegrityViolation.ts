@@ -43,7 +43,7 @@ function checkDuplicateGeo(operator: IUser, newProperty: IProperty): Promise<Dat
         propertyService.search(operator, PropertySearchRequest, (errors: CustomError[], properties: IProperty[]) => {
             if (properties.length > 0) {
                 const v = new DataIntegrityViolation();
-                v.dataIntegrityCheckType = DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE;
+                v.checkType = DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE;
                 v.description = `Existing Property Name: ${properties[0].name}<Br>Duplicate Address: ${properties[0].address} ${properties[0].city}, ${properties[0].state} ${properties[0].zip}`;
                 resolve(v);
             } else {
@@ -68,7 +68,7 @@ function checkDuplicateName(operator: IUser, newProperty: IProperty): Promise<Da
         propertyService.search(operator, PropertySearchRequest, (errors: CustomError[], properties: IProperty[]) => {
             if (properties.length > 0) {
                 const v = new DataIntegrityViolation();
-                v.dataIntegrityCheckType = DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE;
+                v.checkType = DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE;
                 v.description = `New Property Address: ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}<Br>
                     Duplicate Property Address: ${properties[0].address} ${properties[0].city}, ${properties[0].state} ${properties[0].zip}`;
                 resolve(v);

@@ -14,9 +14,7 @@ const PropertyAmenityService = require("../../propertyamenities/services/propert
 const Routes = new express.Router();
 const async = require("async");
 const _ = require("lodash");
-// const dataIntegrityChecks = require("../../../build/audit/objects/DataIntegrityChecks");
-//
-// console.log(dataIntegrityChecks);
+const dataIntegrityChecks = require("../../../build/audit/objects/DataIntegrityChecks");
 
 Routes.get("/filters", function(req, res) {
     async.parallel({
@@ -31,8 +29,15 @@ Routes.get("/filters", function(req, res) {
 
             callbackp(null, audits);
         },
+        dataIntegrityChecks: function(callbackp) {
+            if (req.user.memberships.isadmin !== true) {
+                callbackp: null;
+            }
+
+            callbackp(null, dataIntegrityChecks);
+        },
     }, function(err, all) {
-        res.status(200).json({audits: all.audits});
+        res.status(200).json({audits: all.audits, dataIntegrityChecks: all.dataIntegrityChecks});
         all = null;
     });
 });

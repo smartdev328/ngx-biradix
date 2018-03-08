@@ -2,7 +2,7 @@ import {DataIntegrityCheckType, DataIntegritySearchParameter, DataIntegritySever
 
 export class DataIntegrityCheck {
     public severity: DataIntegritySeverity;
-    public reasonType: DataIntegrityCheckType;
+    public type: DataIntegrityCheckType;
     public name: string;
     public searchParameter: DataIntegritySearchParameter;
 }
