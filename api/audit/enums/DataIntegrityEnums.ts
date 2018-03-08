@@ -9,6 +9,6 @@ export enum DataIntegritySearchParameter {
 }
 
 export enum DataIntegrityCheckType {
-    PROPERTY_GEO_DUPLICATE = "Property Geo Duplicate",
-    PROPERTY_NAME_DUPLICATE = "Property Name Duplicate",
+    PROPERTY_GEO_DUPLICATE = "PROPERTY_GEO_DUPLICATE",
+    PROPERTY_NAME_DUPLICATE = "PROPERTY_NAME_DUPLICATE",
 }
