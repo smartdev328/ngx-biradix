@@ -329,10 +329,10 @@ module.exports = {
 
             let contactChanges = getContactChanges(property, null, all);
             let feesChanges = getFeesChanges(property, null, all);
-            let amenitiesChanges = getAmenitiesChanges(property, n, all, "community_amenities", "Community");
-            amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property, n, all,"location_amenities", "Location"));
-            let floorplansAddedChanges = getFloorplansAddedChanges(property, n, all);
-            let picturesChanges = getPicturesChanges(property, n, all);
+            let amenitiesChanges = getAmenitiesChanges(property, null, all, "community_amenities", "Community");
+            amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property, null, all, "location_amenities", "Location"));
+            let floorplansAddedChanges = getFloorplansAddedChanges(property, null, all);
+            let picturesChanges = getPicturesChanges(property, null, all);
 
             let changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesChanges.data);
 

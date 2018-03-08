@@ -6,6 +6,7 @@ export interface IPropertySearchRequest {
         distance: number;
     };
     select: string;
-    exclude: string;
+    exclude?: string[];
     hideCustom?: boolean;
+    searchName?: string;
 }
