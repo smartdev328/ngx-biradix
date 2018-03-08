@@ -1,29 +1,28 @@
 import * as propertyService from "../../../api/properties/services/propertyService";
 import {DataIntegrityCheckType} from "../../audit/enums/DataIntegrityEnums";
 import {DataIntegrityViolation} from "../../audit/objects/DataIntegrityViolation";
-import {DataIntegrityViolations} from "../../audit/objects/DataIntegrityViolations";
+import {DataIntegrityViolationSet} from "../../audit/objects/DataIntegrityViolationSet";
 import {CustomError} from "../../shared/objects/CustomError";
 import {IUser} from "../../users/interfaces/IUser";
 import {IProperty} from "../interfaces/IProperty";
 import {IPropertySearchRequest} from "../interfaces/IPropertySearchRequest";
 
 export class PropertyDataIntegrityViolationService {
-    public async getNewPropertyViloations(operator: IUser, newProperty: IProperty): Promise<DataIntegrityViolations> {
-        return new Promise<DataIntegrityViolations>((resolve, reject) => {
+    public async getNewPropertyViloations(operator: IUser, newProperty: IProperty): Promise<DataIntegrityViolationSet> {
+        return new Promise<DataIntegrityViolationSet>((resolve, reject) => {
             if (newProperty.custom && newProperty.custom.owner) {
               return resolve(null);
             }
 
-            const response = new DataIntegrityViolations();
+            const violationSet = new DataIntegrityViolationSet();
             Promise.all([checkDuplicateGeo(operator, newProperty), checkDuplicateName(operator, newProperty)]).then((violations: DataIntegrityViolation[]) => {
                 if (violations.length > 0) {
-                    response.violations = violations;
-                    resolve(response);
+                    violationSet.violations = violations;
+                    resolve(violationSet);
                 } else {
                     resolve(null);
                 }
             });
-
         });
     }
 }

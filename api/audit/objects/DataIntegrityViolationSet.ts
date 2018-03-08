@@ -1,6 +1,6 @@
 import {DataIntegrityViolation} from "./DataIntegrityViolation";
 
-export class DataIntegrityViolations {
+export class DataIntegrityViolationSet {
     public violations: DataIntegrityViolation[] = [];
     public approval?: {
         approved: boolean;
