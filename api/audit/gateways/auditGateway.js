@@ -1,42 +1,40 @@
-'use strict';
+"use strict";
 
-var express = require('express');
-var AuditService = require('../services/auditService')
-var AccessService = require('../../access/services/accessService')
-var PropertyHelperService = require('../../properties/services/propertyHelperService')
-var PropertyService = require('../../properties/services/propertyService')
-var CreateService = require('../../properties/services/createService')
-var AmenitiesService = require('../../amenities/services/amenityService')
-var UserService = require('../../users/services/userService')
-var UserCreateService = require('../../users/services/userCreateService')
-var PropertyUserService = require('../../propertyusers/services/propertyUsersService')
-var PropertyAmenityService = require('../../propertyamenities/services/propertyAmenityService')
-var Routes = express.Router();
-var async = require('async')
-var _ = require('lodash')
+const express = require("express");
+const AuditService = require("../services/auditService");
+const AccessService = require("../../access/services/accessService");
+const PropertyHelperService = require("../../properties/services/propertyHelperService");
+const PropertyService = require("../../properties/services/propertyService");
+const CreateService = require("../../properties/services/createService");
+const AmenitiesService = require("../../amenities/services/amenityService");
+const UserService = require("../../users/services/userService");
+const UserCreateService = require("../../users/services/userCreateService");
+const PropertyUserService = require("../../propertyusers/services/propertyUsersService");
+const PropertyAmenityService = require("../../propertyamenities/services/propertyAmenityService");
+const Routes = new express.Router();
+const async = require("async");
+const _ = require("lodash");
+const dataIntegrityChecks = require("../../../build/audit/objects/DataIntegrityChecks");
 
-Routes.get('/filters', function (req, res) {
-    var debug = {};
+console.log(dataIntegrityChecks);
+
+Routes.get("/filters", function(req, res) {
     async.parallel({
         audits: function(callbackp) {
-            var audits = AuditService.audits;
-
-            debug.before = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
+            let audits = AuditService.audits;
 
             if (req.user.memberships.isadmin !== true) {
-                audits = _.filter(audits, function(x) {return !x.admin})
+                audits = _.filter(audits, function(x) {
+                    return !x.admin;
+                });
             }
 
-            debug.after = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
-
-            callbackp(null,audits)
-        }
-
+            callbackp(null, audits);
+        },
     }, function(err, all) {
         res.status(200).json({audits: all.audits});
         all = null;
-    })
-
+    });
 });
 
 Routes.post('/undo', function (req, res) {

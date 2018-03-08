@@ -1,39 +1,40 @@
-'use strict';
-var mongoose = require('mongoose');
+"use strict";
+const mongoose = require("mongoose");
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var s = new Schema({
+let s = new Schema({
     operator: {
-        id : {type: Schema.Types.ObjectId, index:true},
-        name: String
+        id: {type: Schema.Types.ObjectId, index: true},
+        name: String,
     },
     user: {
-        id : {type: Schema.Types.ObjectId, index:true},
-        name: String
+        id: {type: Schema.Types.ObjectId, index: true},
+        name: String,
     },
     property: {
-        id : {type: Schema.Types.ObjectId, index:true},
-        orgid : {type: Schema.Types.ObjectId},
-        name: String
+        id: {type: Schema.Types.ObjectId, index: true},
+        orgid: {type: Schema.Types.ObjectId},
+        name: String,
     },
     amenity: {
-        id : Schema.Types.ObjectId,
-        name: String
+        id: Schema.Types.ObjectId,
+        name: String,
     },
-    type : {type: String, index: true},
+    type: {type: String, index: true},
     description: String,
-    date: {type: Date, index:true},
+    date: {type: Date, index: true},
     context: {
         ip: String,
-        user_agent: String
+        user_agent: String,
     },
-    reverted : Boolean,
-    revertedFromId : Schema.Types.ObjectId,
-    data : Object,
-    adminOnly : Object
+    reverted: Boolean,
+    revertedFromId: Schema.Types.ObjectId,
+    data: Object,
+    adminOnly: Object,
+    dataIntegrityViolations: [],
 });
 
-s.index({"type": 1,"date": 1});
+s.index({"type": 1, "date": 1});
 
-module.exports = mongoose.model('Audit', s);
+module.exports = mongoose.model("Audit", s);

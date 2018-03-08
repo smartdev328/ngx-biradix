@@ -83,32 +83,32 @@ let audits = [
 
 module.exports = {
     audits: audits,
-    create: function(audit,callback) {
-        var n = new AuditSchema();
+    create: function(audit, callback) {
+        let n = new AuditSchema();
 
         if (audit.operator) {
             n.operator = {
                 id: audit.operator.id || audit.operator._id,
-                name: audit.operator.name || (audit.operator.first + ' ' + audit.operator.last)
-            }
+                name: audit.operator.name || (audit.operator.first + " " + audit.operator.last),
+            };
         }
         if (audit.user) {
             n.user = {
                 id: audit.user.id || audit.user._id,
-                name: audit.user.name || (audit.user.first + ' ' + audit.user.last)
+                name: audit.user.name || (audit.user.first + " " + audit.user.last),
             };
         }
         if (audit.property) {
             n.property = {
                 id: audit.property.id || audit.property._id,
                 name: audit.property.name,
-                orgid: audit.property.orgid
+                orgid: audit.property.orgid,
             };
         }
         if (audit.amenity) {
             n.amenity = {
                 id: audit.amenity.id || audit.amenity._id,
-                name: audit.amenity.name
+                name: audit.amenity.name,
             };
         }
         if (audit.data) {
@@ -119,6 +119,7 @@ module.exports = {
         n.description = audit.description;
         n.adminOnly = audit.adminOnly;
         n.date = new Date().toISOString();
+        n.dataIntegrityViolations = audit.dataIntegrityViolations;
 
         if (audit.revertedFromId) {
             n.revertedFromId = audit.revertedFromId;
@@ -126,7 +127,7 @@ module.exports = {
 
         n.save(callback);
     },
-    updateReverted: function (id,callback) {
+    updateReverted: function(id, callback) {
         var query = {_id: id};
         var update = {reverted: true};
         var options = {new: true};

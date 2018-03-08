@@ -13,6 +13,11 @@ const AmenityService = require("../../amenities/services/amenityService");
 const OrganizationService = require("../../organizations/services/organizationService");
 const EmailService = require("../../business/services/emailService");
 const PropertyUsersService = require("../../propertyusers/services/propertyUsersService");
+const PropertyDataIntegrityViolation = require("../../../build/properties/services/PropertyDataIntegrityViolation");
+const PropertyDataIntegrityViolationService = new PropertyDataIntegrityViolation.PropertyDataIntegrityViolationService();
+PropertyDataIntegrityViolationService.getNewPropertyViloations({name: "Alex", memberships: {isadmin: true}}, {name: "Test", loc: [33.458841, -111.913684]}).then((x)=> {
+    console.log(x[0].description);
+});
 
 module.exports = {
     update: function(operator, context,revertedFromId, property, options, callback) {
@@ -259,7 +264,7 @@ module.exports = {
         });
     },
     create: function(operator, context, property, callback) {
-        var modelErrors = [];
+        let modelErrors = [];
 
         errorCheck(property, modelErrors);
 
@@ -285,12 +290,12 @@ module.exports = {
 
                 populateAmenitiesandFloorplans(property, all);
 
-                var permissions = [];
+                let permissions = [];
                 // Skip all permission logic if custom property
                 if (!property.isCustom) {
                     // if org of property is provided, assign manage to all CMs for that org
                     // this is our implict assignment
-                    var CMs = [];
+                    let CMs = [];
                     if (property.orgid) {
 
                         CMs = _.filter(all.roles, function (x) {
@@ -299,10 +304,9 @@ module.exports = {
                     }
 
                     // and assign view opermissions to all non admins and not POs
-                    var viewers = _.filter(all.roles, function (x) {
+                    let viewers = _.filter(all.roles, function (x) {
                         return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1
-                    })
-
+                    });
 
                     // Assign all permisions to viewers and CMS
                     viewers.forEach(function (x) {
