@@ -15,12 +15,9 @@ const EmailService = require("../../business/services/emailService");
 const PropertyUsersService = require("../../propertyusers/services/propertyUsersService");
 const PropertyDataIntegrityViolation = require("../../../build/properties/services/PropertyDataIntegrityViolation");
 const PropertyDataIntegrityViolationService = new PropertyDataIntegrityViolation.PropertyDataIntegrityViolationService();
-PropertyDataIntegrityViolationService.getNewPropertyViloations({name: "Alex", memberships: {isadmin: true}}, {name: "Test", loc: [33.458841, -111.913684]}).then((x)=> {
-    console.log(x[0].description);
-});
 
 module.exports = {
-    update: function(operator, context,revertedFromId, property, options, callback) {
+    update: function(operator, context, revertedFromId, property, options, callback) {
         let modelErrors = [];
 
         errorCheck(property, modelErrors);
@@ -278,138 +275,134 @@ module.exports = {
             skipGeo = true;
         }
 
-        getHelpers(operator, property, {skipGeo: skipGeo}, function(err, all)
-            {
-                if (err) {
-                    return callback([{msg:err}],null)
-                }
+        getHelpers(operator, property, {skipGeo: skipGeo}, function(err, all) {
+            if (err) {
+                return callback([{msg: err}], null);
+            }
 
-                if (skipGeo) {
-                    all.geo = {latitude: property.loc[0], longitude: property.loc[1]};
-                }
+            if (skipGeo) {
+                all.geo = {latitude: property.loc[0], longitude: property.loc[1]};
+            }
 
-                populateAmenitiesandFloorplans(property, all);
+            populateAmenitiesandFloorplans(property, all);
 
-                let permissions = [];
-                // Skip all permission logic if custom property
-                if (!property.isCustom) {
-                    // if org of property is provided, assign manage to all CMs for that org
-                    // this is our implict assignment
-                    let CMs = [];
-                    if (property.orgid) {
-
-                        CMs = _.filter(all.roles, function (x) {
-                            return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1
-                        })
-                    }
-
-                    // and assign view opermissions to all non admins and not POs
-                    let viewers = _.filter(all.roles, function (x) {
-                        return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1
-                    });
-
-                    // Assign all permisions to viewers and CMS
-                    viewers.forEach(function (x) {
-                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
-                    })
-
-                    CMs.forEach(function (x) {
-                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
-                    });
-                } else {
-                    // Custom Properties need explicit access since they are not in org of creator
-                    permissions.push({executorid: operator._id.toString(), allow: true, type: "PropertyManage"});
-                }
-
-                var profileChanges = getProfileChanges(property, null, all);
-
-                var newName = "None"
+            let permissions = [];
+            // Skip all permission logic if custom property
+            if (!property.isCustom) {
+                // if org of property is provided, assign manage to all CMs for that org
+                // this is our implict assignment
+                let CMs = [];
                 if (property.orgid) {
-                    newName = _.find(all.orgs, function(x) {return x._id.toString() == property.orgid.toString()}).name
+                    CMs = _.filter(all.roles, function(x) {
+                        return x.orgid == property.orgid.toString() && x.tags.indexOf("CM") > -1;
+                    });
                 }
 
-                profileChanges.push({description: "Company: " + newName});
-                // console.log(profileChanges);
+                // and assign view opermissions to all non admins and not POs
+                let viewers = _.filter(all.roles, function(x) {
+                    return x.tags.indexOf("CM") > -1 || x.tags.indexOf("RM") > -1 || x.tags.indexOf("BM") > -1;
+                });
 
-                var contactChanges = getContactChanges(property, null, all);
-                var feesChanges = getFeesChanges(property,null, all);
+                // Assign all permisions to viewers and CMS
+                viewers.forEach(function(x) {
+                    permissions.push({executorid: x._id.toString(), allow: true, type: "PropertyView"});
+                });
 
-                var amenitiesChanges = getAmenitiesChanges(property,n, all,"community_amenities", "Community");
-                amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
+                CMs.forEach(function(x) {
+                    permissions.push({executorid: x._id.toString(), allow: true, type: "PropertyManage"});
+                });
+            } else {
+                // Custom Properties need explicit access since they are not in org of creator
+                permissions.push({executorid: operator._id.toString(), allow: true, type: "PropertyManage"});
+            }
 
-                var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
-                var picturesChanges = getPicturesChanges(property,n, all);
+            let profileChanges = getProfileChanges(property, null, all);
 
-                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesChanges.data);
+            let newName = "None";
+            if (property.orgid) {
+                newName = _.find(all.orgs, function(x) {
+                    return x._id.toString() == property.orgid.toString();
+                }).name;
+            }
 
+            profileChanges.push({description: "Company: " + newName});
 
-                var n = new PropertySchema();
+            let contactChanges = getContactChanges(property, null, all);
+            let feesChanges = getFeesChanges(property, null, all);
+            let amenitiesChanges = getAmenitiesChanges(property, n, all, "community_amenities", "Community");
+            amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property, n, all,"location_amenities", "Location"));
+            let floorplansAddedChanges = getFloorplansAddedChanges(property, n, all);
+            let picturesChanges = getPicturesChanges(property, n, all);
 
-                populateSchema(property, n, all);
+            let changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesChanges.data);
 
-                n.active = true;
-                n.orgid = property.orgid;
-                n.comps = [];
-                n.date = Date.now();
-                n.needsApproval = true;
+            let n = new PropertySchema();
+
+            populateSchema(property, n, all);
+
+            n.active = true;
+            n.orgid = property.orgid;
+            n.comps = [];
+            n.date = Date.now();
+            n.needsApproval = true;
+
+            if (property.isCustom) {
+                n.needsApproval = false;
+            }
+            n.needsSurvey = true;
+
+            if (property.isCustom) {
+                n.custom = {owner: {name: operator.first + " " + operator.last, id: operator._id}}
+
+                if (n.name.indexOf("Custom ") != 0) {
+                    n.name = "Custom " + n.name.trim();
+                }
+            }
+
+            n.save(function(err, prop) {
+                if (err) {
+                    console.log(err);
+                    return callback([{msg: "Unable to create property. Please contact the administrator."}], null);
+                }
+
+                let type = "property_created";
 
                 if (property.isCustom) {
-                    n.needsApproval = false;
-                }
-                n.needsSurvey = true;
-
-                if (property.isCustom) {
-                    n.custom = {owner: {name: operator.first + ' ' + operator.last, id: operator._id}}
-
-                    if (n.name.indexOf('Custom ') != 0) {
-                        n.name = "Custom " + n.name.trim();
-                    }
+                    type = "property_created_custom";
                 }
 
-                n.save(function (err, prop) {
+                PropertyDataIntegrityViolationService.getNewPropertyViloations(operator, prop).then((violations)=> {
+                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes, dataIntegrityViolations: violations});
+                });
 
-                    if (err) {
-                        console.log(err);
-                        return callback([{msg:"Unable to create property. Please contact the administrator."}], null)
-                    }
+                if (permissions.length > 0 ) {
+                    permissions.forEach(function(x) {
+                        x.resource = prop._id.toString();
+                    });
+                }
 
-                    var type = 'property_created';
+                AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), "hidden", "RM_GROUP"]}, function() {});
+                AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), "hidden", "BM_GROUP"]}, function() {});
+                AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), "hidden", "PO_GROUP"]}, function() {});
 
-                    if (property.isCustom) {
-                        type = 'property_created_custom';
-                    }
-
-                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes})
-
-                    if (permissions.length > 0 ) {
-                        permissions.forEach(function(x) {
-                            x.resource = prop._id.toString();
-                        })
-                    }
-
-                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'RM_GROUP']}, function(){});
-                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'BM_GROUP']}, function(){});
-                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'PO_GROUP']}, function(){});
-
-                    async.eachLimit(permissions, 10, function(permission, callbackp) {
-                        AccessService.createPermission(permission, function(err, perm) {
-                            callbackp(err, perm);
-                        });
-                    }, function(err) {
-                        // link to yourself to treat yourself as a comp
-                        CompsService.linkComp(null,null,null,false,prop._id, prop._id,function() {
-                            if (!err) {
-                                callback(null, prop);
-                            } else {
-                                callback([{msg: err}], prop);
-                            }
-                        });
+                async.eachLimit(permissions, 10, function(permission, callbackp) {
+                    AccessService.createPermission(permission, function(err, perm) {
+                        callbackp(err, perm);
+                    });
+                }, function(err) {
+                    // link to yourself to treat yourself as a comp
+                    CompsService.linkComp(null, null, null, false, prop._id, prop._id, function() {
+                        if (!err) {
+                            callback(null, prop);
+                        } else {
+                            callback([{msg: err}], prop);
+                        }
                     });
                 });
-            }
-        );
+            });
+        });
     },
-}
+};
 
 function isValidString(s) {
     return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s);

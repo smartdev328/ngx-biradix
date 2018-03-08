@@ -14,9 +14,9 @@ const PropertyAmenityService = require("../../propertyamenities/services/propert
 const Routes = new express.Router();
 const async = require("async");
 const _ = require("lodash");
-const dataIntegrityChecks = require("../../../build/audit/objects/DataIntegrityChecks");
-
-console.log(dataIntegrityChecks);
+// const dataIntegrityChecks = require("../../../build/audit/objects/DataIntegrityChecks");
+//
+// console.log(dataIntegrityChecks);
 
 Routes.get("/filters", function(req, res) {
     async.parallel({
