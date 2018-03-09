@@ -399,6 +399,7 @@ module.exports = {
 
         criteria.search = (criteria.search || "").trim();
         criteria.searchName = (criteria.searchName || "").trim();
+        criteria.searchExactName = (criteria.searchExactName || "").trim();
 
         let AllProperties =
             Operator.memberships.isadmin === true
@@ -549,17 +550,21 @@ module.exports = {
 
             query = query.sort(criteria.sort || "name");
 
-            if (criteria.select !== '*') {
-                if (criteria.search != '') {
+            if (criteria.select !== "*") {
+                if (criteria.search != "") {
                     var s = new RegExp(escapeStringRegexp(criteria.search), "i")
-                    query = query.or([{'name': s}, {'address': s}, {'city': s}, {'state': s}]);
-                    query = query.select(criteria.select || '_id name address city state zip custom');
-                } else if (criteria.searchName != '') {
-                    var s = new RegExp(escapeStringRegexp(criteria.searchName), "i")
-                    query = query.or([{'name': s}]);
-                    query = query.select(criteria.select || '_id name address city state zip custom');
+                    query = query.or([{"name": s}, {"address": s}, {"city": s}, {"state": s}]);
+                    query = query.select(criteria.select || "_id name address city state zip custom");
+                } else if (criteria.searchName != "") {
+                    let s = new RegExp(escapeStringRegexp(criteria.searchName), "i")
+                    query = query.or([{"name": s}]);
+                    query = query.select(criteria.select || "_id name address city state zip custom");
+                } else if (criteria.searchExactName != "") {
+                    let s = new RegExp("^" + escapeStringRegexp(criteria.searchExactName) + "$", "i")
+                    query = query.or([{"name": s}]);
+                    query = query.select(criteria.select || "_id name address city state zip custom");
                 } else {
-                    query = query.select(criteria.select || '_id name custom');
+                    query = query.select(criteria.select || "_id name custom");
                 }
             }
 

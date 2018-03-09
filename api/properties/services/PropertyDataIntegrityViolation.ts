@@ -16,8 +16,15 @@ export class PropertyDataIntegrityViolationService {
 
             const violationSet = new DataIntegrityViolationSet();
             Promise.all([checkDuplicateGeo(operator, newProperty), checkDuplicateName(operator, newProperty)]).then((violations: DataIntegrityViolation[]) => {
-                if (violations.length > 0) {
-                    violationSet.violations = violations;
+                if (violations[0] || violations[1]) {
+
+                    if (violations[0]) {
+                        violationSet.violations.push(violations[0]);
+                    }
+                    if (violations[1]) {
+                        violationSet.violations.push(violations[1]);
+                    }
+
                     resolve(violationSet);
                 } else {
                     resolve(null);
@@ -60,7 +67,7 @@ function checkDuplicateName(operator: IUser, newProperty: IProperty): Promise<Da
             exclude: [newProperty._id.toString()],
             hideCustom: true,
             limit: 1,
-            searchName: newProperty.name,
+            searchExactName: newProperty.name,
             select: "name address city state zip",
         };
 

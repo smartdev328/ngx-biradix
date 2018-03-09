@@ -8,5 +8,5 @@ export interface IPropertySearchRequest {
     select: string;
     exclude?: string[];
     hideCustom?: boolean;
-    searchName?: string;
+    searchExactName?: string;
 }
