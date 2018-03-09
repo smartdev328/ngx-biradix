@@ -97,32 +97,48 @@ define([
 
         }
 
-        $scope.reload = function () {
+        $scope.reload = function() {
             $scope.localLoading = false;
 
-            var types = _.pluck(_.filter($scope.typeItems,function(x) {return x.selected == true}),"id");
-            var users = _.pluck($scope.userItems,"id");
-            var properties = _.pluck($scope.propertyItems,"id");
+            var types = _.pluck(_.filter($scope.typeItems, function(x) {
+                return x.selected == true;
+            }), "id");
+            var users = _.pluck($scope.userItems, "id");
+            var properties = _.pluck($scope.propertyItems, "id");
 
             $auditService.search({
-                skip: $scope.pager.offset, limit: $scope.pager.itemsPerPage
-                , types: types
-                , users: users
-                , properties: properties
-                , search: $scope.options.search
-                , daterange :
-                {
+                skip: $scope.pager.offset,
+                limit: $scope.pager.itemsPerPage,
+                types: types,
+                users: users,
+                properties: properties,
+                search: $scope.options.search,
+                daterange: {
                     daterange: $scope.daterange.selectedRange,
-                        start: $scope.daterange.selectedStartDate,
-                    end: $scope.daterange.selectedEndDate
-                }
-                ,offset : moment().utcOffset()
-            }).then(function (response) {
+                    start: $scope.daterange.selectedStartDate,
+                    end: $scope.daterange.selectedEndDate,
+                },
+                offset: moment().utcOffset(),
+            }).then(function(response) {
                     $scope.activity = response.data.activity;
+
+                    // Join violation on integrity check
+                    if ($scope.dataIntegrityChecks && $scope.dataIntegrityChecks.length > 0) {
+                        $scope.activity.forEach(function(a) {
+                            if (a.dataIntegrityViolationSet && a.dataIntegrityViolationSet.violations) {
+                                a.dataIntegrityViolationSet.violations.forEach(function(v) {
+                                  v.dataIntegrityCheck = _.find($scope.dataIntegrityChecks, function(x) {
+                                      return x.type==v.checkType;
+                                  });
+                                });
+                            }
+                        });
+                    }
+
                     $scope.pager = response.data.pager;
                     $scope.localLoading = true;
                 },
-                function (error) {
+                function(error) {
                     if (error.status == 401) {
                         $rootScope.logoff();
                         return;
@@ -136,6 +152,7 @@ define([
 
                 $auditService.filters().then(function (response) {
                         $scope.audits = response.data.audits;
+                        $scope.dataIntegrityChecks = response.data.dataIntegrityChecks;
 
                         $scope.typeItems = [];
                         $scope.userItems = [];

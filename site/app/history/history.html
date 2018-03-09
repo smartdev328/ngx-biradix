@@ -83,6 +83,13 @@
                 <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
             </td>
         </tr>
+
+        <tr ng-if="me.permissions.indexOf('Admin') > -1" ng-repeat="violation in row.dataIntegrityViolationSet.violations">
+            <Td colspan="100%" ng-style="{'background-color' : violation.dataIntegrityCheck.severity == 1 ? 'pink' : 'gold'}">
+                <B>{{violation.dataIntegrityCheck.name}}</B><Br>
+                <span ng-bind-html="violation.description"></span>
+            </Td>
+        </tr>
         <tr ng-if="row.open">
             <td colspan="100%">
                 <h4 ng-if="row.data && (row.data[0].description || row.data.length > 1)">Details</h4>

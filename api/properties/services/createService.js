@@ -371,8 +371,8 @@ module.exports = {
                     type = "property_created_custom";
                 }
 
-                PropertyDataIntegrityViolationService.getNewPropertyViloations(operator, prop).then((violations)=> {
-                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes, dataIntegrityViolations: violations});
+                PropertyDataIntegrityViolationService.getNewPropertyViloations(operator, prop).then((violationSet)=> {
+                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes, dataIntegrityViolationSet: violationSet});
                 });
 
                 if (permissions.length > 0 ) {

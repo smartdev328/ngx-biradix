@@ -119,7 +119,7 @@ module.exports = {
         n.description = audit.description;
         n.adminOnly = audit.adminOnly;
         n.date = new Date().toISOString();
-        n.dataIntegrityViolations = audit.dataIntegrityViolations;
+        n.dataIntegrityViolationSet = audit.dataIntegrityViolationSet;
 
         if (audit.revertedFromId) {
             n.revertedFromId = audit.revertedFromId;
@@ -155,8 +155,7 @@ module.exports = {
                 }
                 query.exec(function(err, list) {
                     if (userids.length > 0) {
-                        list.forEach(function (li) {
-
+                        list.forEach(function(li) {
                             if (li.operator && li.operator.id && userids.indexOf(li.operator.id.toString()) == -1) {
                                 li.operator.name = "External User";
                             }
@@ -164,9 +163,7 @@ module.exports = {
                             if (li.user && li.user.id && userids.indexOf(li.user.id.toString()) == -1) {
                                 li.description = li.description.replace(li.user.name, "External User")
                                 li.user.name = "External User";
-
                             }
-
                         });
                     }
 
