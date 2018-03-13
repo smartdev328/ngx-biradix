@@ -128,13 +128,29 @@ module.exports = {
         n.save(callback);
     },
     updateReverted: function(id, callback) {
-        var query = {_id: id};
-        var update = {reverted: true};
-        var options = {new: true};
+        let query = {_id: id};
+        let update = {reverted: true};
+        let options = {new: true};
 
         AuditSchema.findOneAndUpdate(query, update, options, function(err, saved) {
-            return callback(err, saved)
-        })
+            return callback(err, saved);
+        });
+    },
+    updatedataIntegrityViolationSetApproved: function(operator, id, callback) {
+        if (!id) {
+            return callback([{msg: "Unable to update history item. Please contact the administrator."}], null);
+        }
+
+        let query = {_id: id};
+        let update = {"dataIntegrityViolationSet.approval": {
+            name: operator.first + " " + operator.last,
+            date: new Date(),
+        }};
+        let options = {new: true};
+
+        AuditSchema.findOneAndUpdate(query, update, options, function(err, saved) {
+            return callback(err, saved);
+        });
     },
     get: function(criteria, userids, propertyids, compids, callback) {
 
@@ -172,11 +188,11 @@ module.exports = {
             }
 
         });
-    }
+    },
 
-}
+};
 
-function QueryBuilder (criteria, userids, propertyids, compids) {
+function QueryBuilder(criteria, userids, propertyids, compids) {
     criteria = criteria || {};
 
     criteria.skip = criteria.skip || 0;
@@ -184,22 +200,24 @@ function QueryBuilder (criteria, userids, propertyids, compids) {
     criteria.users = criteria.users || [];
     criteria.properties = criteria.properties || [];
 
-    //Remove "Login As" from non admin so it doesnt cause them to freak out
+    // Remove "Login As" from non admin so it doesnt cause them to freak out
     if (userids.length > 0 || propertyids.length > 0) {
         if (criteria.types && criteria.types.length > 0) {
-            _.remove(criteria.types,function(x) {return x == "login_as" || x == "show_unlinked"});
+            _.remove(criteria.types, function(x) {
+                return x == "login_as" || x == "show_unlinked";
+            });
         }
     }
-    var query = AuditSchema.find();
+    let query = AuditSchema.find();
 
-    //Everyone can filter on type
+    // Everyone can filter on type
     if (criteria.types && criteria.types.length > 0) {
         query = query.where("type").in(criteria.types);
     }
 
-    //Everyone can filter on daterange
+    // Everyone can filter on daterange
     if (criteria.daterange) {
-        var dr = DateService.convertRangeToParts(criteria.daterange,criteria.offset);
+        let dr = DateService.convertRangeToParts(criteria.daterange, criteria.offset);
         if (criteria.daterange != "Lifetime") {
             query = query.where("date").gte(dr.start).lte(dr.end);
         }
@@ -214,61 +232,66 @@ function QueryBuilder (criteria, userids, propertyids, compids) {
         query= query.where("dataIntegrityViolationSet.violations.checkType").in(criteria.dataIntegrityTypes);
     }
 
-    var allowedforComps = ['property_created','property_status','property_profile_updated','property_contact_updated','property_fees_updated','property_amenities_updated','property_floorplan_created','property_floorplan_removed','property_floorplan_updated','property_floorplan_amenities_updated','survey_created','survey_deleted','survey_updated'];
-    //If you are limited by users or properties go here:
-    if (userids.length > 0 || propertyids.length > 0) {
+    if (criteria.approved === true) {
+        query= query.where("dataIntegrityViolationSet.approval").exists(true);
+    }
 
-        //default search for non admins, allow them to see all users and props they have access to
+    if (criteria.approved === false) {
+        query= query.where("dataIntegrityViolationSet.violations").exists(true);
+        query= query.where("dataIntegrityViolationSet.approval").exists(false);
+    }
+
+    let allowedforComps = ["property_created", "property_status", "property_profile_updated", "property_contact_updated", "property_fees_updated", "property_amenities_updated",
+        "property_floorplan_created", "property_floorplan_removed", "property_floorplan_updated", "property_floorplan_amenities_updated", "survey_created", "survey_deleted", "survey_updated"];
+
+    // If you are limited by users or properties go here:
+    if (userids.length > 0 || propertyids.length > 0) {
+        // default search for non admins, allow them to see all users and props they have access to
         if (criteria.users.length == 0 && criteria.properties.length == 0) {
             query = query.or([
-                {"operator.id": {$in : userids}},
-                {"user.id": {$in : userids}},
-                {"property.id": {$in : propertyids}},
-                {$and : [{"property.id": {$in : compids}},{"type":{$in:allowedforComps}}]},
-                ])
-        }
-        else {
-            //if we got here that means the non admin is filtering by props or users
+                {"operator.id": {$in: userids}},
+                {"user.id": {$in: userids}},
+                {"property.id": {$in: propertyids}},
+                {$and: [{"property.id": {$in: compids}}, {"type": {$in: allowedforComps}}]},
+                ]);
+        } else {
+            // if we got here that means the non admin is filtering by props or users
             if (criteria.users.length > 0) {
                 query = query.or([
-                    {"operator.id": {$in : _.intersection(userids, criteria.users)}},
-                    {"user.id": {$in : _.intersection(userids, criteria.users)}},
-                ])
+                    {"operator.id": {$in: _.intersection(userids, criteria.users)}},
+                    {"user.id": {$in: _.intersection(userids, criteria.users)}},
+                ]);
             }
 
             if (criteria.properties.length > 0) {
                 query = query.or([
-                    {"property.id": {$in : _.intersection(propertyids, criteria.properties)}},
-                    {$and : [{"property.id": {$in : _.intersection(compids, criteria.properties)}},{"type":{$in:allowedforComps}}]},
-                ])
+                    {"property.id": {$in: _.intersection(propertyids, criteria.properties)}},
+                    {$and: [{"property.id": {$in: _.intersection(compids, criteria.properties)}}, {"type": {$in: allowedforComps}}]},
+                ]);
             }
-
         }
-    }
-    else {
-        //if we got here then we just need to filter for admins
+    } else {
+        // if we got here then we just need to filter for admins
         if (criteria.users.length > 0) {
             query = query.or([
-                {"operator.id": {$in : criteria.users}},
-                {"user.id": {$in : criteria.users}},
-            ])
+                {"operator.id": {$in: criteria.users}},
+                {"user.id": {$in: criteria.users}},
+            ]);
         }
 
         if (criteria.properties.length > 0) {
             query = query.and([
-                {"property.id": {$in : criteria.properties}},
-            ])
+                {"property.id": {$in: criteria.properties}},
+            ]);
         }
     }
-
 
     if (criteria.search) {
         query = query.or([
             {"description": {$regex: new RegExp(criteria.search, "i")}},
             {"data.description": {$regex: new RegExp(criteria.search, "i")}},
-        ])
-    }
-
+        ]);
+    };
 
     return query;
 }

@@ -42,8 +42,15 @@
         </div>
 
         <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
-            Checks: <Br>
+            Data Integrity Checks: <Br>
             <filter-list options="integrityOptions" items="options.integrityItems"></filter-list>
+        </div>
+
+        <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
+            Data Integrity Approval: <Br>
+            <select class="form-control input-sm" ng-model="options.approved"
+                    ng-options="item for item in options.approvedOptions">
+            </select>
         </div>
 
         <div class="col-xs-1" style="height:55px">
@@ -69,7 +76,7 @@
             <th>Operator</th>
             <th>&nbsp;</th>
         </tr>
-        <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : '', 'background-color' : (me.permissions.indexOf('Admin') == -1 || row.severity == 999) ? 'inherit' : (row.severity == 1 ? 'pink' : (row.severity == 2 ? 'gold' : 'cyan')) }">
+        <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : '', 'background-color' : getDataIntegrityColor(row.severity, row.dataIntegrityViolationSet.approval)}">
             <td style="text-align: center"><i
                     ng-if="me.permissions.indexOf('History/MoreInfo') > -1 || row.data"
                     ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
@@ -87,6 +94,7 @@
                    popover-append-to-body="true"
                 ><span class="fa fa-lock"></span></a>
                 <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
+                <A href ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)"><span class="fa fa-thumbs-up" uib-tooltip="Approve Violation(s)"></span></A>
             </td>
         </tr>
 
@@ -94,9 +102,17 @@
             <td style="border-top:0px !important;">
 
             </td>
-            <Td colspan="100%" ng-style="{'background-color' : violation.dataIntegrityCheck.severity == 1 ? 'pink' : (violation.dataIntegrityCheck.severity == 2 ? 'gold' : 'cyan')}">
+            <Td colspan="100%" ng-style="{'background-color' : getDataIntegrityColor(violation.dataIntegrityCheck.severity, row.dataIntegrityViolationSet.approval) }">
                 <B>{{violation.dataIntegrityCheck.name}}</B><Br>
                 <span ng-bind-html="violation.description"></span>
+            </Td>
+        </tr>
+        <tr ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.approval">
+            <td style="border-top:0px !important;">
+
+            </td>
+            <Td colspan="100%" ng-style="{'background-color' : getDataIntegrityColor(1, row.dataIntegrityViolationSet.approval) }">
+                Approved By: <B>{{row.dataIntegrityViolationSet.approval.name}}</B> on <i><b>{{row.dataIntegrityViolationSet.approval.date | date: 'short'}}</b></i><Br>
             </Td>
         </tr>
         <tr ng-if="row.open">

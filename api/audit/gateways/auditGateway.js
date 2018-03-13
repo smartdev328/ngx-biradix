@@ -42,6 +42,18 @@ Routes.get("/filters", function(req, res) {
     });
 });
 
+Routes.post("/approve", function(req, res) {
+    AccessService.canAccess(req.user, "Admin", function (canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        AuditService.updatedataIntegrityViolationSetApproved(req.user, req.body.id, function(errors) {
+            return res.status(200).json({errors: errors});
+        });
+    });
+});
+
 Routes.post('/undo', function (req, res) {
     AccessService.canAccess(req.user,"History", function(canAccess) {
 

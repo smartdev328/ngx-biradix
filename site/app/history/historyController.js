@@ -10,7 +10,7 @@ define([
 
         $rootScope.nav = "";
         $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: 50}
-        $scope.limits = [10,50,100,500]
+        $scope.limits = [10, 50, 100, 500];
         $scope.typeOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "left", labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types"};
         $scope.integrityOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available", labelSelected: "Selected", searchLabel: "Violations"};
         $scope.userOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users"};
@@ -18,21 +18,22 @@ define([
         $scope.daterange={
             direction : "right",
             Ranges : {
-                'Today': [moment().startOf("day"), moment().endOf("day")],
-                'Week to Date': [moment().startOf("week"), moment().endOf("day")],
-                'Month to Date': [moment().startOf("month"), moment().endOf("day")],
-                '30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
-                '90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
-                '12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
-                'Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
-                'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
+                "Today": [moment().startOf("day"), moment().endOf("day")],
+                "Week to Date": [moment().startOf("week"), moment().endOf("day")],
+                "Month to Date": [moment().startOf("month"), moment().endOf("day")],
+                "30 Days": [moment().subtract(30, "days").startOf("day"), moment().endOf("day")],
+                "90 Days": [moment().subtract(90, "days").startOf("day"), moment().endOf("day")],
+                "12 Months": [moment().subtract(1, "year").startOf("day"), moment().endOf("day")],
+                "Year-to-Date": [moment().startOf("year"), moment().endOf("day")],
+                "Lifetime": [moment().subtract(30, "year").startOf("day"), moment().endOf("day")],
             },
-            selectedRange : "30 Days",
-            selectedStartDate : null,
-            selectedEndDate : null
-        }
+            selectedRange: "30 Days",
+            selectedStartDate: null,
+            selectedEndDate: null,
+        };
 
-        $scope.options = {search: "", integrityItems: []};
+        $scope.options = {search: "", integrityItems: [], approvedOptions: ["All", "Approved Only", "Unapproved Only"]};
+        $scope.options.approved = $scope.options.approvedOptions[0];
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
@@ -40,11 +41,11 @@ define([
             $userService.search({
                 limit: 100,
                 active: true,
-                search:search
+                search: search,
             }).then(function (response) {
-                var u,u2;
+                var u;
+                var u2;
                 var items = [];
-
 
                 response.data.users.forEach(function (a) {
                     u = {id: a._id, name: a.name};
@@ -60,16 +61,15 @@ define([
                         })
 
                     } else {
-                        items.push(u)
+                        items.push(u);
                     }
                 })
 
                 callback(items);
-            }, function (error) {
+            }, function(error) {
                 callback([]);
-            })
-
-        }
+            });
+        };
 
         $scope.autocompleteproperties = function(search,callback) {
             $propertyService.search({
@@ -110,6 +110,13 @@ define([
                 return x.selected == true;
             }), "id");
 
+            var approved = null;
+            if ($scope.options.approved == "Approved Only") {
+                approved = true;
+            } else if ($scope.options.approved == "Unapproved Only") {
+                approved = false;
+            }
+
             $auditService.search({
                 skip: $scope.pager.offset,
                 limit: $scope.pager.itemsPerPage,
@@ -118,6 +125,7 @@ define([
                 users: users,
                 properties: properties,
                 search: $scope.options.search,
+                approved: approved,
                 daterange: {
                     daterange: $scope.daterange.selectedRange,
                     start: $scope.daterange.selectedStartDate,
@@ -214,10 +222,53 @@ define([
             }
         });
 
+        $scope.getDataIntegrityColor = function(severity, approval) {
+            if ($rootScope.me.permissions.indexOf("Admin") == -1 || severity == 999) {
+                return "inherit";
+            }
 
+            if (approval) {
+                return "lightgreen";
+            }
+
+            if (severity == 1) {
+                return "lightpink";
+            }
+
+            if (severity == 2) {
+                return "orange";
+            }
+
+            if (severity == 3) {
+                return "cyan";
+            }
+            return "inherit";
+        }
+
+        $scope.approve = function(row) {
+            $dialog.confirm("Are you sure you want to mark this item as 'Approved' for Data Integrity Violations?", function() {
+                $scope.localLoading = false;
+
+                $auditService.approve(row._id).then(function(response) {
+                        if (response.data.errors && response.data.errors.length > 0) {
+                            toastr.error( _.pluck(response.data.errors, "msg").join("<br>"));
+                            $scope.localLoading = true;
+                        } else {
+                            toastr.success("Data Integrity Violations Approved successfully.");
+                            $scope.reload();
+                        }
+                    },
+                    function(error) {
+                        toastr.error("Unable to undo. Please contact the administrator." );
+                        $scope.localLoading = true;
+                    });
+            }, function() {
+
+            });
+        };
 
         $scope.undo = function(row) {
-            $dialog.confirm('Are you sure you want to Undo this item?', function() {
+            $dialog.confirm("Are you sure you want to Undo this item?", function() {
                 $scope.localLoading = false;
 
                 $auditService.undo(row._id).then(function (response) {
@@ -230,7 +281,6 @@ define([
                             window.setTimeout(function() {$scope.reload();}, 1000);
 
                         }
-
 
                     },
                     function (error) {

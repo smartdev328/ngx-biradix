@@ -32,7 +32,13 @@ let s = new Schema({
     revertedFromId: Schema.Types.ObjectId,
     data: Object,
     adminOnly: Object,
-    dataIntegrityViolationSet: {},
+    dataIntegrityViolationSet: {
+        violations: [],
+        approval: {
+            name: String,
+            date: Date,
+        },
+    },
 });
 
 s.index({"type": 1, "date": 1});
