@@ -9,11 +9,12 @@ define([
         window.setTimeout(function() {window.document.title = "Activity History | BI:Radix";},1500)
 
         $rootScope.nav = "";
-        $scope.pager = {offset : 0, currentPage: 1, itemsPerPage: 50}
+        $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: 50}
         $scope.limits = [10,50,100,500]
-        $scope.typeOptions = { noneLabel: 'Any', panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types" }
-        $scope.userOptions = { noneLabel: 'Any', panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users" }
-        $scope.propertyOptions = { noneLabel: 'Any', panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
+        $scope.typeOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "left", labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types"};
+        $scope.integrityOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available", labelSelected: "Selected", searchLabel: "Violations"};
+        $scope.userOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users"};
+        $scope.propertyOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties"};
         $scope.daterange={
             direction : "right",
             Ranges : {
@@ -31,7 +32,7 @@ define([
             selectedEndDate : null
         }
 
-        $scope.options = {search : ""};
+        $scope.options = {search: "", integrityItems: []};
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
@@ -63,7 +64,7 @@ define([
                     }
                 })
 
-                callback(items)
+                callback(items);
             }, function (error) {
                 callback([]);
             })
@@ -105,11 +106,15 @@ define([
             }), "id");
             var users = _.pluck($scope.userItems, "id");
             var properties = _.pluck($scope.propertyItems, "id");
+            var dataIntegrityTypes = _.pluck(_.filter($scope.options.integrityItems, function(x) {
+                return x.selected == true;
+            }), "id");
 
             $auditService.search({
                 skip: $scope.pager.offset,
                 limit: $scope.pager.itemsPerPage,
                 types: types,
+                dataIntegrityTypes: dataIntegrityTypes,
                 users: users,
                 properties: properties,
                 search: $scope.options.search,
@@ -125,11 +130,20 @@ define([
                     // Join violation on integrity check
                     if ($scope.dataIntegrityChecks && $scope.dataIntegrityChecks.length > 0) {
                         $scope.activity.forEach(function(a) {
+                            a.severity = a.severity || 999;
+
                             if (a.dataIntegrityViolationSet && a.dataIntegrityViolationSet.violations) {
                                 a.dataIntegrityViolationSet.violations.forEach(function(v) {
                                   v.dataIntegrityCheck = _.find($scope.dataIntegrityChecks, function(x) {
                                       return x.type==v.checkType;
                                   });
+                                  if (v.dataIntegrityCheck.severity < a.severity) {
+                                      a.severity = v.dataIntegrityCheck.severity;
+                                  }
+                                });
+
+                                a.dataIntegrityViolationSet.violations = _.sortBy(a.dataIntegrityViolationSet.violations, function(x) {
+                                    return x.dataIntegrityCheck.severity;
                                 });
                             }
                         });
@@ -157,25 +171,24 @@ define([
                         $scope.typeItems = [];
                         $scope.userItems = [];
                         $scope.propertyItems = [];
+                        $scope.options.integrityItems = [];
 
-                        $scope.audits.forEach(function (a) {
+                        $scope.audits.forEach(function(a) {
                             $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group})
-                        })
+                        });
 
+                        $scope.dataIntegrityChecks.forEach(function(a) {
+                            $scope.options.integrityItems.push({id: a.type, name: a.name, selected: false, group: a.severity == 1 ? "High" : (a.severity == 2 ? "Medium" : "Low")});
+                        });
 
-                        $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || '') + x.name.toLowerCase()});
-
-
-                        //$stateParams.property
+                        $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || "") + x.name.toLowerCase()});
 
                         if (!$stateParams.property) {
-
                             $scope.reload();
                         } else {
-
                             $propertyService.search({
                                 limit: 1,
-                                permission: ['PropertyManage','CompManage'],
+                                permission: ["PropertyManage","CompManage"],
                                 active: true,
                                 _id: $stateParams.property
                                 , skipAmenities: true

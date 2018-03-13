@@ -40,6 +40,12 @@
             Search: <Br>
             <input type="text" class="form-control input-sm" ng-model="options.search">
         </div>
+
+        <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
+            Checks: <Br>
+            <filter-list options="integrityOptions" items="options.integrityItems"></filter-list>
+        </div>
+
         <div class="col-xs-1" style="height:55px">
             <br>
             <button class="btn btn-primary btn-sm" ng-click="resetPager()">Filter</button>
@@ -63,7 +69,7 @@
             <th>Operator</th>
             <th>&nbsp;</th>
         </tr>
-        <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : ''}">
+        <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : '', 'background-color' : (me.permissions.indexOf('Admin') == -1 || row.severity == 999) ? 'inherit' : (row.severity == 1 ? 'pink' : (row.severity == 2 ? 'gold' : 'cyan')) }">
             <td style="text-align: center"><i
                     ng-if="me.permissions.indexOf('History/MoreInfo') > -1 || row.data"
                     ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
@@ -85,7 +91,10 @@
         </tr>
 
         <tr ng-if="me.permissions.indexOf('Admin') > -1" ng-repeat="violation in row.dataIntegrityViolationSet.violations">
-            <Td colspan="100%" ng-style="{'background-color' : violation.dataIntegrityCheck.severity == 1 ? 'pink' : 'gold'}">
+            <td style="border-top:0px !important;">
+
+            </td>
+            <Td colspan="100%" ng-style="{'background-color' : violation.dataIntegrityCheck.severity == 1 ? 'pink' : (violation.dataIntegrityCheck.severity == 2 ? 'gold' : 'cyan')}">
                 <B>{{violation.dataIntegrityCheck.name}}</B><Br>
                 <span ng-bind-html="violation.description"></span>
             </Td>

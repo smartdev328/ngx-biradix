@@ -205,9 +205,13 @@ function QueryBuilder (criteria, userids, propertyids, compids) {
         }
     }
 
-    //Everyone can filter on id
+    // Everyone can filter on id
     if (criteria.id) {
         query= query.where("_id").equals(criteria.id);
+    }
+
+    if (criteria.dataIntegrityTypes && criteria.dataIntegrityTypes.length) {
+        query= query.where("dataIntegrityViolationSet.violations.checkType").in(criteria.dataIntegrityTypes);
     }
 
     var allowedforComps = ['property_created','property_status','property_profile_updated','property_contact_updated','property_fees_updated','property_amenities_updated','property_floorplan_created','property_floorplan_removed','property_floorplan_updated','property_floorplan_amenities_updated','survey_created','survey_deleted','survey_updated'];
