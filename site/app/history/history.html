@@ -74,8 +74,8 @@
             <th>Action</th>
             <th>Details</th>
             <th>Operator</th>
-            <th>&nbsp;</th>
             <th ng-if="me.permissions.indexOf('Admin') > -1">&nbsp;</th>
+            <th>&nbsp;</th>
         </tr>
         <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : '', 'background-color' : getDataIntegrityColor(row.severity, row.dataIntegrityViolationSet.approval)}">
             <td style="text-align: center"><i
@@ -85,8 +85,14 @@
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
             <td>{{row.operator.name}}</td>
-            <td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1" nowrap>
+                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)" style="padding-right:5px"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
+                <span ng-if="row.dataIntegrityViolationSet.violations.length > 0 && row.dataIntegrityViolationSet.approval" style="padding-right:20px"></span>
+                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0" ng-click="proximity(row)"><span class="fa fa-search-plus" tooltip-append-to-body="true" uib-tooltip="Proximity Search"></span></A>
+            </td>
+            <td nowrap>
                 <span ng-if="getAudit(row.type).undo && row.revertedFromId" class="fa fa-info-circle" tooltip-placement="left" uib-tooltip="This action is due to an earlier undo"></span>
+                <span ng-if="!getAudit(row.type).undo || !row.revertedFromId" style="padding-right:20px"></span>
                 <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
                 <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="'mouseenter'"
                    popover-placement="left"
@@ -95,10 +101,6 @@
                    popover-append-to-body="true"
                 ><span class="fa fa-lock"></span></a>
                 <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
-            </td>
-            <td ng-if="me.permissions.indexOf('Admin') > -1">
-                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)" style="padding-right:5px"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
-                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0" ng-click="proximity(row)"><span class="fa fa-search-plus" tooltip-append-to-body="true" uib-tooltip="Proximity Search"></span></A>
             </td>
         </tr>
 

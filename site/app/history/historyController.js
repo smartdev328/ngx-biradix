@@ -265,7 +265,7 @@ define([
             }
 
             if (severity == 3) {
-                return "cyan";
+                return "#d9edf7";
             }
             return "inherit";
         };
