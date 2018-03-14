@@ -196,6 +196,10 @@ define([
                             return (x.group || "") + x.name.toLowerCase();
                         });
 
+                        if ($stateParams.active) {
+                            $scope.options.approved = $scope.options.approvedOptions[2];
+                        }
+
                         if (!$stateParams.property && !$stateParams.user) {
                             $scope.reload();
                         } else if ($stateParams.property) {

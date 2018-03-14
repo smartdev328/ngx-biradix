@@ -1,5 +1,6 @@
-angular.module('biradix.global').controller('rootController', ['$scope','$location','$rootScope','$cookies','$authService','$propertyService', '$window', '$uibModal', 'toastr', 'ngProgress', '$timeout','$sce','$amenityService', function ($scope, $location, $rootScope, $cookies, $authService,$propertyService, $window, $uibModal, toastr,ngProgress,$timeout,$sce,$amenityService) {
-
+angular.module("biradix.global").controller("rootController",
+    ["$scope", "$location", "$rootScope", "$cookies", "$authService", "$propertyService", "$window", "$uibModal", "toastr", "ngProgress", "$timeout", "$sce", "$amenityService","$auditService",
+        function($scope, $location, $rootScope, $cookies, $authService, $propertyService, $window, $uibModal, toastr, ngProgress, $timeout, $sce, $amenityService,$auditService) {
         $scope.hasSessionStorage = true;
         try {
             window.sessionStorage;
@@ -352,7 +353,7 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
                     event.preventDefault();
             }
         }
-        
+
         $scope.searchSelected = function (item, model, label) {
             $scope.searches.search1 = "";
             $scope.searches.search2 = "";
@@ -360,7 +361,7 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
             $location.path("/profile/" + item._id);
         }
 
-        //Decide if logged in or not.
+        // Decide if logged in or not.
         if (!$rootScope.loggedIn) {
             $rootScope.swaptoLoggedOut();
         }
@@ -368,7 +369,7 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
             $rootScope.swaptoLoggedIn(false);
         }
 
-        //make sure in full screen right nav is always shown
+        // make sure in full screen right nav is always shown
         var w = angular.element($window);
         $('#mobile-nav').css("width",w.width() + "px")
 
@@ -454,10 +455,10 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
 
 
         $scope.alerts = function() {
-
-            if ($rootScope.me.permissions.indexOf('Admin') > -1) {
+            if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.alertsAmenities();
                 $scope.alertsProperties();
+                $scope.alertsAudits();
             }
         };
 
@@ -478,22 +479,59 @@ angular.module('biradix.global').controller('rootController', ['$scope','$locati
                             key: "amenities",
                             count: response.data.amenities.length,
                             label: "Amenities: ",
-                            url: "#/amenities"
-                        })
+                            url: "#/amenities",
+                        });
                     }
-
                 }
             },
-            function (error) {
+            function(error) {
                 if (error.status == 401) {
                     $rootScope.logoff();
                     return;
                 }
             });
 
-            window.setTimeout(function() {$scope.alertsAmenities()}, 120000);
+            window.setTimeout(function() {
+                $scope.alertsAmenities()
+            }, 120000);
+        };
+            $scope.alertsAudits = function() {
+                $auditService.search({limit: 1, approved: false}).then(function(response) {
+                        var a = _.find($rootScope.notifications, function(x) {
+                            return x.key == "audits";
+                        });
 
-        }
+                        if (a) {
+                            a.count = response.data.pager.count;
+
+                            if (a.count == 0) {
+                                _.remove($rootScope.notifications, function(x) {
+                                    return x.key == "audits";
+                                });
+                            }
+                        } else {
+                            if (response.data.pager.count) {
+                                $rootScope.notifications.push({
+                                    key: "audits",
+                                    count: response.data.pager.count,
+                                    label: "Data Integrity: ",
+                                    url: "#/history?active=1",
+                                });
+                            }
+                        }
+
+                    },
+                    function(error) {
+                        if (error.status == 401) {
+                            $rootScope.logoff();
+                            return;
+                        }
+                    });
+
+                window.setTimeout(function() {
+                    $scope.alertsAudits();
+                }, 120000);
+            };
 
         $rootScope.isModalOpen = function(el) {
             return($(el).hasClass("open"))
