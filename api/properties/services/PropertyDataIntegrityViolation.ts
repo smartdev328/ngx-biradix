@@ -8,6 +8,17 @@ import {IProperty} from "../interfaces/IProperty";
 import {IPropertySearchRequest} from "../interfaces/IPropertySearchRequest";
 
 export class PropertyDataIntegrityViolationService {
+    public getFloorplansChanged(reason: string): DataIntegrityViolationSet {
+        const violationSet = new DataIntegrityViolationSet();
+        const v = new DataIntegrityViolation();
+        v.checkType = DataIntegrityCheckType.PROPERTY_FLOOR_PLANS_CHANGE;
+        v.description = reason;
+
+        violationSet.violations.push(v);
+
+        return violationSet;
+    }
+
     public async getNewPropertyViloations(operator: IUser, newProperty: IProperty): Promise<DataIntegrityViolationSet> {
         return new Promise<DataIntegrityViolationSet>((resolve, reject) => {
             if (newProperty.custom && newProperty.custom.owner) {
@@ -25,6 +36,36 @@ export class PropertyDataIntegrityViolationService {
                         violationSet.violations.push(violations[1]);
                     }
 
+                    resolve(violationSet);
+                } else {
+                    resolve(null);
+                }
+            });
+        });
+    }
+
+    public async getUpdatePropertyViloations(operator: IUser, newProperty: IProperty, oldProperty: IProperty): Promise<DataIntegrityViolationSet> {
+        return new Promise<DataIntegrityViolationSet>((resolve, reject) => {
+            if (newProperty.custom && newProperty.custom.owner) {
+                return resolve(null);
+            }
+
+            const violationSet = new DataIntegrityViolationSet();
+            Promise.all([
+                checkDuplicateGeo(operator, newProperty),
+                checkDuplicateName(operator, newProperty),
+                checkAddressChange(newProperty, oldProperty),
+            ]).then((violations: DataIntegrityViolation[]) => {
+                if (violations[0] || violations[1]) {
+                    if (violations[0]) {
+                        violationSet.violations.push(violations[0]);
+                    }
+                    if (violations[1]) {
+                        violationSet.violations.push(violations[1]);
+                    }
+                    if (violations[2]) {
+                        violationSet.violations.push(violations[2]);
+                    }
                     resolve(violationSet);
                 } else {
                     resolve(null);
@@ -56,6 +97,20 @@ function checkDuplicateGeo(operator: IUser, newProperty: IProperty): Promise<Dat
                 resolve(null);
             }
         });
+    });
+}
+
+function checkAddressChange(newProperty: IProperty, oldProperty: IProperty): Promise<DataIntegrityViolation> {
+    return new Promise<DataIntegrityViolation>((resolve, reject) => {
+        if (newProperty.address.toLowerCase() !== oldProperty.address.toLowerCase()) {
+            const v = new DataIntegrityViolation();
+            v.checkType = DataIntegrityCheckType.PROPERTY_ADDRESS_CHANGE;
+            v.description = `New Property Address: ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}<Br>
+                    Previous Property Address: ${oldProperty.address} ${oldProperty.city}, ${oldProperty.state} ${oldProperty.zip}`;
+            resolve(v);
+        } else {
+            resolve(null);
+        }
     });
 }
 

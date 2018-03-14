@@ -94,7 +94,8 @@
                    popover-append-to-body="true"
                 ><span class="fa fa-lock"></span></a>
                 <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
-                <A href ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)"><span class="fa fa-thumbs-up" uib-tooltip="Approve Violation(s)"></span></A>
+                <A href ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
+                <A href ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.violations.length > 0" ng-click="proximity(row)"><span class="fa fa-search-plus" tooltip-append-to-body="true" uib-tooltip="Proximity Search"></span></A>
             </td>
         </tr>
 

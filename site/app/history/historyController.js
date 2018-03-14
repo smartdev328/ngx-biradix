@@ -1,23 +1,24 @@
-'use strict';
+"use strict";
 define([
-    'app',
-], function (app) {
-
-    app.controller('historyController'
-        , ['$scope','$rootScope','$location','ngProgress','$dialog','$auditService','toastr','$stateParams','$propertyService','$userService',
-            function ($scope,$rootScope,$location,ngProgress,$dialog,$auditService,toastr,$stateParams,$propertyService,$userService) {
-        window.setTimeout(function() {window.document.title = "Activity History | BI:Radix";},1500)
+    "app",
+], function(app) {
+    app.controller("historyController"
+        , ["$scope", "$rootScope", "$location", "ngProgress", "$dialog", "$auditService", "toastr", "$stateParams", "$propertyService", "$userService",
+            function($scope, $rootScope, $location, ngProgress, $dialog, $auditService, toastr, $stateParams, $propertyService, $userService) {
+        window.setTimeout(function() {
+            window.document.title = "Activity History | BI:Radix";
+            }, 1500);
 
         $rootScope.nav = "";
-        $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: 50}
+        $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: 50};
         $scope.limits = [10, 50, 100, 500];
         $scope.typeOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "left", labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types"};
         $scope.integrityOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available", labelSelected: "Selected", searchLabel: "Violations"};
         $scope.userOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available Users", labelSelected: "Selected Users", searchLabel: "Users"};
         $scope.propertyOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties"};
         $scope.daterange={
-            direction : "right",
-            Ranges : {
+            direction: "right",
+            Ranges: {
                 "Today": [moment().startOf("day"), moment().endOf("day")],
                 "Week to Date": [moment().startOf("week"), moment().endOf("day")],
                 "Month to Date": [moment().startOf("month"), moment().endOf("day")],
@@ -27,9 +28,9 @@ define([
                 "Year-to-Date": [moment().startOf("year"), moment().endOf("day")],
                 "Lifetime": [moment().subtract(30, "year").startOf("day"), moment().endOf("day")],
             },
-            selectedRange: "30 Days",
-            selectedStartDate: null,
-            selectedEndDate: null,
+            selectedRange: $stateParams.date1 ? "Custom Range" : "30 Days",
+            selectedStartDate: $stateParams.date1 || null,
+            selectedEndDate: $stateParams.date2 || null,
         };
 
         $scope.options = {search: "", integrityItems: [], approvedOptions: ["All", "Approved Only", "Unapproved Only"]};
@@ -37,17 +38,17 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
-        $scope.autocompleteusers = function(search,callback) {
+        $scope.autocompleteusers = function(search, callback) {
             $userService.search({
                 limit: 100,
                 active: true,
                 search: search,
-            }).then(function (response) {
+            }).then(function(response) {
                 var u;
                 var u2;
                 var items = [];
 
-                response.data.users.forEach(function (a) {
+                response.data.users.forEach(function(a) {
                     u = {id: a._id, name: a.name};
                     if ($rootScope.me.permissions.indexOf('Admin') > -1) {
                         a.roles.forEach(function (r) {
@@ -85,9 +86,9 @@ define([
                     p.isCustom = !!(p.custom && p.custom.owner);
 
                     if (p.isCustom) {
-                        p.group = " My Custom Properties"
+                        p.group = " My Custom Properties";
                     } else {
-                        p.group = $rootScope.me.orgs[0].name + " Properties"
+                        p.group = $rootScope.me.orgs[0].name + " Properties";
                     }
                 })
 
@@ -196,7 +197,7 @@ define([
                         } else {
                             $propertyService.search({
                                 limit: 1,
-                                permission: ["PropertyManage","CompManage"],
+                                permission: ["PropertyManage", "CompManage"],
                                 active: true,
                                 _id: $stateParams.property
                                 , skipAmenities: true
@@ -221,6 +222,18 @@ define([
                     });
             }
         });
+
+        $scope.proximity = function(row) {
+            var date2 = moment(row.date).add(30, "day").format("YYYY-MM-DD");
+            var date1 = moment(row.date).subtract(1, "day").format("YYYY-MM-DD");
+            switch (row.dataIntegrityViolationSet.violations[0].dataIntegrityCheck.searchParameter) {
+                case "Property":
+                    window.open("#/history?property=" + row.property.id + "&date1=" + date1 + "&date2=" + date2);
+                    break;
+                default:
+                    throw new Error("Not implemented");
+            };
+        };
 
         $scope.getDataIntegrityColor = function(severity, approval) {
             if ($rootScope.me.permissions.indexOf("Admin") == -1 || severity == 999) {

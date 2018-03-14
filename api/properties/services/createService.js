@@ -42,6 +42,8 @@ module.exports = {
                     return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                 }
 
+                let originalProperty = JSON.parse(JSON.stringify(n));
+
                 // Check if we can update orgs
                 AccessService.canAccess(operator,"Properties/Create", function(canAccess) {
 
@@ -111,12 +113,11 @@ module.exports = {
                         }
                     }
 
-                    var original_media = _.cloneDeep(n.media);
+                    let original_media = _.cloneDeep(n.media);
 
                     populateSchema(property, n, all);
 
-                    n.save(function (err, prop) {
-
+                    n.save(function(err, prop) {
                         if (err) {
                             return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                         }
@@ -168,54 +169,56 @@ module.exports = {
                             });
                             //}
 
-                            //Add  all permissions  asynchornously
+                            // Add  all permissions  asynchornously
                             async.eachLimit(permissions, 10, function(permission, callbackp){
                                 AccessService.createPermission(permission, function (err, perm) {
-                                    callbackp(err, perm)
+                                    callbackp(err, perm);
                                 });
                             }, function(err) {
 
                             });
 
-                            //Remove  all permissions  asynchornously
+                            // Remove  all permissions  asynchornously
                             async.eachLimit(removePermissions, 10, function(permission, callbackp){
                                 AccessService.deletePermission(permission, function (err, perm) {
-                                    callbackp(err, perm)
+                                    callbackp(err, perm);
                                 });
                             }, function(err) {
 
                             });
 
                             if (profileChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_profile_updated', description: prop.name + ": " + profileChanges.length  + " update(s)", context: context, data: profileChanges})
+                                PropertyDataIntegrityViolationService.getUpdatePropertyViloations(operator, prop, originalProperty).then((violationSet)=> {
+                                    AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_profile_updated", description: prop.name + ": " + profileChanges.length + " update(s)", context: context, data: profileChanges, dataIntegrityViolationSet: violationSet});
+                                });
                             }
 
                             if (contactChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
                             }
 
                             if (feesChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
                             }
 
                             if (amenitiesChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
                             }
 
                             floorplansAddedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_created', description: prop.name + ": " + change.description, context: context, data: [change]})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_floorplan_created', description: prop.name + ": " + change.description, context: context, data: [change]})
                             })
 
                             floorplansRemovedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_removed", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan removed")});
                             })
 
                             floorplansUpdatedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_updated', description: prop.name + ": " + change.description, context: context, data: [change]})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_updated", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan updated")});
                             })
 
                             floorplansAmenitiesUpdatedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
                             })
 
 
