@@ -8,7 +8,10 @@ import {IProperty} from "../interfaces/IProperty";
 import {IPropertySearchRequest} from "../interfaces/IPropertySearchRequest";
 
 export class PropertyDataIntegrityViolationService {
-    public getFloorplansChanged(reason: string): DataIntegrityViolationSet {
+    public getFloorplansChanged(reason: string, isUndo: boolean): DataIntegrityViolationSet {
+        if (isUndo) {
+            return null;
+        }
         const violationSet = new DataIntegrityViolationSet();
         const v = new DataIntegrityViolation();
         v.checkType = DataIntegrityCheckType.PROPERTY_FLOOR_PLANS_CHANGE;
@@ -44,9 +47,13 @@ export class PropertyDataIntegrityViolationService {
         });
     }
 
-    public async getUpdatePropertyViloations(operator: IUser, newProperty: IProperty, oldProperty: IProperty): Promise<DataIntegrityViolationSet> {
+    public async getUpdatePropertyViloations(operator: IUser, newProperty: IProperty, oldProperty: IProperty, isUndo: boolean): Promise<DataIntegrityViolationSet> {
         return new Promise<DataIntegrityViolationSet>((resolve, reject) => {
             if (newProperty.custom && newProperty.custom.owner) {
+                return resolve(null);
+            }
+
+            if (isUndo) {
                 return resolve(null);
             }
 

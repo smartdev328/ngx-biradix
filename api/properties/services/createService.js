@@ -188,7 +188,7 @@ module.exports = {
                             });
 
                             if (profileChanges.length > 0) {
-                                PropertyDataIntegrityViolationService.getUpdatePropertyViloations(operator, prop, originalProperty).then((violationSet)=> {
+                                PropertyDataIntegrityViolationService.getUpdatePropertyViloations(operator, prop, originalProperty, !!revertedFromId).then((violationSet)=> {
                                     AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_profile_updated", description: prop.name + ": " + profileChanges.length + " update(s)", context: context, data: profileChanges, dataIntegrityViolationSet: violationSet});
                                 });
                             }
@@ -206,15 +206,15 @@ module.exports = {
                             }
 
                             floorplansAddedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_floorplan_created', description: prop.name + ": " + change.description, context: context, data: [change]})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_created", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan added", !!revertedFromId)});
                             })
 
                             floorplansRemovedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_removed", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan removed")});
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_removed", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan removed", !!revertedFromId)});
                             })
 
                             floorplansUpdatedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_updated", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan updated")});
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_updated", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan updated", !!revertedFromId)});
                             })
 
                             floorplansAmenitiesUpdatedChanges.forEach(function(change) {

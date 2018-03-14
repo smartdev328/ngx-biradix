@@ -141,7 +141,7 @@ module.exports = {
             return callback([{msg: "Unable to update history item. Please contact the administrator."}], null);
         }
 
-        let query = {_id: id};
+        let query = {_id: id, dataIntegrityViolationSet: {$exists: true}};
         let update = {"dataIntegrityViolationSet.approval": {
             name: operator.first + " " + operator.last,
             date: new Date(),

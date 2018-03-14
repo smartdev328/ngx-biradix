@@ -75,6 +75,7 @@
             <th>Details</th>
             <th>Operator</th>
             <th>&nbsp;</th>
+            <th ng-if="me.permissions.indexOf('Admin') > -1">&nbsp;</th>
         </tr>
         <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : '', 'background-color' : getDataIntegrityColor(row.severity, row.dataIntegrityViolationSet.approval)}">
             <td style="text-align: center"><i
@@ -94,8 +95,10 @@
                    popover-append-to-body="true"
                 ><span class="fa fa-lock"></span></a>
                 <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
-                <A href ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
-                <A href ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.violations.length > 0" ng-click="proximity(row)"><span class="fa fa-search-plus" tooltip-append-to-body="true" uib-tooltip="Proximity Search"></span></A>
+            </td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1">
+                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)" style="padding-right:5px"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
+                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0" ng-click="proximity(row)"><span class="fa fa-search-plus" tooltip-append-to-body="true" uib-tooltip="Proximity Search"></span></A>
             </td>
         </tr>
 

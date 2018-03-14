@@ -54,7 +54,7 @@ Routes.post("/approve", function(req, res) {
     });
 });
 
-Routes.post('/undo', function (req, res) {
+Routes.post("/undo", function (req, res) {
     AccessService.canAccess(req.user,"History", function(canAccess) {
 
         if (!canAccess) {
@@ -66,11 +66,11 @@ Routes.post('/undo', function (req, res) {
                 return res.status(400).json("Invalid parameters");
             }
 
-            var o = obj[0];
+            let o = obj[0];
 
-            var errors = [];
+            let errors = [];
             async.waterfall([
-                function(callbacks){
+                function(callbacks) {
                     switch (o.type) {
                         case "user_status":
                             UserService.updateActive(req.user, {id: o.user.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err,n) {
@@ -81,7 +81,7 @@ Routes.post('/undo', function (req, res) {
                         case "property_status":
                             PropertyService.updateActive(req.user, {id: o.property.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err, n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "comp_unlinked":
@@ -208,11 +208,11 @@ Routes.post('/undo', function (req, res) {
                         case "amenity_unmapped":
                             amenityUnMapUndo(req,o, function(err) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             })
-                            break;                        
+                            break;
                         default:
-                            errors = [{msg:"Unable to undo this action"}];
+                            errors = [{msg: "Unable to undo this action"}];
                             callbacks(null);
                     }
                 }, function(callbacks) {
@@ -220,12 +220,14 @@ Routes.post('/undo', function (req, res) {
                         callbacks(null);
                     } else {
                         AuditService.updateReverted(o._id, function() {
-                            callbacks(null);
-                        })
+                            AuditService.updatedataIntegrityViolationSetApproved(req.user, o._id, function() {
+                                callbacks(null);
+                            });
+                        });
                     }
-                }
+                },
             ], function() {
-                return res.status(200).json({errors:errors});
+                return res.status(200).json({errors: errors});
             });
         });
     });
@@ -291,14 +293,13 @@ Routes.post('/', function (req, res) {
     })
 });
 
-Routes.put('/', function (req, res) {
-    var audit = req.body;
+Routes.put("/", function (req, res) {
+    let audit = req.body;
     audit.operator = req.user;
     audit.context = req.context;
     AuditService.create(audit, function() {
-        return res.status(200).json({success:true});
-    })
-
+        return res.status(200).json({success: true});
+    });
 });
 
 module.exports = Routes;
