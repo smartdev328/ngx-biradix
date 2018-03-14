@@ -92,7 +92,7 @@
             </td>
             <td nowrap>
                 <span ng-if="getAudit(row.type).undo && row.revertedFromId" class="fa fa-info-circle" tooltip-placement="left" uib-tooltip="This action is due to an earlier undo"></span>
-                <span ng-if="!getAudit(row.type).undo || !row.revertedFromId" style="padding-right:20px"></span>
+                <span ng-if="!getAudit(row.type).undo || !row.revertedFromId" style="padding-right:16px"></span>
                 <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
                 <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="'mouseenter'"
                    popover-placement="left"
