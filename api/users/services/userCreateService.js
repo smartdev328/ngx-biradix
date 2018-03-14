@@ -1,17 +1,19 @@
-'use strict';
-var generatePassword = require('password-generator');
-var _ = require('lodash');
-var async = require('async')
-var UserSchema= require('../schemas/userSchema')
-var UtilityService = require('./utilityService')
-var userBounceService = require('./userBounceService')
-var EmailService = require('../../business/services/emailService')
-var AccessService = require('../../access/services/accessService')
-var AuditService = require('../../audit/services/auditService')
-var UserService = require('./userService')
+"use strict";
+const generatePassword = require("password-generator");
+const _ = require("lodash");
+const async = require("async");
+const UserSchema= require("../schemas/userSchema");
+const UtilityService = require("./utilityService");
+const userBounceService = require("./userBounceService");
+const EmailService = require("../../business/services/emailService");
+const AccessService = require("../../access/services/accessService");
+const AuditService = require("../../audit/services/auditService");
+const UserService = require("./userService")
+const UserDataIntegrityViolation = require("../../../build/users/services/UserDataIntegrityViolationService");
+const UserDataIntegrityViolationService = new UserDataIntegrityViolation.UserDataIntegrityViolationService();
 
 module.exports = {
-    updateMe : function(operator, context, user, callback)  {
+    updateMe: function(operator, context, user, callback)  {
         var modelErrors = [];
         initUser(user)
 
@@ -42,9 +44,9 @@ module.exports = {
                 usr.bounceReason = undefined;
             }
 
-            userBounceService.resetBounce(usr.email,function(){});
-            
-            usr.save(function (err, usr) {
+            userBounceService.resetBounce(usr.email, function() {});
+
+            usr.save(function(err, usr) {
                 if (err) {
                     modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
                     callback(modelErrors,null);
@@ -68,135 +70,135 @@ module.exports = {
                     changes = null;
                 }
 
-                callback(null,usr);
+                callback(null, usr);
 
                 UserService.rebuildSearch(operator._id);
             });
-
-        })
-
-
-
+        });
     },
-    update : function(operator,context, revertedFromId, user, callback)  {
-        var modelErrors = [];
+    update: function(operator, context, revertedFromId, user, callback) {
+        let modelErrors = [];
 
         initUser(user)
 
         validateContact(user, modelErrors);
 
-        if (!user.roleids || ! user.roleids.length)
-        {
-            modelErrors.push({param: 'roleid', msg : 'Please select the role.'});
+        if (!user.roleids || ! user.roleids.length) {
+            modelErrors.push({param: "roleid", msg: "Please select the role."});
         }
 
         if (modelErrors.length > 0) {
-            callback(modelErrors,null);
+            callback(modelErrors, null);
             return;
         }
 
-        getUserandCheckforDupe(user.emailLower,user._id, function(errors, usr) {
+        getUserandCheckforDupe(user.emailLower, user._id, function(errors, usr) {
             if (errors.length > 0) {
                 callback(errors, null);
                 return;
             }
 
-            var changes = getChangesForAudit(usr, user);
+            let originalUser = JSON.parse(JSON.stringify(usr));
+
+            let changes = getChangesForAudit(usr, user);
 
             populateBaseFields(operator, usr, user, true);
 
             getHelpers(user.emailLower, function(err, all) {
                 if (err) {
-                    modelErrors.push({msg: 'Unexpected Error. Unable to update user.'});
+                    modelErrors.push({msg: "Unexpected Error. Unable to update user."});
                     callback(modelErrors, null);
                     return;
                 };
 
-
-                //get all current roleids
-                //If non-admin only get roleids for their org so they do not remove orgs they dont have access to
-                var currentroleids = _.filter(all.memberships, function(m) {
+                // get all current roleids
+                // If non-admin only get roleids for their org so they do not remove orgs they dont have access to
+                let currentroleids = _.filter(all.memberships, function(m) {
                     return m.userid.toString() == user._id.toString() &&
-                    _.find(all.roles, function(r) { return r._id.toString() == m.roleid.toString() && (r.tags[0] == 'Guest' || operator.memberships.isadmin === true || operator.orgs[0]._id.toString() == r.orgid.toString())})
+                    _.find(all.roles, function(r) {
+                        return r._id.toString() == m.roleid.toString() && (r.tags[0] == "Guest" || operator.memberships.isadmin === true || operator.orgs[0]._id.toString() == r.orgid.toString());
+                    });
                 });
 
+                currentroleids = _.map(currentroleids, function(x) {
+                    return x.roleid.toString();
+                });
 
-                currentroleids = _.map(currentroleids,function(x) {return x.roleid.toString()});
+                // Find roles that were removed and roles that were added
+                let aAdded = _.difference(user.roleids, currentroleids);
+                let aRemoved = _.difference(currentroleids, user.roleids);
 
-                //Find roles that were removed and roles that were added
-                var aAdded = _.difference(user.roleids, currentroleids);
-                var aRemoved = _.difference(currentroleids,user.roleids);
+                let bRoleChanged = aAdded.length > 0 || aRemoved.length > 0;
 
-
-                var bRoleChanged = aAdded.length > 0 || aRemoved.length > 0;
-
-                var permissions = [];
-                var removePermissions = [];
-
+                let permissions = [];
+                let removePermissions = [];
 
                 // console.log(currentroleids, aAdded, aRemoved);
                 //
-                // modelErrors.push({msg: 'Test.'});
+                // modelErrors.push({msg: "Test."});
                 // callback(modelErrors, null);
                 // return;
 
                 if (bRoleChanged) {
-                    var userRoles = updateNewRole(aAdded, all, permissions);
-                    var removedRoles = removeOldRole(aRemoved, all, removePermissions);
+                    let userRoles = updateNewRole(aAdded, all, permissions);
+                    let removedRoles = removeOldRole(aRemoved, all, removePermissions);
 
-                    userRoles = _.map(userRoles, function(x) { return x.org.name + " - " + x.name}).join(", ");
-                    removedRoles = _.map(removedRoles, function(x) { return x.org.name + " - " + x.name}).join(", ");
+                    userRoles = _.map(userRoles, function(x) {
+                        return x.org.name + " - " + x.name;
+                    }).join(", ");
+                    removedRoles = _.map(removedRoles, function(x) {
+                        return x.org.name + " - " + x.name;
+                    }).join(", ");
 
-                    var description = "";
+                    let description = "";
                     if (removedRoles) {
-                        description = "Removed: " + removedRoles
+                        description = "Removed: " + removedRoles;
                     }
 
                     if (userRoles) {
-
                         if (description) {
                             description +=", ";
                         }
                         description += "Added: " + userRoles;
                     }
-                    changes.push({description: description, field: 'roleids', added: aAdded, removed: aRemoved})
+                    changes.push({description: description, field: "roleids", added: aAdded, removed: aRemoved});
                 }
-
 
                 if (usr.bounceReason) {
                     usr.bounceReason = undefined;
                 }
 
-                userBounceService.resetBounce(usr.email,function(){});
+                userBounceService.resetBounce(usr.email, function() {});
 
                 if (user.defaultRole) {
                     usr.settings.defaultRole = user.defaultRole.toString();
                 }
 
-                usr.save(function (err, usr) {
+                usr.save(function(err, usr) {
                     if (err) {
-                        modelErrors.push({msg: 'Unexpected Error. Unable to update user.'});
+                        modelErrors.push({msg: "Unexpected Error. Unable to update user."});
                         callback(modelErrors, null);
                         return;
                     };
 
                     if (changes.length > 0) {
-                        var audit = {
+                        let audit = {
                             operator: operator,
-                            revertedFromId : revertedFromId,
+                            revertedFromId: revertedFromId,
                             user: usr,
-                            type: 'user_updated',
-                            description: usr.first + ' ' + usr.last,
+                            type: "user_updated",
+                            description: usr.first + " " + usr.last,
                             context: context,
-                            data: changes
+                            data: changes,
+                            dataIntegrityViolationSet: UserDataIntegrityViolationService.getChanged(usr, originalUser, !!revertedFromId),
                         };
 
-                        AuditService.create(audit, function() {})
+                        AuditService.create(audit, function() {});
                     }
 
                     if (bRoleChanged) {
-                        removeUserFromRole(usr._id,aRemoved, removePermissions, function() {
-                            addUserToRole(usr._id,aAdded, permissions, function() {
+                        removeUserFromRole(usr._id, aRemoved, removePermissions, function() {
+                            addUserToRole(usr._id, aAdded, permissions, function() {
                                 callback(null, usr);
                             });
                         });
@@ -206,11 +208,8 @@ module.exports = {
 
                     UserService.rebuildSearch(usr._id);
                 });
-            })
-
-        })
-
-
+            });
+        });
     },
     insert : function(operator,context, user, base, callback)  {
         var modelErrors = [];

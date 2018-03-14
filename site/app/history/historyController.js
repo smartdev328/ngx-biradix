@@ -38,35 +38,37 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
+        $scope.formatUsers = function(data) {
+            var u;
+            var u2;
+            var items = [];
+
+            data.users.forEach(function(a) {
+                u = {id: a._id, name: a.name};
+                if ($rootScope.me.permissions.indexOf("Admin") > -1) {
+                    a.roles.forEach(function(r) {
+                        u2 = _.cloneDeep(u);
+                        if (r.name == "Guest") {
+                            u2.group = "Guests";
+                        } else {
+                            u2.group = r.org.name;
+                        }
+                        items.push(u2);
+                    });
+                } else {
+                    items.push(u);
+                }
+            })
+            return items;
+        }
+
         $scope.autocompleteusers = function(search, callback) {
             $userService.search({
                 limit: 100,
                 active: true,
                 search: search,
             }).then(function(response) {
-                var u;
-                var u2;
-                var items = [];
-
-                response.data.users.forEach(function(a) {
-                    u = {id: a._id, name: a.name};
-                    if ($rootScope.me.permissions.indexOf('Admin') > -1) {
-                        a.roles.forEach(function (r) {
-                            u2 = _.cloneDeep(u);
-                            if (r.name == "Guest") {
-                                u2.group = "Guests";
-                            } else {
-                                u2.group = r.org.name;
-                            }
-                            items.push(u2);
-                        })
-
-                    } else {
-                        items.push(u);
-                    }
-                })
-
-                callback(items);
+                callback($scope.formatUsers(response.data));
             }, function(error) {
                 callback([]);
             });
@@ -75,9 +77,9 @@ define([
         $scope.autocompleteproperties = function(search,callback) {
             $propertyService.search({
                 limit: 100,
-                permission: ['PropertyManage','CompManage'],
+                permission: ['PropertyManage', 'CompManage'],
                 active: true,
-                search:search
+                search: search
                 , skipAmenities: true
             }).then(function (response) {
 
@@ -92,11 +94,10 @@ define([
                     }
                 })
 
-                callback(response.data.properties)
-            }, function (error) {
+                callback(response.data.properties);
+            }, function(error) {
                 callback([]);
-            })
-
+            });
         }
 
         $scope.reload = function() {
@@ -168,12 +169,13 @@ define([
                     }
                     $scope.localLoading = true;
                 });
-        }
+        };
+
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 me();
 
-                $auditService.filters().then(function (response) {
+                $auditService.filters().then(function(response) {
                         $scope.audits = response.data.audits;
                         $scope.dataIntegrityChecks = response.data.dataIntegrityChecks;
 
@@ -183,41 +185,48 @@ define([
                         $scope.options.integrityItems = [];
 
                         $scope.audits.forEach(function(a) {
-                            $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group})
+                            $scope.typeItems.push({id: a.key, name: a.value, selected: !a.excludeDefault, group: a.group});
                         });
 
                         $scope.dataIntegrityChecks.forEach(function(a) {
-                            $scope.options.integrityItems.push({id: a.type, name: a.name, selected: false, group: a.severity == 1 ? "High" : (a.severity == 2 ? "Medium" : "Low")});
+                            $scope.options.integrityItems.push({id: a.type, name: a.name, selected: false, group: a.severity == 1 ? "  High" : (a.severity == 2 ? " Medium" : "Low")});
                         });
 
-                        $scope.typeItems = _.sortBy($scope.typeItems, function(x) {return (x.group || "") + x.name.toLowerCase()});
+                        $scope.typeItems = _.sortBy($scope.typeItems, function(x) {
+                            return (x.group || "") + x.name.toLowerCase();
+                        });
 
-                        if (!$stateParams.property) {
+                        if (!$stateParams.property && !$stateParams.user) {
                             $scope.reload();
-                        } else {
+                        } else if ($stateParams.property) {
                             $propertyService.search({
                                 limit: 1,
                                 permission: ["PropertyManage", "CompManage"],
                                 active: true,
-                                _id: $stateParams.property
-                                , skipAmenities: true
-                            }).then(function (response) {
-
+                                _id: $stateParams.property,
+                                skipAmenities: true,
+                            }).then(function(response) {
                                 if (response.data.properties || response.data.properties.length > 0) {
-                                    $scope.propertyItems.push({id: $stateParams.property, name: response.data.properties[0].name})
+                                    $scope.propertyItems.push({id: $stateParams.property, name: response.data.properties[0].name});
                                 }
 
                                 $scope.reload();
-
-                            }, function (error) {
+                            }, function(error) {
                                 $scope.reload();
-                            })
-
-
-
+                            });
+                        } else if ($stateParams.user) {
+                            $userService.search({
+                                limit: 1,
+                                _id: $stateParams.user,
+                            }).then(function(response) {
+                                $scope.userItems = $scope.formatUsers(response.data);
+                                $scope.reload();
+                            }, function(error) {
+                                $scope.reload();
+                            });
                         }
                     },
-                    function (error) {
+                    function(error) {
                         $scope.localLoading = true;
                     });
             }
@@ -229,6 +238,9 @@ define([
             switch (row.dataIntegrityViolationSet.violations[0].dataIntegrityCheck.searchParameter) {
                 case "Property":
                     window.open("#/history?property=" + row.property.id + "&date1=" + date1 + "&date2=" + date2);
+                    break;
+                case "User":
+                    window.open("#/history?user=" + row.user.id + "&date1=" + date1 + "&date2=" + date2);
                     break;
                 default:
                     throw new Error("Not implemented");
@@ -256,7 +268,7 @@ define([
                 return "cyan";
             }
             return "inherit";
-        }
+        };
 
         $scope.approve = function(row) {
             $dialog.confirm("Are you sure you want to mark this item as 'Approved' for Data Integrity Violations?", function() {
@@ -284,34 +296,31 @@ define([
             $dialog.confirm("Are you sure you want to Undo this item?", function() {
                 $scope.localLoading = false;
 
-                $auditService.undo(row._id).then(function (response) {
+                $auditService.undo(row._id).then(function(response) {
                         if (response.data.errors.length > 0) {
-                            toastr.error( _.pluck(response.data.errors,'msg').join("<br>"));
+                            toastr.error( _.pluck(response.data.errors, "msg").join("<br>"));
                             $scope.localLoading = true;
-                        }
-                        else {
+                        } else {
                             toastr.success("Undo action performed successfully.");
                             window.setTimeout(function() {$scope.reload();}, 1000);
-
                         }
-
                     },
-                    function (error) {
+                    function(error) {
                         toastr.error("Unable to undo. Please contact the administrator." );
                         $scope.localLoading = true;
                     });
-
-
             }, function() {
 
-            })
-        }
+            });
+        };
 
         $scope.getAudit = function(key) {
-            return _.find($scope.audits, function(x) {return x.key == key})
+            return _.find($scope.audits, function(x) {
+                return x.key == key;
+            });
         }
 
-        $scope.resetPager = function () {
+        $scope.resetPager = function() {
             $scope.pager.offset = 0;
             $scope.reload();
         }

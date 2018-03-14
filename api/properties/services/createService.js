@@ -13,7 +13,7 @@ const AmenityService = require("../../amenities/services/amenityService");
 const OrganizationService = require("../../organizations/services/organizationService");
 const EmailService = require("../../business/services/emailService");
 const PropertyUsersService = require("../../propertyusers/services/propertyUsersService");
-const PropertyDataIntegrityViolation = require("../../../build/properties/services/PropertyDataIntegrityViolation");
+const PropertyDataIntegrityViolation = require("../../../build/properties/services/PropertyDataIntegrityViolationService");
 const PropertyDataIntegrityViolationService = new PropertyDataIntegrityViolation.PropertyDataIntegrityViolationService();
 
 module.exports = {
