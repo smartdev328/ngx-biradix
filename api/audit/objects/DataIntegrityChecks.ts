@@ -9,6 +9,9 @@ const DataIntegrityChecks: DataIntegrityCheck[] = [
 
     {severity: DataIntegritySeverity.LOW, type: DataIntegrityCheckType.USER_NAME_CHANGED, name: "User Name Changed", searchParameter: DataIntegritySearchParameter.USER},
     {severity: DataIntegritySeverity.HIGH, type: DataIntegrityCheckType.USER_NAME_EMAIL_CHANGED, name: "User & Email Changed", searchParameter: DataIntegritySearchParameter.USER},
+
+    {severity: DataIntegritySeverity.HIGH, type: DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50, name: "Occupancy/Lease/ATR Changed (50%)", searchParameter: DataIntegritySearchParameter.PROPERTY},
+    {severity: DataIntegritySeverity.MEDIUM, type: DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_25, name: "Occupancy/Lease/ATR Changed (25%)", searchParameter: DataIntegritySearchParameter.PROPERTY},
 ];
 
 export = DataIntegrityChecks;

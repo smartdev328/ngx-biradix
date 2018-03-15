@@ -1,24 +1,24 @@
-'use strict';
-var PropertySchema= require('../schemas/propertySchema')
-var SurveySchema= require('../schemas/surveySchema')
-//////////////////////////
-var AccessService = require('../../access/services/accessService')
-var OrgService = require('../../organizations/services/organizationService')
-var AmenityService = require('../../amenities/services/amenityService')
-var AuditService = require('../../audit/services/auditService')
-///////////////////////////
-var async = require("async");
-var _ = require("lodash")
-var moment = require('moment');
-var mongoose = require('mongoose')
-///////////////////////////
-var CompsService = require('./compsService')
-var PropertyHelperService = require('./propertyHelperService')
-var SurveyHelperService = require('./surveyHelperService')
-var guestQueueService = require('../../propertyusers/services/guestsQueueService')
-var userService = require('../../users/services/userService')
-var EmailService = require('../../business/services/emailService')
-var escapeStringRegexp = require('escape-string-regexp');
+"use strict";
+const PropertySchema = require("../schemas/propertySchema");
+const SurveySchema = require("../schemas/surveySchema");
+const AccessService = require("../../access/services/accessService");
+const OrgService = require("../../organizations/services/organizationService");
+const AmenityService = require("../../amenities/services/amenityService");
+const AuditService = require("../../audit/services/auditService");
+
+const async = require("async");
+const _ = require("lodash");
+const moment = require("moment");
+const mongoose = require("mongoose");
+const CompsService = require("./compsService");
+const PropertyHelperService = require("./propertyHelperService");
+const SurveyHelperService = require("./surveyHelperService");
+const guestQueueService = require("../../propertyusers/services/guestsQueueService");
+const userService = require("../../users/services/userService");
+const EmailService = require("../../business/services/emailService");
+const escapeStringRegexp = require("escape-string-regexp");
+const MarketSurveyDataIntegrityViolation = require("../../../build/properties/services/MarketSurveyDataIntegrityViolationService");
+const MarketSurveyDataIntegrityViolationService = new MarketSurveyDataIntegrityViolation.MarketSurveyDataIntegrityViolationService();
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -962,11 +962,12 @@ module.exports = {
                     AuditService.create({
                         operator: operator,
                         property: property,
-                        type: 'survey_updated',
+                        type: "survey_updated",
                         revertedFromId: revertedFromId,
                         description: property.name + ": " + (data.length -1) + " update(s)",
                         context: context,
-                        data: data
+                        data: data,
+                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(created, copy, !!revertedFromId),
                     })
 
                     if (operator.roles[0] == 'Guest') {
@@ -1115,6 +1116,7 @@ module.exports = {
                         description: subject.name + ": " + (data.length - 1) + " update(s)",
                         context: context,
                         data: data,
+                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(created, lastsurvey, !!revertedFromId),
                     });
                 };
 

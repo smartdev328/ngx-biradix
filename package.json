@@ -1,13 +1,14 @@
 {
   "name": "BIRadix",
-  "version": "2.16.9",
+  "version": "2.16.10",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec api/*/tests/*.js",
-    "build": "tsc && gulp vendorsjs vendorscss globaljs globalcss",
+    "build": "tsc && gulp",
     "postinstall": "bower install && npm run build && npm test",
-    "tsc": "tsc --watch"
+    "tsc": "tsc --watch",
+    "gulp": "gulp vendorsjs vendorscss globaljs globalcss"
   },
   "repository": {
     "type": "git",
