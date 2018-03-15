@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec api/*/tests/*.js",
-    "build": "tsc && gulp",
+    "build": "tsc && ui",
     "postinstall": "bower install && npm run build && npm test",
     "tsc": "tsc --watch",
-    "gulp": "gulp vendorsjs vendorscss globaljs globalcss"
+    "ui": "gulp vendorsjs vendorscss globaljs globalcss"
   },
   "repository": {
     "type": "git",
