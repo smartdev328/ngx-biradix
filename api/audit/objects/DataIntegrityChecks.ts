@@ -12,6 +12,8 @@ const DataIntegrityChecks: DataIntegrityCheck[] = [
 
     {severity: DataIntegritySeverity.HIGH, type: DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50, name: "Occupancy/Lease/ATR Changed (50%)", searchParameter: DataIntegritySearchParameter.PROPERTY},
     {severity: DataIntegritySeverity.MEDIUM, type: DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_25, name: "Occupancy/Lease/ATR Changed (25%)", searchParameter: DataIntegritySearchParameter.PROPERTY},
+    {severity: DataIntegritySeverity.HIGH, type: DataIntegrityCheckType.NER_CHANGED_50, name: "NER (NER/Sqft) Changed (50%)", searchParameter: DataIntegritySearchParameter.PROPERTY},
+    {severity: DataIntegritySeverity.MEDIUM, type: DataIntegrityCheckType.NER_CHANGED_25, name: "NER (NER/Sqft) Changed (25%)", searchParameter: DataIntegritySearchParameter.PROPERTY},
 ];
 
 export = DataIntegrityChecks;
