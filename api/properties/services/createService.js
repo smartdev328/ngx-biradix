@@ -355,7 +355,7 @@ module.exports = {
             n.needsSurvey = true;
 
             if (property.isCustom) {
-                n.custom = {owner: {name: operator.first + " " + operator.last, id: operator._id}}
+                n.custom = {owner: {name: operator.first + " " + operator.last, id: operator._id}};
 
                 if (n.name.indexOf("Custom ") != 0) {
                     n.name = "Custom " + n.name.trim();
@@ -504,54 +504,52 @@ function errorCheck(property, modelErrors) {
         if (!fp.sqft || isNaN(fp.sqft) || parseInt(fp.sqft) < 0) {
             modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of square feet'});
         }
-    })
+    });
 }
 
 var getHelpers = function(operator, property, options, callback) {
     async.parallel({
-        geo: function (callbackp) {
-
+        geo: function(callbackp) {
             if (options.skipGeo) {
-                callbackp(null,{latitude:property.loc[0], longitude: property.loc[1]});
-            }
-            else {
-                var address = property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip;
-                GeocodeService.geocode(address, true, function (err, res, fromCache) {
+                callbackp(null, {latitude: property.loc[0], longitude: property.loc[1]});
+            } else {
+                let address = property.address + " " + property.city + " " + property.state + " " + property.zip;
+                GeocodeService.geocode(address, true, function(err, res, fromCache) {
                     // console.log(res[0].latitude, res[0].longitude);
-                    console.log("GEOCODE: 1 [error] ", address, ': ', err)
-                    console.log("GEOCODE: 1 [result] ", address, ': ', res)
-                    console.log("GEOCODE: 1 [fromCache] ", address, ': ', fromCache)
+                    if (err) {
+                        console.log("GEOCODE: 1 [error] ", address, ": ", err);
+                    }
+                    console.log("GEOCODE: 1 [result] ", address, ": ", res);
+                    console.log("GEOCODE: 1 [fromCache] ", address, ": ", fromCache);
 
                     if (!res || !res[0] || !res[0].latitude) {
-                        //retry in 5 seconds
+                        // retry in 5 seconds
                         setTimeout(function() {
                             GeocodeService.geocode(address, false, function (err, res, fromCache) {
                                 // console.log(res[0].latitude, res[0].longitude);
-
-                                console.log("GEOCODE: 2 [error] ", address, ': ', err)
-                                console.log("GEOCODE: 2 [result] ", address, ': ', res)
-                                console.log("GEOCODE: 2 [fromCache] ", address, ': ', fromCache)
+                                if (err) {
+                                    console.log("GEOCODE: 2 [error] ", address, ": ", err);
+                                }
+                                console.log("GEOCODE: 2 [result] ", address, ": ", res);
+                                console.log("GEOCODE: 2 [fromCache] ", address, ": ", fromCache);
 
                                 if (!res || !res[0] || !res[0].latitude) {
-
-                                    var email = {
+                                    let email = {
                                         to: "alex@biradix.com,eugene@biradix.com",
                                         subject: "Geocode Error",
                                         logo: "https://platform.biradix.com/images/organizations/biradix.png",
-                                        template: 'debug.html',
+                                        template: "debug.html",
                                         templateData: {
                                             debug: JSON.stringify({
                                                 err: err,
                                                 res: res,
-                                                address: property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip,
-                                                user: operator
-                                            })
-                                        }
+                                                address: property.address + " " + property.city + " " + property.state + " " + property.zip,
+                                                user: operator,
+                                            }),
+                                        },
                                     };
 
-
-                                    EmailService.send(email, function (emailError, status) {
-                                    })
+                                    EmailService.send(email, function(emailError, status) {});
 
                                     callbackp("Unable to lookup address. Please re-submit to try again. If the problem persists, please contact support@biradix.com", null)
                                 } else {
