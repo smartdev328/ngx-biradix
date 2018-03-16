@@ -457,7 +457,6 @@ angular.module("biradix.global").controller("rootController",
         $scope.alerts = function() {
             if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.alertsAmenities();
-                $scope.alertsProperties();
                 $scope.alertsAudits();
             }
         };
@@ -534,41 +533,7 @@ angular.module("biradix.global").controller("rootController",
             };
 
         $rootScope.isModalOpen = function(el) {
-            return($(el).hasClass("open"))
-        }
-
-        $scope.alertsProperties = function() {
-            $propertyService.search({limit: 20, needsApproval:true, skipAmenities: true, hideCustom: true}).then(function (response) {
-
-                    var a = _.find($rootScope.notifications, function(x) {return x.key == "properties"});
-
-                    if (a) {
-                        a.count = response.data.properties.length;
-
-                        if (a.count == 0) {
-                            _.remove($rootScope.notifications, function(x) {return x.key == "properties"});
-                        }
-                    } else {
-                        if (response.data.properties.length) {
-                            $rootScope.notifications.push({
-                                key: "properties",
-                                count: response.data.properties.length,
-                                label: "Properties: ",
-                                url: "#/properties"
-                            })
-                        }
-
-                    }
-                },
-                function (error) {
-                    if (error.status == 401) {
-                        $rootScope.logoff();
-                        return;
-                    }
-                });
-
-            window.setTimeout(function() {$scope.alertsProperties()}, 60000);
-
+            return($(el).hasClass("open"));
         }
 
     $rootScope.bouncePopup = function(user) {

@@ -67,8 +67,6 @@ export class MarketSurveyDataIntegrityViolationService {
         v = new DataIntegrityViolation();
         v.description = "";
 
-        // TODO: Add /sqft?
-        // TODO: Test escape
         const totalUnitsNew: number = calculateTotalUnits(newSurvey.floorplans);
         const totalUnitsOld: number = calculateTotalUnits(oldSurvey.floorplans);
 

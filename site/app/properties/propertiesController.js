@@ -227,9 +227,6 @@ define([
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-                if ($rootScope.me.permissions.indexOf("Admin") > -1) {
-                    $scope.getNeedsApproval();
-                }
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
                 $scope.adjustToSize($(window).width());
@@ -628,47 +625,9 @@ define([
                     //Cancel
                 });
             });
-        }
-
-        $scope.needsApproval = [];
-
-        $scope.getNeedsApproval = function() {
-            $propertyService.search({limit: 10000, needsApproval:true, skipAmenities: true, hideCustom: true}).then(function (response) {
-                    $scope.needsApproval = response.data.properties;
-
-                },
-                function (error) {
-
-                });
-        }
-
-        $scope.Approve = function (property) {
-
-            $dialog.confirm('Are you sure you want to approve <b>"' + property.name + '</b>"?', function() {
-                ngProgress.start();
-
-                $propertyService.Approve(property._id).then(function (response) {
-
-                        if (response.data.errors) {
-                            toastr.error(_.pluck(response.data.errors,'msg').join("<br>"));
-                        }
-                        else {
-                            toastr.success(property.name + " has been marked as approved.");
-                            $scope.getNeedsApproval();
-                        }
-
-                        ngProgress.reset();
-                    },
-                    function (error) {
-                        toastr.error("Unable to update property. Please contact the administrator.");
-                        ngProgress.reset();
-                    });
-
-            }, function() {})
-        }
+        };
 
         $scope.clone = function(property) {
-
             require([
                 '/app/properties/cloneController.js'
             ], function () {

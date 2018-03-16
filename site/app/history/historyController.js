@@ -284,7 +284,11 @@ define([
                             $scope.localLoading = true;
                         } else {
                             toastr.success("Data Integrity Violations Approved successfully.");
-                            $scope.reload();
+                            row.dataIntegrityViolationSet.approval = {
+                                name: $rootScope.me.first + " " + $rootScope.me.last,
+                                date: new Date(),
+                            };
+                            $scope.localLoading = true;
                         }
                     },
                     function(error) {
