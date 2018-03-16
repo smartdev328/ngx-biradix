@@ -1,24 +1,24 @@
-'use strict';
-var PropertySchema= require('../schemas/propertySchema')
-var SurveySchema= require('../schemas/surveySchema')
-//////////////////////////
-var AccessService = require('../../access/services/accessService')
-var OrgService = require('../../organizations/services/organizationService')
-var AmenityService = require('../../amenities/services/amenityService')
-var AuditService = require('../../audit/services/auditService')
-///////////////////////////
-var async = require("async");
-var _ = require("lodash")
-var moment = require('moment');
-var mongoose = require('mongoose')
-///////////////////////////
-var CompsService = require('./compsService')
-var PropertyHelperService = require('./propertyHelperService')
-var SurveyHelperService = require('./surveyHelperService')
-var guestQueueService = require('../../propertyusers/services/guestsQueueService')
-var userService = require('../../users/services/userService')
-var EmailService = require('../../business/services/emailService')
-var escapeStringRegexp = require('escape-string-regexp');
+"use strict";
+const PropertySchema = require("../schemas/propertySchema");
+const SurveySchema = require("../schemas/surveySchema");
+const AccessService = require("../../access/services/accessService");
+const OrgService = require("../../organizations/services/organizationService");
+const AmenityService = require("../../amenities/services/amenityService");
+const AuditService = require("../../audit/services/auditService");
+
+const async = require("async");
+const _ = require("lodash");
+const moment = require("moment");
+const mongoose = require("mongoose");
+const CompsService = require("./compsService");
+const PropertyHelperService = require("./propertyHelperService");
+const SurveyHelperService = require("./surveyHelperService");
+const guestQueueService = require("../../propertyusers/services/guestsQueueService");
+const userService = require("../../users/services/userService");
+const EmailService = require("../../business/services/emailService");
+const escapeStringRegexp = require("escape-string-regexp");
+const MarketSurveyDataIntegrityViolation = require("../../../build/properties/services/MarketSurveyDataIntegrityViolationService");
+const MarketSurveyDataIntegrityViolationService = new MarketSurveyDataIntegrityViolation.MarketSurveyDataIntegrityViolationService();
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -399,6 +399,7 @@ module.exports = {
 
         criteria.search = (criteria.search || "").trim();
         criteria.searchName = (criteria.searchName || "").trim();
+        criteria.searchExactName = (criteria.searchExactName || "").trim();
 
         let AllProperties =
             Operator.memberships.isadmin === true
@@ -510,7 +511,7 @@ module.exports = {
             }
 
             if (criteria.needsApproval != null) {
-                criteria.select = "id name loc"
+                criteria.select = "id name loc";
                 query = query.where("needsApproval").equals(true);
             }
 
@@ -529,8 +530,7 @@ module.exports = {
                             $near: criteria.geo.loc,
                             $maxDistance: criteria.geo.distance / 3963.2, // covert miles to radians
                         },
-                    }
-
+                    };
 
                 query = query.where(loc);
             }
@@ -549,17 +549,21 @@ module.exports = {
 
             query = query.sort(criteria.sort || "name");
 
-            if (criteria.select !== '*') {
-                if (criteria.search != '') {
-                    var s = new RegExp(escapeStringRegexp(criteria.search), "i")
-                    query = query.or([{'name': s}, {'address': s}, {'city': s}, {'state': s}]);
-                    query = query.select(criteria.select || '_id name address city state zip custom');
-                } else if (criteria.searchName != '') {
-                    var s = new RegExp(escapeStringRegexp(criteria.searchName), "i")
-                    query = query.or([{'name': s}]);
-                    query = query.select(criteria.select || '_id name address city state zip custom');
+            if (criteria.select !== "*") {
+                if (criteria.search != "") {
+                    let s = new RegExp(escapeStringRegexp(criteria.search), "i");
+                    query = query.or([{"name": s}, {"address": s}, {"city": s}, {"state": s}]);
+                    query = query.select(criteria.select || "_id name address city state zip custom");
+                } else if (criteria.searchName != "") {
+                    let s = new RegExp(escapeStringRegexp(criteria.searchName), "i");
+                    query = query.or([{"name": s}]);
+                    query = query.select(criteria.select || "_id name address city state zip custom");
+                } else if (criteria.searchExactName != "") {
+                    let s = new RegExp("^" + escapeStringRegexp(criteria.searchExactName) + "$", "i");
+                    query = query.or([{"name": s}]);
+                    query = query.select(criteria.select || "_id name address city state zip custom");
                 } else {
-                    query = query.select(criteria.select || '_id name custom');
+                    query = query.select(criteria.select || "_id name custom");
                 }
             }
 
@@ -573,69 +577,64 @@ module.exports = {
             query.exec(function(err, props) {
                 t = (new Date()).getTime();
                 if ((t-tS) / 1000 > .1) {
-                    console.log('Long Property Run: (Exec): ', (t - tS) / 1000, "s", criteria, all.permissions, props.length);
+                    // console.log('Long Property Run: (Exec): ', (t - tS) / 1000, "s", criteria, all.permissions, props.length);
                 }
 
-                var time = new Date();
+                // var time = new Date();
                 if (props && props.length > 0) {
-
-                    props = JSON.parse(JSON.stringify(props))
-                    if (criteria.search != '') {
-                        var isBr = criteria.search.toLowerCase() == "b" || criteria.search.toLowerCase() == "br";
-                        var isI = criteria.search.toLowerCase() == "i";
-                        //calculate summary for autocomplete
-                        props.forEach(function(x,i) {
+                    props = JSON.parse(JSON.stringify(props));
+                    if (criteria.search != "") {
+                        let isBr = criteria.search.toLowerCase() == "b" || criteria.search.toLowerCase() == "br";
+                        let isI = criteria.search.toLowerCase() == "i";
+                        // calculate summary for autocomplete
+                        props.forEach(function(x, i) {
                                 if (isBr) {
                                     props[i].summary = x.name + "<p><i>" + x.address + ", " + x.city + ", " + x.state + "</i></p>";
                                 } else if (isI) {
                                     props[i].summary = x.name + "<br><em>" + x.address + ", " + x.city + ", " + x.state + "</em>";
-
                                 } else {
                                     props[i].summary = x.name + "<br><i>" + x.address + ", " + x.city + ", " + x.state + "</i>";
                                 }
-
                             }
-                        )
+                        );
 
-                        //sort by first occurance
+                        // sort by first occurance
                         props = _.sortBy(props, function(x) {
                             return x.summary.toLowerCase().indexOf(criteria.search.toLowerCase());
                         });
                     }
 
-                    props = _.take(props, criteria.limit || 10)
+                    props = _.take(props, criteria.limit || 10);
                 }
 
-                var lookups = {fees: {}, amenities: []};
+                let lookups = {fees: {}, amenities: []};
 
                 if (props && props.length > 0) {
-                    if (criteria.select && criteria.select.indexOf('fees') > -1) {
+                    if (criteria.select && criteria.select.indexOf("fees") > -1) {
                         lookups.fees = PropertyHelperService.fees;
                     }
 
-                    var company;
-                    var am;
+                    let company;
+                    let am;
 
                     tS = (new Date()).getTime();
                     props.forEach(function(x) {
-
                         if (x.orgid) {
-                            x.company = '';
+                            x.company = "";
                             company = _.find(all.orgs, function (o) {
                                 return o._id.toString() == x.orgid.toString()
-                            })
+                            });
 
                             if (company) {
                                 x.company = company.name;
                             }
-
                         }
 
                         if (x.community_amenities) {
                             x.community_amenities.forEach(function(x) {
                                 am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
                                 if (am) {
-                                    lookups.amenities.push({_id: am._id, name: am.name})
+                                    lookups.amenities.push({_id: am._id, name: am.name});
                                 }
                             })
                         }
@@ -957,11 +956,12 @@ module.exports = {
                     AuditService.create({
                         operator: operator,
                         property: property,
-                        type: 'survey_updated',
+                        type: "survey_updated",
                         revertedFromId: revertedFromId,
                         description: property.name + ": " + (data.length -1) + " update(s)",
                         context: context,
-                        data: data
+                        data: data,
+                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(created, copy, !!revertedFromId),
                     })
 
                     if (operator.roles[0] == 'Guest') {
@@ -1099,7 +1099,7 @@ module.exports = {
 
                 SurveyHelperService.updateLastSurvey(subject._id, function() {
                     callback(err, created);
-                })
+                });
 
                 if (!survey.skipAudit) {
                     AuditService.create({
@@ -1110,6 +1110,7 @@ module.exports = {
                         description: subject.name + ": " + (data.length - 1) + " update(s)",
                         context: context,
                         data: data,
+                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(created, lastsurvey, !!revertedFromId),
                     });
                 };
 

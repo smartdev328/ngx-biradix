@@ -1,45 +1,60 @@
-'use strict';
+"use strict";
 
-var express = require('express');
-var AuditService = require('../services/auditService')
-var AccessService = require('../../access/services/accessService')
-var PropertyHelperService = require('../../properties/services/propertyHelperService')
-var PropertyService = require('../../properties/services/propertyService')
-var CreateService = require('../../properties/services/createService')
-var AmenitiesService = require('../../amenities/services/amenityService')
-var UserService = require('../../users/services/userService')
-var UserCreateService = require('../../users/services/userCreateService')
-var PropertyUserService = require('../../propertyusers/services/propertyUsersService')
-var PropertyAmenityService = require('../../propertyamenities/services/propertyAmenityService')
-var Routes = express.Router();
-var async = require('async')
-var _ = require('lodash')
+const express = require("express");
+const AuditService = require("../services/auditService");
+const AccessService = require("../../access/services/accessService");
+const PropertyHelperService = require("../../properties/services/propertyHelperService");
+const PropertyService = require("../../properties/services/propertyService");
+const CreateService = require("../../properties/services/createService");
+const AmenitiesService = require("../../amenities/services/amenityService");
+const UserService = require("../../users/services/userService");
+const UserCreateService = require("../../users/services/userCreateService");
+const PropertyUserService = require("../../propertyusers/services/propertyUsersService");
+const PropertyAmenityService = require("../../propertyamenities/services/propertyAmenityService");
+const Routes = new express.Router();
+const async = require("async");
+const _ = require("lodash");
+const dataIntegrityChecks = require("../../../build/audit/objects/DataIntegrityChecks");
 
-Routes.get('/filters', function (req, res) {
-    var debug = {};
+Routes.get("/filters", function(req, res) {
     async.parallel({
         audits: function(callbackp) {
-            var audits = AuditService.audits;
-
-            debug.before = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
+            let audits = AuditService.audits;
 
             if (req.user.memberships.isadmin !== true) {
-                audits = _.filter(audits, function(x) {return !x.admin})
+                audits = _.filter(audits, function(x) {
+                    return !x.admin;
+                });
             }
 
-            debug.after = {audits:audits.length, memberships: req.user.memberships, isNOTadmin: req.user.memberships.isadmin !== true};
+            callbackp(null, audits);
+        },
+        dataIntegrityChecks: function(callbackp) {
+            if (req.user.memberships.isadmin !== true) {
+                callbackp: null;
+            }
 
-            callbackp(null,audits)
-        }
-
+            callbackp(null, dataIntegrityChecks);
+        },
     }, function(err, all) {
-        res.status(200).json({audits: all.audits});
+        res.status(200).json({audits: all.audits, dataIntegrityChecks: all.dataIntegrityChecks});
         all = null;
-    })
-
+    });
 });
 
-Routes.post('/undo', function (req, res) {
+Routes.post("/approve", function(req, res) {
+    AccessService.canAccess(req.user, "Admin", function (canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+
+        AuditService.updatedataIntegrityViolationSetApproved(req.user, req.body.id, function(errors) {
+            return res.status(200).json({errors: errors});
+        });
+    });
+});
+
+Routes.post("/undo", function (req, res) {
     AccessService.canAccess(req.user,"History", function(canAccess) {
 
         if (!canAccess) {
@@ -51,11 +66,11 @@ Routes.post('/undo', function (req, res) {
                 return res.status(400).json("Invalid parameters");
             }
 
-            var o = obj[0];
+            let o = obj[0];
 
-            var errors = [];
+            let errors = [];
             async.waterfall([
-                function(callbacks){
+                function(callbacks) {
                     switch (o.type) {
                         case "user_status":
                             UserService.updateActive(req.user, {id: o.user.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err,n) {
@@ -66,7 +81,7 @@ Routes.post('/undo', function (req, res) {
                         case "property_status":
                             PropertyService.updateActive(req.user, {id: o.property.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err, n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "comp_unlinked":
@@ -193,11 +208,11 @@ Routes.post('/undo', function (req, res) {
                         case "amenity_unmapped":
                             amenityUnMapUndo(req,o, function(err) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             })
-                            break;                        
+                            break;
                         default:
-                            errors = [{msg:"Unable to undo this action"}];
+                            errors = [{msg: "Unable to undo this action"}];
                             callbacks(null);
                     }
                 }, function(callbacks) {
@@ -205,12 +220,14 @@ Routes.post('/undo', function (req, res) {
                         callbacks(null);
                     } else {
                         AuditService.updateReverted(o._id, function() {
-                            callbacks(null);
-                        })
+                            AuditService.updatedataIntegrityViolationSetApproved(req.user, o._id, function() {
+                                callbacks(null);
+                            });
+                        });
                     }
-                }
+                },
             ], function() {
-                return res.status(200).json({errors:errors});
+                return res.status(200).json({errors: errors});
             });
         });
     });
@@ -276,14 +293,13 @@ Routes.post('/', function (req, res) {
     })
 });
 
-Routes.put('/', function (req, res) {
-    var audit = req.body;
+Routes.put("/", function (req, res) {
+    let audit = req.body;
     audit.operator = req.user;
     audit.context = req.context;
     AuditService.create(audit, function() {
-        return res.status(200).json({success:true});
-    })
-
+        return res.status(200).json({success: true});
+    });
 });
 
 module.exports = Routes;

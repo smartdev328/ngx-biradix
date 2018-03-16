@@ -128,7 +128,7 @@ d.run(function() {
 
                     setTimeout(function() {
                         require('../config/seed').init();
-                    }, 30000)
+                    }, 30000);
 
                 //    var moment = require("moment");
                 //    var end = moment().add(-1,"day").startOf('week').add(1,"day").utcOffset(-480);

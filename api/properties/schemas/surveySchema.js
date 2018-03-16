@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var s = new Schema({
     date: {
         type: Date,
-        index: true
+        index: true,
     },
     leased: Number,
     atr: Number,

@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 function resolve($q, ctrl) {
-    //$('.routeLoading').show();
-    //$('.routeContent').hide();
+    //$(".routeLoading").show();
+    //$(".routeContent").hide();
     var deferred = $q.defer();
     require([
         ctrl
     ], function () {
         deferred.resolve();
-        //$('.routeLoading').hide();
-        //$('.routeContent').show();
+        //$(".routeLoading").hide();
+        //$(".routeContent").show();
     });
     return deferred.promise;
 }
@@ -35,7 +35,7 @@ function AsyncRoute (url, path, controller,view, outlet, data) {
     if (controller) {
         r.resolve = {
             get: function ($q) {
-                return resolve($q, path + '/' + controller)
+                return resolve($q, path + "/" + controller)
             }
         }
     }
@@ -45,16 +45,16 @@ function AsyncRoute (url, path, controller,view, outlet, data) {
 }
 
 define([], function () {
-    var app = angular.module('Biradix', [
-        , 'ui.router'
-        , 'ui.bootstrap'
-        , 'toastr'
-        , 'ngCookies'
-        , 'ngProgress'
-        , 'ngSanitize'
-        , 'biradix.global'
-        , 'AxelSoft'
-        , 'ui.sortable'
+    var app = angular.module("Biradix", [
+        , "ui.router"
+        , "ui.bootstrap"
+        , "toastr"
+        , "ngCookies"
+        , "ngProgress"
+        , "ngSanitize"
+        , "biradix.global"
+        , "AxelSoft"
+        , "ui.sortable"
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {
@@ -66,7 +66,7 @@ define([], function () {
         angular.extend(toastrConfig, {
             timeOut: 5000,
             closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: "toast-top-right",
             allowHtml: true,
             progressBar : true,
             tapToDismiss: true,
@@ -76,52 +76,52 @@ define([], function () {
         $urlRouterProvider.otherwise("/login");
 
         $stateProvider
-            .state('login', AsyncRoute("/login?r","login","loginController","login.html","loggedOutView",{}))
-            .state('expired', AsyncRoute("/expired?name","expired","expiredController","expired.html","loggedOutView",{loggedIn: false}))
-            .state('contact', AsyncRoute("/contact","contactOff","contactOffController","contact.html","loggedOutView",{loggedIn: false}))
-            .state('contact_thank_you', AsyncRoute("/contact/thankyou","contactOff",null,"thankyou.html","loggedOutView",{loggedIn: false}))
-            .state('password', AsyncRoute("/password","passwordOff","passwordOffController","password.html","loggedOutView",{loggedIn: false}))
-            .state('password_sent', AsyncRoute("/password/sent","passwordOff",null,"sent.html","loggedOutView",{loggedIn: false}))
-            .state('password_invalid', AsyncRoute("/password/invalid","passwordOff","passwordOffController","invalid.html","loggedOutView",{loggedIn: false}))
-            .state('password_reset', AsyncRoute("/password/reset/:token","passwordOff","resetController","reset.html","loggedOutView",{loggedIn: false}))
+            .state("login", AsyncRoute("/login?r", "login", "loginController", "login.html", "loggedOutView",{}))
+            .state("expired", AsyncRoute("/expired?name", "expired", "expiredController", "expired.html", "loggedOutView",{loggedIn: false}))
+            .state("contact", AsyncRoute("/contact", "contactOff", "contactOffController", "contact.html", "loggedOutView",{loggedIn: false}))
+            .state("contact_thank_you", AsyncRoute("/contact/thankyou", "contactOff",null,"thankyou.html", "loggedOutView",{loggedIn: false}))
+            .state("password", AsyncRoute("/password", "passwordOff", "passwordOffController", "password.html", "loggedOutView",{loggedIn: false}))
+            .state("password_sent", AsyncRoute("/password/sent", "passwordOff",null,"sent.html", "loggedOutView",{loggedIn: false}))
+            .state("password_invalid", AsyncRoute("/password/invalid", "passwordOff", "passwordOffController", "invalid.html", "loggedOutView",{loggedIn: false}))
+            .state("password_reset", AsyncRoute("/password/reset/:token", "passwordOff", "resetController", "reset.html", "loggedOutView",{loggedIn: false}))
 
-            .state('maintenance', AsyncRoute("/maintenance","login","loginController","maintenance.html","loggedOutView",{loggedIn: false}))
+            .state("maintenance", AsyncRoute("/maintenance", "login", "loginController", "maintenance.html", "loggedOutView",{loggedIn: false}))
 
-            .state('dashboard', AsyncRoute("/dashboard?id&s","dashboard","dashboardController","dashboard.html","loggedInView",{loggedIn: true}))
-            .state('dashboard2', AsyncRoute("/dashboard2?id","dashboard2","dashboard2Controller","dashboard2.html","loggedInView",{loggedIn: true}))
-            .state('manageUsers', AsyncRoute("/manageusers","manageUsers","manageUsersController","manageUsers.html","loggedInView",{loggedIn: true}))
-            .state('properties', AsyncRoute("/properties","properties","propertiesController","properties.html","loggedInView",{loggedIn: true}))
-            .state('history', AsyncRoute("/history?property","history","historyController","history.html","loggedInView",{loggedIn: true}))
-            .state('profile', AsyncRoute("/profile/:id","profile","profileController","profile.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
-            .state('updateProfile', AsyncRoute("/updateProfile?password&notifications&settings","updateprofile","updateProfileController","updateProfile.html","loggedInView",{loggedIn: true}))
-            .state('uploadSurveys', AsyncRoute("/uploadSurveys","uploadSurveys","uploadSurveysController","uploadSurveys.html","loggedInView",{loggedIn: true}))
-            .state('amenities', AsyncRoute("/amenities","amenities","amenitiesController","amenities.html","loggedInView",{loggedIn: true}))
-            .state('reporting', AsyncRoute("/reporting?property","reporting","reportingController",phantom ? "reporting-phantom.html" : "reporting.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
-            .state('contactus', AsyncRoute("/contactus","contact","contactController","contact.html","loggedInView",{loggedIn: true}))
-            .state('organizations', AsyncRoute("/organizations","organizations","organizationsController","organizations.html","loggedInView",{loggedIn: true}))
+            .state("dashboard", AsyncRoute("/dashboard?id&s", "dashboard", "dashboardController", "dashboard.html", "loggedInView",{loggedIn: true}))
+            .state("dashboard2", AsyncRoute("/dashboard2?id", "dashboard2", "dashboard2Controller", "dashboard2.html", "loggedInView",{loggedIn: true}))
+            .state("manageUsers", AsyncRoute("/manageusers", "manageUsers", "manageUsersController", "manageUsers.html", "loggedInView",{loggedIn: true}))
+            .state("properties", AsyncRoute("/properties", "properties", "propertiesController", "properties.html", "loggedInView",{loggedIn: true}))
+            .state("history", AsyncRoute("/history?property&user&date1&date2&active", "history", "historyController", "history.html", "loggedInView",{loggedIn: true}))
+            .state("profile", AsyncRoute("/profile/:id", "profile", "profileController", "profile.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
+            .state("updateProfile", AsyncRoute("/updateProfile?password&notifications&settings", "updateprofile", "updateProfileController", "updateProfile.html", "loggedInView",{loggedIn: true}))
+            .state("uploadSurveys", AsyncRoute("/uploadSurveys", "uploadSurveys", "uploadSurveysController", "uploadSurveys.html", "loggedInView",{loggedIn: true}))
+            .state("amenities", AsyncRoute("/amenities", "amenities", "amenitiesController", "amenities.html", "loggedInView",{loggedIn: true}))
+            .state("reporting", AsyncRoute("/reporting?property", "reporting", "reportingController",phantom ? "reporting-phantom.html" : "reporting.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
+            .state("contactus", AsyncRoute("/contactus", "contact", "contactController", "contact.html", "loggedInView",{loggedIn: true}))
+            .state("organizations", AsyncRoute("/organizations", "organizations", "organizationsController", "organizations.html", "loggedInView",{loggedIn: true}))
     });
 
-    app.filter("sanitize2", ['$sanitize', function ($sanitize) {
-        return function (htmlCode) {
+    app.filter("sanitize2", ["$sanitize", function ($sanitize) {
+        return function(htmlCode) {
             return $sanitize(htmlCode);
-        }
+        };
     }]);
 
-    app.filter("sanitize", ['$sce', function ($sce) {
+    app.filter("sanitize", ["$sce", function ($sce) {
         return function (htmlCode) {
             return $sce.trustAsHtml(htmlCode);
         }
     }]);
 
     app.run([
-        '$rootScope', '$uibModalStack',
+        "$rootScope", "$uibModalStack",
         function($rootScope, $uibModalStack) {
 
-            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
-                //Cancel all popups
-                $uibModalStack.dismissAll('cancel');
+            $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams, options) {
+                // Cancel all popups
+                $uibModalStack.dismissAll("cancel");
 
-                if ($rootScope.loggedIn && maintenance === true && toState.url.indexOf('maintenance') == -1) {
+                if ($rootScope.loggedIn && maintenance === true && toState.url.indexOf("maintenance") == -1) {
                     $rootScope.logoff();
                     return event.preventDefault();
                 }
@@ -134,7 +134,7 @@ define([], function () {
                         }
                     }
 
-                    window.location.href = '/';
+                    window.location.href = "/";
                     return event.preventDefault();
                 }
 
@@ -144,9 +144,9 @@ define([], function () {
                 }
 
 
-                ga('set', 'title', toState.name);
-                ga('set', 'page', toState.name);
-                ga('send', 'pageview');
+                ga("set", "title", toState.name);
+                ga("set", "page", toState.name);
+                ga("send", "pageview");
 
                 if ($rootScope.reload === true) {
                     location.reload();
@@ -155,7 +155,7 @@ define([], function () {
         }
     ]);
 
-    app.factory('$exceptionHandler', function () {
+    app.factory("$exceptionHandler", function () {
         return function errorCatcherHandler(exception, cause) {
             global_error(exception,{location: location.href});
         };

@@ -1,54 +1,54 @@
-'use strict';
-var mongoose = require('mongoose');
+"use strict";
+const mongoose = require("mongoose");
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var s = new Schema({
+const s = new Schema({
     name: {
-        type: String
+        type: String,
     },
     address: {
-        type: String
+        type: String,
     },
     city: {
-        type: String
+        type: String,
     },
     state: {
-        type: String
+        type: String,
     },
     zip: {
-        type: String
+        type: String,
     },
     phone: {
-        type: String
+        type: String,
     },
     contactName: {
-        type: String
+        type: String,
     },
     contactEmail: {
-        type: String
+        type: String,
     },
     website: {
-        type: String
+        type: String,
     },
     yearBuilt: {
-        type: Number
+        type: Number,
     },
     yearRenovated: {
-        type: Number
+        type: Number,
     },
     constructionType: {
-        type: String
+        type: String,
     },
     owner: {
-        type: String
+        type: String,
     },
     management: {
-        type: String
+        type: String,
     },
     loc: {
-        type: [Number],  // [<longitude>, <latitude>]
-        index: '2d'      // create the geospatial index
+        type: [Number], // [<longitude>, <latitude>]
+        index: "2d", // create the geospatial index
     },
     date: Date,
     active: Boolean,
@@ -57,7 +57,7 @@ var s = new Schema({
     notes: String,
     fees: {},
     orgid: {
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
     },
     floorplans: Array,
     totalUnits: Number,
@@ -66,8 +66,7 @@ var s = new Schema({
     comps: Array,
     survey: {},
     media: [],
-    custom: {}
-
+    custom: {},
 });
 
-module.exports = mongoose.model('Property', s, 'properties');
+module.exports = mongoose.model("Property", s, "properties");

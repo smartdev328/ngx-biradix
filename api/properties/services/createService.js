@@ -13,9 +13,11 @@ const AmenityService = require("../../amenities/services/amenityService");
 const OrganizationService = require("../../organizations/services/organizationService");
 const EmailService = require("../../business/services/emailService");
 const PropertyUsersService = require("../../propertyusers/services/propertyUsersService");
+const PropertyDataIntegrityViolation = require("../../../build/properties/services/PropertyDataIntegrityViolationService");
+const PropertyDataIntegrityViolationService = new PropertyDataIntegrityViolation.PropertyDataIntegrityViolationService();
 
 module.exports = {
-    update: function(operator, context,revertedFromId, property, options, callback) {
+    update: function(operator, context, revertedFromId, property, options, callback) {
         let modelErrors = [];
 
         errorCheck(property, modelErrors);
@@ -39,6 +41,8 @@ module.exports = {
                 if (err || !n) {
                     return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                 }
+
+                let originalProperty = JSON.parse(JSON.stringify(n));
 
                 // Check if we can update orgs
                 AccessService.canAccess(operator,"Properties/Create", function(canAccess) {
@@ -109,12 +113,11 @@ module.exports = {
                         }
                     }
 
-                    var original_media = _.cloneDeep(n.media);
+                    let original_media = _.cloneDeep(n.media);
 
                     populateSchema(property, n, all);
 
-                    n.save(function (err, prop) {
-
+                    n.save(function(err, prop) {
                         if (err) {
                             return callback([{msg: "Unable to update property. Please contact the administrator."}], null)
                         }
@@ -166,54 +169,56 @@ module.exports = {
                             });
                             //}
 
-                            //Add  all permissions  asynchornously
+                            // Add  all permissions  asynchornously
                             async.eachLimit(permissions, 10, function(permission, callbackp){
                                 AccessService.createPermission(permission, function (err, perm) {
-                                    callbackp(err, perm)
+                                    callbackp(err, perm);
                                 });
                             }, function(err) {
 
                             });
 
-                            //Remove  all permissions  asynchornously
+                            // Remove  all permissions  asynchornously
                             async.eachLimit(removePermissions, 10, function(permission, callbackp){
                                 AccessService.deletePermission(permission, function (err, perm) {
-                                    callbackp(err, perm)
+                                    callbackp(err, perm);
                                 });
                             }, function(err) {
 
                             });
 
                             if (profileChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_profile_updated', description: prop.name + ": " + profileChanges.length  + " update(s)", context: context, data: profileChanges})
+                                PropertyDataIntegrityViolationService.getUpdatePropertyViloations(operator, prop, originalProperty, !!revertedFromId).then((violationSet)=> {
+                                    AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_profile_updated", description: prop.name + ": " + profileChanges.length + " update(s)", context: context, data: profileChanges, dataIntegrityViolationSet: violationSet});
+                                });
                             }
 
                             if (contactChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_contact_updated', description: prop.name + ": " + contactChanges.length  + " update(s)", context: context, data: contactChanges})
                             }
 
                             if (feesChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_fees_updated', description: prop.name + ": " + feesChanges.length  + " update(s)", context: context, data: feesChanges})
                             }
 
                             if (amenitiesChanges.length > 0) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_amenities_updated', description: prop.name + ": " + (_.sum(amenitiesChanges, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(amenitiesChanges, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: amenitiesChanges})
                             }
 
                             floorplansAddedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_created', description: prop.name + ": " + change.description, context: context, data: [change]})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_created", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan added", !!revertedFromId)});
                             })
 
                             floorplansRemovedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_removed', description: prop.name + ": " + change.description, context: context, data: [change]})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_removed", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan removed", !!revertedFromId)});
                             })
 
                             floorplansUpdatedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_updated', description: prop.name + ": " + change.description, context: context, data: [change]})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_updated", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan updated", !!revertedFromId)});
                             })
 
                             floorplansAmenitiesUpdatedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId : revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: 'property_floorplan_amenities_updated', description: prop.name + ": " + change.description +  ": " + (_.sum(change.data, function(x) {return x.type == 'added' ? 1 : 0}))  + " added, " + (_.sum(change.data, function(x) {return x.type == 'removed' ? 1 : 0})) + " removed", context: context, data: change.data})
                             })
 
 
@@ -259,7 +264,7 @@ module.exports = {
         });
     },
     create: function(operator, context, property, callback) {
-        var modelErrors = [];
+        let modelErrors = [];
 
         errorCheck(property, modelErrors);
 
@@ -273,139 +278,134 @@ module.exports = {
             skipGeo = true;
         }
 
-        getHelpers(operator, property, {skipGeo: skipGeo}, function(err, all)
-            {
-                if (err) {
-                    return callback([{msg:err}],null)
-                }
+        getHelpers(operator, property, {skipGeo: skipGeo}, function(err, all) {
+            if (err) {
+                return callback([{msg: err}], null);
+            }
 
-                if (skipGeo) {
-                    all.geo = {latitude: property.loc[0], longitude: property.loc[1]};
-                }
+            if (skipGeo) {
+                all.geo = {latitude: property.loc[0], longitude: property.loc[1]};
+            }
 
-                populateAmenitiesandFloorplans(property, all);
+            populateAmenitiesandFloorplans(property, all);
 
-                var permissions = [];
-                // Skip all permission logic if custom property
-                if (!property.isCustom) {
-                    // if org of property is provided, assign manage to all CMs for that org
-                    // this is our implict assignment
-                    var CMs = [];
-                    if (property.orgid) {
-
-                        CMs = _.filter(all.roles, function (x) {
-                            return x.orgid == property.orgid.toString() && x.tags.indexOf('CM') > -1
-                        })
-                    }
-
-                    // and assign view opermissions to all non admins and not POs
-                    var viewers = _.filter(all.roles, function (x) {
-                        return x.tags.indexOf('CM') > -1 || x.tags.indexOf('RM') > -1 || x.tags.indexOf('BM') > -1
-                    })
-
-
-                    // Assign all permisions to viewers and CMS
-                    viewers.forEach(function (x) {
-                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyView'})
-                    })
-
-                    CMs.forEach(function (x) {
-                        permissions.push({executorid: x._id.toString(), allow: true, type: 'PropertyManage'})
-                    });
-                } else {
-                    // Custom Properties need explicit access since they are not in org of creator
-                    permissions.push({executorid: operator._id.toString(), allow: true, type: "PropertyManage"});
-                }
-
-                var profileChanges = getProfileChanges(property, null, all);
-
-                var newName = "None"
+            let permissions = [];
+            // Skip all permission logic if custom property
+            if (!property.isCustom) {
+                // if org of property is provided, assign manage to all CMs for that org
+                // this is our implict assignment
+                let CMs = [];
                 if (property.orgid) {
-                    newName = _.find(all.orgs, function(x) {return x._id.toString() == property.orgid.toString()}).name
+                    CMs = _.filter(all.roles, function(x) {
+                        return x.orgid == property.orgid.toString() && x.tags.indexOf("CM") > -1;
+                    });
                 }
 
-                profileChanges.push({description: "Company: " + newName});
-                // console.log(profileChanges);
+                // and assign view opermissions to all non admins and not POs
+                let viewers = _.filter(all.roles, function(x) {
+                    return x.tags.indexOf("CM") > -1 || x.tags.indexOf("RM") > -1 || x.tags.indexOf("BM") > -1;
+                });
 
-                var contactChanges = getContactChanges(property, null, all);
-                var feesChanges = getFeesChanges(property,null, all);
+                // Assign all permisions to viewers and CMS
+                viewers.forEach(function(x) {
+                    permissions.push({executorid: x._id.toString(), allow: true, type: "PropertyView"});
+                });
 
-                var amenitiesChanges = getAmenitiesChanges(property,n, all,"community_amenities", "Community");
-                amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property,n, all,"location_amenities", "Location"));
+                CMs.forEach(function(x) {
+                    permissions.push({executorid: x._id.toString(), allow: true, type: "PropertyManage"});
+                });
+            } else {
+                // Custom Properties need explicit access since they are not in org of creator
+                permissions.push({executorid: operator._id.toString(), allow: true, type: "PropertyManage"});
+            }
 
-                var floorplansAddedChanges = getFloorplansAddedChanges(property,n, all);
-                var picturesChanges = getPicturesChanges(property,n, all);
+            let profileChanges = getProfileChanges(property, null, all);
 
-                var changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesChanges.data);
+            let newName = "None";
+            if (property.orgid) {
+                newName = _.find(all.orgs, function(x) {
+                    return x._id.toString() == property.orgid.toString();
+                }).name;
+            }
 
+            profileChanges.push({description: "Company: " + newName});
 
-                var n = new PropertySchema();
+            let contactChanges = getContactChanges(property, null, all);
+            let feesChanges = getFeesChanges(property, null, all);
+            let amenitiesChanges = getAmenitiesChanges(property, null, all, "community_amenities", "Community");
+            amenitiesChanges = amenitiesChanges.concat(getAmenitiesChanges(property, null, all, "location_amenities", "Location"));
+            let floorplansAddedChanges = getFloorplansAddedChanges(property, null, all);
+            let picturesChanges = getPicturesChanges(property, null, all);
 
-                populateSchema(property, n, all);
+            let changes = profileChanges.concat(contactChanges).concat(feesChanges).concat(amenitiesChanges).concat(floorplansAddedChanges).concat(picturesChanges.data);
 
-                n.active = true;
-                n.orgid = property.orgid;
-                n.comps = [];
-                n.date = Date.now();
-                n.needsApproval = true;
+            let n = new PropertySchema();
+
+            populateSchema(property, n, all);
+
+            n.active = true;
+            n.orgid = property.orgid;
+            n.comps = [];
+            n.date = Date.now();
+            n.needsApproval = true;
+
+            if (property.isCustom) {
+                n.needsApproval = false;
+            }
+            n.needsSurvey = true;
+
+            if (property.isCustom) {
+                n.custom = {owner: {name: operator.first + " " + operator.last, id: operator._id}};
+
+                if (n.name.indexOf("Custom ") != 0) {
+                    n.name = "Custom " + n.name.trim();
+                }
+            }
+
+            n.save(function(err, prop) {
+                if (err) {
+                    console.log(err);
+                    return callback([{msg: "Unable to create property. Please contact the administrator."}], null);
+                }
+
+                let type = "property_created";
 
                 if (property.isCustom) {
-                    n.needsApproval = false;
-                }
-                n.needsSurvey = true;
-
-                if (property.isCustom) {
-                    n.custom = {owner: {name: operator.first + ' ' + operator.last, id: operator._id}}
-
-                    if (n.name.indexOf('Custom ') != 0) {
-                        n.name = "Custom " + n.name.trim();
-                    }
+                    type = "property_created_custom";
                 }
 
-                n.save(function (err, prop) {
+                PropertyDataIntegrityViolationService.getNewPropertyViloations(operator, prop).then((violationSet)=> {
+                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes, dataIntegrityViolationSet: violationSet});
+                });
 
-                    if (err) {
-                        console.log(err);
-                        return callback([{msg:"Unable to create property. Please contact the administrator."}], null)
-                    }
+                if (permissions.length > 0 ) {
+                    permissions.forEach(function(x) {
+                        x.resource = prop._id.toString();
+                    });
+                }
 
-                    var type = 'property_created';
+                AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), "hidden", "RM_GROUP"]}, function() {});
+                AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), "hidden", "BM_GROUP"]}, function() {});
+                AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), "hidden", "PO_GROUP"]}, function() {});
 
-                    if (property.isCustom) {
-                        type = 'property_created_custom';
-                    }
-
-                    AuditService.create({operator: operator, property: prop, type: type, description: prop.name, context: context, data: changes})
-
-                    if (permissions.length > 0 ) {
-                        permissions.forEach(function(x) {
-                            x.resource = prop._id.toString();
-                        })
-                    }
-
-                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'RM_GROUP']}, function(){});
-                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'BM_GROUP']}, function(){});
-                    AccessService.createRole({name: "Property " + prop._id.toString(), tags: [prop._id.toString(), 'hidden', 'PO_GROUP']}, function(){});
-
-                    async.eachLimit(permissions, 10, function(permission, callbackp) {
-                        AccessService.createPermission(permission, function(err, perm) {
-                            callbackp(err, perm);
-                        });
-                    }, function(err) {
-                        // link to yourself to treat yourself as a comp
-                        CompsService.linkComp(null,null,null,false,prop._id, prop._id,function() {
-                            if (!err) {
-                                callback(null, prop);
-                            } else {
-                                callback([{msg: err}], prop);
-                            }
-                        });
+                async.eachLimit(permissions, 10, function(permission, callbackp) {
+                    AccessService.createPermission(permission, function(err, perm) {
+                        callbackp(err, perm);
+                    });
+                }, function(err) {
+                    // link to yourself to treat yourself as a comp
+                    CompsService.linkComp(null, null, null, false, prop._id, prop._id, function() {
+                        if (!err) {
+                            callback(null, prop);
+                        } else {
+                            callback([{msg: err}], prop);
+                        }
                     });
                 });
-            }
-        );
+            });
+        });
     },
-}
+};
 
 function isValidString(s) {
     return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s);
@@ -504,54 +504,52 @@ function errorCheck(property, modelErrors) {
         if (!fp.sqft || isNaN(fp.sqft) || parseInt(fp.sqft) < 0) {
             modelErrors.push({param: 'floorplan', msg : 'A floorplan has an invalid number of square feet'});
         }
-    })
+    });
 }
 
 var getHelpers = function(operator, property, options, callback) {
     async.parallel({
-        geo: function (callbackp) {
-
+        geo: function(callbackp) {
             if (options.skipGeo) {
-                callbackp(null,{latitude:property.loc[0], longitude: property.loc[1]});
-            }
-            else {
-                var address = property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip;
-                GeocodeService.geocode(address, true, function (err, res, fromCache) {
+                callbackp(null, {latitude: property.loc[0], longitude: property.loc[1]});
+            } else {
+                let address = property.address + " " + property.city + " " + property.state + " " + property.zip;
+                GeocodeService.geocode(address, true, function(err, res, fromCache) {
                     // console.log(res[0].latitude, res[0].longitude);
-                    console.log("GEOCODE: 1 [error] ", address, ': ', err)
-                    console.log("GEOCODE: 1 [result] ", address, ': ', res)
-                    console.log("GEOCODE: 1 [fromCache] ", address, ': ', fromCache)
+                    if (err) {
+                        console.log("GEOCODE: 1 [error] ", address, ": ", err);
+                    }
+                    console.log("GEOCODE: 1 [result] ", address, ": ", res);
+                    console.log("GEOCODE: 1 [fromCache] ", address, ": ", fromCache);
 
                     if (!res || !res[0] || !res[0].latitude) {
-                        //retry in 5 seconds
+                        // retry in 5 seconds
                         setTimeout(function() {
                             GeocodeService.geocode(address, false, function (err, res, fromCache) {
                                 // console.log(res[0].latitude, res[0].longitude);
-
-                                console.log("GEOCODE: 2 [error] ", address, ': ', err)
-                                console.log("GEOCODE: 2 [result] ", address, ': ', res)
-                                console.log("GEOCODE: 2 [fromCache] ", address, ': ', fromCache)
+                                if (err) {
+                                    console.log("GEOCODE: 2 [error] ", address, ": ", err);
+                                }
+                                console.log("GEOCODE: 2 [result] ", address, ": ", res);
+                                console.log("GEOCODE: 2 [fromCache] ", address, ": ", fromCache);
 
                                 if (!res || !res[0] || !res[0].latitude) {
-
-                                    var email = {
+                                    let email = {
                                         to: "alex@biradix.com,eugene@biradix.com",
                                         subject: "Geocode Error",
                                         logo: "https://platform.biradix.com/images/organizations/biradix.png",
-                                        template: 'debug.html',
+                                        template: "debug.html",
                                         templateData: {
                                             debug: JSON.stringify({
                                                 err: err,
                                                 res: res,
-                                                address: property.address + ' ' + property.city + ' ' + property.state + ' ' + property.zip,
-                                                user: operator
-                                            })
-                                        }
+                                                address: property.address + " " + property.city + " " + property.state + " " + property.zip,
+                                                user: operator,
+                                            }),
+                                        },
                                     };
 
-
-                                    EmailService.send(email, function (emailError, status) {
-                                    })
+                                    EmailService.send(email, function(emailError, status) {});
 
                                     callbackp("Unable to lookup address. Please re-submit to try again. If the problem persists, please contact support@biradix.com", null)
                                 } else {

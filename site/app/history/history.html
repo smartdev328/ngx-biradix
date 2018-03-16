@@ -40,13 +40,25 @@
             Search: <Br>
             <input type="text" class="form-control input-sm" ng-model="options.search">
         </div>
+
+        <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
+            Data Integrity Checks: <Br>
+            <filter-list options="integrityOptions" items="options.integrityItems"></filter-list>
+        </div>
+
+        <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
+            Data Integrity Approval: <Br>
+            <select class="form-control input-sm" ng-model="options.approved"
+                    ng-options="item for item in options.approvedOptions">
+            </select>
+        </div>
+
         <div class="col-xs-1" style="height:55px">
             <br>
             <button class="btn btn-primary btn-sm" ng-click="resetPager()">Filter</button>
         </div>
+
     </div>
-
-
 
 <Br>
     <div class="alert alert-warning" role="alert" ng-if="!activity || activity.length == 0"><b>There are no results matching your criteria.</b></div>
@@ -61,9 +73,28 @@
             <th>Action</th>
             <th>Details</th>
             <th>Operator</th>
+            <th ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px">
+                <input ng-click="checkAll()" ng-model="options.checkAll" style="width:14px;height:14px;margin:1px 0px 0px 0px" type="checkbox">
+            </th>
+            <th ng-if="me.permissions.indexOf('Admin') > -1">
+                <div class="form-group has-feedback pull-left" style="margin-bottom:0px; margin-right:5px">
+                    <div class="btn-group action_dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:0px 5px 0px 5px">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                            <li ng-if="canApproveChecked()"><a href ng-click="approveChecked()"><span class="fa fa-thumbs-up fa-fw"></span> Approve Checked</a></li>
+                            <li ng-if="!canApproveChecked()"><a href
+                                                                onclick="event.preventDefault();event.stopPropagation()"
+                                                                style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
+                            ><span class="fa fa-thumbs-up fa-fw"></span> Approve Checked</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </th>
             <th>&nbsp;</th>
         </tr>
-        <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : ''}">
+        <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : '', 'background-color' : getDataIntegrityColor(row.severity, row.dataIntegrityViolationSet.approval)}">
             <td style="text-align: center"><i
                     ng-if="me.permissions.indexOf('History/MoreInfo') > -1 || row.data"
                     ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
@@ -71,8 +102,17 @@
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
             <td>{{row.operator.name}}</td>
-            <td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
+                <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox" ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval">
+            </td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1" nowrap>
+                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)" style="padding-right:5px"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
+                <span ng-if="row.dataIntegrityViolationSet.violations.length > 0 && row.dataIntegrityViolationSet.approval" style="padding-right:20px"></span>
+                <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0" ng-click="proximity(row)"><span class="fa fa-search-plus" tooltip-append-to-body="true" uib-tooltip="Proximity Search"></span></A>
+            </td>
+            <td nowrap>
                 <span ng-if="getAudit(row.type).undo && row.revertedFromId" class="fa fa-info-circle" tooltip-placement="left" uib-tooltip="This action is due to an earlier undo"></span>
+                <span ng-if="!getAudit(row.type).undo || !row.revertedFromId" style="padding-right:16px"></span>
                 <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
                 <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="'mouseenter'"
                    popover-placement="left"
@@ -82,6 +122,24 @@
                 ><span class="fa fa-lock"></span></a>
                 <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
             </td>
+        </tr>
+
+        <tr ng-if="me.permissions.indexOf('Admin') > -1" ng-repeat="violation in row.dataIntegrityViolationSet.violations">
+            <td style="border-top:0px !important;">
+
+            </td>
+            <Td colspan="100%" ng-style="{'background-color' : getDataIntegrityColor(violation.dataIntegrityCheck.severity, row.dataIntegrityViolationSet.approval) }">
+                <B>{{violation.dataIntegrityCheck.name}}</B><Br>
+                <span ng-bind-html="violation.description"></span>
+            </Td>
+        </tr>
+        <tr ng-if="me.permissions.indexOf('Admin') > -1 && row.dataIntegrityViolationSet.approval">
+            <td style="border-top:0px !important;">
+
+            </td>
+            <Td colspan="100%" ng-style="{'background-color' : getDataIntegrityColor(1, row.dataIntegrityViolationSet.approval) }">
+                Approved By: <B>{{row.dataIntegrityViolationSet.approval.name}}</B> on <i><b>{{row.dataIntegrityViolationSet.approval.date | date: 'short'}}</b></i><Br>
+            </Td>
         </tr>
         <tr ng-if="row.open">
             <td colspan="100%">
