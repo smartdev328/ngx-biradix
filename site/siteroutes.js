@@ -63,7 +63,7 @@ module.exports = (function() {
 
     ui.get("/", function(req, res) {
         req.headers = req.headers || {"user-agent": ""};
-        let phantom = req.headers["user-agent"].indexOf("PhantomJS") > -1;
+        let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
         let subdomain = req.hostname.split(".")[0].toLowerCase();
         let local = (subdomain == "localhost" || phantom);
 
