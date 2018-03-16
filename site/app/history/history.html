@@ -73,13 +73,13 @@
         <tbody>
         <tr class="thead">
             <th style="width:24px"></th>
-            <th ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px">
-                <input ng-click="checkAll()" ng-model="options.checkAll" style="width:14px;height:14px;margin:1px 0px 0px 0px" type="checkbox">
-            </th>
             <th>Date</th>
             <th>Action</th>
             <th>Details</th>
             <th>Operator</th>
+            <th ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px">
+                <input ng-click="checkAll()" ng-model="options.checkAll" style="width:14px;height:14px;margin:1px 0px 0px 0px" type="checkbox">
+            </th>
             <th ng-if="me.permissions.indexOf('Admin') > -1">&nbsp;</th>
             <th>&nbsp;</th>
         </tr>
@@ -87,13 +87,13 @@
             <td style="text-align: center"><i
                     ng-if="me.permissions.indexOf('History/MoreInfo') > -1 || row.data"
                     ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
-            <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
-                <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox" ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval">
-            </td>
             <td>{{row.date | date: 'short'}}</td>
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
             <td>{{row.operator.name}}</td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
+                <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox" ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval">
+            </td>
             <td ng-if="me.permissions.indexOf('Admin') > -1" nowrap>
                 <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)" style="padding-right:5px"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
                 <span ng-if="row.dataIntegrityViolationSet.violations.length > 0 && row.dataIntegrityViolationSet.approval" style="padding-right:20px"></span>
