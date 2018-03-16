@@ -1,10 +1,10 @@
 import {DataIntegrityCheckType} from "../../audit/enums/DataIntegrityEnums";
-import {DataIntegrityViolation} from "../../audit/objects/DataIntegrityViolation";
-import {DataIntegrityViolationSet} from "../../audit/objects/DataIntegrityViolationSet";
+import {IDataIntegrityViolation} from "../../audit/interfaces/IDataIntegrityViolation";
+import {IDataIntegrityViolationSet} from "../../audit/interfaces/IDataIntegrityViolationSet";
 import {IUser} from "../interfaces/IUser";
 
 export class UserDataIntegrityViolationService {
-    public getChanged(newUser: IUser, oldUser: IUser, isUndo: boolean): DataIntegrityViolationSet {
+    public getChanged(newUser: IUser, oldUser: IUser, isUndo: boolean): IDataIntegrityViolationSet {
         if (isUndo) {
             return null;
         }
@@ -16,10 +16,14 @@ export class UserDataIntegrityViolationService {
             return null;
         }
 
-        const violationSet = new DataIntegrityViolationSet();
-        const v = new DataIntegrityViolation();
+        const violationSet: IDataIntegrityViolationSet = {
+            violations: [],
+        };
 
-        v.description = `New Name: ${newUser.first + " " + newUser.last}<br>Old Name: ${oldUser.first + " " + oldUser.last}<br>`;
+        const v: IDataIntegrityViolation = {
+            checkType: null,
+            description: `New Name: ${newUser.first + " " + newUser.last}<br>Old Name: ${oldUser.first + " " + oldUser.last}<br>`,
+        };
 
         if (newUser.email.toLowerCase() === oldUser.email.toLowerCase()) {
             v.checkType = DataIntegrityCheckType.USER_NAME_CHANGED;

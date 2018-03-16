@@ -58,10 +58,6 @@
             <button class="btn btn-primary btn-sm" ng-click="resetPager()">Filter</button>
         </div>
 
-        <div class="col-xs-1" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1 && activity.length > 0">
-            <br>
-            <button class="btn btn-success btn-sm" ng-click="approveChecked()" ng-disabled="!canApproveChecked()">Approve Checked</button>
-        </div>
     </div>
 
 <Br>
@@ -80,7 +76,22 @@
             <th ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px">
                 <input ng-click="checkAll()" ng-model="options.checkAll" style="width:14px;height:14px;margin:1px 0px 0px 0px" type="checkbox">
             </th>
-            <th ng-if="me.permissions.indexOf('Admin') > -1">&nbsp;</th>
+            <th ng-if="me.permissions.indexOf('Admin') > -1">
+                <div class="form-group has-feedback pull-left" style="margin-bottom:0px; margin-right:5px">
+                    <div class="btn-group action_dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:0px 5px 0px 5px">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                            <li ng-if="canApproveChecked()"><a href ng-click="approveChecked()"><span class="fa fa-thumbs-up fa-fw"></span> Approve Checked</a></li>
+                            <li ng-if="!canApproveChecked()"><a href
+                                                                onclick="event.preventDefault();event.stopPropagation()"
+                                                                style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
+                            ><span class="fa fa-thumbs-up fa-fw"></span> Approve Checked</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </th>
             <th>&nbsp;</th>
         </tr>
         <tr ng-repeat-start="row in activity" ng-style="{'color' : row.reverted ? 'silver' : '', 'background-color' : getDataIntegrityColor(row.severity, row.dataIntegrityViolationSet.approval)}">

@@ -1,17 +1,22 @@
 import {DataIntegrityCheckType} from "../../audit/enums/DataIntegrityEnums";
-import {DataIntegrityViolation} from "../../audit/objects/DataIntegrityViolation";
-import {DataIntegrityViolationSet} from "../../audit/objects/DataIntegrityViolationSet";
+import {IDataIntegrityViolation} from "../../audit/interfaces/IDataIntegrityViolation";
+import {IDataIntegrityViolationSet} from "../../audit/interfaces/IDataIntegrityViolationSet";
 import {IMarketSurvey} from "../interfaces/IMarketSurvey";
 import {IMarketSurveyFloorplan} from "../interfaces/IMarketSurveyFloorplan";
 
 export class MarketSurveyDataIntegrityViolationService {
-    public getChanged(newSurvey: IMarketSurvey, oldSurvey: IMarketSurvey, isUndo: boolean): DataIntegrityViolationSet {
+    public getChanged(newSurvey: IMarketSurvey, oldSurvey: IMarketSurvey, isUndo: boolean): IDataIntegrityViolationSet {
         if (isUndo || !oldSurvey._id) {
             return null;
         }
-        const violationSet = new DataIntegrityViolationSet();
-        let v = new DataIntegrityViolation();
-        v.description = "";
+        const violationSet: IDataIntegrityViolationSet = {
+            violations: [],
+        };
+
+        let v: IDataIntegrityViolation = {
+            checkType: null,
+            description: "",
+        };
 
         let n = newSurvey.occupancy || 0;
         let o = oldSurvey.occupancy || 0;
@@ -64,8 +69,10 @@ export class MarketSurveyDataIntegrityViolationService {
 
         /* Separate violation for NER */
 
-        v = new DataIntegrityViolation();
-        v.description = "";
+        v = {
+            checkType: null,
+            description: "",
+        };
 
         const totalUnitsNew: number = calculateTotalUnits(newSurvey.floorplans);
         const totalUnitsOld: number = calculateTotalUnits(oldSurvey.floorplans);
