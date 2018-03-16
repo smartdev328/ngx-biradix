@@ -1,7 +1,8 @@
 "use strict";
 define([
     "app",
-], function(app) {
+    "async",
+], function(app, async) {
     app.controller("historyController"
         , ["$scope", "$rootScope", "$location", "ngProgress", "$dialog", "$auditService", "toastr", "$stateParams", "$propertyService", "$userService",
             function($scope, $rootScope, $location, ngProgress, $dialog, $auditService, toastr, $stateParams, $propertyService, $userService) {
@@ -33,10 +34,32 @@ define([
             selectedEndDate: $stateParams.date2 || null,
         };
 
-        $scope.options = {search: "", integrityItems: [], approvedOptions: ["All", "Approved Only", "Unapproved Only"]};
+        $scope.options = {search: "", integrityItems: [],
+            approvedOptions: ["All", "Approved Only", "Unapproved Only"],
+            checked: {},
+            checkAll: false,
+        };
         $scope.options.approved = $scope.options.approvedOptions[0];
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
+
+        $scope.checkAll = function() {
+            $scope.activity.forEach(function(a) {
+               if (a.dataIntegrityViolationSet && a.dataIntegrityViolationSet.violations.length > 0 && !a.dataIntegrityViolationSet.approval) {
+                   $scope.options.checked[a._id] = $scope.options.checkAll;
+               }
+            });
+        }
+
+        $scope.canApproveChecked = function() {
+            for (var key in $scope.options.checked) {
+                if ($scope.options.checked[key] === true) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         $scope.formatUsers = function(data) {
             var u;
@@ -101,6 +124,9 @@ define([
         }
 
         $scope.reload = function() {
+            $scope.options.checked = {};
+            $scope.options.checkAll = false;
+
             $scope.localLoading = false;
 
             var types = _.pluck(_.filter($scope.typeItems, function(x) {
@@ -300,6 +326,54 @@ define([
             });
         };
 
+        $scope.approveChecked = function() {
+            var ids = [];
+            for (var key in $scope.options.checked) {
+                if ($scope.options.checked[key] === true) {
+                    ids.push(key);
+                }
+            }
+
+            $dialog.confirm("Are you sure you want to mark <b>" + ids.length + "</b> item(s) as 'Approved' for Data Integrity Violations?", function() {
+                $scope.localLoading = false;
+                var success = 0;
+                var errors = 0;
+
+                async.eachLimit(ids, 3, function(id, callback) {
+                    $auditService.approve(id).then(function(response) {
+                        var row = _.find($scope.activity, function(x) {
+                            return x._id.toString() == id.toString();
+                        });
+                            if (response.data.errors && response.data.errors.length > 0) {
+                                errors++;
+                            } else {
+                                row.dataIntegrityViolationSet.approval = {
+                                    name: $rootScope.me.first + " " + $rootScope.me.last,
+                                    date: new Date(),
+                                };
+                                success++;
+                            }
+                            callback();
+                        },
+                        function(error) {
+                            errors++;
+                            callback();
+                        });
+                }, function(err) {
+                    if (success > 0) {
+                        toastr.success(success + " Data Integrity Violation(s) Approved successfully.");
+                    }
+
+                    if (errors > 0) {
+                        toastr.success(errors + " Data Integrity Violation(s) had errors.");
+                    }
+
+                    $scope.localLoading = true;
+                });
+            }, function() {
+
+            });
+        };
         $scope.undo = function(row) {
             $dialog.confirm("Are you sure you want to Undo this item?", function() {
                 $scope.localLoading = false;

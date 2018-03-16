@@ -57,9 +57,12 @@
             <br>
             <button class="btn btn-primary btn-sm" ng-click="resetPager()">Filter</button>
         </div>
+
+        <div class="col-xs-1" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1 && activity.length > 0">
+            <br>
+            <button class="btn btn-success btn-sm" ng-click="approveChecked()" ng-disabled="!canApproveChecked()">Approve Checked</button>
+        </div>
     </div>
-
-
 
 <Br>
     <div class="alert alert-warning" role="alert" ng-if="!activity || activity.length == 0"><b>There are no results matching your criteria.</b></div>
@@ -70,6 +73,9 @@
         <tbody>
         <tr class="thead">
             <th style="width:24px"></th>
+            <th ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px">
+                <input ng-click="checkAll()" ng-model="options.checkAll" style="width:14px;height:14px;margin:1px 0px 0px 0px" type="checkbox">
+            </th>
             <th>Date</th>
             <th>Action</th>
             <th>Details</th>
@@ -81,6 +87,9 @@
             <td style="text-align: center"><i
                     ng-if="me.permissions.indexOf('History/MoreInfo') > -1 || row.data"
                     ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="row.open = !(row.open || false);"></i></td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
+                <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox" ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval">
+            </td>
             <td>{{row.date | date: 'short'}}</td>
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
