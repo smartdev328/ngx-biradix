@@ -49,7 +49,7 @@ define([
                    $scope.options.checked[a._id] = $scope.options.checkAll;
                }
             });
-        }
+        };
 
         $scope.canApproveChecked = function() {
             for (var key in $scope.options.checked) {
@@ -59,7 +59,7 @@ define([
             }
 
             return false;
-        }
+        };
 
         $scope.formatUsers = function(data) {
             var u;
@@ -81,9 +81,10 @@ define([
                 } else {
                     items.push(u);
                 }
-            })
+            });
+
             return items;
-        }
+        };
 
         $scope.autocompleteusers = function(search, callback) {
             $userService.search({
@@ -97,16 +98,17 @@ define([
             });
         };
 
-        $scope.autocompleteproperties = function(search,callback) {
+        $scope.autocompleteproperties = function(search, callback) {
             $propertyService.search({
                 limit: 100,
-                permission: ['PropertyManage', 'CompManage'],
+                permission: ["PropertyManage", "CompManage"],
                 active: true,
-                search: search
-                , skipAmenities: true
-            }).then(function (response) {
-
-                response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
+                search: search,
+                skipAmenities: true,
+            }).then(function(response) {
+                response.data.properties = _.sortBy(response.data.properties, function(x) {
+                    return x.name;
+                });
                 response.data.properties.forEach(function(p) {
                     p.isCustom = !!(p.custom && p.custom.owner);
 
@@ -115,13 +117,13 @@ define([
                     } else {
                         p.group = $rootScope.me.orgs[0].name + " Properties";
                     }
-                })
+                });
 
                 callback(response.data.properties);
             }, function(error) {
                 callback([]);
             });
-        }
+        };
 
         $scope.reload = function() {
             $scope.options.checked = {};
@@ -315,6 +317,7 @@ define([
                                 date: new Date(),
                             };
                             $scope.localLoading = true;
+                            $scope.options.checked[row._id] = false;
                         }
                     },
                     function(error) {
@@ -368,6 +371,9 @@ define([
                         toastr.success(errors + " Data Integrity Violation(s) had errors.");
                     }
 
+                    $scope.options.checked = {};
+                    $scope.options.checkAll = false;
+
                     $scope.localLoading = true;
                 });
             }, function() {
@@ -384,7 +390,9 @@ define([
                             $scope.localLoading = true;
                         } else {
                             toastr.success("Undo action performed successfully.");
-                            window.setTimeout(function() {$scope.reload();}, 1000);
+                            window.setTimeout(function() {
+                                $scope.reload();
+                            }, 1000);
                         }
                     },
                     function(error) {
@@ -400,24 +408,24 @@ define([
             return _.find($scope.audits, function(x) {
                 return x.key == key;
             });
-        }
+        };
 
         $scope.resetPager = function() {
             $scope.pager.offset = 0;
             $scope.reload();
-        }
+        };
 
         $scope.pagerChanged = function() {
-            $scope.pager.offset = (($scope.pager.currentPage || 1) - 1) * parseInt($scope.pager.itemsPerPage)
+            $scope.pager.offset = (($scope.pager.currentPage || 1) - 1) * parseInt($scope.pager.itemsPerPage);
             $scope.reload();
-        }
+        };
 
-        $scope.pageStart = function () {
+        $scope.pageStart = function() {
             if ($scope.pager.count == 0) return 0;
             return (($scope.pager.currentPage || 1) - 1) * parseInt($scope.pager.itemsPerPage) + 1;
-        }
+        };
 
-        $scope.pageEnd = function () {
+        $scope.pageEnd = function() {
             if ($scope.pager.count == 0) return 0;
             var x = $scope.pageStart() - 1 + parseInt($scope.pager.itemsPerPage);
 
@@ -426,6 +434,6 @@ define([
             }
 
             return parseInt(x);
-        }
+        };
     }]);
 });
