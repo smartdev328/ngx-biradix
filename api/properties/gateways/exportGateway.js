@@ -120,16 +120,16 @@ module.exports = {
             });
         });
 
-        Routes.get('/reportsPdf', function (req, res) {
-            var timer = new Date().getTime();
+        Routes.get("/reportsPdf", function(req, res) {
+            let timer = new Date().getTime();
             redisService.getByKey(req.query.key, function(err, result) {
-                var query = {};
+                let query = {};
 
                 if (result) {
                     query = JSON.parse(result);
                 }
 
-                var message = {
+                let message = {
                     user: req.user,
                     url: req.basePath,
                     timezone: query.timezone,
@@ -139,13 +139,14 @@ module.exports = {
                     compIds: query.compIds,
                     type: query.type,
                     propertyIds: query.propertyIds,
-                    settings : query.settings,
+                    settings: query.settings,
                 };
 
                 bus.query(settings.PDF_REPORTING_QUEUE,
                     message,
-                    function (data) {
-                        console.log("Pdf Reporting Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                    function(data) {
+                        let log = {"property_ids": query.propertyIds, "user": req.user.email, "name": data.filename, "pdf_time_ms": (new Date().getTime() - timer)};
+                        console.log(log);
 
                         if (!data.stream) {
                             error.send(new Error(data.err), message);
