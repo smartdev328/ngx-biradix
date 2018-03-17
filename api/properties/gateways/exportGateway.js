@@ -146,7 +146,7 @@ module.exports = {
                     message,
                     function(data) {
                         let log = {"property_ids": query.propertyIds, "user": req.user.email, "name": data.filename, "pdf_time_ms": (new Date().getTime() - timer)};
-                        console.log(log);
+                        console.log(JSON.stringify(log));
 
                         if (!data.stream) {
                             error.send(new Error(data.err), message);
