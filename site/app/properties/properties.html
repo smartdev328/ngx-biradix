@@ -50,21 +50,23 @@
         <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
             <table>
                 <tr>
-                    <td colspan="2">
+                    <td style="width:50px">
                         <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:2px !important;font-size:11px;height:25px"
                                 ng-change="resetPager()"
                                 ng-options="item for item in limits">
                         </select>
+                    </td>
+                    <td>
                         &nbsp;Rows
                     </Td>
                 </tr>
-                <tr>
+                <tr ng-if="me.permissions.indexOf('Admin') > -1">
                     <Td colspan="100%">
                         <hr style="margin: 10px 0px">
                     </Td>
                 </tr>
                 <tr ng-if="me.permissions.indexOf('Admin') > -1">
-                    <th colspan="2">
+                    <th colspan="2" class="center">
                         Active Status:
                     </th>
                 </tr>
@@ -85,17 +87,17 @@
                         &nbsp;<label for="showInactive" style="font-weight: normal">Inactive</label>
                     </Td>
                 </tr>
-                <tr ng-if="me.permissions.indexOf('Admin') > -1">
+                <tr ng-if="me.permissions.indexOf('Admin') > -1 || me.permissions.indexOf('Properties/Custom') > -1">
                     <Td colspan="100%">
                         <hr style="margin: 10px 0px">
                     </Td>
                 </tr>
-                <tr>
+                <tr ng-if="me.permissions.indexOf('Admin') > -1 || me.permissions.indexOf('Properties/Custom') > -1">
                     <th colspan="2">
                         Properties:
                     </th>
                 </tr>
-                <tr>
+                <tr ng-if="me.permissions.indexOf('Admin') > -1 || me.permissions.indexOf('Properties/Custom') > -1">
                     <td class="center">
                         <input type="checkbox" ng-model="options.showCustom" ng-click="calcCustom()" id="showCustom">
                     </td>
@@ -104,7 +106,7 @@
                     </Td>
                 </tr>
 
-                <tr>
+                <tr ng-if="me.permissions.indexOf('Admin') > -1 || me.permissions.indexOf('Properties/Custom') > -1">
                     <td class="center">
                         <input type="checkbox" ng-model="options.showShared" ng-click="calcCustom()" id="showShared">
                     </td>
