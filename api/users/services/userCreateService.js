@@ -56,12 +56,12 @@ module.exports = {
                 if (changes.length > 0) {
                     var audit = {
                         operator: operator,
-                        revertedFromId : null,
+                        revertedFromId: null,
                         user: usr,
                         type: 'user_updated',
                         description: usr.first + ' ' + usr.last,
                         context: context,
-                        data: changes
+                        data: changes,
                     };
 
                     AuditService.create(audit, function() {})
@@ -427,7 +427,7 @@ function getHelpers(emailLower, callback) {
             }
         },
         roles : function(callbackp) {
-            AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']},callbackp);
+            AccessService.getOrgRoles({tags: ['Admin', 'CM', 'RM', 'BM', 'PO','Guest']}, callbackp);
         },
 
         memberships: function (callbackp) {
@@ -570,7 +570,7 @@ function removeUserFromRole(id, roleids, permissions, callback) {
         if (permissions.length > 0 ) {
             permissions.forEach(function(x) {
                 x.resource = id.toString();
-            })
+            });
         }
 
         async.eachLimit(permissions, 10, function(permission, callbackp){

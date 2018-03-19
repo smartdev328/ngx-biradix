@@ -432,3 +432,7 @@ button.close {
     margin-top: 0px !important;;
     margin-bottom: 0px !important;
 }
+
+.dropdown-menu td input[type=checkbox] {
+    margin-top: 0px !important;
+}

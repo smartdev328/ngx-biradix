@@ -28,13 +28,13 @@
             <table>
                 <tr>
                     <td style="width:50px">
-                        <select class="form-control input-sm" ng-model="limit" style="width:45px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                        <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
                                 ng-change="resetPager()"
                                 ng-options="item for item in limits">
                         </select>
                     </td>
                     <Td>
-                        Rows
+                        &nbsp;Rows
                     </Td>
                 </tr>
                 <tr>
@@ -65,7 +65,12 @@
                     </Td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="padding-top:7px">
+                    <Td colspan="100%">
+                        <hr style="margin: 10px 0px">
+                    </Td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <b>Email Status</b>
                     </Td>
                 </tr>
