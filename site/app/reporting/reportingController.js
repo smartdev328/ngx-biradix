@@ -171,8 +171,7 @@ define([
         $scope.reload = function(bRun) {
             $scope.propertyItems = {items: []};
 
-
-            //For Printing
+            // For Printing
             if ($cookies.get("reportIds")) {
 
                 if (!_.isArray($cookies.get("reportIds"))) {
@@ -375,7 +374,6 @@ define([
         }
 
         $scope.changeProperty = function() {
-            //$scope.localLoading = false;
             $scope.loadComps();
         }
 
@@ -384,7 +382,6 @@ define([
             $scope.reportLoading = true;
             $scope.noReports = false;
             $scope.noProperties = false;
-
 
             $scope.reportNamesChanged();
 
@@ -700,7 +697,7 @@ define([
             $scope.progressId = _.random(1000000, 9999999);
 
             var data = {
-                compIds :  encodeURIComponent($scope.compIds),
+                compIds:  encodeURIComponent($scope.compIds),
                 reportIds:  encodeURIComponent($scope.reportIds),
                 progressId: $scope.progressId,
                 timezone: moment().utcOffset(),
@@ -731,9 +728,7 @@ define([
         }
 
         $scope.checkProgress = function() {
-
             $progressService.isComplete($scope.progressId, function(isComplete) {
-
                 if (isComplete) {
                     ngProgress.complete();
                     $('#export').prop('disabled', false);
@@ -741,9 +736,8 @@ define([
                 else {
                     $window.setTimeout($scope.checkProgress, 500);
                 }
-            })
-
-        }
+            });
+        };
 
         $scope.audit = function(type, where) {
             var data =$scope.compNames.concat($scope.reportNames);
@@ -772,13 +766,12 @@ define([
 
         },true)
 
-            $scope.$watch('selected.Property', function() {
-                if ($scope.selected.Property) {
-                    $scope.propertyIds = [$scope.selected.Property._id];
-                    $scope.changeProperty();
-                }
-
-            },true)
+        $scope.$watch('selected.Property', function() {
+            if ($scope.selected.Property) {
+                $scope.propertyIds = [$scope.selected.Property._id];
+                $scope.changeProperty();
+            }
+        }, true);
 
 
         $scope.reportNamesChanged = function() {
@@ -788,7 +781,6 @@ define([
         }
 
         $scope.reportsChanged = function(load, callback) {
-
             $scope.configureTrendsOptions();
             $scope.configurePropertyReportOptions();
             $scope.configureRankingsOptions();
@@ -861,9 +853,47 @@ define([
             }
         }
 
+        $scope.excel_property_status = function() {
+            var properties = $scope.propertyItems.items;
+
+            if (!properties.length) {
+                $scope.noProperties = true;
+                $scope.reportLoading = false;
+                return;
+            }
+
+            $scope.propertyNames = _.pluck(properties, "name");
+            $scope.propertyNames.forEach(function(x, i) {
+                $scope.propertyNames[i] = {description: "Property: " + x};
+            });
+
+            $scope.description = "%where%, " + $scope.propertyNames.length + " Property(ies), " + $scope.reportIds.length + " Report Type(s)";
+            $scope.auditMultiple("report", "Excel");
+
+            ngProgress.start();
+
+            $("#export").prop("disabled", true);
+
+            $scope.progressId = _.random(1000000, 9999999);
+
+            var data = {
+                timezone: moment().utcOffset(),
+                propertyIds: $scope.propertyIds,
+                settings: $scope.runSettings.propertyStatus,
+            }
+
+            var key = $urlService.shorten(JSON.stringify(data));
+
+            var url = "/api/1.0/reporting/excel/property_status?"
+            url += "token=" + $cookies.get("token")
+            url += "&key=" + key;
+
+            $window.setTimeout($scope.checkProgress, 500);
+
+            location.href = url;
+        };
 
         $scope.excel = function() {
-
             ngProgress.start();
 
             $('#export').prop('disabled', true);
@@ -876,7 +906,7 @@ define([
                 selectedEndDate: $scope.liveSettings.dashboardSettings.daterange.selectedEndDate.format(),
                 selectedRange: $scope.liveSettings.dashboardSettings.daterange.selectedRange,
                 progressId: $scope.progressId,
-                compids: $scope.compIds
+                compids: $scope.compIds,
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
