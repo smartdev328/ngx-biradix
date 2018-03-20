@@ -225,13 +225,10 @@ define([
 
                         $scope.run();
                     }
-
-
                 });
-
             }
 
-            window.setTimeout(function () {
+            window.setTimeout(function() {
                 window.document.title = "Reporting | BI:Radix";
             }, 1500);
             $scope.localLoading = true;
@@ -240,12 +237,12 @@ define([
         $scope.loadSingle = function(callback) {
             $propertyService.search({
                 limit: 2,
-                permission: 'PropertyManage',
+                permission: "PropertyManage",
                 hideCustomComps: true,
                 active: true,
-                select: "_id name comps.id comps.orderNumber custom"
-                , skipAmenities: true
-            }).then(function (response) {
+                select: "_id name comps.id comps.orderNumber custom",
+                skipAmenities: true,
+            }).then(function(response) {
                 response.data.properties.forEach(function(p) {
                     p.isCustom = !!(p.custom && p.custom.owner);
                 })
@@ -259,30 +256,34 @@ define([
 
                 if (!$scope.myProperties || $scope.myProperties.length == 0) {
                     id = null;
-                }
-                else if (!id) {
+                } else if (!id) {
                     $scope.selected.Property = $scope.myProperties[0];
                 } else {
-
                     $scope.selected.Property = _.find($scope.myProperties, function (x) {
-                        return x._id.toString() == id
+                        return x._id.toString() == id;
                     })
 
                     if (!$scope.selected.Property) {
                         $propertyService.search({
                             limit: 1,
                             _id: id,
-                            permission: 'PropertyManage',
+                            permission: "PropertyManage",
                             active: true,
-                            select: "_id name comps.id comps.orderNumber custom"
-                            , skipAmenities: true
-                        }).then(function (response) {
-                            response.data.properties.forEach(function(p) {
-                                p.isCustom = !!(p.custom && p.custom.owner);
-                            })
-                            $scope.selected.Property = response.data.properties[0];
-                            $scope.myProperties.push($scope.selected.Property);
-                            $scope.myProperties = _.sortBy($scope.myProperties, function(x) {return x.name});
+                            select: "_id name comps.id comps.orderNumber custom",
+                            skipAmenities: true,
+                        }).then(function(response) {
+                            if (response.data.properties.length == 0) {
+                                $scope.selected.Property = $scope.myProperties[0];
+                            } else {
+                                response.data.properties.forEach(function (p) {
+                                    p.isCustom = !!(p.custom && p.custom.owner);
+                                })
+                                $scope.selected.Property = response.data.properties[0];
+                                $scope.myProperties.push($scope.selected.Property);
+                                $scope.myProperties = _.sortBy($scope.myProperties, function (x) {
+                                    return x.name;
+                                });
+                            }
                             callback();
                         });
 

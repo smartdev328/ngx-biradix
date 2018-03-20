@@ -24,7 +24,7 @@
         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Filters">
             <span class="fa fa-filter"></span> <span class="caret"></span>
         </button>
-        <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
+        <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;" onclick="event.stopPropagation();">
             <table>
                 <tr>
                     <td style="width:50px">
@@ -60,7 +60,7 @@
                     <td class="center">
                         <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
                     </td>
-                    <Td>
+                    <Td nowrap style="padding-right:15px">
                         <label style="font-weight: normal;" for="showInactive">Inactive</label>
                     </Td>
                 </tr>
@@ -87,7 +87,7 @@
                     <td class="center">
                         <input type="checkbox" ng-model="showUndeliverable" ng-click="calcUndeliverable()" id="showUndeliverable">
                     </td>
-                    <Td>
+                    <Td nowrap style="padding-right:15px">
                         <label style="font-weight: normal;" for="showUndeliverable">Undeliverable</label>
                     </Td>
                 </tr>
@@ -105,7 +105,7 @@
                     <td class="center">
                         <input id="user_role_{{$index}}" type="checkbox" ng-model="role.selected" ng-checked="role.selected" ng-click="updateRoleFilters()">
                     </td>
-                    <Td>
+                    <Td nowrap style="padding-right:15px">
                         <label style="font-weight: normal;" for="user_role_{{$index}}">{{role.name}}</label>
                     </Td>
                 </tr>
