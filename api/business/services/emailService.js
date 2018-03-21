@@ -53,14 +53,12 @@ function getData(email, callback) {
     if (email.template) {
         fs.readFile(settings.PROJECT_DIR +"/../api/business/templates/" + email.template, "utf8", function (err,data) {
             if (err) {
-                throw (err)
-            }
-            else {
+                throw (err);
+            } else {
                 LiquidService.parse(data, email.templateData, filters, function(result) {
                     callback(result);
-                })
+                });
             }
-
         });
     } else {
         callback(email.html);

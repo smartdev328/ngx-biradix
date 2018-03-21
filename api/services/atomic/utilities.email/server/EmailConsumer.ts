@@ -1,4 +1,3 @@
-import * as jackrabbit from "jackrabbit";
 import {IEmail} from "../contracts/IEmail";
 import {TOPIC} from "../contracts/Settings";
 import {EmailService} from "./EmailService";
@@ -6,18 +5,16 @@ import {EmailService} from "./EmailService";
 export class EmailConsumer {
     private rabbit;
 
-    public init(RABBIT_URL: string): Promise<string> {
+    public init(rabbit: any): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            this.rabbit = jackrabbit(RABBIT_URL);
-            this.rabbit.on("connected", () => {
-                console.log(`${TOPIC} Server connected`);
+            console.log(`${TOPIC} Server re-using connection`);
+            this.rabbit = rabbit;
 
-                const queue = this.createQueue();
+            const queue = this.createQueue();
 
-                queue.on("consuming", () => {
-                    console.log(`${TOPIC} Server consuming`);
-                    resolve("Success");
-                });
+            queue.on("consuming", () => {
+                console.log(`${TOPIC} Server consuming (shared connection)`);
+                resolve("Success");
             });
         });
     }

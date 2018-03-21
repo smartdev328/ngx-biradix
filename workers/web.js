@@ -2,6 +2,7 @@ require("newrelic");
 const jwt = require("jsonwebtoken");
 const settings = require("../config/settings");
 const errors = require("../config/error");
+const container = require("../config/container");
 
 let d = require("domain").create();
 
@@ -14,7 +15,7 @@ d.on("error", function(err) {
 });
 
 d.run(function() {
-    require('../config/cluster').init({maxThreads: 1}, function (workerId) {
+    require('../config/cluster').init({maxThreads: 1}, function(workerId) {
         var express = require('express')
         var app = express()
         var mongoose = require('mongoose');
@@ -22,7 +23,7 @@ d.run(function() {
 
         var connectedCount = 0;
 
-        queues.connect(function () {
+        queues.connect(function() {
             connectedCount++;
             ready();
         })
@@ -37,45 +38,13 @@ d.run(function() {
             ready();
         });
 
-        let timeout1 = setTimeout(function() {
-            console.log("EmailConsumer not loaded in time. Restarting");
-            process.exit(0);
-        }, 30000);
-
-        const consumer = require("../build/services/atomic/utilities.email/server/EmailConsumer");
-        const EmailConsumer = new consumer.EmailConsumer();
-
-        EmailConsumer.init(settings.CLOUDAMQP_URL)
-            .then((success) => {
-                clearTimeout(timeout1);
-
-                connectedCount++;
-                ready();
-            }).catch((error) => {
-            console.log("EmailConsumer: ", error);
-        });
-
-        let timeout2 = setTimeout(function() {
-            console.log("EmailService not loaded in time. Restarting");
-            process.exit(0);
-        }, 30000);
-
-        const service = require("../build/services/atomic/utilities.email/client/EmailService");
-        const EmailService = new service.EmailService();
-
-        EmailService.init(settings.CLOUDAMQP_URL)
-            .then((success) => {
-                clearTimeout(timeout2);
-                global.emailService = EmailService;
-                connectedCount++;
-                ready();
-            }).catch((error) => {
-            console.log("EmailService: ", error);
+        container.init(function() {
+            connectedCount++;
+            ready();
         });
 
         function ready() {
-
-            if (connectedCount < 4) {
+            if (connectedCount < 3) {
                 return;
             }
 
