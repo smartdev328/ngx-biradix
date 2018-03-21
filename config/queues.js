@@ -7,6 +7,9 @@ var exchange;
 var queues = {};
 
 module.exports = {
+    getQueue: function() {
+        return queue;
+    },
     handleCommand: function(key,consumer) {
         queues[key].consume(consumer);
         this.attachQListeners(queues[key], key);

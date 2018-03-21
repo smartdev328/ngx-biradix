@@ -17,7 +17,6 @@ var redisService = require('../../utilities/services/redisService')
 var userBounceService = require('./userBounceService')
 var escapeStringRegexp = require('escape-string-regexp');
 
-
 module.exports = {
 
     rebuildSearch: function(id) {
