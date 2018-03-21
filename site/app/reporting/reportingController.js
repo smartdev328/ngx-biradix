@@ -879,6 +879,7 @@ define([
             var data = {
                 timezone: moment().utcOffset(),
                 propertyIds: $scope.propertyIds,
+                progressId: $scope.progressId,
                 settings: $scope.runSettings.propertyStatus,
             }
 

@@ -2,14 +2,42 @@
 const express = require("express");
 const async = require("async");
 const Routes = new express.Router();
+const redisService = require("../../utilities/services/redisService")
+const progressService = require("../../progress/services/progressService")
+const request = require("request");
+const moment= require("moment");
+const settings = require("../../../config/settings")
 
 const propertyStatusService = require("../services/propertyStatusService");
 const individualReportsService = require("../services/individualReportsService");
 
 Routes.get("/excel/property_status", (req, res) => {
-    propertyStatusService.run(req.user, req.query.propertyIds, req.user.settings.showLeases, (data) => {
-       console.log(req.query.key);
-       console.log(data);
+    redisService.getByKey(req.query.key, function(err, result) {
+        result = JSON.parse(result);
+        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, (data) => {
+            let fileName = "Property_Status_Report_";
+            fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
+            fileName += ".xlsx";
+
+            const json = {
+                fileName: fileName,
+                report: data,
+                show: result.settings.show,
+                strDate: moment().utcOffset(result.timezone).format("MM/DD/YYYY"),
+            };
+
+            const url = settings.EXCEL_URL.replace("/excel", "/property_status")
+
+            const r = request.post(url, {
+                json: json,
+            }).pipe(res)
+
+            r.on("finish", function() {
+                if (result.progressId) {
+                    progressService.setComplete(result.progressId);
+                }
+            });
+        });
     });
 });
 
