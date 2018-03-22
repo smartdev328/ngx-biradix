@@ -1,5 +1,5 @@
 import {RedisClient} from "redis";
-import {IMessage} from "../../../library/sharedContracts/IMessage";
+import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {IShortenerService} from "../contracts/IShortenerService";
 import {QUEUE_NAME, RETRIEVE_FUNCTION, SHORTEN_FUNCTION} from "../contracts/Settings";
 
@@ -20,7 +20,7 @@ export class ShortenerService implements IShortenerService {
 
     public shorten(body: string, expiresInMinutes: number): Promise<string> {
         return new Promise<any>((resolve, reject) => {
-            const message: IMessage = {
+            const message: IRPCMessage = {
                 functionName: SHORTEN_FUNCTION,
                 payload: {
                     body,
@@ -42,7 +42,7 @@ export class ShortenerService implements IShortenerService {
 
     public retrieve(key: string): Promise<string> {
         return new Promise<any>((resolve, reject) => {
-            const message: IMessage = {
+            const message: IRPCMessage = {
                 functionName: RETRIEVE_FUNCTION,
                 payload: key,
             };

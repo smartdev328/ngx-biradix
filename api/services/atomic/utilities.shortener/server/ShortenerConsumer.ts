@@ -1,5 +1,5 @@
 import {RedisClient} from "redis";
-import {IMessage} from "../../../library/sharedContracts/IMessage";
+import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {QUEUE_NAME, RETRIEVE_FUNCTION, SHORTEN_FUNCTION} from "../contracts/Settings";
 import {ShortenerService} from "./ShortenerService";
 
@@ -33,7 +33,7 @@ export class ShortenerConsumer {
         return queue;
     }
 
-    private consumer(message: IMessage, reply: any) {
+    private consumer(message: IRPCMessage, reply: any) {
         switch (message.functionName) {
             case SHORTEN_FUNCTION:
                 shortenerService.shorten(message.payload.body, message.payload.expiresInMinutes)

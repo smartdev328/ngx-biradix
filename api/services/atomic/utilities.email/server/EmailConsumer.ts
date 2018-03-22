@@ -1,4 +1,4 @@
-import {IMessage} from "../../../library/sharedContracts/IMessage";
+import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
 import {EmailService} from "./EmailService";
 
@@ -26,7 +26,7 @@ export class EmailConsumer {
         return queue;
     }
 
-    private consumer(message: IMessage, reply: any) {
+    private consumer(message: IRPCMessage, reply: any) {
         switch (message.functionName) {
             case SEND_FUNCTION:
                 EmailService.send(message.payload)

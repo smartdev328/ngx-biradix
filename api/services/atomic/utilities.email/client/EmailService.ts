@@ -1,4 +1,4 @@
-import {IMessage} from "../../../library/sharedContracts/IMessage";
+import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {IEmail} from "../contracts/IEmail";
 import {IEmailService} from "../contracts/IEmailService";
 import {QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
@@ -18,7 +18,7 @@ export class EmailService implements IEmailService {
 
     public send(email: IEmail): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            const message: IMessage = {functionName: SEND_FUNCTION, payload: email};
+            const message: IRPCMessage = {functionName: SEND_FUNCTION, payload: email};
             this.exchange.publish(message, {
                 key: QUEUE_NAME,
                 reply(data: any) {
