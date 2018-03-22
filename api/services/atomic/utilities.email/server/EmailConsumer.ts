@@ -1,5 +1,5 @@
 import {IEmail} from "../contracts/IEmail";
-import {TOPIC} from "../contracts/Settings";
+import {SEND_KEY, TOPIC} from "../contracts/Settings";
 import {EmailService} from "./EmailService";
 
 export class EmailConsumer {
@@ -7,13 +7,12 @@ export class EmailConsumer {
 
     public init(rabbit: any): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            console.log(`${TOPIC} Server re-using connection`);
             this.rabbit = rabbit;
 
             const queue = this.createQueue();
 
             queue.on("consuming", () => {
-                console.log(`${TOPIC} Server consuming (shared connection)`);
+                console.log(`${TOPIC}.${SEND_KEY} consuming`);
                 resolve("Success");
             });
         });
@@ -21,7 +20,7 @@ export class EmailConsumer {
 
     private createQueue(): any {
         const exchange = this.rabbit.default();
-        const queue = exchange.queue({ name: TOPIC, durable: true, prefetch: 1 });
+        const queue = exchange.queue({ name: TOPIC + "." + SEND_KEY, durable: true, prefetch: 1 });
         queue.consume(this.consumer);
 
         return queue;

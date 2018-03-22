@@ -2,17 +2,17 @@
 const express = require("express");
 const async = require("async");
 const Routes = new express.Router();
-const redisService = require("../../utilities/services/redisService")
 const progressService = require("../../progress/services/progressService")
 const request = require("request");
 const moment= require("moment");
 const settings = require("../../../config/settings")
+const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry");
 
 const propertyStatusService = require("../services/propertyStatusService");
 const individualReportsService = require("../services/individualReportsService");
 
 Routes.get("/excel/property_status", (req, res) => {
-    redisService.getByKey(req.query.key, function(err, result) {
+    serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
         result = JSON.parse(result);
         propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, (data) => {
             let fileName = "Property_Status_Report_";

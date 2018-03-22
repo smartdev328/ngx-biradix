@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.16.25",
+  "version": "2.16.26",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "@types/express": "^4.11.1",
     "@types/md5": "^2.1.32",
     "@types/node": "^9.4.6",
+    "@types/redis": "^2.8.6",
     "async": "^1.5.2",
     "aws-sdk": "^2.166.0",
     "body-parser": "^1.17.2",

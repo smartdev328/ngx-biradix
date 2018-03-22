@@ -2,6 +2,7 @@
 const LiquidService = require("../../utilities/services/liquidService");
 const settings = require("../../../config/settings");
 const fs = require("fs");
+const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry")
 
 const filters = {
     formatNumber: function(input, decimals) {
@@ -35,7 +36,7 @@ module.exports = {
                 } else {
                     LiquidService.parse(data, {message: html, logo: email.logo, width: email.width}, filters, function(result) {
                         newemail.html = result;
-                        global.emailService.send(newemail).then((success) => {
+                        serviceRegistry.getEmailService().send(newemail).then((success) => {
                             console.log("Email Sent Success: ", success);
                             callback(null, success);
                         }).catch((error) => {

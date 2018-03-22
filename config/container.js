@@ -1,9 +1,18 @@
 const settings = require("./settings");
 const jackrabbit = require("jackrabbit");
+const redis = require("redis");
+const redisClient = redis.createClient(settings.REDIS_URL);
+const serviceRegistry = require("../build/services/gateway/ServiceRegistry");
+
 const EmailConsumerModule = require("../build/services/atomic/utilities.email/server/EmailConsumer");
 const EmailServiceModule = require("../build/services/atomic/utilities.email/client/EmailService");
 const EmailConsumer = new EmailConsumerModule.EmailConsumer();
-global.emailService = new EmailServiceModule.EmailService();
+serviceRegistry.setEmailService(new EmailServiceModule.EmailService());
+
+const ShortenerConsumerModule = require("../build/services/atomic/utilities.shortener/server/ShortenerConsumer");
+const ShortenerConsumer = new ShortenerConsumerModule.ShortenerConsumer();
+const ShortenerServiceModule = require("../build/services/atomic/utilities.shortener/client/ShortenerService");
+serviceRegistry.setShortenerService(new ShortenerServiceModule.ShortenerService());
 
 module.exports = {
     init: function(ready) {
@@ -17,7 +26,10 @@ module.exports = {
             console.log("Re-usable Rabbit connected");
             Promise.all([
                 EmailConsumer.init(queue),
-                global.emailService.init(queue)]
+                serviceRegistry.getEmailService().init(queue),
+                ShortenerConsumer.init(queue, redisClient),
+                serviceRegistry.getShortenerService().init(queue, redisClient),
+                ]
             ).then((values) => {
                 clearTimeout(timeout);
                 ready();

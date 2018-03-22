@@ -1,3 +1,17 @@
+export interface IAttachment {
+    filename: string;
+}
+
+export interface IStringAttachment extends IAttachment {
+    content: string;
+    contentType: string;
+}
+
+export interface IBufferAttachment extends IAttachment {
+    content: Buffer;
+    contentType: string;
+}
+
 export interface IEmail {
     from: string;
     to: string;
@@ -6,4 +20,5 @@ export interface IEmail {
     html?: string;
     bcc?: string;
     cc?: string;
+    attachments?: IAttachment[];
 }

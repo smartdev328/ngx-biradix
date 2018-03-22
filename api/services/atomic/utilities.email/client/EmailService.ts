@@ -1,13 +1,14 @@
 import {IEmail} from "../contracts/IEmail";
-import {TOPIC} from "../contracts/Settings";
+import {IEmailService} from "../contracts/IEmailService";
+import {SEND_KEY, TOPIC} from "../contracts/Settings";
 
-export class EmailService {
+export class EmailService implements IEmailService {
     private rabbit;
     private exchange;
 
     public init(rabbit: any): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            console.log(`${TOPIC} Client re-using connection`);
+            console.log(`${TOPIC} ready to publish`);
             this.rabbit = rabbit;
             this.exchange = this.getExchange();
             resolve("Success");
@@ -17,7 +18,7 @@ export class EmailService {
     public send(email: IEmail): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             this.exchange.publish(email, {
-                key: TOPIC,
+                key: TOPIC + "." + SEND_KEY,
                 reply(data: any) {
                     if (data.error) {
                         return reject(data.error);
