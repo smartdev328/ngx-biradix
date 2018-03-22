@@ -1,5 +1,5 @@
-import {IEmail} from "../contracts/IEmail";
-import {SEND_KEY, TOPIC} from "../contracts/Settings";
+import {IMessage} from "../../../library/sharedContracts/IMessage";
+import {QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
 import {EmailService} from "./EmailService";
 
 export class EmailConsumer {
@@ -12,7 +12,7 @@ export class EmailConsumer {
             const queue = this.createQueue();
 
             queue.on("consuming", () => {
-                console.log(`${TOPIC}.${SEND_KEY} consuming`);
+                console.log(`${QUEUE_NAME} consuming`);
                 resolve("Success");
             });
         });
@@ -20,19 +20,25 @@ export class EmailConsumer {
 
     private createQueue(): any {
         const exchange = this.rabbit.default();
-        const queue = exchange.queue({ name: TOPIC + "." + SEND_KEY, durable: true, prefetch: 1 });
+        const queue = exchange.queue({ name: QUEUE_NAME, durable: true, prefetch: 1 });
         queue.consume(this.consumer);
 
         return queue;
     }
 
-    private consumer(data: IEmail, reply: any) {
-        EmailService.send(data)
-            .then((status: any) => {
-                reply({error: null, status});
-            })
-            .catch((error: any) => {
-                reply({error, status: null});
-            });
+    private consumer(message: IMessage, reply: any) {
+        switch (message.functionName) {
+            case SEND_FUNCTION:
+                EmailService.send(message.payload)
+                    .then((status: any) => {
+                        reply({error: null, status});
+                    })
+                    .catch((error: any) => {
+                        reply({error, status: null});
+                    });
+                break;
+            default:
+                throw new Error(message.functionName + " not implemented");
+        }
     }
 }

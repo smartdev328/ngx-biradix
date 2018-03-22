@@ -1,6 +1,7 @@
+import {IMessage} from "../../../library/sharedContracts/IMessage";
 import {IEmail} from "../contracts/IEmail";
 import {IEmailService} from "../contracts/IEmailService";
-import {SEND_KEY, TOPIC} from "../contracts/Settings";
+import {QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
 
 export class EmailService implements IEmailService {
     private rabbit;
@@ -8,7 +9,7 @@ export class EmailService implements IEmailService {
 
     public init(rabbit: any): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            console.log(`${TOPIC} ready to publish`);
+            console.log(`${QUEUE_NAME} ready to publish`);
             this.rabbit = rabbit;
             this.exchange = this.getExchange();
             resolve("Success");
@@ -17,8 +18,9 @@ export class EmailService implements IEmailService {
 
     public send(email: IEmail): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            this.exchange.publish(email, {
-                key: TOPIC + "." + SEND_KEY,
+            const message: IMessage = {functionName: SEND_FUNCTION, payload: email};
+            this.exchange.publish(message, {
+                key: QUEUE_NAME,
                 reply(data: any) {
                     if (data.error) {
                         return reject(data.error);
