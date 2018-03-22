@@ -6,7 +6,11 @@ export function rabbit() {
     fac.default = () => {
         return {
             publish: (message, {key, reply}) => {
-                savedConsumer(message, reply);
+                if (!savedConsumer) {
+                    reply({error: {message, key}});
+                } else {
+                    savedConsumer(message, reply);
+                }
             },
             queue: (argsQueue) => {
                 return {
