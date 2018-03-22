@@ -1,5 +1,6 @@
 var puppeteer = require('puppeteer');
 var browser;
+var settings = require("../../../config/settings")
 
 module.exports = {
     getCookie : function(hostname,name,value) {
