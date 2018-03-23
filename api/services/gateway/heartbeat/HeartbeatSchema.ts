@@ -5,18 +5,20 @@ export const HeartbeatSchema = new GraphQLSchema({
     query: new GraphQLObjectType({
         fields: {
             utilities_email: {
+                description: "Returns the health status of the utilties.email service. 'OK' means healthy. ",
                 type: GraphQLString,
                 resolve() {
-                    return ServiceRegistry.getEmailService().heartbeat();
+                    return ServiceRegistry.getEmailService().health();
                 },
             },
             utilities_shortener: {
+                description: "Returns the health status of the utilties.shortener service. 'OK' means healthy. ",
                 type: GraphQLString,
                 resolve() {
-                    return ServiceRegistry.getShortenerService().heartbeat();
+                    return ServiceRegistry.getShortenerService().health();
                 },
             },
         },
-        name: "RootQueryType",
+        name: "HealthQueries",
     }),
 });

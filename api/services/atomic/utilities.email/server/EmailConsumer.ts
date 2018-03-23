@@ -1,5 +1,5 @@
 import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
-import {HEARTBEAT_FUNCTION, QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
+import {HEALTH_FUNCTION, QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
 import {EmailService} from "./EmailService";
 
 export class EmailConsumer {
@@ -37,7 +37,7 @@ export class EmailConsumer {
                         reply({error, status: null});
                     });
                 break;
-            case HEARTBEAT_FUNCTION:
+            case HEALTH_FUNCTION:
                 reply({error: null});
                 break;
             default:

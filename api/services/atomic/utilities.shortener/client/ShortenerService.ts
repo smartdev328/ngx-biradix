@@ -2,7 +2,7 @@ import {RedisClient} from "redis";
 import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {IShortenerService} from "../contracts/IShortenerService";
 import {QUEUE_NAME, RETRIEVE_FUNCTION, SHORTEN_FUNCTION} from "../contracts/Settings";
-import {HEARTBEAT_FUNCTION} from "../../utilities.email/contracts/Settings";
+import {HEALTH_FUNCTION} from "../../utilities.email/contracts/Settings";
 
 export class ShortenerService implements IShortenerService {
     private rabbit;
@@ -19,9 +19,9 @@ export class ShortenerService implements IShortenerService {
         });
     }
 
-    public heartbeat(): Promise<string> {
+    public health(): Promise<string> {
         return new Promise<any>((resolve, reject) => {
-            const message: IRPCMessage = {functionName: HEARTBEAT_FUNCTION, payload: {}};
+            const message: IRPCMessage = {functionName: HEALTH_FUNCTION, payload: {}};
             this.exchange.publish(message, {
                 key: QUEUE_NAME,
                 reply(data: any) {

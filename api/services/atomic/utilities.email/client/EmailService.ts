@@ -1,7 +1,7 @@
 import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {IEmail} from "../contracts/IEmail";
 import {IEmailService} from "../contracts/IEmailService";
-import {HEARTBEAT_FUNCTION, QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
+import {HEALTH_FUNCTION, QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
 
 export class EmailService implements IEmailService {
     private rabbit;
@@ -16,9 +16,9 @@ export class EmailService implements IEmailService {
         });
     }
 
-    public heartbeat(): Promise<string> {
+    public health(): Promise<string> {
         return new Promise<any>((resolve, reject) => {
-            const message: IRPCMessage = {functionName: HEARTBEAT_FUNCTION, payload: {}};
+            const message: IRPCMessage = {functionName: HEALTH_FUNCTION, payload: {}};
             this.exchange.publish(message, {
                 key: QUEUE_NAME,
                 reply(data: any) {
