@@ -17,11 +17,16 @@ serviceRegistry.setShortenerService(new ShortenerServiceModule.ShortenerService(
 module.exports = {
     init: function(ready) {
         let timeout = setTimeout(function() {
-            console.log("Services not loaded in time. Restarting");
+            console.error("Services not loaded in time. Restarting");
             process.exit(0);
         }, 30000);
 
         const queue = jackrabbit(settings.CLOUDAMQP_URL);
+        queue.on("error", function() {
+            console.error("Rabbit Disconnected");
+            process.exit(0);
+        });
+
         queue.on("connected", function() {
             console.log("Re-usable Rabbit connected");
             Promise.all([
@@ -34,7 +39,7 @@ module.exports = {
                 clearTimeout(timeout);
                 ready();
             }).catch((error) => {
-                console.log("Error initializing services", error);
+                console.error("Error initializing services", error);
                 process.exit(0);
             });
         });

@@ -1,5 +1,5 @@
 import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
-import {QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
+import {HEARTBEAT_FUNCTION, QUEUE_NAME, SEND_FUNCTION} from "../contracts/Settings";
 import {EmailService} from "./EmailService";
 
 export class EmailConsumer {
@@ -36,6 +36,9 @@ export class EmailConsumer {
                     .catch((error: any) => {
                         reply({error, status: null});
                     });
+                break;
+            case HEARTBEAT_FUNCTION:
+                reply({error: null});
                 break;
             default:
                 throw new Error(message.functionName + " not implemented");
