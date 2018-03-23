@@ -47,14 +47,18 @@ d.run(function() {
             if (connectedCount < 3) {
                 return;
             }
+            const graphqlHTTP = require("express-graphql");
+            let {HeartbeatSchema} = require("../build/services/gateway/heartbeat/HeartbeatSchema");
 
-            // EmailService.send({to: "alex@viderman.com", from: "test@test.com", subject: "Test", html: "<B>Test</B>"}).then((success) => {
-            //     console.log(success);
-            // }).catch((error) => {
-            //     console.log(error);
-            // });
-
-            require('../config/express').init(app, d)
+            require("../config/express").init(app, d)
+            app.get("/heartbeat/graphql", graphqlHTTP({
+                schema: HeartbeatSchema,
+                graphiql: true,
+            }));
+            app.post("/heartbeat/graphql", graphqlHTTP({
+                schema: HeartbeatSchema,
+                graphiql: true,
+            }));
             app.use('/poc/', require('../poc/pocGateway'));
             app.use('/', require('../site/siteroutes'));
             app.use(settings.API_PATH + 'access/', require('../api/access/gateways/accessGateway'));

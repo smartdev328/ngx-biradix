@@ -2,6 +2,7 @@ import {RedisClient} from "redis";
 import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {QUEUE_NAME, RETRIEVE_FUNCTION, SHORTEN_FUNCTION} from "../contracts/Settings";
 import {ShortenerService} from "./ShortenerService";
+import {HEARTBEAT_FUNCTION} from "../../utilities.email/contracts/Settings";
 
 let shortenerService: ShortenerService;
 
@@ -52,6 +53,9 @@ export class ShortenerConsumer {
                     .catch((error: any) => {
                         reply({error, body: null});
                     });
+                break;
+            case HEARTBEAT_FUNCTION:
+                reply({error: null});
                 break;
             default:
                 throw new Error(message.functionName + " not implemented");
