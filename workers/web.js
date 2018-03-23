@@ -51,11 +51,11 @@ d.run(function() {
             let {HeartbeatSchema} = require("../build/services/gateway/heartbeat/HeartbeatSchema");
 
             require("../config/express").init(app, d)
-            app.get("/heartbeat/graphql", graphqlHTTP({
+            app.use("/heartbeat/graphql", graphqlHTTP({
                 schema: HeartbeatSchema,
-                graphiql: true,
+                graphiql: false,
             }));
-            app.post("/heartbeat/graphql", graphqlHTTP({
+            app.use("/heartbeat/graphqli", graphqlHTTP({
                 schema: HeartbeatSchema,
                 graphiql: true,
             }));
