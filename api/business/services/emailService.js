@@ -40,7 +40,7 @@ module.exports = {
                             console.log("Email Sent Success: ", success);
                             callback(null, success);
                         }).catch((error) => {
-                            console.log("Email Sent Error: ", error);
+                            console.error("Email Sent Error: ", error);
                             callback(error, null);
                         });
                     });

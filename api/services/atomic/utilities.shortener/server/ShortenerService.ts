@@ -24,7 +24,7 @@ export class ShortenerService {
                     return reject(error);
                 }
 
-                return resolve(result.toString());
+                return resolve((result || "").toString());
             });
         });
     }

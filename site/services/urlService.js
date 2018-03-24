@@ -1,22 +1,28 @@
-angular.module('biradix.global').factory('$urlService', ['$http', function ($http,$cookies) {
+angular.module("biradix.global").factory("$urlService", ["$http", "$cookies", function($http, $cookies) {
         var fac = {};
 
-        fac.shorten = function (url) {
-
+        fac.shorten = function(body) {
             var strReturn = "";
+
+            var query = {
+                query: "mutation stringShorten($body: String!) {shortenString(body: $body, expiresInMinutes: 30)}",
+                variables: {"body": body},
+            };
 
             jQuery.ajax({
                 type: "POST",
-                data: {url:url},
-                url: '/url'+ '?bust=' + (new Date()).getTime(),
+                contentType: "application/json",
+                headers: {"Authorization": "Bearer " + $cookies.get("token")},
+                data: JSON.stringify(query),
+                url: "/graphql?bust=" + (new Date()).getTime(),
                 success: function(html) {
-                    strReturn = html.key;
+                    strReturn = html.data.shortenString;
                 },
-                async:false
+                async: false,
             });
 
             return strReturn;
-        }
+        };
 
         return fac;
     }]);

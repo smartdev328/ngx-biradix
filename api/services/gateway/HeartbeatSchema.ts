@@ -1,5 +1,5 @@
 import {GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
-import * as ServiceRegistry from "../ServiceRegistry";
+import * as ServiceRegistry from "./ServiceRegistry";
 
 export const HeartbeatSchema = new GraphQLSchema({
     query: new GraphQLObjectType({

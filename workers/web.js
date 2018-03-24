@@ -48,7 +48,8 @@ d.run(function() {
                 return;
             }
             const graphqlHTTP = require("express-graphql");
-            let {HeartbeatSchema} = require("../build/services/gateway/heartbeat/HeartbeatSchema");
+            let {HeartbeatSchema} = require("../build/services/gateway/HeartbeatSchema");
+            let {RootSchema} = require("../build/services/gateway/RootSchema");
 
             require("../config/express").init(app, d)
             app.use("/health/graphql", graphqlHTTP({
@@ -59,6 +60,17 @@ d.run(function() {
                 schema: HeartbeatSchema,
                 graphiql: true,
             }));
+
+            app.use("/graphqli", graphqlHTTP({
+                schema: RootSchema,
+                graphiql: true,
+            }));
+
+            app.post("/graphql", graphqlHTTP({
+                schema: RootSchema,
+                graphiql: false,
+            }));
+
             app.use('/poc/', require('../poc/pocGateway'));
             app.use('/', require('../site/siteroutes'));
             app.use(settings.API_PATH + 'access/', require('../api/access/gateways/accessGateway'));

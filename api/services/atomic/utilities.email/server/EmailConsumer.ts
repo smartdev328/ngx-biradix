@@ -34,14 +34,16 @@ export class EmailConsumer {
                         reply({error: null, status});
                     })
                     .catch((error: any) => {
-                        reply({error, status: null});
+                        console.error(error);
+                        reply({error: error.toString(), status: null});
                     });
                 break;
             case HEALTH_FUNCTION:
                 reply({error: null});
                 break;
             default:
-                throw new Error(message.functionName + " not implemented");
+                console.error(message.functionName + " not implemented");
+                reply({error: message.functionName + " not implemented", status: null});
         }
     }
 }
