@@ -20,11 +20,14 @@ export class ShortenerService {
     public retrieve(key: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             this.redisClient.get(key, (error, result) => {
-                if (error) {
+                try {
+                    if (error) {
+                        return reject(error);
+                    }
+                    return resolve((result || "").toString());
+                } catch (error) {
                     return reject(error);
                 }
-
-                return resolve((result || "").toString());
             });
         });
     }
