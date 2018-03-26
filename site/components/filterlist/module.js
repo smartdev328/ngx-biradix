@@ -341,6 +341,7 @@ angular.module('biradix.global').directive('filterList', function () {
 
                         if ($scope.items) {
                             $scope.items.forEach(function(i) {
+                                i.selected = !!i.selected;
                                 if (!i.selected) {
                                     $scope.filters.checkAll = false;
                                 }
