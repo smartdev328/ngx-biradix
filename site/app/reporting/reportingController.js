@@ -29,7 +29,6 @@ define([
         $scope.meLoaded = false;
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-
                 $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
                 $scope.reportItems.push({id: "concession", name: "Concessions", selected:$stateParams.property == "2", group: "Individual Reports", type:"single"});
                 $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
@@ -43,10 +42,9 @@ define([
                         name: "Trend Analysis",
                         selected: false,
                         group: "Individual Reports",
-                        type: "single"
+                        type: "single",
                     });
                 $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
-
 
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
@@ -1341,10 +1339,10 @@ define([
 
         $scope.configurePropertyReportOptions = function() {
             if (!$scope.liveSettings.showProfile) {
-                $scope.resetPropertyReportSettings(false)
+                $scope.resetPropertyReportSettings(false);
             }
 
-            $scope.temp.showProfileOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showProfileOptions = {hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
             $scope.temp.showProfileItems = [
                 {id: "picture", name: "Picture", selected: $scope.liveSettings.showProfile.picture},
                 {id: "address", name: "Address", selected: $scope.liveSettings.showProfile.address},
@@ -1385,7 +1383,7 @@ define([
                 {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.dashboardSettings.show.nersqft},
             ];
 
-            $scope.temp.showFloorplanOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+            $scope.temp.showFloorplanOptions = {hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields"};
             $scope.temp.showFloorplanItems = [
                 {id: "description", name: "Description", selected: $scope.liveSettings.profileSettings.show.description},
                 {id: "units", name: "Units", selected: $scope.liveSettings.profileSettings.show.units},

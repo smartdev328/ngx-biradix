@@ -1,13 +1,13 @@
-angular.module('biradix.global').factory('$reportingService', ['$http','$cookies','$cookieSettingsService', function ($http,$cookies,$cookieSettingsService) {
+angular.module("biradix.global").factory("$reportingService", ["$http","$cookies","$cookieSettingsService", function ($http,$cookies,$cookieSettingsService) {
         var fac = {};
 
         fac.reports = function(compids, subjectid, reports, options) {
-            return $http.post('/api/1.0/reporting/' + subjectid + '?bust=' + (new Date()).getTime(), {
+            return $http.post("/api/1.0/reporting/" + subjectid + "?bust=" + (new Date()).getTime(), {
                 compids: compids,
                 reports: reports,
                 options: options,
             }, {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                headers: {"Authorization": "Bearer " + $cookies.get("token") }}).success(function (response) {
                 return response;
             }).error(function (response) {
                 return response;
@@ -15,11 +15,11 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
         }
 
         fac.reportsGroup = function(propertyids, reports) {
-            return $http.post('/api/1.0/reporting/group'+ '?bust=' + (new Date()).getTime(), {
+            return $http.post("/api/1.0/reporting/group"+ "?bust=" + (new Date()).getTime(), {
                 propertyids: propertyids,
                 reports: reports,
             }, {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                headers: {"Authorization": "Bearer " + $cookies.get("token") }}).success(function (response) {
                 return response;
             }).error(function (response) {
                 return response;
@@ -79,7 +79,7 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
             if ($cookies.get("pr.s")) {
                 settings = JSON.parse($cookies.get("pr.s"));
             }
-            if (typeof settings.picture == 'undefined') {
+            if (typeof settings.picture == "undefined") {
                 settings.picture = true;
             }
 
@@ -105,10 +105,10 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
                 renewal: me ? me.settings.showRenewal : true,
                 atr: me ? me.settings.showATR : false,
                 traf: true,
-                lease: true
-            }
+                lease: true,
+            };
         }
-        
+
         fac.getDefaultProfileFloorplanColumns = function(width) {
             var columns = {
                 description: true,
@@ -119,7 +119,7 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
                 concessions: true,
                 ner: true,
                 nersqft: true,
-                mersqft: false
+                mersqft: false,
             }
 
             if (width < 1024) {
@@ -131,12 +131,12 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
             if (width < 500) {
                 columns.ner = false;
                 columns.description = false;
-            }    
-            
+            }
+
             return columns;
         }
 
-        fac.getDefaultDashboardCompColumns = function(me,width) {
+        fac.getDefaultDashboardCompColumns = function(me, width) {
             var columns = {
                 units: true,
                 unitPercent: false,
@@ -150,7 +150,7 @@ angular.module('biradix.global').factory('$reportingService', ['$http','$cookies
                 ner: true,
                 nersqft: true,
                 mersqft: false,
-                weekly:false
+                weekly: false,
             }
 
             if (width < 1175) {
