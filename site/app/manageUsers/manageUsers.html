@@ -24,17 +24,17 @@
         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Filters">
             <span class="fa fa-filter"></span> <span class="caret"></span>
         </button>
-        <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:200px" onclick="event.stopPropagation();">
+        <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;" onclick="event.stopPropagation();">
             <table>
                 <tr>
                     <td style="width:50px">
-                        <select class="form-control input-sm" ng-model="limit" style="width:45px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                        <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
                                 ng-change="resetPager()"
                                 ng-options="item for item in limits">
                         </select>
                     </td>
                     <Td>
-                        Rows
+                        &nbsp;Rows
                     </Td>
                 </tr>
                 <tr>
@@ -60,12 +60,17 @@
                     <td class="center">
                         <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
                     </td>
-                    <Td>
+                    <Td nowrap style="padding-right:15px">
                         <label style="font-weight: normal;" for="showInactive">Inactive</label>
                     </Td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="padding-top:7px">
+                    <Td colspan="100%">
+                        <hr style="margin: 10px 0px">
+                    </Td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <b>Email Status</b>
                     </Td>
                 </tr>
@@ -82,7 +87,7 @@
                     <td class="center">
                         <input type="checkbox" ng-model="showUndeliverable" ng-click="calcUndeliverable()" id="showUndeliverable">
                     </td>
-                    <Td>
+                    <Td nowrap style="padding-right:15px">
                         <label style="font-weight: normal;" for="showUndeliverable">Undeliverable</label>
                     </Td>
                 </tr>
@@ -100,7 +105,7 @@
                     <td class="center">
                         <input id="user_role_{{$index}}" type="checkbox" ng-model="role.selected" ng-checked="role.selected" ng-click="updateRoleFilters()">
                     </td>
-                    <Td>
+                    <Td nowrap style="padding-right:15px">
                         <label style="font-weight: normal;" for="user_role_{{$index}}">{{role.name}}</label>
                     </Td>
                 </tr>

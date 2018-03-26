@@ -57,6 +57,39 @@ module.exports = {
                 ],
             }));
 
+            // protect /graphqli
+            app.use("/graphqli", expressJwt(
+                {
+                    secret: settings.SECRET,
+                    credentialsRequired: false,
+                    getToken: function fromHeaderOrQuerystring(req) {
+                        let token = null;
+                        if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+                            token = req.headers.authorization.split(" ")[1];
+                        } else if (req.query && req.query.token) {
+                            token = req.query.token;
+                        }
+                        return token;
+                    },
+                }
+            ));
+
+            app.use("/graphql", expressJwt(
+                {
+                    secret: settings.SECRET,
+                    credentialsRequired: false,
+                    getToken: function fromHeaderOrQuerystring(req) {
+                        let token = null;
+                        if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+                            token = req.headers.authorization.split(" ")[1];
+                        } else if (req.query && req.query.token) {
+                            token = req.query.token;
+                        }
+                        return token;
+                    },
+                }
+            ));
+
             // Middleware to populate operator context
             app.use(function(req, res, next) {
                 req.context = {ip: req.headers["x-forwarded-for"] || req.connection.remoteAddress, user_agent: req.headers["user-agent"]};

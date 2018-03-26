@@ -17,7 +17,6 @@ var redisService = require('../../utilities/services/redisService')
 var userBounceService = require('./userBounceService')
 var escapeStringRegexp = require('escape-string-regexp');
 
-
 module.exports = {
 
     rebuildSearch: function(id) {
@@ -161,7 +160,7 @@ module.exports = {
                         search.orgid = criteria.orgid;
                     }
 
-                    //Get all roles that are vieable to the user if we need to filter by either orgid or roles in that org or guests
+                    // Get all roles that are vieable to the user if we need to filter by either orgid or roles in that org or guests
                     AccessService.getOrgRoles(search, function (err, roles) {
                         var roleids = _.map(roles, function(x) {return x._id.toString()});
                         //Get all users assigned to those roles
@@ -186,13 +185,18 @@ module.exports = {
                 criteria.ids.push(criteria._id);
             }
 
-            //If we are searching by role or org:
+            if (criteria.ids) {
+                criteria.ids = _.map(criteria.ids, function (x) {
+                    return x.toString();
+                });
+            }
+
+            // If we are searching by role or org:
             if (all.rolesSearchUserIds) {
                 //If we already have a list of ids we want to filter by, make sure its in the allowed list of role or org
                 if (criteria.ids) {
                     criteria.ids = _.intersection(all.rolesSearchUserIds, criteria.ids);
-                }
-                else {
+                } else {
                     //Not filtering by ids, filter only by users in role or org
                     criteria.ids = all.rolesSearchUserIds;
                 }

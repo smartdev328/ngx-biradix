@@ -73,58 +73,58 @@ Routes.post("/undo", function (req, res) {
                 function(callbacks) {
                     switch (o.type) {
                         case "user_status":
-                            UserService.updateActive(req.user, {id: o.user.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err,n) {
+                            UserService.updateActive(req.user, {id: o.user.id, active: o.data[0].status ? true : false}, req.context, o._id, function(err,n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "property_status":
-                            PropertyService.updateActive(req.user, {id: o.property.id, active: o.data[0].status ? true : false }, req.context, o._id, function (err, n) {
+                            PropertyService.updateActive(req.user, {id: o.property.id, active: o.data[0].status ? true : false}, req.context, o._id, function(err, n) {
                                 errors = err || [];
                                 callbacks(null);
                             });
                             break;
                         case "comp_unlinked":
-                            PropertyService.linkComp(req.user, req.context, o._id, o.data[0].id, o.data[1].id,  function (err, n) {
+                            PropertyService.linkComp(req.user, req.context, o._id, o.data[0].id, o.data[1].id, function(err, n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "comp_linked":
-                            PropertyService.unlinkComp(req.user, req.context, o._id, o.data[0].id, o.data[1].id,  function (err, n) {
+                            PropertyService.unlinkComp(req.user, req.context, o._id, o.data[0].id, o.data[1].id, function(err, n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "links_updated":
-                            linksUpdated(req,o, function(err) {
+                            linksUpdated(req, o, function(err) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             })
                             break;
                         case "survey_created":
-                            PropertyService.deleteSurvey(req.user, req.context, o._id, o.data[0].id,  function (err, n) {
+                            PropertyService.deleteSurvey(req.user, req.context, o._id, o.data[0].id, function(err, n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "survey_deleted":
-                            PropertyService.createSurvey(req.user, req.context, o._id, o.data[0].survey.propertyid, o.data[0].survey,  function (err, n) {
+                            PropertyService.createSurvey(req.user, req.context, o._id, o.data[0].survey.propertyid, o.data[0].survey, function(err, n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "survey_updated":
-                            PropertyService.updateSurvey(req.user, req.context, o._id, o.data[0].survey.propertyid, o.data[0].survey._id, o.data[0].survey,  function (err, n) {
+                            PropertyService.updateSurvey(req.user, req.context, o._id, o.data[0].survey.propertyid, o.data[0].survey._id, o.data[0].survey, function(err, n) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             });
                             break;
                         case "property_profile_updated":
                         case "property_contact_updated":
-                            propertyUpdateUndo(req,o, function(err) {
+                            propertyUpdateUndo(req, o, function(err) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             })
                             break;
                         case "property_fees_updated":
@@ -170,9 +170,9 @@ Routes.post("/undo", function (req, res) {
                             })
                             break;
                         case "user_updated":
-                            userUpdatedUndo(req,o, function(err) {
+                            userUpdatedUndo(req, o, function(err) {
                                 errors = err || [];
-                                callbacks(null)
+                                callbacks(null);
                             })
                             break;
                         case "user_assigned":
@@ -594,20 +594,34 @@ function propertyFloorplanAmenitiesUpdatedUndo  (req, o, callback) {
     });
 }
 
-function userUpdatedUndo  (req, o, callback) {
-    UserService.search(req.user, {_id: o.user.id, select: "_id first last email"}, function (er, users) {
-        var user = users[0];
+function userUpdatedUndo(req, o, callback) {
+    UserService.search(req.user, {_id: o.user.id, select: "_id first last email"}, function(er, users) {
+        let user = users[0];
+        user.roleids = _.map(user.roles, function(x) {
+            return x._id.toString();
+        });
 
-        o.data.forEach(function (d) {
-            user[d.field] = d.old_value;
-        })
+        o.data.forEach(function(d) {
+            if (d.field == "roleids" && (d.added || d.removed)) {
+                _.remove(user.roleids, function(x) {
+                    return d.added.indexOf(x) > -1;
+                });
+                user.roleids = _.unique(user.roleids.concat(d.removed));
+            } else {
+                user[d.field] = d.old_value;
+            }
+        });
+
+        // console.log(user);
+        // callback([{msg: "test"}]);
+        // return;
 
         UserCreateService.update(req.user, req.context, o._id, user, callback);
     });
 }
 
-function userAssignedUndo  (req, o, callback) {
-    PropertyUserService.unlink(req.user,req.context, o._id, o.data[0].userid,o.data[0].propertyid,callback)
+function userAssignedUndo (req, o, callback) {
+    PropertyUserService.unlink(req.user, req.context, o._id, o.data[0].userid, o.data[0].propertyid, callback);
 }
 
 function userUnAssignedUndo  (req, o, callback) {

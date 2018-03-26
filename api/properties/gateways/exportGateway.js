@@ -3,15 +3,13 @@ var async = require("async");
 var moment = require('moment')
 var request = require('request')
 var ProgressService = require('../../progress/services/progressService')
-var organizationService = require('../../organizations/services/organizationService')
 var settings = require("../../../config/settings")
 var queueService = require('../services/queueService');
 var bus = require('../../../config/queues')
 var JSONB = require('json-buffer')
-var redisService = require('../../utilities/services/redisService')
 var error = require('../../../config/error')
 var exportService = require('../services/exportService');
-
+const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry");
 
 module.exports = {
     init: function(Routes) {
@@ -26,8 +24,7 @@ module.exports = {
         })
 
         Routes.get('/:id/excel', function (req, res) {
-
-            redisService.getByKey(req.query.key, function(err, result) {
+            serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
                 var query = {};
 
                 if (result) {
@@ -122,7 +119,7 @@ module.exports = {
 
         Routes.get("/reportsPdf", function(req, res) {
             let timer = new Date().getTime();
-            redisService.getByKey(req.query.key, function(err, result) {
+            serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
                 let query = {};
 
                 if (result) {
@@ -173,18 +170,16 @@ module.exports = {
         });
 
         Routes.get('/:id/pdf', function (req, res) {
-            var timer = new Date().getTime();
+            let timer = new Date().getTime();
 
-            redisService.getByKey(req.query.key, function(err, result) {
-                var query = {};
+            serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
+                let query = {};
 
                 if (result) {
                     query = JSON.parse(result);
                 }
 
-                //console.log(query, typeof query.showFile, typeof query.full);
-
-                var message = {
+                let message = {
                     user: req.user,
                     context : req.context,
                     url : req.basePath,
@@ -204,7 +199,7 @@ module.exports = {
                 };
 
                 bus.query(settings.PDF_PROFILE_QUEUE,message,
-                    function (data) {
+                    function(data) {
                         console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
 
                         if (!data.stream) {
@@ -228,12 +223,9 @@ module.exports = {
                     }
                 );
             });
-
-
         });
-    }
-}
-
+    },
+};
 
 var CSVEncode = function(s) {
     var result = s.replace(/"/g, '""');

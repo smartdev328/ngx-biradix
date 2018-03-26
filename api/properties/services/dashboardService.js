@@ -32,8 +32,8 @@ module.exports = {
                     , skipAmenities: true
                 }, function(err, property) {
                     localCacheService.set(key, property[0], 2)
-                    callbackp(err, property[0])
-                })
+                    callbackp(err, property[0]);
+                });
             },
             comp: function (callbackp) {
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView','PropertyManage','CompManage'], _id: compId
@@ -42,9 +42,9 @@ module.exports = {
                     if (err || !property || property.length == 0) {
                         return callbackp('Unable to find property')
                     }
-                    //console.log("Comp DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
+                    // console.log("Comp DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
                     callbackp(err, {p: property[0], l: lookups})
-                })
+                });
             },
             modify: function(callbackp) {
                 if (!checkManaged) {
@@ -121,7 +121,7 @@ module.exports = {
                                 }
                             }
                         }
-                    })
+                    });
 
                     // console.log("Profile DB for " + compId + ": " + (new Date().getTime() - timer) + "ms");
 
@@ -136,13 +136,13 @@ module.exports = {
                         }
                     }
 
-                    //Guests cannot survey properties they do not manage
-                    if (canSurvey && !all.modify && user.roles[0] == 'Guest') {
+                    // Guests cannot survey properties they do not manage
+                    if (canSurvey && !all.modify && user.roles[0] == "Guest") {
                         canSurvey = false;
                     }
 
                     // console.log("Profile done: " + (new Date().getTime() - timer) / 1000 + "s");
-                    callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey : canSurvey})
+                    callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey: canSurvey})
 
                     for (var s in all) {
                         all[s] = null;
@@ -167,6 +167,7 @@ module.exports = {
             _id: id,
             select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps media custom",
             skipAmenities: true,
+            active: true,
         }, function(err, property) {
             if (err) {
                 return callback(err, null);
@@ -202,7 +203,7 @@ module.exports = {
                         if (c.survey && c.survey.dateByOwner) {
                             datesByOner[c._id.toString()] = c.survey.dateByOwner;
                         }
-                    })
+                    });
 
                     if (err) {
                         return callback(err, null);
@@ -265,7 +266,7 @@ module.exports = {
                                         if (err || !subjects) {
                                             error.send(err, {subjects: subjects, compids: compids, id: id});
 
-                                            return callbackp(err, {})
+                                            return callbackp(err, {});
                                         }
 
                                         let shared = {};

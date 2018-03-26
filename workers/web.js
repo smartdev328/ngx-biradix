@@ -1,27 +1,21 @@
-//var moment = require("moment");
-//var end = moment("5/3/2016 3:00").subtract(4,"weeks").endOf("week").add(1,"day").utcOffset(-480);
-//var start = moment("5/3/2016 3:00").subtract(5,"weeks").startOf("week").add(1,"day").utcOffset(-480);
-//console.log(start.format(),end.format());
-//process.exit();
-//return;
-require ('newrelic');
-var jwt = require('jsonwebtoken');
-var settings = require('../config/settings')
-var errors = require("../config/error")
+require("newrelic");
+const jwt = require("jsonwebtoken");
+const settings = require("../config/settings");
+const errors = require("../config/error");
+const container = require("../config/container");
 
-var d= require("domain").create();
+let d = require("domain").create();
 
 d.on("error", function(err) {
     console.log(err.stack);
     console.log(d.context);
     if (settings.MODE == "production") {
-        errors.send(err.stack,d.context);
+        errors.send(err.stack, d.context);
     }
 });
 
 d.run(function() {
-
-    require('../config/cluster').init({maxThreads: 1}, function (workerId) {
+    require('../config/cluster').init({maxThreads: 1}, function(workerId) {
         var express = require('express')
         var app = express()
         var mongoose = require('mongoose');
@@ -29,7 +23,7 @@ d.run(function() {
 
         var connectedCount = 0;
 
-        queues.connect(function () {
+        queues.connect(function() {
             connectedCount++;
             ready();
         })
@@ -44,11 +38,39 @@ d.run(function() {
             ready();
         });
 
+        container.init(function() {
+            connectedCount++;
+            ready();
+        });
+
         function ready() {
-            if (connectedCount < 2) {
+            if (connectedCount < 3) {
                 return;
             }
-            require('../config/express').init(app, d)
+            const graphqlHTTP = require("express-graphql");
+            let {HeartbeatSchema} = require("../build/services/gateway/HeartbeatSchema");
+            let {RootSchema} = require("../build/services/gateway/RootSchema");
+
+            require("../config/express").init(app, d)
+            app.use("/health/graphql", graphqlHTTP({
+                schema: HeartbeatSchema,
+                graphiql: false,
+            }));
+            app.use("/health/graphqli", graphqlHTTP({
+                schema: HeartbeatSchema,
+                graphiql: true,
+            }));
+
+            app.use("/graphqli", graphqlHTTP({
+                schema: RootSchema,
+                graphiql: true,
+            }));
+
+            app.post("/graphql", graphqlHTTP({
+                schema: RootSchema,
+                graphiql: false,
+            }));
+
             app.use('/poc/', require('../poc/pocGateway'));
             app.use('/', require('../site/siteroutes'));
             app.use(settings.API_PATH + 'access/', require('../api/access/gateways/accessGateway'));

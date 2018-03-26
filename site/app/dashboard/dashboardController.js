@@ -59,7 +59,6 @@ define([
             if(oldHash == newHash) return;
 
             $cookieSettingsService.saveDaterange($scope.settings.daterange)
-            //console.log('from date')
             $scope.refreshGraphs();
         }, true);
 
@@ -114,7 +113,7 @@ define([
             $scope.cutomMyProperties = _.filter($scope.myProperties, function(x) {return (x.custom && x.custom.owner)})
         }
 
-        //make sure me is loaded befor you search initially
+        // make sure me is loaded befor you search initially
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 me();
@@ -127,19 +126,19 @@ define([
                     $authService.updateSettings($rootScope.me.settings);
                 }
 
-                if ($rootScope.me.roles[0] == 'Guest') {
-                    $location.path('/dashboard2')
+                if ($rootScope.me.roles[0] == "Guest") {
+                    $location.path("/dashboard2");
                     return;
                 }
 
                 $propertyService.search({
                     limit: $scope.showInList + 1,
-                    permission: 'PropertyManage',
-                    active: true
-                    , skipAmenities: true
-                    , select: "name custom"
-                    ,hideCustomComps:true
-                }).then(function (response) {
+                    permission: "PropertyManage",
+                    active: true,
+                    skipAmenities: true,
+                    select: "name custom",
+                    hideCustomComps: true,
+                }).then(function(response) {
                     $scope.myProperties = response.data.properties;
                     $scope.splitProperties();
 
@@ -153,20 +152,18 @@ define([
 
                     var id = $rootScope.me.settings.defaultPropertyId;
 
-                    if($stateParams.id) {
+                    if ($stateParams.id) {
                         id = $stateParams.id;
                     }
 
-
                     if (!$scope.myProperties || $scope.myProperties.length == 0) {
                         id = null;
-                    }
-                    else if (!id) {
+                    } else if (!id) {
                         $scope.selectedProperty = $scope.myProperties[0];
                     } else {
-                        $scope.selectedProperty = {_id: id}
+                        $scope.selectedProperty = {_id: id};
 
-                        //if you lost access to your saved property, update your settings
+                        // if you lost access to your saved property, update your settings
                         if (!$scope.selectedProperty ) {
                             $scope.selectedProperty = $scope.myProperties[0];
                             $scope.changeProperty();
@@ -175,19 +172,15 @@ define([
                     }
 
                     if ($scope.selectedProperty) {
-                        if($stateParams.id) {
+                        if ($stateParams.id) {
                             $scope.changeProperty();
                         } else {
-                            $scope.loadProperty($scope.selectedProperty._id)
-                            // $scope.loadProperty("58cdc0bfa8c00c1158192b30")
-
+                            $scope.loadProperty($scope.selectedProperty._id);
                         }
                     } else {
-                        //console.log('loading changed 1');
                         $scope.localLoading = true;
                     }
-
-                }, function (error) {
+                }, function(error) {
                     if (error.status == 401) {
                         $rootScope.logoff();
                         return;
@@ -195,7 +188,7 @@ define([
 
                     toastr.error('Unable to access the system at this time. Please contact an administrator');
                     $scope.localLoading = true;
-                })
+                });
             }
         });
 
@@ -224,7 +217,6 @@ define([
         });
 
         $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
-            //console.log('loaded');
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -241,9 +233,8 @@ define([
                         end: $scope.settings.daterange.selectedEndDate
                         }
                     ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.settings.nerScale}
-                ).then(function (response) {
-
-                    var resp = $propertyService.parseDashboard(response.data,$scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom);
+                ).then(function(response) {
+                    var resp = $propertyService.parseDashboard(response.data, $scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom);
 
                     if (!trendsOnly) {
                         $scope.property = resp.property;
@@ -263,16 +254,14 @@ define([
                     $scope.occData = resp.occData;
                     $scope.leasedData = resp.leasedData;
 
-                    //console.log('loading changed 2');
-
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
 
-                    if($stateParams.s == "1" && !$scope.surveyPopped) {
-                        $rootScope.marketSurvey(defaultPropertyId,null, {trackReminders : true});
-                        $scope.surveyPopped =  true;
+                    if ($stateParams.s == "1" && !$scope.surveyPopped) {
+                        $rootScope.marketSurvey(defaultPropertyId, null, {trackReminders: true});
+                        $scope.surveyPopped = true;
                         if ($scope.property) {
-                            $auditService.create({type: 'tracking_reminder_clicked',
+                            $auditService.create({type: "tracking_reminder_clicked",
                                 property: {
                                     id: $scope.property._id,
                                     name: $scope.property.name,
@@ -282,16 +271,15 @@ define([
                             });
                         }
                     }
-
                 }, function(error) {
                     if (error.status == 401) {
                         $rootScope.logoff();
                         return;
                     } else if (error.status == 400) {
                         if (!$scope.myProperties || $scope.myProperties.length == 0) {
-                            $scope.setProperty(null)
+                            $scope.setProperty(null);
                         } else {
-                            $scope.setProperty($scope.myProperties[0])
+                            $scope.setProperty($scope.myProperties[0]);
                         }
 
                     }
