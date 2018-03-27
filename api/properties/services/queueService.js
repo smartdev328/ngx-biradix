@@ -21,9 +21,9 @@ module.exports = {
         );
     },
     getDashboard: function(req, callback) {
-        if (!bus.getQueue(settings.DASHBOARD_QUEUE).consuming) {
-            return callback("Not consuming", null);
-        }
+        // if (!bus.getQueue(settings.DASHBOARD_QUEUE).consuming) {
+        //     return callback("Not consuming", null);
+        // }
         // var timer = new Date().getTime();
         bus.query(settings.DASHBOARD_QUEUE,{user: req.user, id: req.params.id, options: req.body},
             function (data) {
