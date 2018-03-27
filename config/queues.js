@@ -7,8 +7,8 @@ var exchange;
 var queues = {};
 
 module.exports = {
-    getQueue: function() {
-        return queue;
+    getQueue: function(key) {
+        return queues[key];
     },
     handleCommand: function(key,consumer) {
         queues[key].consume(consumer);

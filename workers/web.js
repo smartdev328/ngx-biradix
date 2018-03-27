@@ -44,6 +44,7 @@ d.run(function() {
         });
 
         function ready() {
+            console.log("connectedCount: ", connectedCount)
             if (connectedCount < 3) {
                 return;
             }

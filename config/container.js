@@ -14,6 +14,11 @@ const ShortenerConsumer = new ShortenerConsumerModule.ShortenerConsumer();
 const ShortenerServiceModule = require("../build/services/atomic/utilities.shortener/client/ShortenerService");
 serviceRegistry.setShortenerService(new ShortenerServiceModule.ShortenerService());
 
+const LatencyConsumerModule = require("../build/services/atomic/utilities.latency/server/LatencyConsumer");
+const LatencyConsumer = new LatencyConsumerModule.LatencyConsumer();
+const LatencyServiceModule = require("../build/services/atomic/utilities.latency/client/LatencyService");
+serviceRegistry.setLatencyService(new LatencyServiceModule.LatencyService());
+
 module.exports = {
     init: function(ready) {
         let timeout = setTimeout(function() {
@@ -31,8 +36,10 @@ module.exports = {
             console.log("Re-usable Rabbit connected");
             Promise.all([
                 EmailConsumer.init(queue),
-                serviceRegistry.getEmailService().init(queue),
+                LatencyConsumer.init(queue),
                 ShortenerConsumer.init(queue, redisClient),
+                serviceRegistry.getEmailService().init(queue),
+                serviceRegistry.getLatencyService().init(queue),
                 serviceRegistry.getShortenerService().init(queue, redisClient),
                 ]
             ).then((values) => {

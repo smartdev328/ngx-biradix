@@ -20,11 +20,14 @@ module.exports = {
             }
         );
     },
-    getDashboard: function (req, callback) {
-        var timer = new Date().getTime();
+    getDashboard: function(req, callback) {
+        if (!bus.getQueue(settings.DASHBOARD_QUEUE).consuming) {
+            return callback("Not consuming", null);
+        }
+        // var timer = new Date().getTime();
         bus.query(settings.DASHBOARD_QUEUE,{user: req.user, id: req.params.id, options: req.body},
             function (data) {
-                //console.log("Dashboard for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                // console.log("Dashboard for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
                 callback(data.err, data.dashboard);
             }
         );
