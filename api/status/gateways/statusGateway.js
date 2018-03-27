@@ -51,7 +51,7 @@ Routes.get('/db', function (req, res) {
 Routes.get('/dashboard', function (req, res) {
     userService.getSystemUser(function (obj) {
         var SystemUser = obj.user;
-        propertyService.search(SystemUser, {limit: 1, skipAmenities: true}, function (err, properties) {
+        propertyService.search(SystemUser, {limit: 1, skipAmenities: true, active: true, hideCustom: true}, function (err, properties) {
             if (err) {
                 throw new Error(err);
             }
@@ -80,7 +80,7 @@ Routes.get('/dashboard', function (req, res) {
 Routes.get('/profile', function (req, res) {
     userService.getSystemUser(function(obj) {
         var SystemUser = obj.user;
-        propertyService.search(SystemUser,{limit:1, skipAmenities: true}, function(err,properties) {
+        propertyService.search(SystemUser,{limit:1, skipAmenities: true, active: true, hideCustom: true}, function(err,properties) {
             if (err) {
                 throw new Error(err);
             }
