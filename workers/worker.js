@@ -2,6 +2,7 @@ require ('newrelic');
 var settings = require('../config/settings')
 var errors = require("../config/error")
 var d= require("domain").create();
+const container = require("../config/containerWorker");
 
 d.on("error", function(err) {
     console.log(err.stack);
@@ -35,9 +36,13 @@ d.run(function() {
             ready();
         });
 
+        container.init(function() {
+            connectedCount++;
+            ready();
+        });
 
         function ready() {
-            if (connectedCount < 2) {
+            if (connectedCount < 3) {
                 return;
             }
 
