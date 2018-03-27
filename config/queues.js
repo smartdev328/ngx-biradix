@@ -19,7 +19,6 @@ module.exports = {
         this.attachQListeners(queues[key], key);
     },
 
-
     command: function(key,data,callback) {
         exchange.publish(data,
             {
