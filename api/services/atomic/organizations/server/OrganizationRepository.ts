@@ -1,5 +1,4 @@
 import * as mongoose from "mongoose";
-import {IOrganization} from "../contracts/IOrganization";
 
 const Schema: mongoose.Schema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,

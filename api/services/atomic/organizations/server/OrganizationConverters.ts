@@ -1,6 +1,6 @@
-import {IOrganization} from "../contracts/IOrganization";
+import {IOrganizationRead} from "../contracts/IOrganization";
 
-function _DBtoObject(object: any): IOrganization {
+function _DBtoObject(object: any): IOrganizationRead {
     object.settings = object.settings || {};
 
     return {
@@ -79,11 +79,11 @@ function _DBtoObject(object: any): IOrganization {
     };
 }
 
-export function DBtoObject(object: any): IOrganization {
+export function DBtoObject(object: any): IOrganizationRead {
     return _DBtoObject(object);
 }
 
-export function DBtoObjectArray(object: any[]): IOrganization[] {
+export function DBtoObjectArray(object: any[]): IOrganizationRead[] {
     return object.map((x) => {
         return _DBtoObject(x);
     });

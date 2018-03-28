@@ -1,3 +1,4 @@
+import {ExecutePermission} from "../../auth.permissions/contracts/ExecutePermission";
 import {OrganizationSearchRequest} from "../contracts/OrganizationSearchRequest";
 import {OrganizationSearchResponse} from "../contracts/OrganizationSearchResponse";
 import * as Converter from "./OrganizationConverters";
@@ -12,7 +13,7 @@ export class OrganizationService {
     public read(searchRequest: OrganizationSearchRequest): Promise<OrganizationSearchResponse> {
         const This = this;
         return new Promise<OrganizationSearchResponse>((resolve, reject) => {
-            if (!searchRequest.loggedInUser || !searchRequest.loggedInUser.memberships.isadmin) {
+            if (!searchRequest.loggedInUser || searchRequest.loggedInUser.permissions.indexOf[ExecutePermission.ADMIN] > -1) {
                 reject("Acces Denied");
             }
 
