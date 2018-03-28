@@ -1,5 +1,6 @@
 import {GraphQLObjectType, GraphQLSchema} from "graphql";
 import {stringShorten} from "./mutations/stringShorten";
+import {organizations} from "./queries/organizations";
 import {stringRetrieve} from "./queries/stringRetrieve";
 
 export const RootSchema = new GraphQLSchema({
@@ -11,6 +12,7 @@ export const RootSchema = new GraphQLSchema({
     }),
     query: new GraphQLObjectType({
         fields: {
+            organizations,
             stringRetrieve,
         },
         name: "RootQueryType",
