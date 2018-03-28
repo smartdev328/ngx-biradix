@@ -1,27 +1,26 @@
-'use strict';
+"use strict";
 
-var express = require('express');
-var organizationService = require('../services/organizationService')
-var AccessService = require('../../access/services/accessService')
-var Routes = express.Router();
+const express = require("express");
+const organizationService = require("../services/organizationService")
+const AccessService = require("../../access/services/accessService")
+const Routes = new express.Router();
+const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry")
 
-
-Routes.post('/', function (req, res) {
-    var amenity = req.body;
-
-    AccessService.canAccess(req.user,"Admin", function(canAccess) {
-
-        if (!canAccess) {
-            return res.status(401).json("Unauthorized request");
-        }
-
-        organizationService.read(function (err, orgs) {
-            return res.status(200).json({errors: err, organizations: orgs});
-        })
+Routes.post("/", function(req, res) {
+    AccessService.canAccess(req.user, "Admin", function(canAccess) {
+        serviceRegistry.getOrganizationService().read({
+            loggedInUser: req.user,
+            webContext: req.context,
+            criteria: {},
+        }).then((response) => {
+            return res.status(200).json({errors: null, organizations: response.data});
+        }).catch((errors)=> {
+            return res.status(200).json({errors: errors, organizations: null});
+        });
     });
 });
 
-Routes.put('/:id/defaultSettings', function (req, res) {
+Routes.put("/:id/defaultSettings", function (req, res) {
 
     AccessService.canAccess(req.user,"Admin", function(canAccess) {
 
