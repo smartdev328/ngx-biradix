@@ -1,4 +1,4 @@
-import {IUserReadLoggedIn} from "../../../composite/users/contracts/IUser";
+import {IUserReadLoggedIn} from "../../users/contracts/IUser";
 import {SearchRequest} from "../../../library/sharedContracts/SearchRequest";
 import {IOrganizationCriteria} from "./IOrganizationCriteria";
 

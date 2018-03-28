@@ -6,24 +6,24 @@ const redis = require("redis");
 const redisClient = redis.createClient(settings.REDIS_URL);
 const serviceRegistry = require("../build/services/gateway/ServiceRegistry");
 
-const EmailConsumerModule = require("../build/services/atomic/utilities.email/server/EmailConsumer");
-const EmailServiceModule = require("../build/services/atomic/utilities.email/client/EmailService");
+const EmailConsumerModule = require("../build/services/services/utilities.email/server/EmailConsumer");
+const EmailServiceModule = require("../build/services/services/utilities.email/client/EmailService");
 const EmailConsumer = new EmailConsumerModule.EmailConsumer();
 serviceRegistry.setEmailService(new EmailServiceModule.EmailService());
 
-const ShortenerConsumerModule = require("../build/services/atomic/utilities.shortener/server/ShortenerConsumer");
+const ShortenerConsumerModule = require("../build/services/services/utilities.shortener/server/ShortenerConsumer");
 const ShortenerConsumer = new ShortenerConsumerModule.ShortenerConsumer();
-const ShortenerServiceModule = require("../build/services/atomic/utilities.shortener/client/ShortenerService");
+const ShortenerServiceModule = require("../build/services/services/utilities.shortener/client/ShortenerService");
 serviceRegistry.setShortenerService(new ShortenerServiceModule.ShortenerService());
 
-const LatencyConsumerModule = require("../build/services/atomic/utilities.latency/server/LatencyConsumer");
+const LatencyConsumerModule = require("../build/services/services/utilities.latency/server/LatencyConsumer");
 const LatencyConsumer = new LatencyConsumerModule.LatencyConsumer();
-const LatencyServiceModule = require("../build/services/atomic/utilities.latency/client/LatencyService");
+const LatencyServiceModule = require("../build/services/services/utilities.latency/client/LatencyService");
 serviceRegistry.setLatencyService(new LatencyServiceModule.LatencyService());
 
-const OrganizationConsumerModule = require("../build/services/atomic/organizations/server/OrganizationConsumer");
+const OrganizationConsumerModule = require("../build/services/services/organizations/server/OrganizationConsumer");
 const OrganizationConsumer = new OrganizationConsumerModule.OrganizationConsumer();
-const OrganizationServiceModule = require("../build/services/atomic/organizations/client/OrganizationService");
+const OrganizationServiceModule = require("../build/services/services/organizations/client/OrganizationService");
 serviceRegistry.setOrganizationService(new OrganizationServiceModule.OrganizationService());
 
 module.exports = {

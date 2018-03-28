@@ -4,9 +4,9 @@ const mongoose = require("mongoose");
 
 const serviceRegistry = require("../build/services/gateway/ServiceRegistry");
 
-const EmailServiceModule = require("../build/services/atomic/utilities.email/client/EmailService");
+const EmailServiceModule = require("../build/services/services/utilities.email/client/EmailService");
 serviceRegistry.setEmailService(new EmailServiceModule.EmailService());
-const OrganizationServiceModule = require("../build/services/atomic/organizations/client/OrganizationService");
+const OrganizationServiceModule = require("../build/services/services/organizations/client/OrganizationService");
 serviceRegistry.setOrganizationService(new OrganizationServiceModule.OrganizationService());
 
 module.exports = {

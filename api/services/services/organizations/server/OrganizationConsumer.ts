@@ -2,10 +2,9 @@ import * as mongoose from "mongoose";
 import {IRPCMessage} from "../../../library/sharedContracts/IMessage";
 import {OrganizationSearchResponse} from "../contracts/OrganizationSearchResponse";
 import {HEALTH_FUNCTION, QUEUE_NAME, READ_FUNCTION} from "../contracts/Settings";
+import {OrganizationReadService} from "./OrganizationReadService";
 import {Repository} from "./OrganizationRepository";
-import {OrganizationService} from "./OrganizationService";
-
-let organizationService: OrganizationService;
+let organizationReadService: OrganizationReadService;
 
 export class OrganizationConsumer {
     private rabbit;
@@ -17,7 +16,7 @@ export class OrganizationConsumer {
             const queue = this.createQueue();
             const repository = new Repository(mongooseCoonection);
 
-            organizationService = new OrganizationService(repository);
+            organizationReadService = new OrganizationReadService(repository);
 
             queue.on("consuming", () => {
                 console.log(`${QUEUE_NAME} consuming`);
@@ -37,7 +36,7 @@ export class OrganizationConsumer {
     private consumer(message: IRPCMessage, reply: any) {
         switch (message.functionName) {
             case READ_FUNCTION:
-                organizationService.read(message.payload)
+                organizationReadService.read(message.payload)
                     .then((searchResponse: OrganizationSearchResponse) => {
                         reply({error: null, searchResponse});
                     })

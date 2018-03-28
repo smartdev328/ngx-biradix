@@ -1,20 +1,27 @@
+import * as jwt from "jsonwebtoken";
 import {ExecutePermission} from "../../auth.permissions/contracts/ExecutePermission";
+import {IUserReadLoggedIn} from "../../users/contracts/IUser";
 import {OrganizationSearchRequest} from "../contracts/OrganizationSearchRequest";
 import {OrganizationSearchResponse} from "../contracts/OrganizationSearchResponse";
 import * as Converter from "./OrganizationConverters";
 import {Repository} from "./OrganizationRepository";
+import {SECRET} from "./Settings";
 
-export class OrganizationService {
+export class OrganizationReadService {
     private repository: Repository;
 
     constructor(repository: Repository) {
         this.repository = repository;
     }
+
     public read(searchRequest: OrganizationSearchRequest): Promise<OrganizationSearchResponse> {
         const This = this;
+
         return new Promise<OrganizationSearchResponse>((resolve, reject) => {
-            if (!searchRequest.loggedInUser || searchRequest.loggedInUser.permissions.indexOf[ExecutePermission.ADMIN] > -1) {
-                reject("Acces Denied");
+            const loggedInUser: IUserReadLoggedIn = this.getLoggedInUser(searchRequest.userJwt);
+
+            if (!loggedInUser || loggedInUser.permissions.indexOf[ExecutePermission.ADMIN] > -1) {
+                return reject("Acces Denied");
             }
 
             const query = This.repository.model.find();
@@ -40,5 +47,18 @@ export class OrganizationService {
                 return reject(error);
             });
         });
+    }
+
+    private getLoggedInUser(token: string): IUserReadLoggedIn {
+        if (!jwt) {
+            return null;
+        }
+
+        try {
+            const decoded = jwt.verify(token, SECRET);
+            return decoded.data;
+        } catch (err) {
+            return null;
+        }
     }
 }
