@@ -1,7 +1,7 @@
 import {GraphQLError, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
 import * as ServiceRegistry from "../ServiceRegistry";
 
-export const stringRetrieve = {
+export const StringRetrieve = {
     args: {
         key: {type: new GraphQLNonNull(GraphQLString)},
     },

@@ -5,7 +5,7 @@ angular.module("biradix.global").factory("$urlService", ["$http", "$cookies", fu
             var strReturn = "";
 
             var query = {
-                query: "mutation stringShorten($body: String!) {stringShorten(body: $body, expiresInMinutes: 30)}",
+                query: "mutation StringShorten($body: String!) {StringShorten(body: $body, expiresInMinutes: 30)}",
                 variables: {"body": body},
             };
 

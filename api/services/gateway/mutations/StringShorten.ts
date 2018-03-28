@@ -1,7 +1,7 @@
 import {GraphQLError, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
 import * as ServiceRegistry from "../ServiceRegistry";
 
-export const stringShorten = {
+export const StringShorten = {
         args: {
             body: {type: new GraphQLNonNull(GraphQLString)},
             expiresInMinutes: {type: new GraphQLNonNull(GraphQLInt)},
