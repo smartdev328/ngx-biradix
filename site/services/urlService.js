@@ -16,7 +16,7 @@ angular.module("biradix.global").factory("$urlService", ["$http", "$cookies", fu
                 data: JSON.stringify(query),
                 url: "/graphql?bust=" + (new Date()).getTime(),
                 success: function(html) {
-                    strReturn = html.data.stringShorten;
+                    strReturn = html.data.StringShorten;
                 },
                 async: false,
             });
