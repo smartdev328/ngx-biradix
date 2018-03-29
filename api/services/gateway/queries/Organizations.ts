@@ -1,7 +1,7 @@
 import {GraphQLError, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from "graphql";
 import {OrganizationSearchResponse} from "../../services/organizations/contracts/OrganizationSearchResponse";
 import * as ServiceRegistry from "../ServiceRegistry";
-import {organization} from "../types/organizations/Organization";
+import {Organization} from "../types/organizations/Organization";
 import {OrganizationSearchCriteria} from "../types/organizations/OrganizationSearchCriteria";
 
 export const Organizations = {
@@ -9,7 +9,7 @@ export const Organizations = {
         criteria: {type: OrganizationSearchCriteria},
     },
     description: "Retrieve list of client organizations.",
-    type: new GraphQLList(organization),
+    type: new GraphQLList(Organization),
     resolve(parent, {criteria}, request) {
         return ServiceRegistry.getOrganizationService().read({
             criteria,
