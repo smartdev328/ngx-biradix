@@ -43,7 +43,7 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
-        $scope.allowGroupUndo = ["survey_created", "survey_updated", "survey_updated"];
+        $scope.allowGroupUndo = ["survey_created", "survey_updated", "survey_deleted"];
 
         $scope.checkAll = function() {
             $scope.activity.forEach(function(a) {
