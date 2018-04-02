@@ -7,7 +7,7 @@ export const StringRetrieve = {
     },
     description: "Retrieve your long string back with a key.",
     type: GraphQLString,
-    resolve(parent, {key}, request) {
+    resolve(_, {key}, request) {
         if (!request.user) {
             throw new GraphQLError("You are not authorized to access function");
         }

@@ -91,8 +91,6 @@ d.run(function() {
             app.use('/properties/cron', require('../api/properties/gateways/cronGateway'));
             app.use('/propertyusers/cron', require('../api/propertyusers/gateways/cronGateway'));
 
-            app.use("/url", require("../build/urlshortener/gateways/urlGateway"));
-
             app.get('/p/:token', function (req, res) {
                 res.redirect('/#/password/reset/' + req.params.token)
             })

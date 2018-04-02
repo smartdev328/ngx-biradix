@@ -1,6 +1,6 @@
 import {SearchResponse} from "../../../library/sharedContracts/SearchResponse";
-import {IOrganizationRead} from "./IOrganization";
+import {IOrganization} from "./IOrganization";
 
-export class OrganizationSearchResponse extends SearchResponse<IOrganizationRead[]> {
+export class OrganizationSearchResponse extends SearchResponse<IOrganization[]> {
 
 }

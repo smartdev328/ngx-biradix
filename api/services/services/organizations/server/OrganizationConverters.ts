@@ -1,89 +1,90 @@
-import {IOrganizationRead} from "../contracts/IOrganization";
+import {IOrganization} from "../contracts/IOrganization";
+import {IOrganizationSettings} from "../contracts/IOrganizationSettings";
+import {IOrganizationModel} from "./OrganizationRepository";
 
-function _DBtoObject(object: any): IOrganizationRead {
-    object.settings = object.settings || {};
+function _DBtoObject(object: IOrganizationModel): IOrganization {
+    const settings: any = object.settings || {};
 
     return {
         _id: object._id.toString(),
-        name: object.name,
-        subdomain: object.subdomain,
+        isDefault: object.isDefault,
         logoBig: object.logoBig,
         logoSmall: object.logoSmall,
-        isDefault: object.isDefault,
+        name: object.name,
         settings: {
-            updates: object.settings.updates || {
+            all_properties: settings.all_properties || {
                 allow: true,
                 configured: false,
                 default_value: true,
             },
-            how_often: object.settings.how_often || {
+            atr: settings.atr || {
+                allow: true,
+                configured: false,
+                default_value: false,
+            },
+            detailed_concessions: settings.detailed_concessions || {
+                allow: true,
+                configured: false,
+                default_value: false,
+            },
+            how_often: settings.how_often || {
                 allow: true,
                 configured: false,
                 default_value: "* * * * 2",
             },
-            all_properties: object.settings.all_properties || {
-                allow: true,
-                configured: false,
-                default_value: true,
-            },
-            reminders: object.settings.reminders || {
-                allow: true,
-                configured: false,
-                default_value: true,
-            },
-            leased: object.settings.leased || {
+            leased: settings.leased || {
                 allow: true,
                 configured: false,
                 default_value: false,
             },
-            renewal: object.settings.renewal || {
-                allow: true,
-                configured: false,
-                default_value: false,
-            },
-            atr: object.settings.atr || {
-                allow: true,
-                configured: false,
-                default_value: false,
-            },
-            detailed_concessions: object.settings.detailed_concessions || {
-                allow: true,
-                configured: false,
-                default_value: false,
-            },
-
-            notification_columns: object.settings.notification_columns || {
+            notification_columns: settings.notification_columns || {
                 allow: true,
                 configured: false,
                 default_value: {
-                    occupancy: true,
-                    leased: false,
                     atr: false,
-                    units: true,
-                    sqft: true,
+                    concessions: false,
+                    last_updated: true,
+                    leased: false,
+                    ner: true,
+                    nersqft: true,
+                    nersqftmonth: true,
+                    nersqftweek: true,
+                    nersqftyear: false,
+                    nervscompavg: false,
+                    occupancy: true,
                     rent: true,
                     runrate: false,
                     runratesqft: false,
-                    ner: true,
-                    nersqft: true,
-                    nersqftweek: true,
-                    nersqftmonth: true,
-                    nersqftyear: false,
-                    last_updated: true,
+                    sqft: true,
+                    units: true,
                     weekly: false,
-                    concessions: false,
-                    nervscompavg: false,
                 },
             },
+            reminders: settings.reminders || {
+                allow: true,
+                configured: false,
+                default_value: true,
+            },
+            renewal: settings.renewal || {
+                allow: true,
+                configured: false,
+                default_value: false,
+            },
+            updates: settings.updates || {
+                allow: true,
+                configured: false,
+                default_value: true,
+            },
         },
+        subdomain: object.subdomain,
     };
 }
 
-export function DBtoObject(object: any): IOrganizationRead {
+export function DBtoObject(object: IOrganizationModel): IOrganization {
     return _DBtoObject(object);
 }
 
-export function DBtoObjectArray(object: any[]): IOrganizationRead[] {
+export function DBtoObjectArray(object: IOrganizationModel[]): IOrganization[] {
     return object.map((x) => {
         return _DBtoObject(x);
     });

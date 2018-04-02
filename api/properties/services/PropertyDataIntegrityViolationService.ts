@@ -2,8 +2,8 @@ import * as propertyService from "../../../api/properties/services/propertyServi
 import {DataIntegrityCheckType} from "../../audit/enums/DataIntegrityEnums";
 import {IDataIntegrityViolation} from "../../audit/interfaces/IDataIntegrityViolation";
 import {IDataIntegrityViolationSet} from "../../audit/interfaces/IDataIntegrityViolationSet";
-import {ICustomError} from "../../shared/interfaces/ICustomError";
-import {IUser} from "../../users/interfaces/IUser";
+import {ICustomError} from "../../services/library/sharedContracts/ICustomError";
+import {IUserLoggedIn} from "../../services/services/users/contracts/IUser";
 import {IProperty} from "../interfaces/IProperty";
 import {IPropertySearchRequest} from "../interfaces/IPropertySearchRequest";
 
@@ -24,7 +24,7 @@ export class PropertyDataIntegrityViolationService {
         return violationSet;
     }
 
-    public async getNewPropertyViloations(operator: IUser, newProperty: IProperty): Promise<IDataIntegrityViolationSet> {
+    public async getNewPropertyViloations(operator: IUserLoggedIn, newProperty: IProperty): Promise<IDataIntegrityViolationSet> {
         return new Promise<IDataIntegrityViolationSet>((resolve, reject) => {
             if (newProperty.custom && newProperty.custom.owner) {
               return resolve(null);
@@ -52,7 +52,7 @@ export class PropertyDataIntegrityViolationService {
         });
     }
 
-    public async getUpdatePropertyViloations(operator: IUser, newProperty: IProperty, oldProperty: IProperty, isUndo: boolean): Promise<IDataIntegrityViolationSet> {
+    public async getUpdatePropertyViloations(operator: IUserLoggedIn, newProperty: IProperty, oldProperty: IProperty, isUndo: boolean): Promise<IDataIntegrityViolationSet> {
         return new Promise<IDataIntegrityViolationSet>((resolve, reject) => {
             if (newProperty.custom && newProperty.custom.owner) {
                 return resolve(null);
@@ -90,7 +90,7 @@ export class PropertyDataIntegrityViolationService {
     }
 }
 
-function checkDuplicateGeo(operator: IUser, newProperty: IProperty): Promise<IDataIntegrityViolation> {
+function checkDuplicateGeo(operator: IUserLoggedIn, newProperty: IProperty): Promise<IDataIntegrityViolation> {
     return new Promise<IDataIntegrityViolation>((resolve, reject) => {
 
         const PropertySearchRequest: IPropertySearchRequest = {
@@ -131,7 +131,7 @@ function checkAddressChange(newProperty: IProperty, oldProperty: IProperty): Pro
     });
 }
 
-function checkDuplicateName(operator: IUser, newProperty: IProperty): Promise<IDataIntegrityViolation> {
+function checkDuplicateName(operator: IUserLoggedIn, newProperty: IProperty): Promise<IDataIntegrityViolation> {
     return new Promise<IDataIntegrityViolation>((resolve, reject) => {
 
         const PropertySearchRequest: IPropertySearchRequest = {

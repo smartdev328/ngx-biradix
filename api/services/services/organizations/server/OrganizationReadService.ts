@@ -1,6 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import {ExecutePermission} from "../../auth.permissions/contracts/ExecutePermission";
-import {IUserReadLoggedIn} from "../../users/contracts/IUser";
+import {IUserLoggedIn} from "../../users/contracts/IUser";
 import {OrganizationSearchRequest} from "../contracts/OrganizationSearchRequest";
 import {OrganizationSearchResponse} from "../contracts/OrganizationSearchResponse";
 import * as Converter from "./OrganizationConverters";
@@ -18,7 +18,7 @@ export class OrganizationReadService {
         const This = this;
 
         return new Promise<OrganizationSearchResponse>((resolve, reject) => {
-            const loggedInUser: IUserReadLoggedIn = this.getLoggedInUser(searchRequest.userJwt);
+            const loggedInUser: IUserLoggedIn = this.getLoggedInUser(searchRequest.userJwt);
 
             if (!loggedInUser || loggedInUser.permissions.indexOf[ExecutePermission.ADMIN] > -1) {
                 return reject("Acces Denied");
@@ -40,6 +40,7 @@ export class OrganizationReadService {
 
             query.exec().then((orgs) => {
                 const response: OrganizationSearchResponse = new OrganizationSearchResponse();
+
                 response.data = Converter.DBtoObjectArray(orgs);
 
                 return resolve(response);
@@ -49,7 +50,7 @@ export class OrganizationReadService {
         });
     }
 
-    private getLoggedInUser(token: string): IUserReadLoggedIn {
+    private getLoggedInUser(token: string): IUserLoggedIn {
         if (!jwt) {
             return null;
         }

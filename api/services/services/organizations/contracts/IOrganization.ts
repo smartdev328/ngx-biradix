@@ -8,7 +8,7 @@ export interface IOrganizationWrite {
     isDefault: boolean;
 }
 
-export interface IOrganizationRead extends IOrganizationWrite {
+export interface IOrganization extends IOrganizationWrite {
     _id: string;
     settings: IOrganizationSettings;
 }

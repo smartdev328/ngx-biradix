@@ -10,7 +10,7 @@ export const Organizations = {
     },
     description: "Retrieve list of client organizations.",
     type: new GraphQLList(Organization),
-    resolve(parent, {criteria}, request) {
+    resolve(_, {criteria}, request) {
         return ServiceRegistry.getOrganizationService().read({
             criteria,
             userJwt: request.user_jwt,

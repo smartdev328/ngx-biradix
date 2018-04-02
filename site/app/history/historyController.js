@@ -43,9 +43,14 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "History";
 
+        $scope.allowGroupUndo = ["survey_created", "survey_updated"];
+
         $scope.checkAll = function() {
             $scope.activity.forEach(function(a) {
-               if (a.dataIntegrityViolationSet && a.dataIntegrityViolationSet.violations.length > 0 && !a.dataIntegrityViolationSet.approval) {
+               if (
+                   (a.dataIntegrityViolationSet && a.dataIntegrityViolationSet.violations.length > 0 && !a.dataIntegrityViolationSet.approval)
+                    || $scope.canGroupUndo(a)
+               ) {
                    $scope.options.checked[a._id] = $scope.options.checkAll;
                }
             });
@@ -60,6 +65,26 @@ define([
 
             return false;
         };
+
+        $scope.canGroupUndo = function(row) {
+            return $scope.allowGroupUndo.indexOf(row.type) > -1 && row.canUndo && $scope.getAudit(row.type).undo && !row.reverted;
+        }
+
+        $scope.canUndoChecked = function() {
+            var row;
+            for (var key in $scope.options.checked) {
+                if ($scope.options.checked[key] === true) {
+                    row = _.find($scope.activity, function(x) {
+                       return x._id.toString() == key.toString();
+                    });
+
+                    if ($scope.canGroupUndo(row)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         $scope.formatUsers = function(data) {
             var u;
@@ -238,7 +263,7 @@ define([
                                 _id: $stateParams.property,
                                 skipAmenities: true,
                             }).then(function(response) {
-                                if (response.data.properties || response.data.properties.length > 0) {
+                                if (response.data.properties && response.data.properties.length > 0) {
                                     $scope.propertyItems.push({id: $stateParams.property, name: response.data.properties[0].name});
                                 }
 
@@ -328,6 +353,60 @@ define([
 
             });
         };
+
+        $scope.undoChecked = function() {
+            var good = [];
+            var bad = [];
+            var row;
+            for (var key in $scope.options.checked) {
+                if ($scope.options.checked[key] === true) {
+                    row = _.find($scope.activity, function(x) {
+                        return x._id.toString() == key.toString();
+                    });
+                    if ($scope.canGroupUndo(row)) {
+                        good.push({_id: key, date: (new Date(row.date).getTime())});
+                    } else {
+                        bad.push(key);
+                    }
+                }
+            }
+
+            var msg = "Are you sure you want to undo <b>" + good.length + "</b> item(s)?";
+
+            if (bad.length > 0) {
+                msg += "<Br><Br><span style='color:red'>Note: There are <b>" + bad.length + "</b> item(s) not eligable for group undo.</span>";
+            }
+
+            good = _.sortBy(good, function(n) {
+                return -1*n.date;
+            });
+
+            var successes = 0;
+            $dialog.confirm(msg, function() {
+                $scope.localLoading = false;
+                async.eachSeries(good, function(row, callbacks) {
+                    $auditService.undo(row._id).then(function(response) {
+                            if (response.data.errors.length > 0) {
+                                toastr.error( _.pluck(response.data.errors, "msg").join("<br>"));
+                            } else {
+                                successes++;
+                            }
+                            callbacks();
+                        },
+                        function(error) {
+                            toastr.error("Unable to undo. Please contact the administrator." );
+                            callbacks();
+                        });
+                    }, function(err) {
+                        toastr.success(successes + " undo(s) performed successfully.");
+                        window.setTimeout(function() {
+                            $scope.reload();
+                            $scope.localLoading = true;
+                        }, 1000);
+                    }
+                );
+            });
+        }
 
         $scope.approveChecked = function() {
             var ids = [];

@@ -4,7 +4,7 @@ export interface IUserBase {
     email: string;
 }
 
-export interface IUserReadLoggedIn extends IUserBase {
+export interface IUserLoggedIn extends IUserBase {
     memberships: {
         isadmin: boolean;
         memberships: string[];

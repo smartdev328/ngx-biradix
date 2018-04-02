@@ -88,6 +88,11 @@
                                                                 onclick="event.preventDefault();event.stopPropagation()"
                                                                 style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
                             ><span class="fa fa-thumbs-up fa-fw"></span> Approve Checked</a></li>
+                            <li ng-if="canUndoChecked()"><a href ng-click="undoChecked()"><span class="fa fa-undo fa-fw"></span> Undo Checked</a></li>
+                            <li ng-if="!canUndoChecked()"><a href
+                                                                onclick="event.preventDefault();event.stopPropagation()"
+                                                                style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
+                            ><span class="fa fa-undo fa-fw"></span> Undo Checked</a></li>
                         </ul>
                     </div>
                 </div>
@@ -103,7 +108,13 @@
             <td>{{row.description}}</td>
             <td>{{row.operator.name}}</td>
             <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
-                <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox" ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval">
+                <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox"
+                       ng-if="
+                                (row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval)
+                                ||
+                                canGroupUndo(row)
+                            "
+                >
             </td>
             <td ng-if="me.permissions.indexOf('Admin') > -1" nowrap>
                 <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0 && !row.dataIntegrityViolationSet.approval" ng-click="approve(row)" style="padding-right:5px"><span class="fa fa-thumbs-up" tooltip-append-to-body="true" uib-tooltip="Approve Violation(s)"></span></A>
