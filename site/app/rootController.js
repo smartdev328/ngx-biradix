@@ -240,8 +240,15 @@ angular.module("biradix.global").controller("rootController",
         }
 
         $rootScope.swaptoLoggedIn = function(redirect) {
-
             $rootScope.getMe(function() {
+                Raygun.setUser(
+                    $rootScope.me.email,
+                    false,
+                    $rootScope.me.email,
+                    $rootScope.me.first + " " + $rootScope.me.last,
+                    $rootScope.me.first,
+                    $rootScope.me.orgs[0].name
+                );
                 $rootScope.loggedIn = true;
                 $('.loading').hide();
                 $('.loggedout').hide();
