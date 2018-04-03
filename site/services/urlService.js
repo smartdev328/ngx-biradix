@@ -5,7 +5,7 @@ angular.module("biradix.global").factory("$urlService", ["$http", "$cookies", fu
             var strReturn = "";
 
             var query = {
-                query: "mutation stringShorten($body: String!) {stringShorten(body: $body, expiresInMinutes: 30)}",
+                query: "mutation StringShorten($body: String!) {StringShorten(body: $body, expiresInMinutes: 30)}",
                 variables: {"body": body},
             };
 
@@ -16,7 +16,7 @@ angular.module("biradix.global").factory("$urlService", ["$http", "$cookies", fu
                 data: JSON.stringify(query),
                 url: "/graphql?bust=" + (new Date()).getTime(),
                 success: function(html) {
-                    strReturn = html.data.stringShorten;
+                    strReturn = html.data.StringShorten;
                 },
                 async: false,
             });

@@ -21,6 +21,7 @@ gulp.task('vendorsjs', function() {
         , './bower_components/moment/min/moment.min.js'
         , './bower_components/highcharts-release/highcharts.js'
         , './bower_components/angular-ui-sortable/sortable.min.js'
+        , './bower_components/raygun4js/dist/raygun.min.js'
         , './site/components/ngProgress/ngProgress.min.js'
         , './site/components/angular-toastr/angular-toastr.tpls.min.js'
         , './site/components/daterangepicker/daterangepicker.js'

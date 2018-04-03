@@ -654,67 +654,27 @@ module.exports = {
                                     am = _.find(all.amenities, function(a) {return a._id.toString() == x.toString()})
                                     if (am) {
                                         if (!_.find(lookups.amenities, function(l) {return l._id.toString() == am._id.toString()})) {
-                                            lookups.amenities.push({_id: am._id, name: am.name})
+                                            lookups.amenities.push({_id: am._id, name: am.name});
                                         }
                                     }
-                                })
-                            })
+                                });
+                            });
                         }
-
-                    })
+                    });
 
                     t = (new Date()).getTime();
-                    //console.log('Property Run: (Loop): ',(t-tS) / 1000, "s");
-                }
-
+                    // console.log('Property Run: (Loop): ',(t-tS) / 1000, "s");
+                };
 
                 all = null;
+                t = (new Date()).getTime();
+                // console.log('Property Search is Done: ',(t-tStart) / 1000, "s");
 
-                if (criteria.needsApproval != null) {
-                    async.eachLimit(props, 10, function(prop, callbackp) {
-                        PropertySchema.find(
-                            {
-                            loc: {
-                                $near: prop.loc,
-                                $maxDistance: .1 / 3963.2
-                            },
-                                _id : {$ne: prop._id},
-                                active:true,
-                                "custom.owner" : {$exists: false}
-                        }).select("_id name loc").exec(function(err, dupes) {
-                            prop.dupes = _.map(dupes, function(x) {return x.name}).join(", ");
-                            callbackp();
-                        });
-
-                    }, function(err) {
-                        async.eachLimit(props, 10, function(prop, callbackp) {
-                            PropertySchema.find(
-                                {
-                                    name: {$regex: new RegExp("^"+prop.name+"$", "i")},
-                                    _id : {$ne: prop._id},
-                                    active:true,
-                                    "custom.owner" : {$exists: false}
-                                }).select("_id name loc").exec(function(err, dupes) {
-                                prop.dupeName = dupes.length > 0;
-                                callbackp();
-                            });
-
-                        }, function(err) {
-                            callback(err, props, lookups)
-                        })
-                    })
-
-                } else {
-
-                    t = (new Date()).getTime();
-                    // console.log('Property Search is Done: ',(t-tStart) / 1000, "s");
-
-                    callback(err, props, lookups)
-                }
-            })
-        })
+                callback(err, props, lookups);
+            });
+        });
     },
-    updateActive : function(operator, property, context, revertedFromId, callback)  {
+    updateActive: function(operator, property, context, revertedFromId, callback) {
         var self = this;
         var modelErrors = [];
 

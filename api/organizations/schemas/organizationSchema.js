@@ -1,23 +1,22 @@
-'use strict';
-var mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var s = new Schema({
+const s = new Schema({
     name: {
-        type: String
+        type: String,
     },
     subdomain: {
-        type: String
+        type: String,
     },
     logoBig: {
-        type: String
+        type: String,
     },
     logoSmall: {
-        type: String
+        type: String,
     },
     isDefault: Boolean,
-    settings : {}
+    settings: {},
 });
 
-module.exports = mongoose.model('Organization', s);
+module.exports = mongoose.model("Organization", s);

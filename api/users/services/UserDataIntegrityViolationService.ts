@@ -1,10 +1,10 @@
 import {DataIntegrityCheckType} from "../../audit/enums/DataIntegrityEnums";
 import {IDataIntegrityViolation} from "../../audit/interfaces/IDataIntegrityViolation";
 import {IDataIntegrityViolationSet} from "../../audit/interfaces/IDataIntegrityViolationSet";
-import {IUser} from "../interfaces/IUser";
+import {IUserBase} from "../../services/services/users/contracts/IUser";
 
 export class UserDataIntegrityViolationService {
-    public getChanged(newUser: IUser, oldUser: IUser, isUndo: boolean): IDataIntegrityViolationSet {
+    public getChanged(newUser: IUserBase, oldUser: IUserBase, isUndo: boolean): IDataIntegrityViolationSet {
         if (isUndo) {
             return null;
         }

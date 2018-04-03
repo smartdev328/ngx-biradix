@@ -3,8 +3,10 @@ export interface ISearchResponse<T> {
 }
 
 export interface IPaginatedSearchResponse<T> extends ISearchResponse<T> {
-    totalRecords: number;
-    currentOffset: number;
-    currentPage: number;
-    pageSize: number;
+    pageInfo: {
+        totalRecords: number;
+        currentOffset: number;
+        currentPage: number;
+        pageSize: number;
+    };
 }

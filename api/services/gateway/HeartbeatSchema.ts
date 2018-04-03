@@ -4,6 +4,13 @@ import * as ServiceRegistry from "./ServiceRegistry";
 export const HeartbeatSchema = new GraphQLSchema({
     query: new GraphQLObjectType({
         fields: {
+            organizations: {
+                description: "Returns the health status of the organizations service. 'OK' means healthy. ",
+                type: GraphQLString,
+                resolve() {
+                    return ServiceRegistry.getOrganizationService().health();
+                },
+            },
             utilities_email: {
                 description: "Returns the health status of the utilties.email service. 'OK' means healthy. ",
                 type: GraphQLString,

@@ -3,6 +3,7 @@ const settings = require("./settings.js");
 const error = require("./error.js");
 const bodyParser = require("body-parser");
 const expressJwt = require("express-jwt");
+const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const redisService = require("../api/utilities/services/redisService");
@@ -124,6 +125,17 @@ module.exports = {
 
                         next();
                     });
+                } else {
+                    next();
+                }
+            });
+
+            // Tokenize the full loggedin user back to a JWT token so it can be passed around to microservices
+            app.use(function(req, res, next) {
+                if (req.user) {
+                    const token = jwt.sign({data: req.user}, settings.SECRET, {expiresIn: 30 * 60});
+                    req.user_jwt = token;
+                    next();
                 } else {
                     next();
                 }

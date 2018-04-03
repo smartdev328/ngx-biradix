@@ -1,8 +1,8 @@
 import {ISearchRequest} from "./ISearchRequest";
 import {IWebContext} from "./IWebContext";
 
-export class SearchRequest<U, C> implements ISearchRequest<U, C> {
-    public loggedInUser?: U;
+export class SearchRequest<U, C> implements ISearchRequest<C> {
+    public userJwt?: string;
     public criteria: C;
     public webContext: IWebContext;
     public transactionId?: string;

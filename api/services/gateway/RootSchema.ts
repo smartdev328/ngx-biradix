@@ -1,17 +1,19 @@
 import {GraphQLObjectType, GraphQLSchema} from "graphql";
-import {stringShorten} from "./mutations/stringShorten";
-import {stringRetrieve} from "./queries/stringRetrieve";
+import {StringShorten} from "./mutations/StringShorten";
+import {Organizations} from "./queries/Organizations";
+import {StringRetrieve} from "./queries/StringRetrieve";
 
 export const RootSchema = new GraphQLSchema({
     mutation: new GraphQLObjectType({
         fields: {
-            stringShorten,
+            StringShorten,
         },
         name: "RootMutationType",
     }),
     query: new GraphQLObjectType({
         fields: {
-            stringRetrieve,
+            Organizations,
+            StringRetrieve,
         },
         name: "RootQueryType",
     }),

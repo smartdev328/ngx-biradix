@@ -1,7 +1,7 @@
 import {IWebContext} from "./IWebContext";
 
-export interface ISearchRequest<U, C> {
-    loggedInUser?: U;
+export interface ISearchRequest<C> {
+    userJwt?: string;
     criteria: C;
     webContext: IWebContext;
     transactionId?: string;
