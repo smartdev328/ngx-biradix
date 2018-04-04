@@ -377,7 +377,19 @@
                     </Center>
             <Br>
             <div style="text-align: center">
-                <a class="btn btn-warning contact-submit" ng-click="create()">Save Changes</a>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+
+                </div>
+                <div class="col-xs-10 col-sm-8" style="text-align: center">
+                    <a class="btn btn-warning contact-submit" ng-click="create()">Save Changes</a>
+                </div>
+                <div class="col-xs-2 col-sm-2" ng-if="editMode && ($root.me.permissions.indexOf('Admin') > -1 || property.custom.owner)">
+                    <button class=" btn btn-danger btn-large contact-submit pull-right" type="button" ng-click="delete()" uib-tooltip="Delete Survey"><i class="fa fa-trash" style="color:white"></i></button>
+                </div>
             </div>
         </div>
 

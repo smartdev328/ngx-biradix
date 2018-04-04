@@ -69,10 +69,10 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                     $propertyService.search({
                         limit: 1,
-                        permission: ['PropertyManage', 'CompManage'],
+                        permission: ["PropertyManage", "CompManage"],
                         ids: [id],
-                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id survey.date orgid"
-                    }).then(function (response) {
+                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id survey.date orgid custom",
+                }).then(function(response) {
                         $scope.property = response.data.properties[0]
                         $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
                         $scope.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
@@ -942,13 +942,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
             $scope.getOrder = function(sort) {
                 switch (sort) {
                     case "type":
-                        return ["bedrooms","bathrooms"]
+                        return ["bedrooms", "bathrooms"]
                     case "-type":
-                        return ["-bedrooms","bathrooms"]
+                        return ["-bedrooms", "bathrooms"]
                     default:
                         return sort;
                 }
-            }
+            };
 
             $scope.toggleSort = function(field, defaultAsc) {
 
@@ -984,8 +984,28 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     $scope.sort = "-" + field;
                 }
 
-            }
+            };
 
+            $scope.delete = function() {
+                $("button.contact-submit").prop("disabled", true);
+
+                $dialog.confirm("Are you sure you want to delete this Market Survey?", function() {
+                    $propertyService.deleteSurvey(id, surveyid).then(function(response) {
+                            $("button.contact-submit").prop("disabled", false);
+                            if (response.data.errors) {
+                                toastr.error(_.pluck(response.data.errors, "msg").join("<br>"));
+                            } else {
+                                $rootScope.$broadcast("data.reload");
+                                toastr.success("Market Survey deleted successfully.");
+                                $uibModalInstance.close();
+                            }
+                        },
+                        function(error) {
+                            $("button.contact-submit").prop("disabled", false);
+                            toastr.error("Unable to delete Market Survey. Please contact the administrator.");
+                        });
+                }, function() {
+                    $("button.contact-submit").prop("disabled", false);
+                });
+            };
     }]);
-
-

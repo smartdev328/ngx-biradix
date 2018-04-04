@@ -193,6 +193,22 @@ module.exports = {
             })
         })
 
+        Routes.delete("/:id/survey/:surveyid", function (req, res) {
+            AccessService.canAccessResource(req.user, req.params.id, ["PropertyManage", "CompManage"], function(canAccess) {
+                if (!canAccess) {
+                    return res.status(401).json("Unauthorized request");
+                }
+
+                PropertyService.deleteSurvey(req.user, req.context, null, req.params.surveyid, function(err, newusr) {
+                    if (err) {
+                        return res.status(200).json({success: false, errors: err});
+                    } else {
+                        return res.status(200).json({success: true});
+                    }
+                });
+            });
+        })
+
         Routes.put('/:id/survey/:surveyid', function (req, res) {
             AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
                 if (!canAccess) {
