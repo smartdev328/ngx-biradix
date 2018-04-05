@@ -22,9 +22,9 @@ export class MarketSurveyDataIntegrityViolationService {
         let o = oldSurvey.occupancy || 0;
         let d = Math.abs(n - o);
 
-        // diff must be > 0 and starting value must be over 20%
-        if (d > 0 && o >= 20) {
-            if (d / o >= .5) {
+        // diff must be > 0 and Rule doesn't apply when starting values and ending values are between 1% and 50%. (0% ending value still triggers alert)
+        if (d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
+            if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
                 v.description += `Occupancy: ${formatNumber(oldSurvey.occupancy, 1)}% =&gt; ${formatNumber(newSurvey.occupancy, 1)}%<br>`;
             } else if (d / o >= .25) {
@@ -37,9 +37,9 @@ export class MarketSurveyDataIntegrityViolationService {
         o = oldSurvey.leased || 0;
         d = Math.abs(n - o);
 
-        // diff must be > 0 and starting value must be over 20%
-        if (d > 0 && o >= 20) {
-            if (d / o >= .5) {
+        // diff must be > 0 and Rule doesn't apply when starting values and ending values are between 1% and 50%. (0% ending value still triggers alert)
+        if (d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
+            if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
                 v.description += `Leased: ${formatNumber(oldSurvey.leased, 1)}% =&gt; ${formatNumber(newSurvey.leased, 1)}%<br>`;
             } else if (d / o >= .25 && v.checkType !== DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50) {
@@ -52,9 +52,9 @@ export class MarketSurveyDataIntegrityViolationService {
         o = oldSurvey.atr || 0;
         d = Math.abs(n - o);
 
-        // diff must be > 0 and starting value must be over 20%
-        if (d > 0 && o >= 20) {
-            if (d / o >= .5) {
+        // diff must be > 0 and Rule doesn't apply when starting values and ending values are between 1% and 50%. (0% ending value still triggers alert)
+        if (d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
+            if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
                 v.description += `ATR: ${formatNumber(oldSurvey.atr, 0)} =&gt; ${formatNumber(newSurvey.atr, 0)}<br>`;
             } else if (d / o >= .25 && v.checkType !== DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50) {
@@ -94,7 +94,7 @@ export class MarketSurveyDataIntegrityViolationService {
 
                 // Take calcuated weighted average NER and divice my weighted average SQFT
                 const sqftNew = calculateSQFT(newSurvey.floorplans, totalUnitsNew);
-                const sqftOld = calculateSQFT(oldSurvey.floorplans, totalUnitsNew);
+                const sqftOld = calculateSQFT(oldSurvey.floorplans, totalUnitsOld);
                 n = n / sqftNew;
                 o = o / sqftOld;
 
