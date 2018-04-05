@@ -238,6 +238,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
+    fac.deleteSurvey = function (propertyid, surveyid) {
+        return $http.delete('/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime(), {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
+
         fac.floorplanName = function(fp) {
             var name = fp.bedrooms + "x" + fp.bathrooms;
 
