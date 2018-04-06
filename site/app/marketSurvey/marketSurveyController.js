@@ -152,7 +152,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                     })
 
 
-                                    // var removed = _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
+                                    var removed = _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
 
                                     var n;
                                     s.floorplans.forEach(function (fp) {
