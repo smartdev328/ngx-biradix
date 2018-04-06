@@ -1,44 +1,22 @@
-'use strict';
+"use strict";
 define([
-    'app',
-    'async'
-], function (app,async) {
-
-    app.controller('uploadSurveysController', ['$scope','$rootScope','$location','ngProgress','toastr','$propertyService', function ($scope,$rootScope,$location,ngProgress,toastr,$propertyService) {
+    "app",
+    "async",
+], function(app, async) {
+    app.controller("uploadSurveysController", ["$scope", "$rootScope", "$location", "ngProgress", "toastr", "$propertyService", "$q", function($scope, $rootScope, $location, ngProgress, toastr, $propertyService, $q) {
         $scope.data = {};
 
-        window.setTimeout(function() {window.document.title = "Admin | Upload Surveys | BI:Radix";},1500);
+        window.setTimeout(function() {
+            window.document.title = "Admin | Upload Surveys | BI:Radix";
+        }, 1500);
 
         $rootScope.nav = "";
 
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "UploadSurveys";
-
-        $scope.reload = function () {
-            $scope.localLoading = false;
-
-            $propertyService.search({limit: 10000, permission: 'PropertyManage', active: true, select : "_id name"}).then(function (response) {
-                $scope.myProperties = response.data.properties;
-
-                ////For testing
-                //$scope.data.property = $scope.myProperties[0];
-                //$scope.data.surveys = $("#sample").val();
-
-                $scope.localLoading = true;
-            }, function(error) {
-                if (error.status == 401) {
-                    $rootScope.logoff();
-                    return;
-                }
-                $scope.localLoading = true;
-            })
-
-        }
-
-        $scope.reload();
+        $scope.localLoading = true;
 
         $scope.upload = function() {
-
             if (!$scope.data.property) {
                 toastr.error("Please select a proeprty");
                 return;
@@ -103,7 +81,7 @@ define([
                 }
             }
 
-             $scope.localLoading = false;
+            $scope.localLoading = false;
             $propertyService.getFullProperty($scope.data.property._id).then(function (response) {
 
                 var p = response.data.properties[0];
@@ -306,7 +284,34 @@ define([
             })
 
             return resp;
-        }
+        };
 
+        $scope.searchAsync = function(term) {
+            var deferred = $q.defer();
+
+            $scope.autocompleteproperties(term, function(result) {
+                result = _.sortByOrder(result, ["name"], [true]);
+                deferred.resolve(result);
+            });
+
+            return deferred.promise;
+        };
+
+        $scope.autocompleteproperties = function(search, callback) {
+            $propertyService.search({
+                limit: 100,
+                permission: ["PropertyManage"],
+                active: true,
+                searchName: search,
+                skipAmenities: true,
+                hideCustom: true,
+                select: "name",
+                sort: "name",
+            }).then(function(response) {
+                callback(response.data.properties);
+            }, function(error) {
+                callback([]);
+            });
+        };
     }]);
 });
