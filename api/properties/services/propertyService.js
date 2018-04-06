@@ -524,14 +524,21 @@ module.exports = {
             }
 
             if (criteria.geo) {
-                let loc =
-                    {
-                        "loc": {
-                            $near: criteria.geo.loc,
-                            $maxDistance: criteria.geo.distance / 3963.2, // covert miles to radians
-                        },
-                    };
+                // let loc =
+                //     {
+                //         "loc": {
+                //             $near: criteria.geo.loc,
+                //             $maxDistance: criteria.geo.distance / 3963.2, // covert miles to radians
+                //         },
+                //     };
 
+                let loc = {
+                    "loc": {
+                        "$geoWithin": {
+                            "$center": [criteria.geo.loc, 0.0009],
+                        },
+                    },
+                };
                 query = query.where(loc);
             }
 
