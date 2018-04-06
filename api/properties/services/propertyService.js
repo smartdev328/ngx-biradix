@@ -973,8 +973,12 @@ module.exports = {
 
             standardizeOptionalFields(lastsurvey);
 
-            lastsurvey.weeklyleases = lastsurvey.weeklyleases || "N/A";
-            lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || "N/A";
+            if (typeof lastsurvey.weeklyleases === "undefined" || lastsurvey.weeklyleases == null) {
+                lastsurvey.weeklyleases = "No value set";
+            }
+            if (typeof lastsurvey.weeklytraffic === "undefined" || lastsurvey.weeklytraffic == null) {
+                lastsurvey.weeklytraffic = "No value set";
+            }
             lastsurvey.floorplans = lastsurvey.floorplans || [];
 
             let n = new SurveySchema();
