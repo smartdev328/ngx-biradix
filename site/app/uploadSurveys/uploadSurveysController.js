@@ -66,7 +66,44 @@ define([
                 return;
             }
 
-            $scope.localLoading = false;
+            var d;
+            var dDate;
+            var i;
+            for (i = 4; i < data[0].length; i+=2) {
+                d = data[0][i];
+                dDate = new Date(d);
+
+                if (isNaN(dDate.getTime())) {
+                    toastr.error(d + " is not a valid date.");
+                    return;
+                }
+
+                if (dDate.getTime() > (new Date()).getTime()) {
+                    toastr.error(d + " is a future date.");
+                    return;
+                }
+            };
+
+            var type;
+
+            for (i = 5; i < data.length; i++) {
+                type = data[i][0].split("x");
+
+                if (type.length != 2) {
+                    toastr.error(data[i][0] + " must be in the format bedrooms x bathrooms ex: 3x1.5");
+                    return;
+                }
+                if (type[0] == "" || isNaN(type[0])) {
+                    toastr.error(data[i][0] + " must have a valid number of bedrooms");
+                    return;
+                }
+                if (type[1] == "" || isNaN(type[1])) {
+                    toastr.error(data[i][0] + " must have a valid number of bathrooms");
+                    return;
+                }
+            }
+
+             $scope.localLoading = false;
             $propertyService.getFullProperty($scope.data.property._id).then(function (response) {
 
                 var p = response.data.properties[0];

@@ -151,7 +151,7 @@ function calculateSQFT(floorplans: IMarketSurveyFloorplan[], totalUnits: number)
 
 function formatNumber(value: number, decimals: number): string {
     if (typeof value === "undefined" || value === null) {
-        return "N/A";
+        return "(no value set)";
     }
 
     return value.toFixed(decimals);
