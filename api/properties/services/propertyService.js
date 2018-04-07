@@ -560,15 +560,15 @@ module.exports = {
                 if (criteria.search != "") {
                     let s = new RegExp(escapeStringRegexp(criteria.search), "i");
                     query = query.or([{"name": s}, {"address": s}, {"city": s}, {"state": s}]);
-                    query = query.select(criteria.select || "_id name address city state zip custom");
+                    query = query.select(criteria.select || "_id name address city state zip custom loc");
                 } else if (criteria.searchName != "") {
                     let s = new RegExp(escapeStringRegexp(criteria.searchName), "i");
                     query = query.or([{"name": s}]);
-                    query = query.select(criteria.select || "_id name address city state zip custom");
+                    query = query.select(criteria.select || "_id name address city state zip custom loc");
                 } else if (criteria.searchExactName != "") {
                     let s = new RegExp("^" + escapeStringRegexp(criteria.searchExactName) + "$", "i");
                     query = query.or([{"name": s}]);
-                    query = query.select(criteria.select || "_id name address city state zip custom");
+                    query = query.select(criteria.select || "_id name address city state zip custom loc");
                 } else {
                     query = query.select(criteria.select || "_id name custom");
                 }
