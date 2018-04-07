@@ -23,7 +23,8 @@ export class MarketSurveyDataIntegrityViolationService {
         let d = Math.abs(n - o);
 
         // diff must be > 0 and Rule doesn't apply when starting values and ending values are between 1% and 50%. (0% ending value still triggers alert)
-        if (d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
+        // We want them to leave the field blank if they don't know the correct value. If 95% -> blank, that is OK and we don't need to flag it.
+        if (oldSurvey.occupancy !== null && newSurvey.occupancy !== null && d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
             if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
                 v.description += `Occupancy: ${formatNumber(oldSurvey.occupancy, 1)}% =&gt; ${formatNumber(newSurvey.occupancy, 1)}%<br>`;
@@ -38,7 +39,8 @@ export class MarketSurveyDataIntegrityViolationService {
         d = Math.abs(n - o);
 
         // diff must be > 0 and Rule doesn't apply when starting values and ending values are between 1% and 50%. (0% ending value still triggers alert)
-        if (d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
+        // We want them to leave the field blank if they don't know the correct value. If 95% -> blank, that is OK and we don't need to flag it.
+        if (oldSurvey.leased !== null && newSurvey.leased !== null && d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
             if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
                 v.description += `Leased: ${formatNumber(oldSurvey.leased, 1)}% =&gt; ${formatNumber(newSurvey.leased, 1)}%<br>`;
@@ -53,7 +55,8 @@ export class MarketSurveyDataIntegrityViolationService {
         d = Math.abs(n - o);
 
         // diff must be > 0 and Rule doesn't apply when starting values and ending values are between 1% and 50%. (0% ending value still triggers alert)
-        if (d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
+        // We want them to leave the field blank if they don't know the correct value. If 95% -> blank, that is OK and we don't need to flag it.
+        if (oldSurvey.atr !== null && newSurvey.atr !== null && d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
             if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
                 v.description += `ATR: ${formatNumber(oldSurvey.atr, 0)} =&gt; ${formatNumber(newSurvey.atr, 0)}<br>`;

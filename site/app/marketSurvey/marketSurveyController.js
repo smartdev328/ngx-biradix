@@ -105,15 +105,15 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 var s = response.data.survey;
                                 if (s && s.length > 0) {
                                     s = s[0];
-                                    $scope.survey.leased = s.leased || '';
-                                    $scope.survey.atr = s.atr || '';
-                                    $scope.survey.atr_percent = s.atr_percent || '';
-                                    $scope.survey.renewal = s.renewal || '';
-                                    $scope.survey.occupancy = s.occupancy || '';
+                                    $scope.survey.leased = s.leased != null && !isNaN(s.leased) ? s.leased : "";
+                                    $scope.survey.atr = s.atr != null && !isNaN(s.atr) ? s.atr : "";
+                                    $scope.survey.atr_percent = s.atr_percent != null && !isNaN(s.atr_percent) ? s.atr_percent : "";
+                                    $scope.survey.renewal = s.renewal != null && !isNaN(s.renewal) ? s.renewal : "";
+                                    $scope.survey.occupancy = s.occupancy != null && !isNaN(s.occupancy) ? s.occupancy : "";
                                     $scope.survey.weeklytraffic = s.weeklytraffic
                                     $scope.survey.weeklyleases = s.weeklyleases
                                     $scope.survey.notes = s.notes;
-                                    $scope.settings.showNotes = (s.notes || '') != '';
+                                    $scope.settings.showNotes = (s.notes || "") != "";
 
                                     var removeFloorplans = [];
 
