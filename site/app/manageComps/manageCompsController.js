@@ -28,10 +28,9 @@ define([
             };
 
             $scope.changed = false;
-
+            $scope.MAX_COMPS = 20;
 
             $scope.save = function() {
-
                 var compids = _.map($scope.comps,function(x) {return x._id.toString()});
 
                 ngProgress.start();
@@ -111,6 +110,11 @@ define([
             }
 
             $scope.upsert = function(prop) {
+                if ($scope.comps.length >= $scope.MAX_COMPS) {
+                    $scope.search1 = "";
+                    toastr.error("There are a maximum of 20 comps that can be added to a subject property");
+                    return;
+                }
                 $scope.changed = true;
                 prop.faded = true;
                 prop.summary = $scope.getSummary(prop);
@@ -191,7 +195,11 @@ define([
                 }, wait);
             }
 
-            $scope.create = function () {
+            $scope.create = function() {
+                if ($scope.comps.length >= $scope.MAX_COMPS) {
+                    toastr.error("There are a maximum of 20 comps that can be added to a subject property");
+                    return;
+                }
                 require([
                     '/app/propertyWizard/propertyWizardController.js'
                 ], function () {
