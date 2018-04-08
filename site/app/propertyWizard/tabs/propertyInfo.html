@@ -12,13 +12,7 @@
     <div class="row">
         <div class="col-sm-6">
             Property Name <span class="required">*</span><br>
-            <input ng-show="!disableAddress" type="text" class="form-control input-sm" ng-model="property.name" id="autocomplete" placeholder="Enter property name">
-            <input ng-show="disableAddress" type="text" class="form-control input-sm" ng-model="property.name"
-                   style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="bottom"
-                   uib-popover="This property address is locked because it has historical data associated with it. Please reach out to support@biradix.com if you believe the address is incorrect."
-            >
+            <input type="text" class="form-control input-sm" ng-model="property.name" id="autocomplete" placeholder="Enter property name">
         </div>
         <div class="col-sm-6">
             Address <span class="required">*</span><br>
