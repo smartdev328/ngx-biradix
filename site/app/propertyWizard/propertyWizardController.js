@@ -439,10 +439,8 @@ define([
                         })
 
                         $scope.startWatchingChanges();
-
                     });
-                }
-                else {
+                } else {
                     $scope.localLoading = true;
                     $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
 
@@ -568,9 +566,13 @@ define([
 
                 google.maps.event.addListener(autocomplete, 'place_changed', function () {
                     var place = autocomplete.getPlace();
-                    $scope.googleBlur('#autocomplete',place.name)
-                    $scope.property.name=place.name;
-                    $scope.placeToAddress(place,1);
+                    $scope.googleBlur("#autocomplete", place.name);
+                    $scope.property.name = place.name;
+                    if ($scope.disableAddress) {
+                        return;
+                    }
+
+                    $scope.placeToAddress(place, 1);
                 });
             }
 
