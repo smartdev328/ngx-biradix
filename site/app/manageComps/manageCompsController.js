@@ -118,7 +118,7 @@ define([
                 var dist = $scope.getDistanceInMiles($scope.subject.loc, prop.loc);
                 if (dist > 15) {
                     $scope.search1 = "";
-                    toastr.error("<b>Out of range</b> - " + prop.name +" could not be added as a comp of " + subject.name +" because it's too far away.");
+                    toastr.error("<b>Out of range</b> - " + $scope.prop.name +" could not be added as a comp of " + $scope.subject.name +" because it's too far away.");
                     return;
                 }
 
