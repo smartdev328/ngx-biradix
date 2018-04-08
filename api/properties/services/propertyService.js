@@ -524,14 +524,21 @@ module.exports = {
             }
 
             if (criteria.geo) {
-                let loc =
-                    {
-                        "loc": {
-                            $near: criteria.geo.loc,
-                            $maxDistance: criteria.geo.distance / 3963.2, // covert miles to radians
-                        },
-                    };
+                // let loc =
+                //     {
+                //         "loc": {
+                //             $near: criteria.geo.loc,
+                //             $maxDistance: criteria.geo.distance / 3963.2, // covert miles to radians
+                //         },
+                //     };
 
+                let loc = {
+                    "loc": {
+                        "$geoWithin": {
+                            "$center": [criteria.geo.loc, 0.0009],
+                        },
+                    },
+                };
                 query = query.where(loc);
             }
 
@@ -553,15 +560,15 @@ module.exports = {
                 if (criteria.search != "") {
                     let s = new RegExp(escapeStringRegexp(criteria.search), "i");
                     query = query.or([{"name": s}, {"address": s}, {"city": s}, {"state": s}]);
-                    query = query.select(criteria.select || "_id name address city state zip custom");
+                    query = query.select(criteria.select || "_id name address city state zip custom loc");
                 } else if (criteria.searchName != "") {
                     let s = new RegExp(escapeStringRegexp(criteria.searchName), "i");
                     query = query.or([{"name": s}]);
-                    query = query.select(criteria.select || "_id name address city state zip custom");
+                    query = query.select(criteria.select || "_id name address city state zip custom loc");
                 } else if (criteria.searchExactName != "") {
                     let s = new RegExp("^" + escapeStringRegexp(criteria.searchExactName) + "$", "i");
                     query = query.or([{"name": s}]);
-                    query = query.select(criteria.select || "_id name address city state zip custom");
+                    query = query.select(criteria.select || "_id name address city state zip custom loc");
                 } else {
                     query = query.select(criteria.select || "_id name custom");
                 }
@@ -850,23 +857,23 @@ module.exports = {
                 let data = [{description: "Survey Date: ", date: lastsurvey.date, survey: copy}];
 
                 if (copy.notes !== survey.notes) {
-                    data.push({description: "Notes: " + (typeof lastsurvey.notes == 'undefined' || lastsurvey.notes == null || lastsurvey.notes == '' ? 'N/A' : lastsurvey.notes ) + " => " + (typeof survey.notes == 'undefined' || survey.notes == null || survey.notes == '' ? 'N/A' : survey.notes )})
+                    data.push({description: "Notes: " + (typeof lastsurvey.notes == 'undefined' || lastsurvey.notes == null || lastsurvey.notes == '' ? '(no value set)' : lastsurvey.notes ) + " => " + (typeof survey.notes == 'undefined' || survey.notes == null || survey.notes == '' ? '(no value set)' : survey.notes )})
                 }
 
                 if (copy.occupancy !== survey.occupancy) {
-                    data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == 'undefined' || lastsurvey.occupancy == null ? 'N/A' : lastsurvey.occupancy + '%') + " => " + (typeof survey.occupancy == 'undefined' || survey.occupancy == null ? 'N/A' : survey.occupancy + "%")})
+                    data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == 'undefined' || lastsurvey.occupancy == null ? '(no value set)' : lastsurvey.occupancy + '%') + " => " + (typeof survey.occupancy == 'undefined' || survey.occupancy == null ? '(no value set)' : survey.occupancy + "%")})
                 }
 
                 if (copy.leased !== survey.leased) {
-                    data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? 'N/A' : lastsurvey.leased + '%') + " => " + (typeof survey.leased == 'undefined' || survey.leased == null ? 'N/A' : survey.leased + "%")})
+                    data.push({description: "Leased: " + (typeof lastsurvey.leased == 'undefined' || lastsurvey.leased == null ? '(no value set)' : lastsurvey.leased + '%') + " => " + (typeof survey.leased == 'undefined' || survey.leased == null ? '(no value set)' : survey.leased + "%")})
                 }
 
                 if (copy.atr !== survey.atr) {
-                    data.push({description: "ATR: " + (typeof lastsurvey.atr == 'undefined' || lastsurvey.atr == null ? 'N/A' : lastsurvey.atr + '') + " => " + (typeof survey.atr == 'undefined' || survey.atr == null ? 'N/A' : survey.atr + "")})
+                    data.push({description: "ATR: " + (typeof lastsurvey.atr == 'undefined' || lastsurvey.atr == null ? '(no value set)' : lastsurvey.atr + '') + " => " + (typeof survey.atr == 'undefined' || survey.atr == null ? '(no value set)' : survey.atr + "")})
                 }
 
                 if (copy.renewal !== survey.renewal) {
-                    data.push({description: "Renewal: " + (typeof copy.renewal == "undefined" || copy.renewal == null ? "N/A" : copy.renewal + "%") + " => " + (typeof survey.renewal == "undefined" || survey.renewal == null ? "N/A" : survey.renewal + "%")});
+                    data.push({description: "Renewal: " + (typeof copy.renewal == "undefined" || copy.renewal == null ? "(no value set)" : copy.renewal + "%") + " => " + (typeof survey.renewal == "undefined" || survey.renewal == null ? "(no value set)" : survey.renewal + "%")});
                 }
 
                 if (copy.weeklyleases !== survey.weeklyleases) {
@@ -881,7 +888,7 @@ module.exports = {
                     let oldfp = _.find(lastsurvey.floorplans, function(x) {return x.id == fp.id});
 
                     if (!oldfp) {
-                        data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp)});
+                        data.push({description: PropertyHelperService.floorplanName(fp) + ": (no value set) => " + PropertyHelperService.floorplanRentName(fp)});
                     } else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                         data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp) })
                     }
@@ -973,8 +980,12 @@ module.exports = {
 
             standardizeOptionalFields(lastsurvey);
 
-            lastsurvey.weeklyleases = lastsurvey.weeklyleases || "N/A";
-            lastsurvey.weeklytraffic = lastsurvey.weeklytraffic || "N/A";
+            if (typeof lastsurvey.weeklyleases === "undefined" || lastsurvey.weeklyleases == null) {
+                lastsurvey.weeklyleases = "(no value set)";
+            }
+            if (typeof lastsurvey.weeklytraffic === "undefined" || lastsurvey.weeklytraffic == null) {
+                lastsurvey.weeklytraffic = "(no value set)";
+            }
             lastsurvey.floorplans = lastsurvey.floorplans || [];
 
             let n = new SurveySchema();
@@ -1014,21 +1025,21 @@ module.exports = {
             let data = [{description: "Survey Date: ", date: n.date, id: n._id}];
 
             if (lastsurvey.notes !== n.notes) {
-                data.push({description: "Notes: " + (typeof lastsurvey.notes == "undefined" || lastsurvey.notes == null || lastsurvey.notes == "" ? "N/A" : lastsurvey.notes ) + " => " + (typeof n.notes == "undefined" || n.notes == null || n.notes == "" ? "N/A" : n.notes )});
+                data.push({description: "Notes: " + (typeof lastsurvey.notes == "undefined" || lastsurvey.notes == null || lastsurvey.notes == "" ? "(no value set)" : lastsurvey.notes ) + " => " + (typeof n.notes == "undefined" || n.notes == null || n.notes == "" ? "(no value set)" : n.notes )});
             }
 
             if (lastsurvey.occupancy !== n.occupancy) {
-                data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == "undefined" || lastsurvey.occupancy == null ? "N/A" : lastsurvey.occupancy + "%") + " => " + (typeof survey.occupancy == "undefined" || survey.occupancy == null ? "N/A" : survey.occupancy + "%")});
+                data.push({description: "Occupancy: " + (typeof lastsurvey.occupancy == "undefined" || lastsurvey.occupancy == null ? "(no value set)" : lastsurvey.occupancy + "%") + " => " + (typeof survey.occupancy == "undefined" || survey.occupancy == null ? "(no value set)" : survey.occupancy + "%")});
             }
             if (lastsurvey.leased !== n.leased) {
-                data.push({description: "Leased: " + (typeof lastsurvey.leased == "undefined" || lastsurvey.leased == null ? "N/A" : lastsurvey.leased + "%") + " => " + (typeof n.leased == "undefined" || n.leased == null ? "N/A" : n.leased + "%")});
+                data.push({description: "Leased: " + (typeof lastsurvey.leased == "undefined" || lastsurvey.leased == null ? "(no value set)" : lastsurvey.leased + "%") + " => " + (typeof n.leased == "undefined" || n.leased == null ? "(no value set)" : n.leased + "%")});
             }
             if (lastsurvey.atr !== n.atr) {
-                data.push({description: "ATR: " + (typeof lastsurvey.atr == "undefined" || lastsurvey.atr == null ? "N/A" : lastsurvey.atr + "") + " => " + (typeof n.atr == "undefined" || n.atr == null ? "N/A" : n.atr + "")});
+                data.push({description: "ATR: " + (typeof lastsurvey.atr == "undefined" || lastsurvey.atr == null ? "(no value set)" : lastsurvey.atr + "") + " => " + (typeof n.atr == "undefined" || n.atr == null ? "(no value set)" : n.atr + "")});
             }
 
             if (lastsurvey.renewal !== n.renewal) {
-                data.push({description: "Renewal: " + (typeof lastsurvey.renewal == "undefined" || lastsurvey.renewal == null ? "N/A" : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == "undefined" || n.renewal == null ? "N/A" : n.renewal + "%")});
+                data.push({description: "Renewal: " + (typeof lastsurvey.renewal == "undefined" || lastsurvey.renewal == null ? "(no value set)" : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == "undefined" || n.renewal == null ? "(no value set)" : n.renewal + "%")});
             }
             if (lastsurvey.weeklyleases !== n.weeklyleases) {
                 data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + n.weeklyleases});
@@ -1048,7 +1059,7 @@ module.exports = {
                 });
 
                 if (!oldfp) {
-                    data.push({description: PropertyHelperService.floorplanName(fp) + ": (N/A) => " + PropertyHelperService.floorplanRentName(fp)});
+                    data.push({description: PropertyHelperService.floorplanName(fp) + ": (no value set) => " + PropertyHelperService.floorplanRentName(fp)});
                 } else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                     data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp)});
                 }

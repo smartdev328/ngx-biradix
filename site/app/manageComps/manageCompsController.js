@@ -28,10 +28,9 @@ define([
             };
 
             $scope.changed = false;
-
+            $scope.MAX_COMPS = 20;
 
             $scope.save = function() {
-
                 var compids = _.map($scope.comps,function(x) {return x._id.toString()});
 
                 ngProgress.start();
@@ -60,7 +59,7 @@ define([
                 limit: 20,
                 permission: 'PropertyManage',
                 ids: [id],
-                select: "_id name custom comps.id comps.orderNumber"
+                select: "_id name custom comps.id comps.orderNumber loc"
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.subject = response.data.properties[0]
@@ -100,9 +99,8 @@ define([
             }
 
             $scope.getLocation = function (val) {
-                var compids = _.map($scope.comps,function(x) {return x._id.toString()});
                 return $propertyService.search({search: val, active: true, exclude: [id], hideCustom: !$scope.isCustom}).then(function (response) {
-                    return response.data.properties
+                    return response.data.properties;
                 });
             };
 
@@ -111,6 +109,19 @@ define([
             }
 
             $scope.upsert = function(prop) {
+                if ($scope.comps.length >= $scope.MAX_COMPS) {
+                    $scope.search1 = "";
+                    toastr.error("There are a maximum of 20 comps that can be added to a subject property");
+                    return;
+                }
+
+                var dist = $scope.getDistanceInMiles($scope.subject.loc, prop.loc);
+                if (dist > 15) {
+                    $scope.search1 = "";
+                    toastr.error("<b>Out of range</b> - " + prop.name +" could not be added as a comp of " + $scope.subject.name +" because it's too far away.");
+                    return;
+                }
+
                 $scope.changed = true;
                 prop.faded = true;
                 prop.summary = $scope.getSummary(prop);
@@ -191,7 +202,11 @@ define([
                 }, wait);
             }
 
-            $scope.create = function () {
+            $scope.create = function() {
+                if ($scope.comps.length >= $scope.MAX_COMPS) {
+                    toastr.error("There are a maximum of 20 comps that can be added to a subject property");
+                    return;
+                }
                 require([
                     '/app/propertyWizard/propertyWizardController.js'
                 ], function () {
@@ -224,8 +239,23 @@ define([
                         //Cancel
                     });
                 });
-            }
+            };
 
+            $scope.rad = function(x) {
+                return x * Math.PI / 180;
+            };
+
+            $scope.getDistanceInMiles = function(p1, p2) {
+                var R = 6378137; // Earth’s mean radius in meter
+                var dLat = $scope.rad(p2[1] - p1[1]);
+                var dLong = $scope.rad(p2[0] - p1[0]);
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos($scope.rad(p1[1])) * Math.cos($scope.rad(p2[1])) *
+                    Math.sin(dLong / 2) * Math.sin(dLong / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c; // returns the distance in meter
+                // m/1,609.344=mi
+                return Math.round(d / 1609.344 * 10) / 10;
+            };
         }]);
-
 });

@@ -397,8 +397,9 @@ define([
                 })
 
                 if (id) {
-                    $propertyService.getFullProperty(id).then(function (response) {
+                    $propertyService.getFullProperty(id).then(function(response) {
                         $scope.property = response.data.properties[0];
+                        $scope.disableAddress = !!($scope.property.survey && $scope.property.survey.id);
                         isCustom = $scope.property.custom && $scope.property.custom.owner;
                         $scope.isCustom = isCustom;
 
@@ -438,10 +439,8 @@ define([
                         })
 
                         $scope.startWatchingChanges();
-
                     });
-                }
-                else {
+                } else {
                     $scope.localLoading = true;
                     $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
 
@@ -567,9 +566,13 @@ define([
 
                 google.maps.event.addListener(autocomplete, 'place_changed', function () {
                     var place = autocomplete.getPlace();
-                    $scope.googleBlur('#autocomplete',place.name)
-                    $scope.property.name=place.name;
-                    $scope.placeToAddress(place,1);
+                    $scope.googleBlur("#autocomplete", place.name);
+                    $scope.property.name = place.name;
+                    if ($scope.disableAddress) {
+                        return;
+                    }
+
+                    $scope.placeToAddress(place, 1);
                 });
             }
 

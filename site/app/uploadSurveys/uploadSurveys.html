@@ -11,12 +11,11 @@
         <dev class="panel-body">
             <hr>
             Property:<Br>
-            <select
-                    class="form-control input-sm hidden-print"
-                    ng-options="item.name for item in myProperties"
-                    ng-model="data.property"
-                    style="font-size:14px"
-            >
+                <div
+                     custom-select="f.name for f in searchAsync($searchTerm)"
+                     custom-select-options="{ 'async': true }"
+                     ng-model="data.property" autofocus
+                ></div>
             </select><br>
             <Br>
             Data:<br>
