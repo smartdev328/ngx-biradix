@@ -14,14 +14,9 @@ Use this section to update your password for <b>{{email}}</b><br />
         <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="confirmpassword" required ng-minlength="8">
         <div class="text-danger" ng-show="myForm.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
     </div>
-    <button class="btn btn-primary btn-large btn-block" type="submit" ng-show="!localLoading">Reset</button>
+    <button class="btn btn-primary btn-large btn-block" type="submit" ng-show="!localLoading">Reset Password</button>
     <div style="width:40px;margin:0px auto;padding-top:5px" ng-show="localLoading">
         <img src="/images/squares.gif" style="width:40px">
     </div>
 </form>
-<br>
-<div style="text-align:center">
-    <small style="font-size:13px">
-        <A href="#/login"><i class="fa fa-arrow-circle-o-left" style="padding-right:5px"></i>Back to Login</A>
-    </small>
-</div>
+
