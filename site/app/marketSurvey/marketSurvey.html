@@ -73,6 +73,10 @@
         height: 26px
     }
 
+    .popover-inner UL {
+        margin-left:-30px;
+    }
+
 </Style>
 
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
@@ -100,7 +104,7 @@
             <div ng-class="{'radio' : true}">
                 <label style="font-weight:normal;"><input type="radio" ng-model="swap.who" value="swap"> Send Survey Swap</label>
                     <select ng-options="guest.first + ' ' + guest.last + ' ('+ guest.email +')' for guest in swap.guests" ng-model="swap.selectedGuest" class="form-control input-sm" style="display: inline-block;max-width:250px"></select>
-                    <i class="fa fa-info-circle"
+                    <i class="fa fa-question-circle"
                        style="cursor:pointer;font-size:14px;padding-left:2px;"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
@@ -130,7 +134,7 @@
             </div>
 
             <toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()" style="margin-left:30px;"  disabled="!me.orgs[0].settings.detailed_concessions.allow" popover="me.orgs[0].settings.detailed_concessions.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
-            <i class="fa fa-info-circle"  style="font-size:12px"
+            <i class="fa fa-question-circle"  style="font-size:12px"
             popover-trigger="'mouseenter'"
             popover-placement="bottom"
                uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"
@@ -168,26 +172,26 @@
                         <i ng-show="sort == '-sqft'" class="fa fa-sort-down"></i>
                         <i ng-show="sort == 'sqft'" class="fa fa-sort-up"></i>
                     </th>
-                    <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-info-circle" style="font-size:12px"
+                    <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-question-circle" style="font-size:12px"
                      popover-trigger="'mouseenter'"
                      popover-placement="left"
                                                                              uib-popover="Enter the current gross floor plan rent, before any concessions or discounts. If the floor plan does not have any units available, enter most recent market rent. If the floor plan has a range, please enter base (minimum) rent."
                             ></i></th>
-                    <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                    <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
                      popover-trigger="'mouseenter'"
                      popover-placement="left"
                                                                                                                 uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
                             ></i><Br>
                     <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
 
-                    <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                    <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
                                                                                                                popover-trigger="'mouseenter'"
                                                                                                                popover-placement="left"
                                                                                                                uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
                     ></i><Br>
                         <div style="font-size:8pt;font-weight:normal;">(One-Time)</div></th>
 
-                    <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-info-circle"  style="font-size:12px"
+                    <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
                                                                                                                popover-trigger="'mouseenter'"
                                                                                                                popover-placement="left"
                                                                                                                uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
@@ -233,14 +237,17 @@
                             $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
                         </div>
                     </td>
-                    <td>
-                        &nbsp;<a href ng-click="undo(row)" ng-if="row.updated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                        &nbsp;
-                        <i ng-if="row.warning" class="fa fa-info-circle" style="color:orange"
+                    <td nowrap>
+                        &nbsp;<a href ng-click="undo(row)" ng-if="row.updated" class="pull-left"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                        <i ng-if="row.warning && !getFloorPlanErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                            popover-trigger="'mouseenter'"
                            popover-placement="left"
                            uib-popover="The Net Eff. Rent for this floor plan has changed by more than 10% since the last market survey"
-
+                        ></i>
+                        <i ng-if="getFloorPlanErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                           popover-trigger="'mouseenter'"
+                           popover-placement="left"
+                           uib-popover-html="getFloorPlanErrors(row)"
                         ></i>
                     </td>
                 </tr>
@@ -278,7 +285,7 @@
                                 <div>
                                     &nbsp;<a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     &nbsp;
-                                    <i ng-if="occupancyWarning" class="fa fa-info-circle" style="color:orange"
+                                    <i ng-if="occupancyWarning" class="fa fa-question-circle" style="color:orange"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
                                        uib-popover="Occupancy % has changed by more than 10% since the last market survey"
@@ -289,7 +296,7 @@
                                 <div ng-if="$root.me.settings.showLeases || survey.leased">
                                     &nbsp;<a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     &nbsp;
-                                    <i ng-if="leasedWarning" class="fa fa-info-circle" style="color:orange"
+                                    <i ng-if="leasedWarning" class="fa fa-question-circle" style="color:orange"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
                                        uib-popover="Leased % has changed by more than 10% since the last market survey"
@@ -300,7 +307,7 @@
                                 <div ng-if="$root.me.settings.showRenewal || survey.renewal">
                                     &nbsp;<a href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     &nbsp;
-                                    <i ng-if="renewalWarning" class="fa fa-info-circle" style="color:orange"
+                                    <i ng-if="renewalWarning" class="fa fa-question-circle" style="color:orange"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
                                        uib-popover="Renewal % has changed by more than 10% since the last market survey"
@@ -317,7 +324,7 @@
                                 <div ng-if="$root.me.settings.showATR || survey.atr">
                                     <b class="hidden-xs">Apts. to Rent</b>
                                     <b class="visible-xs-inline">ATR</b>
-                                    <i class="fa fa-info-circle"
+                                    <i class="fa fa-question-circle"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
                                        uib-popover="Apartments to Rent – How many units do you have for rent? Enter total number of Vacant Available and On-Notice units. Ex: 5 Vacant Available Units + 6 On-Notice Units = 11 ATR"
@@ -356,7 +363,7 @@
                                 <div ng-if="$root.me.settings.showATR || survey.atr">
                                     &nbsp;<a href ng-click="undo('atr')" ng-if="survey.atrupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     &nbsp;
-                                    <i ng-if="atrWarning" class="fa fa-info-circle" style="color:orange"
+                                    <i ng-if="atrWarning" class="fa fa-question-circle" style="color:orange"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
                                        uib-popover="ATR % has changed by more than 10% since the last market survey"

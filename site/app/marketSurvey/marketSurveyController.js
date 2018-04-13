@@ -362,15 +362,14 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                 }
 
-                return true
+                return true;
             }
 
-            $scope.updateDone = function(fp, state, fp_field) {
+            $scope.updateDone = function(fp, state, fpField) {
+                fpField = fpField || "";
 
-                fp_field = fp_field || '';
-
-                if (typeof fp == 'string') {
-                    switch(fp) {
+                if (typeof fp == "string") {
+                    switch (fp) {
                         case "leased":
                             $scope.leasedWarning = false;
                             if (!state) {
@@ -559,10 +558,8 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                             $scope.survey.leasesupdated = $scope.survey.weeklyleases != $scope.originalSurvey.weeklyleases;
                             break;
-
                     }
-                }
-                else {
+                } else {
                     fp.warning = false;
 
                     var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
@@ -579,107 +576,105 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                         fp.warning = false;
 
                         window.setTimeout(function() {
-                            //$('#rent-' + fp.id)[0].focus();
-                            //$('#rent-' + fp.id)[0].select();
-                            $('#rent-' + fp.id).parent().removeClass("has-error");
-                            $('#concessionsOneTime-' + fp.id).parent().removeClass("has-error");
-                            $('#concessionsMonthly-' + fp.id).parent().removeClass("has-error");
-                            $('#concessions-' + fp.id).parent().removeClass("has-error");
+                            $("#rent-" + fp.id).parent().removeClass("has-error");
+                            $("#concessionsOneTime-" + fp.id).parent().removeClass("has-error");
+                            $("#concessionsMonthly-" + fp.id).parent().removeClass("has-error");
+                            $("#concessions-" + fp.id).parent().removeClass("has-error");
                         }, 300);
+                        fp.errors = {};
                     } else {
                         var er = "";
+                        fp.errors = fp.errors || {};
 
-                        if (fp_field == 'rent') {
-
-                            if (!$scope.isValid(fp.rent,true,false)) {
-                                er = '<b>Warning:</b> Rent must be 1 or greater, no decimals or blank fields';
+                        if (fpField == "rent") {
+                            if (!$scope.isValid(fp.rent, true, false)) {
+                                er = "Rent must be 1 or greater, no decimals or blank fields";
                             }
+
+                            fp.errors.rent = er;
 
                             if (er.length > 0) {
-                                toastr.warning(er);
-                                window.setTimeout(function () {
-                                    //$('#rent-' + fp.id)[0].focus();
-                                    //$('#rent-' + fp.id)[0].select();
-                                    $('#rent-' + fp.id).parent().addClass("has-error");
+                                window.setTimeout(function() {
+                                    $("#rent-" + fp.id).parent().addClass("has-error");
                                 }, 300);
-                                $scope.checkUndoFp(fp,old);
+                                $scope.checkUndoFp(fp, old);
                                 return;
-
                             }
                         }
-
 
                         if ($scope.settings.showDetailed) {
-
-                            if (fp_field == 'concessionsOneTime') {
-                                //console.log(fp);
-                                if (!$scope.isValid(fp.concessionsOneTime,true,false)) {
-                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
+                            if (fpField == "concessionsOneTime") {
+                                if (!$scope.isValid(fp.concessionsOneTime, true, false)) {
+                                    er = "Concessions (One-Time) must be 0 or greater, no decimals or blank fields";
                                 }
 
+                                fp.errors.concessionsOneTime = er;
                                 if (er.length > 0) {
-                                    toastr.warning(er);
-                                    window.setTimeout(function () {
-                                        //$('#concessionsOneTime-' + fp.id)[0].focus();
-                                        //$('#concessionsOneTime-' + fp.id)[0].select();
-                                        $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
+                                    window.setTimeout(function() {
+                                        $("#concessionsOneTime-" + fp.id).parent().addClass("has-error");
                                     }, 300);
-                                    $scope.checkUndoFp(fp,old);
+                                    $scope.checkUndoFp(fp, old);
                                     return;
                                 }
                             }
 
-                            if (fp_field == 'concessionsMonthly') {
-                                if (!$scope.isValid(fp.concessionsMonthly,true,false)) {
-                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
+                            if (fpField == "concessionsMonthly") {
+                                if (!$scope.isValid(fp.concessionsMonthly, true, false)) {
+                                    er = "Concessions (Monthly) must be 0 or greater, no decimals or blank fields";
                                 }
 
+                                fp.errors.concessionsMonthly = er;
+
                                 if (er.length > 0) {
-                                    toastr.warning(er);
-                                    window.setTimeout(function () {
-                                        //$('#concessionsMonthly-' + fp.id)[0].focus();
-                                        //$('#concessionsMonthly-' + fp.id)[0].select();
-                                        $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
+                                    window.setTimeout(function() {
+                                        $("#concessionsMonthly-" + fp.id).parent().addClass("has-error");
                                     }, 300);
-                                    $scope.checkUndoFp(fp,old);
+                                    $scope.checkUndoFp(fp, old);
+                                    return;
+                                }
+                            }
+                        } else {
+                            if (fpField == "concessions") {
+                                if (!$scope.isValid(fp.concessions, true, false)) {
+                                    er = "Concessions must be 0 or greater, no decimals or blank fields";
+                                }
+
+                                fp.errors.concessions = er;
+
+                                if (er.length > 0) {
+                                    window.setTimeout(function() {
+                                        $("#concessions-" + fp.id).parent().addClass("has-error");
+                                    }, 300);
+                                    $scope.checkUndoFp(fp, old);
                                     return;
                                 }
                             }
                         }
-                        else {
-                            if (fp_field == 'concessions') {
-                                if (!$scope.isValid(fp.concessions,true,false)) {
-                                    er = '<b>Warning:</b> Concessions must be 0 or greater, no decimals or blank fields';
-                                }
 
-                                if (er.length > 0) {
-                                    toastr.warning(er);
-                                    window.setTimeout(function () {
-                                        //$('#concessions-' + fp.id)[0].focus();
-                                        //$('#concessions-' + fp.id)[0].select();
-                                        $('#concessions-' + fp.id).parent().addClass("has-error");
-                                    }, 300);
-                                    $scope.checkUndoFp(fp,old);
-                                    return;
-                                }
-                            }
+                        if ($scope.settings.showDetailed) {
+                            fp.ner = fp.rent - (fp.concessionsOneTime || 0) / 12 - (fp.concessionsMonthly || 0);
+                        } else {
+                            fp.ner = fp.rent - (fp.concessions || 0) / 12;
+                        }
+
+                        fp.errors.ner = "";
+                        if (fp.ner < 0) {
+                            fp.errors.ner = "Net Effective Rent cannot be negative";
+                            window.setTimeout(function() {
+                                $("#rent-" + fp.id).parent().addClass("has-error");
+                            }, 300);
+                            $scope.checkUndoFp(fp, old);
+                            return;
                         }
 
                         if (old.rent > 0) {
-
                             if ($scope.settings.showDetailed) {
-                                fp.ner = fp.rent - (fp.concessionsOneTime || 0) / 12 - (fp.concessionsMonthly || 0);
-
-
                                 if (fp.concessionsOneTime === null || typeof fp.concessionsOneTime == 'undefined' || fp.concessionsOneTime === ''
                                     || fp.concessionsMonthly === null || typeof fp.concessionsMonthly == 'undefined' || fp.concessionsMonthly === ''
                                 ) {
                                     fp.ner = old.ner;
                                 }
-
                             } else {
-                                fp.ner = fp.rent - (fp.concessions || 0) / 12;
-
                                 if (fp.concessions === null || typeof fp.concessions == 'undefined' || fp.concessions === '' ) {
                                     fp.ner = old.ner;
                                 }
@@ -691,13 +686,28 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 fp.warning = true;
                             }
                         }
-
                     }
-                    $scope.checkUndoFp(fp,old);
-
+                    $scope.checkUndoFp(fp, old);
                 }
+            };
 
+    $scope.getFloorPlanErrors = function(fp) {
+        var er = "";
+
+        if (fp.errors) {
+            for (var e in fp.errors) {
+                if (fp.errors[e]) {
+                    er += "<li>" + fp.errors[e] + "<Br>";
+                }
             }
+        }
+
+        if (er) {
+            er = "<UL>" + er + "</UL>";
+        }
+
+        return er;
+    };
 
             $scope.checkUndoFp = function(fp, old) {
                 if ($scope.settings.showDetailed) {
@@ -735,77 +745,28 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     next = 0;
                 }
 
-
                 all[next].focus();
                 all[next].select();
-
-                //if (id.indexOf("rent") == -1 && id.indexOf("concessionsOneTime") == -1) {
-                    //$scope.update(fp)
-                //}
             }
 
             $scope.create = function() {
                 var isSuccess = true;
                 var error = "";
 
-                var tenpercent = false;
                 $scope.survey.floorplans.forEach(function(fp) {
-
-                    if (!$scope.isValid(fp.rent,true,false)) {
-                        isSuccess = false;
-                        error = 'rent';
-                        $('#rent-' + fp.id).parent().addClass("has-error");
-                    }
+                    $scope.updateDone(fp, true, "rent");
 
                     if ($scope.settings.showDetailed) {
-
-                        if (!$scope.isValid(fp.concessionsOneTime,true,false)) {
-                            isSuccess = false;
-                            error = 'concessionsOneTime';
-                            $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
-                        }
-
-                        if (!$scope.isValid(fp.concessionsMonthly,true,false)) {
-                            isSuccess = false;
-                            error = 'concessionsMonthly';
-                            $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
-                        }
-
-                        if (isSuccess) {
-                            fp.ner = fp.rent - (fp.concessionsOneTime || 0) / 12 - (fp.concessionsMonthly || 0);
-
-                            if (fp.ner < 0) {
-                                isSuccess = false;
-                                error = 'concessions';
-                                $('#concessionsMonthly-' + fp.id).parent().addClass("has-error");
-                                $('#concessionsOneTime-' + fp.id).parent().addClass("has-error");
-                                $('#rent-' + fp.id).parent().addClass("has-error");
-                            }
-                        }
-
+                        $scope.updateDone(fp, true, "concessionsOneTime");
+                        $scope.updateDone(fp, true, "concessionsMonthly");
                     } else {
-                        if (!$scope.isValid(fp.concessions,true,false)) {
-                            isSuccess = false;
-                            error = 'concessions';
-                            $('#concessions-' + fp.id).parent().addClass("has-error");
-                        }
-
-                        if (isSuccess) {
-                            fp.ner = fp.rent - (fp.concessions || 0) / 12;
-
-                            if (fp.ner < 0) {
-                                isSuccess = false;
-                                error = 'concessions';
-                                $('#concessions-' + fp.id).parent().addClass("has-error");
-                                $('#rent-' + fp.id).parent().addClass("has-error");
-                            }
-                        }
-
-
+                        $scope.updateDone(fp, true, "concessions");
                     }
 
-                })
-
+                    if ($scope.getFloorPlanErrors(fp)) {
+                        isSuccess = false;
+                    }
+                });
 
                 if (!$scope.isValid($scope.survey.occupancy,false,true,0,100)) {
                     isSuccess = false;
@@ -870,9 +831,9 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                         $('button.contact-submit').prop('disabled', false);
                         toastr.error('Unable to perform action. Please contact an administrator');
                         ngProgress.complete();
-                    })
+                    });
                 } else {
-                    error = "Please update the highlighted required fields.<br><Br><b>- Blank or negative values are not valid.</b><br><b>- Rents/Concessions can not be decimal</b><Br><b>- Traffic or Leases can not be decimal</b><br><b>- Rents cannot be \"0\"</b><br><b>- Net Effect Rent cannot be negative</b>";
+                    error = "Please update the highlighted fields.";
                     toastr.error(error);
                 }
             }
