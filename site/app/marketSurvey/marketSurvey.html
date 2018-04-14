@@ -25,7 +25,7 @@
             width:10px !important;
         }
 
-        .heading div, .moreinfo div {
+        .heading div, .moreinfo .moreinforow {
             height: 28px
         }
 
@@ -69,7 +69,7 @@
         opacity: .5;
     }
 
-    .heading div, .moreinfo div {
+    .heading div, .moreinfo .moreinforow {
         height: 26px
     }
 
@@ -77,6 +77,28 @@
         margin-left:-30px;
     }
 
+    .popover-inner UL LI:before {
+        font-family: 'FontAwesome';
+        content: '\f071';
+        margin:0 1px 0 -15px;
+        color: red;
+    }
+    .popover-inner UL LI {
+        margin-top:10px
+    }
+
+    .popover-inner UL LI span {
+        position: relative; left: 4px;
+        color: red;
+    }
+
+    .popover-inner UL.warn LI:before,
+    .popover-inner UL.warn LI span {
+        color:orange;
+    }
+    .has-error .form-control {
+        background-color:#FFF0F0;
+    }
 </Style>
 
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
@@ -239,15 +261,15 @@
                     </td>
                     <td nowrap>
                         &nbsp;<a href ng-click="undo(row)" ng-if="row.updated" class="pull-left"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                        <i ng-if="row.warning && !getFloorPlanErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+                        <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                            popover-trigger="'mouseenter'"
                            popover-placement="left"
-                           uib-popover="The Net Eff. Rent for this floor plan has changed by more than 10% since the last market survey"
+                           uib-popover-html="getWarnings(row)"
                         ></i>
-                        <i ng-if="getFloorPlanErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                        <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                            popover-trigger="'mouseenter'"
                            popover-placement="left"
-                           uib-popover-html="getFloorPlanErrors(row)"
+                           uib-popover-html="getErrors(row)"
                         ></i>
                     </td>
                 </tr>
@@ -282,18 +304,21 @@
                             </td>
 
                             <td style="width:45px;" valign="top" class="moreinfo">
-                                <div>
-                                    &nbsp;<a href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                                    &nbsp;
-                                    <i ng-if="occupancyWarning" class="fa fa-question-circle" style="color:orange"
+                                <div class="moreinforow">
+                                    <a class="pull-left" href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                                    <i ng-if="getWarnings(validation.occupancy) && !getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                                        popover-trigger="'mouseenter'"
-                                       popover-placement="top"
-                                       uib-popover="Occupancy % has changed by more than 10% since the last market survey"
-                                       popover-append-to-body="true"
+                                       popover-placement="left"
+                                       uib-popover-html="getWarnings(validation.occupancy)"
+                                    ></i>
+                                    <i ng-if="getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getErrors(validation.occupancy)"
                                     ></i>
                                 </div>
                                 <Br ng-if="$root.me.settings.showLeases || survey.leased">
-                                <div ng-if="$root.me.settings.showLeases || survey.leased">
+                                <div ng-if="$root.me.settings.showLeases || survey.leased" class="moreinforow">
                                     &nbsp;<a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     &nbsp;
                                     <i ng-if="leasedWarning" class="fa fa-question-circle" style="color:orange"
@@ -304,7 +329,7 @@
                                     ></i>
                                 </div>
                                 <br ng-if="$root.me.settings.showRenewal || survey.renewal">
-                                <div ng-if="$root.me.settings.showRenewal || survey.renewal">
+                                <div ng-if="$root.me.settings.showRenewal || survey.renewal" class="moreinforow">
                                     &nbsp;<a href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     &nbsp;
                                     <i ng-if="renewalWarning" class="fa fa-question-circle" style="color:orange"
@@ -360,7 +385,7 @@
                                 </div>
                             </td>
                             <td style="width:45px;"  valign="top" class="moreinfo">
-                                <div ng-if="$root.me.settings.showATR || survey.atr">
+                                <div ng-if="$root.me.settings.showATR || survey.atr" class="moreinforow">
                                     &nbsp;<a href ng-click="undo('atr')" ng-if="survey.atrupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     &nbsp;
                                     <i ng-if="atrWarning" class="fa fa-question-circle" style="color:orange"
@@ -372,9 +397,33 @@
                                 </div>
                                 <Br ng-if="$root.me.settings.showATR || survey.atr">
 
-                                <div><a href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a></div>
+                                <div class="moreinforow">
+                                    <a class="pull-left" href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                                    <i ng-if="getWarnings(validation.traffic) && !getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getWarnings(validation.traffic)"
+                                    ></i>
+                                    <i ng-if="getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getErrors(validation.traffic)"
+                                    ></i>
+                                </div>
                                 <Br>
-                                <div><a href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a></div>
+                                <div class="moreinforow">
+                                    <a class="pull-left" href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                                    <i ng-if="getWarnings(validation.leases) && !getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getWarnings(validation.leases)"
+                                    ></i>
+                                    <i ng-if="getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getErrors(validation.leases)"
+                                    ></i>
+                                </div>
                             </td>
                         </tr>
 

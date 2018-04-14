@@ -467,92 +467,98 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             $scope.survey.renewalupdated = $scope.survey.renewal != $scope.originalSurvey.renewal;;
                             break;
                         case "occupancy":
+                            $scope.validation = $scope.validation || {};
+                            $scope.validation.occupancy = $scope.validation.occupancy || {};
+                            $scope.validation.occupancy.warnings = $scope.validation.occupancy.warnings || {};
+                            $scope.validation.occupancy.errors = $scope.validation.occupancy.errors || {};
                             $scope.occupancyWarning = false;
                             if (!state) {
                                 $scope.survey.occupancy = $scope.originalSurvey.occupancy;
                                 window.setTimeout(function() {
-                                    //$('#occupancy')[0].focus();
-                                    //$('#occupancy')[0].select();
-                                    $('#occupancy').parent().removeClass("has-error");
+                                    $("#occupancy").parent().removeClass("has-error");
                                 }, 300);
                             } else {
+                                $scope.validation.occupancy.warnings = {};
+                                $scope.validation.occupancy.errors = {};
 
                                 var er = "";
-                                if (!$scope.isValid($scope.survey.occupancy,false,true,0,100)) {
-                                    er = '<b>Warning:</b> Occupancy must be between 0% and 100%';
+                                if (!$scope.isValid($scope.survey.occupancy, false, true, 0, 100)) {
+                                    er = "Occupancy must be between 0% and 100%";
                                 }
 
+                                $scope.validation.occupancy.errors.zero = er;
+
                                 if (er.length > 0) {
-                                    toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#occupancy')[0].focus();
-                                        //$('#occupancy')[0].select();
-                                        $('#occupancy').parent().addClass("has-error");
+                                        $("#occupancy").parent().addClass("has-error");
                                     }, 300);
-                                    //return;
                                 }
+
+                                $scope.validation.occupancy.warnings.change = "";
 
                                 if ($scope.originalSurvey.occupancy > 0) {
                                     var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
                                     if (percent >= 10) {
-                                        $scope.occupancyWarning = true;
+                                        $scope.validation.occupancy.warnings.change = "Occupancy % has changed by more than 10% since the last market survey";
                                     }
                                 }
                             }
                             $scope.survey.occupancyupdated = $scope.survey.occupancy != $scope.originalSurvey.occupancy;
                             break;
                         case "traffic":
+                            $scope.validation = $scope.validation || {};
+                            $scope.validation.traffic = $scope.validation.traffic || {};
+                            $scope.validation.traffic.warnings = $scope.validation.traffic.warnings || {};
+                            $scope.validation.traffic.errors = $scope.validation.traffic.errors || {};
 
                             if (!state) {
+                                $scope.validation.traffic.warnings = {};
+                                $scope.validation.traffic.errors = {};
                                 $scope.survey.weeklytraffic = $scope.originalSurvey.weeklytraffic;
                                 window.setTimeout(function() {
-                                    //$('#traffic')[0].focus();
-                                    //$('#traffic')[0].select();
-                                    $('#traffic').parent().removeClass("has-error");
+                                    $("#traffic").parent().removeClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
 
                                 if (!$scope.isValid($scope.survey.weeklytraffic,true,false)) {
-                                    er = '<b>Warning:</b> Traffic/Week must be 0 or greater, no decimals';
+                                    er = "Traffic/Week must be 0 or greater, no decimals";
                                 }
 
+                                $scope.validation.traffic.errors.zero = er;
                                 if (er.length > 0) {
-                                    toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#traffic')[0].focus();
-                                        //$('#traffic')[0].select();
-                                        $('#traffic').parent().addClass("has-error");
+                                        $("#traffic").parent().addClass("has-error");
                                     }, 300);
-                                    //return;
                                 }
                             }
 
                             $scope.survey.trafficupdated = $scope.survey.weeklytraffic != $scope.originalSurvey.weeklytraffic;
                             break;
                         case "leases":
-
+                            $scope.validation = $scope.validation || {};
+                            $scope.validation.leases = $scope.validationleases || {};
+                            $scope.validation.leases.warnings = $scope.validation.leases.warnings || {};
+                            $scope.validation.leases.errors = $scope.validation.leases.errors || {};
                             if (!state) {
+                                $scope.validation.leases.warnings = {};
+                                $scope.validation.leases.errors = {};
                                 $scope.survey.weeklyleases = $scope.originalSurvey.weeklyleases;
                                 window.setTimeout(function() {
-                                    //$('#leases')[0].focus();
-                                    //$('#leases')[0].select();
-                                    $('#leases').parent().removeClass("has-error");
+                                    $("#leases").parent().removeClass("has-error");
                                 }, 300);
                             } else {
                                 var er = "";
-                                if (!$scope.isValid($scope.survey.weeklyleases,true,false)) {
-                                    er = '<b>Warning:</b> Leases/Week must be 0 or greater, no decimals';
+                                if (!$scope.isValid($scope.survey.weeklyleases, true, false)) {
+                                    er = "Leases/Week must be 0 or greater, no decimals";
                                 }
 
+                                $scope.validation.leases.errors.zero = er;
+
                                 if (er.length > 0) {
-                                    toastr.warning(er);
                                     window.setTimeout(function() {
-                                        //$('#leases')[0].focus();
-                                        //$('#leases')[0].select();
-                                        $('#leases').parent().addClass("has-error");
+                                        $("#leases").parent().addClass("has-error");
                                     }, 300);
-                                    //return;
                                 }
                             }
 
@@ -560,8 +566,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             break;
                     }
                 } else {
-                    fp.warning = false;
-
                     var old = _.find($scope.originalSurvey.floorplans, function(o) {return o.id ==  fp.id})
 
                     if (old && old.rent) {
@@ -573,7 +577,8 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                         fp.concessions = old.concessions;
                         fp.concessionsMonthly = old.concessionsMonthly;
                         fp.concessionsOneTime = old.concessionsOneTime;
-                        fp.warning = false;
+                        fp.warnings = {};
+                        fp.errors = {};
 
                         window.setTimeout(function() {
                             $("#rent-" + fp.id).parent().removeClass("has-error");
@@ -581,10 +586,10 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             $("#concessionsMonthly-" + fp.id).parent().removeClass("has-error");
                             $("#concessions-" + fp.id).parent().removeClass("has-error");
                         }, 300);
-                        fp.errors = {};
                     } else {
                         var er = "";
                         fp.errors = fp.errors || {};
+                        fp.warnings = fp.warnings || {};
 
                         if (fpField == "rent") {
                             if (!$scope.isValid(fp.rent, true, false)) {
@@ -659,13 +664,18 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                         fp.errors.ner = "";
                         if (fp.ner < 0) {
-                            fp.errors.ner = "Net Effective Rent cannot be negative";
+                            fp.errors.ner = "The NER for this floor plan cannot be negative";
                             window.setTimeout(function() {
                                 $("#rent-" + fp.id).parent().addClass("has-error");
+                                $("#concessions-" + fp.id).parent().addClass("has-error");
+                                $("#concessionsOneTime-" + fp.id).parent().addClass("has-error");
+                                $("#concessionsMonthly-" + fp.id).parent().addClass("has-error");
                             }, 300);
                             $scope.checkUndoFp(fp, old);
                             return;
                         }
+
+                        delete fp.warnings.ner;
 
                         if (old.rent > 0) {
                             if ($scope.settings.showDetailed) {
@@ -683,7 +693,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             var percent = Math.abs((parseInt(fp.ner) - parseInt(old.ner)) / parseInt(old.ner) * 100);
 
                             if (percent >= 10) {
-                                fp.warning = true;
+                                fp.warnings.ner = "The NER for this floor plan has changed by more than 10% since the last property survey";
                             }
                         }
                     }
@@ -691,13 +701,31 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 }
             };
 
-    $scope.getFloorPlanErrors = function(fp) {
+    $scope.getWarnings = function(fp) {
         var er = "";
 
-        if (fp.errors) {
+        if (fp && fp.warnings) {
+            for (var e in fp.warnings) {
+                if (fp.warnings[e]) {
+                    er += "<li><Span>" + fp.warnings[e] + "</Span><Br>";
+                }
+            }
+        }
+
+        if (er) {
+            er = "<UL class='warn'>" + er + "</UL>";
+        }
+
+        return er;
+    };
+
+    $scope.getErrors = function(fp) {
+        var er = "";
+
+        if (fp && fp.errors) {
             for (var e in fp.errors) {
                 if (fp.errors[e]) {
-                    er += "<li>" + fp.errors[e] + "<Br>";
+                    er += "<li><Span>" + fp.errors[e] + "</Span><Br>";
                 }
             }
         }
@@ -763,7 +791,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                         $scope.updateDone(fp, true, "concessions");
                     }
 
-                    if ($scope.getFloorPlanErrors(fp)) {
+                    if ($scope.getErrors(fp)) {
                         isSuccess = false;
                     }
                 });
