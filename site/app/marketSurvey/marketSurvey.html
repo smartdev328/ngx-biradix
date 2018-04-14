@@ -319,24 +319,30 @@
                                 </div>
                                 <Br ng-if="$root.me.settings.showLeases || survey.leased">
                                 <div ng-if="$root.me.settings.showLeases || survey.leased" class="moreinforow">
-                                    &nbsp;<a href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                                    &nbsp;
-                                    <i ng-if="leasedWarning" class="fa fa-question-circle" style="color:orange"
+                                    <a class="pull-left" href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                                    <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                                        popover-trigger="'mouseenter'"
-                                       popover-placement="top"
-                                       uib-popover="Leased % has changed by more than 10% since the last market survey"
-                                       popover-append-to-body="true"
+                                       popover-placement="left"
+                                       uib-popover-html="getWarnings(validation.leased)"
+                                    ></i>
+                                    <i ng-if="getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getErrors(validation.leased)"
                                     ></i>
                                 </div>
                                 <br ng-if="$root.me.settings.showRenewal || survey.renewal">
                                 <div ng-if="$root.me.settings.showRenewal || survey.renewal" class="moreinforow">
-                                    &nbsp;<a href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                                    &nbsp;
-                                    <i ng-if="renewalWarning" class="fa fa-question-circle" style="color:orange"
+                                    <a class="pull-left" href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                                    <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                                        popover-trigger="'mouseenter'"
-                                       popover-placement="top"
-                                       uib-popover="Renewal % has changed by more than 10% since the last market survey"
-                                       popover-append-to-body="true"
+                                       popover-placement="left"
+                                       uib-popover-html="getWarnings(validation.renewal)"
+                                    ></i>
+                                    <i ng-if="getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getErrors(validation.renewal)"
                                     ></i>
                                 </div>
                             </td>
@@ -386,13 +392,16 @@
                             </td>
                             <td style="width:45px;"  valign="top" class="moreinfo">
                                 <div ng-if="$root.me.settings.showATR || survey.atr" class="moreinforow">
-                                    &nbsp;<a href ng-click="undo('atr')" ng-if="survey.atrupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                                    &nbsp;
-                                    <i ng-if="atrWarning" class="fa fa-question-circle" style="color:orange"
+                                    <a class="pull-left" href ng-click="undo('atr')" ng-if="survey.atrupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+                                    <i ng-if="getWarnings(validation.atr) && !getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                                        popover-trigger="'mouseenter'"
-                                       popover-placement="top"
-                                       uib-popover="ATR % has changed by more than 10% since the last market survey"
-                                       popover-append-to-body="true"
+                                       popover-placement="left"
+                                       uib-popover-html="getWarnings(validation.atr)"
+                                    ></i>
+                                    <i ng-if="getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="left"
+                                       uib-popover-html="getErrors(validation.atr)"
                                     ></i>
                                 </div>
                                 <Br ng-if="$root.me.settings.showATR || survey.atr">
