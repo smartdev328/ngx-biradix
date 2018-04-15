@@ -391,7 +391,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 }
 
                                 if (!er) {
-                                    if ($scope.originalSurvey && typeof $scope.originalSurvey.leased !== "undefined" && $scope.originalSurvey.leased > 0 && parseInt($scope.survey.leased) === 0) {
+                                    if ($scope.originalSurvey && typeof $scope.originalSurvey.leased !== "undefined" && $scope.originalSurvey.leased >= 20 && parseInt($scope.survey.leased) === 0) {
                                         er = "Properties that have been above 20% leased historically cannot be set to 0. If you don't know leased %, leave it blank";
                                     }
                                 }
@@ -408,8 +408,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                                 $scope.validation.leased.warnings.change = "";
 
-                                if ($scope.originalSurvey.leased && $scope.originalSurvey.leased > 0 && $scope.survey.leased) {
-                                    var percent = Math.abs((parseInt($scope.survey.leased) - parseInt($scope.originalSurvey.leased)) / parseInt($scope.originalSurvey.leased) * 100);
+                                if ($scope.originalSurvey && typeof $scope.originalSurvey.leased !== "undefined" && $scope.originalSurvey.leased >= 0 && $scope.survey.leased) {
+                                    var percent = 100;
+
+                                    if ($scope.originalSurvey.leased > 0) {
+                                        percent = Math.abs((parseInt($scope.survey.leased) - parseInt($scope.originalSurvey.leased)) / parseInt($scope.originalSurvey.leased) * 100);
+                                    }
+
                                     if (percent >= 10) {
                                         $scope.leasedWarning = true;
                                         $scope.validation.leased.warnings.change = "Leased % has changed by more than 10% since the last market survey";
@@ -521,7 +526,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 }
 
                                 if (!er) {
-                                    if ($scope.originalSurvey && typeof $scope.originalSurvey.occupancy !== "undefined" && $scope.originalSurvey.occupancy > 0 && parseInt($scope.survey.occupancy) === 0) {
+                                    if ($scope.originalSurvey && typeof $scope.originalSurvey.occupancy !== "undefined" && $scope.originalSurvey.occupancy >= 20 && parseInt($scope.survey.occupancy) === 0) {
                                         er = "Properties that have been above 20% occupancy historically cannot be set to 0. If you don't know occupancy %, leave it blank";
                                     }
                                 }
@@ -538,8 +543,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                                 $scope.validation.occupancy.warnings.change = "";
 
-                                if ($scope.originalSurvey.occupancy > 0) {
-                                    var percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
+                                if ($scope.originalSurvey && typeof $scope.originalSurvey.occupancy !== "undefined" && $scope.originalSurvey.occupancy >= 0) {
+                                    var percent = 100;
+
+                                    if (percent > 0) {
+                                        percent = Math.abs((parseInt($scope.survey.occupancy) - parseInt($scope.originalSurvey.occupancy)) / parseInt($scope.originalSurvey.occupancy) * 100);
+                                    }
+
                                     if (percent >= 10) {
                                         $scope.validation.occupancy.warnings.change = "Occupancy % has changed by more than 10% since the last market survey";
                                     }
@@ -623,13 +633,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                         fp.concessionsOneTime = old.concessionsOneTime;
                         fp.warnings = {};
                         fp.errors = {};
-
-                        window.setTimeout(function() {
-                            $("#rent-" + fp.id).parent().removeClass("has-error");
-                            $("#concessionsOneTime-" + fp.id).parent().removeClass("has-error");
-                            $("#concessionsMonthly-" + fp.id).parent().removeClass("has-error");
-                            $("#concessions-" + fp.id).parent().removeClass("has-error");
-                        }, 300);
                     } else {
                         var er = "";
                         fp.errors = fp.errors || {};
@@ -643,9 +646,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             fp.errors.rent = er;
 
                             if (er.length > 0) {
-                                window.setTimeout(function() {
-                                    $("#rent-" + fp.id).parent().addClass("has-error");
-                                }, 300);
                                 $scope.checkUndoFp(fp, old);
                                 return;
                             }
@@ -659,9 +659,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                                 fp.errors.concessionsOneTime = er;
                                 if (er.length > 0) {
-                                    window.setTimeout(function() {
-                                        $("#concessionsOneTime-" + fp.id).parent().addClass("has-error");
-                                    }, 300);
                                     $scope.checkUndoFp(fp, old);
                                     return;
                                 }
@@ -675,9 +672,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 fp.errors.concessionsMonthly = er;
 
                                 if (er.length > 0) {
-                                    window.setTimeout(function() {
-                                        $("#concessionsMonthly-" + fp.id).parent().addClass("has-error");
-                                    }, 300);
                                     $scope.checkUndoFp(fp, old);
                                     return;
                                 }
@@ -691,9 +685,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 fp.errors.concessions = er;
 
                                 if (er.length > 0) {
-                                    window.setTimeout(function() {
-                                        $("#concessions-" + fp.id).parent().addClass("has-error");
-                                    }, 300);
                                     $scope.checkUndoFp(fp, old);
                                     return;
                                 }
@@ -709,12 +700,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                         fp.errors.ner = "";
                         if (fp.ner < 0) {
                             fp.errors.ner = "The NER for this floor plan cannot be negative";
-                            window.setTimeout(function() {
-                                $("#rent-" + fp.id).parent().addClass("has-error");
-                                $("#concessions-" + fp.id).parent().addClass("has-error");
-                                $("#concessionsOneTime-" + fp.id).parent().addClass("has-error");
-                                $("#concessionsMonthly-" + fp.id).parent().addClass("has-error");
-                            }, 300);
                             $scope.checkUndoFp(fp, old);
                             return;
                         }

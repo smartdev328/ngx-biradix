@@ -84,6 +84,7 @@
         color: red;
     }
     .popover-inner UL LI {
+        list-style: none;
         margin-top:10px
     }
 
@@ -99,6 +100,12 @@
     .has-error .form-control {
         background-color:#FFF0F0;
     }
+
+    .has-warning .form-control {
+        background-color:#ffe5cb;
+        border: 1px solid #f90 !important;
+    }
+
 </Style>
 
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
@@ -240,22 +247,22 @@
                         {{row.sqft}}
                     </td>
                     <td style="white-space: nowrap;text-align:right;">
-                        <div class="form-group">
+                        <div ng-class="{'form-group': true, 'has-error': !!row.errors.rent || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                             $<input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
                         </div>
                     </td>
                     <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
-                        <div class="form-group">
+                        <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessions || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                             $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()" ng-change="clear('concessions-' + row.id)" ng-keydown="pressed(row,'concessions-' + row.id, $event)" ng-blur="updateDone(row,true,'concessions')">
                         </div>
                     </td>
                     <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
-                        <div class="form-group">
+                        <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsOneTime || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                             $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()" ng-change="clear('concessionsOneTime-' + row.id)" ng-keydown="pressed(row,'concessionsOneTime-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsOneTime')">
                         </div>
                     </td>
                     <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
-                        <div class="form-group">
+                        <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsMonthly || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                             $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
                         </div>
                     </td>
