@@ -81,15 +81,15 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                         }
 
                         $scope.survey.floorplans.forEach(function (fp) {
-                            fp.rent = fp.rent || ''
-                            fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : '';
+                            fp.rent = fp.rent || ""
+                            fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : "";
                         })
-                        $scope.survey.atr = $scope.survey.atr || '';
-                        $scope.survey.leased = $scope.survey.leased || '';
-                        $scope.survey.renewal = $scope.survey.renewal || '';
-                        $scope.survey.occupancy = $scope.survey.occupancy || '';
-                        $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || '';
-                        $scope.survey.weeklyleases = $scope.survey.weeklyleases || '';
+                        $scope.survey.atr = $scope.survey.atr || "";
+                        $scope.survey.leased = $scope.survey.leased || "";
+                        $scope.survey.renewal = $scope.survey.renewal || "";
+                        $scope.survey.occupancy = $scope.survey.occupancy || "";
+                        $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || "";
+                        $scope.survey.weeklyleases = $scope.survey.weeklyleases || "";
 
                         if (!$scope.editableSurveyId && $scope.property.survey) {
                             $scope.editableSurveyId = $scope.property.survey.id;
@@ -179,19 +179,15 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                         }
                                     }
 
-
-
                                     if (surveyid) {
                                         $scope.editMode = true;
                                         $scope.editDate = s.date;
                                     }
-
                                 }
 
                                 $scope.doneLoading();
-                            })
-                        }
-                        else {
+                            });
+                        } else {
                             $scope.doneLoading();
                         }
                     });
@@ -199,25 +195,25 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
             });
 
             $scope.getGuestInfo = function(guest) {
-                var str = 'Last Email Sent: <b>';
+                var str = "Last Email Sent: <b>";
 
                 if (guest.lastEmailed) {
-                    str += moment(guest.lastEmailed).format("MM/DD/YYYY")
+                    str += moment(guest.lastEmailed).format("MM/DD/YYYY");
                 } else {
-                    str += "Never"
+                    str += "Never";
                 }
 
-                str += "</b><Br>"
+                str += "</b><Br>";
 
-                str += 'Last Survey Completed: <b>';
+                str += "Last Survey Completed: <b>";
 
                 if (guest.lastCompleted) {
-                    str += moment(guest.lastCompleted).format("MM/DD/YYYY")
+                    str += moment(guest.lastCompleted).format("MM/DD/YYYY");
                 } else {
-                    str += "Never"
+                    str += "Never";
                 }
 
-                str += "</b>"
+                str += "</b>";
 
                 return str;
             }
@@ -226,12 +222,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 $scope.survey.totalUnits = 0;
 
                 $scope.survey.floorplans.forEach(function(fp) {
-                    fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ?  fp.concessionsOneTime : '';
-                    fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ?  fp.concessionsMonthly : '';
+                    delete fp.errors;
+                    delete fp.warnings;
+                    fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ? fp.concessionsOneTime : "";
+                    fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ? fp.concessionsMonthly : "";
 
                     $scope.survey.totalUnits += fp.units;
-
-                })
+                });
 
                 $scope.survey.floorplans = _.sortByAll($scope.survey.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'fid'])
 
@@ -289,10 +286,10 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     $scope.showSurvey();
                 } else {
                     $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'swap');
-                    $('button.contact-submit').prop('disabled', true);
+                    $("button.contact-submit").prop('disabled', true);
                     ngProgress.start();
                     $propertyService.emailGuest($scope.property._id, $scope.swap.selectedGuest._id).then(function(response) {
-                        $('button.contact-submit').prop('disabled', false);
+                        $("button.contact-submit").prop('disabled', false);
                         ngProgress.complete();
                         if (response.data.errors) {
                             toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
@@ -303,7 +300,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             $uibModalInstance.close();
                         }
                     }, function (err) {
-                        $('button.contact-submit').prop('disabled', false);
+                        $("button.contact-submit").prop('disabled', false);
                         toastr.error('Unable to perform action. Please contact an administrator');
                         ngProgress.complete();
                     })
@@ -327,34 +324,33 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
             $scope.isValid  = function(field, required, allowDecimal, min, max) {
 
-                if (typeof field === 'undefined') {
+                if (typeof field === "undefined") {
                     return false;
                 }
 
                 if (required) {
 
-                    if (field === '' || field === null || isNaN(field)) {
+                    if (field === "" || field === null || isNaN(field)) {
                         return false;
                     }
                 } else {
-                    if (field !== '' && field !== null && isNaN(field)) {
+                    if (field !== "" && field !== null && isNaN(field)) {
                         return false;
                     }
                 }
 
-                if (!allowDecimal && (field || '').toString().indexOf('.') > -1) {
+                if (!allowDecimal && (field || "").toString().indexOf('.') > -1) {
                     return false;
                 }
 
 
-                if (field != '' && field != null && !isNaN(field)) {
-                    if (typeof min !== 'undefined' && parseFloat(field) < min) {
+                if (field != "" && field != null && !isNaN(field)) {
+                    if (typeof min !== "undefined" && parseFloat(field) < min) {
                         return false;
                     }
-                    if (typeof max !== 'undefined' && parseFloat(field) > max) {
+                    if (typeof max !== "undefined" && parseFloat(field) > max) {
                         return false;
                     }
-
                 }
 
                 return true;
@@ -534,7 +530,6 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                                 }
 
                                 $scope.validation.traffic.errors.zero = er;
-
                             }
 
                             $scope.survey.trafficupdated = $scope.survey.weeklytraffic != $scope.originalSurvey.weeklytraffic;
@@ -651,13 +646,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                         if (old.rent > 0) {
                             if ($scope.settings.showDetailed) {
-                                if (fp.concessionsOneTime === null || typeof fp.concessionsOneTime == 'undefined' || fp.concessionsOneTime === ''
-                                    || fp.concessionsMonthly === null || typeof fp.concessionsMonthly == 'undefined' || fp.concessionsMonthly === ''
+                                if (fp.concessionsOneTime === null || typeof fp.concessionsOneTime == "undefined" || fp.concessionsOneTime === ""
+                                    || fp.concessionsMonthly === null || typeof fp.concessionsMonthly == "undefined" || fp.concessionsMonthly === ""
                                 ) {
                                     fp.ner = old.ner;
                                 }
                             } else {
-                                if (fp.concessions === null || typeof fp.concessions == 'undefined' || fp.concessions === '' ) {
+                                if (fp.concessions === null || typeof fp.concessions == "undefined" || fp.concessions === "" ) {
                                     fp.ner = old.ner;
                                 }
                             }
@@ -805,11 +800,11 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                     $scope.fixConessions();
 
-                    $('button.contact-submit').prop('disabled', true);
+                    $("button.contact-submit").prop('disabled', true);
                     ngProgress.start();
 
                     $propertyService.getSurveyWarnings(id, $scope.survey).then(function(resp) {
-                        $('button.contact-submit').prop('disabled', false);
+                        $("button.contact-submit").prop('disabled', false);
                         ngProgress.complete();
                         if (resp.data.errors && resp.data.errors.length > 0) {
                             var errors = _.pluck(resp.data.errors,"msg").join("<li style='padding-top:5px'>")
@@ -821,7 +816,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                             $scope.success();
                         }
                     }, function (err) {
-                        $('button.contact-submit').prop('disabled', false);
+                        $("button.contact-submit").prop('disabled', false);
                         toastr.error('Unable to perform action. Please contact an administrator');
                         ngProgress.complete();
                     });
@@ -845,13 +840,13 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 }
             }
             var surveyError = function (err) {
-                $('button.contact-submit').prop('disabled', false);
+                $("button.contact-submit").prop('disabled', false);
                 toastr.error('Unable to perform action. Please contact an administrator');
                 ngProgress.complete();
             };
 
             var surveySuccess = function(resp) {
-                $('button.contact-submit').prop('disabled', false);
+                $("button.contact-submit").prop('disabled', false);
                 ngProgress.complete();
                 if (resp.data.errors && resp.data.errors.length > 0) {
                     var errors = _.pluck(resp.data.errors,"msg").join("<br>")
@@ -874,28 +869,26 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
             }
 
             $scope.success = function() {
-
                 $scope.fixConessions();
 
-                if (!$scope.settings.showDetailed) {
-                    $scope.survey.floorplans.forEach(function (fp) {
+                $scope.survey.floorplans.forEach(function (fp) {
+                    if (!$scope.settings.showDetailed) {
                         delete fp.concessionsOneTime;
                         delete fp.concessionsMonthly;
-                    });
-                }
+                    }
+                    delete fp.errors;
+                    delete fp.warnings;
+                });
 
-                $('button.contact-submit').prop('disabled', true);
+                $("button.contact-submit").prop("disabled", true);
                 ngProgress.start();
 
                 if (surveyid) {
-                    $propertyService.updateSurvey(id, surveyid, $scope.survey).then(surveySuccess, surveyError)
+                    $propertyService.updateSurvey(id, surveyid, $scope.survey).then(surveySuccess, surveyError);
+                } else {
+                    $propertyService.createSurvey(id, $scope.survey).then(surveySuccess, surveyError);
                 }
-                else {
-                    $propertyService.createSurvey(id, $scope.survey).then(surveySuccess, surveyError)
-                }
-
-
-            }
+            };
 
             $scope.getOrder = function(sort) {
                 switch (sort) {
