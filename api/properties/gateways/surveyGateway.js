@@ -1,15 +1,15 @@
-var AccessService = require('../../access/services/accessService')
-var PropertyService = require('../services/propertyService')
-var surveyHelperService = require('../services/surveyHelperService')
-var moment = require('moment');
-var async = require('async');
-var _ = require("lodash")
+var AccessService = require("../../access/services/accessService");
+var PropertyService = require("../services/propertyService");
+var surveyHelperService = require("../services/surveyHelperService");
+var moment = require("moment");
+var async = require("async");
+var _ = require("lodash");
 
 module.exports = {
     init: function(Routes) {
 
-        Routes.get('/:id/survey/guests/:guestid/email', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+        Routes.get("/:id/survey/guests/:guestid/email", function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,["PropertyManage","CompManage"], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
@@ -20,8 +20,8 @@ module.exports = {
             });
         });
 
-        Routes.post('/:id/survey/warnings', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+        Routes.post("/:id/survey/warnings", function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,["PropertyManage","CompManage"], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
@@ -81,23 +81,23 @@ module.exports = {
                                 percent = Math.abs((parseFloat(n.occupancy) - parseFloat(o.occupancy)) / parseFloat(n.occupancy) * 100);
 
                                 if (percent >= 10) {
-                                    errors.push({msg: 'Occupancy % has changed by more than 10% since last survey'});
+                                    errors.push({msg: "Occupancy % has changed by more than 10% since last survey"});
                                 }
                             }
 
-                            if (n.leased && o.leased != null && o.leased != '' && typeof o.leased != 'undefined') {
+                            if (n.leased && o.leased != null && o.leased != "" && typeof o.leased != "undefined") {
                                 percent = Math.abs((parseFloat(n.leased || 0) - parseFloat(o.leased || 0)) / parseFloat(n.leased) * 100);
 
                                 if (percent >= 10) {
-                                    errors.push({msg: 'Leased % has changed by more than 10% since last survey'});
+                                    errors.push({msg: "Leased % has changed by more than 10% since last survey"});
                                 }
                             }
 
-                            if (n.atr_percent && o.atr_percent != null && o.atr_percent != '' && typeof o.atr_percent != 'undefined') {
+                            if (n.atr_percent && o.atr_percent != null && o.atr_percent != "" && typeof o.atr_percent != "undefined") {
                                 percent = Math.abs((parseFloat(n.atr_percent || 0) - parseFloat(o.atr_percent || 0)));
 
                                 if (percent >= 10) {
-                                    errors.push({msg: 'ATR % has changed by more than 10% since last survey'});
+                                    errors.push({msg: "ATR % has changed by more than 10% since last survey"});
                                 }
                             }
 
@@ -117,7 +117,7 @@ module.exports = {
                             })
 
                             if (fpNer === true) {
-                                errors.push({msg:'Rent pricing for some floor plans has changed by more than 10% since last survey'});
+                                errors.push({msg:"NER for some floor plans has changed by more than 10% since last survey"});
                             }
                         }
 
@@ -127,11 +127,11 @@ module.exports = {
                             var n = req.body;
 
                             if (parseFloat(o.occupancy) === parseFloat(n.occupancy)) {
-                                errors.push({msg:'Occupancy % has not changed in two weeks'});
+                                errors.push({msg:"Occupancy % has not changed in two weeks"});
                             }
 
                             if (parseFloat(o.weeklytraffic) === parseFloat(n.weeklytraffic)) {
-                                errors.push({msg:'Traffic/Week has not changed in two weeks'});
+                                errors.push({msg:"Traffic/Week has not changed in two weeks"});
                             }
 
                         }
@@ -141,7 +141,7 @@ module.exports = {
                             var n = req.body;
 
                             if (parseFloat(o.weeklyleases) === parseFloat(n.weeklyleases)) {
-                                errors.push({msg:'Leases/Week has not changed in a month'});
+                                errors.push({msg:"Leases/Week has not changed in a month"});
                             }
 
 
@@ -162,9 +162,9 @@ module.exports = {
                             })
 
                             if (fpNerAll === true) {
-                                errors.push({msg:'<B style="color:#f33">Rents for all floor plans have not changed in a month</B>'});
+                                errors.push({msg: "<B style='color:#f33'>NER for all floor plans has not changed in one month</B>"});
                             } else if (fpNer) {
-                                //errors.push({msg:'Rent pricing for some floor plans has not changed in one month'});
+                                //errors.push({msg:"NER for some floor plans has not changed in one month "});
                             }
                         }
 
@@ -176,8 +176,8 @@ module.exports = {
             })
         })
 
-        Routes.post('/:id/survey', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+        Routes.post("/:id/survey", function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,["PropertyManage","CompManage"], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
@@ -209,8 +209,8 @@ module.exports = {
             });
         })
 
-        Routes.put('/:id/survey/:surveyid', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+        Routes.put("/:id/survey/:surveyid", function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,["PropertyManage","CompManage"], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
@@ -226,8 +226,8 @@ module.exports = {
             })
         })
 
-        Routes.get('/:id/survey/:surveyid', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+        Routes.get("/:id/survey/:surveyid", function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,["PropertyManage","CompManage"], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
@@ -243,8 +243,8 @@ module.exports = {
             })
         })
 
-        Routes.get('/:id/surveys', function (req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {
+        Routes.get("/:id/surveys", function (req, res) {
+            AccessService.canAccessResource(req.user,req.params.id,["PropertyManage","CompManage"], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
