@@ -1,27 +1,27 @@
-angular.module('biradix.global').controller('marketSurveyController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService','$dialog', 'surveyid', '$authService','$auditService','options','$userService','$propertyUsersService','$cookieSettingsService', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService) {
+angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope","toastr", "$location", "$propertyService","$dialog", "surveyid", "$authService","$auditService","options","$userService","$propertyUsersService","$cookieSettingsService", function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
             $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
-                return $location.path('/login')
+                return $location.path("/login");
             }
 
-            ga('set', 'title', "/marketSurvey");
-            ga('set', 'page', "/marketSurvey");
-            ga('send', 'pageview');
+            ga("set", "title", "/marketSurvey");
+            ga("set", "page", "/marketSurvey");
+            ga("send", "pageview");
             $scope.swap = {};
 
             $scope.cancel = function () {
                 if ($scope.changed) {
-                    $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
-                        $uibModalInstance.dismiss('cancel');
+                    $dialog.confirm("You have made changes that have not been saved. Are you sure you want to close without saving?", function () {
+                        $uibModalInstance.dismiss("cancel");
                     }, function () {
                     });
                 }
                 else {
-                    $uibModalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss("cancel");
                 }
             };
 
@@ -51,10 +51,24 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     $scope.survey.floorplans.forEach(function(fp) {
                         if (fp.concessionsOneTime && fp.concessionsMonthly
                             && !isNaN(fp.concessionsOneTime)&& !isNaN(fp.concessionsMonthly)) {
-                            fp.concessions = fp.concessionsOneTime +  fp.concessionsMonthly * 12;
+                            fp.concessions = fp.concessionsOneTime + fp.concessionsMonthly * 12;
                         }
-                    })
+                    });
                 }
+
+                $scope.survey.floorplans.forEach(function(fp) {
+                    delete fp.errors;
+                    delete fp.warnings;
+
+                    $scope.updateDone(fp, true, "rent");
+
+                    if ($scope.settings.showDetailed) {
+                        $scope.updateDone(fp, true, "concessionsOneTime");
+                        $scope.updateDone(fp, true, "concessionsMonthly");
+                    } else {
+                        $scope.updateDone(fp, true, "concessions");
+                    }
+                });
             }
 
             var me = $rootScope.$watch("me", function(x) {
@@ -224,6 +238,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                 $scope.survey.floorplans.forEach(function(fp) {
                     delete fp.errors;
                     delete fp.warnings;
+                    delete fp.updated;
                     fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ? fp.concessionsOneTime : "";
                     fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ? fp.concessionsMonthly : "";
 
@@ -236,7 +251,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                 if (!$scope.editMode && !$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
-                            $userService.search({ids:response.data.users, select: "first last email bounceReason guestStats"}).then(function (response) {
+                            $userService.search({ids: response.data.users, select: "first last email bounceReason guestStats"}).then(function (response) {
                                     $scope.swap.guests = response.data.users;
                                     if ($scope.swap.guests.length > 0) {
 
@@ -637,7 +652,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
 
                         fp.errors.ner = "";
                         if (fp.ner < 0) {
-                            fp.errors.ner = "The NER for this floor plan cannot be negative";
+                            fp.errors.ner = "The NER for a floor plan cannot be negative";
                             $scope.checkUndoFp(fp, old);
                             return;
                         }
@@ -878,6 +893,7 @@ angular.module('biradix.global').controller('marketSurveyController', ['$scope',
                     }
                     delete fp.errors;
                     delete fp.warnings;
+                    delete fp.updated;
                 });
 
                 $("button.contact-submit").prop("disabled", true);
