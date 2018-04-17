@@ -59,15 +59,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 $scope.survey.floorplans.forEach(function(fp) {
                     delete fp.errors;
                     delete fp.warnings;
-
-                    $scope.updateDone(fp, true, "rent");
-
-                    if ($scope.settings.showDetailed) {
-                        $scope.updateDone(fp, true, "concessionsOneTime");
-                        $scope.updateDone(fp, true, "concessionsMonthly");
-                    } else {
-                        $scope.updateDone(fp, true, "concessions");
-                    }
                 });
             }
 
