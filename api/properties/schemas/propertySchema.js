@@ -69,4 +69,6 @@ const s = new Schema({
     custom: {},
 });
 
+s.index({"comps.id": 1});
+
 module.exports = mongoose.model("Property", s, "properties");
