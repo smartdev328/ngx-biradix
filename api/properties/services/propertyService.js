@@ -914,10 +914,13 @@ module.exports = {
                 lastsurvey.weeklytraffic = survey.weeklytraffic;
                 lastsurvey.notes = survey.notes;
 
-                lastsurvey.save(function (err, created) {
+                if (subject.orgid && operator.orgs[0]._id.toString() == subject.orgid.toString()) {
+                    lastsurvey.doneByOwner = true;
+                }
 
+                lastsurvey.save(function (err, created) {
                     SurveyHelperService.updateLastSurvey(property._id, function() {
-                        callback(err, created)
+                        callback(err, created);
                     })
 
                     AuditService.create({
@@ -931,7 +934,7 @@ module.exports = {
                         dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(created, copy, !!revertedFromId),
                     })
 
-                    if (operator.roles[0] == 'Guest') {
+                    if (operator.roles[0] == "Guest") {
                         console.log('Updating survey as guest')
                         userService.updateGuestStatsLastCompleted(operator._id,id, () => {});
                         emailOriginatorGuestSurvey(operator,id, subject.name);

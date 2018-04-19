@@ -498,11 +498,18 @@ angular.module("biradix.global").controller("rootController",
             });
 
             window.setTimeout(function() {
-                $scope.alertsAmenities()
+                $scope.alertsAmenities();
             }, 120000);
         };
             $scope.alertsAudits = function() {
-                $auditService.search({limit: 1, approved: false}).then(function(response) {
+                $auditService.search({
+                    limit: 1,
+                    approved: false,
+                    daterange: {
+                        daterange: "Last 30 Days",
+                    },
+                    offset: moment().utcOffset(),
+                }).then(function(response) {
                         var a = _.find($rootScope.notifications, function(x) {
                             return x.key == "audits";
                         });
