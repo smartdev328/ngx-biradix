@@ -91,8 +91,8 @@ define([
             $scope.fixDates();
 
             $scope.reportsChanged(true, function() {
-                if($scope.compIds && $scope.compIds.length) {
-                    $scope.run()
+                if ($scope.compIds && $scope.compIds.length) {
+                    $scope.run();
                 } else {
                     $scope.waitForComps = true;
                 }
@@ -170,8 +170,10 @@ define([
             $scope.propertyItems = {items: []};
 
             // For Printing
+            if ($cookies.get("transaction_id")) {
+                $scope.transaction_id = $cookies.get("transaction_id");
+            }
             if ($cookies.get("reportIds")) {
-
                 if (!_.isArray($cookies.get("reportIds"))) {
                     $scope.reportIds = $cookies.get("reportIds").split(",");
                 } else {
@@ -528,7 +530,6 @@ define([
         }
 
         $scope.singleReport = function() {
-
             $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
             $scope.compIds =  _.pluck($scope.selected.Comps,"id")
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
@@ -555,7 +556,8 @@ define([
                         graphs: $scope.cleanSettings.profileSettings.graphs
                         , scale: $scope.cleanSettings.dashboardSettings.nerScale
                     },
-                    offset: moment().utcOffset()
+                    offset: moment().utcOffset(),
+                    transaction_id: $scope.transaction_id,
                 }
             }
 
@@ -651,7 +653,6 @@ define([
 
 
         $scope.pdf = function(showFile) {
-
             if ($scope.property_report) {
                 var c = 0;
                 var n;
@@ -702,7 +703,7 @@ define([
                 type: $scope.reportType,
                 propertyIds:  encodeURIComponent($scope.propertyIds),
                 showFile: showFile,
-                settings: $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds)
+                settings: $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds),
             }
 
             var key = $urlService.shorten(JSON.stringify(data));

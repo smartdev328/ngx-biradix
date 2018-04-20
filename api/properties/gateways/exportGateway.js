@@ -10,6 +10,7 @@ var JSONB = require('json-buffer')
 var error = require('../../../config/error')
 var exportService = require('../services/exportService');
 const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry");
+const uuid = require("node-uuid");
 
 module.exports = {
     init: function(Routes) {
@@ -137,12 +138,13 @@ module.exports = {
                     type: query.type,
                     propertyIds: query.propertyIds,
                     settings: query.settings,
+                    transaction_id: uuid.v1(),
                 };
 
                 bus.query(settings.PDF_REPORTING_QUEUE,
                     message,
                     function(data) {
-                        let log = {"property_ids": query.propertyIds, "user": req.user.email, "name": data.filename, "pdf_time_ms": (new Date().getTime() - timer)};
+                        let log = {"event": "Pdf complete process (report)", "transaction_id": message.transaction_id, "property_ids": query.propertyIds, "user": req.user.email, "name": data.filename, "pdf_time_ms": (new Date().getTime() - timer)};
                         console.log(JSON.stringify(log));
 
                         if (!data.stream) {
@@ -195,12 +197,13 @@ module.exports = {
                     orderBy : query.orderBy,
                     show : query.show,
                     showProfile : query.showP,
-
+                    transaction_id: uuid.v1(),
                 };
 
-                bus.query(settings.PDF_PROFILE_QUEUE,message,
+                bus.query(settings.PDF_PROFILE_QUEUE, message,
                     function(data) {
-                        console.log("Pdf Q for " + req.params.id + ": " + (new Date().getTime() - timer) + "ms");
+                        let log = {"event": "Pdf complete process (profile)", "transaction_id": message.transaction_id, "property_ids": query.propertyIds, "user": req.user.email, "name": data.filename, "pdf_time_ms": (new Date().getTime() - timer)};
+                        console.log(JSON.stringify(log));
 
                         if (!data.stream) {
                             error.send(new Error(data.err),message);

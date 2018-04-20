@@ -48,15 +48,16 @@ module.exports = {
         }
 
     },
-    getPdf : function(url, cookies, callback) {
+    getPdf : function(transaction_id, url, cookies, callback) {
         var timer = new Date().getTime();
         this.getBrowser(url,(err,browser) => {
 
             if (err) {
                 return callback(err,null);
             }
-            // console.log("Got Browser: " + (new Date().getTime() - timer) + "ms");
-            // timer = new Date().getTime();
+            let log = {"event": "Pdf get remote browser", "transaction_id": transaction_id, "pdf_get_browser_time_ms": (new Date().getTime() - timer)};
+            console.log(JSON.stringify(log));
+            timer = new Date().getTime();
             browser.newPage().then(page => {
                 page.setUserAgent("PhantomJS")
                     .then(()=>page.setCookie(...cookies)).catch(err=> {callback(err,null);})
@@ -80,20 +81,27 @@ module.exports = {
                         });
                     }).catch(err=> {callback(err,null);})
                     .then(()=> {
-                        console.log("PDF Variables: " + (new Date().getTime() - timer) + "ms");
+                        let log = {"event": "Pdf set cookies/ua/print", "transaction_id": transaction_id, "pdf_settings_time_ms": (new Date().getTime() - timer)};
+                        console.log(JSON.stringify(log));
+
                         timer = new Date().getTime();
                         page.goto(url)
                             .then(()=> {
-                                console.log("PDF Goto: " + (new Date().getTime() - timer) + "ms");
+                                let log = {"event": "Pdf load page html", "transaction_id": transaction_id, "pdf_load_page_time_ms": (new Date().getTime() - timer)};
+                                console.log(JSON.stringify(log));
                                 timer = new Date().getTime();
                                 page.waitForFunction('window.renderable == true')
                                     .then(()=> {
-                                        console.log("PDF window.renderable: " + (new Date().getTime() - timer) + "ms");
+                                        let log = {"event": "Pdf fully render angular after html load", "transaction_id": transaction_id, "pdf_angular_time_ms": (new Date().getTime() - timer)};
+                                        console.log(JSON.stringify(log));
+
                                         timer = new Date().getTime();
 
                                         page.pdf({format: "A4", printBackground: true})
                                             .then((pdf) => {
-                                                console.log("PDF Print: " + (new Date().getTime() - timer) + "ms");
+                                                let log = {"event": "Pdf download rendered page as pdf", "transaction_id": transaction_id, "pdf_file_ready_time_ms": (new Date().getTime() - timer)};
+                                                console.log(JSON.stringify(log));
+
                                                 callback(null,pdf)
                                                 browser.close();
                                             }).catch(err=> {callback(err,null);})
