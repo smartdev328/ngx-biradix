@@ -194,7 +194,12 @@ module.exports = {
 
                         profiles = _.sortByAll(profiles, ['orderNumber','name']);
 
-                        const log = {"event": "Dashboard + Profile for every comp (part of angular render)", "transaction_id": options.transaction_id, "property_ids": profiles[0].property._id, "user": user.email, "name": profiles[0].property.name, "data_time_ms": (new Date().getTime() - timer)};
+                        const log = {"event": "PDF data: Summary + " + profiles.length + " property profiles (part of angular render)",
+                            "transaction_id": options.transaction_id,
+                            "property_ids": profiles[0].property._id,
+                            "user": user.email, "name": profiles[0].property.name,
+                            "pdf_data_time_ms": (new Date().getTime() - timer),
+                            "pdf_data_number_profiles": profiles.length};
                         console.log(JSON.stringify(log));
 
                         callback({dashboard: data.dashboard, profiles: profiles});
