@@ -54,7 +54,7 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     context: data.context
                 })
 
-                pdfService.getPdf(url,cookies, function(err,buffer) {
+                pdfService.getPdf(null, url, cookies, function(err,buffer) {
                     if (data.progressId) {
                         ProgressService.setComplete(data.progressId)
                     }
@@ -72,24 +72,18 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     full = null;
                     cookies = null;
                     properties = null;
-                })
-
-
-
+                });
             });
-
-
         })
     }
     catch (ex) {
         console.log('I failed render');
         reply({stream: null, err: ex});
     }
-
 });
-bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
-    console.log(data.propertyIds, " reporting pdf started");
 
+bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
+    // console.log(data.propertyIds, " reporting pdf started");
 
     try {
         let propertyId = data.propertyIds.toString().length == 24 ? data.propertyIds : null;
@@ -114,6 +108,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                 url = url.replace("https://","http://");
 
                 var cookies = [
+                    pdfService.getCookie(data.hostname, "transaction_id", data.transaction_id),
                     pdfService.getCookie(data.hostname, "token", full.token),
                     pdfService.getCookie(data.hostname, "compIds", data.compIds),
                     pdfService.getCookie(data.hostname, "reportIds", data.reportIds),
@@ -122,12 +117,12 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "settings", encodeURIComponent(JSON.stringify(data.settings))),
                 ];
 
-                pdfService.getPdf(url,cookies, function(err,buffer) {
+                pdfService.getPdf(data.transaction_id, url, cookies, function(err,buffer) {
                     if (data.progressId) {
-                        ProgressService.setComplete(data.progressId)
+                        ProgressService.setComplete(data.progressId);
                     }
 
-                    console.log(data.propertyIds, " pdf reporting ended");
+                    // console.log(data.propertyIds, " pdf reporting ended");
                     if (err) {
                         console.log('I failed render', err);
                         reply({stream: null, err: err});
@@ -139,7 +134,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     full = null;
                     cookies = null;
                     properties = null;
-                })
+                });
             });
         });
     }

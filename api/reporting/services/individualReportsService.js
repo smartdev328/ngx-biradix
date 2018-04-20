@@ -1,16 +1,16 @@
-var PropertyService = require('../../properties/services/propertyService')
-var PropertyHelperService = require('../../properties/services/propertyHelperService')
-var dateService = require('../../utilities/services/dateService')
-var _ = require("lodash")
-var moment = require("moment")
-var bus = require('../../../config/queues')
-var settings = require('../../../config/settings')
-var async = require("async");
+const PropertyService = require("../../properties/services/propertyService");
+const PropertyHelperService = require("../../properties/services/propertyHelperService");
+const dateService = require("../../utilities/services/dateService");
+const _ = require("lodash");
+const moment = require("moment");
+const bus = require("../../../config/queues");
+const settings = require("../../../config/settings");
+const async = require("async");
+const uuid = require("node-uuid");
 
 module.exports = {
-    getProperties:  function(user, reports, proeprtyids, callback) {
-
-        //optimize to not look up property if we dont have to
+    getProperties: function(user, reports, proeprtyids, callback) {
+        // optimize to not look up property if we dont have to
         if (
             reports.indexOf('community_amenities') == -1 &&
             reports.indexOf('location_amenities') == -1 &&
@@ -157,8 +157,6 @@ module.exports = {
                 settings.DASHBOARD_QUEUE
                 , {user: user, id: subjectid, options: options}
                 , function (data) {
-                    //console.log("Full Report for " + data.dashboard.property.name + " [dashboard only] " + ((new Date().getTime() - timer) / 1000) + "s");
-
                     async.eachLimit(data.dashboard.comps, 1, function(comp, callbackp){
                         options.show.graphs = graphs;
                         options.show.traffic = true;
@@ -196,13 +194,14 @@ module.exports = {
 
                         profiles = _.sortByAll(profiles, ['orderNumber','name']);
 
-                        console.log("Full Report for " + profiles[0].property.name + " + "  + profiles.length + " comps: " + ((new Date().getTime() - timer) / 1000) + "s");
+                        const log = {"event": "Dashboard + Profile for every comp (part of angular render)", "transaction_id": options.transaction_id, "property_ids": profiles[0].property._id, "user": user.email, "name": profiles[0].property.name, "data_time_ms": (new Date().getTime() - timer)};
+                        console.log(JSON.stringify(log));
+
                         callback({dashboard: data.dashboard, profiles: profiles});
                         data.dashboard = null;
                         profiles = null;
                         data = null;
                     });
-
                 }
             );
         } else {

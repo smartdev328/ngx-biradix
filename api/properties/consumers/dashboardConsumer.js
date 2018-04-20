@@ -3,7 +3,7 @@ var bus = require("../../../config/queues")
 var DashboardService = require("../services/dashboardService")
 
 bus.handleQuery(settings.DASHBOARD_QUEUE, function(data,reply) {
-    console.log(data.id + " dashboard started");
+    // console.log(data.id + " dashboard started");
     try {
         DashboardService.getDashboard(data.user, data.id, data.options, function (err, dashboard) {
             //console.log(data.id + " dashboard ended");
