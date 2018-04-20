@@ -198,8 +198,9 @@ module.exports = {
                             "transaction_id": options.transaction_id,
                             "property_ids": profiles[0].property._id,
                             "user": user.email, "name": profiles[0].property.name,
+                            "pdf_data_number_profiles": profiles.length,
                             "pdf_data_time_ms": (new Date().getTime() - timer),
-                            "pdf_data_number_profiles": profiles.length};
+                        };
                         console.log(JSON.stringify(log));
 
                         callback({dashboard: data.dashboard, profiles: profiles});
