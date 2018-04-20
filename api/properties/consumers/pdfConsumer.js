@@ -10,7 +10,7 @@ var JSONB = require('json-buffer')
 var errors = require("../../../config/error")
 
 bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
-    console.log(data.id + " pdf started");
+    // console.log(data.id + " pdf started");
     try {
         PropertyService.search(data.user, {_id: data.id, skipAmenities: true}, function (err, properties) {
             UserService.getFullUser(data.user, function (full) {
@@ -54,12 +54,12 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     context: data.context
                 })
 
-                pdfService.getPdf(null, url, cookies, function(err,buffer) {
+                pdfService.getPdf(data.transaction_id, url, cookies, function(err,buffer) {
                     if (data.progressId) {
                         ProgressService.setComplete(data.progressId)
                     }
 
-                    console.log(data.id + " pdf ended");
+                    // console.log(data.id + " pdf ended");
 
                     if (err) {
                         console.log('I failed render');
