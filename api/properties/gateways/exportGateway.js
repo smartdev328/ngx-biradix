@@ -141,6 +141,7 @@ module.exports = {
                     propertyIds: query.propertyIds,
                     settings: query.settings,
                     transaction_id: uuid.v1(),
+                    showFile: query.showFile,
                 };
 
                 res.status(200).send("OK");
@@ -179,9 +180,9 @@ module.exports = {
                     const json = JSON.parse(result);
                     res.setHeader("Content-Type", "application/pdf");
 
-                    if (json.showFile) {
+                    // if (json.showFile) {
                         res.setHeader("Content-Disposition", "attachment; filename=" + json.data.filename);
-                    }
+                    // }
 
                     const stream = require("stream");
                     const bufferStream = new stream.PassThrough();
@@ -222,6 +223,7 @@ module.exports = {
                     show : query.show,
                     showProfile : query.showP,
                     transaction_id: uuid.v1(),
+                    showFile: query.showFile,
                 };
 
                 bus.query(settings.PDF_PROFILE_QUEUE, message,

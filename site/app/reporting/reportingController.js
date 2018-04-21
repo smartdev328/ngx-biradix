@@ -687,10 +687,16 @@ define([
                 }
             }
 
+            var auditType = "report_print";
+
+            if (showFile) {
+                auditType = "report_pdf";
+            }
+
             if ($scope.reportType == "single") {
-                $scope.audit('report_pdf','Pdf');
+                $scope.audit(auditType, "Pdf");
             } else {
-                $scope.auditMultiple('report_pdf','Pdf');
+                $scope.auditMultiple(auditType, "Pdf");
             }
 
             $scope.progressId = _.random(1000000, 9999999);
@@ -735,11 +741,11 @@ define([
                         url += "token=" + $cookies.get("token")
                         url += "&id=" + $scope.progressId;
 
-                        if (showFile === true) {
+                        // if (showFile === true) {
                             location.href = url;
-                        } else {
-                            window.open(url);
-                        }
+                        // } else {
+                        //     window.open(url);
+                        // }
                     } else {
                         window.setTimeout(
                             function() {
@@ -768,7 +774,11 @@ define([
                 data.unshift({description: 'Saved Report: ' + $scope.currentReport.name})
             }
 
-            $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: data});
+            if (where == "Pdf") {
+                $auditService.create({type: type, property: $scope.selected.Property, description: $scope.description.replace('%where%', where), data: data});
+            } else {
+                $auditService.create({type: 'report', property: $scope.selected.Property, description: $scope.description.replace('%where%',where), data: data});
+            }
         }
 
         $scope.auditMultiple = function(type, where) {
@@ -779,7 +789,19 @@ define([
                 data.unshift({description: 'Saved Report: ' + $scope.currentReport.name})
             }
 
-            $auditService.create({type: 'report', description: $scope.description.replace('%where%',where), data: data});
+            if (where == "Pdf") {
+                $auditService.create({
+                    type: type,
+                    description: $scope.description.replace('%where%', where),
+                    data: data,
+                });
+            } else {
+                $auditService.create({
+                    type: 'report',
+                    description: $scope.description.replace('%where%', where),
+                    data: data,
+                });
+            }
         }
         $scope.$watch('reportItems', function() {
             $scope.reports = null;

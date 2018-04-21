@@ -292,13 +292,11 @@ define([
             $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs);
 
             $window.setTimeout($scope.checkProgress, 500);
-
-        }
+        };
 
 
         $scope.print = function() {
             $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs);
-        }
-
+        };
     }]);
 });
