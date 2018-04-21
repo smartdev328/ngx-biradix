@@ -2,12 +2,12 @@ var bus = require("../../../config/queues")
 var settings = require("../../../config/settings")
 var PropertyService = require("../services/propertyService")
 var pdfService = require("../services/pdfService")
-var UserService = require('../../users/services/userService')
-var moment = require('moment')
-var AuditService = require('../../audit/services/auditService')
-var ProgressService = require('../../progress/services/progressService')
-var JSONB = require('json-buffer')
-var errors = require("../../../config/error")
+var UserService = require("../../users/services/userService")
+var moment = require("moment")
+var AuditService = require("../../audit/services/auditService")
+var ProgressService = require("../../progress/services/progressService")
+var JSONB = require("json-buffer")
+var errors = require("../../../config/error");
 
 bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
     // console.log(data.id + " pdf started");
@@ -41,17 +41,18 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                 var description = p.name;
 
                 if (data.full) {
-                    description += ' (with Comps)';
+                    description += " (with Comps)";
                 }
 
                 description += " - " + data.selectedRange;
 
+                console.log(data.showFile);
                 AuditService.create({
-                    type: 'pdf_profile',
+                    type: data.showFile ? "pdf_profile" : "print_profile",
                     operator: data.user,
                     property: p,
                     description: description,
-                    context: data.context
+                    context: data.context,
                 })
 
                 pdfService.getPdf(data.transaction_id, url, cookies, function(err,buffer) {
@@ -62,7 +63,7 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     // console.log(data.id + " pdf ended");
 
                     if (err) {
-                        console.log('I failed render');
+                        console.log("I failed render");
                         reply({stream: null, err: err});
                         errors.send(err);
                     }
@@ -77,7 +78,7 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
         })
     }
     catch (ex) {
-        console.log('I failed render');
+        console.log("I failed render");
         reply({stream: null, err: ex});
     }
 });
@@ -124,7 +125,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
 
                     // console.log(data.propertyIds, " pdf reporting ended");
                     if (err) {
-                        console.log('I failed render', err);
+                        console.log("I failed render", err);
                         reply({stream: null, err: err});
                         errors.send(err);
                     }
@@ -141,6 +142,5 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
     catch (ex) {
         reply({stream: null, err: ex.toString()});
     }
-
 });
 

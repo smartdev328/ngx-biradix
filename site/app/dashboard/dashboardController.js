@@ -332,10 +332,9 @@ define([
                 settings: {
                     profileSettings: $scope.profileSettings,
                     dashboardSettings: $scope.settings,
-                    showProfile: $scope.showProfile
-                }
-
-            }
+                    showProfile: $scope.showProfile,
+                },
+            };
 
             var key = $urlService.shorten(JSON.stringify(data));
 
@@ -350,6 +349,14 @@ define([
                     }, 500
                 );
             });
+
+            var auditType = "report_print";
+
+            if (showFile) {
+                auditType = "report_pdf";
+            }
+
+            $auditService.create({type: auditType, property: $scope.property, description: $scope.property.name + ": Dashboard"});
 
             ngProgress.start();
 
@@ -366,11 +373,11 @@ define([
                      url += "token=" + $cookies.get("token")
                      url += "&id=" + $scope.progressId;
 
-                     if (showFile === true) {
+                    // if (showFile === true) {
                          location.href = url;
-                     } else {
-                         window.open(url);
-                     }
+                     // } else {
+                     //     window.open(url);
+                     // }
                  } else {
                      window.setTimeout(
                          function() {
