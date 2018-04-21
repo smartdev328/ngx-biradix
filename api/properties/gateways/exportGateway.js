@@ -11,6 +11,8 @@ var error = require('../../../config/error')
 var exportService = require('../services/exportService');
 const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry");
 const uuid = require("node-uuid");
+const redis = require('redis');
+const redisClient = redis.createClient(settings.REDIS_URL);
 
 module.exports = {
     init: function(Routes) {
@@ -141,6 +143,8 @@ module.exports = {
                     transaction_id: uuid.v1(),
                 };
 
+                res.status(200).send("OK");
+
                 bus.query(settings.PDF_REPORTING_QUEUE,
                     message,
                     function(data) {
@@ -149,26 +153,46 @@ module.exports = {
 
                         if (!data.stream) {
                             error.send(new Error(data.err), message);
-                            return res.status("200").send("There was an error generating this report. Please contact an administrator");
+                        } else {
+                            redisClient.set("report-" + query.progressId, JSON.stringify({
+                                data,
+                                showFile: query.showFile
+                            }));
+                            redisClient.expire("report-" + query.progressId, 300);
                         }
-
-                        res.setHeader("Content-Type", "application/pdf");
-
-                        if (query.showFile) {
-                            res.setHeader('Content-Disposition', 'attachment; filename=' + data.filename);
-                        }
-
-                        var stream = require('stream');
-                        var bufferStream = new stream.PassThrough();
-                        bufferStream.end(JSONB.parse(data.stream));
-                        bufferStream.pipe(res)
 
                         data = null;
-
                     }
                 );
-            })
+            });
+        });
 
+        Routes.get("/downloadPdf", function(req, res) {
+            const progressId = req.query.id;
+
+            if (!progressId) {
+                return res.status(200).send("Invalid Link");
+            }
+
+            redisClient.get("report-" + progressId, (err, result) => {
+                if (result) {
+                    const json = JSON.parse(result);
+                    res.setHeader("Content-Type", "application/pdf");
+
+                    if (json.showFile) {
+                        res.setHeader("Content-Disposition", "attachment; filename=" + json.data.filename);
+                    }
+
+                    const stream = require("stream");
+                    const bufferStream = new stream.PassThrough();
+                    bufferStream.end(JSONB.parse(json.data.stream));
+                    bufferStream.pipe(res);
+                    delete json;
+                    delete result;
+                } else {
+                    res.status(200).send("This report has expired, please re-run it");
+                }
+            });
         });
 
         Routes.get('/:id/pdf', function (req, res) {
@@ -222,17 +246,9 @@ module.exports = {
                         bufferStream.pipe(res)
 
                         data = null;
-
                     }
                 );
             });
         });
     },
 };
-
-var CSVEncode = function(s) {
-    var result = s.replace(/"/g, '""');
-    if (result.search(/("|,|\n)/g) >= 0)
-        result = '"' + result + '"';
-    return result;
-}

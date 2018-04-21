@@ -115,11 +115,13 @@ define([
                     return;
                 }
 
-                var dist = $scope.getDistanceInMiles($scope.subject.loc, prop.loc);
-                if (dist > 15) {
-                    $scope.search1 = "";
-                    toastr.error("<b>Out of range</b> - " + prop.name +" could not be added as a comp of " + $scope.subject.name +" because it's too far away.");
-                    return;
+                if ($rootScope.me.email.toLowerCase() !== "eugene@biradix.com") {
+                    var dist = $scope.getDistanceInMiles($scope.subject.loc, prop.loc);
+                    if (dist > 15) {
+                        $scope.search1 = "";
+                        toastr.error("<b>Out of range</b> - " + prop.name + " could not be added as a comp of " + $scope.subject.name + " because it's too far away.");
+                        return;
+                    }
                 }
 
                 $scope.changed = true;

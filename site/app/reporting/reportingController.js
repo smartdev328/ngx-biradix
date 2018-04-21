@@ -712,20 +712,43 @@ define([
             url += "token=" + $cookies.get('token')
             url += "&key=" + key
 
-            if (showFile === true) {
-                ngProgress.start();
+            $.get( url, function( data ) {
+                window.setTimeout(
+                    function() {
+                        $scope.checkProgressNew(showFile);
+                    }, 500
+                );
+            });
 
-                $('#export').prop('disabled', true);
+            ngProgress.start();
 
-                window.setTimeout($scope.checkProgress, 500);
-                location.href = url;
-            }
-            else {
-                window.open(url);
-            }
+            $("#export").prop("disabled", true);
+        };
 
-        }
+        $scope.checkProgressNew = function(showFile) {
+                $progressService.isComplete($scope.progressId, function(isComplete) {
+                    if (isComplete) {
+                        ngProgress.complete();
+                        $("#export").prop("disabled", false);
 
+                        var url = "/api/1.0/properties/downloadPdf?"
+                        url += "token=" + $cookies.get("token")
+                        url += "&id=" + $scope.progressId;
+
+                        if (showFile === true) {
+                            location.href = url;
+                        } else {
+                            window.open(url);
+                        }
+                    } else {
+                        window.setTimeout(
+                            function() {
+                                $scope.checkProgressNew(showFile);
+                            }, 500
+                        );
+                    }
+                });
+            };
         $scope.checkProgress = function() {
             $progressService.isComplete($scope.progressId, function(isComplete) {
                 if (isComplete) {

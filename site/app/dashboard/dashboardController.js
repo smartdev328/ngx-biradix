@@ -3,7 +3,7 @@ define([
     'app'
 ], function (app) {
 
-     app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService) {
+     app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$http", function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$http) {
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -290,7 +290,6 @@ define([
         };
 
         $scope.checkProgress = function() {
-
             $progressService.isComplete($scope.progressId, function(isComplete) {
 
                 if (isComplete) {
@@ -301,7 +300,6 @@ define([
                     window.setTimeout($scope.checkProgress, 500);
                 }
             })
-
         }
 
         $scope.pdf = function(showFile) {
@@ -341,26 +339,49 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = '/api/1.0/properties/reportsPdf?'
-            url += "token=" + $cookies.get('token')
-            url += "&key=" + key
+            var url = "/api/1.0/properties/reportsPdf?"
+            url += "token=" + $cookies.get("token")
+            url += "&key=" + key;
 
-            if (showFile === true) {
-                ngProgress.start();
+            $.get( url, function( data ) {
+                window.setTimeout(
+                    function() {
+                        $scope.checkProgressNew(showFile);
+                    }, 500
+                );
+            });
 
-                $('#export').prop('disabled', true);
+            ngProgress.start();
 
-                window.setTimeout($scope.checkProgress, 500);
-                location.href = url;
-            }
-            else {
-                window.open(url);
-            }
+            $("#export").prop("disabled", true);
+        };
 
-        }
+         $scope.checkProgressNew = function(showFile) {
+             $progressService.isComplete($scope.progressId, function(isComplete) {
+                 if (isComplete) {
+                     ngProgress.complete();
+                     $("#export").prop("disabled", false);
+
+                     var url = "/api/1.0/properties/downloadPdf?"
+                     url += "token=" + $cookies.get("token")
+                     url += "&id=" + $scope.progressId;
+
+                     if (showFile === true) {
+                         location.href = url;
+                     } else {
+                         window.open(url);
+                     }
+                 } else {
+                     window.setTimeout(
+                         function() {
+                             $scope.checkProgressNew(showFile);
+                         }, 500
+                     );
+                 }
+             });
+         };
 
         $scope.excel = function() {
-
             ngProgress.start();
 
             $('#export').prop('disabled', true);
