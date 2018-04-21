@@ -92,14 +92,14 @@ module.exports = {
                                 timer = new Date().getTime();
                                 page.waitForFunction('window.renderable == true')
                                     .then(()=> {
-                                        let log = {"event": "Pdf fully render angular after html load", "transaction_id": transaction_id, "pdf_angular_time_ms": (new Date().getTime() - timer)};
+                                        let log = {"event": "Pdf render with angular/highcharts", "transaction_id": transaction_id, "pdf_angular_time_ms": (new Date().getTime() - timer)};
                                         console.log(JSON.stringify(log));
 
                                         timer = new Date().getTime();
 
                                         page.pdf({format: "A4", printBackground: true})
                                             .then((pdf) => {
-                                                let log = {"event": "Pdf download rendered page as pdf", "transaction_id": transaction_id, "pdf_file_ready_time_ms": (new Date().getTime() - timer)};
+                                                let log = {"event": "Pdf print/download", "transaction_id": transaction_id, "pdf_file_ready_time_ms": (new Date().getTime() - timer)};
                                                 console.log(JSON.stringify(log));
 
                                                 callback(null,pdf)

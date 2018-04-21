@@ -194,7 +194,7 @@ module.exports = {
 
                         profiles = _.sortByAll(profiles, ['orderNumber','name']);
 
-                        const log = {"event": "PDF data: Summary + " + profiles.length + " property profiles (part of angular render)",
+                        const log = {"event": "Pdf data: Summary + " + profiles.length + " property profiles (part of angular render)",
                             "transaction_id": options.transaction_id,
                             "property_ids": profiles[0].property._id,
                             "user": user.email, "name": profiles[0].property.name,
