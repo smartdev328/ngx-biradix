@@ -153,11 +153,13 @@ module.exports = {
 
                         if (!data.stream) {
                             error.send(new Error(data.err), message);
-                            return res.status("200").send("There was an error generating this report. Please contact an administrator");
+                        } else {
+                            redisClient.set("report-" + query.progressId, JSON.stringify({
+                                data,
+                                showFile: query.showFile
+                            }));
+                            redisClient.expire("report-" + query.progressId, 300);
                         }
-
-                        redisClient.set("report-" + query.progressId, JSON.stringify({data, showFile: query.showFile}));
-                        redisClient.expire("report-" + query.progressId, 600);
 
                         data = null;
                     }
