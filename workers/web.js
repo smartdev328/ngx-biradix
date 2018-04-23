@@ -85,6 +85,7 @@ d.run(function() {
             app.use(settings.API_PATH + 'reporting/', require('../api/reporting/gateways/reportingGateway'));
             app.use(settings.API_PATH + 'reporting/save/', require('../api/reporting/gateways/saveReportGateway'));
             app.use(settings.API_PATH + 'media/images/', require('../api/media/gateways/imagesGateway'));
+            app.use(settings.API_PATH + 'keen/', require("../build/keen/gateways/keenGateway"));
             app.use('/contact', require('../api/contact/gateways/contactGateway'));
             app.use('/progress', require('../api/progress/gateways/progressGateway'));
             app.use('/status', require('../api/status/gateways/statusGateway'));
@@ -92,15 +93,14 @@ d.run(function() {
             app.use('/propertyusers/cron', require('../api/propertyusers/gateways/cronGateway'));
 
             app.get('/p/:token', function (req, res) {
-                res.redirect('/#/password/reset/' + req.params.token)
+                res.redirect('/#/password/reset/' + req.params.token);
             })
 
             app.get('/g/:propertyid/:token', function (req, res) {
                 jwt.verify(req.params.token, settings.SECRET, function(err, decoded) {
                     if (err) {
                         res.redirect('/#/expired');
-                    }
-                    else {
+                    } else {
                         res.cookie('token', req.params.token);
                         res.cookie('tokenDate', "");
                         res.redirect('/#/dashboard2?id=' + req.params.propertyid)
@@ -116,7 +116,6 @@ d.run(function() {
                 require('../api/properties/consumers/notificationsConsumer');
                 require('../api/propertyusers/consumers/guestsConsumer');
                 require('../api/properties/consumers/pdfConsumer')
-                require('../api/status/consumers/phantomConsumer')
             }
 
             var server = app.listen(settings.PORT, function () {

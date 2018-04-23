@@ -49,7 +49,6 @@ module.exports = {
                     queues[settings.PDF_REPORTING_QUEUE] = exchange.queue({ name: settings.PDF_REPORTING_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
                     queues[settings.WEB_STATUS_QUEUE] = exchange.queue({ name: settings.WEB_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
-                    queues[settings.PHANTOM_STATUS_QUEUE] = exchange.queue({ name: settings.PHANTOM_STATUS_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 
                     queues[settings.HISTORY_COMPARE_REPORT_QUEUE] = exchange.queue({ name: settings.HISTORY_COMPARE_REPORT_QUEUE, prefetch: 1, durable: false, arguments : {"x-message-ttl" : 120000 } });
 

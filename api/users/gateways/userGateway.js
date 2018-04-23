@@ -121,8 +121,7 @@ userRoutes.post('/createGuest', function (req, res) {
             if (users && users.length == 1 && users[0].roles[0].name == 'Guest') {
                 AccessService.createPermission({executorid: req.user._id, resource: users[0]._id,type: 'UserManage'}, function() {
                     return res.status(201).json({errors: null, user: UtilityService.getPublicJSON(users[0])});
-                })
-
+                });
             } else {
                 AccessService.getOrgRoles({tags: ['Guest']}, function (err, guests) {
                     req.body.roleids = [guests[0]._id.toString()];

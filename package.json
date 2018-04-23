@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.17.32",
+  "version": "2.17.33",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -49,6 +49,7 @@
     "jackrabbit": "^4.3.0",
     "json-buffer": "^3.0.0",
     "jsonwebtoken": "^7.4.1",
+    "keen-js": "^4.3.0",
     "liquid-node": "^2.6.1",
     "lodash": "^3.8.0",
     "md5": "^2.2.1",
