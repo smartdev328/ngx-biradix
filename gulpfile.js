@@ -51,6 +51,7 @@ gulp.task("globaljs", function() {
     return gulp.src([
           "./site/modules/module.global.js"
         , "./site/components/timeseries/module.js"
+        , "./site/components/barchart/module.js"
         , "./site/components/toggle/module.js"
         , "./site/components/filterlist/module.js"
         , "./site/components/filterlist/moduleajax.js"
@@ -101,7 +102,7 @@ gulp.task("globaljs", function() {
         "./site/components/reports/propertyReport.js",
         "./site/components/reports/trendsReport.js",
         "./site/components/reports/trendsTimeseries.js",
-        "./site/components/reports/concession.js"        
+        "./site/components/reports/concession.js",
     ])
         .pipe(concat("global.js"))
         .pipe(gulp.dest("./dist/"))

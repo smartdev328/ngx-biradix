@@ -1,6 +1,6 @@
 define([
     "app",
-    '../../services/organizationsService',
+    "../../services/organizationsService",
 ], function(app) {
     app.controller("metricsController", ["$scope", "$rootScope", "$location", "$keenService", "ngProgress", "$uibModal", "toastr", "$cookieSettingsService", "$organizationsService",
         function($scope, $rootScope, $location, $keenService, ngProgress, $uibModal, toastr, $cookieSettingsService, $organizationsService) {
@@ -24,21 +24,27 @@ define([
                         return location.href = "/";
                     }
                     $scope.runOrganizations();
-                    $scope.run();
+                    $scope.runAll();
                 }
                 unbind();
             });
 
             $scope.runOrganizations = function() {
+                $scope.localLoading = false;
                 $organizationsService.search().then(function(response) {
                     response.data.organizations.forEach(function(o) {
                         $scope.options.organizationItems.push({id: o._id, name: o.name, selected: false});
                     });
+                    $scope.localLoading = true;
                 });
+            };
+
+            $scope.runAll = function() {
+                $scope.runSurveySwapRequested();
+                $scope.runSurveySwapRequestedByOrganization();
             }
 
-            $scope.run = function() {
-                $scope.localLoading = false;
+            $scope.runSurveySwapRequested = function() {
                 var parameters = {
                     event_collection: "SurveySwap Requested",
                     interval: $keenService.daterangeToInterval($scope.options.daterange),
@@ -67,7 +73,6 @@ define([
                 }
 
                 $keenService.query("count", parameters).then(function(response) {
-                    $scope.localLoading = true;
                     if (response.data.errors) {
                         return toastr.error("Error: " + response.data.errors.code);
                     }
@@ -80,6 +85,7 @@ define([
 
                     var s = {data: [], name: "Requests", yAxis: 0};
                     response.data.result.result.forEach(function(d) {
+                        // console.log(d.timeframe.start, d.timeframe.end);
                         s.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value]);
                         if (_max < d.value) {
                             _max = d.value;
@@ -99,7 +105,44 @@ define([
 
                     $scope.overallData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: "", title: "", marker: true, data: series, min: min, max: max};
                 }, function(error) {
-                    $scope.localLoading = true;
+                    toastr.error("Unable to perform action. Please contact an administrator");
+                });
+            };
+
+            $scope.runSurveySwapRequestedByOrganization = function() {
+                var parameters = {
+                    event_collection: "SurveySwap Requested",
+                    group_by: "user.organization.name",
+                    filters: [
+                        {
+                            property_name: "env",
+                            operator: "eq",
+                            property_value: heroku_env,
+                        },
+                    ],
+                    timeframe: $keenService.daterangeToTtimeframe($scope.options.daterange),
+                };
+
+                $keenService.query("count", parameters).then(function(response) {
+
+                    var series = [];
+                    var categories = [];
+                    var values = [];
+                    response.data.result.result.forEach(function(d) {
+                        categories.push(d["user.organization.name"]);
+                        values.push(d.result);
+                    })
+
+                    series.push({name: "Requests", data: values});
+
+
+                    $scope.orgData = {
+                        yLabel: "",
+                        height: 300,
+                        data: series,
+                        categories: categories,
+                    };
+                }, function(error) {
                     toastr.error("Unable to perform action. Please contact an administrator");
                 });
             };
@@ -110,7 +153,7 @@ define([
                 var newHash = d.selectedStartDate.format("MMDDYYYY") + d.selectedEndDate.format("MMDDYYYY");
                 if (oldHash === newHash) return;
 
-                $scope.run();
+                $scope.runAll();
             }, true);
 
             $scope.$watch("options.organizationItems", function(n, old) {
@@ -129,7 +172,7 @@ define([
 
                 if (JSON.stringify(oldHash) === JSON.stringify(newHash)) return;
 
-                $scope.run();
+                $scope.runAll();
             }, true);
         }]);
 });

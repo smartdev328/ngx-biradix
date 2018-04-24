@@ -237,14 +237,10 @@ angular.module('biradix.global').directive('timeSeries', function () {
 
                         $rootScope.$broadcast('timeseriesLoaded');
                     }, 0);
-
                 }
-
             });
-
-
         },
-        templateUrl: '/components/timeseries/timeseries.html?bust=' + version
+        templateUrl: "/components/timeseries/timeseries.html?bust=" + version,
     };
 })
 
