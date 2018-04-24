@@ -57,7 +57,7 @@ define([
 
             $scope.save = function() {
                 var event = {
-                    type: "SurveySwap_Added_To_Property",
+                    type: "SurveySwap Added To Property",
                     payload: {
                         property: {
                             id: $scope.property._id,
