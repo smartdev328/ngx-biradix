@@ -306,7 +306,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                     name: $rootScope.me.orgs[0].name,
                                 },
                             },
-                            contact: {
+                            survery_swap_contact: {
                                 name: $scope.swap.selectedGuest.first + " " + $scope.swap.selectedGuest.last,
                                 email: $scope.swap.selectedGuest.email,
                                 domain: ($scope.swap.selectedGuest.email || "").replace(/.*@/, ""),

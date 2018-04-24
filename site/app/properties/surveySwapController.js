@@ -57,7 +57,7 @@ define([
 
             $scope.save = function() {
                 var event = {
-                    type: "SurveySwap Added To Property",
+                    type: "SurveySwap Setup For Property",
                     payload: {
                         property: {
                             id: $scope.property._id,
@@ -71,7 +71,7 @@ define([
                                 name: $rootScope.me.orgs[0].name,
                             },
                         },
-                        contact: {
+                        survery_swap_contact: {
                             name: $scope.newGuest.first + " " + $scope.newGuest.last,
                             email: $scope.newGuest.email,
                             domain: ($scope.newGuest.email || "").replace(/.*@/, ""),

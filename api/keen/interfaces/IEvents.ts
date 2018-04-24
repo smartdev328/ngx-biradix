@@ -1,9 +1,9 @@
-export enum KeenEventType {
-    SURVEYSWAP_ADDED_TO_PROPERTY = "SurveySwap Added To Property",
-    SURVEYSWAP_REQUESTED = "SurveySwap Requested",
-}
-
 export interface IEvent {
     type: KeenEventType;
     payload: any;
+}
+
+export enum KeenEventType {
+    SURVEYSWAP_SETUP_FOR_PROPERTY = "SurveySwap Setup For Property",
+    SURVEYSWAP_REQUESTED = "SurveySwap Requested",
 }

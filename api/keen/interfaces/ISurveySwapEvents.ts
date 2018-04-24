@@ -14,7 +14,7 @@ export interface ISurveySwapEvent extends IEvent {
                 name: string;
             },
         },
-        contact: {
+        survery_swap_contact: {
             name: string;
             email: string;
             domain: string;
