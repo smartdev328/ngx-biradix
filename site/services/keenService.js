@@ -19,5 +19,28 @@ angular.module("biradix.global").factory("$keenService", ["$http", "$cookies", f
         });
     };
 
+    fac.daterangeToTtimeframe = function(daterange) {
+        return {
+            start: moment(daterange.selectedStartDate).format(),
+            end: moment(daterange.selectedEndDate).format(),
+        };
+    };
+
+    fac.daterangeToInterval = function(daterange) {
+        var s = moment(daterange.selectedStartDate);
+        var e = moment(daterange.selectedEndDate);
+
+        var d = Math.abs(s.diff(e, "days"));
+
+        if (d >= 720) {
+            return "monthly";
+        }
+        if (d > 30) {
+            return "weekly";
+        }
+
+        return "daily";
+    };
+
     return fac;
 }]);

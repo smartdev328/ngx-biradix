@@ -7,16 +7,23 @@
 </div>
 <div ng-show="localLoading">
     <div class="panel panel-info hidden-print">
-        <div class="panel-heading">Dashboard</div>
+        <div class="panel-heading">Global Filters</div>
         <div class="panel-body">
-            <div style="width:200px">
-                <daterange-picker daterange="options.daterange"></daterange-picker>
+            <div class="row">
+                <div class="col-md-3 col-xs-12">
+                    Date Range:<BR>
+                    <daterange-picker daterange="options.daterange"></daterange-picker>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    Organizations:<BR>
+                    <filter-list options="options.organizationOptions" items="options.organizationItems"></filter-list>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="panel panel-info hidden-print">
-        <div class="panel-heading">Overall Requests</div>
+        <div class="panel-heading">SurverySwap Overall Requests</div>
         <div class="panel-body">
             <time-series options="overallData"></time-series>
         </div>
