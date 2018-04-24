@@ -6,8 +6,9 @@ const helpers = Keen.helpers;
 const utils = Keen.utils;
 
 const keen = new Keen({
-    projectId: "5ab6b675c9e77c00016930ad",
-    writeKey: "CECDC1B35BEDB07F0AEA1C9CCF4D2425D057BAB91C01C479D5382AE9152D991836AE2DA9CB922A095D01C6611DFE3DF1002E15655155C38ACB985D12AD51BB867848F752697BACC3C770FF8001D427F7A14D7E0FCA1DE71A5B567AE7F819AB15",
+    projectId: settings.KEEN_PROJECT_ID,
+    readKey: settings.KEEN_READ_KEY,
+    writeKey: settings.KEEN_WRITE_KEY,
 });
 
 export class KeenService {
@@ -30,5 +31,9 @@ export class KeenService {
         });
 
         keen.recordEvent(event.type, event.payload);
+    }
+
+    public static query(analysis: string, parameters: any): Promise<any> {
+        return keen.query(analysis, parameters);
     }
 }

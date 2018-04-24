@@ -7,4 +7,12 @@ routes.put("/", (req, res) => {
     return res.status(200).json({success: true});
 });
 
+routes.post("/", (req, res) => {
+    KeenService.query(req.body.analysis, req.body.parameters).then((result) => {
+        return res.status(200).json({result});
+    }).catch((errors) => {
+        return res.status(200).json({errors});
+    });
+});
+
 module.exports = routes;
