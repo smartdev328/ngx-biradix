@@ -150,7 +150,7 @@ define([
             $scope.runSurveySwapRequestedByWeekday = function() {
                 var parameters = {
                     event_collection: "SurveySwap Requested",
-                    interval: $keenService.daterangeToInterval($scope.options.daterange),
+                    interval: "weekly",
                     filters: [
                         {
                             property_name: "env",
