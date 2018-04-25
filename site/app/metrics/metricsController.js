@@ -17,7 +17,6 @@ define([
                     Ranges: {
                         "Today": [moment().startOf("day"), moment().endOf("day")],
                         "Yesterday": [moment().subtract(1, "day").startOf("day"), moment().subtract(1, "day").endOf("day")],
-                        "2 Days Ago": [moment().subtract(2, "day").startOf("day"), moment().subtract(2, "day").endOf("day")],
                         "Week to Date": [moment().startOf("isoweek"), moment().endOf("day")],
                         "Last 7 Days": [moment().subtract(7, "days").startOf("day"), moment().endOf("day")],
                         "Month to Date": [moment().startOf("month"), moment().endOf("day")],
@@ -25,6 +24,7 @@ define([
                         "Last 30 Days": [moment().subtract(30, "days").startOf("day"), moment().endOf("day")],
                         "Last Month": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")],
                         "Year to Date": [moment().startOf("year"), moment().endOf("day")],
+                        "Last 12 Months": [moment().subtract(12, "months").startOf("day"), moment().endOf("day")],
                     },
                     selectedRange: "Last 30 Days",
                     selectedStartDate: null,
