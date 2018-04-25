@@ -42,7 +42,8 @@ define([
             $scope.runAll = function() {
                 $scope.runSurveySwapRequested();
                 $scope.runSurveySwapRequestedByOrganization();
-            }
+                $scope.runSurveySwapRequestedByWeekday();
+            };
 
             $scope.runSurveySwapRequested = function() {
                 var parameters = {
@@ -124,17 +125,16 @@ define([
                 };
 
                 $keenService.query("count", parameters).then(function(response) {
-
                     var series = [];
                     var categories = [];
                     var values = [];
                     response.data.result.result.forEach(function(d) {
-                        categories.push(d["user.organization.name"]);
+                        categories = [];
+                        values = [];
+                        categories.push("Requests");
                         values.push(d.result);
-                    })
-
-                    series.push({name: "Requests", data: values});
-
+                        series.push({name: d["user.organization.name"], data: values});
+                    });
 
                     $scope.orgData = {
                         yLabel: "",
@@ -145,6 +145,118 @@ define([
                 }, function(error) {
                     toastr.error("Unable to perform action. Please contact an administrator");
                 });
+            };
+
+            $scope.runSurveySwapRequestedByWeekday = function() {
+                var parameters = {
+                    event_collection: "SurveySwap Requested",
+                    interval: $keenService.daterangeToInterval($scope.options.daterange),
+                    filters: [
+                        {
+                            property_name: "env",
+                            operator: "eq",
+                            property_value: heroku_env,
+                        },
+                    ],
+                    group_by: "timestamp_info.day_of_week_string",
+                    timeframe: $keenService.daterangeToTtimeframe($scope.options.daterange),
+                };
+
+                var orgs = _.map(_.filter($scope.options.organizationItems, function(x) {
+                    return x.selected === true;
+                }), function(x) {
+                    return x.id;
+                });
+
+                if (orgs.length > 0) {
+                    parameters.filters.push({
+                        property_name: "user.organization.id",
+                        operator: "in",
+                        property_value: orgs,
+                    });
+                }
+
+                $keenService.query("count", parameters).then(function(response) {
+                    if (response.data.errors) {
+                        return toastr.error("Error: " + response.data.errors.code);
+                    }
+                    var series = [];
+                    var min = 0;
+                    var max = 0;
+                    var _min = 9999;
+                    var _max = 0;
+
+                    var monday = {data: [], name: "Monday", yAxis: 0};
+                    var tuesday = {data: [], name: "Tuesday", yAxis: 0};
+                    var wednesday = {data: [], name: "Wednesday", yAxis: 0};
+                    var thursday = {data: [], name: "Thursday", yAxis: 0};
+                    var friday = {data: [], name: "Friday", yAxis: 0};
+                    var saturday = {data: [], name: "Saturday", yAxis: 0};
+                    var sunday = {data: [], name: "Sunday", yAxis: 0};
+                    var date;
+                    var hasData = false;
+                    var minmax = {};
+
+                    response.data.result.result.forEach(function(d) {
+                        date = ((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2;
+                        minmax = $scope.parseWeekday(monday, date, d, _min, _max);
+                        _min = minmax._min;
+                        _max = minmax._max;
+                        minmax = $scope.parseWeekday(tuesday, date, d, _min, _max);
+                        _min = minmax._min;
+                        _max = minmax._max;
+                        minmax = $scope.parseWeekday(wednesday, date, d, _min, _max);
+                        _min = minmax._min;
+                        _max = minmax._max;
+                        minmax = $scope.parseWeekday(thursday, date, d, _min, _max);
+                        _min = minmax._min;
+                        _max = minmax._max;
+                        minmax = $scope.parseWeekday(friday, date, d, _min, _max);
+                        _min = minmax._min;
+                        _max = minmax._max;
+                        minmax = $scope.parseWeekday(saturday, date, d, _min, _max);
+                        _min = minmax._min;
+                        _max = minmax._max;
+                        minmax = $scope.parseWeekday(sunday, date, d, _min, _max);
+                        _min = minmax._min;
+                        _max = minmax._max;
+                        hasData = true;
+                    });
+
+                    if (hasData) {
+                        min = _min;
+                        max = _max;
+                    }
+
+                    series.push(monday);
+                    series.push(tuesday);
+                    series.push(wednesday);
+                    series.push(thursday);
+                    series.push(friday);
+                    series.push(saturday);
+                    series.push(sunday);
+
+                    $scope.weekdayData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: "", title: "", marker: true, data: series, min: min, max: max};
+                });
+            };
+
+            $scope.parseWeekday = function(series, date, row, _min, _max) {
+                var value = _.find(row.value, function(x) {
+                    return x["timestamp_info.day_of_week_string"] === series.name;
+                }) || {result: 0};
+                value = value.result;
+
+                series.data.push([date, value]);
+
+                if (_max < value) {
+                    _max = value;
+                }
+
+                if (_min > value) {
+                    _min = value;
+                }
+
+                return {_min: _min, max: _max};
             };
 
             $scope.$watch("options.daterange", function(d, old) {
