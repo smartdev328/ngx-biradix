@@ -40,12 +40,7 @@ angular.module("biradix.global").directive("barChart", function() {
                                 },
                             },
                             tooltip: {
-                                headerFormat: "<span style='font-size:10px'>{point.key}</span><table>",
-                                pointFormat: "<tr><td style='color:{series.color};padding:0'>{series.name}: </td>" +
-                                "<td style='padding:0'><b>{point.y}</b></td></tr>",
-                                footerFormat: "</table>",
-                                shared: true,
-                                useHTML: true,
+                                enabled: false,
                             },
                             plotOptions: {
                                 column: {
@@ -62,7 +57,7 @@ angular.module("biradix.global").directive("barChart", function() {
                             series: $scope.options.data,
                         };
 
-                        data.series.dataLabels = {
+                        data.series[0].dataLabels = {
                             enabled: true,
                                 rotation: -90,
                                 color: "#FFFFFF",
