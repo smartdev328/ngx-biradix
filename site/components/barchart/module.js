@@ -24,8 +24,14 @@ angular.module("biradix.global").directive("barChart", function() {
                                 text: "",
                             },
                             xAxis: {
-                                categories: $scope.options.categories,
-                                crosshair: true,
+                                type: "category",
+                                labels: {
+                                    rotation: -45,
+                                    style: {
+                                        fontSize: "13px",
+                                        fontFamily: "Verdana, sans-serif",
+                                    },
+                                },
                             },
                             yAxis: {
                                 min: 0,
@@ -50,7 +56,23 @@ angular.module("biradix.global").directive("barChart", function() {
                             credits: {
                                 enabled: false,
                             },
+                            legend: {
+                                enabled: false,
+                            },
                             series: $scope.options.data,
+                        };
+
+                        data.series.dataLabels = {
+                            enabled: true,
+                                rotation: -90,
+                                color: "#FFFFFF",
+                                align: "right",
+                                format: "{point.y:.0f}", // one decimal
+                                y: 10, // 10 pixels down from the top
+                                style: {
+                                fontSize: "13px",
+                                    fontFamily: "Verdana, sans-serif",
+                            },
                         };
 
                         el.highcharts(data);

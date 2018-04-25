@@ -145,22 +145,15 @@ define([
                 };
 
                 $keenService.query("count", parameters).then(function(response) {
-                    var series = [];
-                    var categories = [];
-                    var values = [];
+                    var series = [{name: "Requests", data: []}];
                     response.data.result.result.forEach(function(d) {
-                        categories = [];
-                        values = [];
-                        categories.push("Requests");
-                        values.push(d.result);
-                        series.push({name: d["user.organization.name"], data: values});
+                        series[0].data.push([d["user.organization.name"], d.result]);
                     });
 
                     $scope.orgData = {
                         yLabel: "",
                         height: 300,
                         data: series,
-                        categories: categories,
                     };
                 }, function(error) {
                     toastr.error("Unable to perform action. Please contact an administrator");
