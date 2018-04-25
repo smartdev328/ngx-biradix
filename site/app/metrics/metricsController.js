@@ -145,6 +145,14 @@ define([
                 };
 
                 $keenService.query("count", parameters).then(function(response) {
+                    if (response.data.errors) {
+                        return toastr.error("Error: " + response.data.errors.code);
+                    }
+
+                    response.data.result.result = _.sortBy(response.data.result.result, function(x) {
+                        return -1*x.result;
+                    });
+
                     var series = [{name: "Requests", data: []}];
                     response.data.result.result.forEach(function(d) {
                         series[0].data.push([d["user.organization.name"], d.result]);
