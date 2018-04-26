@@ -11,7 +11,7 @@ angular.module("biradix.global").factory("$keenService", ["$http", "$cookies", f
     };
 
     fac.query = function(analysis, parameters) {
-        return $http.post("/api/1.0/keen"+ "?bust=" + (new Date()).getTime(), {analysis, parameters}, {
+        return $http.post("/api/1.0/keen"+ "?bust=" + (new Date()).getTime(), {analysis: analysis, parameters: parameters}, {
             headers: {"Authorization": "Bearer " + $cookies.get("token")}}).success(function(response) {
             return response;
         }).error(function(response) {
