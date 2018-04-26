@@ -1,0 +1,42 @@
+<h2 class="mainheader">Metrics
+    <hr>
+</h2>
+
+<div class="panel panel-info hidden-print">
+    <div class="panel-heading">Filters</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-3">
+                Organizations:<BR>
+                <filter-list options="options.organizationOptions" items="options.organizationItems"></filter-list>
+            </div>
+            <div class="col-md-3">
+                Date Range:<BR>
+                <daterange-picker daterange="options.daterange"></daterange-picker>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info hidden-print">
+    <div class="panel-heading">SurverySwap Requests</div>
+    <div class="panel-body">
+        <time-series options="overallData"></time-series>
+    </div>
+</div>
+
+<div class="panel panel-info hidden-print">
+    <div class="panel-heading">SurverySwap Requests by Organization</div>
+    <div class="panel-body">
+        <bar-chart options="orgData"></bar-chart>
+    </div>
+</div>
+
+<div class="panel panel-info hidden-print">
+    <div class="panel-heading">SurverySwap Requests by Weekday</div>
+    <div class="panel-body">
+        <time-series options="weekdayData"></time-series>
+    </div>
+</div>

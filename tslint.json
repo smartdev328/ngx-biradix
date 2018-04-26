@@ -6,7 +6,8 @@
   "jsRules": {},
   "rules": {
     "no-console": ["log"],
-    "max-line-length": ["error",180]
+    "max-line-length": ["error",180],
+    "no-empty-interface": false
   },
   "rulesDirectory": []
 }

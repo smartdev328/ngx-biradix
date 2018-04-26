@@ -1,4 +1,4 @@
-angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope","toastr", "$location", "$propertyService","$dialog", "surveyid", "$authService","$auditService","options","$userService","$propertyUsersService","$cookieSettingsService", function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService) {
+angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope","toastr", "$location", "$propertyService","$dialog", "surveyid", "$authService","$auditService","options","$userService","$propertyUsersService","$cookieSettingsService", "$keenService", function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService,$keenService) {
 
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes : false, showDetailed: false};
@@ -291,6 +291,29 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'manual');
                     $scope.showSurvey();
                 } else {
+                    var event = {
+                        type: "SurveySwap Requested",
+                        payload: {
+                            property: {
+                                id: $scope.property._id,
+                                name: $scope.property.name,
+                            },
+                            user: {
+                                id: $rootScope.me._id,
+                                name: $rootScope.me.first + " " + $rootScope.me.last,
+                                organization: {
+                                    id: $rootScope.me.orgs[0]._id,
+                                    name: $rootScope.me.orgs[0].name,
+                                },
+                            },
+                            survery_swap_contact: {
+                                name: $scope.swap.selectedGuest.first + " " + $scope.swap.selectedGuest.last,
+                                email: $scope.swap.selectedGuest.email,
+                                domain: ($scope.swap.selectedGuest.email || "").replace(/.*@/, ""),
+                            },
+                        },
+                    };
+
                     $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'swap');
                     $("button.contact-submit").prop('disabled', true);
                     ngProgress.start();
@@ -299,9 +322,8 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         ngProgress.complete();
                         if (response.data.errors) {
                             toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
-
-                        }
-                        else {
+                        } else {
+                            $keenService.record(event).then(function(response) {}, function(error) {});
                             toastr.success("Survey swap email sent to " + $scope.swap.selectedGuest.first + " " + $scope.swap.selectedGuest.last + " (" + $scope.swap.selectedGuest.email + ")")
                             $uibModalInstance.close();
                         }

@@ -139,12 +139,12 @@
 
                         <div class="col-sm-4" ng-if="reportType=='single'">
                             Comps:<Br>
-                            <div ng-if="items.length == 0" style="text-align:center">
+                            <div ng-if="temp.items.length == 0" style="text-align:center">
                                 <div class="alert alert-warning" role="alert"><b>There are no comps assigned to this property</b></div>
                             </div>
 
-                            <div ng-if="items.length > 0">
-                                <filter-list options="options" items="items"></filter-list>
+                            <div ng-if="temp.items.length > 0">
+                                <filter-list options="options" items="temp.items"></filter-list>
                             </div>
                         </div>
 

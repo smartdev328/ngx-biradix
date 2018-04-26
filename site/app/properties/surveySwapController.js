@@ -3,7 +3,7 @@ define([
     'app'
 ], function (app) {
      app.controller
-        ('surveySwapController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$dialog', function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$dialog) {
+        ('surveySwapController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$dialog', "$rootScope", "$keenService", function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$dialog, $rootScope, $keenService) {
 
             $scope.property = property;
 
@@ -24,11 +24,7 @@ define([
 
 
                 $propertyUsersService.getPropertyAssignedUsers(property._id).then(function (response) {
-
-
-
-                        $userService.search({ids:response.data.users, select: "first last email guestStats"}).then(function (response) {
-
+                        $userService.search({ids: response.data.users, select: "first last email guestStats"}).then(function(response) {
                                 $scope.users = response.data.users;
 
                                 var stats;
@@ -60,6 +56,29 @@ define([
             $scope.reload();
 
             $scope.save = function() {
+                var event = {
+                    type: "SurveySwap Setup For Property",
+                    payload: {
+                        property: {
+                            id: $scope.property._id,
+                            name: $scope.property.name,
+                        },
+                        user: {
+                            id: $rootScope.me._id,
+                            name: $rootScope.me.first + " " + $rootScope.me.last,
+                            organization: {
+                                id: $rootScope.me.orgs[0]._id,
+                                name: $rootScope.me.orgs[0].name,
+                            },
+                        },
+                        survery_swap_contact: {
+                            name: $scope.newGuest.first + " " + $scope.newGuest.last,
+                            email: $scope.newGuest.email,
+                            domain: ($scope.newGuest.email || "").replace(/.*@/, ""),
+                        },
+                    },
+                }
+
                 $scope.loading = true;
                 $userService.createGuest($scope.newGuest).then(function (response) {
                         if (response.data.errors) {
@@ -74,6 +93,10 @@ define([
                                     $scope.loading = false;
                                 }
                                 else {
+                                    if ($scope.users.length == 0) {
+                                        $keenService.record(event).then(function(response) {}, function(error) {});
+                                    }
+
                                     toastr.success("Contact <B>" + newUser.first + ' ' + newUser.last + "</B> added successfully.");
                                     $scope.reload();
                                 }
@@ -109,9 +132,7 @@ define([
                         });
                 }, function() {
 
-                })
-            }
-
-
+                });
+            };
         }]);
 });

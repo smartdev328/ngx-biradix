@@ -70,6 +70,7 @@ module.exports = (function() {
                 dyno: process.env.DYNO,
                 maintenance: settings.MAINTENANCE_MODE,
                 raygun_key: settings.RAYGUN_APIKEY,
+                heroku_env: settings.NEW_RELIC_NAME,
                 // nreum : newrelic.getBrowserTimingHeader()
             });
         });

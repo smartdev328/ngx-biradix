@@ -99,6 +99,8 @@ define([], function () {
             .state("reporting", AsyncRoute("/reporting?property", "reporting", "reportingController",phantom ? "reporting-phantom.html" : "reporting.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
             .state("contactus", AsyncRoute("/contactus", "contact", "contactController", "contact.html", "loggedInView",{loggedIn: true}))
             .state("organizations", AsyncRoute("/organizations", "organizations", "organizationsController", "organizations.html", "loggedInView",{loggedIn: true}))
+
+            .state("metrics", AsyncRoute("/metrics", "metrics", "metricsController", "metrics.html", "loggedInView", {loggedIn: true}));
     });
 
     app.filter("sanitize2", ["$sanitize", function ($sanitize) {
@@ -142,7 +144,6 @@ define([], function () {
                     $rootScope.swaptoLoggedIn();
                     return event.preventDefault();
                 }
-
 
                 ga("set", "title", toState.name);
                 ga("set", "page", toState.name);

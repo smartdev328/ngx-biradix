@@ -26,17 +26,6 @@ Routes.get('/rabbit', function (req, res) {
     );
 });
 
-Routes.get('/rabbitPhantom', function (req, res) {
-    bus.query(settings.PHANTOM_STATUS_QUEUE,{test:true},
-        function (data) {
-            if (data.data.test !== true) {
-
-                throw new Error("Rabbit result doesnt match");
-            }
-            res.status(200).send("OK");
-        }
-    );
-});
 
 Routes.get('/db', function (req, res) {
     propertySchema.findOne({}, function(err, obj) {

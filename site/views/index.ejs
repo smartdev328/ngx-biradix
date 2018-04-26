@@ -7,7 +7,7 @@
     </script>
     <link rel="icon" type="image/png" href="/images/organizations/<%=logoSmall%>">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <script type="text/javascript">var version="<%=version%>"; var local=<%=local%>; var phantom = <%=phantom%>; var logoBig='<%=logoBig%>';var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>";</script>
+    <script type="text/javascript">var version="<%=version%>"; var local=<%=local%>; var phantom = <%=phantom%>; var logoBig='<%=logoBig%>';var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>"; var heroku_env="<%=heroku_env%>"</script>
 
     <link href="/dist/vendors.css?v=<%=hashes.vendorscss%>" rel="stylesheet" type="text/css">
     <script src="/dist/vendors.js?v=<%=hashes.vendorsjs%>"></script>
@@ -226,6 +226,9 @@
 
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href="#/organizations"  href ng-class="{'active': sideNav == 'Organizations','subnav' : true}"> - Organizations</a>
+                    </li>
+                    <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
+                        <a href = "#/metrics" href ng-class="{'active': sideNav == 'Metrics', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Metrics</a>
                     </li>
                     <li>
                         <a ng-class="{'active': sideNav == 'ContactUs'}" href="#/contactus" ng-click="turnOffIfMobile()"><i class="fa fa-envelope"></i> Contact Us</a>
