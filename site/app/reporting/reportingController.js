@@ -341,7 +341,7 @@ define([
                 limit: 10000, permission: 'PropertyView', active: true, select : "_id name address", ids: compids, sort: "name"
                 , skipAmenities: true
             }).then(function (response) {
-                $scope.items = [];
+                $scope.temp.items = [];
 
                 response.data.properties.forEach(function(c) {
                     var comp = _.find($scope.selected.Property.comps, function (x) {
@@ -359,7 +359,7 @@ define([
 
                 response.data.properties.forEach(function(c) {
                     if (c._id != subjectid) {
-                        $scope.items.push({id: c._id, name: c.name, selected: true, address: c.address});
+                        $scope.temp.items.push({id: c._id, name: c.name, selected: true, address: c.address});
                     }
                 })
                 $scope.localLoading = true;
@@ -368,10 +368,8 @@ define([
                     delete $scope.waitForComps;
                     $scope.run();
                 }
-
-            })
-
-        }
+            });
+        };
 
         $scope.changeProperty = function() {
             $scope.loadComps();
@@ -406,7 +404,7 @@ define([
                 $scope.singleReport();
             } else {
 
-                var properties =  _.pluck($scope.propertyItems.items,"name");
+                var properties =  _.pluck($scope.propertyItems.items, "name");
                 var reports = [];
 
                 $scope.reportNames2.forEach(function(r) {
@@ -530,7 +528,7 @@ define([
         }
 
         $scope.singleReport = function() {
-            $scope.selected.Comps = _.filter($scope.items,function(x) {return x.selected == true})
+            $scope.selected.Comps = _.filter($scope.temp.items,function(x) {return x.selected == true})
             $scope.compIds =  _.pluck($scope.selected.Comps,"id")
             $scope.compNames =  _.pluck($scope.selected.Comps,"name")
             $scope.compNames.forEach(function(x,i) {$scope.compNames[i] = {description: 'Comp: ' + x}});
