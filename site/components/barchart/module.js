@@ -59,15 +59,9 @@ angular.module("biradix.global").directive("barChart", function() {
 
                         data.series[0].dataLabels = {
                             enabled: true,
-                                rotation: -90,
-                                color: "#FFFFFF",
-                                align: "right",
-                                format: "{point.y:.0f}", // one decimal
-                                y: 10, // 10 pixels down from the top
-                                style: {
-                                fontSize: "13px",
-                                    fontFamily: "Verdana, sans-serif",
-                            },
+                            color: "#000000",
+                            align: "center",
+                            format: "{point.y:.0f}", // one decimal
                         };
 
                         el.highcharts(data);
