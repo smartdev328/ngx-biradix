@@ -35,18 +35,13 @@ angular.module("biradix.global").directive("barChart", function() {
                             },
                             yAxis: {
                                 min: 0,
+                                allowDecimals: false,
                                 title: {
                                     text: $scope.options.yLabel,
                                 },
                             },
                             tooltip: {
                                 enabled: false,
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0,
-                                },
                             },
                             credits: {
                                 enabled: false,
@@ -61,6 +56,7 @@ angular.module("biradix.global").directive("barChart", function() {
                             enabled: true,
                             color: "#000000",
                             align: "center",
+                            verticalAlign: "bottom",
                             format: "{point.y:.0f}", // one decimal
                         };
 

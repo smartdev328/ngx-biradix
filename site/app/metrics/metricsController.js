@@ -156,6 +156,9 @@ define([
                     var series = [{name: "Requests", data: []}];
                     response.data.result.result.forEach(function(d) {
                         series[0].data.push([d["user.organization.name"], d.result]);
+                        if (d.result > max) {
+                            max = d.result.result;
+                        }
                     });
 
                     $scope.orgData = {
