@@ -171,7 +171,7 @@ define([
             $scope.runSurveySwapRequestedByWeekday = function() {
                 var parameters = {
                     event_collection: "SurveySwap Requested",
-                    interval: "weekly",
+                    interval: "daily",
                     filters: [
                         {
                             property_name: "env",
@@ -179,7 +179,6 @@ define([
                             property_value: heroku_env,
                         },
                     ],
-                    group_by: "timestamp_info.day_of_week_string",
                     timeframe: $keenService.daterangeToTtimeframe($scope.options.daterange),
                 };
 
@@ -216,31 +215,49 @@ define([
                     var sunday = {data: [], name: "Sunday", yAxis: 0};
                     var date;
                     var hasData = false;
-                    var minmax = {};
-
+                    var dow;
+                    var point;
                     response.data.result.result.forEach(function(d) {
                         date = ((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2;
-                        minmax = $scope.parseWeekday(monday, date, d, _min, _max);
-                        _min = minmax._min;
-                        _max = minmax._max;
-                        minmax = $scope.parseWeekday(tuesday, date, d, _min, _max);
-                        _min = minmax._min;
-                        _max = minmax._max;
-                        minmax = $scope.parseWeekday(wednesday, date, d, _min, _max);
-                        _min = minmax._min;
-                        _max = minmax._max;
-                        minmax = $scope.parseWeekday(thursday, date, d, _min, _max);
-                        _min = minmax._min;
-                        _max = minmax._max;
-                        minmax = $scope.parseWeekday(friday, date, d, _min, _max);
-                        _min = minmax._min;
-                        _max = minmax._max;
-                        minmax = $scope.parseWeekday(saturday, date, d, _min, _max);
-                        _min = minmax._min;
-                        _max = minmax._max;
-                        minmax = $scope.parseWeekday(sunday, date, d, _min, _max);
-                        _min = minmax._min;
-                        _max = minmax._max;
+                        dow = moment(date).format("dddd");
+                        switch (dow) {
+                            case "Monday":
+                                point = moment(date).add(2, "days").startOf("day");
+                                monday.data.push([parseInt(moment(point).format("x")), d.value]);
+                                break;
+                            case "Tuesday":
+                                point = moment(date).add(1, "days").startOf("day");
+                                tuesday.data.push([parseInt(moment(point).format("x")), d.value]);
+                                break;
+                            case "Wednesday":
+                                point = moment(date).startOf("day");
+                                wednesday.data.push([parseInt(moment(point).format("x")), d.value]);
+                                break;
+                            case "Thursday":
+                                point = moment(date).add(-1, "days").startOf("day");
+                                thursday.data.push([parseInt(moment(point).format("x")), d.value]);
+                                break;
+                            case "Friday":
+                                point = moment(date).add(-2, "days").startOf("day");
+                                friday.data.push([parseInt(moment(point).format("x")), d.value]);
+                                break;
+                            case "Saturday":
+                                point = moment(date).add(-3, "days").startOf("day");
+                                saturday.data.push([parseInt(moment(point).format("x")), d.value]);
+                                break;
+                            case "Sunday":
+                                point = moment(date).add(-4, "days").startOf("day");
+                                sunday.data.push([parseInt(moment(point).format("x")), d.value]);
+                                break;
+                        }
+                        if (_max < d.value) {
+                            _max = d.value;
+                        }
+
+                        if (_min > d.value) {
+                            _min = d.value;
+                        }
+
                         hasData = true;
                     });
 
@@ -259,25 +276,6 @@ define([
 
                     $scope.weekdayData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: "", title: "", marker: true, data: series, min: min, max: max};
                 });
-            };
-
-            $scope.parseWeekday = function(series, date, row, _min, _max) {
-                var value = _.find(row.value, function(x) {
-                    return x["timestamp_info.day_of_week_string"] === series.name;
-                }) || {result: 0};
-                value = value.result;
-
-                series.data.push([date, value]);
-
-                if (_max < value) {
-                    _max = value;
-                }
-
-                if (_min > value) {
-                    _min = value;
-                }
-
-                return {_min: _min, max: _max};
             };
 
             $scope.$watch("options.daterange", function(d, old) {

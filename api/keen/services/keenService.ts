@@ -14,21 +14,6 @@ const keen = new Keen({
 export class KeenService {
     public static recordEvent(event: IEvent) {
         event.payload.env = settings.NEW_RELIC_NAME;
-        keen.extendEvents(() => {
-            return {
-                keen: {
-                    addons: [
-                        {
-                            input: {
-                                date_time: "keen.timestamp",
-                            },
-                            name: "keen:date_time_parser",
-                            output: "timestamp_info",
-                        },
-                    ],
-                },
-            };
-        });
 
         keen.recordEvent(event.type, event.payload);
     }
