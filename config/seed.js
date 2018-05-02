@@ -1187,19 +1187,19 @@ var RolesCreate = function(Orgs, callback) {
     var Guest = {name: "Guest", tags: ['Guest'], orgid : Orgs.Biradix._id}
     var AllianceCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Alliance._id}
     var AllianceRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Alliance._id}
-    var AllianceBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Alliance._id}
+    var AllianceBM = {name: "Property Manager", tags: ['BM'], orgid : Orgs.Alliance._id}
     var AlliancePO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Alliance._id}
     var DemoCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Demo._id}
     var DemoRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Demo._id}
-    var DemoBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Demo._id}
+    var DemoBM = {name: "Property Manager", tags: ['BM'], orgid : Orgs.Demo._id}
     var DemoPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Demo._id}
     var WoodCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Wood._id}
     var WoodRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Wood._id}
-    var WoodBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Wood._id}
+    var WoodBM = {name: "Property Manager", tags: ['BM'], orgid : Orgs.Wood._id}
     var WoodPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Wood._id}
     var GreystarCM = {name: "Corporate Manager", tags: ['CM'], orgid : Orgs.Greystar._id}
     var GreystarRM = {name: "Regional Manager", tags: ['RM'], orgid : Orgs.Greystar._id}
-    var GreystarBM = {name: "Business Manager", tags: ['BM'], orgid : Orgs.Greystar._id}
+    var GreystarBM = {name: "Property Manager", tags: ['BM'], orgid : Orgs.Greystar._id}
     var GreystarPO = {name: "Property Owner", tags: ['PO'], orgid : Orgs.Greystar._id}
 
     async.parallel({
