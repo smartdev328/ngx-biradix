@@ -97,6 +97,25 @@
                 newrole.save(callback);
             })
         },
+        updateRole: function(role, callback) {
+            const modelErrors = [];
+            role.name = role.name || "";
+            role._id = role._id || "";
+            if (role.name === '') {
+                modelErrors.push({param: 'name', msg: 'Invalid role name.'});
+            }
+            if (role._id === '') {
+                modelErrors.push({param: '_id', msg: 'Invalid role _id.'});
+            }
+
+            let query = {_id: role._id};
+            let update = {name: role.name};
+            let options = {new: true};
+
+            RoleSchema.findOneAndUpdate(query, update, options, function(err, saved) {
+                return callback(err, saved);
+            });
+        },
         createRole: function (role, callback) {
             var modelErrors = [];
             role.name = role.name || '';

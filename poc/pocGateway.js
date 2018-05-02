@@ -20,7 +20,7 @@ routes.post('/gitWebHook', function(req, res) {
 
         var ghostInspector = "https://api.ghostinspector.com/v1/suites/58d891f966fd7359f7af2aa4/execute/?apiKey=07cd183a6be0326686341494aaa63ca12218de05&startUrl=" + url;
 
-        //Call Test(s) after 1 minute
+        // Call Test(s) after 1 minute
         setTimeout(function() {
             request({url: ghostInspector, timeout: 1000 * 60 * 60}, function (error, response, body) {
                 var resp;
@@ -77,8 +77,19 @@ function GitHubStatus(sha, state, description) {
 
         }
     );
-
 }
+
+routes.get('/convertBMs', function(req,res) {
+    AccessService.getRoles({tags: ['BM'], cache: false}, function (err, roles) {
+        roles.forEach((role) => {
+           if (role.name == "Business Manager") {
+               role.name = "Property Manager";
+               AccessService.updateRole(role, function() {});
+           }
+        });
+    });
+    return res.status(200).json({done:true});
+});
 
 routes.get('/hydrateOrgRoles', function(req,res) {
     OrgService.hydrateOrgRoles();
@@ -130,7 +141,7 @@ routes.get('/addorg', function(req, res) {
 
                 var CM = {name: "Corporate Manager", tags: ['CM'], orgid: org._id}
                 var RM = {name: "Regional Manager", tags: ['RM'], orgid: org._id}
-                var BM = {name: "Business Manager", tags: ['BM'], orgid: org._id}
+                var BM = {name: "Property Manager", tags: ['BM'], orgid: org._id}
                 var PO = {name: "Property Owner", tags: ['PO'], orgid: org._id}
 
                 async.parallel({
