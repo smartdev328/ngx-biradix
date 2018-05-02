@@ -49,8 +49,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                 if (!$scope.settings.showDetailed) {
                     $scope.survey.floorplans.forEach(function(fp) {
-                        if (fp.concessionsOneTime && fp.concessionsMonthly
-                            && !isNaN(fp.concessionsOneTime)&& !isNaN(fp.concessionsMonthly)) {
+                        if (typeof fp.concessionsOneTime != "undefined" && fp.concessionsOneTime != null && fp.concessionsOneTime !== "" && !isNaN(fp.concessionsOneTime)
+                            && typeof fp.concessionsMonthly != "undefined" && fp.concessionsMonthly != null && fp.concessionsMonthly !== "" && !isNaN(fp.concessionsMonthly)
+                            ) {
                             fp.concessions = fp.concessionsOneTime + fp.concessionsMonthly * 12;
                         }
                     });
