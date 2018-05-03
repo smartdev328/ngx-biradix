@@ -519,7 +519,7 @@ define([
         $scope.dashboard = function(id) {
             $rootScope.me.settings.defaultPropertyId = id;
             $authService.updateSettings($rootScope.me.settings).then(function() {
-                $rootScope.refreshToken();
+                $rootScope.refreshToken(true, function() {});
             });
             $location.path('/dashboard')
         }

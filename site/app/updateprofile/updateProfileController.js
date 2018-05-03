@@ -176,9 +176,7 @@ define([
                     }
                     else {
                         toastr.success('Profile updated successfully.');
-                        $rootScope.refreshToken(function() {
-
-                        });
+                        $rootScope.refreshToken(true, function() {});
                     }
                     
 
@@ -272,7 +270,7 @@ define([
                     else {
                         toastr.success('Notifications updated successfully.');
 
-                        $rootScope.refreshToken(function() {});
+                        $rootScope.refreshToken(true, function() {});
                     }
 
                 }, function (err) {
@@ -305,7 +303,7 @@ define([
                     else {
                         toastr.success('Settings updated successfully.');
 
-                        $rootScope.refreshToken(function() {});
+                        $rootScope.refreshToken(true, function() {});
                     }
 
                 }, function (err) {

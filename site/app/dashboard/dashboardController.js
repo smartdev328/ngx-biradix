@@ -201,7 +201,7 @@ define([
             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null);
             $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty ? $scope.selectedProperty._id : null;
             $authService.updateSettings($rootScope.me.settings).then(function() {
-                $rootScope.refreshToken();
+                $rootScope.refreshToken(true, function() {});
             });
 
         }
