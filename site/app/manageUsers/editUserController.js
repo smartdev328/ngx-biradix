@@ -27,32 +27,33 @@ define([
             $scope.getDropdowns = function () {
                 $scope.loading = true;
 
-                $userService.getRolesToAssign().then(function (response) {
-                        $scope.roles = response.data;
-                        $scope.roles.unshift({name: 'Please select a role', _id:""})
-
-                        if (userId) {
-                            $scope.user.roles.forEach(function(r) {
-                                r.selectedRole = _.find($scope.roles, function (x) {
-                                    return r._id.toString() == x._id.toString()
-                                })
-
-                            })
-                        }
-                        else {
-
-                            $scope.user.roles[0].selectedRole = $scope.roles[0];
+                $userService.getRolesToAssign().then(function(response) {
+                    $scope.roles = response.data;
+                    $scope.roles.unshift({name: 'Please select a role', _id:""});
+                        // Remove guests from non-admins
+                        if ($rootScope.me.permissions.indexOf("Admin") === -1) {
+                            _.remove($scope.roles, function(r) {
+                                return r.name === "Guest";
+                            });
                         }
 
-                        async.each($scope.user.roles, function(role, callback) {
-                            $scope.getProps(role,true);
-                            callback();
-                        }, function (err) {
-                            $scope.loading = false;
-                        })
+                    if (userId) {
+                        $scope.user.roles.forEach(function(r) {
+                            r.selectedRole = _.find($scope.roles, function(x) {
+                                return r._id.toString() == x._id.toString();
+                            });
+                        });
+                    } else {
+                        $scope.user.roles[0].selectedRole = $scope.roles[0];
+                    }
 
-
-                    },
+                    async.each($scope.user.roles, function(role, callback) {
+                        $scope.getProps(role,true);
+                        callback();
+                    }, function(err) {
+                        $scope.loading = false;
+                    });
+                 },
                     function (error) {
                         $scope.loading = false;
                         toastr.error("Unable to retrieve data. Please contact the administrator.");

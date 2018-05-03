@@ -111,6 +111,17 @@ define([
                     }
                 });
 
+                    // Remove guests from non-admins (filters and data)
+                    if ($rootScope.me.permissions.indexOf("Admin") === -1) {
+                        _.remove($scope.roles, function(r) {
+                            return r.name === "Guest";
+                        });
+
+                        _.remove($scope.data, function(r) {
+                            return r.role === "Guest";
+                        });
+                    }
+
                 if (!hasRoles) {
                     $scope.roles = _.sortBy(_.uniq($scope.roles));
 
@@ -120,6 +131,8 @@ define([
 
                     $scope.updateRoleFilters();
                 }
+
+
 
                 $scope.localLoading = true;
             },
@@ -317,9 +330,9 @@ define([
 
                 modalInstance.result.then(function(newUser) {
                     if (!userId) {
-                        toastr.success(newUser.first + " " + newUser.last + " has been created successfully. A welcome email has been sent to " + newUser.email, "", {timeOut: 10000});
+                        toastr.success("<B>" + newUser.first + " " + newUser.last + "</B> has been created successfully. A welcome email has been sent to <B>" + newUser.email + "</B>", "", {timeOut: 10000});
                     } else {
-                        toastr.success(newUser.first + " " + newUser.last + " updated successfully.");
+                        toastr.success("<B>" + newUser.first + " " + newUser.last + "</B> updated successfully.");
                     }
 
                     $scope.reload();
