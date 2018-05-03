@@ -28,7 +28,7 @@ let audits = [
     {key: "pdf_profile", value: "Profile PDF Exported", group: "Reporting"},
     {key: "print_profile", value: "Profile Printed", group: "Reporting"},
     {key: "excel_profile", value: "Excel Profile", group: "Reporting"},
-    {key: "report", value: " Report Ran", group: "Reporting"},
+    {key: "report", value: "Report Ran", group: "Reporting"},
     {key: "report_print", value: "Report Printed", group: "Reporting"},
     {key: "report_pdf", value: "Report PDF Exported", group: "Reporting"},
     {key: "show_unlinked", value: "Exclude Setting", group: "Reporting", admin: true},
@@ -59,12 +59,12 @@ let audits = [
     {key: "property_floorplan_amenities_updated", value: "Floor Plan Amenities Updated", undo: true, group: "Property Info"},
 
     {key: "property_pictures", value: "Pictures Updated", undo: true, group: "Property"},
-    {key: "property_pictures_order", value: "Picture order Updated", undo: false, group: "Property"},
+    {key: "property_pictures_order", value: "Picture Order Updated", undo: false, group: "Property"},
 
     {key: "survey_created", value: "Property Survey Added", undo: true, group: "Property Survey"},
     {key: "survey_deleted", value: "Property Survey Deleted", undo: true, group: "Property Survey"},
     {key: "survey_updated", value: "Property Survey Updated", undo: true, group: "Property Survey"},
-    {key: "survey_emailed", value: "Property Survey Swap Emailed", undo: false, group: "Property Survey"},
+    {key: "survey_emailed", value: "SurveySwap Emailed", undo: false, group: "Property Survey"},
 
     {key: "amenity_created", value: "Amenity Created", group: "Amenity", admin: true},
     {key: "amenity_updated", value: "Amenity Updated/Approved", group: "Amenity", admin: true},

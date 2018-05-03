@@ -229,8 +229,32 @@ define([
                     }
 
                     return item.tags[0] == 'PO';
-                }
-            }
+                };
+            };
 
+            $scope.rolesTooltip = function() {
+                var string = "";
+                if (_.find($scope.roles, function(x) {
+                    return x.name === "Corporate Manager";
+                    })) {
+                    string += "<span class='roles_info'><B>Corporate Manager</B> - The Corporate Manager has full access to the BI:Radix platform. This role includes all functionality available to other roles as well as additional administrative functions and access to all users and properties in the organization.</span><Br><Br>";
+                }
+                if (_.find($scope.roles, function(x) {
+                        return x.name === "Regional Manager";
+                    })) {
+                    string += "<span class='roles_info'><B>Regional Manager</B> - The Regional Manager is typically responsible for a group of properties and their property managers. This role includes all the functionality of Property Manager role and is setup to administer multiple properties and users associated with those properties.</span><Br><Br>";
+                }
+                if (_.find($scope.roles, function(x) {
+                        return x.name === "Property Manager";
+                    })) {
+                    string += "<span class='roles_info'><B>Property Manager</B> - The Property Manager typically manages one property.  This role can manage the properties assigned to them and users associated with those properties.</span><Br><Br>";
+                }
+                if (_.find($scope.roles, function(x) {
+                        return x.name === "Property Owner";
+                    })) {
+                    string += "<span class='roles_info'><B>Property Owner</B> - The Property Owner is typically assigned to property stakeholders who want visibility and access to reporting. This role has read-only access to the properties assigned to them. </span><Br><Br>";
+                }
+                return string;
+            };
         }]);
 });
