@@ -29,3 +29,7 @@ export interface ISurveySwapAddedToPropertyEvent extends ISurveySwapEvent {
 export interface ISurveySwapRequestedEvent extends ISurveySwapEvent {
 
 }
+
+export interface ISurveySwapRespondedEvent extends ISurveySwapEvent {
+    responseTimeInMinutes: number;
+}

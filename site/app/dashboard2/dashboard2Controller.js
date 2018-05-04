@@ -30,12 +30,10 @@ define([
         }
 
         $scope.changeProperty = function() {
-            $scope.loadProperty($scope.selectedProperty._id);
-            $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty._id;
-            $authService.updateSettings($rootScope.me.settings).then(function() {
-                $rootScope.refreshToken(true, function() {});
+            $rootScope.refreshToken(true, function() {
+                $scope.loadProperty($scope.selectedProperty._id);
+                $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty._id;
             });
-
         }
 
         $scope.setProperty = function(property) {
