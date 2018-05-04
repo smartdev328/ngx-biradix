@@ -40,3 +40,15 @@
         <time-series options="weekdayData"></time-series>
     </div>
 </div>
+
+<div class="panel panel-info hidden-print">
+    <div class="panel-heading">SurverySwap Avg Response Time</div>
+    <div class="panel-body">
+        <select class="form-control input-sm pull-right" ng-model="widgets.response.current" style="width:100px"
+                ng-options="item for item in widgets.response.breakdown"
+                ng-change="runSurveySwapResponded()">
+        </select>
+        <br clear="all">
+        <time-series options="responseData"></time-series>
+    </div>
+</div>
