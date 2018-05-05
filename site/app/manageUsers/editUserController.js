@@ -27,32 +27,33 @@ define([
             $scope.getDropdowns = function () {
                 $scope.loading = true;
 
-                $userService.getRolesToAssign().then(function (response) {
-                        $scope.roles = response.data;
-                        $scope.roles.unshift({name: 'Please select a role', _id:""})
-
-                        if (userId) {
-                            $scope.user.roles.forEach(function(r) {
-                                r.selectedRole = _.find($scope.roles, function (x) {
-                                    return r._id.toString() == x._id.toString()
-                                })
-
-                            })
-                        }
-                        else {
-
-                            $scope.user.roles[0].selectedRole = $scope.roles[0];
+                $userService.getRolesToAssign().then(function(response) {
+                    $scope.roles = response.data;
+                    $scope.roles.unshift({name: 'Please select a role', _id:""});
+                        // Remove guests from non-admins
+                        if ($rootScope.me.permissions.indexOf("Admin") === -1) {
+                            _.remove($scope.roles, function(r) {
+                                return r.name === "Guest";
+                            });
                         }
 
-                        async.each($scope.user.roles, function(role, callback) {
-                            $scope.getProps(role,true);
-                            callback();
-                        }, function (err) {
-                            $scope.loading = false;
-                        })
+                    if (userId) {
+                        $scope.user.roles.forEach(function(r) {
+                            r.selectedRole = _.find($scope.roles, function(x) {
+                                return r._id.toString() == x._id.toString();
+                            });
+                        });
+                    } else {
+                        $scope.user.roles[0].selectedRole = $scope.roles[0];
+                    }
 
-
-                    },
+                    async.each($scope.user.roles, function(role, callback) {
+                        $scope.getProps(role,true);
+                        callback();
+                    }, function(err) {
+                        $scope.loading = false;
+                    });
+                 },
                     function (error) {
                         $scope.loading = false;
                         toastr.error("Unable to retrieve data. Please contact the administrator.");
@@ -228,8 +229,32 @@ define([
                     }
 
                     return item.tags[0] == 'PO';
-                }
-            }
+                };
+            };
 
+            $scope.rolesTooltip = function() {
+                var string = "";
+                if (_.find($scope.roles, function(x) {
+                    return x.name === "Corporate Manager";
+                    })) {
+                    string += "<span class='roles_info'><B>Corporate Manager</B> - The Corporate Manager has full access to the BI:Radix platform. This role includes all functionality available to other roles as well as additional administrative functions and access to all users and properties in the organization.</span><Br><Br>";
+                }
+                if (_.find($scope.roles, function(x) {
+                        return x.name === "Regional Manager";
+                    })) {
+                    string += "<span class='roles_info'><B>Regional Manager</B> - The Regional Manager is typically responsible for a group of properties and their property managers. This role includes all the functionality of Property Manager role and is setup to administer multiple properties and users associated with those properties.</span><Br><Br>";
+                }
+                if (_.find($scope.roles, function(x) {
+                        return x.name === "Property Manager";
+                    })) {
+                    string += "<span class='roles_info'><B>Property Manager</B> - The Property Manager typically manages one property.  This role can manage the properties assigned to them and users associated with those properties.</span><Br><Br>";
+                }
+                if (_.find($scope.roles, function(x) {
+                        return x.name === "Property Owner";
+                    })) {
+                    string += "<span class='roles_info'><B>Property Owner</B> - The Property Owner is typically assigned to property stakeholders who want visibility and access to reporting. This role has read-only access to the properties assigned to them. </span><Br><Br>";
+                }
+                return string;
+            };
         }]);
 });

@@ -627,11 +627,10 @@ module.exports = {
     }
     ,
 
-    updateSettings : function(Operator, user, settings, context, callback)  {
+    updateSettings: function(Operator, user, settings, context, callback)  {
         var modelErrors = [];
 
-        if (!user._id)
-        {
+        if (!user._id) {
             modelErrors.push({msg : 'Invalid user id.'});
         }
 
@@ -640,18 +639,16 @@ module.exports = {
             return;
         }
 
-        this.search(Operator,{_id: user._id, select: "settings first last email"}, function (err, users) {
+        this.search(Operator, {_id: user._id, select: "settings first last email"}, function(err, users) {
             if (err || users.length == 0) {
-                modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
-                callback(modelErrors,null);
+                modelErrors.push({msg : "Unexpected Error. Unable to update user."});
+                callback(modelErrors, null);
                 return;
             };
 
             var usr = users[0];
 
-            //console.log(usr);
-
-            defaultSettings(usr,users[0].roles[0].org.settings);
+            defaultSettings(usr, users[0].roles[0].org.settings);
 
             var bLinkedUpdated = usr.settings.hideUnlinked != settings.hideUnlinked;
 

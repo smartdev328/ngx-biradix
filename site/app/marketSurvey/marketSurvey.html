@@ -204,7 +204,7 @@
                     <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-question-circle" style="font-size:12px"
                      popover-trigger="'mouseenter'"
                      popover-placement="left"
-                                                                             uib-popover="Enter the current gross floor plan rent, before any concessions or discounts. If the floor plan does not have any units available, enter most recent market rent. If the floor plan has a range, please enter base (minimum) rent."
+                                                                             uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
                             ></i></th>
                     <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
                      popover-trigger="'mouseenter'"
@@ -237,7 +237,7 @@
                         <div class="visible-xs tiny">{{row.units}} Units</div>
                         <div class="visible-xs tiny">{{row.sqft}} Sqft</div>
                     </td>
-                    <td class="hidden-xs">
+                    <td class="hidden-xs" style="word-break: break-all">
                         {{row.description}}
                     </td>
                     <td class="hidden-xs pad" style="text-align: right">

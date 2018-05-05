@@ -38,6 +38,13 @@ define([
                 organizationItems: [],
             };
 
+            $scope.widgets = {
+                response: {
+                    breakdown: ["Minutes", "Hours"],
+                    current: "Minutes",
+                },
+            };
+
             var unbind = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
                     if ($rootScope.me.permissions.indexOf("Admin") === -1) {
@@ -63,6 +70,7 @@ define([
                 $scope.runSurveySwapRequested();
                 $scope.runSurveySwapRequestedByOrganization();
                 $scope.runSurveySwapRequestedByWeekday();
+                $scope.runSurveySwapResponded();
             };
 
             $scope.runSurveySwapRequested = function() {
@@ -275,6 +283,81 @@ define([
                     series.push(sunday);
 
                     $scope.weekdayData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: "", title: "", marker: true, data: series, min: min, max: max};
+                });
+            };
+
+            $scope.runSurveySwapResponded = function() {
+                var parameters = {
+                    event_collection: "SurveySwap Responded",
+                    interval: $keenService.daterangeToInterval($scope.options.daterange),
+                    filters: [
+                        {
+                            property_name: "env",
+                            operator: "eq",
+                            property_value: heroku_env,
+                        },
+                    ],
+                    target_property: "responseTimeInMinutes",
+                    timeframe: $keenService.daterangeToTtimeframe($scope.options.daterange),
+                };
+
+                var orgs = _.map(_.filter($scope.options.organizationItems, function(x) {
+                    return x.selected == true;
+                }), function(x) {
+                    return x.id;
+                });
+
+                if (orgs.length > 0) {
+                    parameters.filters.push({
+                        property_name: "user.organization.id",
+                        operator: "in",
+                        property_value: orgs,
+                    });
+                }
+
+                $keenService.query("average", parameters).then(function(response) {
+                    if (response.data.errors) {
+                        return toastr.error("Error: " + response.data.errors.code);
+                    }
+
+                    var series = [];
+                    var min = 0;
+                    var max = 0;
+                    var _min = 9999;
+                    var _max = 0;
+
+                    var s = {data: [], name: "Avg Response Time", yAxis: 0};
+                    response.data.result.result.forEach(function(d) {
+                        d.value = d.value || 0;
+                        if ($scope.widgets.response.current == "Hours") {
+                            d.value = d.value / 60;
+                        }
+
+                        s.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value]);
+                        if (_max < d.value) {
+                            _max = d.value;
+                        }
+
+                        if (_min > d.value) {
+                            _min = d.value;
+                        }
+                    });
+
+                    if (s.data.length > 0) {
+                        min = _min;
+                        max = _max;
+                    }
+
+                    series.push(s);
+
+                    if ($scope.widgets.response.current == "Hours") {
+                        $scope.responseData = {height: 300, printWidth: 800, decimalPlaces: 1, prefix: "", suffix: " hrs.", title: "", marker: true, data: series, min: min, max: max};
+                    } else {
+                        $scope.responseData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: " min.", title: "", marker: true, data: series, min: min, max: max};
+                    }
+
+                }, function(error) {
+                    toastr.error("Unable to perform action. Please contact an administrator");
                 });
             };
 

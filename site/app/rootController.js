@@ -26,7 +26,6 @@ angular.module("biradix.global").controller("rootController",
         if (loc.indexOf('//biradixplatform-integration') > -1) {
             $scope.env = "This is INT";
         }
-    var refreshFactor = 1;
 
         $rootScope.version = version;
         $rootScope.logoBig = logoBig + '?';
@@ -38,37 +37,56 @@ angular.module("biradix.global").controller("rootController",
             $rootScope.loggedIn = false;
         }
 
-        $rootScope.refresh = true;
         $rootScope.timeout = 0;
 
-        //Global functions
-        $rootScope.resetTimeout = function () {
+        // Global functions
+        $rootScope.resetTimeout = function() {
             $rootScope.timeout = 0;
-            $rootScope.refresh = true;
         }
 
-        $rootScope.incrementTimeout = function () {
+        $rootScope.incrementTimeout = function() {
             if ($scope.$$childHead == null) {
                 return;
             }
             $rootScope.timeout++;
 
-            if ($rootScope.timeout > 60) {
-                $rootScope.refresh = false;
+            // log off after 60 minutes of inactivity
+            if ($rootScope.timeout > 60 * 60) {
+                if ($rootScope.loggedIn && $scope.hasSessionStorage) {
+                    $window.sessionStorage.redirect = $location.path();
+                }
+                $rootScope.logoff();
             }
 
             $timeout($rootScope.incrementTimeout, 1000);
         }
 
-        $rootScope.refreshToken = function(callback) {
+        var refreshFactor = 1;
+        $rootScope.refreshToken = function(force, callback) {
             if (!$rootScope.validateTokens()) {
                 return;
             }
-            if ($rootScope.refresh) {
+            var refresh = !!force;
+
+            if (!refresh) {
+                var date = $cookies.get('tokenDate');
+
+                if (!date) {
+                    date = new Date();
+                } else {
+                    date = new Date(date);
+                }
+
+                var tokenAgeInMinutes = (new Date().getTime() - date.getTime()) / 1000 / 60 * refreshFactor;
+
+                if (tokenAgeInMinutes > 30) {
+                    refresh = true;
+                }
+            }
+
+            if (refresh) {
                 $authService.refreshToken($cookies.get('token'), function (usr, status) {
-
                     if (usr) {
-
                         if (usr.maintenance === true) {
                             $rootScope.logoff();
                             return;
@@ -77,29 +95,26 @@ angular.module("biradix.global").controller("rootController",
                         $rootScope.me = usr;
                         $rootScope.reload = false;
 
-                        if ($rootScope.me.version.toString() != version.toString()) {
+                        if ($rootScope.me.version.toString() !== version.toString()) {
                             $rootScope.reload = true;
                         }
 
-                        $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
-
+                        $window.setTimeout($rootScope.refreshToken, 60/refreshFactor * 1000); // start token refresh in 1 min
 
                         if (callback) {
                             callback();
                         }
-                    }
-                    else if (status == 401 ) {
+                    } else if (status == 401 ) {
                         if ($rootScope.loggedIn && $scope.hasSessionStorage) {
                             $window.sessionStorage.redirect = $location.path();
                         }
-                        $rootScope.logoff()
+                        $rootScope.logoff();
                     }
                     else if (status == 0 ) {
                         $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
                     }
-                })
-            }
-            else {
+                });
+            } else {
                 $rootScope.getMe(function() {
                     $rootScope.reload = false;
 
@@ -113,8 +128,6 @@ angular.module("biradix.global").controller("rootController",
                     }
                 });
             }
-
-
         }
 
         $scope.searches = {
@@ -126,7 +139,7 @@ angular.module("biradix.global").controller("rootController",
         $rootScope.notifications = [];
 
         $rootScope.validateTokens = function() {
-            if (!$cookies.get('token')) {
+            if (!$cookies.get("token")) {
                 if ($scope.hasSessionStorage) {
                     $window.sessionStorage.redirect = $location.path();
                 }
@@ -327,7 +340,7 @@ angular.module("biradix.global").controller("rootController",
                     }
 
 
-                    $rootScope.refreshToken(function() {
+                    $rootScope.refreshToken(true, function() {
                         $rootScope.$broadcast('data.reload');
                     });
                 }

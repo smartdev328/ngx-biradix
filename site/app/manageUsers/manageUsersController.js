@@ -58,8 +58,7 @@ define([
             };
         };
 
-
-        $scope.$on('size', function(e,size) {
+        $scope.$on("size", function(e, size) {
             if (!$scope.columnsChanged) {
                 $scope.adjustToSize(size);
             }
@@ -73,7 +72,7 @@ define([
             }
 
             $scope.resetPager();
-        }
+        };
 
         $scope.calcUndeliverable = function() {
             if ($scope.showDeliverable === $scope.showUndeliverable) {
@@ -83,36 +82,61 @@ define([
             }
 
             $scope.resetPager();
-        }
+        };
 
         $scope.reload = function() {
             $scope.localLoading = false;
-            $userService.search().then(function (response) {
+            $userService.search().then(function(response) {
                 $scope.data = response.data.users;
 
-                $scope.roles = [];
+                var hasRoles = !!$scope.roles;
+                if (!hasRoles) {
+                    $scope.roles = [];
+                }
 
                 var roles;
                 $scope.data.forEach(function(x) {
-                    roles = _.uniq(_.map(x.roles, function(y) {return y.name}));
-                    x.role = roles.join(", ")
-                    x.company = _.map(x.roles, function(y) {return y.org.name}).join(", ")
+                    roles = _.uniq(_.map(x.roles, function(y) {
+                        return y.name;
+                    }));
+                    x.role = roles.join(", ");
+                    x.company = _.map(x.roles, function(y) {
+                        return y.org.name;
+                    }).join(", ");
                     x.undeliverable = !!x.bounceReason;
                     x.customPropertiesLimit = x.customPropertiesLimit || 0;
 
-                    $scope.roles = $scope.roles.concat(roles);
-                })
+                    if (!hasRoles) {
+                        $scope.roles = $scope.roles.concat(roles);
+                    }
+                });
 
-                $scope.roles = _.sortBy(_.uniq($scope.roles));
+                    // Remove guests from non-admins (filters and data)
+                    if ($rootScope.me.permissions.indexOf("Admin") === -1) {
+                        _.remove($scope.roles, function(r) {
+                            return r.name === "Guest";
+                        });
 
-                $scope.roles.forEach(function(r,i) {
-                    $scope.roles[i] = {id: r, name: r, selected:  r != 'Guest'}
-                })
+                        _.remove($scope.data, function(r) {
+                            return r.role === "Guest";
+                        });
+                    }
+
+                if (!hasRoles) {
+                    $scope.roles = _.sortBy(_.uniq($scope.roles));
+
+                    $scope.roles.forEach(function (r, i) {
+                        $scope.roles[i] = {id: r, name: r, selected: r != "Guest"};
+                    });
+
                     $scope.updateRoleFilters();
+                }
+
+
 
                 $scope.localLoading = true;
             },
-            function (error) {
+            function(error) {
                 if (error.status == 401) {
                     $rootScope.logoff();
                     return;
@@ -304,15 +328,15 @@ define([
                     }
                 });
 
-                modalInstance.result.then(function (newUser) {
-
-                    var action = "updated";
+                modalInstance.result.then(function(newUser) {
                     if (!userId) {
-                        action = "created";
+                        toastr.success("<B>" + newUser.first + " " + newUser.last + "</B> has been created successfully. A welcome email has been sent to <B>" + newUser.email + "</B>", "", {timeOut: 10000});
+                    } else {
+                        toastr.success("<B>" + newUser.first + " " + newUser.last + "</B> updated successfully.");
                     }
-                    toastr.success(newUser.first + " " + newUser.last + " " + action + " successfully.");
-                    $scope.reload()
-                }, function () {
+
+                    $scope.reload();
+                }, function() {
 
                 });
             });
