@@ -15,9 +15,6 @@ define([
             ga('set', 'page', "/surveySwap");
             ga('send', 'pageview');
 
-
-
-
             $scope.reload = function() {
                 $scope.newGuest = {};
                 $scope.loading = true;
