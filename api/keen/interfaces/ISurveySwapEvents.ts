@@ -1,5 +1,15 @@
 import {IEvent} from "./IEvents";
 
+export interface ISurveySwapTotals extends IEvent {
+    payload: {
+        comps_total: number;
+        comps_participating: number;
+        comps_participating_percent: number;
+        comps_setup: number;
+        comps_setup_percent: number;
+    };
+}
+
 export interface ISurveySwapEvent extends IEvent {
     payload: {
         property: {

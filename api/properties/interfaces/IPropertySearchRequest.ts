@@ -9,4 +9,5 @@ export interface IPropertySearchRequest {
     exclude?: string[];
     hideCustom?: boolean;
     searchExactName?: string;
+    noorgid?: boolean;
 }

@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.17.51",
+  "version": "2.17.53",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,8 @@
     "build": "tsc && npm run ui",
     "postinstall": "bower install && npm run build && npm test",
     "tsc": "tsc --watch",
+    "dev1": "npm run tsc",
+    "dev2": "nodemon workers/web",
     "ui": "gulp vendorsjs vendorscss globaljs globalcss"
   },
   "repository": {
@@ -72,7 +74,6 @@
     "raygun": "^0.9.1",
     "redis": "^2.7.1",
     "request": "^2.81.0",
-    "tslint": "^5.9.1",
     "typescript": "^2.7.2",
     "xlsjs": "^0.7.6"
   },
@@ -83,6 +84,8 @@
   },
   "devDependencies": {
     "eslint": "^4.18.2",
-    "eslint-config-google": "^0.9.1"
+    "eslint-config-google": "^0.9.1",
+    "nodemon": "^1.17.4",
+    "tslint": "^5.9.1"
   }
 }
