@@ -354,38 +354,40 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 extremes[i] = {};
                 extremes[i].min = defaultMin;
                 extremes[i].max = defaultMax;
-            })
+            });
 
             if (hasPoints) {
-
                 if (!summary && !selectedBedroom == -2 && ls.length == 0 && series.length > 1) {
-                    series = _.sortBy(series, function (x) {
-                        return -x._last
-                    })
+                    series = _.sortBy(series, function(x) {
+                        return -x._last;
+                    });
                 }
                 min = _.min(series, function (x) {
-                    return x._min
+                    return x._min;
                 })._min;
                 max = _.max(series, function (x) {
-                    return x._max
+                    return x._max;
                 })._max;
 
                 var axisseries;
 
                 uniqueAxis.forEach(function(i) {
-                    axisseries = _.filter(series, function(s) {return s.yAxis == i});
+                    axisseries = _.filter(series, function(s) {
+                        return s.yAxis == i;
+                    });
 
                     extremes[i].min = _.min(axisseries, function (x) {
-                        return x._min
+                        return x._min;
                     })._min;
                     extremes[i].max = _.max(axisseries, function (x) {
-                        return x._max
+                        return x._max;
                     })._max;
                 });
+
+                console.log(uniqueAxis, max, defaultMax);
             }
             return {data: series, min: min, max: max, extremes: extremes};
-        }
-
+        };
 
         var markerContent = function(property) {
             return "<div style='min-height:50px;min-width:150px'><a href='#/profile/" + property._id + "'>" + property.name + "</a><br />" + property.address + "</div>";

@@ -91,11 +91,11 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 text: $scope.options.extremes[i].title
                             },
                             labels: {
-                                formatter: function () {
+                                formatter: function() {
                                     return $scope.options.prefix + this.value.toFixed($scope.options.decimalPlaces).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + $scope.options.suffix;
-                                }
+                                },
                             },
-                            endOnTick : false
+                            endOnTick: true,
                         };
 
                         if (i == 0) {
