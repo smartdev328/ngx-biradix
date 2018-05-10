@@ -96,6 +96,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 },
                             },
                             endOnTick: true,
+                            alignTicks: false,
                         };
 
                         if (i == 0) {
