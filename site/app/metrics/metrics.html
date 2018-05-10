@@ -24,6 +24,7 @@
     <div class="panel-heading">SurverySwap Requests</div>
     <div class="panel-body">
         <time-series options="overallData"></time-series>
+        <h4>Total: {{widgets.requests.total | number: 0}}</h4>
     </div>
 </div>
 
@@ -50,5 +51,6 @@
         </select>
         <br clear="all">
         <time-series options="responseData"></time-series>
+        <h4>Total: {{widgets.response.total | number: 0}}</h4>
     </div>
 </div>

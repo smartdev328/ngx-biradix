@@ -384,7 +384,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     })._max;
                 });
 
-                console.log(uniqueAxis, max, defaultMax);
+                //console.log(uniqueAxis, max, defaultMax);
             }
             return {data: series, min: min, max: max, extremes: extremes};
         };
