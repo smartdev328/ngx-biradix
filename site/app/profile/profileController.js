@@ -209,7 +209,7 @@ define([
                     }
 
                     if (!$scope.comp.survey || !$scope.comp.survey.date) {
-                        toastr.error('No market surveys have been done for this property.');
+                        toastr.error('No Property Surveys have been done for this property.');
                     }
 
                 }, function(error) {

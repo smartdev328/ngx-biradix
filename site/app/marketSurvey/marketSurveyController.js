@@ -464,7 +464,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                                     if (percent >= 10) {
                                         $scope.leasedWarning = true;
-                                        $scope.validation.leased.warnings.change = "Leased % has changed by more than 10% since the last market survey";
+                                        $scope.validation.leased.warnings.change = "Leased % has changed by more than 10% since the last Property Survey";
                                     }
                                 }
                             }
@@ -497,7 +497,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                 if ($scope.originalSurvey.atr_percent && $scope.originalSurvey.atr_percent > 0 && typeof $scope.survey.atr != "undefined" && $scope.survey.atr != null) {
                                     var percent = Math.abs((parseInt($scope.survey.atr_percent) - parseInt($scope.originalSurvey.atr_percent)));
                                     if (percent >= 10) {
-                                        $scope.validation.atr.warnings.change = "ATR % has changed by more than 10% since the last market survey";
+                                        $scope.validation.atr.warnings.change = "ATR % has changed by more than 10% since the last Property Survey";
                                     }
                                 }
                             }
@@ -528,7 +528,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                 if ($scope.originalSurvey.renewal && $scope.originalSurvey.renewal > 0 && $scope.survey.renewal) {
                                     var percent = Math.abs((parseInt($scope.survey.renewal) - parseInt($scope.originalSurvey.renewal)) / parseInt($scope.originalSurvey.renewal) * 100);
                                     if (percent >= 10) {
-                                        $scope.validation.renewal.warnings.change = "Renewal % has changed by more than 10% since the last market survey";
+                                        $scope.validation.renewal.warnings.change = "Renewal % has changed by more than 10% since the last Property Survey";
                                     }
                                 }
                             }
@@ -571,7 +571,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                     }
 
                                     if (percent >= 10) {
-                                        $scope.validation.occupancy.warnings.change = "Occupancy % has changed by more than 10% since the last market survey";
+                                        $scope.validation.occupancy.warnings.change = "Occupancy % has changed by more than 10% since the last Property Survey";
                                     }
                                 }
                             }
@@ -921,10 +921,10 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     $scope.guestResponded();
                     $rootScope.$broadcast('data.reload');
                     if (surveyid) {
-                        toastr.success('Market Survey Updated Successfully.');
+                        toastr.success('Property Survey updated successfully.');
                     }
                     else {
-                        toastr.success('Market Survey Created Successfully.');
+                        toastr.success('Property Survey created successfully.');
                     }
 
                     if (options && options.trackReminders === true) {
@@ -1007,20 +1007,20 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.delete = function() {
                 $("button.contact-submit").prop("disabled", true);
 
-                $dialog.confirm("Are you sure you want to delete this Market Survey?", function() {
+                $dialog.confirm("Are you sure you want to delete this Property Survey?", function() {
                     $propertyService.deleteSurvey(id, surveyid).then(function(response) {
                             $("button.contact-submit").prop("disabled", false);
                             if (response.data.errors) {
                                 toastr.error(_.pluck(response.data.errors, "msg").join("<br>"));
                             } else {
                                 $rootScope.$broadcast("data.reload");
-                                toastr.success("Market Survey deleted successfully.");
+                                toastr.success("Property Survey deleted successfully.");
                                 $uibModalInstance.close();
                             }
                         },
                         function(error) {
                             $("button.contact-submit").prop("disabled", false);
-                            toastr.error("Unable to delete Market Survey. Please contact the administrator.");
+                            toastr.error("Unable to delete Property Survey. Please contact the administrator.");
                         });
                 }, function() {
                     $("button.contact-submit").prop("disabled", false);

@@ -1238,7 +1238,7 @@ function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
                 to: stat.sender.email,
                 bcc: 'surveyswapemails@biradix.com',
                 logo: "https://platform.biradix.com/images/organizations/" + stat.sender.logo,
-                subject: guest.first + " " + guest.last + " updated " + propertyname +" market survey",
+                subject: guest.first + " " + guest.last + " updated " + propertyname +" Property Survey",
                 template: 'guest_survey.html',
                 templateData: {
                     first:stat.sender.first,

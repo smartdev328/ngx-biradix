@@ -114,7 +114,7 @@
 <div ng-show="localLoading">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title">Market Survey: {{property.name}}</h2>
+        <h2 class="modal-title">Property Survey: {{property.name}}</h2>
     </div>
     <div class="modal-body" style="padding:0px 14px 14px 14px">
         <div ng-show="hasContact" style="color:#777">
@@ -128,7 +128,7 @@
 
         <div ng-if="showGuests">
             <div ng-class="{'radio' : true, disabled: false}">
-                <label style="font-weight:normal;width:100%"><input type="radio" ng-model="swap.who" value="manual"> Manual Market Survey</label><Br>
+                <label style="font-weight:normal;width:100%"><input type="radio" ng-model="swap.who" value="manual"> Manual Property Survey</label><Br>
             </div>
             <div ng-class="{'radio' : true}">
                 <label style="font-weight:normal;"><input type="radio" ng-model="swap.who" value="swap"> Send Survey Swap</label>
@@ -159,7 +159,7 @@
         </div>
         <div ng-if="!showGuests">
             <div class="alert alert-warning" ng-if="editMode">
-                <b>Note:</b> You are modifying historical data of a Market Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
+                <b>Note:</b> You are modifying historical data of a Property Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
             </div>
 
             <toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()" style="margin-left:30px;"  disabled="!me.orgs[0].settings.detailed_concessions.allow" popover="me.orgs[0].settings.detailed_concessions.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
@@ -169,10 +169,10 @@
                uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"
         ></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="visible-xs"></div>
-            <span class="visible-xs-inline-block" style="width:30px;"></span><toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Market Survey Notes<br>
+            <span class="visible-xs-inline-block" style="width:30px;"></span><toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Property Survey Notes<br>
             <div style="margin-top:10px"></div>
             <div ng-if="settings.showNotes">
-            <textarea class="form-control" placeholder="Type Market Survey notes here" ng-model="survey.notes" ng-keydown="updateChanged()"></textarea><br>
+            <textarea class="form-control" placeholder="Type Property Survey notes here" ng-model="survey.notes" ng-keydown="updateChanged()"></textarea><br>
             </div>
             <table class="table table-condensed table-striped table-hover survey-values hidden-arrows sortablegrid" style="margin-bottom:10px">
                 <tbody>
