@@ -343,12 +343,13 @@ define([
                     var _min2 = 9999;
                     var _max2 = 0;
                     var extremes = [
+                        {title: "Responses", min: 0, max: 0},
                         {title: "Avg Response Time", min: 0, max: 0},
-                        {title: "Total Responses", min: 0, max: 0},
                         ];
 
-                    var s = {data: [], name: "Avg Response Time", yAxis: 0};
-                    var s2 = {data: [], name: "Total Responses", yAxis: 0};
+                    var s2 = {data: [], name: "Responses", yAxis: 0};
+                    var s = {data: [], name: "Avg Response Time", yAxis: 1};
+
                     response.data.result.result.forEach(function(d) {
                         d.value.average = d.value.average || 0;
                         if ($scope.widgets.response.current == "Hours") {
@@ -376,16 +377,16 @@ define([
                     });
 
                     if (s.data.length > 0) {
-                        extremes[0].min = _min;
-                        extremes[0].max = _max;
+                        extremes[0].min = _min2;
+                        extremes[0].max = _max2;
                     }
                     if (s2.data.length > 0) {
-                        extremes[1].min = _min2;
-                        extremes[1].max = _max2;
+                        extremes[1].min = _min;
+                        extremes[1].max = _max;
                     }
 
-                    series.push(s);
                     series.push(s2);
+                    series.push(s);
 
                     $scope.responseData = {height: 300, printWidth: 800, decimalPlaces: 0, title: "", marker: true, data: series, extremes: extremes, suffix: "", prefix: ""};
 
