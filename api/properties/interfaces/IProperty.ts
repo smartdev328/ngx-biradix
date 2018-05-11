@@ -1,3 +1,7 @@
+export interface IComp {
+    id: string;
+}
+
 export interface IProperty {
     _id: string;
     name: string;
@@ -12,4 +16,5 @@ export interface IProperty {
             id: string;
         },
     };
+    comps?: IComp[];
 }

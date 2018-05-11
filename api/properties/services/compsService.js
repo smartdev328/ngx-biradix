@@ -146,9 +146,12 @@ module.exports = {
 
         compid = _.map(compid, function(x) {return new ObjectId(x)})
 
-        var ObjectId = require('mongoose').Types.ObjectId;
-        var query = PropertySchema.find({'comps.id': {$in:  compid }});
+        const query = PropertySchema.find({'comps.id': {$in:  compid }});
         query.select(criteria.select);
+
+        if (criteria.active) {
+            query.where("active").equals(true);
+        }
         query.exec(callback);
-    }
-}
+    },
+};
