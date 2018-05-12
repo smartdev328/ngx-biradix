@@ -44,6 +44,9 @@ routes.get("/daily_totals", (req, res) => {
                 compsService.getSubjects(compIds, SubjectSearchRequest, (subjectErrors: ICustomError[], subjects: IProperty[]) => {
                     let goodComps: string[] = [];
                     subjects.forEach((subject) => {
+                        // Remove yourself as a comp
+                        subject.comps = subject.comps.filter((x) => x.id.toString() != subject._id.toString());
+
                         goodComps = goodComps.concat(subject.comps.map((x) => x.id.toString()));
                     });
 
@@ -110,7 +113,7 @@ routes.get("/daily_totals", (req, res) => {
 
                     KeenService.recordEvent(event);
 
-                    res.status(200).json({event, subjects});
+                    res.status(200).json(event);
                 });
              });
         });
