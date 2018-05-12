@@ -110,7 +110,7 @@ routes.get("/daily_totals", (req, res) => {
 
                     KeenService.recordEvent(event);
 
-                    res.status(200).json(event);
+                    res.status(200).json({event, subjects});
                 });
              });
         });
