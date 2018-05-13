@@ -3,8 +3,8 @@
         <h2 class="mainheader">Dashboard</h2>
     </div>
     <div class="col-xs-5 col-sm-5 hidden-print">
-        <button uib-tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(selectedProperty._id)">
-            <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Market Survey</span>
+        <button uib-tooltip="Property Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(selectedProperty._id)">
+            <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Property Survey</span>
         </button>
     </div>
 </div>
@@ -76,8 +76,8 @@
             </div>
             <div class="panel-body">
                 <hr>
-                <div class="alert alert-success" role="alert" ng-if="canAccess">Your Market Survey is up to date! You have access to the comparative data below.</div>
-                <div class="alert alert-warning" role="alert" ng-if="!canAccess">Your Market Survey is <b>not</b> up to date! Please complete a <A href ng-click="marketSurvey(selectedProperty._id)">Market Survey</A> for {{selectedProperty.name}} to gain access to the comparative data of the following properties below.</div>
+                <div class="alert alert-success" role="alert" ng-if="canAccess">Your Property Survey is up to date! You have access to the comparative data below.</div>
+                <div class="alert alert-warning" role="alert" ng-if="!canAccess">Your Property Survey is <b>not</b> up to date! Please complete a <A href ng-click="marketSurvey(selectedProperty._id)">Property Survey</A> for {{selectedProperty.name}} to gain access to the comparative data of the following properties below.</div>
                 <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
                     <tbody>
                     <tr class="thead">

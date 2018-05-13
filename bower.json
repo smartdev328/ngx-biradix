@@ -20,7 +20,7 @@
     "async": "1.5.2",
     "bootstrap": "3.3.7",
     "font-awesome": "4.4.0",
-    "highcharts-release": "^6.0.3",
+    "highcharts-release": "^6.1.0",
     "jquery": "2.1.4",
     "jquery-ui": "~1.12.1",
     "lodash": "3.10.0",

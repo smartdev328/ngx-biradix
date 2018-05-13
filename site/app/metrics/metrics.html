@@ -21,28 +21,62 @@
 </div>
 
 <div class="panel panel-info hidden-print">
-    <div class="panel-heading">SurverySwap Requests</div>
+    <div class="panel-heading">SurverySwap Requests
+        <i class="fa fa-question-circle"
+           style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
+           popover-trigger="'mouseenter'"
+           popover-placement="right"
+           popover-append-to-body="true"
+           uib-popover-html="'Shows every time a SurveySwap request email is sent.'"
+        ></i>
+    </div>
     <div class="panel-body">
         <time-series options="overallData"></time-series>
+        <h4>Total Requests (in date range): {{widgets.requests.total | number: 0}}</h4>
     </div>
 </div>
 
 <div class="panel panel-info hidden-print">
-    <div class="panel-heading">SurverySwap Requests by Organization</div>
+    <div class="panel-heading">SurverySwap Requests by Organization
+        <i class="fa fa-question-circle"
+           style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
+           popover-trigger="'mouseenter'"
+           popover-placement="right"
+           popover-append-to-body="true"
+           uib-popover-html="'Shows every time a SurveySwap request email is sent. Visualized by Organization.'"
+        ></i>
+    </div>
     <div class="panel-body">
         <bar-chart options="orgData"></bar-chart>
     </div>
 </div>
 
 <div class="panel panel-info hidden-print">
-    <div class="panel-heading">SurverySwap Requests by Weekday</div>
+    <div class="panel-heading">SurverySwap Requests by Weekday
+        <i class="fa fa-question-circle"
+           style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
+           popover-trigger="'mouseenter'"
+           popover-placement="right"
+           popover-append-to-body="true"
+           uib-popover-html="'Shows every time a SurveySwap request email is sent. Visualized by day of week.'"
+        ></i>
+    </div>
     <div class="panel-body">
         <time-series options="weekdayData"></time-series>
     </div>
 </div>
 
 <div class="panel panel-info hidden-print">
-    <div class="panel-heading">SurverySwap Avg Response Time</div>
+    <div class="panel-heading">SurveySwap Responses & Avg Response Time
+        <i class="fa fa-question-circle"
+           style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
+           popover-trigger="'mouseenter'"
+           popover-placement="right"
+           popover-append-to-body="true"
+           uib-popover-html="'<B>Responses:</B> Shows every time a SurveySwap contact completes a property survey.<Br><Br><B>Avg Response Time:</B> Shows the average response time for a SurveySwap contact to respond to a SurveySwap request. Time is based on difference between when the last SurveySwap request for that property was sent and when the property survey was completed (using older link doesnt impact response time, only when the last request was sent).'"
+
+        ></i>
+    </div>
     <div class="panel-body">
         <select class="form-control input-sm pull-right" ng-model="widgets.response.current" style="width:100px"
                 ng-options="item for item in widgets.response.breakdown"
@@ -50,5 +84,6 @@
         </select>
         <br clear="all">
         <time-series options="responseData"></time-series>
+        <h4>Total Responses (in date range): {{widgets.response.total | number: 0}}</h4>
     </div>
 </div>

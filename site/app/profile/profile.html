@@ -15,8 +15,8 @@
                 <li ng-if="owner && $root.me.permissions.indexOf('Hide/ExtendedProfile') == -1"><a href ng-click="excel()"><i class="fa fa-file-excel-o fa-fw" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
-        <button ng-if="canSurvey && roles[0] != 'Property Owner'" uib-tooltip="Market Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
-            <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Market Survey</span>
+        <button ng-if="canSurvey && roles[0] != 'Property Owner'" uib-tooltip="Property Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
+            <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Property Survey</span>
         </button>
         <button ng-if="!canSurvey && roles[0] != 'Property Owner'"
                 style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
@@ -25,7 +25,7 @@
                 popover-title="This property is managed by a BI:Radix user."
                 uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
                 type="button" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-lock"></i> <span class="hidden-xs">Market Survey</span>
+            <i class="fa fa-lock"></i> <span class="hidden-xs">Property Survey</span>
         </button>
 
     </div>

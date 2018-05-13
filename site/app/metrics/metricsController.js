@@ -42,6 +42,10 @@ define([
                 response: {
                     breakdown: ["Minutes", "Hours"],
                     current: "Minutes",
+                    total: 0,
+                },
+                requests: {
+                    total: 0,
                 },
             };
 
@@ -111,8 +115,9 @@ define([
                     var max = 0;
                     var _min = 9999;
                     var _max = 0;
-
                     var s = {data: [], name: "Requests", yAxis: 0};
+
+                    $scope.widgets.requests.total = 0;
                     response.data.result.result.forEach(function(d) {
                         // console.log(d.timeframe.start, d.timeframe.end);
                         s.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value]);
@@ -123,6 +128,8 @@ define([
                         if (_min > d.value) {
                             _min = d.value;
                         }
+
+                        $scope.widgets.requests.total += d.value;
                     });
 
                     if (s.data.length > 0) {
@@ -288,6 +295,15 @@ define([
 
             $scope.runSurveySwapResponded = function() {
                 var parameters = {
+                    analyses: {
+                        average: {
+                            analysis_type: "average",
+                            target_property: "responseTimeInMinutes",
+                        },
+                        count: {
+                            analysis_type: "count",
+                        },
+                    },
                     event_collection: "SurveySwap Responded",
                     interval: $keenService.daterangeToInterval($scope.options.daterange),
                     filters: [
@@ -297,7 +313,7 @@ define([
                             property_value: heroku_env,
                         },
                     ],
-                    target_property: "responseTimeInMinutes",
+                    target_property: "",
                     timeframe: $keenService.daterangeToTtimeframe($scope.options.daterange),
                 };
 
@@ -315,46 +331,64 @@ define([
                     });
                 }
 
-                $keenService.query("average", parameters).then(function(response) {
+                $scope.widgets.response.total = 0;
+                $keenService.query("multi_analysis", parameters).then(function(response) {
                     if (response.data.errors) {
                         return toastr.error("Error: " + response.data.errors.code);
                     }
 
                     var series = [];
-                    var min = 0;
-                    var max = 0;
                     var _min = 9999;
                     var _max = 0;
+                    var _min2 = 9999;
+                    var _max2 = 0;
+                    var extremes = [
+                        {title: "Responses", min: 0, max: 0},
+                        {title: "Avg Response Time", min: 0, max: 0},
+                        ];
 
-                    var s = {data: [], name: "Avg Response Time", yAxis: 0};
+                    var s2 = {data: [], name: "Responses", yAxis: 0};
+                    var s = {data: [], name: "Avg Response Time", yAxis: 1};
+
                     response.data.result.result.forEach(function(d) {
-                        d.value = d.value || 0;
+                        d.value.average = d.value.average || 0;
                         if ($scope.widgets.response.current == "Hours") {
-                            d.value = d.value / 60;
+                            d.value.average = d.value.average / 60;
                         }
 
-                        s.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value]);
-                        if (_max < d.value) {
-                            _max = d.value;
+                        s.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value.average]);
+                        if (_max < d.value.average) {
+                            _max = d.value.average;
                         }
 
-                        if (_min > d.value) {
-                            _min = d.value;
+                        if (_min > d.value.average) {
+                            _min = d.value.average;
                         }
+
+                        s2.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value.count]);
+                        if (_max2 < d.value.count) {
+                            _max2 = d.value.count;
+                        }
+
+                        if (_min2 > d.value.count) {
+                            _min2 = d.value.count;
+                        }
+                        $scope.widgets.response.total += d.value.count;
                     });
 
                     if (s.data.length > 0) {
-                        min = _min;
-                        max = _max;
+                        extremes[0].min = _min2;
+                        extremes[0].max = _max2;
+                    }
+                    if (s2.data.length > 0) {
+                        extremes[1].min = _min;
+                        extremes[1].max = _max;
                     }
 
+                    series.push(s2);
                     series.push(s);
 
-                    if ($scope.widgets.response.current == "Hours") {
-                        $scope.responseData = {height: 300, printWidth: 800, decimalPlaces: 1, prefix: "", suffix: " hrs.", title: "", marker: true, data: series, min: min, max: max};
-                    } else {
-                        $scope.responseData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: " min.", title: "", marker: true, data: series, min: min, max: max};
-                    }
+                    $scope.responseData = {height: 300, printWidth: 800, decimalPlaces: 0, title: "", marker: true, data: series, extremes: extremes, suffix: "", prefix: ""};
 
                 }, function(error) {
                     toastr.error("Unable to perform action. Please contact an administrator");
