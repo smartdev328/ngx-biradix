@@ -442,6 +442,7 @@ module.exports = {
                     var org = UtilityService.getOrgByUrl(resp.user.orgs, base);
                     var logo = base + "/images/organizations/" + org.logoBig;
                     var email = {
+                        category: "Forgot Password",
                         to: usr.email,
                         subject: 'Password recovery',
                         logo : logo,

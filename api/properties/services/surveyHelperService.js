@@ -50,6 +50,7 @@ module.exports = {
                         // Send Email
                         let email = {
                             to: guest.email,
+                            category: ["SurveySwap Requested", "SurveySwap Requested 1.0"],
                             bcc: "surveyswapemails@biradix.com",
                             logo: base + "/images/organizations/biradix.png",
                             subject: operator.first + " " + operator.last + " is asking for some information about " + property.name,

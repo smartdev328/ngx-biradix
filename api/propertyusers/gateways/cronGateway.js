@@ -39,6 +39,7 @@ routes.get("/reminders", function(req, res) {
                 async.eachLimit(properties, 2, function(property, callbackp) {
                         let email = {
                             // to: "alex@biradix.com",
+                            category: "Property Update Reminder",
                             to: property.user.email,
                             bcc: "<cue@biradix.com>",
                             logo: property.logo,

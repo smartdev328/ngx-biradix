@@ -308,6 +308,7 @@ module.exports = {
                         var logo = base + "/images/organizations/" + org.logoBig;
 
                         var email = {
+                            category: "New User Created",
                             to: usr.email,
                             subject: org.name + creator + " has created a new account for you at BI:Radix",
                             logo : logo,

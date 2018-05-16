@@ -1,2 +1,1 @@
-export const SENDGRID_USERNAME: string = process.env.SENDGRID_USERNAME || "app43915263@heroku.com";
-export const SENDGRID_PASSWORD: string = process.env.SENDGRID_PASSWORD || "cypsntld9977";
+export const SENDGRID_API_KEY: string = process.env.SENDGRID_API_KEY || "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";

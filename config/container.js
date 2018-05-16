@@ -72,6 +72,27 @@ module.exports = {
                     serviceRegistry.getOrganizationService().init(queue),
                 ]
             ).then((values) => {
+                // const EmailService = require("../api/business/services/emailService");
+                //
+                // var email = {
+                //     to: "alex@biradix.com",
+                //     subject: 'BI:Radix - Wood Residential nightly data export',
+                //     logo: "https://wood.biradix.com/images/organizations/wood.png",
+                //     template: 'export.html',
+                //     templateData: {},
+                //     attachments: [
+                //         {
+                //             filename: 'biradix_wood_export.csv',
+                //             content: "1,2\r\n",
+                //             contentType: 'text/csv'
+                //         }
+                //     ]
+                // };
+                // console.log(email);
+                //
+                // EmailService.send(email, function (emailError, status) {
+                //     console.log(emailError, status);
+                // })
                 // serviceRegistry.getOrganizationService().read({criteria: {
                 //         isDefault: true,
                 //     }}).then((x)=> {
