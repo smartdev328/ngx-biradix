@@ -1237,7 +1237,6 @@ function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
             var email = {
                 category: "SurveySwap Complete",
                 to: stat.sender.email,
-                bcc: 'surveyswapemails@biradix.com',
                 logo: "https://platform.biradix.com/images/organizations/" + stat.sender.logo,
                 subject: guest.first + " " + guest.last + " updated " + propertyname +" property survey",
                 template: 'guest_survey.html',
@@ -1249,6 +1248,12 @@ function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
             }
 
             EmailService.send(email,function(emailError,status) {
+
+                delete email.category;
+                email.to = "surveyswapemails@biradix.com";
+
+                EmailService.send(email, function(emailError, status) {});
+
                 console.log(status);
             });
         }

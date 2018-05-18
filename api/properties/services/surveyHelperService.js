@@ -51,7 +51,6 @@ module.exports = {
                         let email = {
                             to: guest.email,
                             category: ["SurveySwap Requested", "SurveySwap Requested 1.0"],
-                            bcc: "surveyswapemails@biradix.com",
                             logo: base + "/images/organizations/biradix.png",
                             subject: operator.first + " " + operator.last + " is asking for some information about " + property.name,
                             template: "swap.html",
@@ -73,6 +72,12 @@ module.exports = {
                             if (emailError || !status || !status.message || status.message != "success") {
                                 return callback([{msg: "Unable to deliver mesage to Contact. Please contact the Administrator"}]);
                             }
+
+                            delete email.category;
+                            email.to = "surveyswapemails@biradix.com";
+
+                            EmailService.send(email, function(emailError, status) {});
+
                             // Activity History
                             let data = [{description: "Subjects: " + SubjectNames.join(", ")}];
 
