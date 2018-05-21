@@ -1229,32 +1229,31 @@ function removeRMBMPermissionsAfterUnlink (compid, subjectid) {
     })
 }
 
-function emailOriginatorGuestSurvey(guest,propertyid,propertyname) {
+function emailOriginatorGuestSurvey(guest, propertyid, propertyname) {
     if (guest.guestStats) {
-        let stat = guest.guestStats.find(x=>x.sender && x.propertyid.toString() == propertyid.toString());
+        let stat = guest.guestStats.find((x) => x.sender && x.propertyid.toString() == propertyid.toString());
 
         if (stat) {
-            var email = {
+            const email = {
                 category: "SurveySwap Complete",
                 to: stat.sender.email,
                 logo: "https://platform.biradix.com/images/organizations/" + stat.sender.logo,
                 subject: guest.first + " " + guest.last + " updated " + propertyname +" property survey",
-                template: 'guest_survey.html',
+                template: "guest_survey.html",
                 templateData: {
-                    first:stat.sender.first,
+                    first: stat.sender.first,
                     guest: guest.first + " " + guest.last,
-                    property:propertyname,
-                }
-            }
+                    property: propertyname,
+                    admin_only: "",
+                },
+            };
 
-            EmailService.send(email,function(emailError,status) {
-
+            EmailService.send(email, function(emailError,status) {
                 delete email.category;
                 email.to = "surveyswapemails@biradix.com";
+                email.templateData.admin_only = "<i>TO: " + stat.sender.first + " " + stat.sender.last + " &lt;" + stat.sender.email + "&gt;</i><br><br>";
 
                 EmailService.send(email, function(emailError, status) {});
-
-                console.log(status);
             });
         }
     }

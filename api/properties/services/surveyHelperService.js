@@ -60,6 +60,7 @@ module.exports = {
                                 subjects: SubjectNames,
                                 link: base + "/g/" + property._id.toString() + "/" + full.token,
                                 operator: operator.first + " " + operator.last,
+                                admin_only: "",
                             },
                         };
 
@@ -75,6 +76,7 @@ module.exports = {
 
                             delete email.category;
                             email.to = "surveyswapemails@biradix.com";
+                            email.templateData.admin_only = "<i>TO: " + guest.first + " " + guest.last + " &lt;" + guest.email + "&gt;</i><br><Br>";
 
                             EmailService.send(email, function(emailError, status) {});
 
