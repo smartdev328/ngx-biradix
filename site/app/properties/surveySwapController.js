@@ -3,8 +3,7 @@ define([
     'app'
 ], function (app) {
      app.controller
-        ('surveySwapController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$dialog', "$rootScope", "$keenService", function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$dialog, $rootScope, $keenService) {
-
+        ('surveySwapController', ['$scope', '$uibModalInstance', 'property', '$userService', 'ngProgress','$propertyService','$propertyUsersService','toastr','$dialog', "$rootScope", "$keenService", "$authService", function ($scope, $uibModalInstance, property, $userService, ngProgress,$propertyService,$propertyUsersService,toastr,$dialog, $rootScope, $keenService, $authService) {
             $scope.property = property;
 
             $scope.cancel = function () {
@@ -129,6 +128,24 @@ define([
                         });
                 }, function() {
 
+                });
+            };
+
+            $scope.update = function(user) {
+                ngProgress.start();
+                $authService.updateMe(user).then(function (resp) {
+                    ngProgress.complete();
+                    if (resp.data.errors && resp.data.errors.length > 0) {
+                        var errors = _.pluck(resp.data.errors, "msg").join("<br>")
+                        toastr.error(errors);
+                    } else {
+                        toastr.success("Contact <B>" + user.first + " " + user.last + "</B> updated successfully.");
+                        user.edit = false;
+                        $rootScope.refreshToken(true, function() {});
+                    }
+                }, function(err) {
+                    toastr.error("Unable to perform action. Please contact an administrator");
+                    ngProgress.complete();
                 });
             };
         }]);

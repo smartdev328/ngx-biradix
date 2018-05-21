@@ -14,11 +14,10 @@ const UserDataIntegrityViolationService = new UserDataIntegrityViolation.UserDat
 
 module.exports = {
     updateMe: function(operator, context, user, callback)  {
-        var modelErrors = [];
+        let modelErrors = [];
         initUser(user)
 
-        if (!operator._id)
-        {
+        if (!operator._id) {
             modelErrors.push({msg : 'Invalid user id.'});
         }
 
@@ -29,16 +28,15 @@ module.exports = {
             return;
         }
 
-        getUserandCheckforDupe(user.emailLower,operator._id, function(errors, usr) {
+        getUserandCheckforDupe(user.emailLower, user._id || operator._id, function(errors, usr) {
             if (errors.length > 0) {
                 callback(errors, null);
                 return;
             }
 
-            var changes = getChangesForAudit(usr, user);
+            let changes = getChangesForAudit(usr, user);
 
             populateBaseFields(operator, usr, user, true);
-
 
             if (usr.bounceReason) {
                 usr.bounceReason = undefined;
@@ -377,18 +375,14 @@ function initUser(user) {
 }
 
 function getUserandCheckforDupe(emailLower, id, callback) {
-    var modelErrors = [];
+    const modelErrors = [];
 
-    UserSchema.findOne({
-        _id: id
-    }, function(err, usr) {
+    UserSchema.findOne({_id: id}, function(err, usr) {
         if (err || !usr) {
             modelErrors.push({msg: 'Unexpected Error. Unable to update user.'});
             callback(modelErrors, null);
             return;
-        }
-        ;
-
+        };
 
         UserSchema.findOne({emailLower: emailLower, _id: {'$ne': id}}, function (err, dupeuser) {
             if (dupeuser) {
@@ -462,7 +456,7 @@ function removeOldRole(roleids, all, permissions) {
     } else {
         console.log(all.roles)
         console.log(roleids)
-        throw new Error("Should not get here")
+        throw new Error("Should not get here");
     }
 
     return userRoles;
