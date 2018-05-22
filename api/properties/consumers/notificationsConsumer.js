@@ -121,6 +121,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                     });
 
                     var email = {
+                        category: "Property Status Update",
                         to: data.user.email,
                         //to: "eugene@biradix.com,alex@biradix.com",
                         width: 1000,

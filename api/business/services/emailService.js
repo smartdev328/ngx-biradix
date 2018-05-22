@@ -2,7 +2,8 @@
 const LiquidService = require("../../utilities/services/liquidService");
 const settings = require("../../../config/settings");
 const fs = require("fs");
-const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry")
+const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry");
+const _ = require("lodash");
 
 const filters = {
     formatNumber: function(input, decimals) {
@@ -15,11 +16,11 @@ const filters = {
 };
 
 module.exports = {
-    send: function (email, callback) {
+    send: function(email, callback) {
         email.width = email.width || 600;
 
         let newemail = {
-            from: email.from || "BIRadix Team <support@biradix.com>",
+            from: email.from || "BI:Radix Team <support@biradix.com>",
             to: email.to,
             bcc: email.bcc,
             subject: email.subject,
@@ -27,10 +28,22 @@ module.exports = {
 
         if (email.attachments) {
             newemail.attachments = email.attachments;
+
+            newemail.attachments.forEach((a) => {
+               a.content = (new Buffer(a.content)).toString("base64");
+            });
+        }
+
+        if (email.category) {
+            if (_.isArray(email.category)) {
+                newemail.categories = email.category;
+            } else {
+                newemail.categories = [email.category];
+            }
         }
 
         getData(email, function(html) {
-            fs.readFile(settings.PROJECT_DIR +"/../api/business/templates/email.html", "utf8", function (err,data) {
+            fs.readFile(settings.PROJECT_DIR +"/../api/business/templates/email.html", "utf8", function(err, data) {
                 if (err) {
                     throw (err);
                 } else {
@@ -52,7 +65,7 @@ module.exports = {
 
 function getData(email, callback) {
     if (email.template) {
-        fs.readFile(settings.PROJECT_DIR +"/../api/business/templates/" + email.template, "utf8", function (err,data) {
+        fs.readFile(settings.PROJECT_DIR +"/../api/business/templates/" + email.template, "utf8", function(err, data) {
             if (err) {
                 throw (err);
             } else {

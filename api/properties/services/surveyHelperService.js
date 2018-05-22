@@ -50,7 +50,7 @@ module.exports = {
                         // Send Email
                         let email = {
                             to: guest.email,
-                            bcc: "surveyswapemails@biradix.com",
+                            category: ["SurveySwap Requested", "SurveySwap Requested 1.0"],
                             logo: base + "/images/organizations/biradix.png",
                             subject: operator.first + " " + operator.last + " is asking for some information about " + property.name,
                             template: "swap.html",
@@ -60,6 +60,7 @@ module.exports = {
                                 subjects: SubjectNames,
                                 link: base + "/g/" + property._id.toString() + "/" + full.token,
                                 operator: operator.first + " " + operator.last,
+                                admin_only: "",
                             },
                         };
 
@@ -72,6 +73,13 @@ module.exports = {
                             if (emailError || !status || !status.message || status.message != "success") {
                                 return callback([{msg: "Unable to deliver mesage to Contact. Please contact the Administrator"}]);
                             }
+
+                            delete email.category;
+                            email.to = "surveyswapemails@biradix.com";
+                            email.templateData.admin_only = "<i>TO: " + guest.first + " " + guest.last + " &lt;" + guest.email + "&gt;</i><br><Br>";
+
+                            EmailService.send(email, function(emailError, status) {});
+
                             // Activity History
                             let data = [{description: "Subjects: " + SubjectNames.join(", ")}];
 

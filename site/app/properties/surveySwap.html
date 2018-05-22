@@ -1,19 +1,19 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-    <h2 class="modal-title">Assign Users: {{property.name}}</h2>
+    <h2 class="modal-title">SurveySwap Contacts: {{property.name}}</h2>
     <hr>
 </div>
 
 <div class="modal-body">
     <div>
-        Please configure contact(s) for <b>{{property.name}}</b> below. Once contacts are added, Survey Swap will be an option when performing a new property survey.<Br></div>
+        Please configure contact(s) for <b>{{property.name}}</b> below. Once contacts are added, SurveySwap will be an option when performing a new property survey.<Br></div>
     <Br>
     <div ng-if="loading" style="display:block;width:100px;margin:20px  auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
     <div ng-if="!loading" style="overflow-x: auto">
         <div ng-if="!users.length">
-            <div class="alert alert-info" role="alert"  style="margin-bottom:0px !important;">There are currently no <b>Survey Swap</b> contacts setup for this comp.</div>
+            <div class="alert alert-info" role="alert"  style="margin-bottom:0px !important;">There are currently no <b>SurveySwap</b> contacts setup for this comp.</div>
             <Br>
         </div>
         <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit()">
@@ -29,12 +29,23 @@
                 </tr>
 
                 <tr ng-repeat="row in users">
-                    <td>{{row.first}}</td>
-                    <td>{{row.last}}</td>
+                    <td ng-if="!row.edit">{{row.first}}</td>
+                    <td ng-if="!row.edit">{{row.last}}</td>
+                    <td ng-if="row.edit"><input type="text" class="form-control input-sm" ng-model="row.first" placeholder="First"></td>
+                    <td ng-if="row.edit"><input type="text" class="form-control input-sm" ng-model="row.last" placeholder="Last"></td>
+
                     <td>{{row.email}}</td>
                     <td>{{(row.lastEmailed | date : 'short') || '-'}}</td>
                     <td>{{(row.lastCompleted | date : 'short') || '-'}}</td>
-                    <td style="vertical-align: middle !important;"><i class="fa fa-times fa-fw" style="cursor: pointer" ng-click="remove(row)"></i></td>
+                    <td style="vertical-align: middle !important;" ng-if="!row.edit" nowrap>
+                        <i class="fa fa-pencil fa-fw" style="cursor: pointer" ng-click="row.temp_first = row.first; row.temp_last = row.last; row.edit = true" uib-tooltip="Edit"></i>
+                        <i class="fa fa-minus fa-fw" style="cursor: pointer" ng-click="remove(row)" uib-tooltip="Remove"></i>
+                    </td>
+                    <td style="vertical-align: middle !important;" ng-if="row.edit" nowrap>
+                        <i class="fa fa-save fa-fw" style="cursor: pointer" ng-click="update(row)" uib-tooltip="Save"></i>
+                        <i class="fa fa-undo fa-fw" style="cursor: pointer" ng-click="row.first = row.temp_first; row.last = row.temp_last; row.edit = false" uib-tooltip="Cancel"></i>
+                    </td>
+
                 </tr>
                 <tr>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.first" id="newGuestfirst" placeholder="First"></td>

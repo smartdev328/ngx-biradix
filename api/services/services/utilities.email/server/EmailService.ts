@@ -1,26 +1,16 @@
-import * as nodemailer from "nodemailer";
-import * as sgTransport from "nodemailer-sendgrid-transport";
+import * as sgMail from "@sendgrid/mail";
 import { IEmail} from "../contracts/IEmail";
-import { SENDGRID_PASSWORD, SENDGRID_USERNAME } from "./Settings";
+import { SENDGRID_API_KEY } from "./Settings";
 
-const options = {
-    auth: {
-        api_key: SENDGRID_PASSWORD,
-        api_user: SENDGRID_USERNAME,
-    },
-};
-
-const client = nodemailer.createTransport(sgTransport(options));
+sgMail.setApiKey(SENDGRID_API_KEY);
 
 export class EmailService {
     public static send(email: IEmail): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            client.sendMail(email, (emailError, status) => {
-                if (emailError) {
-                    return reject(emailError);
-                }
-
-                return resolve(status);
+            sgMail.send(email as any).then((success) => {
+                return resolve({message: "success"});
+            }).catch((error) => {
+                return reject(error);
             });
         });
     }
