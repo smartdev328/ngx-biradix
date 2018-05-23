@@ -94,6 +94,16 @@ module.exports = {
                 ret = _.sum(fps, function (x) {
                     return (x.concessionsOneTime || 0) * x.units / tot
                 })
+            } else if (scale == "occupancy") {
+                ret = s.occupancy;
+            } else if (scale == "leased") {
+                ret = s.leased;
+            } else if (scale == "renewal") {
+                ret = s.renewal;
+            } else if (scale == "leases") {
+                ret = s.weeklyleases;
+            } else if (scale == "traffic") {
+                ret = s.weeklytraffic;
             } else {
                 ret = _.sum(fps, function (x) {
                     return (x.rent - x.concessions / 12 ) * x.units / tot

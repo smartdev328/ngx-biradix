@@ -119,32 +119,38 @@ module.exports = {
 
                 if (show.occupancy) {
                     points[s.propertyid].occupancy = points[s.propertyid].occupancy || {};
-                    points[s.propertyid].occupancy[dateKey] = s.occupancy;
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "occupancy");
+                    points[s.propertyid].occupancy[dateKey] = nerPoint;
                 }
 
                 if (show.leased && s.leased != null) {
                     points[s.propertyid].leased = points[s.propertyid].leased || {};
-                    points[s.propertyid].leased[dateKey] = s.leased;
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "leased");
+                    points[s.propertyid].leased[dateKey] = nerPoint;
                 }
 
                 if (show.atr && s.atr_percent != null) {
                     points[s.propertyid].atr = points[s.propertyid].atr || {};
-                    points[s.propertyid].atr[dateKey] = s.atr_percent;
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "atr");
+                    points[s.propertyid].atr[dateKey] = nerPoint;
                 }
 
                 if (show.renewal && s.renewal != null) {
                     points[s.propertyid].renewal = points[s.propertyid].renewal || {};
-                    points[s.propertyid].renewal[dateKey] = s.renewal;
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "renewal");
+                    points[s.propertyid].renewal[dateKey] = nerPoint;
                 }
                 
                 if (show.leases) {
                     points[s.propertyid].leases = points[s.propertyid].leases || {};
-                    points[s.propertyid].leases[dateKey] = s.weeklyleases;
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "leases");
+                    points[s.propertyid].leases[dateKey] = nerPoint;
                 }
 
                 if (show.traffic) {
                     points[s.propertyid].traffic = points[s.propertyid].traffic || {};
-                    points[s.propertyid].traffic[dateKey] = s.weeklytraffic;
+                    nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "traffic");
+                    points[s.propertyid].traffic[dateKey] = nerPoint;
                 }
 
                 if (show.rent) {
@@ -257,22 +263,22 @@ module.exports = {
                 i++;
                 if (show.graphs === true) {
                     if (show.occupancy) {
-                        points[prop].occupancy = DataPointsHelperService.normailizePoints(points[prop].occupancy, offset, dr, false, show.dontExtrapolate, i == 1);
+                        points[prop].occupancy = DataPointsHelperService.normailizePoints(points[prop].occupancy, offset, dr, true, show.dontExtrapolate, i == 1);
                     }
                     if (show.leased && points[prop].leased) {
-                        points[prop].leased = DataPointsHelperService.normailizePoints(points[prop].leased, offset, dr, false, show.dontExtrapolate);
+                        points[prop].leased = DataPointsHelperService.normailizePoints(points[prop].leased, offset, dr, true, show.dontExtrapolate);
                     }
                     if (show.atr && points[prop].atr) {
-                        points[prop].atr = DataPointsHelperService.normailizePoints(points[prop].atr, offset, dr, false, show.dontExtrapolate);
+                        points[prop].atr = DataPointsHelperService.normailizePoints(points[prop].atr, offset, dr, true, show.dontExtrapolate);
                     }
                     if (show.renewal && points[prop].renewal) {
-                        points[prop].renewal = DataPointsHelperService.normailizePoints(points[prop].renewal, offset, dr, false, show.dontExtrapolate);
+                        points[prop].renewal = DataPointsHelperService.normailizePoints(points[prop].renewal, offset, dr, true, show.dontExtrapolate);
                     }                    
                     if (show.traffic) {
-                        points[prop].traffic = DataPointsHelperService.normailizePoints(points[prop].traffic, offset, dr, false, show.dontExtrapolate);
+                        points[prop].traffic = DataPointsHelperService.normailizePoints(points[prop].traffic, offset, dr, true, show.dontExtrapolate);
                     }
                     if (show.leases) {
-                        points[prop].leases = DataPointsHelperService.normailizePoints(points[prop].leases, offset, dr, false, show.dontExtrapolate);
+                        points[prop].leases = DataPointsHelperService.normailizePoints(points[prop].leases, offset, dr, true, show.dontExtrapolate);
                     }
 
                     if (show.rent) {
@@ -359,19 +365,19 @@ module.exports = {
 
                 if (!show.dontExtrapolate) {
                     if (show.occupancy) {
-                        points[prop].occupancy = DataPointsHelperService.extrapolateMissingPoints(points[prop].occupancy);
+                        points[prop].occupancy = DataPointsHelperService.extrapolateMissingPoints(points[prop].occupancy, true);
                     }
                     if (show.leased) {
-                        points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].leased);
+                        points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].leased, true);
                     }
                     if (show.atr) {
-                        points[prop].atr = DataPointsHelperService.extrapolateMissingPoints(points[prop].atr);
+                        points[prop].atr = DataPointsHelperService.extrapolateMissingPoints(points[prop].atr, true);
                     }
                     if (show.traffic) {
-                        points[prop].traffic = DataPointsHelperService.extrapolateMissingPoints(points[prop].traffic);
+                        points[prop].traffic = DataPointsHelperService.extrapolateMissingPoints(points[prop].traffic, true);
                     }
                     if (show.leases) {
-                        points[prop].leases = DataPointsHelperService.extrapolateMissingPoints(points[prop].leases);
+                        points[prop].leases = DataPointsHelperService.extrapolateMissingPoints(points[prop].leases, true);
                     }
 
                     if (show.rent) {
@@ -479,115 +485,14 @@ module.exports = {
             }
 
             //Remove unit counts when not averaging points
-            if (show.rent) {
-                for (prop in points) {
-                    if (points[prop].rent) {
-                        points[prop].rent.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-                }
-            }
-
-            if (show.rentsqft) {
-                for (prop in points) {
-                    if (points[prop].rentsqft) {
-                        points[prop].rentsqft.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-                }
-            }
-
-            if (show.runrate) {
-                for (prop in points) {
-                    if (points[prop].runrate) {
-                        points[prop].runrate.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-                }
-            }
-
-            if (show.runratesqft) {
-                for (prop in points) {
-                    if (points[prop].runratesqft) {
-                        points[prop].runratesqft.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-                }
-            }            
-            if (show.nersqft) {
-                for (prop in points) {
-                    if (points[prop].nersqft) {
-                        points[prop].nersqft.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-                }
-            }
-
-            if (show.concessions) {
-                for (prop in points) {
-                    if (points[prop].concessions) {
-                        points[prop].concessions.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-
-                    if (points[prop].concessionsMonthly) {
-                        points[prop].concessionsMonthly.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-
-                    if (points[prop].concessionsOneTime) {
-                        points[prop].concessionsOneTime.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-                }
-            }
-
-            if (show.ner) {
-                for (prop in points) {
-                    if (points[prop].ner) {
-                        points[prop].ner.forEach(function (p) {
-                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                p.v = p.v.value;
-                            }
-                        });
-                    }
-
-                    bedroomBeakdown.forEach(function(b) {
-                        if (points[prop][b]) {
-                            points[prop][b].forEach(function (p) {
-                                if (p.v.totalUnits == 0) {
-                                    //console.log(prop,b,p);
-                                }
-                                if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                                    p.v = p.v.value;
-                                }
-                            });
+            var dim;
+            for (prop in points) {
+                for (dim in points[prop]) {
+                    points[prop][dim].forEach(function (p) {
+                        if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                            p.v = p.v.value;
                         }
-                    })
+                    });
                 }
             }
 
