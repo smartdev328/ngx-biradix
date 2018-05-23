@@ -60,23 +60,23 @@ angular.module('biradix.global').directive('propertyComps', function () {
                                 $scope.totals.sqft = ($scope.totals.sqft || 0) +  comp.survey.sqft * comp.units;
 
                                 if (typeof comp.survey.occupancy != 'undefined' && comp.survey.occupancy != null) {
-                                    $scope.totals.occupancy = ($scope.totals.occupancy || 0) + comp.survey.occupancy * 1;
-                                    $scope.totals.unitsOccupancy = ($scope.totals.unitsOccupancy || 0) +  1;
+                                    $scope.totals.occupancy = ($scope.totals.occupancy || 0) + comp.survey.occupancy * comp.units;
+                                    $scope.totals.unitsOccupancy = ($scope.totals.unitsOccupancy || 0) +  comp.units;
                                 }
 
                                 if (typeof comp.survey.leased != 'undefined' && comp.survey.leased != null) {
-                                    $scope.totals.leased = ($scope.totals.leased || 0) + comp.survey.leased * 1;
-                                    $scope.totals.unitsLeased = ($scope.totals.unitsLeased || 0) +  1;
+                                    $scope.totals.leased = ($scope.totals.leased || 0) + comp.survey.leased * comp.units;
+                                    $scope.totals.unitsLeased = ($scope.totals.unitsLeased || 0) +  comp.units;
                                 }
 
                                 if (typeof comp.atr_percent != 'undefined' && comp.atr_percent != null && comp.atr_percent > -1) {
-                                    $scope.totals.atr_percent = ($scope.totals.atr_percent || 0) + comp.atr_percent  * 1;
-                                    $scope.totals.unitsAtr = ($scope.totals.unitsAtr || 0) +  1;
+                                    $scope.totals.atr_percent = ($scope.totals.atr_percent || 0) + comp.atr_percent  * comp.units;
+                                    $scope.totals.unitsAtr = ($scope.totals.unitsAtr || 0) +  comp.units;
                                 }
 
                                 if (typeof comp.survey.renewal != 'undefined' && comp.survey.renewal != null) {
-                                    $scope.totals.renewal = ($scope.totals.renewal || 0) + comp.survey.renewal * 1;
-                                    $scope.totals.unitsRenewal = ($scope.totals.unitsRenewal || 0) +  1;
+                                    $scope.totals.renewal = ($scope.totals.renewal || 0) + comp.survey.renewal * comp.units;
+                                    $scope.totals.unitsRenewal = ($scope.totals.unitsRenewal || 0) +  comp.units;
                                 }
 
                                 $scope.totals.weeklytraffic = ($scope.totals.weeklytraffic || 0)+  comp.survey.weeklytraffic * comp.units;

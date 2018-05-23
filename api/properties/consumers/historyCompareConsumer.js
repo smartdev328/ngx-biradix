@@ -269,8 +269,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                 totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
 
                 if (p.occupancy) {
-                    totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * 1); // not weighted
-                    totalrow.occupancyCount = (totalrow.occupancyCount || 0) + 1; // not weighted
+                    totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits); // not weighted
+                    totalrow.occupancyCount = (totalrow.occupancyCount || 0) + p.totUnits; // not weighted
                 }
 
                 totalrow.sqft = (totalrow.sqft || 0) + (p.sqft * p.totUnits);
@@ -289,14 +289,14 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
 
                 if (p.leased !== '') {
                     // not weighted
-                    totalrow.leased = (totalrow.leased || 0) + (p.leased * 1);
-                    totalrow.leasedUnits = (totalrow.leasedUnits || 0) + 1;
+                    totalrow.leased = (totalrow.leased || 0) + (p.leased * p.totUnits);
+                    totalrow.leasedUnits = (totalrow.leasedUnits || 0) + p.totUnits;
                 }
 
                 if (p.atr_percent !== '') {
                     // not weighted
-                    totalrow.atr_percent = (totalrow.atr_percent || 0) + (p.atr_percent * 1);
-                    totalrow.atrUnits = (totalrow.atrUnits || 0) + 1;
+                    totalrow.atr_percent = (totalrow.atr_percent || 0) + (p.atr_percent * p.totUnits);
+                    totalrow.atrUnits = (totalrow.atrUnits || 0) + p.totUnits;
                 }
                 //}
 

@@ -412,20 +412,20 @@ module.exports = {
                 //Only Avergage if we want comps grouped
                 if (summary || show.averages) {
                     if (show.occupancy) {
-                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy');
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy', true);
                     }
                     if (show.leased) {
-                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased');
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased', true);
                     }
                     if (show.atr) {
-                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'atr');
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'atr', true);
                     }
                     if (show.traffic) {
-                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic');
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic', true);
                     }
 
                     if (show.leases) {
-                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leases');
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leases', true);
                     }
 
                     if (show.rent) {
