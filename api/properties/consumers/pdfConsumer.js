@@ -119,10 +119,6 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                 ];
 
                 pdfService.getPdf(data.transaction_id, url, cookies, function(err,buffer) {
-                    if (data.progressId) {
-                        ProgressService.setComplete(data.progressId);
-                    }
-
                     // console.log(data.propertyIds, " pdf reporting ended");
                     if (err) {
                         console.log("I failed render", err);

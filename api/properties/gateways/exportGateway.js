@@ -158,7 +158,11 @@ module.exports = {
                             redisClient.set("report-" + query.progressId, JSON.stringify({
                                 data,
                                 showFile: query.showFile
-                            }));
+                            }), function(err, res) {
+                                if (query.progressId) {
+                                    ProgressService.setComplete(query.progressId);
+                                }
+                            });
                             redisClient.expire("report-" + query.progressId, 300);
                         }
 
