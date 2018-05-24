@@ -138,20 +138,82 @@ module.exports = {
 
     },
     getSubjects: function(compid, criteria, callback) {
-
-        var ObjectId = require('mongoose').Types.ObjectId;
+        const ObjectId = require('mongoose').Types.ObjectId;
         if (!_.isArray(compid)) {
             compid = [compid];
         }
 
-        compid = _.map(compid, function(x) {return new ObjectId(x)})
+        compid = _.map(compid, function(x) {
+            return new ObjectId(x);
+        });
 
-        const query = PropertySchema.find({'comps.id': {$in:  compid }});
+        const query = PropertySchema.find({"comps.id": {$in: compid}});
         query.select(criteria.select);
 
         if (criteria.active) {
             query.where("active").equals(true);
         }
         query.exec(callback);
+    },
+    getCompsForGuest: function(compid, callback) {
+        const ObjectId = require("mongoose").Types.ObjectId;
+        compid = new ObjectId(compid);
+
+        let query = PropertySchema.find({"comps.id": {$in: [compid]}});
+        query.select("_id name survey.date comps.id");
+        query.where("active").equals(true);
+        let compids = [];
+        let temp;
+        query.exec((errors, subjects) => {
+            let properties = JSON.parse(JSON.stringify(subjects));
+            // Get all compids of all subjects
+            properties.forEach((p) => {
+                temp = p.comps.map((c) => c.id);
+
+                // Remove yourself as a comp for unique counts
+                _.remove(temp, (x) => x.toString() === p._id.toString());
+                compids = compids.concat(temp);
+            });
+
+            // Get unique counts of each comp occurrence for sorting
+            const counts = _.countBy(compids, (i) => i);
+
+            // Get Unique list
+            compids = _.uniq(compids);
+
+            // Convert to Objects
+            compids = _.map(compids, function(x) {
+                return new ObjectId(x);
+            });
+
+            // Get Comps of Subjects
+            query = PropertySchema.find({"comps.id": {$in: compids}});
+            query.select("_id name survey.date loc");
+            query.where("active").equals(true);
+            query.exec((errors, compsofSubjects) => {
+                let comps = JSON.parse(JSON.stringify(compsofSubjects));
+
+                // Find yourself to get geo loc
+                const me = comps.find((x) => x._id.toString() === compid.toString());
+
+                // Remove yourself and subjects we already found
+                _.remove(comps, (x) => {
+                    return x._id === me._id || _.find(properties, (y) => y._id === x._id);
+                });
+
+                // Join on number of subjects
+                comps.forEach((c) => {
+                   c.subjectCount = counts[c._id.toString()];
+                });
+                // TODO: add distance from me
+                // TODO: Sort by counts desc, dist asc
+                // TODO: grab up to 7
+                // TODO: loop through and make sure you have permissions to view them
+
+                // properties = properties.concat(comps);
+
+                callback(errors, properties);
+            });
+        });
     },
 };

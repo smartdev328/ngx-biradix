@@ -121,8 +121,8 @@ define([
                     $scope.canAccess = true;
                 }
 
-                $propertyService.getSubjects($scope.selectedProperty._id).then(function (response) {
-                    $scope.subjects = response.data.subjects;
+                $propertyService.getGuestComps($scope.selectedProperty._id).then(function (response) {
+                    $scope.subjects = response.data.comps;
                     _.remove($scope.subjects, function(x) {return x._id.toString() == $scope.selectedProperty._id.toString()})
                     $scope.localLoading = true;
                 }, function(error) {
