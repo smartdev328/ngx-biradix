@@ -191,7 +191,7 @@ module.exports = {
             });
 
             // Get Comps of Subjects
-            query = PropertySchema.find({"comps.id": {$in: compids}});
+            query = PropertySchema.find({_id: {$in: compids}});
             query.select("_id name survey.date loc");
             query.where("active").equals(true);
             query.exec((errors, compsofSubjects) => {
