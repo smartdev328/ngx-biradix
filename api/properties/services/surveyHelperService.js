@@ -34,7 +34,7 @@ module.exports = {
                 }
 
                 // Get subjects, exclude yourself
-                CompsService.getSubjects([propertyid], {select: "_id name"}, function(err, subjects) {
+                CompsService.getCompsForGuest(guestid, propertyid, function(err, subjects) {
                     _.remove(subjects, function(x) {
                         return x._id.toString() == propertyid;
                     });

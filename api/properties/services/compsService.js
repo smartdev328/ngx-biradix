@@ -155,7 +155,7 @@ module.exports = {
         }
         query.exec(callback);
     },
-    getCompsForGuest: function(compid, callback) {
+    getCompsForGuest: function(guestid, compid, callback) {
         const ObjectId = require("mongoose").Types.ObjectId;
         compid = new ObjectId(compid);
 
@@ -166,6 +166,10 @@ module.exports = {
         let temp;
         query.exec((errors, subjects) => {
             let properties = JSON.parse(JSON.stringify(subjects));
+
+            // Remove yourself as a subject just in case
+            _.remove(properties, (x) => x._id.toString() === compid.toString());
+
             // Get all compids of all subjects
             properties.forEach((p) => {
                 temp = p.comps.map((c) => c.id);
@@ -204,16 +208,47 @@ module.exports = {
                 // Join on number of subjects
                 comps.forEach((c) => {
                    c.subjectCount = counts[c._id.toString()];
+                   c.distance = getDistanceInMiles(me.loc, c.loc);
                 });
-                // TODO: add distance from me
-                // TODO: Sort by counts desc, dist asc
-                // TODO: grab up to 7
-                // TODO: loop through and make sure you have permissions to view them
 
-                // properties = properties.concat(comps);
+                // Sort by subjectCount asc, distance desc so we can pop off the top in reverse order
+                comps = _.sortByOrder(comps, ["subjectCount", "distance"], [true, false]);
+
+                let compToAdd;
+                // keep grabbing from list until we fill 7 total or run out
+                while (properties.length < 7 && comps.length > 0) {
+                    compToAdd = comps.pop();
+                    properties.push(compToAdd);
+
+                    // Remove and re-add view permissions to this property
+                    AccessService.deletePermission({executorid: guestid, resource: new ObjectId(compToAdd._id), type: "PropertyView"}, function(err, perm) {
+                        AccessService.createPermission({
+                            executorid: guestid,
+                            resource: new ObjectId(compToAdd._id),
+                            allow: true,
+                            type: "PropertyView",
+                        }, function() {});
+                    });
+                }
 
                 callback(errors, properties);
             });
         });
     },
+};
+const rad = function(x) {
+    return x * Math.PI / 180;
+};
+
+const getDistanceInMiles = function(p1, p2) {
+    const R = 6378137; // Earth’s mean radius in meter
+    const dLat = rad(p2[1] - p1[1]);
+    const dLong = rad(p2[0] - p1[0]);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(rad(p1[1])) * Math.cos(rad(p2[1])) *
+        Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // returns the distance in meter
+    // m/1,609.344=mi
+    return Math.round(d / 1609.344 * 10) / 10;
 };

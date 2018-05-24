@@ -6,12 +6,12 @@ var CompService = require('../services/compsService')
 module.exports = {
     init: function(Routes) {
         Routes.get("/:id/guestComps", function(req, res) {
-            AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
+            AccessService.canAccessResource(req.user, req.params.id, "PropertyManage", function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
 
-                CompService.getCompsForGuest(req.params.id, function (err, subjects) {
+                CompService.getCompsForGuest(req.user._id, req.params.id, function(err, subjects) {
                     if (err) {
                         return res.status(200).json({comps: null, errors: err});
                     }
