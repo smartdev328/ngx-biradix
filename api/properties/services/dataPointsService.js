@@ -484,15 +484,17 @@ module.exports = {
                 points = newpoints;
             }
 
-            //Remove unit counts when not averaging points
-            var dim;
+            // Remove unit counts when not averaging points
+            let dim;
             for (prop in points) {
                 for (dim in points[prop]) {
-                    points[prop][dim].forEach(function (p) {
-                        if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
-                            p.v = p.v.value;
-                        }
-                    });
+                    if (points[prop][dim].length) {
+                        points[prop][dim].forEach(function (p) {
+                            if (p.v && typeof p.v == "object" && typeof p.v.totalUnits == "number") {
+                                p.v = p.v.value;
+                            }
+                        });
+                    }
                 }
             }
 
