@@ -2,7 +2,7 @@
 var PropertySchema= require('../schemas/propertySchema')
 var async = require("async");
 var _ = require("lodash")
-var moment = require('moment');
+var moment = require('moment-timezone');
 var AuditService = require('../../audit/services/auditService')
 var AccessService = require('../../access/services/accessService')
 var guestQueueService = require('../../propertyusers/services/guestsQueueService')
@@ -160,7 +160,7 @@ module.exports = {
         compid = new ObjectId(compid);
 
         let query = PropertySchema.find({"comps.id": {$in: [compid]}});
-        query.select("_id name survey.date comps.id");
+        query.select("_id name survey.date comps.id loc");
         query.where("active").equals(true);
         let compids = [];
         let temp;
@@ -174,8 +174,6 @@ module.exports = {
             properties.forEach((p) => {
                 temp = p.comps.map((c) => c.id);
 
-                // Remove yourself as a comp for unique counts
-                _.remove(temp, (x) => x.toString() === p._id.toString());
                 compids = compids.concat(temp);
             });
 
@@ -197,13 +195,10 @@ module.exports = {
             query.exec((errors, compsofSubjects) => {
                 let comps = JSON.parse(JSON.stringify(compsofSubjects));
 
-                // Find yourself to get geo loc
-                const me = comps.find((x) => x._id.toString() === compid.toString());
-
-                // Remove yourself and subjects we already found
-                _.remove(comps, (x) => {
-                    return x._id === me._id || _.find(properties, (y) => y._id === x._id);
-                });
+                // Remove yourself
+                const me =_.remove(comps, (x) => {
+                    return x._id.toString() === compid.toString();
+                })[0];
 
                 // Join on number of subjects
                 comps.forEach((c) => {
@@ -215,10 +210,19 @@ module.exports = {
                 comps = _.sortByOrder(comps, ["subjectCount", "distance"], [true, false]);
 
                 let compToAdd;
+                let final = [];
                 // keep grabbing from list until we fill 7 total or run out
-                while (properties.length < 7 && comps.length > 0) {
+                while (final.length < 7 && comps.length > 0) {
                     compToAdd = comps.pop();
-                    properties.push(compToAdd);
+
+                    // Set sort date to day only in pacific time, put in back if no sort date
+                    if (compToAdd.survey && compToAdd.survey.date) {
+                        compToAdd.date = new Date(moment(compToAdd.survey.date).tz("America/Los_Angeles").format("YYYY-MM-DD"));
+                    } else {
+                        compToAdd.date = new Date("1/1/1980");
+                    }
+
+                    final.push(compToAdd);
 
                     // Remove and re-add view permissions to this property
                     AccessService.deletePermission({executorid: guestid, resource: new ObjectId(compToAdd._id), type: "PropertyView"}, function(err, perm) {
@@ -231,7 +235,9 @@ module.exports = {
                     });
                 }
 
-                callback(errors, properties);
+                final = _.sortByOrder(final, ["date", "name"], [false, true]);
+
+                callback(errors, final);
             });
         });
     },

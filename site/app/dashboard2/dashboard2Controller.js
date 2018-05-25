@@ -74,10 +74,10 @@ define([
                     $scope.selectedProperty = $scope.myProperties[0];
                 } else {
                     $scope.selectedProperty = _.find($scope.myProperties, function (x) {
-                        return x._id.toString() == id
+                        return x._id.toString() == id;
                     })
 
-                    //if you lost access to your saved property, update your settings
+                    // if you lost access to your saved property, update your settings
                     if (!$scope.selectedProperty ) {
                         $scope.selectedProperty = $scope.myProperties[0];
                         $scope.changeProperty();
@@ -86,25 +86,25 @@ define([
                 }
 
                 if ($scope.selectedProperty) {
-                    if($stateParams.id) {
+                    if ($stateParams.id) {
                         $scope.changeProperty();
                     } else {
-                        $scope.loadProperty($scope.selectedProperty._id)
+                        $scope.loadProperty($scope.selectedProperty._id);
                     }
                 } else {
                     $scope.localLoading = true;
                 }
-
-            }, function (error) {
+            }, function(error) {
                 if (error.status == 401) {
                     $rootScope.logoff();
                     return;
                 }
 
-                toastr.error('Unable to access the system at this time. Please contact an administrator');
+                toastr.error("Unable to access the system at this time. Please contact an administrator");
                 $scope.localLoading = true;
-            })
-        }
+            });
+        };
+
         $scope.loadProperty = function(defaultPropertyId) {
             if (defaultPropertyId) {
 
