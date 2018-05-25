@@ -312,7 +312,7 @@ module.exports = {
 
                         bedroomBeakdown.forEach(function (b) {
                             points[prop][b] = DataPointsHelperService.normailizePoints(points[prop][b], offset, dr, true, show.dontExtrapolate);
-                        })
+                        });
                     }
                 }
 
@@ -360,7 +360,7 @@ module.exports = {
 
                     bedroomBeakdown.forEach(function(b) {
                         points[prop][b] = DataPointsHelperService.objectToArray(points[prop][b]);
-                    })
+                    });
                 }
 
                 if (!show.dontExtrapolate) {
@@ -369,6 +369,9 @@ module.exports = {
                     }
                     if (show.leased) {
                         points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].leased, true);
+                    }
+                    if (show.renewal) {
+                        points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].renewal, true);
                     }
                     if (show.atr) {
                         points[prop].atr = DataPointsHelperService.extrapolateMissingPoints(points[prop].atr, true);
@@ -413,9 +416,9 @@ module.exports = {
             }
 
             if (summary || bedrooms == -2 || show.averages) {
-                newpoints = {averages:{}}
+                newpoints = {averages: {}}
 
-                //Only Avergage if we want comps grouped
+                // Only Avergage if we want comps grouped
                 if (summary || show.averages) {
                     if (show.occupancy) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy', true);
@@ -423,17 +426,18 @@ module.exports = {
                     if (show.leased) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased', true);
                     }
+                    if (show.renewal) {
+                        DataPointsHelperService.getSummary(points, subject._id, newpoints, 'renewal', true);
+                    }
                     if (show.atr) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'atr', true);
                     }
                     if (show.traffic) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic', true);
                     }
-
                     if (show.leases) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leases', true);
                     }
-
                     if (show.rent) {
                         DataPointsHelperService.getSummary(points, subject._id, newpoints, 'rent', true);
                     }

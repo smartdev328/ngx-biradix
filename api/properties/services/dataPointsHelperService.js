@@ -98,6 +98,8 @@ module.exports = {
                 ret = s.occupancy;
             } else if (scale == "leased") {
                 ret = s.leased;
+            } else if (scale == "atr") {
+                ret = s.atr_percent;
             } else if (scale == "renewal") {
                 ret = s.renewal;
             } else if (scale == "leases") {
@@ -105,9 +107,9 @@ module.exports = {
             } else if (scale == "traffic") {
                 ret = s.weeklytraffic;
             } else {
-                ret = _.sum(fps, function (x) {
+                ret = _.sum(fps, function(x) {
                     return (x.rent - x.concessions / 12 ) * x.units / tot
-                })
+                });
             }
 
             if (scale == "nersqft" || scale == "rentsqft" || scale == "runratesqft") {
