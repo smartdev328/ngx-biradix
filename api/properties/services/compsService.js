@@ -225,14 +225,7 @@ module.exports = {
                     final.push(compToAdd);
 
                     // Remove and re-add view permissions to this property
-                    AccessService.deletePermission({executorid: guestid, resource: new ObjectId(compToAdd._id), type: "PropertyView"}, function(err, perm) {
-                        AccessService.createPermission({
-                            executorid: guestid,
-                            resource: new ObjectId(compToAdd._id),
-                            allow: true,
-                            type: "PropertyView",
-                        }, function() {});
-                    });
+                    addPermission(guestid, compToAdd._id);
                 }
 
                 final = _.sortByOrder(final, ["date", "name"], [false, true]);
@@ -258,3 +251,14 @@ const getDistanceInMiles = function(p1, p2) {
     // m/1,609.344=mi
     return Math.round(d / 1609.344 * 10) / 10;
 };
+
+const addPermission = function(guestid, propertyid) {
+    AccessService.deletePermission({executorid: guestid, resource: propertyid, type: "PropertyView"}, function(err, perm) {
+        AccessService.createPermission({
+            executorid: guestid,
+            resource: propertyid,
+            allow: true,
+            type: "PropertyView",
+        }, function() {});
+    });
+}
