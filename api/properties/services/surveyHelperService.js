@@ -8,7 +8,7 @@ const EmailService = require("../../business/services/emailService");
 const AuditService = require("../../audit/services/auditService");
 
 module.exports = {
-    emailGuest: function(operator, context, base, propertyid, guestid, callback) {
+    emailGuest: function(operator, context, base, propertyid, guestid, subjectid, callback) {
         PropertySchema.find({_id: propertyid}, function(err, properties) {
             if (!properties || properties.length != 1) {
                 return callback([{msg: "Unable to locate Property. Please contact the Administrator"}]);
@@ -34,7 +34,7 @@ module.exports = {
                 }
 
                 // Get subjects, exclude yourself
-                CompsService.getCompsForGuest(guestid, propertyid, function(err, subjects) {
+                CompsService.getCompsForGuest(guestid, propertyid, subjectid, function(err, subjects) {
                     _.remove(subjects, function(x) {
                         return x._id.toString() == propertyid;
                     });
@@ -96,6 +96,7 @@ module.exports = {
                                     id: operator.orgs[0]._id,
                                     name: operator.orgs[0].name,
                                 },
+                                subjectid: subjectid,
                             }, function() {
                                 callback(null);
                             });

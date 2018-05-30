@@ -180,10 +180,6 @@ angular.module('biradix.global').directive('propertyComps', function () {
                     return trusted[content] || (trusted[content] = $sce.trustAsHtml(content));
                 }
 
-                $scope.marketSurvey = function (compid) {
-                    $scope.$root.marketSurvey(compid)
-                }
-
                 $scope.toggleOpen = function(comp) {
                     comp.open = !comp.open;
                 }

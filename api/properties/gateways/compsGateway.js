@@ -1,7 +1,8 @@
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
 var saveCompsService = require('../services/saveCompsService')
-var CompService = require('../services/compsService')
+var CompService = require('../services/compsService');
+const _ = require("lodash");
 
 module.exports = {
     init: function(Routes) {
@@ -11,7 +12,11 @@ module.exports = {
                     return res.status(401).json("Unauthorized request");
                 }
 
-                CompService.getCompsForGuest(req.user._id, req.params.id, function(err, subjects) {
+                let guestStatComp = _.find(req.user.guestStats, function(x) {
+                    return x.propertyid.toString() === req.params.id.toString();
+                });
+
+                CompService.getCompsForGuest(req.user._id, req.params.id, guestStatComp.sender.subjectid, function(err, subjects) {
                     if (err) {
                         return res.status(200).json({comps: null, errors: err});
                     }

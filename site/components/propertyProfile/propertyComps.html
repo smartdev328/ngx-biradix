@@ -278,7 +278,7 @@
                         <span class="caret"></span>
                     </button>
                     <ul role="menu" ng-class="{'dropdown-menu': true, 'skinny': true, 'dropdown-menu-right' : true, 'dropup-menu-right' : $index == comps.length - 1}">
-                        <li ng-if="comp.canSurvey"><a href ng-click="marketSurvey(comp._id)"
+                        <li ng-if="comp.canSurvey"><a href ng-click="$root.marketSurvey(comp._id, null, {subjectid: comps[0]._id})"
                                                       tooltip-placement="left"
                                                       uib-tooltip="{{surveyTooltip(comp)}}"><i class="fa fa-edit fa-fw"></i> New Property Survey</a></li>
 
