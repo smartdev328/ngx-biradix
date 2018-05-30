@@ -217,7 +217,7 @@ module.exports = {
                 });
 
                 // Sort by subjectCount asc, distance desc so we can pop off the top in reverse order
-                comps = _.sortByOrder(comps, ["keep", "subjectCount", "distance"], [false, true, false]);
+                comps = _.sortByOrder(comps, ["keep", "subjectCount", "distance"], [true, true, false]);
 
                 let compToAdd;
                 let final = [];
