@@ -52,8 +52,16 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             }).error(function (response) {
                 return response;
             });
-        }
+        };
 
+    fac.getGuestComps = function (propertyid) {
+        return $http.get('/api/1.0/properties/' + propertyid+ '/guestComps?bust=' + (new Date()).getTime(), {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
         fac.getAmenityCounts = function () {
             return $http.get('/api/1.0/properties/getAmenityCounts?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
@@ -63,8 +71,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.emailGuest = function (propertyid, guestid) {
-            return $http.get('/api/1.0/properties/' + propertyid + '/survey/guests/' + guestid + '/email?bust=' + (new Date()).getTime(), {
+        fac.emailGuest = function (propertyid, guestid, subjectid) {
+            return $http.post('/api/1.0/properties/' + propertyid + '/survey/guests/' + guestid + '/email?bust=' + (new Date()).getTime(), {subjectid: subjectid}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

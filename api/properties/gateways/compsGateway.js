@@ -1,10 +1,32 @@
 var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
 var saveCompsService = require('../services/saveCompsService')
-var CompService = require('../services/compsService')
+var CompService = require('../services/compsService');
+const _ = require("lodash");
 
 module.exports = {
     init: function(Routes) {
+        Routes.get("/:id/guestComps", function(req, res) {
+            AccessService.canAccessResource(req.user, req.params.id, "PropertyManage", function(canAccess) {
+                if (!canAccess) {
+                    return res.status(401).json("Unauthorized request");
+                }
+
+                let guestStatComp = _.find(req.user.guestStats, function(x) {
+                    return x.propertyid.toString() === req.params.id.toString();
+                });
+
+                CompService.getCompsForGuest(req.user._id, req.params.id, guestStatComp.sender.subjectid, function(err, subjects) {
+                    if (err) {
+                        return res.status(200).json({comps: null, errors: err});
+                    }
+                    else {
+                        return res.status(200).json({comps: subjects});
+                    }
+                });
+            });
+        });
+
         Routes.get('/:id/subjects', function (req, res) {
             AccessService.canAccessResource(req.user,req.params.id,'PropertyManage', function(canAccess) {
                 if (!canAccess) {

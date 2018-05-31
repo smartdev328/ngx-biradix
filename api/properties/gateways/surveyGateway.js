@@ -7,13 +7,13 @@ const _ = require("lodash");
 
 module.exports = {
     init: function(Routes) {
-        Routes.get("/:id/survey/guests/:guestid/email", function(req, res) {
+        Routes.post("/:id/survey/guests/:guestid/email", function(req, res) {
             AccessService.canAccessResource(req.user, req.params.id, ["PropertyManage", "CompManage"], function(canAccess) {
                 if (!canAccess) {
                     return res.status(401).json("Unauthorized request");
                 }
 
-                surveyHelperService.emailGuest(req.user, req.context, req.basePath, req.params.id, req.params.guestid, function(errs) {
+                surveyHelperService.emailGuest(req.user, req.context, req.basePath, req.params.id, req.params.guestid, req.body.subjectid, function(errs) {
                     return res.status(200).json({errors: errs});
                 });
             });

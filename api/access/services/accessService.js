@@ -266,6 +266,8 @@
             newpermission.type = permission.type;
             newpermission.direct = permission.direct;
 
+            // console.log(permission);
+
             newpermission.save(function (err, obj) {
                 if (err) {
                     modelErrors.push({msg: 'Unexpected Error. Unable to create membership: ' + err});
