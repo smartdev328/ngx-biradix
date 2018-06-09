@@ -71,6 +71,10 @@ define([
                 $scope.search.active = $scope.showActive;
             }
 
+            if ($scope.showInactive) {
+                $scope.show.active = true;
+            }
+
             $scope.resetPager();
         };
 
