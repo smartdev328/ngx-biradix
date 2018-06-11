@@ -169,9 +169,8 @@ module.exports = {
                     // if (debug) {
                     //     console.log(points[d])
                     // }
-
-                    if (points[d] != null) {
-                        rangePoints.push(points[d])
+                    if (points[d] != null && points[d].value != null) {
+                        rangePoints.push(points[d]);
                     }
                 }
             }
