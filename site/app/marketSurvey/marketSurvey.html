@@ -128,7 +128,7 @@
 
         <div ng-if="showGuests">
             <div ng-class="{'radio' : true, disabled: false}">
-                <label style="font-weight:bold"><input type="radio" ng-model="swap.who" value="manual"> Manual Property Survey</label> <i style="font-size:12px;"> - Last Survey: <a href style="font-size:12px;" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover-html="showDateHover(survey.date)">{{showDate(survey.date)}}</a></i><Br>
+                <label style="font-weight:bold"><input type="radio" ng-model="swap.who" value="manual"> Manual Property Survey</label> <i style="font-size:12px;"> - Last Survey: <a href style="font-size:12px;" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover-html="showDateHover(survey.survey_date)">{{showDate(survey.survey_date)}}</a></i><Br>
             </div>
             <div ng-class="{'radio' : true}" style="padding-top:10px">
                 <label style="font-weight:bold;"><input type="radio" ng-model="swap.who" value="swap"> Send SurveySwap</label> <i style="font-size:12px;"> - Last Emailed: <a href style="font-size:12px;" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover-html="showDateHover(swap.selectedGuest.lastEmailed)">{{showDate(swap.selectedGuest.lastEmailed)}}</a></i><Br>

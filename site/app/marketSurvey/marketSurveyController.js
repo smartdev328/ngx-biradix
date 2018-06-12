@@ -99,7 +99,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         $scope.survey.weeklyleases = $scope.survey.weeklyleases || "";
 
                         if ($scope.property.survey && $scope.property.survey.date) {
-                            $scope.survey.date = $scope.property.date;
+                            $scope.survey.survey_date = $scope.property.date;
                         }
 
                         if (!$scope.editableSurveyId && $scope.property.survey) {
@@ -119,7 +119,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                     $scope.survey.weeklytraffic = s.weeklytraffic
                                     $scope.survey.weeklyleases = s.weeklyleases
                                     $scope.survey.notes = s.notes;
-                                    $scope.survey.date = s.date;
+                                    $scope.survey.survey_date = s.date;
                                     $scope.settings.showNotes = (s.notes || "") != "";
 
                                     var removeFloorplans = [];
@@ -301,7 +301,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                             }
                                         })
 
-                                        $scope.swap.who = $cookieSettingsService.getSurveyGuestOption($scope.property._id);;
+                                        $scope.swap.who = $cookieSettingsService.getSurveyGuestOption($scope.property._id);
                                         $scope.swap.selectedGuest = $scope.swap.guests[0];
                                         $scope.showGuests();
                                     }
