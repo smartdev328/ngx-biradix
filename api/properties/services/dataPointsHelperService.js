@@ -176,13 +176,11 @@ module.exports = {
             }
 
             if (rangePoints.length > 0) {
-
                 if (weighted) {
                     totalUnits = _.sum(rangePoints, function(x) {return x.totalUnits});
-                    //weighte average value and totalUnits
+                    // weighte average value and totalUnits
                     ret[monday] = {value: _.sum(rangePoints, function(x) {return x.value * x.totalUnits}) / totalUnits, totalUnits: totalUnits / rangePoints.length};
-                }
-                else {
+                } else {
                     ret[monday] = _.sum(rangePoints) / rangePoints.length;
                 }
 
@@ -191,45 +189,42 @@ module.exports = {
                 }
             }
 
-
             monday = monday - WEEK;
             nextMonday = nextMonday - WEEK;
         }
 
-        //console.log(dr.end,moment.utc(dr.end).format(),moment.utc(dr.end).add(offset, "minute").format(),moment.utc(dr.end).add(offset, "minute").startOf("day").format());
+        // console.log(dr.end,moment.utc(dr.end).format(),moment.utc(dr.end).add(offset, "minute").format(),moment.utc(dr.end).add(offset, "minute").startOf("day").format());
 
         if (!dontExtrapolate) {
-            var today = parseInt(moment.utc(dr.end).add(offset, "minute").startOf("day").subtract(offset, "minute").format('x'))
+            const today = parseInt(moment.utc(dr.end).add(offset, "minute").startOf("day").subtract(offset, "minute").format('x'))
 
             ret[today] = first;
         }
 
         return ret;
     },
-    extrapolateMissingPoints: function (pts, weighted) {
-
-        var Count = pts.length;
+    extrapolateMissingPoints: function(pts, weighted) {
+        let Count = pts.length;
 
         if (Count < 2) {
             return pts;
         }
 
-        var i = 0;
-        var Current;
-        var Last = null;
-        var Delta = 0;
+        let i = 0;
+        let Current;
+        let Last = null;
+        let Delta = 0;
 
         while (i < Count) {
             Current = pts[i];
             if (Last != null && Current.d - Last.d > WEEK) {
-
                 if (weighted) {
                     Delta = (Current.v.value - Last.v.value) / (Current.d - Last.d) * WEEK;
                     Current =
                     {
                         d: Last.d + WEEK,
                         v: {value: Last.v.value + Delta, totalUnits: Last.v.totalUnits},
-                        f: true
+                        f: true,
                     };
                 } else {
                     Delta = (Current.v - Last.v) / (Current.d - Last.d) * WEEK;
@@ -237,10 +232,9 @@ module.exports = {
                     {
                         d: Last.d + WEEK,
                         v: Last.v + Delta,
-                        f: true
+                        f: true,
                     };
                 }
-
 
                 pts.splice(i, 0, Current);
 
@@ -255,50 +249,59 @@ module.exports = {
         return pts;
     },
     objectToArray: function (obj) {
-        var ar = [];
-
-        for (var k in obj) {
+        let ar = [];
+        let k;
+        for (k in obj) {
             ar.push({d: parseInt(k), v: obj[k]});
         }
 
-        ar = _.sortBy(ar, function (x) {
-            return x.d
+        ar = _.sortBy(ar, function(x) {
+            return x.d;
         });
 
         return ar;
     },
     getSummary: function(points, subjectid, newpoints, dimension, weighted) {
-        newpoints['averages'][dimension] = [];
-        for (var prop in points) {
-            if (prop == subjectid) {
+        newpoints["averages"][dimension] = [];
+        let prop;
+        for (prop in points) {
+            if (prop.toString() === subjectid.toString()) {
                 newpoints[prop] = points[prop];
             } else {
-                newpoints['averages'][dimension] = newpoints['averages'][dimension].concat(points[prop][dimension]);
+                newpoints["averages"][dimension] = newpoints["averages"][dimension].concat(points[prop][dimension]);
             }
         }
 
-        var total;
-        var g = _.chain(newpoints['averages'][dimension]).groupBy("d").map(function (v, k) {
+        let total;
+        const g = _.chain(newpoints["averages"][dimension]).groupBy("d").map(function(v, k) {
             total = v.length;
             if (weighted) {
-                total = _.sum(v, function (x) {
-                    return x.v.totalUnits
-                })
+                total = _.sum(v, function(x) {
+                    // return x.c.d; // this causes an error to test
+                    if (x.v && x.v.totalUnits) {
+                        return x.v.totalUnits;
+                    } else {
+                        return 0;
+                    }                    
+                });
             }
 
             return {
                 d: parseInt(k),
-                v: _.sum(v, function (x) {
+                v: _.sum(v, function(x) {
                     if (weighted) {
-                        return x.v.value * x.v.totalUnits
+                        if (x.v && x.v.totalUnits) {
+                            return x.v.value * x.v.totalUnits;
+                        } else {
+                            return 0;
+                        }
                     } else {
-                        return x.v
+                        return x.v;
                     }
-
-                }) / total
-            }
+                }) / total,
+            };            
         }).value();
 
-        newpoints['averages'][dimension] = g;
-    }
-}
+        newpoints["averages"][dimension] = g;
+    },
+};
