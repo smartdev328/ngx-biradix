@@ -16,7 +16,11 @@ module.exports = {
                     return x.propertyid.toString() === req.params.id.toString();
                 });
 
-                CompService.getCompsForGuest(req.user._id, req.params.id, guestStatComp.sender.subjectid, function(err, subjects) {
+                let requestor = null;
+                if (guestStatComp.sender) {
+                    requestor = guestStatComp.sender.subjectid;
+                }
+                CompService.getCompsForGuest(req.user._id, req.params.id, requestor, function(err, subjects) {
                     if (err) {
                         return res.status(200).json({comps: null, errors: err});
                     }

@@ -98,6 +98,10 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || "";
                         $scope.survey.weeklyleases = $scope.survey.weeklyleases || "";
 
+                        if ($scope.property.survey && $scope.property.survey.date) {
+                            $scope.survey.date = $scope.property.date;
+                        }
+
                         if (!$scope.editableSurveyId && $scope.property.survey) {
                             $scope.editableSurveyId = $scope.property.survey.id;
                         }
@@ -115,6 +119,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                     $scope.survey.weeklytraffic = s.weeklytraffic
                                     $scope.survey.weeklyleases = s.weeklyleases
                                     $scope.survey.notes = s.notes;
+                                    $scope.survey.date = s.date;
                                     $scope.settings.showNotes = (s.notes || "") != "";
 
                                     var removeFloorplans = [];
@@ -277,7 +282,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
-                if (!$scope.editMode && !$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
+                if (!$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
                             $userService.search({ids: response.data.users, select: "first last email bounceReason guestStats"}).then(function (response) {
                                     $scope.swap.guests = response.data.users;
@@ -1001,7 +1006,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 } else {
                     $scope.sort = "-" + field;
                 }
-
             };
 
             $scope.delete = function() {
@@ -1026,4 +1030,20 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     $("button.contact-submit").prop("disabled", false);
                 });
             };
+
+            $scope.showDate = function(date) {
+              if (!date) {
+                  return "Never";
+              } else {
+                  return moment(date).fromNow();
+              }
+            };
+
+        $scope.showDateHover = function(date) {
+            if (!date) {
+                return "Never";
+            } else {
+                return moment(date).format("MM/DD/YYYY h:mm a");
+            }
+        };
     }]);

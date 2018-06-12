@@ -208,16 +208,18 @@ module.exports = {
 
                    // If we have the requestor subject id, make sure we keep it, otherwise keep all subject ids
                    if (subjectid) {
-                       c.keep = subjectid.toString() === c._id.toString();
+                       c.requestor = subjectid.toString() === c._id.toString();
                    } else {
-                       c.keep =!!_.find(subjects, (y) => {
-                          return y._id.toString() === c._id.toString();
-                       });
+                       c.requestor = false;
                    }
+
+                    c.subject =!!_.find(subjects, (y) => {
+                        return y._id.toString() === c._id.toString();
+                    });
                 });
 
                 // Sort by subjectCount asc, distance desc so we can pop off the top in reverse order
-                comps = _.sortByOrder(comps, ["keep", "subjectCount", "distance"], [true, true, false]);
+                comps = _.sortByOrder(comps, ["requestor", "subject", "subjectCount", "distance"], [true, true, true, false]);
 
                 let compToAdd;
                 let final = [];

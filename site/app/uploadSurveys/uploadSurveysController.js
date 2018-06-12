@@ -224,20 +224,19 @@ define([
                             return days < 4;
                         })
 
-                        if (inrange) {
-                            warnings.push(survey.date + ': Duplicate Date / Not Added');
+                        if (/* inrange */ false) {
+                            warnings.push(survey.date + ": Duplicate Date / Not Added");
                             callbackp();
                         }
                         else {
-
                             $propertyService.createSurvey(property._id, survey).then(
                                 function(resp) {
-
                                     if (resp.data.errors && resp.data.errors.length > 0) {
-                                        errors.push(survey.date + ': ' + resp.data.errors[0].msg);
+                                        errors.push(survey.date + ": " + resp.data.errors[0].msg);
                                     }
                                     else {
-                                        successes.push(survey.date + ' added successfully');
+                                        dates.push(survey.date);
+                                        successes.push(survey.date + " added successfully");
                                     }
                                     callbackp();
                             }, function(resp) {

@@ -32,21 +32,23 @@ Routes.post('/send', function (req, res) {
     }
 
     if (modelErrors.length > 0) {
-        return res.status(200).json({success:false, errors: modelErrors});
+        return res.status(200).json({success: false, errors: modelErrors});
     }
 
     OrgService.read(function (err, orgs) {
-        var biradix = _.find(orgs, function(x) {return x.isDefault === true});
-        var logo = base + "/images/organizations/" + biradix.logoBig;
-        var email = {
+        const biradix = _.find(orgs, function(x) {
+            return x.isDefault === true;
+        });
+        const logo = base + "/images/organizations/" + biradix.logoBig;
+        const email = {
+            category: "Customer Support Request",
             from: req.body.name + " <" + req.body.email +">",
             to: "support@biradix.com",
             logo: logo,
             subject: req.body.subject,
-            template: 'contact.html',
-            templateData: req.body
-
-        }
+            template: "contact.html",
+            templateData: req.body,
+        };
 
        BizEmailService.send(email, function(emailError, status) {
 

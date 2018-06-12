@@ -69,52 +69,68 @@ module.exports = {
             return x.units
         });
 
-        var ret;
+        let ret;
 
         if (tot > 0) {
-
             if (scale == "rent" || scale == "rentsqft") {
-                ret = _.sum(fps, function (x) {
-                    return x.rent * x.units / tot
-                })
-
+                ret = _.sum(fps, function(x) {
+                    return x.rent * x.units / tot;
+                });
             } else if (scale == "runrate") {
-                ret = _.sum(fps, function (x) {
-                    return (x.rent - (x.concessionsMonthly || 0)) * x.units / tot
-                })
+                ret = _.sum(fps, function(x) {
+                    return (x.rent - (x.concessionsMonthly || 0)) * x.units / tot;
+                });
             } else if (scale == "concessions") {
-                ret = _.sum(fps, function (x) {
-                    return x.concessions * x.units / tot
-                })
+                ret = _.sum(fps, function(x) {
+                    return x.concessions * x.units / tot;
+                });
             } else if (scale == "concessionsMonthly") {
-                ret = _.sum(fps, function (x) {
-                    return (x.concessionsMonthly || 0) * x.units / tot
-                })
+                ret = _.sum(fps, function(x) {
+                    return (x.concessionsMonthly || 0) * x.units / tot;
+                });
             } else if (scale == "concessionsOneTime") {
-                ret = _.sum(fps, function (x) {
-                    return (x.concessionsOneTime || 0) * x.units / tot
-                })
+                ret = _.sum(fps, function(x) {
+                    return (x.concessionsOneTime || 0) * x.units / tot;
+                });
             } else if (scale == "occupancy") {
                 ret = s.occupancy;
+                if (typeof s.occupancy === "undefined" || s.occupancy === null) {
+                    tot = 0;
+                }
             } else if (scale == "leased") {
                 ret = s.leased;
+                if (typeof s.leased === "undefined" || s.leased === null) {
+                    tot = 0;
+                }
             } else if (scale == "atr") {
                 ret = s.atr_percent;
+                if (typeof s.atr_percent === "undefined" || s.atr_percent === null) {
+                    tot = 0;
+                }
             } else if (scale == "renewal") {
                 ret = s.renewal;
+                if (typeof s.renewal === "undefined" || s.renewal === null) {
+                    tot = 0;
+                }
             } else if (scale == "leases") {
                 ret = s.weeklyleases;
+                if (typeof s.weeklyleases === "undefined" || s.weeklyleases === null) {
+                    tot = 0;
+                }
             } else if (scale == "traffic") {
                 ret = s.weeklytraffic;
+                if (typeof s.weeklytraffic === "undefined" || s.weeklytraffic === null) {
+                    tot = 0;
+                }
             } else {
                 ret = _.sum(fps, function(x) {
-                    return (x.rent - x.concessions / 12 ) * x.units / tot
+                    return (x.rent - x.concessions / 12 ) * x.units / tot;
                 });
             }
 
             if (scale == "nersqft" || scale == "rentsqft" || scale == "runratesqft") {
-                var sqft = _.sum(fps, function (x) {
-                    return x.sqft * x.units / tot
+                const sqft = _.sum(fps, function(x) {
+                    return x.sqft * x.units / tot;
                 })
                 ret = ret / sqft;
             }
@@ -153,9 +169,8 @@ module.exports = {
                     // if (debug) {
                     //     console.log(points[d])
                     // }
-
-                    if (points[d] != null) {
-                        rangePoints.push(points[d])
+                    if (points[d] != null && points[d].value != null) {
+                        rangePoints.push(points[d]);
                     }
                 }
             }

@@ -371,7 +371,7 @@ module.exports = {
                         points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].leased, true);
                     }
                     if (show.renewal) {
-                        points[prop].leased = DataPointsHelperService.extrapolateMissingPoints(points[prop].renewal, true);
+                        points[prop].renewal = DataPointsHelperService.extrapolateMissingPoints(points[prop].renewal, true);
                     }
                     if (show.atr) {
                         points[prop].atr = DataPointsHelperService.extrapolateMissingPoints(points[prop].atr, true);
