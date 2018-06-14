@@ -1,3 +1,6 @@
+<style>
+    .reallylong {font-size:12px}
+</style>
 <h2 class="mainheader">Metrics
     <hr>
 </h2>
@@ -85,5 +88,26 @@
         <br clear="all">
         <time-series options="responseData"></time-series>
         <h4>Total Responses (in date range): {{widgets.response.total | number: 0}}</h4>
+    </div>
+</div>
+
+<div class="panel panel-info hidden-print">
+    <div class="panel-heading">SurveySwap Comp Aggregates
+        <i class="fa fa-question-circle"
+           style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
+           popover-trigger="'mouseenter'"
+           popover-placement="top"
+           popover-append-to-body="true"
+           uib-popover-html="'<div class=reallylong><b>Note:</b> A comp is defined as a property that is currently setup as comp of a subject property and is not assigned to an organization.<Br><Br><B>SurveySwap Comps Configured:</B> Shows # of comps that have at least one contact setup.<Br><Br><B>SurveySwap Comps Configured %:</B> (SurveySwap Comps Configured) / (SurveySwap Comps Total). Show SurveySwap configured comps relative to total comps. Indicator of how many comps have showed interest in SurveySwap.<Br><Br><B>SurveySwap Comps Requesting:</B> Shows # of comps that have been sent a SurveySwap request in the last two weeks.<Br><Br><B>SurveySwap Comps Requested %:</B> (SurveySwap Comps Requesting) / (SurveySwap Comps Configured). Show SurveySwap sending comps relative to the SurveySwap configured. Indicator of how many comps are actively sending SurveySwap requests after being configured.<Br><Br><B>SurveySwap Comps Responding:</B> Shows # of comps that have been responding to SurveySwap requests (contact completed survey) in the last two weeks.<Br><Br><B>SurveySwap Comps Responding %:</B> (SurveySwap Comps Responding) / (SurveySwap Comps Requesting). Shows SurveySwap responding comps relative to the SurveySwap requesting. Indicator of how many comps are responding to SurveySwap requests relative to SurveySwap comps that are sending requests.<Br><Br><B>Total Comps:</B> Shows # of comps on the entire platform.</div>'"
+
+        ></i>
+    </div>
+    <div class="panel-body">
+        <select class="form-control input-sm pull-right" ng-model="widgets.comps.type" style="width:200px"
+                ng-options="item.name for item in widgets.comps.types"
+                ng-change="runComps()">
+        </select>
+        <br clear="all">
+        <time-series options="compsData"></time-series>
     </div>
 </div>

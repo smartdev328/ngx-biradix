@@ -38,6 +38,13 @@ define([
                 organizationItems: [],
             };
 
+            var types = [{name: "Configured Comps", one: "comps_configured", two: null},
+                {name: "Configured % (Configured / Total)", one: "comps_configured", two: "comps_total"},
+                {name: "Requesting Comps", one: "comps_requesting", two: null},
+                {name: "Requesting % (Requesting / Configured)", one: "comps_requesting", two: "comps_configured"},
+                {name: "Responding Comps", one: "comps_responding", two: null},
+                {name: "Responding % (Responding / Requesting)", one: "comps_responding", two: "comps_requesting"},
+                {name: "Total Comps", one: "comps_total", two: null}];
             $scope.widgets = {
                 response: {
                     breakdown: ["Minutes", "Hours"],
@@ -46,6 +53,10 @@ define([
                 },
                 requests: {
                     total: 0,
+                },
+                comps: {
+                    types: types,
+                    type: types[6],
                 },
             };
 
@@ -75,8 +86,80 @@ define([
                 $scope.runSurveySwapRequestedByOrganization();
                 $scope.runSurveySwapRequestedByWeekday();
                 $scope.runSurveySwapResponded();
+                $scope.runComps();
             };
 
+            $scope.runComps = function() {
+                var parameters = {
+                    analyses: {
+                        one: {
+                            analysis_type: "average",
+                            target_property: $scope.widgets.comps.type.one,
+                        },
+                        two: {
+                            analysis_type: "average",
+                            target_property: $scope.widgets.comps.type.two,
+                        },
+                    },
+                    event_collection: "SurveySwap Totals",
+                    interval: $keenService.daterangeToInterval($scope.options.daterange),
+                    timeframe: $keenService.daterangeToTtimeframe($scope.options.daterange),
+                    filters: [
+                        {
+                            property_name: "env",
+                            operator: "eq",
+                            property_value: heroku_env,
+                        },
+                    ],
+                };
+
+                if (!$scope.widgets.comps.type.two) {
+                    delete parameters.analyses.two;
+                }
+
+                $keenService.query("multi_analysis", parameters).then(function(response) {
+                    if (response.data.errors) {
+                        return toastr.error("Error: " + response.data.errors.code);
+                    }
+
+                    var series = [];
+                    var min = 0;
+                    var max = 0;
+                    var _min = 9999;
+                    var _max = 0;
+                    var s = {data: [], name: $scope.widgets.comps.type.name, yAxis: 0};
+
+                    response.data.result.result.forEach(function(d) {
+                        // console.log(d.timeframe.start, d.timeframe.end);
+
+                        if ($scope.widgets.comps.type.two) {
+                            d.value = d.value.one / d.value.two * 100;
+                        } else {
+                            d.value = d.value.one;
+                        }
+
+                        s.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value]);
+                        if (_max < d.value) {
+                            _max = d.value;
+                        }
+
+                        if (_min > d.value) {
+                            _min = d.value;
+                        }
+                      });
+
+                    if (s.data.length > 0) {
+                        min = _min;
+                        max = _max;
+                    }
+
+                    series.push(s);
+
+                    $scope.compsData = {height: 300, printWidth: 800, decimalPlaces: $scope.widgets.comps.type.two ? 1 : 0, prefix: "", suffix: $scope.widgets.comps.type.two ? "%" : "", title: "", marker: true, data: series, min: min, max: max};
+                }, function(error) {
+                    toastr.error("Unable to perform action. Please contact an administrator");
+                });
+            }
             $scope.runSurveySwapRequested = function() {
                 var parameters = {
                     event_collection: "SurveySwap Requested",
