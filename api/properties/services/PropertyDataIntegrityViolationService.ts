@@ -98,7 +98,7 @@ function checkDuplicateGeo(operator: IUserLoggedIn, newProperty: IProperty): Pro
             exclude: [newProperty._id.toString()],
             geo: {loc: newProperty.loc, distance: .1},
             hideCustom: true,
-            limit: 1,
+            limit: 10,
             select: "name address city state zip",
         };
 
@@ -106,8 +106,13 @@ function checkDuplicateGeo(operator: IUserLoggedIn, newProperty: IProperty): Pro
             if (properties.length > 0) {
                 const v: IDataIntegrityViolation = {
                     checkType: DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE,
-                    description: `Existing Property Name: ${properties[0].name}<Br>Duplicate Address: ${properties[0].address} ${properties[0].city}, ${properties[0].state} ${properties[0].zip}`,
+                    description: `Created Property: ${newProperty.name}, ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
                 };
+
+                properties.forEach((property) => {
+                    v.description += `<Br>Existing Property: ${property.name}, ${property.address} ${property.city}, ${property.state} ${property.zip}`;
+                });
+
                 resolve(v);
             } else {
                 resolve(null);

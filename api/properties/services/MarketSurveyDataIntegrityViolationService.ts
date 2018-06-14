@@ -27,10 +27,10 @@ export class MarketSurveyDataIntegrityViolationService {
         if (oldSurvey.occupancy !== null && newSurvey.occupancy !== null && d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
             if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
-                v.description += `Occupancy: ${formatNumber(oldSurvey.occupancy, 1)}% =&gt; ${formatNumber(newSurvey.occupancy, 1)}%<br>`;
+                v.description += `Occupancy: ${formatNumber(oldSurvey.occupancy, -1)}% =&gt; ${formatNumber(newSurvey.occupancy, -1)}%<br>`;
             } else if (d / o >= .25) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_25;
-                v.description += `Occupancy: ${formatNumber(oldSurvey.occupancy, 1)}% =&gt; ${formatNumber(newSurvey.occupancy, 1)}%<br>`;
+                v.description += `Occupancy: ${formatNumber(oldSurvey.occupancy, -1)}% =&gt; ${formatNumber(newSurvey.occupancy, -1)}%<br>`;
             }
         }
 
@@ -43,10 +43,10 @@ export class MarketSurveyDataIntegrityViolationService {
         if (oldSurvey.leased !== null && newSurvey.leased !== null && d > 0 && (o < 1 || o > 50 || n < 1 || n > 50)) {
             if (o === 0 || d / o >= .5) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50;
-                v.description += `Leased: ${formatNumber(oldSurvey.leased, 1)}% =&gt; ${formatNumber(newSurvey.leased, 1)}%<br>`;
+                v.description += `Leased: ${formatNumber(oldSurvey.leased, -1)}% =&gt; ${formatNumber(newSurvey.leased, -1)}%<br>`;
             } else if (d / o >= .25 && v.checkType !== DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_50) {
                 v.checkType = DataIntegrityCheckType.OCCUPANCY_LEASE_ATR_CHANGED_25;
-                v.description += `Leased: ${formatNumber(oldSurvey.leased, 1)}% =&gt; ${formatNumber(newSurvey.leased, 1)}%<br>`;
+                v.description += `Leased: ${formatNumber(oldSurvey.leased, -1)}% =&gt; ${formatNumber(newSurvey.leased, -1)}%<br>`;
             }
         }
 
@@ -155,6 +155,10 @@ function calculateSQFT(floorplans: IMarketSurveyFloorplan[], totalUnits: number)
 function formatNumber(value: number, decimals: number): string {
     if (typeof value === "undefined" || value === null) {
         return "(no value set)";
+    }
+
+    if (decimals === -1) {
+        return value.toString();
     }
 
     return value.toFixed(decimals);

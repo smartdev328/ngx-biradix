@@ -183,6 +183,10 @@ module.exports = {
                         });
                     }
 
+                    if (err) {
+                        console.error(err);
+                    }
+
                     callback(err,list,PaginationService.getPager(criteria.skip, criteria.limit, obj))
                 });
             }

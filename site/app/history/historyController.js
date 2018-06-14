@@ -11,7 +11,7 @@ define([
             }, 1500);
 
         $rootScope.nav = "";
-        $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: 50};
+        $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: parseInt($stateParams.rows) || 50};
         $scope.limits = [10, 50, 100, 500];
         $scope.typeOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "left", labelAvailable: "Available Types", labelSelected: "Selected Types", searchLabel: "Types"};
         $scope.integrityOptions = {noneLabel: "Any", panelWidth: 210, minwidth: "100%", hideSearch: false, dropdown: true, dropdownDirection: "right", labelAvailable: "Available", labelSelected: "Selected", searchLabel: "Violations"};
@@ -29,9 +29,9 @@ define([
                 "Year-to-Date": [moment().startOf("year"), moment().endOf("day")],
                 "Lifetime": [moment().subtract(30, "year").startOf("day"), moment().endOf("day")],
             },
-            selectedRange: $stateParams.date1 ? "Custom Range" : "30 Days",
-            selectedStartDate: $stateParams.date1 || null,
-            selectedEndDate: $stateParams.date2 || null,
+            selectedRange: $stateParams.range || "30 Days",
+            selectedStartDate: null,
+            selectedEndDate: null,
         };
 
         $scope.options = {search: "", integrityItems: [],
@@ -294,10 +294,10 @@ define([
             var date1 = moment(row.date).subtract(1, "day").format("YYYY-MM-DD");
             switch (row.dataIntegrityViolationSet.violations[0].dataIntegrityCheck.searchParameter) {
                 case "Property":
-                    window.open("#/history?property=" + row.property.id + "&date1=" + date1 + "&date2=" + date2);
+                    window.open("#/history?property=" + row.property.id + "&range=Lifetime&rows=500");
                     break;
                 case "User":
-                    window.open("#/history?user=" + row.user.id + "&date1=" + date1 + "&date2=" + date2);
+                    window.open("#/history?user=" + row.user.id + "&range=Lifetime&rows=500");
                     break;
                 default:
                     throw new Error("Not implemented");

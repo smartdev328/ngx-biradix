@@ -239,7 +239,7 @@ module.exports = {
 
                 if (removed && removed.length > 0) {
                     _.filter(comp.floorplans, function(x) {return removed.indexOf(x.id.toString()) > -1}).forEach(function(fp) {
-                        removedData.push({type:'removed', id: fp.id.toString(), description: 'Removed: ' + PropertyHelperService.floorplanName(fp)})
+                        removedData.push({type:'removed', id: fp.id.toString(), description: 'Excluded: ' + PropertyHelperService.floorplanName(fp)})
                     })
                 }
 
@@ -249,27 +249,24 @@ module.exports = {
                         AuditService.create({
                             operator: operator,
                             property: subj,
-                            type: 'links_updated',
+                            type: "links_updated",
                             revertedFromId: revertedFromId,
-                            description: subj.name + " + " + comp.name + " (" + added.length + " Added, " + removed.length + " Removed)",
+                            description: subj.name + " + " + comp.name + " (" + added.length + " Added, " + removed.length + " Excluded)",
                             context: context,
                             data: [{
                                 description: "Subject: " + subj.name,
-                                id: subj._id
+                                id: subj._id,
                             }, {
                                 description: "Comp: " + comp.name,
-                                id: comp._id
-                            },].concat(addedData).concat(removedData)
-                        })
+                                id: comp._id,
+                            }].concat(addedData).concat(removedData),
+                        });
                     }
 
-
-                    return callback(err, saved)
-                })
-
-
-            })
-        })
+                    return callback(err, saved);
+                });
+            });
+        });
     },
     unlinkComp:function(operator,context,revertedFromId,subjectid, compid, callback) {
         var self = this;
