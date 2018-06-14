@@ -8,7 +8,11 @@ import {IProperty} from "../interfaces/IProperty";
 import {IPropertySearchRequest} from "../interfaces/IPropertySearchRequest";
 
 export class PropertyDataIntegrityViolationService {
-    public getFloorplansChanged(reason: string, isUndo: boolean): IDataIntegrityViolationSet {
+    public getFloorplansChanged(newProperty: IProperty, reason: string, isUndo: boolean): IDataIntegrityViolationSet {
+        if (newProperty.custom && newProperty.custom.owner) {
+            return null;
+        }
+
         if (isUndo) {
             return null;
         }

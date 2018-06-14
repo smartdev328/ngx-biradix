@@ -206,15 +206,15 @@ module.exports = {
                             }
 
                             floorplansAddedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_created", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan added", !!revertedFromId)});
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_created", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged(prop, "Floor plan added", !!revertedFromId)});
                             })
 
                             floorplansRemovedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_removed", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan removed", !!revertedFromId)});
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_removed", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged(prop, "Floor plan removed", !!revertedFromId)});
                             })
 
                             floorplansUpdatedChanges.forEach(function(change) {
-                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_updated", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged("Floor plan updated", !!revertedFromId)});
+                                AuditService.create({operator: operator, revertedFromId: revertedFromId, property: prop, type: "property_floorplan_updated", description: prop.name + ": " + change.description, context: context, data: [change], dataIntegrityViolationSet: PropertyDataIntegrityViolationService.getFloorplansChanged(prop, "Floor plan updated", !!revertedFromId)});
                             })
 
                             floorplansAmenitiesUpdatedChanges.forEach(function(change) {

@@ -27,7 +27,7 @@ module.exports = {
         );
         query.select("name orgid survey.id survey.occupancy survey.ner date totalUnits")
         query.exec(function(err, properties) {
-            var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
+            var surveyids = _.map(properties,function(x) {return x.survey && x.survey.id ? x.survey.id.toString() : ""});
 
             _.remove(surveyids,function(x) {return x == ''})
 
@@ -928,7 +928,7 @@ module.exports = {
                         description: property.name + ": " + (data.length -1) + " update(s)",
                         context: context,
                         data: data,
-                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(created, copy, !!revertedFromId),
+                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(property, created, copy, !!revertedFromId),
                     })
 
                     if (operator.roles[0] == "Guest") {
@@ -1081,7 +1081,7 @@ module.exports = {
                         description: subject.name + ": " + (data.length - 1) + " update(s)",
                         context: context,
                         data: data,
-                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(created, lastsurvey, !!revertedFromId),
+                        dataIntegrityViolationSet: MarketSurveyDataIntegrityViolationService.getChanged(subject, created, lastsurvey, !!revertedFromId),
                     });
                 };
 

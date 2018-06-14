@@ -3,9 +3,14 @@ import {IDataIntegrityViolation} from "../../audit/interfaces/IDataIntegrityViol
 import {IDataIntegrityViolationSet} from "../../audit/interfaces/IDataIntegrityViolationSet";
 import {IMarketSurvey} from "../interfaces/IMarketSurvey";
 import {IMarketSurveyFloorplan} from "../interfaces/IMarketSurveyFloorplan";
+import {IProperty} from "../interfaces/IProperty";
 
 export class MarketSurveyDataIntegrityViolationService {
-    public getChanged(newSurvey: IMarketSurvey, oldSurvey: IMarketSurvey, isUndo: boolean): IDataIntegrityViolationSet {
+    public getChanged(property: IProperty,newSurvey: IMarketSurvey, oldSurvey: IMarketSurvey, isUndo: boolean): IDataIntegrityViolationSet {
+        if (property.custom && property.custom.owner) {
+            return null;
+        }
+
         if (isUndo || !oldSurvey._id) {
             return null;
         }
