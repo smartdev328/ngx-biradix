@@ -1,5 +1,6 @@
 <style>
     .reallylong {font-size:12px}
+    .increase-popover-width {max-width:600px !important;}
 </style>
 <h2 class="mainheader">Metrics
     <hr>
@@ -98,6 +99,7 @@
            popover-trigger="'mouseenter'"
            popover-placement="top"
            popover-append-to-body="true"
+           popover-class="increase-popover-width"
            uib-popover-html="'<div class=reallylong><b>Note:</b> A comp is defined as a property that is currently setup as comp of a subject property and is not assigned to an organization.<Br><Br><B>SurveySwap Comps Configured:</B> Shows # of comps that have at least one contact setup.<Br><Br><B>SurveySwap Comps Configured %:</B> (SurveySwap Comps Configured) / (SurveySwap Comps Total). Show SurveySwap configured comps relative to total comps. Indicator of how many comps have showed interest in SurveySwap.<Br><Br><B>SurveySwap Comps Requesting:</B> Shows # of comps that have been sent a SurveySwap request in the last two weeks.<Br><Br><B>SurveySwap Comps Requested %:</B> (SurveySwap Comps Requesting) / (SurveySwap Comps Configured). Show SurveySwap sending comps relative to the SurveySwap configured. Indicator of how many comps are actively sending SurveySwap requests after being configured.<Br><Br><B>SurveySwap Comps Responding:</B> Shows # of comps that have been responding to SurveySwap requests (contact completed survey) in the last two weeks.<Br><Br><B>SurveySwap Comps Responding %:</B> (SurveySwap Comps Responding) / (SurveySwap Comps Requesting). Shows SurveySwap responding comps relative to the SurveySwap requesting. Indicator of how many comps are responding to SurveySwap requests relative to SurveySwap comps that are sending requests.<Br><Br><B>Total Comps:</B> Shows # of comps on the entire platform.</div>'"
 
         ></i>
