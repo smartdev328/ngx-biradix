@@ -91,7 +91,7 @@ define([], function () {
             .state("dashboard2", AsyncRoute("/dashboard2?id", "dashboard2", "dashboard2Controller", "dashboard2.html", "loggedInView",{loggedIn: true}))
             .state("manageUsers", AsyncRoute("/manageusers", "manageUsers", "manageUsersController", "manageUsers.html", "loggedInView",{loggedIn: true}))
             .state("properties", AsyncRoute("/properties", "properties", "propertiesController", "properties.html", "loggedInView",{loggedIn: true}))
-            .state("history", AsyncRoute("/history?property&user&date1&date2&active", "history", "historyController", "history.html", "loggedInView",{loggedIn: true}))
+            .state("history", AsyncRoute("/history?property&user&range&rows&active", "history", "historyController", "history.html", "loggedInView",{loggedIn: true}))
             .state("profile", AsyncRoute("/profile/:id", "profile", "profileController", "profile.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
             .state("updateProfile", AsyncRoute("/updateProfile?password&notifications&settings", "updateprofile", "updateProfileController", "updateProfile.html", "loggedInView",{loggedIn: true}))
             .state("uploadSurveys", AsyncRoute("/uploadSurveys", "uploadSurveys", "uploadSurveysController", "uploadSurveys.html", "loggedInView",{loggedIn: true}))

@@ -1,22 +1,63 @@
-'use strict';
+"use strict";
 
-var express = require('express');
-var _ = require('lodash');
-var UtilityService=  require('../services/utilityService')
-var UserService=  require('../services/userService')
-var AccessService = require('../../access/services/accessService')
-var AuditService = require('../../audit/services/auditService')
-var settings = require('../../../config/settings')
-var userCreateService = require('../services/userCreateService')
-var userRoutes = express.Router();
-var packages = require('../../../package.json');
-var async = require('async');
+var express = require("express");
+var _ = require("lodash");
+var UtilityService = require("../services/utilityService");
+var UserService = require("../services/userService");
+var AccessService = require("../../access/services/accessService");
+var PropertyService = require("../../properties/services/propertyService");
+var AuditService = require("../../audit/services/auditService");
+var settings = require("../../../config/settings");
+var userCreateService = require("../services/userCreateService");
+var userRoutes = new express.Router();
+var packages = require("../../../package.json");
+var async = require("async");
+const EmailService = require("../../business/services/emailService");
 
-userRoutes.post('/bounce', function (req, res) {
-
+userRoutes.post("/bounce", function (req, res) {
     req.body.forEach(function(b) {
         if (b.email && b.reason) {
             UserService.updateBounce(b.email, b.reason, function() {});
+
+            // Need System User to look up guest
+            UserService.getSystemUser((System) => {
+                // Get user by email
+               UserService.search(System.user, {email: b.email, select: "_id first last guestStats"}, (err, users) => {
+                   // If user exists and they have guestStats, must be a guest
+                   if (users && users.length === 1 && users[0].guestStats && users[0].guestStats.length > 0) {
+
+                       // Sort their assigned comps by last emailed newest first, grab first
+                       const last = _.sortBy(users[0].guestStats, (g) => {
+                           return -1*g.lastEmailed ? (new Date(g.lastEmailed)).getTime() : 0;
+                       })[0];
+
+                       // if guest emailed, ready
+                       if (last.lastEmailed) {
+                           PropertyService.search(System.user, {_id: last.propertyid}, (error, properties) => {
+                               const templateData = {
+                                   contactEmail: b.email,
+                                   property: properties[0].name,
+                                   message: b.reason,
+                                   admin_only: "<i>TO: " + last.sender.first + " " + last.sender.last + " &lt;" + last.sender.email + "&gt;</i><br><Br>"
+                               };
+                               let email = {
+                                   // to: last.sender.email,
+                                   to: "surveyswapemails@biradix.com",
+                                   category: ["SurveySwap Bounced"],
+                                   logo: "https://platform.biradix.com/images/organizations/" + last.sender.logo,
+                                   subject: "Unable to reach SurveySwap contact (" + b.email + ") for " + properties[0].name,
+                                   template: "surveyswap_bounced.html",
+                                   templateData: templateData,
+                               };
+
+                               EmailService.send(email, (emailError, status) => {
+                                   // TODO: Email "surveyswapemails@biradix.com"
+                               });
+                           });
+                       }
+                   }
+               });
+            });
         }
     })
 
