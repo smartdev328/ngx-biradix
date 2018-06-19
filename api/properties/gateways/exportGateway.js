@@ -153,7 +153,8 @@ module.exports = {
                         console.log(JSON.stringify(log));
 
                         if (!data.stream) {
-                            error.send(new Error(data.err), message);
+                            error.send(data.err, message);
+                            console.error(data.err);
                         } else {
                             redisClient.set("report-" + query.progressId, JSON.stringify({
                                 data,

@@ -27,6 +27,10 @@ define([
 
             };
 
+            $scope.isOpen = false;
+            $scope.showAdd = false;
+            $scope.opened = false;
+
             $scope.changed = false;
             $scope.MAX_COMPS = 20;
 
@@ -259,5 +263,16 @@ define([
                 // m/1,609.344=mi
                 return Math.round(d / 1609.344 * 10) / 10;
             };
+
+            $scope.$watch("isOpen", function(n, o) {
+                $scope.showAdd = false;
+                if (n) {
+                    $scope.opened = true;
+                }
+                else if ($scope.opened) {
+                    $scope.showAdd = true;
+                }
+
+            }, true);
         }]);
 });
