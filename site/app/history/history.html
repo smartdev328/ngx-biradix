@@ -126,10 +126,10 @@
                 <span ng-if="!getAudit(row.type).undo || !row.revertedFromId" style="padding-right:16px"></span>
                 <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
                 <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="'mouseenter'"
+                   popover-trigger="'mouseenter'"
                    popover-placement="left"
-                   popover-title="This property is managed by a BI:Radix user."
-                   uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
                    popover-append-to-body="true"
+                   uib-popover-html="'This property is managed by <B>{{row.property.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
                 ><span class="fa fa-lock"></span></a>
                 <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
             </td>

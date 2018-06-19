@@ -257,23 +257,19 @@ Routes.post('/', function (req, res) {
                     }, function(err, orgids) {
                         // console.log(orgids);
 
-
                         PropertyService.search(req.user, {
                             limit: 10000, permission: ['PropertyManage'], ids: propertyids
                             , select: "_id"
                             , skipAmenities: true
                         }, function (err, properties) {
                             obj.forEach(function (o) {
-
                                 if (o.property) {
-
-                                    var org = _.find(orgids, function(x) {return x._id.toString() == o.property.id.toString()});
+                                    const org = _.find(orgids, function(x) {return x._id.toString() == o.property.id.toString()});
 
                                     if (org && org.orgid) {
                                         o.property.orgid = org.orgid.toString();
+                                        o.property.company = org.company;
                                     }
-
-
                                 }
 
                                 o.canUndo = true;
