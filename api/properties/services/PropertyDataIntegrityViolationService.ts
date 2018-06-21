@@ -38,7 +38,7 @@ export class PropertyDataIntegrityViolationService {
                 violations: [],
             };
 
-            Promise.all([checkDuplicateGeo(operator, newProperty), checkDuplicateName(operator, newProperty)]).then((violations: IDataIntegrityViolation[]) => {
+            Promise.all([checkDuplicateGeo(operator, newProperty, null), checkDuplicateName(operator, newProperty)]).then((violations: IDataIntegrityViolation[]) => {
                 if (violations[0] || violations[1]) {
 
                     if (violations[0]) {
@@ -71,7 +71,7 @@ export class PropertyDataIntegrityViolationService {
             };
 
             Promise.all([
-                checkDuplicateGeo(operator, newProperty),
+                checkDuplicateGeo(operator, newProperty, oldProperty),
                 checkDuplicateName(operator, newProperty),
                 checkAddressChange(newProperty, oldProperty),
             ]).then((violations: IDataIntegrityViolation[]) => {
@@ -94,34 +94,37 @@ export class PropertyDataIntegrityViolationService {
     }
 }
 
-function checkDuplicateGeo(operator: IUserLoggedIn, newProperty: IProperty): Promise<IDataIntegrityViolation> {
+function checkDuplicateGeo(operator: IUserLoggedIn, newProperty: IProperty, oldProperty: IProperty): Promise<IDataIntegrityViolation> {
     return new Promise<IDataIntegrityViolation>((resolve, reject) => {
+        if (oldProperty === null || newProperty.address.toLowerCase() !== oldProperty.address.toLowerCase()) {
+            const PropertySearchRequest: IPropertySearchRequest = {
+                active: true,
+                exclude: [newProperty._id.toString()],
+                geo: {loc: newProperty.loc, distance: .1},
+                hideCustom: true,
+                limit: 10,
+                select: "name address city state zip",
+            };
 
-        const PropertySearchRequest: IPropertySearchRequest = {
-            active: true,
-            exclude: [newProperty._id.toString()],
-            geo: {loc: newProperty.loc, distance: .1},
-            hideCustom: true,
-            limit: 10,
-            select: "name address city state zip",
-        };
+            propertyService.search(operator, PropertySearchRequest, (errors: ICustomError[], properties: IProperty[]) => {
+                if (properties.length > 0) {
+                    const v: IDataIntegrityViolation = {
+                        checkType: DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE,
+                        description: `Created Property: ${newProperty.name}, ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
+                    };
 
-        propertyService.search(operator, PropertySearchRequest, (errors: ICustomError[], properties: IProperty[]) => {
-            if (properties.length > 0) {
-                const v: IDataIntegrityViolation = {
-                    checkType: DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE,
-                    description: `Created Property: ${newProperty.name}, ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
-                };
+                    properties.forEach((property) => {
+                        v.description += `<Br>Existing Property: ${property.name}, ${property.address} ${property.city}, ${property.state} ${property.zip}`;
+                    });
 
-                properties.forEach((property) => {
-                    v.description += `<Br>Existing Property: ${property.name}, ${property.address} ${property.city}, ${property.state} ${property.zip}`;
-                });
-
-                resolve(v);
-            } else {
-                resolve(null);
-            }
-        });
+                    resolve(v);
+                } else {
+                    resolve(null);
+                }
+            });
+        } else {
+            resolve(null);
+        }
     });
 }
 
