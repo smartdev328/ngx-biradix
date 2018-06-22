@@ -501,9 +501,9 @@ define([
                     return;
                 }
 
-                //Only check for creatinng comps
-                //Do not check for custom properties
-                if (id || !isComp || isCustom) {
+                // Do not check for custom properties
+                // Do not check on edit
+                if (id || isCustom) {
                     return;
                 }
 
@@ -512,28 +512,47 @@ define([
                 }
 
                 window.setTimeout(function() {
+                    if (isComp) {
+                        $propertyService.checkDupe({
+                            name: $scope.property.name,
+                            address: $scope.property.address + ' ' + $scope.property.zip,
+                            exclude: [subjectid]
+                        }).then(function (response) {
+                            if (response.data.property) {
+                                var p = response.data.property;
+                                // $scope.dupeChecked = true;
+                                $dialog.confirm('We have detected a property with this address already exists. We recommend you add this existing property instead of creating a new one:<Br><Br>Name: <B>' + p.name + '</B><br>Units: <b>' + p.totalUnits + '</b><br>Address: <b>' + p.address + '</b><br><Br>If the property name has changed or it has been renovated, you will be able to make any necessary updates after adding it as a comp.<Br><br>Add existing property as comp?', function () {
 
+                                    $uibModalInstance.close(p);
+                                }, function () {
 
-                    $propertyService.checkDupe({
-                        name: $scope.property.name,
-                        address: $scope.property.address + ' ' + $scope.property.zip,
-                        exclude: [subjectid]
-                    }).then(function (response) {
-                        if (response.data.property) {
-                            var p = response.data.property;
-                            // $scope.dupeChecked = true;
-                            $dialog.confirm('We have detected a property with this address already exists. We recommend you add this existing property instead of creating a new one:<Br><Br>Name: <B>' + p.name + '</B><br>Units: <b>' + p.totalUnits + '</b><br>Address: <b>' + p.address + '</b><br><Br>If the property name has changed or it has been renovated, you will be able to make any necessary updates after adding it as a comp.<Br><br>Add existing property as comp?', function () {
+                                })
+                            }
+                            ;
+                        }, function (error) {
+                        })
+                    }
+                    else {
+                        $propertyService.checkDupeSubject({
+                            name: $scope.property.name,
+                            address: $scope.property.address + ' ' + $scope.property.zip,
+                            name: $scope.property.name
+                        }).then(function (response) {
+                            if (response.data.property) {
+                                var p = response.data.property;
+                                // $scope.dupeChecked = true;
+                                $dialog.warning('We have detected a property with this address already exists:<Br><Br>Name: <B>' + p.name + '</B><br>Units: <b>' + p.totalUnits + '</b><br>Address: <b>' + p.address + '</b><br><Br>Are you sure you want to create this property?', function () {
+                                    $uibModalInstance.dismiss('cancel');
+                                }, function() {
 
-                                $uibModalInstance.close(p);
-                            }, function () {
+                                });
+                            }
+                            ;
+                        }, function (error) {
 
-                            })
-                        }
-                        ;
-                    }, function (error) {
-
-                    })
-                },1000);
+                        })
+                    }
+                }, 1000);
 
             }
 
