@@ -1,24 +1,27 @@
-angular.module('biradix.global').factory('$dialog', ['$uibModal', function ($uibModal) {
+angular.module("biradix.global").factory("$dialog", ["$uibModal", function ($uibModal) {
             var svc = {};
 
             svc.confirm = function (msg,confirm,deny) {
                 deny = deny || function() {};
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/components/dialog/confirm.html?bust='+version,
+                    templateUrl: "/components/dialog/confirm.html?bust="+version,
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",                    
                     controller: function($scope, $uibModalInstance){
                         $scope.msg = msg;
-                        $scope.cancel = function () {
-                            $uibModalInstance.dismiss('cancel');
+                        $scope.cancel = function() {
+                            $uibModalInstance.dismiss("cancel");
                         };
 
-                        $scope.confirm = function () {
-                            $uibModalInstance.close('confirm');
+                        $scope.confirm = function() {
+                            $uibModalInstance.close("confirm");
                         };
-                    }
+                    },
                 });
 
 
-                modalInstance.result.then(function () {
+                modalInstance.result.then(function() {
                     return confirm();
                 }, function () {
                     return deny();
@@ -29,15 +32,18 @@ angular.module('biradix.global').factory('$dialog', ['$uibModal', function ($uib
     svc.warning = function (msg,confirm,deny) {
         deny = deny || function() {};
         var modalInstance = $uibModal.open({
-            templateUrl: '/components/dialog/warning.html?bust='+version,
+            templateUrl: "/components/dialog/warning.html?bust="+version,
+            size: "md",
+            keyboard: false,
+            backdrop: "static",
             controller: function($scope, $uibModalInstance){
                 $scope.msg = msg;
                 $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss("cancel");
                 };
 
                 $scope.confirm = function () {
-                    $uibModalInstance.close('confirm');
+                    $uibModalInstance.close("confirm");
                 };
             }
         });

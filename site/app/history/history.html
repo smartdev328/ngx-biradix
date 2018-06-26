@@ -28,14 +28,6 @@
             Users: <Br>
             <filter-list-ajax options="userOptions" model="userItems" search="autocompleteusers"></filter-list-ajax>
         </div>
-
-        <div class="col-xs-6 col-md-3" style="height:55px">
-            Rows: <Br>
-            <select class="form-control input-sm" ng-model="pager.itemsPerPage"
-                    ng-change="resetPager()"
-                    ng-options="item for item in limits">
-            </select>
-        </div>
         <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
             Search: <Br>
             <input type="text" class="form-control input-sm" ng-model="options.search">
@@ -53,10 +45,38 @@
             </select>
         </div>
 
-        <div class="col-xs-1" style="height:55px">
+        <div class="col-xs-6 col-md-3" style="height:55px;">
             <br>
-            <button class="btn btn-primary btn-sm" ng-click="resetPager()">Filter</button>
+            <div class="row" style="margin-left:-15px">
+            <div class="col-xs-6">
+                <div class="btn-group action_dropdown stay_open_button">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Filters">
+                        <span class="fa fa-filter"></span> <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;" onclick="event.stopPropagation();">
+                        <table>
+                            <tr>
+                                <td style="width:50px">
+                                    <select class="form-control input-sm" ng-model="pager.itemsPerPage" style="width:50px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                                            ng-change="resetPager()"
+                                            ng-options="item for item in limits">
+                                    </select>
+                                </td>
+                                <Td>
+                                    &nbsp;Rows
+                                </Td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6" style="text-align: right;">
+                <button class="btn btn-primary btn-sm" ng-click="resetPager()" style="width:100px">Filter</button>
+            </div>
+            </div>
         </div>
+
+
 
     </div>
 

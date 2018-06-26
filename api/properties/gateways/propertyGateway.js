@@ -220,7 +220,7 @@ Routes.post('/checkDupe', function(req, res) {
                 limit: 1,
                 "active":true,
                 "geo":{"loc": [geo[0].latitude, geo[0].longitude], "distance": .1},
-                select: "name address city state zip totalUnits",
+                select: "name address city state zip totalUnits loc",
                 exclude: req.body.exclude,
                 hideCustom: true
             }, function(err, props) {
