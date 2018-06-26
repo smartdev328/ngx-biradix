@@ -544,5 +544,21 @@ define([
 
             return "<center><img src='/images/squares.gif' style='width:40px'></center>";
         };
+
+        $scope.isOpen = {};
+
+        $scope.openPopup = function($event, id) {
+            if ($scope.isOpen[id]) {
+                return;
+            }
+
+             for (var i in $scope.isOpen) {
+                $scope.isOpen[i] = false;
+            }
+
+            var el = angular.element($event.toElement);
+
+            el.triggerHandler("click");
+        };
     }]);
 });

@@ -50,37 +50,8 @@
 
         <div class="col-xs-6 col-md-3" style="height:55px;">
             <br>
-            <div class="row" style="margin-left:-15px">
-            <div class="col-xs-6">
-                <div class="btn-group action_dropdown stay_open_button">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Filters">
-                        <span class="fa fa-filter"></span> <span class="caret"></span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;" onclick="event.stopPropagation();">
-                        <table>
-                            <tr>
-                                <td style="width:50px">
-                                    <select class="form-control input-sm" ng-model="pager.itemsPerPage" style="width:50px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
-                                            ng-change="resetPager()"
-                                            ng-options="item for item in limits">
-                                    </select>
-                                </td>
-                                <Td>
-                                    &nbsp;Rows
-                                </Td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6" style="text-align: right;">
-                <button class="btn btn-primary btn-sm" ng-click="resetPager()" style="width:100px">Filter</button>
-            </div>
-            </div>
+            <button class="btn btn-primary btn-sm" ng-click="resetPager()" style="width:100px">Filter</button>
         </div>
-
-
-
     </div>
 
 <Br>
@@ -130,11 +101,14 @@
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
             <td ng-if="me.permissions.indexOf('Admin') > -1"><a href
-                                                                style="text-decoration-style: dashed !important; text-decoration: underline"
+                                                                style="font-style: italic"
                                                                 popover-trigger="'outsideClick'"
                                                                 popover-placement="left"
                                                                 popover-append-to-body="true"
+                                                                popover-is-open="isOpen[row._id]"
                                                                 uib-popover-html="getUser(row.operator)"
+                                                                ng-mouseenter="openPopup($event, row._id)"
+                                                                id = "trigger_{{row._id}}"
             >{{row.operator.name}}</a></td>
             <td ng-if="me.permissions.indexOf('Admin') == -1">{{row.operator.name}}</td>
             <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
@@ -206,6 +180,11 @@
 
     <div class="pull-left grid-show" style="padding-top:5px;" ng-if="activity && activity.length > 0">
         Showing {{pageStart()}} to {{pageEnd()}} of {{pager.count}}
+
+        <select class="form-control input-sm" ng-model="pager.itemsPerPage" style="width:85px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                ng-change="resetPager()"
+                ng-options="item + ' per page' for item in limits">
+        </select>
     </div>
     <div class="pull-right grid-pager" ng-if="activity && activity.length > 0">
         <ul uib-pagination ng-change="pagerChanged()" ng-show="pager.count > pager.itemsPerPage" max-size="5" total-items="pager.count" ng-model="pager.currentPage" class="pagination-sm" items-per-page="pager.itemsPerPage" style="margin-top:0px"></ul>
