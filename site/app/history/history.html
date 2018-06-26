@@ -1,3 +1,6 @@
+<style>
+    .user-hover, .user-hover A {font-size:12px !important;}
+</style>
 <h2 class="mainheader">Activity History
     <hr>
 </h2>
@@ -126,7 +129,14 @@
             <td>{{row.date | date: 'short'}}</td>
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
-            <td>{{row.operator.name}}</td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1"><a href
+                                                                style="text-decoration-style: dashed !important; text-decoration: underline"
+                                                                popover-trigger="'outsideClick'"
+                                                                popover-placement="left"
+                                                                popover-append-to-body="true"
+                                                                uib-popover-html="getUser(row.operator)"
+            >{{row.operator.name}}</a></td>
+            <td ng-if="me.permissions.indexOf('Admin') == -1">{{row.operator.name}}</td>
             <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
                 <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox"
                        ng-if="
