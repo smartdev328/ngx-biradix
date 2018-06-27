@@ -101,7 +101,6 @@
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
             <td ng-if="me.permissions.indexOf('Admin') > -1"><a href
-                                                                style="font-style: italic"
                                                                 popover-trigger="'outsideClick'"
                                                                 popover-placement="left"
                                                                 popover-append-to-body="true"
@@ -179,7 +178,7 @@
      </table>
 
     <div class="pull-left grid-show" style="padding-top:5px;" ng-if="activity && activity.length > 0">
-        Showing {{pageStart()}} to {{pageEnd()}} of {{pager.count}}
+        {{pager.count | number: 0}} items
 
         <select class="form-control input-sm" ng-model="pager.itemsPerPage" style="width:85px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
                 ng-change="resetPager()"
