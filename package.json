@@ -9,7 +9,6 @@
     "postinstall": "bower install && npm run build && npm test",
     "tsc": "tsc --watch",
     "dev1": "npm run tsc",
-    "dev2": "nodemon workers/web",
     "ui": "gulp vendorsjs vendorscss globaljs globalcss"
   },
   "repository": {
@@ -31,7 +30,7 @@
     "async": "^1.5.2",
     "aws-sdk": "^2.166.0",
     "body-parser": "^1.17.2",
-    "bower": "^1.8.0",
+    "bower": "^1.8.4",
     "chai": "^4.1.2",
     "compression": "^1.7.0",
     "cookie-parser": "^1.4.3",
@@ -84,7 +83,6 @@
   "devDependencies": {
     "eslint": "^4.18.2",
     "eslint-config-google": "^0.9.1",
-    "nodemon": "^1.17.4",
     "tslint": "^5.9.1"
   }
 }
