@@ -2,6 +2,7 @@
     .table-comps TD {
         vertical-align: middle !important;
     }
+
 </style>
 <div class="maingrid wrapper panel" style="overflow-x:auto">
     <div class="header" style="height:46px"></div>
@@ -205,9 +206,8 @@
                ng-if="comp.number > 0 && !comp.canSurvey"
                popover-trigger="'mouseenter'"
                popover-placement="right"
-               popover-title="This property is managed by a BI:Radix user."
                popover-append-to-body="true"
-               uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
+               uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
 
             ></i>
             <i class="fa fa-share-alt hidden-print"
@@ -287,8 +287,8 @@
                                                        style="cursor: not-allowed;opacity: 0.5;"
                                                        popover-trigger="'mouseenter'"
                                                        popover-placement="left"
-                                                       popover-title="This property is managed by a BI:Radix user."
-                                                       uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
+                                                       popover-append-to-body="true"
+                                                       uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
                         ><i class="fa fa-lock fa-fw"></i> New Property Survey</a></li>
                         <li><A href="#/history?property={{comp._id}}"><i class="fa fa-history fa-fw"></i> Activity History</A></li>
                     </ul>

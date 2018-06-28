@@ -1,3 +1,6 @@
+<style>
+    .user-hover, .user-hover A {font-size:12px !important;}
+</style>
 <h2 class="mainheader">Activity History
     <hr>
 </h2>
@@ -15,7 +18,7 @@
         </div>
 
         <div class="col-xs-6 col-md-3" style="height:55px">
-            Types: <Br>
+            Action Type(s): <Br>
             <filter-list options="typeOptions" items="typeItems"></filter-list>
         </div>
 
@@ -27,14 +30,6 @@
         <div class="col-xs-6 col-md-3" style="height:55px">
             Users: <Br>
             <filter-list-ajax options="userOptions" model="userItems" search="autocompleteusers"></filter-list-ajax>
-        </div>
-
-        <div class="col-xs-6 col-md-3" style="height:55px">
-            Rows: <Br>
-            <select class="form-control input-sm" ng-model="pager.itemsPerPage"
-                    ng-change="resetPager()"
-                    ng-options="item for item in limits">
-            </select>
         </div>
         <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
             Search: <Br>
@@ -53,11 +48,10 @@
             </select>
         </div>
 
-        <div class="col-xs-1" style="height:55px">
+        <div class="col-xs-6 col-md-3" style="height:55px;">
             <br>
-            <button class="btn btn-primary btn-sm" ng-click="resetPager()">Filter</button>
+            <button class="btn btn-primary btn-sm" ng-click="resetPager()" style="width:100px">Filter</button>
         </div>
-
     </div>
 
 <Br>
@@ -106,7 +100,16 @@
             <td>{{row.date | date: 'short'}}</td>
             <td>{{getAudit(row.type).value}}</td>
             <td>{{row.description}}</td>
-            <td>{{row.operator.name}}</td>
+            <td ng-if="me.permissions.indexOf('Admin') > -1"><a href
+                                                                popover-trigger="'outsideClick'"
+                                                                popover-placement="left"
+                                                                popover-append-to-body="true"
+                                                                popover-is-open="isOpen[row._id]"
+                                                                uib-popover-html="getUser(row.operator)"
+                                                                ng-mouseenter="openPopup($event, row._id)"
+                                                                id = "trigger_{{row._id}}"
+            >{{row.operator.name}}</a></td>
+            <td ng-if="me.permissions.indexOf('Admin') == -1">{{row.operator.name}}</td>
             <td ng-if="me.permissions.indexOf('Admin') > -1" style="width:24px" valign="top">
                 <input ng-model="options.checked[row._id]" style="width:14px;height:14px" type="checkbox"
                        ng-if="
@@ -122,16 +125,15 @@
                 <A href ng-if="row.dataIntegrityViolationSet.violations.length > 0" ng-click="proximity(row)"><span class="fa fa-search-plus" tooltip-append-to-body="true" uib-tooltip="Proximity Search"></span></A>
             </td>
             <td nowrap>
-                <span ng-if="getAudit(row.type).undo && row.revertedFromId" class="fa fa-info-circle" tooltip-placement="left" uib-tooltip="This action is due to an earlier undo"></span>
-                <span ng-if="!getAudit(row.type).undo || !row.revertedFromId" style="padding-right:16px"></span>
-                <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
+                <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted && !row.revertedFromId" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
+                <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted && row.revertedFromId" href ng-click="undo(row)" uib-tooltip="This action is due to an earlier undo. Click to undo."  tooltip-placement="left"><span class="fa fa-undo" style="color:red"></span></a>
                 <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="'mouseenter'"
+                   popover-trigger="'mouseenter'"
                    popover-placement="left"
-                   popover-title="This property is managed by a BI:Radix user."
-                   uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
                    popover-append-to-body="true"
+                   uib-popover-html="'This property is managed by <B>{{row.property.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
                 ><span class="fa fa-lock"></span></a>
-                <span ng-if="row.reverted" class="fa fa-undo" style="color:red" uib-tooltip="Already undone"></span>
+                <span ng-if="row.reverted" class="fa fa-undo" style="color:silver" uib-tooltip="Already undone"  tooltip-placement="left"></span>
             </td>
         </tr>
 
@@ -175,7 +177,12 @@
      </table>
 
     <div class="pull-left grid-show" style="padding-top:5px;" ng-if="activity && activity.length > 0">
-        Showing {{pageStart()}} to {{pageEnd()}} of {{pager.count}}
+        {{pager.count | number: 0}} items
+
+        <select class="form-control input-sm" ng-model="pager.itemsPerPage" style="width:85px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                ng-change="resetPager()"
+                ng-options="item + ' per page' for item in limits">
+        </select>
     </div>
     <div class="pull-right grid-pager" ng-if="activity && activity.length > 0">
         <ul uib-pagination ng-change="pagerChanged()" ng-show="pager.count > pager.itemsPerPage" max-size="5" total-items="pager.count" ng-model="pager.currentPage" class="pagination-sm" items-per-page="pager.itemsPerPage" style="margin-top:0px"></ul>

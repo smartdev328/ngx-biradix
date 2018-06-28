@@ -34,7 +34,7 @@
                     <td ng-if="row.edit"><input type="text" class="form-control input-sm" ng-model="row.first" placeholder="First"></td>
                     <td ng-if="row.edit"><input type="text" class="form-control input-sm" ng-model="row.last" placeholder="Last"></td>
 
-                    <td>{{row.email}}</td>
+                    <td style="word-break: break-word;">{{row.email}}</td>
                     <td>{{(row.lastEmailed | date : 'short') || '-'}}</td>
                     <td>{{(row.lastCompleted | date : 'short') || '-'}}</td>
                     <td style="vertical-align: middle !important;" ng-if="!row.edit" nowrap>

@@ -436,3 +436,8 @@ button.close {
 .dropdown-menu td input[type=checkbox] {
     margin-top: 0px !important;
 }
+
+HR.popoverhr {
+    margin-top:5px !important;
+    margin-bottom:5px !important;
+}

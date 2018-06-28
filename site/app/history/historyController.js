@@ -514,5 +514,51 @@ define([
 
             return parseInt(x);
         };
+
+        $scope.users = {};
+        $scope.gotUsers = {};
+        $scope.getUser = function(user) {
+            var id = (user.id || user._id).toString();
+            if ($scope.users[id]) {
+                return $scope.users[id];
+            }
+
+            if (!$scope.gotUsers[id]) {
+                $userService.search({
+                    limit: 1,
+                    _id: id,
+                }).then(function (response) {
+                    if (response.data && response.data.users && response.data.users[0]) {
+                        $scope.users[id] = "<div class='user-hover'>Organization: <b>" + response.data.users[0].roles[0].org.name + "</b><Br>" +
+                             "Email: <b>" + response.data.users[0].email + "</b><Br>" +
+                             "Role: <b>" + response.data.users[0].roles[0].name + "</b><Br>" +
+                             "History: <A href='#/history?user=" + id + "&range=Lifetime&rows=500' target='_blank'>Click Here</A></div>";
+                    } else {
+                        $scope.users[id] = "<B>N/A</B>";
+                    }
+
+                });
+
+                $scope.gotUsers[id] = true;
+            }
+
+            return "<center><img src='/images/squares.gif' style='width:40px'></center>";
+        };
+
+        $scope.isOpen = {};
+
+        $scope.openPopup = function($event, id) {
+            if ($scope.isOpen[id]) {
+                return;
+            }
+
+             for (var i in $scope.isOpen) {
+                $scope.isOpen[i] = false;
+            }
+
+            var el = angular.element($event.toElement);
+
+            el.triggerHandler("click");
+        };
     }]);
 });

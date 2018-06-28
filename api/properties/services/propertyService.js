@@ -626,7 +626,7 @@ module.exports = {
                         if (x.orgid) {
                             x.company = "";
                             company = _.find(all.orgs, function (o) {
-                                return o._id.toString() == x.orgid.toString()
+                                return o._id.toString() === x.orgid.toString();
                             });
 
                             if (company) {
