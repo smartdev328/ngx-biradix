@@ -42,7 +42,7 @@ module.exports = {
                 const final = [];
                 properties.forEach(function(p) {
                     p.comps = _.map(p.comps, "id")
-                    if (!p.survey && p.survey._id) {
+                    if (!p.survey || !p.survey._id) {
                         final.push({_id: p._id, name: p.name, totalUnits: p.totalUnits});
                     } else {
                         const survey = _.find(surveys, function(x) {
