@@ -535,8 +535,7 @@ define([
                     else {
                         $propertyService.checkDupeSubject({
                             name: $scope.property.name,
-                            address: $scope.property.address + ' ' + $scope.property.zip,
-                            name: $scope.property.name
+                            address: $scope.property.address + ' ' + $scope.property.zip
                         }).then(function (response) {
                             if (response.data.property) {
                                 var p = response.data.property;

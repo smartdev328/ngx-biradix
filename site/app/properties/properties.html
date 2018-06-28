@@ -376,10 +376,13 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                             <li><a href ng-if="comp.canEdit" ng-click="edit(comp._id, true, row, false)"><span class="fa fa-building fa-fw"></span> Edit Comp</a></li>
-                            <li><a href ng-if="!comp.canEdit" style="cursor: not-allowed;" popover-trigger="'mouseenter'"
+                            <li><a href="javascript:void(0)"
+                                   onclick="event.preventDefault();event.stopPropagation()"
+                                   ng-if="!comp.canEdit" style="cursor: not-allowed;opacity: 0.5;"
+                                      popover-trigger="'mouseenter'"
                                    popover-placement="left"
-                                   popover-title="This property is managed by a BI:Radix user."
-                                   uib-popover="It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com."
+                                   popover-append-to-body="true"
+                                   uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
                             ><i class="fa fa-lock fa-fw"></i> Edit Comp</a></li>
                             <li><a href ng-click="addComp(row)"><span class="fa fa-times fa-fw"></span> Remove Comp</a></li>
                             <li><a href ng-click="editLink(row, comp)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
