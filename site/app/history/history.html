@@ -126,14 +126,14 @@
             </td>
             <td nowrap>
                 <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted && !row.revertedFromId" href ng-click="undo(row)" uib-tooltip="Undo"><span class="fa fa-undo"></span></a>
-                <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted && row.revertedFromId" href ng-click="undo(row)" uib-tooltip="This action is due to an earlier undo. Click to undo."  tooltip-placement="left"><span class="fa fa-undo" style="color:red"></span></a>
+                <a ng-if="row.canUndo && getAudit(row.type).undo && !row.reverted && row.revertedFromId" href ng-click="undo(row)" uib-tooltip="This action is the result of a previous undo - click to undo again"  tooltip-placement="top" tooltip-append-to-body="true"><span class="fa fa-undo" style="color:red"></span></a>
                 <a ng-if="!row.canUndo && getAudit(row.type).undo && !row.reverted" href style="cursor: not-allowed;" popover-trigger="'mouseenter'"
                    popover-trigger="'mouseenter'"
                    popover-placement="left"
                    popover-append-to-body="true"
                    uib-popover-html="'This property is managed by <B>{{row.property.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
                 ><span class="fa fa-lock"></span></a>
-                <span ng-if="row.reverted" class="fa fa-undo" style="color:silver" uib-tooltip="Already undone"  tooltip-placement="left"></span>
+                <span ng-if="row.reverted" class="fa fa-undo" style="color:silver" uib-tooltip="Undo Completed"  tooltip-placement="top"></span>
             </td>
         </tr>
 
