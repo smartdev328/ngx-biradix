@@ -23,26 +23,30 @@ const MarketSurveyDataIntegrityViolationService = new MarketSurveyDataIntegrityV
 module.exports = {
     getCompsForReminders: function(compids,callback) {
         var query = PropertySchema.find(
-            {_id: {$in : compids}}
+            {_id: {$in: compids}}
         );
         query.select("name orgid survey.id survey.occupancy survey.ner date totalUnits")
         query.exec(function(err, properties) {
-            var surveyids = _.map(properties,function(x) {return x.survey && x.survey.id ? x.survey.id.toString() : ""});
+            const surveyids = _.map(properties,function(x) {
+                return x.survey && x.survey.id ? x.survey.id.toString() : ""
+            });
 
-            _.remove(surveyids,function(x) {return x == ''})
+            _.remove(surveyids, function(x) {
+                return x === "";
+            })
 
-            query = SurveySchema.find({_id: {$in : surveyids}});
+            query = SurveySchema.find({_id: {$in: surveyids}});
             query.select("date");
 
             query.exec(function(err, surveys) {
-                var final = [];
+                const final = [];
                 properties.forEach(function(p) {
-                    p.comps = _.map(p.comps,"id")
-                    if (!p.survey) {
+                    p.comps = _.map(p.comps, "id")
+                    if (!p.survey && p.survey._id) {
                         final.push({_id: p._id, name: p.name, totalUnits: p.totalUnits});
                     } else {
-                        var survey = _.find(surveys, function (x) {
-                            return x._id.toString() == p.survey.id.toString();
+                        const survey = _.find(surveys, function(x) {
+                            return x._id && x._id.toString() === p.survey.id.toString();
                         });
 
                         if (!survey) {
@@ -53,21 +57,15 @@ module.exports = {
                                 name: p.name,
                                 date: survey.date,
                                 occupancy: p.survey.occupancy,
-                                ner : p.survey.ner,
-                                totalUnits: p.totalUnits
+                                ner: p.survey.ner,
+                                totalUnits: p.totalUnits,
                             });
                         }
-
                     }
-                })
+                });
                 callback(final);
             });
-
-
         });
-
-
-
     },
     getPropertiesForReminders: function(callback) {
         var query = PropertySchema.find(
