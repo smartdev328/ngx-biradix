@@ -109,6 +109,18 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                                 y.lastyearnersqftpercent = "";
                             }
 
+                            if (typeof y.lastmonthnerpercent == "undefined") {
+                                y.lastmonthnerpercent = "";
+                            }
+
+                            if (typeof y.lastweeknerpercent == "undefined") {
+                                y.lastweeknerpercent = "";
+                            }
+
+                            if (typeof y.lastyearnerpercent == "undefined") {
+                                y.lastyearnerpercent = "";
+                            }                            
+
                             if (typeof y.nervscompavg == "undefined" || y.nervscompavg == null) {
                                 y.nervscompavg = "";
                             }

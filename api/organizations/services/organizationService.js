@@ -252,14 +252,27 @@ function defaultSettings(org) {
             runrate: false,
             runratesqft: false,
             ner: true,
+            nerweek: true,
+            nermonth: true,
+            neryear: false,            
             nersqft: true,
-            nersqftweek: true,
-            nersqftmonth: true,
+            nersqftweek: false,
+            nersqftmonth: false,
             nersqftyear: false,
             last_updated: true,
             weekly: false,
             concessions: false,
-            nervscompavg : false
-        }
+            nervscompavg: false,
+        },
+    };
+
+    if (typeof org.settings.notification_columns.default_value.nerweek === "undefined") {
+        org.settings.notification_columns.default_value.nerweek = false;
+    }
+    if (typeof org.settings.notification_columns.default_value.nermonth === "undefined") {
+        org.settings.notification_columns.default_value.nermonth = false;
+    }
+    if (typeof org.settings.notification_columns.default_value.neryear === "undefined") {
+        org.settings.notification_columns.default_value.neryear = false;
     }
 }

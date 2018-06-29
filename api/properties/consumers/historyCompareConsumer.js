@@ -310,7 +310,6 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     return x._id.toString() == p._id.toString()
                 });
 
-
                 if (p.nersqft && lastweek && lastweek.nersqft) {
                     p.lastweeknersqftpercent = Math.round((p.nersqft - lastweek.nersqft) / lastweek.nersqft * 100 * 10) / 10;
 
@@ -331,9 +330,28 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     totalrow.lastyearnersqftpercent = (totalrow.lastyearnersqftpercent || 0) + (p.lastyearnersqftpercent * p.totUnits);
                     totalrow.lastyearnersqftTotalUnits = (totalrow.lastyearnersqftTotalUnits || 0) + p.totUnits;
                 }
-            }
+                if (p.ner && lastweek && lastweek.ner) {
+                    p.lastweeknerpercent = Math.round((p.ner - lastweek.ner) / lastweek.ner * 100 * 10) / 10;
 
-        })
+                    totalrow.lastweeknerpercent = (totalrow.lastweeknerpercent || 0) + (p.lastweeknerpercent * p.totUnits);
+                    totalrow.lastweeknerTotalUnits = (totalrow.lastweeknerTotalUnits || 0) + p.totUnits;
+                }
+
+                if (p.ner && lastmonth && lastmonth.ner) {
+                    p.lastmonthnerpercent = Math.round((p.ner - lastmonth.ner) / lastmonth.ner * 100 * 10) / 10;
+
+                    totalrow.lastmonthnerpercent = (totalrow.lastmonthnerpercent || 0) + (p.lastmonthnerpercent * p.totUnits);
+                    totalrow.lastmonthnerTotalUnits = (totalrow.lastmonthnerTotalUnits || 0) + p.totUnits;
+                }
+
+                if (p.ner && lastyear && lastyear.ner) {
+                    p.lastyearnerpercent = Math.round((p.ner - lastyear.ner) / lastyear.ner * 100 * 10) / 10;
+
+                    totalrow.lastyearnerpercent = (totalrow.lastyearnerpercent || 0) + (p.lastyearnerpercent * p.totUnits);
+                    totalrow.lastyearnerTotalUnits = (totalrow.lastyearnerTotalUnits || 0) + p.totUnits;
+                }                
+            }
+        });
 
         if (totalrow.leasedUnits && totalrow.leasedUnits > 0) {
             totalrow.leased = Math.round(totalrow.leased / totalrow.leasedUnits * 10) / 10;
@@ -374,6 +392,18 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
             if (totalrow.lastyearnersqftTotalUnits) {
                 totalrow.lastyearnersqftpercent = Math.round(totalrow.lastyearnersqftpercent / totalrow.lastyearnersqftTotalUnits * 10) / 10;
             }
+
+            if (totalrow.lastweeknerTotalUnits) {
+                totalrow.lastweeknerpercent = Math.round(totalrow.lastweeknerpercent / totalrow.lastweeknerTotalUnits * 10) / 10;
+            }
+
+            if (totalrow.lastmonthnerTotalUnits) {
+                totalrow.lastmonthnerpercent = Math.round(totalrow.lastmonthnerpercent / totalrow.lastmonthnerTotalUnits * 10) / 10;
+            }
+
+            if (totalrow.lastyearnerTotalUnits) {
+                totalrow.lastyearnerpercent = Math.round(totalrow.lastyearnerpercent / totalrow.lastyearnerTotalUnits * 10) / 10;
+            }            
 
             totalrow.totUnits = Math.round(totalrow.totUnits / totalrow.count * 10) / 10; // not weighted
         }
