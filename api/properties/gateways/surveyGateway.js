@@ -13,7 +13,7 @@ module.exports = {
                     return res.status(401).json("Unauthorized request");
                 }
 
-                surveyHelperService.emailGuest(req.user, req.context, req.basePath, req.params.id, req.params.guestid, req.body.subjectid, function(errs) {
+                surveyHelperService.emailGuest(req.user, req.context, req.basePath, req.params.id, req.params.guestid, req.body.subjectid, req.body.subjectname, function(errs) {
                     return res.status(200).json({errors: errs});
                 });
             });
