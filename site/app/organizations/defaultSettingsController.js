@@ -149,13 +149,13 @@ define([
             }
 
             $scope.$watch("columnsItems", function(n, o) {
-                var o = _.map(o, function(x) {return x.selected.toString()}).join(',')
-                var n = _.map(n, function(x) {return x.selected.toString()}).join(',')
+                console.log(n,o)
+                var o = _.map(_.sortByAll(o, "id"), function(x) {return x.selected.toString()}).join(',')
+                var n = _.map(_.sortByAll(n, "id"), function(x) {return x.selected.toString()}).join(',')
 
                 if (n != o) {
-                    $scope.organization.settings.notification_columns.configured=true
+                    $scope.organization.settings.notification_columns.configured=true;
                 }
-
             }, true);
 
     }]);
