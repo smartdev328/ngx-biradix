@@ -8,7 +8,7 @@ const EmailService = require("../../business/services/emailService");
 const AuditService = require("../../audit/services/auditService");
 
 module.exports = {
-    emailGuest: function(operator, context, base, propertyid, guestid, subjectid, callback) {
+    emailGuest: function(operator, context, base, propertyid, guestid, subjectid, subjectname, callback) {
         PropertySchema.find({_id: propertyid}, function(err, properties) {
             if (!properties || properties.length != 1) {
                 return callback([{msg: "Unable to locate Property. Please contact the Administrator"}]);
@@ -46,13 +46,27 @@ module.exports = {
                     // SubjectNames = _.take(SubjectNames,1);
                     // Create Login Token that expires in 30 days.
                     guest.minutesToExpire = 60 * 24 * 30;
+
+                    let subject = operator.first + " " + operator.last + " is asking for some information about " + property.name;
+                    let category = "SurveySwap Requested 1.0";
+                    const rand = Math.floor(Math.random() * Math.floor(2));
+
+                    if (subjectname && rand === 0) {
+                        subject = subjectname + " would like to swap market survey data with " + property.name;
+                        category = "SurveySwap Requested w/Subject Name";
+                    }
+
+                    // console.log(subjectname, subject, category, rand);
+                    //
+                    // return callback([{msg: "Test"}]);
+
                     userService.getFullUser(guest, function(full) {
                         // Send Email
                         let email = {
                             to: guest.email,
-                            category: ["SurveySwap Requested", "SurveySwap Requested 1.0"],
+                            category: ["SurveySwap Requested", category],
                             logo: base + "/images/organizations/biradix.png",
-                            subject: operator.first + " " + operator.last + " is asking for some information about " + property.name,
+                            subject: subject,
                             template: "swap.html",
                             templateData: {
                                 first: guest.first,

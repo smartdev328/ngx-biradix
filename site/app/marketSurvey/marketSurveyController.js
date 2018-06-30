@@ -359,7 +359,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'swap');
                     $("button.contact-submit").prop('disabled', true);
                     ngProgress.start();
-                    $propertyService.emailGuest($scope.property._id, $scope.swap.selectedGuest._id, (options || {}).subjectid).then(function(response) {
+                    $propertyService.emailGuest($scope.property._id, $scope.swap.selectedGuest._id, (options || {}).subjectid, (options || {}).subjectname).then(function(response) {
                         $("button.contact-submit").prop('disabled', false);
                         ngProgress.complete();
                         if (response.data.errors) {

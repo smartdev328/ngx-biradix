@@ -28,6 +28,9 @@ define([
                 {id: "runrate", name: "Recurring Rent", selected: $scope.organization.settings.notification_columns.default_value.runrate},
                 {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.organization.settings.notification_columns.default_value.runratesqft},
                 {id: "ner", name: "Net Eff. Rent", selected: $scope.organization.settings.notification_columns.default_value.ner},
+                {id: "nerweek", name: "NER vs Last Week", selected: $scope.organization.settings.notification_columns.default_value.nerweek},
+                {id: "nermonth", name: "NER vs Last Month", selected: $scope.organization.settings.notification_columns.default_value.nermonth},
+                {id: "neryear", name: "NER vs Last Year", selected: $scope.organization.settings.notification_columns.default_value.neryear},
                 {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.organization.settings.notification_columns.default_value.nersqft},
                 {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.organization.settings.notification_columns.default_value.nersqftweek},
                 {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.organization.settings.notification_columns.default_value.nersqftmonth},
@@ -146,13 +149,13 @@ define([
             }
 
             $scope.$watch("columnsItems", function(n, o) {
-                var o = _.map(o, function(x) {return x.selected.toString()}).join(',')
-                var n = _.map(n, function(x) {return x.selected.toString()}).join(',')
+                console.log(n,o)
+                var o = _.map(_.sortByAll(o, "id"), function(x) {return x.selected.toString()}).join(',')
+                var n = _.map(_.sortByAll(n, "id"), function(x) {return x.selected.toString()}).join(',')
 
                 if (n != o) {
-                    $scope.organization.settings.notification_columns.configured=true
+                    $scope.organization.settings.notification_columns.configured=true;
                 }
-
             }, true);
 
     }]);
