@@ -65,6 +65,7 @@ define([
             var type;
 
             for (i = 5; i < data.length; i++) {
+                data[i][0] = data[i][0].toString().toLowerCase();
                 type = data[i][0].split("x");
 
                 if (type.length != 2) {
