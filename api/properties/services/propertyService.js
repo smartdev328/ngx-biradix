@@ -953,7 +953,7 @@ module.exports = {
             },
             function(surveyid, date, callbackw) {
                 if (date) {
-                    SurveySchema.findOne({date: {$lt: date}, propertyid: subject._id}, function(err, lastsurvey) {
+                    SurveySchema.findOne({date: {$lt: date}, propertyid: subject._id}, null, {sort: {date: -1}}, function(err, lastsurvey) {
                         callbackw(null, lastsurvey);
                     });
                 } else if (surveyid) {
