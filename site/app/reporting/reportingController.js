@@ -823,6 +823,14 @@ define([
         }
 
         $scope.reportsChanged = function(load, callback) {
+            if (!$rootScope.me) {
+                Raygun.send(new Error("Missing user context in reporting"), {loggedInUser: $rootScope.me});
+                window.setTimeout(function() {
+                    $rootScope.logoff();
+                }, 1000);
+                return;
+            }
+
             $scope.configureTrendsOptions();
             $scope.configurePropertyReportOptions();
             $scope.configureRankingsOptions();
@@ -990,7 +998,7 @@ define([
                 last_updated: true,
                 weekly: false,
                 concessions: false,
-                nervscompavg : false
+                nervscompavg: false,
             }
         }
 
@@ -1392,6 +1400,10 @@ define([
                 $scope.resetPropertyReportSettings(false);
             }
 
+            if (!$rootScope.me) {
+                return;
+            }
+
             $scope.temp.showProfileOptions = {hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
             $scope.temp.showProfileItems = [
                 {id: "picture", name: "Picture", selected: $scope.liveSettings.showProfile.picture},
@@ -1497,7 +1509,6 @@ define([
             $scope.liveSettings.showProfile = $reportingService.getInfoRows($rootScope.me);
             $scope.liveSettings.dashboardSettings.daterange.direction = "right";
 
-
             if (rebind) {
                 $scope.liveSettings.dashboardSettings.daterange.reload = true;
                 $scope.configurePropertyReportOptions();
@@ -1508,7 +1519,7 @@ define([
 
         $scope.configureConcessionOptions = function() {
             if (!$scope.liveSettings.concession) {
-                $scope.resetConcessionSettings()
+                $scope.resetConcessionSettings();
             }
         }
 
