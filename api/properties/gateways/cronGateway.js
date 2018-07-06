@@ -16,7 +16,7 @@ const GeocodeService = require("../../utilities/services/geocodeService");
 Routes.get("/geocode", (req, res) => {
     userService.getSystemUser((system) => {
         const systemUser = system.user;
-        let reply = [];
+        let updated = 0;
         propertyService.search(systemUser, {geocode: true, active: 1, limit: 6, select: "address city state zip name loc"}, (err, props) => {
             async.eachSeries(props, (property, callbacks) => {
                 let address = property.address + " " + property.city + " " + property.state + " " + property.zip;
@@ -26,19 +26,25 @@ Routes.get("/geocode", (req, res) => {
                         callbacks(err);
                     } else {
                         const loc = [res[0].latitude, res[0].longitude];
-                        propertyService.updateGeo(systemUser, property._id, loc, (err, newprop) => {
-                            if (err) {
-                                console.error("GEOCODE EVENT ERROR", err);
-                                callbacks(err);
-                            } else {
-                                reply.push(JSON.stringify(property.loc) + " => " + JSON.stringify(loc));
-                                callbacks();
-                            }
-                        });
+
+                        if (property.loc[0] === loc[0] && property.loc[1] === loc[1]) {
+                            callbacks();
+                        } else {
+                            propertyService.updateGeo(systemUser, property._id, loc, (err, newprop) => {
+                                if (err) {
+                                    console.error("GEOCODE EVENT ERROR", err);
+                                    callbacks(err);
+                                } else {
+                                    updated++;
+                                    console.info("GEOCODE EVENT UPDATED: ", JSON.stringify(property.loc) + " => " + JSON.stringify(loc));
+                                    callbacks();
+                                }
+                            });
+                        }
                     }
                 });
             }, (err) => {
-                res.status(200).json({count: props.length, log: reply});
+                res.status(200).json({count: props.length, updated: updated});
             });
         });
     });
