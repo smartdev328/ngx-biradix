@@ -67,6 +67,7 @@ const s = new Schema({
     survey: {},
     media: [],
     custom: {},
+    lastGeoCheck: Date,
 });
 
 s.index({"comps.id": 1});

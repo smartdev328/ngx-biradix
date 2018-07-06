@@ -549,6 +549,14 @@ module.exports = {
                 ]);
             }
 
+            if (criteria.geocode) {
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate()-7);
+                query = query.and([
+                    {$or: [{"lastGeoCheck": {$exists: false}}, {"lastGeoCheck": {$lt: cutoff}}]},
+                ]);
+            }
+
             query = query.sort(criteria.sort || "name");
 
             if (criteria.select !== "*") {
@@ -748,7 +756,7 @@ module.exports = {
         });
 
     },
-    Approve : function(operator, id, context, callback)  {
+    Approve: function(operator, id, context, callback)  {
         var modelErrors = [];
 
         if (!id)
@@ -776,7 +784,36 @@ module.exports = {
 
             return callback(err, saved)
         })
-    },    
+    },
+    updateGeo: function(operator, id, loc, callback) {
+        const modelErrors = [];
+
+        if (!id) {
+            modelErrors.push({msg: "Invalid property id."});
+        }
+
+        if (!loc || !loc[0] || !loc[1]) {
+            modelErrors.push({msg: "Invalid location"});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        var query = {_id: id};
+        var update = {loc: loc, lastGeoCheck: new Date()};
+        var options = {new: true};
+
+        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to update property.'});
+                callback(modelErrors, null);
+                return;
+            }
+            return callback(err, saved);
+        });
+    },
     deleteSurvey: function(operator,context,revertedFromId, id, callback) {
         async.waterfall([
             function(callbackw){

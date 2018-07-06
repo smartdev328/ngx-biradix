@@ -7,9 +7,42 @@ var Routes = express.Router();
 /////////////////////////////////
 var userService = require('../../users/services/userService')
 var queueService = require('../services/queueService');
+var propertyService = require('../services/propertyService');
 var exportService = require('../services/exportService');
 var EmailService = require('../../business/services/emailService')
 var redisService = require('../../utilities/services/redisService')
+const GeocodeService = require("../../utilities/services/geocodeService");
+
+Routes.get("/geocode", (req, res) => {
+    userService.getSystemUser((system) => {
+        const systemUser = system.user;
+        let reply = [];
+        propertyService.search(systemUser, {geocode: true, active: 1, limit: 6, select: "address city state zip name loc"}, (err, props) => {
+            async.eachSeries(props, (property, callbacks) => {
+                let address = property.address + " " + property.city + " " + property.state + " " + property.zip;
+                GeocodeService.geocode(address, false, (err, res, fromCache) => {
+                    if (!res || !res[0] || !res[0].latitude) {
+                        console.error("GEOCODE EVENT ERROR", err);
+                        callbacks(err);
+                    } else {
+                        const loc = [res[0].latitude, res[0].longitude];
+                        propertyService.updateGeo(systemUser, property._id, loc, (err, newprop) => {
+                            if (err) {
+                                console.error("GEOCODE EVENT ERROR", err);
+                                callbacks(err);
+                            } else {
+                                reply.push(JSON.stringify(property.loc) + " => " + JSON.stringify(loc));
+                                callbacks();
+                            }
+                        });
+                    }
+                });
+            }, (err) => {
+                res.status(200).json({count: props.length, log: reply});
+            });
+        });
+    });
+});
 
 Routes.get('/test', function (req, res) {
     userService.getUsersForNotifications(true, function (err, users) {
