@@ -366,7 +366,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                             toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
                         } else {
                             $keenService.record(event).then(function(response) {}, function(error) {});
-                            toastr.success("Survey swap email sent to " + $scope.swap.selectedGuest.first + " " + $scope.swap.selectedGuest.last + " (" + $scope.swap.selectedGuest.email + ")")
+                            toastr.success("SurveySwap email sent to " + $scope.swap.selectedGuest.first + " " + $scope.swap.selectedGuest.last + " (" + $scope.swap.selectedGuest.email + ")")
                             $uibModalInstance.close();
                         }
                     }, function (err) {
