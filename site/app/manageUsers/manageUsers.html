@@ -27,22 +27,6 @@
         <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;" onclick="event.stopPropagation();">
             <table>
                 <tr>
-                    <td style="width:50px">
-                        <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
-                                ng-change="resetPager()"
-                                ng-options="item for item in limits">
-                        </select>
-                    </td>
-                    <Td>
-                        &nbsp;Rows
-                    </Td>
-                </tr>
-                <tr>
-                    <Td colspan="100%">
-                        <hr style="margin: 10px 0px">
-                    </Td>
-                </tr>
-                <tr>
                     <td colspan="2">
                         <b>User Status</b>
                     </Td>
@@ -233,8 +217,12 @@
 
         </table>
         <div class="pull-left grid-show" style="padding-top:5px;">
-            Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
-            <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
+            {{filtered.length | number: 0}} items <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
+
+            <select class="form-control input-sm" ng-model="limit" style="width:85px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                    ng-change="resetPager()"
+                    ng-options="item + ' per page' for item in limits">
+            </select>
         </div>
         <div class="pull-right grid-pager">
             <ul uib-pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></ul>

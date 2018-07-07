@@ -909,11 +909,11 @@ module.exports = {
                 }
 
                 if (copy.weeklyleases !== survey.weeklyleases) {
-                    data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + survey.weeklyleases })
+                    data.push({description: "Leases/Week: " + (typeof copy.weeklyleases == "undefined" || copy.weeklyleases == null ? "(no value set)" : lastsurvey.weeklyleases) + " => " + (typeof survey.weeklyleases == "undefined" || survey.weeklyleases == null ? "(no value set)" : survey.weeklyleases)});
                 }
 
                 if (copy.weeklytraffic !== survey.weeklytraffic) {
-                    data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + survey.weeklytraffic })
+                    data.push({description: "Traffic/Week: " + (typeof copy.weeklytraffic == "undefined" || copy.weeklytraffic == null ? "(no value set)" : lastsurvey.weeklytraffic) + " => " + (typeof survey.weeklytraffic == "undefined" || survey.weeklytraffic == null ? "(no value set)" : survey.weeklytraffic)});
                 }
 
                 survey.floorplans.forEach(function(fp) {
@@ -1015,12 +1015,6 @@ module.exports = {
 
             standardizeOptionalFields(lastsurvey);
 
-            if (typeof lastsurvey.weeklyleases === "undefined" || lastsurvey.weeklyleases == null) {
-                lastsurvey.weeklyleases = "(no value set)";
-            }
-            if (typeof lastsurvey.weeklytraffic === "undefined" || lastsurvey.weeklytraffic == null) {
-                lastsurvey.weeklytraffic = "(no value set)";
-            }
             lastsurvey.floorplans = lastsurvey.floorplans || [];
 
             let n = new SurveySchema();
@@ -1076,12 +1070,13 @@ module.exports = {
             if (lastsurvey.renewal !== n.renewal) {
                 data.push({description: "Renewal: " + (typeof lastsurvey.renewal == "undefined" || lastsurvey.renewal == null ? "(no value set)" : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == "undefined" || n.renewal == null ? "(no value set)" : n.renewal + "%")});
             }
+
             if (lastsurvey.weeklyleases !== n.weeklyleases) {
-                data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + n.weeklyleases});
+                data.push({description: "Leases/Week: " + (typeof lastsurvey.weeklyleases == "undefined" || lastsurvey.weeklyleases == null ? "(no value set)" : lastsurvey.weeklyleases) + " => " + (typeof n.weeklyleases == "undefined" || n.weeklyleases == null ? "(no value set)" : n.weeklyleases)});
             }
 
             if (lastsurvey.weeklytraffic !== n.weeklytraffic) {
-                data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + n.weeklytraffic});
+                data.push({description: "Traffic/Week: " + (typeof lastsurvey.weeklytraffic == "undefined" || lastsurvey.weeklytraffic == null ? "(no value set)" : lastsurvey.weeklytraffic) + " => " + (typeof n.weeklytraffic == "undefined" || n.weeklytraffic == null ? "(no value set)" : n.weeklytraffic)});
             }
 
             n.floorplans.forEach(function(fp) {
@@ -1206,6 +1201,8 @@ function standardizeOptionalFields(survey) {
     standardizeOptionalField(survey, "occupancy");
     standardizeOptionalField(survey, "leased");
     standardizeOptionalField(survey, "renewal");
+    standardizeOptionalField(survey, "weeklyleases");
+    standardizeOptionalField(survey, "weeklytraffic");
 }
 
 function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {

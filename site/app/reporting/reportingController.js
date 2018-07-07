@@ -34,8 +34,8 @@ define([
                 $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
                 $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
                 $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "property_rankings_summary", name: "Property Rankings", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "property_rankings", name: "Property Rankings (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "property_rankings_summary", name: "Floor Plan Comparison", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "property_rankings", name: "Floor Plan Comparison (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
 
                     $scope.reportItems.push({
                         id: "trends",
