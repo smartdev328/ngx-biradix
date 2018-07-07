@@ -197,7 +197,7 @@ define([
                 survey.occupancy = data[1][i];
                 survey.weeklytraffic = data[2][i];
                 survey.weeklyleases = data[3][i];
-                survey.date = data[0][i];
+                survey.date = new Date(data[0][i]);
                 survey.propertyid = property._id;
                 survey.floorplans = [];
                 for(var fi in floorplans) {
@@ -219,29 +219,28 @@ define([
                 async.eachSeries(surveys
                     , function (survey, callbackp) {
                         var inrange = _.find(dates, function(d) {
-
-                            var diff = moment(d).diff(moment(new Date(survey.date)));
+                            var diff = moment(d).diff(moment(survey.date));
                             var days = Math.abs(diff / 1000 / 60 / 60 / 24);
-                            return days < 4;
+                            return days < 2;
                         })
 
-                        if (/* inrange */ false) {
-                            warnings.push(survey.date + ": Duplicate Date / Not Added");
+                        if (inrange) {
+                            warnings.push(moment(survey.date).format("MM/DD/YYYY") + ": Duplicate Date / Not Added");
                             callbackp();
                         }
                         else {
                             $propertyService.createSurvey(property._id, survey).then(
                                 function(resp) {
                                     if (resp.data.errors && resp.data.errors.length > 0) {
-                                        errors.push(survey.date + ": " + resp.data.errors[0].msg);
+                                        errors.push(moment(survey.date).format("MM/DD/YYYY") + ": " + resp.data.errors[0].msg);
                                     }
                                     else {
                                         dates.push(survey.date);
-                                        successes.push(survey.date + " added successfully");
+                                        successes.push(moment(survey.date).format("MM/DD/YYYY") + " added successfully");
                                     }
                                     callbackp();
                             }, function(resp) {
-                                    errors.push(survey.date + ': Unknown error');
+                                    errors.push(moment(survey.date).format("MM/DD/YYYY") + ': Unknown error');
                                     callbackp();
                                 })
                         }
