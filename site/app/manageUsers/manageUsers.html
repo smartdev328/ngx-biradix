@@ -36,7 +36,7 @@
                         <input type="checkbox" ng-model="showActive" ng-click="calcActive()" id="showActive">
                     </td>
                     <Td>
-                        <label style="font-weight: normal;" for="showActive">Active</label>
+                        &nbsp;<label style="font-weight: normal;" for="showActive">Active</label>
                     </Td>
                 </tr>
 
@@ -45,7 +45,7 @@
                         <input type="checkbox" ng-model="showInactive" ng-click="calcActive()" id="showInactive">
                     </td>
                     <Td nowrap style="padding-right:15px">
-                        <label style="font-weight: normal;" for="showInactive">Inactive</label>
+                        &nbsp;<label style="font-weight: normal;" for="showInactive">Inactive</label>
                     </Td>
                 </tr>
                 <tr>
@@ -63,7 +63,7 @@
                         <input type="checkbox" ng-model="showDeliverable" ng-click="calcUndeliverable()" id="showDeliverable">
                     </td>
                     <Td>
-                        <label style="font-weight: normal;" for="showDeliverable">Deliverable</label>
+                        &nbsp;<label style="font-weight: normal;" for="showDeliverable">Deliverable</label>
                     </Td>
                 </tr>
 
@@ -72,7 +72,7 @@
                         <input type="checkbox" ng-model="showUndeliverable" ng-click="calcUndeliverable()" id="showUndeliverable">
                     </td>
                     <Td nowrap style="padding-right:15px">
-                        <label style="font-weight: normal;" for="showUndeliverable">Undeliverable</label>
+                        &nbsp;<label style="font-weight: normal;" for="showUndeliverable">Undeliverable</label>
                     </Td>
                 </tr>
                 <tr>
@@ -90,7 +90,7 @@
                         <input id="user_role_{{$index}}" type="checkbox" ng-model="role.selected" ng-checked="role.selected" ng-click="updateRoleFilters()">
                     </td>
                     <Td nowrap style="padding-right:15px">
-                        <label style="font-weight: normal;" for="user_role_{{$index}}">{{role.name}}</label>
+                        &nbsp;<label style="font-weight: normal;" for="user_role_{{$index}}">{{role.name}}</label>
                     </Td>
                 </tr>
             </table>
