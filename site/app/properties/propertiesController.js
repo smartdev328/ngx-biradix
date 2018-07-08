@@ -119,21 +119,19 @@ define([
                             }
 
                             //For propert sorting
+                            p.occupancy = -1;
+                            p.ner = -1;
+                            p.lastUpdated = new Date("1/1/1980");
                             if (p.survey) {
-                                if (p.survey.occupancy != null) {
+                                if (p.survey.occupancy != null && typeof p.occupancy !== "undefined") {
                                     p.occupancy = p.survey.occupancy;
                                 }
-
-                                if (p.survey.ner != null) {
+                                if (p.survey.ner != null && typeof p.ner !== "undefined") {
                                     p.ner = p.survey.ner;
                                 }
-                                if (p.survey.date != null) {
+                                if (p.survey.date != null && typeof p.date !== "undefined") {
                                     p.lastUpdated = p.survey.date;
                                 }
-                            } else {
-                                p.occupancy = -1;
-                                p.ner = -1;
-                                p.lastUpdated = new Date("1/1/1980");
                             }
 
                             p.canEdit = true;
@@ -187,23 +185,19 @@ define([
                             $scope.customCount++;
                         }
                     }
-                    // For propert sorting
+                    p.occupancy = -1;
+                    p.ner = -1;
+                    p.lastUpdated = new Date("1/1/1980");
                     if (p.survey) {
-                        if (p.survey.occupancy != null) {
+                        if (p.survey.occupancy != null && typeof p.occupancy !== "undefined") {
                             p.occupancy = p.survey.occupancy;
                         }
-
-                        if (p.survey.ner != null) {
+                        if (p.survey.ner != null && typeof p.ner !== "undefined") {
                             p.ner = p.survey.ner;
                         }
-
-                        if (p.survey.date != null) {
+                        if (p.survey.date != null && typeof p.date !== "undefined") {
                             p.lastUpdated = p.survey.date;
                         }
-                    } else {
-                        p.occupancy = -1;
-                        p.ner = -1;
-                        p.lastUpdated = new Date("1/1/1980");
                     }
 
                     if ($scope.data.length < 6) {
