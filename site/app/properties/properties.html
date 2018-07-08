@@ -121,6 +121,7 @@
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.totalUnits" ng-checked="show.totalUnits" ng-click="columnsChanged=true"> Total Units</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy" ng-click="columnsChanged=true"> Occupancy %</label></div></li>
             <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="columnsChanged=true"> Net Eff. Rent</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.lastUpdated" ng-checked="show.lastUpdated" ng-click="columnsChanged=true"> Last Survey</label></div></li>
             <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
             <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
             <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.owner" ng-click="columnsChanged=true"> Owner</label></div></li>
@@ -198,6 +199,12 @@
                 <div class="pull-right" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
                 <div class="pull-right" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
             </th>
+                <th ng-show="show.lastUpdated" style="cursor:pointer;min-width:108px;width:108px" ng-click="toggleSort('lastUpdated')">
+                    <div class="pull-left">Last Survey</div>
+                    <div class="pull-right" ng-show="sort.lastUpdated == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-right" ng-show="sort.lastUpdated === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-right" ng-show="sort.lastUpdated === false"><i class="fa fa-sort-up"></i></div>
+                </th>
             <th ng-show="show.active" class="center">
                 Active
             </th>
@@ -256,6 +263,7 @@
             <td ng-show="show.totalUnits" style="text-align:center">{{row.totalUnits == null ? '-' : row.totalUnits}}</td>
             <td ng-show="show.occupancy" style="text-align:right">{{row.survey.occupancy == null ? '-' :  row.survey.occupancy + '%'}}</td>
             <td ng-show="show.ner" style="text-align:right">{{row.survey.ner == null ? '-' : '$' + row.survey.ner }}</td>
+            <td ng-show="show.lastUpdated" style="text-align:right">{{row.survey.date == null ? 'Never' : row.survey.date | date : 'shortDate' }}</td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x" ng-show="row.active"></span>
                 <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ddd"></span>
@@ -347,6 +355,7 @@
             <td ng-show="show.totalUnits" style="text-align:center">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</td>
             <td ng-show="show.occupancy" style="text-align:right">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</td>
             <td ng-show="show.ner" style="text-align:right">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</td>
+            <td ng-show="show.lastUpdated" style="text-align:right">{{comp.survey.date == null ? 'Never' : comp.survey.date | date : 'shortDate' }}</td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x" ng-show="comp.active"></span>
                 <span class="fa fa-times fa-2x" ng-show="!comp.active" style="color:#ddd"></span>

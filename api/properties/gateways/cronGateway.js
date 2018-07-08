@@ -28,7 +28,14 @@ Routes.get("/geocode", (req, res) => {
                         const loc = [res[0].latitude, res[0].longitude];
 
                         if (property.loc[0] === loc[0] && property.loc[1] === loc[1]) {
-                            callbacks();
+                            propertyService.updateGeo(systemUser, property._id, loc, (err, newprop) => {
+                                if (err) {
+                                    console.error("GEOCODE EVENT ERROR", err);
+                                    callbacks(err);
+                                } else {
+                                   callbacks();
+                                }
+                            });
                         } else {
                             propertyService.updateGeo(systemUser, property._id, loc, (err, newprop) => {
                                 if (err) {
@@ -36,7 +43,7 @@ Routes.get("/geocode", (req, res) => {
                                     callbacks(err);
                                 } else {
                                     updated++;
-                                    console.info("GEOCODE EVENT UPDATED: ", JSON.stringify(property.loc) + " => " + JSON.stringify(loc));
+                                    console.info("GEOCODE EVENT UPDATED: ", property.name, JSON.stringify(property.loc) + " => " + JSON.stringify(loc));
                                     callbacks();
                                 }
                             });
