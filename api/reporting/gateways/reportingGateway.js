@@ -42,8 +42,13 @@ Routes.get("/excel/property_status", (req, res) => {
 });
 
 Routes.post("/group", function(req, res) {
+    console.log(req.body.reports);
     propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, function(data) {
-        res.status(200).json({"property_status": data});
+        let response = {};
+        req.body.reports.forEach((k) => {
+           response[k] = data;
+        });
+        res.status(200).json(response);
     });
 });
 

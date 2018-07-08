@@ -56,6 +56,7 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
             else if (reportIds.indexOf("property_rankings_summary") > -1 && k == "rankingsSummary") {}
             else if (reportIds.indexOf("property_rankings") > -1 && k == "rankings") {}
             else if (reportIds.indexOf("property_status") > -1 && k == "propertyStatus") {}
+            else if (reportIds.indexOf("custom_portfolio") > -1 && k == "customPortfolio") {}
             else if (reportIds.indexOf("trends") > -1 && k == "trends") {}
             else {
                 delete copyOfSettings[k];
