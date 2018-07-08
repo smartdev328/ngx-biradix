@@ -521,6 +521,10 @@ module.exports = {
                 }
                 all.dates = points;
 
+                all.dates.forEach((date, i)=> {
+                    date.w = i+1;
+                })
+
                 callback(all);
             })
 

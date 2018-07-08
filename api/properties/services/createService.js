@@ -907,6 +907,7 @@ function getFloorplansUpdatedChanges(property, n, all) {
                 || fp.bathrooms != nfp.bathrooms
                 || fp.units != nfp.units
                 || fp.sqft != nfp.sqft
+                || fp.description != nfp.description
             ) {
                 n.needsSurvey = true;
             }            

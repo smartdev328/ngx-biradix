@@ -40,7 +40,7 @@
     </div>
 
 
-    <div class="btn-group action_dropdown stay_open_button pull-right" style="margin-right:5px">
+    <div class="btn-group action_dropdown stay_open_button pull-right" style="margin-right:5px"  ng-if="me.permissions.indexOf('Admin') > -1">
         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false"
                 uib-tooltip="Filters"
                 tooltip-placement="top"
@@ -49,22 +49,6 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
             <table>
-                <tr>
-                    <td style="width:50px">
-                        <select class="form-control input-sm" ng-model="limit" style="width:50px;display:inline-block;padding:2px !important;font-size:11px;height:25px"
-                                ng-change="resetPager()"
-                                ng-options="item for item in limits">
-                        </select>
-                    </td>
-                    <td>
-                        &nbsp;Rows
-                    </Td>
-                </tr>
-                <tr ng-if="me.permissions.indexOf('Admin') > -1">
-                    <Td colspan="100%">
-                        <hr style="margin: 10px 0px">
-                    </Td>
-                </tr>
                 <tr ng-if="me.permissions.indexOf('Admin') > -1">
                     <th colspan="2">
                         Active Status:
@@ -386,7 +370,7 @@
                             ><i class="fa fa-lock fa-fw"></i> Edit Comp</a></li>
                             <li><a href ng-click="addComp(row)"><span class="fa fa-times fa-fw"></span> Remove Comp</a></li>
                             <li><a href ng-click="editLink(row, comp)"><span class="fa fa-chain fa-fw"></span> Comped Floor Plans</a></li>
-                            <li ng-if="!comp.isCustom"><a href ng-click="surveySwap(comp)" ng-if="!comp.orgid"><span class="fa fa-exchange fa-fw"></span> Survey Swap</a></li>
+                            <li ng-if="!comp.isCustom"><a href ng-click="surveySwap(comp)" ng-if="!comp.orgid"><span class="fa fa-exchange fa-fw"></span> SurveySwap</a></li>
                         </ul>
                     </div>
                 </div>
@@ -396,11 +380,14 @@
         </tbody>
 
     </table>
+        <div class="pull-left grid-show" style="padding-top:5px;">
+            {{filtered.length | number: 0}} items <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
 
-    <div class="pull-left grid-show" style="padding-top:5px;">
-        Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
-        <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
-    </div>
+            <select class="form-control input-sm" ng-model="limit" style="width:85px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                    ng-change="resetPager()"
+                    ng-options="item + ' per page' for item in limits">
+            </select>
+        </div>
     <div class="pull-right grid-pager">
         <ul uib-pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></ul>
     </div>

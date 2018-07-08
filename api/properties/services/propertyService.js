@@ -549,6 +549,14 @@ module.exports = {
                 ]);
             }
 
+            if (criteria.geocode) {
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate()-7);
+                query = query.and([
+                    {$or: [{"lastGeoCheck": {$exists: false}}, {"lastGeoCheck": {$lt: cutoff}}]},
+                ]);
+            }
+
             query = query.sort(criteria.sort || "name");
 
             if (criteria.select !== "*") {
@@ -748,7 +756,7 @@ module.exports = {
         });
 
     },
-    Approve : function(operator, id, context, callback)  {
+    Approve: function(operator, id, context, callback)  {
         var modelErrors = [];
 
         if (!id)
@@ -776,7 +784,36 @@ module.exports = {
 
             return callback(err, saved)
         })
-    },    
+    },
+    updateGeo: function(operator, id, loc, callback) {
+        const modelErrors = [];
+
+        if (!id) {
+            modelErrors.push({msg: "Invalid property id."});
+        }
+
+        if (!loc || !loc[0] || !loc[1]) {
+            modelErrors.push({msg: "Invalid location"});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        var query = {_id: id};
+        var update = {loc: loc, lastGeoCheck: new Date()};
+        var options = {new: true};
+
+        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to update property.'});
+                callback(modelErrors, null);
+                return;
+            }
+            return callback(err, saved);
+        });
+    },
     deleteSurvey: function(operator,context,revertedFromId, id, callback) {
         async.waterfall([
             function(callbackw){
@@ -872,11 +909,11 @@ module.exports = {
                 }
 
                 if (copy.weeklyleases !== survey.weeklyleases) {
-                    data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + survey.weeklyleases })
+                    data.push({description: "Leases/Week: " + (typeof copy.weeklyleases == "undefined" || copy.weeklyleases == null ? "(no value set)" : lastsurvey.weeklyleases) + " => " + (typeof survey.weeklyleases == "undefined" || survey.weeklyleases == null ? "(no value set)" : survey.weeklyleases)});
                 }
 
                 if (copy.weeklytraffic !== survey.weeklytraffic) {
-                    data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + survey.weeklytraffic })
+                    data.push({description: "Traffic/Week: " + (typeof copy.weeklytraffic == "undefined" || copy.weeklytraffic == null ? "(no value set)" : lastsurvey.weeklytraffic) + " => " + (typeof survey.weeklytraffic == "undefined" || survey.weeklytraffic == null ? "(no value set)" : survey.weeklytraffic)});
                 }
 
                 survey.floorplans.forEach(function(fp) {
@@ -978,12 +1015,6 @@ module.exports = {
 
             standardizeOptionalFields(lastsurvey);
 
-            if (typeof lastsurvey.weeklyleases === "undefined" || lastsurvey.weeklyleases == null) {
-                lastsurvey.weeklyleases = "(no value set)";
-            }
-            if (typeof lastsurvey.weeklytraffic === "undefined" || lastsurvey.weeklytraffic == null) {
-                lastsurvey.weeklytraffic = "(no value set)";
-            }
             lastsurvey.floorplans = lastsurvey.floorplans || [];
 
             let n = new SurveySchema();
@@ -1039,12 +1070,13 @@ module.exports = {
             if (lastsurvey.renewal !== n.renewal) {
                 data.push({description: "Renewal: " + (typeof lastsurvey.renewal == "undefined" || lastsurvey.renewal == null ? "(no value set)" : lastsurvey.renewal + "%") + " => " + (typeof n.renewal == "undefined" || n.renewal == null ? "(no value set)" : n.renewal + "%")});
             }
+
             if (lastsurvey.weeklyleases !== n.weeklyleases) {
-                data.push({description: "Leases/Week: " + lastsurvey.weeklyleases + " => " + n.weeklyleases});
+                data.push({description: "Leases/Week: " + (typeof lastsurvey.weeklyleases == "undefined" || lastsurvey.weeklyleases == null ? "(no value set)" : lastsurvey.weeklyleases) + " => " + (typeof n.weeklyleases == "undefined" || n.weeklyleases == null ? "(no value set)" : n.weeklyleases)});
             }
 
             if (lastsurvey.weeklytraffic !== n.weeklytraffic) {
-                data.push({description: "Traffic/Week: " + lastsurvey.weeklytraffic + " => " + n.weeklytraffic});
+                data.push({description: "Traffic/Week: " + (typeof lastsurvey.weeklytraffic == "undefined" || lastsurvey.weeklytraffic == null ? "(no value set)" : lastsurvey.weeklytraffic) + " => " + (typeof n.weeklytraffic == "undefined" || n.weeklytraffic == null ? "(no value set)" : n.weeklytraffic)});
             }
 
             n.floorplans.forEach(function(fp) {
@@ -1169,6 +1201,8 @@ function standardizeOptionalFields(survey) {
     standardizeOptionalField(survey, "occupancy");
     standardizeOptionalField(survey, "leased");
     standardizeOptionalField(survey, "renewal");
+    standardizeOptionalField(survey, "weeklyleases");
+    standardizeOptionalField(survey, "weeklytraffic");
 }
 
 function removeCMPermissionsAfterUnlink(compid, subjectid, orgid) {

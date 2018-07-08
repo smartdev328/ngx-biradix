@@ -1,5 +1,5 @@
 <ul class="profile-list">
-    <li ng-repeat="value in amenities">
+    <li ng-repeat="value in amenities | orderBy: value">
         {{value}}
     </li>
 </ul>
