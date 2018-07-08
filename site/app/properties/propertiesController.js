@@ -49,6 +49,7 @@ define([
                 company: siteAdmin,
                 tools: true,
                 owner: false,
+                lastUpdated: false,
             };
         }
 
@@ -95,7 +96,7 @@ define([
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
                 $propertyService.search({
-                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid needsSurvey survey.dateByOwner custom", ids: compids
+                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid needsSurvey survey.dateByOwner custom", ids: compids
                     , skipAmenities: true
                 }).then(function (response) {
                     $propertyService.search({
@@ -126,10 +127,13 @@ define([
                                 if (p.survey.ner != null) {
                                     p.ner = p.survey.ner;
                                 }
-
+                                if (p.survey.date != null) {
+                                    p.lastUpdated = p.survey.date;
+                                }
                             } else {
                                 p.occupancy = -1;
                                 p.ner = -1;
+                                p.lastUpdated = new Date("1/1/1980");
                             }
 
                             p.canEdit = true;
@@ -163,7 +167,7 @@ define([
             $propertyService.search({
                 limit: 10000,
                 permission: "PropertyManage",
-                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner orgid comps.id comps.excluded comps.orderNumber needsSurvey custom",
+                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid comps.id comps.excluded comps.orderNumber needsSurvey custom",
                 skipAmenities: true,
                 hideCustomComps: true,
             }).then(function(response) {
@@ -192,9 +196,14 @@ define([
                         if (p.survey.ner != null) {
                             p.ner = p.survey.ner;
                         }
+
+                        if (p.survey.date != null) {
+                            p.lastUpdated = p.survey.date;
+                        }
                     } else {
                         p.occupancy = -1;
                         p.ner = -1;
+                        p.lastUpdated = new Date("1/1/1980");
                     }
 
                     if ($scope.data.length < 6) {
