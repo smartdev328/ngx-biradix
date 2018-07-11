@@ -551,7 +551,7 @@ module.exports = {
 
             if (criteria.geocode) {
                 const cutoff = new Date();
-                cutoff.setDate(cutoff.getDate()-7);
+                cutoff.setDate(cutoff.getDate()-30);
                 query = query.and([
                     {$or: [{"lastGeoCheck": {$exists: false}}, {"lastGeoCheck": {$lt: cutoff}}]},
                 ]);

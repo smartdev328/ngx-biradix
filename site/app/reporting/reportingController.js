@@ -633,7 +633,6 @@ define([
                         $scope.total += (3*($scope.compIds.length + 1));
                     }
 
-
                     $rootScope.$on('timeseriesLoaded', function (event,data) {
                         // console.log('timesieres', (new Date()).getTime())
                         $scope.graphs ++;
@@ -647,17 +646,13 @@ define([
                         }
                     });
                 } else {
-
                     window.setTimeout(function () {
                         window.renderable = true;
                         // console.log('Render', (new Date()).getTime())
-                    }, $scope.trends ? 2000 :  300)
+                    }, $scope.trends ? 2000 :  300);
                 }
-
-
             });
-        }
-
+        };
 
         $scope.pdf = function(showFile) {
             if ($scope.property_report) {
@@ -972,6 +967,47 @@ define([
             location.href = url;
         };
 
+            $scope.excel_custom_portfolio = function(settings) {
+                var properties = $scope.propertyItems.items;
+
+                if (!properties.length) {
+                    $scope.noProperties = true;
+                    $scope.reportLoading = false;
+                    return;
+                }
+
+                $scope.propertyNames = _.pluck(properties, "name");
+                $scope.propertyNames.forEach(function(x, i) {
+                    $scope.propertyNames[i] = {description: "Property: " + x};
+                });
+
+                $scope.description = "%where%, " + $scope.propertyNames.length + " Property(ies), " + $scope.reportIds.length + " Report Type(s)";
+                $scope.auditMultiple("report", "Excel");
+
+                ngProgress.start();
+
+                $("#export").prop("disabled", true);
+
+                $scope.progressId = _.random(1000000, 9999999);
+
+                var data = {
+                    timezone: moment().utcOffset(),
+                    propertyIds: $scope.propertyIds,
+                    progressId: $scope.progressId,
+                    settings: $scope.runSettings.propertyStatus,
+                }
+
+                var key = $urlService.shorten(JSON.stringify(data));
+
+                var url = "/api/1.0/reporting/excel/custom_portfolio?"
+                url += "token=" + $cookies.get("token")
+                url += "&key=" + key;
+
+                $window.setTimeout($scope.checkProgress, 500);
+
+                location.href = url;
+            };
+
         $scope.excel = function() {
             ngProgress.start();
 
@@ -1095,6 +1131,8 @@ define([
                     concessions: false,
                     nervscompavg: false,
                 };
+
+                $scope.liveSettings.customPortfolio.compAverages = true;
             }
 
             $scope.configureCustomPortfolioOptions = function() {
@@ -1133,7 +1171,9 @@ define([
                 if (!$rootScope.me.settings.showATR) {
                     _.remove($scope.temp.showCustomPortfolioItems, function(x) {return x.id == 'atr'})
                 }
-
+                if (typeof $scope.liveSettings.customPortfolio.compAverages == 'undefined') {
+                    $scope.liveSettings.customPortfolio.compAverages = true;
+                }
             }
         ////////////////////// Rankings Summary ////////////////////////////////
         $scope.resetRankingsSummarySettings = function() {
@@ -1659,7 +1699,6 @@ define([
         })
 
         $scope.saveReport = function() {
-
             $scope.UItoSettings();
             $scope.UItoSettingsMultiple();
 

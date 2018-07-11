@@ -31,7 +31,7 @@
                 <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export PDF</a></li>
                 <li><a href ng-click="excel()" ng-if="property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
                 <li><a href ng-click="excel_property_status(runSettings.propertyStatus)" ng-if="property_status && !custom_portfolio"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
-                <li><a href ng-click="excel_property_status(runSettings.customPortfolio)" ng-if="custom_portfolio && !property_status"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+                <li><a href ng-click="excel_custom_portfolio(runSettings.customPortfolio)" ng-if="custom_portfolio && !property_status"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
     </div>
@@ -419,6 +419,10 @@
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Columns<br>
                                     <filter-list options="temp.showCustomPortfolioOptions" items="temp.showCustomPortfolioItems"></filter-list>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Show Comp Averages<br>
+                                    <toggle-switch checked="liveSettings.customPortfolio.compAverages"></toggle-switch>&nbsp;
                                 </div>
                             </div>
                         </div>

@@ -38,7 +38,6 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
 
     fac.cleanSettings = function(settings, reportIds) {
         var copyOfSettings = _.cloneDeep(settings);
-
          for (var k in copyOfSettings) {
 
             var d = fix(copyOfSettings[k].daterange);
@@ -62,10 +61,8 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
                 delete copyOfSettings[k];
             }
         }
-
         return copyOfSettings;
-    }
-
+    };
 
     fac.upsert = function (report) {
         return $http.post('/api/1.0/reporting/save/upsert'+ '?bust=' + (new Date()).getTime(), report, {

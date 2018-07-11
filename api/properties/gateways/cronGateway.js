@@ -17,12 +17,12 @@ Routes.get("/geocode", (req, res) => {
     userService.getSystemUser((system) => {
         const systemUser = system.user;
         let updated = 0;
-        propertyService.search(systemUser, {geocode: true, active: 1, limit: 6, select: "address city state zip name loc"}, (err, props) => {
+        propertyService.search(systemUser, {geocode: true, active: true, limit: 6, select: "address city state zip name loc"}, (err, props) => {
             async.eachSeries(props, (property, callbacks) => {
                 let address = property.address + " " + property.city + " " + property.state + " " + property.zip;
                 GeocodeService.geocode(address, false, (err, res, fromCache) => {
                     if (!res || !res[0] || !res[0].latitude) {
-                        console.error("GEOCODE EVENT ERROR", err);
+                        console.error("GEOCODE EVENT ERROR", res);
                         callbacks(err);
                     } else {
                         const loc = [res[0].latitude, res[0].longitude];
