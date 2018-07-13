@@ -14,7 +14,14 @@
                  popover-append-to-body="true"
                  uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
             ></div>
-            <input type="text" style="width:0px;height:18px;border:0;padding:0" value="{{::item.name}}">{{::item.name}}
+            <input type="text" style="width:0px;height:18px;border:0;padding:0" value="{{::item.name}}">
+            <span ng-if="::!item.tooltip">{{::item.name}}</span>
+            <span ng-if="::item.tooltip"
+                  popover-trigger="'mouseenter'"
+                  popover-placement="right"
+                  popover-append-to-body="true"
+                  uib-popover-html="item.tooltip"
+            >{{::item.name}}</span>
         </div>
     </div>
 </div>

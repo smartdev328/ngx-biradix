@@ -45,7 +45,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                         callbackp(null)
                     }
                     else {
-                        queueService.getCompareReport(data.user, id, function (err, report) {
+                        queueService.getCompareReport(data.user, id, data.options, function (err, report) {
                             //console.log(id, report[0].name, report[0]._id)
                             redisService.set(key, report, 3 * 60); // 3 hours
                             //console.log('No Cache:', report);

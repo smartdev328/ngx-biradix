@@ -17,6 +17,10 @@
     color:#4460a9 !important;
 }
 
+.bold td {
+    font-weight: bold !important;
+}
+
 .maingrid.wrapper.panel .subtotal TD  {
     padding-bottom:10px !important;
 }

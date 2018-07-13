@@ -14,7 +14,7 @@ const individualReportsService = require("../services/individualReportsService")
 Routes.get("/excel/property_status", (req, res) => {
     serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
         result = JSON.parse(result);
-        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, (data) => {
+        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: false}, (data) => {
             let fileName = "Property_Status_Report_";
             fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
             fileName += ".xlsx";
@@ -44,7 +44,8 @@ Routes.get("/excel/property_status", (req, res) => {
 Routes.get("/excel/custom_portfolio", (req, res) => {
     serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
         result = JSON.parse(result);
-        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, (data) => {
+        console.log(result.settings);
+        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: result.settings.compAverages}, (data) => {
             let fileName = "Custom_Portfolio_Report_";
             fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
             fileName += ".xlsx";
@@ -73,14 +74,28 @@ Routes.get("/excel/custom_portfolio", (req, res) => {
 
 
 Routes.post("/group", function(req, res) {
-    console.log(req.body.reports);
-    propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, function(data) {
-        let response = {};
-        req.body.reports.forEach((k) => {
-           response[k] = data;
+    async.parallel({
+        custom_portfolio: function(callbackp) {
+            if (req.body.reports.indexOf("custom_portfolio") === -1) {
+                return callbackp(null);
+            }
+
+            propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, {compAverages: req.body.settings.customPortfolio.compAverages}, function(data) {
+                callbackp(null,data);
+            });
+        },
+        property_status: function(callbackp) {
+            if (req.body.reports.indexOf("property_status") === -1) {
+                return callbackp(null);
+            }
+            propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, {compAverages: false}, function (data) {
+                callbackp(null,data);
+            });
+        },
+        }, function(err, all) {
+        res.status(200).json(all);
+        all = null;
         });
-        res.status(200).json(response);
-    });
 });
 
 Routes.post("/:id", function(req, res) {

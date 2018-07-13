@@ -14,10 +14,11 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
             });
         }
 
-        fac.reportsGroup = function(propertyids, reports) {
+        fac.reportsGroup = function(propertyids, reports, settings) {
             return $http.post("/api/1.0/reporting/group"+ "?bust=" + (new Date()).getTime(), {
                 propertyids: propertyids,
                 reports: reports,
+                settings: settings,
             }, {
                 headers: {"Authorization": "Bearer " + $cookies.get("token") }}).success(function (response) {
                 return response;

@@ -11,9 +11,9 @@ module.exports = {
             }
         );
     },
-    getCompareReport: function(user, id, callback) {
+    getCompareReport: function(user, id, options, callback) {
         var timer = new Date().getTime();
-        bus.query(settings.HISTORY_COMPARE_REPORT_QUEUE,{user: user, id: id},
+        bus.query(settings.HISTORY_COMPARE_REPORT_QUEUE,{user: user, id: id, options: options},
             function (data) {
                 //console.log("Compare report for " + id + ": " + (new Date().getTime() - timer) + "ms");
                 callback(data.err, data.report);
