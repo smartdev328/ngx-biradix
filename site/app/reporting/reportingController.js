@@ -533,6 +533,10 @@ define([
                 $scope.temp.showCustomPortfolioItems.forEach(function (f) {
                     $scope.liveSettings.customPortfolio.show[f.id] = f.selected;
                 });
+
+                if ($scope.temp.customPortfolioSortSelected) {
+                    $scope.liveSettings.customPortfolio.orderBy = ($scope.temp.customPortfolioSortDir == "desc" ? "-" : "") + $scope.temp.customPortfolioSortSelected.id;
+                }
             }
         };
 
@@ -1107,7 +1111,7 @@ define([
 
             ////////////////////// Custom Portfolio ////////////////////////////////
             $scope.resetCustomPortfolioSettings = function() {
-                $scope.liveSettings.customPortfolio = {}
+                $scope.liveSettings.customPortfolio = {orderBy: "default"};
 
                 $scope.liveSettings.customPortfolio.show = {
                     occupancy: true,
@@ -1146,8 +1150,8 @@ define([
                     {id: "leased", name: "Leased %", selected: $scope.liveSettings.customPortfolio.show.leased || false, tooltip: "<b>Leased %</b> - Percentage of property which is leased"},
                     {id: "atr", name: "ATR %", selected: $scope.liveSettings.customPortfolio.show.atr || false, tooltip: "<b>Apartments To Rent %</b> - Apartments To Rent (Exposure) is calculated by adding vacant available units (units not leased) plus units on notice and dividing by total units of the property"},
                     {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.customPortfolio.show.weekly, tooltip: "<b>Traffic Week</b> - Number of tours/shows given to prospective tenants in last 7 days (week)<br><br><b>Leases / Week</b> - Number of approved leases in the last 7 days (week), after cancellations and denials"},
-                    {id: "units", name: "Units", selected: $scope.liveSettings.customPortfolio.show.units, tooltip: "Field: <b>Units</b><Br>Description: Total units"},
-                    {id: "sqft", name: "Sqft", selected: $scope.liveSettings.customPortfolio.show.sqft, tooltip: "Field: <b>Sqft</b><Br>Description: The weighted average square footage. Example - if there were 25 units with 500 square feet, and 75 units with 1000, the weighted average sq ft value would be (25 x 500 + 75 x 1000) / 100 units = 875 sq ft"},
+                    {id: "units", name: "Units", selected: $scope.liveSettings.customPortfolio.show.units, tooltip: "<b>Units</b><Br>Description: Total units"},
+                    {id: "sqft", name: "Sqft", selected: $scope.liveSettings.customPortfolio.show.sqft, tooltip: "<b>Square Feet</b><Br>Description: The weighted average square footage. Example - if there were 25 units with 500 square feet, and 75 units with 1000, the weighted average sq ft value would be (25 x 500 + 75 x 1000) / 100 units = 875 sq ft"},
                     {id: "rent", name: "Rent", selected: $scope.liveSettings.customPortfolio.show.rent, tooltip: "<b>Rent</b> - The weighted average monthly market rent (Gross Market Rent - GMR). This is made up of base (minimum) gross floor plan rents for a 12 month lease, before any concessions or discounts"},
                     {id: "concessions", name: "Total Concession", selected: $scope.liveSettings.customPortfolio.show.concessions, tooltip: "<b>Total Concessions</b> - This is the sum of One Time Concessions and 12 months of Recurring Concessions"},
                     {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.customPortfolio.show.runrate, tooltip: "<b>Recurring Rent</b> - This is Rent minus Recurring Concessions. Excludes One-Time Concessions."},
@@ -1158,7 +1162,7 @@ define([
                     {id: "neryear", name: "NER vs Last Year", selected: $scope.liveSettings.customPortfolio.show.neryear, tooltip: "<b>Net Effective Rent vs Last Year</b> - Net Effective Rent divided by Last Year's Net Effective Rent"},
                     {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.liveSettings.customPortfolio.show.nersqft, tooltip: "<b>Net Effective Rent / Sqft</b> - Net Effective Rent per Square Foot (NER divided by Sqft)"},
                     {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.liveSettings.customPortfolio.show.nersqftweek, tooltip: "<b>Net Effective Rent / Sqft vs Last Week</b> - Net Effective Rent / Sqft divided by Last Week's Net Effective Rent / Sqft"},
-                    {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.liveSettings.customPortfolio.show.nersqftmonth, tooltip: "Field: <b>Net Effective Rent / Sqft vs Last Month</b><Br>Description: Net Effective Rent / Sqft divided by Last Month's Net Effective Rent / Sqft"},
+                    {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.liveSettings.customPortfolio.show.nersqftmonth, tooltip: "<b>Net Effective Rent / Sqft vs Last Month</b><Br>Description: Net Effective Rent / Sqft divided by Last Month's Net Effective Rent / Sqft"},
                     {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $scope.liveSettings.customPortfolio.show.nersqftyear, tooltip: "<b>Net Effective Rent / Sqft vs Last Year</b> - Net Effective Rent / Sqft divided by Last Year's Net Effective Rent / Sqft"},
                     {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.liveSettings.customPortfolio.show.nervscompavg, tooltip: "<b>Net Effective Rent vs Comp Avg</b> - Net Effective Rent divided by Comp average Net Effective Rent"},
                     {id: "last_updated", name: "Last Updated", selected: $scope.liveSettings.customPortfolio.show.last_updated, tooltip: "<b>Last Updated</b> - The date of the last survey completed for that property"},
@@ -1174,7 +1178,40 @@ define([
                 if (typeof $scope.liveSettings.customPortfolio.compAverages == 'undefined') {
                     $scope.liveSettings.customPortfolio.compAverages = false;
                 }
+
+                $scope.temp.customPortfolioSortItems = [
+                    {id: "default", name: "Default"},
+                    {id: "name", name: "Property Name"},
+                    {id: "occupancy", name: "Occ. %"},
+                    {id: "leased", name: "Leased %"},
+                    {id: "atr", name: "ATR %"},
+                    {id: "weeklytraffic", name: "Traffic/Week"},
+                    {id: "weeklyleases", name: "Leases/Week"},
+                    {id: "units", name: "Units"},
+                    {id: "sqft", name: "Sqft"},
+                    {id: "rent", name: "Rent"},
+                    {id: "concessions", name: "Total Concession"},
+                    {id: "runrate", name: "Recurring Rent"},
+                    {id: "runratesqft", name: "Recurring Rent / Sqft"},
+                    {id: "ner", name: "Net Eff. Rent"},
+                    {id: "nerweek", name: "NER vs Last Week"},
+                    {id: "nermonth", name: "NER vs Last Month"},
+                    {id: "neryear", name: "NER vs Last Year"},
+                    {id: "nersqft", name: "Net Eff. Rent / Sqft"},
+                    {id: "nersqftweek", name: "NER/Sqft vs Last Week"},
+                    {id: "nersqftmonth", name: "NER/Sqft vs Last Month"},
+                    {id: "nersqftyear", name: "NER/Sqft vs Last Year"},
+                    {id: "nervscompavg", name: "NER vs Comp Avg"},
+                    {id: "last_updated", name: "Last Updated"},
+                ];
+
+                var f = $scope.liveSettings.customPortfolio.orderBy.replace("-","");
+                $scope.temp.customPortfolioSortSelected = _.find($scope.temp.customPortfolioSortItems, function(x) {
+                    return x.id === f;
+                });
+                $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
             }
+
         ////////////////////// Rankings Summary ////////////////////////////////
         $scope.resetRankingsSummarySettings = function() {
             $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
