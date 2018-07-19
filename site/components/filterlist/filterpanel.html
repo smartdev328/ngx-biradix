@@ -7,6 +7,11 @@
         <div ng-repeat="item in value"
              ng-class="{'triangle-parent':true,'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused, 'disabled' : item.disabled}"
              ng-click="clk($event,item)"
+             popover-trigger="'mouseenter'"
+             popover-placement="right"
+             popover-append-to-body="true"
+             uib-popover-html="item.tooltip"
+             popover-enable="item.tooltip"
         >
             <div ng-if="item.isCustom" class="triangle"
                  popover-trigger="'mouseenter'"
@@ -15,13 +20,7 @@
                  uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
             ></div>
             <input type="text" style="width:0px;height:18px;border:0;padding:0" value="{{::item.name}}">
-            <span ng-if="::!item.tooltip">{{::item.name}}</span>
-            <span ng-if="::item.tooltip"
-                  popover-trigger="'mouseenter'"
-                  popover-placement="right"
-                  popover-append-to-body="true"
-                  uib-popover-html="item.tooltip"
-            >{{::item.name}}</span>
+            <span>{{::item.name}}</span>
         </div>
     </div>
 </div>

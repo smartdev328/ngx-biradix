@@ -1,3 +1,8 @@
+<style>
+    .regular-border {
+        border-top-width: 1px !important;
+    }
+</style>
 <div class="break2 panel panel-info" style="margin-bottom: 0px !important;">
     <div class="panel-heading">Custom Portfolio</div>
     <div class="panel-body">
@@ -76,7 +81,7 @@
                     </th>
                 </tr>
                 <tr ng-repeat-start="block in report" ng-if="false"></tr>
-                <tr ng-repeat-start="row in block" ng-class="{'subject':$index == 0,'subtotal' : $index == block.length - 1,'subtotal-padding' : $index == block.length - 1, 'bold': row.name === 'Comp Averages'}"
+                <tr ng-repeat-start="row in block" ng-class="{'subject':$index == 0,'subtotal' : $index == block.length - 1 || row.name === 'Comp Averages','subtotal-padding' : $index == block.length - 1, 'bold': row.name === 'Comp Averages', 'regular-border': $index == block.length - 1 && settings.compAverages}"
                     >
                     <td>
                         {{row.name}}

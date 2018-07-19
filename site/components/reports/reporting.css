@@ -19,6 +19,7 @@
 
 .bold td {
     font-weight: bold !important;
+    font-style: italic;
 }
 
 .maingrid.wrapper.panel .subtotal TD  {

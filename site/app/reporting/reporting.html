@@ -478,7 +478,7 @@
 
             <trends-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="runSettings.trends"></trends-report>
 
-            <custom-portfolio class="report" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="liveSettings.customPortfolio.show"></custom-portfolio>
+            <custom-portfolio class="report" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="liveSettings.customPortfolio.show" settings="liveSettings.customPortfolio"></custom-portfolio>
 
             <div ng-if="!reportLoading && reports && reports.custom_portfolio && reports.property_status" style="height:20px"></div>
             <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="liveSettings.propertyStatus.show"></property-status>

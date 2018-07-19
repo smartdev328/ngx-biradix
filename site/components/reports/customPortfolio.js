@@ -4,7 +4,8 @@ angular.module('biradix.global').directive('customPortfolio', function () {
             scope: {
                 report: '=',
                 showLeases: '=',
-                show: '='
+                show: '=',
+                settings: '=',
             },
             controller: function ($scope) {
             },
