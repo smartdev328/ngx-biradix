@@ -27,6 +27,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     dashboard.comps.forEach(function (c, i) {
 
                         report.push({
+                            "isSubject": i === 0,
+                            "default": i,
                             name: c.name,
                             _id: c._id,
                             sqft: c.survey.sqft,
@@ -277,11 +279,24 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
         weightedAverageTotalRow(totalrow);
         weightedAverageTotalRow(totalrowComps);
 
+        if (data.options && data.options.orderBy) {
+            const f = data.options.orderBy.replace("-", "");
+            report = _.sortByAll(report, (r) => {
+               return r[f];
+            });
+
+            if (data.options.orderBy[0] === "-") {
+                report = report.reverse();
+            }
+        }
+
         if (data.options && data.options.compAverages) {
+            totalrowComps.isSubject = false;
             totalrowComps.nervscompavg = "";
             report.push(totalrowComps);
         }
 
+        totalrow.isSubject = false;
         report.push(totalrow);
 
         reply({err: err, report: report});

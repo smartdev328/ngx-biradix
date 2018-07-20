@@ -15,7 +15,7 @@ Routes.get("/excel/property_status", (req, res) => {
     serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
         result = JSON.parse(result);
         propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: false}, (data) => {
-            let fileName = "Property_Status_Report_";
+            let fileName = "Portfolio_Report_";
             fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
             fileName += ".xlsx";
 
@@ -45,7 +45,7 @@ Routes.get("/excel/custom_portfolio", (req, res) => {
     serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
         result = JSON.parse(result);
         console.log(result.settings);
-        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: result.settings.compAverages}, (data) => {
+        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: result.settings.compAverages, orderBy: result.settings.orderBy}, (data) => {
             let fileName = "Custom_Portfolio_Report_";
             fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
             fileName += ".xlsx";
@@ -80,8 +80,8 @@ Routes.post("/group", function(req, res) {
                 return callbackp(null);
             }
 
-            propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, {compAverages: req.body.settings.customPortfolio.compAverages}, function(data) {
-                callbackp(null,data);
+            propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, {compAverages: req.body.settings.customPortfolio.compAverages, orderBy: req.body.settings.customPortfolio.orderBy}, function(data) {
+                callbackp(null, data);
             });
         },
         property_status: function(callbackp) {
@@ -89,7 +89,7 @@ Routes.post("/group", function(req, res) {
                 return callbackp(null);
             }
             propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, {compAverages: false}, function (data) {
-                callbackp(null,data);
+                callbackp(null, data);
             });
         },
         }, function(err, all) {
