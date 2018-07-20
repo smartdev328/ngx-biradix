@@ -50,8 +50,8 @@
                     </th>
                     <th ng-if="show.units" style="text-align: right">
                         Units
-                        <i ng-show="settings.orderBy == '-units'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'units'" class="fa fa-sort-up"></i>
+                        <i ng-show="settings.orderBy == '-totUnits'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'totUnits'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="show.sqft" style="text-align: right">
                         Sqft
@@ -85,18 +85,18 @@
                     </th>
                     <th ng-if="show.nerweek" style="text-align: right">
                         NER<Br>vs Last Week
-                        <i ng-show="settings.orderBy == '-nerweek'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'nerweek'" class="fa fa-sort-up"></i>
+                        <i ng-show="settings.orderBy == '-lastweeknerpercent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'lastweeknerpercent'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="show.nermonth" style="text-align: right">
                         NER<Br>vs Last Month
-                        <i ng-show="settings.orderBy == '-nermonth'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'nermonth'" class="fa fa-sort-up"></i>
+                        <i ng-show="settings.orderBy == '-lastmonthnerpercent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'lastmonthnerpercent'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="show.neryear" style="text-align: right">
                         NER<Br>vs Last Year
-                        <i ng-show="settings.orderBy == '-neryear'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'neryear'" class="fa fa-sort-up"></i>
+                        <i ng-show="settings.orderBy == '-lastyearnerpercent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'lastyearnerpercent'" class="fa fa-sort-up"></i>
                     </th>                    
                     <th ng-if="show.nersqft" style="text-align: right">
                         NER/Sqft
@@ -106,18 +106,18 @@
                     </th>
                     <th ng-if="show.nersqftweek" style="text-align: right">
                         NER/Sqft<Br>vs Last Week
-                        <i ng-show="settings.orderBy == '-nersqftweek'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'nersqftweek'" class="fa fa-sort-up"></i>
+                        <i ng-show="settings.orderBy == '-lastweeknersqftpercent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'lastweeknersqftpercent'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="show.nersqftmonth" style="text-align: right">
                         NER/Sqft<Br>vs Last Month
-                        <i ng-show="settings.orderBy == '-nersqftmonth'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'nersqftmonth'" class="fa fa-sort-up"></i>
+                        <i ng-show="settings.orderBy == '-lastmonthnersqftpercent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'lastmonthnersqftpercent'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="show.nersqftyear" style="text-align: right">
                         NER/Sqft<Br>vs Last Year
-                        <i ng-show="settings.orderBy == '-nersqftyear'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'nersqftyear'" class="fa fa-sort-up"></i>
+                        <i ng-show="settings.orderBy == '-lastyearnersqftpercent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'lastyearnersqftpercent'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="show.nervscompavg" style="text-align: right">
                         NER<Br>vs Comp Avg
