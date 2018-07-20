@@ -4,7 +4,6 @@ define([
 ], function (app) {
      app.controller
         ('saveReportController', ['$scope', '$uibModalInstance', 'settings','reportIds', 'type', 'currentReport', 'reportNames', 'ngProgress','toastr','$dialog','$saveReportService', function ($scope, $uibModalInstance, settings,reportIds, type, currentReport, reportNames, ngProgress,toastr,$dialog,$saveReportService) {
-
             ga('set', 'title', "/saveReport");
             ga('set', 'page', "/saveReport");
             ga('send', 'pageview');
@@ -20,8 +19,7 @@ define([
                 share: currentReport && currentReport.orgid ? true : false
             }
 
-
-
+            console.log($scope.report);
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };

@@ -1,4 +1,8 @@
-﻿.filter-list .filter-panel {
+﻿.filter-list-tooltip {
+    font-size:12px;
+}
+
+.filter-list .filter-panel {
     height:200px;
     width:250px;
     border: 1px solid #BDE3FD;

@@ -44,7 +44,8 @@ define([
                         group: "Individual Reports",
                         type: "single",
                     });
-                $scope.reportItems.push({id: "property_status", name: "Property Status", selected:false, group: "Portfolio Reports", type:"multiple"});
+                $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple"});
+                $scope.reportItems.push({id: "custom_portfolio", name: "Custom Data", selected: false, group: "Portfolio Reports", type:"multiple"});
 
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
@@ -56,6 +57,7 @@ define([
                     $scope.configureRankingsSummaryOptions();
                     $scope.configureConcessionOptions();
                     $scope.configurePropertyStatusOptions();
+                    $scope.configureCustomPortfolioOptions();
                 }
 
                 $scope.reload($stateParams.property == "1" || $stateParams.property == "2" || $stateParams.property == "3" || $stateParams.property == "4");
@@ -438,9 +440,10 @@ define([
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
-            $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds).then(function(response) {
+            $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds, $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds)).then(function(response) {
 
                 $scope.configurePropertyStatusOptions();
+                $scope.configureCustomPortfolioOptions();
 
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
@@ -523,9 +526,19 @@ define([
             if ($scope.reportIds.indexOf("property_status") > -1) {
                 $scope.temp.showPropertyStatusItems.forEach(function (f) {
                     $scope.liveSettings.propertyStatus.show[f.id] = f.selected;
-                })
+                });
             }
-        }
+
+            if ($scope.reportIds.indexOf("custom_portfolio") > -1) {
+                $scope.temp.showCustomPortfolioItems.forEach(function (f) {
+                    $scope.liveSettings.customPortfolio.show[f.id] = f.selected;
+                });
+
+                if ($scope.temp.customPortfolioSortSelected) {
+                    $scope.liveSettings.customPortfolio.orderBy = ($scope.temp.customPortfolioSortDir == "desc" ? "-" : "") + $scope.temp.customPortfolioSortSelected.id;
+                }
+            }
+        };
 
         $scope.singleReport = function() {
             $scope.selected.Comps = _.filter($scope.temp.items,function(x) {return x.selected == true})
@@ -624,7 +637,6 @@ define([
                         $scope.total += (3*($scope.compIds.length + 1));
                     }
 
-
                     $rootScope.$on('timeseriesLoaded', function (event,data) {
                         // console.log('timesieres', (new Date()).getTime())
                         $scope.graphs ++;
@@ -638,17 +650,13 @@ define([
                         }
                     });
                 } else {
-
                     window.setTimeout(function () {
                         window.renderable = true;
                         // console.log('Render', (new Date()).getTime())
-                    }, $scope.trends ? 2000 :  300)
+                    }, $scope.trends ? 2000 :  300);
                 }
-
-
             });
-        }
-
+        };
 
         $scope.pdf = function(showFile) {
             if ($scope.property_report) {
@@ -671,7 +679,7 @@ define([
             if ($scope.property_status) {
                 var c = 0;
                 var n;
-                for (n in $scope.runSettings.propertyStatus.show){
+                for (n in $scope.runSettings.propertyStatus.show) {
 
                     if ($scope.runSettings.propertyStatus.show[n] === true) {
                         c++;
@@ -680,6 +688,23 @@ define([
 
                 if (c > 13) {
                     toastr.error("<B>Unable to Print/Export Report!</B><Br><Br>You have selected <b>" + c + "</b> columns for your Property Status report. Having over <u>13</u> columns will not fit in Print/Export.")
+
+                    return;
+                }
+            }
+
+            if ($scope.custom_portfolio) {
+                var c = 0;
+                var n;
+                for (n in $scope.runSettings.customPortfolio.show) {
+
+                    if ($scope.runSettings.customPortfolio.show[n] === true) {
+                        c++;
+                    }
+                }
+
+                if (c > 13) {
+                    toastr.error("<B>Unable to Print/Export Report!</B><Br><Br>You have selected <b>" + c + "</b> columns for your Custom Data report. Having over <u>13</u> columns will not fit in Print/Export.")
 
                     return;
                 }
@@ -837,6 +862,7 @@ define([
             $scope.configureRankingsSummaryOptions();
             $scope.configureConcessionOptions();
             $scope.configurePropertyStatusOptions();
+            $scope.configureCustomPortfolioOptions();
 
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
 
@@ -860,6 +886,7 @@ define([
 
 
             $scope.property_status = reportIds.indexOf("property_status") > -1;
+            $scope.custom_portfolio = reportIds.indexOf("custom_portfolio") > -1;
             $scope.rankingsSummary = reportIds.indexOf("property_rankings_summary") > -1;
             $scope.rankings = reportIds.indexOf("property_rankings") > -1;
             $scope.property_report = reportIds.indexOf("property_report") > -1;
@@ -903,7 +930,7 @@ define([
             }
         }
 
-        $scope.excel_property_status = function() {
+        $scope.excel_property_status = function(settings) {
             var properties = $scope.propertyItems.items;
 
             if (!properties.length) {
@@ -943,6 +970,47 @@ define([
 
             location.href = url;
         };
+
+            $scope.excel_custom_portfolio = function(settings) {
+                var properties = $scope.propertyItems.items;
+
+                if (!properties.length) {
+                    $scope.noProperties = true;
+                    $scope.reportLoading = false;
+                    return;
+                }
+
+                $scope.propertyNames = _.pluck(properties, "name");
+                $scope.propertyNames.forEach(function(x, i) {
+                    $scope.propertyNames[i] = {description: "Property: " + x};
+                });
+
+                $scope.description = "%where%, " + $scope.propertyNames.length + " Property(ies), " + $scope.reportIds.length + " Report Type(s)";
+                $scope.auditMultiple("report", "Excel");
+
+                ngProgress.start();
+
+                $("#export").prop("disabled", true);
+
+                $scope.progressId = _.random(1000000, 9999999);
+
+                var data = {
+                    timezone: moment().utcOffset(),
+                    propertyIds: $scope.propertyIds,
+                    progressId: $scope.progressId,
+                    settings: $scope.runSettings.customPortfolio,
+                }
+
+                var key = $urlService.shorten(JSON.stringify(data));
+
+                var url = "/api/1.0/reporting/excel/custom_portfolio?"
+                url += "token=" + $cookies.get("token")
+                url += "&key=" + key;
+
+                $window.setTimeout($scope.checkProgress, 500);
+
+                location.href = url;
+            };
 
         $scope.excel = function() {
             ngProgress.start();
@@ -1040,6 +1108,109 @@ define([
             }
 
         }
+
+            ////////////////////// Custom Portfolio ////////////////////////////////
+            $scope.resetCustomPortfolioSettings = function() {
+                $scope.liveSettings.customPortfolio = {orderBy: "default"};
+
+                $scope.liveSettings.customPortfolio.show = {
+                    occupancy: true,
+                    leased: $rootScope.me.settings.showLeases || false,
+                    atr: $rootScope.me.settings.showATR || false,
+                    units: true,
+                    sqft: true,
+                    rent: true,
+                    runrate: false,
+                    runratesqft: false,
+                    ner: true,
+                    nerweek: true,
+                    nermonth: true,
+                    neryear: false,
+                    nersqft: true,
+                    nersqftweek: false,
+                    nersqftmonth: false,
+                    nersqftyear: false,
+                    last_updated: true,
+                    weekly: false,
+                    concessions: false,
+                    nervscompavg: false,
+                };
+
+                $scope.liveSettings.customPortfolio.compAverages = false;
+            }
+
+            $scope.configureCustomPortfolioOptions = function() {
+                if (!$scope.liveSettings.customPortfolio) {
+                    $scope.resetCustomPortfolioSettings();
+                }
+
+                $scope.temp.showCustomPortfolioOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+                $scope.temp.showCustomPortfolioItems = [
+                    {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.customPortfolio.show.occupancy, tooltip: "<b>Occupancy %</b><br><i>Percentage of property which is occupied</i>"},
+                    {id: "leased", name: "Leased %", selected: $scope.liveSettings.customPortfolio.show.leased || false, tooltip: "<b>Leased %</b><br><i>Percentage of property which is leased</i>"},
+                    {id: "atr", name: "ATR %", selected: $scope.liveSettings.customPortfolio.show.atr || false, tooltip: "<b>Apartments To Rent %</b><br><i>Apartments To Rent (Exposure) is calculated by adding vacant available units (units not leased) plus units on notice and dividing by total units of the property</i>"},
+                    {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.customPortfolio.show.weekly, tooltip: "<b>Traffic Week</b><br><i>Number of tours/shows given to prospective tenants in last 7 days (week)<br><br><b>Leases / Week</b><br><i>Number of approved leases in the last 7 days (week), after cancellations and denials</i>"},
+                    {id: "units", name: "Units", selected: $scope.liveSettings.customPortfolio.show.units, tooltip: "<b>Units</b><Br><i>Total units</i>"},
+                    {id: "sqft", name: "Sqft", selected: $scope.liveSettings.customPortfolio.show.sqft, tooltip: "<b>Square Feet</b><Br><i>The weighted average square footage. Example - if there were 25 units with 500 square feet, and 75 units with 1000, the weighted average sq ft value would be (25 x 500 + 75 x 1000) / 100 units = 875 sq ft</i>"},
+                    {id: "rent", name: "Rent", selected: $scope.liveSettings.customPortfolio.show.rent, tooltip: "<b>Rent</b><br><i>The weighted average monthly market rent (Gross Market Rent - GMR). This is made up of base (minimum) gross floor plan rents for a 12 month lease, before any concessions or discounts</i>"},
+                    {id: "concessions", name: "Total Concession", selected: $scope.liveSettings.customPortfolio.show.concessions, tooltip: "<b>Total Concessions</b><br><i>This is the sum of One Time Concessions and 12 months of Recurring Concessions</i>"},
+                    {id: "runrate", name: "Recurring Rent", selected: $scope.liveSettings.customPortfolio.show.runrate, tooltip: "<b>Recurring Rent</b><br><i>This is Rent minus Recurring Concessions. Excludes One-Time Concessions.</i>"},
+                    {id: "runratesqft", name: "Recurring Rent / Sqft", selected: $scope.liveSettings.customPortfolio.show.runratesqft, tooltip: "<b>Recurring Rent / Sqft</b><br><i>This is Recurring Rent divided by Sqft </i>"},
+                    {id: "ner", name: "Net Eff. Rent", selected: $scope.liveSettings.customPortfolio.show.ner, tooltip: "<b>Net Effective Rent</b><br><i>Net Effective Rent (NER) is Rent less Recurring Concession and (One-Time Concessions / 12)</i>"},
+                    {id: "nerweek", name: "NER vs Last Week", selected: $scope.liveSettings.customPortfolio.show.nerweek, tooltip: "<b>Net Effective Rent vs Last Week</b><br><i>Net Effective Rent divided by Last Week's Net Effective Rent</i>"},
+                    {id: "nermonth", name: "NER vs Last Month", selected: $scope.liveSettings.customPortfolio.show.nermonth, tooltip: "<b>Net Effective Rent vs Last Month</b><br><i>Net Effective Rent divided by Last Month's Net Effective Rent</i>"},
+                    {id: "neryear", name: "NER vs Last Year", selected: $scope.liveSettings.customPortfolio.show.neryear, tooltip: "<b>Net Effective Rent vs Last Year</b><br><i>Net Effective Rent divided by Last Year's Net Effective Rent</i>"},
+                    {id: "nersqft", name: "Net Eff. Rent / Sqft", selected: $scope.liveSettings.customPortfolio.show.nersqft, tooltip: "<b>Net Effective Rent / Sqft</b><br><i>Net Effective Rent per Square Foot (NER divided by Sqft)</i>"},
+                    {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.liveSettings.customPortfolio.show.nersqftweek, tooltip: "<b>Net Effective Rent / Sqft vs Last Week</b><br><i>Net Effective Rent / Sqft divided by Last Week's Net Effective Rent / Sqft</i>"},
+                    {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.liveSettings.customPortfolio.show.nersqftmonth, tooltip: "<b>Net Effective Rent / Sqft vs Last Month</b><Br><i>Net Effective Rent / Sqft divided by Last Month's Net Effective Rent / Sqft</i>"},
+                    {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $scope.liveSettings.customPortfolio.show.nersqftyear, tooltip: "<b>Net Effective Rent / Sqft vs Last Year</b><br><i>Net Effective Rent / Sqft divided by Last Year's Net Effective Rent / Sqft</i>"},
+                    {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.liveSettings.customPortfolio.show.nervscompavg, tooltip: "<b>Net Effective Rent vs Comp Avg</b><br><i>Net Effective Rent divided by Comp average Net Effective Rent</i>"},
+                    {id: "last_updated", name: "Last Updated", selected: $scope.liveSettings.customPortfolio.show.last_updated, tooltip: "<b>Last Updated</b><br><i>The date of the last survey completed for that property</i>"},
+                ];
+
+                if (!$rootScope.me.settings.showLeases) {
+                    _.remove($scope.temp.showCustomPortfolioItems, function(x) {return x.id == 'leased'})
+                }
+
+                if (!$rootScope.me.settings.showATR) {
+                    _.remove($scope.temp.showCustomPortfolioItems, function(x) {return x.id == 'atr'})
+                }
+                if (typeof $scope.liveSettings.customPortfolio.compAverages == 'undefined') {
+                    $scope.liveSettings.customPortfolio.compAverages = false;
+                }
+
+                $scope.temp.customPortfolioSortItems = [
+                    {id: "default", name: "Comp Preference"},
+                    {id: "name", name: "Property Name"},
+                    {id: "occupancy", name: "Occ. %"},
+                    {id: "leased", name: "Leased %"},
+                    {id: "atr", name: "ATR %"},
+                    {id: "weeklytraffic", name: "Traffic/Week"},
+                    {id: "weeklyleases", name: "Leases/Week"},
+                    {id: "totUnits", name: "Units"},
+                    {id: "sqft", name: "Sqft"},
+                    {id: "rent", name: "Rent"},
+                    {id: "concessions", name: "Total Concession"},
+                    {id: "runrate", name: "Recurring Rent"},
+                    {id: "runratesqft", name: "Recurring Rent / Sqft"},
+                    {id: "ner", name: "Net Eff. Rent"},
+                    {id: "lastweeknerpercent", name: "NER vs Last Week"},
+                    {id: "lastmonthnerpercent", name: "NER vs Last Month"},
+                    {id: "lastyearnerpercent", name: "NER vs Last Year"},
+                    {id: "nersqft", name: "Net Eff. Rent / Sqft"},
+                    {id: "lastweeknersqftpercent", name: "NER/Sqft vs Last Week"},
+                    {id: "lastmonthnersqftpercent", name: "NER/Sqft vs Last Month"},
+                    {id: "lastyearnersqftpercent", name: "NER/Sqft vs Last Year"},
+                    {id: "nervscompavg", name: "NER vs Comp Avg"},
+                    {id: "last_updated", name: "Last Updated"},
+                ];
+
+                var f = $scope.liveSettings.customPortfolio.orderBy.replace("-","");
+                $scope.temp.customPortfolioSortSelected = _.find($scope.temp.customPortfolioSortItems, function(x) {
+                    return x.id === f;
+                });
+                $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
+            }
 
         ////////////////////// Rankings Summary ////////////////////////////////
         $scope.resetRankingsSummarySettings = function() {
@@ -1565,7 +1736,6 @@ define([
         })
 
         $scope.saveReport = function() {
-
             $scope.UItoSettings();
             $scope.UItoSettingsMultiple();
 

@@ -30,7 +30,8 @@
                 <li><a href ng-click="pdf('')"><i class="fa fa-print"></i> Print</a></li>
                 <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export PDF</a></li>
                 <li><a href ng-click="excel()" ng-if="property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
-                <li><a href ng-click="excel_property_status()" ng-if="property_status"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+                <li><a href ng-click="excel_property_status(runSettings.propertyStatus)" ng-if="property_status && !custom_portfolio"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+                <li><a href ng-click="excel_custom_portfolio(runSettings.customPortfolio)" ng-if="custom_portfolio && !property_status"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
     </div>
@@ -176,7 +177,7 @@
                         }
                     </style>
                     <br clear="all">
-                    <uib-accordion ng-if="(rankings || rankingsSummary || property_report || concession || property_status || trends)" class="hidden-print" style="margin-top:15px" close-others="false">
+                    <uib-accordion ng-if="(rankings || rankingsSummary || property_report || concession || property_status || custom_portfolio || trends)" class="hidden-print" style="margin-top:15px" close-others="false">
                         <div ng-if="concession" uib-accordion-group class="panel-default" is-open="temp.concession_open">
                             <uib-accordion-heading>
                                 <Div>
@@ -408,6 +409,45 @@
                                 </div>
                             </div>
                         </div>
+                        <div ng-if="custom_portfolio" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.custom_portfolio_open">
+                            <uib-accordion-heading>
+                                <Div>
+                                    <i class="fa fa-gear fa-2px"></i> Preferences: Custom Data <i ng-class="{fa : true, 'fa-chevron-right': !temp.custom_portfolio_open, 'fa-chevron-down': temp.custom_portfolio_open, 'fa-2px': true}"></i>
+                                </Div>
+                            </uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Columns<br>
+                                    <filter-list options="temp.showCustomPortfolioOptions" items="temp.showCustomPortfolioItems"></filter-list>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
+                                    Sort Order<br>
+                                    <div ng-class="{'col-xs-6': temp.customPortfolioSortSelected.id != 'default', 'col-xs-12': temp.customPortfolioSortSelected.id == 'default'}" style="padding-left: 0; padding-right:0">
+                                        <select
+                                                class="input-sm form-control"
+                                                ng-options="item.name for item in temp.customPortfolioSortItems"
+                                                ng-model="temp.customPortfolioSortSelected"
+                                        ></select>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-right:0;padding-left:5px;white-space: nowrap" ng-show="temp.customPortfolioSortSelected.id != 'default'">
+                                        <label><input type="radio" name="customPortfolioSort" value="asc" ng-model="temp.customPortfolioSortDir"> <i class="fa fa-sort-amount-asc"></i> <span style="font-size:11px">Asc</span></label>
+
+                                        <label><input type="radio" name="customPortfolioSort" value="desc" ng-model="temp.customPortfolioSortDir"> <i class="fa fa-sort-amount-desc"></i> <span style="font-size:11px">Desc</span></label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Add Comp Averages
+                                    <i class="fa fa-info-circle" style="font-size:12px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="top"
+                                       uib-popover="Add row to show weighted average values for the comp set."
+                                    ></i>
+                                    <br>
+                                    <toggle-switch checked="liveSettings.customPortfolio.compAverages"></toggle-switch>&nbsp;
+                                </div>
+                            </div>
+                        </div>
                     </uib-accordion>
 
                     <div class="hidden-print">
@@ -454,6 +494,9 @@
 
             <trends-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="runSettings.trends"></trends-report>
 
+            <custom-portfolio class="report" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="liveSettings.customPortfolio.show" settings="liveSettings.customPortfolio"></custom-portfolio>
+
+            <div ng-if="!reportLoading && reports && reports.custom_portfolio && reports.property_status" style="height:20px"></div>
             <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="liveSettings.propertyStatus.show"></property-status>
         </div>
     </div>

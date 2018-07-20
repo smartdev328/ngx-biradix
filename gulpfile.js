@@ -99,6 +99,7 @@ gulp.task("globaljs", function() {
         "./site/components/reports/propertyRankings.js",
         "./site/components/reports/propertyRankingsSummary.js",
         "./site/components/reports/propertyStatus.js",
+        "./site/components/reports/customPortfolio.js",
         "./site/components/reports/propertyReport.js",
         "./site/components/reports/trendsReport.js",
         "./site/components/reports/trendsTimeseries.js",

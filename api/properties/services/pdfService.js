@@ -24,10 +24,10 @@ module.exports = {
             puppeteer.launch({
                 headless: true,
                 args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
-                slowMo: 0
+                slowMo: 0,
             }).then((newBrowser) => {
                 browser = newBrowser;
-                callback(null,browser);
+                callback(null, browser);
                 // browser.on("disconnected", () => {
                 //     browser = null;
                 //     console.log('disconnected');

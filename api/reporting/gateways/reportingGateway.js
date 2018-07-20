@@ -14,8 +14,8 @@ const individualReportsService = require("../services/individualReportsService")
 Routes.get("/excel/property_status", (req, res) => {
     serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
         result = JSON.parse(result);
-        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, (data) => {
-            let fileName = "Property_Status_Report_";
+        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: false}, (data) => {
+            let fileName = "Portfolio_Report_";
             fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
             fileName += ".xlsx";
 
@@ -41,10 +41,61 @@ Routes.get("/excel/property_status", (req, res) => {
     });
 });
 
-Routes.post("/group", function(req, res) {
-    propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, function(data) {
-        res.status(200).json({"property_status": data});
+Routes.get("/excel/custom_portfolio", (req, res) => {
+    serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
+        result = JSON.parse(result);
+        console.log(result.settings);
+        propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: result.settings.compAverages, orderBy: result.settings.orderBy}, (data) => {
+            let fileName = "Custom_Portfolio_Report_";
+            fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
+            fileName += ".xlsx";
+
+            const json = {
+                fileName: fileName,
+                report: data,
+                show: result.settings.show,
+                strDate: moment().utcOffset(result.timezone).format("MM/DD/YYYY"),
+            };
+
+            const url = settings.EXCEL_URL.replace("/excel", "/custom_portfolio")
+
+            const r = request.post(url, {
+                json: json,
+            }).pipe(res)
+
+            r.on("finish", function() {
+                if (result.progressId) {
+                    progressService.setComplete(result.progressId);
+                }
+            });
+        });
     });
+});
+
+
+Routes.post("/group", function(req, res) {
+    async.parallel({
+        custom_portfolio: function(callbackp) {
+            if (req.body.reports.indexOf("custom_portfolio") === -1) {
+                return callbackp(null);
+            }
+
+            propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, {compAverages: req.body.settings.customPortfolio.compAverages, orderBy: req.body.settings.customPortfolio.orderBy}, function(data) {
+                callbackp(null, data);
+            });
+        },
+        property_status: function(callbackp) {
+            if (req.body.reports.indexOf("property_status") === -1) {
+                return callbackp(null);
+            }
+            propertyStatusService.run(req.user, req.body.propertyids, req.user.settings.showLeases, {compAverages: false}, function (data) {
+                callbackp(null, data);
+            });
+        },
+        }, function(err, all) {
+        res.status(200).json(all);
+        all = null;
+        });
 });
 
 Routes.post("/:id", function(req, res) {

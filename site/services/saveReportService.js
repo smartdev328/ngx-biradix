@@ -38,7 +38,6 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
 
     fac.cleanSettings = function(settings, reportIds) {
         var copyOfSettings = _.cloneDeep(settings);
-
          for (var k in copyOfSettings) {
 
             var d = fix(copyOfSettings[k].daterange);
@@ -56,15 +55,14 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
             else if (reportIds.indexOf("property_rankings_summary") > -1 && k == "rankingsSummary") {}
             else if (reportIds.indexOf("property_rankings") > -1 && k == "rankings") {}
             else if (reportIds.indexOf("property_status") > -1 && k == "propertyStatus") {}
+            else if (reportIds.indexOf("custom_portfolio") > -1 && k == "customPortfolio") {}
             else if (reportIds.indexOf("trends") > -1 && k == "trends") {}
             else {
                 delete copyOfSettings[k];
             }
         }
-
         return copyOfSettings;
-    }
-
+    };
 
     fac.upsert = function (report) {
         return $http.post('/api/1.0/reporting/save/upsert'+ '?bust=' + (new Date()).getTime(), report, {

@@ -17,4 +17,6 @@
 
 <trends-report  class="report break-before" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="::runSettings.trends"></trends-report>
 
+<custom-portfolio class="report break-before" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="liveSettings.customPortfolio.show" settings="liveSettings.customPortfolio"></custom-portfolio>
+
 <property-status class="report break-before" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="liveSettings.propertyStatus.show"></property-status>

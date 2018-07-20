@@ -34,7 +34,7 @@ module.exports = {
 
             app.use((req, res, next) => {
                 const host = req.headers.host.toString().toLowerCase();
-                if ((host.indexOf("localhost") > -1 || host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1) && req.originalUrl === "/") {
+                if ((host.indexOf("localhost") > -1 || host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1) && req.originalUrl === "/" && req.headers["user-agent"] !== "PhantomJS") {
                     const auth = {login: "testadmin@biradix.com", password: "temppass!"};
 
                     // parse login and password from headers
