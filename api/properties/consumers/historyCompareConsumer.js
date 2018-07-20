@@ -280,14 +280,12 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
         weightedAverageTotalRow(totalrowComps);
 
         if (data.options && data.options.orderBy) {
-            const f = data.options.orderBy.replace("-", "");
-            report = _.sortByAll(report, (r) => {
-               return r[f];
-            });
-
-            if (data.options.orderBy[0] === "-") {
-                report = report.reverse();
+            if (data.options.orderBy === "-default") {
+                data.options.orderBy = "default";
             }
+
+            const f = data.options.orderBy.replace("-", "");
+            report = _.sortByOrder(report, [f, "name"], [data.options.orderBy[0] !== "-", true]);
         }
 
         if (data.options && data.options.compAverages) {
