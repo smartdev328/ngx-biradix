@@ -1173,6 +1173,7 @@ define([
                     {id: "management", name: "Management", selected: $scope.liveSettings.customPortfolio.show.management, tooltip: "<b>Management</b><br><i>Management company</i>"},
                     {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.customPortfolio.show.occupancy, tooltip: "<b>Occupancy %</b><br><i>Percentage of property which is occupied</i>"},
                     {id: "leased", name: "Leased %", selected: $scope.liveSettings.customPortfolio.show.leased || false, tooltip: "<b>Leased %</b><br><i>Percentage of property which is leased</i>"},
+                    {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.customPortfolio.show.renewal || false, tooltip: "<b>Renewal %</b><br><i>Percentage of leases that have renewed (typically used by student housing)</i>"},
                     {id: "atr", name: "ATR %", selected: $scope.liveSettings.customPortfolio.show.atr || false, tooltip: "<b>Apartments To Rent %</b><br><i>Apartments To Rent (Exposure) is calculated by adding vacant available units (units not leased) plus units on notice and dividing by total units of the property</i>"},
                     {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.customPortfolio.show.weekly, tooltip: "<b>Traffic Week</b><br><i>Number of tours/shows given to prospective tenants in last 7 days (week)<br><br><b>Leases / Week</b><br><i>Number of approved leases in the last 7 days (week), after cancellations and denials</i>"},
                     {id: "units", name: "Units", selected: $scope.liveSettings.customPortfolio.show.units, tooltip: "<b>Units</b><Br><i>Total units</i>"},
@@ -1191,6 +1192,18 @@ define([
                     {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $scope.liveSettings.customPortfolio.show.nersqftyear, tooltip: "<b>Net Effective Rent / Sqft vs Last Year</b><br><i>Net Effective Rent / Sqft divided by Last Year's Net Effective Rent / Sqft</i>"},
                     {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.liveSettings.customPortfolio.show.nervscompavg, tooltip: "<b>Net Effective Rent vs Comp Avg</b><br><i>Net Effective Rent divided by Comp average Net Effective Rent</i>"},
                     {id: "last_updated", name: "Last Updated", selected: $scope.liveSettings.customPortfolio.show.last_updated, tooltip: "<b>Last Updated</b><br><i>The date of the last survey completed for that property</i>"},
+                    {id: "rentsqft", name: "Rent/Sqft", selected: $scope.liveSettings.customPortfolio.show.rentsqft, tooltip: "<b>Rent/Sqft</b><br><i>This is Rent divided by Sqft</i>"},
+                    {id: "nersqftvscompavg", name: "NER/Sqft vs Comp Avg", selected: $scope.liveSettings.customPortfolio.show.nersqftvscompavg, tooltip: "<b>Net Effective Rent/Sqft vs Comp Avg</b><br><i>Net Effective Rent / Sqft divided by Comp average Net Effective Rent / Sqft</i>"},
+                    {id: "concessionsOneTime", name: "One-Time Concessions", selected: $scope.liveSettings.customPortfolio.show.concessionsOneTime, tooltip: "<b>One-Time Concessions</b><br><i>The one-time (upfront) concessions. Example - if there is a $500 look-and-lease discount for signing a 12 month lease</i>"},
+                    {id: "concessionsMonthly", name: "Recurring Concessions", selected: $scope.liveSettings.customPortfolio.show.concessionsMonthly, tooltip: "<b>Recurring Concessions</b><br><i>The recurring (monthly) concessions. Example - if concession is $100 off per month</i>"},
+                    {id: "rent0", name: "Rent - Studios", selected: $scope.liveSettings.customPortfolio.show.rent0, tooltip: "<b>Rent - Studios</b><br><i>This is Rent grouped by studios</i>"},
+                    {id: "rent1", name: "Rent - 1 Bds.", selected: $scope.liveSettings.customPortfolio.show.rent1, tooltip: "<b>Rent - 1 Bds.</b><br><i>This is Rent grouped by 1 bedrooms</i>"},
+                    {id: "rent2", name: "Rent - 2 Bds.", selected: $scope.liveSettings.customPortfolio.show.rent2, tooltip: "<b>Rent - 2 Bds.</b><br><i>This is Rent grouped by 2 bedrooms</i>"},
+                    {id: "rent3", name: "Rent - 3 Bds.", selected: $scope.liveSettings.customPortfolio.show.rent3, tooltip: "<b>Rent - 3 Bds.</b><br><i>This is Rent grouped by 3 bedrooms</i>"},
+                    {id: "ner0", name: "NER - Studios", selected: $scope.liveSettings.customPortfolio.show.ner0, tooltip: "<b>NER - Studios</b><br><i>Net Effective Rent grouped by studios</i>"},
+                    {id: "ner1", name: "NER - 1 Bds.", selected: $scope.liveSettings.customPortfolio.show.ner1, tooltip: "<b>NER - 1 Bds.</b><br><i>Net Effective Rent grouped by 1 bedrooms</i>"},
+                    {id: "ner2", name: "NER - 2 Bds.", selected: $scope.liveSettings.customPortfolio.show.ner2, tooltip: "<b>NER - 2 Bds.</b><br><i>Net Effective Rent grouped by 2 bedrooms</i>"},
+                    {id: "ner3", name: "NER - 3 Bds.", selected: $scope.liveSettings.customPortfolio.show.ner3, tooltip: "<b>NER - 3 Bds.</b><br><i>Net Effective Rent grouped by 3 bedrooms</i>"},
                 ];
 
                 if (!$rootScope.me.settings.showLeases) {
@@ -1216,23 +1229,36 @@ define([
                     {id: "totUnits", name: "Units"},
                     {id: "occupancy", name: "Occ. %"},
                     {id: "leased", name: "Leased %"},
+                    {id: "renewal", name: "Renewal %"},
                     {id: "atr_percent", name: "ATR %"},
                     {id: "weeklytraffic", name: "Traffic/Week"},
                     {id: "weeklyleases", name: "Leases/Week"},
                     {id: "sqft", name: "Sqft"},
                     {id: "rent", name: "Rent"},
-                    {id: "concessions", name: "Total Concession"},
+                    {id: "rentsqft", name: "Rent / Sqft"},
+                    {id: "rent0", name: "Rent - Studios"},
+                    {id: "rent1", name: "Rent - 1 Bds."},
+                    {id: "rent2", name: "Rent - 2 Bds."},
+                    {id: "rent3", name: "Rent - 3 Bds."},
+                    {id: "concessionsOneTime", name: "One-Time Concess."},
+                    {id: "concessionsMonthly", name: "Recurring Concess."},
                     {id: "runrate", name: "Recurring Rent"},
                     {id: "runratesqft", name: "Recurring Rent / Sqft"},
+                    {id: "concessions", name: "Total Concession"},
                     {id: "ner", name: "Net Eff. Rent"},
+                    {id: "ner0", name: "NER - Studios"},
+                    {id: "ner1", name: "NER - 1 Bds."},
+                    {id: "ner2", name: "NER - 2 Bds."},
+                    {id: "ner3", name: "NER - 3 Bds."},
+                    {id: "nervscompavg", name: "NER vs Comp Avg"},
                     {id: "lastweeknerpercent", name: "NER vs Last Week"},
                     {id: "lastmonthnerpercent", name: "NER vs Last Month"},
                     {id: "lastyearnerpercent", name: "NER vs Last Year"},
                     {id: "nersqft", name: "Net Eff. Rent / Sqft"},
+                    {id: "nersqftvscompavg", name: "NER/Sqft vs Comp Avg"},
                     {id: "lastweeknersqftpercent", name: "NER/Sqft vs Last Week"},
                     {id: "lastmonthnersqftpercent", name: "NER/Sqft vs Last Month"},
                     {id: "lastyearnersqftpercent", name: "NER/Sqft vs Last Year"},
-                    {id: "nervscompavg", name: "NER vs Comp Avg"},
                     {id: "last_updated", name: "Last Updated"},
                 ];
 
@@ -1338,7 +1364,6 @@ define([
             }
 
         }
-
 
         $scope.configureRankingsOptions = function() {
             if (!$scope.liveSettings.rankings) {
