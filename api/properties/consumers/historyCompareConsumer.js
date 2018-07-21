@@ -30,6 +30,8 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             "isSubject": i === 0,
                             "default": i,
                             name: c.name,
+                            address: c.address,
+                            phone: c.phone,
                             _id: c._id,
                             sqft: c.survey.sqft,
                             ner: c.survey.ner,

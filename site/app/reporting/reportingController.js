@@ -1114,6 +1114,8 @@ define([
                 $scope.liveSettings.customPortfolio = {orderBy: "default"};
 
                 $scope.liveSettings.customPortfolio.show = {
+                    address: false,
+                    phone: false,
                     occupancy: true,
                     leased: $rootScope.me.settings.showLeases || false,
                     atr: $rootScope.me.settings.showATR || false,
@@ -1146,6 +1148,8 @@ define([
 
                 $scope.temp.showCustomPortfolioOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
                 $scope.temp.showCustomPortfolioItems = [
+                    {id: "address", name: "Address", selected: $scope.liveSettings.customPortfolio.show.address, tooltip: "<b>Address</b><br><i>Property address</i>"},
+                    {id: "address", name: "Phone", selected: $scope.liveSettings.customPortfolio.show.address, tooltip: "<b>Phone</b><br><i>Property phone</i>"},
                     {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.customPortfolio.show.occupancy, tooltip: "<b>Occupancy %</b><br><i>Percentage of property which is occupied</i>"},
                     {id: "leased", name: "Leased %", selected: $scope.liveSettings.customPortfolio.show.leased || false, tooltip: "<b>Leased %</b><br><i>Percentage of property which is leased</i>"},
                     {id: "atr", name: "ATR %", selected: $scope.liveSettings.customPortfolio.show.atr || false, tooltip: "<b>Apartments To Rent %</b><br><i>Apartments To Rent (Exposure) is calculated by adding vacant available units (units not leased) plus units on notice and dividing by total units of the property</i>"},
@@ -1182,9 +1186,11 @@ define([
                 $scope.temp.customPortfolioSortItems = [
                     {id: "default", name: "Comp Preference"},
                     {id: "name", name: "Property Name"},
+                    {id: "address", name: "Property Address"},
+                    {id: "phone", name: "Property Phone"},
                     {id: "occupancy", name: "Occ. %"},
                     {id: "leased", name: "Leased %"},
-                    {id: "atr", name: "ATR %"},
+                    {id: "atr_percent", name: "ATR %"},
                     {id: "weeklytraffic", name: "Traffic/Week"},
                     {id: "weeklyleases", name: "Leases/Week"},
                     {id: "totUnits", name: "Units"},

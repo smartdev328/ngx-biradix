@@ -23,7 +23,16 @@
                         <i ng-show="settings.orderBy == '-name'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'name'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.occupancy" style="text-align: right">
+                    <th ng-if="show.address" style="height:44px;">
+                        Address
+                        <i ng-show="settings.orderBy == '-address'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'address'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="show.phone" style="height:44px;">
+                        Phone
+                        <i ng-show="settings.orderBy == '-phone'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'phone'" class="fa fa-sort-up"></i>
+                    </th>                    <th ng-if="show.occupancy" style="text-align: right">
                         Occ. %
                         <i ng-show="settings.orderBy == '-occupancy'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'occupancy'" class="fa fa-sort-up"></i>
@@ -136,6 +145,12 @@
                     >
                     <td>
                         {{row.name}}
+                    </td>
+                    <td ng-if="row.address">
+                        {{row.address}}
+                    </td>
+                    <td ng-if="row.phone">
+                        {{row.phone}}
                     </td>
                     <td ng-if="show.occupancy" style="text-align:right">
                         {{row.occupancy != "" && row.occupancy != null ? row.occupancy + "%" : "-"}}
