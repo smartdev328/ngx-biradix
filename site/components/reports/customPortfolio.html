@@ -199,15 +199,15 @@
                         <i ng-show="settings.orderBy == '-nersqft'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'nersqft'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.nersqftweek" style="text-align: right">
-                        NER/Sqft<Br>vs Last Week
-                        <i ng-show="settings.orderBy == '-lastweeknersqftpercent'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'lastweeknersqftpercent'" class="fa fa-sort-up"></i>
-                    </th>
                     <th ng-if="show.nersqftvscompavg" style="text-align: right">
                         NER/Sqft<Br>vs Comp Avg
                         <i ng-show="settings.orderBy == '-nersqftvscompavg'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'nersqftvscompavg'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="show.nersqftweek" style="text-align: right">
+                        NER/Sqft<Br>vs Last Week
+                        <i ng-show="settings.orderBy == '-lastweeknersqftpercent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'lastweeknersqftpercent'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="show.nersqftmonth" style="text-align: right">
                         NER/Sqft<Br>vs Last Month
