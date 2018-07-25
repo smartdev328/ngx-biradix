@@ -74,21 +74,21 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
 
                         if (i > 0 && c.survey && typeof c.survey.totUnits !== "undefined") {
                             compNER += (c.survey.ner * c.survey.totUnits);
-                            compNERSqft += (c.survey.nersqft * c.survey.totUnits);
+                            compNERSqft += (c.survey.sqft * c.survey.totUnits);
                             compNERunits += c.survey.totUnits;
                         }
                     })
 
                     if (compNERunits > 0) {
+                        compNERSqft = compNER/ compNERSqft;
                         compNER = compNER / compNERunits;
-                        compNERSqft = compNERSqft / compNERunits;
 
                         report.forEach((x) => {
                             if (x.ner) {
                                 x.nervscompavg = (x.ner.toFixed(0) - compNER.toFixed(0))/ compNER.toFixed(0) * 100;
                             }
                             if (x.nersqft) {
-                                x.nersqftvscompavg = (x.nersqft.toFixed(0) - compNERSqft.toFixed(0))/ compNERSqft.toFixed(0) * 100;
+                                x.nersqftvscompavg = (x.nersqft.toFixed(2) - compNERSqft.toFixed(2))/ compNERSqft.toFixed(2) * 100;
                             }
                         });
                     }

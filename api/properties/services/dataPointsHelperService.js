@@ -263,6 +263,11 @@ module.exports = {
     },
     getSummary: function(points, subjectid, newpoints, dimension, weighted) {
         newpoints["averages"][dimension] = [];
+
+        if (dimension === "nersqft") {
+            newpoints["averages"][dimension] = newpoints["averages"][dimension]
+        }
+
         let prop;
         for (prop in points) {
             if (prop.toString() === subjectid.toString()) {
