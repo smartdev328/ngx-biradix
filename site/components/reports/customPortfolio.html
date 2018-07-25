@@ -107,25 +107,26 @@
                         <i ng-show="settings.orderBy == '-rentsqft'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'rentsqft'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.rent0" style="text-align: right">
+                    <th ng-if="show.rent0 && settings.bedrooms[0]" style="text-align: right">
                         Rent<Br>Studios
-                        <i ng-show="settings.orderBy == '-rent0'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'rent0'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.rent1" style="text-align: right">
+                    <th ng-if="show.rent0 && settings.bedrooms[1]" style="text-align: right">
                         Rent<Br>1 Bds.
-                        <i ng-show="settings.orderBy == '-rent1'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'rent1'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.rent2" style="text-align: right">
+                    <th ng-if="show.rent0 && settings.bedrooms[2]" style="text-align: right">
                         Rent<Br>2 Bds.
-                        <i ng-show="settings.orderBy == '-rent2'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'rent2'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.rent3" style="text-align: right">
+                    <th ng-if="show.rent0 && settings.bedrooms[3]" style="text-align: right">
                         Rent<Br>3 Bds.
-                        <i ng-show="settings.orderBy == '-rent3'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'rent3'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="show.rent0 && settings.bedrooms[4]" style="text-align: right">
+                        Rent<Br>4 Bds.
+                    </th>
+                    <th ng-if="show.rent0 && settings.bedrooms[5]" style="text-align: right">
+                        Rent<Br>5 Bds.
+                    </th>
+                    <th ng-if="show.rent0 && settings.bedrooms[6]" style="text-align: right">
+                        Rent<Br>6 Bds.
                     </th>
                     <th ng-if="show.concessionsOneTime" style="text-align: right">
                         One-Time<br>Concess.
@@ -157,25 +158,26 @@
                         <i ng-show="settings.orderBy == '-ner'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'ner'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.ner0" style="text-align: right">
+                    <th ng-if="show.ner0 && settings.bedrooms[0]" style="text-align: right">
                         NER<Br>Studios
-                        <i ng-show="settings.orderBy == '-ner0'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'ner0'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.ner1" style="text-align: right">
+                    <th ng-if="show.ner0 && settings.bedrooms[1]" style="text-align: right">
                         NER<Br>1 Bds.
-                        <i ng-show="settings.orderBy == '-ner1'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'ner1'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.ner2" style="text-align: right">
+                    <th ng-if="show.ner0 && settings.bedrooms[2]" style="text-align: right">
                         NER<Br>2 Bds.
-                        <i ng-show="settings.orderBy == '-ner2'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'ner2'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.ner3" style="text-align: right">
+                    <th ng-if="show.ner0 && settings.bedrooms[3]" style="text-align: right">
                         NER<Br>3 Bds.
-                        <i ng-show="settings.orderBy == '-ner3'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'ner3'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="show.ner0 && settings.bedrooms[4]" style="text-align: right">
+                        NER<Br>4 Bds.
+                    </th>
+                    <th ng-if="show.ner0 && settings.bedrooms[5]" style="text-align: right">
+                        NER<Br>5 Bds.
+                    </th>
+                    <th ng-if="show.ner0 && settings.bedrooms[6]" style="text-align: right">
+                        NER<Br>6 Bds.
                     </th>
                     <th ng-if="show.nervscompavg" style="text-align: right">
                         NER<Br>vs Comp Avg
@@ -284,17 +286,26 @@
                     <td ng-if="show.rentsqft" style="text-align:right">
                         ${{row.rentsqft | number : 2}}
                     </td>
-                    <td ng-if="show.rent0" style="text-align:right">
+                    <td ng-if="show.rent0 && settings.bedrooms[0]" style="text-align:right">
                         {{row.rent0 !== undefined ? "$" + row.rent0.toFixed(0) : "-"}}
                     </td>
-                    <td ng-if="show.rent1" style="text-align:right">
+                    <td ng-if="show.rent0 && settings.bedrooms[1]" style="text-align:right">
                         {{row.rent1 !== undefined ? "$" + row.rent1.toFixed(0) : "-"}}
                     </td>
-                    <td ng-if="show.rent2" style="text-align:right">
+                    <td ng-if="show.rent0 && settings.bedrooms[2]" style="text-align:right">
                         {{row.rent2 !== undefined ? "$" + row.rent2.toFixed(0) : "-"}}
                     </td>
-                    <td ng-if="show.rent3" style="text-align:right">
+                    <td ng-if="show.rent0 && settings.bedrooms[3]" style="text-align:right">
                         {{row.rent3 !== undefined ? "$" + row.rent3.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="show.rent0 && settings.bedrooms[4]" style="text-align:right">
+                        {{row.rent4 !== undefined ? "$" + row.rent4.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="show.rent0 && settings.bedrooms[5]" style="text-align:right">
+                        {{row.rent5 !== undefined ? "$" + row.rent5.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="show.rent0 && settings.bedrooms[6]" style="text-align:right">
+                        {{row.rent6 !== undefined ? "$" + row.rent6.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="show.concessionsOneTime" style="text-align:right">
                         {{row.concessionsOneTime !== undefined ? "$" + row.concessionsOneTime.toFixed(0) : "-"}}
@@ -314,17 +325,26 @@
                     <td ng-if="show.ner" style="text-align:right">
                         ${{row.ner | number : 0}}
                     </td>
-                    <td ng-if="show.ner0" style="text-align:right">
+                    <td ng-if="show.ner0 && settings.bedrooms[0]" style="text-align:right">
                         {{row.ner0 !== undefined ? "$" + row.ner0.toFixed(0) : "-"}}
                     </td>
-                    <td ng-if="show.ner1" style="text-align:right">
+                    <td ng-if="show.ner0 && settings.bedrooms[1]" style="text-align:right">
                         {{row.ner1 !== undefined ? "$" + row.ner1.toFixed(0) : "-"}}
                     </td>
-                    <td ng-if="show.ner2" style="text-align:right">
+                    <td ng-if="show.ner0 && settings.bedrooms[2]" style="text-align:right">
                         {{row.ner2 !== undefined ? "$" + row.ner2.toFixed(0) : "-"}}
                     </td>
-                    <td ng-if="show.ner3" style="text-align:right">
+                    <td ng-if="show.ner0 && settings.bedrooms[3]" style="text-align:right">
                         {{row.ner3 !== undefined ? "$" + row.ner3.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="show.ner0 && settings.bedrooms[4]" style="text-align:right">
+                        {{row.ner4 !== undefined ? "$" + row.ner4.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="show.ner0 && settings.bedrooms[5]" style="text-align:right">
+                        {{row.ner5 !== undefined ? "$" + row.ner5.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="show.ner0 && settings.bedrooms[6]" style="text-align:right">
+                        {{row.ner6 !== undefined ? "$" + row.ner6.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="show.nervscompavg" style="text-align:right">
                         <span ng-if="$index == block.length - 1 || row.name === 'Comp Averages'"></span>

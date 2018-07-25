@@ -448,6 +448,21 @@ define([
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
+                if ($scope.reports.custom_portfolio) {
+                    var bedrooms = {};
+                    $scope.reports.custom_portfolio.forEach(function(gr) {
+                        var avgRow = gr[gr.length - 1];
+                        for (var i = 0; i<=6; i++) {
+                            if (typeof avgRow["rent" + i + "Units"] !== "undefined" && avgRow["rent" + i + "Units"] > 0) {
+                                bedrooms[i] = true;
+                            }
+                        }
+                    });
+
+                    $scope.liveSettings.customPortfolio.bedrooms = bedrooms;
+                    $scope.runSettings.customPortfolio.bedrooms = bedrooms;
+                }
+
                 $scope.description = '%where%, ' + $scope.propertyNames.length + ' Property(ies), ' + $scope.reportIds.length + ' Report Type(s)';
 
                 if (!phantom) {
@@ -1196,15 +1211,9 @@ define([
                     {id: "nersqftvscompavg", name: "NER/Sqft vs Comp Avg", selected: $scope.liveSettings.customPortfolio.show.nersqftvscompavg, tooltip: "<b>Net Effective Rent/Sqft vs Comp Avg</b><br><i>Net Effective Rent / Sqft divided by Comp average Net Effective Rent / Sqft</i>"},
                     {id: "concessionsOneTime", name: "One-Time Concessions", selected: $scope.liveSettings.customPortfolio.show.concessionsOneTime, tooltip: "<b>One-Time Concessions</b><br><i>The one-time (upfront) concessions. Example - if there is a $500 look-and-lease discount for signing a 12 month lease</i>"},
                     {id: "concessionsMonthly", name: "Recurring Concessions", selected: $scope.liveSettings.customPortfolio.show.concessionsMonthly, tooltip: "<b>Recurring Concessions</b><br><i>The recurring (monthly) concessions. Example - if concession is $100 off per month</i>"},
-                    {id: "rent0", name: "Rent - Studios", selected: $scope.liveSettings.customPortfolio.show.rent0, tooltip: "<b>Rent - Studios</b><br><i>This is Rent grouped by studios</i>"},
-                    {id: "rent1", name: "Rent - 1 Bds.", selected: $scope.liveSettings.customPortfolio.show.rent1, tooltip: "<b>Rent - 1 Bds.</b><br><i>This is Rent grouped by 1 bedrooms</i>"},
-                    {id: "rent2", name: "Rent - 2 Bds.", selected: $scope.liveSettings.customPortfolio.show.rent2, tooltip: "<b>Rent - 2 Bds.</b><br><i>This is Rent grouped by 2 bedrooms</i>"},
-                    {id: "rent3", name: "Rent - 3 Bds.", selected: $scope.liveSettings.customPortfolio.show.rent3, tooltip: "<b>Rent - 3 Bds.</b><br><i>This is Rent grouped by 3 bedrooms</i>"},
-                    {id: "ner0", name: "NER - Studios", selected: $scope.liveSettings.customPortfolio.show.ner0, tooltip: "<b>NER - Studios</b><br><i>Net Effective Rent grouped by studios</i>"},
-                    {id: "ner1", name: "NER - 1 Bds.", selected: $scope.liveSettings.customPortfolio.show.ner1, tooltip: "<b>NER - 1 Bds.</b><br><i>Net Effective Rent grouped by 1 bedrooms</i>"},
-                    {id: "ner2", name: "NER - 2 Bds.", selected: $scope.liveSettings.customPortfolio.show.ner2, tooltip: "<b>NER - 2 Bds.</b><br><i>Net Effective Rent grouped by 2 bedrooms</i>"},
-                    {id: "ner3", name: "NER - 3 Bds.", selected: $scope.liveSettings.customPortfolio.show.ner3, tooltip: "<b>NER - 3 Bds.</b><br><i>Net Effective Rent grouped by 3 bedrooms</i>"},
-                ];
+                    {id: "rent0", name: "Rent by # Bedrooms", selected: $scope.liveSettings.customPortfolio.show.rent0, tooltip: "<b>Rent by # Bedrooms</b><br><i>This is Rent grouped by number of bedrooms</i>"},
+                    {id: "ner0", name: "NER by # Bedrooms", selected: $scope.liveSettings.customPortfolio.show.ner0, tooltip: "<b>NER by # Bedrooms</b><br><i>Net Effective Rent grouped by number of bedrooms</i>"},
+               ];
 
                 if (!$rootScope.me.settings.showLeases) {
                     _.remove($scope.temp.showCustomPortfolioItems, function(x) {return x.id == 'leased'})
@@ -1246,10 +1255,6 @@ define([
                     {id: "runratesqft", name: "Recurring Rent / Sqft"},
                     {id: "concessions", name: "Total Concession"},
                     {id: "ner", name: "NER"},
-                    {id: "ner0", name: "NER - Studios"},
-                    {id: "ner1", name: "NER - 1 Bds."},
-                    {id: "ner2", name: "NER - 2 Bds."},
-                    {id: "ner3", name: "NER - 3 Bds."},
                     {id: "nervscompavg", name: "NER vs Comp Avg"},
                     {id: "lastweeknerpercent", name: "NER vs Last Week"},
                     {id: "lastmonthnerpercent", name: "NER vs Last Month"},
