@@ -92,6 +92,10 @@ module.exports = {
                 ret = _.sum(fps, function(x) {
                     return (x.concessionsOneTime || 0) * x.units / tot;
                 });
+            } else if (scale == "sqft") {
+                ret = _.sum(fps, function(x) {
+                    return (x.sqft || 0) * x.units / tot;
+                });
             } else if (scale == "occupancy") {
                 ret = s.occupancy;
                 if (typeof s.occupancy === "undefined" || s.occupancy === null) {
