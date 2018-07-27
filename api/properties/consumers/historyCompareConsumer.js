@@ -583,53 +583,54 @@ var weightedAverageTotalRow = function(totalrow) {
         }
 
         if (totalrow.rent0Units) {
-            totalrow.rent0 = Math.round(totalrow.rent0 / totalrow.rent0Units * 10) / 10;
+            totalrow.rent0 = Math.round(totalrow.rent0 / totalrow.rent0Units * 100) / 100;
         }
         if (totalrow.rent1Units) {
-            totalrow.rent1 = Math.round(totalrow.rent1 / totalrow.rent1Units * 10) / 10;
+            totalrow.rent1 = Math.round(totalrow.rent1 / totalrow.rent1Units * 100) / 100;
         }
         if (totalrow.rent2Units) {
-            totalrow.rent2 = Math.round(totalrow.rent2 / totalrow.rent2Units * 10) / 10;
+            totalrow.rent2 = Math.round(totalrow.rent2 / totalrow.rent2Units * 100) / 100;
         }
         if (totalrow.rent3Units) {
-            totalrow.rent3 = Math.round(totalrow.rent3 / totalrow.rent3Units * 10) / 10;
+            totalrow.rent3 = Math.round(totalrow.rent3 / totalrow.rent3Units * 100) / 100;
         }
         if (totalrow.rent4Units) {
-            totalrow.rent4 = Math.round(totalrow.rent4 / totalrow.rent4Units * 10) / 10;
+            totalrow.rent4 = Math.round(totalrow.rent4 / totalrow.rent4Units * 100) / 100;
         }
         if (totalrow.rent5Units) {
-            totalrow.rent5 = Math.round(totalrow.rent5 / totalrow.rent5Units * 10) / 10;
+            totalrow.rent5 = Math.round(totalrow.rent5 / totalrow.rent5Units * 100) / 100;
         }
         if (totalrow.rent6Units) {
-            totalrow.rent6 = Math.round(totalrow.rent6 / totalrow.rent6Units * 10) / 10;
+            totalrow.rent6 = Math.round(totalrow.rent6 / totalrow.rent6Units * 100) / 100;
         }
 
         if (totalrow.ner0Units) {
-            totalrow.ner0 = Math.round(totalrow.ner0 / totalrow.ner0Units * 10) / 10;
+            totalrow.ner0 = Math.round(totalrow.ner0 / totalrow.ner0Units * 100) / 100;
         }
         if (totalrow.ner1Units) {
-            totalrow.ner1 = Math.round(totalrow.ner1 / totalrow.ner1Units * 10) / 10;
+            totalrow.ner1 = Math.round(totalrow.ner1 / totalrow.ner1Units * 100) / 100;
+            console.log(totalrow.ner1);
         }
         if (totalrow.ner2Units) {
-            totalrow.ner2 = Math.round(totalrow.ner2 / totalrow.ner2Units * 10) / 10;
+            totalrow.ner2 = Math.round(totalrow.ner2 / totalrow.ner2Units * 100) / 100;
         }
         if (totalrow.ner3Units) {
-            totalrow.ner3 = Math.round(totalrow.ner3 / totalrow.ner3Units * 10) / 10;
+            totalrow.ner3 = Math.round(totalrow.ner3 / totalrow.ner3Units * 100) / 100;
         }
         if (totalrow.ner4Units) {
-            totalrow.ner4 = Math.round(totalrow.ner4 / totalrow.ner4Units * 10) / 10;
+            totalrow.ner4 = Math.round(totalrow.ner4 / totalrow.ner4Units * 100) / 100;
         }
         if (totalrow.ner5Units) {
-            totalrow.ner5 = Math.round(totalrow.ner5 / totalrow.ner5Units * 10) / 10;
+            totalrow.ner5 = Math.round(totalrow.ner5 / totalrow.ner5Units * 100) / 100;
         }
         if (totalrow.ner6Units) {
-            totalrow.ner6 = Math.round(totalrow.ner6 / totalrow.ner6Units * 10) / 10;
+            totalrow.ner6 = Math.round(totalrow.ner6 / totalrow.ner6Units * 100) / 100;
         }
         if (totalrow.concessionsMonthlyUnits) {
-            totalrow.concessionsMonthly = Math.round(totalrow.concessionsMonthly / totalrow.concessionsMonthlyUnits * 10) / 10;
+            totalrow.concessionsMonthly = Math.round(totalrow.concessionsMonthly / totalrow.concessionsMonthlyUnits * 100) / 100;
         }
         if (totalrow.concessionsOneTimeUnits) {
-            totalrow.concessionsOneTime = Math.round(totalrow.concessionsOneTime / totalrow.concessionsOneTimeUnits * 10) / 10;
+            totalrow.concessionsOneTime = Math.round(totalrow.concessionsOneTime / totalrow.concessionsOneTimeUnits * 100) / 100;
         }
         
         totalrow.totUnits = Math.round(totalrow.totUnits / totalrow.count * 10) / 10; // not weighted
