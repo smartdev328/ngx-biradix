@@ -54,6 +54,7 @@ Routes.get("/excel/custom_portfolio", (req, res) => {
                 fileName: fileName,
                 report: data,
                 show: result.settings.show,
+                bedrooms: result.settings.bedrooms,
                 strDate: moment().utcOffset(result.timezone).format("MM/DD/YYYY"),
             };
 
