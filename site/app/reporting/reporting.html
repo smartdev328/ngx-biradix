@@ -18,9 +18,10 @@
         width: 200px;
         padding: 5px 10px;
         margin: 4px 0;
-        border: 1px solid #ddd;
+        border: 1px solid #1E90FF;
+        color: #1E90FF;
         border-radius: 2px;
-        background-color: #F0F0F0;
+        background-color: #FFF;
 
         text-align: left;
         cursor: move;
@@ -465,8 +466,8 @@
                                         <div class="pull-left">Column Sort Order</div> <div class="pull-right"><span class="caret"></span></div>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" role="menu" style="width:250px;height:230px;overflow-y: auto; margin-right:15px" onclick="event.stopPropagation();">
-                                        <ul ui-sortable="sortableOptions" ng-model="items" class="list">
-                                            <li ng-repeat="item in items" class="item"><i class="fa fa-bars" style="color:#333"></i>&nbsp;&nbsp;{{ item }}</li>
+                                        <ul ui-sortable="sortableOptions" ng-model="liveSettings.customPortfolio.columnSortOrder" class="list">
+                                            <li ng-repeat="item in liveSettings.customPortfolio.columnSortOrder" class="item"><i class="fa fa-bars"></i>&nbsp;&nbsp;{{ item.name }}</li>
                                         </ul>
                                     </div>
                                 </div>

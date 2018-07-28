@@ -5,13 +5,6 @@ define([
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q'
         , function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService,$q) {
-
-            $scope.items = [];
-
-            for (var i = 1; i < 40; i ++) {
-                $scope.items.push("Column " + i);
-            }
-
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -1221,15 +1214,31 @@ define([
                     {id: "ner0", name: "NER by # Bedrooms", selected: $scope.liveSettings.customPortfolio.show.ner0, tooltip: "<b>NER by # Bedrooms</b><br><i>Net Effective Rent grouped by number of bedrooms</i>"},
                ];
 
-                if (!$rootScope.me.settings.showLeases) {
-                    _.remove($scope.temp.showCustomPortfolioItems, function(x) {return x.id == 'leased'})
-                }
-
-                if (!$rootScope.me.settings.showATR) {
-                    _.remove($scope.temp.showCustomPortfolioItems, function(x) {return x.id == 'atr'})
-                }
                 if (typeof $scope.liveSettings.customPortfolio.compAverages == 'undefined') {
                     $scope.liveSettings.customPortfolio.compAverages = false;
+                }
+
+                if (typeof $scope.liveSettings.customPortfolio.columnSortOrder === "undefined") {
+                    $scope.liveSettings.customPortfolio.columnSortOrder = [
+                        {id: "name", name: "Property Name"},
+                        {id: "units", name: "Units"},
+                        {id: "occupancy", name: "Occ. %"},
+                    ];
+
+                    if ($rootScope.me.settings.showLeases) {
+                        $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "leased", name: "Leased %"});
+                    }
+                    if ($rootScope.me.settings.showATR) {
+                        $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "atr", name: "ATR %"});
+                    }
+
+                    $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "sqft", name: "Sqft"});
+                    $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "rent", name: "Rent"});
+                    $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "ner", name: "NER"});
+                    $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "nerweek", name: "NER vs Last Week"});
+                    $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "nermonth", name: "NER vs Last Month"});
+                    $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "nersqft", name: "NER/Sqft"});
+                    $scope.liveSettings.customPortfolio.columnSortOrder.push({id: "last_updated", name: "Last Updated"});
                 }
 
                 $scope.temp.customPortfolioSortItems = [
@@ -1280,6 +1289,18 @@ define([
                 $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
             }
 
+            $scope.$watch("temp.showCustomPortfolioItems", function(value) {
+                $scope.liveSettings.customPortfolio.columnSortOrder = $scope.liveSettings.customPortfolio.columnSortOrder || [];
+                value.forEach(function(show) {
+                   if (show.selected) {
+                       if (!_.find($scope.liveSettings.customPortfolio.columnSortOrder, function(x) {return x.id === show.id})) {
+                           $scope.liveSettings.customPortfolio.columnSortOrder.push({id: show.id, name: show.name});
+                       }
+                   } else {
+                       _.remove($scope.liveSettings.customPortfolio.columnSortOrder, function(x) {return x.id === show.id});
+                   }
+                });
+            }, true);
         ////////////////////// Rankings Summary ////////////////////////////////
         $scope.resetRankingsSummarySettings = function() {
             $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
