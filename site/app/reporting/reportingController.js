@@ -6,6 +6,12 @@ define([
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q'
         , function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService,$q) {
 
+            $scope.items = [];
+
+            for (var i = 1; i < 40; i ++) {
+                $scope.items.push("Column " + i);
+            }
+
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";

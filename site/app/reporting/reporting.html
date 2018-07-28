@@ -7,6 +7,27 @@
         background-color: #f5f5f5;
     }
 </style>
+
+<style>
+    .list {
+        list-style: none outside none;
+        margin: 0px 0px 0px -25px;
+    }
+
+    .item {
+        width: 200px;
+        padding: 5px 10px;
+        margin: 4px 0;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        background-color: #F0F0F0;
+
+        text-align: left;
+        cursor: move;
+    }
+
+</style>
+
 <div ng-show="!meLoaded" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
@@ -420,8 +441,9 @@
                                     Columns<br>
                                     <filter-list options="temp.showCustomPortfolioOptions" items="temp.showCustomPortfolioItems"></filter-list>
                                 </div>
+
                                 <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
-                                    Sort Order<br>
+                                    Row Sort Order<br>
                                     <div ng-class="{'col-xs-6': temp.customPortfolioSortSelected.id != 'default', 'col-xs-12': temp.customPortfolioSortSelected.id == 'default'}" style="padding-left: 0; padding-right:0">
                                         <select
                                                 class="input-sm form-control"
@@ -436,6 +458,19 @@
 
                                     </div>
                                 </div>
+
+                                <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
+                                    <Br>
+                                    <button type="button" class="btn btn-default dropdown-toggle btn-sm btn-block" data-toggle="dropdown" aria-expanded="false">
+                                        <div class="pull-left">Column Sort Order</div> <div class="pull-right"><span class="caret"></span></div>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="width:250px;height:230px;overflow-y: auto; margin-right:15px" onclick="event.stopPropagation();">
+                                        <ul ui-sortable="sortableOptions" ng-model="items" class="list">
+                                            <li ng-repeat="item in items" class="item"><i class="fa fa-bars" style="color:#333"></i>&nbsp;&nbsp;{{ item }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Add Comp Averages
                                     <i class="fa fa-info-circle" style="font-size:12px"
