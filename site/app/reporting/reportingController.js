@@ -1220,7 +1220,6 @@ define([
 
                 if (typeof $scope.liveSettings.customPortfolio.columnSortOrder === "undefined") {
                     $scope.liveSettings.customPortfolio.columnSortOrder = [
-                        {id: "name", name: "Property Name"},
                         {id: "units", name: "Units"},
                         {id: "occupancy", name: "Occ. %"},
                     ];
@@ -1292,13 +1291,23 @@ define([
             $scope.$watch("temp.showCustomPortfolioItems", function(value) {
                 $scope.liveSettings.customPortfolio.columnSortOrder = $scope.liveSettings.customPortfolio.columnSortOrder || [];
                 value.forEach(function(show) {
-                   if (show.selected) {
-                       if (!_.find($scope.liveSettings.customPortfolio.columnSortOrder, function(x) {return x.id === show.id})) {
-                           $scope.liveSettings.customPortfolio.columnSortOrder.push({id: show.id, name: show.name});
-                       }
-                   } else {
-                       _.remove($scope.liveSettings.customPortfolio.columnSortOrder, function(x) {return x.id === show.id});
-                   }
+
+                    if (show.id !== "name") {
+                        if (show.selected) {
+                            if (!_.find($scope.liveSettings.customPortfolio.columnSortOrder, function (x) {
+                                return x.id === show.id
+                            })) {
+                                $scope.liveSettings.customPortfolio.columnSortOrder.push({
+                                    id: show.id,
+                                    name: show.name
+                                });
+                            }
+                        } else {
+                            _.remove($scope.liveSettings.customPortfolio.columnSortOrder, function (x) {
+                                return x.id === show.id
+                            });
+                        }
+                    }
                 });
             }, true);
         ////////////////////// Rankings Summary ////////////////////////////////

@@ -439,12 +439,12 @@
                             </uib-accordion-heading>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
-                                    Columns<br>
+                                    Property Data Values<br>
                                     <filter-list options="temp.showCustomPortfolioOptions" items="temp.showCustomPortfolioItems"></filter-list>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
-                                    Row Sort Order<br>
+                                    Sort by<br>
                                     <div ng-class="{'col-xs-6': temp.customPortfolioSortSelected.id != 'default', 'col-xs-12': temp.customPortfolioSortSelected.id == 'default'}" style="padding-left: 0; padding-right:0">
                                         <select
                                                 class="input-sm form-control"
@@ -461,9 +461,9 @@
                                 </div>
 
                                 <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
-                                    <Br>
+                                    Column Order<Br>
                                     <button type="button" class="btn btn-default dropdown-toggle btn-sm btn-block" data-toggle="dropdown" aria-expanded="false">
-                                        <div class="pull-left">Column Sort Order</div> <div class="pull-right"><span class="caret"></span></div>
+                                        <div class="pull-left">Update Order</div> <div class="pull-right"><span class="caret"></span></div>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" role="menu" style="width:250px;height:230px;overflow-y: auto; margin-right:15px" onclick="event.stopPropagation();">
                                         <ul ui-sortable="sortableOptions" ng-model="liveSettings.customPortfolio.columnSortOrder" class="list">
@@ -530,10 +530,10 @@
 
             <trends-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="runSettings.trends"></trends-report>
 
-            <custom-portfolio class="report" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="liveSettings.customPortfolio.show" settings="liveSettings.customPortfolio"></custom-portfolio>
+            <custom-portfolio class="report" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="runSettings.customPortfolio.show" settings="runSettings.customPortfolio"></custom-portfolio>
 
             <div ng-if="!reportLoading && reports && reports.custom_portfolio && reports.property_status" style="height:20px"></div>
-            <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="liveSettings.propertyStatus.show"></property-status>
+            <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="runSettings.propertyStatus.show"></property-status>
         </div>
     </div>
 </div>
