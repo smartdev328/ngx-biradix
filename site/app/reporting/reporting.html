@@ -15,9 +15,9 @@
     }
 
     .item {
-        width: 200px;
+        /*width: 200px;*/
         padding: 5px 10px;
-        margin: 4px 0;
+        margin: 4px 4px 4px -8px;
         border: 1px solid #1E90FF;
         color: #1E90FF;
         border-radius: 2px;
@@ -461,14 +461,22 @@
                                 </div>
 
                                 <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
-                                    Column Order<Br>
-                                    <button type="button" class="btn btn-default dropdown-toggle btn-sm btn-block" data-toggle="dropdown" aria-expanded="false">
-                                        <div class="pull-left">Update Order</div> <div class="pull-right"><span class="caret"></span></div>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="width:250px;height:230px;overflow-y: auto; margin-right:15px" onclick="event.stopPropagation();">
-                                        <ul ui-sortable="sortableOptions" ng-model="liveSettings.customPortfolio.columnSortOrder" class="list">
-                                            <li ng-repeat="item in liveSettings.customPortfolio.columnSortOrder" class="item"><i class="fa fa-bars"></i>&nbsp;&nbsp;{{ item.name }}</li>
-                                        </ul>
+                                    <div ng-class="{'col-xs-6': !liveSettings.customPortfolio.defaultOrder, 'col-xs-12': liveSettings.customPortfolio.defaultOrder}" style="padding-left: 0; padding-right:0">
+                                        Column Order<Br>
+                                        <button type="button" class="btn btn-default dropdown-toggle btn-sm btn-block" data-toggle="dropdown" aria-expanded="false">
+                                            <div class="pull-left" ng-if="liveSettings.customPortfolio.defaultOrder">Default Order</div>
+                                            <div class="pull-left" ng-if="!liveSettings.customPortfolio.defaultOrder">Custom Order</div>
+                                            <div class="pull-right"><span class="caret"></span></div>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-left" role="menu" style="width:250px;height:230px;overflow-y: auto;" onclick="event.stopPropagation();">
+                                            <ul ui-sortable="sortableOptions" ng-model="liveSettings.customPortfolio.columnSortOrder" class="list">
+                                                <li ng-repeat="item in liveSettings.customPortfolio.columnSortOrder" class="item"><i class="fa fa-bars"></i>&nbsp;&nbsp;{{ item.name }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-right:0;padding-left:5px;white-space: nowrap;text-align:center" ng-show="!liveSettings.customPortfolio.defaultOrder">
+                                        <Br>
+                                        <A href ng-click="liveSettings.customPortfolio.defaultOrder = true;defaultSortColumns(temp.showCustomPortfolioItems)" style="font-size:11px">Reset to Default</A>
                                     </div>
                                 </div>
 
