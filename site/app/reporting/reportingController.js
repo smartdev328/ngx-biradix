@@ -44,7 +44,7 @@ define([
                         type: "single",
                     });
                 $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple"});
-                $scope.reportItems.push({id: "custom_portfolio", name: "Custom Data", selected: false, group: "Portfolio Reports", type:"multiple"});
+                $scope.reportItems.push({id: "custom_portfolio", name: "Customizable Property Data", selected: false, group: "Portfolio Reports", type:"multiple"});
 
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
@@ -718,7 +718,7 @@ define([
                 }
 
                 if (c > 13) {
-                    toastr.error("<B>Unable to Print/Export Report!</B><Br><Br>You have selected <b>" + c + "</b> columns for your Custom Data report. Having over <u>13</u> columns will not fit in Print/Export.")
+                    toastr.error("<B>Unable to Print/Export Report!</B><Br><Br>You have selected <b>" + c + "</b> columns for your Customizable Property Data report. Having over <u>13</u> columns will not fit in Print/Export.")
 
                     return;
                 }
