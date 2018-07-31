@@ -512,7 +512,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             resp.property.hasFees = false;
             if (resp.property.fees) {
                 for (var fee in resp.property.fees) {
-                    if (resp.property.fees[fee].length > 0) {
+                    if ((resp.property.fees[fee] || "").length > 0) {
                         resp.property.hasFees = true;
                     }
                 }
