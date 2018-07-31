@@ -13,9 +13,8 @@ var error = require('../../../config/error')
 bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
     console.log(data.properties, " notifications started");
     async.parallel({
-        properties : function(callbackp) {
-
-            var criteria = {
+        properties: function(callbackp) {
+            const criteria = {
                 select:"_id name",
                 limit: 200,
                 permission: 'PropertyManage',
@@ -30,53 +29,49 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
 
             propertyService.search(data.user, criteria, function(err,props) {
                 callbackp(err, _.pluck(props,"_id"));
-            })
-        }
+            });
+        },
     }, function(err, all) {
         if (all.properties.length > 0) {
-            var final = [];
+            const final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
 
-                var key = "nots-" + id;
+                const key = "nots-" + id;
 
-                const hasSort = data.options && data.options.orderByl
+                const hasSort = data.options && data.options.orderBy;
 
                 redisService.get(key, function(err, result) {
                     if (result && settings.HEROKU_APP == "biradixplatform-prod" && !hasSort) {
-                        //console.log('Cache:', result);
+                        // console.log('Cache:', result);
                         final.push(result);
                         callbackp(null);
                     } else {
                         queueService.getCompareReport(data.user, id, data.options, function (err, report) {
-                            //console.log(id, report[0].name, report[0]._id)
+                            // console.log(id, report[0].name, report[0]._id)
                             if (!hasSort) {
                                 redisService.set(key, report, 3 * 60); // 3 hours
                             }
 
-                            //console.log('No Cache:', report);
+                            // console.log('No Cache:', report);
                             final.push(report);
 
                             if (report == null) {
                                 callbackp(err);
                             } else {
-                                callbackp(null)
+                                callbackp(null);
                             }
-                        })
+                        });
                     }
                 });
-
-
-
             }, function(err) {
                 if (err) {
                     error.send(JSON.stringify(err), {data: data, user: data.user});
-                    reply({done:true});
-                    return
+                    reply({done: true});
+                    return;
                 }
 
-
                 if (final.length > 0) {
-                    //console.log(final);
+                    // console.log(final);
                     var logo ='https://' + data.user.orgs[0].subdomain + ".biradix.com/images/organizations/" + data.user.orgs[0].logoBig;
                     var unsub ='https://' + data.user.orgs[0].subdomain + ".biradix.com/u";
                     var dashboardBase ='https://' + data.user.orgs[0].subdomain + ".biradix.com/d/";
@@ -89,7 +84,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                         when = "monthly";
                     }
 
-                    //console.log(final);
+                    // console.log(final);
 
                     var tz = data.user.settings.tz || 'America/Los_Angeles';
 

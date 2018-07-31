@@ -153,12 +153,12 @@ module.exports = {
                         console.log(JSON.stringify(log));
 
                         if (!data.stream) {
-                            error.send(data.err, message);
-                            console.error(data.err);
+                            error.send(JSON.stringify(data.err), message);
+                            // console.error(data.err);
                         } else {
                             redisClient.set("report-" + query.progressId, JSON.stringify({
                                 data,
-                                showFile: query.showFile
+                                showFile: query.showFile,
                             }), function(err, res) {
                                 if (query.progressId) {
                                     ProgressService.setComplete(query.progressId);
