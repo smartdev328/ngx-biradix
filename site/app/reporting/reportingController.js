@@ -1279,46 +1279,50 @@ define([
                     $scope.liveSettings.customPortfolio.defaultOrder = false;
                 },
             }
-            $scope.$watch("temp.showCustomPortfolioItems", function(value) {
-                $scope.defaultSortColumns(value);
-            }, true);
 
-        $scope.defaultSortColumns = function(value) {
-            $scope.liveSettings.customPortfolio.columnSortOrder = $scope.liveSettings.customPortfolio.columnSortOrder || [];
+            $scope.defaultSortColumns = function(value) {
+                $scope.liveSettings.customPortfolio.columnSortOrder = $scope.liveSettings.customPortfolio.columnSortOrder || [];
 
-            if ($scope.liveSettings.customPortfolio.defaultOrder) {
-                $scope.liveSettings.customPortfolio.columnSortOrder = [];
-                $scope.temp.defaultOrderItems.forEach(function(d) {
-                    if (_.find(value, function(x) {
-                        return x.id === d.id && x.selected === true;
-                    })) {
-                        $scope.liveSettings.customPortfolio.columnSortOrder.push({
-                            id: d.id,
-                            name: d.name,
-                        });
-                    }
-                });
-            } else {
-                value.forEach(function(show) {
-                    if (show.id !== "name") {
-                        if (show.selected) {
-                            if (!_.find($scope.liveSettings.customPortfolio.columnSortOrder, function (x) {
-                                return x.id === show.id;
-                            })) {
-                                $scope.liveSettings.customPortfolio.columnSortOrder.push({
-                                    id: show.id,
-                                    name: show.name,
-                                });
-                            }
-                        } else {
-                            _.remove($scope.liveSettings.customPortfolio.columnSortOrder, function (x) {
-                                return x.id === show.id
+                if ($scope.liveSettings.customPortfolio.defaultOrder) {
+                    $scope.liveSettings.customPortfolio.columnSortOrder = [];
+                    $scope.temp.defaultOrderItems.forEach(function(d) {
+                        if (_.find(value, function(x) {
+                            return x.id === d.id && x.selected === true;
+                        })) {
+                            $scope.liveSettings.customPortfolio.columnSortOrder.push({
+                                id: d.id,
+                                name: d.name,
                             });
                         }
-                    }
-                });
-            }
-        };
+                    });
+                } else {
+                    value.forEach(function(show) {
+                        if (show.id !== "name") {
+                            if (show.selected) {
+                                if (!_.find($scope.liveSettings.customPortfolio.columnSortOrder, function (x) {
+                                    return x.id === show.id;
+                                })) {
+                                    $scope.liveSettings.customPortfolio.columnSortOrder.push({
+                                        id: show.id,
+                                        name: show.name,
+                                    });
+                                }
+                            } else {
+                                _.remove($scope.liveSettings.customPortfolio.columnSortOrder, function (x) {
+                                    return x.id === show.id
+                                });
+                            }
+                        }
+                    });
+                }
+            };
+
+            $scope.$watch("temp.showCustomPortfolioItems", function(value) {
+                if ($scope.temp && $scope.temp.defaultOrderItems) {
+                    $scope.defaultSortColumns(value);
+                }
+            }, true);
+
         ////////////////////// Rankings Summary ////////////////////////////////
         $scope.resetRankingsSummarySettings = function() {
             $scope.liveSettings.rankingsSummary = {orderBy: "nersqft"}
