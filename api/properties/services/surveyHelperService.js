@@ -332,5 +332,31 @@ var  getSurveyStats = function(floorplans, survey, links, hide, nerPlaces) {
         }        
         survey.sqft = Math.round(survey.sqft);
         survey.concessions = Math.round(survey.concessions);
+
+        const concessionsMonthlytotUnits = _.sum(fps, function (fp) {
+            if (typeof fp.concessionsMonthly === "undefined") {
+                return 0;
+            }
+            return fp.units;
+        });
+
+        if (concessionsMonthlytotUnits > 0) {
+            survey.concessionsMonthly = Math.round(_.sum(fps, function(fp) {
+                return (fp.concessionsMonthly || 0) * fp.units;
+            }) / concessionsMonthlytotUnits);
+        }
+
+        const concessionsOneTimetotUnits = _.sum(fps, function (fp) {
+            if (typeof fp.concessionsOneTime === "undefined") {
+                return 0;
+            }
+            return fp.units;
+        });
+
+        if (concessionsOneTimetotUnits > 0) {
+            survey.concessionsOneTime = Math.round(_.sum(fps, function(fp) {
+                return (fp.concessionsOneTime || 0) * fp.units;
+            }) / concessionsOneTimetotUnits);
+        }
     }
 }

@@ -3,14 +3,22 @@
         border-top-width: 1px !important;
     }
 
+    th {
+        white-space: nowrap !important;
+    }
+
     @media print {
         .report .maingrid.wrapper.panel .subtotal.regular-border TD {
             border-top: 1px solid #ddd !important;
         }
     }
+
+    .custom-portfolio .maingrid.wrapper.panel .subtotal-padding TD {
+        padding-bottom: 50px !important;
+    }
 </style>
-<div class="break2 panel panel-info" style="margin-bottom: 0px !important;">
-    <div class="panel-heading">Custom Data</div>
+<div class="break2 panel panel-info custom-portfolio" style="margin-bottom: 0px !important;">
+    <div class="panel-heading">Customizable Property Data</div>
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
@@ -23,203 +31,381 @@
                         <i ng-show="settings.orderBy == '-name'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'name'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.occupancy" style="text-align: right">
-                        Occ. %
-                        <i ng-show="settings.orderBy == '-occupancy'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'occupancy'" class="fa fa-sort-up"></i>
+                    <th ng-repeat-start="col in settings.columnSortOrder" ng-if="false"></th>
+                    <th ng-if="col.id == 'address'" style="height:44px;">
+                        Address
+                        <i ng-show="settings.orderBy == '-address'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'address'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.leased && showLeases" style="text-align: right">
-                        Leased %
-                        <i ng-show="settings.orderBy == '-leased'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'leased'" class="fa fa-sort-up"></i>
+                    <th ng-if="col.id == 'phone'" style="height:44px;min-width:58px">
+                        Phone
+                        <i ng-show="settings.orderBy == '-phone'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'phone'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.atr" style="text-align: right">
-                        ATR %
-                        <i ng-show="settings.orderBy == '-atr'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'atr'" class="fa fa-sort-up"></i>
+                    <th ng-if="col.id == 'yearBuilt'" style="height:44px;min-width:78px">
+                        Year Built
+                        <i ng-show="settings.orderBy == '-yearBuilt'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'yearBuilt'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.weekly" style="text-align: right">
-                        Traffic/<Br>Week
-                        <i ng-show="settings.orderBy == '-weeklytraffic'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'weeklytraffic'" class="fa fa-sort-up"></i>
+                    <th ng-if="col.id == 'constructionType'" style="height:44px;min-width:95px">
+                        Construction
+                        <i ng-show="settings.orderBy == '-constructionType'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'constructionType'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.weekly" style="text-align: right">
-                        Leases/<Br>Week
-                        <i ng-show="settings.orderBy == '-weeklyleases'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'weeklyleases'" class="fa fa-sort-up"></i>
+                    <th ng-if="col.id == 'owner'" style="height:44px;">
+                        Owner
+                        <i ng-show="settings.orderBy == '-owner'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'owner'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.units" style="text-align: right">
+                    <th ng-if="col.id == 'management'" style="height:44px;min-width: 95px;">
+                        Management
+                        <i ng-show="settings.orderBy == '-management'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'management'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'units'" style="text-align: right;min-width: 52px;">
                         Units
                         <i ng-show="settings.orderBy == '-totUnits'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'totUnits'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.sqft" style="text-align: right">
+                    <th ng-if="col.id == 'occupancy'" style="text-align: right; min-width: 65px;">
+                        Occ. %
+                        <i ng-show="settings.orderBy == '-occupancy'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'occupancy'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'leased'" style="text-align: right; min-width: 78px;">
+                        Leased %
+                        <i ng-show="settings.orderBy == '-leased'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'leased'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'renewal'" style="text-align: right;min-width: 85px;">
+                        Renewal %
+                        <i ng-show="settings.orderBy == '-renewal'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'renewal'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'atr'" style="text-align: right;min-width: 60px;">
+                        ATR %
+                        <i ng-show="settings.orderBy == '-atr_percent'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'atr_percent'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'weekly'" style="text-align: right;min-width: 55px;">
+                        Traffic/<Br>Week
+                        <i ng-show="settings.orderBy == '-weeklytraffic'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'weeklytraffic'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'weekly'" style="text-align: right;min-width: 55px;">
+                        Leases/<Br>Week
+                        <i ng-show="settings.orderBy == '-weeklyleases'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'weeklyleases'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'sqft'" style="text-align: right">
                         Sqft
                         <i ng-show="settings.orderBy == '-sqft'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'sqft'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.rent" style="text-align: right">
+                    <th ng-if="col.id == 'rent'" style="text-align: right">
                         Rent
                         <i ng-show="settings.orderBy == '-rent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'rent'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.concessions" style="text-align: right">
-                        Total<br>Concess.
-                        <i ng-show="settings.orderBy == '-concessions'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'concessions'" class="fa fa-sort-up"></i>
+                    <th ng-if="col.id == 'rentsqft'" style="text-align: right">
+                        Rent<Br>/Sqft
+                        <i ng-show="settings.orderBy == '-rentsqft'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'rentsqft'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.runrate" style="text-align: right">
+                    <th ng-if="col.id == 'rent0' && settings.bedrooms[0]" style="text-align: right">
+                        Rent<Br>Studios
+                    </th>
+                    <th ng-if="col.id == 'rent0' && settings.bedrooms[1]" style="text-align: right">
+                        Rent<Br>1 Bds.
+                    </th>
+                    <th ng-if="col.id == 'rent0' && settings.bedrooms[2]" style="text-align: right">
+                        Rent<Br>2 Bds.
+                    </th>
+                    <th ng-if="col.id == 'rent0' && settings.bedrooms[3]" style="text-align: right">
+                        Rent<Br>3 Bds.
+                    </th>
+                    <th ng-if="col.id == 'rent0' && settings.bedrooms[4]" style="text-align: right">
+                        Rent<Br>4 Bds.
+                    </th>
+                    <th ng-if="col.id == 'rent0' && settings.bedrooms[5]" style="text-align: right">
+                        Rent<Br>5 Bds.
+                    </th>
+                    <th ng-if="col.id == 'rent0' && settings.bedrooms[6]" style="text-align: right">
+                        Rent<Br>6 Bds.
+                    </th>
+                    <th ng-if="col.id == 'concessionsOneTime'" style="text-align: right">
+                        One-Time<br>Concess.
+                        <i ng-show="settings.orderBy == '-concessionsOneTime'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'concessionsOneTime'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'concessionsMonthly'" style="text-align: right">
+                        Recur.<br>Concess.
+                        <i ng-show="settings.orderBy == '-concessionsMonthly'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'concessionsMonthly'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'runrate'" style="text-align: right">
                         Recur.<Br>Rent
                         <i ng-show="settings.orderBy == '-runrate'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'runrate'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.runratesqft" style="text-align: right">
+                    <th ng-if="col.id == 'runratesqft'" style="text-align: right">
                         Recur. Rent<Br>/Sqft
                         <i ng-show="settings.orderBy == '-runratesqft'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'runratesqft'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.ner" style="text-align: right">
+                    <th ng-if="col.id == 'concessions'" style="text-align: right">
+                        Total<br>Concess.
+                        <i ng-show="settings.orderBy == '-concessions'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'concessions'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'ner'" style="text-align: right">
                         NER
                         <i ng-show="settings.orderBy == '-ner'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'ner'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.nerweek" style="text-align: right">
+                    <th ng-if="col.id == 'ner0' && settings.bedrooms[0]" style="text-align: right">
+                        NER<Br>Studios
+                    </th>
+                    <th ng-if="col.id == 'ner0' && settings.bedrooms[1]" style="text-align: right">
+                        NER<Br>1 Bds.
+                    </th>
+                    <th ng-if="col.id == 'ner0' && settings.bedrooms[2]" style="text-align: right">
+                        NER<Br>2 Bds.
+                    </th>
+                    <th ng-if="col.id == 'ner0' && settings.bedrooms[3]" style="text-align: right">
+                        NER<Br>3 Bds.
+                    </th>
+                    <th ng-if="col.id == 'ner0' && settings.bedrooms[4]" style="text-align: right">
+                        NER<Br>4 Bds.
+                    </th>
+                    <th ng-if="col.id == 'ner0' && settings.bedrooms[5]" style="text-align: right">
+                        NER<Br>5 Bds.
+                    </th>
+                    <th ng-if="col.id == 'ner0' && settings.bedrooms[6]" style="text-align: right">
+                        NER<Br>6 Bds.
+                    </th>
+                    <th ng-if="col.id == 'nervscompavg'" style="text-align: right">
+                        NER<Br>vs Comp Avg
+                        <i ng-show="settings.orderBy == '-nervscompavg'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'nervscompavg'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'nerweek'" style="text-align: right">
                         NER<Br>vs Last Week
                         <i ng-show="settings.orderBy == '-lastweeknerpercent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'lastweeknerpercent'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.nermonth" style="text-align: right">
+                    <th ng-if="col.id == 'nermonth'" style="text-align: right">
                         NER<Br>vs Last Month
                         <i ng-show="settings.orderBy == '-lastmonthnerpercent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'lastmonthnerpercent'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.neryear" style="text-align: right">
+                    <th ng-if="col.id == 'neryear'" style="text-align: right">
                         NER<Br>vs Last Year
                         <i ng-show="settings.orderBy == '-lastyearnerpercent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'lastyearnerpercent'" class="fa fa-sort-up"></i>
                     </th>                    
-                    <th ng-if="show.nersqft" style="text-align: right">
+                    <th ng-if="col.id == 'nersqft'" style="text-align: right">
                         NER/Sqft
                         <i ng-show="settings.orderBy != 'nersqft' && settings.orderBy != '-nersqft'" class="fa fa-sort"></i>
                         <i ng-show="settings.orderBy == '-nersqft'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'nersqft'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.nersqftweek" style="text-align: right">
+                    <th ng-if="col.id == 'nersqftvscompavg'" style="text-align: right">
+                        NER/Sqft<Br>vs Comp Avg
+                        <i ng-show="settings.orderBy == '-nersqftvscompavg'" class="fa fa-sort-down"></i>
+                        <i ng-show="settings.orderBy == 'nersqftvscompavg'" class="fa fa-sort-up"></i>
+                    </th>
+                    <th ng-if="col.id == 'nersqftweek'" style="text-align: right">
                         NER/Sqft<Br>vs Last Week
                         <i ng-show="settings.orderBy == '-lastweeknersqftpercent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'lastweeknersqftpercent'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.nersqftmonth" style="text-align: right">
+                    <th ng-if="col.id == 'nersqftmonth'" style="text-align: right">
                         NER/Sqft<Br>vs Last Month
                         <i ng-show="settings.orderBy == '-lastmonthnersqftpercent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'lastmonthnersqftpercent'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.nersqftyear" style="text-align: right">
+                    <th ng-if="col.id == 'nersqftyear'" style="text-align: right">
                         NER/Sqft<Br>vs Last Year
                         <i ng-show="settings.orderBy == '-lastyearnersqftpercent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'lastyearnersqftpercent'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="show.nervscompavg" style="text-align: right">
-                        NER<Br>vs Comp Avg
-                        <i ng-show="settings.orderBy == '-nervscompavg'" class="fa fa-sort-down"></i>
-                        <i ng-show="settings.orderBy == 'nervscompavg'" class="fa fa-sort-up"></i>
-                    </th>
-                    <th ng-if="show.last_updated" style="text-align: right">
+                    <th ng-if="col.id == 'last_updated'" style="text-align: right">
                         Last<Br>
                         Updated
                         <i ng-show="settings.orderBy == '-last_updated'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'last_updated'" class="fa fa-sort-up"></i>
                     </th>
+                    <th ng-repeat-end="true" ng-if="false"></th>
                 </tr>
                 <tr ng-repeat-start="block in report" ng-if="false"></tr>
                 <tr ng-repeat-start="row in block" ng-class="{'subject': row.isSubject,'subtotal' : $index == block.length - 1 || row.name === 'Comp Averages','subtotal-padding' : $index == block.length - 1, 'bold': row.name === 'Comp Averages', 'regular-border': $index == block.length - 1 && settings.compAverages}"
                     >
-                    <td>
+                    <td nowrap>
                         {{row.name}}
                     </td>
-                    <td ng-if="show.occupancy" style="text-align:right">
-                        {{row.occupancy != "" && row.occupancy != null ? row.occupancy + "%" : "-"}}
+                    <td ng-repeat-start="col in settings.columnSortOrder" ng-if="false"></td>
+                    <td ng-if="col.id == 'address'">
+                        {{row.address}}
                     </td>
-                    <td style="text-align:right" ng-if="show.leased && showLeases">
-                        {{row.leased != "" ? row.leased + "%" : "-"}}
+                    <td ng-if="col.id == 'phone'">
+                        {{row.phone}}
                     </td>
-                    <td style="text-align:right" ng-if="show.atr">
-                        {{row.atr_percent != "" ? row.atr_percent + "%" : "-"}}
+                    <td ng-if="col.id == 'yearBuilt'">
+                        {{row.yearBuilt}}
                     </td>
-                    <td ng-if="show.weekly" style="text-align:right">
-                        {{row.weeklytraffic | number : 0}}
+                    <td ng-if="col.id == 'constructionType'">
+                        {{row.constructionType}}
                     </td>
-                    <td ng-if="show.weekly" style="text-align:right">
-                        {{row.weeklyleases | number : 0}}
+                    <td ng-if="col.id == 'owner'">
+                        {{row.owner}}
                     </td>
-                    <td ng-if="show.units" style="text-align:right">
+                    <td ng-if="col.id == 'management'">
+                        {{row.management}}
+                    </td>
+                    <td ng-if="col.id == 'units'" style="text-align:right">
                         {{row.totUnits | number : 0}}
                     </td>
-                    <td ng-if="show.sqft" style="text-align:right">
+                    <td ng-if="col.id == 'occupancy'" style="text-align:right">
+                        {{row.occupancy != "" && row.occupancy != null ? row.occupancy + "%" : "-"}}
+                    </td>
+                    <td style="text-align:right" ng-if="col.id == 'leased'">
+                        {{row.leased != "" ? row.leased + "%" : "-"}}
+                    </td>
+                    <td style="text-align:right" ng-if="col.id == 'renewal'">
+                        {{row.renewal != "" ? row.renewal + "%" : "-"}}
+                    </td>
+                    <td style="text-align:right" ng-if="col.id == 'atr'">
+                        {{row.atr_percent != "" ? row.atr_percent + "%" : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'weekly'" style="text-align:right">
+                        {{row.weeklytraffic | number : 0}}
+                    </td>
+                    <td ng-if="col.id == 'weekly'" style="text-align:right">
+                        {{row.weeklyleases | number : 0}}
+                    </td>
+                    <td ng-if="col.id == 'sqft'" style="text-align:right">
                         {{row.sqft | number : 0}}
                     </td>
-                    <td ng-if="show.rent" style="text-align:right">
+                    <td ng-if="col.id == 'rent'" style="text-align:right">
                         ${{row.rent | number : 0}}
                     </td>
-                    <td ng-if="show.concessions" style="text-align:right">
-                        ${{row.concessions | number : 0}}
+                    <td ng-if="col.id == 'rentsqft'" style="text-align:right">
+                        ${{row.rentsqft | number : 2}}
                     </td>
-                    <td ng-if="show.runrate" style="text-align:right">
+                    <td ng-if="col.id == 'rent0' && settings.bedrooms[0]" style="text-align:right">
+                        {{row.rent0 !== undefined ? "$" + row.rent0.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'rent0' && settings.bedrooms[1]" style="text-align:right">
+                        {{row.rent1 !== undefined ? "$" + row.rent1.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'rent0' && settings.bedrooms[2]" style="text-align:right">
+                        {{row.rent2 !== undefined ? "$" + row.rent2.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'rent0' && settings.bedrooms[3]" style="text-align:right">
+                        {{row.rent3 !== undefined ? "$" + row.rent3.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'rent0' && settings.bedrooms[4]" style="text-align:right">
+                        {{row.rent4 !== undefined ? "$" + row.rent4.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'rent0' && settings.bedrooms[5]" style="text-align:right">
+                        {{row.rent5 !== undefined ? "$" + row.rent5.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'rent0' && settings.bedrooms[6]" style="text-align:right">
+                        {{row.rent6 !== undefined ? "$" + row.rent6.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'concessionsOneTime'" style="text-align:right">
+                        {{row.concessionsOneTime !== undefined ? "$" + row.concessionsOneTime.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'concessionsMonthly'" style="text-align:right">
+                        {{row.concessionsMonthly !== undefined ? "$" + row.concessionsMonthly.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'runrate'" style="text-align:right">
                         ${{row.runrate | number : 0}}
                     </td>
-                    <td ng-if="show.runratesqft" style="text-align:right">
+                    <td ng-if="col.id == 'runratesqft'" style="text-align:right">
                         ${{row.runratesqft | number : 2}}
                     </td>
-                    <td ng-if="show.ner" style="text-align:right">
+                    <td ng-if="col.id == 'concessions'" style="text-align:right">
+                        ${{row.concessions | number : 0}}
+                    </td>
+                    <td ng-if="col.id == 'ner'" style="text-align:right">
                         ${{row.ner | number : 0}}
                     </td>
-                    <td ng-if="show.nerweek" style="text-align:right">
+                    <td ng-if="col.id == 'ner0' && settings.bedrooms[0]" style="text-align:right">
+                        {{row.ner0 !== undefined ? "$" + row.ner0.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'ner0' && settings.bedrooms[1]" style="text-align:right">
+                        {{row.ner1 !== undefined ? "$" + row.ner1.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'ner0' && settings.bedrooms[2]" style="text-align:right">
+                        {{row.ner2 !== undefined ? "$" + row.ner2.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'ner0' && settings.bedrooms[3]" style="text-align:right">
+                        {{row.ner3 !== undefined ? "$" + row.ner3.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'ner0' && settings.bedrooms[4]" style="text-align:right">
+                        {{row.ner4 !== undefined ? "$" + row.ner4.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'ner0' && settings.bedrooms[5]" style="text-align:right">
+                        {{row.ner5 !== undefined ? "$" + row.ner5.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'ner0' && settings.bedrooms[6]" style="text-align:right">
+                        {{row.ner6 !== undefined ? "$" + row.ner6.toFixed(0) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'nervscompavg'" style="text-align:right">
+                        <span ng-if="$index == block.length - 1 || row.name === 'Comp Averages'"></span>
+                        <span ng-if="$index != block.length - 1 && row.nervscompavg != ''">{{row.nervscompavg | number : 2}}%</span>
+                        <span ng-if="$index != block.length - 1 && row.nervscompavg == '' && row.name !== 'Comp Averages'">-</span>
+                    </td>
+                    <td ng-if="col.id == 'nerweek'" style="text-align:right">
                         <span ng-if="row.lastweeknerpercent > 0">{{row.lastweeknerpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastweeknerpercent < 0">{{row.lastweeknerpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastweeknerpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastweeknerpercent === ''">&nbsp;&nbsp;</span>
                     </td>
-                    <td ng-if="show.nermonth" style="text-align:right">
+                    <td ng-if="col.id == 'nermonth'" style="text-align:right">
                         <span ng-if="row.lastmonthnerpercent > 0">{{row.lastmonthnerpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastmonthnerpercent < 0">{{row.lastmonthnerpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastmonthnerpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastmonthnerpercent === ''">&nbsp;&nbsp;</span>
                     </td>
-                    <td ng-if="show.neryear" style="text-align:right">
+                    <td ng-if="col.id == 'neryear'" style="text-align:right">
                         <span ng-if="row.lastyearnerpercent > 0">{{row.lastyearnerpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastyearnerpercent < 0">{{row.lastyearnerpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastyearnerpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastyearnerpercent === ''">&nbsp;&nbsp;</span>
                     </td>                    
-                    <td ng-if="show.nersqft" style="text-align:right">
+                    <td ng-if="col.id == 'nersqft'" style="text-align:right">
                         ${{row.nersqft | number : 2}}
                     </td>
-                    <td ng-if="show.nersqftweek" style="text-align:right">
+                    <td ng-if="col.id == 'nersqftvscompavg'" style="text-align:right">
+                        <span ng-if="$index == block.length - 1 || row.name === 'Comp Averages'"></span>
+                        <span ng-if="$index != block.length - 1 && row.nersqftvscompavg != ''">{{row.nersqftvscompavg | number : 2}}%</span>
+                        <span ng-if="$index != block.length - 1 && row.nersqftvscompavg == '' && row.name !== 'Comp Averages'">-</span>
+                    </td>
+                    <td ng-if="col.id == 'nersqftweek'" style="text-align:right">
                         <span ng-if="row.lastweeknersqftpercent > 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastweeknersqftpercent < 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastweeknersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastweeknersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
-                    <td ng-if="show.nersqftmonth" style="text-align:right">
+                    <td ng-if="col.id == 'nersqftmonth'" style="text-align:right">
                         <span ng-if="row.lastmonthnersqftpercent > 0">{{row.lastmonthnersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastmonthnersqftpercent < 0">{{row.lastmonthnersqftpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastmonthnersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastmonthnersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
-                    <td ng-if="show.nersqftyear" style="text-align:right">
+                    <td ng-if="col.id == 'nersqftyear'" style="text-align:right">
                         <span ng-if="row.lastyearnersqftpercent > 0">{{row.lastyearnersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
                         <span ng-if="row.lastyearnersqftpercent < 0">{{row.lastyearnersqftpercent}}% <i class="fa fa-long-arrow-down danger" style="color:red"></i></span>
                         <span ng-if="row.lastyearnersqftpercent === 0">0% <i class="fa fa-arrows-v" style="color:black"></i></span>
                         <span ng-if="row.lastyearnersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
-                    <td ng-if="show.nervscompavg" style="text-align:right">
-                        <span ng-if="$index == block.length - 1 || row.name === 'Comp Averages'"></span>
-                        <span ng-if="$index != block.length - 1 && row.nervscompavg != ''">{{row.nervscompavg | number : 2}}%</span>
-                        <span ng-if="$index != block.length - 1 && row.nervscompavg == '' && row.name !== 'Comp Averages'">-</span>
-                    </td>
-                    <td ng-if="show.last_updated" style="text-align:right">
+                    <td ng-if="col.id == 'last_updated'" style="text-align:right">
                         <span ng-class="{'danger':row.tier == 'danger'}">{{row.date}}</span>
                     </td>
+                    <td ng-repeat-end="true" ng-if="false"></td>
                 </tr>
                 <tr ng-repeat-end ng-if="false"></tr>
                 <tr ng-repeat-end ng-if="false"></tr>

@@ -44,9 +44,8 @@ Routes.get("/excel/property_status", (req, res) => {
 Routes.get("/excel/custom_portfolio", (req, res) => {
     serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
         result = JSON.parse(result);
-        console.log(result.settings);
         propertyStatusService.run(req.user, result.propertyIds, req.user.settings.showLeases, {compAverages: result.settings.compAverages, orderBy: result.settings.orderBy}, (data) => {
-            let fileName = "Custom_Portfolio_Report_";
+            let fileName = "Customizable_Property_Data_Report_";
             fileName += moment().utcOffset(result.timezone).format("MM_DD_YYYY");
             fileName += ".xlsx";
 
@@ -54,6 +53,8 @@ Routes.get("/excel/custom_portfolio", (req, res) => {
                 fileName: fileName,
                 report: data,
                 show: result.settings.show,
+                bedrooms: result.settings.bedrooms,
+                columnSortOrder: result.settings.columnSortOrder,
                 strDate: moment().utcOffset(result.timezone).format("MM/DD/YYYY"),
             };
 

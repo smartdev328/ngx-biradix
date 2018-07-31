@@ -76,7 +76,7 @@ module.exports = {
                 ret = _.sum(fps, function(x) {
                     return x.rent * x.units / tot;
                 });
-            } else if (scale == "runrate") {
+            } else if (scale == "runrate" || scale == "runratesqft") {
                 ret = _.sum(fps, function(x) {
                     return (x.rent - (x.concessionsMonthly || 0)) * x.units / tot;
                 });
@@ -91,6 +91,10 @@ module.exports = {
             } else if (scale == "concessionsOneTime") {
                 ret = _.sum(fps, function(x) {
                     return (x.concessionsOneTime || 0) * x.units / tot;
+                });
+            } else if (scale == "sqft") {
+                ret = _.sum(fps, function(x) {
+                    return (x.sqft || 0) * x.units / tot;
                 });
             } else if (scale == "occupancy") {
                 ret = s.occupancy;
@@ -263,6 +267,11 @@ module.exports = {
     },
     getSummary: function(points, subjectid, newpoints, dimension, weighted) {
         newpoints["averages"][dimension] = [];
+
+        if (dimension === "nersqft") {
+            newpoints["averages"][dimension] = newpoints["averages"][dimension]
+        }
+
         let prop;
         for (prop in points) {
             if (prop.toString() === subjectid.toString()) {

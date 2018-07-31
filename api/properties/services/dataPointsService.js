@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 var async = require("async");
 var _ = require("lodash")
-var moment = require('moment');
-var DateService = require('../../utilities/services/dateService')
-var DataPointsHelperService = require('./dataPointsHelperService')
-var SurveySchema= require('../schemas/surveySchema')
+var moment = require("moment");
+var DateService = require("../../utilities/services/dateService")
+var DataPointsHelperService = require("./dataPointsHelperService")
+var SurveySchema= require("../schemas/surveySchema")
 const error = require("../../../config/error");
 
 module.exports = {
@@ -54,12 +54,19 @@ module.exports = {
         }
 
         if (show.ner || show.rent || show.rentsqft || show.nersqft || show.concessions || show.runrate || show.runratesqft) {
-            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.concessionsMonthly floorplans.concessionsOneTime floorplans.bedrooms floorplans.bathrooms floorplans.sqft"
+            select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.concessionsMonthly floorplans.concessionsOneTime floorplans.bedrooms floorplans.bathrooms floorplans.sqft";
         }
 
         query = query.select(select)
 
         query = query.sort("date");
+
+        let switchBackNer = false;
+        if (show.scale === "nersqft") {
+            show.scale = "ner";
+            show.nersqft = true;
+            switchBackNer = true;
+        }
 
         var timer = new Date().getTime();
         query.exec(function(err, surveys) {
@@ -96,7 +103,7 @@ module.exports = {
                         return !hide || !x.excluded
                     });
 
-                    bedroomBeakdown = _.uniq(_.pluck(includedFps, 'bedrooms'));
+                    bedroomBeakdown = _.uniq(_.pluck(includedFps, "bedrooms"));
                 }
 
                 var dateKey;
@@ -105,7 +112,7 @@ module.exports = {
                 var newpoints;
 
                 surveys.forEach(function (s) {
-                    dateKey = parseInt(moment.utc(s.date).add(offset, "minute").startOf("day").subtract(offset, "minute").format('x'));
+                    dateKey = parseInt(moment.utc(s.date).add(offset, "minute").startOf("day").subtract(offset, "minute").format("x"));
 
                     points[s.propertyid] = points[s.propertyid] || {};
 
@@ -150,7 +157,7 @@ module.exports = {
                         points[s.propertyid].traffic[dateKey] = nerPoint;
                     }
 
-                    if (show.rent) {
+                    if (show.rent || show.rentsqft) {
                         points[s.propertyid].rent = points[s.propertyid].rent || {};
 
                         nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "rent");
@@ -172,7 +179,7 @@ module.exports = {
                         }
                     }
 
-                    if (show.runrate) {
+                    if (show.runrate || show.runratesqft) {
                         points[s.propertyid].runrate = points[s.propertyid].runrate || {};
 
                         nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "runrate");
@@ -231,7 +238,7 @@ module.exports = {
                         }
                     }
 
-                    if (show.ner) {
+                    if (show.ner || show.nersqft || show.scale === "nersqft") {
                         points[s.propertyid].ner = points[s.propertyid].ner || {};
 
                         nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, show.scale);
@@ -244,11 +251,26 @@ module.exports = {
                         bedroomBeakdown.forEach(function (b) {
                             points[s.propertyid][b] = points[s.propertyid][b] || {};
                             points[s.propertyid][b][dateKey] = points[s.propertyid][b][dateKey] || {};
-
                             nerPoint = DataPointsHelperService.getNerPoint(s, b, hide, subject, comps, show.scale);
                             points[s.propertyid][b][dateKey] = nerPoint;
-                        })
 
+                            points[s.propertyid][b + "_sqft"] = points[s.propertyid][b + "_sqft"] || {};
+                            points[s.propertyid][b + "_sqft"][dateKey] = points[s.propertyid][b + "_sqft"][dateKey] || {};
+                            nerPoint = DataPointsHelperService.getNerPoint(s, b, hide, subject, comps, "sqft");
+                            points[s.propertyid][b + "_sqft"][dateKey] = nerPoint;
+
+                            points[s.propertyid][b + "_nersqft"] = points[s.propertyid][b + "_nersqft"] || {};
+                            points[s.propertyid][b + "_nersqft"][dateKey] = points[s.propertyid][b + "_nersqft"][dateKey] || {};
+                            nerPoint = DataPointsHelperService.getNerPoint(s, b, hide, subject, comps, "nersqft");
+                            points[s.propertyid][b + "_nersqft"][dateKey] = nerPoint;                            
+                        });
+                    }
+
+                    if (show.nersqft || show.rentsqft || show.runratesqft || show.scale === "nersqft") {
+                        points[s.propertyid].sqft = points[s.propertyid].sqft || {};
+
+                        nerPoint = DataPointsHelperService.getNerPoint(s, bedrooms, hide, subject, comps, "sqft");
+                        points[s.propertyid].sqft[dateKey] = nerPoint;
                     }
 
                 })
@@ -278,7 +300,7 @@ module.exports = {
                             points[prop].leases = DataPointsHelperService.normailizePoints(points[prop].leases, offset, dr, true, show.dontExtrapolate);
                         }
 
-                        if (show.rent) {
+                        if (show.rent || show.rentsqft) {
                             points[prop].rent = DataPointsHelperService.normailizePoints(points[prop].rent, offset, dr, true, show.dontExtrapolate);
                         }
 
@@ -286,7 +308,7 @@ module.exports = {
                             points[prop].rentsqft = DataPointsHelperService.normailizePoints(points[prop].rentsqft, offset, dr, true, show.dontExtrapolate);
                         }
 
-                        if (show.runrate) {
+                        if (show.runrate || show.runratesqft) {
                             points[prop].runrate = DataPointsHelperService.normailizePoints(points[prop].runrate, offset, dr, true, show.dontExtrapolate);
                         }
 
@@ -304,12 +326,18 @@ module.exports = {
                             points[prop].concessionsOneTime = DataPointsHelperService.normailizePoints(points[prop].concessionsOneTime, offset, dr, true, show.dontExtrapolate);
                         }
 
-                        if (show.ner) {
+                        if (show.ner || show.nersqft || show.scale === "nersqft") {
                             points[prop].ner = DataPointsHelperService.normailizePoints(points[prop].ner, offset, dr, true, show.dontExtrapolate);
 
                             bedroomBeakdown.forEach(function (b) {
                                 points[prop][b] = DataPointsHelperService.normailizePoints(points[prop][b], offset, dr, true, show.dontExtrapolate);
+                                points[prop][b + "_sqft"] = DataPointsHelperService.normailizePoints(points[prop][b + "_sqft"], offset, dr, true, show.dontExtrapolate);
+                                points[prop][b + "_nersqft"] = DataPointsHelperService.normailizePoints(points[prop][b + "_nersqft"], offset, dr, true, show.dontExtrapolate);
                             });
+                        }
+
+                        if (show.nersqft || show.rentsqft || show.runratesqft || show.scale === "nersqft") {
+                            points[prop].sqft = DataPointsHelperService.normailizePoints(points[prop].sqft, offset, dr, true, show.dontExtrapolate);
                         }
                     }
 
@@ -332,13 +360,13 @@ module.exports = {
                     if (show.leases) {
                         points[prop].leases = DataPointsHelperService.objectToArray(points[prop].leases);
                     }
-                    if (show.rent) {
+                    if (show.rent || show.rentsqft)  {
                         points[prop].rent = DataPointsHelperService.objectToArray(points[prop].rent);
                     }
                     if (show.rentsqft) {
                         points[prop].rentsqft = DataPointsHelperService.objectToArray(points[prop].rentsqft);
                     }
-                    if (show.runrate) {
+                    if (show.runrate || show.runratesqft) {
                         points[prop].runrate = DataPointsHelperService.objectToArray(points[prop].runrate);
                     }
                     if (show.runratesqft) {
@@ -352,12 +380,18 @@ module.exports = {
                         points[prop].concessionsMonthly = DataPointsHelperService.objectToArray(points[prop].concessionsMonthly);
                         points[prop].concessionsOneTime = DataPointsHelperService.objectToArray(points[prop].concessionsOneTime);
                     }
-                    if (show.ner) {
+                    if (show.ner || show.runratesqft || show.scale === "nersqft") {
                         points[prop].ner = DataPointsHelperService.objectToArray(points[prop].ner);
 
                         bedroomBeakdown.forEach(function (b) {
                             points[prop][b] = DataPointsHelperService.objectToArray(points[prop][b]);
+                            points[prop][b + "_sqft"] = DataPointsHelperService.objectToArray(points[prop][b + "_sqft"]);
+                            points[prop][b + "_nersqft"] = DataPointsHelperService.objectToArray(points[prop][b + "_nersqft"]);
                         });
+                    }
+
+                    if (show.nersqft || show.rentsqft || show.runratesqft || show.scale === "nersqft") {
+                        points[prop].sqft = DataPointsHelperService.objectToArray(points[prop].sqft);
                     }
 
                     if (!show.dontExtrapolate) {
@@ -380,13 +414,13 @@ module.exports = {
                             points[prop].leases = DataPointsHelperService.extrapolateMissingPoints(points[prop].leases, true);
                         }
 
-                        if (show.rent) {
+                        if (show.rent || show.rentsqft) {
                             points[prop].rent = DataPointsHelperService.extrapolateMissingPoints(points[prop].rent, true);
                         }
                         if (show.rentsqft) {
                             points[prop].rentsqft = DataPointsHelperService.extrapolateMissingPoints(points[prop].rentsqft, true);
                         }
-                        if (show.runrate) {
+                        if (show.runrate || show.runratesqft) {
                             points[prop].runrate = DataPointsHelperService.extrapolateMissingPoints(points[prop].runrate, true);
                         }
                         if (show.runratesqft) {
@@ -401,12 +435,18 @@ module.exports = {
                             points[prop].concessionsOneTime = DataPointsHelperService.extrapolateMissingPoints(points[prop].concessionsOneTime, true);
                         }
 
-                        if (show.ner) {
+                        if (show.ner || show.nersqft || show.scale === "nersqft") {
                             points[prop].ner = DataPointsHelperService.extrapolateMissingPoints(points[prop].ner, true);
 
                             bedroomBeakdown.forEach(function (b) {
                                 points[prop][b] = DataPointsHelperService.extrapolateMissingPoints(points[prop][b], true);
-                            })
+                                points[prop][b + "_sqft"] = DataPointsHelperService.extrapolateMissingPoints(points[prop][b + "_sqft"], true);
+                                points[prop][b + "_nersqft"] = DataPointsHelperService.extrapolateMissingPoints(points[prop][b + "_nersqft"], true);
+                            });
+                        }
+
+                        if (show.nersqft || show.rentsqft || show.runratesqft || show.scale === "nersqft") {
+                            points[prop].sqft = DataPointsHelperService.extrapolateMissingPoints(points[prop].sqft, true);
                         }
                     }
 
@@ -418,61 +458,67 @@ module.exports = {
                     // Only Avergage if we want comps grouped
                     if (summary || show.averages) {
                         if (show.occupancy) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'occupancy', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "occupancy", true);
                         }
                         if (show.leased) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leased', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "leased", true);
                         }
                         if (show.renewal) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'renewal', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "renewal", true);
                         }
                         if (show.atr) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'atr', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "atr", true);
                         }
                         if (show.traffic) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'traffic', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "traffic", true);
                         }
                         if (show.leases) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'leases', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "leases", true);
                         }
-                        if (show.rent) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'rent', true);
+                        if (show.rent|| show.rentsqft) {
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "rent", true);
                         }
                         if (show.rentsqft) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'rentsqft', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "rentsqft", true);
                         }
 
-                        if (show.runrate) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'runrate', true);
+                        if (show.runrate || show.runratesqft) {
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "runrate", true);
                         }
                         if (show.runratesqft) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'runratesqft', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "runratesqft", true);
                         }
 
                         if (show.nersqft) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'nersqft', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "nersqft", true);
                         }
                         if (show.concessions) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'concessions', true);
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'concessionsMonthly', true);
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'concessionsOneTime', true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "concessions", true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "concessionsMonthly", true);
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "concessionsOneTime", true);
                         }
 
-                        if (show.ner) {
-                            DataPointsHelperService.getSummary(points, subject._id, newpoints, 'ner', true);
+                        if (show.ner || show.nersqft || show.scale === "nersqft") {
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "ner", true);
+                        }
+
+                        if (show.nersqft || show.rentsqft || show.runratesqft || show.scale === "nersqft") {
+                            DataPointsHelperService.getSummary(points, subject._id, newpoints, "sqft", true);
                         }
                     }
 
-                    //Go in here if we only want the "All" feature
+                    // Go in here if we only want the "All" feature
                     if (bedrooms == -2) {
                         bedroomBeakdown.forEach(function (b) {
                             if (points[prop][b]) {
                                 DataPointsHelperService.getSummary(points, subject._id, newpoints, b.toString(), true);
+                                DataPointsHelperService.getSummary(points, subject._id, newpoints, b.toString() + "_sqft", true);
+                                DataPointsHelperService.getSummary(points, subject._id, newpoints, b.toString() + "_nersqft", true);
                             }
                         });
                     }
 
-                    //If we dont want summary, put back other non-summary points
+                    // If we dont want summary, put back other non-summary points
                     if (!summary && (bedrooms == -2 || show.averages)) {
                         for (prop in points) {
                             if (prop != subject._id.toString()) {
@@ -481,6 +527,35 @@ module.exports = {
                         }
                     }
 
+                    // Fix averages of anything / sqft
+
+                    if (newpoints.averages.sqft) {
+                        newpoints.averages.sqft.forEach((sq, i) => {
+                            if (sq.v) {
+                                if (newpoints.averages.ner) {
+                                    newpoints.averages.nersqft[i].v = newpoints.averages.ner[i].v / sq.v;
+                                }
+
+                                if (newpoints.averages.rent) {
+                                    newpoints.averages.rentsqft[i].v = newpoints.averages.rent[i].v / sq.v;
+                                }
+
+                                if (newpoints.averages.runrate) {
+                                    newpoints.averages.runratesqft[i].v = newpoints.averages.runrate[i].v / sq.v;
+                                }
+                            }
+                        });
+                    }
+
+                    if (switchBackNer) {
+                        bedroomBeakdown.forEach(function(b) {
+                            newpoints.averages[b + "_sqft"].forEach((sq, i) => {
+                                if (sq.v) {
+                                    newpoints.averages[b][i].v = newpoints.averages[b][i].v / sq.v;
+                                }
+                            });
+                        });
+                    }
 
                     points = newpoints;
                 }
@@ -496,6 +571,19 @@ module.exports = {
                                 }
                             });
                         }
+                    }
+                }
+
+                if (switchBackNer) {
+                    if (points.averages) {
+                        points.averages.ner = points.averages.nersqft;
+                    }
+
+                    for (prop in points) {
+                        points[prop].ner = points[prop].nersqft;
+                        bedroomBeakdown.forEach(function(b) {
+                            points[prop][b] = points[prop][b + "_nersqft"];
+                        });
                     }
                 }
 

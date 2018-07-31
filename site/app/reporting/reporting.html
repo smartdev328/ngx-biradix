@@ -7,6 +7,28 @@
         background-color: #f5f5f5;
     }
 </style>
+
+<style>
+    .list {
+        list-style: none outside none;
+        margin: 0px 0px 0px -25px;
+    }
+
+    .item {
+        /*width: 200px;*/
+        padding: 5px 10px;
+        margin: 4px 4px 4px -8px;
+        border: 1px solid #1E90FF;
+        color: #1E90FF;
+        border-radius: 2px;
+        background-color: #FFF;
+
+        text-align: left;
+        cursor: move;
+    }
+
+</style>
+
 <div ng-show="!meLoaded" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
@@ -412,16 +434,17 @@
                         <div ng-if="custom_portfolio" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.custom_portfolio_open">
                             <uib-accordion-heading>
                                 <Div>
-                                    <i class="fa fa-gear fa-2px"></i> Preferences: Custom Data <i ng-class="{fa : true, 'fa-chevron-right': !temp.custom_portfolio_open, 'fa-chevron-down': temp.custom_portfolio_open, 'fa-2px': true}"></i>
+                                    <i class="fa fa-gear fa-2px"></i> Preferences: Customizable Property Data <i ng-class="{fa : true, 'fa-chevron-right': !temp.custom_portfolio_open, 'fa-chevron-down': temp.custom_portfolio_open, 'fa-2px': true}"></i>
                                 </Div>
                             </uib-accordion-heading>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
-                                    Columns<br>
+                                    Property Data Values<br>
                                     <filter-list options="temp.showCustomPortfolioOptions" items="temp.showCustomPortfolioItems"></filter-list>
                                 </div>
+
                                 <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
-                                    Sort Order<br>
+                                    Sort by<br>
                                     <div ng-class="{'col-xs-6': temp.customPortfolioSortSelected.id != 'default', 'col-xs-12': temp.customPortfolioSortSelected.id == 'default'}" style="padding-left: 0; padding-right:0">
                                         <select
                                                 class="input-sm form-control"
@@ -436,6 +459,27 @@
 
                                     </div>
                                 </div>
+
+                                <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
+                                    <div ng-class="{'col-xs-6': !liveSettings.customPortfolio.defaultOrder, 'col-xs-12': liveSettings.customPortfolio.defaultOrder}" style="padding-left: 0; padding-right:0">
+                                        Column Order<Br>
+                                        <button type="button" class="btn btn-default dropdown-toggle btn-sm btn-block" data-toggle="dropdown" aria-expanded="false">
+                                            <div class="pull-left" ng-if="liveSettings.customPortfolio.defaultOrder">Default Order</div>
+                                            <div class="pull-left" ng-if="!liveSettings.customPortfolio.defaultOrder">Custom Order</div>
+                                            <div class="pull-right"><span class="caret"></span></div>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-left" role="menu" style="width:250px;height:230px;overflow-y: auto;" onclick="event.stopPropagation();">
+                                            <ul ui-sortable="sortableOptions" ng-model="liveSettings.customPortfolio.columnSortOrder" class="list">
+                                                <li ng-repeat="item in liveSettings.customPortfolio.columnSortOrder" class="item"><i class="fa fa-bars"></i>&nbsp;&nbsp;{{ item.name }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-right:0;padding-left:5px;white-space: nowrap;text-align:center" ng-show="!liveSettings.customPortfolio.defaultOrder">
+                                        <Br>
+                                        <A href ng-click="liveSettings.customPortfolio.defaultOrder = true;defaultSortColumns(temp.showCustomPortfolioItems)" style="font-size:11px">Reset to Default</A>
+                                    </div>
+                                </div>
+
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Add Comp Averages
                                     <i class="fa fa-info-circle" style="font-size:12px"
@@ -494,10 +538,10 @@
 
             <trends-report  style="position: relative !important;" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="runSettings.trends"></trends-report>
 
-            <custom-portfolio class="report" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="liveSettings.customPortfolio.show" settings="liveSettings.customPortfolio"></custom-portfolio>
+            <custom-portfolio class="report" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="runSettings.customPortfolio.show" settings="runSettings.customPortfolio"></custom-portfolio>
 
             <div ng-if="!reportLoading && reports && reports.custom_portfolio && reports.property_status" style="height:20px"></div>
-            <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="liveSettings.propertyStatus.show"></property-status>
+            <property-status class="report" ng-if="!reportLoading && reports && reports.property_status" report="reports.property_status" show-leases="$root.me.settings.showLeases" show="runSettings.propertyStatus.show"></property-status>
         </div>
     </div>
 </div>

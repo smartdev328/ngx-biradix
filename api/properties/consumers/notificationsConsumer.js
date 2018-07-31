@@ -5,6 +5,7 @@ var propertyService = require('../services/propertyService');
 var async = require("async");
 var _ = require("lodash");
 var moment = require("moment-timezone");
+var moment = require("moment-timezone");
 var redisService = require('../../utilities/services/redisService')
 var BizEmailService = require('../../business/services/emailService')
 var error = require('../../../config/error')
@@ -38,16 +39,20 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
 
                 var key = "nots-" + id;
 
+                const hasSort = data.options && data.options.orderByl
+
                 redisService.get(key, function(err, result) {
-                    if (result && settings.HEROKU_APP == "biradixplatform-prod") {
+                    if (result && settings.HEROKU_APP == "biradixplatform-prod" && !hasSort) {
                         //console.log('Cache:', result);
                         final.push(result);
-                        callbackp(null)
-                    }
-                    else {
+                        callbackp(null);
+                    } else {
                         queueService.getCompareReport(data.user, id, data.options, function (err, report) {
                             //console.log(id, report[0].name, report[0]._id)
-                            redisService.set(key, report, 3 * 60); // 3 hours
+                            if (!hasSort) {
+                                redisService.set(key, report, 3 * 60); // 3 hours
+                            }
+
                             //console.log('No Cache:', report);
                             final.push(report);
 
