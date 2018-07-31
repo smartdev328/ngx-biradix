@@ -33,7 +33,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
         },
     }, function(err, all) {
         if (all.properties.length > 0) {
-            const final = [];
+            let final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
 
                 const key = "nots-" + id;
