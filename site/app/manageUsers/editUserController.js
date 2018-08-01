@@ -98,6 +98,12 @@ define([
             }
 
 
+            $scope.listProperties = function(properties) {
+                return properties.map(function(p) {
+                   return "<B>" + p.name + "</B>";
+                }).join("<Br>");
+            };
+
             $scope.getProps = function(role, first) {
                 $scope.loading = true;
                 role.properties = [];
@@ -110,10 +116,11 @@ define([
                     }
                 } else {
 
-                    var isGuest = $scope.user.roles[0].selectedRole.name == "Guest";
+                    $scope.isGuest = $scope.user.roles[0].selectedRole.name == "Guest";
                     var criteria = {limit: 10000, permission: 'PropertyManage', select:"_id name orgid", active: true};
 
-                    if (isGuest) {
+                    if ($scope.isGuest) {
+                        criteria.ids = $scope.user.roles[0].propertyids;
                         criteria.noorgid = true;
                         criteria.permission = 'CompManage';
                     } else {

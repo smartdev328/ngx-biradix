@@ -60,7 +60,8 @@
                 </div>
             <div class="row" ng-if="role.properties && role.properties.length > 0">
                 <div class="col-xs-12">
-                    <filter-list options="role.propertyOptions" items="role.properties"></filter-list>
+                    <filter-list options="role.propertyOptions" items="role.properties" ng-if="!isGuest"></filter-list>
+                    <span ng-if="isGuest" ng-bind-html="listProperties(role.properties)"></span>
                 </div>
             </div>
                 <A href ng-click="user.roles.splice($index,1)" ng-if="$index > 0 && $root.me.permissions.indexOf('Admin') > -1"><i class="fa fa-trash" style="color:pink !important;"></i></A>
