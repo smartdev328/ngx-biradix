@@ -408,7 +408,7 @@ module.exports = {
 };
 
 function isValidString(s) {
-    return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.í]*$/.test(s);
+    return /^[a-zA-Z0-9- ~`!#$%\^&*+=\[\]\\';,/{}|":<>\?@\(\)_\.]*$/.test(s);
 }
 
 function errorCheck(property, modelErrors) {
