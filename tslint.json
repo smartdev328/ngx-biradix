@@ -8,7 +8,9 @@
     "no-console": ["log"],
     "max-line-length": ["error",180],
     "no-empty-interface": false,
-    "no-trailing-spaces": false
+    "no-trailing-spaces": false,
+    "no-trailing-whitespace": false,
+    "no-empty": false
   },
   "rulesDirectory": []
 }

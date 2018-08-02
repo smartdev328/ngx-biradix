@@ -90,27 +90,30 @@ module.exports = {
             callback();
         });
     },
+    resetBounce: function(id, callback) {
+        UserSchema.findOneAndUpdate({_id: id}, {bounceReason: undefined, bounceDate: undefined}, {}, function(err, user) {
+            userBounceService.resetBounce(user.email, function() {
+                callback();
+            });
+        });
+    },
     updateBounce: function(email,reason,callback) {
         UserSchema.findOne(
             {
-                emailLower: email.toLowerCase()
+                emailLower: email.toLowerCase(),
             }
             , function(err, user) {
                 if (user) {
                     user.bounceReason = reason;
                     user.bounceDate = new Date();
                     user.save(function(err, newUser) {
-
                         getSysemUser(function(systemUser) {
                             AuditService.create({user: newUser, operator: systemUser.user,type: 'user_bounced', description: email + ": " + reason, context: {ip: '127.0.0.1', user_agent: 'server'}})
 
                             callback();
                         });
-
-                    })
-
+                    });
                 }
-
         });
     },
     getSystemUser : function(callback) {
@@ -227,8 +230,13 @@ module.exports = {
             }
 
             if (criteria.search && criteria.search != '') {
-                var s = new RegExp(escapeStringRegexp(criteria.search), "i")
+                const s = new RegExp(escapeStringRegexp(criteria.search), "i")
                 query = query.or([{'search': s}]);
+            }
+
+            if (criteria.bounceReason && criteria.bounceReason !== "") {
+                const s = new RegExp(escapeStringRegexp(criteria.bounceReason), "i")
+                query = query.or([{"bounceReason": s}]);
             }
 
             if (criteria.custom) {
