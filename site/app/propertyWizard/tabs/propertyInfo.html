@@ -17,7 +17,7 @@
         <div class="col-sm-6">
             Address <span class="required">*</span><br>
             <input ng-show="!disableAddress" type="text" class="form-control input-sm" ng-model="property.address" id="autocomplete2" placeholder="Enter address" ng-blur="checkDupe()">
-            <input ng-show="disableAddress" type="text" class="form-control input-sm" ng-model="property.address"
+            <input ng-show="disableAddress" type="text" class="form-control input-sm" ng-model="property.address" ng-disabled="true"
                    style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
                    popover-trigger="'mouseenter'"
                    popover-placement="bottom"
@@ -31,6 +31,7 @@
             City <span class="required">*</span><br>
             <input ng-show="!disableAddress" type="text" class="form-control input-sm" ng-model="property.city">
             <input ng-show="disableAddress" type="text" class="form-control input-sm" ng-model="property.city"
+                   ng-disabled="true"
                    style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
                    popover-trigger="'mouseenter'"
                    popover-placement="bottom"
@@ -48,6 +49,7 @@
 
                     <input ng-show="disableAddress" type="text" class="form-control input-sm" ng-model="property.state.abbreviation"
                            style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
+                           ng-disabled="true"
                            popover-trigger="'mouseenter'"
                            popover-placement="bottom"
                            uib-popover="This property address is locked because it has historical data associated with it. Please reach out to support@biradix.com if you believe the address is incorrect."
@@ -57,6 +59,7 @@
                     Zip <span class="required">*</span><br>
                     <input ng-show="!disableAddress" type="text" class="form-control input-sm" ng-model="property.zip" input-mask="99999" ng-blur="checkDupe()">
                     <input ng-show="disableAddress" type="text" class="form-control input-sm" ng-model="property.zip"
+                           ng-disabled="true"
                            style="opacity: 0.5; cursor: not-allowed;margin-right:10px"
                            popover-trigger="'mouseenter'"
                            popover-placement="bottom"

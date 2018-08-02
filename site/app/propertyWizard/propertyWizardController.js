@@ -399,7 +399,7 @@ define([
                 if (id) {
                     $propertyService.getFullProperty(id).then(function(response) {
                         $scope.property = response.data.properties[0];
-                        $scope.disableAddress = !!($scope.property.survey && $scope.property.survey.id);
+                        $scope.disableAddress = !!($scope.property.survey && $scope.property.survey.id) && $rootScope.me.email.toLowerCase() !== "eugene@biradix.com";
                         isCustom = $scope.property.custom && $scope.property.custom.owner;
                         $scope.isCustom = isCustom;
 

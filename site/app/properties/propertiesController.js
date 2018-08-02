@@ -250,9 +250,13 @@ define([
             $scope.currentPage = 1;
         }
 
+        $scope.escapeRegExp = function(str) {
+            return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        }
+
         $scope.searchFilter = function (obj) {
             if (!$scope.searchText) return true;
-            var re = new RegExp($scope.searchText, 'i');
+            var re = new RegExp($scope.escapeRegExp($scope.searchText), 'i');
 
             var ret = false;
             $scope.searchable.forEach(function (x) {

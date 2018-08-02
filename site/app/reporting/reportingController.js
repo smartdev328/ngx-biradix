@@ -28,13 +28,13 @@ define([
         $scope.meLoaded = false;
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-                $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "concession", name: "Concessions", selected:$stateParams.property == "2", group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "property_rankings_summary", name: "Floor Plan Comparison", selected:$stateParams.property == "3", group: "Individual Reports", type:"single"});
-                $scope.reportItems.push({id: "property_rankings", name: "Floor Plan Comparison (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single"});
+                $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single", tooltip: "<b>Community Amenities Report</b><Br>Report highlights all Community Amenities for the subject property and each comp property."});
+                $scope.reportItems.push({id: "concession", name: "Concessions", selected:$stateParams.property == "2", group: "Individual Reports", type:"single", tooltip: "<b>Concessions Report</b><Br>Report compares concessions over a customizable period of time for the subject property and comps. It includes Market Rent, One-Time Concessions, Recurring Concessions, Total Concessions, NER, and NER vs. Weighted Avg. Comp NER"});
+                $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single", tooltip: "<b>Fees and Deposits Report</b><Br>Report includes different fees and deposits for each property including: Administration Fee, Application Fee, Lease Terms, Pet Deposit (Refundable & Non-Refundable), Security Deposit, Pet Rent, and Short Term Rental Premium"});
+                $scope.reportItems.push({id: "location_amenities", name: "Location Amenities", selected:false, group: "Individual Reports", type:"single", tooltip: "<b>Location Amenities Report</b><Br>Report highlights all Location Amenities for the subject property and each comp property."});
+                $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single", tooltip: "<b>Market Survey Summary</b><Br>Report includes historic trends for key performance indicators including NER or NER/SQFT, Occupancy and Leased percentage in addition to property summaries for the subject property and each comps. The report allows users to benchmark the subject property vs. one or more comps and provides the ability to drill down by NER or NER/SQFT to the floor plan (bedroom) level for a customizable time-frame (ex: last 90 days.)"});
+                $scope.reportItems.push({id: "property_rankings_summary", name: "Floor Plan Comparison", selected:$stateParams.property == "3", group: "Individual Reports", type:"single", tooltip: "<b>Floor Plan Comparison</b><Br>Report lets the user quickly sort, rank and analyze the current performance of the subject property versus each of the comps at the property and floor plan level"});
+                $scope.reportItems.push({id: "property_rankings", name: "Floor Plan Comparison (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single", tooltip: "<b>Floor Plan Comparison (Detailed)</b><Br>Similar to Floor Plan Comparison report, the \"detailed\" version includes the subject property and each comp and a detailed breakdown by individual floor plans as opposed to grouping by # of bedrooms."});
 
                     $scope.reportItems.push({
                         id: "trends",
@@ -42,9 +42,10 @@ define([
                         selected: false,
                         group: "Individual Reports",
                         type: "single",
+                        tooltip: "<b>Trend Analysis</b><Br>Report allows comparison of data (Rent, NER, NER/SQFT, Occupancy, Leased %, Traffic & Leases, etc.) over two different time periods (ex: last 30 days vs. previous 30 days), as well as benchmarking against competitor data.",
                     });
-                $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple"});
-                $scope.reportItems.push({id: "custom_portfolio", name: "Customizable Property Data", selected: false, group: "Portfolio Reports", type:"multiple"});
+                $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Property Status</b><Br>Report is intended to give a focused summary on the current state of your portfolio. It can be modified to include data points such as Traffic & Leases, NER and NER/SQFT, as well as NER changes vs. Last Week, Last Month, or vs. Last Year, as well as how each property is performing vs. weighted avg. for all properties."});
+                $scope.reportItems.push({id: "custom_portfolio", name: "Customizable Property Data", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Customizable Property Data</b><Br>Report offers customizable solution to ad hoc building report tables with any property data available in BI:Radix. Allows modifying column order, setting sort preference, and exporting to Excel. "});
 
                 if ($cookies.get("settings")) {
                     $scope.liveSettings = JSON.parse($cookies.get("settings"))
@@ -1137,7 +1138,7 @@ define([
                     occupancy: true,
                     leased: $rootScope.me.settings.showLeases || false,
                     renewal: false,
-                    atr: $rootScope.me.settings.showATR || false,
+                    atr: false,
                     units: true,
                     sqft: true,
                     rent: true,
@@ -1145,8 +1146,8 @@ define([
                     runrate: false,
                     runratesqft: false,
                     ner: true,
-                    nerweek: true,
-                    nermonth: true,
+                    nerweek: false,
+                    nermonth: false,
                     neryear: false,
                     nersqft: true,
                     nersqftweek: false,
@@ -1154,7 +1155,7 @@ define([
                     nersqftyear: false,
                     last_updated: true,
                     weekly: false,
-                    concessions: false,
+                    concessions: true,
                     concessionsMonthly: false,
                     concessionsOneTime: false,
                     nervscompavg: false,
@@ -1182,17 +1183,17 @@ define([
                 $scope.temp.showCustomPortfolioItems = [
                     {id: "address", name: "Address", selected: $scope.liveSettings.customPortfolio.show.address, tooltip: "<b>Address</b><br><i>Property address</i>"},
                     {id: "phone", name: "Phone", selected: $scope.liveSettings.customPortfolio.show.phone, tooltip: "<b>Phone</b><br><i>Property phone</i>"},
-                    {id: "yearBuilt", name: "Year Built", selected: $scope.liveSettings.customPortfolio.show.yearBuilt, tooltip: "<b>Year Built</b><br><i>Year property was constructed (YOC)</i>"},
                     {id: "constructionType", name: "Construction", selected: $scope.liveSettings.customPortfolio.show.constructionType, tooltip: "<b>Construction</b><br><i>Type of construction</i>"},
                     {id: "owner", name: "Owner", selected: $scope.liveSettings.customPortfolio.show.owner, tooltip: "<b>Owner</b><br><i>Ownership group</i>"},
                     {id: "management", name: "Management", selected: $scope.liveSettings.customPortfolio.show.management, tooltip: "<b>Management</b><br><i>Management company</i>"},
+                    {id: "yearBuilt", name: "Year Built", selected: $scope.liveSettings.customPortfolio.show.yearBuilt, tooltip: "<b>Year Built</b><br><i>Year property was constructed (YOC)</i>"},
                     {id: "units", name: "Units", selected: $scope.liveSettings.customPortfolio.show.units, tooltip: "<b>Units</b><Br><i>Total units</i>"},
+                    {id: "sqft", name: "Sqft", selected: $scope.liveSettings.customPortfolio.show.sqft, tooltip: "<b>Square Feet</b><Br><i>The weighted average square footage. Example - if there were 25 units with 500 square feet, and 75 units with 1000, the weighted average sq ft value would be (25 x 500 + 75 x 1000) / 100 units = 875 sq ft</i>"},
                     {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.customPortfolio.show.occupancy, tooltip: "<b>Occupancy %</b><br><i>Percentage of property which is occupied</i>"},
                     {id: "leased", name: "Leased %", selected: $scope.liveSettings.customPortfolio.show.leased || false, tooltip: "<b>Leased %</b><br><i>Percentage of property which is leased</i>"},
                     {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.customPortfolio.show.renewal || false, tooltip: "<b>Renewal %</b><br><i>Percentage of leases that have renewed (typically used by student housing)</i>"},
                     {id: "atr", name: "ATR %", selected: $scope.liveSettings.customPortfolio.show.atr || false, tooltip: "<b>Apartments To Rent %</b><br><i>Apartments To Rent (Exposure) is calculated by adding vacant available units (units not leased) plus units on notice and dividing by total units of the property</i>"},
                     {id: "weekly", name: "Traffic & Leases / Week", selected: $scope.liveSettings.customPortfolio.show.weekly, tooltip: "<b>Traffic Week</b><br><i>Number of tours/shows given to prospective tenants in last 7 days (week)<br><br><b>Leases / Week</b><br><i>Number of approved leases in the last 7 days (week), after cancellations and denials</i>"},
-                    {id: "sqft", name: "Sqft", selected: $scope.liveSettings.customPortfolio.show.sqft, tooltip: "<b>Square Feet</b><Br><i>The weighted average square footage. Example - if there were 25 units with 500 square feet, and 75 units with 1000, the weighted average sq ft value would be (25 x 500 + 75 x 1000) / 100 units = 875 sq ft</i>"},
                     {id: "rent", name: "Rent", selected: $scope.liveSettings.customPortfolio.show.rent, tooltip: "<b>Rent</b><br><i>The weighted average monthly market rent (Gross Market Rent - GMR). This is made up of base (minimum) gross floor plan rents for a 12 month lease, before any concessions or discounts</i>"},
                     {id: "rentsqft", name: "Rent/Sqft", selected: $scope.liveSettings.customPortfolio.show.rentsqft, tooltip: "<b>Rent/Sqft</b><br><i>This is Rent divided by Sqft</i>"},
                     {id: "rent0", name: "Rent by # Bedrooms", selected: $scope.liveSettings.customPortfolio.show.rent0, tooltip: "<b>Rent by # Bedrooms</b><br><i>This is Rent grouped by number of bedrooms</i>"},
@@ -1231,18 +1232,18 @@ define([
                     {id: "name", name: "Property Name"},
                     {id: "address", name: "Property Address"},
                     {id: "phone", name: "Property Phone"},
-                    {id: "yearBuilt", name: "Year Built"},
                     {id: "constructionType", name: "Construction"},
                     {id: "owner", name: "Owner"},
                     {id: "management", name: "Management"},
+                    {id: "yearBuilt", name: "Year Built"},
                     {id: "totUnits", name: "Units"},
+                    {id: "sqft", name: "Sqft"},
                     {id: "occupancy", name: "Occ. %"},
                     {id: "leased", name: "Leased %"},
                     {id: "renewal", name: "Renewal %"},
                     {id: "atr_percent", name: "ATR %"},
                     {id: "weeklytraffic", name: "Traffic/Week"},
                     {id: "weeklyleases", name: "Leases/Week"},
-                    {id: "sqft", name: "Sqft"},
                     {id: "rent", name: "Rent"},
                     {id: "rentsqft", name: "Rent / Sqft"},
                     {id: "rent0", name: "Rent - Studios"},

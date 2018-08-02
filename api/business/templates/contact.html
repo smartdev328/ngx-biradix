@@ -1,3 +1,6 @@
 <b>From:</b> {{name}} &lt;{{email}}&gt;<br>
-<b>Subject:</b> {{subject}} <br>
+{% if properties != "" %}
+<b>Subject Properties:</b> {{properties}} <br>
+{% endif %}
+<b>Title:</b> {{subject}} <br>
 <b>Message:</b> {{message}}<br>

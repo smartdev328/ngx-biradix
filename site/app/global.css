@@ -441,3 +441,5 @@ HR.popoverhr {
     margin-top:5px !important;
     margin-bottom:5px !important;
 }
+
+.increase-popover-width {max-width:600px !important;}
