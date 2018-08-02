@@ -4,7 +4,7 @@ define([
     '../../services/contactService.js'
 ], function (app) {
      app.controller
-        ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService) {
+        ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', '$propertyService', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService,$propertyService) {
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
             $rootScope.sideMenu = true;
@@ -22,24 +22,37 @@ define([
                 $scope.msg.name = me.first + ' ' + me.last;
                 $scope.msg.email = me.email;
                 ngProgress.start();
-                $contactService.send(msg).then(function (resp) {
-                    $('button.contact-submit').prop('disabled', false);
-                    ngProgress.complete();
 
-                        if (resp.data.errors) {
-                            var errors = _.pluck(resp.data.errors,"msg").join("<br>")
-                            toastr.error(errors);
-                        }
-                        else {
-                            //toastr.success('Thank you for your submission. Someone will contact you shortly.');
-                            $scope.done = true
-                        }
-                },
-                    function(errors) {
-                        toastr.error('Unable to access the system at this time. Please contact an administrator');
-                        $('button.contact-submit').prop('disabled', false);
-                        ngProgress.complete();
-                    });
+                $propertyService.search({
+                    limit: 20,
+                    permission: "PropertyManage",
+                    active: true,
+                    select: "name",
+                    skipAmenities: true,
+                }).then(function(response) {
+                    msg.properties = response.data.properties.map(function(p) {
+                        return p.name;
+                    }).join(", ");
+
+                    $contactService.send(msg).then(function (resp) {
+                            $('button.contact-submit').prop('disabled', false);
+                            ngProgress.complete();
+
+                            if (resp.data.errors) {
+                                var errors = _.pluck(resp.data.errors, "msg").join("<br>")
+                                toastr.error(errors);
+                            }
+                            else {
+                                //toastr.success('Thank you for your submission. Someone will contact you shortly.');
+                                $scope.done = true
+                            }
+                        },
+                        function(errors) {
+                            toastr.error('Unable to access the system at this time. Please contact an administrator');
+                            $('button.contact-submit').prop('disabled', false);
+                            ngProgress.complete();
+                        });
+                });
             }
         }]);
 });

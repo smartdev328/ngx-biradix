@@ -35,7 +35,7 @@ Routes.post('/send', function (req, res) {
         return res.status(200).json({success: false, errors: modelErrors});
     }
 
-    OrgService.read(function (err, orgs) {
+    OrgService.read(function(err, orgs) {
         const biradix = _.find(orgs, function(x) {
             return x.isDefault === true;
         });
@@ -46,21 +46,19 @@ Routes.post('/send', function (req, res) {
             to: "support@biradix.com",
             logo: logo,
             subject: req.body.subject,
+            properties: req.body.properties || "",
             template: "contact.html",
             templateData: req.body,
         };
 
        BizEmailService.send(email, function(emailError, status) {
-
             if (emailError) {
-                throw Error(emailError)
+                throw Error(emailError);
             }
 
-            return res.status(200).json({success:true});
-        })
-
+            return res.status(200).json({success: true});
+        });
     });
-
-})
+});
 
 module.exports = Routes;

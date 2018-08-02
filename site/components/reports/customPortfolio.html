@@ -37,17 +37,17 @@
                         <i ng-show="settings.orderBy == '-address'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'address'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'phone'" style="height:44px;min-width:58px">
+                    <th ng-if="col.id == 'phone'" style="height:44px;">
                         Phone
                         <i ng-show="settings.orderBy == '-phone'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'phone'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'yearBuilt'" style="height:44px;min-width:78px">
-                        Year Built
+                    <th ng-if="col.id == 'yearBuilt'" style="height:44px;text-align: right">
+                        Year<br>Built
                         <i ng-show="settings.orderBy == '-yearBuilt'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'yearBuilt'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'constructionType'" style="height:44px;min-width:95px">
+                    <th ng-if="col.id == 'constructionType'" style="height:44px;">
                         Construction
                         <i ng-show="settings.orderBy == '-constructionType'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'constructionType'" class="fa fa-sort-up"></i>
@@ -57,42 +57,42 @@
                         <i ng-show="settings.orderBy == '-owner'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'owner'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'management'" style="height:44px;min-width: 95px;">
+                    <th ng-if="col.id == 'management'" style="height:44px;">
                         Management
                         <i ng-show="settings.orderBy == '-management'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'management'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'units'" style="text-align: right;min-width: 52px;">
+                    <th ng-if="col.id == 'units'" style="text-align: right;">
                         Units
                         <i ng-show="settings.orderBy == '-totUnits'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'totUnits'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'occupancy'" style="text-align: right; min-width: 65px;">
+                    <th ng-if="col.id == 'occupancy'" style="text-align: right;">
                         Occ. %
                         <i ng-show="settings.orderBy == '-occupancy'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'occupancy'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'leased'" style="text-align: right; min-width: 78px;">
+                    <th ng-if="col.id == 'leased'" style="text-align: right;">
                         Leased %
                         <i ng-show="settings.orderBy == '-leased'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'leased'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'renewal'" style="text-align: right;min-width: 85px;">
+                    <th ng-if="col.id == 'renewal'" style="text-align: right;">
                         Renewal %
                         <i ng-show="settings.orderBy == '-renewal'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'renewal'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'atr'" style="text-align: right;min-width: 60px;">
+                    <th ng-if="col.id == 'atr'" style="text-align: right;">
                         ATR %
                         <i ng-show="settings.orderBy == '-atr_percent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'atr_percent'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'weekly'" style="text-align: right;min-width: 55px;">
+                    <th ng-if="col.id == 'weekly'" style="text-align: right;">
                         Traffic/<Br>Week
                         <i ng-show="settings.orderBy == '-weeklytraffic'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'weeklytraffic'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'weekly'" style="text-align: right;min-width: 55px;">
+                    <th ng-if="col.id == 'weekly'" style="text-align: right;">
                         Leases/<Br>Week
                         <i ng-show="settings.orderBy == '-weeklyleases'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'weeklyleases'" class="fa fa-sort-up"></i>
@@ -113,7 +113,7 @@
                         <i ng-show="settings.orderBy == 'rentsqft'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="col.id == 'rent0' && settings.bedrooms[0]" style="text-align: right">
-                        Rent<Br>Studios
+                        Rent<Br>0 Bds.
                     </th>
                     <th ng-if="col.id == 'rent0' && settings.bedrooms[1]" style="text-align: right">
                         Rent<Br>1 Bds.
@@ -164,7 +164,7 @@
                         <i ng-show="settings.orderBy == 'ner'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="col.id == 'ner0' && settings.bedrooms[0]" style="text-align: right">
-                        NER<Br>Studios
+                        NER<Br>0 Bds.
                     </th>
                     <th ng-if="col.id == 'ner0' && settings.bedrooms[1]" style="text-align: right">
                         NER<Br>1 Bds.
@@ -206,7 +206,6 @@
                     </th>                    
                     <th ng-if="col.id == 'nersqft'" style="text-align: right">
                         NER/Sqft
-                        <i ng-show="settings.orderBy != 'nersqft' && settings.orderBy != '-nersqft'" class="fa fa-sort"></i>
                         <i ng-show="settings.orderBy == '-nersqft'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'nersqft'" class="fa fa-sort-up"></i>
                     </th>
@@ -251,7 +250,7 @@
                     <td ng-if="col.id == 'phone'">
                         {{row.phone}}
                     </td>
-                    <td ng-if="col.id == 'yearBuilt'">
+                    <td ng-if="col.id == 'yearBuilt'" style="text-align:right">
                         {{row.yearBuilt}}
                     </td>
                     <td ng-if="col.id == 'constructionType'">
