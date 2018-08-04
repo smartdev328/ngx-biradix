@@ -387,6 +387,9 @@ define([
             if (seconds > 60) {
                 toastr.error("Sorry! We appear to be having difficulties generating your report. Please try to run the report again and if you continue to run into issues support@biradix.com", null, {timeOut: 60000});
                 delete $scope.reportStarted;
+                $scope.reportLoading = false;
+                window.renderable = true;
+                return;
             }
 
             window.setTimeout(function() {
@@ -410,6 +413,10 @@ define([
             }
             $scope.reportStarted = new Date();
             $scope.checkReportRunning();
+
+            if ($scope.currentReport && $scope.currentReport.name.toLowerCase() === "crash me" && $rootScope.me.email.toLowerCase().indexOf("biradix.com") > -1) {
+               throw new Error("Reports crash testing on purpose");
+            }
 
             if ($scope.reportType == "single") {
                 $scope.coverPage = {
