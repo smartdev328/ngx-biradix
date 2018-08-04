@@ -38,39 +38,37 @@ module.exports = {
 
             populateBaseFields(operator, usr, user, true);
 
-            if (usr.bounceReason) {
+            UserService.resetBounce(operator, context, usr._id, () => {
                 usr.bounceReason = undefined;
-            }
-
-            userBounceService.resetBounce(usr.email, function() {});
-
-            usr.save(function(err, usr) {
-                if (err) {
-                    modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
-                    callback(modelErrors,null);
-                    return;
-                };
-
-                if (changes.length > 0) {
-                    var audit = {
-                        operator: operator,
-                        revertedFromId: null,
-                        user: usr,
-                        type: 'user_updated',
-                        description: usr.first + ' ' + usr.last,
-                        context: context,
-                        data: changes,
+                usr.bounceDate = undefined;
+                usr.save(function(err, usr) {
+                    if (err) {
+                        modelErrors.push({msg : 'Unexpected Error. Unable to update user.'});
+                        callback(modelErrors, null);
+                        return;
                     };
 
-                    AuditService.create(audit, function() {})
+                    if (changes.length > 0) {
+                        var audit = {
+                            operator: operator,
+                            revertedFromId: null,
+                            user: usr,
+                            type: 'user_updated',
+                            description: usr.first + ' ' + usr.last,
+                            context: context,
+                            data: changes,
+                        };
 
-                    audit = null;
-                    changes = null;
-                }
+                        AuditService.create(audit, function() {})
 
-                callback(null, usr);
+                        audit = null;
+                        changes = null;
+                    }
 
-                UserService.rebuildSearch(operator._id);
+                    callback(null, usr);
+
+                    UserService.rebuildSearch(operator._id);
+                });
             });
         });
     },
@@ -162,49 +160,49 @@ module.exports = {
                     changes.push({description: description, field: "roleids", added: aAdded, removed: aRemoved});
                 }
 
-                if (usr.bounceReason) {
-                    usr.bounceReason = undefined;
-                }
-
-                userBounceService.resetBounce(usr.email, function() {});
-
                 if (user.defaultRole) {
                     usr.settings.defaultRole = user.defaultRole.toString();
                 }
 
-                usr.save(function(err, usr) {
-                    if (err) {
-                        modelErrors.push({msg: "Unexpected Error. Unable to update user."});
-                        callback(modelErrors, null);
-                        return;
-                    };
+                UserService.resetBounce(operator, context, usr._id, () => {
+                    usr.bounceReason = undefined;
+                    usr.bounceDate = undefined;
+                    usr.save(function (err, usr) {
+                        if (err) {
+                            modelErrors.push({msg: "Unexpected Error. Unable to update user."});
+                            callback(modelErrors, null);
+                            return;
+                        }
+                        ;
 
-                    if (changes.length > 0) {
-                        let audit = {
-                            operator: operator,
-                            revertedFromId: revertedFromId,
-                            user: usr,
-                            type: "user_updated",
-                            description: usr.first + " " + usr.last,
-                            context: context,
-                            data: changes,
-                            dataIntegrityViolationSet: UserDataIntegrityViolationService.getChanged(usr, originalUser, !!revertedFromId),
-                        };
+                        if (changes.length > 0) {
+                            let audit = {
+                                operator: operator,
+                                revertedFromId: revertedFromId,
+                                user: usr,
+                                type: "user_updated",
+                                description: usr.first + " " + usr.last,
+                                context: context,
+                                data: changes,
+                                dataIntegrityViolationSet: UserDataIntegrityViolationService.getChanged(usr, originalUser, !!revertedFromId),
+                            };
 
-                        AuditService.create(audit, function() {});
-                    }
-
-                    if (bRoleChanged) {
-                        removeUserFromRole(usr._id, aRemoved, removePermissions, function() {
-                            addUserToRole(usr._id, aAdded, permissions, function() {
-                                callback(null, usr);
+                            AuditService.create(audit, function () {
                             });
-                        });
-                    } else {
-                        callback(null, usr);
-                    }
+                        }
 
-                    UserService.rebuildSearch(usr._id);
+                        if (bRoleChanged) {
+                            removeUserFromRole(usr._id, aRemoved, removePermissions, function () {
+                                addUserToRole(usr._id, aAdded, permissions, function () {
+                                    callback(null, usr);
+                                });
+                            });
+                        } else {
+                            callback(null, usr);
+                        }
+
+                        UserService.rebuildSearch(usr._id);
+                    });
                 });
             });
         });
