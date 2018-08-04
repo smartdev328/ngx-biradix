@@ -238,7 +238,7 @@
                     <th ng-repeat-end="true" ng-if="false"></th>
                 </tr>
                 <tr ng-repeat-start="block in report" ng-if="false"></tr>
-                <tr ng-repeat-start="row in block" ng-class="{'subject': row.isSubject,'subtotal' : $index == block.length - 1 || row.name === 'Comp Averages','subtotal-padding' : $index == block.length - 1, 'bold': row.name === 'Comp Averages', 'regular-border': $index == block.length - 1 && settings.compAverages}"
+                <tr ng-repeat-start="row in block" ng-class="{'subject': row.isSubject,'subtotal' : row.name === 'Averages' || row.name === 'Comp Averages','subtotal-padding' : row.name === 'Averages', 'bold': row.name === 'Comp Averages', 'regular-border': row.name === 'Averages' && settings.compAverages}"
                     >
                     <td nowrap>
                         {{row.name}}
@@ -353,9 +353,9 @@
                         {{row.ner6 !== undefined ? "$" + row.ner6.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'nervscompavg'" style="text-align:right">
-                        <span ng-if="$index == block.length - 1 || row.name === 'Comp Averages'"></span>
-                        <span ng-if="$index != block.length - 1 && row.nervscompavg != ''">{{row.nervscompavg | number : 2}}%</span>
-                        <span ng-if="$index != block.length - 1 && row.nervscompavg == '' && row.name !== 'Comp Averages'">-</span>
+                        <span ng-if="row.name === 'Averages' || row.name === 'Comp Averages'"></span>
+                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nervscompavg != ''">{{row.nervscompavg | number : 2}}%</span>
+                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nervscompavg == ''">-</span>
                     </td>
                     <td ng-if="col.id == 'nerweek'" style="text-align:right">
                         <span ng-if="row.lastweeknerpercent > 0">{{row.lastweeknerpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>
@@ -379,9 +379,9 @@
                         ${{row.nersqft | number : 2}}
                     </td>
                     <td ng-if="col.id == 'nersqftvscompavg'" style="text-align:right">
-                        <span ng-if="$index == block.length - 1 || row.name === 'Comp Averages'"></span>
-                        <span ng-if="$index != block.length - 1 && row.nersqftvscompavg != ''">{{row.nersqftvscompavg | number : 2}}%</span>
-                        <span ng-if="$index != block.length - 1 && row.nersqftvscompavg == '' && row.name !== 'Comp Averages'">-</span>
+                        <span ng-if="row.name === 'Averages' || row.name === 'Comp Averages'"></span>
+                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nersqftvscompavg != ''">{{row.nersqftvscompavg | number : 2}}%</span>
+                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nersqftvscompavg == ''">-</span>
                     </td>
                     <td ng-if="col.id == 'nersqftweek'" style="text-align:right">
                         <span ng-if="row.lastweeknersqftpercent > 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>

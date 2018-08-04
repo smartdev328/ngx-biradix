@@ -377,6 +377,23 @@ define([
             $scope.loadComps();
         }
 
+        $scope.checkReportRunning = function() {
+            if (!$scope.reportStarted) {
+                return;
+            }
+
+            var seconds = ((new Date()).getTime() - $scope.reportStarted.getTime()) / 1000;
+
+            if (seconds > 60) {
+                toastr.error("Sorry! We appear to be having difficulties generating your report. Please try to run the report again and if you continue to run into issues support@biradix.com", null, {timeOut: 60000});
+                delete $scope.reportStarted;
+            }
+
+            window.setTimeout(function() {
+                $scope.checkReportRunning();
+            }, 1000);
+        };
+
         $scope.run = function() {
             $scope.reports = null;
             $scope.reportLoading = true;
@@ -391,11 +408,10 @@ define([
                 window.renderable = true;
                 return;
             }
-
-
+            $scope.reportStarted = new Date();
+            $scope.checkReportRunning();
 
             if ($scope.reportType == "single") {
-
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
                     isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
@@ -405,7 +421,6 @@ define([
 
                 $scope.singleReport();
             } else {
-
                 var properties =  _.pluck($scope.propertyItems.items, "name");
                 var reports = [];
 
@@ -421,8 +436,8 @@ define([
 
                 $scope.multipleReport();
             }
+        };
 
-        }
         $scope.multipleReport = function() {
             var properties = $scope.propertyItems.items;
 
@@ -469,11 +484,11 @@ define([
                     $scope.auditMultiple('report', 'Website');
                 }
 
+                delete $scope.reportStarted;
+
                 window.setTimeout(function() {
                     window.renderable = true;
-                },200)
-
-
+                }, 200);
             });
 
         }
@@ -502,7 +517,6 @@ define([
                     $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
 
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
-
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
@@ -564,7 +578,6 @@ define([
             var options = {};
 
             $scope.UItoSettings();
-
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
             $scope.cleanSettings = $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds);
@@ -639,6 +652,8 @@ define([
                 if (!phantom) {
                     $scope.audit('report', 'Website');
                 }
+
+                delete $scope.reportStarted;
 
                 if ($scope.property_report) {
                     $scope.graphs = 0;
