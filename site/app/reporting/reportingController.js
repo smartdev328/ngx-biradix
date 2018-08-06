@@ -506,25 +506,28 @@ define([
                 return;
             }
             if ($scope.reportIds.indexOf("property_report") > -1) {
+                $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
+                $scope.liveSettings.showProfile = {};
 
-                    $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
-                    $scope.liveSettings.showProfile = {};
+                $scope.temp.showProfileItems.forEach(function (f) {
+                    $scope.liveSettings.showProfile[f.id] = f.selected;
+                })
 
-                    $scope.temp.showProfileItems.forEach(function (f) {
-                        $scope.liveSettings.showProfile[f.id] = f.selected;
-                    })
+                $scope.temp.showCompItems.forEach(function (f) {
+                    $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
+                })
 
-                    $scope.temp.showCompItems.forEach(function (f) {
-                        $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
-                    })
+                $scope.temp.showFloorplanItems.forEach(function (f) {
+                    $scope.liveSettings.profileSettings.show[f.id] = f.selected;
+                })
 
-                    $scope.temp.showFloorplanItems.forEach(function (f) {
-                        $scope.liveSettings.profileSettings.show[f.id] = f.selected;
-                    })
+                $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
 
-                    $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
-
+                if (!$scope.temp.compSortSelected) {
+                    $scope.liveSettings.dashboardSettings.orderByComp = "number";
+                } else {
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
+                }
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
