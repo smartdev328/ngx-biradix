@@ -15,7 +15,7 @@ define([
         };
 
          $scope.getLocation = function(val) {
-             return $propertyService.search({search: val, active: true, hideCustom: true, noorgid: true}).then(function(response) {
+             return $propertyService.search({search: val, active: true, hideCustom: true}).then(function(response) {
                  return response.data.properties;
              });
          };
