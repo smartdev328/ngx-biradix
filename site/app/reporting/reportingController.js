@@ -384,11 +384,12 @@ define([
 
             var seconds = ((new Date()).getTime() - $scope.reportStarted.getTime()) / 1000;
 
-            if (seconds > 60) {
-                toastr.error("Sorry! We appear to be having difficulties generating your report. Please try to run the report again and if you continue to run into issues support@biradix.com", null, {timeOut: 60000});
+            if (seconds > 90) {
+                toastr.error("Sorry! We appear to be having difficulties generating your report. Please try to run the report again and if you continue see this message contact support@biradix.com", null, {timeOut: 60000});
                 delete $scope.reportStarted;
                 $scope.reportLoading = false;
                 window.renderable = true;
+                Raygun.send(new Error("Report took longer then 90 seconds"));
                 return;
             }
 
