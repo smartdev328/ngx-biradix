@@ -47,7 +47,6 @@
                     $scope.resetChecked();
 
                     if (item1.id == item2.id) {
-
                         if (!item1.disabled) {
                             item1.checked = true;
                         }
@@ -56,7 +55,7 @@
 
                     var started = false;
                     var group;
-                    for(group in $scope.groups) {
+                    for (group in $scope.groups) {
                         $scope.groups[group].forEach(function (item) {
                             if (item.id == item1.id || item.id == item2.id) {
                                 started = !started;
@@ -72,23 +71,21 @@
                 }
 
                 $scope.keyup = function($event) {
-
-                    //Shift
+                    // Shift
                     if ($event.keyCode == 16 && $scope.shiftStarted) {
                         $scope.shiftStarted = null;
-                    }
-                    else
-                    //Ctrl-A
+                    } else
+                    // Ctrl-A
                     if ($event.keyCode == 65 && $event.ctrlKey === true) {
                         $event.preventDefault();
                         $scope.resetChecked();
                         var group;
-                        for(group in $scope.groups) {
-                            $scope.groups[group].forEach(function (item) {
-                                if (!item1.disabled) {
+                        for (group in $scope.groups) {
+                            $scope.groups[group].forEach(function(item) {
+                                if (!item.disabled) {
                                     item.checked = true;
                                 }
-                            })
+                            });
                         }
                         $scope.selectAll = !$scope.selectAll;
                     }
@@ -99,7 +96,7 @@
 
                     var group;
                     if ($event.keyCode == 16 && !$scope.shiftStarted) {
-                        for(group in $scope.groups) {
+                        for (group in $scope.groups) {
                             $scope.groups[group].forEach(function (item) {
                                 if (item.checked) {
                                     $scope.shiftStarted = item;
