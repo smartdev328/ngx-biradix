@@ -263,7 +263,38 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 str += "</b>";
 
                 return str;
-            }
+            };
+
+    $scope.getGuestInfoBounce = function(guest) {
+        var str = "<B>Last Email Sent:</B>";
+
+        if (guest.lastEmailed) {
+            str += moment(guest.lastEmailed).format("MM/DD/YYYY");
+        } else {
+            str += "Never";
+        }
+
+        str += "<Br>";
+
+        str += "<B>Last Survey Completed: </b>";
+
+        if (guest.lastCompleted) {
+            str += moment(guest.lastCompleted).format("MM/DD/YYYY");
+        } else {
+            str += "Never";
+        }
+
+        str += "<br>";
+
+        str += "<b>Undeliverable:</b> " + guest.email + "<br>";
+
+        str += "<B>Error:</B> " + guest.bounceReason + "<br>"
+
+        if (guest.bounceDate) {
+            str += "<B>Last Attempt:</B> " + moment(new Date(guest.bounceDate)).format("MM/DD/YYYY HH:MM") + "<br>"
+        }
+        return str;
+    }
 
             $scope.doneLoading = function() {
                 $scope.survey.totalUnits = 0;
@@ -284,7 +315,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                 if (!$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
-                            $userService.search({ids: response.data.users, select: "first last email bounceReason guestStats"}).then(function (response) {
+                            $userService.search({ids: response.data.users, select: "first last email bounceReason bounceDate guestStats"}).then(function (response) {
                                     $scope.swap.guests = response.data.users;
                                     if ($scope.swap.guests.length > 0) {
 

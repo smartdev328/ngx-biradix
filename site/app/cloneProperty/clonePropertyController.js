@@ -10,6 +10,10 @@ define([
         ga("set", "page", "/cloneProperty");
         ga("send", "pageview");
 
+         $scope.cancel = function() {
+             $uibModalInstance.dismiss("cancel");
+         };
+
         $scope.create = function() {
             $uibModalInstance.close("create");
         };

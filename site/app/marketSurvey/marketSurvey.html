@@ -148,14 +148,14 @@
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        popover-append-to-body="true"
-                       uib-popover="We are unable to deliver email to this contact."
+                       uib-popover-html="getGuestInfoBounce(swap.selectedGuest)"
                     ></i>
 
                 <Br>
             </div>
             <Br>
             <div style="text-align: center">
-                <button class="btn btn-success contact-submit" ng-click="surveyWhoSelector()" ng-disabled="swap.who == 'swap' && swap.selectedGuest.bounceReason">Next</button>
+                <button class="btn btn-success contact-submit" ng-click="surveyWhoSelector()">Next</button>
             </div>
         </div>
         <div ng-if="!showGuests">

@@ -1806,10 +1806,14 @@ define([
                 {id: "runratesqft", name: "Recur. Rent/Sqft"},
             ]
             var f = $scope.liveSettings.dashboardSettings.orderByComp.replace("-","");
-            $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f})
-            $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+            $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f});
 
-        }
+            if (!$scope.temp.compSortSelected) {
+                $scope.temp.compSortSelected = $scope.temp.compSortItems[0];
+            }
+
+            $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+        };
 
         $scope.resetPropertyReportSettings = function(rebind) {
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
