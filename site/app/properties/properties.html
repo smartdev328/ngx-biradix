@@ -13,7 +13,7 @@
     </div>
 
     <div class="btn-group action_dropdown pull-left" ng-if="me.permissions.indexOf('Properties/Custom') > -1">
-        <button ng-if="!customLimitReached" type="button" class="btn btn-default dropdown-toggle btn-sm" ng-click="edit(null,false, null, true)">
+        <button ng-if="!customLimitReached" type="button" class="btn btn-default dropdown-toggle btn-sm" ng-click="cloneCustom()">
             <div class="triangle"></div>
             <span class="fa fa-plus"></span> Add Custom Property
         </button>

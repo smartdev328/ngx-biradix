@@ -377,6 +377,27 @@ define([
             $scope.loadComps();
         }
 
+        $scope.checkReportRunning = function() {
+            if (!$scope.reportStarted) {
+                return;
+            }
+
+            var seconds = ((new Date()).getTime() - $scope.reportStarted.getTime()) / 1000;
+
+            if (seconds > 90) {
+                toastr.error("Sorry! We appear to be having difficulties generating your report. Please try to run the report again and if you continue see this message contact support@biradix.com", null, {timeOut: 60000});
+                delete $scope.reportStarted;
+                $scope.reportLoading = false;
+                window.renderable = true;
+                Raygun.send(new Error("Report took longer then 90 seconds"));
+                return;
+            }
+
+            window.setTimeout(function() {
+                $scope.checkReportRunning();
+            }, 1000);
+        };
+
         $scope.run = function() {
             $scope.reports = null;
             $scope.reportLoading = true;
@@ -391,11 +412,14 @@ define([
                 window.renderable = true;
                 return;
             }
+            $scope.reportStarted = new Date();
+            $scope.checkReportRunning();
 
-
+            if ($scope.currentReport && $scope.currentReport.name.toLowerCase() === "crash me" && $rootScope.me.email.toLowerCase().indexOf("biradix.com") > -1) {
+               throw new Error("Reports crash testing on purpose");
+            }
 
             if ($scope.reportType == "single") {
-
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
                     isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
@@ -405,7 +429,6 @@ define([
 
                 $scope.singleReport();
             } else {
-
                 var properties =  _.pluck($scope.propertyItems.items, "name");
                 var reports = [];
 
@@ -421,8 +444,8 @@ define([
 
                 $scope.multipleReport();
             }
+        };
 
-        }
         $scope.multipleReport = function() {
             var properties = $scope.propertyItems.items;
 
@@ -469,11 +492,11 @@ define([
                     $scope.auditMultiple('report', 'Website');
                 }
 
+                delete $scope.reportStarted;
+
                 window.setTimeout(function() {
                     window.renderable = true;
-                },200)
-
-
+                }, 200);
             });
 
         }
@@ -483,26 +506,28 @@ define([
                 return;
             }
             if ($scope.reportIds.indexOf("property_report") > -1) {
+                $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
+                $scope.liveSettings.showProfile = {};
 
-                    $scope.liveSettings.dashboardSettings.selectedBedroom = $scope.temp.bedroom.value;
-                    $scope.liveSettings.showProfile = {};
+                $scope.temp.showProfileItems.forEach(function (f) {
+                    $scope.liveSettings.showProfile[f.id] = f.selected;
+                })
 
-                    $scope.temp.showProfileItems.forEach(function (f) {
-                        $scope.liveSettings.showProfile[f.id] = f.selected;
-                    })
+                $scope.temp.showCompItems.forEach(function (f) {
+                    $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
+                })
 
-                    $scope.temp.showCompItems.forEach(function (f) {
-                        $scope.liveSettings.dashboardSettings.show[f.id] = f.selected;
-                    })
+                $scope.temp.showFloorplanItems.forEach(function (f) {
+                    $scope.liveSettings.profileSettings.show[f.id] = f.selected;
+                })
 
-                    $scope.temp.showFloorplanItems.forEach(function (f) {
-                        $scope.liveSettings.profileSettings.show[f.id] = f.selected;
-                    })
+                $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
 
-                    $scope.liveSettings.profileSettings.orderByFp = ($scope.temp.floorPlanSortDir == "desc" ? "-" : "") + $scope.temp.floorPlanSortSelected.id;
-
+                if (!$scope.temp.compSortSelected) {
+                    $scope.liveSettings.dashboardSettings.orderByComp = "number";
+                } else {
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
-
+                }
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
@@ -564,7 +589,6 @@ define([
             var options = {};
 
             $scope.UItoSettings();
-
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
             $scope.cleanSettings = $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds);
@@ -639,6 +663,8 @@ define([
                 if (!phantom) {
                     $scope.audit('report', 'Website');
                 }
+
+                delete $scope.reportStarted;
 
                 if ($scope.property_report) {
                     $scope.graphs = 0;
@@ -1780,10 +1806,14 @@ define([
                 {id: "runratesqft", name: "Recur. Rent/Sqft"},
             ]
             var f = $scope.liveSettings.dashboardSettings.orderByComp.replace("-","");
-            $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f})
-            $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+            $scope.temp.compSortSelected = _.find($scope.temp.compSortItems, function(x) {return x.id == f});
 
-        }
+            if (!$scope.temp.compSortSelected) {
+                $scope.temp.compSortSelected = $scope.temp.compSortItems[0];
+            }
+
+            $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+        };
 
         $scope.resetPropertyReportSettings = function(rebind) {
             $scope.liveSettings.dashboardSettings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());

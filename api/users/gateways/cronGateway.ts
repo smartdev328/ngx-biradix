@@ -32,7 +32,7 @@ routes.get("/clear_spam", (req, res) => {
                 }
 
                 if (remove) {
-                    userService.resetBounce(u._id, (err, updated) => { });
+                    userService.resetBounce(SystemUser, {ip: "127.0.0.1", user_agent: "server"}, u._id, (err, updated) => { });
                 }
             });
             return res.status(200).json({total: users.length, removed});

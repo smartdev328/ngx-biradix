@@ -1,0 +1,53 @@
+<style>
+    h2.OR { width:90%; text-align:center; border-bottom: 1px solid #ccc; line-height:0.1em; margin:10px 0 10px; font-size: 18px }
+    h2.OR span { background:#fff; padding:0 10px; }
+</style>
+
+<div ng-show="localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+
+<div ng-if="!localLoading">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Add Custom Property</h2>
+        <hr>
+    </div>
+
+    <div class="modal-body">
+        You can add a custom property by cloning an existing property or building your own.<Br>
+            <Br>
+            <table style="border:1px solid #ccc;width:100%">
+                <tr>
+                    <td style="border-top:1px solid #ccc;padding:10px" colspan="100%">
+                        <div class="form-group has-feedback has-feedback-left search" style="margin-bottom:0px !important;" ng-class="{'has-error' : (noResults || showAdd) && search1}">
+                            <input type="text" class="form-control input-sm"
+                                   placeholder="Search for property address or name"
+                                   uib-typeahead="props.summary for props in getLocation($viewValue)"
+                                   typeahead-on-select="searchSelected($item, $model, $label)"
+                                   typeahead-template-url="customTemplate.html"
+                                   typeahead-no-results="noResults"
+                                   typeahead-is-open="isOpen"
+                                   ng-model="options.search"
+                                   style="width:100%"
+                                   ng-keydown="disableSearchKeys($event)"
+                            >
+                            <i class="fa fa-search form-control-feedback" ng-style="{'color': (noResults || showAdd) && search1 ? '#a94442' : '#ccc'};"></i>
+                        </div>
+                        <div ng-show="(noResults || showAdd) && search1">
+                            <Br>
+
+                            <div class="alert alert-danger" role="alert"  style="margin-bottom:0px !important;">Unable to find your property</div>
+                        </div>
+                        <Br>
+                        <center>
+                        <h2 class="OR"><span>OR</span></h2>
+                        <BR>
+                        <button class="btn btn-primary" ng-click="create()">Create New Custom Property</button>
+                            </center>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

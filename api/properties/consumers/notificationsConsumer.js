@@ -5,7 +5,6 @@ var propertyService = require('../services/propertyService');
 var async = require("async");
 var _ = require("lodash");
 var moment = require("moment-timezone");
-var moment = require("moment-timezone");
 var redisService = require('../../utilities/services/redisService')
 var BizEmailService = require('../../business/services/emailService')
 var error = require('../../../config/error')

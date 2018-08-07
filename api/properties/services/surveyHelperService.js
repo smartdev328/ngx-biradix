@@ -60,59 +60,61 @@ module.exports = {
                     //
                     // return callback([{msg: "Test"}]);
 
-                    userService.getFullUser(guest, function(full) {
-                        // Send Email
-                        let email = {
-                            to: guest.email,
-                            category: ["SurveySwap Requested", category],
-                            logo: base + "/images/organizations/biradix.png",
-                            subject: subject,
-                            template: "swap.html",
-                            templateData: {
-                                first: guest.first,
-                                comp: property.name,
-                                subjects: SubjectNames,
-                                link: base + "/g/" + property._id.toString() + "/" + full.token,
-                                operator: operator.first + " " + operator.last,
-                                admin_only: "",
-                            },
-                        };
-
-                        // email.to = 'alex@biradix.com';
-                        // email.bcc = '';
-
-                        EmailService.send(email, function(emailError, status) {
-                            console.log(status);
-
-                            if (emailError || !status || !status.message || status.message != "success") {
-                                return callback([{msg: "Unable to deliver mesage to Contact. Please contact the Administrator"}]);
-                            }
-
-                            delete email.category;
-                            email.to = "surveyswapemails@biradix.com";
-                            email.templateData.admin_only = "<i>TO: " + guest.first + " " + guest.last + " &lt;" + guest.email + "&gt;</i><br><Br>";
-
-                            EmailService.send(email, function(emailError, status) {});
-
-                            // Activity History
-                            let data = [{description: "Subjects: " + SubjectNames.join(", ")}];
-
-                            AuditService.create({operator: operator, property: property, user: guest, type: "survey_emailed", description: `Property: ${property.name}, User: ${guest.first} ${guest.last} <${guest.email}>`, data: data});
-
-                            // Update Last Emailed
-                            userService.updateGuestStatsLastEmailed(guestid, propertyid, {
-                                first: operator.first,
-                                last: operator.last,
-                                email: operator.email,
-                                logo: operator.orgs[0].logoBig,
-                                id: operator._id,
-                                organization: {
-                                    id: operator.orgs[0]._id,
-                                    name: operator.orgs[0].name,
+                    userService.resetBounce(operator, context,guest._id, () => {
+                        userService.getFullUser(guest, function(full) {
+                            // Send Email
+                            let email = {
+                                to: guest.email,
+                                category: ["SurveySwap Requested", category],
+                                logo: base + "/images/organizations/biradix.png",
+                                subject: subject,
+                                template: "swap.html",
+                                templateData: {
+                                    first: guest.first,
+                                    comp: property.name,
+                                    subjects: SubjectNames,
+                                    link: base + "/g/" + property._id.toString() + "/" + full.token,
+                                    operator: operator.first + " " + operator.last,
+                                    admin_only: "",
                                 },
-                                subjectid: subjectid,
-                            }, function() {
-                                callback(null);
+                            };
+
+                            // email.to = 'alex@biradix.com';
+                            // email.bcc = '';
+
+                            EmailService.send(email, function(emailError, status) {
+                                console.log(status);
+
+                                if (emailError || !status || !status.message || status.message != "success") {
+                                    return callback([{msg: "Unable to deliver mesage to Contact. Please contact the Administrator"}]);
+                                }
+
+                                delete email.category;
+                                email.to = "surveyswapemails@biradix.com";
+                                email.templateData.admin_only = "<i>TO: " + guest.first + " " + guest.last + " &lt;" + guest.email + "&gt;</i><br><Br>";
+
+                                EmailService.send(email, function(emailError, status) {});
+
+                                // Activity History
+                                let data = [{description: "Subjects: " + SubjectNames.join(", ")}];
+
+                                AuditService.create({operator: operator, property: property, user: guest, type: "survey_emailed", description: `Property: ${property.name}, User: ${guest.first} ${guest.last} <${guest.email}>`, data: data});
+
+                                // Update Last Emailed
+                                userService.updateGuestStatsLastEmailed(guestid, propertyid, {
+                                    first: operator.first,
+                                    last: operator.last,
+                                    email: operator.email,
+                                    logo: operator.orgs[0].logoBig,
+                                    id: operator._id,
+                                    organization: {
+                                        id: operator.orgs[0]._id,
+                                        name: operator.orgs[0].name,
+                                    },
+                                    subjectid: subjectid,
+                                }, function() {
+                                    callback(null);
+                                });
                             });
                         });
                     });

@@ -51,7 +51,7 @@ define([
             $scope.floorplanGroup = function(fp) {
                 switch (fp.bedrooms) {
                     case 0:
-                        return "0 Bedrooms (Studios)";
+                        return "0 Bedrooms";
                     default:
                         return fp.bedrooms + " Bedrooms";
                 }

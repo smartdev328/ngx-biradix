@@ -38,7 +38,7 @@ export class PropertyDataIntegrityViolationService {
                 violations: [],
             };
 
-            Promise.all([checkDuplicateGeo(operator, newProperty, null), checkDuplicateName(operator, newProperty)]).then((violations: IDataIntegrityViolation[]) => {
+            Promise.all([checkDuplicateGeo(operator, newProperty, null), checkDuplicateName(operator, newProperty, null)]).then((violations: IDataIntegrityViolation[]) => {
                 if (violations[0] || violations[1]) {
 
                     if (violations[0]) {
@@ -72,7 +72,7 @@ export class PropertyDataIntegrityViolationService {
 
             Promise.all([
                 checkDuplicateGeo(operator, newProperty, oldProperty),
-                checkDuplicateName(operator, newProperty),
+                checkDuplicateName(operator, newProperty, oldProperty),
                 checkAddressChange(newProperty, oldProperty),
             ]).then((violations: IDataIntegrityViolation[]) => {
                 if (violations[0] || violations[1]) {
@@ -106,11 +106,19 @@ function checkDuplicateGeo(operator: IUserLoggedIn, newProperty: IProperty, oldP
                 select: "name address city state zip",
             };
 
+            let strAction;
+
+            if (oldProperty === null) {
+                strAction = "Created";
+            } else {
+                strAction = "Updated";
+            }
+
             propertyService.search(operator, PropertySearchRequest, (errors: ICustomError[], properties: IProperty[]) => {
                 if (properties.length > 0) {
                     const v: IDataIntegrityViolation = {
                         checkType: DataIntegrityCheckType.PROPERTY_GEO_DUPLICATE,
-                        description: `Created Property: ${newProperty.name}, ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
+                        description: `${strAction} Property: ${newProperty.name}, ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
                     };
 
                     properties.forEach((property) => {
@@ -143,25 +151,36 @@ function checkAddressChange(newProperty: IProperty, oldProperty: IProperty): Pro
     });
 }
 
-function checkDuplicateName(operator: IUserLoggedIn, newProperty: IProperty): Promise<IDataIntegrityViolation> {
+function checkDuplicateName(operator: IUserLoggedIn, newProperty: IProperty, oldProperty: IProperty): Promise<IDataIntegrityViolation> {
     return new Promise<IDataIntegrityViolation>((resolve, reject) => {
 
         const PropertySearchRequest: IPropertySearchRequest = {
             active: true,
             exclude: [newProperty._id.toString()],
             hideCustom: true,
-            limit: 1,
+            limit: 20,
             searchExactName: newProperty.name,
             select: "name address city state zip",
         };
+
+        let strAction;
+
+        if (oldProperty === null) {
+            strAction = "Created";
+        } else {
+            strAction = "Updated";
+        }
 
         propertyService.search(operator, PropertySearchRequest, (errors: ICustomError[], properties: IProperty[]) => {
             if (properties.length > 0) {
                 const v: IDataIntegrityViolation = {
                     checkType: DataIntegrityCheckType.PROPERTY_NAME_DUPLICATE,
-                    description: `New Property Address: ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}<Br>
-                    Duplicate Property Address: ${properties[0].address} ${properties[0].city}, ${properties[0].state} ${properties[0].zip}`,
+                    description: `${strAction} Property: ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
                 };
+
+                properties.forEach((property) => {
+                    v.description += `<Br>Existing Property: ${property.name}, ${property.address} ${property.city}, ${property.state} ${property.zip}`;
+                });
 
                 resolve(v);
             } else {

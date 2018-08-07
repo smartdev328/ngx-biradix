@@ -90,10 +90,17 @@ module.exports = {
             callback();
         });
     },
-    resetBounce: function(id, callback) {
-        UserSchema.findOneAndUpdate({_id: id}, {bounceReason: undefined, bounceDate: undefined}, {}, function(err, user) {
-            userBounceService.resetBounce(user.email, function() {
-                callback();
+    resetBounce: function(operator, context, id, callback) {
+        UserSchema.findOne({_id: id}, (err, user) => {
+            if (!user.bounceReason) {
+                return callback();
+            }
+             UserSchema.findOneAndUpdate({_id: id}, {bounceReason: undefined, bounceDate: undefined}, {}, function(err, user) {
+                userBounceService.resetBounce(user.email, function() {
+                    AuditService.create({user: user, operator: operator, type: "user_unbounced", description: "User " + user.first + " " + user.last + " (" + user.email + ") undeliverable flag removed", context}, () => {});
+
+                    callback();
+                });
             });
         });
     },
@@ -418,6 +425,7 @@ module.exports = {
         }
     },
     resetPassword: function(email,base,context,callback) {
+        const _this = this;
         var modelErrors = [];
         email = email || '';
 
@@ -460,22 +468,17 @@ module.exports = {
 
                     AuditService.create({type: 'reset_password', user : usr,description: 'Success: ' + usr.email, context: context})
 
-                    UserSchema.findOneAndUpdate({_id: usr._id}, {bounceReason: undefined}, {}, function() {});
-                    userBounceService.resetBounce(usr.email,function(){
-                        EmailService.send(email,function(emailError,status) {
+                    _this.resetBounce(usr, context, usr._id, () => {
+                        EmailService.send(email, function(emailError,status) {
                             usr = null;
                             email = null;
                             resp = null;
-                            return callback(null,true);
-                        })
+                            return callback(null, true);
+                        });
                     });
-
-                })
-
-
+                });
             }
-        )
-
+        );
     },
     login : function(user, context, success, error) {
         var modelErrors = [];

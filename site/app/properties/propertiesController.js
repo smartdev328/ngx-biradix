@@ -537,6 +537,33 @@ define([
 
             return c.excluded || false;
         }
+        
+        $scope.cloneCustom = function() {
+            require([
+                "/app/cloneProperty/clonePropertyController.js"
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/cloneProperty/cloneProperty.html?bust=" + version,
+                    controller: "clonePropertyController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                });
+
+                modalInstance.result.then(function(result) {
+                    if (typeof result === "string" && result === "create") {
+                        $scope.edit(null, false, null, true);
+                        return;
+                    }
+
+                    $scope.reload(function() {
+                        toastr.success("Custom property copied successfully");
+                    });
+                }, function() {
+
+                });
+            });
+        };
 
         $scope.addComp = function(subject) {
             if (!subject.open) {
