@@ -68,6 +68,13 @@ const s = new Schema({
     media: [],
     custom: {},
     lastGeoCheck: Date,
+    walkscore: {
+        date: {type: Date, index: true},
+        error: String,
+        walkscore: Number,
+        transitscore: Number,
+        bikescore: Number,
+    },
 });
 
 s.index({"comps.id": 1});

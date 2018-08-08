@@ -557,6 +557,14 @@ module.exports = {
                 ]);
             }
 
+            if (criteria.walkscore) {
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate()-7);
+                query = query.and([
+                    {$or: [{"walkscore.date": {$exists: false}}, {"walkscore.date": {$lt: cutoff}}]},
+                ]);
+            }
+
             query = query.sort(criteria.sort || "name");
 
             if (criteria.select !== "*") {
