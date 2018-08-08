@@ -245,12 +245,12 @@ module.exports = {
             fp.runrate = Math.round((fp.rent - (fp.concessionsMonthly || 0)) * 100) / 100;
             fp.runratesqft = Math.round((fp.rent - (fp.concessionsMonthly || 0)) / fp.sqft * 100) / 100
 
-            if (links.excluded === true && hide) {
+            if (links && links.excluded === true && hide) {
                 links.floorplans = links.floorplans.map(function (x) {
                     return x.toString()
-                })
+                });
 
-                //console.log(links.floorplans, fp.id)
+                // console.log(links.floorplans, fp.id)
                 if (links.floorplans.indexOf(fp.id.toString()) == -1) {
                     fp.excluded = true;
                     delete fp.rent;

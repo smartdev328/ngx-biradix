@@ -13,6 +13,19 @@ var EmailService = require('../../business/services/emailService')
 var redisService = require('../../utilities/services/redisService')
 const GeocodeService = require("../../utilities/services/geocodeService");
 
+Routes.get("/walkscore", (req, res) => {
+    userService.getSystemUser((system) => {
+        const systemUser = system.user;
+        propertyService.search(systemUser, {
+            walkscore: true,
+            active: true,
+            limit: 10,
+            select: "address city state zip name loc",
+        }, (err, props) => {
+            res.status(200).json({count: props.length});
+        });
+    });
+});
 Routes.get("/geocode", (req, res) => {
     userService.getSystemUser((system) => {
         const systemUser = system.user;
