@@ -1156,6 +1156,9 @@ define([
 
                 $scope.liveSettings.customPortfolio.show = {
                     address: false,
+                    walkscore: false,
+                    transitscore: false,
+                    bikescore: false,
                     phone: false,
                     yearBuilt: false,
                     constructionType: false,
@@ -1205,9 +1208,12 @@ define([
                     $scope.resetCustomPortfolioSettings();
                 }
 
-                $scope.temp.showCustomPortfolioOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+                $scope.temp.showCustomPortfolioOptions = { hideSearch: true, dropdown: true, dropdownDirection: "left", labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
                 $scope.temp.showCustomPortfolioItems = [
                     {id: "address", name: "Address", selected: $scope.liveSettings.customPortfolio.show.address, tooltip: "<b>Address</b><br><i>Property address</i>"},
+                    {id: "walkscore", name: "Walk Score", selected: $scope.liveSettings.customPortfolio.show.walkscore, tooltip: "<b>Walk Score</b><br><i>Walk Score measures the walkability of any address</i>"},
+                    {id: "transitscore", name: "Transit Score", selected: $scope.liveSettings.customPortfolio.show.transitscore, tooltip: "<b>Transit Score</b><br><i>Transit Score measures access to public transit</i>"},
+                    {id: "bikescore", name: "Bike Score", selected: $scope.liveSettings.customPortfolio.show.bikescore, tooltip: "<b>Bike Score</b><br><i>Bike Score measures whether a location is good for biking</i>"},
                     {id: "phone", name: "Phone", selected: $scope.liveSettings.customPortfolio.show.phone, tooltip: "<b>Phone</b><br><i>Property phone</i>"},
                     {id: "constructionType", name: "Construction", selected: $scope.liveSettings.customPortfolio.show.constructionType, tooltip: "<b>Construction</b><br><i>Type of construction</i>"},
                     {id: "owner", name: "Owner", selected: $scope.liveSettings.customPortfolio.show.owner, tooltip: "<b>Owner</b><br><i>Ownership group</i>"},
@@ -1255,8 +1261,11 @@ define([
 
                 $scope.temp.customPortfolioSortItems = [
                     {id: "default", name: "Comp Preference"},
-                    {id: "name", name: "Property Name"},
                     {id: "address", name: "Property Address"},
+                    {id: "name", name: "Property Name"},
+                    {id: "walkscore", name: "Walk Score"},
+                    {id: "transitscore", name: "Transit Score"},
+                    {id: "bikescore", name: "Bike Score"},
                     {id: "phone", name: "Property Phone"},
                     {id: "constructionType", name: "Construction"},
                     {id: "owner", name: "Owner"},
