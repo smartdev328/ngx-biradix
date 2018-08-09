@@ -1732,6 +1732,9 @@ define([
                 {id: "atr", name: "ATR %", selected: $scope.liveSettings.showProfile.atr},
                 {id: "traf", name: "Traffic / Week", selected: $scope.liveSettings.showProfile.traf},
                 {id: "lease", name: "Leases / Week", selected: $scope.liveSettings.showProfile.lease},
+                {id: "walkscore", name: "Walk Score", selected: $scope.liveSettings.showProfile.walkscore},
+                {id: "transitscore", name: "Transit Score", selected: $scope.liveSettings.showProfile.transitscore},
+                {id: "bikescore", name: "Bike Score", selected: $scope.liveSettings.showProfile.bikescore},
             ];
 
             $scope.temp.showCompOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }

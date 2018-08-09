@@ -84,6 +84,9 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
                 settings.picture = true;
             }
 
+            if (typeof settings.walkscore === "undefined") {
+                settings.walkscore = true;
+            }
             return settings;
         }
 
@@ -107,6 +110,9 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
                 atr: me ? me.settings.showATR : false,
                 traf: true,
                 lease: true,
+                walkscore: true,
+                bikescore: false,
+                transitscore: false,
             };
         }
 

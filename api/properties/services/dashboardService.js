@@ -28,7 +28,7 @@ module.exports = {
                 }
 
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView'], _id: subjectId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey media custom"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey media custom walkscore"
                     , skipAmenities: true
                 }, function(err, property) {
                     localCacheService.set(key, property[0], 2)
@@ -37,7 +37,7 @@ module.exports = {
             },
             comp: function (callbackp) {
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView','PropertyManage','CompManage'], _id: compId
-                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey media custom"
+                    , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey media custom walkscore"
                 }, function(err, property, lookups) {
                     if (err || !property || property.length == 0) {
                         return callbackp('Unable to find property')
@@ -165,7 +165,7 @@ module.exports = {
         PropertyService.search(user, {limit: 1,
             permission: "PropertyManage",
             _id: id,
-            select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps media custom",
+            select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps media custom walkscore",
             skipAmenities: true,
             active: true,
         }, function(err, property) {
@@ -193,7 +193,7 @@ module.exports = {
                     limit: 30,
                     permission: "PropertyView",
                     ids: compids,
-                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt owner management media custom phone",
+                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt owner management media custom phone walkscore",
                     skipAmenities: true,
                 }, function(err, comps) {
                     // pre-comupte a lookup for datest by owner for locks
