@@ -559,7 +559,7 @@ module.exports = {
 
             if (criteria.walkscore) {
                 const cutoff = new Date();
-                cutoff.setDate(cutoff.getDate()-7);
+                cutoff.setDate(cutoff.getDate()-60);
                 query = query.and([
                     {$or: [{"walkscore.date": {$exists: false}}, {"walkscore.date": {$lt: cutoff}}]},
                 ]);
@@ -792,6 +792,69 @@ module.exports = {
 
             return callback(err, saved)
         })
+    },
+    updateWalkScore: function(operator, id, walkscore, transitscore, bikescore, callback) {
+        const modelErrors = [];
+
+        if (!id) {
+            modelErrors.push({msg: "Invalid property id."});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        const query = {_id: id};
+        const update = {walkscore: {
+                walkscore,
+                transitscore,
+                bikescore,
+                date: new Date(),
+                error: undefined
+            }};
+        const options = {new: true};
+
+        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to update property.'});
+                callback(modelErrors, null);
+                return;
+            }
+            return callback(err, saved);
+        });
+    },
+    updateWalkScoreError: function(operator, id, error, callback) {
+        const modelErrors = [];
+
+        if (!id) {
+            modelErrors.push({msg: "Invalid property id."});
+        }
+
+        if (modelErrors.length > 0) {
+            callback(modelErrors, null);
+            return;
+        }
+        const query = {_id: id};
+
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate()-59);
+
+        const update = {walkscore: {
+                date: cutoff,
+                error: error,
+            }};
+        const options = {new: true};
+
+        PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
+
+            if (err) {
+                modelErrors.push({msg: 'Unable to update property.'});
+                callback(modelErrors, null);
+                return;
+            }
+            return callback(err, saved);
+        });
     },
     updateGeo: function(operator, id, loc, callback) {
         const modelErrors = [];

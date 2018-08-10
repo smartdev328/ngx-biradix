@@ -53,7 +53,7 @@ define([
                 limit: 20,
                 permission: 'PropertyManage',
                 active: true,
-                select: "address city state zip website name survey phone email contactName constructionType yearBuilt yearRenovated owner management totalUnits"
+                select: "address city state zip website name survey phone email contactName constructionType yearBuilt yearRenovated owner management totalUnits walkscore"
                 , skipAmenities: true
             }).then(function (response) {
                 $scope.myProperties = response.data.properties;

@@ -22,8 +22,8 @@ export class WalkScoreService {
                 switch (resp.status) {
                     case 1:
                         resolve({
-                            bikescore: resp.bike.score,
-                            transitscore: resp.transit.score,
+                            bikescore: resp.bike ? resp.bike.score : 0,
+                            transitscore: resp.transit ? resp.transit.score : 0,
                             walkscore: resp.walkscore,
                         });
                         break;

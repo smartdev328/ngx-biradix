@@ -12,6 +12,7 @@ var exportService = require('../services/exportService');
 var EmailService = require('../../business/services/emailService')
 var redisService = require('../../utilities/services/redisService')
 const GeocodeService = require("../../utilities/services/geocodeService");
+const WalkScore = require("../../../build/walkscore/services/walkScoreService");
 
 Routes.get("/walkscore", (req, res) => {
     userService.getSystemUser((system) => {
@@ -22,7 +23,21 @@ Routes.get("/walkscore", (req, res) => {
             limit: 10,
             select: "address city state zip name loc",
         }, (err, props) => {
-            res.status(200).json({count: props.length});
+            async.eachSeries(props, (property, callbacks) => {
+                let address = property.address + " " + property.city + " " + property.state + " " + property.zip;
+                WalkScore.WalkScoreService.getScore(address, property.loc[0], property.loc[1]).then((result) => {
+                    propertyService.updateWalkScore(systemUser, property._id, result.walkscore, result.transitscore, result.bikescore, () => {
+                        callbacks();
+                    });
+                }).catch((error) => {
+                    console.error("WALKSCORE ERROR (" + address + "): " + error.error);
+                    propertyService.updateWalkScoreError(systemUser, property._id, error.error, () => {
+                        callbacks();
+                    });
+                });
+            }, (err) => {
+                res.status(200).json({count: props.length});
+            });
         });
     });
 });
