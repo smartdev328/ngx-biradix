@@ -175,7 +175,7 @@ function checkDuplicateName(operator: IUserLoggedIn, newProperty: IProperty, old
             if (properties.length > 0) {
                 const v: IDataIntegrityViolation = {
                     checkType: DataIntegrityCheckType.PROPERTY_NAME_DUPLICATE,
-                    description: `${strAction} Property: ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
+                    description: `${strAction} Property: ${newProperty.name}, ${newProperty.address} ${newProperty.city}, ${newProperty.state} ${newProperty.zip}`,
                 };
 
                 properties.forEach((property) => {

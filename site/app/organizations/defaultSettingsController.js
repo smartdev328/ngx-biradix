@@ -149,15 +149,16 @@ define([
             }
 
             $scope.$watch("columnsItems", function(n, o) {
-                console.log(n,o)
-                var o = _.map(_.sortByAll(o, "id"), function(x) {return x.selected.toString()}).join(',')
-                var n = _.map(_.sortByAll(n, "id"), function(x) {return x.selected.toString()}).join(',')
+                if (!o || !n) {
+                    return;
+                }
 
-                if (n != o) {
+                var o2 = _.map(_.sortByAll(o, "id"), function(x) {return x.selected.toString()}).join(',')
+                var n2 = _.map(_.sortByAll(n, "id"), function(x) {return x.selected.toString()}).join(',')
+
+                if (n2 != o2) {
                     $scope.organization.settings.notification_columns.configured=true;
                 }
             }, true);
-
     }]);
-
 });

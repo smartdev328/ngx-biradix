@@ -78,9 +78,9 @@ module.exports = {
         );
         query.select("name orgid survey.id survey.occupancy survey.ner date comps.id totalUnits")
         query.exec(function(err, properties) {
-            var surveyids = _.map(properties,function(x) {return x.survey ? x.survey.id.toString() : ""});
+            var surveyids = _.map(properties,function(x) {return x.survey && x.survey.id ? x.survey.id.toString() : ""});
 
-            _.remove(surveyids,function(x) {return x == ''})
+            _.remove(surveyids, function(x) {return x == ''})
 
             query = SurveySchema.find({_id: {$in : surveyids}});
             query.select("date");

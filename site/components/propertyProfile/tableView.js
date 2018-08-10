@@ -14,8 +14,7 @@ angular.module('biradix.global').directive('tableView', function () {
                         $scope.bedrooms = _.cloneDeep($scope.columns)
                         $scope.bedrooms.shift();
                     }
-                })
-
+                });
             },
             templateUrl: '/components/propertyProfile/tableView.html?bust=' + version
         };
