@@ -32,17 +32,17 @@
                         <i ng-show="settings.orderBy == 'name'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-repeat-start="col in settings.columnSortOrder" ng-if="false"></th>
-                    <th ng-if="col.id == 'walkscore'" style="height:44px;">
+                    <th ng-if="col.id == 'walkscore'" style="height:44px;text-align: center">
                         <A href="https://www.walkscore.com/how-it-works/" target="_blank" style="text-decoration: underline; line-height: 1;font-size:9pt">Walk<Br>Score&reg;</a>
                         <i ng-show="settings.orderBy == '-walkscore'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'walkscore'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'transitscore'" style="height:44px;">
+                    <th ng-if="col.id == 'transitscore'" style="height:44px;text-align: center">
                         <A href="https://www.walkscore.com/how-it-works/" target="_blank" style="text-decoration: underline; line-height: 1;font-size:9pt">Transit<Br>Score&reg;</a>
                         <i ng-show="settings.orderBy == '-transitscore'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'transitscore'" class="fa fa-sort-up"></i>
                     </th>
-                    <th ng-if="col.id == 'bikescore'" style="height:44px;">
+                    <th ng-if="col.id == 'bikescore'" style="height:44px;text-align: center">
                         <A href="https://www.walkscore.com/how-it-works/" target="_blank" style="text-decoration: underline; line-height: 1;font-size:9pt">Bike<Br>Score&reg;</a>
                         <i ng-show="settings.orderBy == '-bikescore'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'bikescore'" class="fa fa-sort-up"></i>
@@ -259,13 +259,13 @@
                         {{row.name}}
                     </td>
                     <td ng-repeat-start="col in settings.columnSortOrder" ng-if="false"></td>
-                    <td ng-if="col.id == 'walkscore'">
+                    <td ng-if="col.id == 'walkscore'" style="text-align: center">
                         {{row.walkscore == 0 ? "-" : row.walkscore}}
                     </td>
-                    <td ng-if="col.id == 'transitscore'">
+                    <td ng-if="col.id == 'transitscore'" style="text-align: center">
                         {{row.transitscore == 0 ? "-" : row.transitscore}}
                     </td>
-                    <td ng-if="col.id == 'bikescore'">
+                    <td ng-if="col.id == 'bikescore'" style="text-align: center">
                         {{row.bikescore == 0 ? "-" : row.bikescore}}
                     </td>
                     <td ng-if="col.id == 'address'">
