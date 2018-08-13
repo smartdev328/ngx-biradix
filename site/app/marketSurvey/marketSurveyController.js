@@ -266,7 +266,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             };
 
     $scope.getGuestInfoBounce = function(guest) {
-        var str = "<B>Last Email Sent:</B>";
+        var str = "<B>Last Email Sent:</B> ";
 
         if (guest.lastEmailed) {
             str += moment(guest.lastEmailed).format("MM/DD/YYYY");
@@ -286,7 +286,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
         str += "<br>";
 
-        str += "<b>Undeliverable:</b> " + guest.email + "<br>";
+        str += "<b>Status:</b> Undeliverable<br>";
+
+        str += "<b>Email:</b> " + guest.email + "<br>";
 
         str += "<B>Error:</B> " + guest.bounceReason + "<br>"
 

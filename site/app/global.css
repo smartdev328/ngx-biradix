@@ -443,3 +443,5 @@ HR.popoverhr {
 }
 
 .increase-popover-width {max-width:600px !important;}
+
+.popover-small {font-size:12px}

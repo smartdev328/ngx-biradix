@@ -86,7 +86,7 @@ module.exports = {
                 existing.save((err, report) => {
 
                     if (err) {
-                        modelErrors.push({msg: 'Unexpected Error. Unable to save report.'});
+                        modelErrors.push({msg: 'Unexpected Error. Unable to save template.'});
                         callback(modelErrors, null);
                         return;
                     }
@@ -188,7 +188,7 @@ module.exports = {
             n.save((err, report) => {
 
                 if (err) {
-                    modelErrors.push({msg: 'Unexpected Error. Unable to save report.'});
+                    modelErrors.push({msg: 'Unexpected Error. Unable to save template.'});
                     callback(modelErrors, null);
                     return;
                 }

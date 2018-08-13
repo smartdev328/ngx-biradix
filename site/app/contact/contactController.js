@@ -13,7 +13,7 @@ define([
             var me;
             $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
-                    me = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
+                    me = { first: $rootScope.me.first, last: $rootScope.me.last, email:  $rootScope.me.email }
                 }
             })
 
@@ -32,6 +32,11 @@ define([
                 }).then(function(response) {
                     msg.properties = response.data.properties.map(function(p) {
                         return p.name;
+                    }).join(", ");
+
+                    msg.role = $rootScope.me.roles[0];
+                    msg.company = $rootScope.me.orgs.map(function(o) {
+                        return o.name;
                     }).join(", ");
 
                     $contactService.send(msg).then(function (resp) {

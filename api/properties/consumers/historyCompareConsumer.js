@@ -82,6 +82,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             ner4: c.survey.bedrooms["4"].ner,
                             ner5: c.survey.bedrooms["5"].ner,
                             ner6: c.survey.bedrooms["6"].ner,
+                            excluded: !!c.survey.excluded,
                         });
 
                         if (i > 0 && c.survey && typeof c.survey.totUnits !== "undefined") {

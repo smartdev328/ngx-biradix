@@ -256,7 +256,13 @@
                 <tr ng-repeat-start="row in block" ng-class="{'subject': row.isSubject,'subtotal' : row.name === 'Averages' || row.name === 'Comp Averages','subtotal-padding' : row.name === 'Averages', 'bold': row.name === 'Comp Averages', 'regular-border': row.name === 'Averages' && settings.compAverages}"
                     >
                     <td nowrap>
-                        {{row.name}}
+                        {{row.name}}                 <i class="fa fa-chain-broken blue" class="pull-left"
+                                                        style="cursor:pointer;"
+                                                        ng-if="row.excluded"
+                                                        popover-trigger="'mouseenter'"
+                                                        popover-placement="right"
+                                                        uib-popover="This property has some floor plans that have been manually excluded from reporting calculations"
+                    ></i>
                     </td>
                     <td ng-repeat-start="col in settings.columnSortOrder" ng-if="false"></td>
                     <td ng-if="col.id == 'walkscore'" style="text-align: center">

@@ -561,21 +561,21 @@ angular.module("biradix.global").controller("rootController",
 
         $rootScope.isModalOpen = function(el) {
             return($(el).hasClass("open"));
+        };
+
+        $rootScope.bouncePopup = function(user) {
+            var str  = '<b>Status:</b> Undeliverable<br>';
+
+            str += '<B>Email:</B> ' + user.email + '<br>'
+
+            str += '<B>Error:</B> ' + user.bounceReason + '<br>'
+
+            if (user.bounceDate) {
+                str += '<B>Last Attempt:</B> ' + moment(new Date(user.bounceDate)).format("MM/DD/YYYY HH:MM") + '<br>'
+            }
+
+            return str;
         }
-
-    $rootScope.bouncePopup = function(user) {
-        var str  = '<b>Undeliverable:</b> ' + user.email + '<br>';
-
-        str += '<B>Error:</B> ' + user.bounceReason + '<br>'
-
-        if (user.bounceDate) {
-            str += '<B>Last Attempt:</B> ' + moment(new Date(user.bounceDate)).format("MM/DD/YYYY HH:MM") + '<br>'
-        }
-
-        return str;
-
-
-    }
     }]);
 
 
