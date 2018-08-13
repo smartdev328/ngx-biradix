@@ -1108,13 +1108,11 @@ function getSysemUser (callback) {
 }
 
 function defaultSettings(user, orgSettings) {
- //   orgSettings = orgSettings || { detailed_concessions : {}, leased: {}, renewal : {}, how_often: { default_value: "* * * * 2"}, updates: {}, reminders: {}};
-    //console.log(orgSettings);
     user.settings = user.settings || {};
     user.settings.monthlyConcessions = user.settings.monthlyConcessions || orgSettings.detailed_concessions.default_value;
-    user.settings.showLeases = user.settings.showLeases || orgSettings.leased.default_value;
-    user.settings.showRenewal = user.settings.showRenewal || orgSettings.renewal.default_value;
-    user.settings.showATR = user.settings.showATR || orgSettings.atr.default_value;
+    user.settings.showLeases = typeof user.settings.showLeases === "undefined" ? orgSettings.leased.default_value : user.settings.showLeases;
+    user.settings.showRenewal = typeof user.settings.showRenewal === "undefined" ? orgSettings.renewal.default_value : user.settings.showRenewal;
+    user.settings.showATR = typeof user.settings.showATR === "undefined" ? orgSettings.atr.default_value : user.settings.showATR;
     user.settings.notifications = user.settings.notifications || {};
     user.settings.notifications.cron = user.settings.notifications.cron || orgSettings.how_often.default_value
     user.settings.notifications.props = user.settings.notifications.props || [];
