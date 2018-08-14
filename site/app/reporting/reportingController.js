@@ -27,6 +27,7 @@ define([
 
         $scope.meLoaded = false;
         var me = $rootScope.$watch("me", function(x) {
+            console.log($rootScope.me);
             if ($rootScope.me) {
                 $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single", tooltip: "<b>Community Amenities Report</b><Br><i>Report highlights all Community Amenities for the subject property and each comp property.</i>"});
                 $scope.reportItems.push({id: "concession", name: "Concessions", selected:$stateParams.property == "2", group: "Individual Reports", type:"single", tooltip: "<b>Concessions Report</b><Br><i>Report compares concessions over a customizable period of time for the subject property and comps. It includes Market Rent, One-Time Concessions, Recurring Concessions, Total Concessions, NER, and NER vs. Weighted Avg. Comp NER</i>"});
