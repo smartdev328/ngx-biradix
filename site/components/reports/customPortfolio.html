@@ -118,7 +118,13 @@
                         <i ng-show="settings.orderBy == 'sqft'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="col.id == 'rent'" style="text-align: right">
-                        Rent
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="top"
+                                uib-popover-html="$root.tooltips['rent']"
+                                popover-class="popover-small"
+                                popover-append-to-body="true"
+                        >Rent</span>
                         <i ng-show="settings.orderBy == '-rent'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'rent'" class="fa fa-sort-up"></i>
                     </th>
