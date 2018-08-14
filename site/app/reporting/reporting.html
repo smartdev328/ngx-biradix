@@ -60,7 +60,7 @@
 
     <div class="hidden-print pull-right">
         <div class="btn-group" style="padding-bottom:10px;padding-right:10px">
-            <button uib-tooltip="My Custom/Shared Reports" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "my">
+            <button uib-tooltip="My Custom/Shared Templates" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "my">
                 <i class="fa fa-save visible-xs-inline"></i> <span class="hidden-xs">My Report Templates</span> <span class="caret" style="color:white !important;"></span>
             </button>
             <div class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:300px">
@@ -114,7 +114,7 @@
                         </td>
 
                         <td valign="middle" style="text-align: right;padding-right:5px" nowrap>
-                            <i class="fa fa-users" style="font-size:12px;margin-right:2px" ng-if="report.ownerid.toString() == me._id.toString()" uib-tooltip="You shared this report" tooltip-append-to-body="true"></i>
+                            <i class="fa fa-user" style="font-size:12px;margin-right:2px" ng-if="report.ownerid.toString() == me._id.toString()" uib-tooltip="You shared this template" tooltip-append-to-body="true"></i>
                             <a href ng-click="editReport(report)" ng-if="report.ownerid.toString() == me._id.toString() || me.roles[0] == 'Corporate Manager'" uib-tooltip="Edit"><i class="fa fa-pencil" style="font-size:12px"></i></a>
                         </td>
                     </tr>

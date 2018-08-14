@@ -86,7 +86,13 @@
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
         <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent">
-            Rent
+            <span
+                    popover-trigger="'mouseenter'"
+                    popover-placement="top"
+                    uib-popover-html="$root.tooltips['rent']"
+                    popover-class="popover-small"
+                    popover-append-to-body="true"
+            >Rent</span>
             <i ng-show="sort.rent == null" class="fa fa-sort"></i>
             <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
