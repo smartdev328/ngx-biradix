@@ -28,7 +28,6 @@ define([
         $scope.meLoaded = false;
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-                console.log($rootScope.me, x, "Inside");
                 $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single", tooltip: "<b>Community Amenities Report</b><Br><i>Report highlights all Community Amenities for the subject property and each comp property.</i>"});
                 $scope.reportItems.push({id: "concession", name: "Concessions", selected:$stateParams.property == "2", group: "Individual Reports", type:"single", tooltip: "<b>Concessions Report</b><Br><i>Report compares concessions over a customizable period of time for the subject property and comps. It includes Market Rent, One-Time Concessions, Recurring Concessions, Total Concessions, NER, and NER vs. Weighted Avg. Comp NER</i>"});
                 $scope.reportItems.push({id: "fees_deposits", name: "Fees & Deposits", selected:false, group: "Individual Reports", type:"single", tooltip: "<b>Fees and Deposits Report</b><Br><i>Report includes different fees and deposits for each property including: Administration Fee, Application Fee, Lease Terms, Pet Deposit (Refundable & Non-Refundable), Security Deposit, Pet Rent, and Short Term Rental Premium</i>"});
@@ -890,12 +889,7 @@ define([
         }
 
         $scope.reportsChanged = function(load, callback) {
-            console.log($rootScope.me, "Reports Changed");
             if (!$rootScope.me) {
-                Raygun.send(new Error("Missing user context in reporting"), {loggedInUser: $rootScope.me});
-                window.setTimeout(function() {
-                    $rootScope.logoff();
-                }, 1000);
                 return;
             }
 
