@@ -27,7 +27,6 @@ define([
 
         $scope.meLoaded = false;
         var me = $rootScope.$watch("me", function(x) {
-            console.log($rootScope.me, x);
             if ($rootScope.me) {
                 console.log($rootScope.me, x, "Inside");
                 $scope.reportItems.push({id: "community_amenities", name: "Community Amenities", selected:false, group: "Individual Reports", type:"single", tooltip: "<b>Community Amenities Report</b><Br><i>Report highlights all Community Amenities for the subject property and each comp property.</i>"});
@@ -891,6 +890,7 @@ define([
         }
 
         $scope.reportsChanged = function(load, callback) {
+            console.log($rootScope.me, "Reports Changed");
             if (!$rootScope.me) {
                 Raygun.send(new Error("Missing user context in reporting"), {loggedInUser: $rootScope.me});
                 window.setTimeout(function() {
