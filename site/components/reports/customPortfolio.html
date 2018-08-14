@@ -78,7 +78,13 @@
                         <i ng-show="settings.orderBy == 'management'" class="fa fa-sort-up"></i>
                     </th>
                     <th ng-if="col.id == 'units'" style="text-align: right;">
-                        Units
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="top"
+                                uib-popover-html="$root.tooltips['units']"
+                                popover-class="popover-small"
+                                popover-append-to-body="true"
+                        >Units</span>
                         <i ng-show="settings.orderBy == '-totUnits'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'totUnits'" class="fa fa-sort-up"></i>
                     </th>

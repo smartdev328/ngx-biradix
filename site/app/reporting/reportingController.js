@@ -1219,7 +1219,7 @@ define([
                     {id: "owner", name: "Owner", selected: $scope.liveSettings.customPortfolio.show.owner, tooltip: "<b>Owner</b><br><i>Ownership group</i>"},
                     {id: "management", name: "Management", selected: $scope.liveSettings.customPortfolio.show.management, tooltip: "<b>Management</b><br><i>Management company</i>"},
                     {id: "yearBuilt", name: "Year Built", selected: $scope.liveSettings.customPortfolio.show.yearBuilt, tooltip: "<b>Year Built</b><br><i>Year property was constructed (YOC)</i>"},
-                    {id: "units", name: "Units", selected: $scope.liveSettings.customPortfolio.show.units, tooltip: "<b>Units</b><Br><i>Total units</i>"},
+                    {id: "units", name: "Units", selected: $scope.liveSettings.customPortfolio.show.units, tooltip:  $rootScope.tooltips["units"]},
                     {id: "sqft", name: "Sqft", selected: $scope.liveSettings.customPortfolio.show.sqft, tooltip: "<b>Square Feet</b><Br><i>The weighted average square footage. Example - if there were 25 units with 500 square feet, and 75 units with 1000, the weighted average sq ft value would be (25 x 500 + 75 x 1000) / 100 units = 875 sq ft</i>"},
                     {id: "occupancy", name: "Occ. %", selected: $scope.liveSettings.customPortfolio.show.occupancy, tooltip: "<b>Occupancy %</b><br><i>Percentage of property which is occupied</i>"},
                     {id: "leased", name: "Leased %", selected: $scope.liveSettings.customPortfolio.show.leased || false, tooltip: "<b>Leased %</b><br><i>Percentage of property which is leased</i>"},

@@ -578,9 +578,8 @@ angular.module("biradix.global").controller("rootController",
         };
 
         $rootScope.tooltips = {
-            'rent': '<b>Rent</b> - <i>The weighted average monthly market rent (Gross Market Rent - GMR). This is made up of base (minimum) gross floor plan rents for a 12 month lease, before any concessions or discounts',
+            "units": "<b>Units</b> - <i>Total units</i>",
+            "rent": "<b>Rent</b> - <i>The weighted average monthly market rent (Gross Market Rent - GMR). This is made up of base (minimum) gross floor plan rents for a 12 month lease, before any concessions or discounts</i>",
         };
-
     }]);
-
 
