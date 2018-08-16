@@ -256,7 +256,7 @@ Routes.get('/export', function (req, res) {
 
                 var email = {
                     to: "BI_Radi.nvvrgyasj45hb348@u.box.com",
-                    bcc: "alex@biradix.com,eugene@biradix.com",
+                    bcc: "eugene@biradix.com,alex@biradix.com",
                     subject: 'BI:Radix - Wood Residential nightly data export',
                     logo: "https://wood.biradix.com/images/organizations/wood.png",
                     template: 'export.html',
