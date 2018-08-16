@@ -38,6 +38,9 @@
     margin-bottom:10px;z-index: 10;position:relative
 }
 
+.maingrid th {
+    white-space: nowrap !important;
+}
 
 .grid-pager ul {
     margin-bottom: 0px !important;
