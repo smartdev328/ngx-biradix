@@ -561,21 +561,61 @@ angular.module("biradix.global").controller("rootController",
 
         $rootScope.isModalOpen = function(el) {
             return($(el).hasClass("open"));
-        }
+        };
 
-    $rootScope.bouncePopup = function(user) {
-        var str  = '<b>Undeliverable:</b> ' + user.email + '<br>';
+        $rootScope.bouncePopup = function(user) {
+            var str  = '<b>Status:</b> Undeliverable<br>';
 
-        str += '<B>Error:</B> ' + user.bounceReason + '<br>'
+            str += '<B>Email:</B> ' + user.email + '<br>'
 
-        if (user.bounceDate) {
-            str += '<B>Last Attempt:</B> ' + moment(new Date(user.bounceDate)).format("MM/DD/YYYY HH:MM") + '<br>'
-        }
+            str += '<B>Error:</B> ' + user.bounceReason + '<br>'
 
-        return str;
+            if (user.bounceDate) {
+                str += '<B>Last Attempt:</B> ' + moment(new Date(user.bounceDate)).format("MM/DD/YYYY HH:MM") + '<br>'
+            }
 
+            return str;
+        };
 
-    }
+        $rootScope.tooltips = {
+            "address": "<b>Address</b> - <i>Property address</i>",
+            "walkscore": "<b>Walk Score® - Walk Score</b> - <i>Walk Score measures the walk-ability of any address</i>",
+            "transitscore": "<b>Walk Score® - Transit Score</b> - <i>Transit Score measures access to public transit</i>",
+            "bikescore": "<b>Walk Score® - Bike Score</b> - <i>Bike Score measures whether a location is good for biking</i>",
+            "phone": "<b>Phone</b> - <i>Property phone</i>",
+            "constructionType": "<b>Construction</b> - <i>Type of construction</i>",
+            "owner": "<b>Owner</b> - <i>Ownership group</i>",
+            "management": "<b>Management</b> - <i>Management company</i>",
+            "yearBuilt": "<b>Year Built</b> - <i>Year property was constructed (YOC)</i>",
+            "weeklytraffic": "<b>Traffic Week</b> - <i>Number of tours/shows given to prospective tenants in last 7 days (week)",
+            "weeklyleases": "<b>Leases / Week</b> - <i>Number of approved leases in the last 7 days (week), after cancellations and denials</i>",
+            "units": "<b>Units</b> - <i>Total units</i>",
+            "unitPercent": "<b>Units %</b> - <i>Number of Units / Total units * 100</i>",
+            "sqft": "<b>Square Feet</b> - <i>The weighted average square footage. Example - if there were 25 units with 500 square feet, and 75 units with 1000, the weighted average sq ft value would be (25 x 500 + 75 x 1000) / 100 units = 875 sq ft</i>",
+            "occupancy": "<b>Occupancy %</b> - <i>Percentage of property which is occupied</i>",
+            "leased": "<b>Leased %</b> - <i>Percentage of property which is leased</i>",
+            "atr": "<b>Apartments To Rent %</b> - <i>Apartments To Rent (Exposure) is calculated by adding vacant available units (units not leased) plus units on notice and dividing by total units of the property</i>",
+            "renewal": "<b>Renewal %</b> - <i>Percentage of leases that have renewed (typically used by student housing)</i>",
+            "rent": "<b>Rent</b> - <i>The weighted average monthly market rent. This is made up of base (minimum) floor plan market rents for a 12 month lease, before any concessions or discounts</i>",
+            "rentsqft": "<b>Rent/Sqft</b> - <i>This is Rent divided by Sqft</i>",
+            "rent0": "<b>Rent by # Bedrooms</b> - <i>This is Rent grouped by number of bedrooms</i>",
+            "concessionsOneTime": "<b>One-Time Concessions</b> - <i>The one-time (upfront) concessions. Example - if there is a $500 look-and-lease discount for signing a 12 month lease</i>",
+            "concessionsMonthly": "<b>Recurring Concessions</b> - <i>The recurring (monthly) concessions. Example - if concession is $100 off per month</i>",
+            "runrate": "<b>Recurring Rent</b> - <i>This is Rent minus Recurring Concessions. Excludes One-Time Concessions.</i>",
+            "runratesqft": "<b>Recurring Rent / Sqft</b> - <i>This is Recurring Rent divided by Sqft </i>",
+            "concessions": "<b>Total Concessions</b> - <i>This is the sum of One Time Concessions and 12 months of Recurring Concessions</i>",
+            "ner": "<b>Net Effective Rent</b> - <i>Net Effective Rent (NER) is Rent less Recurring Concession and (One-Time Concessions / 12)</i>",
+            "ner0": "<b>NER by # Bedrooms</b> - <i>Net Effective Rent grouped by number of bedrooms</i>",
+            "nervscompavg": "<b>Net Effective Rent vs Comp Avg</b> - <i>Net Effective Rent divided by Comp average Net Effective Rent</i>",
+            "nerweek": "<b>Net Effective Rent vs Last Week</b> - <i>Net Effective Rent divided by Last Week's Net Effective Rent</i>",
+            "nermonth": "<b>Net Effective Rent vs Last Month</b> - <i>Net Effective Rent divided by Last Month's Net Effective Rent</i>",
+            "neryear": "<b>Net Effective Rent vs Last Year</b> - <i>Net Effective Rent divided by Last Year's Net Effective Rent</i>",
+            "nersqft": "<b>Net Effective Rent / Sqft</b> - <i>Net Effective Rent per Square Foot (NER divided by Sqft)</i>",
+            "nersqftweek": "<b>Net Effective Rent / Sqft vs Last Week</b> - <i>Net Effective Rent / Sqft divided by Last Week's Net Effective Rent / Sqft</i>",
+            "nersqftmonth": "<b>Net Effective Rent / Sqft vs Last Month</b> - <i>Net Effective Rent / Sqft divided by Last Month's Net Effective Rent / Sqft</i>",
+            "nersqftyear": "<b>Net Effective Rent / Sqft vs Last Year</b> - <i>Net Effective Rent / Sqft divided by Last Year's Net Effective Rent / Sqft</i>",
+            "nersqftvscompavg": "<b>Net Effective Rent/Sqft vs Comp Avg</b> - <i>Net Effective Rent / Sqft divided by Comp average Net Effective Rent / Sqft</i>",
+            "last_updated": "<b>Last Updated</b> - <i>The date of the last survey completed for that property</i>",
+        };
     }]);
-
 

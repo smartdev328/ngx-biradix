@@ -140,6 +140,7 @@
                        popover-placement="right"
                        popover-append-to-body="true"
                        uib-popover-html="getGuestInfo(swap.selectedGuest)"
+                       ng-if="!swap.selectedGuest.bounceReason"
                     ></i>
 
                     <i class="fa fa-exclamation-triangle warning"
@@ -148,6 +149,7 @@
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        popover-append-to-body="true"
+                       popover-class="popover-small"
                        uib-popover-html="getGuestInfoBounce(swap.selectedGuest)"
                     ></i>
 

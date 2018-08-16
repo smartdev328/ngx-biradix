@@ -137,9 +137,9 @@ define([
                         $scope.lookups = resp.lookups;
                         $scope.property = resp.property;
                         $scope.canManage = resp.canManage;
-                        $scope.canSurvey = resp.canSurvey;
                         $scope.owner = resp.owner;
                         $scope.roles = $rootScope.me.roles;
+                        $scope.canSurvey = resp.canSurvey && $scope.roles[0] != "Property Owner";
                         $scope.comp = resp.comp;
                         window.setTimeout(function() {$window.document.title = $scope.property.name + " - Profile | BI:Radix";},1500);
 

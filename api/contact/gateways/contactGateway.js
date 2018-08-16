@@ -47,6 +47,8 @@ Routes.post('/send', function (req, res) {
             logo: logo,
             subject: req.body.subject,
             properties: req.body.properties || "",
+            role: req.body.role || "",
+            company: req.body.company || "",
             template: "contact.html",
             templateData: req.body,
         };

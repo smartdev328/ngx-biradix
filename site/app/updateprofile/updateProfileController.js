@@ -181,7 +181,7 @@ define([
                         toastr.success('Profile updated successfully.');
                         $rootScope.refreshToken(true, function() {});
                     }
-                    
+
 
                 }, function (err) {
                     $('button.contact-submit').prop('disabled', false);
@@ -262,20 +262,21 @@ define([
                 ngProgress.start();
 
                 $authService.updateSettings($rootScope.me.settings).then(function (resp) {
-                    $('button.contact-submit').prop('disabled', false);
-                    ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
                         resp.data.errors.forEach(function(e) {
                             toastr.error(e.msg);
-                        })
-
+                        });
+                        $('button.contact-submit').prop('disabled', false);
+                        ngProgress.complete();
                     }
                     else {
-                        toastr.success('Notifications updated successfully.');
+                        toastr.success("Notifications updated successfully.");
 
-                        $rootScope.refreshToken(true, function() {});
+                        $rootScope.refreshToken(true, function() {
+                            $('button.contact-submit').prop('disabled', false);
+                            ngProgress.complete();
+                        });
                     }
-
                 }, function (err) {
                     $('button.contact-submit').prop('disabled', false);
                     toastr.error('Unable to save Notifications. Please contact an administrator');
@@ -295,20 +296,20 @@ define([
                 ngProgress.start();
 
                 $authService.updateSettings($rootScope.me.settings).then(function (resp) {
-                    $('button.contact-submit').prop('disabled', false);
-                    ngProgress.complete();
                     if (resp.data.errors && resp.data.errors.length > 0) {
                         resp.data.errors.forEach(function(e) {
                             toastr.error(e.msg);
                         })
+                        $('button.contact-submit').prop('disabled', false);
+                        ngProgress.complete();
+                    } else {
+                        toastr.success("Settings updated successfully.");
 
+                        $rootScope.refreshToken(true, function() {
+                            $('button.contact-submit').prop('disabled', false);
+                            ngProgress.complete();
+                        });
                     }
-                    else {
-                        toastr.success('Settings updated successfully.');
-
-                        $rootScope.refreshToken(true, function() {});
-                    }
-
                 }, function (err) {
                     $('button.contact-submit').prop('disabled', false);
                     toastr.error('Unable to save Settings. Please contact an administrator');

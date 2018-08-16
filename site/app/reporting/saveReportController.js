@@ -58,7 +58,7 @@ define([
                     },
                     function(error) {
                         $('button.contact-submit').prop('disabled', false);
-                        toastr.error("Unable to save report. Please contact the administrator.");
+                        toastr.error("Unable to save template. Please contact the administrator.");
                     });
 
             }
