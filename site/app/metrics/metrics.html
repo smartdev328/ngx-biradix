@@ -25,6 +25,22 @@
 </div>
 
 <div class="panel panel-info hidden-print">
+    <div class="panel-heading">Property Surveys Completed
+        <i class="fa fa-question-circle"
+           style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
+           popover-trigger="'mouseenter'"
+           popover-placement="right"
+           popover-append-to-body="true"
+           uib-popover-html="'Shows every time a new Property Survey is created.'"
+        ></i>
+    </div>
+    <div class="panel-body">
+        <time-series options="surveyData"></time-series>
+        <h4>Total Surveys (in date range): {{widgets.survey.total | number: 0}}</h4>
+    </div>
+</div>
+
+<div class="panel panel-info hidden-print">
     <div class="panel-heading">SurverySwap Requests
         <i class="fa fa-question-circle"
            style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"

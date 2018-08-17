@@ -19,6 +19,8 @@ const EmailService = require("../../business/services/emailService");
 const escapeStringRegexp = require("escape-string-regexp");
 const MarketSurveyDataIntegrityViolation = require("../../../build/properties/services/MarketSurveyDataIntegrityViolationService");
 const MarketSurveyDataIntegrityViolationService = new MarketSurveyDataIntegrityViolation.MarketSurveyDataIntegrityViolationService();
+const IEvents = require("../../../build/keen/interfaces/IEvents");
+const keenModule = require("../../../build/keen/services/keenService");
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -1056,28 +1058,32 @@ module.exports = {
                 // if we pass in the date, pick last survey before the date
                 PropertySchema.findOne({_id: id}, function(err, prop) {
                     subject = prop;
-                    callbackw(null, (prop.survey ? prop.survey.id : null), survey.date);
+
+                    OrgService.read(function(err, orgs) {
+                        callbackw(null, (prop.survey ? prop.survey.id : null), survey.date, orgs);
+                    });
+
                 });
             },
-            function(surveyid, date, callbackw) {
+            function(surveyid, date, orgs, callbackw) {
                 if (date) {
                     SurveySchema.findOne({date: {$lt: date}, propertyid: subject._id}, null, {sort: {date: -1}}, function(err, lastsurvey) {
-                        callbackw(null, lastsurvey);
+                        callbackw(null, lastsurvey, orgs);
                     });
                 } else if (surveyid) {
                     SurveySchema.findOne({_id: surveyid}, function(err, lastsurvey) {
-                        callbackw(null, lastsurvey);
+                        callbackw(null, lastsurvey, orgs);
                     });
                 } else {
-                    callbackw(null, {});
+                    callbackw(null, {}, orgs);
                 }
             },
-            function(lastsurvey, callbackw) {
+            function(lastsurvey, orgs, callbackw) {
                 SurveyHelperService.getSubjectExclusions(id, compFloorplans, function(exclusions) {
-                    callbackw(null, lastsurvey, exclusions);
+                    callbackw(null, lastsurvey, exclusions ,orgs);
                 });
             },
-        ], function(err, lastsurvey, exclusions ) {
+        ], function(err, lastsurvey, exclusions, orgs ) {
             if (!lastsurvey) {
                 lastsurvey = {};
             } else {
@@ -1164,7 +1170,36 @@ module.exports = {
                 } else if (oldfp.rent !== fp.rent || oldfp.concessions !== fp.concessions) {
                     data.push({description: PropertyHelperService.floorplanName(oldfp) + ": " + PropertyHelperService.floorplanRentName(oldfp) + " => " + PropertyHelperService.floorplanRentName(fp)});
                 }
-            })
+            });
+
+            let subjectOrg = null;
+
+            if (subject.orgid) {
+                subjectOrg = orgs.find((x) => {
+                    return x._id.toString() === subject.orgid.toString();
+                });
+            }
+            const event = {
+                type: IEvents.KeenEventType.PROPERTY_SURVEY,
+                payload: {
+                    property: {
+                        id: subject._id.toString(),
+                        name: subject.name,
+                        organization: {
+                            id: subjectOrg ? subjectOrg._id.toString() : null,
+                            name: subjectOrg ? subjectOrg.name.toString() : "",
+                        },
+                    },
+                    user: {
+                        id: operator._id,
+                        name: operator.first + " " + operator.last,
+                        organization: {
+                            id: operator.orgs[0]._id,
+                            name: operator.orgs[0].name,
+                        },
+                    },
+                },
+            };
 
             n.save(function(err, created) {
                 data[0].id = created._id;
@@ -1173,6 +1208,7 @@ module.exports = {
                     callback(err, created);
                 });
 
+                keenModule.KeenService.recordEvent(event);
                 if (!survey.skipAudit) {
                     AuditService.create({
                         operator: operator,
