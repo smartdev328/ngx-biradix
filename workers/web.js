@@ -92,6 +92,7 @@ d.run(function() {
             app.use('/properties/cron', require('../api/properties/gateways/cronGateway'));
             app.use('/propertyusers/cron', require('../api/propertyusers/gateways/cronGateway'));
             app.use("/propertyusers/keen", require("../build/propertyusers/gateways/keenGateway"));
+            app.use("/properties/keen", require("../build/properties/gateways/keenGateway"));
             app.use("/users/cron", require("../build/users/gateways/cronGateway"));
 
             app.get('/p/:token', function (req, res) {

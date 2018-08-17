@@ -7,12 +7,18 @@ define([
             $scope.property = property;
 
             $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
+                if (!$scope.newGuest.first && !$scope.newGuest.last && !$scope.newGuest.email) {
+                    $uibModalInstance.dismiss("cancel");
+                } else {
+                    $dialog.confirm("It appears you are in the middle of adding a contact. Do you want to close without saving it?", function() {
+                        $uibModalInstance.dismiss("cancel");
+                    });
+                }
             };
 
-            ga('set', 'title', "/surveySwap");
-            ga('set', 'page', "/surveySwap");
-            ga('send', 'pageview');
+            ga("set", "title", "/surveySwap");
+            ga("set", "page", "/surveySwap");
+            ga("send", "pageview");
 
             $scope.reload = function() {
                 $scope.newGuest = {};

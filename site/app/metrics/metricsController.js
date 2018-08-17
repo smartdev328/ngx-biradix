@@ -58,6 +58,9 @@ define([
                     types: types,
                     type: types[6],
                 },
+                survey: {
+                    total: 0,
+                },
             };
 
             var unbind = $rootScope.$watch("me", function(x) {
@@ -82,6 +85,7 @@ define([
             };
 
             $scope.runAll = function() {
+                $scope.runPropertySurveys();
                 $scope.runSurveySwapRequested();
                 $scope.runSurveySwapRequestedByOrganization();
                 $scope.runSurveySwapRequestedByWeekday();
@@ -160,6 +164,73 @@ define([
                     toastr.error("Unable to perform action. Please contact an administrator");
                 });
             }
+            $scope.runPropertySurveys = function() {
+                var parameters = {
+                    event_collection: "Property Survey",
+                    interval: $keenService.daterangeToInterval($scope.options.daterange),
+                    filters: [
+                        {
+                            property_name: "env",
+                            operator: "eq",
+                            property_value: heroku_env,
+                        },
+                    ],
+                    timeframe: $keenService.daterangeToTtimeframe($scope.options.daterange),
+                };
+
+                var orgs = _.map(_.filter($scope.options.organizationItems, function(x) {
+                    return x.selected == true;
+                }), function(x) {
+                    return x.id;
+                });
+
+                if (orgs.length > 0) {
+                    parameters.filters.push({
+                        property_name: "user.organization.id",
+                        operator: "in",
+                        property_value: orgs,
+                    });
+                }
+
+                $keenService.query("count", parameters).then(function(response) {
+                    if (response.data.errors) {
+                        return toastr.error("Error: " + response.data.errors.code);
+                    }
+
+                    var series = [];
+                    var min = 0;
+                    var max = 0;
+                    var _min = 9999;
+                    var _max = 0;
+                    var s = {data: [], name: "Surveys", yAxis: 0};
+
+                    $scope.widgets.survey.total = 0;
+                    response.data.result.result.forEach(function(d) {
+                        // console.log(d.timeframe.start, d.timeframe.end);
+                        s.data.push([((new Date(d.timeframe.start)).getTime() + (new Date(d.timeframe.end)).getTime()) / 2, d.value]);
+                        if (_max < d.value) {
+                            _max = d.value;
+                        }
+
+                        if (_min > d.value) {
+                            _min = d.value;
+                        }
+
+                        $scope.widgets.survey.total += d.value;
+                    });
+
+                    if (s.data.length > 0) {
+                        min = _min;
+                        max = _max;
+                    }
+
+                    series.push(s);
+
+                    $scope.surveyData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: "", title: "", marker: true, data: series, min: min, max: max};
+                }, function(error) {
+                    toastr.error("Unable to perform action. Please contact an administrator");
+                });
+            };
             $scope.runSurveySwapRequested = function() {
                 var parameters = {
                     event_collection: "SurveySwap Requested",

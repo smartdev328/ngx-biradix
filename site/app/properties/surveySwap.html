@@ -19,7 +19,7 @@
         <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit()">
             <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
                 <tbody>
-                <tr class="thead">
+                <tr class="thead" ng-if="users.length > 0">
                     <th>First</th>
                     <th>Last</th>
                     <th>Email</th>
@@ -47,17 +47,32 @@
                     </td>
 
                 </tr>
+                <tr ng-if="users.length == 0">
+                    <Td colspan="100%">
+                        <b>Add New Contact:</b>
+                    </Td>
+                </tr>
                 <tr>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.first" id="newGuestfirst" placeholder="First"></td>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.last" id="newGuestlast" placeholder="Last"></td>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.email" id="newGuestemail" placeholder="Email"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td style="vertical-align: middle !important;"><i class="fa fa-plus fa-fw" style="cursor: pointer" ng-click="save()"></i></td>
+                    <td style="vertical-align: middle !important;" nowrap>
+                        <i class="fa fa-save fa-fw" style="cursor: pointer" ng-click="save()" uib-tooltip="Save"></i>
+                        <Span ng-if="newGuest.first || newGuest.last || newGuest.email">
+                        <i class="fa fa-undo fa-fw" style="cursor: pointer" ng-click="newGuest.first = ''; newGuest.last = ''; newGuest.email = '';" uib-tooltip="Cancel"></i>
+                        </Span>
+                        <Span ng-if="!newGuest.first && !newGuest.last && !newGuest.email" style="width:20px;">
+                        </Span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
-
         </form>
+    </div>
+
+    <div class="modal-footer" style="text-align: center">
+        <button class="btn btn-success contact-submit" ng-click="cancel()">Done</button>
     </div>
 </div>
