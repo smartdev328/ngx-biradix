@@ -7,12 +7,18 @@ define([
             $scope.property = property;
 
             $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
+                if (!$scope.newGuest.first && !$scope.newGuest.last && !$scope.newGuest.email) {
+                    $uibModalInstance.dismiss("cancel");
+                } else {
+                    $dialog.confirm("You have made changes that have not been saved. Are you sure you want to close without saving?", function() {
+                        $uibModalInstance.dismiss("cancel");
+                    });
+                }
             };
 
-            ga('set', 'title', "/surveySwap");
-            ga('set', 'page', "/surveySwap");
-            ga('send', 'pageview');
+            ga("set", "title", "/surveySwap");
+            ga("set", "page", "/surveySwap");
+            ga("send", "pageview");
 
             $scope.reload = function() {
                 $scope.newGuest = {};

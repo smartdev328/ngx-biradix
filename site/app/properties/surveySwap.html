@@ -48,16 +48,29 @@
 
                 </tr>
                 <tr>
+                    <Td colspan="100%">
+                        <b>Create new Contact:</b>
+                    </Td>
+                </tr>
+                <tr>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.first" id="newGuestfirst" placeholder="First"></td>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.last" id="newGuestlast" placeholder="Last"></td>
                     <td><input type="text" class="form-control input-sm" ng-model="newGuest.email" id="newGuestemail" placeholder="Email"></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td style="vertical-align: middle !important;"><i class="fa fa-plus fa-fw" style="cursor: pointer" ng-click="save()"></i></td>
+                    <td style="vertical-align: middle !important;" nowrap>
+                        <Span ng-if="newGuest.first || newGuest.last || newGuest.email">
+                        <i class="fa fa-save fa-fw" style="cursor: pointer" ng-click="save()" uib-tooltip="Save"></i>
+                        <i class="fa fa-undo fa-fw" style="cursor: pointer" ng-click="newGuest.first = ''; newGuest.last = ''; newGuest.email = '';" uib-tooltip="Cancel"></i>
+                        </Span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
-
         </form>
+    </div>
+
+    <div class="modal-footer" style="text-align: center">
+        <button class="btn btn-success contact-submit" ng-click="cancel()">Done</button>
     </div>
 </div>
