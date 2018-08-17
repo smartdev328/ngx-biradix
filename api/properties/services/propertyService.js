@@ -1197,6 +1197,7 @@ module.exports = {
                             id: operator.orgs[0]._id,
                             name: operator.orgs[0].name,
                         },
+                        role: operator.roles[0],
                     },
                 },
             };
