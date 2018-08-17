@@ -19,7 +19,7 @@
         <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit()">
             <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px">
                 <tbody>
-                <tr class="thead">
+                <tr class="thead" ng-if="users.length > 0">
                     <th>First</th>
                     <th>Last</th>
                     <th>Email</th>
@@ -47,9 +47,9 @@
                     </td>
 
                 </tr>
-                <tr>
+                <tr ng-if="users.length == 0">
                     <Td colspan="100%">
-                        <b>Create new Contact:</b>
+                        <b>Add New Contact:</b>
                     </Td>
                 </tr>
                 <tr>
@@ -59,9 +59,12 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td style="vertical-align: middle !important;" nowrap>
-                        <Span ng-if="newGuest.first || newGuest.last || newGuest.email">
                         <i class="fa fa-save fa-fw" style="cursor: pointer" ng-click="save()" uib-tooltip="Save"></i>
+                        <Span ng-if="newGuest.first || newGuest.last || newGuest.email">
                         <i class="fa fa-undo fa-fw" style="cursor: pointer" ng-click="newGuest.first = ''; newGuest.last = ''; newGuest.email = '';" uib-tooltip="Cancel"></i>
+                        </Span>
+                        <Span ng-if="!newGuest.first && !newGuest.last && !newGuest.email" style="width:20px;">
+
                         </Span>
                     </td>
                 </tr>
