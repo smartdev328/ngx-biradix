@@ -10,7 +10,7 @@ define([
                 if (!$scope.newGuest.first && !$scope.newGuest.last && !$scope.newGuest.email) {
                     $uibModalInstance.dismiss("cancel");
                 } else {
-                    $dialog.confirm("You have made changes that have not been saved. Are you sure you want to close without saving?", function() {
+                    $dialog.confirm("It appears you are in the middle of adding a contact. Do you want to close without saving it?", function() {
                         $uibModalInstance.dismiss("cancel");
                     });
                 }
