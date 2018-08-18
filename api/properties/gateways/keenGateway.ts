@@ -9,7 +9,7 @@ import {KeenEventType} from "../../keen/interfaces/IEvents";
 import {KeenService} from "../../keen/services/keenService";
 const routes = express.Router();
 
-routes.get("/daily_totals", (req, res) => {
+routes.get("/daily_totals", async (req, res) => {
     userService.getSystemUser((obj) => {
         const SystemUser = obj.user;
 

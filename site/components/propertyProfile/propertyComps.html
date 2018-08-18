@@ -18,207 +18,216 @@
         <th>
 
         </th>
-        <th class="sortable" ng-click="toggleSort('name')">            &nbsp;&nbsp;
-            <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['address']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
-            >Name/<Br>Address</span>
+        <th class="sortable" ng-click="toggleSort('name')"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['address']"
+            popover-class="popover-small"
+            popover-append-to-body="true"
+        >            &nbsp;&nbsp;
+            Name/<Br>Address
             <i ng-show="sort.name == null" class="fa fa-sort"></i>
             <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('occupancy')" ng-if="show.occupancy">
-            <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['occupancy']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
-            >Occ. %</span>
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('occupancy')" ng-if="show.occupancy"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['occupancy']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
+            Occ. %
             <i ng-show="sort.occupancy == null" class="fa fa-sort"></i>
             <i ng-show="sort.occupancy === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.occupancy === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased">
-            <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['leased']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
-            >Leased %</span>
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['leased']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
+            Leased %
             <i ng-show="sort.leased == null" class="fa fa-sort"></i>
             <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('renewal')" ng-if="show.renewal">
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('renewal')" ng-if="show.renewal"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['renewal']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['renewal']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Renewal %</span>
             <i ng-show="sort.renewal == null" class="fa fa-sort"></i>
             <i ng-show="sort.renewal === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.renewal === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('atr_percent')" ng-if="show.atr">
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('atr_percent')" ng-if="show.atr"                    popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['atr']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['atr']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >ATR %</span>
             <i ng-show="sort.atr_percent == null" class="fa fa-sort"></i>
             <i ng-show="sort.atr_percent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.atr_percent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly">
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['weeklytraffic']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['weeklytraffic']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Traffic/&nbsp;&nbsp;<br>Week</span>
             <i ng-show="sort.weeklytraffic == null" class="fa fa-sort"></i>
             <i ng-show="sort.weeklytraffic === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.weeklytraffic === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklyleases')" ng-if="show.weekly">
+        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklyleases')" ng-if="show.weekly"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['weeklyleases']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['weeklyleases']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Leases/&nbsp;&nbsp;<br>Week</span>
             <i ng-show="sort.weeklyleases == null" class="fa fa-sort"></i>
             <i ng-show="sort.weeklyleases === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.weeklyleases === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['units']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['units']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Units</span>
             <i ng-show="sort.units == null" class="fa fa-sort"></i>
             <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')" ng-if="show.unitPercent">
+        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')" ng-if="show.unitPercent"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['unitPercent']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['unitPercent']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Units %</span>
             <i ng-show="sort.unitPercent == null" class="fa fa-sort"></i>
             <i ng-show="sort.unitPercent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.unitPercent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')" ng-if="show.sqft">
+        <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')" ng-if="show.sqft"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['sqft']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['sqft']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Sqft</span>
             <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['rent']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['rent']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Rent</span>
             <i ng-show="sort.rent == null" class="fa fa-sort"></i>
             <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['rentsqft']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['rentsqft']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Rent/&nbsp;&nbsp;<br>Sqft</span>
             <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:75px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
+        <th style="min-width:75px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['concessions']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['concessions']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Total&nbsp;&nbsp;&nbsp;<Br>Concess.</span>
             <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
             <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('runrate')" ng-if="show.runrate">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('runrate')" ng-if="show.runrate"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['runrate']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['runrate']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Recur.&nbsp;&nbsp;<span class="hidden-print">&nbsp;&nbsp;</span><Br>Rent</span>
 
             <i ng-show="sort.runrate == null" class="fa fa-sort"></i>
             <i ng-show="sort.runrate === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.runrate === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:100px;text-align: right" class="sortable" ng-click="toggleSort('runratesqft')" ng-if="show.runratesqft">
+        <th style="min-width:100px;text-align: right" class="sortable" ng-click="toggleSort('runratesqft')" ng-if="show.runratesqft"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['runratesqft']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['runratesqft']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
+
             >Recur. Rent/&nbsp;&nbsp;<br>Sqft</span>
 
             <i ng-show="sort.runratesqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.runratesqft === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.runratesqft === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
-            <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['ner']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
-            >Net Eff.&nbsp;&nbsp;<Br> Rent</span>
+        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner"
+            popover-trigger="'mouseenter'"
+            popover-placement="top"
+            uib-popover-html="$root.tooltips['ner']"
+            popover-class="popover-small"
+            popover-append-to-body="true"
+        >
+            Net Eff.&nbsp;&nbsp;<Br> Rent
             <i ng-show="sort.ner == null" class="fa fa-sort"></i>
             <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
             <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
         </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft">
+        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft"
+            popover-trigger="'mouseenter'"
+            popover-placement="left"
+            uib-popover-html="$root.tooltips['nersqft']"
+            popover-class="popover-small"
+            popover-append-to-body="true">
             <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="left"
-                    uib-popover-html="$root.tooltips['nersqft']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
             >NER/&nbsp;&nbsp;<br>Sqft</span>
             <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
             <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
