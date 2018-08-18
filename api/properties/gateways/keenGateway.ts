@@ -24,55 +24,73 @@ routes.get("/daily_totals", async (req, res) => {
         propertyService.search(SystemUser, PropertySearchRequest, (errors: ICustomError[], properties: IProperty[]) => {
             const event: IPropertyTotalsEvent = {
                 payload: {
-                    stale_assigned_properties: 0,
-                    stale_assigned_units: 0,
-                    stale_properties: 0,
-                    stale_units: 0,
+                    high_assigned_properties: 0,
+                    high_assigned_units: 0,
+                    high_properties: 0,
+                    high_units: 0,
+                    low_assigned_properties: 0,
+                    low_assigned_units: 0,
+                    low_properties: 0,
+                    low_units: 0,
+                    medium_assigned_properties: 0,
+                    medium_assigned_units: 0,
+                    medium_properties: 0,
+                    medium_units: 0,
                     total_assigned_properties: 0,
                     total_assigned_units: 0,
                     total_properties: 0,
                     total_units: 0,
-                    updated_assigned_properties: 0,
-                    updated_assigned_units: 0,
-                    updated_properties: 0,
-                    updated_units: 0,
                 },
                 type: KeenEventType.PROPERTY_TOTALS,
             };
 
-            let stale: boolean;
+            const enum UPDATED {
+                LOW,
+                MEDIUM,
+                HIGH,
+            }
+            let state: UPDATED;
+
             let days: number;
             properties.forEach((property: any) => {
 
-                stale = true;
+                state = UPDATED.LOW;
                 if (property.survey && property.survey.date) {
                     days = Math.round(((new Date()).getTime() - (new Date(property.survey.date)).getTime()) / 1000 / 60 / 60 / 24);
-                    if (days < 31) {
-                        stale = false;
+                    if (days <= 10) {
+                        state = UPDATED.HIGH;
+                    } else if (days <= 30) {
+                        state = UPDATED.MEDIUM;
                     }
                 }
 
                 event.payload.total_properties++;
                 event.payload.total_units += property.totalUnits;
 
-                if (stale) {
-                    event.payload.stale_properties++;
-                    event.payload.stale_units += property.totalUnits;
+                if (state === UPDATED.HIGH) {
+                    event.payload.high_properties++;
+                    event.payload.high_units += property.totalUnits;
+                } else if (state === UPDATED.MEDIUM) {
+                    event.payload.medium_properties++;
+                    event.payload.medium_units += property.totalUnits;
                 } else {
-                    event.payload.updated_properties++;
-                    event.payload.updated_units += property.totalUnits;
+                    event.payload.low_properties++;
+                    event.payload.low_units += property.totalUnits;
                 }
 
                 if (property.orgid) {
                     event.payload.total_assigned_properties++;
                     event.payload.total_assigned_units += property.totalUnits;
 
-                    if (stale) {
-                        event.payload.stale_assigned_properties++;
-                        event.payload.stale_assigned_units += property.totalUnits;
+                    if (state === UPDATED.HIGH) {
+                        event.payload.high_assigned_properties++;
+                        event.payload.high_assigned_units += property.totalUnits;
+                    } else if (state === UPDATED.MEDIUM) {
+                        event.payload.medium_assigned_properties++;
+                        event.payload.medium_assigned_units += property.totalUnits;
                     } else {
-                        event.payload.updated_assigned_properties++;
-                        event.payload.updated_assigned_units += property.totalUnits;
+                        event.payload.low_assigned_properties++;
+                        event.payload.low_assigned_units += property.totalUnits;
                     }
                 }
             });
