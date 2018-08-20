@@ -1200,6 +1200,10 @@ define([
             }
 
             $scope.configureCustomPortfolioOptions = function() {
+                if (!$rootScope) {
+                    return;
+                }
+
                 if (!$scope.liveSettings.customPortfolio) {
                     $scope.resetCustomPortfolioSettings();
                 }

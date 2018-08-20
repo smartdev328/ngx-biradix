@@ -1202,6 +1202,8 @@ module.exports = {
                 },
             };
 
+            const isCustom = !!subject.custom && !!subject.custom.owner && !!subject.custom.owner.name;
+
             n.save(function(err, created) {
                 data[0].id = created._id;
 
@@ -1209,7 +1211,9 @@ module.exports = {
                     callback(err, created);
                 });
 
-                keenModule.KeenService.recordEvent(event);
+                if (!isCustom) {
+                    keenModule.KeenService.recordEvent(event);
+                }
                 if (!survey.skipAudit) {
                     AuditService.create({
                         operator: operator,

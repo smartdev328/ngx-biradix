@@ -6,600 +6,600 @@
 </style>
 <div class="maingrid wrapper panel" style="overflow-x:auto">
     <div class="header" style="height:46px"></div>
-<table class="table table-condensed table-striped table-hover hidden-arrows table-comps" style="font-size:9pt;">
-    <tbody>
-    <tr class="thead">
-        <th style="width:25px;">
+    <table class="table table-condensed table-striped table-hover hidden-arrows table-comps" style="font-size:9pt;">
+        <tbody>
+        <tr class="thead">
+            <th style="width:25px;">
 
-        </th>
-        <th style="width:25px;" class="hidden-print hidden-report">
+            </th>
+            <th style="width:25px;" class="hidden-print hidden-report">
 
-        </th>
-        <th>
+            </th>
+            <th>
 
-        </th>
-        <th class="sortable" ng-click="toggleSort('name')">            &nbsp;&nbsp;
+            </th>
+            <th class="sortable" ng-click="toggleSort('name')">            &nbsp;&nbsp;
+                <span
+                        popover-trigger="'mouseenter'"
+                        popover-placement="auto"
+                        uib-popover-html="$root.tooltips['address']"
+                        popover-class="popover-small-margin"
+                        popover-append-to-body="true"
+                >Name/<Br>Address</span>
+                <i ng-show="sort.name == null" class="fa fa-sort"></i>
+                <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('occupancy')" ng-if="show.occupancy">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    uib-popover-html="$root.tooltips['address']"
-                    popover-class="popover-small"
-                    popover-append-to-body="true"
-            >Name/<Br>Address</span>
-            <i ng-show="sort.name == null" class="fa fa-sort"></i>
-            <i ng-show="sort.name === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.name === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('occupancy')" ng-if="show.occupancy">
-            <span
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['occupancy']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Occ. %</span>
-            <i ng-show="sort.occupancy == null" class="fa fa-sort"></i>
-            <i ng-show="sort.occupancy === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.occupancy === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased">
+                <i ng-show="sort.occupancy == null" class="fa fa-sort"></i>
+                <i ng-show="sort.occupancy === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.occupancy === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('leased')" ng-if="show.leased">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['leased']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Leased %</span>
-            <i ng-show="sort.leased == null" class="fa fa-sort"></i>
-            <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('renewal')" ng-if="show.renewal">
+                <i ng-show="sort.leased == null" class="fa fa-sort"></i>
+                <i ng-show="sort.leased === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.leased === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('renewal')" ng-if="show.renewal">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['renewal']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Renewal %</span>
-            <i ng-show="sort.renewal == null" class="fa fa-sort"></i>
-            <i ng-show="sort.renewal === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.renewal === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('atr_percent')" ng-if="show.atr">
+                <i ng-show="sort.renewal == null" class="fa fa-sort"></i>
+                <i ng-show="sort.renewal === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.renewal === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('atr_percent')" ng-if="show.atr">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['atr']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >ATR %</span>
-            <i ng-show="sort.atr_percent == null" class="fa fa-sort"></i>
-            <i ng-show="sort.atr_percent === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.atr_percent === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly">
+                <i ng-show="sort.atr_percent == null" class="fa fa-sort"></i>
+                <i ng-show="sort.atr_percent === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.atr_percent === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklytraffic')" ng-if="show.weekly">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['weeklytraffic']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Traffic/&nbsp;&nbsp;<br>Week</span>
-            <i ng-show="sort.weeklytraffic == null" class="fa fa-sort"></i>
-            <i ng-show="sort.weeklytraffic === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.weeklytraffic === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklyleases')" ng-if="show.weekly">
+                <i ng-show="sort.weeklytraffic == null" class="fa fa-sort"></i>
+                <i ng-show="sort.weeklytraffic === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.weeklytraffic === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:65px;text-align:right"  class="sortable" ng-click="toggleSort('weeklyleases')" ng-if="show.weekly">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['weeklyleases']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Leases/&nbsp;&nbsp;<br>Week</span>
-            <i ng-show="sort.weeklyleases == null" class="fa fa-sort"></i>
-            <i ng-show="sort.weeklyleases === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.weeklyleases === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
+                <i ng-show="sort.weeklyleases == null" class="fa fa-sort"></i>
+                <i ng-show="sort.weeklyleases === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.weeklyleases === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('units')" ng-if="show.units">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['units']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Units</span>
-            <i ng-show="sort.units == null" class="fa fa-sort"></i>
-            <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')" ng-if="show.unitPercent">
+                <i ng-show="sort.units == null" class="fa fa-sort"></i>
+                <i ng-show="sort.units === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.units === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:60px;text-align:right"  class="sortable" ng-click="toggleSort('unitPercent')" ng-if="show.unitPercent">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['unitPercent']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Units %</span>
-            <i ng-show="sort.unitPercent == null" class="fa fa-sort"></i>
-            <i ng-show="sort.unitPercent === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.unitPercent === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')" ng-if="show.sqft">
+                <i ng-show="sort.unitPercent == null" class="fa fa-sort"></i>
+                <i ng-show="sort.unitPercent === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.unitPercent === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:60px;text-align:right" class="sortable" ng-click="toggleSort('sqft')" ng-if="show.sqft">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['sqft']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Sqft</span>
-            <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent">
+                <i ng-show="sort.sqft == null" class="fa fa-sort"></i>
+                <i ng-show="sort.sqft === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.sqft === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('rent')" ng-if="show.rent">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['rent']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Rent</span>
-            <i ng-show="sort.rent == null" class="fa fa-sort"></i>
-            <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft">
+                <i ng-show="sort.rent == null" class="fa fa-sort"></i>
+                <i ng-show="sort.rent === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.rent === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('mersqft')" ng-if="show.mersqft">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['rentsqft']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Rent/&nbsp;&nbsp;<br>Sqft</span>
-            <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:75px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
+                <i ng-show="sort.mersqft == null" class="fa fa-sort"></i>
+                <i ng-show="sort.mersqft === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.mersqft === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:75px;text-align: right" class="sortable" ng-click="toggleSort('concessions')" ng-if="show.concessions">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['concessions']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Total&nbsp;&nbsp;&nbsp;<Br>Concess.</span>
-            <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
-            <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('runrate')" ng-if="show.runrate">
+                <i ng-show="sort.concessions == null" class="fa fa-sort"></i>
+                <i ng-show="sort.concessions === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.concessions === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('runrate')" ng-if="show.runrate">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['runrate']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Recur.&nbsp;&nbsp;<span class="hidden-print">&nbsp;&nbsp;</span><Br>Rent</span>
 
-            <i ng-show="sort.runrate == null" class="fa fa-sort"></i>
-            <i ng-show="sort.runrate === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.runrate === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:100px;text-align: right" class="sortable" ng-click="toggleSort('runratesqft')" ng-if="show.runratesqft">
+                <i ng-show="sort.runrate == null" class="fa fa-sort"></i>
+                <i ng-show="sort.runrate === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.runrate === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:100px;text-align: right" class="sortable" ng-click="toggleSort('runratesqft')" ng-if="show.runratesqft">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['runratesqft']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Recur. Rent/&nbsp;&nbsp;<br>Sqft</span>
 
-            <i ng-show="sort.runratesqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.runratesqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.runratesqft === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
+                <i ng-show="sort.runratesqft == null" class="fa fa-sort"></i>
+                <i ng-show="sort.runratesqft === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.runratesqft === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:70px;text-align: right" class="sortable" ng-click="toggleSort('ner')" ng-if="show.ner">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="top"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['ner']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >Net Eff.&nbsp;&nbsp;<Br> Rent</span>
-            <i ng-show="sort.ner == null" class="fa fa-sort"></i>
-            <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
-        </th>
-        <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft">
+                <i ng-show="sort.ner == null" class="fa fa-sort"></i>
+                <i ng-show="sort.ner === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.ner === false" class="fa fa-sort-up"></i>
+            </th>
+            <th style="min-width:60px;text-align: right" class="sortable" ng-click="toggleSort('nersqft')" ng-if="show.nersqft">
             <span
                     popover-trigger="'mouseenter'"
-                    popover-placement="left"
+                    popover-placement="auto"
                     uib-popover-html="$root.tooltips['nersqft']"
-                    popover-class="popover-small"
+                    popover-class="popover-small-margin"
                     popover-append-to-body="true"
             >NER/&nbsp;&nbsp;<br>Sqft</span>
-            <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
-            <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
-            <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
-        </th>
-        <th class="hidden-print hidden-report"  ng-if="roles[0] != 'Property Owner'">
-            &nbsp;
-        </th>
-    </tr>
+                <i ng-show="sort.nersqft == null" class="fa fa-sort"></i>
+                <i ng-show="sort.nersqft === true" class="fa fa-sort-down"></i>
+                <i ng-show="sort.nersqft === false" class="fa fa-sort-up"></i>
+            </th>
+            <th class="hidden-print hidden-report"  ng-if="roles[0] != 'Property Owner'">
+                &nbsp;
+            </th>
+        </tr>
 
-    <tr ng-repeat-start="comp in comps | orderBy : orderBy">
-        <td style="text-align: center;vertical-align: middle;">
-            <i class="fa fa-clock-o danger"
-               style="color:red;cursor:pointer;font-size:14px;padding-left:2px"
-               ng-if="comp.survey.tier == 'danger'"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-title="{{surveyTooltip(comp)}}"
-               popover-append-to-body="true"
-               uib-popover="Property has not been updated in 15+ days"
-            ></i>
-            <i class="fa fa-clock-o warning"
-               style="color:orange;cursor:pointer;font-size:14px;padding-left:2px"
-               ng-if="comp.survey.tier == 'warning'"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-title="{{surveyTooltip(comp)}}"
-               popover-append-to-body="true"
-               uib-popover="Property has not been updated in 8+ days"
-            ></i>
-            <i class="fa fa-clock-o success"
-               style="color:green;cursor:pointer;font-size:14px;padding-left:2px"
-               ng-if="comp.survey.tier != 'warning' && comp.survey.tier != 'danger'"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-title="{{surveyTooltip(comp)}}"
-               popover-append-to-body="true"
-               uib-popover="This property has been updated within the last 7 days"
-            ></i>
-        </td>
-        <td  style="text-align:center; vertical-align: middle">
-            <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;width:22px;text-align: center">
-        </td>
-        <td style="text-align: center;vertical-align: middle; width:25px"  class="hidden-print hidden-report">
-            <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
-        </td>
-        <td>
-            <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
+        <tr ng-repeat-start="comp in comps | orderBy : orderBy">
+            <td style="text-align: center;vertical-align: middle;">
+                <i class="fa fa-clock-o danger"
+                   style="color:red;cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="comp.survey.tier == 'danger'"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-title="{{surveyTooltip(comp)}}"
+                   popover-append-to-body="true"
+                   uib-popover="Property has not been updated in 15+ days"
+                ></i>
+                <i class="fa fa-clock-o warning"
+                   style="color:orange;cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="comp.survey.tier == 'warning'"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-title="{{surveyTooltip(comp)}}"
+                   popover-append-to-body="true"
+                   uib-popover="Property has not been updated in 8+ days"
+                ></i>
+                <i class="fa fa-clock-o success"
+                   style="color:green;cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="comp.survey.tier != 'warning' && comp.survey.tier != 'danger'"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-title="{{surveyTooltip(comp)}}"
+                   popover-append-to-body="true"
+                   uib-popover="This property has been updated within the last 7 days"
+                ></i>
+            </td>
+            <td  style="text-align:center; vertical-align: middle">
+                <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;width:22px;text-align: center">
+            </td>
+            <td style="text-align: center;vertical-align: middle; width:25px"  class="hidden-print hidden-report">
+                <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(comp)"></i>
+            </td>
+            <td>
+                <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
 
-            <i class="fa fa-exclamation-triangle warning"
-               style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
-               ng-if="comp.needsSurvey"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-append-to-body="true"
-               uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
-            ></i>
+                <i class="fa fa-exclamation-triangle warning"
+                   style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
+                   ng-if="comp.needsSurvey"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
+                ></i>
 
-            <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:14px;padding-left:2px"
-               ng-if="comp.survey.excluded"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-append-to-body="true"
-               uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
-            ></i>
+                <i class="fa fa-chain-broken blue"
+                   style="cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="comp.survey.excluded"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   uib-popover="This property has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                ></i>
 
-            <i class="fa fa-lock hidden-print"
-               style="cursor:pointer;font-size:14px;padding-left:2px"
-               ng-if="comp.number > 0 && !comp.canSurvey"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-append-to-body="true"
-               uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
+                <i class="fa fa-lock hidden-print"
+                   style="cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="comp.number > 0 && !comp.canSurvey"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
 
-            ></i>
-            <i class="fa fa-share-alt hidden-print"
-               style="cursor:pointer;font-size:14px;padding-left:2px"
-               ng-if="comp.number > 0 && comp.canSurvey && comp.otherSubjects"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-title="This property is shared competitor"
-               popover-append-to-body="true"
-               uib-popover-html="getPopoverContent(comp)"
+                ></i>
+                <i class="fa fa-share-alt hidden-print"
+                   style="cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="comp.number > 0 && comp.canSurvey && comp.otherSubjects"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-title="This property is shared competitor"
+                   popover-append-to-body="true"
+                   uib-popover-html="getPopoverContent(comp)"
 
-            ></i>
-            <Br>
-            {{comp.address}}
-        </td>
-        <td style="text-align: right" ng-if="show.occupancy" class="pad">
-            {{comp.survey.occupancy == null ? "-" : comp.survey.occupancy + '%'}}
-        </td>
-        <td style="text-align: right" ng-if="show.leased" class="pad">
-            {{comp.survey.leased == null ? "-" : comp.survey.leased + '%'}}
-        </td>
-        <td style="text-align: right" ng-if="show.renewal" class="pad">
-            {{comp.survey.renewal == null ? "-" : comp.survey.renewal + '%'}}
-        </td>
-        <td style="text-align: right" ng-if="show.atr" class="pad">
-            {{comp.atr_percent < 0 ? "-" : comp.atr_percent + '%'}}
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            {{comp.survey.weeklytraffic == null ? "-" : comp.survey.weeklytraffic}}
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            {{comp.survey.weeklyleases == null ? "-" : comp.survey.weeklyleases}}
-        </td>
-        <td style="text-align: right" ng-if="show.units" class="pad">
-            {{comp.units}}
-        </td>
-        <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-            100%
-        </td>
-        <td style="text-align: right" ng-if="show.sqft" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.rent" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.mersqft == null ? "-" : "$" + (comp.survey.mersqft  | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.concessions"  class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runrate" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.runrate == null ? "-" : "$" + comp.survey.runrate}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.runratesqft == null ? "-" : "$" + (comp.survey.runratesqft  | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.ner" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.nersqft" class="pad">
-            <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
-        </td>
-        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
-            <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
-                <div ng-class="{'btn-group': true, 'action_dropdown': true, 'dropup' : $index == comps.length - 1}">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
-                        <span class="caret"></span>
-                    </button>
-                    <ul role="menu" ng-class="{'dropdown-menu': true, 'skinny': true, 'dropdown-menu-right' : true, 'dropup-menu-right' : $index == comps.length - 1}">
-                        <li ng-if="comp.canSurvey"><a href ng-click="$root.marketSurvey(comp._id, null, {subjectid: comps[0]._id, subjectname: comps[0].name})"
-                                                      tooltip-placement="left"
-                                                      uib-tooltip="{{surveyTooltip(comp)}}"><i class="fa fa-edit fa-fw"></i> New Property Survey</a></li>
+                ></i>
+                <Br>
+                {{comp.address}}
+            </td>
+            <td style="text-align: right" ng-if="show.occupancy" class="pad">
+                {{comp.survey.occupancy == null ? "-" : comp.survey.occupancy + '%'}}
+            </td>
+            <td style="text-align: right" ng-if="show.leased" class="pad">
+                {{comp.survey.leased == null ? "-" : comp.survey.leased + '%'}}
+            </td>
+            <td style="text-align: right" ng-if="show.renewal" class="pad">
+                {{comp.survey.renewal == null ? "-" : comp.survey.renewal + '%'}}
+            </td>
+            <td style="text-align: right" ng-if="show.atr" class="pad">
+                {{comp.atr_percent < 0 ? "-" : comp.atr_percent + '%'}}
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                {{comp.survey.weeklytraffic == null ? "-" : comp.survey.weeklytraffic}}
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                {{comp.survey.weeklyleases == null ? "-" : comp.survey.weeklyleases}}
+            </td>
+            <td style="text-align: right" ng-if="show.units" class="pad">
+                {{comp.units}}
+            </td>
+            <td style="text-align: right" ng-if="show.unitPercent" class="pad">
+                100%
+            </td>
+            <td style="text-align: right" ng-if="show.sqft" class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.rent" class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.rent == null ? "-" : "$" + comp.survey.rent}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.mersqft" class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.mersqft == null ? "-" : "$" + (comp.survey.mersqft  | number : 2)}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.concessions"  class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.concessions == null ? "-" : "$" + comp.survey.concessions}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runrate" class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.runrate == null ? "-" : "$" + comp.survey.runrate}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.runratesqft == null ? "-" : "$" + (comp.survey.runratesqft  | number : 2)}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.ner" class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.ner == null ? "-" : "$" + comp.survey.ner}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.nersqft" class="pad">
+                <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.nersqft == null ? "-" : "$" + (comp.survey.nersqft  | number : 2)}}</span>
+            </td>
+            <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
+                <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
+                    <div ng-class="{'btn-group': true, 'action_dropdown': true, 'dropup' : $index == comps.length - 1}">
+                        <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                            <span class="caret"></span>
+                        </button>
+                        <ul role="menu" ng-class="{'dropdown-menu': true, 'skinny': true, 'dropdown-menu-right' : true, 'dropup-menu-right' : $index == comps.length - 1}">
+                            <li ng-if="comp.canSurvey"><a href ng-click="$root.marketSurvey(comp._id, null, {subjectid: comps[0]._id, subjectname: comps[0].name})"
+                                                          tooltip-placement="left"
+                                                          uib-tooltip="{{surveyTooltip(comp)}}"><i class="fa fa-edit fa-fw"></i> New Property Survey</a></li>
 
-                        <li ng-if="!comp.canSurvey"><a href
-                                                       onclick="event.preventDefault();event.stopPropagation()"
-                                                       style="cursor: not-allowed;opacity: 0.5;"
-                                                       popover-trigger="'mouseenter'"
-                                                       popover-placement="left"
-                                                       popover-append-to-body="true"
-                                                       uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
-                        ><i class="fa fa-lock fa-fw"></i> New Property Survey</a></li>
-                        <li><A href="#/history?property={{comp._id}}"><i class="fa fa-history fa-fw"></i> Activity History</A></li>
-                    </ul>
+                            <li ng-if="!comp.canSurvey"><a href
+                                                           onclick="event.preventDefault();event.stopPropagation()"
+                                                           style="cursor: not-allowed;opacity: 0.5;"
+                                                           popover-trigger="'mouseenter'"
+                                                           popover-placement="left"
+                                                           popover-append-to-body="true"
+                                                           uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
+                            ><i class="fa fa-lock fa-fw"></i> New Property Survey</a></li>
+                            <li><A href="#/history?property={{comp._id}}"><i class="fa fa-history fa-fw"></i> Activity History</A></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-        </td>
-    </tr>
-    <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
-        <td style="text-align: center"></td>
-        <td style="text-align: center" class="hidden-print hidden-report"></td>
-        <td  style="text-align:right;; width:25px">
-            <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:12px;padding-top:2px;padding-left:5px" ng-click="toggleOpen(row)"></i>
-        </td>
-        <td nowrap>
-            &nbsp;&nbsp;{{row.name}}
-            <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:12px;padding-left:2px"
-               ng-if="row.excluded"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               uib-popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
-                    ></i>
-        </td>
-        <td style="text-align: right" ng-if="show.occupancy" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.leased" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.renewal" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.atr" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.units" class="pad">
-            {{row.units}}
-        </td>
-        <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-            {{row.unitPercent | number : 1 }}%
-        </td>
-        <td style="text-align: right" ng-if="show.sqft" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.sqft == null ? "-" : row.sqft}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.rent" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.rent == null ? "-" : "$" + row.rent}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.mersqft == null ? "-" : "$" + (row.mersqft | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.concessions" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.concessions == null ? "-" : "$" + row.concessions}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runrate" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.runrate == null ? "-" : "$" + row.runrate}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.runratesqft == null ? "-" : "$" + (row.runratesqft | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.ner" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.ner == null ? "-" : "$" + row.ner}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.nersqft" class="pad">
-            <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
-        </td>
+            </td>
+        </tr>
+        <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
+            <td style="text-align: center"></td>
+            <td style="text-align: center" class="hidden-print hidden-report"></td>
+            <td  style="text-align:right;; width:25px">
+                <i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:12px;padding-top:2px;padding-left:5px" ng-click="toggleOpen(row)"></i>
+            </td>
+            <td nowrap>
+                &nbsp;&nbsp;{{row.name}}
+                <i class="fa fa-chain-broken blue"
+                   style="cursor:pointer;font-size:12px;padding-left:2px"
+                   ng-if="row.excluded"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   uib-popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."
+                ></i>
+            </td>
+            <td style="text-align: right" ng-if="show.occupancy" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.leased" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.renewal" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.atr" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.units" class="pad">
+                {{row.units}}
+            </td>
+            <td style="text-align: right" ng-if="show.unitPercent" class="pad">
+                {{row.unitPercent | number : 1 }}%
+            </td>
+            <td style="text-align: right" ng-if="show.sqft" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.sqft == null ? "-" : row.sqft}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.rent" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.rent == null ? "-" : "$" + row.rent}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.mersqft" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.mersqft == null ? "-" : "$" + (row.mersqft | number : 2)}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.concessions" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.concessions == null ? "-" : "$" + row.concessions}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runrate" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.runrate == null ? "-" : "$" + row.runrate}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.runratesqft == null ? "-" : "$" + (row.runratesqft | number : 2)}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.ner" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.ner == null ? "-" : "$" + row.ner}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.nersqft" class="pad">
+                <span ng-style="{'font-style': row.excluded ? 'italic' : ''}">{{row.nersqft == null ? "-" : "$" + (row.nersqft | number : 2)}}</span>
+            </td>
 
 
-        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
+            <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
-        </td>
-    </tr>
-    <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : row.bedrooms}">
-        <td style="text-align: center"></td>
-        <td style="text-align: center"></td>
-        <td  style="text-align:center; width:25px">
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : row.bedrooms}">
+            <td style="text-align: center"></td>
+            <td style="text-align: center"></td>
+            <td  style="text-align:center; width:25px">
 
-        </td>
-        <td>
-            &nbsp;&nbsp;&nbsp;&nbsp;{{fp.name}}
-            <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:12px;padding-left:2px"
-               ng-if="fp.excluded"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-append-to-body="true"
-               uib-popover="This floor plan has been manually excluded from reporting and dashboard calculations."
-                    ></i>
-        </td>
-        <td style="text-align: right" ng-if="show.occupancy" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.leased" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.renewal" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.atr" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            -
-        </td>
-        <td style="text-align: right" ng-if="show.units" class="pad">
-            {{fp.units}}
-        </td>
-        <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-            {{fp.unitPercent | number : 1 }}%
-        </td>
-        <td style="text-align: right" ng-if="show.sqft" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.rent" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.rent == null ? "-" : "$" + fp.rent}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.mersqft == null ? "-" : "$" + (fp.mersqft | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.concessions" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runrate" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runrate == null ? "-" : "$" + fp.runrate}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runratesqft == null ? "-" : "$" + (fp.runratesqft | number : 2)}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.ner" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.ner == null ? "-" : "$" + fp.ner}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.nersqft" class="pad">
-            <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
-        </td>
+            </td>
+            <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{fp.name}}
+                <i class="fa fa-chain-broken blue"
+                   style="cursor:pointer;font-size:12px;padding-left:2px"
+                   ng-if="fp.excluded"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   uib-popover="This floor plan has been manually excluded from reporting and dashboard calculations."
+                ></i>
+            </td>
+            <td style="text-align: right" ng-if="show.occupancy" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.leased" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.renewal" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.atr" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                -
+            </td>
+            <td style="text-align: right" ng-if="show.units" class="pad">
+                {{fp.units}}
+            </td>
+            <td style="text-align: right" ng-if="show.unitPercent" class="pad">
+                {{fp.unitPercent | number : 1 }}%
+            </td>
+            <td style="text-align: right" ng-if="show.sqft" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.rent" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.rent == null ? "-" : "$" + fp.rent}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.mersqft" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.mersqft == null ? "-" : "$" + (fp.mersqft | number : 2)}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.concessions" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runrate" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runrate == null ? "-" : "$" + fp.runrate}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runratesqft == null ? "-" : "$" + (fp.runratesqft | number : 2)}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.ner" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.ner == null ? "-" : "$" + fp.ner}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.nersqft" class="pad">
+                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
+            </td>
 
-        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
+            <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
-        </td>
-    </tr>
-    <tr ng-repeat-end></tr>
+            </td>
+        </tr>
+        <tr ng-repeat-end></tr>
 
-    <tr class="tfoot" ng-if="showTotals">
-        <td style="text-align: center"></td>
-        <td style="text-align: center"></td>
-        <td  style="text-align:center; width:25px" class="hidden-print hidden-report">
-        </td>
-        <td>
-            Totals / Averages
-        </td>
-        <td style="text-align: right" ng-if="show.occupancy" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="!totals.unitsOccupancy">-</span>
-            <span ng-if="totals.unitsOccupancy">{{totals.occupancy}}%</span>
-        </td>
-        <td style="text-align: right" ng-if="show.leased" class="pad">
-            <span ng-if="!totals.unitsLeased">-</span>
-            <span ng-if="totals.unitsLeased">{{totals.leased}}%</span>
-        </td>
-        <td style="text-align: right" ng-if="show.renewal" class="pad">
-            <span ng-if="!totals.unitsRenewal">-</span>
-            <span ng-if="totals.unitsRenewal">{{totals.renewal}}%</span>
-        </td>
-        <td style="text-align: right" ng-if="show.atr" class="pad">
-            <span ng-if="!totals.unitsAtr">-</span>
-            <span ng-if="totals.unitsAtr">{{totals.atr_percent}}%</span>
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">{{totals.weeklytraffic | number : 0}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.weekly" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">{{totals.weeklyleases | number : 0}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.units" class="pad">
-            {{totals.totalUnits | number : 0}}
-        </td>
-        <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-            100%
-        </td>
-        <td style="text-align: right" ng-if="show.sqft" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">{{totals.sqft | number : 0}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.rent" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">${{totals.rent | number : 0}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.mersqft" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">${{totals.mersqft | number : 2}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.concessions" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">${{totals.concessions | number : 0}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runrate" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">${{totals.runrate | number : 0}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.runratesqft" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">${{totals.runratesqft | number : 2}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.ner" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">${{totals.ner | number : 0}}</span>
-        </td>
-        <td style="text-align: right" ng-if="show.nersqft" class="pad">
-            <span ng-if="totalSurveys == 0">-</span>
-            <span ng-if="totalSurveys > 0">${{totals.nersqft | number : 2}}</span>
-        </td>
+        <tr class="tfoot" ng-if="showTotals">
+            <td style="text-align: center"></td>
+            <td style="text-align: center"></td>
+            <td  style="text-align:center; width:25px" class="hidden-print hidden-report">
+            </td>
+            <td>
+                Totals / Averages
+            </td>
+            <td style="text-align: right" ng-if="show.occupancy" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="!totals.unitsOccupancy">-</span>
+                <span ng-if="totals.unitsOccupancy">{{totals.occupancy}}%</span>
+            </td>
+            <td style="text-align: right" ng-if="show.leased" class="pad">
+                <span ng-if="!totals.unitsLeased">-</span>
+                <span ng-if="totals.unitsLeased">{{totals.leased}}%</span>
+            </td>
+            <td style="text-align: right" ng-if="show.renewal" class="pad">
+                <span ng-if="!totals.unitsRenewal">-</span>
+                <span ng-if="totals.unitsRenewal">{{totals.renewal}}%</span>
+            </td>
+            <td style="text-align: right" ng-if="show.atr" class="pad">
+                <span ng-if="!totals.unitsAtr">-</span>
+                <span ng-if="totals.unitsAtr">{{totals.atr_percent}}%</span>
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">{{totals.weeklytraffic | number : 0}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.weekly" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">{{totals.weeklyleases | number : 0}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.units" class="pad">
+                {{totals.totalUnits | number : 0}}
+            </td>
+            <td style="text-align: right" ng-if="show.unitPercent" class="pad">
+                100%
+            </td>
+            <td style="text-align: right" ng-if="show.sqft" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">{{totals.sqft | number : 0}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.rent" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">${{totals.rent | number : 0}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.mersqft" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">${{totals.mersqft | number : 2}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.concessions" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">${{totals.concessions | number : 0}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runrate" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">${{totals.runrate | number : 0}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.runratesqft" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">${{totals.runratesqft | number : 2}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.ner" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">${{totals.ner | number : 0}}</span>
+            </td>
+            <td style="text-align: right" ng-if="show.nersqft" class="pad">
+                <span ng-if="totalSurveys == 0">-</span>
+                <span ng-if="totalSurveys > 0">${{totals.nersqft | number : 2}}</span>
+            </td>
 
-        <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
+            <td style="text-align:center" class="hidden-print hidden-report" ng-if="roles[0] != 'Property Owner'">
 
-        </td>
-    </tr>
-    </tbody>
-</table>
-    </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
