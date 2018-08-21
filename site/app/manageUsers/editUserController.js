@@ -221,12 +221,14 @@ define([
 
             $scope.saveProperties = function(user, properties,rolesChanged) {
                 $propertyUsersService.setPropertiesForUser(user._id,properties,rolesChanged).then(function(response) {
-                    window.setTimeout(function() {$uibModalInstance.close(user)}, 1000) ;
-                },
-                    function (error) {
+                        window.setTimeout(function() {
+                            $uibModalInstance.close(user);
+                        }, 2000);
+                    },
+                    function(error) {
                         toastr.error("Unable to update properties. Please contact the administrator.");
                         $scope.loading = false;
-                    })
+                    });
             }
 
             $scope.allowedRoles = function(index){
