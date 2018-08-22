@@ -411,16 +411,7 @@ define([
 
                         $scope.property.floorplans = $scope.property.floorplans || [];
 
-                        $scope.property.averageSqft = 0
-                        if ($scope.property.floorplans.length > 0) {
-                            $scope.property.floorplans.forEach(function (fp) {
-                                fp.bathrooms = parseFloat(fp.bathrooms);
-                                $scope.property.averageSqft += fp.sqft;
-                            })
-
-                            $scope.property.averageSqft /= $scope.property.floorplans.length;
-                        }
-
+                        $scope.calculateFloorplanTotals();
 
                         $scope.property.community_amenities.forEach(function(pa) {
                             var am = _.find($scope.communityItems, function(a) {
@@ -700,9 +691,12 @@ define([
             }
 
             $scope.calculateFloorplanTotals = function() {
-                //re-calcualte total units in case we updated unit counts
+                // re-calcualte total units in case we updated unit counts
                 var newTotal = 0;
                 var newAvg = 0;
+
+                $scope.property.floorplans = $scope.property.floorplans || [];
+
                 $scope.property.floorplans.forEach(function(f) {
                     newTotal += parseInt(f.units);
                     newAvg += parseInt(f.units) * parseInt(f.sqft);
@@ -711,7 +705,7 @@ define([
                 $scope.property.totalUnits = newTotal;
 
                 if (newTotal > 0) {
-                    $scope.property.averageSqft = parseInt(newAvg / newTotal);
+                    $scope.property.averageSqft = newAvg / newTotal;
                 } else {
                     $scope.property.averageSqft = 0;
                 }
