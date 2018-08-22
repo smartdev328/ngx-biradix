@@ -23,7 +23,7 @@ module.exports = {
         if (url.indexOf("localhost") > -1) {
             puppeteer.launch({
                 headless: true,
-                args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
+                arguments: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
                 slowMo: 0,
             }).then((newBrowser) => {
                 browser = newBrowser;
@@ -48,7 +48,7 @@ module.exports = {
         }
 
     },
-    getPdf : function(transaction_id, url, cookies, callback) {
+    getPdf: function(transaction_id, url, cookies, callback) {
         var timer = new Date().getTime();
         this.getBrowser(url,(err,browser) => {
 
