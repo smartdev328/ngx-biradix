@@ -109,25 +109,17 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
         }
 
         fac.defaultDateObject = function(selectedRange,selectedStartDate,selectedEndDate) {
-            var r = selectedRange || "90 Days";
+            var r = selectedRange || "Last 90 Days";
 
-            if (r == "Last 30 Days") {
-                r = "30 Days"
-            }
-            else
-            if (r == "Last 90 Days") {
-                r = "90 Days"
-            }
-            else
-            if (r == "Last Year") {
-                r = "Year-to-Date"
+             if (r == "Last Year") {
+                r = "Year-to-Date";
             }
 
             return {
                 Ranges : {
-                    '30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
-                    '90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
-                    '12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
+                    'Last 30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
+                    'Last 90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
+                    'Last 12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
                     'Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
                     'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
                 },

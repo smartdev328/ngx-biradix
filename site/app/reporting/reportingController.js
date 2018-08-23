@@ -1851,13 +1851,13 @@ define([
             $scope.liveSettings.concession = {
                 daterange: {
                     Ranges : {
-                        '30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
-                        '90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
-                        '12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
+                        'Last 30 Days': [moment().subtract(30, 'days').startOf("day"), moment().endOf("day")],
+                        'Last 90 Days': [moment().subtract(90, 'days').startOf("day"), moment().endOf("day")],
+                        'Last 12 Months': [moment().subtract(1, 'year').startOf("day"), moment().endOf("day")],
                         'Year-to-Date': [moment().startOf("year"), moment().endOf("day")],
                         'Lifetime': [moment().subtract(30, 'year').startOf("day"), moment().endOf("day")],
                     },
-                    selectedRange : "90 Days",
+                    selectedRange : "Last 90 Days",
                     selectedStartDate : null,
                     selectedEndDate : null,
                     direction: "right"
