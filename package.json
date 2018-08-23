@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.20.23",
+  "version": "2.20.24",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -68,7 +68,7 @@
     "node-sass": "^4.9.3",
     "node-uuid": "^1.4.8",
     "password-generator": "^2.2.0",
-    "puppeteer": "^1.4.0",
+    "puppeteer": "^1.7.0",
     "raygun": "^0.9.1",
     "redis": "^2.8.0",
     "request": "^2.88.0",
