@@ -319,26 +319,28 @@ module.exports = {
                         })
                     }
 
-                    //Give yourself access to manage yourself
+                    // Give yourself access to manage yourself
                     AccessService.createPermission({executorid: usr._id, resource: usr._id,allow: true,type: 'UserManage',direct: true}, function () {});
 
-                    //Allow to manage new user so a BM can add properties to created BM
+                    // Allow to manage new user so a BM can add properties to created BM
                     if (operator) {
                         AccessService.createPermission({
                             executorid: operator._id,
                             resource: usr._id,
                             allow: true,
-                            type: 'UserManage',
-                            direct: true
-                        }, function () {
+                            type: "UserManage",
+                            direct: true,
+                        }, function() {
+                            // Done
+                            callback(null, usr);
                         });
+                    } else {
+                        // Done
+                        callback(null, usr);
                     }
 
-                    //Done
-                    callback(null,usr);
-
                     UserService.rebuildSearch(usr._id);
-                })
+                });
             });
         });
     },

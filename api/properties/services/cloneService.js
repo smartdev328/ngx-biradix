@@ -17,7 +17,11 @@ module.exports = {
             let property = JSON.parse(JSON.stringify(comps[0]));
             async.eachSeries(media, function(image, callbacks) {
                 S3Service.copyImage(image, function(err, newImage) {
-                    property.media.push(newImage);
+                    if (newImage) {
+                        property.media.push(newImage);
+                    } else {
+                        console.error("copyImages error ", err);
+                    }
                     callbacks();
                 });
             }, function() {
