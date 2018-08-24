@@ -6,6 +6,7 @@
                 groups: '=',
                 moveChecked: '&',
                 resetChecked: '&',
+                tooltipfn: "=",
             },
             controller: function ($scope) {
                 $scope.version = version;

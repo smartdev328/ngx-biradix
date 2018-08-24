@@ -3,8 +3,9 @@
             restrict: 'E',
             scope: {
                 options: '=',
-                model:'=',
-                search:'='
+                model: '=',
+                search: '=',
+                tooltipfn: "=",
             },
             controller: function ($scope, $filter, $element) {
                 $scope.version = version;

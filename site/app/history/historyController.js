@@ -29,7 +29,7 @@ define([
                 "Year-to-Date": [moment().startOf("year"), moment().endOf("day")],
                 "Lifetime": [moment().subtract(30, "year").startOf("day"), moment().endOf("day")],
             },
-            selectedRange: $stateParams.range || "30 Days",
+            selectedRange: $stateParams.range || "Last 30 Days",
             selectedStartDate: null,
             selectedEndDate: null,
         };
@@ -515,6 +515,33 @@ define([
             return parseInt(x);
         };
 
+        $scope.usersDD = {};
+        $scope.gotUsersDD = {};
+        $scope.getUserDD = function(user) {
+            var id = (user.id || user._id).toString();
+            if ($scope.usersDD[id]) {
+                return $scope.usersDD[id];
+            }
+
+            if (!$scope.gotUsersDD[id]) {
+                $userService.search({
+                    limit: 1,
+                    _id: id,
+                }).then(function (response) {
+                    if (response.data && response.data.users && response.data.users[0]) {
+                        $scope.usersDD[id] = "Email: <b>" + response.data.users[0].email + "</b><Br>" +
+                            "Role: <b>" + response.data.users[0].roles[0].name + "</b><Br>";
+                    } else {
+                        $scope.usersDD[id] = "<B>N/A</B>";
+                    }
+                });
+
+                $scope.gotUsersDD[id] = true;
+            }
+
+            return "<center><img src='/images/squares.gif' style='width:40px'></center>";
+        };
+
         $scope.users = {};
         $scope.gotUsers = {};
         $scope.getUser = function(user) {
@@ -536,7 +563,6 @@ define([
                     } else {
                         $scope.users[id] = "<B>N/A</B>";
                     }
-
                 });
 
                 $scope.gotUsers[id] = true;
