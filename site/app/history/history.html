@@ -24,12 +24,12 @@
 
         <div class="col-xs-6 col-md-3" style="height:55px">
             Properties:<br>
-            <filter-list-ajax options="propertyOptions" model="propertyItems" search="autocompleteproperties"  tooltipfn="getPropertyDD"></filter-list-ajax>
+            <filter-list-ajax options="propertyOptions" model="propertyItems" search="autocompleteproperties"  tooltipfn="getPropertyDD" tooltipdir="'left'"></filter-list-ajax>
         </div>
 
         <div class="col-xs-6 col-md-3" style="height:55px">
             Users: <Br>
-            <filter-list-ajax options="userOptions" model="userItems" search="autocompleteusers" tooltipfn="getUserDD"></filter-list-ajax>
+            <filter-list-ajax options="userOptions" model="userItems" search="autocompleteusers" tooltipfn="getUserDD" tooltipdir="'left'"></filter-list-ajax>
         </div>
         <div class="col-xs-6 col-md-3" style="height:55px" ng-if="me.permissions.indexOf('Admin') > -1">
             Search: <Br>

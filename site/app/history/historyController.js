@@ -560,7 +560,7 @@ define([
                         $scope.propertiesDD[id] = "";
 
                         if ($rootScope.me.permissions.indexOf("Admin") > -1) {
-                            $scope.propertiesDD[id] += "Organization: <b>" + (response.data.properties[0].company || "N/A") + "</b><Br>";
+                            $scope.propertiesDD[id] += "Organization: <b>" + (response.data.properties[0].company || "None") + "</b><Br>";
                         }
 
                         $scope.propertiesDD[id] += "Address: <b>" + response.data.properties[0].address + "</b><Br>";
@@ -573,7 +573,7 @@ define([
                 $scope.gotPropertiesDD[id] = true;
             }
 
-            return "<center><img src='/images/squares.gif' style='width:40px'></center>";
+            return "<center><img src='/images/squares.gif' style='width:30px'></center>";
         };
 
         $scope.users = {};
@@ -602,7 +602,7 @@ define([
                 $scope.gotUsers[id] = true;
             }
 
-            return "<center><img src='/images/squares.gif' style='width:40px'></center>";
+            return "<center><img src='/images/squares.gif' style='width:30px'></center>";
         };
 
         $scope.isOpen = {};

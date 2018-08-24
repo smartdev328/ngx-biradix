@@ -7,6 +7,7 @@
                 moveChecked: '&',
                 resetChecked: '&',
                 tooltipfn: "=",
+                tooltipdir: "=",
             },
             controller: function ($scope) {
                 $scope.version = version;
@@ -303,7 +304,8 @@ angular.module('biradix.global').directive('filterList', function () {
             restrict: 'E',
             scope: {
                 options: '=',
-                items:'='
+                items:'=',
+                tooltipdir: "=",
             },
             controller: function ($scope, $filter, $element) {
                 $scope.version = version;
