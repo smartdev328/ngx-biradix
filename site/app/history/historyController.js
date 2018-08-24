@@ -542,6 +542,40 @@ define([
             return "<center><img src='/images/squares.gif' style='width:40px'></center>";
         };
 
+        $scope.propertiesDD = {};
+        $scope.gotPropertiesDD = {};
+        $scope.getPropertyDD = function(property) {
+            var id = (property.id || property._id).toString();
+            if ($scope.propertiesDD[id]) {
+                return $scope.propertiesDD[id];
+            }
+
+            if (!$scope.gotPropertiesDD[id]) {
+                $propertyService.search({
+                    limit: 1,
+                    _id: id,
+                    select: "name address city state zip units orgid totalUnits",
+                }).then(function(response) {
+                    if (response.data && response.data.properties && response.data.properties[0]) {
+                        $scope.propertiesDD[id] = "";
+
+                        if ($rootScope.me.permissions.indexOf("Admin") > -1) {
+                            $scope.propertiesDD[id] += "Organization: <b>" + (response.data.properties[0].company || "N/A") + "</b><Br>";
+                        }
+
+                        $scope.propertiesDD[id] += "Address: <b>" + response.data.properties[0].address + "</b><Br>";
+                        $scope.propertiesDD[id] += "Unit Count: <b>" + (response.data.properties[0].totalUnits || 0) + "</b><Br>";
+                    } else {
+                        $scope.propertiesDD[id] = "<B>N/A</B>";
+                    }
+                });
+
+                $scope.gotPropertiesDD[id] = true;
+            }
+
+            return "<center><img src='/images/squares.gif' style='width:40px'></center>";
+        };
+
         $scope.users = {};
         $scope.gotUsers = {};
         $scope.getUser = function(user) {
