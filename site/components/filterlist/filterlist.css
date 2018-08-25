@@ -3,6 +3,10 @@
     max-width:400px;
 }
 
+.filter-list-tooltip .squares {
+    width:50px !important;
+}
+
 .filter-list .filter-panel {
     height:200px;
     width:250px;

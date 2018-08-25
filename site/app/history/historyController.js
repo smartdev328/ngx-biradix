@@ -539,7 +539,7 @@ define([
                 $scope.gotUsersDD[id] = true;
             }
 
-            return "<center><img src='/images/squares.gif' style='width:20px'></center>";
+            return "<center><img src='/images/squares.gif' class='squares'></center>";
         };
 
         $scope.propertiesDD = {};
@@ -573,7 +573,7 @@ define([
                 $scope.gotPropertiesDD[id] = true;
             }
 
-            return "<center><img src='/images/squares.gif' style='width:20px'></center>";
+            return "<center><img src='/images/squares.gif' class='squares'></center>";
         };
 
         $scope.users = {};
