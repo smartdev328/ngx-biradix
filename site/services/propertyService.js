@@ -218,8 +218,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.saveCompOrder = function (propertyid, compids) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/comps/saveOrder?bust=' + (new Date()).getTime(), {compids: compids}, {
+        fac.saveCompOrder = function (propertyid, compids, progressId) {
+            return $http.post('/api/1.0/properties/' + propertyid + '/comps/saveOrder?bust=' + (new Date()).getTime(), {compids: compids, progressId: progressId}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

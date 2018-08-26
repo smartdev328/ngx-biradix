@@ -3,10 +3,12 @@ define([
     'app',
 ], function (app) {
      app.controller
-        ('manageCompsController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$uibModal','$dialog', function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService,$uibModal,$dialog) {
+        ('manageCompsController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$uibModal','$dialog', '$progressService',
+            function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService,$uibModal,$dialog, $progressService) {
 
             if (!$rootScope.loggedIn) {
-                $location.path('/login')
+                $location.path('/login');
+                return;
             }
 
             ga('set', 'title', "/manageComps");
@@ -34,23 +36,34 @@ define([
             $scope.changed = false;
             $scope.MAX_COMPS = 20;
 
+            $scope.checkProgress = function() {
+                $progressService.isComplete($scope.progressId, function(isComplete) {
+
+                    if (isComplete) {
+                        ngProgress.complete();
+                        $('.btn').prop("disabled",false);
+
+                        $uibModalInstance.close();
+                    } else {
+                        window.setTimeout($scope.checkProgress, 500);
+                    }
+                });
+            }
+
             $scope.save = function() {
                 var compids = _.map($scope.comps,function(x) {return x._id.toString()});
 
                 ngProgress.start();
-                $('.btn').prop("disabled",true);
+                $('.btn').prop("disabled", true);
 
+                $scope.progressId = _.random(1000000, 9999999);
 
-                $propertyService.saveCompOrder(id,compids).then(function (response) {
-
-                    ngProgress.complete();
-                    $('.btn').prop("disabled",false);
-
-                    $uibModalInstance.close();
+                $propertyService.saveCompOrder(id, compids, $scope.progressId).then(function (response) {
+                    window.setTimeout($scope.checkProgress, 500);
                 }, function(response) {
                     toastr.error('Unable to save Comps. Please contact an administrator');
                     ngProgress.complete();
-                    $('.btn').prop("disabled",false);
+                    $('.btn').prop("disabled", false);
 
                 });
             }

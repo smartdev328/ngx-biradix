@@ -2,6 +2,7 @@ var AccessService = require('../../access/services/accessService')
 var PropertyService = require('../services/propertyService')
 var saveCompsService = require('../services/saveCompsService')
 var CompService = require('../services/compsService');
+const progressService = require("../../progress/services/progressService");
 const _ = require("lodash");
 
 module.exports = {
@@ -89,11 +90,12 @@ module.exports = {
                 }
 
                 req.body.compids = req.body.compids || [];
+                res.status(200).json({success: true});
 
                 saveCompsService.saveComps(req.user,req.context,req.params.id,req.body.compids, function() {
-                    return res.status(200).json({success: true});
-                })
-            })
+                    progressService.setComplete(req.body.progressId);
+                });
+            });
         })
 
         Routes.post('/:id/comps/:compid', function (req, res) {
