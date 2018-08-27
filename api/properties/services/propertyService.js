@@ -1238,6 +1238,8 @@ module.exports = {
     getLastSurveyStats: function(options,subject, comps, callback) {
         let surveyids = _.pluck(comps, "survey.id");
 
+        console.log("3", subject.comps);
+
         // get all surveys of comps at once to be efficient
         SurveySchema.find().where("_id").in(surveyids).exec(function(err, surveys) {
             let links;
@@ -1288,7 +1290,7 @@ module.exports = {
                         // console.log(subject.name, comp.name, links);
                         //
                         if (!links) {
-                            console.log(subject.comps);
+                            console.log("4", subject.comps);
                             console.log(comp._id, comp.name);
                         }
 
