@@ -180,6 +180,7 @@ module.exports = {
                     return x.id.toString();
                 });
 
+                console.log(compids, options.compids);
                 if (options.compids) {
                     compids = _.intersection(compids, options.compids);
                 }

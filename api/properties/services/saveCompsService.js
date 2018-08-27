@@ -26,7 +26,6 @@ module.exports = {
                 async.eachLimit(added, 10, function(id, callbackp){
                     PropertyService.linkComp(operator, context, null, subjectId, id, function (err, newLink) {
                         callbackp();
-
                     });
                 }, function(err) {
                     async.eachLimit(removed, 10, function(id, callbackp){
@@ -35,23 +34,21 @@ module.exports = {
 
                         });
                     }, function(err) {
-                        //return res.status(401).json("Unauthorized request");
+                        // return res.status(401).json("Unauthorized request");
                         var order = [];
                         updatedCompIds.forEach(function(x, i) {
                             order.push({compid: x, orderNumber: i});
                         });
-                        async.eachLimit(order, 10, function(o, callbackp){
+                        async.eachLimit(order, 1, function(o, callbackp){
                             CompService.saveCompOrder(subjectId, o.compid, o.orderNumber, function (err, newLink) {
                                 callbackp();
                             });
                         }, function(err) {
                             callback();
                         });
-
                     });
                 });
-            })
-
-        })        
-    }
-}
+            });
+        });
+    },
+};

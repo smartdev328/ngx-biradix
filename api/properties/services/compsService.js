@@ -97,7 +97,7 @@ module.exports = {
                         resource: new ObjectId(compid),
                         allow: true,
                         type: 'CompManage'
-                    }, function () {
+                    }, function() {
                     });
                 }
 
@@ -113,7 +113,7 @@ module.exports = {
                             description: "Subject: " + all.subject.name,
                             id: all.subject._id
                         }, {description: "Comp: " + all.comp.name, id: all.comp._id},]
-                    })
+                    });
 
                     AuditService.create({
                         operator: operator,
@@ -126,16 +126,14 @@ module.exports = {
                             description: "Subject: " + all.subject.name,
                             id: all.subject._id
                         }, {description: "Comp: " + all.comp.name, id: all.comp._id},]
-                    })
+                    });
                 }
 
                 guestQueueService.updateGuestPermissionsForProperty(compid, function() {});
 
-                return callback(err, saved)
-            })
-
+                return callback(err, saved);
+            });
         });
-
     },
     getSubjects: function(compid, criteria, callback) {
         const ObjectId = require('mongoose').Types.ObjectId;
