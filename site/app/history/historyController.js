@@ -23,13 +23,13 @@ define([
                 "Today": [moment().startOf("day"), moment().endOf("day")],
                 "Week to Date": [moment().startOf("week"), moment().endOf("day")],
                 "Month to Date": [moment().startOf("month"), moment().endOf("day")],
-                "30 Days": [moment().subtract(30, "days").startOf("day"), moment().endOf("day")],
-                "90 Days": [moment().subtract(90, "days").startOf("day"), moment().endOf("day")],
-                "12 Months": [moment().subtract(1, "year").startOf("day"), moment().endOf("day")],
+                "Last 30 Days": [moment().subtract(30, "days").startOf("day"), moment().endOf("day")],
+                "Last 90 Days": [moment().subtract(90, "days").startOf("day"), moment().endOf("day")],
+                "Last 12 Months": [moment().subtract(1, "year").startOf("day"), moment().endOf("day")],
                 "Year-to-Date": [moment().startOf("year"), moment().endOf("day")],
                 "Lifetime": [moment().subtract(30, "year").startOf("day"), moment().endOf("day")],
             },
-            selectedRange: $stateParams.range || "30 Days",
+            selectedRange: $stateParams.range || "Last 30 Days",
             selectedStartDate: null,
             selectedEndDate: null,
         };
@@ -515,6 +515,67 @@ define([
             return parseInt(x);
         };
 
+        $scope.usersDD = {};
+        $scope.gotUsersDD = {};
+        $scope.getUserDD = function(user) {
+            var id = (user.id || user._id).toString();
+            if ($scope.usersDD[id]) {
+                return $scope.usersDD[id];
+            }
+
+            if (!$scope.gotUsersDD[id]) {
+                $userService.search({
+                    limit: 1,
+                    _id: id,
+                }).then(function (response) {
+                    if (response.data && response.data.users && response.data.users[0]) {
+                        $scope.usersDD[id] = "Email: <b>" + response.data.users[0].email + "</b><Br>" +
+                            "Role: <b>" + response.data.users[0].roles[0].name + "</b><Br>";
+                    } else {
+                        $scope.usersDD[id] = "<B>N/A</B>";
+                    }
+                });
+
+                $scope.gotUsersDD[id] = true;
+            }
+
+            return "<center><img src='/images/squares.gif' class='squares'></center>";
+        };
+
+        $scope.propertiesDD = {};
+        $scope.gotPropertiesDD = {};
+        $scope.getPropertyDD = function(property) {
+            var id = (property.id || property._id).toString();
+            if ($scope.propertiesDD[id]) {
+                return $scope.propertiesDD[id];
+            }
+
+            if (!$scope.gotPropertiesDD[id]) {
+                $propertyService.search({
+                    limit: 1,
+                    _id: id,
+                    select: "name address city state zip units orgid totalUnits",
+                }).then(function(response) {
+                    if (response.data && response.data.properties && response.data.properties[0]) {
+                        $scope.propertiesDD[id] = "";
+
+                        if ($rootScope.me.permissions.indexOf("Admin") > -1) {
+                            $scope.propertiesDD[id] += "Organization: <b>" + (response.data.properties[0].company || "None") + "</b><Br>";
+                        }
+
+                        $scope.propertiesDD[id] += "Address: <b>" + response.data.properties[0].address + "</b><Br>";
+                        $scope.propertiesDD[id] += "Unit Count: <b>" + (response.data.properties[0].totalUnits || 0) + "</b><Br>";
+                    } else {
+                        $scope.propertiesDD[id] = "<B>N/A</B>";
+                    }
+                });
+
+                $scope.gotPropertiesDD[id] = true;
+            }
+
+            return "<center><img src='/images/squares.gif' class='squares'></center>";
+        };
+
         $scope.users = {};
         $scope.gotUsers = {};
         $scope.getUser = function(user) {
@@ -536,13 +597,12 @@ define([
                     } else {
                         $scope.users[id] = "<B>N/A</B>";
                     }
-
                 });
 
                 $scope.gotUsers[id] = true;
             }
 
-            return "<center><img src='/images/squares.gif' style='width:40px'></center>";
+            return "<center><img src='/images/squares.gif' style='width:30px'></center>";
         };
 
         $scope.isOpen = {};

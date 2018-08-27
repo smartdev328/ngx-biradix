@@ -63,6 +63,8 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 });
             }
 
+            $scope.totals = {units: 0, sqft: 0, rent: 0, concessions: 0, concessionsOneTime: 0, concessionsMonthly: 0};
+
             var me = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
 
@@ -298,8 +300,62 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
         return str;
     }
 
+        $scope.totalRent = function() {
+            $scope.totals.rent = 0;
+            $scope.survey.floorplans.forEach(function(fp) {
+                $scope.totals.rent += (fp.rent * fp.units);
+            });
+
+            if ($scope.totals.units) {
+                $scope.totals.rent /= $scope.totals.units;
+            }
+
+            return $scope.totals.rent;
+        };
+
+        $scope.totalConcessions = function() {
+            $scope.totals.concessions = 0;
+            $scope.survey.floorplans.forEach(function(fp) {
+                $scope.totals.concessions += (fp.concessions * fp.units);
+            });
+
+            if ($scope.totals.units) {
+                $scope.totals.concessions /= $scope.totals.units;
+            }
+
+            return $scope.totals.concessions;
+        };
+
+    $scope.totalConcessionsOneTime = function() {
+        $scope.totals.concessionsOneTime = 0;
+        $scope.survey.floorplans.forEach(function(fp) {
+            $scope.totals.concessionsOneTime += (fp.concessionsOneTime * fp.units);
+        });
+
+        if ($scope.totals.units) {
+            $scope.totals.concessionsOneTime /= $scope.totals.units;
+        }
+
+        return $scope.totals.concessionsOneTime;
+    };
+
+    $scope.totalConcessionsMonthly = function() {
+        $scope.totals.concessionMonthly = 0;
+        $scope.survey.floorplans.forEach(function(fp) {
+            $scope.totals.concessionsMonthly += (fp.concessionsMonthly * fp.units);
+        });
+
+        if ($scope.totals.units) {
+            $scope.totals.concessionsMonthly /= $scope.totals.units;
+        }
+
+        return $scope.totals.concessionsMonthly;
+    };
+
             $scope.doneLoading = function() {
                 $scope.survey.totalUnits = 0;
+                $scope.totals.units = 0;
+                $scope.totals.sqft = 0;
 
                 $scope.survey.floorplans.forEach(function(fp) {
                     delete fp.errors;
@@ -309,7 +365,13 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ? fp.concessionsMonthly : "";
 
                     $scope.survey.totalUnits += fp.units;
+                    $scope.totals.units += fp.units;
+                    $scope.totals.sqft += (fp.sqft * fp.units);
                 });
+
+                if ($scope.totals.units) {
+                    $scope.totals.sqft /= $scope.totals.units;
+                }
 
                 $scope.survey.floorplans = _.sortByAll($scope.survey.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'fid'])
 

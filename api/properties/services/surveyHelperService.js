@@ -280,6 +280,7 @@ var  getSurveyStats = function(floorplans, survey, links, hide, nerPlaces) {
     });
     survey.totUnits = totUnits;
 
+    // console.log(links, floorplans, survey);
     if (links.excluded === true && hide) {
         links.floorplans = links.floorplans.map(function (x) {
             return x.toString()

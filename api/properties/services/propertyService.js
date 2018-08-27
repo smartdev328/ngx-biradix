@@ -1244,7 +1244,9 @@ module.exports = {
             let s;
             comps.forEach(function(comp) {
                 // match each survey to a comp
-                links = _.find(subject.comps, function(x) {return x.id == comp._id});
+                links = _.find(subject.comps, function(x) {
+                    return x.id.toString() === comp._id.toString();
+                });
 
                 // if there is a survey go here:
                 if (comp.survey) {
@@ -1282,6 +1284,8 @@ module.exports = {
                         comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
+
+                        //console.log(subject.name, comp.name, links);
 
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide, options.nerPlaces);
                     }

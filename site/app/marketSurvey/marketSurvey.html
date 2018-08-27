@@ -285,6 +285,38 @@
                 </tr>
 
                 </tbody>
+                <tfoot>
+                    <tr style="font-weight: bold;">
+                        <td class="visible-xs">
+                            Totals/Avgs:
+                            <div class="visible-xs tiny">{{totals.units}} Units</div>
+                            <div class="visible-xs tiny">{{totals.sqft | number: 0}} Sqft</div>
+                        </td>
+                        <td class="hidden-xs" colspan="2">
+                            Totals/Averages:
+                        </td>
+                        <td class="hidden-xs pad" style="text-align: right">
+                            {{totals.units}}
+                        </td>
+                        <td class="hidden-xs pad" style="text-align: right">
+                            {{totals.sqft | number: 0}}
+                        </td>
+                        <td style="text-align: right; padding-right: 10px">
+                            ${{totalRent() | number: 0}}
+                        </td>
+                        <td ng-if="!settings.showDetailed" style="text-align: right; padding-right: 10px">
+                            ${{totalConcessions() | number: 0}}
+                        </td>
+                        <td ng-if="settings.showDetailed" style="text-align: right; padding-right: 10px">
+                            ${{totalConcessionsOneTime() | number: 0}}
+                        </td>
+                        <td ng-if="settings.showDetailed" style="text-align: right; padding-right: 10px">
+                            ${{totalConcessionsMonthly() | number: 0}}
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tfoot>
                 </table>
 
                 <Center>

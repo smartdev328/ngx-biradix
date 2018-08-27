@@ -2,7 +2,7 @@
 const express = require("express");
 const async = require("async");
 const Routes = new express.Router();
-const progressService = require("../../progress/services/progressService")
+const progressService = require("../../progress/services/progressService");
 const request = require("request");
 const moment= require("moment");
 const settings = require("../../../config/settings")

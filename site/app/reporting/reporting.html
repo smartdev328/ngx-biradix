@@ -143,7 +143,7 @@
                         <div class="col-sm-4">
                             Default Reports:<Br>
                             <div>
-                                <filter-list options="reportOptions" items="reportItems"></filter-list>
+                                <filter-list options="reportOptions" items="reportItems" tooltipdir="'right'"></filter-list>
                             </div>
                         </div>
 
@@ -440,7 +440,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Property Data Values<br>
-                                    <filter-list options="temp.showCustomPortfolioOptions" items="temp.showCustomPortfolioItems"></filter-list>
+                                    <filter-list options="temp.showCustomPortfolioOptions" items="temp.showCustomPortfolioItems" tooltipdir="'right'"></filter-list>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-4 col-md-3"  style="margin:15px 0px">
@@ -496,8 +496,9 @@
 
                     <div class="hidden-print">
                         <center>
-                            <button class="btn btn-sm btn-primary" ng-click="run()">Run Report</button>
-                            <button class="btn btn-sm btn-warning" ng-if="reportIds.length > 0" ng-click="saveReport()">Save Template</button>
+                            <button class="btn btn-sm btn-primary" ng-click="run()" style="width:100px">Run</button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-sm btn-warning" ng-if="reportIds.length > 0" ng-click="saveReport()" style="width:100px">Save Template</button>
                         </center>
                     </div>
                 </div>
@@ -511,9 +512,9 @@
                     <div ng-show="reportLoading" style="display:block;width:40px;margin:50px auto">
                         <img src="/images/squares.gif" style="width:100px">
                     </div>
-                    <div class="alert alert-warning" role="alert" ng-if="!reports && !noReports && !reportLoading && !noProperties"><b>Please select your Criteria and hit 'Run Report'</b></div>
-                    <div class="alert alert-danger" role="alert" ng-if="noReports"><b>Please select at least 1 report and hit 'Run Report'</b></div>
-                    <div class="alert alert-danger" role="alert" ng-if="noProperties"><b>Please select at least 1 property and hit 'Run Report'</b></div>
+                    <div class="alert alert-warning" role="alert" ng-if="!reports && !noReports && !reportLoading && !noProperties"><b>Please select your Criteria and hit 'Run'</b></div>
+                    <div class="alert alert-danger" role="alert" ng-if="noReports"><b>Please select at least 1 report and hit 'Run '</b></div>
+                    <div class="alert alert-danger" role="alert" ng-if="noProperties"><b>Please select at least 1 property and hit 'Run'</b></div>
 
                 </div>
             </div>

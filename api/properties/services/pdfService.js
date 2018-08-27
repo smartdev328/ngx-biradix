@@ -20,10 +20,10 @@ module.exports = {
         //     return callback(browser);
         // }
 
-        if (url.indexOf("localhost") > -1) {
+        if (/* false && */url.indexOf("localhost") > -1) {
             puppeteer.launch({
                 headless: true,
-                args: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
+                arguments: [/*'--disable-gpu'*/, '--no-sandbox', '--disable-setuid-sandbox'],
                 slowMo: 0,
             }).then((newBrowser) => {
                 browser = newBrowser;
@@ -32,11 +32,18 @@ module.exports = {
                 //     browser = null;
                 //     console.log('disconnected');
                 // })
-            }).catch(err=> {callback(err,null);})
+            }).catch((err) => {callback(err,null);});
         }
         else {
+            let token = "";
+            if (settings.BROWSERLESS_IO_KEY) {
+                token = "?token=" + settings.BROWSERLESS_IO_KEY;
+            };
+
+            console.log(token);
+
             puppeteer.connect({
-                browserWSEndpoint: 'wss://chrome.browserless.io?token=' + settings.BROWSERLESS_IO_KEY
+                browserWSEndpoint: `wss://chrome.browserless.io${token}`,
             }).then((newBrowser) => {
                 browser = newBrowser;
                 callback(null,browser);
@@ -48,7 +55,7 @@ module.exports = {
         }
 
     },
-    getPdf : function(transaction_id, url, cookies, callback) {
+    getPdf: function(transaction_id, url, cookies, callback) {
         var timer = new Date().getTime();
         this.getBrowser(url,(err,browser) => {
 

@@ -39,11 +39,23 @@ angular.module('biradix.global').directive('daterangePicker', function () {
 
                 $scope.reload = function() {
 
+                    switch ($scope.daterange.selectedRange) {
+                        case "30 Days":
+                            $scope.daterange.selectedRange = "Last 30 Days";
+                            break;
+                        case "90 Days":
+                            $scope.daterange.selectedRange = "Last 90 Days";
+                            break;
+                        case "12 Months":
+                            $scope.daterange.selectedRange = "Last 12 Months";
+                            break;
+                    }
+
                     if ($scope.daterange.selectedRange == "Custom Range") {
                     }
                     else {
                         if (!$scope.daterange.Ranges[$scope.daterange.selectedRange]) {
-                            $scope.daterange.selectedRange = $scope.daterange.Ranges[0]
+                            $scope.daterange.selectedRange = $scope.daterange.Ranges[0];
                         }
                         $scope.daterange.selectedStartDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][0];
                         $scope.daterange.selectedEndDate = $scope.daterange.Ranges[$scope.daterange.selectedRange][1];
@@ -56,8 +68,8 @@ angular.module('biradix.global').directive('daterangePicker', function () {
                         format: 'MM/DD/YYYY',
                         startDate: $scope.daterange.selectedStartDate,
                         endDate: $scope.daterange.selectedEndDate,
-                        showDropdowns: true,
-                        showWeekNumbers: true,
+                        showDropdowns: false,
+                        showWeekNumbers: false,
                         timePicker: false,
                         timePickerIncrement: 1,
                         timePicker12Hour: true,
@@ -69,7 +81,8 @@ angular.module('biradix.global').directive('daterangePicker', function () {
                         applyClass: 'btn-primary',
                         cancelClass: 'btn-default',
                         maxDate: moment().format("MM/DD/YYYY"),
-                        minDate: moment().subtract(30, 'year').format("MM/DD/YYYY")
+                        minDate: moment().subtract(30, 'year').format("MM/DD/YYYY"),
+                        linkedCalendars: false,
                     }, function (start, end, label) {
                         $scope.daterange.selectedStartDate = start;
                         $scope.daterange.selectedEndDate = end;

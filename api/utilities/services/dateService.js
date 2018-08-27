@@ -18,7 +18,7 @@ module.exports = {
     },
 
     convertRangeToParts: function(daterange, offset) {
-        daterange = daterange || {daterange: "90 Days"};
+        daterange = daterange || {daterange: "Last 90 Days"};
 
         switch (daterange.daterange) {
             case "Today":
