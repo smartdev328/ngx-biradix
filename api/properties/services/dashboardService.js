@@ -180,7 +180,7 @@ module.exports = {
                     return x.id.toString();
                 });
 
-                console.log("1", property[0].comps);
+                console.log("1", _.pluck(property[0].comps, "id"));
                 if (options.compids) {
                     compids = _.intersection(compids, options.compids);
                 }
@@ -214,7 +214,7 @@ module.exports = {
                         updateCompSurveyIdsByDate(comps, options.surveyDateStart, options.surveyDateEnd, function() {
                             async.parallel({
                                 comps: function(callbackp) {
-                                    console.log("2", property[0].comps);
+                                    console.log("2", _.pluck(property[0].comps, "id"));
                                     PropertyService.getLastSurveyStats({
                                         hide: user.settings.hideUnlinked,
                                         injectFloorplans: options.injectFloorplans,

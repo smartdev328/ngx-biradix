@@ -1238,7 +1238,7 @@ module.exports = {
     getLastSurveyStats: function(options,subject, comps, callback) {
         let surveyids = _.pluck(comps, "survey.id");
 
-        console.log("3", subject.comps);
+        console.log("3", _.pluck(subject.comps, "id"));
 
         // get all surveys of comps at once to be efficient
         SurveySchema.find().where("_id").in(surveyids).exec(function(err, surveys) {
@@ -1290,7 +1290,7 @@ module.exports = {
                         // console.log(subject.name, comp.name, links);
                         //
                         if (!links) {
-                            console.log("4", subject.comps);
+                            console.log("4", _.pluck(subject.comps, "id"));
                             console.log(comp._id, comp.name);
                         }
 
