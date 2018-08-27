@@ -329,7 +329,7 @@
                      uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
 
                 ></div>
-                <A href="#/profile/{{comp._id}}">{{$index + 1}}. {{comp.name}}</A>
+                {{$index + 1}}. {{comp.name}}
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:1px;color:orange"
                    ng-if="comp.needsSurvey"

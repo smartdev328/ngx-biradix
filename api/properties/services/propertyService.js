@@ -1285,7 +1285,12 @@ module.exports = {
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
 
-                        //console.log(subject.name, comp.name, links);
+                        // console.log(subject.name, comp.name, links);
+                        //
+                        if (!links) {
+                            console.log(subject.comps);
+                            console.log(comp._id, comp.name);
+                        }
 
                         SurveyHelperService.floorplansToSurvey(comp.survey, s.floorplans, links, options.hide, options.nerPlaces);
                     }
