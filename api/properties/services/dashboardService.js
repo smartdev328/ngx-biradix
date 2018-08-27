@@ -20,19 +20,11 @@ module.exports = {
                     return callbackp();
                 }
 
-                var key = "view_" + user._id.toString()+"_"+subjectId;
-                var prop = localCacheService.get(key);
-
-                if (prop) {
-                    return callbackp(null,prop)
-                }
-
                 PropertyService.search(user, {limit: 1, permission: ['PropertyView'], _id: subjectId
                     , select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees totalUnits survey location_amenities community_amenities floorplans comps orgid needsSurvey media custom walkscore"
                     , skipAmenities: true
                 }, function(err, property) {
-                    localCacheService.set(key, property[0], 2)
-                    callbackp(err, property[0]);
+                     callbackp(err, property[0]);
                 });
             },
             comp: function (callbackp) {
@@ -180,7 +172,6 @@ module.exports = {
                     return x.id.toString();
                 });
 
-                console.log("1", _.pluck(property[0].comps, "id"));
                 if (options.compids) {
                     compids = _.intersection(compids, options.compids);
                 }
@@ -214,7 +205,7 @@ module.exports = {
                         updateCompSurveyIdsByDate(comps, options.surveyDateStart, options.surveyDateEnd, function() {
                             async.parallel({
                                 comps: function(callbackp) {
-                                    console.log("2", _.pluck(property[0].comps, "id"));
+                                    // console.log("2", _.pluck(property[0].comps, "id"));
                                     PropertyService.getLastSurveyStats({
                                         hide: user.settings.hideUnlinked,
                                         injectFloorplans: options.injectFloorplans,
