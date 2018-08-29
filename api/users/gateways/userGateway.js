@@ -38,12 +38,11 @@ userRoutes.post("/bounce", function (req, res) {
                                    contactEmail: b.email,
                                    property: properties[0].name,
                                    message: b.reason,
-                                   admin_only: "<i>TO: " + last.sender.first + " " + last.sender.last + " &lt;" + last.sender.email + "&gt;</i><br><Br>"
+                                   admin_only: "",
                                };
                                let email = {
-                                   // to: last.sender.email,
-                                   to: "surveyswapemails@biradix.com",
-                                   category: ["SurveySwap Bounced"],
+                                   to: last.sender.email,
+                                   category: ["SurveySwap Undeliverable"],
                                    logo: "https://platform.biradix.com/images/organizations/" + last.sender.logo,
                                    subject: "Unable to reach SurveySwap contact (" + b.email + ") for " + properties[0].name,
                                    template: "surveyswap_bounced.html",
@@ -51,7 +50,11 @@ userRoutes.post("/bounce", function (req, res) {
                                };
 
                                EmailService.send(email, (emailError, status) => {
-                                   // TODO: Email "surveyswapemails@biradix.com"
+                                   delete email.category;
+                                   email.to = "surveyswapemails@biradix.com";
+                                   email.templateData.admin_only = "<i>TO: " + last.sender.first + " " + last.sender.last + " &lt;" + last.sender.email + "&gt;</i><br><Br>";
+
+                                   EmailService.send(email, function(emailError, status) {});
                                });
                            });
                        }
@@ -61,7 +64,7 @@ userRoutes.post("/bounce", function (req, res) {
         }
     })
 
-    res.status(200).json({ success: true });
+    res.status(200).json({success: true});
 
 })
 
