@@ -39,6 +39,7 @@ userRoutes.post("/bounce", function (req, res) {
                                    property: properties[0].name,
                                    message: b.reason,
                                    admin_only: "",
+                                   first: last.sender.first,
                                };
                                let email = {
                                    to: last.sender.email,
