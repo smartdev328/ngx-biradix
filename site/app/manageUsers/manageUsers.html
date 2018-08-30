@@ -208,7 +208,9 @@
                                 <li><a href ng-click="edit(row._id)"><span class="fa fa-fw fa-edit"></span> Edit User</a></li>
                                 <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && !row.active"><span class="fa fa-fw fa-check"></span> Activate</a></li>
                                 <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && row.active"><span class="fa fa-fw fa-times"></span> De-activate</a></li>
+                                <li class="dropdown-header" ng-if="me.permissions.indexOf('Admin') > -1">BI:Radix Admin</li>
                                 <li><a href ng-click="loginAs(row._id)" ng-show="me.permissions.indexOf('Users/LogInAs') > -1 && row.active"><span class="fa fa-fw fa-key"></span> Login As</a></li>
+                                <li ng-if="!row.isCustom && me.permissions.indexOf('Admin') > -1"><a href="/#history?user={{row._id}}" target="_blank"><span class="fa fa-history fa-fw"></span> View Activity</a></li>
                             </ul>
                         </div>
                     </div>
