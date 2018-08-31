@@ -528,7 +528,7 @@ define([
                             if (response.data.property) {
                                 var p = response.data.property;
                                 // $scope.dupeChecked = true;
-                                $dialog.warning("We have detected a property with this address already exists:<Br><Br>Name: <B>" + p.name + "</B><br>Units: <b>" + p.totalUnits + "</b><br>Address: <b>" + p.address + "</b><br><Br>Are you sure you want to create a new property?", function() {
+                                $dialog.warning("A property already exists in the same location (or in very close proximity):<Br><Br>Name: <B>" + p.name + "</B><br>Units: <b>" + p.totalUnits + "</b><br>Address: <b>" + p.address + "</b><br><Br>Are you sure you want to create a new property?", function() {
                                     $uibModalInstance.dismiss("cancel");
                                 }, function() {
 
