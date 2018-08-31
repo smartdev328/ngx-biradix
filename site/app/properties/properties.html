@@ -277,7 +277,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <li><a href ng-click="edit(row._id, false)"><span class="fa fa-building fa-fw"></span> Edit Property</a></li>
+                            <li><a href ng-click="edit(row._id, false)"><span class="fa fa-pencil fa-fw"></span> Edit Property</a></li>
                             <li ng-if="(!row.isCustom || row.orgid)"><a href ng-click="addComp(row)"><span class="fa fa-building-o fa-fw"></span> Manage Comps</a></li>
                             <li ng-if="!row.isCustom && row.orgid"><a href ng-click="manageUsers(row)"><span class="fa fa-users fa-fw"></span> Assign Users</a></li>
 
@@ -378,7 +378,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                            <li><a href ng-if="comp.canEdit" ng-click="edit(comp._id, true, row, false)"><span class="fa fa-building fa-fw"></span> Edit Comp</a></li>
+                            <li><a href ng-if="comp.canEdit" ng-click="edit(comp._id, true, row, false)"><span class="fa fa-pencil fa-fw"></span> Edit Comp</a></li>
                             <li><a href="javascript:void(0)"
                                    onclick="event.preventDefault();event.stopPropagation()"
                                    ng-if="!comp.canEdit" style="cursor: not-allowed;opacity: 0.5;"
