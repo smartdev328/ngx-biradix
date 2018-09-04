@@ -57,7 +57,16 @@ module.exports = {
             }
         }
 
-        var tot = _.sum(fps, function (x) {
+        // Remove all floorplans with missing rent
+        const removedNoRent = _.remove(fps, (fp) => {
+            return typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent);
+        });
+
+        if (removedNoRent && removedNoRent.length > 0) {
+            excluded = true;
+        }
+
+        let tot = _.sum(fps, function (x) {
             if (scale == "concessionsMonthly" && (typeof x.concessionsMonthly == 'undefined' || x.concessionsMonthly == null || isNaN(x.concessionsMonthly)) ) {
                 return 0;
             }
@@ -66,7 +75,7 @@ module.exports = {
                 return 0;
             }
 
-            return x.units
+            return x.units;
         });
 
         let ret;
