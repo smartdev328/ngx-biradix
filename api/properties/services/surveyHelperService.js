@@ -156,6 +156,11 @@ module.exports = {
                 else {
                     var survey = surveys[0];
 
+                    // Remove all floorplans with missing rent
+                    _.remove(survey.floorplans, (fp) => {
+                        return typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent);
+                    });
+
                     var totUnits = _.sum(survey.floorplans, function (fp) {
                         return fp.units
                     });
@@ -177,7 +182,7 @@ module.exports = {
                             weeklytraffic: survey.weeklytraffic,
                             notes: survey.notes,
                             date: survey.date,
-                            dateByOwner : dateByOwner
+                            dateByOwner: dateByOwner
                         }
 
                         var query = {_id: propertyid};
@@ -185,22 +190,20 @@ module.exports = {
                         var options = {new: true};
 
                         PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                            callback()
+                            callback();
                         })
-                    }
-                    else {
+                    } else {
                         var query = {_id: propertyid};
                         var update = {survey: undefined};
                         var options = {new: true};
 
                         PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                            callback()
-                        })
+                            callback();
+                        });
                     }
                 }
-
-            })
-        })
+            });
+        });
     },
 
     getSubjectExclusions: function (compid, compFloorplans, callback) {
