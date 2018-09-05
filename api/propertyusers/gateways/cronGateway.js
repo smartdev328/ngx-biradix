@@ -43,6 +43,7 @@ routes.get("/reminders", function(req, res) {
                             to: property.user.email,
                             bcc: "<cue@biradix.com>",
                             logo: property.logo,
+                            logoHeight: property.logoEmailHeight,
                             width: 700,
                             subject: "UPDATE REMINDER: Market Survey",
                             template: "reminder.html",

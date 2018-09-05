@@ -1390,6 +1390,7 @@ function emailOriginatorGuestSurvey(guest, propertyid, propertyname) {
                 category: "SurveySwap Complete",
                 to: stat.sender.email,
                 logo: "https://platform.biradix.com/images/organizations/" + stat.sender.logo,
+                logoHeight: stat.sender.logoHeight,
                 subject: guest.first + " " + guest.last + " updated " + propertyname +" property survey",
                 template: "guest_survey.html",
                 templateData: {

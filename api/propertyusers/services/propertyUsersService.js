@@ -121,6 +121,7 @@ module.exports = {
                             f.logo ="https://" + f.user.roles[0].org.subdomain + ".biradix.com/images/organizations/" + f.user.roles[0].org.logoBig;
                             f.unsub ="https://" + f.user.roles[0].org.subdomain + ".biradix.com/u";
                             f.dashboardBase ="https://" + f.user.roles[0].org.subdomain + ".biradix.com/d/";
+                            f.logoHeight = f.user.roles[0].org.logoEmailHeight;
 
                             // Fix last survey date to users timezone
                             f.properties.forEach(function(p) {

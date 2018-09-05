@@ -106,6 +106,7 @@ module.exports = {
                                     last: operator.last,
                                     email: operator.email,
                                     logo: operator.orgs[0].logoBig,
+                                    logoHeight: operator.orgs[0].logoEmailHeight,
                                     id: operator._id,
                                     organization: {
                                         id: operator.orgs[0]._id,

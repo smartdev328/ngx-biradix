@@ -74,6 +74,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                     var logo ='https://' + data.user.orgs[0].subdomain + ".biradix.com/images/organizations/" + data.user.orgs[0].logoBig;
                     var unsub ='https://' + data.user.orgs[0].subdomain + ".biradix.com/u";
                     var dashboardBase ='https://' + data.user.orgs[0].subdomain + ".biradix.com/d/";
+                    const logoHeight = data.user.orgs[0].logoEmailHeight;
 
                     var cron = data.user.settings.notifications.cron.split(" ");
 
@@ -137,6 +138,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                         //to: "eugene@biradix.com,alex@biradix.com",
                         width: 1000,
                         logo: logo,
+                        logoHeight: logoHeight,
                         subject: "Property Status Update",
                         template: 'notification.html',
                         templateData: {

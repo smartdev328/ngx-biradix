@@ -9,6 +9,7 @@ function _DBtoObject(object: IOrganizationModel): IOrganization {
         _id: object._id.toString(),
         isDefault: object.isDefault,
         logoBig: object.logoBig,
+        logoEmailHeight: object.logoEmailHeight,
         logoSmall: object.logoSmall,
         name: object.name,
         settings: {

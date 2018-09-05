@@ -5,6 +5,7 @@ export interface IOrganizationWrite {
     subdomain: string;
     logoBig: string;
     logoSmall: string;
+    logoEmailHeight?: number;
     isDefault: boolean;
 }
 

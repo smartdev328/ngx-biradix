@@ -45,6 +45,7 @@ userRoutes.post("/bounce", function (req, res) {
                                    to: last.sender.email,
                                    category: ["SurveySwap Undeliverable"],
                                    logo: "https://platform.biradix.com/images/organizations/" + last.sender.logo,
+                                   logoHeight: last.sender.logoHeight,
                                    subject: "Unable to reach SurveySwap contact (" + b.email + ") for " + properties[0].name,
                                    template: "surveyswap_bounced.html",
                                    templateData: templateData,
