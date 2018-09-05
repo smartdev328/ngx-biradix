@@ -299,7 +299,7 @@ module.exports = {
 
                         var org = userRoles[0].org;
 
-                        base = base.replace("platform",org.subdomain)
+                        base = base.replace("platform.", org.subdomain + ".");
 
                         var logo = base + "/images/organizations/" + org.logoBig;
 
