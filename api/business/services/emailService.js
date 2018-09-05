@@ -47,7 +47,7 @@ module.exports = {
                 if (err) {
                     throw (err);
                 } else {
-                    LiquidService.parse(data, {message: html, logo: email.logo, width: email.width}, filters, function(result) {
+                    LiquidService.parse(data, {message: html, logo: email.logo, width: email.width, logoHeight: email.logoHeight}, filters, function(result) {
                         newemail.html = result;
                         serviceRegistry.getEmailService().send(newemail).then((success) => {
                             console.log("Email Sent Success: ", success);

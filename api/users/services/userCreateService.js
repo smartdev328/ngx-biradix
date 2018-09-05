@@ -308,6 +308,7 @@ module.exports = {
                             to: usr.email,
                             subject: org.name + creator + " has created a new account for you at BI:Radix",
                             logo : logo,
+                            logoHeight: org.logoEmailHeight,
                             template : 'create.html',
                             templateData : {first: usr.first, email: usr.email, link: base, password: user.password }
                         };

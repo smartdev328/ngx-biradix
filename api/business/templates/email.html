@@ -1,5 +1,5 @@
 <html><body><center><table cellpadding=0 cellspacing=0 border=0 style = 'border:1px solid #ccc; text-align:left;min-width:600px;max-width:{{width}}px;'>
-    <tr><td  style='padding:15px;' ><img src = "{{logo}}" height="41" >
+    <tr><td  style='padding:15px;' ><img src = "{{logo}}" {% if logoHeight %}height="{{logoHeight}}"{% endif %}>
     </td></tr><tr ><Td style='padding:15px; background-color:white; font-face:arial; font-size:11pt; '>
 {{message}}
 </td ></tr ></table></center ></body></html>

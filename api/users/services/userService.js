@@ -462,8 +462,9 @@ module.exports = {
                         to: usr.email,
                         subject: 'Password recovery',
                         logo : logo,
-                        template : 'password.html',
-                        templateData : {first: usr.first, email: usr.email, link: base + "/p/" + token }
+                        logoHeight: org.logoEmailHeight,
+                        template: 'password.html',
+                        templateData: {first: usr.first, email: usr.email, link: base + "/p/" + token }
                     };
 
                     AuditService.create({type: 'reset_password', user : usr,description: 'Success: ' + usr.email, context: context})
