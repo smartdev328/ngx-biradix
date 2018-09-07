@@ -2,7 +2,7 @@
 define([
     "app",
 ], function(app) {
-    app.controller("bulkFloorplansController", ["$scope", "$uibModalInstance", "$dialog", "toastr", "floorplans", function ($scope, $uibModalInstance, $dialog, $toastr, floorplans) {
+    app.controller("bulkFloorplansController", ["$scope", "$uibModalInstance", "$dialog", "toastr", "floorplans", function ($scope, $uibModalInstance, $dialog, toastr, floorplans) {
         ga("set", "title", "/bulkFloorPlans");
         ga("set", "page", "/bulkFloorPlans");
         ga("send", "pageview");
@@ -57,10 +57,19 @@ define([
                             fp.sqft = parseInt(data[i][4]);
                             fp.amenities = [];
 
-                            if (_.find(floorplans, function(f) {
-                                return f.bedrooms === fp.bedrooms && f.bathrooms === fp.bathrooms && f.description === fp.description && f.units === fp.units && f.sqft === fp.sqft;
-                            })) {
+                            if (
+                                _.find(floorplans, function(f) {
+                                    return f.bedrooms === fp.bedrooms && f.bathrooms === fp.bathrooms && f.description === fp.description && f.units === fp.units && f.sqft === fp.sqft;
+                                })
+                            ) {
                                 fp.duplicate = true;
+                            } else if (
+                                _.find(tempFloorplans, function(f) {
+                                    return f.bedrooms === fp.bedrooms && f.bathrooms === fp.bathrooms && f.description === fp.description && f.units === fp.units && f.sqft === fp.sqft;
+                                })
+                            ) {
+                                errors = ["Contains at least two identical floor plans (i.e. same Bed/Bath/Units/Sqft/Description) which can create confusion later. We recommend adding unique descriptions for otherwise similar floor plans. "];
+                                break;
                             } else {
                                 $scope.canUpload = true;
                             }
@@ -74,7 +83,7 @@ define([
                 }
 
                 if (errors.length > 0) {
-                    $toastr.error("<b>Unable to upload floor plans for the following reason(s):</b><Br><Br>" + errors.join("<Br>"));
+                    toastr.error("<b>Unable to upload floor plans for the following reason(s):</b><Br><Br>" + errors.join("<Br>"), );
                 } else {
                     $scope.newFloorplans = tempFloorplans;
                 }
