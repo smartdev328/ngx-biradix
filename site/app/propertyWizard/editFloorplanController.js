@@ -144,7 +144,7 @@ define([
                 var response = [];
                 $scope.unitItemsCopy.forEach(function(a) {
                     if (a.selected) {
-                        response.push(a.id.toString())
+                        response.push(a.id.toString());
                     }
                 })
 

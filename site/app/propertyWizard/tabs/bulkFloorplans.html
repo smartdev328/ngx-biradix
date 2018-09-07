@@ -32,12 +32,63 @@
         <Br>
         <Div style="text-align: center">
             <div class="file-input-wrapper">
-                <button class="btn btn-primary">Upload</button>
+                <button class="btn btn-primary" ng-if="newFloorplans.length === 0">Upload</button>
+                <button class="btn btn-primary" ng-if="newFloorplans.length > 0">Clear and Upload Again</button>
                 <input type='file' id="fileUpload" multiple accept=".xlsx"
                        onchange="angular.element(this).scope().processFile(this)"
                 />
             </div>
-
         </Div>
+
+        <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px" ng-if="newFloorplans.length > 0">
+            <tbody>
+            <tr class="thead">
+                <th>Type</th>
+                <th>Desc.</th>
+                <th style="text-align: center">Units</th>
+                <th style="text-align: center">Sqft</th>
+                <th></th>
+            </tr>
+
+            <tr ng-repeat="row in newFloorplans | orderBy: ['bedrooms','bathrooms','sqft','units','description']" ng-style="{'background-color': row.duplicate ? '#f2dede !important' : 'inherit'}">
+                <td>
+                    {{row.bedrooms}}x{{row.bathrooms}}
+                </td>
+                <td style="word-break: break-all">
+                    {{row.description}}
+                </td>
+                <td style="text-align: center">
+                    {{row.units}}
+                </td>
+                <td style="text-align: center">
+                    {{row.sqft}}
+                </td>
+                <td class="center">
+                    <i class="fa fa-copy" ng-if="row.duplicate"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="left"
+                       popover-append-to-body="true"
+                       uib-popover="This is a duplicate floor plan. It will not be uploaded"
+                    ></i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-if="newFloorplans.length > 0" style="text-align: center">
+            <Br>
+            <button ng-if="!canUpload"
+
+                    popover-trigger="'mouseenter'"
+                    popover-placement="top"
+                    popover-append-to-body="true"
+                    uib-popover="No new floorplans found to upload"
+                    class="btn btn-success" style="opacity: .5;cursor: not-allowed">
+                Done
+            </button>
+
+            <button ng-if="canUpload" ng-click="done()" class="btn btn-success">
+                Done
+            </button>
+        </div>
     </div>
 </div>

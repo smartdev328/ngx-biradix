@@ -647,12 +647,15 @@ define([
                     keyboard: false,
                     backdrop: "static",
                     resolve: {
-
+                        floorplans: function() {
+                            return $scope.property.floorplans;
+                        },
                     },
                 });
 
-                modalInstance.result.then(function() {
-
+                modalInstance.result.then(function(newFloorplans) {
+                    $scope.property.floorplans = $scope.property.floorplans.concat(newFloorplans);
+                    toastr.success(newFloorplans.length + " floor plans uploaded successfully.");
                 }, function() {
                     // Cancel
                 });
