@@ -1,0 +1,43 @@
+<style>
+    .file-input-wrapper {
+        width: 300px;
+        height: 40px;
+        overflow: hidden;
+        position: relative;
+        margin:10px auto;
+
+    }
+    .file-input-wrapper > input[type="file"] {
+        font-size: 200px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        opacity: 0;
+    }
+    .file-input-wrapper > button {
+        display: inline-block;
+        width:300px;
+    }
+</style>
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Bulk Upload Floor Plans</h2>
+    </div>
+    <div class="modal-body container-fluid">
+        <div>
+        To upload your floor plans, please download this <A href="/images/Floor%20Plan%20Upload%20Sample.xlsx" target="_blank">Sample Document</A> and modify with your property floor plans and save.
+        </div>
+
+        <Br>
+        <Div style="text-align: center">
+            <div class="file-input-wrapper">
+                <button class="btn btn-primary">Upload</button>
+                <input type='file' id="fileUpload" multiple accept=".xlsx"
+                       onchange="angular.element(this).scope().processFile(this)"
+                />
+            </div>
+
+        </Div>
+    </div>
+</div>

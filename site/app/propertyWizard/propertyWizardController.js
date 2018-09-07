@@ -636,6 +636,29 @@ define([
                 }
             }
 
+        $scope.bulkFloorplans = function() {
+            require([
+                "/app/propertyWizard/bulkFloorplansController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/bulkFloorplans.html?bust=" + version,
+                    controller: "bulkFloorplansController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+
+                    },
+                });
+
+                modalInstance.result.then(function() {
+
+                }, function() {
+                    // Cancel
+                });
+            });
+        };
+            
             $scope.addFloorplan = function(fp) {
                 require([
                     '/app/propertyWizard/editFloorplanController.js'
@@ -683,7 +706,7 @@ define([
                         //Cancel
                     });
                 });
-            }
+            };
 
             $scope.calculateFloorplanTotals = function() {
                 // re-calcualte total units in case we updated unit counts

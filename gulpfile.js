@@ -25,6 +25,7 @@ gulp.task("vendorsjs", function() {
         , "./site/components/daterangepicker/daterangepicker.js"
         , "./site/components/select/customSelect.js"
         , "./site/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"
+        , "./node_modules/xlsx-style/dist/xlsx.core.min.js",
 
     ])
         .pipe(concat("vendors.js"))
