@@ -114,9 +114,7 @@ angular.module('biradix.global').directive('propertyComps', function () {
                                 j++;
                                 comp.bedrooms[b] = comp.survey.bedrooms[b];
                             }
-
-
-                        })
+                        });
 
                         $scope.totals.totalUnits /= $scope.comps.length;
                         

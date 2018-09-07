@@ -266,6 +266,19 @@ module.exports = {
                     delete fp.runratesqft;
                 }
             }
+
+            if (!fp.excluded) {
+                if (typeof fp.rent === "undefined" || fp.rent === null || fp.rent === "") {
+                    fp.excluded = true;
+                    delete fp.rent;
+                    delete fp.concessions;
+                    delete fp.ner;
+                    delete fp.nersqft;
+                    delete fp.mersqft;
+                    delete fp.runrate;
+                    delete fp.runratesqft;
+                }
+            }
         })
     }
 }
@@ -301,6 +314,15 @@ var  getSurveyStats = function(floorplans, survey, links, hide, nerPlaces) {
         if (excluded) {
             survey.excluded = true;
         }
+    }
+
+    // Remove all floorplans with missing rent
+    const removedNoRent = _.remove(fps, (fp) => {
+        return typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent);
+    });
+
+    if (removedNoRent && removedNoRent.length > 0) {
+        survey.excluded = true;
     }
 
     totUnits = _.sum(fps, function (fp) {

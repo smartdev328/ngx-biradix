@@ -83,10 +83,10 @@ define([
 
                 for (j = 4; j < data[i].length; j+=2) {
                     // We found rent
-                    if (typeof data[i][j] !== "undefined" && data[i][j] !== null && data[i][j] !== "") {
+                    if (typeof data[i][j + 1] !== "undefined" && data[i][j + 1] !== null && data[i][j + 1] !== "") {
                         // But missing concessions
-                        if (typeof data[i][j + 1] === "undefined" || data[i][j + 1] === null || data[i][j + 1] === "") {
-                            toastr.error(data[i][0] + " must have a valid number for Concession.");
+                        if (typeof data[i][j] === "undefined" || data[i][j] === null || data[i][j] === "") {
+                            toastr.error(data[i][0] + " must have a valid number for Rent since Concession is set.");
                             return;
                         }
                     }

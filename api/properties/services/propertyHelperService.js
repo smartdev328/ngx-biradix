@@ -35,6 +35,8 @@ module.exports = {
 
         if (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent)) {
             return "(no value set)";
+        } else if (typeof fp.concessions === "undefined" || fp.concessions === null || isNaN(fp.concessions)) {
+            return "($" + fp.rent + " gmr, (no value set) cons/total)";
         } else if (typeof fp.concessionsOneTime !== "undefined") {
             return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total, $" + fp.concessionsOneTime + " cons/one-time, $" + fp.concessionsMonthly + " cons/monthly)";
         } else {
