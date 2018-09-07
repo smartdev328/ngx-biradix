@@ -40,9 +40,9 @@ angular.module('biradix.global').directive('rankingsReport', function () {
 
                         $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].floorplans = $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].floorplans || [];
 
-                        if ($scope.settings.hideUnlinked && fp.excluded) {
+                        if (($scope.settings.hideUnlinked && fp.excluded) || (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent))) {
                             $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].excluded = true;
-                        }  else {
+                        } else {
                             var f = {
                                 description: fp.description,
                                 units: fp.units,

@@ -104,34 +104,39 @@ module.exports = {
             callback(null)
         } else {
             PropertyService.getSurvey({ids: surveyids,select: "propertyid floorplans"}, function(err, surveys) {
-                var property_rankings = [];
+                const property_rankings = [];
 
-                var allIncludedFloorplans = PropertyHelperService.flattenAllCompFloorplans(comps,subjectid);
+                const allIncludedFloorplans = PropertyHelperService.flattenAllCompFloorplans(comps,subjectid);
+                let hasRent;
+                let f;
+                let included;
                 surveys.forEach(function(s) {
                     s.floorplans.forEach(function(fp,i) {
-                        var f = {fid: fp.id, id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft
-                            , ner: Math.round((fp.rent - (fp.concessions / 12)) * 100) / 100
-                            , nersqft: Math.round((fp.rent - (fp.concessions / 12)) / fp.sqft * 100) / 100
-                            , runrate:  Math.round((fp.rent - (fp.concessionsMonthly || 0)) * 100) / 100
-                            , runratesqft:  Math.round((fp.rent - (fp.concessionsMonthly || 0)) / fp.sqft * 100) / 100
+                        hasRent = typeof fp.rent !== "undefined" && fp.rent !== null && isNaN(fp.rent);
+                        f = {fid: fp.id, id: s.propertyid, bedrooms: fp.bedrooms, bathrooms: fp.bathrooms, description: fp.description, units: fp.units, sqft: fp.sqft
+                            , ner: Math.round((fp.rent - ((fp.concessions || 0) / 12)) * 100) / 100
+                            , nersqft: Math.round((fp.rent - ((fp.concessions || 0) / 12)) / fp.sqft * 100) / 100
+                            , runrate: Math.round((fp.rent - (fp.concessionsMonthly || 0)) * 100) / 100
+                            , runratesqft: Math.round((fp.rent - (fp.concessionsMonthly || 0)) / fp.sqft * 100) / 100
                             , rent: fp.rent
                             , mersqft: Math.round(fp.rent / fp.sqft * 100) / 100
                             , concessionsMonthly: fp.concessionsMonthly
                             , concessionsOneTime: fp.concessionsOneTime
-                            , concessions: fp.concessions
+                            , concessions: fp.concessions,
 
                         };
 
-                        var included = _.find(allIncludedFloorplans, function(x) {return x.toString() == fp.id.toString()})
+                        included = _.find(allIncludedFloorplans, function(x) {return x.toString() === fp.id.toString()})
 
                         if (!included) {
                             f.excluded = true;
                         }
-                        property_rankings.push(f)
-                    })
-                })
 
-                callback(property_rankings)
+                        property_rankings.push(f);
+                    });
+                });
+
+                callback(property_rankings);
             });
         }
     }

@@ -12,7 +12,7 @@ module.exports = {
         if (bedrooms > -1) {
             fps = _.filter(fps, function (x) {
                 return x.bedrooms == bedrooms
-            })
+            });
         }
 
         var excluded = false;
@@ -32,7 +32,7 @@ module.exports = {
                 }
             }
 
-            //compare current floorplan to current exclusions to get a current exclusion list
+            // compare current floorplan to current exclusions to get a current exclusion list
             var currentfps = _.pluck(_.find(comps, function (x) {
                 return x._id == s.propertyid
             }).floorplans, "id").map(function (x) {
@@ -42,7 +42,7 @@ module.exports = {
             var incfps = _.find(subject.comps, function (x) {
                 return x.id == s.propertyid
             }).floorplans.map(function (x) {
-                return x.toString()
+                return x.toString();
             });
 
             excfps = excfps.concat(_.difference(currentfps, incfps))
@@ -53,7 +53,7 @@ module.exports = {
                 });
                 if (removed && removed.length > 0) {
                     excluded = true;
-                }
+                  }
             }
         }
 

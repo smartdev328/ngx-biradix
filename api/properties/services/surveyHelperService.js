@@ -256,7 +256,7 @@ module.exports = {
 
                 // console.log(links.floorplans, fp.id)
                 if (links.floorplans.indexOf(fp.id.toString()) == -1) {
-                    fp.excluded = true;
+                      fp.excluded = true;
                     delete fp.rent;
                     delete fp.concessions;
                     delete fp.ner;
@@ -268,7 +268,7 @@ module.exports = {
             }
 
             if (!fp.excluded) {
-                if (typeof fp.rent === "undefined" || fp.rent === null || fp.rent === "") {
+                if (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent)) {
                     fp.excluded = true;
                     delete fp.rent;
                     delete fp.concessions;

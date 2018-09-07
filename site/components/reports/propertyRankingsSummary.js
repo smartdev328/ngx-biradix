@@ -43,10 +43,10 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
 
                         $scope.rankings[fp.bedrooms].floorplans =$scope.rankings[fp.bedrooms].floorplans || [];
 
-                        if ($scope.settings.hideUnlinked && fp.excluded) {
+                        if (($scope.settings.hideUnlinked && fp.excluded) || (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent))) {
                             $scope.rankings[fp.bedrooms].excluded = true;
                             $scope.excluded = true;
-                        }  else {
+                        } else {
                             var f = {
                                 description: fp.description,
                                 units: fp.units,
@@ -83,7 +83,7 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
                                 p = {
                                     id: fp.id.toString(),
                                     name: f.name,
-                                    description : f.address,
+                                    description: f.address,
                                     subject: f.subject,
                                     units: fp.units,
                                     sqft: fp.sqft * fp.units,
