@@ -528,15 +528,14 @@ define([
             $authService.updateSettings($rootScope.me.settings).then(function() {
                 $rootScope.refreshToken(true, function() {});
             });
-            $location.path('/dashboard')
-        }
+            $location.path('/dashboard');
+        };
 
         $scope.hasExcluded = function(subj, comp) {
-
             var c = _.find(subj.comps, function(cm) {return cm.id.toString() == comp._id.toString()});
 
             return c.excluded || false;
-        }
+        };
         
         $scope.cloneCustom = function() {
             require([

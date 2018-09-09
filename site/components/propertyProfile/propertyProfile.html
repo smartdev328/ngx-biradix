@@ -99,6 +99,15 @@
         </td>
         <td>
             {{property.totalUnits || 'N/A'}}
+
+            <i class="fa fa-exclamation-triangle warning"
+               style="cursor:pointer;font-size:14px;padding-left:1px;color:orange;"
+               ng-if="property.needsSurvey"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-append-to-body="true"
+               uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
+            ></i>
         </td>
     </tr>
     <tr ng-if="show.occ">
