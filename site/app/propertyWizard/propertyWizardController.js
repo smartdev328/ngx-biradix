@@ -15,6 +15,8 @@ define([
 
             $scope.isCustom = isCustom;
 
+            $scope.needsSurvey = false;
+
             $scope.startWatchingChanges = function() {
                 window.setTimeout(function() {
                     $scope.$watch("property", function (newValue, oldValue) {
@@ -585,6 +587,7 @@ define([
                     var i = $scope.property.floorplans.indexOf(fp);
                     $scope.property.floorplans.splice(i,1);
                     $scope.calculateFloorplanTotals();
+                    $scope.needsSurvey = true;
                 }, function() {});
             }
 
@@ -663,6 +666,7 @@ define([
         };
             
             $scope.addFloorplan = function(fp) {
+                var oldFp = _.cloneDeep(fp);
                 require([
                     '/app/propertyWizard/editFloorplanController.js'
                 ], function () {
@@ -700,6 +704,17 @@ define([
 
                         if (addedFp) {
                             $scope.property.floorplans.push(addedFp);
+
+                            $scope.needsSurvey = true;
+                        } else {
+                            if (fp.bedrooms !== oldFp.bedrooms
+                                || fp.bathrooms.toString() !== oldFp.bathrooms.toString()
+                                || fp.units !== oldFp.units
+                                || fp.sqft !== oldFp.sqft
+                                || fp.description !== oldFp.description
+                            ) {
+                                $scope.needsSurvey = true;
+                            }
                         }
 
                         $scope.calculateFloorplanTotals();

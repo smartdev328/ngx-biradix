@@ -83,10 +83,11 @@ define([
                 }
 
                 if (errors.length > 0) {
-                    toastr.error("<b>Unable to upload floor plans for the following reason(s):</b><Br><Br>" + errors.join("<Br>"), );
+                    toastr.error("<b>Unable to upload floor plans for the following reason(s):</b><Br><Br>" + errors.join("<Br>"), {timeOut: 10000, extendedTimeOut: 10000});
                 } else {
                     $scope.newFloorplans = tempFloorplans;
                 }
+                upload.value = null;
             };
             reader.readAsBinaryString(file);
         };
