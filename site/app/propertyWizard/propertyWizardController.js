@@ -661,6 +661,7 @@ define([
                     toastr.success(newFloorplans.length + " floor plans uploaded successfully.");
                     $scope.needsSurvey = true;
                     document.activeElement && document.activeElement.blur();
+                    $scope.calculateFloorplanTotals();
                 }, function() {
                     // Cancel
                     document.activeElement && document.activeElement.blur();
