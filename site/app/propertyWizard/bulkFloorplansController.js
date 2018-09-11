@@ -8,7 +8,9 @@ define([
         ga("send", "pageview");
 
         $scope.newFloorplans = [];
-        $scope.canUpload = false;
+        $scope.totals = {};
+
+        $scope.instructions = true;
 
         $scope.cancel = function() {
             if ($scope.newFloorplans.length > 0) {
@@ -18,6 +20,19 @@ define([
                 });
             } else {
                 $uibModalInstance.dismiss("cancel");
+            }
+        };
+
+        $scope.calcTotals = function() {
+            $scope.totals.units = 0;
+            $scope.totals.sqft = 0;
+            $scope.newFloorplans.forEach(function(fp) {
+                $scope.totals.units += fp.units;
+                $scope.totals.sqft += (fp.units * fp.sqft);
+            });
+
+            if ($scope.totals.units != 0) {
+                $scope.totals.sqft /= $scope.totals.units;
             }
         };
 
@@ -59,7 +74,7 @@ define([
 
                             if (
                                 _.find(floorplans, function(f) {
-                                    return f.bedrooms === fp.bedrooms && f.bathrooms === fp.bathrooms && f.description === fp.description && f.units === fp.units && f.sqft === fp.sqft;
+                                    return f.bedrooms === fp.bedrooms && f.bathrooms.toString() === fp.bathrooms.toString() && f.description === fp.description && f.units === fp.units && f.sqft === fp.sqft;
                                 })
                             ) {
                                 fp.duplicate = true;
@@ -70,9 +85,20 @@ define([
                             ) {
                                 errors = ["Contains at least two identical floor plans (i.e. same Bed/Bath/Units/Sqft/Description) which can create confusion later. We recommend adding unique descriptions for otherwise similar floor plans. "];
                                 break;
-                            } else {
-                                $scope.canUpload = true;
+                            } else if (fp.bedrooms > 6) {
+                                fp.error = "Please make sure there are no more than 6 Bedrooms";
+                            } else if (fp.bedrooms < 0) {
+                                fp.error = "Negative Bedrooms are not allowed";
+                            } else if (fp.bathrooms > 9) {
+                                fp.error = "Please make sure there are no more than 9 Bathrooms";
+                            } else if (fp.bathrooms < 1) {
+                                fp.error = "Please make sure there there is at least 1 Bathroom";
+                            } else if (fp.units < 1) {
+                                fp.error = "Negative Unit Counts are not allowed";
+                            } else if (fp.sqft < 1) {
+                                fp.error = "Negative Sqft are not allowed";
                             }
+
                             tempFloorplans.push(fp);
                         }
                     }
@@ -85,18 +111,31 @@ define([
                 if (errors.length > 0) {
                     toastr.error("<b>Unable to upload floor plans for the following reason(s):</b><Br><Br>" + errors.join("<Br>"), {timeOut: 10000, extendedTimeOut: 10000});
                 } else {
-                    $scope.newFloorplans = tempFloorplans;
+                    $scope.newFloorplans = _.sortByAll(tempFloorplans, ['bedrooms','bathrooms','sqft','units','description']);
+
+                    $scope.instructions = false;
+                    $scope.calcTotals();
                 }
                 upload.value = null;
             };
             reader.readAsBinaryString(file);
         };
 
+        $scope.removeFloorplan = function(index) {
+            $scope.newFloorplans.splice(index, 1);
+            $scope.calcTotals();
+        };
+
         $scope.done = function() {
-            var good = _.filter($scope.newFloorplans, function(fp) {
-                return !fp.duplicate;
+            var bad = _.filter($scope.newFloorplans, function(fp) {
+                return fp.duplicate || fp.error;
             });
-            $uibModalInstance.close(good);
+
+            if (bad.length > 0) {
+                toastr.error("Please remove any floor plans with errors before continuing", {timeOut: 10000, extendedTimeOut: 10000});
+            } else {
+                $uibModalInstance.close($scope.newFloorplans);
+            }
         };
     }]);
 });

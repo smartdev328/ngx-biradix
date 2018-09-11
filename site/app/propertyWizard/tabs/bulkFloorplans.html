@@ -23,19 +23,19 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Bulk Upload Floor Plans</h2>
+        <hr>
     </div>
     <div class="modal-body container-fluid">
-        <div>
+        <div  ng-if="instructions">
             To upload floor plans:
 
             <ol>
                 <li>Download this <A href="/images/Floor%20Plan%20Upload%20Sample.xlsx" target="_blank" style="font-weight: bold !important;">Sample Excel Document</A></li>
                 <li>Modify sample Excel document with your property floor plans</li>
-                <li>Save your changes and upload using the "Done" button below</li>
+                <li>Save your changes and upload using the "Upload" button below</li>
             </ol>
         </div>
 
-        <Br>
         <Div style="text-align: center">
             <div class="file-input-wrapper">
                 <button class="btn btn-primary" ng-if="newFloorplans.length === 0">Upload</button>
@@ -56,7 +56,7 @@
                 <th></th>
             </tr>
 
-            <tr ng-repeat="row in newFloorplans | orderBy: ['bedrooms','bathrooms','sqft','units','description']" ng-style="{'background-color': row.duplicate ? '#f2dede !important' : 'inherit'}">
+            <tr ng-repeat="row in newFloorplans">
                 <td>
                     {{row.bedrooms}}x{{row.bathrooms}}
                 </td>
@@ -69,30 +69,47 @@
                 <td style="text-align: center">
                     {{row.sqft}}
                 </td>
-                <td class="center">
-                    <i class="fa fa-copy" ng-if="row.duplicate"
+                <td style="text-align: right">
+                    <i class="fa fa-exclamation-triangle danger"
+                       style="font-size:14px;padding-right:2px;color:red"
+                       ng-if="row.error"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
                        popover-append-to-body="true"
-                       uib-popover="This is a duplicate floor plan. It will not be uploaded"
+                       uib-popover-html="row.error"
                     ></i>
+
+                    <i class="fa fa-exclamation-triangle warning"
+                       style="font-size:14px;padding-right:2px;color:orange"
+                       ng-if="row.duplicate"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="left"
+                       popover-append-to-body="true"
+                       uib-popover="This floor plan already exists"
+                    ></i>
+
+                    <A href ng-click="removeFloorplan($index)"><i class="fa fa-minus"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="left"
+                       popover-append-to-body="true"
+                       uib-popover="Remove"
+                    ></i></A>
                 </td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr style="font-weight:bold">
+                <td colspan="2">Totals/Averages</td>
+                <td style="text-align: center">{{totals.units}}</td>
+                <td style="text-align: center">{{totals.sqft | number: 0}}</td>
+                <td></td>
+            </tr>
+            </tfoot>
         </table>
         <div ng-if="newFloorplans.length > 0" style="text-align: center">
             <Br>
-            <button ng-if="!canUpload"
 
-                    popover-trigger="'mouseenter'"
-                    popover-placement="top"
-                    popover-append-to-body="true"
-                    uib-popover="No new floorplans found to upload"
-                    class="btn btn-success" style="opacity: .5;cursor: not-allowed">
-                Done
-            </button>
-
-            <button ng-if="canUpload" ng-click="done()" class="btn btn-success">
+            <button ng-click="done()" class="btn btn-success">
                 Done
             </button>
         </div>

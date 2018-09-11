@@ -659,8 +659,11 @@ define([
                 modalInstance.result.then(function(newFloorplans) {
                     $scope.property.floorplans = $scope.property.floorplans.concat(newFloorplans);
                     toastr.success(newFloorplans.length + " floor plans uploaded successfully.");
+                    $scope.needsSurvey = true;
+                    document.activeElement && document.activeElement.blur();
                 }, function() {
                     // Cancel
+                    document.activeElement && document.activeElement.blur();
                 });
             });
         };
@@ -720,8 +723,10 @@ define([
                         $scope.calculateFloorplanTotals();
 
                         toastr.success('Floor Plan ' + (fp == null ? 'created' : 'updated')+  ' successfully.');
+                        document.activeElement && document.activeElement.blur();
                     }, function () {
                         //Cancel
+                        document.activeElement && document.activeElement.blur();
                     });
                 });
             };
