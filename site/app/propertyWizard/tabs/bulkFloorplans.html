@@ -42,6 +42,7 @@
                 <button class="btn btn-primary" ng-if="newFloorplans.length > 0">Clear and Upload Again</button>
                 <input type='file' id="fileUpload" multiple accept=".xlsx"
                        onchange="angular.element(this).scope().processFile(this)"
+                       ng-click="newFloorplans = []"
                 />
             </div>
         </Div>
@@ -71,28 +72,15 @@
                 </td>
                 <td style="text-align: right">
                     <i class="fa fa-exclamation-triangle danger"
-                       style="font-size:14px;padding-right:2px;color:red"
+                       style="font-size:14px;padding-right:7px;color:red"
                        ng-if="row.error"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
                        popover-append-to-body="true"
                        uib-popover-html="row.error"
                     ></i>
-
-                    <i class="fa fa-exclamation-triangle warning"
-                       style="font-size:14px;padding-right:2px;color:orange"
-                       ng-if="row.duplicate"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       popover-append-to-body="true"
-                       uib-popover="This floor plan already exists"
-                    ></i>
-
                     <A href ng-click="removeFloorplan($index)"><i class="fa fa-minus"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       popover-append-to-body="true"
-                       uib-popover="Remove"
+                       uib-tooltip="Remove"
                     ></i></A>
                 </td>
             </tr>

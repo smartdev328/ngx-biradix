@@ -37,6 +37,7 @@ define([
         };
 
         $scope.processFile = function(upload) {
+            $scope.newFloorplans = [];
             var file = upload.files[0];
             var reader = new FileReader();
             reader.onload = function(e) {
@@ -67,7 +68,7 @@ define([
                             fp = {};
                             fp.bedrooms = parseInt(data[i][0]);
                             fp.bathrooms = data[i][1].toString();
-                            fp.description = data[i][2];
+                            fp.description = data[i][2] || "";
                             fp.units = parseInt(data[i][3]);
                             fp.sqft = parseInt(data[i][4]);
                             fp.amenities = [];
@@ -77,7 +78,7 @@ define([
                                     return f.bedrooms === fp.bedrooms && f.bathrooms.toString() === fp.bathrooms.toString() && f.description === fp.description && f.units === fp.units && f.sqft === fp.sqft;
                                 })
                             ) {
-                                fp.duplicate = true;
+                                fp.error = "This floor plan already exists";
                             } else if (
                                 _.find(tempFloorplans, function(f) {
                                     return f.bedrooms === fp.bedrooms && f.bathrooms === fp.bathrooms && f.description === fp.description && f.units === fp.units && f.sqft === fp.sqft;
@@ -86,17 +87,17 @@ define([
                                 errors = ["Contains at least two identical floor plans (i.e. same Bed/Bath/Units/Sqft/Description) which can create confusion later. We recommend adding unique descriptions for otherwise similar floor plans. "];
                                 break;
                             } else if (fp.bedrooms > 6) {
-                                fp.error = "Please make sure there are no more than 6 Bedrooms";
+                                fp.error = "Bedrooms must be less that 7";
                             } else if (fp.bedrooms < 0) {
-                                fp.error = "Negative Bedrooms are not allowed";
+                                fp.error = "Bedrooms must be greater than or equal to zero";
                             } else if (fp.bathrooms > 9) {
-                                fp.error = "Please make sure there are no more than 9 Bathrooms";
+                                fp.error = "Bathrooms must be less than 11";
                             } else if (fp.bathrooms < 1) {
-                                fp.error = "Please make sure there there is at least 1 Bathroom";
+                                fp.error = "Bathrooms must be greater than zero";
                             } else if (fp.units < 1) {
-                                fp.error = "Negative Unit Counts are not allowed";
+                                fp.error = "Unit Count must be greater than zero";
                             } else if (fp.sqft < 1) {
-                                fp.error = "Negative Sqft are not allowed";
+                                fp.error = "Sqft values must be greater than zero";
                             }
 
                             tempFloorplans.push(fp);
