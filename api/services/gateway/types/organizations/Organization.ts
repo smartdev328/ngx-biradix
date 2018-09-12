@@ -6,6 +6,7 @@ export const Organization = new GraphQLObjectType({
         _id: { type: GraphQLString },
         isDefault: { type: GraphQLBoolean },
         logoBig: { type: GraphQLString },
+        logoEmailHeight: { type: GraphQLInt },
         logoSmall: { type: GraphQLString },
         name: { type: GraphQLString },
         settings: { type: OrganizationSettings },

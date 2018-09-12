@@ -196,6 +196,7 @@ module.exports = {
                     delete json;
                     delete result;
                 } else {
+                    console.error("This report has expired, please re-run it");
                     res.status(200).send("This report has expired, please re-run it");
                 }
             });

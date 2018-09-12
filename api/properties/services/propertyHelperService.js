@@ -29,18 +29,19 @@ module.exports = {
         name += " " + fp.sqft + " Sqft";
         name += ", " + fp.units + " Units";
 
-        return name
+        return name;
     },
-
     floorplanRentName: function(fp) {
 
-        if (typeof fp.concessionsOneTime != 'undefined') {
+        if (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent)) {
+            return "(no value set)";
+        } else if (typeof fp.concessions === "undefined" || fp.concessions === null || isNaN(fp.concessions)) {
+            return "($" + fp.rent + " gmr, (no value set) cons/total)";
+        } else if (typeof fp.concessionsOneTime !== "undefined") {
             return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total, $" + fp.concessionsOneTime + " cons/one-time, $" + fp.concessionsMonthly + " cons/monthly)";
-        }
-        else {
+        } else {
             return "($" + fp.rent + " gmr, $" + fp.concessions + " cons/total)";
         }
-
     },
     flattenAllCompFloorplans: function(comps, subjectid) {
         var subjcomps = _.find(comps,function(x) {return x._id.toString() == subjectid.toString()}).comps;

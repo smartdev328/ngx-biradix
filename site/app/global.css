@@ -447,3 +447,18 @@ HR.popoverhr {
 .popover.popover-small {font-size:12px}
 
 .popover.popover-small-margin {font-size:12px;margin-top:-20px !important;}
+
+
+
+
+.dropdown-header {
+    display: block;
+    padding: 3px 5px;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.42857143;
+    color: #777;
+    white-space: nowrap;
+    background-color: #d9edf7;
+    margin: 10px 0px 5px 0px;
+}

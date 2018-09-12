@@ -15,6 +15,9 @@ const s = new Schema({
     logoSmall: {
         type: String,
     },
+    logoEmailHeight: {
+      type: Number,
+    },
     isDefault: Boolean,
     settings: {},
 });

@@ -46,7 +46,7 @@ define([
 
             var d;
             var dDate;
-            var i;
+            var i, j;
             for (i = 4; i < data[0].length; i+=2) {
                 d = data[0][i];
                 dDate = new Date(d);
@@ -79,6 +79,17 @@ define([
                 if (type[1] == "" || isNaN(type[1])) {
                     toastr.error(data[i][0] + " must have a valid number of bathrooms");
                     return;
+                }
+
+                for (j = 4; j < data[i].length; j+=2) {
+                    // We found rent
+                    if (typeof data[i][j + 1] !== "undefined" && data[i][j + 1] !== null && data[i][j + 1] !== "") {
+                        // But missing concessions
+                        if (typeof data[i][j] === "undefined" || data[i][j] === null || data[i][j] === "") {
+                            toastr.error(data[i][0] + " must have a valid number for Rent since Concession is set.");
+                            return;
+                        }
+                    }
                 }
             }
 

@@ -1,0 +1,105 @@
+<style>
+    .file-input-wrapper {
+        width: 300px;
+        height: 40px;
+        overflow: hidden;
+        position: relative;
+        margin:10px auto;
+
+    }
+    .file-input-wrapper > input[type="file"] {
+        font-size: 200px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        opacity: 0;
+    }
+    .file-input-wrapper > button {
+        display: inline-block;
+        width:300px;
+    }
+</style>
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Bulk Upload Floor Plans</h2>
+        <hr>
+    </div>
+    <div class="modal-body container-fluid">
+        <div  ng-if="instructions">
+            To upload floor plans:
+
+            <ol>
+                <li>Download this <A href="/images/Floor%20Plan%20Upload%20Sample.xlsx" target="_blank" style="font-weight: bold !important;">Sample Excel Document</A></li>
+                <li>Modify sample Excel document with your property floor plans</li>
+                <li>Save your changes and upload using the "Upload" button below</li>
+            </ol>
+        </div>
+
+        <Div style="text-align: center">
+            <div class="file-input-wrapper">
+                <button class="btn btn-primary" ng-if="newFloorplans.length === 0">Upload</button>
+                <button class="btn btn-primary" ng-if="newFloorplans.length > 0">Clear and Upload Again</button>
+                <input type='file' id="fileUpload" multiple accept=".xlsx"
+                       onchange="angular.element(this).scope().processFile(this)"
+                       ng-click="newFloorplans = []"
+                />
+            </div>
+        </Div>
+
+        <table class="table table-condensed table-striped table-hover" style="margin-bottom:10px" ng-if="newFloorplans.length > 0">
+            <tbody>
+            <tr class="thead">
+                <th>Type</th>
+                <th>Desc.</th>
+                <th style="text-align: center">Units</th>
+                <th style="text-align: center">Sqft</th>
+                <th></th>
+            </tr>
+
+            <tr ng-repeat="row in newFloorplans">
+                <td>
+                    {{row.bedrooms}}x{{row.bathrooms}}
+                </td>
+                <td style="word-break: break-all">
+                    {{row.description}}
+                </td>
+                <td style="text-align: center">
+                    {{row.units}}
+                </td>
+                <td style="text-align: center">
+                    {{row.sqft}}
+                </td>
+                <td style="text-align: right">
+                    <i class="fa fa-exclamation-triangle danger"
+                       style="font-size:14px;padding-right:7px;color:red"
+                       ng-if="row.error"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="left"
+                       popover-append-to-body="true"
+                       uib-popover-html="row.error"
+                    ></i>
+                    <A href ng-click="removeFloorplan($index)"><i class="fa fa-minus"
+                       uib-tooltip="Remove"
+                    ></i></A>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr style="font-weight:bold">
+                <td colspan="2">Totals/Averages</td>
+                <td style="text-align: center">{{totals.units}}</td>
+                <td style="text-align: center">{{totals.sqft | number: 0}}</td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+        <div ng-if="newFloorplans.length > 0" style="text-align: center">
+            <Br>
+
+            <button ng-click="done()" class="btn btn-success">
+                Done
+            </button>
+        </div>
+    </div>
+</div>

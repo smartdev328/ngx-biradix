@@ -528,15 +528,14 @@ define([
             $authService.updateSettings($rootScope.me.settings).then(function() {
                 $rootScope.refreshToken(true, function() {});
             });
-            $location.path('/dashboard')
-        }
+            $location.path('/dashboard');
+        };
 
         $scope.hasExcluded = function(subj, comp) {
-
             var c = _.find(subj.comps, function(cm) {return cm.id.toString() == comp._id.toString()});
 
             return c.excluded || false;
-        }
+        };
         
         $scope.cloneCustom = function() {
             require([
@@ -685,8 +684,35 @@ define([
                     //Cancel
                 });
             });
-        }
+        };
 
+        $scope.propertiesDD = {};
+        $scope.gotPropertiesDD = {};
+        $scope.getPropertyDD = function(id) {
+            if ($scope.propertiesDD[id]) {
+                return $scope.propertiesDD[id];
+            }
+
+            if (!$scope.gotPropertiesDD[id]) {
+                $propertyService.getSubjects(id).then(function(response) {
+                    if (response.data && response.data.subjects && response.data.subjects.length > 1) {
+                        $scope.propertiesDD[id] = "Used As Comp by:";
+                        response.data.subjects = _.sortBy(response.data.subjects, "name");
+                        response.data.subjects.forEach(function(s) {
+                            if (s._id.toString() !== id.toString()) {
+                                $scope.propertiesDD[id] += "<li>" + s.name + "</li>";
+                            }
+                        });
+                    } else {
+                        $scope.propertiesDD[id] = "<B>N/A</B>";
+                    }
+                });
+
+                $scope.gotPropertiesDD[id] = true;
+            }
+
+            return "<center><img src='/images/squares.gif' class='squares'></center>";
+        };
 
     }]);
 });

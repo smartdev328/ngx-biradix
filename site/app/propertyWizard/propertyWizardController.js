@@ -15,6 +15,8 @@ define([
 
             $scope.isCustom = isCustom;
 
+            $scope.needsSurvey = false;
+
             $scope.startWatchingChanges = function() {
                 window.setTimeout(function() {
                     $scope.$watch("property", function (newValue, oldValue) {
@@ -506,45 +508,40 @@ define([
                     if (isComp) {
                         $propertyService.checkDupe({
                             name: $scope.property.name,
-                            address: $scope.property.address + ' ' + $scope.property.zip,
-                            exclude: [subjectid]
+                            address: $scope.property.address + " " + $scope.property.zip,
+                            exclude: [subjectid],
                         }).then(function (response) {
                             if (response.data.property) {
                                 var p = response.data.property;
                                 // $scope.dupeChecked = true;
-                                $dialog.confirm('We have detected a property with this address already exists. We recommend you add this existing property instead of creating a new one:<Br><Br>Name: <B>' + p.name + '</B><br>Units: <b>' + p.totalUnits + '</b><br>Address: <b>' + p.address + '</b><br><Br>If the property name has changed or it has been renovated, you will be able to make any necessary updates after adding it as a comp.<Br><br>Add existing property as comp?', function () {
-
+                                $dialog.confirm("We have detected a property already exists in the same location (or in very close proximity):<Br><Br>Name: <B>" + p.name + "</B><br>Units: <b>" + p.totalUnits + "</b><br>Address: <b>" + p.address + "</b><br><Br>If the property name has changed or it has been renovated, you will be able to make any necessary updates after adding it as a comp.<Br><br>Add existing property as comp?", function() {
                                     $uibModalInstance.close(p);
-                                }, function () {
-
-                                })
-                            }
-                            ;
-                        }, function (error) {
-                        })
-                    }
-                    else {
-                        $propertyService.checkDupeSubject({
-                            name: $scope.property.name,
-                            address: $scope.property.address + ' ' + $scope.property.zip
-                        }).then(function (response) {
-                            if (response.data.property) {
-                                var p = response.data.property;
-                                // $scope.dupeChecked = true;
-                                $dialog.warning('We have detected a property with this address already exists:<Br><Br>Name: <B>' + p.name + '</B><br>Units: <b>' + p.totalUnits + '</b><br>Address: <b>' + p.address + '</b><br><Br>Are you sure you want to create this property?', function () {
-                                    $uibModalInstance.dismiss('cancel');
                                 }, function() {
 
                                 });
                             }
-                            ;
-                        }, function (error) {
+                        }, function(error) {
+                        });
+                    } else {
+                        $propertyService.checkDupeSubject({
+                            name: $scope.property.name,
+                            address: $scope.property.address + " " + $scope.property.zip,
+                        }).then(function(response) {
+                            if (response.data.property) {
+                                var p = response.data.property;
+                                // $scope.dupeChecked = true;
+                                $dialog.warning("A property already exists in the same location (or in very close proximity):<Br><Br>Name: <B>" + p.name + "</B><br>Units: <b>" + p.totalUnits + "</b><br>Address: <b>" + p.address + "</b><br><Br>Are you sure you want to create a new property?", function() {
+                                    $uibModalInstance.dismiss("cancel");
+                                }, function() {
 
-                        })
+                                });
+                            }
+                        }, function(error) {
+
+                        });
                     }
                 }, 1000);
-
-            }
+            };
 
             $scope.googleBlur = function(id, value) {
                 $(id).on("blur", function() {
@@ -590,6 +587,7 @@ define([
                     var i = $scope.property.floorplans.indexOf(fp);
                     $scope.property.floorplans.splice(i,1);
                     $scope.calculateFloorplanTotals();
+                    $scope.needsSurvey = true;
                 }, function() {});
             }
 
@@ -641,7 +639,38 @@ define([
                 }
             }
 
+        $scope.bulkFloorplans = function() {
+            require([
+                "/app/propertyWizard/bulkFloorplansController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/bulkFloorplans.html?bust=" + version,
+                    controller: "bulkFloorplansController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        floorplans: function() {
+                            return $scope.property.floorplans;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function(newFloorplans) {
+                    $scope.property.floorplans = $scope.property.floorplans.concat(newFloorplans);
+                    toastr.success(newFloorplans.length + " floor plans uploaded successfully.");
+                    $scope.needsSurvey = true;
+                    document.activeElement && document.activeElement.blur();
+                    $scope.calculateFloorplanTotals();
+                }, function() {
+                    // Cancel
+                    document.activeElement && document.activeElement.blur();
+                });
+            });
+        };
+            
             $scope.addFloorplan = function(fp) {
+                var oldFp = _.cloneDeep(fp);
                 require([
                     '/app/propertyWizard/editFloorplanController.js'
                 ], function () {
@@ -679,16 +708,29 @@ define([
 
                         if (addedFp) {
                             $scope.property.floorplans.push(addedFp);
+
+                            $scope.needsSurvey = true;
+                        } else {
+                            if (fp.bedrooms !== oldFp.bedrooms
+                                || fp.bathrooms.toString() !== oldFp.bathrooms.toString()
+                                || fp.units !== oldFp.units
+                                || fp.sqft !== oldFp.sqft
+                                || fp.description !== oldFp.description
+                            ) {
+                                $scope.needsSurvey = true;
+                            }
                         }
 
                         $scope.calculateFloorplanTotals();
 
                         toastr.success('Floor Plan ' + (fp == null ? 'created' : 'updated')+  ' successfully.');
+                        document.activeElement && document.activeElement.blur();
                     }, function () {
                         //Cancel
+                        document.activeElement && document.activeElement.blur();
                     });
                 });
-            }
+            };
 
             $scope.calculateFloorplanTotals = function() {
                 // re-calcualte total units in case we updated unit counts

@@ -106,6 +106,7 @@ module.exports = {
                                     last: operator.last,
                                     email: operator.email,
                                     logo: operator.orgs[0].logoBig,
+                                    logoHeight: operator.orgs[0].logoEmailHeight,
                                     id: operator._id,
                                     organization: {
                                         id: operator.orgs[0]._id,
@@ -156,6 +157,11 @@ module.exports = {
                 else {
                     var survey = surveys[0];
 
+                    // Remove all floorplans with missing rent
+                    _.remove(survey.floorplans, (fp) => {
+                        return typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent);
+                    });
+
                     var totUnits = _.sum(survey.floorplans, function (fp) {
                         return fp.units
                     });
@@ -177,7 +183,7 @@ module.exports = {
                             weeklytraffic: survey.weeklytraffic,
                             notes: survey.notes,
                             date: survey.date,
-                            dateByOwner : dateByOwner
+                            dateByOwner: dateByOwner
                         }
 
                         var query = {_id: propertyid};
@@ -185,22 +191,20 @@ module.exports = {
                         var options = {new: true};
 
                         PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                            callback()
+                            callback();
                         })
-                    }
-                    else {
+                    } else {
                         var query = {_id: propertyid};
                         var update = {survey: undefined};
                         var options = {new: true};
 
                         PropertySchema.findOneAndUpdate(query, update, options, function (err, saved) {
-                            callback()
-                        })
+                            callback();
+                        });
                     }
                 }
-
-            })
-        })
+            });
+        });
     },
 
     getSubjectExclusions: function (compid, compFloorplans, callback) {
@@ -252,6 +256,19 @@ module.exports = {
 
                 // console.log(links.floorplans, fp.id)
                 if (links.floorplans.indexOf(fp.id.toString()) == -1) {
+                      fp.excluded = true;
+                    delete fp.rent;
+                    delete fp.concessions;
+                    delete fp.ner;
+                    delete fp.nersqft;
+                    delete fp.mersqft;
+                    delete fp.runrate;
+                    delete fp.runratesqft;
+                }
+            }
+
+            if (!fp.excluded) {
+                if (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent)) {
                     fp.excluded = true;
                     delete fp.rent;
                     delete fp.concessions;
@@ -297,6 +314,15 @@ var  getSurveyStats = function(floorplans, survey, links, hide, nerPlaces) {
         if (excluded) {
             survey.excluded = true;
         }
+    }
+
+    // Remove all floorplans with missing rent
+    const removedNoRent = _.remove(fps, (fp) => {
+        return typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent);
+    });
+
+    if (removedNoRent && removedNoRent.length > 0) {
+        survey.excluded = true;
     }
 
     totUnits = _.sum(fps, function (fp) {

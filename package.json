@@ -1,6 +1,6 @@
 {
   "name": "BIRadix",
-  "version": "2.20.34",
+  "version": "2.20.49",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -73,7 +73,8 @@
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "typescript": "^2.9.2",
-    "xlsjs": "^0.7.6"
+    "xlsjs": "^0.7.6",
+    "xlsx-style": "^0.8.13"
   },
   "private": true,
   "engines": {

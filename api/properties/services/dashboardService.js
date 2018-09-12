@@ -157,7 +157,7 @@ module.exports = {
         PropertyService.search(user, {limit: 1,
             permission: "PropertyManage",
             _id: id,
-            select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps media custom walkscore",
+            select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey comps media custom walkscore needsSurvey",
             skipAmenities: true,
             active: true,
         }, function(err, property) {

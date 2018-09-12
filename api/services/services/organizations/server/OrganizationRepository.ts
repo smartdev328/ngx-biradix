@@ -6,6 +6,7 @@ interface IDBOrganization {
     subdomain: string;
     logoBig: string;
     logoSmall: string;
+    logoEmailHeight?: number;
     isDefault: boolean;
     settings?: IOrganizationSettings;
 }
@@ -22,6 +23,9 @@ const Schema: mongoose.Schema = new mongoose.Schema({
     },
     logoSmall: {
         type: String,
+    },
+    logoEmailHeight: {
+        type: Number,
     },
     name: {
         type: String,

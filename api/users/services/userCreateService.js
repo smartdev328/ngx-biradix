@@ -299,7 +299,7 @@ module.exports = {
 
                         var org = userRoles[0].org;
 
-                        base = base.replace("platform",org.subdomain)
+                        base = base.replace("platform.", org.subdomain + ".");
 
                         var logo = base + "/images/organizations/" + org.logoBig;
 
@@ -308,6 +308,7 @@ module.exports = {
                             to: usr.email,
                             subject: org.name + creator + " has created a new account for you at BI:Radix",
                             logo : logo,
+                            logoHeight: org.logoEmailHeight,
                             template : 'create.html',
                             templateData : {first: usr.first, email: usr.email, link: base, password: user.password }
                         };
