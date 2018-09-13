@@ -43,7 +43,9 @@ define([
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.reload();
+            $rootScope.refreshToken(true, function() {
+                $scope.reload();
+            });
         });
 
         $scope.reload = function() {
@@ -109,12 +111,27 @@ define([
             if (defaultPropertyId) {
 
                 var surveyDaysAgo = 99;
+                var guestLastUpdater = false;
 
                 if ($scope.selectedProperty.survey  && $scope.selectedProperty.survey.date) {
-                    surveyDaysAgo = (new Date().getTime() - (new Date($scope.selectedProperty.survey.date)).getTime()) / 1000 / 60 / 60 / 24;
+                    var surveyTime = (new Date($scope.selectedProperty.survey.date)).getTime();
+                    surveyDaysAgo = (new Date().getTime() - surveyTime) / 1000 / 60 / 60 / 24;
+                    console.log($scope.selectedProperty.survey.date);
+                    var guest = _.find($rootScope.me.guestStats, function(x) {
+                       return x.propertyid.toString() === $scope.selectedProperty._id.toString();
+                    });
+
+                    if (guest && guest.lastCompleted) {
+                        var guestCompletedTime = (new Date(guest.lastCompleted)).getTime();
+                        // Difference in minutes between survey and last time guest completed survey
+                        if ((surveyTime - guestCompletedTime) / 1000 / 60 <= 5) {
+                            // If we got here, the guest filled out the survey within 5 minutes of last survey so we assume it was them
+                            guestLastUpdater = true;
+                        }
+                    }
                 }
 
-                if (surveyDaysAgo > 6) {
+                if (surveyDaysAgo > 6 || !guestLastUpdater) {
                     $scope.canAccess = false;
                     $rootScope.marketSurvey($scope.selectedProperty._id);
                 } else {

@@ -130,12 +130,11 @@
     <div class="col-xs-12"  style="position: relative !important;">
         <div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
             <div class="alert alert-warning" role="alert"><b>There are no properties assigned to your account</b></div>
-
         </div>
         <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
             <img src="/images/squares.gif" style="width:100px">
         </div>
-        <div class="row" ng-if="localLoading">
+        <div class="row" ng-if="localLoading && myProperties.length !== 0">
             <div class="panel panel-info hidden-print">
                 <div class="panel-heading">Criteria</div>
                 <div class="panel-body">
