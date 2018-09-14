@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td style="border-top:1px solid #ccc;padding:10px" colspan="100%">
-                        <div class="form-group has-feedback has-feedback-left search" style="margin-bottom:0px !important;" ng-class="{'has-error' : (noResults || showAdd) && search1}">
+                        <div class="form-group has-feedback has-feedback-left search" style="margin-bottom:0px !important;" ng-class="{'has-error' : (noResults || showAdd) && search1 && !searchLoading}">
                             <input type="text" class="form-control input-sm"
                                    placeholder="Comp address or name"
                                    uib-typeahead="props.summary for props in getLocation($viewValue)"
@@ -63,11 +63,15 @@
                                    typeahead-template-url="customTemplate.html"
                                    typeahead-no-results="noResults"
                                    typeahead-is-open="isOpen"
+                                   typeahead-loading="searchLoading"
                                    ng-model="search1"
                                    style="width:100%"
                                    ng-keydown="disableSearchKeys($event)"
                             >
-                            <i class="fa fa-search form-control-feedback" ng-style="{'color': (noResults || showAdd) && search1 ? '#a94442' : '#ccc'};"></i>
+                            <i class="fa fa-search form-control-feedback" ng-style="{'color': (noResults || showAdd) && search1 && !searchLoading ? '#a94442' : '#ccc'};"></i>
+                        </div>
+                        <div ng-if="searchLoading" class="pull-right">
+                            <img src="/images/squares.gif" style="width:50px"> Searching...
                         </div>
                         <div ng-show="(noResults || showAdd) && search1" style="padding:10px">
                             Unable to find your comp. <button class="btn btn-primary" ng-click="create()">Create New Comp</button>
