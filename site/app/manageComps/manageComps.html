@@ -70,10 +70,7 @@
                             >
                             <i class="fa fa-search form-control-feedback" ng-style="{'color': (noResults || showAdd) && search1 && !searchLoading ? '#a94442' : '#ccc'};"></i>
                         </div>
-                        <div ng-if="searchLoading" class="pull-right">
-                            <img src="/images/squares.gif" style="width:50px"> Searching...
-                        </div>
-                        <div ng-show="(noResults || showAdd) && search1" style="padding:10px">
+                        <div ng-show="(noResults || showAdd) && search1 && !searchLoading" style="padding:10px">
                             Unable to find your comp. <button class="btn btn-primary" ng-click="create()">Create New Comp</button>
                         </div>
                        </td>
