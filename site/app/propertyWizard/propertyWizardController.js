@@ -728,6 +728,7 @@ define([
                     }, function () {
                         //Cancel
                         document.activeElement && document.activeElement.blur();
+                        $scope.calculateFloorplanTotals();
                     });
                 });
             };
@@ -740,6 +741,7 @@ define([
                 $scope.property.floorplans = $scope.property.floorplans || [];
 
                 $scope.property.floorplans.forEach(function(f) {
+                    f.bathrooms = f.bathrooms.toString();
                     newTotal += parseInt(f.units);
                     newAvg += parseInt(f.units) * parseInt(f.sqft);
                 })
