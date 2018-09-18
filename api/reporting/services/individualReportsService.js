@@ -526,13 +526,19 @@ module.exports = {
                 }
                 all.dates = points;
 
+                // if date1 is week 4, subtract 3 from all weeks so it starts with 1
+                let weekOffset = 0;
+                if (all.dates.length > 0) {
+                    weekOffset = all.dates[0].w - 1;
+                }
+
                 all.dates.forEach((date, i)=> {
-                    date.w = i+1;
+                    console.log()
+                    date.w -= weekOffset;
                 })
 
                 callback(all);
-            })
-
+            });
         } else {
             callback(null);
         }

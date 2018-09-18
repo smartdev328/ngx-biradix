@@ -14,7 +14,7 @@
       "value": "production"
     },
     "EXCEL_URL": {
-      "value": "http://biradixsheets.apphb.com/excel"
+      "value": "https://biradixexcel-qa.herokuapp.com/excel"
     },
     "NEW_RELIC_NAME": {
       "value": "REVIEW"

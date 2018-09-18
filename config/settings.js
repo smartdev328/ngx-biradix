@@ -12,7 +12,7 @@ module.exports = {
     NEW_RELIC_LICENSE_KEY: process.env.NEW_RELIC_LICENSE_KEY || "75d3c144332d3045905a17e15206ab4d0dfc243a",
     NEW_RELIC_NAME: process.env.NEW_RELIC_NAME || "LOCAL",
     REDIS_URL: process.env.REDIS_URL || "redis://localhost:6379",
-    EXCEL_URL: process.env.EXCEL_URL || "http://localhost:12008/excel",
+    EXCEL_URL: process.env.EXCEL_URL || "http://localhost:5000/excel",
     CLOUDAMQP_URL: process.env.RABBITMQ_BIGWIG_URL || process.env.CLOUDAMQP_URL || "amqp://localhost",
     DASHBOARD_QUEUE: "jobs.property.dashboard",
     PROFILE_QUEUE: "jobs.property.profile",

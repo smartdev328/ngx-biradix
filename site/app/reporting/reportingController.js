@@ -452,6 +452,7 @@ define([
             if (!properties.length) {
                 $scope.noProperties = true;
                 $scope.reportLoading = false;
+                delete $scope.reportStarted;
                 return;
             }
 
