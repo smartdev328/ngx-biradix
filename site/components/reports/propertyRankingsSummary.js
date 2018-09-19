@@ -32,11 +32,11 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
 
                 $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms']);
 
-                $scope.exclusions = {};
-                $scope.exclusionsByBedrooms = {};
-                $scope.exclusionBySubject = false;
 
                 $scope.reload = function() {
+                    $scope.exclusions = {};
+                    $scope.exclusionsByBedrooms = {};
+                    $scope.exclusionBySubject = false;
                     $scope.rankings = {};
                     $scope.summary = [];
                     $scope.totals = {};

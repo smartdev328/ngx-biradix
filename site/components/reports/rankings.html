@@ -111,13 +111,13 @@
             <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
                 <div class="fp-header-div">
                 <h4>Floorplans: {{key}}
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:1px"
-                   ng-if="value.excluded"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   uib-popover="This report has some floor plans that have been manually excluded from reporting and dashboard calculations."
-                        ></i>
+                    <i class="fa fa-chain-broken blue"
+                       style="cursor:pointer;font-size:12px;padding-left:1px"
+                       ng-if="exclusionsByBedrooms[key]"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
+                    ></i>
             </h4>
                 </div>
             </td>
