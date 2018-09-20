@@ -40,7 +40,7 @@
                    ng-if="points.excluded"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
-                   uib-popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                   uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
             </div>
             <div class="panel-body">
@@ -207,10 +207,10 @@
             <div class="panel-heading">Trends
                 <i class="fa fa-chain-broken blue"
                    style="cursor:pointer;font-size:14px;padding-left:2px"
-                   ng-if="points.excluded"
+                   ng-if="profile.points.excluded"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
-                   uib-popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
+                   uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
             </div>
             <div class="panel-body">

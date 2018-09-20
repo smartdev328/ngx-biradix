@@ -30,22 +30,26 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
 
                 $scope.defaultSort = "nersqft";
 
-                $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms'])
+                $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms']);
+
 
                 $scope.reload = function() {
-                    $scope.rankings = {}
+                    $scope.exclusions = {};
+                    $scope.exclusionsByBedrooms = {};
+                    $scope.exclusionBySubject = false;
+                    $scope.rankings = {};
                     $scope.summary = [];
                     $scope.totals = {};
                     $scope.excluded = false;
-                    $scope.report.forEach(function (fp) {
-
+                    $scope.report.forEach(function(fp) {
                         $scope.rankings[fp.bedrooms] = $scope.rankings[fp.bedrooms] || {};
 
                         $scope.rankings[fp.bedrooms].floorplans =$scope.rankings[fp.bedrooms].floorplans || [];
+                        $scope.rankings[fp.bedrooms].excluded = $scope.rankings[fp.bedrooms].excluded || {};
 
                         if (($scope.settings.hideUnlinked && fp.excluded) || (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent))) {
-                            $scope.rankings[fp.bedrooms].excluded = true;
-                            $scope.excluded = true;
+                            $scope.rankings[fp.bedrooms].excluded[fp.id] = true;
+                            $scope.exclusions[fp.id] = true;
                         } else {
                             var f = {
                                 description: fp.description,
@@ -63,7 +67,7 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
                             };
 
 
-                            if ($scope.subject._id.toString() == fp.id.toString()) {
+                            if ($scope.subject._id.toString() === fp.id.toString()) {
                                 f.name = $scope.subject.name;
                                 f.address = $scope.subject.address;
                                 f.subject = true;
@@ -127,13 +131,11 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
 
                             var s = _.find($scope.summary, function(x) {return x.id == fp.id.toString() })
 
-
-
                             if (!s) {
                                  s = {
                                     id: fp.id.toString(),
                                     name: f.name,
-                                    description : f.address,
+                                    description: f.address,
                                     subject: f.subject,
                                     units: fp.units,
                                     sqft: fp.sqft * fp.units,
@@ -296,7 +298,27 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
                     $scope.totals.unitpercent = 100;
                     $scope.totals.units = $scope.totals.units / $scope.summary.length;
 
-                    //Phantom JS hack. if the report fits the page exactly, add more pixesl so it doesnt leave a blank logo on the previous page
+                    // Check if excluded property is missing so we can add it to the top level;
+                    for(var e in $scope.exclusions) {
+                        if (!_.find($scope.summary, function(x) {
+                            return x.id.toString() === e;
+                        })) {
+                            $scope.exclusionBySubject = true;
+                        }
+                    }
+
+                    // Do the same thing for each group;
+                    for(var bedroom in $scope.rankings) {
+                        for(var e in $scope.rankings[bedroom].excluded) {
+                            if (!_.find($scope.rankings[bedroom].floorplans, function(x) {
+                                return x.id.toString() === e;
+                            })) {
+                                $scope.exclusionsByBedrooms[bedroom] = true;
+                            }
+                        }
+                    }
+
+                    // Phantom JS hack. if the report fits the page exactly, add more pixesl so it doesnt leave a blank logo on the previous page
                     if (phantom) {
                         window.setTimeout(function () {
                             var el = $($element).find('.break');

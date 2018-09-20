@@ -135,7 +135,7 @@ define([
                     $uibModalInstance.close();
                 }else {
                     $scope.fpCopy.amenities = $scope.populateAmenities();
-                    $uibModalInstance.close($scope.fpCopy);
+                    $uibModalInstance.close(_.cloneDeep($scope.fpCopy));
                 }
             }
 

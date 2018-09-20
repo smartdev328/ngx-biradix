@@ -32,6 +32,7 @@ angular.module('biradix.global').directive('rankingsReport', function () {
                 $scope.report = _.sortByAll($scope.report, ['bedrooms', 'bathrooms'])
 
                 $scope.reload = function() {
+                    $scope.exclusionsByBedrooms = {};
                     $scope.rankings = {}
                     $scope.report.forEach(function (fp) {
                         fp.bathrooms = (fp.bathrooms || '').toString().trim();
@@ -41,7 +42,7 @@ angular.module('biradix.global').directive('rankingsReport', function () {
                         $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].floorplans = $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].floorplans || [];
 
                         if (($scope.settings.hideUnlinked && fp.excluded) || (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent))) {
-                            $scope.rankings[fp.bedrooms + 'x' + fp.bathrooms].excluded = true;
+                               $scope.exclusionsByBedrooms[fp.bedrooms + 'x' + fp.bathrooms] = true;
                         } else {
                             var f = {
                                 description: fp.description,
@@ -55,7 +56,8 @@ angular.module('biradix.global').directive('rankingsReport', function () {
                                 mersqft: fp.mersqft
                                 , concessionsMonthly: fp.concessionsMonthly
                                 , concessionsOneTime: fp.concessionsOneTime
-                                , concessions: fp.concessions
+                                , concessions: fp.concessions,
+                                id: fp.id,
                             };
 
 

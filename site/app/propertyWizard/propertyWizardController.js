@@ -50,7 +50,6 @@ define([
                 else {
                     $uibModalInstance.dismiss('cancel');
                 }
-
             };
 
             $scope.values = {};
@@ -59,29 +58,27 @@ define([
 
             $scope.getTitle = function() {
                 var title = "";
+
                 if (!id && isComp) {
-                    title = "Create Comp"
+                    title = "Create Comp";
                 } else if (!id && !isComp) {
-                    title = "Create Property"
-                }
-                else
-                if (id && isComp) {
-                    title = "Edit Comp"
+                    title = "Create Property";
+                } else if (id && isComp) {
+                    title = "Edit Comp";
                 } else if (id && !isComp) {
-                    title = "Edit Property"
+                    title = "Edit Property";
                 }
 
                 if (isCustom) {
-                    title += " (Custom)"
+                    title += " (Custom)";
                 }
 
-                if ($scope.property.name) {
+                if ($scope.property && $scope.property.name) {
                     title += ": " + $scope.property.name;
                 }
 
                 return title;
-            }
-
+            };
 
             $scope.steps = [
                 {label:'Property Info', template: 'propertyInfo.html'},
