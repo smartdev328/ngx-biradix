@@ -124,6 +124,14 @@ d.run(function() {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
+                // const s = require("../build/approvedlists/service/ApprovedListsService");
+                // s.create(null, null, {value: "test4", type: "Owner"}).then((w) => {
+                //     console.log(w);
+                //     s.read({type: "Owner", activeOnly: true}).then((x) => {
+                //         console.log(x);
+                //     });
+                // });
+
                 // const WalkScore = require("../build/walkscore/services/walkScoreService");
                 // WalkScore.WalkScoreService.getScore("4949 N 7th Ave, Phoenix, AZ 85013", 33.508710, -112.082400).then((w) => {
                 //    console.log(w);
