@@ -5,6 +5,7 @@ import {IUserLoggedIn} from "../../services/services/users/contracts/IUser";
 import {IWebContext} from "../../services/library/sharedContracts/IWebContext";
 import {IApprovedListSearchCriteria} from "../objects/ApprovedListSearchCriteria";
 import * as auditService from "../../../api/audit/services/auditService";
+import * as escapeStringRegexp from "escape-string-regexp";
 
 export async function create(operator: IUserLoggedIn, context: IWebContext, item: IApprovedListItemWrite): Promise<IApprovedListItemRead> {
     const m = new model();
@@ -45,7 +46,11 @@ export async function read(criteria: IApprovedListSearchCriteria): Promise<IAppr
     }
 
     if (criteria.value) {
-        query.where("value").regex(new RegExp("^" + criteria.value + "$", "i"));
+        query.where("value").regex(new RegExp("^" + escapeStringRegexp(criteria.value) + "$", "i"));
+    }
+
+    if (criteria.search) {
+        query.where("value").regex(new RegExp(escapeStringRegexp(criteria.search), "i"));
     }
 
     const result: IApprovedListsModel[]  = await query.exec();
