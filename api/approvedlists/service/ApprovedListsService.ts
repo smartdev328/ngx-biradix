@@ -53,6 +53,11 @@ export async function read(criteria: IApprovedListSearchCriteria): Promise<IAppr
         query.where("value").regex(new RegExp(escapeStringRegexp(criteria.search), "i"));
     }
 
+    criteria.limit = criteria.limit || 10000;
+
+    query.limit(criteria.limit);
+    query.sort("value");
+
     const result: IApprovedListsModel[]  = await query.exec();
     return result.map((m: IApprovedListsModel) => {
         return DBModelToReadObject(m);

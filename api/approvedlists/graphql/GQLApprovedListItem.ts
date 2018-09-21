@@ -32,6 +32,7 @@ export const GQLApprovedListSearchCriteria = new GraphQLInputObjectType({
         value: { type: GraphQLString },
         search: { type: GraphQLString },
         activeOnly: { type: new GraphQLNonNull(GraphQLBoolean) },
+        limit: {type: new GraphQLNonNull(GraphQLInt)},
     }),
     name: "ApprovedListSearchCriteria",
 });

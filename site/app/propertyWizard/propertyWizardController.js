@@ -3,8 +3,8 @@ define([
     "app",
     "../../components/inputmask/module.js",
 ], function(app) {
-    app.controller("propertyWizardController", ["$scope", "$uibModalInstance", "id", "isComp", "isCustom", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "$amenityService", "$uibModal", "subjectid",
-    function($scope, $uibModalInstance, id, isComp, isCustom, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, $amenityService, $uibModal, subjectid) {
+    app.controller("propertyWizardController", ["$scope", "$uibModalInstance", "id", "isComp", "isCustom", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "$amenityService", "$uibModal", "subjectid", "$approvedListsService",
+    function($scope, $uibModalInstance, id, isComp, isCustom, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, $amenityService, $uibModal, subjectid, $approvedListsService) {
             if (!$rootScope.loggedIn) {
                 $location.path("/login");
             }
@@ -37,6 +37,17 @@ define([
                         }
                     }, true);
                 }, 1000);
+            };
+
+            $scope.autocompleteApprovedList = function(search, type) {
+                return $approvedListsService.read({
+                    "type": type,
+                    "activeOnly": true,
+                    "search": search,
+                    "limit": 10,
+                }).then(function(result) {
+                    return result.data.data.ApprovedListQuery;
+                });
             }
 
             $scope.cancel = function () {

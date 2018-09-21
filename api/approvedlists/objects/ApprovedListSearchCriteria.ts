@@ -5,4 +5,5 @@ export interface IApprovedListSearchCriteria {
     value?: string;
     activeOnly: boolean;
     search?: string;
+    limit: number;
 }
