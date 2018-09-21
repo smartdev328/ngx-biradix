@@ -4,7 +4,7 @@ import * as userService from "../../../api/users/services/userService";
 import {IUserLoggedIn} from "../../services/services/users/contracts/IUser";
 
 export async function seed() {
-    const existing = await approvedListsService.read({type: ApprovedListType.MANAGER, activeOnly: false});
+    const existing = await approvedListsService.read({type: ApprovedListType.MANAGER, activeOnly: false, limit: 1});
 
     if (!existing || !existing.length) {
         console.log("Seeding managers");
