@@ -18,13 +18,13 @@ var context = {ip: '127.0.0.1', user_agent: 'server'}
 
 module.exports = {
     init: function () {
-        ManagersSeed.seed();
-        OwnersSeed.seed();
         UserSchema.findOne({}, function(err, usr) {
             if (usr) {
                 console.log('No seed');
                 //UserService.rebuildSearch(null);
                 // OrgService.hydrateOrgRoles();
+                ManagersSeed.seed();
+                OwnersSeed.seed();
             } else {
                 async.waterfall([
                     function(callbackw) {
@@ -89,7 +89,8 @@ module.exports = {
                         })
                     }
                 ], function(err) {
-
+                    ManagersSeed.seed();
+                    OwnersSeed.seed();
                 });
             }
         }) ;
