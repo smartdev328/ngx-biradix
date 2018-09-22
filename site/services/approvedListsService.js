@@ -7,6 +7,7 @@ angular.module("biradix.global").factory("$approvedListsService", ["$http", "$co
                 "  ApprovedListQuery(criteria: $criteria) {\n" +
                 "    id\n" +
                 "    value\n" +
+                "    type\n" +
                 "  }\n" +
                 "}\n",
             variables: {"criteria": criteria},
