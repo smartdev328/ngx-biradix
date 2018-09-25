@@ -8,6 +8,7 @@ angular.module("biradix.global").factory("$approvedListsService", ["$http", "$co
                 "    id\n" +
                 "    value\n" +
                 "    type\n" +
+                "    searchable\n"+
                 "  }\n" +
                 "}\n",
             variables: {"criteria": criteria},

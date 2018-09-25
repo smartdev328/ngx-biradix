@@ -18,7 +18,7 @@ export const GQLApprovedListType = new GraphQLEnumType({
 export const GQLApprovedListItemRead = new GraphQLObjectType({
     fields: () => ({
         id: { type: new GraphQLNonNull(GraphQLString) },
-        active: { type: new GraphQLNonNull(GraphQLBoolean) },
+        searchable: { type: new GraphQLNonNull(GraphQLBoolean) },
         type: {type: new GraphQLNonNull(GQLApprovedListType) },
         value: { type: new GraphQLNonNull(GraphQLString) },
         aliases: {type: new GraphQLList(GraphQLString)},
@@ -31,7 +31,7 @@ export const GQLApprovedListSearchCriteria = new GraphQLInputObjectType({
         type: {type: new GraphQLNonNull(GQLApprovedListType) },
         value: { type: GraphQLString },
         search: { type: GraphQLString },
-        activeOnly: { type: new GraphQLNonNull(GraphQLBoolean) },
+        searchableOnly: { type: new GraphQLNonNull(GraphQLBoolean) },
         limit: {type: new GraphQLNonNull(GraphQLInt)},
     }),
     name: "ApprovedListSearchCriteria",

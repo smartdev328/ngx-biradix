@@ -7,7 +7,7 @@
 </div>
 <div ng-show="localLoading">
     <div class="pull-left">
-        <Select ng-options="type for type in types" ng-model="type" ng-change="reload()" class="form-control input-sm"></Select>
+        <Select ng-options="typeMap[type] for type in types" ng-model="type" ng-change="reload()" class="form-control input-sm"></Select>
     </div>
     <div class="form-group has-feedback pull-right grid-search" style="margin-right:5px">
         <input type="text" class="form-control input-sm"
@@ -25,17 +25,13 @@
         <table class="table table-condensed table-striped table-hover">
             <tbody>
             <tr class="thead">
-                <th></th>
-                <th>#</th>
                 <th>Value</th>
-                <th>Type</th>
+                <th>Field</th>
             </tr>
 
             <tr ng-repeat-start="row in filtered = (data | filter: searchText) | skip : pageStart() - 1 | limitTo : limit">
-                <td style="text-align: center"></td>
-                <td>{{pageStart() + $index}}.</td>
                 <td><span>{{row.value}}</span></td>
-                <td>{{row.type}}</td>
+                <td>{{typeMap[row.type]}}</td>
             </tr>
             <tr ng-repeat-end="" ng-if="false"></tr>
             </tbody>

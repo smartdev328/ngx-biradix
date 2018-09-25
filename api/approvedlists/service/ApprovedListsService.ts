@@ -14,7 +14,7 @@ export async function create(operator: IUserLoggedIn, context: IWebContext, item
     m.aliases = [];
     m.value = item.value;
     m.type = item.type;
-    m.active = true;
+    m.searchable = true;
 
     const isDupe: IApprovedListItemRead[] = await this.read({value: item.value, activeOnly: false, type: item.type});
 
@@ -41,8 +41,8 @@ export async function create(operator: IUserLoggedIn, context: IWebContext, item
 export async function read(criteria: IApprovedListSearchCriteria): Promise<IApprovedListItemRead[]> {
     const query = model.find({type: criteria.type});
 
-    if (criteria.activeOnly) {
-        query.where("active").equals(true);
+    if (criteria.searchableOnly) {
+        query.where("searchable").equals(true);
     }
 
     if (criteria.value) {
@@ -55,7 +55,6 @@ export async function read(criteria: IApprovedListSearchCriteria): Promise<IAppr
 
     criteria.limit = criteria.limit || 10000;
 
-    query.limit(criteria.limit);
     query.sort("value");
 
     const result: IApprovedListsModel[]  = await query.exec();

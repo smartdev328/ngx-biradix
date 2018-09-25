@@ -19,7 +19,9 @@ define([
         $scope.type = "OWNER";
         $scope.limit = 50;
         $scope.search = {}
-        $scope.searchable = ['name','type'];
+        $scope.searchable = ['name', 'type'];
+
+        $scope.typeMap = {"OWNER": "Property: Owner", "MANAGER": "Property: Management"};
 
         // /////////////////////////////
         $scope.reload = function () {
@@ -27,7 +29,7 @@ define([
             $approvedListsService.read({
                 "type": $scope.type,
                 "limit": 10000,
-                "activeOnly": false,
+                "searchableOnly": false,
             }).then(function (response) {
                 $scope.data = response.data.data.ApprovedListQuery;
                     $scope.localLoading = true;

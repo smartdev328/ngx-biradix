@@ -21,6 +21,7 @@ const MarketSurveyDataIntegrityViolation = require("../../../build/properties/se
 const MarketSurveyDataIntegrityViolationService = new MarketSurveyDataIntegrityViolation.MarketSurveyDataIntegrityViolationService();
 const IEvents = require("../../../build/keen/interfaces/IEvents");
 const keenModule = require("../../../build/keen/services/keenService");
+const approvedListsService = require("../../../build/approvedlists/service/ApprovedListsService");
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -382,6 +383,39 @@ module.exports = {
             })
             callback(err, surveys);
         })
+    },
+    getUnapproved: async function(type) {
+        const approved = await approvedListsService.read({type, searchableOnly: false, limit: 10000});
+        const list = approved.map((x) => x.value);
+
+        let field = "";
+
+        switch (type) {
+            case "Owner":
+                field = "owner";
+                break;
+            case "Management":
+                field = "management"
+                break;
+            default:
+                throw new Error ("Unapproved type not implemented");
+        }
+        let query = PropertySchema.find({});
+        query.select(`name ${field}`);
+        query.where(field).nin(list);
+
+        const unapproved = await query.exec();
+        const frequency = {};
+        let total = 0;
+
+        unapproved.forEach((p) => {
+            frequency[p[field]] = (frequency[p[field]] || 0) + 1;
+            total ++;
+        });
+
+        // console.log({unapproved, frequency, total});
+
+        return {unapproved, frequency, total};
     },
     search: function(Operator, criteria, callback) {
         // let tStart = (new Date()).getTime();

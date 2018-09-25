@@ -3,14 +3,13 @@ import {IApprovedListItemRead, IApprovedListItemWrite} from "../objects/Approved
 
 export interface IApprovedListsModel extends IApprovedListItemWrite, mongoose.Document {
     _id: mongoose.Types.ObjectId;
-    active: boolean;
     aliases: string[];
 }
 
 const ApprovedListsSchema: mongoose.Schema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     aliases: [String],
-    active: Boolean,
+    searchable: Boolean,
     type: {
         type: String,
     },
@@ -27,7 +26,7 @@ export function DBModelToReadObject(dbModel: IApprovedListsModel): IApprovedList
         value: dbModel.value,
         type: dbModel.type,
         aliases: dbModel.aliases,
-        active: dbModel.active,
+        searchable: dbModel.searchable,
     };
 
     return object;

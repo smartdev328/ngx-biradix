@@ -4,7 +4,7 @@ import * as userService from "../../../api/users/services/userService";
 import {IUserLoggedIn} from "../../services/services/users/contracts/IUser";
 
 export async function seed() {
-    const existing = await approvedListsService.read({type: ApprovedListType.MANAGER, activeOnly: false, limit: 1});
+    const existing = await approvedListsService.read({type: ApprovedListType.MANAGER, searchableOnly: false, limit: 1});
 
     if (!existing || !existing.length) {
         console.log("Seeding managers");
@@ -13,6 +13,7 @@ export async function seed() {
             return {
                 value: m,
                 type: ApprovedListType.MANAGER,
+                searchable: true,
             } as IApprovedListItemWrite;
         });
 

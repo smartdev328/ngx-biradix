@@ -42,7 +42,7 @@ define([
             $scope.autocompleteApprovedList = function(search, type) {
                 return $approvedListsService.read({
                     "type": type,
-                    "activeOnly": true,
+                    "searchableOnly": true,
                     "search": search,
                     "limit": 10,
                 }).then(function(result) {

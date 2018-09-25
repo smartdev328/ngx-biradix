@@ -6,10 +6,10 @@ export enum ApprovedListType {
 export interface IApprovedListItemWrite {
     value: string;
     type: ApprovedListType;
+    searchable: boolean;
 }
 
 export interface IApprovedListItemRead extends IApprovedListItemWrite {
     id: string;
-    active: boolean;
     aliases: string[];
 }
