@@ -151,7 +151,7 @@ d.run(function() {
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
                 // var PropertyService = require('../api/properties/services/propertyService');
-                // PropertyService.getUnapproved("Management").then(x=>{console.log(x)});
+                // PropertyService.getUnapproved("Owner").then(x=>{console.log(x)});
                 if (workerId == 1) {
                     // var s3Service = require("../api/media/services/s3Service")
                     //

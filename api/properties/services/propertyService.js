@@ -403,14 +403,28 @@ module.exports = {
         let query = PropertySchema.find({});
         query.select(`name ${field}`);
         query.where(field).nin(list);
+        query.and([
+            {$or: [{"custom.owner": {$exists: false}}, {"orgid": {$exists: true}}]},
+        ]);
+        query.where("active").equals(true);
 
-        const unapproved = await query.exec();
-        const frequency = {};
+        const result = await query.exec();
+        const frequencyObj = {};
+        const unapproved = [];
         let total = 0;
 
-        unapproved.forEach((p) => {
-            frequency[p[field]] = (frequency[p[field]] || 0) + 1;
+        result.forEach((p) => {
+            unapproved.push({id: p._id.toString(), value: p[field], name: p.name});
+            frequencyObj[p[field]] = (frequencyObj[p[field]] || 0) + 1;
             total ++;
+        });
+
+        let frequency = Object.keys(frequencyObj).map((key) => {
+            return {value: key, count: frequencyObj[key]};
+        });
+
+        frequency = _.sortBy(frequency, (f) => {
+            return f.value.toLowerCase();
         });
 
         // console.log({unapproved, frequency, total});
