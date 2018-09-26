@@ -97,6 +97,7 @@ define([], function () {
             .state("uploadSurveys", AsyncRoute("/uploadSurveys", "uploadSurveys", "uploadSurveysController", "uploadSurveys.html", "loggedInView",{loggedIn: true}))
             .state("amenities", AsyncRoute("/amenities", "amenities", "amenitiesController", "amenities.html", "loggedInView",{loggedIn: true}))
             .state("approvedLists", AsyncRoute("/approvedLists", "approvedLists", "approvedListsController", "approvedLists.html", "loggedInView",{loggedIn: true}))
+            .state("unapprovedLists", AsyncRoute("/unapprovedLists?type", "approvedLists", "unapprovedListsController", "unapprovedLists.html", "loggedInView",{loggedIn: true}))
             .state("reporting", AsyncRoute("/reporting?property", "reporting", "reportingController",phantom ? "reporting-phantom.html" : "reporting.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
             .state("contactus", AsyncRoute("/contactus", "contact", "contactController", "contact.html", "loggedInView",{loggedIn: true}))
             .state("organizations", AsyncRoute("/organizations", "organizations", "organizationsController", "organizations.html", "loggedInView",{loggedIn: true}))

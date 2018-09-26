@@ -499,7 +499,7 @@ angular.module("biradix.global").controller("rootController",
                                 key: key,
                                 count: total,
                                 label: label + ": ",
-                                url: "#/unapproved?type=" + type,
+                                url: "#/unapprovedLists?type=" + type,
                             });
                         }
                     }
