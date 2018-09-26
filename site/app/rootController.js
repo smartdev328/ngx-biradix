@@ -478,7 +478,35 @@ angular.module("biradix.global").controller("rootController",
             if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.alertsAmenities();
                 $scope.alertsAudits();
+                $scope.alertsApprovedLists("OWNER", "owner", "Property: Owners");
+                $scope.alertsApprovedLists("MANAGER", "management", "Property: Management");
             }
+        };
+
+        $scope.alertsApprovedLists = function(type, key, label) {
+            $propertyService.getUnapproved(type, "total").then(function (response) {
+                    var a = _.find($rootScope.notifications, function(x) {return x.key === key});
+                    var total = response.data.data.UnapprovedListQuery.total;
+                    if (a) {
+                        a.count = total;
+
+                        if (a.count === 0) {
+                            _.remove($rootScope.notifications, function(x) {return x.key === key});
+                        }
+                    } else {
+                        if (total) {
+                            $rootScope.notifications.push({
+                                key: key,
+                                count: total,
+                                label: label + ": ",
+                                url: "#/unapproved?type=" + type,
+                            });
+                        }
+                    }
+                },
+                function (error) {
+                    toastr.error(error.data.errors[0].message);
+                });
         };
 
         $scope.alertsAmenities = function() {

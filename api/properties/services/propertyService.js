@@ -394,7 +394,7 @@ module.exports = {
             case "Owner":
                 field = "owner";
                 break;
-            case "Management":
+            case "Manager":
                 field = "management"
                 break;
             default:
