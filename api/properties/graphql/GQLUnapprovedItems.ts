@@ -35,8 +35,8 @@ export const GQLUnApprovedListQuery = {
     description: "Retrieve list of un-apporved items.",
     type: GQLUnapprovedListResponse,
     resolve(_, {type}, request) {
-        if (!request.user) {
-            //throw new Error("Access denied.");
+        if (!request.user || request.user.permissions.indexOf("Admin") === -1) {
+            throw new Error("Access denied.");
         }
         return propertyService.getUnapproved(type).then((response) => {
             return response;
