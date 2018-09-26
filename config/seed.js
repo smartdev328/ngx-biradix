@@ -11,16 +11,20 @@ var PropertyService = require('../api/properties/services/propertyService')
 var propertyUsersService = require('../api/propertyusers/services/propertyUsersService')
 var CreateService = require('../api/properties/services/createService')
 var AmenityService = require('../api/amenities/services/amenityService')
+const ManagersSeed = require("../build/approvedlists/seed/ManagersSeed");
+const OwnersSeed = require("../build/approvedlists/seed/OwnersSeed");
 
 var context = {ip: '127.0.0.1', user_agent: 'server'}
 
 module.exports = {
     init: function () {
-        UserSchema.findOne({},function(err, usr) {
+        UserSchema.findOne({}, function(err, usr) {
             if (usr) {
                 console.log('No seed');
                 //UserService.rebuildSearch(null);
                 // OrgService.hydrateOrgRoles();
+                ManagersSeed.seed();
+                OwnersSeed.seed();
             } else {
                 async.waterfall([
                     function(callbackw) {
@@ -85,7 +89,8 @@ module.exports = {
                         })
                     }
                 ], function(err) {
-
+                    ManagersSeed.seed();
+                    OwnersSeed.seed();
                 });
             }
         }) ;

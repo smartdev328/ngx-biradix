@@ -78,5 +78,7 @@ const s = new Schema({
 });
 
 s.index({"comps.id": 1});
+s.index({"owner": 1});
+s.index({"management": 1});
 
 module.exports = mongoose.model("Property", s, "properties");

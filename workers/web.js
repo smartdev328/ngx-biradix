@@ -124,6 +124,14 @@ d.run(function() {
             var server = app.listen(settings.PORT, function () {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
+                // const s = require("../build/approvedlists/service/ApprovedListsService");
+                // s.create(null, null, {value: "test4", type: "Owner"}).then((w) => {
+                //     console.log(w);
+                //     s.read({type: "Owner", activeOnly: true}).then((x) => {
+                //         console.log(x);
+                //     });
+                // });
+
                 // const WalkScore = require("../build/walkscore/services/walkScoreService");
                 // WalkScore.WalkScoreService.getScore("4949 N 7th Ave, Phoenix, AZ 85013", 33.508710, -112.082400).then((w) => {
                 //    console.log(w);
@@ -141,8 +149,10 @@ d.run(function() {
                 //cronService.isAllowed("* * * * 2");
 
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-                if (workerId == 1) {
 
+                // var PropertyService = require('../api/properties/services/propertyService');
+                // PropertyService.getUnapproved("Owner").then(x=>{console.log(x)});
+                if (workerId == 1) {
                     // var s3Service = require("../api/media/services/s3Service")
                     //
                     // var source =         {

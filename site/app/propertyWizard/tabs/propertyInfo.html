@@ -95,11 +95,11 @@
     <div class="row">
         <div class="col-sm-6">
             Owner <span class="required">*</span><br>
-            <input type="text" class="form-control input-sm" ng-model="property.owner">
+            <input type="text" class="form-control input-sm" ng-model="property.owner" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'OWNER')">
         </div>
         <div class="col-sm-6">
             Management <span class="required">*</span><br>
-            <input type="text" class="form-control input-sm" ng-model="property.management">
+            <input type="text" class="form-control input-sm" ng-model="property.management" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'MANAGER')">
         </div>
     </div>
 

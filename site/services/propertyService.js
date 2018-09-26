@@ -1,6 +1,21 @@
 angular.module('biradix.global').factory('$propertyService', ['$http','$cookies', function ($http,$cookies) {
         var fac = {};
 
+    fac.getUnapproved = function(type, fields) {
+        var query = {
+            query: "query {\n" +
+                "  UnapprovedListQuery(type:"+ type +") {\n" + fields +
+                "  }\n" +
+                "}",
+        };
+
+        return $http.post("/graphql"+ "?bust=" + (new Date()).getTime(), query, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function(response) {
+            return response;
+        }).error(function(response) {
+            return response;
+        });
+    };
     fac.clone = function (id, comps) {
         return $http.post('/api/1.0/properties/' + id + '/clone'+ '?bust=' + (new Date()).getTime(), {comps: comps}, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

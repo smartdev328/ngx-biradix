@@ -21,6 +21,7 @@ const MarketSurveyDataIntegrityViolation = require("../../../build/properties/se
 const MarketSurveyDataIntegrityViolationService = new MarketSurveyDataIntegrityViolation.MarketSurveyDataIntegrityViolationService();
 const IEvents = require("../../../build/keen/interfaces/IEvents");
 const keenModule = require("../../../build/keen/services/keenService");
+const approvedListsService = require("../../../build/approvedlists/service/ApprovedListsService");
 
 module.exports = {
     getCompsForReminders: function(compids,callback) {
@@ -382,6 +383,53 @@ module.exports = {
             })
             callback(err, surveys);
         })
+    },
+    getUnapproved: async function(type) {
+        const approved = await approvedListsService.read({type, searchableOnly: false, limit: 10000});
+        const list = approved.map((x) => x.value);
+
+        let field = "";
+
+        switch (type) {
+            case "Owner":
+                field = "owner";
+                break;
+            case "Manager":
+                field = "management"
+                break;
+            default:
+                throw new Error ("Unapproved type not implemented");
+        }
+        let query = PropertySchema.find({});
+        query.select(`name ${field}`);
+        query.where(field).nin(list);
+        query.and([
+            {$or: [{"custom.owner": {$exists: false}}, {"orgid": {$exists: true}}]},
+        ]);
+        query.where("active").equals(true);
+
+        const result = await query.exec();
+        const frequencyObj = {};
+        const unapproved = [];
+        let total = 0;
+
+        result.forEach((p) => {
+            unapproved.push({id: p._id.toString(), value: p[field], name: p.name});
+            frequencyObj[p[field]] = (frequencyObj[p[field]] || 0) + 1;
+            total ++;
+        });
+
+        let frequency = Object.keys(frequencyObj).map((key) => {
+            return {value: key, count: frequencyObj[key]};
+        });
+
+        frequency = _.sortBy(frequency, (f) => {
+            return f.value.toLowerCase();
+        });
+
+        // console.log({unapproved, frequency, total});
+
+        return {unapproved, frequency, total};
     },
     search: function(Operator, criteria, callback) {
         // let tStart = (new Date()).getTime();

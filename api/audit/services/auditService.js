@@ -75,6 +75,8 @@ let audits = [
     {key: "amenity_mapped", value: "Amenity Mapped as Alias", group: "Amenity", admin: true, undo: true},
     {key: "amenity_unmapped", value: "Amenity Unmapped as Alias", group: "Amenity", admin: true, undo: true},
 
+    {key: "list_item_created", value: "Approved Item Created", group: "Approved Item", admin: true},
+
     {key: "tracking_reminder_clicked", value: "Reminder Email Clicked", group: "Tracking", admin: true},
     {key: "tracking_reminder_survey", value: "Reminder Email Survey", group: "Tracking", admin: true},
 
@@ -84,6 +86,18 @@ let audits = [
 
 module.exports = {
     audits: audits,
+    createAsync: function(audit) {
+        const _this = this;
+        return new Promise((resolve, reject) => {
+            _this.create(audit, function(err, obj) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
+    },
     create: function(audit, callback) {
         let n = new AuditSchema();
 

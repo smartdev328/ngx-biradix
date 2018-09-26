@@ -128,6 +128,13 @@ module.exports = {
         getSysemUser(callback);
 
     },
+    getSystemUserAsync: function() {
+        return new Promise((resolve, reject) => {
+            getSysemUser(function(obj) {
+                resolve(obj.user);
+            });
+        });
+    },
     search: function(Operator,criteria, callback) {
 
         var tStart = (new Date()).getTime();
