@@ -5,6 +5,10 @@
         display:none !important;
     }
 
+    .auto-complete UL {
+        min-width:90%
+    }
+
 
 </style>
 
@@ -93,11 +97,11 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6 auto-complete">
             Owner <span class="required">*</span><br>
             <input type="text" class="form-control input-sm" ng-model="property.owner" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'OWNER')">
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 auto-complete">
             Management <span class="required">*</span><br>
             <input type="text" class="form-control input-sm" ng-model="property.management" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'MANAGER')">
         </div>
