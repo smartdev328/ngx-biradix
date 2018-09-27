@@ -56,6 +56,7 @@ export async function read(criteria: IApprovedListSearchCriteria): Promise<IAppr
     criteria.limit = criteria.limit || 10000;
 
     query.sort("value");
+    query.limit(criteria.limit);
 
     const result: IApprovedListsModel[]  = await query.exec();
     return result.map((m: IApprovedListsModel) => {
