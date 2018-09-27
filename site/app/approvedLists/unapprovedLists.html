@@ -22,12 +22,28 @@
                 <th></th>
                 <th>Unapproved Value</th>
                 <th>Count</th>
+                <th>
+
+                </th>
             </tr>
 
             <tr ng-repeat-start="row in data.frequency">
                 <td style="text-align: center"><i ng-class="{'fa' : true,  'fa-plus-square-o': !row.open, 'fa-minus-square-o' : row.open}" style="cursor:pointer;font-size:18px;padding-top:2px" ng-click="row.open = !row.open"></i></td>
                 <td>{{row.value}}</td>
                 <td>{{row.count}}</td>
+                <td class="center">
+                    <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
+                        <div class="btn-group action_dropdown">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                                <li><a href ng-click="approve(row, true)"><span class="fa fa-check fa-fw"></span> Approve as Searchable</a></li>
+                                <li><a href ng-click="approve(row, false)"><span class="fa fa-ban fa-fw"></span> Approve as Non-Searchable</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
             </tr>
             <tr ng-if="row.open">
                 <Td colspan="100%">

@@ -31,7 +31,7 @@ define([
                 "limit": 10000,
                 "searchableOnly": false,
             }).then(function (response) {
-                $scope.data = response.data.data.ApprovedListQuery;
+                $scope.data = response.data.data.ApprovedList;
                     $scope.localLoading = true;
             },
             function (error) {

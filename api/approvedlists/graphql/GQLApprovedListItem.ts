@@ -26,6 +26,15 @@ export const GQLApprovedListItemRead = new GraphQLObjectType({
     name: "ApprovedListItemRead",
 });
 
+export const GQLApprovedListItemWrite = new GraphQLInputObjectType({
+    fields: () => ({
+        searchable: { type: new GraphQLNonNull(GraphQLBoolean) },
+        type: {type: new GraphQLNonNull(GQLApprovedListType) },
+        value: { type: new GraphQLNonNull(GraphQLString) },
+    }),
+    name: "ApprovedListItemWrite",
+});
+
 export const GQLApprovedListSearchCriteria = new GraphQLInputObjectType({
     fields: () => ({
         type: {type: new GraphQLNonNull(GQLApprovedListType) },
@@ -45,6 +54,25 @@ export const GQLApprovedListQuery = {
     type: new GraphQLList(GQLApprovedListItemRead),
     resolve(_, {criteria}, request) {
           return approvedListService.read(criteria).then((response: IApprovedListItemRead[]) => {
+            return response;
+        }).catch((error) => {
+            console.error(error);
+            throw new Error(error);
+        });
+    },
+};
+
+export const GQLApprovedListCreateMutation = {
+    args: {
+        approvedListItem: {type: GQLApprovedListItemWrite},
+    },
+    description: "Create new approved item",
+    type: GQLApprovedListItemRead,
+    resolve(_, {approvedListItem}, request) {
+        if (!request.user || request.user.permissions.indexOf("Admin") === -1) {
+            throw new Error("Access denied.");
+        }
+        return approvedListService.create(request.user, request.context, approvedListItem).then((response: IApprovedListItemRead) => {
             return response;
         }).catch((error) => {
             console.error(error);

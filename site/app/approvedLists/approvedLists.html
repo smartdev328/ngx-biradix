@@ -27,19 +27,28 @@
             <tr class="thead">
                 <th>Value</th>
                 <th>Field</th>
+                <th class="center">Searchable</th>
             </tr>
 
             <tr ng-repeat-start="row in filtered = (data | filter: searchText) | skip : pageStart() - 1 | limitTo : limit">
                 <td><span>{{row.value}}</span></td>
                 <td>{{typeMap[row.type]}}</td>
+                <td class="center">
+                    <span class="fa fa-check fa-2x" ng-show="row.searchable"></span>
+                    <span class="fa fa-times fa-2x" ng-show="!row.searchable" style="color:#ccc"></span>
+                </td>
             </tr>
             <tr ng-repeat-end="" ng-if="false"></tr>
             </tbody>
 
         </table>
         <div class="pull-left grid-show" style="padding-top:5px;">
-            Showing {{pageStart()}} to {{pageEnd()}} of {{filtered.length}}
-            <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
+            {{filtered.length | number: 0}} items <span ng-show="filtered.length < data.length">(filtered from {{data.length}})</span>
+
+            <select class="form-control input-sm" ng-model="limit" style="width:85px;display:inline-block;padding:1px !important;font-size:11px;height:24px"
+                    ng-change="resetPager()"
+                    ng-options="item + ' per page' for item in limits">
+            </select>
         </div>
         <div class="pull-right grid-pager">
             <ul uib-pagination ng-show="filtered.length > limit" max-size="5" total-items="filtered.length" ng-model="currentPage" class="pagination-sm" items-per-page="limit"></ul>

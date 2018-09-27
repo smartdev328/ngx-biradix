@@ -4,7 +4,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
     fac.getUnapproved = function(type, fields) {
         var query = {
             query: "query {\n" +
-                "  UnapprovedListQuery(type:"+ type +") {\n" + fields +
+                "  UnapprovedList(type:"+ type +") {\n" + fields +
                 "  }\n" +
                 "}",
         };

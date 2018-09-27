@@ -28,7 +28,7 @@ export async function create(operator: IUserLoggedIn, context: IWebContext, item
         await auditService.createAsync({
             operator,
             type: "list_item_created",
-            description: `${item.type}: ${item.value}`,
+            description: `${item.type}: ${item.value} - ${item.searchable ? "Searchable" : "Not-Searchable"}`,
             context,
         });
     } catch (error) {

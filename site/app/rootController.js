@@ -484,9 +484,9 @@ angular.module("biradix.global").controller("rootController",
         };
 
         $scope.alertsApprovedLists = function(type, key, label) {
-            $propertyService.getUnapproved(type, "total").then(function (response) {
+            $propertyService.getUnapproved(type, "frequency {value}").then(function (response) {
                     var a = _.find($rootScope.notifications, function(x) {return x.key === key});
-                    var total = response.data.data.UnapprovedListQuery.total;
+                    var total = response.data.data.UnapprovedList.frequency.length;
                     if (a) {
                         a.count = total;
 
