@@ -99,11 +99,11 @@
     <div class="row">
         <div class="col-sm-6 auto-complete">
             Owner <span class="required">*</span><br>
-            <input type="text" class="form-control input-sm" ng-model="property.owner" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'OWNER')">
+            <input type="text" class="form-control input-sm" ng-model="property.owner" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'OWNER')" typeahead-focus-first="false" typeahead-should-select="shouldSelect($event)">
         </div>
         <div class="col-sm-6 auto-complete">
             Management <span class="required">*</span><br>
-            <input type="text" class="form-control input-sm" ng-model="property.management" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'MANAGER')">
+            <input type="text" class="form-control input-sm" ng-model="property.management" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'MANAGER')" typeahead-focus-first="false" typeahead-should-select="shouldSelect($event)">
         </div>
     </div>
 
