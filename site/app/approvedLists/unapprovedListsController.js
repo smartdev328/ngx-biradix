@@ -38,7 +38,7 @@ define([
         $scope.reload();
 
         $scope.approve = function(row, searchable) {
-            $dialog.confirm("Are you sure you want to approve <b>" + row.value + "</b> as <b> as a valid <b></b>" + $scope.typeMap[$scope.type] + "</b> value <i>" + (searchable ? "and add it to the list of autocomplete suggestions" : "without adding it to the list of autocomplete suggestions") + "<i>?<Br>", function() {
+            $dialog.confirm("Are you sure you want to approve <b>" + row.value + "</b> as a valid <b>" + $scope.typeMap[$scope.type] + "</b> value <i><u>" + (searchable ? "and add it to the list of autocomplete suggestions" : "without adding it to the list of autocomplete suggestions") + "</u><i>?<Br>", function() {
                 $approvedListsService.create({searchable: searchable, type: $scope.type, value: row.value}).then(function(response) {
                     if (response.data.errors) {
                         toastr.error(response.data.errors[0].message);
