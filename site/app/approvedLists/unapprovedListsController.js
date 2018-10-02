@@ -11,8 +11,6 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "";
 
-
-        //Grid Options
         $scope.data = [];
         $scope.types = ["OWNER", "MANAGER"];
         $scope.type = $stateParams.type || "OWNER";
@@ -21,18 +19,18 @@ define([
         // /////////////////////////////
         $scope.reload = function() {
             $scope.localLoading = false;
-            $propertyService.getUnapproved($scope.type, "frequency {value count} unapproved {id name value}").then(function (response) {
+            $propertyService.getUnapproved($scope.type, "frequency {value count} unapproved {id name value}").then(function(response) {
                 $scope.data = response.data.data.UnapprovedList;
                 $scope.localLoading = true;
             },
-            function (error) {
+            function(error) {
                    $scope.localLoading = true;
                 toastr.error(error.data.errors[0].message);
             });
         };
 
         $scope.updateHash = function() {
-            $location.search('type', $scope.type);
+            $location.search("type", $scope.type);
         };
 
         $scope.reload();
@@ -48,6 +46,34 @@ define([
                     toastr.success(row.value + " approved successfully");
                 }, function(error) {
                     toastr.error(error.data.errors[0].message);
+                });
+            });
+        };
+
+        $scope.edit = function(row) {
+            row.typeMap = $scope.typeMap[$scope.type];
+            row.type = $scope.type;
+            row.newValue = row.value;
+            require([
+                "/app/approvedLists/editUnapprovedItemController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/approvedLists/editUnapprovedItem.html?bust=" + version,
+                    controller: "editUnapprovedItemController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        row: function() {
+                            return row;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function (newFloorplans) {
+                }, function () {
+                    // Cancel
+
                 });
             });
         };

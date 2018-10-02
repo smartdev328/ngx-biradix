@@ -39,12 +39,6 @@ define([
                 }, 1000);
             };
 
-            $scope.shouldSelect = function($event) {
-                if ($event.keyCode === 13) {
-                    return true;
-                }
-            }
-
             $scope.autocompleteApprovedList = function(search, type) {
                 return $approvedListsService.read({
                     "type": type,

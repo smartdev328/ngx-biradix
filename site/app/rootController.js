@@ -374,6 +374,12 @@ angular.module("biradix.global").controller("rootController",
             }
         }
 
+        $rootScope.shouldSelect = function($event) {
+            if ($event.keyCode === 13) {
+                return true;
+            }
+        }
+
         $scope.searchSelected = function (item, model, label) {
             $scope.searches.search1 = "";
             $scope.searches.search2 = "";
