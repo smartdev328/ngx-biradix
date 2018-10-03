@@ -3,8 +3,8 @@ import {IWebContext} from "../../services/library/sharedContracts/IWebContext";
 import {ApprovedListType} from "../../approvedlists/objects/ApprovedLists";
 import * as amenityService from "../../../api/amenities/services/amenityService";
 import * as propertyService from "../../../api/properties/services/propertyService";
-import * as propertyHelperService from "../../../api/properties/services/PropertyHelperService";
-import * as propertyCreateService from "../../../api/properties/services/CreateService";
+import * as propertyHelperService from "../../../api/properties/services/propertyHelperService";
+import * as propertyCreateService from "../../../api/properties/services/createService";
 
 export async function massUpdate(operator: IUserLoggedIn, context: IWebContext, propertyIds: string[], type: ApprovedListType, newValue: string) {
     if (!propertyIds || propertyIds.length === 0) {
