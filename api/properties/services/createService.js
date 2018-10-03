@@ -17,6 +17,18 @@ const PropertyDataIntegrityViolation = require("../../../build/properties/servic
 const PropertyDataIntegrityViolationService = new PropertyDataIntegrityViolation.PropertyDataIntegrityViolationService();
 
 module.exports = {
+    updateAsync: async function(operator, context, revertedFromId, property, options) {
+        const _this = this;
+        return new Promise((resolve, reject) => {
+            _this.update(operator, context, revertedFromId, property, options, function(err, obj) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
+    },
     update: function(operator, context, revertedFromId, property, options, callback) {
         let modelErrors = [];
 

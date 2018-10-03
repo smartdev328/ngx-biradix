@@ -431,6 +431,18 @@ module.exports = {
 
         return {unapproved, frequency, total};
     },
+    searchAsync: async function(operator, criteria) {
+        const _this = this;
+        return new Promise((resolve, reject) => {
+            _this.search(operator, criteria, function(err, obj) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
+    },
     search: function(Operator, criteria, callback) {
         // let tStart = (new Date()).getTime();
         let t;

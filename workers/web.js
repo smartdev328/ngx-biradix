@@ -150,6 +150,14 @@ d.run(function() {
 
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
+
+                // var userService = require("../api/users/services/userService");
+                // userService.getSystemUser(function (obj) {
+                //     var SystemUser = obj.user;
+                //     var PropertyMassUpdateService = require("../build/properties/services/PropertyMassUpdateService");
+                //     PropertyMassUpdateService.massUpdate(SystemUser, null, ["5ba066c0d37b9761d08399a6"], "Owner", "test");
+                // });
+
                 // var PropertyService = require('../api/properties/services/propertyService');
                 // PropertyService.getUnapproved("Owner").then(x=>{console.log(x)});
                 if (workerId == 1) {

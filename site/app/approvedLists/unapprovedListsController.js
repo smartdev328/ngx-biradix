@@ -3,7 +3,8 @@ define([
     'app',
     '../../filters/skip/filter',
 ], function (app) {
-    app.controller('unapprovedListsController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$dialog','$uibModal','toastr','$stateParams','$approvedListsService', function ($scope,$rootScope,$location,$propertyService,ngProgress,$dialog,$uibModal,toastr,$stateParams,$approvedListsService) {
+    app.controller('unapprovedListsController', ['$scope','$rootScope','$location','$propertyService','ngProgress','$dialog','$uibModal','toastr','$stateParams','$approvedListsService','$filter',
+        function ($scope,$rootScope,$location,$propertyService,ngProgress,$dialog,$uibModal,toastr,$stateParams,$approvedListsService,$filter) {
         window.setTimeout(function() {window.document.title = "Unapproved Queue | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -67,13 +68,17 @@ define([
                         row: function() {
                             return row;
                         },
+                        unapproved: function() {
+                            return $filter("filter")($scope.data.unapproved, {"value": row.value});
+                        },
                     },
                 });
 
-                modalInstance.result.then(function (newFloorplans) {
-                }, function () {
+                modalInstance.result.then(function(newFloorplans) {
+                    toastr.success("<B>" + row.value + "</B> updated to <b>" + row.newValue + "</b> successfully");
+                    $scope.reload();
+                }, function() {
                     // Cancel
-
                 });
             });
         };

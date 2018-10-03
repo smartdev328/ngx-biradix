@@ -2,7 +2,8 @@
 define([
     "app",
 ], function(app) {
-     app.controller("editUnapprovedItemController", ["$scope", "$uibModalInstance", "row", "ngProgress", "toastr", "$dialog", "$approvedListsService", function($scope, $uibModalInstance, row, ngProgress, toastr, $dialog, $approvedListsService) {
+     app.controller("editUnapprovedItemController", ["$scope", "$uibModalInstance", "row", "ngProgress", "toastr", "$dialog", "$approvedListsService", "$propertyService", "unapproved",
+         function($scope, $uibModalInstance, row, ngProgress, toastr, $dialog, $approvedListsService, $propertyService, unapproved) {
         ga("set", "title", "/editUnapprovedItem");
         ga("set", "page", "/editUnapprovedItem");
         ga("send", "pageview");
@@ -24,8 +25,19 @@ define([
         };
 
         $scope.update = function() {
-            $dialog.confirm("Are you sure you want to update <i><u>" + row.typeMap + "</u></i> <b>" + row.value + "</b> to <b>" + row.newValue + "</b>? <b><u>" + row.count + " properties will be affected.</u></b>", function() {
-                // Todo: Mass Update
+            $dialog.confirm("Are you sure you want to update the <b>" + row.typeMap + "</b> of properties currently using the value <b>\"" + row.value + "\"</b> to <b>\"" + row.newValue + "</b>? <Br><br>" + " Properties affected: " + row.count, function() {
+                var propertyIds = _.map(unapproved, function(x) {
+                    return x.id.toString();
+                });
+                $propertyService.massUpdate(propertyIds, row.type, row.newValue).then(function(response) {
+                    if (response.data.error) {
+                        toastr.error(response.data.error);
+                    } else {
+                        $uibModalInstance.close();
+                    }
+                }, function() {
+                    toastr.error("An error has occurred");
+                });
             });
         };
     }]);
