@@ -391,10 +391,10 @@ module.exports = {
         let field = "";
 
         switch (type) {
-            case "Owner":
+            case "OWNER":
                 field = "owner";
                 break;
-            case "Manager":
+            case "MANAGER":
                 field = "management"
                 break;
             default:

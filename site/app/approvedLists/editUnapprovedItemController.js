@@ -29,7 +29,7 @@ define([
                 var propertyIds = _.map(unapproved, function(x) {
                     return x.id.toString();
                 });
-                $propertyService.massUpdate(propertyIds, row.type, row.newValue).then(function(response) {
+                $propertyService.massUpdate(propertyIds, row.type, row.newValue, row.value).then(function(response) {
                     if (response.data.error) {
                         toastr.error(response.data.error);
                     } else {

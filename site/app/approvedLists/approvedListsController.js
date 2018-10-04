@@ -21,7 +21,7 @@ define([
         $scope.search = {}
         $scope.searchable = ['name', 'type'];
 
-        $scope.typeMap = {"OWNER": "Property: Owner", "MANAGER": "Property: Management"};
+        $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management"};
 
         // /////////////////////////////
         $scope.reload = function () {

@@ -169,8 +169,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-    fac.massUpdate = function (propertyIds, type, newValue) {
-        return $http.post('/api/1.0/properties/massUpdate?bust=' + (new Date()).getTime(), {propertyIds: propertyIds, type: type, newValue: newValue}, {
+    fac.massUpdate = function (propertyIds, type, newValue, oldValue) {
+        return $http.post('/api/1.0/properties/massUpdate?bust=' + (new Date()).getTime(), {propertyIds: propertyIds, type: type, newValue: newValue, oldValue: oldValue}, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {

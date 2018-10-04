@@ -202,7 +202,7 @@ Routes.post("/massUpdate", function (req, res) {
         if (!canAccess) {
             return res.status(401).json("Unauthorized request");
         }
-        PropertyMassUpdateService.massUpdate(req.user, req.context, req.body.propertyIds, req.body.type, req.body.newValue).then((success) => {
+        PropertyMassUpdateService.massUpdate(req.user, req.context, req.body.propertyIds, req.body.type, req.body.newValue, req.body.oldValue).then((success) => {
             return res.status(200).json({success: true});
         }).catch((error) => {
             return res.status(200).json({success: false, error: error.message});

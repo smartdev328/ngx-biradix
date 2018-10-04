@@ -1,5 +1,5 @@
 import {IApprovedListsModel, model, DBModelToReadObject} from "../repository/ApprovedListsRepository";
-import {IApprovedListItemRead, IApprovedListItemWrite} from "../objects/ApprovedLists";
+import {ApprovedListTypeMap, IApprovedListItemRead, IApprovedListItemWrite} from "../objects/ApprovedLists";
 import * as mongoose from "mongoose";
 import {IUserLoggedIn} from "../../services/services/users/contracts/IUser";
 import {IWebContext} from "../../services/library/sharedContracts/IWebContext";
@@ -28,7 +28,7 @@ export async function create(operator: IUserLoggedIn, context: IWebContext, item
         await auditService.createAsync({
             operator,
             type: "list_item_created",
-            description: `${item.type}: ${item.value} - ${item.searchable ? "Added to autocomplete" : "Not added to autocomplete"}`,
+            description: `${ApprovedListTypeMap[item.type]} value "${item.value}", ${item.searchable ? "Added to autocomplete" : "Not added to autocomplete"}`,
             context,
         });
     } catch (error) {

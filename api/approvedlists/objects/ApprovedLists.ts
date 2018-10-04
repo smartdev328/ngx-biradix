@@ -1,7 +1,14 @@
 export enum ApprovedListType {
-    MANAGER = "Manager",
-    OWNER = "Owner",
+    MANAGER = "MANAGER",
+    OWNER = "OWNER",
 }
+
+export const ApprovedListTypeMap = {
+
+};
+
+ApprovedListTypeMap[ApprovedListType.MANAGER] = "Property:Management";
+ApprovedListTypeMap[ApprovedListType.OWNER] = "Property:Owner";
 
 export interface IApprovedListItemWrite {
     value: string;

@@ -15,7 +15,7 @@ define([
         $scope.data = [];
         $scope.types = ["OWNER", "MANAGER"];
         $scope.type = $stateParams.type || "OWNER";
-        $scope.typeMap = {"OWNER": "Property: Owner", "MANAGER": "Property: Management"};
+        $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management"};
 
         // /////////////////////////////
         $scope.reload = function() {

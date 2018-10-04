@@ -7,10 +7,10 @@ export const GQLApprovedListType = new GraphQLEnumType({
     name: "ApprovedListType",
     values: {
         MANAGER: {
-            value: "Manager",
+            value: "MANAGER",
         },
         OWNER: {
-            value: "Owner",
+            value: "OWNER",
         },
     },
 });
