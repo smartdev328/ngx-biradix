@@ -18,6 +18,14 @@ export async function massUpdate(operator: IUserLoggedIn, context: IWebContext, 
         data.push({description: property.name, id: property._id});
     });
 
+    await auditService.createAsync({
+        operator,
+        type: "unapproved_item_mapped",
+        description: `${ApprovedListTypeMap[type]} value, "${oldValue}" => "${newValue}"`,
+        context,
+        data,
+    });
+
     await asyncForEach(properties, async (property) => {
         switch (type) {
             case ApprovedListType.OWNER:
@@ -32,14 +40,6 @@ export async function massUpdate(operator: IUserLoggedIn, context: IWebContext, 
 
         propertyHelperService.fixAmenities(property, amenities);
         await propertyCreateService.updateAsync(operator, context, null, property, {skipGeo: true});
-    });
-
-    await auditService.createAsync({
-        operator,
-        type: "unapproved_item_mapped",
-        description: `${ApprovedListTypeMap[type]} value, "${oldValue}" => "${newValue}"`,
-        context,
-        data,
     });
 
     return true;
