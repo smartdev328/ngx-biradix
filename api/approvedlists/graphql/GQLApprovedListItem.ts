@@ -80,3 +80,23 @@ export const GQLApprovedListCreateMutation = {
         });
     },
 };
+
+export const GQLApprovedListDeleteMutation = {
+    args: {
+        value: {type: GraphQLString},
+        type: {type: GQLApprovedListType},
+    },
+    description: "Delete existing approved item",
+    type: GQLApprovedListItemRead,
+    resolve(_, {value, type}, request) {
+        if (!request.user || request.user.permissions.indexOf("Admin") === -1) {
+            throw new Error("Access denied.");
+        }
+        return approvedListService.remove(request.user, request.context, value, type).then((response: IApprovedListItemRead) => {
+            return response;
+        }).catch((error) => {
+            console.error(error);
+            throw new Error(error);
+        });
+    },
+};

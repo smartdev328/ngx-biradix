@@ -13,7 +13,11 @@ export async function massUpdate(operator: IUserLoggedIn, context: IWebContext, 
     }
     const amenities = await amenityService.searchAsync({});
     const properties = await propertyService.searchAsync(operator, {ids: propertyIds, select: "*", permission: ["CompManage", "PropertyManage"]});
-    const data = [];
+    const data = [{description: "Properties Affected:", id: null}];
+    await asyncForEach(properties, async (property) => {
+        data.push({description: property.name, id: property._id});
+    });
+
     await asyncForEach(properties, async (property) => {
         switch (type) {
             case ApprovedListType.OWNER:
@@ -28,7 +32,6 @@ export async function massUpdate(operator: IUserLoggedIn, context: IWebContext, 
 
         propertyHelperService.fixAmenities(property, amenities);
         await propertyCreateService.updateAsync(operator, context, null, property, {skipGeo: true});
-        data.push({description: property.name, id: property._id});
     });
 
     await auditService.createAsync({

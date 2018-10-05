@@ -125,7 +125,9 @@ d.run(function() {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
                 // const s = require("../build/approvedlists/service/ApprovedListsService");
+                // s.remove(null, null, "1st Lake Properties", "OWNER");
                 // s.create(null, null, {value: "test4", type: "Owner"}).then((w) => {
+
                 //     console.log(w);
                 //     s.read({type: "Owner", activeOnly: true}).then((x) => {
                 //         console.log(x);

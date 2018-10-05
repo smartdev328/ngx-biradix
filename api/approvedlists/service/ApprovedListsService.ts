@@ -1,11 +1,35 @@
 import {IApprovedListsModel, model, DBModelToReadObject} from "../repository/ApprovedListsRepository";
-import {ApprovedListTypeMap, IApprovedListItemRead, IApprovedListItemWrite} from "../objects/ApprovedLists";
+import {
+    ApprovedListType,
+    ApprovedListTypeMap,
+    IApprovedListItemRead,
+    IApprovedListItemWrite
+} from "../objects/ApprovedLists";
 import * as mongoose from "mongoose";
 import {IUserLoggedIn} from "../../services/services/users/contracts/IUser";
 import {IWebContext} from "../../services/library/sharedContracts/IWebContext";
 import {IApprovedListSearchCriteria} from "../objects/ApprovedListSearchCriteria";
 import * as auditService from "../../../api/audit/services/auditService";
 import * as escapeStringRegexp from "escape-string-regexp";
+
+export async function remove(operator: IUserLoggedIn, context: IWebContext, value: string, type: ApprovedListType) {
+    const exists: IApprovedListItemRead[] = await this.read({value, searchableOnly: false, type} as IApprovedListSearchCriteria);
+
+    if (!exists || exists.length === 0) {
+        throw new Error("Unknown value: " + type + ": " + value);
+    }
+
+    await model.deleteOne({_id: exists[0].id});
+
+    await auditService.createAsync({
+        operator,
+        type: "list_item_removed",
+        description: `${ApprovedListTypeMap[type]} value "${value}", ${exists[0].searchable ? "Was in autocomplete" : "Was not in autocomplete"}`,
+        context,
+    });
+
+    return exists[0];
+}
 
 export async function create(operator: IUserLoggedIn, context: IWebContext, item: IApprovedListItemWrite): Promise<IApprovedListItemRead> {
     const m = new model();
@@ -14,9 +38,9 @@ export async function create(operator: IUserLoggedIn, context: IWebContext, item
     m.aliases = [];
     m.value = item.value;
     m.type = item.type;
-    m.searchable = true;
+    m.searchable = item.searchable;
 
-    const isDupe: IApprovedListItemRead[] = await this.read({value: item.value, activeOnly: false, type: item.type});
+    const isDupe: IApprovedListItemRead[] = await this.read({value: item.value, searchableOnly: false, type: item.type} as IApprovedListSearchCriteria);
 
     if (isDupe && isDupe.length) {
         throw new Error("Duplicate value: " + m.type + ": " + m.value);

@@ -40,6 +40,20 @@ define([
             });
         };
 
+        $scope.delete = function(row) {
+            $dialog.confirm("Are you sure you want to delete <b>" + row.value + "</b> from <b>" + $scope.typeMap[row.type] + "</b>?", function() {
+                $approvedListsService.delete(row.value, row.type).then(function(response) {
+                    if (response.data.errors) {
+                        toastr.error(response.data.errors[0].message);
+                        return;
+                    }
+                    $scope.reload();
+                    toastr.success(row.value + " deleted successfully");
+                }, function(error) {
+                    toastr.error(error.data.errors[0].message);
+                });
+            });
+        };
         $scope.resetPager = function () {
             $scope.currentPage = 1;
         }

@@ -36,5 +36,19 @@ angular.module("biradix.global").factory("$approvedListsService", ["$http", "$co
         });
     };
 
+    fac.delete = function(value, type) {
+        var query = {
+            query: "mutation ApprovedListItemDelete($value: String, $type: ApprovedListType) {ApprovedListItemDelete(value: $value, type: $type) {id type value}}",
+            variables: {"value": value, "type": type},
+        };
+
+        return $http.post("/graphql"+ "?bust=" + (new Date()).getTime(), query, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function(response) {
+            return response;
+        }).error(function(response) {
+            return response;
+        });
+    };
+
     return fac;
 }]);

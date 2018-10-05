@@ -28,6 +28,7 @@
                 <th>Value</th>
                 <th>Field</th>
                 <th class="center">Autocomplete</th>
+                <th></th>
             </tr>
 
             <tr ng-repeat-start="row in filtered = (data | filter: searchText) | skip : pageStart() - 1 | limitTo : limit">
@@ -36,6 +37,18 @@
                 <td class="center">
                     <span class="fa fa-check fa-2x" ng-show="row.searchable"></span>
                     <span class="fa fa-times fa-2x" ng-show="!row.searchable" style="color:#ccc"></span>
+                </td>
+                <td class="center">
+                    <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
+                        <div class="btn-group action_dropdown">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                                <li><a href ng-click="delete(row)"><span class="fa fa-trash fa-fw"></span> Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr ng-repeat-end="" ng-if="false"></tr>
