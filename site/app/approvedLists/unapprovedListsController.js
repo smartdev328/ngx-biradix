@@ -69,7 +69,9 @@ define([
                             return row;
                         },
                         unapproved: function() {
-                            return $filter("filter")($scope.data.unapproved, {"value": row.value});
+                            return _.filter($scope.data.unapproved, function(x) {
+                                return x.value === row.value;
+                            });
                         },
                     },
                 });
