@@ -26,6 +26,7 @@ define([
 
         $scope.update = function() {
             $dialog.confirm("Are you sure you want to update the <b>" + row.typeMap + "</b> of properties currently using the value <b>\"" + row.value + "\"</b> to <b>\"" + row.newValue + "</b>? <Br><br>" + " Properties affected: " + row.count, function() {
+                $("btn btn-primary").prop("disabled", true);
                 var propertyIds = _.map(unapproved, function(x) {
                     return x.id.toString();
                 });
@@ -35,8 +36,10 @@ define([
                     } else {
                         $uibModalInstance.close();
                     }
+                    $("btn btn-primary").prop("disabled", false);
                 }, function() {
                     toastr.error("An error has occurred");
+                    $("btn btn-primary").prop("disabled", false);
                 });
             });
         };
