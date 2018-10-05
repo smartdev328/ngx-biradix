@@ -10,6 +10,7 @@ var CloneService = require('../services/cloneService')
 var OrgService = require('../../organizations/services/organizationService')
 var AmenityService = require('../../amenities/services/amenityService')
 var saveCompsService = require('../services/saveCompsService')
+const PropertyMassUpdateService = require("../../../build/properties/services/PropertyMassUpdateService");
 /////////////////////
 var PropertyHelperService = require('../services/propertyHelperService')
 var CreateService = require('../services/createService')
@@ -195,6 +196,19 @@ Routes.put('/', function(req,res) {
         });
     })
 })
+
+Routes.post("/massUpdate", function (req, res) {
+    AccessService.canAccess(req.user, "Admin", function(canAccess) {
+        if (!canAccess) {
+            return res.status(401).json("Unauthorized request");
+        }
+        PropertyMassUpdateService.massUpdate(req.user, req.context, req.body.propertyIds, req.body.type, req.body.newValue, req.body.oldValue).then((success) => {
+            return res.status(200).json({success: true});
+        }).catch((error) => {
+            return res.status(200).json({success: false, error: error.message});
+        });
+    });
+});
 
 Routes.put('/:id', function (req, res) {
     AccessService.canAccessResource(req.user,req.params.id,['PropertyManage','CompManage'], function(canAccess) {

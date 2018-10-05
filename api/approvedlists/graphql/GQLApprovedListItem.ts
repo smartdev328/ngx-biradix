@@ -7,10 +7,10 @@ export const GQLApprovedListType = new GraphQLEnumType({
     name: "ApprovedListType",
     values: {
         MANAGER: {
-            value: "Manager",
+            value: "MANAGER",
         },
         OWNER: {
-            value: "Owner",
+            value: "OWNER",
         },
     },
 });
@@ -24,6 +24,15 @@ export const GQLApprovedListItemRead = new GraphQLObjectType({
         aliases: {type: new GraphQLList(GraphQLString)},
     }),
     name: "ApprovedListItemRead",
+});
+
+export const GQLApprovedListItemWrite = new GraphQLInputObjectType({
+    fields: () => ({
+        searchable: { type: new GraphQLNonNull(GraphQLBoolean) },
+        type: {type: new GraphQLNonNull(GQLApprovedListType) },
+        value: { type: new GraphQLNonNull(GraphQLString) },
+    }),
+    name: "ApprovedListItemWrite",
 });
 
 export const GQLApprovedListSearchCriteria = new GraphQLInputObjectType({
@@ -45,6 +54,45 @@ export const GQLApprovedListQuery = {
     type: new GraphQLList(GQLApprovedListItemRead),
     resolve(_, {criteria}, request) {
           return approvedListService.read(criteria).then((response: IApprovedListItemRead[]) => {
+            return response;
+        }).catch((error) => {
+            console.error(error);
+            throw new Error(error);
+        });
+    },
+};
+
+export const GQLApprovedListCreateMutation = {
+    args: {
+        approvedListItem: {type: GQLApprovedListItemWrite},
+    },
+    description: "Create new approved item",
+    type: GQLApprovedListItemRead,
+    resolve(_, {approvedListItem}, request) {
+        if (!request.user || request.user.permissions.indexOf("Admin") === -1) {
+            throw new Error("Access denied.");
+        }
+        return approvedListService.create(request.user, request.context, approvedListItem).then((response: IApprovedListItemRead) => {
+            return response;
+        }).catch((error) => {
+            console.error(error);
+            throw new Error(error);
+        });
+    },
+};
+
+export const GQLApprovedListDeleteMutation = {
+    args: {
+        value: {type: GraphQLString},
+        type: {type: GQLApprovedListType},
+    },
+    description: "Delete existing approved item",
+    type: GQLApprovedListItemRead,
+    resolve(_, {value, type}, request) {
+        if (!request.user || request.user.permissions.indexOf("Admin") === -1) {
+            throw new Error("Access denied.");
+        }
+        return approvedListService.remove(request.user, request.context, value, type).then((response: IApprovedListItemRead) => {
             return response;
         }).catch((error) => {
             console.error(error);

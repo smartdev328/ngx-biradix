@@ -125,7 +125,9 @@ d.run(function() {
                 console.log('WorkerID: %s, Port: %s', workerId, server.address().port);
 
                 // const s = require("../build/approvedlists/service/ApprovedListsService");
+                // s.remove(null, null, "1st Lake Properties", "OWNER");
                 // s.create(null, null, {value: "test4", type: "Owner"}).then((w) => {
+
                 //     console.log(w);
                 //     s.read({type: "Owner", activeOnly: true}).then((x) => {
                 //         console.log(x);
@@ -149,6 +151,14 @@ d.run(function() {
                 //cronService.isAllowed("* * * * 2");
 
 //console.log(parseFloat("55678.42342").toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+
+
+                // var userService = require("../api/users/services/userService");
+                // userService.getSystemUser(function (obj) {
+                //     var SystemUser = obj.user;
+                //     var PropertyMassUpdateService = require("../build/properties/services/PropertyMassUpdateService");
+                //     PropertyMassUpdateService.massUpdate(SystemUser, null, ["5ba066c0d37b9761d08399a6"], "Owner", "test");
+                // });
 
                 // var PropertyService = require('../api/properties/services/propertyService');
                 // PropertyService.getUnapproved("Owner").then(x=>{console.log(x)});

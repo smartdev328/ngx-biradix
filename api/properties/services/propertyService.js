@@ -391,10 +391,10 @@ module.exports = {
         let field = "";
 
         switch (type) {
-            case "Owner":
+            case "OWNER":
                 field = "owner";
                 break;
-            case "Manager":
+            case "MANAGER":
                 field = "management"
                 break;
             default:
@@ -430,6 +430,18 @@ module.exports = {
         // console.log({unapproved, frequency, total});
 
         return {unapproved, frequency, total};
+    },
+    searchAsync: async function(operator, criteria) {
+        const _this = this;
+        return new Promise((resolve, reject) => {
+            _this.search(operator, criteria, function(err, obj) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
     },
     search: function(Operator, criteria, callback) {
         // let tStart = (new Date()).getTime();

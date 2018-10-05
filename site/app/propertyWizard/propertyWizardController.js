@@ -46,7 +46,7 @@ define([
                     "search": search,
                     "limit": 10,
                 }).then(function(result) {
-                    return result.data.data.ApprovedListQuery;
+                    return result.data.data.ApprovedList;
                 });
             }
 

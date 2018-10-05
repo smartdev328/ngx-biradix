@@ -5,6 +5,18 @@ var _ = require("lodash")
 var AuditService = require('../../audit/services/auditService')
 
 module.exports = {
+    searchAsync: async function(criteria) {
+        const _this = this;
+        return new Promise((resolve, reject) => {
+            _this.search(criteria, function(err, obj) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(obj);
+                }
+            });
+        });
+    },
     search: function (criteria, callback) {
         var query = AmenitySchema.find({});
 

@@ -21,7 +21,7 @@ define([
         $scope.search = {}
         $scope.searchable = ['name', 'type'];
 
-        $scope.typeMap = {"OWNER": "Property: Owner", "MANAGER": "Property: Management"};
+        $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management"};
 
         // /////////////////////////////
         $scope.reload = function () {
@@ -31,7 +31,7 @@ define([
                 "limit": 10000,
                 "searchableOnly": false,
             }).then(function (response) {
-                $scope.data = response.data.data.ApprovedListQuery;
+                $scope.data = response.data.data.ApprovedList;
                     $scope.localLoading = true;
             },
             function (error) {
@@ -40,6 +40,20 @@ define([
             });
         };
 
+        $scope.delete = function(row) {
+            $dialog.confirm("Are you sure you want to delete <b>" + row.value + "</b> from <b>" + $scope.typeMap[row.type] + "</b>?", function() {
+                $approvedListsService.delete(row.value, row.type).then(function(response) {
+                    if (response.data.errors) {
+                        toastr.error(response.data.errors[0].message);
+                        return;
+                    }
+                    $scope.reload();
+                    toastr.success(row.value + " deleted successfully");
+                }, function(error) {
+                    toastr.error(error.data.errors[0].message);
+                });
+            });
+        };
         $scope.resetPager = function () {
             $scope.currentPage = 1;
         }

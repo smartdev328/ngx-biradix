@@ -76,6 +76,8 @@ let audits = [
     {key: "amenity_unmapped", value: "Amenity Unmapped as Alias", group: "Amenity", admin: true, undo: true},
 
     {key: "list_item_created", value: "Approved Item Created", group: "Approved Item", admin: true},
+    {key: "list_item_removed", value: "Approved Item Removed", group: "Approved Item", admin: true},
+    {key: "unapproved_item_mapped", value: "Unapproved Item Edited/Mapped", group: "Approved Item", admin: true},
 
     {key: "tracking_reminder_clicked", value: "Reminder Email Clicked", group: "Tracking", admin: true},
     {key: "tracking_reminder_survey", value: "Reminder Email Survey", group: "Tracking", admin: true},

@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">Edit Unapproved Value</h2>
+    <hr>
+</div>
+
+<div class="modal-body">
+    <b>{{row.typeMap}} ({{row.count}} properties)</b>
+    <input type="text" class="form-control input-sm" ng-model="row.newValue" uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, row.type)" typeahead-focus-first="false" typeahead-should-select="$root.shouldSelect($event)">
+    <br>
+    <center>
+        <button class="btn btn-primary btn-submit" ng-click="update()" ng-disabled="!row.newValue || row.value === row.newValue">Update</button>
+    </center>
+</div>

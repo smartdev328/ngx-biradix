@@ -4,7 +4,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
     fac.getUnapproved = function(type, fields) {
         var query = {
             query: "query {\n" +
-                "  UnapprovedListQuery(type:"+ type +") {\n" + fields +
+                "  UnapprovedList(type:"+ type +") {\n" + fields +
                 "  }\n" +
                 "}",
         };
@@ -168,6 +168,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 return response;
             });
         }
+
+    fac.massUpdate = function (propertyIds, type, newValue, oldValue) {
+        return $http.post('/api/1.0/properties/massUpdate?bust=' + (new Date()).getTime(), {propertyIds: propertyIds, type: type, newValue: newValue, oldValue: oldValue}, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
 
         fac.update = function (property) {
             return $http.put('/api/1.0/properties/' + property._id+ '?bust=' + (new Date()).getTime(), property, {

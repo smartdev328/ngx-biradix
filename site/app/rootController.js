@@ -374,6 +374,12 @@ angular.module("biradix.global").controller("rootController",
             }
         }
 
+        $rootScope.shouldSelect = function($event) {
+            if ($event.keyCode === 13) {
+                return true;
+            }
+        }
+
         $scope.searchSelected = function (item, model, label) {
             $scope.searches.search1 = "";
             $scope.searches.search2 = "";
@@ -478,15 +484,15 @@ angular.module("biradix.global").controller("rootController",
             if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.alertsAmenities();
                 $scope.alertsAudits();
-                $scope.alertsApprovedLists("OWNER", "owner", "Property: Owners");
-                $scope.alertsApprovedLists("MANAGER", "management", "Property: Management");
+                $scope.alertsApprovedLists("OWNER", "owner", "Property:Owners");
+                $scope.alertsApprovedLists("MANAGER", "management", "Property:Management");
             }
         };
 
         $scope.alertsApprovedLists = function(type, key, label) {
-            $propertyService.getUnapproved(type, "total").then(function (response) {
+            $propertyService.getUnapproved(type, "frequency {value}").then(function (response) {
                     var a = _.find($rootScope.notifications, function(x) {return x.key === key});
-                    var total = response.data.data.UnapprovedListQuery.total;
+                    var total = response.data.data.UnapprovedList.frequency.length;
                     if (a) {
                         a.count = total;
 
