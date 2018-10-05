@@ -26,7 +26,7 @@ define([
 
         $scope.update = function() {
             $dialog.confirm("Are you sure you want to update the <b>" + row.typeMap + "</b> of properties currently using the value <b>\"" + row.value + "\"</b> to <b>\"" + row.newValue + "</b>? <Br><br>" + " Properties affected: " + row.count, function() {
-                $("btn btn-primary").prop("disabled", true);
+                $("button.btn-submit").prop("disabled", true).text("Updating...");
                 var propertyIds = _.map(unapproved, function(x) {
                     return x.id.toString();
                 });
@@ -36,10 +36,10 @@ define([
                     } else {
                         $uibModalInstance.close();
                     }
-                    $("btn btn-primary").prop("disabled", false);
+                    $("button.btn-submit").prop("disabled", false).text("Update");
                 }, function() {
                     toastr.error("An error has occurred");
-                    $("btn btn-primary").prop("disabled", false);
+                    $("button.btn-submit").prop("disabled", false).text("Update");
                 });
             });
         };
