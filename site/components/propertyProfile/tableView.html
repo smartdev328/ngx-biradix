@@ -40,7 +40,7 @@
     </tr>
     <tr ng-repeat="item in data">
         <td class="center">
-          {{item.d | date: 'MM/dd/yyyy'}} <i class="fa fa-edit hidden-print" ng-if="survey" ng-click="marketsurvey(propertyid,item.surveyid)" style="cursor:pointer" uib-tooltip="Edit this Survey"></i>
+          {{item.d | date: 'MM/dd/yyyy'}} <i class="fa fa-pencil hidden-print" ng-if="survey" ng-click="marketsurvey(propertyid,item.surveyid)" style="cursor:pointer" uib-tooltip="Edit this Survey"></i>
         </td>
         <td class="center" ng-if="columns.indexOf('occupancy') > -1">
             {{item.occ != null ? ((item.occ | number : 1) + '%') : '-'}}
