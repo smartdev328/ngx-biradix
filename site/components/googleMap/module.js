@@ -126,7 +126,8 @@ angular.module('biradix.global').directive('googleMap', function () {
                             var mapOptions = {
                                 //zoom: $scope.getZoom($scope.options.points),
                                 center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                disableDefaultUI: phantom,
                             }
                             var elMap = $($element).find('div')[0]
                             $scope.oMap = new google.maps.Map(elMap, mapOptions);
