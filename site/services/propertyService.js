@@ -694,7 +694,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 printWidth: "300",
                 points: [{
                     loc: resp.property.loc,
-                    marker: 'apartment-3',
+                    marker: '0',
                     content: markerContent(resp.property)
                 }]
             }
@@ -719,7 +719,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 if (c._id.toString() != resp.property._id.toString()) {
                     resp.mapOptions.points.push({
                         loc: c.loc,
-                        marker: 'number_' + i,
+                        marker: "" + i,
                         content: markerContent(c)
                     })
                 }

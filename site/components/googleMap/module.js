@@ -95,12 +95,12 @@ angular.module('biradix.global').directive('googleMap', function () {
 
                         delete $scope.error;
 
-                        if (!phantom) {
+                        // if (!phantom) {
                             $scope.error = typeof google === 'undefined';
                             if ($scope.error) {
                                 global_error({stack: 'Google maps not available, showing static map'}, {location: location.href});
                             }
-                        }
+                        // }
 
                         $scope.options.points = $scope.options.points || [];
 
@@ -114,9 +114,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
                         })
 
-                        $rootScope.$broadcast('timeseriesLoaded');
-
-                        if (!phantom && !$scope.error) {
+                        if (!$scope.error) {
                             if ($scope.aMarkers) {
 
                                 for (var i = 0; i < $scope.aMarkers.length; i++) {
@@ -126,7 +124,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $scope.aMarkers = [];
 
                             var mapOptions = {
-                                zoom: $scope.getZoom($scope.options.points),
+                                //zoom: $scope.getZoom($scope.options.points),
                                 center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
                                 mapTypeId: google.maps.MapTypeId.ROADMAP
                             }
@@ -140,13 +138,19 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $(elMap).height($scope.options.height + "px");
 
                             window.setTimeout(function () {
-                                $scope.resize(1)
+                                $scope.resize(1);
                             }, 100);
+
+                            $scope.oMap.addListener('zoom_changed', function() {
+                                $rootScope.$broadcast('timeseriesLoaded');
+                            });
+
+                        } else {
+                            $rootScope.$broadcast('timeseriesLoaded');
                         }
 
                         $scope.gLoaded = true;
                     }
-
                 });
 
                 $scope.closeAllInfoBoxes = function() {
@@ -158,6 +162,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                 }
 
                 $scope.loadMarkers = function() {
+                    var bounds = new google.maps.LatLngBounds();
                     for (var i = 0; i < $scope.options.points.length; i++) {
                         var oPoint = $scope.options.points[i];
                         $scope.aMarkers[i] = new google.maps.Marker({
@@ -167,17 +172,20 @@ angular.module('biradix.global').directive('googleMap', function () {
                             clickable: true,
                             title: oPoint.Name,
                             info: new google.maps.InfoWindow({
-                                content: oPoint.content
-                            })
-
+                                content: oPoint.content,
+                            }),
                         });
 
                         $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
                             $scope.closeAllInfoBoxes();
                             this.info.open($scope.oMap, this);
                         });
+
+                        bounds.extend($scope.aMarkers[i].position);
                     }
-                }
+
+                    $scope.oMap.fitBounds(bounds);
+                };
 
                 $scope.resize = function() {
                     var currCenter = $scope.oMap.getCenter();
@@ -187,6 +195,6 @@ angular.module('biradix.global').directive('googleMap', function () {
 
 
             },
-            template: '<div class="hidden-print"></div><img class="visible-print-block" width="300" height="300" ng-src="{{::staticUrl}}"><div ng-if="error" style="margin: 0px auto; width:300px;"><img width="300" height="300" ng-src="{{::staticUrl}}"></div>'
+            template: '<div></div>'
         };
     })
