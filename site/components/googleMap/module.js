@@ -7,92 +7,9 @@ angular.module('biradix.global').directive('googleMap', function () {
             controller: function ($scope, $element, $rootScope) {
 
                 $scope.phantom = phantom;
-
-                $scope.distance = function(p1, p2)
-                {
-                    var e = (3.1415926538 * p1[0] / 180);
-                    var f = (3.1415926538 * p1[1] / 180);
-                    var g = (3.1415926538 * p2[0] / 180);
-                    var h = (3.1415926538 * p2[1] / 180);
-                    var i = (Math.cos(e) * Math.cos(g) * Math.cos(f) * Math.cos(h) + Math.cos(e) * Math.sin(f) * Math.cos(g) * Math.sin(h) + Math.sin(e) * Math.sin(g));
-                    var j = (Math.acos(i));
-                    var k = (6371 * j);
-
-                    return k;
-                }
-
-                $scope.getZoom = function(points) {
-
-                    var MaxMiles = 0;
-
-                    for (var i = 1; i < points.length; i++ ) {
-                        var dist = $scope.distance(points[0].loc, points[i].loc);
-
-                        if (dist > MaxMiles) {
-                            MaxMiles = dist;
-                        }
-                    }
-
-                    if (MaxMiles > 1600)
-                    {
-                        return 2;
-                    }
-                    else
-                    if (MaxMiles > 800)
-                    {
-                        return 3;
-                    }
-                    else
-                    if (MaxMiles > 400)
-                    {
-                        return 4;
-                    }
-                    else
-                    if (MaxMiles > 200)
-                    {
-                        return 5;
-                    }
-                    else
-                    if (MaxMiles > 100)
-                    {
-                        return 6;
-                    }
-                    else
-                    if (MaxMiles > 50)
-                    {
-                        return 7;
-                    }
-                    else
-                    if (MaxMiles > 25)
-                    {
-                        return 8;
-                    }
-                    else
-                    if (MaxMiles > 12)
-                    {
-                        return 9;
-                    }
-                    else
-                    if (MaxMiles > 6)
-                    {
-                        return 10;
-                    }
-                    else
-                    if (MaxMiles > 4)
-                    {
-                        return 11;
-                    }
-                    else
-                    {
-                        return 12;
-                    }
-
-                }
-
                 $scope.$watch('options', function(){
-
+                    $scope.done = false;
                     if ($scope.options) {
-
                         delete $scope.error;
 
                         // if (!phantom) {
@@ -104,16 +21,6 @@ angular.module('biradix.global').directive('googleMap', function () {
 
                         $scope.options.points = $scope.options.points || [];
 
-                        $scope.staticUrl = "/i?center=" + $scope.options.loc[0]
-                            + "," + $scope.options.loc[1]
-                            + "&zoom=" + $scope.getZoom($scope.options.points)
-                            + "&size=" + $scope.options.printWidth + "x" + $scope.options.height
-                            + "&key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU"
-
-                        $scope.options.points.forEach(function(p) {
-                            $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
-                        })
-
                         if (!$scope.error) {
                             if ($scope.aMarkers) {
 
@@ -124,7 +31,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $scope.aMarkers = [];
 
                             var mapOptions = {
-                                //zoom: $scope.getZoom($scope.options.points),
+                                zoom: 9,
                                 center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
                                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                                 disableDefaultUI: phantom,
@@ -143,11 +50,14 @@ angular.module('biradix.global').directive('googleMap', function () {
                             }, 100);
 
                             $scope.oMap.addListener('zoom_changed', function() {
-                                $rootScope.$broadcast('timeseriesLoaded');
+                                if (!$scope.done) {
+                                    $rootScope.$broadcast('timeseriesLoaded');
+                                    $scope.done = true;
+                                }
                             });
-
                         } else {
                             $rootScope.$broadcast('timeseriesLoaded');
+                            $scope.done = true;
                         }
 
                         $scope.gLoaded = true;
@@ -186,6 +96,10 @@ angular.module('biradix.global').directive('googleMap', function () {
                     }
 
                     $scope.oMap.fitBounds(bounds);
+
+                    window.setTimeout(function() {
+                        $scope.oMap.fitBounds(bounds);
+                    }, 1000);
                 };
 
                 $scope.resize = function() {
