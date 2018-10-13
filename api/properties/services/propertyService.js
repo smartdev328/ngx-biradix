@@ -403,9 +403,7 @@ module.exports = {
         let query = PropertySchema.find({});
         query.select(`name ${field}`);
         query.where(field).nin(list);
-        query.and([
-            {$or: [{"custom.owner": {$exists: false}}, {"orgid": {$exists: true}}]},
-        ]);
+        query.where("custom.owner").exists(false);
         query.where("active").equals(true);
 
         const result = await query.exec();
