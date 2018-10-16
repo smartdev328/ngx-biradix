@@ -53,9 +53,9 @@ module.exports = {
             select += " weeklytraffic"
         }
 
-        if (show.ner || show.rent || show.rentsqft || show.nersqft || show.concessions || show.runrate || show.runratesqft) {
+        //if (show.ner || show.rent || show.rentsqft || show.nersqft || show.concessions || show.runrate || show.runratesqft) {
             select += " exclusions floorplans.id floorplans.rent floorplans.concessions floorplans.concessionsMonthly floorplans.concessionsOneTime floorplans.bedrooms floorplans.bathrooms floorplans.sqft";
-        }
+        //}
 
         query = query.select(select)
 
@@ -340,7 +340,6 @@ module.exports = {
                             points[prop].sqft = DataPointsHelperService.normailizePoints(points[prop].sqft, offset, dr, true, show.dontExtrapolate);
                         }
                     }
-
 
                     if (show.occupancy) {
                         points[prop].occupancy = DataPointsHelperService.objectToArray(points[prop].occupancy);

@@ -426,7 +426,6 @@ module.exports = {
                     );
                 }
             }, function(err,all) {
-
                 // pick series with the most number of mondays for maximum number of joined datapoints
                 var max = all.date1.mondays.length;
 

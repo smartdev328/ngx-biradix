@@ -30,7 +30,7 @@ There are currently no floor plans set up for this property.
         <th></th>
     </tr>
 
-    <tr ng-repeat="row in property.floorplans | orderBy: ['bedrooms','bathrooms','sqft','units','description']">
+    <tr ng-repeat="row in property.floorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']">
         <td>
             {{row.bedrooms}}x{{row.bathrooms}}
         </td>

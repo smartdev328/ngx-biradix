@@ -1060,11 +1060,11 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.getOrder = function(sort) {
                 switch (sort) {
                     case "type":
-                        return ["bedrooms", "bathrooms"]
+                        return ["bedrooms", "bathrooms", "sqft", "description", "units"];
                     case "-type":
-                        return ["-bedrooms", "bathrooms"]
+                        return ["-bedrooms", "bathrooms", "sqft", "description", "units"];
                     default:
-                        return sort;
+                        return [sort, "bedrooms", "bathrooms", "sqft", "description", "units"];
                 }
             };
 
