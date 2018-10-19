@@ -131,7 +131,7 @@ module.exports = {
     getSystemUserAsync: function() {
         return new Promise((resolve, reject) => {
             getSysemUser(function(obj) {
-                resolve(obj.user);
+                 resolve(obj.user);
             });
         });
     },

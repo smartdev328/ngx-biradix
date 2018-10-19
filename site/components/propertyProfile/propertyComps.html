@@ -260,7 +260,7 @@
                 ></i>
             </td>
             <td  style="text-align:center; vertical-align: middle">
-                <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? 'apartment-3' : 'number_' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;width:22px;text-align: center">
+                <img ng-src="/components/googleMap/markers/{{comp.number == 0 ? '0' : '' + comp.number}}.png" ng-click="toggleOpen(comp)" style="cursor:pointer;width:22px;text-align: center">
             </td>
             <td style="text-align: center;vertical-align: middle; width:25px"  class="hidden-print hidden-report">
                 <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="toggleOpen(comp)"></i>

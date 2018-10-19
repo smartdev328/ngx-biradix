@@ -92,7 +92,7 @@
 
         </tr>
 
-        <tr ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : i}">
+        <tr ng-repeat="fp in comp.survey.floorplans | orderBy : [orderBy, 'bedrooms','bathrooms', 'sqft','description','units'] | filter : {bedrooms : i}">
             <td style="text-align:center;">
                 {{fp.bedrooms}}x{{fp.bathrooms}}
             </td>

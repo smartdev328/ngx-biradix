@@ -260,24 +260,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                     categries: [0, 1,2, 3, 4, 5, 6, 7, 8, 9 , 10],
                                     labels: {
                                         formatter: function () {
-                                            var series = this.chart.series;
-                                            var x = this.value;
-                                            var y;
-                                            var week;
-
-                                            series.forEach(function(p) {
-                                                if (p.visible) {
-                                                    y = _.find(p.data, function (z) {
-                                                        return z.x == x && typeof z.week != 'undefined' && z.week > 0
-                                                    });
-
-                                                    if (y) {
-                                                        week = y.week;
-
-                                                    }
-                                                }
-                                            });
-                                            return 'Week: ' + week;
+                                            return "Week: " + (this.value + 1);
                                         }
                                     }
                                 },

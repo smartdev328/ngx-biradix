@@ -7,116 +7,21 @@ angular.module('biradix.global').directive('googleMap', function () {
             controller: function ($scope, $element, $rootScope) {
 
                 $scope.phantom = phantom;
-
-                $scope.distance = function(p1, p2)
-                {
-                    var e = (3.1415926538 * p1[0] / 180);
-                    var f = (3.1415926538 * p1[1] / 180);
-                    var g = (3.1415926538 * p2[0] / 180);
-                    var h = (3.1415926538 * p2[1] / 180);
-                    var i = (Math.cos(e) * Math.cos(g) * Math.cos(f) * Math.cos(h) + Math.cos(e) * Math.sin(f) * Math.cos(g) * Math.sin(h) + Math.sin(e) * Math.sin(g));
-                    var j = (Math.acos(i));
-                    var k = (6371 * j);
-
-                    return k;
-                }
-
-                $scope.getZoom = function(points) {
-
-                    var MaxMiles = 0;
-
-                    for (var i = 1; i < points.length; i++ ) {
-                        var dist = $scope.distance(points[0].loc, points[i].loc);
-
-                        if (dist > MaxMiles) {
-                            MaxMiles = dist;
-                        }
-                    }
-
-                    if (MaxMiles > 1600)
-                    {
-                        return 2;
-                    }
-                    else
-                    if (MaxMiles > 800)
-                    {
-                        return 3;
-                    }
-                    else
-                    if (MaxMiles > 400)
-                    {
-                        return 4;
-                    }
-                    else
-                    if (MaxMiles > 200)
-                    {
-                        return 5;
-                    }
-                    else
-                    if (MaxMiles > 100)
-                    {
-                        return 6;
-                    }
-                    else
-                    if (MaxMiles > 50)
-                    {
-                        return 7;
-                    }
-                    else
-                    if (MaxMiles > 25)
-                    {
-                        return 8;
-                    }
-                    else
-                    if (MaxMiles > 12)
-                    {
-                        return 9;
-                    }
-                    else
-                    if (MaxMiles > 6)
-                    {
-                        return 10;
-                    }
-                    else
-                    if (MaxMiles > 4)
-                    {
-                        return 11;
-                    }
-                    else
-                    {
-                        return 12;
-                    }
-
-                }
-
                 $scope.$watch('options', function(){
-
+                    $scope.done = false;
                     if ($scope.options) {
-
                         delete $scope.error;
 
-                        if (!phantom) {
+                        // if (!phantom) {
                             $scope.error = typeof google === 'undefined';
                             if ($scope.error) {
                                 global_error({stack: 'Google maps not available, showing static map'}, {location: location.href});
                             }
-                        }
+                        // }
 
                         $scope.options.points = $scope.options.points || [];
 
-                        $scope.staticUrl = "/i?center=" + $scope.options.loc[0]
-                            + "," + $scope.options.loc[1]
-                            + "&zoom=" + $scope.getZoom($scope.options.points)
-                            + "&size=" + $scope.options.printWidth + "x" + $scope.options.height
-                            + "&key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU"
-
-                        $scope.options.points.forEach(function(p) {
-                            $scope.staticUrl += "&markers=icon:https://platform.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
-                        })
-
-                        $rootScope.$broadcast('timeseriesLoaded');
-
-                        if (!phantom && !$scope.error) {
+                        if (!$scope.error) {
                             if ($scope.aMarkers) {
 
                                 for (var i = 0; i < $scope.aMarkers.length; i++) {
@@ -126,9 +31,10 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $scope.aMarkers = [];
 
                             var mapOptions = {
-                                zoom: $scope.getZoom($scope.options.points),
+                                zoom: 9,
                                 center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                disableDefaultUI: phantom,
                             }
                             var elMap = $($element).find('div')[0]
                             $scope.oMap = new google.maps.Map(elMap, mapOptions);
@@ -140,13 +46,22 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $(elMap).height($scope.options.height + "px");
 
                             window.setTimeout(function () {
-                                $scope.resize(1)
+                                $scope.resize(1);
                             }, 100);
+
+                            $scope.oMap.addListener('zoom_changed', function() {
+                                if (!$scope.done) {
+                                    $rootScope.$broadcast('timeseriesLoaded');
+                                    $scope.done = true;
+                                }
+                            });
+                        } else {
+                            $rootScope.$broadcast('timeseriesLoaded');
+                            $scope.done = true;
                         }
 
                         $scope.gLoaded = true;
                     }
-
                 });
 
                 $scope.closeAllInfoBoxes = function() {
@@ -158,6 +73,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                 }
 
                 $scope.loadMarkers = function() {
+                    var bounds = new google.maps.LatLngBounds();
                     for (var i = 0; i < $scope.options.points.length; i++) {
                         var oPoint = $scope.options.points[i];
                         $scope.aMarkers[i] = new google.maps.Marker({
@@ -167,17 +83,24 @@ angular.module('biradix.global').directive('googleMap', function () {
                             clickable: true,
                             title: oPoint.Name,
                             info: new google.maps.InfoWindow({
-                                content: oPoint.content
-                            })
-
+                                content: oPoint.content,
+                            }),
                         });
 
                         $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
                             $scope.closeAllInfoBoxes();
                             this.info.open($scope.oMap, this);
                         });
+
+                        bounds.extend($scope.aMarkers[i].position);
                     }
-                }
+
+                    $scope.oMap.fitBounds(bounds);
+
+                    window.setTimeout(function() {
+                        $scope.oMap.fitBounds(bounds);
+                    }, 1000);
+                };
 
                 $scope.resize = function() {
                     var currCenter = $scope.oMap.getCenter();
@@ -187,6 +110,6 @@ angular.module('biradix.global').directive('googleMap', function () {
 
 
             },
-            template: '<div class="hidden-print"></div><img class="visible-print-block" width="300" height="300" ng-src="{{::staticUrl}}"><div ng-if="error" style="margin: 0px auto; width:300px;"><img width="300" height="300" ng-src="{{::staticUrl}}"></div>'
+            template: '<div></div>'
         };
     })

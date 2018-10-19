@@ -49,7 +49,7 @@ module.exports = {
 
             if (excfps.length > 0) {
                 var removed = _.remove(fps, function (x) {
-                    return excfps.indexOf(x.id.toString()) > -1
+                    return !x.id || excfps.indexOf(x.id.toString()) > -1
                 });
                 if (removed && removed.length > 0) {
                     excluded = true;
