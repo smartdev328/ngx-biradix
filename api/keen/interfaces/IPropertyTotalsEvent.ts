@@ -2,6 +2,10 @@ import {IEvent} from "./IEvents";
 
 export interface IPropertyTotalsEvent extends IEvent {
     payload: {
+        organization: {
+            id: string;
+            name: string;
+        }
         high_assigned_properties: number;
         high_assigned_units: number;
         high_properties: number;
