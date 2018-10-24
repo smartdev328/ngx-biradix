@@ -23,7 +23,6 @@ angular.module('biradix.global').directive('googleMap', function () {
 
                         if (!$scope.error) {
                             if ($scope.aMarkers) {
-
                                 for (var i = 0; i < $scope.aMarkers.length; i++) {
                                     google.maps.event.removeListener($scope.aMarkers[i].handle);
                                 }
@@ -31,12 +30,14 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $scope.aMarkers = [];
 
                             var mapOptions = {
-                                zoom: 9,
+                                zoom: 14,
                                 center: new google.maps.LatLng($scope.options.loc[0], $scope.options.loc[1]),
                                 mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                disableDefaultUI: phantom,
-                            }
-                            var elMap = $($element).find('div')[0]
+                                disableDefaultUI: true,
+                                fullscreenControl: !phantom
+                            };
+
+                            var elMap = $($element).find('div')[0];
                             $scope.oMap = new google.maps.Map(elMap, mapOptions);
 
                             $scope.loadMarkers();
@@ -45,13 +46,16 @@ angular.module('biradix.global').directive('googleMap', function () {
                             $(elMap).width($scope.options.width);
                             $(elMap).height($scope.options.height + "px");
 
-                            window.setTimeout(function () {
-                                $scope.resize(1);
-                            }, 100);
+                            // window.setTimeout(function () {
+                            //     $scope.resize(1);
+                            // }, 100);
 
                             $scope.oMap.addListener('zoom_changed', function() {
                                 if (!$scope.done) {
-                                    $rootScope.$broadcast('timeseriesLoaded');
+                                    window.setTimeout(function() {
+                                        $rootScope.$broadcast('timeseriesLoaded');
+                                    }, 500);
+
                                     $scope.done = true;
                                 }
                             });
@@ -95,21 +99,16 @@ angular.module('biradix.global').directive('googleMap', function () {
                         bounds.extend($scope.aMarkers[i].position);
                     }
 
-                    $scope.oMap.fitBounds(bounds);
-
-                    window.setTimeout(function() {
+                    if ($scope.aMarkers.length > 1) {
                         $scope.oMap.fitBounds(bounds);
-                    }, 1000);
+
+
+                        window.setTimeout(function () {
+                            $scope.oMap.fitBounds(bounds);
+                        }, 1000);
+                    }
                 };
-
-                $scope.resize = function() {
-                    var currCenter = $scope.oMap.getCenter();
-                    google.maps.event.trigger($scope.oMap, 'resize');
-                    $scope.oMap.setCenter(currCenter);
-                }
-
-
             },
-            template: '<div></div>'
+            template: "<div></div>"
         };
     })
