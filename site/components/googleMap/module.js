@@ -54,7 +54,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                                 if (!$scope.done) {
                                     window.setTimeout(function() {
                                         $rootScope.$broadcast('timeseriesLoaded');
-                                    }, 500);
+                                    }, 600);
 
                                     $scope.done = true;
                                 }
@@ -63,14 +63,14 @@ angular.module('biradix.global').directive('googleMap', function () {
                             if ($scope.aMarkers.length === 1) {
                                 window.setTimeout(function() {
                                     $rootScope.$broadcast('timeseriesLoaded');
-                                }, 500);
+                                }, 600);
 
                                 $scope.done = true;
                             }
                         } else {
                             window.setTimeout(function() {
                                 $rootScope.$broadcast('timeseriesLoaded');
-                            }, 500);
+                            }, 600);
 
                             $scope.done = true;
                         }
@@ -100,6 +100,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             info: new google.maps.InfoWindow({
                                 content: oPoint.content,
                             }),
+                            zIndex: 100 - i,
                         });
 
                         $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
