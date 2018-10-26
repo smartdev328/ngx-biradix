@@ -88,19 +88,26 @@ module.exports = {
 
                         profiles = _.sortByAll(profiles, ['orderNumber', 'name']);
 
-                        var json = {
+                        let strRange = "";
+                        if (moment(query.selectedEndDate).format("MM/DD/YYYY") !== moment().format("MM/DD/YYYY")) {
+                            strRange = moment(query.selectedStartDate).format("MM/DD/YYYY") + " - " + moment(query.selectedEndDate).format("MM/DD/YYYY");
+                        }
+
+                        let json = {
                             fileName: fileName,
                             dashboard: dashboard,
                             profiles: profiles,
                             utcOffset: query.timezone,
                             settings: {
                                 showLeases: req.user.settings.showLeases
-                            }
+                            },
+                            strDate: moment().utcOffset(query.timezone).format("MM/DD/YYYY"),
+                            strRange,
                         };
 
                         var timer = new Date().getTime();
                         var r = request.post(settings.EXCEL_URL, {
-                            json: json
+                            json: json,
                         }).pipe(res)
 
                         r.on('finish', function () {
