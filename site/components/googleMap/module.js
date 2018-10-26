@@ -1,21 +1,20 @@
-angular.module('biradix.global').directive('googleMap', function () {
+angular.module("biradix.global").directive("googleMap", function () {
         return {
-            restrict: 'E',
+            restrict: "E",
             scope: {
-                options: '='
+                options: "="
             },
             controller: function ($scope, $element, $rootScope) {
 
                 $scope.phantom = phantom;
-                $scope.$watch('options', function(){
-                    $scope.done = false;
+                $scope.$watch("options", function() {
                     if ($scope.options) {
                         delete $scope.error;
 
                         // if (!phantom) {
-                            $scope.error = typeof google === 'undefined';
+                            $scope.error = typeof google === "undefined";
                             if ($scope.error) {
-                                global_error({stack: 'Google maps not available, showing static map'}, {location: location.href});
+                                global_error({stack: "Google maps not available, showing static map"}, {location: location.href});
                             }
                         // }
 
@@ -37,42 +36,20 @@ angular.module('biradix.global').directive('googleMap', function () {
                                 fullscreenControl: !phantom
                             };
 
-                            var elMap = $($element).find('div')[0];
+                            var elMap = $($element).find("div")[0];
                             $scope.oMap = new google.maps.Map(elMap, mapOptions);
 
                             $scope.loadMarkers();
 
-
                             $(elMap).width($scope.options.width);
                             $(elMap).height($scope.options.height + "px");
 
-                            // window.setTimeout(function () {
-                            //     $scope.resize(1);
-                            // }, 100);
-
-                            $scope.oMap.addListener('zoom_changed', function() {
-                                if (!$scope.done) {
-                                    window.setTimeout(function() {
-                                        $rootScope.$broadcast('timeseriesLoaded');
-                                    }, 600);
-
-                                    $scope.done = true;
-                                }
+                            google.maps.event.addListenerOnce($scope.oMap, "idle", function() {
+                                // do something only the first time the map is loaded
+                                $rootScope.$broadcast("timeseriesLoaded");
                             });
-
-                            if ($scope.aMarkers.length === 1) {
-                                window.setTimeout(function() {
-                                    $rootScope.$broadcast('timeseriesLoaded');
-                                }, 600);
-
-                                $scope.done = true;
-                            }
                         } else {
-                            window.setTimeout(function() {
-                                $rootScope.$broadcast('timeseriesLoaded');
-                            }, 600);
-
-                            $scope.done = true;
+                            $rootScope.$broadcast("timeseriesLoaded");
                         }
 
                         $scope.gLoaded = true;
@@ -103,7 +80,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             zIndex: 100 - i,
                         });
 
-                        $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
+                        $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], "click", function () {
                             $scope.closeAllInfoBoxes();
                             this.info.open($scope.oMap, this);
                         });
