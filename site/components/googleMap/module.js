@@ -1,27 +1,25 @@
-angular.module('biradix.global').directive('googleMap', function () {
+angular.module("biradix.global").directive("googleMap", function () {
         return {
-            restrict: 'E',
+            restrict: "E",
             scope: {
-                options: '='
+                options: "="
             },
             controller: function ($scope, $element, $rootScope) {
 
                 $scope.phantom = phantom;
-                $scope.$watch('options', function(){
-                    $scope.done = false;
+                $scope.$watch("options", function() {
                     if ($scope.options) {
+                        $scope.options.points = $scope.options.points || [];
                         delete $scope.error;
 
-                        // if (!phantom) {
-                            $scope.error = typeof google === 'undefined';
+                        if (!phantom) {
+                            $scope.error = typeof google === "undefined";
                             if ($scope.error) {
-                                global_error({stack: 'Google maps not available, showing static map'}, {location: location.href});
+                                global_error({stack: "Google maps not available, showing static map"}, {location: location.href});
                             }
-                        // }
+                        }
 
-                        $scope.options.points = $scope.options.points || [];
-
-                        if (!$scope.error) {
+                        if (!$scope.error && !phantom) {
                             if ($scope.aMarkers) {
                                 for (var i = 0; i < $scope.aMarkers.length; i++) {
                                     google.maps.event.removeListener($scope.aMarkers[i].handle);
@@ -37,45 +35,30 @@ angular.module('biradix.global').directive('googleMap', function () {
                                 fullscreenControl: !phantom
                             };
 
-                            var elMap = $($element).find('div')[0];
+                            var elMap = $($element).find("div")[0];
                             $scope.oMap = new google.maps.Map(elMap, mapOptions);
 
                             $scope.loadMarkers();
 
-
                             $(elMap).width($scope.options.width);
                             $(elMap).height($scope.options.height + "px");
-
-                            // window.setTimeout(function () {
-                            //     $scope.resize(1);
-                            // }, 100);
-
-                            $scope.oMap.addListener('zoom_changed', function() {
-                                if (!$scope.done) {
-                                    window.setTimeout(function() {
-                                        $rootScope.$broadcast('timeseriesLoaded');
-                                    }, 600);
-
-                                    $scope.done = true;
-                                }
-                            });
-
-                            if ($scope.aMarkers.length === 1) {
-                                window.setTimeout(function() {
-                                    $rootScope.$broadcast('timeseriesLoaded');
-                                }, 600);
-
-                                $scope.done = true;
-                            }
-                        } else {
-                            window.setTimeout(function() {
-                                $rootScope.$broadcast('timeseriesLoaded');
-                            }, 600);
-
-                            $scope.done = true;
                         }
 
-                        $scope.gLoaded = true;
+                        $scope.staticUrl = "/i"
+                            + "?size=" + $scope.options.printWidth + "x" + $scope.options.height
+                            + "&key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU"
+
+                        $scope.options.points.forEach(function(p, i) {
+                            if (i === 0) {
+                                $scope.staticUrl += "&markers=icon:https://qa.biradix.com/components/googleMap/markers/" + p.marker + ".png%7C" + p.loc[0] + "," + p.loc[1];
+                            } else {
+                                $scope.staticUrl += "&markers=color:0x1E90FF%7Clabel:" + i + "%7C" + p.loc[0] + "," + p.loc[1];
+                            }
+                        })
+
+                        if (phantom) {
+                            $rootScope.$broadcast("timeseriesLoaded");
+                        }
                     }
                 });
 
@@ -103,7 +86,7 @@ angular.module('biradix.global').directive('googleMap', function () {
                             zIndex: 100 - i,
                         });
 
-                        $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], 'click', function () {
+                        $scope.aMarkers[i].handle = google.maps.event.addListener($scope.aMarkers[i], "click", function () {
                             $scope.closeAllInfoBoxes();
                             this.info.open($scope.oMap, this);
                         });
@@ -116,6 +99,6 @@ angular.module('biradix.global').directive('googleMap', function () {
                     }
                 };
             },
-            template: "<div></div>"
+            template: phantom ? "<img ng-src='{{staticUrl}}'>" : "<div></div>"
         };
     })

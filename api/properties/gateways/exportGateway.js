@@ -89,8 +89,8 @@ module.exports = {
                         profiles = _.sortByAll(profiles, ['orderNumber', 'name']);
 
                         let strRange = "";
-                        if (moment(query.selectedEndDate).format("MM/DD/YYYY") !== moment().format("MM/DD/YYYY")) {
-                            strRange = moment(query.selectedStartDate).format("MM/DD/YYYY") + " - " + moment(query.selectedEndDate).format("MM/DD/YYYY");
+                        if (moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY") !== moment().utcOffset(query.timezone).format("MM/DD/YYYY")) {
+                            strRange = moment(query.selectedStartDate).utcOffset(query.timezone).format("MM/DD/YYYY") + " - " + moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY");
                         }
 
                         let json = {
