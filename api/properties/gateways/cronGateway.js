@@ -50,7 +50,7 @@ Routes.get("/geocode", (req, res) => {
                 let address = property.address + " " + property.city + " " + property.state + " " + property.zip;
                 GeocodeService.geocode(address, false, (err, res, fromCache) => {
                     if (!res || !res[0] || !res[0].latitude) {
-                        console.error("GEOCODE EVENT ERROR", res);
+                        console.error("GEOCODE EVENT ERROR", address, res);
                         callbacks(err);
                     } else {
                         const loc = [res[0].latitude, res[0].longitude];
@@ -58,7 +58,7 @@ Routes.get("/geocode", (req, res) => {
                         if (property.loc[0] === loc[0] && property.loc[1] === loc[1]) {
                             propertyService.updateGeo(systemUser, property._id, loc, (err, newprop) => {
                                 if (err) {
-                                    console.error("GEOCODE EVENT ERROR", err);
+                                    console.error("GEOCODE EVENT ERROR", address, err);
                                     callbacks(err);
                                 } else {
                                    callbacks();
