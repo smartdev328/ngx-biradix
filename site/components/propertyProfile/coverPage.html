@@ -18,6 +18,7 @@
                         <h4 style="font-size:28px !important;color:black !important;margin-top:15px" ng-repeat="report in options.reports"><i>{{report.name}} <i ng-if="options.isCustom" style="font-size:20px !important;color:#32CD32 !important;">(custom property)</i></i>
                             <li style="font-size:24px !important;color:black !important;margin-top:15px;list-style-type: none;margin-left:30px" ng-repeat="item in report.items  | limitTo: 14">- {{item}}</li>
                             <li style="font-size:24px !important;color:black !important;margin-top:15px;list-style-type: none;margin-left:30px" ng-if="report.items.length > 14">- + {{report.items.length - 14}} more</li>
+                            <li style="font-size:20px !important;color:black !important;margin-top:15px;list-style-type: none;font-style:italic" ng-if="options.strRange">{{options.strRange}}</li>
                         </h4>
                     </td>
                 </tr>

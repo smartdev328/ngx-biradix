@@ -42,6 +42,7 @@
                    popover-placement="right"
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
+                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -61,7 +62,10 @@
         </div>
 
         <div class="panel panel-info">
-            <div class="panel-heading">Competitors</div>
+            <div class="panel-heading">
+                Competitors
+                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals" skipcookie="true"></property-comps>
@@ -107,6 +111,7 @@
                    popover-placement="right"
                    uib-popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
                 ></i>
+                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -132,7 +137,9 @@
 <div ng-if="stretchComps" ng-class="{'row': true, 'break2': comps.length > 13, 'stretched': true}">
     <div class="col-xs-12">
         <div class="panel panel-info">
-            <div class="panel-heading">Competitors</div>
+            <div class="panel-heading">Competitors
+                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals"></property-comps>
@@ -212,6 +219,7 @@
                    popover-placement="right"
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
+                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">{{profile.property.strRangeStart}} - {{profile.property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -241,7 +249,9 @@
         </div>
 
         <div class="panel panel-info no-margin-print" astyle="margin-bottom: 0px !important;">
-            <div class="panel-heading">Floor Plans</div>
+            <div class="panel-heading">Floor Plans
+                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">As of {{profile.property.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-floorplans comp="profile.comp" order-by="profileSettings.orderByFp" show="profileSettings.show" skipcookie="true"></property-floorplans>

@@ -419,22 +419,22 @@ define([
                throw new Error("Reports crash testing on purpose");
             }
 
-            if ($scope.reportType == "single") {
+            if ($scope.reportType === "single") {
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
                     isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
-                    reports: [{name: $scope.selected.Property.name, items : $scope.reportNames2}],
+                    reports: [{name: $scope.selected.Property.name, items: $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
-                }
+                };
 
                 $scope.singleReport();
             } else {
-                var properties =  _.pluck($scope.propertyItems.items, "name");
+                var properties = _.pluck($scope.propertyItems.items, "name");
                 var reports = [];
 
                 $scope.reportNames2.forEach(function(r) {
-                    reports.push({name:r, items : properties})
-                })
+                    reports.push({name: r, items: properties});
+                });
 
                 $scope.coverPage = {
                     date: moment().format("MMM Do, YYYY"),
@@ -660,6 +660,10 @@ define([
                 $scope.reports = response.data;
 
                 $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
+
+                if ($scope.reports.property_report && $scope.reports.property_report.dashboard && $scope.reports.property_report.dashboard.property.strRangeEnd) {
+                    $scope.coverPage.strRange = $scope.reports.property_report.dashboard.property.strRangeStart + " - " + $scope.reports.property_report.dashboard.property.strRangeEnd;
+                }
 
                 if (!phantom) {
                     $scope.audit('report', 'Website');

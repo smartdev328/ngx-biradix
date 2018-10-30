@@ -78,12 +78,17 @@ module.exports = {
                 async.parallel({
                     comps: function (callbackp) {
                         // var timer1 = new Date().getTime();
-                        PropertyService.getLastSurveyStats({
-                            hide: user.settings.hideUnlinked,
-                            injectFloorplans: true,
-                        }, all.subject, comps, function() {
-                            // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
-                            callbackp(null, comps);
+                        // If we pass in a surveyDate, dont use the last survey date in comps.survey.id
+                        // Instead get the last survey older then the date given
+                        updateCompSurveyIdsByDate(comps, options.surveyDateStart, options.surveyDateEnd, function() {
+                            PropertyService.getLastSurveyStats({
+                                hide: user.settings.hideUnlinked,
+                                injectFloorplans: true,
+                                date: options.surveyDateEnd ? options.surveyDateEnd : new Date(),
+                            }, all.subject, comps, function () {
+                                // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
+                                callbackp(null, comps);
+                            });
                         });
                     },
                     points: function(callbackp) {
@@ -133,6 +138,10 @@ module.exports = {
                         canSurvey = false;
                     }
 
+                    if (options.surveyDateStart && options.surveyDateEnd) {
+                        all.comp.p.strRangeStart = moment(options.surveyDateStart).utcOffset(options.offset).format("MM/DD/YYYY");
+                        all.comp.p.strRangeEnd = moment(options.surveyDateEnd).utcOffset(options.offset).format("MM/DD/YYYY");
+                    }
                     // console.log("Profile done: " + (new Date().getTime() - timer) / 1000 + "s");
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey: canSurvey})
 
@@ -210,6 +219,7 @@ module.exports = {
                                         hide: user.settings.hideUnlinked,
                                         injectFloorplans: options.injectFloorplans,
                                         nerPlaces: options.nerPlaces,
+                                        date: options.surveyDateEnd ? options.surveyDateEnd : new Date(),
                                     }, property[0], comps, function() {
                                         callbackp(null, comps);
                                     });
@@ -308,6 +318,7 @@ module.exports = {
                                     }
 
                                     // console.log(c.canSurvey,all.owned,c._id);
+
                                 })
 
                                 //console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
@@ -332,6 +343,11 @@ module.exports = {
                                 all.comps.forEach(function(comp) {
                                     comp.survey.floorplans = _.sortByAll(comp.survey.floorplans, ['bedrooms', 'bathrooms', 'sqft', 'description'])
                                 });
+
+                                if (options.surveyDateStart && options.surveyDateEnd) {
+                                    property[0].strRangeStart = moment(options.surveyDateStart).utcOffset(options.offset).format("MM/DD/YYYY");
+                                    property[0].strRangeEnd = moment(options.surveyDateEnd).utcOffset(options.offset).format("MM/DD/YYYY");
+                                }
 
                                 callback (null,{property: property[0], comps: all.comps, points: all.points});
 

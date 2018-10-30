@@ -156,7 +156,12 @@ module.exports = {
 
             options.compids = comps;
 
-            var profiles = [];
+            if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
+                options.surveyDateStart = options.daterange.start;
+                options.surveyDateEnd = options.daterange.end;
+            }
+
+            let profiles = [];
 
             bus.query(
                 settings.DASHBOARD_QUEUE
@@ -175,7 +180,7 @@ module.exports = {
                                 options: options,
                                 checkManaged: false,
                                 subjectId: data.dashboard.property._id,
-                                compId: comp._id
+                                compId: comp._id,
                             },
                             function (data) {
                                 profiles.push(data.profile);

@@ -45,12 +45,19 @@ module.exports = {
                 req.body.summary = false;
                 req.body.compids = query.compids;
 
-                req.body.daterange =
-                    {
+                req.body.daterange = {
                         daterange: query.selectedRange,
                         start: query.selectedStartDate,
-                        end: query.selectedEndDate
-                    }
+                        end: query.selectedEndDate,
+                    };
+                req.body.offset = query.timezone;
+
+                let strRange = "";
+                if (moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY") !== moment().utcOffset(query.timezone).format("MM/DD/YYYY")) {
+                    strRange = moment(query.selectedStartDate).utcOffset(query.timezone).format("MM/DD/YYYY") + " - " + moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY");
+                    req.body.surveyDateStart = req.body.daterange.start;
+                    req.body.surveyDateEnd = req.body.daterange.end;
+                }
 
                 queueService.getDashboard(req, function (err, dashboard) {
                     async.eachLimit(dashboard.comps, 1, function (comp, callbackp) {
@@ -87,11 +94,6 @@ module.exports = {
                         });
 
                         profiles = _.sortByAll(profiles, ['orderNumber', 'name']);
-
-                        let strRange = "";
-                        if (moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY") !== moment().utcOffset(query.timezone).format("MM/DD/YYYY")) {
-                            strRange = moment(query.selectedStartDate).utcOffset(query.timezone).format("MM/DD/YYYY") + " - " + moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY");
-                        }
 
                         let json = {
                             fileName: fileName,
