@@ -533,6 +533,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 }
             }
 
+            if (resp.comp.website) {
+                if (resp.comp.website.length > 40) {
+                    resp.comp.websiteLabel = resp.comp.website.replace("http://", '').substring(0, 40) + "...";
+                } else {
+                    resp.comp.websiteLabel = resp.comp.website.replace("http://", '')
+                }
+            }
+
             resp.property.hasFees = false;
             if (resp.property.fees) {
                 for (var fee in resp.property.fees) {
@@ -722,6 +730,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                         marker: "" + i,
                         content: markerContent(c)
                     })
+                }
+
+                if (c.website) {
+                    if (c.website.length > 40) {
+                       c.websiteLabel = c.website.replace("http://", '').substring(0, 40) + "...";
+                    } else {
+                        c.websiteLabel = c.website.replace("http://", '');
+                    }
                 }
             })
 

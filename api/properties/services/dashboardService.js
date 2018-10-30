@@ -194,7 +194,7 @@ module.exports = {
                     limit: 30,
                     permission: "PropertyView",
                     ids: compids,
-                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt owner management media custom phone walkscore",
+                    select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey floorplans orgid needsSurvey media custom phone walkscore",
                     skipAmenities: true,
                 }, function(err, comps) {
                     // pre-comupte a lookup for datest by owner for locks

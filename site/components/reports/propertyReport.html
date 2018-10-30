@@ -16,11 +16,11 @@
                      ng-if="property.custom.owner"
                 ></div>
                 {{property.name}}
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
-                <property-profile property="property" show="showProfile"></property-profile>
-
+                <property-profile property="comps[0]" show="showProfile"></property-profile>
             </div>
         </div>
 
@@ -42,7 +42,7 @@
                    popover-placement="right"
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
-                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -64,7 +64,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 Competitors
-                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -219,7 +219,7 @@
                    popover-placement="right"
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
-                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">{{profile.property.strRangeStart}} - {{profile.property.strRangeEnd}}</div>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">{{profile.property.strRangeStart}} - {{profile.property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -250,7 +250,7 @@
 
         <div class="panel panel-info no-margin-print" astyle="margin-bottom: 0px !important;">
             <div class="panel-heading">Floor Plans
-                <div class="pull-right" style="color:#000;font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">As of {{profile.property.strRangeEnd}}</div>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">As of {{profile.property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
