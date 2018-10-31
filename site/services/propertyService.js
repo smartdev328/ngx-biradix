@@ -513,6 +513,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 resp.comp = profile.comps[0];
             }
 
+            // console.log(resp);
+
             resp.property.hasName = resp.property.contactName && resp.property.contactName.length > 0;
             resp.property.hasEmail = resp.property.contactEmail && resp.property.contactEmail.length > 0;
             resp.property.hasWebsite = resp.property.website && resp.property.website.length > 0;
