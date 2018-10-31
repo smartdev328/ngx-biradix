@@ -156,6 +156,7 @@ module.exports = {
 
             options.compids = comps;
 
+            console.log(options.offset, moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
             if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
                 options.surveyDateStart = options.daterange.start;
                 options.surveyDateEnd = options.daterange.end;
