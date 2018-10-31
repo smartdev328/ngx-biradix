@@ -57,6 +57,7 @@ module.exports = {
                     strRange = moment(query.selectedStartDate).utcOffset(query.timezone).format("MM/DD/YYYY") + " - " + moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY");
                     req.body.surveyDateStart = req.body.daterange.start;
                     req.body.surveyDateEnd = req.body.daterange.end;
+                    req.body.injectFloorplans = false;
                 }
 
                 queueService.getDashboard(req, function (err, dashboard) {

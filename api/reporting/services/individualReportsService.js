@@ -159,6 +159,7 @@ module.exports = {
             if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
                 options.surveyDateStart = options.daterange.start;
                 options.surveyDateEnd = options.daterange.end;
+                options.injectFloorplans = false;
             }
 
             let profiles = [];

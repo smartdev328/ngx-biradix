@@ -47,7 +47,9 @@ define([
                 $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Property Status</b> - <i>Report is intended to give a focused summary on the current state of your portfolio. It can be modified to include data points such as Traffic & Leases, NER, and NER/SQFT as well as NER changes vs. {Last Week, Last Month, Last Year, or Comp Average}.</i>"});
                 $scope.reportItems.push({id: "custom_portfolio", name: "Customizable Property Data", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Customizable Property Data</b> - <i>Report offers customizable solution to ad hoc building report tables with any property data available in BI:Radix. Allows modifying column order, setting sort preference, and exporting to Excel.</i>"});
 
+                $scope.timezone = moment().utcOffset();
                 if ($cookies.get("settings")) {
+                    $scope.timezone = $cookies.get("timezone");
                     $scope.liveSettings = JSON.parse($cookies.get("settings"));
                     $scope.fixDates();
                 } else {
@@ -421,7 +423,7 @@ define([
 
             if ($scope.reportType === "single") {
                 $scope.coverPage = {
-                    date: moment().format("MMM Do, YYYY"),
+                    date: moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
                     isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
                     reports: [{name: $scope.selected.Property.name, items: $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
@@ -437,7 +439,7 @@ define([
                 });
 
                 $scope.coverPage = {
-                    date: moment().format("MMM Do, YYYY"),
+                    date: moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
                     reports: reports,
                     org: $rootScope.me.orgs[0]
                 }
@@ -607,7 +609,7 @@ define([
                         graphs: $scope.cleanSettings.profileSettings.graphs
                         , scale: $scope.cleanSettings.dashboardSettings.nerScale
                     },
-                    offset: moment().utcOffset(),
+                    offset: $scope.timezone,
                     transaction_id: $scope.transaction_id,
                 }
             }
@@ -619,7 +621,7 @@ define([
                         start: $scope.cleanSettings.concession.daterange.selectedStartDate,
                         end: $scope.cleanSettings.concession.daterange.selectedEndDate
                     },
-                    offset: moment().utcOffset()
+                    offset: $scope.timezone
                 }
             }
 
@@ -636,7 +638,7 @@ define([
                         end: $scope.cleanSettings.trends.daterange2.selectedEndDate,
                         enabled: $scope.cleanSettings.trends.daterange2.enabled
                     },
-                    offset: moment().utcOffset(),
+                    offset: $scope.timezone,
                     show: $scope.cleanSettings.trends.show,
                     graphs: $scope.cleanSettings.trends.graphs
                 }
