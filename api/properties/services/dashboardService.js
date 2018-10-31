@@ -345,6 +345,7 @@ module.exports = {
                                 });
 
                                 if (options.surveyDateStart && options.surveyDateEnd) {
+                                    console.log(options.surveyDateEnd, moment(options.surveyDateEnd).format(),options.offset,moment(options.surveyDateEnd).utcOffset(options.offset).format("MM/DD/YYYY"));
                                     property[0].strRangeStart = moment(options.surveyDateStart).utcOffset(options.offset).format("MM/DD/YYYY");
                                     property[0].strRangeEnd = moment(options.surveyDateEnd).utcOffset(options.offset).format("MM/DD/YYYY");
                                 }
