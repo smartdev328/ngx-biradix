@@ -423,7 +423,7 @@ define([
 
             if ($scope.reportType === "single") {
                 $scope.coverPage = {
-                    date: $scope.timezone + " " + moment().utcOffset($scope.timezone).format() + " " + moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
+                    date: moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
                     isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
                     reports: [{name: $scope.selected.Property.name, items: $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
