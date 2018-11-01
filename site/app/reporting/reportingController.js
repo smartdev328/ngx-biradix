@@ -49,7 +49,7 @@ define([
 
                 $scope.timezone = moment().utcOffset();
                 if ($cookies.get("settings")) {
-                    $scope.timezone = $cookies.get("timezone");
+                    $scope.timezone = parseInt($cookies.get("timezone"));
                     $scope.liveSettings = JSON.parse($cookies.get("settings"));
                     $scope.fixDates();
                 } else {
