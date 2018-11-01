@@ -106,6 +106,7 @@ define([
         $scope.fixDates = function() {
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {
+                    $scope.debug = moment($scope.liveSettings[key].daterange.selectedEndDate).format();
                     $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
                     $scope.liveSettings[key].daterange.reload = true;
                 }
