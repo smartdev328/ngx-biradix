@@ -615,6 +615,7 @@ define([
                 }
 
                 $scope.debug += ": " + JSON.stringify(options.property_report.daterange);
+                $scope.debug += ", " + JSON.stringify($scope.liveSettings.dashboardSettings.daterange);
             }
 
             if ($scope.reportIds.indexOf("concession") > -1) {
