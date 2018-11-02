@@ -614,8 +614,11 @@ define([
                     transaction_id: $scope.transaction_id,
                 }
 
+                if ($cookies.get("settings")) {
+                    options.property_report.daterange.start = $scope.liveSettings.dashboardSettings.daterange.selectedStartDate;
+                    options.property_report.daterange.end = $scope.liveSettings.dashboardSettings.daterange.selectedEndDate;
+                }
                 $scope.debug += ": " + JSON.stringify(options.property_report.daterange);
-                $scope.debug += ", " + JSON.stringify($scope.liveSettings.dashboardSettings.daterange);
             }
 
             if ($scope.reportIds.indexOf("concession") > -1) {
