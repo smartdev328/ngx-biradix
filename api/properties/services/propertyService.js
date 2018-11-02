@@ -1344,6 +1344,7 @@ module.exports = {
                         comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
+                        comp.survey.notes = s.notes;
 
                         // console.log(subject.name, comp.name, links);
                         //

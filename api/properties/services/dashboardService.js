@@ -11,6 +11,8 @@ var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
+        options.injectFloorplans = options.injectFloorplans === false ? false : true;
+
         var timer = new Date().getTime();
         user.settings = user.settings || {};
         async.parallel({
@@ -83,7 +85,7 @@ module.exports = {
                         updateCompSurveyIdsByDate(comps, options.surveyDateStart, options.surveyDateEnd, function() {
                             PropertyService.getLastSurveyStats({
                                 hide: user.settings.hideUnlinked,
-                                injectFloorplans: true,
+                                injectFloorplans: options.injectFloorplans,
                                 date: options.surveyDateEnd ? options.surveyDateEnd : new Date(),
                             }, all.subject, comps, function () {
                                 // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");

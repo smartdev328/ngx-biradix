@@ -535,6 +535,18 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 }
             }
 
+            resp.comp.hasName = resp.comp.contactName && resp.comp.contactName.length > 0;
+            resp.comp.hasEmail = resp.comp.contactEmail && resp.comp.contactEmail.length > 0;
+            resp.comp.hasWebsite = resp.comp.website && resp.comp.website.length > 0;
+            resp.comp.hasSurveyNotes = resp.comp.survey && resp.comp.survey.notes && resp.comp.survey.notes.length > 0;
+            resp.comp.hasNotes = resp.comp.notes && resp.comp.notes.length > 0;
+            resp.comp.hasContact = resp.comp.hasName || resp.comp.hasEmail || resp.comp.hasWebsite;
+            resp.comp.notes = (resp.comp.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+            if (resp.comp.hasSurveyNotes) {
+                resp.comp.survey.notes = (resp.comp.survey.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
+            }
+            
             if (resp.comp.website) {
                 if (resp.comp.website.length > 40) {
                     resp.comp.websiteLabel = resp.comp.website.replace("http://", '').substring(0, 40) + "...";
@@ -542,6 +554,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     resp.comp.websiteLabel = resp.comp.website.replace("http://", '')
                 }
             }
+
+            resp.comp.strRangeEnd = resp.property.strRangeEnd;
 
             resp.property.hasFees = false;
             if (resp.property.fees) {
