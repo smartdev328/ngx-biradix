@@ -107,13 +107,18 @@ define([
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {
                     $scope.debug = moment($scope.liveSettings[key].daterange.selectedEndDate).format();
-                    $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
-                    $scope.liveSettings[key].daterange.reload = true;
+                    $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate);
+                    $scope.debug += " " + moment($scope.liveSettings[key].daterange.selectedEndDate).format();
+                    if (!$cookies.get("settings")) {
+                        $scope.liveSettings[key].daterange.reload = true;
+                    }
                 }
 
                 if ($scope.liveSettings[key].daterange1) {
                     $scope.liveSettings[key].daterange1 = $scope.defaultTrendsDateRange1($scope.liveSettings[key].daterange1.selectedRange,$scope.liveSettings[key].daterange1.selectedStartDate,$scope.liveSettings[key].daterange1.selectedEndDate)
-                    $scope.liveSettings[key].daterange1.reload = true;
+                    if (!$cookies.get("settings")) {
+                        $scope.liveSettings[key].daterange1.reload = true;
+                    }
 
                     $scope.liveSettings[key].daterange1.daterange2 = {
                         selectedRange: $scope.liveSettings[key].daterange2.selectedRange,
@@ -1589,8 +1594,10 @@ define([
                 $scope.updateTrendsDaterange2('Last 90 Days');
 
                 if (rebind) {
-                    $scope.liveSettings.trends.daterange1.reload = true;
-                    $scope.liveSettings.trends.daterange2.reload = true;
+                    if (!$cookies.get("settings")) {
+                        $scope.liveSettings.trends.daterange1.reload = true;
+                        $scope.liveSettings.trends.daterange2.reload = true;
+                    }
                     $scope.configureTrendsOptions();
                 }
             }
