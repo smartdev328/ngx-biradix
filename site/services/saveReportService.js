@@ -6,7 +6,7 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
 
             var start = null;
             if (daterange.selectedStartDate) {
-                if (daterange.selectedStartDate._isUTC) {
+                if (daterange.selectedStartDate._isUTC && !$cookies.get("settings")) {
                     start = moment(daterange.selectedStartDate._d).subtract(daterange.selectedStartDate._offset, 'minute').format();;
                 } else {
                     start = moment(daterange.selectedStartDate._d).format();
@@ -15,7 +15,7 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
 
             var end = null;
             if (daterange.selectedEndDate) {
-                if (daterange.selectedEndDate._isUTC) {
+                if (daterange.selectedEndDate._isUTC && !$cookies.get("settings")) {
                     end = moment(daterange.selectedEndDate._d).subtract(daterange.selectedEndDate._offset, 'minute').endOf("day").format();;
                 } else {
                     end = moment(daterange.selectedEndDate._d).endOf("day").format();
