@@ -106,7 +106,7 @@ define([
         $scope.fixDates = function() {
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {
-                    $scope.debug = moment($scope.liveSettings[key].daterange.selectedEndDate).format();
+                    //$scope.debug = moment($scope.liveSettings[key].daterange.selectedEndDate).format();
                     $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate);
                     $scope.liveSettings[key].daterange.reload = true;
                 }
@@ -618,7 +618,6 @@ define([
                     options.property_report.daterange.start = $scope.liveSettings.dashboardSettings.daterange.selectedStartDate;
                     options.property_report.daterange.end = $scope.liveSettings.dashboardSettings.daterange.selectedEndDate;
                 }
-                $scope.debug += ": " + JSON.stringify(options.property_report.daterange);
             }
 
             if ($scope.reportIds.indexOf("concession") > -1) {
@@ -629,6 +628,10 @@ define([
                         end: $scope.cleanSettings.concession.daterange.selectedEndDate
                     },
                     offset: $scope.timezone
+                }
+                if ($cookies.get("settings")) {
+                    options.concession.daterange.start = $scope.liveSettings.concession.daterange.selectedStartDate;
+                    options.concession.daterange.end = $scope.liveSettings.concession.daterange.selectedEndDate;
                 }
             }
 
@@ -648,10 +651,15 @@ define([
                     offset: $scope.timezone,
                     show: $scope.cleanSettings.trends.show,
                     graphs: $scope.cleanSettings.trends.graphs
+                };
+
+                if ($cookies.get("settings")) {
+                    options.trends.daterange1.start = $scope.liveSettings.trends.daterange2.selectedStartDate;
+                    options.trends.daterange1.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
+                    options.trends.daterange2.start = $scope.liveSettings.trends.daterange2.selectedStartDate;
+                    options.trends.daterange2.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
                 }
-
             }
-
 
             $reportingService.reports(
                 $scope.compIds

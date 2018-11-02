@@ -50,7 +50,7 @@ module.exports = {
                         start: query.selectedStartDate,
                         end: query.selectedEndDate,
                     };
-                req.body.offset = query.timezone;
+                req.body.offset = parseInt(query.timezone);
 
                 let strRange = "";
                 if (moment(query.selectedEndDate).utcOffset(query.timezone).format("MM/DD/YYYY") !== moment().utcOffset(query.timezone).format("MM/DD/YYYY")) {
