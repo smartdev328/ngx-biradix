@@ -36,7 +36,7 @@ angular.module('biradix.global').directive('propertyComps', function () {
                         var j,b;
                         $scope.comps.forEach(function(comp, i) {
                             comp.number = i;
-                            comp.units = comp.totalUnits;
+                            comp.units = comp.survey.totUnits;
                             comp.unitPercent = 100;
                             comp.sqft = comp.survey.sqft == null ? -1 : comp.survey.sqft;
                             comp.rent = comp.survey.rent == null ? -1 : comp.survey.rent;
@@ -53,7 +53,7 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             comp.weeklytraffic = comp.survey.weeklytraffic == null ? -1 : comp.survey.weeklytraffic;
                             comp.weeklyleases = comp.survey.weeklyleases == null ? -1 : comp.survey.weeklyleases;
 
-                            $scope.totals.totalUnits += comp.totalUnits;
+                            $scope.totals.totalUnits += comp.survey.totUnits;
                             if (comp.survey && comp.survey.rent) {
                                 $scope.totalSurveys += 1;
                                 $scope.totals.units = ($scope.totals.units || 0) +  comp.units;
@@ -93,7 +93,7 @@ angular.module('biradix.global').directive('propertyComps', function () {
 
                             comp.survey.floorplans.forEach(function(fp,i) {
                                 fp.number = i;
-                                fp.unitPercent = fp.units / comp.totalUnits * 100;
+                                fp.unitPercent = fp.units / comp.survey.totUnits * 100;
 
                                 if (typeof fp.description == "undefined" || fp.description === "" || fp.description == null) {
                                     fp.name = fp.bedrooms + "x" + fp.bathrooms;
@@ -110,7 +110,7 @@ angular.module('biradix.global').directive('propertyComps', function () {
                                 comp.survey.bedrooms[b].name = $scope.bedroomsLabel(b);
                                 comp.survey.bedrooms[b].number = j;
                                 comp.survey.bedrooms[b].units = comp.survey.bedrooms[b].totUnits;
-                                comp.survey.bedrooms[b].unitPercent = comp.survey.bedrooms[b].units / comp.totalUnits * 100;
+                                comp.survey.bedrooms[b].unitPercent = comp.survey.bedrooms[b].units / comp.survey.totUnits * 100;
                                 j++;
                                 comp.bedrooms[b] = comp.survey.bedrooms[b];
                             }

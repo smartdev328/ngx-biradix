@@ -157,13 +157,6 @@ module.exports = {
             options.compids = comps;
             options.offset = parseInt(options.offset || "-420");
 
-            // console.log(options.offset, typeof options.offset, moment(options.daterange.end).format(), moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
-            if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
-                options.surveyDateStart = options.daterange.start;
-                options.surveyDateEnd = options.daterange.end;
-                options.injectFloorplans = false;
-            }
-
             let profiles = [];
 
             bus.query(

@@ -11,6 +11,13 @@ var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
+        // console.log(options.offset, typeof options.offset, moment(options.daterange.end).format(), moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
+        if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
+            options.surveyDateStart = options.daterange.start;
+            options.surveyDateEnd = options.daterange.end;
+            options.injectFloorplans = false;
+        }
+
         options.injectFloorplans = options.injectFloorplans === false ? false : true;
 
         var timer = new Date().getTime();
@@ -163,6 +170,13 @@ module.exports = {
     },
 
     getDashboard: function(user, id, options, callback) {
+        // console.log(options.offset, typeof options.offset, moment(options.daterange.end).format(), moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
+        if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
+            options.surveyDateStart = options.daterange.start;
+            options.surveyDateEnd = options.daterange.end;
+            options.injectFloorplans = false;
+        }
+
         options.injectFloorplans = options.injectFloorplans === false ? false : true;
         // var timer = new Date().getTime();
         PropertyService.search(user, {limit: 1,

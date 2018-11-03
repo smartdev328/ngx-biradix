@@ -240,6 +240,7 @@ define([
                         $scope.property = resp.property;
                         $scope.comps = resp.comps;
                         $scope.roles = $rootScope.me.roles;
+                        $scope.comp = resp.comps[0];
 
 
                         $scope.mapOptions = resp.mapOptions;

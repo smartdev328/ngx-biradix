@@ -21,6 +21,8 @@
                 <li><a href ng-click="excel()"><i class="fa fa-file-excel-o fa-fw" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
+
+        <daterange-picker ng-if="localLoading" daterange="settings.daterange" class="pull-right" style="margin-right:10px"></daterange-picker>
     </div>
 </div>
 <div ng-show="localLoading">
@@ -140,10 +142,11 @@
                     </tr>
 
                 </table>
+                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
-                <property-profile property="property" show="showProfile"></property-profile>
+                <property-profile property="comp" show="showProfile"></property-profile>
 
                 <div style="width:155px;margin:10px auto 0px auto" class="hidden-print">
                     <button class="btn btm-sm btn-primary" ng-click="viewProfile()">View Property Profile</button>
@@ -214,11 +217,9 @@
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                         ></i>
 
-                <daterange-picker ng-if="localLoading" daterange="settings.daterange" class="pull-right" style="margin-right:-15px"></daterange-picker>
-                <span class="pull-right hidden-xs" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Date Range: </span>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
 
-
-                    <select
+                <select
                         class="input-sm form-control pull-right hidden-print bedrooms"
                         style="display:inline;width:95px;font-weight:normal;font-size:13px;margin-right:10px"
                         ng-options="bedroom.text for bedroom in bedrooms"
@@ -255,7 +256,7 @@
         </div>
 
         <div class="panel panel-info">
-            <div class="panel-heading" style="height:50px">
+            <div class="panel-heading">
                 <span class="pull-left">Competitors</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
@@ -316,6 +317,8 @@
                     </ul>
                 </div>
                 <Br clear="all">
+                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>

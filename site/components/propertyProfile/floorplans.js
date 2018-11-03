@@ -27,7 +27,7 @@ angular.module('biradix.global').directive('propertyFloorplans', function () {
                 $scope.$watch("comp", function() {
                     if ($scope.comp) {
                         $scope.comp.survey.floorplans.forEach(function(fp) {
-                            fp.unitPercent = fp.units / $scope.comp.totalUnits * 100;
+                            fp.unitPercent = fp.units / $scope.comp.survey.totUnits * 100;
                         })
                     }
                 }, true)

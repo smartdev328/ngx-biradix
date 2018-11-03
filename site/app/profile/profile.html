@@ -27,6 +27,8 @@
                 type="button" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false">
             <i class="fa fa-lock"></i> <span class="hidden-xs">Property Survey</span>
         </button>
+
+        <daterange-picker daterange="settings.daterange" class="pull-right hidden-print" ng-if="settings" style="margin-right:10px"></daterange-picker>
     </div>
 </div>
 <div ng-show="localLoading" class="hidden-print">
@@ -86,12 +88,10 @@
                         </td>
                     </tr>
                     </table>
-
-
-            </div>
+                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>            </div>
             <div class="panel-body">
                 <hr>
-                <property-profile property="property" show="showProfile"></property-profile>
+                <property-profile property="comp" show="showProfile"></property-profile>
             </div>
         </div>
 
@@ -130,7 +130,7 @@
             <div class="panel-heading">About Property</div>
             <div class="panel-body">
                 <hr>
-                <property-about property="property"></property-about>
+                <property-about property="comp"></property-about>
             </div>
         </div>
 
@@ -190,8 +190,7 @@
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                         ></i>
 
-                <daterange-picker daterange="settings.daterange" class="pull-right hidden-print" style="margin-right:-15px"></daterange-picker>
-                <span class="pull-right hidden-xs hidden-print" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Date Range: </span>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
                 <br clear="all">
             </div>
             <div class="panel-body">
@@ -233,7 +232,7 @@
 
 
         <div class="panel panel-info"  style="margin-bottom: 0px !important">
-            <div class="panel-heading" style="height:50px">
+            <div class="panel-heading">
                 <span class="pull-left">Floor Plans</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
@@ -279,6 +278,7 @@
                     </ul>
                 </div>
                 <Br clear="all">
+                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>
