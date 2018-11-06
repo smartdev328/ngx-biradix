@@ -35,6 +35,7 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "fp.o", data.orderBy),
                     pdfService.getCookie(data.hostname, "fp.s", data.show),
                     pdfService.getCookie(data.hostname, "pr.s", data.showProfile),
+                    pdfService.getCookie(data.hostname, "timezone", data.timezone),
                 ];
 
 

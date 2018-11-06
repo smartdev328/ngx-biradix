@@ -59,7 +59,7 @@ define([
             if(oldHash == newHash) return;
 
             $cookieSettingsService.saveDaterange($scope.settings.daterange)
-            $scope.refreshGraphs();
+            $scope.loadProperty($scope.selectedProperty._id);
         }, true);
 
         $scope.$watch('settings.summary', function() {

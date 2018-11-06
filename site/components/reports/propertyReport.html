@@ -85,7 +85,10 @@
                      uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
                      ng-if="property.custom.owner"
                 ></div>
-                {{property.name}}</div>
+                {{property.name}}
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-profile property="comps[0]" show="showProfile"></property-profile>

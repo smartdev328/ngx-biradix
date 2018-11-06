@@ -217,8 +217,6 @@
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                         ></i>
 
-                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
-
                 <select
                         class="input-sm form-control pull-right hidden-print bedrooms"
                         style="display:inline;width:95px;font-weight:normal;font-size:13px;margin-right:10px"
@@ -230,6 +228,8 @@
                 <span class="pull-right hidden-xs" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Show:</span>
 
                 <br clear="all">
+
+                <div style="font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
 
 
             </div>

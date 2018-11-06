@@ -29,7 +29,12 @@ define([
 
         }
 
-        //make sure me is loaded befor you search initially
+        $scope.timezone = moment().utcOffset();
+        if ($cookies.get("timezone")) {
+            $scope.timezone = parseInt($cookies.get("timezone"));
+        }
+
+        // make sure me is loaded befor you search initially
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 me();
@@ -147,11 +152,12 @@ define([
                     }
 
                     $scope.coverPage = {
-                        date: moment().format("MMM Do, YYYY"),
+                        date: moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
                         isCustom: $scope.property.custom && $scope.property.custom.owner,
                         reports: [{name: $scope.property.name, items : ['Property Profile']}],
-                        org: $rootScope.me.orgs[0]
-                    }
+                        org: $rootScope.me.orgs[0],
+                        strRange: $scope.property.strRangeEnd ? $scope.property.strRangeStart + " - " + $scope.property.strRangeEnd : ""
+                    };
 
                     $scope.points = resp.points;
                     $scope.surveyData = resp.surveyData;
