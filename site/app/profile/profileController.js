@@ -61,7 +61,7 @@ define([
         $scope.setRenderable = function() {
             window.setTimeout(function() {
                 window.renderable = true;
-            },600)
+            },1000)
         }
 
         $scope.saveShow = function() {
@@ -173,7 +173,7 @@ define([
                             var validSurveys = _.find(response.data.properties, function(x) {
                                 var surveyDaysAgo = 99;
 
-                                if (x.survey  && x.survey.date) {
+                                if (x.survey && x.survey.date) {
                                     surveyDaysAgo = (new Date().getTime() - (new Date(x.survey.date)).getTime()) / 1000 / 60 / 60 / 24;
                                 }
 
@@ -262,7 +262,7 @@ define([
             $scope.progressId = _.random(1000000, 9999999);
 
             var data = {
-                timezone: moment().utcOffset(),
+                timezone: $scope.timezone,
                 selectedStartDate: $scope.settings.daterange.selectedStartDate.format(),
                 selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
                 selectedRange: $scope.settings.daterange.selectedRange,
