@@ -242,6 +242,8 @@ module.exports = {
                     showFile: query.showFile,
                 };
 
+                console.log(query);
+
                 bus.query(settings.PDF_PROFILE_QUEUE, message,
                     function(data) {
                         let log = {"event": "Pdf complete process (profile)", "transaction_id": message.transaction_id, "property_ids": query.propertyIds, "user": req.user.email, "name": data.filename, "pdf_time_ms": (new Date().getTime() - timer)};
