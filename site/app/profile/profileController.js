@@ -60,7 +60,7 @@ define([
         /***************************/
 
         $scope.setRenderable = function() {
-            $scope.debug += "(" + $cookies.get("selectedEndDate") + ") [" + $scope.settings.daterange.selectedEndDate + "]";
+            $scope.debug += "(" + $cookies.get("selectedEndDate") + ") [" + moment($scope.settings.daterange.selectedEndDate).format() + "]";
             window.setTimeout(function() {
                 window.renderable = true;
             },1000)
