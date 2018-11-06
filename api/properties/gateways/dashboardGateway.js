@@ -10,7 +10,7 @@ module.exports = {
         })
 
         Routes.post('/:id/profile', function (req, res) {
-            console.log(req.body);
+            // console.log(req.body);
             queueService.getProfile(req.user, req.body, true, req.params.id, req.params.id, function(err,o) {
                 if (err) {
                     return res.status(400).send(err);
