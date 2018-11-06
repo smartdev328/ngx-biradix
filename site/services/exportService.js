@@ -14,12 +14,19 @@ define([
 
             var url = '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
+
+            var selectedEndDate = daterange.selectedEndDate.format();
+            var selectedStartDate = daterange.selectedStartDate.format()
+            if ($cookies.get("selectedEndDate")) {
+                selectedEndDate = moment($cookies.get("selectedEndDate")).format();
+                selectedStartDate = moment($cookies.get("selectedStartDate")).format();
+            }
             
             var data = {
                 Graphs: graphs,
                 Scale: $cookies.get('Scale') || "ner",
-                selectedStartDate: daterange.selectedStartDate.format(),
-                selectedEndDate: daterange.selectedEndDate.format(),
+                selectedStartDate: selectedStartDate,
+                selectedEndDate: selectedEndDate,
                 selectedRange: daterange.selectedRange,
                 timezone: timezone,
                 progressId: progressId,
