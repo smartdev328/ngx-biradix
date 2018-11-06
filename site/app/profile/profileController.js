@@ -32,7 +32,7 @@ define([
         $scope.timezone = moment().utcOffset();
         if ($cookies.get("timezone")) {
             $scope.timezone = parseInt($cookies.get("timezone"));
-            $scope.debug = $scope.timezone;
+            // $scope.debug = $scope.timezone;
         }
 
         // make sure me is loaded befor you search initially
@@ -60,7 +60,7 @@ define([
         /***************************/
 
         $scope.setRenderable = function() {
-            $scope.debug += "(" + $cookies.get("selectedEndDate") + ") [" + moment($scope.settings.daterange.selectedEndDate).format() + "]";
+            // $scope.debug += "(" + $cookies.get("selectedEndDate") + ") [" + moment($scope.settings.daterange.selectedEndDate).format() + "]";
             window.setTimeout(function() {
                 window.renderable = true;
             },1000)

@@ -56,9 +56,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.profile = function (id,daterange,show) {
+            var timezone = moment().utcOffset();
+            if ($cookies.get("timezone")) {
+                timezone = parseInt($cookies.get("timezone"));
+            }
+
             return $http.post('/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
-                daterange:daterange,
-                offset: moment().utcOffset(),
+                daterange: daterange,
+                offset: timezone,
                 show: show
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
