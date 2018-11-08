@@ -1,11 +1,11 @@
 {{debug}}
 <cover-page options="coverPage"></cover-page>
 <div class="row hidden-print" ng-show="localLoading" style="margin-bottom: 10px !important;">
-    <div class="col-xs-6">
-        <h2 class="mainheader">Property Profile</h2>
+    <div class="col-sm-6 col-xs-12">
+        <h3 class="mainheader">Property Profile</h3>
     </div>
 
-    <div class="col-xs-6 hidden-print">
+    <div class="col-sm-6 col-xs-12 hidden-print">
         <div class="btn-group pull-right">
             <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" id = "export">
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
@@ -29,7 +29,7 @@
             <i class="fa fa-lock"></i> <span class="hidden-xs">Property Survey</span>
         </button>
 
-        <daterange-picker daterange="settings.daterange" class="pull-right hidden-print" ng-if="settings" style="margin-right:10px"></daterange-picker>
+        <daterange-picker daterange="settings.daterange" class="pull-right hidden-print dashboard" ng-if="settings" style="margin-right:10px"></daterange-picker>
     </div>
 </div>
 

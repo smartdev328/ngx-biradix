@@ -35,8 +35,8 @@
 
 <div class="row hidden-print" ng-show="meLoaded" style="margin-bottom: 10px !important;">
     <div class="pull-left">
-        <h2 class="mainheader" ng-if="!currentReport">Reporting</h2>
-        <h2 class="mainheader" ng-if="currentReport">Reporting: {{currentReport.name}}</h2>
+        <h3 class="mainheader" ng-if="!currentReport">Reporting</h3>
+        <h3 class="mainheader" ng-if="currentReport">Reporting: {{currentReport.name}}</h3>
     </div>
     <div class="hidden-print pull-right" ng-if="!reports || noReports || reportLoading">
         <button uib-tooltip="Please run report" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="opacity: .5;cursor: not-allowed">
