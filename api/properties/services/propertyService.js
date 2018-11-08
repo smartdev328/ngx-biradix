@@ -1317,7 +1317,7 @@ module.exports = {
                     if (s) {
                         delete comp.survey.id;
                         comp.survey.date = s.date;
-                        let daysSince = (Date.now() - s.date.getTime()) / 1000 / 60 / 60 / 24;
+                        let daysSince = (options.date - s.date.getTime()) / 1000 / 60 / 60 / 24;
                         if (daysSince >= 15) {
                             comp.survey.tier = "danger";
                         } else if (daysSince >= 8) {
@@ -1344,6 +1344,7 @@ module.exports = {
                         comp.survey.renewal = s.renewal;
                         comp.survey.weeklyleases = s.weeklyleases;
                         comp.survey.weeklytraffic = s.weeklytraffic;
+                        comp.survey.notes = s.notes;
 
                         // console.log(subject.name, comp.name, links);
                         //

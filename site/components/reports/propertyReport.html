@@ -16,11 +16,11 @@
                      ng-if="property.custom.owner"
                 ></div>
                 {{property.name}}
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
-                <property-profile property="property" show="showProfile"></property-profile>
-
+                <property-profile property="comps[0]" show="showProfile"></property-profile>
             </div>
         </div>
 
@@ -42,6 +42,7 @@
                    popover-placement="right"
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -61,7 +62,10 @@
         </div>
 
         <div class="panel panel-info">
-            <div class="panel-heading">Competitors</div>
+            <div class="panel-heading">
+                Competitors
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals" skipcookie="true"></property-comps>
@@ -81,10 +85,13 @@
                      uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
                      ng-if="property.custom.owner"
                 ></div>
-                {{property.name}}</div>
+                {{property.name}}
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+
+            </div>
             <div class="panel-body">
                 <hr>
-                <property-profile property="property" show="showProfile"></property-profile>
+                <property-profile property="comps[0]" show="showProfile"></property-profile>
 
             </div>
         </div>
@@ -107,6 +114,7 @@
                    popover-placement="right"
                    uib-popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
                 ></i>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -132,7 +140,9 @@
 <div ng-if="stretchComps" ng-class="{'row': true, 'break2': comps.length > 13, 'stretched': true}">
     <div class="col-xs-12">
         <div class="panel panel-info">
-            <div class="panel-heading">Competitors</div>
+            <div class="panel-heading">Competitors
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals"></property-comps>
@@ -158,10 +168,12 @@
                      uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
                      ng-if="property.custom.owner"
                 ></div>
-                {{profile.property.name}}</div>
+                {{profile.property.name}}
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
-                <property-profile property="profile.property" show="showProfile"></property-profile>
+                <property-profile property="profile.comp" show="showProfile"></property-profile>
             </div>
         </div>
         <div class="panel panel-info" ng-show="profile.property.community_am.length > 0">
@@ -195,11 +207,11 @@
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
 
-        <div class="panel panel-info" ng-show="profile.property.hasContact || profile.property.hasNotes || profile.property.hasSurveyNotes">
+        <div class="panel panel-info" ng-show="profile.comp.hasContact || profile.comp.hasNotes || profile.comp.hasSurveyNotes">
             <div class="panel-heading">About Property</div>
             <div class="panel-body">
                 <hr>
-                <property-about property="profile.property"></property-about>
+                <property-about property="profile.comp"></property-about>
             </div>
         </div>
 
@@ -212,6 +224,7 @@
                    popover-placement="right"
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                 ></i>
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">{{profile.property.strRangeStart}} - {{profile.property.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <hr>
@@ -241,7 +254,9 @@
         </div>
 
         <div class="panel panel-info no-margin-print" astyle="margin-bottom: 0px !important;">
-            <div class="panel-heading">Floor Plans</div>
+            <div class="panel-heading">Floor Plans
+                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">As of {{profile.property.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-floorplans comp="profile.comp" order-by="profileSettings.orderByFp" show="profileSettings.show" skipcookie="true"></property-floorplans>

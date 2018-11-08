@@ -29,7 +29,13 @@ define([
 
         }
 
-        //make sure me is loaded befor you search initially
+        $scope.timezone = moment().utcOffset();
+        if ($cookies.get("timezone")) {
+            $scope.timezone = parseInt($cookies.get("timezone"));
+            // $scope.debug = $scope.timezone;
+        }
+
+        // make sure me is loaded befor you search initially
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 me();
@@ -54,9 +60,10 @@ define([
         /***************************/
 
         $scope.setRenderable = function() {
+            // $scope.debug += "(" + $cookies.get("selectedEndDate") + ") [" + moment($scope.settings.daterange.selectedEndDate).format() + "]";
             window.setTimeout(function() {
                 window.renderable = true;
-            },600)
+            },1000)
         }
 
         $scope.saveShow = function() {
@@ -67,9 +74,9 @@ define([
 
         $scope.$watch('settings.daterange', function(d,old) {
             if (!$scope.localLoading) return;
-            if(JSON.stringify(old) == JSON.stringify(d)) return;
+            if (JSON.stringify(old) === JSON.stringify(d)) return;
             $cookieSettingsService.saveDaterange($scope.settings.daterange)
-            $scope.refreshGraphs();
+            $scope.loadProperty($scope.propertyId);
         }, true);
 
         $scope.$watch('settings.graphs', function() {
@@ -147,11 +154,12 @@ define([
                     }
 
                     $scope.coverPage = {
-                        date: moment().format("MMM Do, YYYY"),
+                        date: moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
                         isCustom: $scope.property.custom && $scope.property.custom.owner,
                         reports: [{name: $scope.property.name, items : ['Property Profile']}],
-                        org: $rootScope.me.orgs[0]
-                    }
+                        org: $rootScope.me.orgs[0],
+                        strRange: $scope.property.strRangeEnd ? $scope.property.strRangeStart + " - " + $scope.property.strRangeEnd : ""
+                    };
 
                     $scope.points = resp.points;
                     $scope.surveyData = resp.surveyData;
@@ -167,7 +175,7 @@ define([
                             var validSurveys = _.find(response.data.properties, function(x) {
                                 var surveyDaysAgo = 99;
 
-                                if (x.survey  && x.survey.date) {
+                                if (x.survey && x.survey.date) {
                                     surveyDaysAgo = (new Date().getTime() - (new Date(x.survey.date)).getTime()) / 1000 / 60 / 60 / 24;
                                 }
 
@@ -256,7 +264,7 @@ define([
             $scope.progressId = _.random(1000000, 9999999);
 
             var data = {
-                timezone: moment().utcOffset(),
+                timezone: $scope.timezone,
                 selectedStartDate: $scope.settings.daterange.selectedStartDate.format(),
                 selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
                 selectedRange: $scope.settings.daterange.selectedRange,

@@ -35,6 +35,7 @@ bus.handleQuery(settings.PDF_PROFILE_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "fp.o", data.orderBy),
                     pdfService.getCookie(data.hostname, "fp.s", data.show),
                     pdfService.getCookie(data.hostname, "pr.s", data.showProfile),
+                    pdfService.getCookie(data.hostname, "timezone", data.timezone),
                 ];
 
 
@@ -115,6 +116,7 @@ bus.handleQuery(settings.PDF_REPORTING_QUEUE, function(data,reply) {
                     pdfService.getCookie(data.hostname, "reportIds", data.reportIds),
                     pdfService.getCookie(data.hostname, "type", data.type),
                     pdfService.getCookie(data.hostname, "propertyIds", data.propertyIds),
+                    pdfService.getCookie(data.hostname, "timezone", data.timezone),
                     pdfService.getCookie(data.hostname, "settings", encodeURIComponent(JSON.stringify(data.settings))),
                 ];
 

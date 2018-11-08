@@ -1,12 +1,13 @@
+{{debug}}
 <cover-page options="coverPage"></cover-page>
-<div class="row hidden-print" ng-show="localLoading" style="margin-bottom: 0px !important;">
-    <div class="col-xs-7 col-sm-7">
-        <h2 class="mainheader">Property Profile</h2>
+<div class="row hidden-print" ng-show="localLoading" style="margin-bottom: 10px !important;">
+    <div class="col-sm-6 col-xs-12">
+        <h3 class="mainheader">Property Profile</h3>
     </div>
 
-    <div class="col-xs-5 col-sm-5 hidden-print">
+    <div class="col-sm-6 col-xs-12 hidden-print">
         <div class="btn-group pull-right">
-            <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id = "export">
+            <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" id = "export">
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -15,7 +16,7 @@
                 <li ng-if="owner && $root.me.permissions.indexOf('Hide/ExtendedProfile') == -1"><a href ng-click="excel()"><i class="fa fa-file-excel-o fa-fw" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
-        <button ng-if="canSurvey && roles[0] != 'Property Owner'" uib-tooltip="Property Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
+        <button ng-if="canSurvey && roles[0] != 'Property Owner'" uib-tooltip="Property Survey" type="button" style="margin-right:10px" class="btn btn-sm btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(property._id)">
             <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Property Survey</span>
         </button>
         <button ng-if="!canSurvey && roles[0] != 'Property Owner' && comp"
@@ -24,14 +25,14 @@
                 popover-placement="bottom"
                 popover-append-to-body="true"
                 uib-popover-html="'This property is managed by <B>{{comp.company}}</B>.<hr class=popoverhr>It should be up-to-date and not require manual updates. If this property is not showing latest information, please contact support@biradix.com'"
-                type="button" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false">
+                type="button" class="btn btn-primary pull-right btn-sm" data-toggle="dropdown" aria-expanded="false">
             <i class="fa fa-lock"></i> <span class="hidden-xs">Property Survey</span>
         </button>
+
+        <daterange-picker daterange="settings.daterange" class="pull-right hidden-print dashboard" ng-if="settings" style="margin-right:10px"></daterange-picker>
     </div>
 </div>
-<div ng-show="localLoading" class="hidden-print">
-    <hr style="border-color:#ddd;;margin: 5px 5px 10px 5px;">
-</div>
+
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
@@ -86,12 +87,10 @@
                         </td>
                     </tr>
                     </table>
-
-
-            </div>
+                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>            </div>
             <div class="panel-body">
                 <hr>
-                <property-profile property="property" show="showProfile"></property-profile>
+                <property-profile property="comp" show="showProfile"></property-profile>
             </div>
         </div>
 
@@ -130,7 +129,7 @@
             <div class="panel-heading">About Property</div>
             <div class="panel-body">
                 <hr>
-                <property-about property="property"></property-about>
+                <property-about property="comp"></property-about>
             </div>
         </div>
 
@@ -190,9 +189,9 @@
                    uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
                         ></i>
 
-                <daterange-picker daterange="settings.daterange" class="pull-right hidden-print" style="margin-right:-15px"></daterange-picker>
-                <span class="pull-right hidden-xs hidden-print" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Date Range: </span>
                 <br clear="all">
+                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
+
             </div>
             <div class="panel-body">
                 <hr>
@@ -233,7 +232,7 @@
 
 
         <div class="panel panel-info"  style="margin-bottom: 0px !important">
-            <div class="panel-heading" style="height:50px">
+            <div class="panel-heading">
                 <span class="pull-left">Floor Plans</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
@@ -279,6 +278,7 @@
                     </ul>
                 </div>
                 <Br clear="all">
+                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>

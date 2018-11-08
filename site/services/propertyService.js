@@ -56,9 +56,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.profile = function (id,daterange,show) {
+            var timezone = moment().utcOffset();
+            if ($cookies.get("timezone")) {
+                timezone = parseInt($cookies.get("timezone"));
+            }
+
             return $http.post('/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
-                daterange:daterange,
-                offset: moment().utcOffset(),
+                daterange: daterange,
+                offset: timezone,
                 show: show
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
@@ -513,6 +518,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 resp.comp = profile.comps[0];
             }
 
+            // console.log(resp);
+
             resp.property.hasName = resp.property.contactName && resp.property.contactName.length > 0;
             resp.property.hasEmail = resp.property.contactEmail && resp.property.contactEmail.length > 0;
             resp.property.hasWebsite = resp.property.website && resp.property.website.length > 0;
@@ -532,6 +539,28 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                     resp.property.websiteLabel = resp.property.website.replace("http://", '')
                 }
             }
+
+            resp.comp.hasName = resp.comp.contactName && resp.comp.contactName.length > 0;
+            resp.comp.hasEmail = resp.comp.contactEmail && resp.comp.contactEmail.length > 0;
+            resp.comp.hasWebsite = resp.comp.website && resp.comp.website.length > 0;
+            resp.comp.hasSurveyNotes = resp.comp.survey && resp.comp.survey.notes && resp.comp.survey.notes.length > 0;
+            resp.comp.hasNotes = resp.comp.notes && resp.comp.notes.length > 0;
+            resp.comp.hasContact = resp.comp.hasName || resp.comp.hasEmail || resp.comp.hasWebsite;
+            resp.comp.notes = (resp.comp.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+            if (resp.comp.hasSurveyNotes) {
+                resp.comp.survey.notes = (resp.comp.survey.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
+            }
+            
+            if (resp.comp.website) {
+                if (resp.comp.website.length > 40) {
+                    resp.comp.websiteLabel = resp.comp.website.replace("http://", '').substring(0, 40) + "...";
+                } else {
+                    resp.comp.websiteLabel = resp.comp.website.replace("http://", '')
+                }
+            }
+
+            resp.comp.strRangeEnd = resp.property.strRangeEnd;
 
             resp.property.hasFees = false;
             if (resp.property.fees) {
@@ -722,6 +751,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                         marker: "" + i,
                         content: markerContent(c)
                     })
+                }
+
+                if (c.website) {
+                    if (c.website.length > 40) {
+                       c.websiteLabel = c.website.replace("http://", '').substring(0, 40) + "...";
+                    } else {
+                        c.websiteLabel = c.website.replace("http://", '');
+                    }
                 }
             })
 

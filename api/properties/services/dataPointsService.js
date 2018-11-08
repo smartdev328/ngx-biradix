@@ -531,15 +531,15 @@ module.exports = {
                     if (newpoints.averages.sqft) {
                         newpoints.averages.sqft.forEach((sq, i) => {
                             if (sq.v) {
-                                if (newpoints.averages.ner) {
+                                if (newpoints.averages.ner && newpoints.averages.nersqft) {
                                     newpoints.averages.nersqft[i].v = newpoints.averages.ner[i].v / sq.v;
                                 }
 
-                                if (newpoints.averages.rent) {
+                                if (newpoints.averages.rent && newpoints.averages.rentsqft) {
                                     newpoints.averages.rentsqft[i].v = newpoints.averages.rent[i].v / sq.v;
                                 }
 
-                                if (newpoints.averages.runrate) {
+                                if (newpoints.averages.runrate && newpoints.averages.runratesqft) {
                                     newpoints.averages.runratesqft[i].v = newpoints.averages.runrate[i].v / sq.v;
                                 }
                             }

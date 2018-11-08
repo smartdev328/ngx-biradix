@@ -155,8 +155,9 @@ module.exports = {
             options.show.atr = true;
 
             options.compids = comps;
+            options.offset = parseInt(options.offset || "-420");
 
-            var profiles = [];
+            let profiles = [];
 
             bus.query(
                 settings.DASHBOARD_QUEUE
@@ -175,7 +176,7 @@ module.exports = {
                                 options: options,
                                 checkManaged: false,
                                 subjectId: data.dashboard.property._id,
-                                compId: comp._id
+                                compId: comp._id,
                             },
                             function (data) {
                                 profiles.push(data.profile);

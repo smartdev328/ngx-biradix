@@ -11,6 +11,15 @@ var localCacheService = require('../../utilities/services/localcacheService')
 
 module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
+        // console.log(options.offset, typeof options.offset, moment(options.daterange.end).format(), moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
+        if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
+            options.surveyDateStart = options.daterange.start;
+            options.surveyDateEnd = options.daterange.end;
+            options.injectFloorplans = false;
+        }
+
+        options.injectFloorplans = options.injectFloorplans === false ? false : true;
+
         var timer = new Date().getTime();
         user.settings = user.settings || {};
         async.parallel({
@@ -78,12 +87,17 @@ module.exports = {
                 async.parallel({
                     comps: function (callbackp) {
                         // var timer1 = new Date().getTime();
-                        PropertyService.getLastSurveyStats({
-                            hide: user.settings.hideUnlinked,
-                            injectFloorplans: true,
-                        }, all.subject, comps, function() {
-                            // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
-                            callbackp(null, comps);
+                        // If we pass in a surveyDate, dont use the last survey date in comps.survey.id
+                        // Instead get the last survey older then the date given
+                        updateCompSurveyIdsByDate(comps, options.surveyDateStart, options.surveyDateEnd, function() {
+                            PropertyService.getLastSurveyStats({
+                                hide: user.settings.hideUnlinked,
+                                injectFloorplans: options.injectFloorplans,
+                                date: options.surveyDateEnd ? options.surveyDateEnd : new Date(),
+                            }, all.subject, comps, function () {
+                                // console.log("Profile getLastSurveyStats: " + (new Date().getTime() - timer1) / 1000 + "s");
+                                callbackp(null, comps);
+                            });
                         });
                     },
                     points: function(callbackp) {
@@ -133,6 +147,12 @@ module.exports = {
                         canSurvey = false;
                     }
 
+                    if (options.surveyDateStart && options.surveyDateEnd) {
+                        all.comp.p.strRangeStart = moment(options.surveyDateStart).utcOffset(options.offset).format("MM/DD/YYYY");
+                        all.comp.p.strRangeEnd = moment(options.surveyDateEnd).utcOffset(options.offset).format("MM/DD/YYYY");
+                    }
+
+                    //console.log(moment(options.surveyDateEnd).format(), options.offset);
                     // console.log("Profile done: " + (new Date().getTime() - timer) / 1000 + "s");
                     callback(null, {property: all.comp.p, comps: all2.comps, lookups: all.comp.l, points: all2.points, canManage: all.modify, owner: all.owner, canSurvey: canSurvey})
 
@@ -152,6 +172,13 @@ module.exports = {
     },
 
     getDashboard: function(user, id, options, callback) {
+        // console.log(options.offset, typeof options.offset, moment(options.daterange.end).format(), moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
+        if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
+            options.surveyDateStart = options.daterange.start;
+            options.surveyDateEnd = options.daterange.end;
+            options.injectFloorplans = false;
+        }
+
         options.injectFloorplans = options.injectFloorplans === false ? false : true;
         // var timer = new Date().getTime();
         PropertyService.search(user, {limit: 1,
@@ -185,7 +212,7 @@ module.exports = {
                     limit: 30,
                     permission: "PropertyView",
                     ids: compids,
-                    select: "_id name address city state zip loc totalUnits survey.id survey.dateByOwner floorplans orgid needsSurvey constructionType yearBuilt owner management media custom phone walkscore",
+                    select: "_id name address city state zip phone contactEmail contactName website owner management constructionType yearBuilt yearRenovated loc totalUnits survey floorplans orgid needsSurvey media custom phone walkscore",
                     skipAmenities: true,
                 }, function(err, comps) {
                     // pre-comupte a lookup for datest by owner for locks
@@ -210,6 +237,7 @@ module.exports = {
                                         hide: user.settings.hideUnlinked,
                                         injectFloorplans: options.injectFloorplans,
                                         nerPlaces: options.nerPlaces,
+                                        date: options.surveyDateEnd ? options.surveyDateEnd : new Date(),
                                     }, property[0], comps, function() {
                                         callbackp(null, comps);
                                     });
@@ -308,6 +336,7 @@ module.exports = {
                                     }
 
                                     // console.log(c.canSurvey,all.owned,c._id);
+
                                 })
 
                                 //console.log("Dashboard DB for " + id + ": " + (new Date().getTime() - timer) + "ms");
@@ -332,6 +361,11 @@ module.exports = {
                                 all.comps.forEach(function(comp) {
                                     comp.survey.floorplans = _.sortByAll(comp.survey.floorplans, ['bedrooms', 'bathrooms', 'sqft', 'description'])
                                 });
+
+                                if (options.surveyDateStart && options.surveyDateEnd) {
+                                    property[0].strRangeStart = moment(options.surveyDateStart).utcOffset(options.offset).format("MM/DD/YYYY");
+                                    property[0].strRangeEnd = moment(options.surveyDateEnd).utcOffset(options.offset).format("MM/DD/YYYY");
+                                }
 
                                 callback (null,{property: property[0], comps: all.comps, points: all.points});
 

@@ -5,17 +5,30 @@ define([
     app.factory('$exportService', ['$http','$cookies','$urlService', function ($http,$cookies,$urlService) {
         var fac = {};
 
+
         var getPdfUrl = function(showFile,propertyId,graphs, daterange, progressId) {
+            var timezone = moment().utcOffset();
+            if ($cookies.get("timezone")) {
+                timezone = parseInt($cookies.get("timezone"));
+            }
+
             var url = '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
+
+            var selectedEndDate = daterange.selectedEndDate.format();
+            var selectedStartDate = daterange.selectedStartDate.format()
+            if ($cookies.get("selectedEndDate")) {
+                selectedEndDate = moment($cookies.get("selectedEndDate")).format();
+                selectedStartDate = moment($cookies.get("selectedStartDate")).format();
+            }
             
             var data = {
                 Graphs: graphs,
                 Scale: $cookies.get('Scale') || "ner",
-                selectedStartDate: daterange.selectedStartDate.format(),
-                selectedEndDate: daterange.selectedEndDate.format(),
+                selectedStartDate: selectedStartDate,
+                selectedEndDate: selectedEndDate,
                 selectedRange: daterange.selectedRange,
-                timezone: moment().utcOffset(),
+                timezone: timezone,
                 progressId: progressId,
                 showFile: showFile,
                 orderBy: ($cookies.get("fp.o") || ''),

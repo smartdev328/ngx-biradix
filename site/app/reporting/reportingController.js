@@ -47,7 +47,9 @@ define([
                 $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Property Status</b> - <i>Report is intended to give a focused summary on the current state of your portfolio. It can be modified to include data points such as Traffic & Leases, NER, and NER/SQFT as well as NER changes vs. {Last Week, Last Month, Last Year, or Comp Average}.</i>"});
                 $scope.reportItems.push({id: "custom_portfolio", name: "Customizable Property Data", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Customizable Property Data</b> - <i>Report offers customizable solution to ad hoc building report tables with any property data available in BI:Radix. Allows modifying column order, setting sort preference, and exporting to Excel.</i>"});
 
+                $scope.timezone = moment().utcOffset();
                 if ($cookies.get("settings")) {
+                    $scope.timezone = parseInt($cookies.get("timezone"));
                     $scope.liveSettings = JSON.parse($cookies.get("settings"));
                     $scope.fixDates();
                 } else {
@@ -104,7 +106,8 @@ define([
         $scope.fixDates = function() {
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {
-                    $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate)
+                    //$scope.debug = moment($scope.liveSettings[key].daterange.selectedEndDate).format();
+                    $scope.liveSettings[key].daterange = $cookieSettingsService.defaultDateObject($scope.liveSettings[key].daterange.selectedRange,$scope.liveSettings[key].daterange.selectedStartDate,$scope.liveSettings[key].daterange.selectedEndDate);
                     $scope.liveSettings[key].daterange.reload = true;
                 }
 
@@ -419,25 +422,25 @@ define([
                throw new Error("Reports crash testing on purpose");
             }
 
-            if ($scope.reportType == "single") {
+            if ($scope.reportType === "single") {
                 $scope.coverPage = {
-                    date: moment().format("MMM Do, YYYY"),
+                    date: moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
                     isCustom: $scope.selected.Property.custom && $scope.selected.Property.custom.owner,
-                    reports: [{name: $scope.selected.Property.name, items : $scope.reportNames2}],
+                    reports: [{name: $scope.selected.Property.name, items: $scope.reportNames2}],
                     org: $rootScope.me.orgs[0]
-                }
+                };
 
                 $scope.singleReport();
             } else {
-                var properties =  _.pluck($scope.propertyItems.items, "name");
+                var properties = _.pluck($scope.propertyItems.items, "name");
                 var reports = [];
 
                 $scope.reportNames2.forEach(function(r) {
-                    reports.push({name:r, items : properties})
-                })
+                    reports.push({name: r, items: properties});
+                });
 
                 $scope.coverPage = {
-                    date: moment().format("MMM Do, YYYY"),
+                    date: moment().utcOffset($scope.timezone).format("MMM Do, YYYY"),
                     reports: reports,
                     org: $rootScope.me.orgs[0]
                 }
@@ -607,8 +610,13 @@ define([
                         graphs: $scope.cleanSettings.profileSettings.graphs
                         , scale: $scope.cleanSettings.dashboardSettings.nerScale
                     },
-                    offset: moment().utcOffset(),
+                    offset: $scope.timezone,
                     transaction_id: $scope.transaction_id,
+                }
+
+                if ($cookies.get("settings")) {
+                    options.property_report.daterange.start = $scope.liveSettings.dashboardSettings.daterange.selectedStartDate;
+                    options.property_report.daterange.end = $scope.liveSettings.dashboardSettings.daterange.selectedEndDate;
                 }
             }
 
@@ -619,7 +627,11 @@ define([
                         start: $scope.cleanSettings.concession.daterange.selectedStartDate,
                         end: $scope.cleanSettings.concession.daterange.selectedEndDate
                     },
-                    offset: moment().utcOffset()
+                    offset: $scope.timezone
+                }
+                if ($cookies.get("settings")) {
+                    options.concession.daterange.start = $scope.liveSettings.concession.daterange.selectedStartDate;
+                    options.concession.daterange.end = $scope.liveSettings.concession.daterange.selectedEndDate;
                 }
             }
 
@@ -636,13 +648,18 @@ define([
                         end: $scope.cleanSettings.trends.daterange2.selectedEndDate,
                         enabled: $scope.cleanSettings.trends.daterange2.enabled
                     },
-                    offset: moment().utcOffset(),
+                    offset: $scope.timezone,
                     show: $scope.cleanSettings.trends.show,
                     graphs: $scope.cleanSettings.trends.graphs
+                };
+
+                if ($cookies.get("settings")) {
+                    options.trends.daterange1.start = $scope.liveSettings.trends.daterange2.selectedStartDate;
+                    options.trends.daterange1.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
+                    options.trends.daterange2.start = $scope.liveSettings.trends.daterange2.selectedStartDate;
+                    options.trends.daterange2.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
                 }
-
             }
-
 
             $reportingService.reports(
                 $scope.compIds
@@ -660,6 +677,10 @@ define([
                 $scope.reports = response.data;
 
                 $scope.description = $scope.selected.Property.name + ': %where%, ' + $scope.compIds.length + ' Comp(s), ' + $scope.reportIds.length + ' Report Type(s)';
+
+                if ($scope.reports.property_report && $scope.reports.property_report.dashboard && $scope.reports.property_report.dashboard.property.strRangeEnd) {
+                    $scope.coverPage.strRange = $scope.reports.property_report.dashboard.property.strRangeStart + " - " + $scope.reports.property_report.dashboard.property.strRangeEnd;
+                }
 
                 if (!phantom) {
                     $scope.audit('report', 'Website');
