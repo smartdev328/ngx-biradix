@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 
-export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: any, comps: any[]): any {
+export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: any, comps: any[], orderBy: string): any {
     const report = {
         exclusions: {},
         exclusionsByBedrooms: {},
@@ -186,26 +186,29 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
                 report.totals.totalconcessionsMonthly = (report.totals.totalconcessionsMonthly || 0) + fp.units * fp.concessionsMonthly;
                 report.totals.totalconcessionsOneTime = (report.totals.totalconcessionsOneTime || 0) + fp.units * fp.concessionsOneTime;
             }
-
         }
     });
 
-    report.summary.forEach((f) => {
-        f.sqft = Math.round(f.sqft / f.units);
-        f.ner = f.ner / f.units;
-        f.nersqft = f.ner / f.sqft;
-        f.runrate = f.runrate / f.units;
-        f.runratesqft = f.runrate / f.sqft;
-        f.unitpercent = f.units / report.totals.units * 100;
-        f.rent = f.rent / f.units;
-        f.mersqft = f.rent / f.sqft;
-        f.concessions = f.concessions / f.units;
+    report.summary.forEach((fs) => {
+        fs.sqft = Math.round(fs.sqft / fs.units);
+        fs.ner = fs.ner / fs.units;
+        fs.nersqft = fs.ner / fs.sqft;
+        fs.runrate = fs.runrate / fs.units;
+        fs.runratesqft = fs.runrate / fs.sqft;
+        fs.unitpercent = fs.units / report.totals.units * 100;
+        fs.rent = fs.rent / fs.units;
+        fs.mersqft = fs.rent / fs.sqft;
+        fs.concessions = fs.concessions / fs.units;
 
-        if (f.unitsDetailed && f.unitsDetailed > 0) {
-            f.concessionsMonthly = f.concessionsMonthly / f.unitsDetailed;
-            f.concessionsOneTime = f.concessionsOneTime / f.unitsDetailed;
+        if (fs.unitsDetailed && fs.unitsDetailed > 0) {
+            fs.concessionsMonthly = fs.concessionsMonthly / fs.unitsDetailed;
+            fs.concessionsOneTime = fs.concessionsOneTime / fs.unitsDetailed;
         }
     });
+    report.summary = _.sortBy(report.summary, orderBy.replace("-", ""));
+    if (orderBy.indexOf("-") > -1) {
+        report.summary = report.summary.reverse();
+    }
 
     report.totals.sqft = report.totals.totalsqft / report.totals.units;
     report.totals.ner = report.totals.totalner / report.totals.units;
@@ -242,6 +245,12 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
             })) {
                 report.exclusionsByBedrooms[bedroom] = true;
             }
+        }
+
+        // Also sort floorplans in each bedroom
+        report.rankings[bedroom].floorplans = _.sortBy(report.rankings[bedroom].floorplans, orderBy.replace("-", ""));
+        if (orderBy.indexOf("-") > -1) {
+            report.rankings[bedroom].floorplans = report.rankings[bedroom].floorplans.reverse();
         }
     }
 

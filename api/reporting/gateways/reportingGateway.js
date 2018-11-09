@@ -131,7 +131,7 @@ Routes.post("/:id", function(req, res) {
                         })[0];
 
                         if (req.body.reports.indexOf("property_rankings_summary") > -1) {
-                            results.property_rankings_summary = floorPlanComparisonReportService.summaryReport(floorplans, req.user.settings.hideUnlinked, subject, comps);
+                            results.property_rankings_summary = floorPlanComparisonReportService.summaryReport(floorplans, req.user.settings.hideUnlinked, subject, comps, req.body.options.property_rankings_summary.orderBy);
                         }
                         callbackp();
                     });

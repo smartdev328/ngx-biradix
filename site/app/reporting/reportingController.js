@@ -660,6 +660,11 @@ define([
                     options.trends.daterange2.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
                 }
             }
+            if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
+                options.property_rankings_summary = {orderBy: $scope.liveSettings.rankingsSummary.orderBy};
+            }
+
+            console.log(options);
 
             $reportingService.reports(
                 $scope.compIds
