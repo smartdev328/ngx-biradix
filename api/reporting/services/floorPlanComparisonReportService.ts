@@ -47,7 +47,7 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
                 f.subject = true;
             } else {
                 p = _.find(comps, (x) => {
-                    return x.id.toString() === fp.id.toString();
+                    return x._id.toString() === fp.id.toString();
                 });
 
                 f.name = p.name;
