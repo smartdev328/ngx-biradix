@@ -13,7 +13,7 @@ module.exports = {
     getProfile: function(user,options,checkManaged, subjectId, compId, callback) {
         options.offset = options.offset || 0;
         // console.log(options.offset, typeof options.offset, moment(options.daterange.end).format(), moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
-        if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
+        if (options.daterange && options.daterange.end && moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
             options.surveyDateStart = options.daterange.start;
             options.surveyDateEnd = options.daterange.end;
             options.injectFloorplans = false;
@@ -175,7 +175,7 @@ module.exports = {
     getDashboard: function(user, id, options, callback) {
         options.offset = options.offset || 0;
         // console.log(options.offset, typeof options.offset, moment(options.daterange.end).format(), moment(options.daterange.end).utcOffset(options.offset).format(), moment().utcOffset(options.offset).format());
-        if (moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
+        if (options.daterange && options.daterange.end && moment(options.daterange.end).utcOffset(options.offset).format("MM/DD/YYYY") !== moment().utcOffset(options.offset).format("MM/DD/YYYY")) {
             options.surveyDateStart = options.daterange.start;
             options.surveyDateEnd = options.daterange.end;
             options.injectFloorplans = false;

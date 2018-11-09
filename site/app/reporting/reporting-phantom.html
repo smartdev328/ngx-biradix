@@ -5,7 +5,7 @@
 
 <concession class="report break-before" ng-if="!reportLoading && reports && concession" report="reports.concession"></concession>
 
-<rankings-report-summary class="report break-before" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy" show="liveSettings.rankingsSummary.show"></rankings-report-summary>
+<rankings-report-summary class="report break-before" ng-if="!reportLoading && reports && reports.property_rankings_summary && rankingsSummary" report="reports.property_rankings_summary" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy" show="liveSettings.rankingsSummary.show"></rankings-report-summary>
 
 <rankings-report class="report break-before" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankings.orderBy" show="liveSettings.rankings.show"></rankings-report>
 

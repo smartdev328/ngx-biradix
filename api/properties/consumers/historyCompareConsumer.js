@@ -3,11 +3,12 @@ var bus = require("../../../config/queues")
 var queueService = require('../services/queueService');
 var async = require("async");
 var _ = require("lodash");
-var moment = require("moment")
+var moment = require("moment-timezone")
 var error = require('../../../config/error')
 
 bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
     let compNER = 0, compNERSqft = 0, compNERunits = 0;
+    const offset = moment().tz(data.user.settings.tz).utcOffset();
     async.parallel({
         current: function (callbackp) {
 
@@ -120,12 +121,17 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
 
             //console.log('last week:',start,end);
 
-            var options = {
+            const options = {
                 nerPlaces: 1,
                 skipPoints: true,
                 injectFloorplans: false,
+                daterange: {
+                    start: start.format(),
+                    end: end.format(),
+                },
                 surveyDateStart: start.format(),
-                surveyDateEnd: end.format()
+                surveyDateEnd: end.format(),
+                offset,
             };
 
             var req = {user: data.user, params: {id: data.id}, body: options}
@@ -174,16 +180,20 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
             //var end = moment().add(-1,"month").endOf('month').utcOffset(-480);
             //var start = moment().add(-1,"month").startOf('month').utcOffset(-480);
 
-            var start = moment().subtract(5, "weeks").startOf("week").add(1, "day").utcOffset(-480);
-            var end = moment().subtract(4, "weeks").endOf("week").add(1, "day").utcOffset(-480);
+            const start = moment().subtract(5, "weeks").startOf("week").add(1, "day").utcOffset(-480);
+            const end = moment().subtract(4, "weeks").endOf("week").add(1, "day").utcOffset(-480);
 
-
-            var options = {
+            const options = {
                 nerPlaces: 1,
                 skipPoints: true,
                 injectFloorplans: false,
+                daterange: {
+                    start: start.format(),
+                    end: end.format(),
+                },
                 surveyDateStart: start.format(),
-                surveyDateEnd: end.format()
+                surveyDateEnd: end.format(),
+                offset,
             };
             var req = {user: data.user, params: {id: data.id}, body: options}
 
@@ -233,13 +243,17 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
             var start = moment().subtract(56, "weeks").startOf("week").add(1, "day").utcOffset(-480);
             var end = moment().subtract(52, "weeks").endOf("week").add(1, "day").utcOffset(-480);
 
-
-            var options = {
+            const options = {
                 nerPlaces: 1,
                 skipPoints: true,
                 injectFloorplans: false,
+                daterange: {
+                    start: start.format(),
+                    end: end.format(),
+                },
                 surveyDateStart: start.format(),
-                surveyDateEnd: end.format()
+                surveyDateEnd: end.format(),
+                offset,
             };
             var req = {user: data.user, params: {id: data.id}, body: options}
 
