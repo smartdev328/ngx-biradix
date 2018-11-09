@@ -30,10 +30,10 @@ angular.module('biradix.global').directive('rankingsReportSummary', function () 
                 $scope.defaultSort = "nersqft";
 
                 $scope.reload = function() {
-                    console.log($scope.report);
+                    // console.log($scope.report);
                     // Phantom JS hack. if the report fits the page exactly, add more pixesl so it doesnt leave a blank logo on the previous page
                     if (phantom) {
-                        window.setTimeout(function () {
+                        window.setTimeout(function() {
                             var el = $($element).find('.break');
                             var height = el.height();
                             // $scope.debug = height;
