@@ -189,6 +189,46 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
         }
     });
 
+    for (const fp in report.rankings) {
+        if (!report.rankings[fp].summary) {
+            delete report.rankings[fp];
+        } else {
+            report.rankings[fp].summary.sqft = report.rankings[fp].summary.totalsqft / report.rankings[fp].summary.units;
+            report.rankings[fp].summary.ner = report.rankings[fp].summary.totalner / report.rankings[fp].summary.units;
+            report.rankings[fp].summary.nersqft = report.rankings[fp].summary.ner / report.rankings[fp].summary.sqft;
+            report.rankings[fp].summary.runrate = report.rankings[fp].summary.totalrunrate / report.rankings[fp].summary.units;
+            report.rankings[fp].summary.runratesqft = report.rankings[fp].summary.runrate / report.rankings[fp].summary.sqft;
+            report.rankings[fp].summary.rent = report.rankings[fp].summary.totalrent / report.rankings[fp].summary.units;
+            report.rankings[fp].summary.mersqft = report.rankings[fp].summary.rent / report.rankings[fp].summary.sqft;
+            report.rankings[fp].summary.concessions = report.rankings[fp].summary.totalconcessions / report.rankings[fp].summary.units;
+
+            if (report.rankings[fp].summary.unitsDetailed && report.rankings[fp].summary.unitsDetailed > 0) {
+                report.rankings[fp].summary.concessionsMonthly = report.rankings[fp].summary.totalconcessionsMonthly / report.rankings[fp].summary.unitsDetailed;
+                report.rankings[fp].summary.concessionsOneTime = report.rankings[fp].summary.totalconcessionsOneTime / report.rankings[fp].summary.unitsDetailed;
+            }
+
+            report.rankings[fp].floorplans.forEach((f) => {
+                f.sqft = f.sqft / f.units;
+                f.ner = f.ner / f.units;
+                f.nersqft = f.ner / f.sqft;
+                f.runrate = f.runrate / f.units;
+                f.runratesqft = f.runrate / f.sqft;
+                f.unitpercent = f.units / report.rankings[fp].summary.units * 100;
+                f.rent = f.rent / f.units;
+                f.mersqft = f.rent / f.sqft;
+                f.concessions = f.concessions / f.units;
+
+                if (f.unitsDetailed && f.unitsDetailed > 0) {
+                    f.concessionsMonthly = f.concessionsMonthly / f.unitsDetailed;
+                    f.concessionsOneTime = f.concessionsOneTime / f.unitsDetailed;
+                }
+            });
+
+            report.rankings[fp].summary.units = report.rankings[fp].summary.units / report.rankings[fp].floorplans.length;
+        }
+
+    }
+    
     report.summary.forEach((fs) => {
         fs.sqft = Math.round(fs.sqft / fs.units);
         fs.ner = fs.ner / fs.units;
