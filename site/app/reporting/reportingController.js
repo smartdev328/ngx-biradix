@@ -664,8 +664,6 @@ define([
                 options.property_rankings_summary = {orderBy: $scope.liveSettings.rankingsSummary.orderBy};
             }
 
-            console.log(options);
-
             $reportingService.reports(
                 $scope.compIds
                 ,$scope.selected.Property._id
@@ -993,6 +991,33 @@ define([
                 }
             }
         }
+
+            $scope.excel_rankings_summary = function(settings) {
+                ngProgress.start();
+
+                $('#export').prop('disabled', true);
+
+                $scope.progressId = _.random(1000000, 9999999);
+
+                var data = {
+                    timezone: moment().utcOffset(),
+                    progressId: $scope.progressId,
+                    compIds: $scope.compIds,
+                    settings: settings,
+                };
+
+                var key = $urlService.shorten(JSON.stringify(data));
+
+                var url = "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanSummary?"
+                url += "token=" + $cookies.get("token")
+                url += "&key=" + key;
+
+                $window.setTimeout($scope.checkProgress, 500);
+
+                location.href = url;
+
+                $scope.audit("report", "Excel");
+            };
 
         $scope.excel_property_status = function(settings) {
             var properties = $scope.propertyItems.items;
