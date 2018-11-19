@@ -54,6 +54,7 @@
                 <li><a href ng-click="excel()" ng-if="property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
                 <li><a href ng-click="excel_property_status(runSettings.propertyStatus)" ng-if="property_status && !custom_portfolio"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
                 <li><a href ng-click="excel_custom_portfolio(runSettings.customPortfolio)" ng-if="custom_portfolio && !property_status"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+                <li><a href ng-click="excel_rankings_summary(runSettings.rankingsSummary)" ng-if="rankingsSummary && !property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
             </ul>
         </div>
     </div>
@@ -523,7 +524,7 @@
 
             <concession class="report" ng-if="!reportLoading && reports && reports.concession && concession" report="reports.concession"></concession>
 
-            <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.floorplans && rankingsSummary" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy" show="liveSettings.rankingsSummary.show"></rankings-report-summary>
+            <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.property_rankings_summary && rankingsSummary" report="reports.property_rankings_summary" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy" show="liveSettings.rankingsSummary.show"></rankings-report-summary>
 
             <rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankings.orderBy" show="liveSettings.rankings.show"></rankings-report>
 

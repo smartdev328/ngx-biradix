@@ -108,7 +108,7 @@
                 <h4>Entire Property
                     <i class="fa fa-chain-broken blue"
                        style="cursor:pointer;font-size:16px;padding-left:1px"
-                       ng-if="exclusionBySubject"
+                       ng-if="report.exclusionBySubject"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
@@ -118,12 +118,12 @@
         </td>
     </tr>
 
-    <tr ng-repeat="fp in summary | orderBy : orderBy" ng-class="{'subject':fp.subject}">
+    <tr ng-repeat="fp in report.summary | orderBy : orderBy" ng-class="{'subject': fp.subject}">
         <td>
             {{fp.name}}
             <i class="fa fa-chain-broken blue"
                style="cursor:pointer;font-size:12px;padding-left:1px"
-               ng-if="exclusions[fp.id]"
+               ng-if="report.exclusions[fp.id]"
                popover-trigger="'mouseenter'"
                popover-placement="right"
                uib-popover="This property has floor plans that are being excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
@@ -174,45 +174,45 @@
             <div style="color:black !important;">Averages</div>
         </td>
         <td class="center black" ng-if="show.units">
-            <div style="color:black !important;">{{totals.units  | number : 0}}</div>
+            <div style="color:black !important;">{{report.totals.units  | number : 0}}</div>
         </td>
         <td class="center black" ng-if="show.unitPercent">
-            <div style="color:black !important;">{{totals.unitpercent  | number : 0}}%</div>
+            <div style="color:black !important;">{{report.totals.unitpercent  | number : 0}}%</div>
         </td>
         <td class="center black" ng-if="show.sqft">
-            <div style="color:black !important;">{{totals.sqft | number : 0}}</div>
+            <div style="color:black !important;">{{report.totals.sqft | number : 0}}</div>
         </td>
         <td class="center black" ng-if="show.rent">
-            <div style="color:black !important;">{{totals.rent | currency : "$" : 0}}</div>
+            <div style="color:black !important;">{{report.totals.rent | currency : "$" : 0}}</div>
         </td>
         <td class="center black" ng-if="show.mersqft">
-            <div style="color:black !important;">{{totals.mersqft | currency}}</div>
+            <div style="color:black !important;">{{report.totals.mersqft | currency}}</div>
         </td>
         <td class="center black" ng-if="show.concessionsOneTime">
-            <div style="color:black !important;" ng-if="totals.concessionsOneTime == null">-</div>
-            <div style="color:black !important;" ng-if="totals.concessionsOneTime != null">{{totals.concessionsOneTime | currency : "$" : 0}}</div>
+            <div style="color:black !important;" ng-if="report.totals.concessionsOneTime == null">-</div>
+            <div style="color:black !important;" ng-if="report.totals.concessionsOneTime != null">{{report.totals.concessionsOneTime | currency : "$" : 0}}</div>
         </td>
         <td class="center black" ng-if="show.concessionsMonthly">
-            <div style="color:black !important;" ng-if="totals.concessionsMonthly == null">-</div>
-            <div style="color:black !important;" ng-if="totals.concessionsMonthly != null">{{totals.concessionsMonthly | currency : "$" : 0}}</div>
+            <div style="color:black !important;" ng-if="report.totals.concessionsMonthly == null">-</div>
+            <div style="color:black !important;" ng-if="report.totals.concessionsMonthly != null">{{report.totals.concessionsMonthly | currency : "$" : 0}}</div>
         </td>
         <td class="center black" ng-if="show.concessions">
-            <div style="color:black !important;">{{totals.concessions | currency : "$" : 0}}</div>
+            <div style="color:black !important;">{{report.totals.concessions | currency : "$" : 0}}</div>
         </td>
         <td class="center black" ng-if="show.runrate">
-            <div style="color:black !important;">{{totals.runrate | currency : "$" : 0}}</div>
+            <div style="color:black !important;">{{report.totals.runrate | currency : "$" : 0}}</div>
         </td>
         <td class="center black" ng-if="show.runratesqft">
-            <div style="color:black !important;">{{totals.runratesqft | currency}}</div>
+            <div style="color:black !important;">{{report.totals.runratesqft | currency}}</div>
         </td>
         <td class="center black" ng-if="show.ner">
-            <div style="color:black !important;">{{totals.ner | currency : "$" : 0}}</div>
+            <div style="color:black !important;">{{report.totals.ner | currency : "$" : 0}}</div>
         </td>
         <td class="center black" ng-if="show.nersqft">
-            <div style="color:black !important;">{{totals.nersqft | currency}}</div>
+            <div style="color:black !important;">{{report.totals.nersqft | currency}}</div>
         </td>
     </tr>
-        <tr ng-repeat-start="(key,value) in rankings" ng-if="false">
+        <tr ng-repeat-start="(key,value) in report.rankings" ng-if="false">
 
         </tr>
         <tr>
@@ -221,7 +221,7 @@
                 <h4>{{bedroomsLabel(key)}}
                     <i class="fa fa-chain-broken blue"
                        style="cursor:pointer;font-size:16px;padding-left:1px"
-                       ng-if="exclusionsByBedrooms[key]"
+                       ng-if="report.exclusionsByBedrooms[key]"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
@@ -230,7 +230,7 @@
                 </div>
             </td>
         </tr>
-        <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-class="{'subject':fp.subject}">
+        <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-class="{'subject': fp.subject}">
             <td>
                 {{fp.name}}
                 <i class="fa fa-chain-broken blue"

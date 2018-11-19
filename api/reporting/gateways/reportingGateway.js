@@ -5,9 +5,10 @@ const Routes = new express.Router();
 const progressService = require("../../progress/services/progressService");
 const request = require("request");
 const moment= require("moment");
+const _ = require("lodash");
 const settings = require("../../../config/settings")
 const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry");
-
+const floorPlanComparisonReportService = require("../../../build/reporting/services/floorPlanComparisonReportService");
 const propertyStatusService = require("../services/propertyStatusService");
 const individualReportsService = require("../services/individualReportsService");
 
@@ -124,6 +125,14 @@ Routes.post("/:id", function(req, res) {
                 function(callbackp) {
                     individualReportsService.floorplans(req.params.id, comps, function(floorplans) {
                         results.floorplans = floorplans;
+
+                        const subject = _.remove(comps, (x) => {
+                            return x._id.toString() === req.params.id;
+                        })[0];
+
+                        if (req.body.reports.indexOf("property_rankings_summary") > -1) {
+                            results.property_rankings_summary = floorPlanComparisonReportService.summaryReport(floorplans, req.user.settings.hideUnlinked, subject, comps, req.body.options.property_rankings_summary.orderBy);
+                        }
                         callbackp();
                     });
                 },

@@ -13,6 +13,8 @@ const serviceRegistry = require("../../../build/services/gateway/ServiceRegistry
 const uuid = require("node-uuid");
 const redis = require('redis');
 const redisClient = redis.createClient(settings.REDIS_URL);
+const individualReportsService = require("../../reporting/services/individualReportsService");
+const floorPlanComparisonReportService = require("../../../build/reporting/services/floorPlanComparisonReportService");
 
 module.exports = {
     init: function(Routes) {
@@ -25,6 +27,55 @@ module.exports = {
                 res.end()
             })
         })
+
+        Routes.get("/:id/excelFloorplanSummary", (req, res) => {
+            serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
+                let query = {};
+
+                if (result) {
+                    query = JSON.parse(result);
+                }
+
+                individualReportsService.getProperties(req.user, ["property_rankings_summary"], (query.compIds || []).concat([req.params.id]), function(err, comps, lookups) {
+                    individualReportsService.floorplans(req.params.id, comps, function(floorplans) {
+                        const subject = _.remove(comps, (x) => {
+                            return x._id.toString() === req.params.id;
+                        })[0];
+
+                        const property_rankings_summary = floorPlanComparisonReportService.summaryReport(floorplans, req.user.settings.hideUnlinked, subject, comps, query.settings.orderBy);
+
+                        moment().utcOffset(query.timezone);
+
+                        let fileName = subject.name.replace(/ /g, "_") + '_Floor_Plan_Comparison_Report_';
+
+                        fileName += moment().format("MM_DD_YYYY");
+
+                        fileName += ".xlsx";
+
+                        let json = {
+                            fileName: fileName,
+                            settings: query.settings,
+                            report: property_rankings_summary,
+                            strDate: moment().utcOffset(query.timezone).format("MM/DD/YYYY"),
+                        };
+
+                        const url = settings.EXCEL_URL.replace("/excel", "/floorplan_summary")
+
+                        let r = request.post(url, {
+                            json: json,
+                        }).pipe(res)
+
+                        r.on("finish", function() {
+                            if (query.progressId) {
+                                ProgressService.setComplete(query.progressId);
+                            }
+                            r = null;
+                            json = null;
+                        });
+                    });
+                });
+            });
+        });
 
         Routes.get('/:id/excel', function (req, res) {
             serviceRegistry.getShortenerService().retrieve(req.query.key).then((result)=> {
