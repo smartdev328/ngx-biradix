@@ -104,7 +104,7 @@
         </th>
     </tr>
 
-    <tr ng-repeat-start="(key,value) in rankings" ng-if="false">
+    <tr ng-repeat-start="(key,value) in report.rankings" ng-if="false">
 
         </tr>
         <tr>
@@ -113,7 +113,7 @@
                 <h4>Floorplans: {{key}}
                     <i class="fa fa-chain-broken blue"
                        style="cursor:pointer;font-size:16px;padding-left:1px"
-                       ng-if="exclusionsByBedrooms[key]"
+                       ng-if="report.exclusionsByBedrooms[key]"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"

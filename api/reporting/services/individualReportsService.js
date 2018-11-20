@@ -6,7 +6,6 @@ const moment = require("moment");
 const bus = require("../../../config/queues");
 const settings = require("../../../config/settings");
 const async = require("async");
-const uuid = require("node-uuid");
 
 module.exports = {
     getProperties: function(user, reports, proeprtyids, callback) {

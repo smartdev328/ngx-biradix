@@ -133,6 +133,10 @@ Routes.post("/:id", function(req, res) {
                         if (req.body.reports.indexOf("property_rankings_summary") > -1) {
                             results.property_rankings_summary = floorPlanComparisonReportService.summaryReport(floorplans, req.user.settings.hideUnlinked, subject, comps, req.body.options.property_rankings_summary.orderBy);
                         }
+
+                        if (req.body.reports.indexOf("property_rankings") > -1) {
+                            results.property_rankings = floorPlanComparisonReportService.detailedReport(floorplans, req.user.settings.hideUnlinked, subject, comps, req.body.options.property_rankings.orderBy);
+                        }
                         callbackp();
                     });
                 },
