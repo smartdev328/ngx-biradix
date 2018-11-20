@@ -1,5 +1,46 @@
 import * as _ from "lodash";
 
+export function detailedReport(floorplans: any, hideUnlinked: boolean, subject: any, comps: any[], orderBy: string): any {
+    const report = {
+        exclusionsByBedrooms: {},
+        rankings: {},
+    };
+
+    let f;
+    floorplans = _.sortByAll(floorplans, ["bedrooms", "bathrooms", "description"]);
+    floorplans.forEach((fp) => {
+        fp.bathrooms = (fp.bathrooms || "").toString().trim();
+
+        report.rankings[fp.bedrooms + "x" + fp.bathrooms] = report.rankings[fp.bedrooms + "x" + fp.bathrooms] || {};
+
+        report.rankings[fp.bedrooms + "x" + fp.bathrooms].floorplans = report.rankings[fp.bedrooms + "x" + fp.bathrooms].floorplans || [];
+
+        if ((hideUnlinked && fp.excluded) || (typeof fp.rent === "undefined" || fp.rent === null || isNaN(fp.rent))) {
+            report.exclusionsByBedrooms[fp.bedrooms + "x" + fp.bathrooms] = true;
+        } else {
+            f = getFloorplan(fp, subject, comps);
+
+            report.rankings[fp.bedrooms + "x" + fp.bathrooms].floorplans.push(f);
+            addToSummary(report, fp.bedrooms + "x" + fp.bathrooms, fp);
+        }
+    });
+
+    for (const fp in report.rankings) {
+        // Also sort floorplans in each bedroom
+        report.rankings[fp].floorplans = _.sortBy(report.rankings[fp].floorplans, orderBy.replace("-", ""));
+        if (orderBy.indexOf("-") > -1) {
+            report.rankings[fp].floorplans = report.rankings[fp].floorplans.reverse();
+        }
+        if (!report.rankings[fp].summary) {
+            delete report.rankings[fp];
+        } else {
+            averageSummary(report, fp);
+            report.rankings[fp].summary.units = report.rankings[fp].summary.units / report.rankings[fp].floorplans.length;
+        }
+    }
+    return report;
+}
+
 export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: any, comps: any[], orderBy: string): any {
     const report = {
         exclusions: {},
@@ -26,34 +67,8 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
             report.rankings[fp.bedrooms].excluded[fp.id] = true;
             report.exclusions[fp.id] = true;
         } else {
-            f = {
-                description: fp.description,
-                units: fp.units,
-                sqft: fp.sqft,
-                ner: fp.ner,
-                nersqft: fp.nersqft,
-                runrate: fp.runrate,
-                runratesqft: fp.runratesqft,
-                rent: fp.rent,
-                mersqft: fp.mersqft,
-                concessionsMonthly: fp.concessionsMonthly,
-                concessionsOneTime: fp.concessionsOneTime,
-                concessions: fp.concessions,
-            };
-
-            if (subject._id.toString() === fp.id.toString()) {
-                f.name = subject.name;
-                f.address = subject.address;
-                f.subject = true;
-            } else {
-                p = _.find(comps, (x) => {
-                    return x._id.toString() === fp.id.toString();
-                });
-
-                f.name = p.name;
-                f.address = p.address;
-            }
-
+            f = getFloorplan(fp, subject, comps);
+            
             p = _.find(report.rankings[fp.bedrooms].floorplans, (x) => {
                 return x.id.toString() === fp.id.toString(); 
             });
@@ -154,22 +169,7 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
                 }
             }
 
-            report.rankings[fp.bedrooms].summary = report.rankings[fp.bedrooms].summary || {};
-            report.rankings[fp.bedrooms].summary.units = (report.rankings[fp.bedrooms].summary.units || 0) + fp.units;
-            report.rankings[fp.bedrooms].summary.totalsqft = (report.rankings[fp.bedrooms].summary.totalsqft || 0) + fp.units * fp.sqft;
-            report.rankings[fp.bedrooms].summary.totalner = (report.rankings[fp.bedrooms].summary.totalner || 0) + fp.units * fp.ner;
-            report.rankings[fp.bedrooms].summary.totalnersqft = (report.rankings[fp.bedrooms].summary.totalnersqft || 0) + fp.units * fp.nersqft;
-            report.rankings[fp.bedrooms].summary.totalrunrate = (report.rankings[fp.bedrooms].summary.totalrunrate || 0) + fp.units * fp.runrate;
-            report.rankings[fp.bedrooms].summary.totalrunratesqft = (report.rankings[fp.bedrooms].summary.totalrunratesqft || 0) + fp.units * fp.runratesqft;
-            report.rankings[fp.bedrooms].summary.totalrent = (report.rankings[fp.bedrooms].summary.totalrent || 0) + fp.units * fp.rent;
-            report.rankings[fp.bedrooms].summary.totalmersqft = (report.rankings[fp.bedrooms].summary.totalmersqft || 0) + fp.units * fp.mersqft;
-            report.rankings[fp.bedrooms].summary.totalconcessions = (report.rankings[fp.bedrooms].summary.totalconcessions || 0) + fp.units * fp.concessions;
-
-            if (typeof fp.concessionsMonthly !== "undefined" && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
-                report.rankings[fp.bedrooms].summary.unitsDetailed = (report.rankings[fp.bedrooms].summary.unitsDetailed || 0) + fp.units;
-                report.rankings[fp.bedrooms].summary.totalconcessionsMonthly = (report.rankings[fp.bedrooms].summary.totalconcessionsMonthly || 0) + fp.units * fp.concessionsMonthly;
-                report.rankings[fp.bedrooms].summary.totalconcessionsOneTime = (report.rankings[fp.bedrooms].summary.totalconcessionsOneTime || 0) + fp.units * fp.concessionsOneTime;
-            }
+            addToSummary(report, fp.bedrooms, fp);
 
             report.totals.units = (report.totals.units || 0) + fp.units;
             report.totals.totalsqft = (report.totals.totalsqft || 0) + fp.units * fp.sqft;
@@ -193,40 +193,27 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
         if (!report.rankings[fp].summary) {
             delete report.rankings[fp];
         } else {
-            report.rankings[fp].summary.sqft = report.rankings[fp].summary.totalsqft / report.rankings[fp].summary.units;
-            report.rankings[fp].summary.ner = report.rankings[fp].summary.totalner / report.rankings[fp].summary.units;
-            report.rankings[fp].summary.nersqft = report.rankings[fp].summary.ner / report.rankings[fp].summary.sqft;
-            report.rankings[fp].summary.runrate = report.rankings[fp].summary.totalrunrate / report.rankings[fp].summary.units;
-            report.rankings[fp].summary.runratesqft = report.rankings[fp].summary.runrate / report.rankings[fp].summary.sqft;
-            report.rankings[fp].summary.rent = report.rankings[fp].summary.totalrent / report.rankings[fp].summary.units;
-            report.rankings[fp].summary.mersqft = report.rankings[fp].summary.rent / report.rankings[fp].summary.sqft;
-            report.rankings[fp].summary.concessions = report.rankings[fp].summary.totalconcessions / report.rankings[fp].summary.units;
+            averageSummary(report, fp);
 
-            if (report.rankings[fp].summary.unitsDetailed && report.rankings[fp].summary.unitsDetailed > 0) {
-                report.rankings[fp].summary.concessionsMonthly = report.rankings[fp].summary.totalconcessionsMonthly / report.rankings[fp].summary.unitsDetailed;
-                report.rankings[fp].summary.concessionsOneTime = report.rankings[fp].summary.totalconcessionsOneTime / report.rankings[fp].summary.unitsDetailed;
-            }
+            report.rankings[fp].floorplans.forEach((fr) => {
+                fr.sqft = fr.sqft / fr.units;
+                fr.ner = fr.ner / fr.units;
+                fr.nersqft = fr.ner / fr.sqft;
+                fr.runrate = fr.runrate / fr.units;
+                fr.runratesqft = fr.runrate / fr.sqft;
+                fr.unitpercent = fr.units / report.rankings[fp].summary.units * 100;
+                fr.rent = fr.rent / fr.units;
+                fr.mersqft = fr.rent / fr.sqft;
+                fr.concessions = fr.concessions / fr.units;
 
-            report.rankings[fp].floorplans.forEach((f) => {
-                f.sqft = f.sqft / f.units;
-                f.ner = f.ner / f.units;
-                f.nersqft = f.ner / f.sqft;
-                f.runrate = f.runrate / f.units;
-                f.runratesqft = f.runrate / f.sqft;
-                f.unitpercent = f.units / report.rankings[fp].summary.units * 100;
-                f.rent = f.rent / f.units;
-                f.mersqft = f.rent / f.sqft;
-                f.concessions = f.concessions / f.units;
-
-                if (f.unitsDetailed && f.unitsDetailed > 0) {
-                    f.concessionsMonthly = f.concessionsMonthly / f.unitsDetailed;
-                    f.concessionsOneTime = f.concessionsOneTime / f.unitsDetailed;
+                if (fr.unitsDetailed && fr.unitsDetailed > 0) {
+                    fr.concessionsMonthly = fr.concessionsMonthly / fr.unitsDetailed;
+                    fr.concessionsOneTime = fr.concessionsOneTime / fr.unitsDetailed;
                 }
             });
 
             report.rankings[fp].summary.units = report.rankings[fp].summary.units / report.rankings[fp].floorplans.length;
         }
-
     }
     
     report.summary.forEach((fs) => {
@@ -270,7 +257,7 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
 
     // Check if excluded property is missing so we can add it to the top level;
     for (const e in report.exclusions) {
-        if (!_.find(report.summary,(x) => {
+        if (!_.find(report.summary, (x) => {
             return x.id.toString() === e;
         })) {
             report.exclusionBySubject = true;
@@ -295,4 +282,73 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
     }
 
     return report;
+}
+
+function getFloorplan(fp: any, subject: any, comps: any) {
+    let p;
+    const f: any = {
+        description: fp.description,
+        units: fp.units,
+        sqft: fp.sqft,
+        ner: fp.ner,
+        nersqft: fp.nersqft,
+        runrate: fp.runrate,
+        runratesqft: fp.runratesqft,
+        rent: fp.rent,
+        mersqft: fp.mersqft,
+        concessionsMonthly: fp.concessionsMonthly,
+        concessionsOneTime: fp.concessionsOneTime,
+        concessions: fp.concessions,
+        id: fp.id,
+    };
+
+    if (subject._id.toString() === fp.id.toString()) {
+        f.name = subject.name;
+        f.address = subject.address;
+        f.subject = true;
+    } else {
+        p = _.find(comps, (x) => {
+            return x._id.toString() === fp.id.toString();
+        });
+
+        f.name = p.name;
+        f.address = p.address;
+    }
+    
+    return f;
+}
+
+function averageSummary(report: any, key: string) {
+    report.rankings[key].summary.sqft = report.rankings[key].summary.totalsqft / report.rankings[key].summary.units;
+    report.rankings[key].summary.ner = report.rankings[key].summary.totalner / report.rankings[key].summary.units;
+    report.rankings[key].summary.nersqft = report.rankings[key].summary.ner / report.rankings[key].summary.sqft;
+    report.rankings[key].summary.runrate = report.rankings[key].summary.totalrunrate / report.rankings[key].summary.units;
+    report.rankings[key].summary.runratesqft = report.rankings[key].summary.runrate / report.rankings[key].summary.sqft;
+    report.rankings[key].summary.rent = report.rankings[key].summary.totalrent / report.rankings[key].summary.units;
+    report.rankings[key].summary.mersqft = report.rankings[key].summary.rent / report.rankings[key].summary.sqft;
+    report.rankings[key].summary.concessions = report.rankings[key].summary.totalconcessions / report.rankings[key].summary.units;
+
+    if (report.rankings[key].summary.unitsDetailed && report.rankings[key].summary.unitsDetailed > 0) {
+        report.rankings[key].summary.concessionsMonthly = report.rankings[key].summary.totalconcessionsMonthly / report.rankings[key].summary.unitsDetailed;
+        report.rankings[key].summary.concessionsOneTime = report.rankings[key].summary.totalconcessionsOneTime / report.rankings[key].summary.unitsDetailed;
+    }
+}
+
+function addToSummary(report: any, key: string, fp: any) {
+    report.rankings[key].summary = report.rankings[key].summary || {};
+    report.rankings[key].summary.units = (report.rankings[key].summary.units || 0) + fp.units;
+    report.rankings[key].summary.totalsqft = (report.rankings[key].summary.totalsqft || 0) + fp.units * fp.sqft;
+    report.rankings[key].summary.totalner = (report.rankings[key].summary.totalner || 0) + fp.units * fp.ner;
+    report.rankings[key].summary.totalnersqft = (report.rankings[key].summary.totalnersqft || 0) + fp.units * fp.nersqft;
+    report.rankings[key].summary.totalrunrate = (report.rankings[key].summary.totalrunrate || 0) + fp.units * fp.runrate;
+    report.rankings[key].summary.totalrunratesqft = (report.rankings[key].summary.totalrunratesqft || 0) + fp.units * fp.runratesqft;
+    report.rankings[key].summary.totalrent = (report.rankings[key].summary.totalrent || 0) + fp.units * fp.rent;
+    report.rankings[key].summary.totalmersqft = (report.rankings[key].summary.totalmersqft || 0) + fp.units * fp.mersqft;
+    report.rankings[key].summary.totalconcessions = (report.rankings[key].summary.totalconcessions || 0) + fp.units * fp.concessions;
+
+    if (typeof fp.concessionsMonthly !== "undefined" && fp.concessionsMonthly != null && !isNaN(fp.concessionsMonthly)) {
+        report.rankings[key].summary.unitsDetailed = (report.rankings[key].summary.unitsDetailed || 0) + fp.units;
+        report.rankings[key].summary.totalconcessionsMonthly = (report.rankings[key].summary.totalconcessionsMonthly || 0) + fp.units * fp.concessionsMonthly;
+        report.rankings[key].summary.totalconcessionsOneTime = (report.rankings[key].summary.totalconcessionsOneTime || 0) + fp.units * fp.concessionsOneTime;
+    }
 }

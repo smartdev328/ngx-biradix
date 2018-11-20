@@ -51,10 +51,12 @@
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li><a href ng-click="pdf('')"><i class="fa fa-print"></i> Print</a></li>
                 <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export PDF</a></li>
-                <li><a href ng-click="excel()" ng-if="property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+                <li><a href ng-click="excel()" ng-if="property_report && !rankings && !property_report && !rankingsSummary"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
                 <li><a href ng-click="excel_property_status(runSettings.propertyStatus)" ng-if="property_status && !custom_portfolio"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
                 <li><a href ng-click="excel_custom_portfolio(runSettings.customPortfolio)" ng-if="custom_portfolio && !property_status"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
-                <li><a href ng-click="excel_rankings_summary(runSettings.rankingsSummary)" ng-if="rankingsSummary && !property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+                <li><a href ng-click="excel_rankings_summary(runSettings.rankingsSummary)" ng-if="rankingsSummary && !rankings && !property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+                <li><a href ng-click="excel_rankings(runSettings.rankings)" ng-if="rankings && !property_report && !rankingsSummary"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
+
             </ul>
         </div>
     </div>
@@ -526,7 +528,7 @@
 
             <rankings-report-summary class="report" ng-if="!reportLoading && reports && reports.property_rankings_summary && rankingsSummary" report="reports.property_rankings_summary" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankingsSummary.orderBy" show="liveSettings.rankingsSummary.show"></rankings-report-summary>
 
-            <rankings-report class="report" ng-if="!reportLoading && reports && reports.floorplans && rankings" report="reports.floorplans" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankings.orderBy" show="liveSettings.rankings.show"></rankings-report>
+            <rankings-report class="report" ng-if="!reportLoading && reports && reports.property_rankings && rankings" report="reports.property_rankings" subject="selected.Property" comps="selected.Comps" settings="me.settings" order-by="runSettings.rankings.orderBy" show="liveSettings.rankings.show"></rankings-report>
 
             <communityamenities-report class="report" ng-if="!reportLoading && reports && reports.community_amenities" report="reports.community_amenities" subject="selected.Property" comps="selected.Comps"></communityamenities-report>
 

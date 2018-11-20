@@ -8,10 +8,16 @@ var error = require('../../../config/error')
 
 bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
     let compNER = 0, compNERSqft = 0, compNERunits = 0;
-    const offset = moment().tz(data.user.settings.tz).utcOffset();
+
+    let tz = "America/Los_Angeles";
+
+    if (data && data.user && data.user.settings && data.user.settings.tz) {
+        tz = data.user.settings.tz;
+    }
+
+    const offset = moment().tz(tz).utcOffset();
     async.parallel({
         current: function (callbackp) {
-
             var options = {nerPlaces: 1, skipPoints: true, injectFloorplans: false};
             var req = {user: data.user, params: {id: data.id}, body: options}
 
