@@ -7,7 +7,7 @@ export function detailedReport(floorplans: any, hideUnlinked: boolean, subject: 
     };
 
     let f;
-    floorplans = _.sortByAll(floorplans, ["bedrooms", "bathrooms"]);
+    floorplans = _.sortByAll(floorplans, ["bedrooms", "bathrooms", "description"]);
     floorplans.forEach((fp) => {
         fp.bathrooms = (fp.bathrooms || "").toString().trim();
 
@@ -35,6 +35,7 @@ export function detailedReport(floorplans: any, hideUnlinked: boolean, subject: 
             delete report.rankings[fp];
         } else {
             averageSummary(report, fp);
+            report.rankings[fp].summary.units = report.rankings[fp].summary.units / report.rankings[fp].floorplans.length;
         }
     }
     return report;
@@ -210,6 +211,8 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
                     fr.concessionsOneTime = fr.concessionsOneTime / fr.unitsDetailed;
                 }
             });
+
+            report.rankings[fp].summary.units = report.rankings[fp].summary.units / report.rankings[fp].floorplans.length;
         }
     }
     
@@ -329,8 +332,6 @@ function averageSummary(report: any, key: string) {
         report.rankings[key].summary.concessionsMonthly = report.rankings[key].summary.totalconcessionsMonthly / report.rankings[key].summary.unitsDetailed;
         report.rankings[key].summary.concessionsOneTime = report.rankings[key].summary.totalconcessionsOneTime / report.rankings[key].summary.unitsDetailed;
     }
-
-    report.rankings[key].summary.units = report.rankings[key].summary.units / report.rankings[key].floorplans.length;
 }
 
 function addToSummary(report: any, key: string, fp: any) {
