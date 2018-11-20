@@ -26,6 +26,11 @@ export function detailedReport(floorplans: any, hideUnlinked: boolean, subject: 
     });
 
     for (const fp in report.rankings) {
+        // Also sort floorplans in each bedroom
+        report.rankings[fp].floorplans = _.sortBy(report.rankings[fp].floorplans, orderBy.replace("-", ""));
+        if (orderBy.indexOf("-") > -1) {
+            report.rankings[fp].floorplans = report.rankings[fp].floorplans.reverse();
+        }
         if (!report.rankings[fp].summary) {
             delete report.rankings[fp];
         } else {
@@ -184,12 +189,6 @@ export function summaryReport(floorplans: any, hideUnlinked: boolean, subject: a
     });
 
     for (const fp in report.rankings) {
-        // Also sort floorplans in each bedroom
-        report.rankings[fp].floorplans = _.sortBy(report.rankings[fp].floorplans, orderBy.replace("-", ""));
-        if (orderBy.indexOf("-") > -1) {
-            report.rankings[fp].floorplans = report.rankings[fp].floorplans.reverse();
-        }
-
         if (!report.rankings[fp].summary) {
             delete report.rankings[fp];
         } else {
