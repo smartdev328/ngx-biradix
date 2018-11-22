@@ -1,8 +1,7 @@
-console.log(document.referrer);
 var token = getCookie("token");
 
 if (!token) {
-    parent.postMessage("redirect", window.parent.location.href);
+    parent.postMessage("redirect", document.referrer);
 } else {
     $.ajax({
         url: '/api/1.0/users/me' + '?bust=' + (new Date()).getTime(),
@@ -13,10 +12,10 @@ if (!token) {
         },
         contentType: 'application/json; charset=utf-8',
         success: function (result) {
-            parent.postMessage("success", window.parent.location.href);
+            parent.postMessage("success", document.referrer);
         },
         error: function (error) {
-            parent.postMessage("redirect", window.parent.location.href);
+            parent.postMessage("redirect", document.referrer);
         }
     });
 }
