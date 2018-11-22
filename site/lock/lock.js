@@ -1,7 +1,7 @@
 var token = getCookie("token");
 
 if (!token) {
-    redirect();
+    parent.redirect();
 }
 
 $.ajax({
@@ -16,7 +16,7 @@ $.ajax({
 
     },
     error: function (error) {
-        redirect();
+        parent.redirect();
     }
 });
 
