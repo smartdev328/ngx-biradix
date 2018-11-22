@@ -1,8 +1,7 @@
-console.log(window.location, window.parent.location, document.referrer);
 var token = getCookie("token");
 
 if (!token) {
-    parent.postMessage("redirect", "http://testspace.biradix.com.s3-website-us-east-1.amazonaws.com");
+    parent.postMessage("redirect", window.parent.location.href);
 } else {
     $.ajax({
         url: '/api/1.0/users/me' + '?bust=' + (new Date()).getTime(),
@@ -13,10 +12,10 @@ if (!token) {
         },
         contentType: 'application/json; charset=utf-8',
         success: function (result) {
-            parent.postMessage("success", "http://testspace.biradix.com.s3-website-us-east-1.amazonaws.com");
+            parent.postMessage("success", window.parent.location.href);
         },
         error: function (error) {
-            parent.postMessage("redirect", "http://testspace.biradix.com.s3-website-us-east-1.amazonaws.com");
+            parent.postMessage("redirect", window.parent.location.href);
         }
     });
 }
