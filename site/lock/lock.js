@@ -1,4 +1,15 @@
 console.log(getCookie("token"));
+var token = getCookie("token");
+
+var loggedIn = false;
+
+if (token) {
+    loggedIn = true;
+}
+
+if (!loggedIn) {
+    window.parent.location.href="https://biradixplatform-qa-pr-217.herokuapp.com";
+}
 
 function getCookie(name) {
     var dc = document.cookie;
