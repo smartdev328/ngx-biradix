@@ -284,6 +284,10 @@ angular.module("biradix.global").controller("rootController",
                     var x = $window.sessionStorage.redirect;
                     $window.sessionStorage.removeItem('redirect');
 
+                    if (x.indexOf('http') === 0) {
+                        return location.href = x;
+                    }
+
                     //Make sure we dont redirect to /login
                     if (x.indexOf('/login') == -1) {
                         if (x.indexOf("?") == -1) {
