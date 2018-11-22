@@ -1,24 +1,24 @@
 var token = getCookie("token");
 
 if (!token) {
-    parent.redirect();
+    parent.postMessage("redirect");
+} else {
+    $.ajax({
+        url: '/api/1.0/users/me' + '?bust=' + (new Date()).getTime(),
+        type: 'GET',
+        dataType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (result) {
+
+        },
+        error: function (error) {
+            parent.postMessage("redirect");
+        }
+    });
 }
-
-$.ajax({
-    url: '/api/1.0/users/me'+ '?bust=' + (new Date()).getTime(),
-    type: 'GET',
-    dataType: 'json',
-    headers: {
-        'Authorization': 'Bearer ' + token
-    },
-    contentType: 'application/json; charset=utf-8',
-    success: function (result) {
-
-    },
-    error: function (error) {
-        parent.redirect();
-    }
-});
 
 function getCookie(name) {
     var dc = document.cookie;
