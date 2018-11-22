@@ -1,13 +1,27 @@
-console.log(getCookie("token"));
 var token = getCookie("token");
 
-var loggedIn = false;
-
-if (token) {
-    loggedIn = true;
+if (!token) {
+    redirect();
 }
 
-if (!loggedIn) {
+$.ajax({
+    url: '/api/1.0/users/me'+ '?bust=' + (new Date()).getTime(),
+    type: 'GET',
+    dataType: 'json',
+    headers: {
+        'Authorization': 'Bearer ' + token
+    },
+    contentType: 'application/json; charset=utf-8',
+    success: function (result) {
+
+    },
+    error: function (error) {
+        redirect();
+    }
+});
+
+
+function redirect() {
     window.parent.location.href="https://biradixplatform-qa-pr-217.herokuapp.com";
 }
 
