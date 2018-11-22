@@ -20,11 +20,6 @@ $.ajax({
     }
 });
 
-
-function redirect() {
-    window.parent.location.href="https://biradixplatform-qa-pr-217.herokuapp.com";
-}
-
 function getCookie(name) {
     var dc = document.cookie;
     var prefix = name + "=";
