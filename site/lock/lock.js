@@ -1,4 +1,4 @@
-console.log(window.parent.location.href);
+console.log(document.referrer);
 var token = getCookie("token");
 
 if (!token) {
