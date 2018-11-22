@@ -1,7 +1,7 @@
 var token = getCookie("token");
 
 if (!token) {
-    parent.postMessage("redirect");
+    parent.postMessage("redirect", "http://testspace.biradix.com.s3-website-us-east-1.amazonaws.com");
 } else {
     $.ajax({
         url: '/api/1.0/users/me' + '?bust=' + (new Date()).getTime(),
@@ -15,7 +15,7 @@ if (!token) {
 
         },
         error: function (error) {
-            parent.postMessage("redirect");
+            parent.postMessage("redirect", "http://testspace.biradix.com.s3-website-us-east-1.amazonaws.com");
         }
     });
 }
