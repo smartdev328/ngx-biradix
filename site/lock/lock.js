@@ -12,7 +12,7 @@ if (!token) {
         },
         contentType: 'application/json; charset=utf-8',
         success: function (result) {
-
+            parent.postMessage("success", "http://testspace.biradix.com.s3-website-us-east-1.amazonaws.com");
         },
         error: function (error) {
             parent.postMessage("redirect", "http://testspace.biradix.com.s3-website-us-east-1.amazonaws.com");
