@@ -120,6 +120,19 @@ userRoutes.get('/refreshToken', function (req, res) {
     );
 })
 
+userRoutes.post('/domain', async (req, res) => {
+    let domain = "";
+    const SystemUser = await UserService.getSystemUserAsync();
+    if (req.body.email) {
+        const users = await UserService.searchAsync(SystemUser, {email: req.body.email})
+        if (users && users.length == 1) {
+            domain = users[0].roles[0].org.subdomain + ".biradix.com";
+        }
+    }
+
+    return res.status(200).json({domain});
+})
+
 userRoutes.post('/login', function (req, res) {
    var user =  {}
     user.email = req.body.email;

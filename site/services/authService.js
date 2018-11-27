@@ -43,6 +43,14 @@ angular.module('biradix.global').factory('$authService', ['$http','$cookies', fu
         });
     }
 
+    fac.getDomain = function (email) {
+        return $http.post('/api/1.0/users/domain'+ '?bust=' + (new Date()).getTime(), { email: email}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
+
     fac.me = function (token, callback) {
         return $http.get('/api/1.0/users/me'+ '?bust=' + (new Date()).getTime(), {
             headers: {'Authorization': 'Bearer ' + token }}).success(function (response) {

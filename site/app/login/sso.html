@@ -1,0 +1,22 @@
+<iframe src="about:blank" name="dummy" style="display: none"></iframe>
+<h3 style="text-align: center">Log in to your account</h3>
+<Br>
+<form ng-init="setRenderable()" role="form" name="myLoginForm" id="myLoginForm" autocomplete="on" method="post" action="" target="dummy" onsubmit="return false" ng-submit="submit()">
+    <div class="form-group" ng-class="{'has-error': myForm.email.$dirty && myForm.email.$invalid, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
+        <label for="email">Email address</label>
+        <input autocomplete="on" type="email" name="email" class="form-control" id="email" placeholder="Enter email" required ng-model="email">
+    </div>
+    <button class="btn btn-primary btn-large btn-block" type="submit" ng-show="!localLoading">Continue</button>
+    <div style="width:40px;margin:0px auto;padding-top:5px" ng-show="localLoading">
+        <img src="/images/squares.gif" style="width:40px">
+    </div>
+
+    <div style="text-align: center">
+        <Br>
+        <small style="font-size:13px">
+            <a href="#/contact"><i class="fa fa-envelope" style="padding-right:5px"></i>Contact Us</a>
+        </small>
+    </div>
+
+</form>
+

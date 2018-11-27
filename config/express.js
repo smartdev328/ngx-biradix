@@ -76,6 +76,7 @@ module.exports = {
                     settings.API_PATH + "users/recover",
                     settings.API_PATH + "users/updatePasswordByToken",
                     settings.API_PATH + "users/bounce",
+                    settings.API_PATH + "users/domain",
                 ],
             }));
 

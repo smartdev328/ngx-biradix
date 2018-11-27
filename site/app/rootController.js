@@ -285,7 +285,7 @@ angular.module("biradix.global").controller("rootController",
                     $window.sessionStorage.removeItem('redirect');
 
                     if (x.indexOf('http') === 0) {
-                        x = x.replace("%d", location.hostname);
+                        x = x.replace("%d%", location.hostname);
                         return location.href = x;
                     }
 

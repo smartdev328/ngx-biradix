@@ -77,6 +77,7 @@ define([], function () {
 
         $stateProvider
             .state("login", AsyncRoute("/login?r", "login", "loginController", "login.html", "loggedOutView",{}))
+            .state("sso", AsyncRoute("/sso?r", "login", "ssoController", "sso.html", "loggedOutView",{}))
             .state("expired", AsyncRoute("/expired?name", "expired", "expiredController", "expired.html", "loggedOutView",{loggedIn: false}))
             .state("contact", AsyncRoute("/contact", "contactOff", "contactOffController", "contact.html", "loggedOutView",{loggedIn: false}))
             .state("contact_thank_you", AsyncRoute("/contact/thankyou", "contactOff",null,"thankyou.html", "loggedOutView",{loggedIn: false}))

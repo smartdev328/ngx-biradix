@@ -7,7 +7,7 @@ function getReferringUrl() {
         s += "?d=%d%";
     }
 
-    return encodeURIComponent(s)
+    return encodeURIComponent(s);
 }
 
 function redirect(strDomain) {
@@ -15,7 +15,7 @@ function redirect(strDomain) {
 }
 
 function redirectDomain() {
-    window.parent.location.href="https://biradixplatform-qa-pr-217.herokuapp.com/#/login?r=" + getReferringUrl();
+    window.parent.location.href="https://biradixplatform-qa-pr-217.herokuapp.com/#/sso?r=" + getReferringUrl();
 }
 
 function getParameterByName(name, url) {
