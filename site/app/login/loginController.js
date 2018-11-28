@@ -30,6 +30,10 @@ define([
             return;
         }
 
+        if ($stateParams.e) {
+            $scope.email = $stateParams.e;
+        }
+
         $scope.setRenderable = function() {
             window.setTimeout(function() {
                 window.renderable = true;

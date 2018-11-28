@@ -135,6 +135,18 @@ module.exports = {
             });
         });
     },
+    searchAsync: function(operator, criteria) {
+        var _this = this;
+        return new Promise((resolve, reject) => {
+            _this.search(operator, criteria, function(err, users) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(users);
+                }
+            });
+        });
+    },
     search: function(Operator,criteria, callback) {
 
         var tStart = (new Date()).getTime();
