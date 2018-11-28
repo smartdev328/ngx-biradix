@@ -1,21 +1,23 @@
-function getReferringUrl() {
+function getReferringUrl(appendDomain) {
     var s = location.href;
 
-    if (s.indexOf("?") > -1) {
-        s += "&d=%d%";
-    } else {
-        s += "?d=%d%";
+    if (appendDomain) {
+        if (s.indexOf("?") > -1) {
+            s += "&d=%d%";
+        } else {
+            s += "?d=%d%";
+        }
     }
 
     return encodeURIComponent(s);
 }
 
 function redirect(strDomain) {
-    window.parent.location.href="https://" + strDomain + "/#/login?r=" + getReferringUrl();
+    window.parent.location.href="https://" + strDomain + "/#/login?r=" + getReferringUrl(false);
 }
 
 function redirectDomain() {
-    window.parent.location.href="https://platform.biradix.com/#/sso?r=" + getReferringUrl();
+    window.parent.location.href="https://platform.biradix.com/#/sso?r=" + getReferringUrl(true);
 }
 
 function getParameterByName(name, url) {
@@ -75,7 +77,7 @@ if (strDomain) {
         },false);
     
         $(document).ready(function() {
-            $("body").append("<iframe src='https://" + strDomain + "/lock/lock.html?'></iframe>");
+            $("body").append("<iframe style='width:0; height:0; border:0; border:none' src='https://" + strDomain + "/lock/lock.html?'></iframe>");
         });
 
 } else {
