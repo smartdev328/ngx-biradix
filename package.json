@@ -72,6 +72,7 @@
     "raygun": "^0.9.1",
     "redis": "^2.8.0",
     "request": "^2.88.0",
+    "ssh2-sftp-client": "^2.4.2",
     "typescript": "^2.9.2",
     "xlsjs": "^0.7.6",
     "xlsx-style": "^0.8.13"

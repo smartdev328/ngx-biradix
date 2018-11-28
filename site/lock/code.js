@@ -43,25 +43,30 @@ var createCookie = function(name, value, days) {
     document.cookie = name + "=" + value + expires + "; path=/";
 }
 
-function getCookie(c_name) {
-    if (document.cookie.length > 0) {
-        c_start = document.cookie.indexOf(c_name + "=");
-        if (c_start != -1) {
-            c_start = c_start + c_name.length + 1;
-            c_end = document.cookie.indexOf(";", c_start);
-            if (c_end == -1) {
-                c_end = document.cookie.length;
-            }
-            return unescape(document.cookie.substring(c_start, c_end));
+function getCookie(name) {
+    var dc = document.cookie;
+    var prefix = name + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+    } else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+            end = dc.length;
         }
     }
-    return "";
+    return decodeURI(dc.substring(begin + prefix.length, end));
 }
 
-var strDomain = getParameterByName("d") || getCookie('d');
+var strDomain = getParameterByName("d") || getCookie("d");
+
+if (getParameterByName("d")) {
+    createCookie("d", strDomain, 365);
+}
 
 if (strDomain) {
-    createCookie("d", strDomain, 365);
     var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
     var eventer = window[eventMethod];
     var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
@@ -72,13 +77,13 @@ if (strDomain) {
                 redirect(strDomain);
             }
             if (e.data === "success") {
-
                 if (location.href.indexOf("?") > -1) {
                     location.href = location.href.split("?")[0];
+                } else {
+                    $(".page").show();
                 }
-                $(".page").show();
             }
-        },false);
+        }, false);
     
         $(document).ready(function() {
             $("body").append("<iframe style='width:0; height:0; border:0; border:none' src='https://" + strDomain + "/lock/lock.html?'></iframe>");
