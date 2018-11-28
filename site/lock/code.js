@@ -72,6 +72,10 @@ if (strDomain) {
                 redirect(strDomain);
             }
             if (e.data === "success") {
+
+                if (location.href.indexOf("?") > -1) {
+                    location.href = location.href.split("?")[0];
+                }
                 $(".page").show();
             }
         },false);
