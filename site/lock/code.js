@@ -15,7 +15,7 @@ function redirect(strDomain) {
 }
 
 function redirectDomain() {
-    window.parent.location.href="https://biradixplatform-qa-pr-217.herokuapp.com/#/sso?r=" + getReferringUrl();
+    window.parent.location.href="https://platform.biradix.com/#/sso?r=" + getReferringUrl();
 }
 
 function getParameterByName(name, url) {
