@@ -76,7 +76,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     <B>Yardi Property Code:</B>
                 </td>
                 <td>
-                    ${property.yardicode}
+                    ${property.yardiCode}
                 </td>
             </Tr> 
         </table>
