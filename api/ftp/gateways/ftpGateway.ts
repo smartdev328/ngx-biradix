@@ -40,7 +40,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         return p.yardiId === req.params.yardiId;
     })
     html += `
-        <table border="1">
+        <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
                 <th colspan="100%">
                    Property Info 
@@ -71,6 +71,14 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     ${property.yardiId}
                 </td>
             </Tr> 
+            <Tr>
+                <td>
+                    <B>Yardi Property Code:</B>
+                </td>
+                <td>
+                    ${property.yardicode}
+                </td>
+            </Tr> 
         </table>
     `;
 
@@ -81,7 +89,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     html += `
         <br>
-        <table border="1">
+        <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
                 <th colspan="100%">
                    Floor Plans 
@@ -100,6 +108,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 <th>
                    Yardi Floor Plan Id
                 </th>
+                <th>
+                   Yardi Floor Plan Code
+                </th>
             </tr>
     `;
 
@@ -117,6 +128,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 </td>
                 <td>
                    ${fp.yardiId} 
+                </td>
+                <td>
+                   ${fp.yardiCode} 
                 </td>
             </tr>
        `;

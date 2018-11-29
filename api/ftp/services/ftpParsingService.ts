@@ -21,6 +21,7 @@ export async function parseFloorplans(folder: string, date: string) {
     unitTypes.forEach((row) => {
         unitTypesObjects.push({
             yardiId: row[0],
+            yardiCode: row[1],
             propertyYardiId: row[2],
             description: row[3],
             sqft: parseInt(row[6], 10),
@@ -59,6 +60,7 @@ export async function parseProperties(folder: string, date: string) {
            state: row[6],
            zip: row[7],
            yardiId: row[0],
+           yardiCode: row[1],
        });
     });
 
