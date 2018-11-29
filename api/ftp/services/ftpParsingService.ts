@@ -16,7 +16,7 @@ export async function parseFloorplans(folder: string, date: string) {
 
     const body = await downloadFile(folder + "/" + propertiesFile);
     const unitTypes = await csvParse(body);
-    const unitTypesObjects = [];
+    let unitTypesObjects = [];
 
     unitTypes.forEach((row) => {
         unitTypesObjects.push({
@@ -30,6 +30,7 @@ export async function parseFloorplans(folder: string, date: string) {
         });
     });
 
+    unitTypesObjects = _.sortByAll(unitTypesObjects, ["bedrooms", "bathrooms", "sqft", "description", "units"]);
     return unitTypesObjects;
 }
 
