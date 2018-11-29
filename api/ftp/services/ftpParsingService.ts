@@ -1,6 +1,35 @@
 import * as _ from "lodash";
 import {connect, csvParse, downloadFile, sftp} from "./ftpService";
 
+export async function parseUnits(folder: string, date: string) {
+    let data = await sftp.list(folder);
+
+    data = data.map((row) => row.name);
+    let propertiesFile = "";
+
+    data.forEach((fileName) => {
+        if (fileName.indexOf("Unit_" + date) > -1) {
+
+            propertiesFile = fileName;
+        }
+    });
+
+    const body = await downloadFile(folder + "/" + propertiesFile);
+    const unitTypes = await csvParse(body);
+    const unitTypesObjects = [];
+
+    unitTypes.forEach((row) => {
+        unitTypesObjects.push({
+            yardiFloorplanId: row[3],
+            rent: parseInt(row[4], 10),
+            status: row[9],
+            isExcluded: row[10].toString() === "Yes",
+        });
+    });
+
+    return unitTypesObjects;
+}
+
 export async function parseFloorplans(folder: string, date: string) {
     let data = await sftp.list(folder);
 
