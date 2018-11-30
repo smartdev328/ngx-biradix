@@ -216,11 +216,11 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 return {rent: f, count: counts[f]};
             });
 
-            sorted = _.sortBy(countsArray, (u) => {
+            countsArray = _.sortBy(countsArray, (u) => {
                 return -1 * u.count;
             });
 
-            common = sorted[0].rent.toFixed(0);
+            common = parseInt(countsArray[0].rent, 10).toFixed(0);
         }
 
         if (lowest > 0) {
