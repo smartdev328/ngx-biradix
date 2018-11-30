@@ -34,6 +34,14 @@ routes.get("/date/:date", async (req, res) => {
 
 routes.get("/date/:date/:yardiId", async (req, res) => {
     let html = `
+<style>
+    .plus {
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+    font-family: sans-serif;
+    }
+</style>
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -67,6 +75,11 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             "Notice Unrented",
             "Occupied No Notice",
         ].indexOf(u.status) > -1;
+    });
+
+    const occupancyCounts = {};
+    occupiedUnits.forEach((f) => {
+        occupancyCounts[f.status] = (occupancyCounts[f.status] || 0) + 1;
     });
 
     html += `
@@ -128,10 +141,24 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         </table>
 
         <br>
-        <A href="javascript:void()" onclick="$('#all').toggle()">Toggle All Yardi Units</A>`;
+        <A href="javascript:void()" onclick="$('#all').toggle()">Toggle All Yardi Units</A>
+        <div id="all" style="display: none">
+            <br>
+            <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
+            <tr>
+                <th colspan="100%">
+                   Occupancy Breakdown
+                </th>
+            </tr>`;
+    Object.keys(occupancyCounts).forEach((s) => {
+        html += `<tr><td><B>${s}</B></td><td>${occupancyCounts[s]}</td></tr>`;
+    });
 
-    html += renderYardiUnits(allUnits, "all", "none");
-    html += `
+    html += `</table>
+            <Br>
+                    ${renderYardiUnits(allUnits)}
+        </div>
+
         <br><Br>
         <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
@@ -230,7 +257,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         html += `
              <tr>
                 <td>
-                    <A href="javascript:void()" onclick="$('#fp-${fp.yardiId}').toggle()">+</A>
+                    <A href="javascript:void()" onclick="$('#fp-${fp.yardiId}').toggle()" class="plus">+</A>
                 </td>
                 <td>
                    ${fp.bedrooms}x${fp.bathrooms} 
@@ -299,7 +326,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                         </tr>                                                
                     </Table>
                     <Br>
-                    ${renderYardiUnits(allfpUnits, "all-" + fp.yardiId, "block")}
+                    ${renderYardiUnits(allfpUnits)}
                 </td>
             </tr>
        `;
@@ -311,8 +338,8 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
 module.exports = routes;
 
-function renderYardiUnits(units, divId, display) {
-    let html = `<table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;display:${display}" id="${divId}">
+function renderYardiUnits(units) {
+    let html = `<table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
             <tr>
                 <th>
                    Yardi Unit Id 
