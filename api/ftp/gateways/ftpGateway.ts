@@ -141,21 +141,26 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         </table>
 
         <br>
-        <A href="javascript:void()" onclick="$('#all').toggle()">Toggle All Yardi Units</A>
+        <A href="javascript:void()" onclick="$('#all').toggle()">Toggle More Info</A>
         <div id="all" style="display: none">
             <br>
+            <B>Occupancy % Breakdown</B><Br>
             <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
-                <th colspan="100%">
-                   Occupancy Breakdown
+                <th>
+                   Status
+                </th>
+                <th>
+                   Unit Count
                 </th>
             </tr>`;
     Object.keys(occupancyCounts).forEach((s) => {
-        html += `<tr><td><B>${s}</B></td><td>${occupancyCounts[s]}</td></tr>`;
+        html += `<tr><td>${s}</td><td>${occupancyCounts[s]}</td></tr>`;
     });
 
     html += `</table>
             <Br>
+            <B>All Yardi Units</B><Br>
                     ${renderYardiUnits(allUnits)}
         </div>
 
