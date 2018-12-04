@@ -82,6 +82,21 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         occupancyCounts[f.status] = (occupancyCounts[f.status] || 0) + 1;
     });
 
+    const leasedUnits = allUnits.filter((u) => {
+        return !u.isExcluded && [
+            "Notice Rented",
+            "Notice Unrented",
+            "Occupied No Notice",
+            "Vacant Rented Not Ready",
+            "Vacant Rented Ready",
+        ].indexOf(u.status) > -1;
+    });
+
+    const leasedCounts = {};
+    leasedUnits.forEach((f) => {
+        leasedCounts[f.status] = (leasedCounts[f.status] || 0) + 1;
+    });
+
     html += `
         <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
@@ -116,10 +131,18 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             </Tr> 
             <Tr>
                 <td>
-                    <B>Occupancy:</B>
+                    <B>Occupancy %:</B>
                 </td>
                 <td>
                     ${(occupiedUnits.length / totalUnits.length * 100).toFixed(2)}%
+                </td>
+            </Tr> 
+            <Tr>
+                <td>
+                    <B>Leased %:</B>
+                </td>
+                <td>
+                    ${(leasedUnits.length / totalUnits.length * 100).toFixed(2)}%
                 </td>
             </Tr> 
             <Tr>
@@ -160,11 +183,27 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     html += `</table>
             <Br>
+                        <B>Leased % Breakdown</B><Br>
+            <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
+            <tr>
+                <th>
+                   Status
+                </th>
+                <th>
+                   Unit Count
+                </th>
+            </tr>`;
+    Object.keys(leasedCounts).forEach((s) => {
+        html += `<tr><td>${s}</td><td>${leasedCounts[s]}</td></tr>`;
+    });
+    html += `</table>
+            <Br>   
             <B>All Yardi Units</B><Br>
                     ${renderYardiUnits(allUnits)}
         </div>
 
         <br><Br>
+  
         <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
                 <th colspan="100%">
