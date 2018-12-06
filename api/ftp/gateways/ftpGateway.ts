@@ -69,33 +69,64 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         return !u.isExcluded;
     });
 
-    const occupiedUnits = allUnits.filter((u) => {
-        return !u.isExcluded && [
-            "Notice Rented",
-            "Notice Unrented",
-            "Occupied No Notice",
-        ].indexOf(u.status) > -1;
-    });
+    let tupple = filterWithCounts(allUnits, [
+        "Notice Rented",
+        "Notice Unrented",
+        "Occupied No Notice",
+    ]);
+    const occupiedUnits = tupple[0];
+    const occupancyCounts = tupple[1];
 
-    const occupancyCounts = {};
-    occupiedUnits.forEach((f) => {
-        occupancyCounts[f.status] = (occupancyCounts[f.status] || 0) + 1;
-    });
+    tupple = filterWithCounts(allUnits, [
+        "Notice Rented",
+        "Notice Unrented",
+        "Occupied No Notice",
+        "Vacant Rented Not Ready",
+        "Vacant Rented Ready",
+    ]);
+    const leasedUnits = tupple[0];
+    const leasedCounts = tupple[1];
 
-    const leasedUnits = allUnits.filter((u) => {
-        return !u.isExcluded && [
-            "Notice Rented",
-            "Notice Unrented",
-            "Occupied No Notice",
-            "Vacant Rented Not Ready",
-            "Vacant Rented Ready",
-        ].indexOf(u.status) > -1;
-    });
+    tupple = filterWithCounts(allUnits, [
+        "Vacant Rented Not Ready",
+        "Vacant Rented Ready",
+        "Vacant Unrented Not Ready",
+        "Vacant Unrented Ready",
+    ]);
+    const totalVacantUnits = tupple[0];
+    const totalVacantCounts = tupple[1];
 
-    const leasedCounts = {};
-    leasedUnits.forEach((f) => {
-        leasedCounts[f.status] = (leasedCounts[f.status] || 0) + 1;
-    });
+    tupple = filterWithCounts(allUnits, [
+        "Vacant Rented Not Ready",
+        "Vacant Rented Ready",
+    ]);
+    const lessVacantUnits = tupple[0];
+    const lessVacantCounts = tupple[1];
+
+    tupple = filterWithCounts(allUnits, [
+        "Notice Rented",
+    ]);
+    const lessNoticeUnits = tupple[0];
+    const lessNoticeCounts = tupple[1];
+
+    tupple = filterWithCounts(allUnits, [
+        "Admin",
+        "Down",
+        "Excluded",
+        "Model",
+        "Waitlist",
+    ]);
+    const lessNonRevenueUnits = tupple[0];
+    const lessNonRevenueCounts = tupple[1];
+
+    tupple = filterWithCounts(allUnits, [
+        "Notice Rented",
+        "Notice Unrented",
+    ]);
+    const allNoticeUnits = tupple[0];
+    const allNoticeCounts = tupple[1];
+
+    property.atr = totalVacantUnits.length - lessVacantUnits.length - lessNoticeUnits.length - lessNonRevenueUnits.length + allNoticeUnits.length;
 
     html += `
         <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
@@ -147,6 +178,22 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             </Tr> 
             <Tr>
                 <td>
+                    <B>ATR:</B>
+                </td>
+                <td>
+                    ${property.atr}
+                </td>
+            </Tr> 
+            <Tr>
+                <td>
+                    <B>ATR %:</B>
+                </td>
+                <td>
+                    ${(property.atr / totalUnits.length * 100).toFixed(2)}%
+                </td>
+            </Tr> 
+            <Tr>
+                <td>
                     <B>Yardi Property Id:</B>
                 </td>
                 <td>
@@ -183,7 +230,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     html += `</table>
             <Br>
-                        <B>Leased % Breakdown</B><Br>
+            <B>Leased % Breakdown</B><Br>
             <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
                 <th>
@@ -198,6 +245,105 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     });
     html += `</table>
             <Br>   
+            <B>ATR Breakdown</B><Br>
+            <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
+            <tr>
+                <th>
+                   Status
+                </th>
+                <th>
+                   Unit Count
+                </th>
+                <th>
+                    Percent
+                </th>
+            </tr>
+            <Tr>
+                <td>
+                    Total Vacant
+                </td>
+                <td>
+                    +${totalVacantUnits.length}
+                </td>
+                <td>
+                    ${(totalVacantUnits.length / totalUnits.length * 100).toFixed(2)}%
+                </td>
+            </Tr>
+`;
+    Object.keys(totalVacantCounts).forEach((s) => {
+        html += `<tr><td style="padding-left:20px"><i>${s}</i></td><td style="padding-left:20px"><i>+${totalVacantCounts[s]}</i></td><td style="padding-left:20px"><i>${(totalVacantCounts[s] / totalUnits.length * 100).toFixed(2)}%</i></td></tr>`;
+    });
+    html += `
+            <Tr>
+                <td>
+                    Less Vacant Rented
+                </td>
+                <td>
+                    -${lessVacantUnits.length}
+                </td>
+                <td>
+                    ${(lessVacantUnits.length / totalUnits.length * 100).toFixed(2)}%
+                </td>
+            </Tr>
+    `;
+    Object.keys(lessVacantCounts).forEach((s) => {
+        html += `<tr><td style="padding-left:20px"><i>${s}</i></td><td style="padding-left:20px"><i>-${lessVacantCounts[s]}</i></td><td style="padding-left:20px"><i>${(lessVacantCounts[s] / totalUnits.length * 100).toFixed(2)}%</i></td></tr>`;
+    });
+
+    html += `
+            <Tr>
+                <td>
+                    Less Notice Rented
+                </td>
+                <td>
+                    -${lessNoticeUnits.length}
+                </td>
+                <td>
+                    ${(lessNoticeUnits.length / totalUnits.length * 100).toFixed(2)}%
+                </td>
+            </Tr>
+    `;
+    Object.keys(lessNoticeCounts).forEach((s) => {
+        html += `<tr><td style="padding-left:20px"><i>${s}</i></td><td style="padding-left:20px"><i>-${lessNoticeCounts[s]}</i></td><td style="padding-left:20px"><i>${(lessNoticeCounts[s] / totalUnits.length * 100).toFixed(2)}%</i></td></tr>`;
+    });
+
+    html += `
+            <Tr>
+                <td>
+                    Less Non Revenue
+                </td>
+                <td>
+                    -${lessNonRevenueUnits.length}
+                </td>
+                <td>
+                    ${(lessNonRevenueUnits.length / totalUnits.length * 100).toFixed(2)}%
+                </td>
+            </Tr>
+    `;
+    Object.keys(lessNonRevenueCounts).forEach((s) => {
+        html += `<tr><td style="padding-left:20px"><i>${s}</i></td><td style="padding-left:20px"><i>-${lessNonRevenueCounts[s]}</i></td><td style="padding-left:20px"><i>${(lessNonRevenueCounts[s] / totalUnits.length * 100).toFixed(2)}%</i></td></tr>`;
+    });
+
+    html += `
+            <Tr>
+                <td>
+                    Plus All Notice
+                </td>
+                <td>
+                    +${allNoticeUnits.length}
+                </td>
+                <td>
+                    ${(allNoticeUnits.length / totalUnits.length * 100).toFixed(2)}%
+                </td>
+            </Tr>
+    `;
+    Object.keys(allNoticeCounts).forEach((s) => {
+        html += `<tr><td style="padding-left:20px"><i>${s}</i></td><td style="padding-left:20px"><i>+${allNoticeCounts[s]}</i></td><td style="padding-left:20px"><i>${(allNoticeCounts[s] / totalUnits.length * 100).toFixed(2)}%</i></td></tr>`;
+    });
+
+    html += `
+                </table>
+            <Br>    
             <B>All Yardi Units</B><Br>
                     ${renderYardiUnits(allUnits)}
         </div>
@@ -435,4 +581,17 @@ function renderYardiUnits(units) {
     html += `</table>`;
 
     return html;
+}
+
+function filterWithCounts(allUnits, statuses: string[]): [any[], object] {
+    const leasedUnits = allUnits.filter((u) => {
+        return !u.isExcluded && statuses.indexOf(u.status) > -1;
+    });
+
+    const leasedCounts = {};
+    leasedUnits.forEach((f) => {
+        leasedCounts[f.status] = (leasedCounts[f.status] || 0) + 1;
+    });
+
+    return [leasedUnits, leasedCounts];
 }
