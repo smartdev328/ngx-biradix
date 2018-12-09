@@ -1,6 +1,12 @@
 import * as express from "express";
 import * as _ from "lodash";
-import {parseDates, parseFloorplans, parseProperties, parseUnits} from "../services/ftpParsingService";
+import {
+    parseDates,
+    parseFloorplans,
+    parseProperties,
+    parseProspectHistory, parseTenantHistory,
+    parseUnits
+} from "../services/ftpParsingService";
 import {connect} from "../services/ftpService";
 
 const routes = express.Router();
@@ -128,6 +134,47 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     property.atr = totalVacantUnits.length - lessVacantUnits.length - lessNoticeUnits.length - lessNonRevenueUnits.length + allNoticeUnits.length;
 
+    const prospectHistory = await parseProspectHistory("/pbbell", req.params.date);
+    const propertyProspects = prospectHistory.filter((u) => {
+        return u.yardiPropertyId.toString() === req.params.yardiId.toString() && u.eventType === "Walk-In";
+    });
+
+    const tenantHistory = await parseTenantHistory("/pbbell", req.params.date);
+
+    const propertyTenants = tenantHistory.filter((u) => {
+        return [
+            "Submit Application",
+            "Application Denied",
+            "Cancel Move In",
+            "Re-Apply",
+        ].indexOf(u.event) > -1;
+    });
+
+    let u;
+    propertyTenants.forEach((t) => {
+        u = units.find((x) => {
+           return x.yardiId === t.yardiUnitId;
+        });
+        t.yardiPropertyId = u.yardiPropertyId;
+        t.yardiFloorplanId = u.yardiFloorplanId;
+        t.isExcluded = u.isExcluded;
+    });
+
+    const leases = propertyTenants.filter((u) => {
+        return u.yardiPropertyId.toString() === req.params.yardiId.toString() && !u.isExcluded;
+    });
+
+    property.leases = 0;
+    leases.forEach((x) => {
+        if (["Submit Application", "Re-Apply"].indexOf(x.event) > -1) {
+            x.sign = "+";
+            property.leases++;
+        } else {
+            x.sign = "-";
+            property.leases--;
+        }
+    });
+
     html += `
         <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
@@ -158,6 +205,22 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 </td>
                 <td>
                     ${totalUnits.length}
+                </td>
+            </Tr> 
+            <Tr>
+                <td>
+                    <B>Traffic / Week:</B>
+                </td>
+                <td>
+                    ${propertyProspects.length}
+                </td>
+            </Tr> 
+            <Tr>
+                <td>
+                    <B>Leases / Week:</B>
+                </td>
+                <td>
+                    ${property.leases}
                 </td>
             </Tr> 
             <Tr>
@@ -343,7 +406,54 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     html += `
                 </table>
-            <Br>    
+                <br>
+            <B>Traffic / Week</B><Br>
+            <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
+            <tr>
+                <th>
+                   Prospect Id
+                </th>
+                <th>
+                   Event
+                </th>
+                <th>
+                   Date
+                </th>
+            </tr>`;
+    propertyProspects.forEach((p) => {
+        html += `<tr><td>${p.prospectId}</td><td>${p.eventType}</td><td>${p.date}</td></tr>`;
+    });
+    html += `        
+            </table>
+                            <br>
+            <B>Leases / Week</B><Br>
+            <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
+            <tr>
+                <th>
+                   Yardi Unit Id
+                </th>
+                <th>
+                   Yardi Floor Plan Id
+                </th>
+                <th>
+                   Is Excluded
+                </th>
+                <th>
+                   Sign
+                </th>
+                <th>
+                   Event
+                </th>
+                <th>
+                   Date
+                </th>
+            </tr>`;
+    leases.forEach((p) => {
+        html += `<tr><td>${p.yardiUnitId}</td><td>${p.yardiFloorplanId}</td><td>${p.isExcluded}</td><td>${p.sign}</td><td>${p.event}</td><td>${p.date}</td></tr>`;
+    });
+    html += `  
+        </table>
+        <Br>    
             <B>All Yardi Units</B><Br>
                     ${renderYardiUnits(allUnits)}
         </div>

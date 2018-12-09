@@ -1,6 +1,63 @@
 import * as _ from "lodash";
 import {connect, csvParse, downloadFile, sftp} from "./ftpService";
 
+export async function parseTenantHistory(folder: string, date: string) {
+    let data = await sftp.list(folder);
+
+    data = data.map((row) => row.name);
+    let propertiesFile = "";
+
+    data.forEach((fileName) => {
+        if (fileName.indexOf("TenantHistory_" + date) > -1) {
+
+            propertiesFile = fileName;
+        }
+    });
+
+    const body = await downloadFile(folder + "/" + propertiesFile);
+    const unitTypes = await csvParse(body);
+    const unitTypesObjects = [];
+
+    unitTypes.forEach((row) => {
+        unitTypesObjects.push({
+            yardiUnitId: row[1],
+            event: row[3],
+            date: row[4],
+        });
+    });
+
+    return unitTypesObjects;
+}
+
+export async function parseProspectHistory(folder: string, date: string) {
+    let data = await sftp.list(folder);
+
+    data = data.map((row) => row.name);
+    let propertiesFile = "";
+
+    data.forEach((fileName) => {
+        if (fileName.indexOf("ProspectHistory_" + date) > -1) {
+
+            propertiesFile = fileName;
+        }
+    });
+
+    const body = await downloadFile(folder + "/" + propertiesFile);
+    const unitTypes = await csvParse(body);
+    const unitTypesObjects = [];
+
+    unitTypes.forEach((row) => {
+        unitTypesObjects.push({
+            yardiPropertyId: row[1],
+            prospectId: row[4],
+            eventType: row[7],
+            date: row[8],
+        });
+    });
+
+    return unitTypesObjects;
+}
+
 export async function parseUnits(folder: string, date: string) {
     let data = await sftp.list(folder);
 
