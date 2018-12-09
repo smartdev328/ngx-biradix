@@ -430,6 +430,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
                 <th>
+                   Tenant Id
+                </th>
+                <th>
                    Yardi Unit Id
                 </th>
                 <th>
@@ -449,7 +452,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 </th>
             </tr>`;
     leases.forEach((p) => {
-        html += `<tr><td>${p.yardiUnitId}</td><td>${p.yardiFloorplanId}</td><td>${p.isExcluded}</td><td>${p.sign}</td><td>${p.event}</td><td>${p.date}</td></tr>`;
+        html += `<tr><td>${p.tenantId}</td><td>${p.yardiUnitId}</td><td>${p.yardiFloorplanId}</td><td>${p.isExcluded}</td><td>${p.sign}</td><td>${p.event}</td><td>${p.date}</td></tr>`;
     });
     html += `  
         </table>

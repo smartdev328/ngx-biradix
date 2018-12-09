@@ -20,6 +20,7 @@ export async function parseTenantHistory(folder: string, date: string) {
 
     unitTypes.forEach((row) => {
         unitTypesObjects.push({
+            tenantId: row[2],
             yardiUnitId: row[1],
             event: row[3],
             date: row[4],
