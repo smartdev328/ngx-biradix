@@ -325,22 +325,22 @@
                         <tr>
                             <td class="heading" valign="top">
                                 <div><b>Occupancy %</b></div>
-                                <Br ng-if="$root.me.settings.showLeases || survey.leased">
-                                <div ng-if="$root.me.settings.showLeases || survey.leased"><b>Leased %</b></div>
-                                <Br ng-if="$root.me.settings.showRenewal || survey.renewal">
-                                <div ng-if="$root.me.settings.showRenewal || survey.renewal"><b>Renewal %</b></div>
+                                <Br ng-if="settings.showLeases">
+                                <div ng-if="settings.showLeases"><b>Leased %</b></div>
+                                <Br ng-if="settings.showRenewal">
+                                <div ng-if="settings.showRenewal"><b>Renewal %</b></div>
 
                             </td>
                             <td style="text-align: right" valign="top">
                                 <div ng-class="{'form-group': true, 'has-error': getErrors(validation.occupancy), 'has-warning': getWarnings(validation.occupancy) && !getErrors(validation.occupancy)}">
                                     <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
                                 </div>
-                                <Br ng-if="$root.me.settings.showLeases || survey.leased">
-                                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}" ng-if="$root.me.settings.showLeases || survey.leased">
+                                <Br ng-if="settings.showLeases">
+                                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}" ng-if="settings.showLeases">
                                     <input type="number" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
                                 </div>
-                                <Br ng-if="$root.me.settings.showRenewal || survey.renewal">
-                                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}" ng-if="$root.me.settings.showRenewal || survey.renewal">
+                                <Br ng-if="settings.showRenewal">
+                                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}" ng-if="settings.showRenewal">
                                     <input type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
                                 </div>
                             </td>
@@ -359,8 +359,8 @@
                                        uib-popover-html="getErrors(validation.occupancy)"
                                     ></i>
                                 </div>
-                                <Br ng-if="$root.me.settings.showLeases || survey.leased">
-                                <div ng-if="$root.me.settings.showLeases || survey.leased" class="moreinforow">
+                                <Br ng-if="settings.showLeases">
+                                <div ng-if="settings.showLeases" class="moreinforow">
                                     <a class="pull-left" href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                                        popover-trigger="'mouseenter'"
@@ -373,8 +373,8 @@
                                        uib-popover-html="getErrors(validation.leased)"
                                     ></i>
                                 </div>
-                                <br ng-if="$root.me.settings.showRenewal || survey.renewal">
-                                <div ng-if="$root.me.settings.showRenewal || survey.renewal" class="moreinforow">
+                                <br ng-if="settings.showRenewal">
+                                <div ng-if="settings.showRenewal" class="moreinforow">
                                     <a class="pull-left" href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                                        popover-trigger="'mouseenter'"
@@ -394,7 +394,7 @@
                             </td>
 
                             <td class="heading" valign="top">
-                                <div ng-if="$root.me.settings.showATR || survey.atr">
+                                <div ng-if="settings.showATR">
                                     <b class="hidden-xs">Apts. to Rent</b>
                                     <b class="visible-xs-inline">ATR</b>
                                     <i class="fa fa-question-circle"
@@ -405,7 +405,7 @@
                                        style="font-size:12px"
                                     ></i>
                                 </div>
-                                <Br ng-if="$root.me.settings.showATR || survey.atr">
+                                <Br ng-if="settings.showATR">
 
                                 <div>
                                     <b class="hidden-xs">Traffic/Week</b>
@@ -420,10 +420,10 @@
 
                             <td style="text-align: right"  valign="top">
 
-                                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.atr), 'has-warning': getWarnings(validation.atr) && !getErrors(validation.atr)}" ng-if="$root.me.settings.showATR || survey.atr">
+                                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.atr), 'has-warning': getWarnings(validation.atr) && !getErrors(validation.atr)}" ng-if="settings.showATR">
                                     <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.atr" ng-enter="next('atr','atr')" id="atr" onclick="select()" ng-change="clear('atr')" ng-keydown="pressed('atr','atr', $event)" ng-blur="updateDone('atr',true)">
                                 </div>
-                                <Br ng-if="$root.me.settings.showATR || survey.atr">
+                                <Br ng-if="settings.showATR">
                                 <div ng-class="{'form-group': true, 'has-error': getErrors(validation.traffic), 'has-warning': getWarnings(validation.traffic) && !getErrors(validation.traffic)}">
                                     <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()" ng-change="clear('traffic')" ng-keydown="pressed('traffic','traffic', $event)" ng-blur="updateDone('traffic',true)">
                                 </div>
@@ -433,7 +433,7 @@
                                 </div>
                             </td>
                             <td style="width:45px;"  valign="top" class="moreinfo">
-                                <div ng-if="$root.me.settings.showATR || survey.atr" class="moreinforow">
+                                <div ng-if="settings.showATR" class="moreinforow">
                                     <a class="pull-left" href ng-click="undo('atr')" ng-if="survey.atrupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                                     <i ng-if="getWarnings(validation.atr) && !getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                                        popover-trigger="'mouseenter'"
@@ -446,7 +446,7 @@
                                        uib-popover-html="getErrors(validation.atr)"
                                     ></i>
                                 </div>
-                                <Br ng-if="$root.me.settings.showATR || survey.atr">
+                                <Br ng-if="settings.showATR">
 
                                 <div class="moreinforow">
                                     <a class="pull-left" href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>

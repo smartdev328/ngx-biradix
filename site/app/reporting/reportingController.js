@@ -654,10 +654,11 @@ define([
                 };
 
                 if ($cookies.get("settings")) {
-                    options.trends.daterange1.start = $scope.liveSettings.trends.daterange2.selectedStartDate;
-                    options.trends.daterange1.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
+                    options.trends.daterange1.start = $scope.liveSettings.trends.daterange1.selectedStartDate;
+                    options.trends.daterange1.end = $scope.liveSettings.trends.daterange1.selectedEndDate;
                     options.trends.daterange2.start = $scope.liveSettings.trends.daterange2.selectedStartDate;
                     options.trends.daterange2.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
+                    options.trends.daterange2.enabled = $scope.liveSettings.trends.daterange2.enabled;
                 }
             }
             if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {

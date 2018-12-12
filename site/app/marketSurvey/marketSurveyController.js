@@ -1,7 +1,7 @@
 angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope","toastr", "$location", "$propertyService","$dialog", "surveyid", "$authService","$auditService","options","$userService","$propertyUsersService","$cookieSettingsService", "$keenService", function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService,$keenService) {
 
             $scope.editableSurveyId = surveyid;
-            $scope.settings = {showNotes : false, showDetailed: false};
+            $scope.settings = {showNotes: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false};
             $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
@@ -67,6 +67,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
             var me = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
+                    $scope.settings.showLeases = $rootScope.me.settings.showLeases;
+                    $scope.settings.showRenewal = $rootScope.me.settings.showRenewal;
+                    $scope.settings.showATR = $rootScope.me.settings.showATR;
 
                     me();
                     $scope.settings.showDetailed = $rootScope.me.settings.monthlyConcessions;
@@ -353,6 +356,16 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
     };
 
             $scope.doneLoading = function() {
+                if ($scope.survey.atr) {
+                    $scope.settings.showATR = true;
+                }
+                if ($scope.survey.leased) {
+                    $scope.settings.showLeases = true;
+                }
+                if ($scope.survey.renewal) {
+                    $scope.settings.showRenewal = true;
+                }
+
                 $scope.survey.totalUnits = 0;
                 $scope.totals.units = 0;
                 $scope.totals.sqft = 0;
