@@ -102,7 +102,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
 
                                 if (!$scope.settings.daterange2.selectedEndDate._d) {
                                     d2e = moment($scope.settings.daterange2.selectedEndDate).utcOffset($scope.offset).format("MM/DD/YY");
-                                } if ($scope.settings.daterange2.selectedEndDate._isUTC) {
+                                } else if ($scope.settings.daterange2.selectedEndDate._isUTC) {
                                     d2e = moment($scope.settings.daterange2.selectedEndDate._d).subtract($scope.settings.daterange2.selectedEndDate._offset, 'minute').endOf("day").format("MM/DD/YY");
                                 } else {
                                     d2e = moment($scope.settings.daterange2.selectedEndDate._d).endOf("day").format("MM/DD/YY");
