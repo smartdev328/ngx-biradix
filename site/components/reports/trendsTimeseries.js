@@ -95,15 +95,15 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                 if (!$scope.settings.daterange2.selectedStartDate._d) {
                                     d2s = moment($scope.settings.daterange2.selectedStartDate).utcOffset($scope.offset).format("MM/DD/YY");
                                 } else if ($scope.settings.daterange2.selectedStartDate._isUTC) {
-                                    d2s = moment($scope.settings.daterange2.selectedStartDate._d).subtract($scope.settings.daterange2.selectedStartDate._offset, 'minute').format("MM/DD/YY");
+                                    d2s = moment($scope.settings.daterange2.selectedStartDate._d).utcOffset($scope.offset).format("MM/DD/YY");
                                 } else {
-                                    d2s = moment($scope.settings.daterange2.selectedStartDate._d).format("MM/DD/YY");
+                                    d2s = moment($scope.settings.daterange2.selectedStartDate._d).utcOffset($scope.offset).format("MM/DD/YY");
                                 }
 
                                 if (!$scope.settings.daterange2.selectedEndDate._d) {
                                     d2e = moment($scope.settings.daterange2.selectedEndDate).utcOffset($scope.offset).format("MM/DD/YY");
                                 } else if ($scope.settings.daterange2.selectedEndDate._isUTC) {
-                                    d2e = moment($scope.settings.daterange2.selectedEndDate._d).subtract($scope.settings.daterange2.selectedEndDate._offset, 'minute').endOf("day").format("MM/DD/YY");
+                                    d2e = moment($scope.settings.daterange2.selectedEndDate._d).utcOffset($scope.offset).endOf("day").format("MM/DD/YY");
                                 } else {
                                     d2e = moment($scope.settings.daterange2.selectedEndDate._d).endOf("day").format("MM/DD/YY");
                                 }
