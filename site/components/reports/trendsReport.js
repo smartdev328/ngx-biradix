@@ -4,6 +4,7 @@ angular.module('biradix.global').directive('trendsReport', function () {
             scope: {
                 report: '=',
                 settings: '=',
+                offset: "="
             },
             controller: function ($scope,$element) {
 

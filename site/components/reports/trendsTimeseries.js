@@ -6,7 +6,8 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                 settings: '=',
                 report: '=',
                 cbLegendClicked: '&',
-                legendUpdated: '='
+                legendUpdated: '=',
+                offset: "="
             },
             controller: function ($scope, $element) {
 
@@ -73,6 +74,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
 
                             if (d1 == "Custom Range") {
                                 var d1s, d1e;
+
                                 if ($scope.settings.daterange1.selectedStartDate._isUTC) {
                                     d1s = moment($scope.settings.daterange1.selectedStartDate._d).subtract($scope.settings.daterange1.selectedStartDate._offset, 'minute').format("MM/DD/YY");
                                 } else {
@@ -90,13 +92,17 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
 
                             if (d2 == "Custom Range") {
                                 var d2s, d2e;
-                                if ($scope.settings.daterange2.selectedStartDate._isUTC) {
+                                if (!$scope.settings.daterange2.selectedStartDate._d) {
+                                    d2s = moment($scope.settings.daterange2.selectedStartDate).utcOffset($scope.offset).format("MM/DD/YY");
+                                } else if ($scope.settings.daterange2.selectedStartDate._isUTC) {
                                     d2s = moment($scope.settings.daterange2.selectedStartDate._d).subtract($scope.settings.daterange2.selectedStartDate._offset, 'minute').format("MM/DD/YY");
                                 } else {
                                     d2s = moment($scope.settings.daterange2.selectedStartDate._d).format("MM/DD/YY");
                                 }
 
-                                if ($scope.settings.daterange2.selectedEndDate._isUTC) {
+                                if (!$scope.settings.daterange2.selectedEndDate._d) {
+                                    d2e = moment($scope.settings.daterange2.selectedEndDate).utcOffset($scope.offset).format("MM/DD/YY");
+                                } if ($scope.settings.daterange2.selectedEndDate._isUTC) {
                                     d2e = moment($scope.settings.daterange2.selectedEndDate._d).subtract($scope.settings.daterange2.selectedEndDate._offset, 'minute').endOf("day").format("MM/DD/YY");
                                 } else {
                                     d2e = moment($scope.settings.daterange2.selectedEndDate._d).endOf("day").format("MM/DD/YY");
@@ -471,7 +477,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
 
             },
             template:
-                "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px', 'width': options.printWidth + 'px'}\" class=\"visible-print-block\"></div>"+
+                "{{debug}}<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px', 'width': options.printWidth + 'px'}\" class=\"visible-print-block\"></div>"+
                 "<div ng-if='settings.graphs' ng-style=\"{'height': options.height + 'px'}\" class=\"hidden-print-block\"></div>" +
                 "<div ng-if='!settings.graphs' ng-include=\"trendsTable\"></div>"
         };
