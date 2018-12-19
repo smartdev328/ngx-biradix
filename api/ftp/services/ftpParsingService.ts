@@ -1,5 +1,6 @@
 import * as _ from "lodash";
 import {connect, csvParse, downloadFile, sftp} from "./ftpService";
+import * as moment from "moment-timezone";
 
 export async function parseTenantHistory(folder: string, date: string) {
     let data = await sftp.list(folder);
@@ -23,7 +24,8 @@ export async function parseTenantHistory(folder: string, date: string) {
             tenantId: row[2],
             yardiUnitId: row[1],
             event: row[3],
-            date: row[4],
+            strDate: row[4],
+            date: moment(new Date(row[4].replace("AM", " AM").replace("PM", " PM").replace("  ", " ") + " -08:00")).tz("America/Los_Angeles"),
         });
     });
 
@@ -52,7 +54,8 @@ export async function parseProspectHistory(folder: string, date: string) {
             yardiPropertyId: row[1],
             prospectId: row[4],
             eventType: row[7],
-            date: row[8],
+            strDate: row[8],
+            date: moment(new Date(row[8].replace("AM", " AM").replace("PM", " PM").replace("  ", " ") + " -08:00")).tz("America/Los_Angeles"),
         });
     });
 

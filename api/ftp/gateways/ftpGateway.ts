@@ -1,11 +1,12 @@
 import * as express from "express";
 import * as _ from "lodash";
+import * as moment from "moment-timezone";
 import {
     parseDates,
     parseFloorplans,
     parseProperties,
     parseProspectHistory, parseTenantHistory,
-    parseUnits
+    parseUnits,
 } from "../services/ftpParsingService";
 import {connect} from "../services/ftpService";
 
@@ -39,6 +40,14 @@ routes.get("/date/:date", async (req, res) => {
 });
 
 routes.get("/date/:date/:yardiId", async (req, res) => {
+
+    let endDate = moment(`${req.params.date.substring(0, 4)}-${req.params.date.substring(4, 6)}-${req.params.date.substring(6, 8)}T23:59:59-08:00`).tz("America/Los_Angeles");
+    endDate = endDate.startOf("isoWeek").add(-1, "minute");
+    const startDate = endDate.clone().startOf("isoWeek");
+    const startDateUtc = parseInt(startDate.format("x"), 10);
+    const endDateUtc = parseInt(endDate.format("x"), 10);
+    // return res.status(200).send(startDate.format() + " " + endDate.format());
+
     let html = `
 <style>
     .plus {
@@ -135,8 +144,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     property.atr = totalVacantUnits.length - lessVacantUnits.length - lessNoticeUnits.length - lessNonRevenueUnits.length + allNoticeUnits.length;
 
     const prospectHistory = await parseProspectHistory("/pbbell", req.params.date);
-    const propertyProspects = prospectHistory.filter((u) => {
-        return u.yardiPropertyId.toString() === req.params.yardiId.toString() && u.eventType === "Walk-In";
+    const propertyProspects = prospectHistory.filter((p) => {
+        p.utcDate = parseInt(p.date.format("x"), 10);
+        return p.yardiPropertyId.toString() === req.params.yardiId.toString() && p.eventType === "Walk-In";
     });
 
     const tenantHistory = await parseTenantHistory("/pbbell", req.params.date);
@@ -158,6 +168,8 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         t.yardiPropertyId = u.yardiPropertyId;
         t.yardiFloorplanId = u.yardiFloorplanId;
         t.isExcluded = u.isExcluded;
+        t.utcDate = parseInt(t.date.format("x"), 10);
+        t.valid = t.utcDate >= startDateUtc && t.utcDate <= endDateUtc;
     });
 
     const leases = propertyTenants.filter((u) => {
@@ -166,12 +178,17 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     property.leases = 0;
     leases.forEach((x) => {
+        x.valid = x.utcDate >= startDateUtc && x.utcDate <= endDateUtc;
         if (["Submit Application", "Re-Apply"].indexOf(x.event) > -1) {
             x.sign = "+";
-            property.leases++;
+            if (x.valid) {
+                property.leases++;
+            }
         } else {
             x.sign = "-";
-            property.leases--;
+            if (x.valid) {
+                property.leases--;
+            }
         }
     });
 
@@ -212,7 +229,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     <B>Traffic / Week:</B>
                 </td>
                 <td>
-                    ${propertyProspects.length}
+                    ${propertyProspects.filter((x) => x.valid === true).length}
                 </td>
             </Tr> 
             <Tr>
@@ -407,7 +424,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     html += `
                 </table>
                 <br>
-            <B>Traffic / Week</B><Br>
+            <B>Traffic / Week</B> (${startDate.format() + " [" + startDateUtc}] - ${endDate.format() + " [" + endDateUtc}])<Br><Br>
             <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
                 <th>
@@ -417,16 +434,22 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    Event
                 </th>
                 <th>
-                   Date
+                   Date (str)
+                </th>
+                <th>
+                   Date (pst)
+                </th>
+                <th>
+                   Date (epoch)
                 </th>
             </tr>`;
     propertyProspects.forEach((p) => {
-        html += `<tr><td>${p.prospectId}</td><td>${p.eventType}</td><td>${p.date}</td></tr>`;
+        html += `<tr style="background-color: ${p.valid ? "lightgreen" : "inherit"}"><td>${p.prospectId}</td><td>${p.eventType}</td><td>${p.strDate}</td><td>${p.date.format()}</td><td>${p.utcDate}</td></tr>`;
     });
     html += `        
             </table>
                             <br>
-            <B>Leases / Week</B><Br>
+            <B>Leases / Week</B> (${startDate.format() + " [" + startDateUtc}] - ${endDate.format() + " [" + endDateUtc}])<Br>
             <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff">
             <tr>
                 <th>
@@ -448,11 +471,17 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    Event
                 </th>
                 <th>
-                   Date
+                   Date (str)
+                </th>
+                <th>
+                   Date (pst)
+                </th>
+                <th>
+                   Date (epoch)
                 </th>
             </tr>`;
     leases.forEach((p) => {
-        html += `<tr><td>${p.tenantId}</td><td>${p.yardiUnitId}</td><td>${p.yardiFloorplanId}</td><td>${p.isExcluded}</td><td>${p.sign}</td><td>${p.event}</td><td>${p.date}</td></tr>`;
+        html += `<tr style="background-color: ${p.valid ? "lightgreen" : "inherit"}"><td>${p.tenantId}</td><td>${p.yardiUnitId}</td><td>${p.yardiFloorplanId}</td><td>${p.isExcluded}</td><td>${p.sign}</td><td>${p.event}</td><td>${p.strDate}</td><td>${p.date.format()}</td><td>${p.utcDate}</td></tr>`;
     });
     html += `  
         </table>
