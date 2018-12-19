@@ -15,7 +15,7 @@
 
 <fees-report class="report break-before" ng-if="!reportLoading && reports && reports.fees_deposits" report="reports.fees_deposits" subject="selected.Property" comps="selected.Comps"></fees-report>
 
-<trends-report  class="report break-before" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="::runSettings.trends"></trends-report>
+<trends-report  class="report break-before" ng-if="!reportLoading && reports && reports.trends && trends" report="reports.trends" settings="::runSettings.trends" offset="timezone"></trends-report>
 
 <custom-portfolio class="report break-before" ng-if="!reportLoading && reports && reports.custom_portfolio" report="reports.custom_portfolio" show-leases="$root.me.settings.showLeases" show="liveSettings.customPortfolio.show" settings="liveSettings.customPortfolio"></custom-portfolio>
 
