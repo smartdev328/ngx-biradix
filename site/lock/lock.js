@@ -13,8 +13,9 @@ function getCookie(name) {
         }
     }
 
-    console.log(decodeURI(dc.substring(begin + prefix.length, end)));
-    return decodeURI(dc.substring(begin + prefix.length, end));
+    var cookie = (decodeURI(dc.substring(begin + prefix.length, end)) || "").split(";")[0];
+
+    return cookie;
 }
 
 var token = getCookie("token");
