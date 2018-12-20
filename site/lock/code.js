@@ -86,9 +86,8 @@ if (strDomain) {
         }, false);
     
         $(document).ready(function() {
-            $("body").append("<iframe style='width:0; height:0; border:0; border:none' src='https://" + strDomain + "/lock/lock.html?'></iframe>");
+            $("body").append("<iframe style='width:0; height:0; border:0; border:none' src='https://" + strDomain + "/lock/lock.html?bust=" + (new Date()).getTime() + "'></iframe>");
         });
-
 } else {
     redirectDomain();
 }

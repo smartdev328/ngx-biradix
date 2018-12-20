@@ -44,7 +44,7 @@ module.exports = {
                     // Verify login and password are set and correct
                     if (!login || !password || login !== auth.login || password !== auth.password) {
                         res.set("WWW-Authenticate", "Basic realm=\"401\"");
-                        res.status(401).send("Authentication required."); 
+                        res.status(401).send("Authentication required.");
                         return;
                     }
                     next();

@@ -146,6 +146,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     const prospectHistory = await parseProspectHistory("/pbbell", req.params.date);
     const propertyProspects = prospectHistory.filter((p) => {
         p.utcDate = parseInt(p.date.format("x"), 10);
+        p.valid = p.utcDate >= startDateUtc && p.utcDate <= endDateUtc;
         return p.yardiPropertyId.toString() === req.params.yardiId.toString() && p.eventType === "Walk-In";
     });
 
@@ -178,7 +179,6 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     property.leases = 0;
     leases.forEach((x) => {
-        x.valid = x.utcDate >= startDateUtc && x.utcDate <= endDateUtc;
         if (["Submit Application", "Re-Apply"].indexOf(x.event) > -1) {
             x.sign = "+";
             if (x.valid) {
