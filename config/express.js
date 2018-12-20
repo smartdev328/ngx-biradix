@@ -32,26 +32,26 @@ module.exports = {
             app.set("view engine", "ejs");
             app.set("views", __dirname + "/../site/views");
 
-            app.use((req, res, next) => {
-                const host = req.headers.host.toString().toLowerCase();
-                if ((host.indexOf("localhost") > -1 || host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1) && req.originalUrl === "/" && req.headers["user-agent"] !== "PhantomJS") {
-                    const auth = {login: "testadmin@biradix.com", password: "temppass!"};
-
-                    // parse login and password from headers
-                    const b64auth = (req.headers.authorization || "").split(" ")[1] || ""
-                    const [login, password] = new Buffer(b64auth, "base64").toString().split(":")
-
-                    // Verify login and password are set and correct
-                    if (!login || !password || login !== auth.login || password !== auth.password) {
-                        res.set("WWW-Authenticate", "Basic realm=\"401\"");
-                        res.status(401).send("Authentication required."); 
-                        return;
-                    }
-                    next();
-                } else {
-                    next();
-                }
-            });
+            // app.use((req, res, next) => {
+            //     const host = req.headers.host.toString().toLowerCase();
+            //     if ((host.indexOf("localhost") > -1 || host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1) && req.originalUrl === "/" && req.headers["user-agent"] !== "PhantomJS") {
+            //         const auth = {login: "testadmin@biradix.com", password: "temppass!"};
+            //
+            //         // parse login and password from headers
+            //         const b64auth = (req.headers.authorization || "").split(" ")[1] || ""
+            //         const [login, password] = new Buffer(b64auth, "base64").toString().split(":")
+            //
+            //         // Verify login and password are set and correct
+            //         if (!login || !password || login !== auth.login || password !== auth.password) {
+            //             res.set("WWW-Authenticate", "Basic realm=\"401\"");
+            //             res.status(401).send("Authentication required.");
+            //             return;
+            //         }
+            //         next();
+            //     } else {
+            //         next();
+            //     }
+            // });
 
             // protect /api using middleware, allow /api/v/users/login and create to allow to authenticate
             app.use("/api", expressJwt(
