@@ -26,6 +26,8 @@ export async function parseTenantHistory(folder: string, date: string) {
             event: row[3],
             strDate: row[4],
             date: moment(new Date(row[4].replace("AM", " AM").replace("PM", " PM").replace("  ", " ") + " -08:00")).tz("America/Los_Angeles"),
+            leaseFromDate: moment(new Date(row[5].replace("AM", " AM").replace("PM", " PM").replace("  ", " ") + " -08:00")).tz("America/Los_Angeles"),
+            rent: parseInt(row[7], 10),
         });
     });
 
