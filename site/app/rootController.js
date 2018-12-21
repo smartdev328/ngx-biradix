@@ -262,6 +262,12 @@ angular.module("biradix.global").controller("rootController",
                     $rootScope.me.first,
                     $rootScope.me.orgs[0].name
                 );
+
+                FS.identify($rootScope.me._id, {
+                    displayName: $rootScope.me.first + " " + $rootScope.me.last,
+                    email: $rootScope.me.email,
+                    org: $rootScope.me.orgs[0].name
+                });
                 $rootScope.loggedIn = true;
                 $('.loading').hide();
                 $('.loggedout').hide();
