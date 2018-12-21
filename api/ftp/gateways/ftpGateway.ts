@@ -170,11 +170,16 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         t.yardiFloorplanId = u.yardiFloorplanId;
         t.isExcluded = u.isExcluded;
         t.utcDate = parseInt(t.date.format("x"), 10);
+        t.leaseFromDateUtc = parseInt(t.leaseFromDate.format("x"), 10);
         t.valid = t.utcDate >= startDateUtc && t.utcDate <= endDateUtc;
     });
 
     const leases = propertyTenants.filter((u) => {
         return u.yardiPropertyId.toString() === req.params.yardiId.toString() && !u.isExcluded;
+    });
+
+    const applications = propertyTenants.filter((u) => {
+        return u.yardiPropertyId.toString() === req.params.yardiId.toString() && !u.isExcluded && u.event === "Submit Application";
     });
 
     property.leases = 0;
@@ -533,30 +538,37 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     let average;
     let common;
     let largest;
+    let custom;
     let counts;
     let countsArray;
+    let unitApplications;
     floorplans.forEach((fp) => {
-        allfpUnits = units.filter((u) => {
-            return u.yardiFloorplanId.toString() === fp.yardiId.toString();
+        allfpUnits = units.filter((un) => {
+            return un.yardiFloorplanId.toString() === fp.yardiId.toString();
         });
 
-        fpUnits = allfpUnits.filter((u) => {
-            return !u.isExcluded;
+        unitApplications = applications.filter((un) => {
+            return un.yardiFloorplanId.toString() === fp.yardiId.toString();
+        })
+
+        fpUnits = allfpUnits.filter((un) => {
+            return !un.isExcluded;
         });
 
         lowest = 0;
         average = 0;
         common = 0;
         largest = 0;
+        custom = 0;
         fp.units = fpUnits.length;
         if (fpUnits && fpUnits.length > 0) {
-            sorted = _.sortBy(fpUnits, (u) => {
-                return u.rent;
+            sorted = _.sortBy(fpUnits, (un) => {
+                return un.rent;
             });
             lowest = sorted[0].rent.toFixed(0);
 
-            sorted = _.sortBy(fpUnits, (u) => {
-                return -1 * u.rent;
+            sorted = _.sortBy(fpUnits, (un) => {
+                return -1 * un.rent;
             });
             largest = sorted[0].rent.toFixed(0);
 
@@ -575,15 +587,31 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 return {rent: f, count: counts[f]};
             });
 
-            countsArray = _.sortBy(countsArray, (u) => {
-                return -1 * u.count;
+            countsArray = _.sortBy(countsArray, (un) => {
+                return -1 * un.count;
             });
 
             common = parseInt(countsArray[0].rent, 10).toFixed(0);
+
+            sorted = fpUnits.filter((un) => {
+                return ["Notice Unrented",
+                    "Vacant Unrented Not Ready",
+                    "Vacant Unrented Ready"].indexOf(un.status) > -1;
+            });
+
+            if (sorted.length > 0) {
+                sorted = _.sortBy(fpUnits, (un) => {
+                    return un.rent;
+                });
+                custom = sorted[0].rent.toFixed(0);
+            } else {
+                custom = average;
+            }
+
         }
 
-        if (lowest > 0) {
-            fp.rent = lowest;
+        if (custom > 0) {
+            fp.rent = custom;
         }
 
         html += `
@@ -650,15 +678,63 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                         </tr>
                         <tr>
                             <Td>
+                                <B>Custom Rent:</B>
+                             </Td>
+                             <td>
+                                $${custom}
+                              </td>
+                        </tr>                        
+                        <tr>
+                            <Td>
                                 <B>Current Strategy:</B>
                              </Td>
                              <td>
-                                Lowest
+                                Custom
                               </td>
                         </tr>                                                
                     </Table>
                     <Br>
                     ${renderYardiUnits(allfpUnits)}
+                    <Br>
+                    <B>Applications</B>:
+                    <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
+                        <tr>
+                            <th>
+                               Event 
+                            </th>                        
+                            <th>
+                               Rent 
+                            </th>
+                            <th>
+                               LeaseFromDate (pst) 
+                            </th>
+                            <th>
+                               LeaseFromDate (utc) 
+                            </th>
+                        </tr>  
+ `;
+
+        unitApplications.forEach((ap) => {
+            html += `
+                 <tr>
+                    <td>
+                       ${ap.event} 
+                    </td>                 
+                    <td>
+                        $${ap.rent.toFixed(0)} 
+                    </td>
+                    <td>
+                       ${ap.leaseFromDate.format()} 
+                    </td>
+                    <td>
+                       ${ap.leaseFromDateUtc} 
+                    </td>                    
+                </tr>
+           `;
+        });
+        html += `
+                    </table>
+                    <Br>
                 </td>
             </tr>
        `;
