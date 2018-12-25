@@ -46,7 +46,12 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     const startDate = endDate.clone().startOf("isoWeek");
     const startDateUtc = parseInt(startDate.format("x"), 10);
     const endDateUtc = parseInt(endDate.format("x"), 10);
-    // return res.status(200).send(startDate.format() + " " + endDate.format());
+
+    const startLeaseDate = endDate.clone().add(-30, "day").startOf("day");
+    const startLeaseDateUtc = parseInt(startDate.format("x"), 10);
+
+    const endLeaseDate = endDate.clone().add(60, "day").endOf("day");
+    const endtLeaseDateUtc = parseInt(startDate.format("x"), 10);
 
     let html = `
 <style>
@@ -76,12 +81,12 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     const units = await parseUnits("/pbbell", req.params.date);
 
-    const allUnits = units.filter((u) => {
-        return u.yardiPropertyId.toString() === req.params.yardiId.toString();
+    const allUnits = units.filter((un) => {
+        return un.yardiPropertyId.toString() === req.params.yardiId.toString();
     });
 
-    const totalUnits = allUnits.filter((u) => {
-        return !u.isExcluded;
+    const totalUnits = allUnits.filter((un) => {
+        return !un.isExcluded;
     });
 
     let tupple = filterWithCounts(allUnits, [
@@ -152,13 +157,13 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
     const tenantHistory = await parseTenantHistory("/pbbell", req.params.date);
 
-    const propertyTenants = tenantHistory.filter((u) => {
+    const propertyTenants = tenantHistory.filter((un) => {
         return [
             "Submit Application",
             "Application Denied",
             "Cancel Move In",
             "Re-Apply",
-        ].indexOf(u.event) > -1;
+        ].indexOf(un.event) > -1;
     });
 
     let u;
@@ -174,12 +179,13 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         t.valid = t.utcDate >= startDateUtc && t.utcDate <= endDateUtc;
     });
 
-    const leases = propertyTenants.filter((u) => {
-        return u.yardiPropertyId.toString() === req.params.yardiId.toString() && !u.isExcluded;
+    const leases = propertyTenants.filter((un) => {
+        return un.yardiPropertyId.toString() === req.params.yardiId.toString() && !un.isExcluded;
     });
 
-    const applications = propertyTenants.filter((u) => {
-        return u.yardiPropertyId.toString() === req.params.yardiId.toString() && !u.isExcluded && u.event === "Submit Application";
+    const applications = propertyTenants.filter((un) => {
+        return un.yardiPropertyId.toString() === req.params.yardiId.toString() && !un.isExcluded &&
+            ["Submit Application", "Lease Signed"].indexOf(un.event) > -1;
     });
 
     property.leases = 0;
@@ -517,6 +523,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    Units 
                 </th>
                 <th>
+                   Units Avail.
+                </th>
+                <th>
                    Sqft 
                 </th>
                 <th>
@@ -549,7 +558,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
         unitApplications = applications.filter((un) => {
             return un.yardiFloorplanId.toString() === fp.yardiId.toString();
-        })
+        });
 
         fpUnits = allfpUnits.filter((un) => {
             return !un.isExcluded;
@@ -561,6 +570,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         largest = 0;
         custom = 0;
         fp.units = fpUnits.length;
+        fp.unitsAvailable = false;
         if (fpUnits && fpUnits.length > 0) {
             sorted = _.sortBy(fpUnits, (un) => {
                 return un.rent;
@@ -604,6 +614,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     return un.rent;
                 });
                 custom = sorted[0].rent.toFixed(0);
+                fp.unitsAvailable = true;
             } else {
                 custom = average;
             }
@@ -627,6 +638,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 </td>
                 <td>
                    ${fp.units} 
+                </td>
+                <td>
+                   ${fp.unitsAvailable ? "Yes" : "None"} 
                 </td>
                 <td>
                    ${fp.sqft} 
@@ -696,7 +710,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     <Br>
                     ${renderYardiUnits(allfpUnits)}
                     <Br>
-                    <B>Applications</B>:
+                    <B>Lease Rent History</B> (${startLeaseDate.format()} to ${endLeaseDate.format()}):
                     <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
                         <tr>
                             <th>
@@ -704,6 +718,12 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                             </th>                        
                             <th>
                                Rent 
+                            </th>
+                            <th>
+                               Date (pst) 
+                            </th>
+                            <th>
+                               Date (utc) 
                             </th>
                             <th>
                                LeaseFromDate (pst) 
@@ -723,6 +743,12 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     <td>
                         $${ap.rent.toFixed(0)} 
                     </td>
+                    <td>
+                       ${ap.date.format()} 
+                    </td>
+                    <td>
+                       ${ap.utcDate} 
+                    </td>  
                     <td>
                        ${ap.leaseFromDate.format()} 
                     </td>
