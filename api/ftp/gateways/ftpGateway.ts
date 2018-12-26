@@ -163,6 +163,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             "Application Denied",
             "Cancel Move In",
             "Re-Apply",
+            "Lease Signed",
         ].indexOf(un.event) > -1;
     });
 
@@ -177,15 +178,20 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         t.utcDate = parseInt(t.date.format("x"), 10);
         t.leaseFromDateUtc = parseInt(t.leaseFromDate.format("x"), 10);
         t.valid = t.utcDate >= startDateUtc && t.utcDate <= endDateUtc;
-    });
-
-    const leases = propertyTenants.filter((un) => {
-        return un.yardiPropertyId.toString() === req.params.yardiId.toString() && !un.isExcluded;
+        t.validRent = t.utcDate >= startLeaseDate;
     });
 
     const applications = propertyTenants.filter((un) => {
         return un.yardiPropertyId.toString() === req.params.yardiId.toString() && !un.isExcluded &&
             ["Submit Application", "Lease Signed"].indexOf(un.event) > -1;
+    });
+
+    // Only use Lease Signed for rents
+    _.remove(propertyTenants, (un) => {
+        return un.event === "Lease Signed";
+    });
+    const leases = propertyTenants.filter((un) => {
+        return un.yardiPropertyId.toString() === req.params.yardiId.toString() && !un.isExcluded;
     });
 
     property.leases = 0;
@@ -532,6 +538,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    Rent 
                 </th>
                 <th>
+                   Lease Rent History 
+                </th>
+                <th>
                    Yardi Floor Plan Id
                 </th>
                 <th>
@@ -551,6 +560,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     let counts;
     let countsArray;
     let unitApplications;
+    let validRentEvents;
     floorplans.forEach((fp) => {
         allfpUnits = units.filter((un) => {
             return un.yardiFloorplanId.toString() === fp.yardiId.toString();
@@ -571,6 +581,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         custom = 0;
         fp.units = fpUnits.length;
         fp.unitsAvailable = false;
+        fp.leaseRentHistory = false;
         if (fpUnits && fpUnits.length > 0) {
             sorted = _.sortBy(fpUnits, (un) => {
                 return un.rent;
@@ -616,7 +627,20 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 custom = sorted[0].rent.toFixed(0);
                 fp.unitsAvailable = true;
             } else {
-                custom = average;
+                unitApplications = _.sortBy(unitApplications, (un) => {
+                   return -1 * un.dateUtc;
+                });
+
+                validRentEvents = unitApplications.filter((un) => {
+                   return un.validRent;
+                });
+
+                if (validRentEvents.length > 0) {
+                    custom = validRentEvents[0].rent.toFixed(0);
+                    fp.leaseRentHistory = true;
+                } else {
+                    custom = average;
+                }
             }
 
         }
@@ -647,6 +671,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 </td>
                  <td>
                    $${fp.rent} 
+                </td>
+                <td>
+                   ${fp.leaseRentHistory ? "Yes" : "None"} 
                 </td>
                 <td>
                    ${fp.yardiId} 
@@ -736,7 +763,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
         unitApplications.forEach((ap) => {
             html += `
-                 <tr>
+                 <tr style="background-color: ${ap.validRent ? "lightgreen" : "inherit"}">
                     <td>
                        ${ap.event} 
                     </td>                 
