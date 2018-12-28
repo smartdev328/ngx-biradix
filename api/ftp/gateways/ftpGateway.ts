@@ -51,7 +51,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     const startLeaseDateUtc = parseInt(startDate.format("x"), 10);
 
     const endLeaseDate = endDate.clone().add(60, "day").endOf("day");
-    const endtLeaseDateUtc = parseInt(startDate.format("x"), 10);
+    const endtLeaseDateUtc = parseInt(endLeaseDate.format("x"), 10);
 
     let html = `
 <style>
@@ -178,7 +178,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         t.utcDate = parseInt(t.date.format("x"), 10);
         t.leaseFromDateUtc = parseInt(t.leaseFromDate.format("x"), 10);
         t.valid = t.utcDate >= startDateUtc && t.utcDate <= endDateUtc;
-        t.validRent = t.utcDate >= startLeaseDate;
+        t.validRent = t.utcDate >= startLeaseDate && t.leaseFromDateUtc <= endtLeaseDateUtc;
     });
 
     const applications = propertyTenants.filter((un) => {
@@ -620,24 +620,47 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     "Vacant Unrented Ready"].indexOf(un.status) > -1;
             });
 
+            unitApplications = _.sortBy(unitApplications, (un) => {
+                return -1 * un.dateUtc;
+            });
+
+            validRentEvents = unitApplications.filter((un) => {
+                return un.validRent;
+            });
+
+            // Remove everyone with Submit Application where there is a Lease Signed;
+            validRentEvents.forEach((un) => {
+               if (un.event === "Submit Application") {
+                   if (validRentEvents.find((ev) => {
+                      return ev.event === "Lease Signed" && un.tenantId === ev.tenantId;
+                   })) {
+                       un.validRent = false;
+                   }
+               }
+            });
+
+            _.remove(validRentEvents, (un) => {
+                return !un.validRent;
+            })
+
+            if (validRentEvents.length > 0) {
+                fp.leaseRentHistory = true;
+            }
+
             if (sorted.length > 0) {
-                sorted = _.sortBy(fpUnits, (un) => {
+                sorted = _.sortBy(sorted, (un) => {
                     return un.rent;
                 });
                 custom = sorted[0].rent.toFixed(0);
                 fp.unitsAvailable = true;
             } else {
-                unitApplications = _.sortBy(unitApplications, (un) => {
-                   return -1 * un.dateUtc;
-                });
-
-                validRentEvents = unitApplications.filter((un) => {
-                   return un.validRent;
-                });
-
                 if (validRentEvents.length > 0) {
-                    custom = validRentEvents[0].rent.toFixed(0);
-                    fp.leaseRentHistory = true;
+                    custom = 0;
+                    validRentEvents.forEach((un) => {
+                       custom += parseInt(un.rent, 10);
+                    });
+                    custom /= validRentEvents.length;
+                    custom = custom.toFixed(0);
                 } else {
                     custom = average;
                 }
@@ -742,7 +765,10 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                         <tr>
                             <th>
                                Event 
-                            </th>                        
+                            </th> 
+                            <th>
+                               Tenant Id 
+                            </th>                                                   
                             <th>
                                Rent 
                             </th>
@@ -766,7 +792,10 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                  <tr style="background-color: ${ap.validRent ? "lightgreen" : "inherit"}">
                     <td>
                        ${ap.event} 
-                    </td>                 
+                    </td>    
+                    <td>
+                       ${ap.tenantId} 
+                    </td>                                  
                     <td>
                         $${ap.rent.toFixed(0)} 
                     </td>
