@@ -636,6 +636,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    })) {
                        un.validRent = false;
                    }
+               } else if (un.event === "Lease Signed") {
+                   // Invalidate all Lease Signed for now, we are not using them
+                   un.validRent = false;
                }
             });
 
