@@ -42,16 +42,15 @@ routes.get("/date/:date", async (req, res) => {
 routes.get("/date/:date/:yardiId", async (req, res) => {
 
     let endDate = moment(`${req.params.date.substring(0, 4)}-${req.params.date.substring(4, 6)}-${req.params.date.substring(6, 8)}T23:59:59-08:00`).tz("America/Los_Angeles");
-    endDate = endDate.startOf("isoWeek").add(-1, "minute");
-    const startDate = endDate.clone().startOf("isoWeek");
+    endDate = endDate.startOf("day").add(-1, "minute");
+    const startDate = endDate.clone().add(-6, "day").startOf("day");
     const startDateUtc = parseInt(startDate.format("x"), 10);
     const endDateUtc = parseInt(endDate.format("x"), 10);
 
     const startLeaseDate = endDate.clone().add(-30, "day").startOf("day");
-    const startLeaseDateUtc = parseInt(startDate.format("x"), 10);
+    const startLeaseDateUtc = parseInt(startLeaseDate.format("x"), 10);
 
-    const endLeaseDate = endDate.clone().add(60, "day").endOf("day");
-    const endtLeaseDateUtc = parseInt(endLeaseDate.format("x"), 10);
+    const leaseDateDaysValid = 60;
 
     let html = `
 <style>
@@ -178,7 +177,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         t.utcDate = parseInt(t.date.format("x"), 10);
         t.leaseFromDateUtc = parseInt(t.leaseFromDate.format("x"), 10);
         t.valid = t.utcDate >= startDateUtc && t.utcDate <= endDateUtc;
-        t.validRent = t.utcDate >= startLeaseDate && t.leaseFromDateUtc <= endtLeaseDateUtc;
+        t.validRent = t.utcDate >= startLeaseDateUtc && t.leaseFromDateUtc <= (t.utcDate + leaseDateDaysValid * 24 * 60 * 60 * 1000);
     });
 
     const applications = propertyTenants.filter((un) => {
@@ -630,13 +629,14 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
             // Remove everyone with Submit Application where there is a Lease Signed;
             validRentEvents.forEach((un) => {
-               if (un.event === "Submit Application") {
+               /*if (un.event === "Submit Application") {
                    if (validRentEvents.find((ev) => {
                       return ev.event === "Lease Signed" && un.tenantId === ev.tenantId;
                    })) {
                        un.validRent = false;
                    }
-               } else if (un.event === "Lease Signed") {
+               } else */
+               if (un.event === "Lease Signed") {
                    // Invalidate all Lease Signed for now, we are not using them
                    un.validRent = false;
                }
@@ -644,7 +644,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
             _.remove(validRentEvents, (un) => {
                 return !un.validRent;
-            })
+            });
 
             if (validRentEvents.length > 0) {
                 fp.leaseRentHistory = true;
@@ -763,7 +763,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                     <Br>
                     ${renderYardiUnits(allfpUnits)}
                     <Br>
-                    <B>Lease Rent History</B> (${startLeaseDate.format()} to ${endLeaseDate.format()}):
+                    <B>Lease Rent History</B> (${startLeaseDate.format()} to Event Date + ${leaseDateDaysValid} days):
                     <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
                         <tr>
                             <th>
