@@ -148,7 +148,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     property.atr = totalVacantUnits.length - lessVacantUnits.length - lessNoticeUnits.length - lessNonRevenueUnits.length + allNoticeUnits.length;
 
     const prospectHistory = await parseProspectHistory("/pbbell", req.params.date);
-    const propertyProspects = prospectHistory.filter((p) => {
+    let propertyProspects = prospectHistory.filter((p) => {
         p.utcDate = parseInt(p.date.format("x"), 10);
         p.valid = p.utcDate >= startDateUtc && p.utcDate <= endDateUtc;
         return p.yardiPropertyId.toString() === req.params.yardiId.toString() && p.eventType === "Walk-In";
@@ -189,7 +189,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     _.remove(propertyTenants, (un) => {
         return un.event === "Lease Signed";
     });
-    const leases = propertyTenants.filter((un) => {
+    let leases = propertyTenants.filter((un) => {
         return un.yardiPropertyId.toString() === req.params.yardiId.toString() && !un.isExcluded;
     });
 
@@ -206,6 +206,14 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 property.leases--;
             }
         }
+    });
+
+    propertyProspects = _.sortBy(propertyProspects, (p) => {
+        return -p.utcDate;
+    });
+
+    leases = _.sortBy(leases, (p) => {
+        return -p.utcDate;
     });
 
     html += `
@@ -789,6 +797,10 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                             </th>
                         </tr>  
  `;
+
+        unitApplications = _.sortBy(unitApplications, (p) => {
+            return -p.utcDate;
+        });
 
         unitApplications.forEach((ap) => {
             html += `
