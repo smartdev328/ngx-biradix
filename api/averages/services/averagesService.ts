@@ -2,6 +2,9 @@ export interface IRowToAverage {
     totUnits: number;
     sqft: number;
     rent?: number;
+    concessions?: number;
+    ner?: number;
+    nersqft?: number;
 }
 
 export function average(rows: IRowToAverage[]): IRowToAverage {
@@ -17,8 +20,12 @@ export function average(rows: IRowToAverage[]): IRowToAverage {
 
         if (row.rent) {
             returnRow.rent = returnRow.rent || 0;
+            returnRow.concessions = returnRow.concessions || 0;
+            returnRow.ner = returnRow.ner || 0;
             rentUnits += row.totUnits;
             returnRow.rent += row.totUnits * row.rent;
+            returnRow.concessions += row.totUnits * row.concessions;
+            returnRow.ner = (row.rent - row.concessions / 12) * row.totUnits;
         }
     });
 
@@ -28,6 +35,9 @@ export function average(rows: IRowToAverage[]): IRowToAverage {
 
     if (rentUnits) {
         returnRow.rent /= rentUnits;
+        returnRow.concessions /= rentUnits;
+        returnRow.ner /= rentUnits;
+        returnRow.nersqft = returnRow.ner / returnRow.sqft;
     }
 
     return returnRow;

@@ -118,9 +118,6 @@ module.exports = {
                                 if (c.survey.date ) {
                                     for (b in c.survey.bedrooms) {
                                         t = c.survey.bedrooms[b];
-                                        if (b === "0") {
-                                            console.log(c.survey.bedrooms[b]);
-                                        }
                                         if (i > 0) {
                                             bedrooms[b] = bedrooms[b] || [];
                                             bedrooms[b].push(t);
@@ -158,10 +155,6 @@ module.exports = {
                         for (let b in bedrooms) {
                             averages = averagesService.average(bedrooms[b]);
                             compTotalUnits += averages.totUnits;
-                            // if (b === "0") {
-                            //     console.log(bedrooms[b]);
-                            //     console.log(averages);
-                            // }
                         }
                         for (let b in bedrooms) {
                             averages = averagesService.average(bedrooms[b]);
@@ -172,14 +165,14 @@ module.exports = {
                             // string += ("," + moment(c.survey.date).utcOffset(-480).format("MM/DD/YYYY"));
                             string += ("," + averages.totUnits);
                             string += ("," + averages.sqft.toFixed(0));
-                            string += ("," + (typeof averages.rent === "undefined") ? "" : averages.rent.toFixed(0));
-                            // string += ("," + t.concessions);
-                            // string += ("," + t.ner);
-                            // string += ("," + t.nersqft);
+                            string += ("," + (typeof averages.rent === "undefined" ? "" : averages.rent.toFixed(0)));
+                            string += ("," + (typeof averages.concessions === "undefined" ? "" : averages.concessions.toFixed(0)));
+                            string += ("," + (typeof averages.ner === "undefined" ? "" : averages.ner.toFixed(0)));
+                            string += ("," + (typeof averages.nersqft === "undefined" ? "" : averages.nersqft.toFixed(2)));
                             // string += ("," + Math.round(c.survey.occupancy * 100) / 100);
                             // string += ("," + c.survey.weeklytraffic);
                             // string += ("," + c.survey.weeklyleases);
-                            string += ",,,,,,";
+                            string += ",,,";
                             string += ",,,,,,";
                             string += ("," + compTotalUnits);
                             string += ("\r\n");
