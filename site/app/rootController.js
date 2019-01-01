@@ -453,9 +453,10 @@ angular.module("biradix.global").controller("rootController",
             a = b;
         }
 
-        $rootScope.csv_report = function(org) {
+        $rootScope.csv_report = function(org, isGrouped) {
             var url = '/api/1.0/properties/csvreport/'+org+'?'
             url += "token=" + $cookies.get('token')
+            url += "&group=" + (!!isGrouped)
             location.href = url;
         }
 
