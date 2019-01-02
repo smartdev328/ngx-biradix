@@ -84,7 +84,7 @@ module.exports = {
         
     },
     getCsvGrouped: function(operator, subdomain, endDate, callback) {
-        let string = "Property,Subject/Comp,CompFor,UnitType,Date,Units,Sqft,Market Rent,Concess. / 12mo,Net Eff. Rent,NER/Sqft,Occupancy %,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built,Total Units\r\n";
+        let string = "Property,Subject/Comp,CompFor,UnitType,Date,Units,Sqft,Market Rent,Total Concessions,Net Eff. Rent,NER/Sqft,Occupancy %,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built,Total Units\r\n";
 
         organizationService.read(function (err, orgs) {
             const allianceid = _.find(orgs, function (x) {

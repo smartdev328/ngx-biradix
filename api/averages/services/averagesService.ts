@@ -25,10 +25,9 @@ export function average(rows: IRowToAverage[]): IRowToAverage {
             rentUnits += row.totUnits;
             returnRow.rent += row.totUnits * row.rent;
             returnRow.concessions += row.totUnits * row.concessions;
-            returnRow.ner = (row.rent - row.concessions / 12) * row.totUnits;
+            returnRow.ner += (row.rent - row.concessions / 12) * row.totUnits;
         }
     });
-
     if (returnRow.totUnits) {
         returnRow.sqft /= returnRow.totUnits;
     }
