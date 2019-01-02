@@ -7,6 +7,48 @@ export interface IRowToAverage {
     nersqft?: number;
 }
 
+export interface IPropertyLevelRowToAverage {
+    occupancy?: number;
+    weeklytraffic?: number;
+    weeklyleases?: number;
+}
+export function averagePropertyLevel(rows: IPropertyLevelRowToAverage[]): IPropertyLevelRowToAverage {
+    const returnRow: IPropertyLevelRowToAverage = {
+
+    };
+    let occupancyCounts = 0;
+    let trafficCounts = 0;
+    let weeklyCounts = 0;
+
+    rows.forEach((row: IPropertyLevelRowToAverage) => {
+        if (typeof row.occupancy !== "undefined" && row.occupancy !== null && !isNaN(row.occupancy)) {
+            occupancyCounts++;
+            returnRow.occupancy = (returnRow.occupancy || 0) + row.occupancy;
+        }
+        if (typeof row.weeklytraffic !== "undefined" && row.weeklytraffic !== null && !isNaN(row.weeklytraffic)) {
+            trafficCounts++;
+            returnRow.weeklytraffic = (returnRow.weeklytraffic || 0) + row.weeklytraffic;
+        }
+        if (typeof row.weeklyleases !== "undefined" && row.weeklyleases !== null && !isNaN(row.weeklyleases)) {
+            weeklyCounts++;
+            returnRow.weeklyleases = (returnRow.weeklyleases || 0) + row.weeklyleases;
+        }
+    });
+
+    if (occupancyCounts) {
+        returnRow.occupancy /= occupancyCounts;
+    }
+
+    if (trafficCounts) {
+        returnRow.weeklytraffic /= trafficCounts;
+    }
+
+    if (weeklyCounts) {
+        returnRow.weeklyleases /= weeklyCounts;
+    }
+    return returnRow;
+}
+
 export function average(rows: IRowToAverage[]): IRowToAverage {
     const returnRow: IRowToAverage = {
       totUnits: 0,
