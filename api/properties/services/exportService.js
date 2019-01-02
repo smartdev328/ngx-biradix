@@ -122,6 +122,7 @@ module.exports = {
                                 if (c.survey.date) {
                                     if (i > 0) {
                                         compPropertyLevelData.push({
+                                            totUnits: c.survey.totUnits,
                                             occupancy: c.survey.occupancy,
                                             weeklytraffic: c.survey.weeklytraffic,
                                             weeklyleases: c.survey.weeklyleases,
@@ -173,6 +174,30 @@ module.exports = {
                             });
                             let averages;
                             let compAverages;
+
+                            averages = averagesService.average(subjectData);
+                            string += (csvEncode(prop.name));
+                            string += (",Subject");
+                            string += ("," + csvEncode(prop.name));
+                            string += (",All");
+                            string += ("," + moment(subjectStatic.date).utcOffset(-480).format("MM/DD/YYYY"));
+                            string += ("," + averages.totUnits);
+                            string += ("," + averages.sqft.toFixed(0));
+                            string += ("," + (typeof averages.rent === "undefined" ? "" : averages.rent.toFixed(0)));
+                            string += ("," + (typeof averages.concessions === "undefined" ? "" : averages.concessions.toFixed(0)));
+                            string += ("," + (typeof averages.ner === "undefined" ? "" : averages.ner.toFixed(0)));
+                            string += ("," + (typeof averages.nersqft === "undefined" ? "" : averages.nersqft.toFixed(2)));
+                            string += ("," + Math.round(subjectStatic.occupancy * 100) / 100);
+                            string += ("," + subjectStatic.weeklytraffic);
+                            string += ("," + subjectStatic.weeklyleases);
+                            string += ("," + subjectStatic.address);
+                            string += ("," + subjectStatic.city);
+                            string += ("," + subjectStatic.state);
+                            string += ("," + subjectStatic.zip);
+                            string += ("," + subjectStatic.constructionType);
+                            string += ("," + subjectStatic.yearBuilt);
+                            string += ("\r\n");
+
                             for (let b in bedrooms) {
                                 averages = averagesService.average(bedrooms[b]);
                                 string += ("Comp Average, Comp");
@@ -190,33 +215,10 @@ module.exports = {
                                 string += ("\r\n");
                             }
 
-                            averages = averagesService.average(subjectData);
-                            string += (csvEncode(prop.name));
-                            string += (",Subject");
-                            string += ("," + csvEncode(prop.name));
-                            string += (",All");
-                            string += ("," + moment(subjectStatic.date).utcOffset(-480).format("MM/DD/YYYY"));
-                            string += ("," + averages.totUnits);
-                            string += ("," + averages.sqft.toFixed(0));
-                            string += ("," + (typeof averages.rent === "undefined" ? "" : averages.rent.toFixed(0)));
-                            string += ("," + (typeof averages.concessions === "undefined" ? "" : averages.concessions.toFixed(0)));
-                            string += ("," + (typeof averages.ner === "undefined" ? "" : averages.ner.toFixed(0)));
-                            string += ("," + (typeof averages.nersqft === "undefined" ? "" : averages.nersqft.toFixed(2)));                            // string += ("," + Math.round(c.survey.occupancy * 100) / 100);
-                            string += ("," + Math.round(subjectStatic.occupancy * 100) / 100);
-                            string += ("," + subjectStatic.weeklytraffic);
-                            string += ("," + subjectStatic.weeklyleases);
-                            string += ("," + subjectStatic.address);
-                            string += ("," + subjectStatic.city);
-                            string += ("," + subjectStatic.state);
-                            string += ("," + subjectStatic.zip);
-                            string += ("," + subjectStatic.constructionType);
-                            string += ("," + subjectStatic.yearBuilt);
-                            string += ("\r\n");
-
                             averages = averagesService.average(compData);
                             compAverages = averagesService.averagePropertyLevel(compPropertyLevelData);
 
-                            string += ("Comp Average,Subject");
+                            string += ("Comp Average,Comp");
                             string += ("," + csvEncode(prop.name));
                             string += (",All");
                             string += (",");
