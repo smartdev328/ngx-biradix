@@ -286,8 +286,8 @@ function getString(values) {
     string += "," + (typeof values.nersqft === "undefined" ? "" : values.nersqft.toFixed(2));
     string += "," + (typeof values.occupancy === "undefined" || values.occupancy === null ? "" : Math.round(values.occupancy * 100) / 100);
     string += "," + (typeof values.leased === "undefined" || values.leased === null ? "" : Math.round(values.leased * 100) / 100);
-    string += "," + (typeof values.weeklytraffic === "undefined" && values.weeklytraffic === null ? "" : values.weeklytraffic.toFixed(0));
-    string += "," + (typeof values.weeklyleases === "undefined" && values.weeklyleases === null ? "" : values.weeklyleases.toFixed(0));
+    string += "," + (typeof values.weeklytraffic === "undefined" || values.weeklytraffic === null ? "" : values.weeklytraffic.toFixed(0));
+    string += "," + (typeof values.weeklyleases === "undefined" || values.weeklyleases === null ? "" : values.weeklyleases.toFixed(0));
     string += "," + values.address;
     string += "," + values.city;
     string += "," + values.state;
