@@ -102,6 +102,8 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         "Occupied No Notice",
         "Vacant Rented Not Ready",
         "Vacant Rented Ready",
+        "Model",
+        "Down",
     ]);
     const leasedUnits = tupple[0];
     const leasedCounts = tupple[1];
@@ -111,6 +113,8 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         "Vacant Rented Ready",
         "Vacant Unrented Not Ready",
         "Vacant Unrented Ready",
+        "Model",
+        "Down",
     ]);
     const totalVacantUnits = tupple[0];
     const totalVacantCounts = tupple[1];
