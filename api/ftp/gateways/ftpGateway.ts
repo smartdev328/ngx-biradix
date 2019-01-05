@@ -9,11 +9,12 @@ import {
     parseUnits,
 } from "../services/ftpParsingService";
 import {connect} from "../services/ftpService";
+import {SFTP_YARDI} from "../../../config/settings";
 
 const routes = express.Router();
 
 routes.get("/dates", async (req, res) => {
-    await connect();
+    await connect(SFTP_YARDI);
     let dates: string[] = await parseDates("/pbbell");
     dates = dates.map((date) => {
         return `<li><a href='/ftp/date/${date}'>${date}</a></li>`;
@@ -27,7 +28,7 @@ routes.get("/dates", async (req, res) => {
 routes.get("/date/:date", async (req, res) => {
     let html = `<h1>/pbbell/${req.params.date}</h1>`;
     html += `<A href="/ftp/dates">&lt;- Back</A><Br><Br>`;
-    await connect();
+    await connect(SFTP_YARDI);
     let properties = await parseProperties("/pbbell", req.params.date);
 
     properties = properties.map((property) => {
@@ -67,7 +68,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
   crossorigin="anonymous"></script>
 <h1>/pbbell/${req.params.date}/${req.params.yardiId}</h1>`;
     html += `<A href="/ftp/date/${req.params.date}">&lt;- Back</A><Br><Br>`;
-    await connect();
+    await connect(SFTP_YARDI);
     const properties = await parseProperties("/pbbell", req.params.date);
     const property = properties.find((p) => {
         return p.yardiId === req.params.yardiId;

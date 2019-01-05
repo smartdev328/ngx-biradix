@@ -83,6 +83,14 @@ module.exports = {
             })        
         
     },
+    getCsvGroupedAsync: function(operator, subdomain, endDate) {
+        var _this = this;
+        return new Promise((resolve, reject) => {
+            _this.getCsvGrouped(operator, subdomain, endDate, function(data) {
+                resolve(data);
+            });
+        });
+    },
     getCsvGrouped: function(operator, subdomain, endDate, callback) {
         let string = "Property,Subject/Comp,CompFor,UnitType,Units,Sqft,Market Rent,Total Concessions,Net Eff. Rent,NER/Sqft,Occupancy %,Leased %,Traffic,Leases,Address,City,State,ZipCode,Construction,Year Built\r\n";
 

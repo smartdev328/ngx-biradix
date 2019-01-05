@@ -1,15 +1,24 @@
 import * as Client from "ssh2-sftp-client";
 import * as parse from "csv-parse";
+import * as url from "url";
 
 export const sftp = new Client();
 
-export async function connect() {
+export async function connect(connectiongString: string) {
+
+    const ftpUrl = url.parse(connectiongString);
+
     await sftp.connect({
-        host: "ftp.biradix.com",
-        port: "22",
-        username: "prodaccess",
-        password: "HoldingThisPassword!",
+        host: ftpUrl.hostname,
+        port: ftpUrl.port,
+        username: ftpUrl.auth.split(":")[0],
+        password: ftpUrl.auth.split(":")[1],
     });
+}
+
+export async function uploadFile(path: string, contents: Buffer): Promise<boolean> {
+    await sftp.put(contents, path);
+    return true;
 }
 
 export async function downloadFile(path: string): Promise<string> {
