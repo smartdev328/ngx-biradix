@@ -137,25 +137,47 @@ module.exports = {
                                             weeklyleases: c.survey.weeklyleases,
                                         });
                                     }
+
+                                    c.survey.floorplans.forEach((fp) => {
+                                        if (i > 0) {
+                                            compData.push({
+                                                totUnits: fp.units,
+                                                concessions: fp.concessions,
+                                                rent: fp.rent,
+                                                sqft: fp.sqft,
+                                            });
+
+                                            bedrooms[fp.bedrooms] = bedrooms[fp.bedrooms] || [];
+                                            bedrooms[fp.bedrooms].push({
+                                                totUnits: fp.units,
+                                                concessions: fp.concessions,
+                                                rent: fp.rent,
+                                                sqft: fp.sqft,
+                                            });
+                                        } else {
+                                            subjectData.push({
+                                                totUnits: fp.units,
+                                                concessions: fp.concessions,
+                                                rent: fp.rent,
+                                                sqft: fp.sqft,
+                                            });
+                                        }
+                                    });
+
+                                    subjectStatic.occupancy = c.survey.occupancy;
+                                    subjectStatic.leased = c.survey.leased;
+                                    subjectStatic.weeklytraffic = c.survey.weeklytraffic;
+                                    subjectStatic.weeklyleases = c.survey.weeklyleases;
+                                    subjectStatic.address = c.address;
+                                    subjectStatic.city = c.city;
+                                    subjectStatic.state = c.state;
+                                    subjectStatic.zip = c.zip;
+                                    subjectStatic.constructionType = c.constructionType;
+                                    subjectStatic.yearBuilt = c.yearBuilt;
+
                                     for (b in c.survey.bedrooms) {
                                         t = c.survey.bedrooms[b];
-                                        if (i > 0) {
-                                            bedrooms[b] = bedrooms[b] || [];
-                                            bedrooms[b].push(t);
-                                            compData.push(t);
-                                        } else {
-                                            subjectData.push(t);
-                                            subjectStatic.occupancy = c.survey.occupancy;
-                                            subjectStatic.leased = c.survey.leased;
-                                            subjectStatic.weeklytraffic = c.survey.weeklytraffic;
-                                            subjectStatic.weeklyleases = c.survey.weeklyleases;
-                                            subjectStatic.address = c.address;
-                                            subjectStatic.city = c.city;
-                                            subjectStatic.state = c.state;
-                                            subjectStatic.zip = c.zip;
-                                            subjectStatic.constructionType = c.constructionType;
-                                            subjectStatic.yearBuilt = c.yearBuilt;
-
+                                        if (i === 0) {
                                             string += getString({
                                                 property: prop.name,
                                                 subjectorcomp: "Subject",
