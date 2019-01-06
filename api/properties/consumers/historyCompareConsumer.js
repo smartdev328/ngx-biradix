@@ -633,7 +633,6 @@ var weightedAverageTotalRow = function(totalrow) {
         }
         if (totalrow.ner1Units) {
             totalrow.ner1 = Math.round(totalrow.ner1 / totalrow.ner1Units * 100) / 100;
-            console.log(totalrow.ner1);
         }
         if (totalrow.ner2Units) {
             totalrow.ner2 = Math.round(totalrow.ner2 / totalrow.ner2Units * 100) / 100;

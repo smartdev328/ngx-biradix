@@ -104,7 +104,8 @@ module.exports = {
                 permission: 'PropertyManage',
                 orgid: allianceid,
                 active: true,
-                select: "_id name survey zip active date totalUnits yearBuild address city state zip"
+                select: "_id name survey zip active date totalUnits yearBuild address city state zip",
+                ids: ["5642c17955d27c0e003b601b"]
             }, function (err, props) {
                 async.eachLimit(props, 1, function (prop, callbackp) {
                     queueService.getDashboard({
@@ -164,16 +165,18 @@ module.exports = {
                                         }
                                     });
 
-                                    subjectStatic.occupancy = c.survey.occupancy;
-                                    subjectStatic.leased = c.survey.leased;
-                                    subjectStatic.weeklytraffic = c.survey.weeklytraffic;
-                                    subjectStatic.weeklyleases = c.survey.weeklyleases;
-                                    subjectStatic.address = c.address;
-                                    subjectStatic.city = c.city;
-                                    subjectStatic.state = c.state;
-                                    subjectStatic.zip = c.zip;
-                                    subjectStatic.constructionType = c.constructionType;
-                                    subjectStatic.yearBuilt = c.yearBuilt;
+                                    if (i === 0) {
+                                        subjectStatic.occupancy = c.survey.occupancy;
+                                        subjectStatic.leased = c.survey.leased;
+                                        subjectStatic.weeklytraffic = c.survey.weeklytraffic;
+                                        subjectStatic.weeklyleases = c.survey.weeklyleases;
+                                        subjectStatic.address = c.address;
+                                        subjectStatic.city = c.city;
+                                        subjectStatic.state = c.state;
+                                        subjectStatic.zip = c.zip;
+                                        subjectStatic.constructionType = c.constructionType;
+                                        subjectStatic.yearBuilt = c.yearBuilt;
+                                    }
 
                                     for (b in c.survey.bedrooms) {
                                         t = c.survey.bedrooms[b];
