@@ -577,17 +577,17 @@ var weightedAverageTotalRow = function(totalrow) {
         if (totalrow.occupancyCount) {
             totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.occupancyCount * 10) / 10; // not weighted
         }
-        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
-        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
         totalrow.rentsqft = Math.round(totalrow.rent / totalrow.sqft * 100) / 100;
-        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
         totalrow.nersqft = Math.round(totalrow.ner / totalrow.sqft * 100) / 100;
-        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
         totalrow.runratesqft = Math.round(totalrow.runrate / totalrow.sqft * 100) / 100;
-
         totalrow.concessions = Math.round(totalrow.concessions / totalrow.totUnits);
         totalrow.weeklytraffic = Math.round(totalrow.weeklytraffic / totalrow.totUnits);
         totalrow.weeklyleases = Math.round(totalrow.weeklyleases / totalrow.totUnits);
+
+        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
+        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
+        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
+        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
 
         if (totalrow.lastweeknersqftTotalUnits) {
             totalrow.lastweeknersqftpercent = Math.round(totalrow.lastweeknersqftpercent / totalrow.lastweeknersqftTotalUnits * 10) / 10;
