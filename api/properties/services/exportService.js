@@ -200,7 +200,7 @@ module.exports = {
                                 occupancy: subjectStatic.occupancy,
                                 leased: subjectStatic.leased,
                                 weeklytraffic: subjectStatic.weeklytraffic,
-                                weeklyleases: subjectStatic.weeklytraffic,
+                                weeklyleases: subjectStatic.weeklyleases,
                                 address: subjectStatic.address,
                                 city: subjectStatic.city,
                                 state: subjectStatic.state,
