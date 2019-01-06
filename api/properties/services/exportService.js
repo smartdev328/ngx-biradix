@@ -105,7 +105,7 @@ module.exports = {
                 orgid: allianceid,
                 active: true,
                 select: "_id name survey zip active date totalUnits yearBuild address city state zip",
-                ids: ["5642c17955d27c0e003b601b"]
+                // ids: ["5642c17955d27c0e003b601b"]
             }, function (err, props) {
                 async.eachLimit(props, 1, function (prop, callbackp) {
                     queueService.getDashboard({
