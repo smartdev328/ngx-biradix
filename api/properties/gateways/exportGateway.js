@@ -22,10 +22,17 @@ module.exports = {
             res.setHeader('Content-disposition', 'attachment; filename=' + req.params.org + '.csv');
             res.setHeader('Content-type', 'text/csv');
 
-            exportService.getCsv(req.user, req.params.org, null, function(string) {
-                res.write(string);
-                res.end()
-            })
+            if (req.query.group) {
+                exportService.getCsvGrouped(req.user, req.params.org, null, function (string) {
+                    res.write(string);
+                    res.end();
+                });
+            } else {
+                exportService.getCsv(req.user, req.params.org, null, function (string) {
+                    res.write(string);
+                    res.end();
+                });
+            }
         })
 
         Routes.get("/:id/excelFloorplanDetailed", (req, res) => {

@@ -546,15 +546,14 @@ module.exports = {
                         });
                     }
 
-                    if (switchBackNer) {
-                        bedroomBeakdown.forEach(function(b) {
-                            newpoints.averages[b + "_sqft"].forEach((sq, i) => {
-                                if (sq.v) {
-                                    newpoints.averages[b][i].v = newpoints.averages[b][i].v / sq.v;
-                                }
-                            });
+
+                    bedroomBeakdown.forEach(function(b) {
+                        newpoints.averages[b + "_sqft"].forEach((sq, i) => {
+                            if (sq.v) {
+                                newpoints.averages[b + "_nersqft"][i].v = newpoints.averages[b][i].v / sq.v;
+                            }
                         });
-                    }
+                    });
 
                     points = newpoints;
                 }

@@ -233,13 +233,13 @@
                         <a href  href ng-class="{'subnav' : true}" ng-click="test_error()"> - Throw an Error</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
-                        <a href  href ng-class="{'subnav' : true}" ng-click="csv_report('alliance')"> - Alliance Report</a>
+                        <a href  href ng-class="{'subnav' : true}" ng-click="csv_report('alliance', true)"> - Alliance Report</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href  href ng-class="{'subnav' : true}" ng-click="csv_report('wood')"> - Wood Report</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
-                        <a href  href ng-class="{'subnav' : true}" ng-click="csv_report('demo')"> - Demo Report</a>
+                        <a href  href ng-class="{'subnav' : true}" ng-click="csv_report('demo', true)"> - Demo Report</a>
                     </li>
 
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">

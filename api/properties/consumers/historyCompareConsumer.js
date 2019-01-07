@@ -89,6 +89,13 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             ner4: c.survey.bedrooms["4"].ner,
                             ner5: c.survey.bedrooms["5"].ner,
                             ner6: c.survey.bedrooms["6"].ner,
+                            units0: c.survey.bedrooms["0"].totUnits,
+                            units1: c.survey.bedrooms["1"].totUnits,
+                            units2: c.survey.bedrooms["2"].totUnits,
+                            units3: c.survey.bedrooms["3"].totUnits,
+                            units4: c.survey.bedrooms["4"].totUnits,
+                            units5: c.survey.bedrooms["5"].totUnits,
+                            units6: c.survey.bedrooms["6"].totUnits,
                             excluded: !!c.survey.excluded,
                         });
 
@@ -399,72 +406,72 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft) {
     totalrow.nersqftvscompavg = compNERSqft;
     
     if (typeof p.rent0 !== "undefined") {
-        totalrow.rent0 = (totalrow.rent0 || 0) + (p.rent0 * p.totUnits);
-        totalrow.rent0Units = (totalrow.rent0Units || 0) + p.totUnits;
+        totalrow.rent0 = (totalrow.rent0 || 0) + (p.rent0 * p.units0);
+        totalrow.rent0Units = (totalrow.rent0Units || 0) + p.units0;
     }
     
     if (typeof p.rent1 !== "undefined") {
-        totalrow.rent1 = (totalrow.rent1 || 0) + (p.rent1 * p.totUnits);
-        totalrow.rent1Units = (totalrow.rent1Units || 0) + p.totUnits;
+        totalrow.rent1 = (totalrow.rent1 || 0) + (p.rent1 * p.units1);
+        totalrow.rent1Units = (totalrow.rent1Units || 0) + p.units1;
     }
 
     if (typeof p.rent2 !== "undefined") {
-        totalrow.rent2 = (totalrow.rent2 || 0) + (p.rent2 * p.totUnits);
-        totalrow.rent2Units = (totalrow.rent2Units || 0) + p.totUnits;
+        totalrow.rent2 = (totalrow.rent2 || 0) + (p.rent2 * p.units2);
+        totalrow.rent2Units = (totalrow.rent2Units || 0) + p.units2;
     }
 
     if (typeof p.rent3 !== "undefined") {
-        totalrow.rent3 = (totalrow.rent3 || 0) + (p.rent3 * p.totUnits);
-        totalrow.rent3Units = (totalrow.rent3Units || 0) + p.totUnits;
+        totalrow.rent3 = (totalrow.rent3 || 0) + (p.rent3 * p.units3);
+        totalrow.rent3Units = (totalrow.rent3Units || 0) + p.units3;
     }
 
     if (typeof p.rent4 !== "undefined") {
-        totalrow.rent4 = (totalrow.rent4 || 0) + (p.rent4 * p.totUnits);
-        totalrow.rent4Units = (totalrow.rent4Units || 0) + p.totUnits;
+        totalrow.rent4 = (totalrow.rent4 || 0) + (p.rent4 * p.units4);
+        totalrow.rent4Units = (totalrow.rent4Units || 0) + p.units4;
     }
 
     if (typeof p.rent5 !== "undefined") {
-        totalrow.rent5 = (totalrow.rent5 || 0) + (p.rent5 * p.totUnits);
-        totalrow.rent5Units = (totalrow.rent5Units || 0) + p.totUnits;
+        totalrow.rent5 = (totalrow.rent5 || 0) + (p.rent5 * p.units5);
+        totalrow.rent5Units = (totalrow.rent5Units || 0) + p.units5;
     }
 
     if (typeof p.rent6 !== "undefined") {
-        totalrow.rent6 = (totalrow.rent6 || 0) + (p.rent6 * p.totUnits);
-        totalrow.rent6Units = (totalrow.rent6Units || 0) + p.totUnits;
+        totalrow.rent6 = (totalrow.rent6 || 0) + (p.rent6 * p.units6);
+        totalrow.rent6Units = (totalrow.rent6Units || 0) + p.units6;
     }
     if (typeof p.ner0 !== "undefined") {
-        totalrow.ner0 = (totalrow.ner0 || 0) + (p.ner0 * p.totUnits);
-        totalrow.ner0Units = (totalrow.ner0Units || 0) + p.totUnits;
+        totalrow.ner0 = (totalrow.ner0 || 0) + (p.ner0 * p.units0);
+        totalrow.ner0Units = (totalrow.ner0Units || 0) + p.units0;
     }
 
     if (typeof p.ner1 !== "undefined") {
-        totalrow.ner1 = (totalrow.ner1 || 0) + (p.ner1 * p.totUnits);
-        totalrow.ner1Units = (totalrow.ner1Units || 0) + p.totUnits;
+        totalrow.ner1 = (totalrow.ner1 || 0) + (p.ner1 * p.units1);
+        totalrow.ner1Units = (totalrow.ner1Units || 0) + p.units1;
     }
 
     if (typeof p.ner2 !== "undefined") {
-        totalrow.ner2 = (totalrow.ner2 || 0) + (p.ner2 * p.totUnits);
-        totalrow.ner2Units = (totalrow.ner2Units || 0) + p.totUnits;
+        totalrow.ner2 = (totalrow.ner2 || 0) + (p.ner2 * p.units2);
+        totalrow.ner2Units = (totalrow.ner2Units || 0) + p.units2;
     }
 
     if (typeof p.ner3 !== "undefined") {
-        totalrow.ner3 = (totalrow.ner3 || 0) + (p.ner3 * p.totUnits);
-        totalrow.ner3Units = (totalrow.ner3Units || 0) + p.totUnits;
+        totalrow.ner3 = (totalrow.ner3 || 0) + (p.ner3 * p.units3);
+        totalrow.ner3Units = (totalrow.ner3Units || 0) + p.units3;
     }
 
     if (typeof p.ner4 !== "undefined") {
-        totalrow.ner4 = (totalrow.ner4 || 0) + (p.ner4 * p.totUnits);
-        totalrow.ner4Units = (totalrow.ner4Units || 0) + p.totUnits;
+        totalrow.ner4 = (totalrow.ner4 || 0) + (p.ner4 * p.units4);
+        totalrow.ner4Units = (totalrow.ner4Units || 0) + p.units4;
     }
 
     if (typeof p.ner5 !== "undefined") {
-        totalrow.ner5 = (totalrow.ner5 || 0) + (p.ner5 * p.totUnits);
-        totalrow.ner5Units = (totalrow.ner5Units || 0) + p.totUnits;
+        totalrow.ner5 = (totalrow.ner5 || 0) + (p.ner5 * p.units5);
+        totalrow.ner5Units = (totalrow.ner5Units || 0) + p.units5;
     }
 
     if (typeof p.ner6 !== "undefined") {
-        totalrow.ner6 = (totalrow.ner6 || 0) + (p.ner6 * p.totUnits);
-        totalrow.ner6Units = (totalrow.ner6Units || 0) + p.totUnits;
+        totalrow.ner6 = (totalrow.ner6 || 0) + (p.ner6 * p.units6);
+        totalrow.ner6Units = (totalrow.ner6Units || 0) + p.units6;
     }
 
     if (typeof p.concessionsMonthly !== "undefined") {
@@ -570,17 +577,17 @@ var weightedAverageTotalRow = function(totalrow) {
         if (totalrow.occupancyCount) {
             totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.occupancyCount * 10) / 10; // not weighted
         }
-        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
-        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
         totalrow.rentsqft = Math.round(totalrow.rent / totalrow.sqft * 100) / 100;
-        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
         totalrow.nersqft = Math.round(totalrow.ner / totalrow.sqft * 100) / 100;
-        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
         totalrow.runratesqft = Math.round(totalrow.runrate / totalrow.sqft * 100) / 100;
-
         totalrow.concessions = Math.round(totalrow.concessions / totalrow.totUnits);
         totalrow.weeklytraffic = Math.round(totalrow.weeklytraffic / totalrow.totUnits);
         totalrow.weeklyleases = Math.round(totalrow.weeklyleases / totalrow.totUnits);
+
+        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
+        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
+        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
+        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
 
         if (totalrow.lastweeknersqftTotalUnits) {
             totalrow.lastweeknersqftpercent = Math.round(totalrow.lastweeknersqftpercent / totalrow.lastweeknersqftTotalUnits * 10) / 10;
@@ -633,7 +640,6 @@ var weightedAverageTotalRow = function(totalrow) {
         }
         if (totalrow.ner1Units) {
             totalrow.ner1 = Math.round(totalrow.ner1 / totalrow.ner1Units * 100) / 100;
-            console.log(totalrow.ner1);
         }
         if (totalrow.ner2Units) {
             totalrow.ner2 = Math.round(totalrow.ner2 / totalrow.ner2Units * 100) / 100;

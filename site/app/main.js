@@ -9,6 +9,11 @@ requirejs.config({
 Raygun.init(raygun_key);
 Raygun.setVersion(version);
 
+Raygun.onBeforeSend(function(payload) {
+    payload.Details.UserCustomData.fullStoryUrl = (FS.getCurrentSessionURL() || "").replace("%3A", ":");
+    return payload;
+});
+
 global_error = function(err,context) {
     if (err) {
         Raygun.send(err);
