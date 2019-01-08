@@ -42,11 +42,12 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return response;
         });
     }
-        fac.notifications_test = function (properties,showLeases,notification_columns) {
+        fac.notifications_test = function (properties,showLeases,notification_columns, groupComps) {
             return $http.post('/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
                 properties:properties,
                 showLeases: showLeases,
-                notification_columns: notification_columns
+                notification_columns: notification_columns,
+                groupComps: groupComps
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;

@@ -363,14 +363,22 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
         }
 
         if (data.options && data.options.compAverages) {
+            totalrowComps.isSummary = true;
             totalrowComps.isSubject = false;
             totalrowComps.nervscompavg = "";
             totalrowComps.nersqftvscompavg = "";
             report.push(totalrowComps);
         }
 
-        totalrow.isSubject = false;
-        report.push(totalrow);
+        if (!data.options || !data.options.groupComps) {
+            totalrow.isSubject = false;
+            totalrow.isSummary = true;
+            report.push(totalrow);
+        } else {
+            _.remove(report, (row) => {
+               return !row.isSubject && !row.isSummary;
+            });
+        }
 
         reply({err: err, report: report});
 

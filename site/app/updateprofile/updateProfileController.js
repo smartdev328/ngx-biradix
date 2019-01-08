@@ -339,7 +339,7 @@ define([
                 if (!$scope.nots.all) {
                     properties = _.pluck($scope.propertyItems.items,"id");
                 }
-                $propertyService.notifications_test(properties,$scope.settings.showLeases,notification_columns);
+                $propertyService.notifications_test(properties,$scope.settings.showLeases,notification_columns, $scope.settings.notifications.groupComps);
                 toastr.success('Your request for a notifications report has been submitted. Please allow up to 5 minutes to receive your report.');
             }
         }]);

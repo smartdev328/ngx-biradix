@@ -144,6 +144,18 @@
                             <filter-list options="columnsOptions" items="columnsItems"></filter-list>
                         </Td>
                     </tr>
+                    <tr>
+                        <Td style="padding-top: 10px">
+                            Group Comps:
+                        </Td>
+                        <Td style="padding-top: 10px">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button ng-click="settings.notifications.groupComps = false" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === false}">Off</button>
+                                <button ng-click="settings.notifications.groupComps = undefined" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === undefined}">Auto</button>
+                                <button ng-click="settings.notifications.groupComps = true" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === true}">On</button>
+                            </div>
+                        </Td>
+                    </tr>
                 </Table>
                     <div>
                     <hr>

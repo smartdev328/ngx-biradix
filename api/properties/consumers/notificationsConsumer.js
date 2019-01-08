@@ -32,14 +32,28 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
         },
     }, function(err, all) {
         if (all.properties.length > 0) {
+            data.options = data.options || {};
+            const hasSort = data.options.orderBy;
+            data.options.groupComps = data.groupComps;
+            if (!hasSort) {
+                if (typeof data.options.groupComps === "undefined") {
+                    if (data.properties.length >= 25) {
+                        data.options.groupComps = true;
+                    } else {
+                        data.options.groupComps = false;
+                    }
+                }
+
+                if (data.options.groupComps) {
+                    data.options.compAverages = true;
+                }
+            }
             let final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
 
                 const key = "nots-" + id;
 
-                const hasSort = data.options && data.options.orderBy;
-
-                redisService.get(key, function(err, result) {
+                  redisService.get(key, function(err, result) {
                     if (result && settings.HEROKU_APP == "biradixplatform-prod" && !hasSort) {
                         // console.log('Cache:', result);
                         final.push(result);
