@@ -167,7 +167,8 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         return [
             "Submit Application",
             "Application Denied",
-            "Cancel Move In",
+            "Application Cancelled",
+            // "Cancel Move In",
             "Re-Apply",
             "Lease Signed",
         ].indexOf(un.event) > -1;
@@ -192,7 +193,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             ["Submit Application", "Lease Signed"].indexOf(un.event) > -1;
     });
 
-    // Only use Lease Signed for rents
+    // Only use Lease Signed for rents, remove it for leases
     _.remove(propertyTenants, (un) => {
         return un.event === "Lease Signed";
     });
@@ -214,6 +215,10 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             }
         }
     });
+
+    if (property.leases < 0) {
+        property.leases = 0;
+    }
 
     propertyProspects = _.sortBy(propertyProspects, (p) => {
         return -p.utcDate;
@@ -555,9 +560,6 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    Lease Rent History 
                 </th>
                 <th>
-                   Yardi Floor Plan Id
-                </th>
-                <th>
                    Yardi Floor Plan Code
                 </th>
             </tr>
@@ -717,9 +719,6 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    ${fp.leaseRentHistory ? "Yes" : "None"} 
                 </td>
                 <td>
-                   ${fp.yardiId} 
-                </td>
-                <td>
                    ${fp.yardiCode} 
                 </td>
             </tr>
@@ -857,6 +856,9 @@ function renderYardiUnits(units) {
                    Yardi Unit Id 
                 </th>
                 <th>
+                   Yardi Unit Code
+                </th>                
+                <th>
                    Yardi Floorplan Id 
                 </th>
                 <th>
@@ -880,6 +882,9 @@ function renderYardiUnits(units) {
                 <td>
                    ${fp.yardiId} 
                 </td>
+                <td>
+                   ${fp.yardiCode} 
+                </td>                
                 <td>
                    ${fp.yardiFloorplanId} 
                 </td>
