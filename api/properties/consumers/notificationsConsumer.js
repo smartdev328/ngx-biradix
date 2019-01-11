@@ -116,7 +116,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                             }
 
                             if (y.dateMin) {
-                                if (y.dateMin === y.dateMax) {
+                                if (moment(y.dateMin).tz(tz).format("MMM DD") === moment(y.dateMax).tz(tz).format("MMM DD")) {
                                     y.date = moment(y.dateMin).tz(tz).format("MMM DD");
                                 } else {
                                     y.date = moment(y.dateMin).tz(tz).format("MMM DD") + " - " + moment(y.dateMax).tz(tz).format("MMM DD");

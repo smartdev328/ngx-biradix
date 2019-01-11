@@ -392,8 +392,10 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft, calcDateRang
         const d = (new Date(p.date)).getTime();
         if (!totalrow.dateMin) {
             totalrow.dateMin = d;
+            totalrow.tier = p.tier;
         } else if (d < totalrow.dateMin) {
             totalrow.dateMin = d;
+            totalrow.tier = p.tier;
         }
 
         if (!totalrow.dateMax) {
@@ -405,11 +407,6 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft, calcDateRang
 
     totalrow.count = (totalrow.count || 0) + 1;
     totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
-
-    if (p.occupancy) {
-        totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits); // not weighted
-        totalrow.occupancyCount = (totalrow.occupancyCount || 0) + p.totUnits; // not weighted
-    }
 
     totalrow.sqft = (totalrow.sqft || 0) + (p.sqft * p.totUnits);
     totalrow.rent = (totalrow.rent || 0) + (p.rent * p.totUnits);
@@ -506,7 +503,12 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft, calcDateRang
         totalrow.concessionsOneTime = (totalrow.concessionsOneTime || 0) + (p.concessionsOneTime * p.totUnits);
         totalrow.concessionsOneTimeUnits = (totalrow.concessionsOneTimeUnits || 0) + p.totUnits;
     }
-    
+
+    if (p.occupancy !== '') {
+        totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits); // not weighted
+        totalrow.occupancyUnits = (totalrow.occupancyUnits || 0) + p.totUnits; // not weighted
+    }
+
     if (p.leased !== '') {
         // not weighted
         totalrow.leased = (totalrow.leased || 0) + (p.leased * p.totUnits);
@@ -579,6 +581,11 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft, calcDateRang
 }
 
 var weightedAverageTotalRow = function(totalrow) {
+    if (totalrow.occupancyUnits && totalrow.occupancyUnits > 0) {
+        totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.occupancyUnits * 10) / 10;
+    } else {
+        totalrow.occupancy = "";
+    }
     if (totalrow.leasedUnits && totalrow.leasedUnits > 0) {
         totalrow.leased = Math.round(totalrow.leased / totalrow.leasedUnits * 10) / 10;
     } else {
@@ -597,9 +604,6 @@ var weightedAverageTotalRow = function(totalrow) {
     }
 
     if (totalrow.totUnits && totalrow.totUnits > 0) {
-        if (totalrow.occupancyCount) {
-            totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.occupancyCount * 10) / 10; // not weighted
-        }
         totalrow.rentsqft = Math.round(totalrow.rent / totalrow.sqft * 100) / 100;
         totalrow.nersqft = Math.round(totalrow.ner / totalrow.sqft * 100) / 100;
         totalrow.runratesqft = Math.round(totalrow.runrate / totalrow.sqft * 100) / 100;
