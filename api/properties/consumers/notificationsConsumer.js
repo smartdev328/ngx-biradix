@@ -37,11 +37,15 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
             data.options.groupComps = data.groupComps;
             if (!hasSort) {
                 if (typeof data.options.groupComps === "undefined") {
-                    if (data.properties.length >= 25) {
+                    if (data.properties.length > 25) {
                         data.options.groupComps = true;
                     } else {
                         data.options.groupComps = false;
                     }
+                }
+
+                if (data.properties.length > 75) {
+                    data.options.groupComps = true;
                 }
 
                 if (data.options.groupComps) {

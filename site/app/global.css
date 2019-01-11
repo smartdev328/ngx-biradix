@@ -470,3 +470,7 @@ daterange-picker.dashboard > div {
     padding: 4px 5px !important;
     vertical-align:top;
 }
+
+#wrapper .btn-group .btn-default:focus {
+    background-color: #d4d4d4;
+}

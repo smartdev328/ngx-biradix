@@ -16,6 +16,10 @@ export async function connect(connectiongString: string) {
     });
 }
 
+export async function disconnect() {
+    await sftp.end();
+}
+
 export async function uploadFile(path: string, contents: Buffer): Promise<boolean> {
     await sftp.put(contents, path);
     return true;

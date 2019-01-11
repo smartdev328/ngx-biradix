@@ -8,7 +8,7 @@ import {
     parseProspectHistory, parseTenantHistory,
     parseUnits,
 } from "../services/ftpParsingService";
-import {connect} from "../services/ftpService";
+import {connect, disconnect} from "../services/ftpService";
 import {SFTP_YARDI} from "../../../config/settings";
 
 const routes = express.Router();
@@ -16,6 +16,7 @@ const routes = express.Router();
 routes.get("/dates", async (req, res) => {
     await connect(SFTP_YARDI);
     let dates: string[] = await parseDates("/pbbell");
+    await disconnect();
     dates = dates.map((date) => {
         return `<li><a href='/ftp/date/${date}'>${date}</a></li>`;
     });
@@ -30,7 +31,7 @@ routes.get("/date/:date", async (req, res) => {
     html += `<A href="/ftp/dates">&lt;- Back</A><Br><Br>`;
     await connect(SFTP_YARDI);
     let properties = await parseProperties("/pbbell", req.params.date);
-
+    await disconnect();
     properties = properties.map((property) => {
         return `<li><A href="/ftp/date/${req.params.date}/${property.yardiId}">${property.name}</A> [<b>${property.yardiId}</b>]<Br><div style="margin-left:23px"><i>${property.address} - ${property.city} ${property.state}, ${property.zip}</i></div></li>`;
     });
@@ -160,6 +161,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     });
 
     const tenantHistory = await parseTenantHistory("/pbbell", req.params.date);
+    await disconnect();
 
     const propertyTenants = tenantHistory.filter((un) => {
         return [
