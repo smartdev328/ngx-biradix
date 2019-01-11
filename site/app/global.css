@@ -473,4 +473,6 @@ daterange-picker.dashboard > div {
 
 #wrapper .btn-group .btn-default:focus {
     background-color: #d4d4d4;
+    outline: 0;
+
 }

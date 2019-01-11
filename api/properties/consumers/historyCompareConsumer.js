@@ -342,10 +342,10 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
             }
 
             if (p.totUnits) {
-                calcTotalRow(all, p, totalrow, compNER, compNERSqft);
+                calcTotalRow(all, p, totalrow, compNER, compNERSqft, false);
 
                 if (i > 0) {
-                    calcTotalRow(all, p, totalrowComps, compNER, compNERSqft);
+                    calcTotalRow(all, p, totalrowComps, compNER, compNERSqft, true);
                 }
             }
         });
@@ -387,7 +387,22 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
     });
 });
 
-var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft) {
+var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft, calcDateRange) {
+    if (calcDateRange) {
+        const d = (new Date(p.date)).getTime();
+        if (!totalrow.dateMin) {
+            totalrow.dateMin = d;
+        } else if (d < totalrow.dateMin) {
+            totalrow.dateMin = d;
+        }
+
+        if (!totalrow.dateMax) {
+            totalrow.dateMax = d;
+        } else if (d > totalrow.dateMax) {
+            totalrow.dateMax = d;
+        }
+    }
+
     totalrow.count = (totalrow.count || 0) + 1;
     totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
 
@@ -524,41 +539,41 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft) {
     if (p.nersqft && lastweek && lastweek.nersqft) {
         p.lastweeknersqftpercent = Math.round((p.nersqft - lastweek.nersqft) / lastweek.nersqft * 100 * 10) / 10;
 
-        totalrow.lastweeknersqftpercent = (totalrow.lastweeknersqftpercent || 0) + (p.lastweeknersqftpercent * p.totUnits);
+        totalrow.lastweeknersqft = (totalrow.lastweeknersqft || 0) + (lastweek.nersqft * p.totUnits);
         totalrow.lastweeknersqftTotalUnits = (totalrow.lastweeknersqftTotalUnits || 0) + p.totUnits;
     }
 
     if (p.nersqft && lastmonth && lastmonth.nersqft) {
         p.lastmonthnersqftpercent = Math.round((p.nersqft - lastmonth.nersqft) / lastmonth.nersqft * 100 * 10) / 10;
 
-        totalrow.lastmonthnersqftpercent = (totalrow.lastmonthnersqftpercent || 0) + (p.lastmonthnersqftpercent * p.totUnits);
+        totalrow.lastmonthnersqft = (totalrow.lastmonthnersqft || 0) + (lastmonth.nersqft * p.totUnits);
         totalrow.lastmonthnersqftTotalUnits = (totalrow.lastmonthnersqftTotalUnits || 0) + p.totUnits;
     }
 
     if (p.nersqft && lastyear && lastyear.nersqft) {
         p.lastyearnersqftpercent = Math.round((p.nersqft - lastyear.nersqft) / lastyear.nersqft * 100 * 10) / 10;
 
-        totalrow.lastyearnersqftpercent = (totalrow.lastyearnersqftpercent || 0) + (p.lastyearnersqftpercent * p.totUnits);
+        totalrow.lastyearnersqft = (totalrow.lastyearnersqft || 0) + (lastyear.nersqft * p.totUnits);
         totalrow.lastyearnersqftTotalUnits = (totalrow.lastyearnersqftTotalUnits || 0) + p.totUnits;
     }
     if (p.ner && lastweek && lastweek.ner) {
         p.lastweeknerpercent = Math.round((p.ner - lastweek.ner) / lastweek.ner * 100 * 10) / 10;
 
-        totalrow.lastweeknerpercent = (totalrow.lastweeknerpercent || 0) + (p.lastweeknerpercent * p.totUnits);
+        totalrow.lastweekner = (totalrow.lastweekner || 0) + (lastweek.ner * p.totUnits);
         totalrow.lastweeknerTotalUnits = (totalrow.lastweeknerTotalUnits || 0) + p.totUnits;
     }
 
     if (p.ner && lastmonth && lastmonth.ner) {
         p.lastmonthnerpercent = Math.round((p.ner - lastmonth.ner) / lastmonth.ner * 100 * 10) / 10;
 
-        totalrow.lastmonthnerpercent = (totalrow.lastmonthnerpercent || 0) + (p.lastmonthnerpercent * p.totUnits);
+        totalrow.lastmonthner = (totalrow.lastmonthner || 0) + (lastmonth.ner * p.totUnits);
         totalrow.lastmonthnerTotalUnits = (totalrow.lastmonthnerTotalUnits || 0) + p.totUnits;
     }
 
     if (p.ner && lastyear && lastyear.ner) {
         p.lastyearnerpercent = Math.round((p.ner - lastyear.ner) / lastyear.ner * 100 * 10) / 10;
 
-        totalrow.lastyearnerpercent = (totalrow.lastyearnerpercent || 0) + (p.lastyearnerpercent * p.totUnits);
+        totalrow.lastyearner = (totalrow.lastyearner || 0) + (lastyear.ner * p.totUnits);
         totalrow.lastyearnerTotalUnits = (totalrow.lastyearnerTotalUnits || 0) + p.totUnits;
     }
 }
@@ -592,33 +607,34 @@ var weightedAverageTotalRow = function(totalrow) {
         totalrow.weeklytraffic = Math.round(totalrow.weeklytraffic / totalrow.totUnits);
         totalrow.weeklyleases = Math.round(totalrow.weeklyleases / totalrow.totUnits);
 
-        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
-        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
-        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
-        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
-
         if (totalrow.lastweeknersqftTotalUnits) {
-            totalrow.lastweeknersqftpercent = Math.round(totalrow.lastweeknersqftpercent / totalrow.lastweeknersqftTotalUnits * 10) / 10;
+            totalrow.lastweeknersqft /= totalrow.lastweeknersqftTotalUnits;
+            totalrow.lastweeknersqftpercent = Math.round((totalrow.nersqft / totalrow.totUnits - totalrow.lastweeknersqft) / totalrow.lastweeknersqft * 100 * 10) / 10;
         }
 
         if (totalrow.lastmonthnersqftTotalUnits) {
-            totalrow.lastmonthnersqftpercent = Math.round(totalrow.lastmonthnersqftpercent / totalrow.lastmonthnersqftTotalUnits * 10) / 10;
+            totalrow.lastmonthnersqft /= totalrow.lastmonthnersqftTotalUnits;
+            totalrow.lastmonthnersqftpercent = Math.round((totalrow.nersqft / totalrow.totUnits - totalrow.lastmonthnersqft) / totalrow.lastmonthnersqft * 100 * 10) / 10;
         }
 
         if (totalrow.lastyearnersqftTotalUnits) {
-            totalrow.lastyearnersqftpercent = Math.round(totalrow.lastyearnersqftpercent / totalrow.lastyearnersqftTotalUnits * 10) / 10;
+            totalrow.lastyearnersqft /= totalrow.lastyearnersqftTotalUnits;
+            totalrow.lastyearnersqftpercent = Math.round((totalrow.nersqft / totalrow.totUnits - totalrow.lastyearnersqft) / totalrow.lastyearnersqft * 100 * 10) / 10;
         }
 
         if (totalrow.lastweeknerTotalUnits) {
-            totalrow.lastweeknerpercent = Math.round(totalrow.lastweeknerpercent / totalrow.lastweeknerTotalUnits * 10) / 10;
+            totalrow.lastweekner /= totalrow.lastweeknerTotalUnits;
+            totalrow.lastweeknerpercent = Math.round((totalrow.ner / totalrow.totUnits - totalrow.lastweekner) / totalrow.lastweekner * 100 * 10) / 10;
         }
 
         if (totalrow.lastmonthnerTotalUnits) {
-            totalrow.lastmonthnerpercent = Math.round(totalrow.lastmonthnerpercent / totalrow.lastmonthnerTotalUnits * 10) / 10;
+            totalrow.lastmonthner /= totalrow.lastmonthnerTotalUnits;
+            totalrow.lastmonthnerpercent = Math.round((totalrow.ner / totalrow.totUnits - totalrow.lastmonthner) / totalrow.lastmonthner * 100 * 10) / 10;
         }
 
         if (totalrow.lastyearnerTotalUnits) {
-            totalrow.lastyearnerpercent = Math.round(totalrow.lastyearnerpercent / totalrow.lastyearnerTotalUnits * 10) / 10;
+            totalrow.lastyearner /= totalrow.lastyearnerTotalUnits;
+            totalrow.lastyearnerpercent = Math.round((totalrow.ner / totalrow.totUnits - totalrow.lastyearner) / totalrow.lastyearner * 100 * 10) / 10;
         }
 
         if (totalrow.rent0Units) {
@@ -670,7 +686,12 @@ var weightedAverageTotalRow = function(totalrow) {
         if (totalrow.concessionsOneTimeUnits) {
             totalrow.concessionsOneTime = Math.round(totalrow.concessionsOneTime / totalrow.concessionsOneTimeUnits * 100) / 100;
         }
-        
+
+        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
+        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
+        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
+        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
+
         totalrow.totUnits = Math.round(totalrow.totUnits / totalrow.count * 10) / 10; // not weighted
     }
 }

@@ -115,7 +115,7 @@ Updated
 {% endif %}
 </tr>
 {% for block in data %}{% for row in block %}<tr style="{% if forloop.first %}font-weight:bold;color:#4460a9;{% elsif forloop.last %}font-weight:bold;{% endif %}">
-    <Td style="text-align:left;{% if forloop.last %}border-top:1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">{% if forloop.first %}<A href="{{dashboardBase}}{{row._id}}" style="color:#4460a9;text-decoration:none">{{row.name}}</A>{%else%}{% if forloop.last != true %}&nbsp;{{forloop.index0}}.{% endif %}{{row.name}}{% endif %}</Td>
+    <Td style="text-align:left;{% if forloop.last %}border-top:1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">{% if forloop.first %}{{row.name}}{%else%}{% if forloop.last != true %}&nbsp;{{forloop.index0}}.{% endif %}{{row.name}}{% endif %}</Td>
 {% if show.occupancy %}<Td style="{% if forloop.last %}border-top:1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">{% if row.occupancy != "" %}{{row.occupancy | formatNumber : 1}}%{% else %}-{% endif %}</Td>{% endif %}
 {% if showLeases && show.leased %}<Td style="{% if forloop.last %}border-top:1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">{% if row.leased != "" %}{{row.leased | formatNumber : 1}}%{% else %}-{% endif %}</Td>{% endif %}
 {% if show.atr %}<Td style="{% if forloop.last %}border-top:1px solid #ddd;{% else %}border-bottom:1px solid #ddd;{% endif %}">{% if row.atr_percent != "" %}{{row.atr_percent | formatNumber : 1}}%{% else %}-{% endif %}</Td>{% endif %}
