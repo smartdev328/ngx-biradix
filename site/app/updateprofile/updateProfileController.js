@@ -64,7 +64,7 @@ define([
                     $scope.settings.showLeases = $rootScope.me.settings.showLeases;
                     $scope.settings.showATR = $rootScope.me.settings.showATR;
                     $scope.settings.showRenewal = $rootScope.me.settings.showRenewal;
-                    $scope.settings.notifications = {on: $rootScope.me.settings.notifications.on}
+                    $scope.settings.notifications = {on: $rootScope.me.settings.notifications.on, groupComps: $rootScope.me.settings.notifications.groupComps}
                     $scope.settings.reminders = {on: $rootScope.me.settings.reminders.on}
 
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
@@ -238,6 +238,7 @@ define([
 
                     $rootScope.me.settings.notifications.on = $scope.settings.notifications.on;
                     $rootScope.me.settings.reminders.on = $scope.settings.reminders.on;
+                    $rootScope.me.settings.notifications.groupComps = $scope.settings.notifications.groupComps;
 
                     var c= 0;
                     $scope.columnsItems.forEach(function (f) {

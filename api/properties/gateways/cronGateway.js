@@ -100,7 +100,8 @@ Routes.get('/test', function (req, res) {
                         properties: full.operator.settings.notifications.props,
                         showLeases: full.operator.settings.showLeases,
                         notification_columns: full.operator.settings.notification_columns,
-                        dontEmail: true
+                        dontEmail: true,
+                        groupComps: full.operator.settings.groupComps,
                     }, function () {
                         count++;
                         callbackp()
@@ -136,7 +137,8 @@ Routes.get('/notifications', function (req, res) {
                         queueService.sendNotification(full.operator, {
                             properties: full.operator.settings.notifications.props,
                             showLeases: full.operator.settings.showLeases,
-                            notification_columns: full.operator.settings.notification_columns
+                            notification_columns: full.operator.settings.notification_columns,
+                            groupComps: full.operator.settings.groupComps,
                         }, function () {
                             count++;
                             callbackp()
