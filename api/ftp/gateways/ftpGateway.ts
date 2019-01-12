@@ -168,6 +168,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             "Submit Application",
             "Application Denied",
             "Application Cancelled",
+            "Application Canceled",
             // "Cancel Move In",
             "Re-Apply",
             "Lease Signed",
@@ -523,7 +524,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         </table>
         <Br>    
             <B>All Yardi Units</B><Br>
-                    ${renderYardiUnits(allUnits)}
+                    ${renderYardiUnits(allUnits, true)}
         </div>
 
         <br><Br>
@@ -558,6 +559,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                 </th>
                 <th>
                    Lease Rent History 
+                </th>
+                <th>
+                   Yardi Floor Plan Id
                 </th>
                 <th>
                    Yardi Floor Plan Code
@@ -719,6 +723,9 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                    ${fp.leaseRentHistory ? "Yes" : "None"} 
                 </td>
                 <td>
+                   ${fp.yardiId} 
+                </td>
+                <td>
                    ${fp.yardiCode} 
                 </td>
             </tr>
@@ -775,7 +782,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                         </tr>                                                
                     </Table>
                     <Br>
-                    ${renderYardiUnits(allfpUnits)}
+                    ${renderYardiUnits(allfpUnits, false)}
                     <Br>
                     <B>Lease Rent History</B> (${startLeaseDate.format()} to Event Date + ${leaseDateDaysValid} days):
                     <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
@@ -849,7 +856,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
 module.exports = routes;
 
-function renderYardiUnits(units) {
+function renderYardiUnits(units, showFloorPlanId) {
     let html = `<table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
             <tr>
                 <th>
@@ -858,9 +865,7 @@ function renderYardiUnits(units) {
                 <th>
                    Yardi Unit Code
                 </th>                
-                <th>
-                   Yardi Floorplan Id 
-                </th>
+                ${showFloorPlanId ? "<th>Yardi Floorplan Id</th>" : ""}
                 <th>
                    Rent 
                 </th>
@@ -884,10 +889,8 @@ function renderYardiUnits(units) {
                 </td>
                 <td>
                    ${fp.yardiCode} 
-                </td>                
-                <td>
-                   ${fp.yardiFloorplanId} 
-                </td>
+                </td> 
+                ${showFloorPlanId ? "<td>$" + fp.yardiFloorplanId + "</td>" : ""}               
                  <td>
                    $${fp.rent.toFixed(0)} 
                 </td>
