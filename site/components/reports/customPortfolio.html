@@ -587,7 +587,7 @@
                         {{row.management}}
                     </td>
                     <td ng-if="col.id == 'units'" style="text-align:right">
-                        {{row.totUnits !== undefined ? "$" + row.totUnits.toFixed(0) : "-"}}
+                        {{row.totUnits !== undefined && row.totUnits ? row.totUnits.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'occupancy'" style="text-align:right">
                         {{row.occupancy != "" && row.occupancy != null ? row.occupancy + "%" : "-"}}
@@ -602,13 +602,13 @@
                         {{row.atr_percent != "" ? row.atr_percent + "%" : "-"}}
                     </td>
                     <td ng-if="col.id == 'weekly'" style="text-align:right">
-                        {{row.weeklytraffic !== undefined ? "$" + row.weeklytraffic.toFixed(0) : "-"}}
+                        {{row.weeklytraffic !== undefined ? row.weeklytraffic.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'weekly'" style="text-align:right">
-                        {{row.weeklyleases !== undefined ? "$" + row.weeklyleases.toFixed(0) : "-"}}
+                        {{row.weeklyleases !== undefined ? row.weeklyleases.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'sqft'" style="text-align:right">
-                        {{row.sqft !== undefined ? "$" + row.sqft.toFixed(0) : "-"}}
+                        {{row.sqft !== undefined ? row.sqft.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'rent'" style="text-align:right">
                         {{row.rent !== undefined ? "$" + row.rent.toFixed(0) : "-"}}
@@ -700,7 +700,7 @@
                         <span ng-if="row.lastyearnerpercent === ''">&nbsp;&nbsp;</span>
                     </td>
                     <td ng-if="col.id == 'nersqft'" style="text-align:right">
-                        {{row.nersqft !== undefined ? "$" + row.nersqft.toFixed(2) : "-"}}
+                        {{row.nersqft !== undefined && row.nersqft !== null && !isNaN(row.nersqft) ? "$" + row.nersqft.toFixed(2) : "-"}}
                     </td>
                     <td ng-if="col.id == 'nersqftvscompavg'" style="text-align:right">
                         <span ng-if="row.name === 'Averages' || row.name === 'Comp Averages'"></span>

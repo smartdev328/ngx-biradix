@@ -890,7 +890,7 @@ function renderYardiUnits(units, showFloorPlanId) {
                 <td>
                    ${fp.yardiCode} 
                 </td> 
-                ${showFloorPlanId ? "<td>$" + fp.yardiFloorplanId + "</td>" : ""}               
+                ${showFloorPlanId ? "<td>" + fp.yardiFloorplanId + "</td>" : ""}               
                  <td>
                    $${fp.rent.toFixed(0)} 
                 </td>
