@@ -1,100 +1,61 @@
 <h2 class="mainheader">My Account
     <hr>
 </h2>
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-info"  style="height:410px">
-            <div class="panel-heading">Update Profile</div>
-            <div class="panel-body">
-                <hr>
-                <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)">
-                    <div style="padding-bottom:5px"><b>First Name:</b></div>
-                <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
-                    </div>
+<ul class="nav nav-tabs">
+    <li ng-class="{'active': !isPassword}"><a href="#/updateProfile">Profile</a></li>
+    <li ng-class="{'active': isPassword}"><a href="#/updateProfile?password=1">Update Password</a></li>
+</ul>
+<div class="tab-container">
+    <div ng-if="!isPassword">
+        <h4>Account Information</h4>
+        <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)">
+            <div style="padding-bottom:5px"><b>First Name:</b></div>
+            <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
                 </div>
-
-                    <div style="padding-bottom:5px"><b>Last Name:</b></div>
-                <div class="form-group" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
-                    </div>
-                </div>
-
-                    <div style="padding-bottom:5px"><b>Email Address:</b>
-                        <i class="fa fa-exclamation-triangle warning" class="pull-left"
-                           style="color:orange;cursor:pointer;font-size:16px;padding:4px 0px 0px 5px"
-                           ng-if="me.bounceReason"
-                           popover-trigger="'mouseenter'"
-                           popover-placement="right"
-                           popover-class="popover-small"
-                           uib-popover-html="$root.bouncePopup(me)"
-                        ></i>
-                    </div>
-                <div class="form-group " ng-class="{'has-error': (myForm.email.$dirty && myForm.email.$invalid) || me.bounceReason, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-at"></i></div>
-                        <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email" ng-disabled="!canUpdateEmail">
-                    </div>
-                </div>
-
-                <div style="margin:0px auto;width:75px">
-                    <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
-                </div>
-            </form>
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-6">
-        <div class="panel panel-info" style="height:410px" id="passwordPannel">
-            <div class="panel-heading">Update Password</div>
-            <div class="panel-body">
-                <hr>
-                <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password)">
-                    <div class="form-group" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
-                        <label for="currentpassword">Current Password</label>
-                        <input autocomplete="off" type="password" name="currentpassword" class="form-control" id="currentpassword" placeholder="Current password" ng-model="password.currentpassword" required ng-minlength="8">
-                        <div class="text-danger" ng-show="myFormPassword.currentpassword.$error.minlength"><small>8 characters minimum</small></div>
-                    </div>
-
-                    <div class="form-group" ng-class="{'has-error': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$invalid, 'has-success': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$valid}">
-                        <label for="newpassword">New Password</label>
-                        <input autocomplete="off" type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New password" ng-model="password.newpassword" required ng-minlength="8">
-                        <div class="text-danger" ng-show="myFormPassword.newpassword.$error.minlength"><small>8 characters minimum</small></div>
-                    </div>
-
-                    <div class="form-group" ng-class="{'has-error': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$invalid, 'has-success': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$valid}">
-                        <label for="confirmpassword">Confirm Password</label>
-                        <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="password.confirmpassword" required ng-minlength="8">
-                        <div class="text-danger" ng-show="myFormPassword.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
-                    </div>
-
-                    <div style="margin:0px auto;width:75px">
-                        <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:430px" id="notificationsPanel">
-            <div class="panel-heading">Notifications</div>
-            <div class="panel-body">
-
-                <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
-                    <img src="/images/squares.gif" style="width:100px">
+            <div style="padding-bottom:5px"><b>Last Name:</b></div>
+            <div class="form-group" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
                 </div>
+            </div>
 
-                <div ng-show="notificationsLoaded">
-                <hr>
-                    <B>Send me regular property status updates:</B> <toggle-switch checked="settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                    <button class=" btn btn-warning btn-xs" style="font-style: italic;margin-left:20px;font-size:10px" type="button" ng-if="settings.notifications.on === true" ng-click="sendReport()">Send Now</button><Br>
+            <div style="padding-bottom:5px"><b>Email Address:</b>
+                <i class="fa fa-exclamation-triangle warning" class="pull-left"
+                   style="color:orange;cursor:pointer;font-size:16px;padding:4px 0px 0px 5px"
+                   ng-if="me.bounceReason"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-class="popover-small"
+                   uib-popover-html="$root.bouncePopup(me)"
+                ></i>
+            </div>
+            <div class="form-group " ng-class="{'has-error': (myForm.email.$dirty && myForm.email.$invalid) || me.bounceReason, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                    <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email" ng-disabled="!canUpdateEmail">
+                </div>
+            </div>
+
+            <div style="margin:0px auto;width:75px">
+                <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
+            </div>
+        </form>
+        <hr>
+        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="notificationsPanel">
+            <h4>Notifications</h4>
+            <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
+                <img src="/images/squares.gif" style="width:100px">
+            </div>
+
+            <div ng-show="notificationsLoaded">
+                <B>Send me regular property status updates:</B> <toggle-switch checked="settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                <button class=" btn btn-warning btn-xs" style="font-style: italic;margin-left:20px;font-size:10px" type="button" ng-if="settings.notifications.on === true" ng-click="sendReport()">Send Now</button><Br>
                 <br>
                 <Table ng-if="settings.notifications.on === true" style="margin-left:20px;margin-bottom:15px">
                     <Tr>
@@ -157,7 +118,7 @@
                         </Td>
                     </tr>
                 </Table>
-                    <div>
+                <div>
                     <hr>
                     <B>Send me property update reminders:</B> <toggle-switch checked="settings.reminders.on" disabled="!me.orgs[0].settings.reminders.allow" popover="me.orgs[0].settings.reminders.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
                     <i class="fa fa-info-circle"
@@ -166,73 +127,99 @@
                        popover-placement="top"
                        uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
                     ></i><Br>
-                        <br>
-                    </div>
+                    <br>
+                </div>
 
 
 
                 <center>
                     <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveNotifications()">Update</button>
                 </center>
-                </div>
             </div>
+        </div>
+        <hr>
+        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="settingsPanel">
+            <h4>Settings</h4>
+            <B>Show "Leased %" information:</B> <toggle-switch checked="settings.showLeases" disabled="!me.orgs[0].settings.leased.allow" popover="me.orgs[0].settings.leased.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+
+            <i class="fa fa-info-circle"
+               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+               popover-trigger="'mouseenter'"
+               popover-placement="top"
+               popover-append-to-body="true"
+               uib-popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing Property Surveys. Note: Data for Leased % will only be shown if it exists for a property.'
+            ></i>
+
+
+
+
+            <Br>
+            <Br>
+            <B>Show "Renewal %" information:</B> <toggle-switch checked="settings.showRenewal" disabled="!me.orgs[0].settings.renewal.allow" popover="me.orgs[0].settings.renewal.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+
+            <i class="fa fa-info-circle"
+               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+               popover-trigger="'mouseenter'"
+               popover-placement="top"
+               uib-popover='Turning this option ON will result in "Renewal %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Renewal %" value when doing Property Surveys. Note: Data for Renewal % will only be shown if it exists for a property.'
+            ></i>
+
+            <Br>
+            <Br>
+            <B>Show "ATR %" information:</B> <toggle-switch checked="settings.showATR" disabled="!me.orgs[0].settings.atr.allow" popover="me.orgs[0].settings.atr.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+
+            <i class="fa fa-info-circle"
+               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+               popover-trigger="'mouseenter'"
+               popover-placement="top"
+               popover-append-to-body="true"
+               uib-popover='Turning this option ON will result in Apartments to Rent ("ATR %") field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "ATR" value when doing Property Surveys. Note: Data for ATR % will only be shown if it exists for a property.'
+            ></i>
+
+
+            <Br>
+            <Br>
+            <B>Timezone:</B>
+            <select class="form-control input-sm" ng-options="item.name for item in timezones" ng-model="settings.tz" style="display:inline;width:200px">
+            </select><Br>
+            <Br>
+            <center>
+                <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveSettings()">Update</button>
+            </center>
         </div>
     </div>
-
-    <div class="col-md-6">
-        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" class="panel panel-info"  style="height:430px" id="settingsPanel">
-            <div class="panel-heading">Settings</div>
-            <div class="panel-body">
-                <div>
-                    <hr>
-                    <B>Show "Leased %" information:</B> <toggle-switch checked="settings.showLeases" disabled="!me.orgs[0].settings.leased.allow" popover="me.orgs[0].settings.leased.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-
-                    <i class="fa fa-info-circle"
-                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="top"
-                       popover-append-to-body="true"
-                       uib-popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing Property Surveys. Note: Data for Leased % will only be shown if it exists for a property.'
-                    ></i>
-
-
-
-
-                    <Br>
-                    <Br>
-                    <B>Show "Renewal %" information:</B> <toggle-switch checked="settings.showRenewal" disabled="!me.orgs[0].settings.renewal.allow" popover="me.orgs[0].settings.renewal.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-
-                    <i class="fa fa-info-circle"
-                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="top"
-                       uib-popover='Turning this option ON will result in "Renewal %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Renewal %" value when doing Property Surveys. Note: Data for Renewal % will only be shown if it exists for a property.'
-                    ></i>
-
-                    <Br>
-                    <Br>
-                    <B>Show "ATR %" information:</B> <toggle-switch checked="settings.showATR" disabled="!me.orgs[0].settings.atr.allow" popover="me.orgs[0].settings.atr.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-
-                    <i class="fa fa-info-circle"
-                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="top"
-                       popover-append-to-body="true"
-                       uib-popover='Turning this option ON will result in Apartments to Rent ("ATR %") field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "ATR" value when doing Property Surveys. Note: Data for ATR % will only be shown if it exists for a property.'
-                    ></i>
-
-
-                    <Br>
-                    <Br>
-                    <B>Timezone:</B>
-                    <select class="form-control input-sm" ng-options="item.name for item in timezones" ng-model="settings.tz" style="display:inline;width:200px">
-                    </select><Br>
-                    <Br>
-                    <center>
-                        <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveSettings()">Update</button>
-                    </center>
-                </div>
+    <div ng-if="isPassword">
+        <h4>Update Password</h4>
+        <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password)">
+            <div class="form-group" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
+                <label for="currentpassword">Current Password</label>
+                <input autocomplete="off" type="password" name="currentpassword" class="form-control" id="currentpassword" placeholder="Current password" ng-model="password.currentpassword" required ng-minlength="8">
+                <div class="text-danger" ng-show="myFormPassword.currentpassword.$error.minlength"><small>8 characters minimum</small></div>
             </div>
-        </div>
+
+            <div class="form-group" ng-class="{'has-error': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$invalid, 'has-success': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$valid}">
+                <label for="newpassword">New Password</label>
+                <input autocomplete="off" type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New password" ng-model="password.newpassword" required ng-minlength="8">
+                <div class="text-danger" ng-show="myFormPassword.newpassword.$error.minlength"><small>8 characters minimum</small></div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$invalid, 'has-success': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$valid}">
+                <label for="confirmpassword">Confirm Password</label>
+                <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="password.confirmpassword" required ng-minlength="8">
+                <div class="text-danger" ng-show="myFormPassword.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
+            </div>
+
+            <div style="margin:0px auto;width:75px">
+                <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
+            </div>
+        </form>
     </div>
 </div>
+<!--
+
+<div class="row">
+    <div class="col-md-6">
+
+    </div>
+</div>
+-->

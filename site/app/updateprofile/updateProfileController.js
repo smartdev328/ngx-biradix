@@ -12,7 +12,9 @@ define([
             $rootScope.sideMenu = true;
             $rootScope.sideNav = "UpdateProfile";
 
-            $scope.timezones = [
+            $scope.isPassword = $stateParams.password === "1";
+
+                $scope.timezones = [
                 {id: 'America/Los_Angeles', name: "Los Angeles (Pacific)"},
                 {id: 'America/Phoenix', name: "Phoenix (Arizona)"},
                 {id: 'America/Denver', name: "Denver (Mountain)"},
@@ -29,12 +31,6 @@ define([
             var unbind = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
                     window.setTimeout(function() {
-                        if ($stateParams.password === "1") {
-                            $('html, body').animate({
-                                scrollTop: ($('#passwordPannel').offset().top - 80)
-                            }, 500);
-                        }
-                        else
                         if ($stateParams.notifications === "1") {
                             $('html, body').animate({
                                 scrollTop: ($('#notificationsPanel').offset().top - 80)
