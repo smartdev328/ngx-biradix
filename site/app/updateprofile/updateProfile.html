@@ -9,37 +9,44 @@
 </ul>
 <div class="tab-container">
     <div ng-if="isProfile">
-        <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)">
-            <div style="padding-bottom:5px"><b>First Name:</b></div>
-            <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
-                <div class="input-group">
-                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                    <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
+        <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)" class="full-page">
+            <div class="row">
+                <div class="col-sm-4 col-md-3">First Name:</div>
+                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                        <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
+                    </div>
                 </div>
             </div>
 
-            <div style="padding-bottom:5px"><b>Last Name:</b></div>
-            <div class="form-group" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
-                <div class="input-group">
-                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                    <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
+            <div class="row">
+                <div class="col-sm-4 col-md-3">Last Name:</div>
+                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                        <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
+                    </div>
                 </div>
             </div>
 
-            <div style="padding-bottom:5px"><b>Email Address:</b>
-                <i class="fa fa-exclamation-triangle warning" class="pull-left"
-                   style="color:orange;cursor:pointer;font-size:16px;padding:4px 0px 0px 5px"
-                   ng-if="me.bounceReason"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-class="popover-small"
-                   uib-popover-html="$root.bouncePopup(me)"
-                ></i>
-            </div>
-            <div class="form-group " ng-class="{'has-error': (myForm.email.$dirty && myForm.email.$invalid) || me.bounceReason, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
-                <div class="input-group">
-                    <div class="input-group-addon"><i class="fa fa-at"></i></div>
-                    <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email" ng-disabled="!canUpdateEmail">
+            <div class="row">
+                <div class="col-sm-4 col-md-3">Email Address:
+                    <i class="fa fa-exclamation-triangle warning" class="pull-left"
+                       style="color:orange;cursor:pointer;font-size:16px;padding:4px 0px 0px 5px"
+                       ng-if="me.bounceReason"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-class="popover-small"
+                       uib-popover-html="$root.bouncePopup(me)"
+                    ></i>
+                </div>
+
+                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': (myForm.email.$dirty && myForm.email.$invalid) || me.bounceReason, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                        <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email" ng-disabled="!canUpdateEmail">
+                    </div>
                 </div>
             </div>
 
@@ -190,23 +197,38 @@
         </div>
     </div>
     <div ng-if="isPassword">
-        <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password)">
-            <div class="form-group" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
-                <label for="currentpassword">Current Password</label>
-                <input autocomplete="off" type="password" name="currentpassword" class="form-control" id="currentpassword" placeholder="Current password" ng-model="password.currentpassword" required ng-minlength="8">
-                <div class="text-danger" ng-show="myFormPassword.currentpassword.$error.minlength"><small>8 characters minimum</small></div>
+        <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password)" class="full-page">
+            <div class="row">
+                <div class="col-sm-4 col-md-3">Current Password</div>
+                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                        <input autocomplete="off" type="password" name="currentpassword" class="form-control" id="currentpassword" placeholder="Current password" ng-model="password.currentpassword" required ng-minlength="8">
+                    </div>
+                    <div class="text-danger" ng-show="myFormPassword.currentpassword.$error.minlength"><small>8 characters minimum</small></div>
+                </div>
             </div>
 
-            <div class="form-group" ng-class="{'has-error': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$invalid, 'has-success': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$valid}">
-                <label for="newpassword">New Password</label>
-                <input autocomplete="off" type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New password" ng-model="password.newpassword" required ng-minlength="8">
-                <div class="text-danger" ng-show="myFormPassword.newpassword.$error.minlength"><small>8 characters minimum</small></div>
+            <div class="row">
+                <div class="col-sm-4 col-md-3">New Password</div>
+                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$invalid, 'has-success': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$valid}">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                        <input autocomplete="off" type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New password" ng-model="password.newpassword" required ng-minlength="8">
+                    </div>
+                    <div class="text-danger" ng-show="myFormPassword.newpassword.$error.minlength"><small>8 characters minimum</small></div>
+                </div>
             </div>
 
-            <div class="form-group" ng-class="{'has-error': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$invalid, 'has-success': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$valid}">
-                <label for="confirmpassword">Confirm Password</label>
-                <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="password.confirmpassword" required ng-minlength="8">
-                <div class="text-danger" ng-show="myFormPassword.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
+            <div class="row">
+                <div class="col-sm-4 col-md-3">Confirm Password</div>
+                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$invalid, 'has-success': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$valid}">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                        <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="password.confirmpassword" required ng-minlength="8">
+                    </div>
+                    <div class="text-danger" ng-show="myFormPassword.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
+                </div>
             </div>
 
             <div style="margin:0px auto;width:75px">
