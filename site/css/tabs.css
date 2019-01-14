@@ -20,13 +20,14 @@
     color: #000;
     border: 1px solid #ddd;
     background-color: white;
-    margin-right:3px;
+    margin-right:2px;
+    padding:10px 10px
 }
 
 .nav>li>a:focus, .nav>li>a:hover {
     border: 1px solid #ddd;
     background-color: white;
-    margin-right:3px;
+    margin-right:2px;
 }
 
 .nav-tabs>li.active>a,.nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {

@@ -2,14 +2,13 @@
     <hr>
 </h2>
 <ul class="nav nav-tabs">
-    <li ng-class="{'active': isProfile}"><a href="#/updateProfile">Update Profile</a></li>
+    <li ng-class="{'active': isProfile}"><a href="#/updateProfile">Profile</a></li>
     <li ng-class="{'active': isNotifications}" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1"><a href="#/updateProfile?notifications=1">Notifications</a></li>
     <li ng-class="{'active': isSettings}" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1"><a href="#/updateProfile?settings=1">Settings</a></li>
-    <li ng-class="{'active': isPassword}"><a href="#/updateProfile?password=1">Update Password</a></li>
+    <li ng-class="{'active': isPassword}"><a href="#/updateProfile?password=1">Password</a></li>
 </ul>
 <div class="tab-container">
     <div ng-if="isProfile">
-        <h4>Account Information</h4>
         <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)">
             <div style="padding-bottom:5px"><b>First Name:</b></div>
             <div class="form-group" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
@@ -51,7 +50,6 @@
     </div>
     <div ng-if="isNotifications">
           <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="notificationsPanel">
-            <h4>Notifications</h4>
             <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
                 <img src="/images/squares.gif" style="width:100px">
             </div>
@@ -143,7 +141,6 @@
     </div>
     <div ng-if="isSettings">
         <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="settingsPanel">
-            <h4>Settings</h4>
             <B>Show "Leased %" information:</B> <toggle-switch checked="settings.showLeases" disabled="!me.orgs[0].settings.leased.allow" popover="me.orgs[0].settings.leased.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
 
             <i class="fa fa-info-circle"
@@ -193,7 +190,6 @@
         </div>
     </div>
     <div ng-if="isPassword">
-        <h4>Update Password</h4>
         <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password)">
             <div class="form-group" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
                 <label for="currentpassword">Current Password</label>
