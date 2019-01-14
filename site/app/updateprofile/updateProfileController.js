@@ -10,9 +10,23 @@ define([
             $rootScope.nav = "";
 
             $rootScope.sideMenu = true;
-            $rootScope.sideNav = "UpdateProfile";
+
 
             $scope.isPassword = $stateParams.password === "1";
+
+            if ($stateParams.password) {
+                $scope.isPassword = true;
+                $rootScope.sideNav = "UpdatePassword";
+            } else if ($stateParams.notifications === "1") {
+                $scope.isNotifications = true;
+                $rootScope.sideNav = "UpdateNotifications";
+            } else if ($stateParams.settings === "1") {
+                $scope.isSettings = true;
+                $rootScope.sideNav = "UpdateSettings";
+            } else {
+                $scope.isProfile = true;
+                $rootScope.sideNav = "UpdateProfile";
+            }
 
                 $scope.timezones = [
                 {id: 'America/Los_Angeles', name: "Los Angeles (Pacific)"},
@@ -30,27 +44,6 @@ define([
 
             var unbind = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
-                    window.setTimeout(function() {
-                        if ($stateParams.notifications === "1") {
-                            $('html, body').animate({
-                                scrollTop: ($('#notificationsPanel').offset().top - 80)
-                            },500);
-
-                        }
-                        else
-                        if ($stateParams.settings === "1") {
-                            $('html, body').animate({
-                                scrollTop: ($('#settingsPanel').offset().top - 80)
-                            },500);
-
-                        }
-                        else {
-                            $('html, body').animate({
-                                scrollTop: 0
-                            },500);
-                        }
-                    }, 500)
-
                     $scope.settings.tz = _.find($scope.timezones, function(x) {return x.id == $rootScope.me.settings.tz});
 
                     if (!$scope.settings.tz) {

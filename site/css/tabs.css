@@ -8,14 +8,32 @@
 .tab-container h4 {
     color: #4460a9;
 }
+
+.nav-tabs>li {
+    margin-bottom: -2px;
+    font-weight: bold;
+}
+
 .nav-tabs>li>a {
     border-radius: 0;
+    font-size: 12px;
+    color: #000;
+    border: 1px solid #ddd;
+    background-color: white;
+    margin-right:3px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    border: 1px solid #ddd;
+    background-color: white;
+    margin-right:3px;
 }
 
 .nav-tabs>li.active>a,.nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     border-top: 2px solid #4460a9;
+    color: #4460a9;
 }
 
 .nav-tabs>li>a:hover {
-    border-color: #eee;
+    border-color: #ddd;
 }
