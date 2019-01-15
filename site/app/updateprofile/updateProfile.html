@@ -90,7 +90,7 @@
                         </div>
 
                         <div class="form-group col-sm-5 col-md-7 indent-col-2">
-                            <div class="btn-group btn-group-sm" role="group">
+                            <div class="btn-group btn-group-sm state-toggle" role="group">
                                 <button ng-click="nots.howOften = 'Weekly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Weekly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Weekly</button>
                                 <button ng-click="nots.howOften = 'Monthly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Monthly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Monthly</button>
                             </div> every
@@ -143,7 +143,7 @@
                         </div>
 
                         <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
-                            <div class="btn-group btn-group-sm" role="group">
+                            <div class="btn-group btn-group-sm state-toggle" role="group">
                                 <button ng-click="settings.notifications.groupComps = false" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === false}">Off</button>
                                 <button ng-click="settings.notifications.groupComps = undefined" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === undefined}">Auto</button>
                                 <button ng-click="settings.notifications.groupComps = true" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === true}">On</button>
