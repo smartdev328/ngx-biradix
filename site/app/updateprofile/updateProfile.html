@@ -64,24 +64,22 @@
                 <img src="/images/squares.gif" style="width:100px">
             </div>
 
-            <div ng-show="notificationsLoaded">
-                <B>Send me regular property status updates:</B> <toggle-switch checked="settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                <button class=" btn btn-warning btn-xs" style="font-style: italic;margin-left:20px;font-size:10px" type="button" ng-if="settings.notifications.on === true" ng-click="sendReport()">Send Now</button><Br>
-                <br>
-                <Table ng-if="settings.notifications.on === true" style="margin-left:20px;margin-bottom:15px">
-                    <Tr>
-                        <Td colspan="2">
-                            How Often:&nbsp;
+            <form class="full-page larger" ng-show="notificationsLoaded">
+                <div class="row">
+                    <div class="col-sm-7 col-md-5">
+                        Send me regular property status updates:
+                    </div>
 
-                            <select class="form-control input-sm" ng-options="item for item in nots.howOftenOptions" ng-model="nots.howOften" style="display:inline;width:100px" ng-disabled="!me.orgs[0].settings.how_often.allow">
-                            </select>, every
-                            <select ng-if="nots.howOften == 'Weekly'"
-                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:100px" ng-disabled="!me.orgs[0].settings.how_often.allow">
-                            </select>
-                            <select ng-if="nots.howOften == 'Monthly'"
-                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:100px" ng-disabled="!me.orgs[0].settings.how_often.allow">
-                            </select>
+                    <div class="form-group col-sm-5 col-md-7">
+                        <toggle-switch checked="settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                        &nbsp;<a href ng-if="settings.notifications.on === true" ng-click="settings.notifications.toggle = !settings.notifications.toggle"><span class="fa fa-gear fa-2x" style="color: #A2A2A2"></span></a>
+                    </div>
+                </div>
 
+                <div ng-if="settings.notifications.on === true" ng-show="settings.notifications.toggle">
+                    <div class="row">
+                        <div class="indent col-sm-7 col-md-5">
+                            How often:
                             <i class="fa fa-lock"
                                style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
                                popover-trigger="'mouseenter'"
@@ -89,68 +87,106 @@
                                uib-popover="This setting has been locked by your company administrator."
                                ng-if="!me.orgs[0].settings.how_often.allow"
                             ></i>
-                        </Td>
-                    </Tr>
-                    <tr>
-                        <Td colspan="2" style="padding-top:10px">
-                            Include all properties I have access to in status updates: <toggle-switch checked="nots.all" disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch><br>
+                        </div>
 
-                        </Td>
-                    </tr>
-                    <Tr ng-if="!nots.all">
-                        <Td colspan="2">
-                            <div style="float:left;margin-top: 8px;padding-left: 5px;">
-                                <i class="fa fa-long-arrow-right" style="font-size: 10px;"></i>&nbsp;Only include these properties:&nbsp;
-                            </div>
-                            <div ng-if="!nots.all" style="padding-top:5px;float:left;width:200px">
-                                <filter-list-ajax options="propertyOptions" model="propertyItems.items" search="autocompleteproperties"></filter-list-ajax>
-                            </div>
-                            <Br clear="all">
-                        </td>
-                    </tr>
-                    <tr>
-                        <Td style="padding-top: 10px">
+                        <div class="form-group col-sm-5 col-md-7 indent-col-2">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button ng-click="nots.howOften = 'Weekly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Weekly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Weekly</button>
+                                <button ng-click="nots.howOften = 'Monthly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Monthly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Monthly</button>
+                            </div> every
+                            <select ng-if="nots.howOften == 'Weekly'"
+                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:100px" ng-disabled="!me.orgs[0].settings.how_often.allow">
+                            </select>
+                            <select ng-if="nots.howOften == 'Monthly'"
+                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:100px" ng-disabled="!me.orgs[0].settings.how_often.allow">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="indent col-sm-7 col-md-5">
+                            Properties:
+                            <i class="fa fa-lock"
+                               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                               popover-trigger="'mouseenter'"
+                               popover-placement="top"
+                               uib-popover="This setting has been locked by your company administrator."
+                               ng-if="!me.orgs[0].settings.updates.allow"
+                            ></i>
+                        </div>
+
+                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
+                            <Span ng-if="!me.orgs[0].settings.updates.allow">All</Span>
+                            <filter-list-ajax ng-if="me.orgs[0].settings.updates.allow" options="propertyOptions" model="propertyItems.items" search="autocompleteproperties"></filter-list-ajax>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="indent col-sm-7 col-md-5">
                             Select columns:
-                        </Td>
-                        <Td style="padding-top: 10px">
+                        </div>
+
+                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
                             <filter-list options="columnsOptions" items="columnsItems"></filter-list>
-                        </Td>
-                    </tr>
-                    <tr>
-                        <Td style="padding-top: 10px">
-                            Group Comps:
-                        </Td>
-                        <Td style="padding-top: 10px">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="indent col-sm-7 col-md-5">
+                            Group comps:
+
+                            <i class="fa fa-info-circle"
+                               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                               popover-trigger="'mouseenter'"
+                               popover-placement="top"
+                               uib-popover="Turning Group Comps on will result in the comp set being combined into a single weighted average row labeled Comp Average. Setting to 'Auto' will turn Group Comps on if you have 25 or more properties"
+                            ></i>
+                        </div>
+
+                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
                             <div class="btn-group btn-group-sm" role="group">
                                 <button ng-click="settings.notifications.groupComps = false" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === false}">Off</button>
                                 <button ng-click="settings.notifications.groupComps = undefined" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === undefined}">Auto</button>
                                 <button ng-click="settings.notifications.groupComps = true" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === true}">On</button>
                             </div>
-                        </Td>
-                    </tr>
-                </Table>
-                <div>
-                    <hr>
-                    <B>Send me property update reminders:</B> <toggle-switch checked="settings.reminders.on" disabled="!me.orgs[0].settings.reminders.allow" popover="me.orgs[0].settings.reminders.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                    <i class="fa fa-info-circle"
-                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="top"
-                       uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
-                    ></i><Br>
-                    <br>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="indent col-sm-7 col-md-5">
+                            Send Status Update Now
+                        </div>
+
+                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
+                            <button class=" btn btn-warning btn-xs" style="font-style: italic;font-size:10px" type="button" ng-click="sendReport()">Send Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-7 col-md-5">Send me property update reminders:
+                        <i class="fa fa-info-circle"
+                           style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                           popover-trigger="'mouseenter'"
+                           popover-placement="top"
+                           uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
+                        ></i>
+                    </div>
+                    <div class="form-group col-sm-5 col-md-7">
+                        <toggle-switch checked="settings.reminders.on" disabled="!me.orgs[0].settings.reminders.allow" popover="me.orgs[0].settings.reminders.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                    </div>
                 </div>
 
 
-
-                <center>
-                    <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveNotifications()">Update</button>
-                </center>
-            </div>
+                <div class="row">
+                    <center>
+                        <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveNotifications()">Update</button>
+                    </center>
+                </div>
+            </form>
           </div>
     </div>
     <div ng-if="isSettings">
-        <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="settingsPanel">
+        <form class="full-page" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="settingsPanel">
             <div class="row">
                 <div class="col-sm-7 col-md-5">Show "Leased %" information:
                     <i class="fa fa-info-circle"
@@ -212,7 +248,7 @@
                     <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveSettings()">Update</button>
                 </center>
             </div>
-        </div>
+        </form>
     </div>
     <div ng-if="isPassword">
         <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password)" class="full-page">

@@ -24,7 +24,7 @@
     padding:10px 10px
 }
 
-.nav>li>a:focus, .nav>li>a:hover {
+.nav-tabs .nav>li>a:focus,.nav-tabs .nav>li>a:hover {
     border: 1px solid #ddd;
     background-color: white;
     margin-right:2px;

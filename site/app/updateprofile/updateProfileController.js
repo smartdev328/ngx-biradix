@@ -8,11 +8,7 @@ define([
             window.setTimeout(function() {window.document.title = "My Account - Update Profile | BI:Radix";},1500);
 
             $rootScope.nav = "";
-
             $rootScope.sideMenu = true;
-
-
-            $scope.isPassword = $stateParams.password === "1";
 
             if ($stateParams.password) {
                 $scope.isPassword = true;
@@ -53,7 +49,7 @@ define([
                     $scope.settings.showLeases = $rootScope.me.settings.showLeases;
                     $scope.settings.showATR = $rootScope.me.settings.showATR;
                     $scope.settings.showRenewal = $rootScope.me.settings.showRenewal;
-                    $scope.settings.notifications = {on: $rootScope.me.settings.notifications.on, groupComps: $rootScope.me.settings.notifications.groupComps}
+                    $scope.settings.notifications = {on: $rootScope.me.settings.notifications.on, groupComps: $rootScope.me.settings.notifications.groupComps, toggle: false}
                     $scope.settings.reminders = {on: $rootScope.me.settings.reminders.on}
 
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
@@ -72,11 +68,11 @@ define([
 
                     $scope.nots = $cronService.getOptions($rootScope.me.settings.notifications.cron);
 
-                    $scope.nots.all = !$rootScope.me.settings.notifications.props || !$rootScope.me.settings.notifications.props.length;
+                    $scope.nots.all = false;
 
-                    $scope.propertyOptions = { panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Excluded Properties", labelSelected: "Included Properties", searchLabel: "Properties" }
+                    $scope.propertyOptions = {noneLabel: "All", panelWidth:210, minwidth:'100%', hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Excluded Properties", labelSelected: "Included Properties", searchLabel: "Properties" }
 
-                    $scope.columnsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
+                    $scope.columnsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
                     $scope.columnsItems = [
                         {id: "occupancy", name: "Occ. %", selected: $rootScope.me.settings.notification_columns.occupancy},
                         {id: "leased", name: "Leased %", selected: $rootScope.me.settings.notification_columns.leased || false},
