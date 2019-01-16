@@ -12,7 +12,7 @@
     <div ng-if="isProfile">
         <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)" class="full-page">
             <div class="row">
-                <div class="col-sm-4 col-md-3">First Name:</div>
+                <div class="col-sm-4 col-md-3 valign5">First Name</div>
                 <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-user"></i></div>
@@ -22,7 +22,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-4 col-md-3">Last Name:</div>
+                <div class="col-sm-4 col-md-3 valign5">Last Name</div>
                 <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-user"></i></div>
@@ -32,9 +32,9 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-4 col-md-3">Email Address:
+                <div class="col-sm-4 col-md-3 valign5">Email Address
                     <i class="fa fa-exclamation-triangle warning" class="pull-left"
-                       style="color:orange;cursor:pointer;font-size:16px;padding:4px 0px 0px 5px"
+                       style="color:orange;cursor:pointer;font-size:14px;padding:4px 0px 0px 5px"
                        ng-if="me.bounceReason"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
@@ -65,23 +65,29 @@
             </div>
 
             <form class="full-page larger" ng-show="notificationsLoaded">
+                <Div class="row" style="margin-top:-15px">
+                <Center>
+                    <A href ng-click="reset()" style="font-size:12px">Reset to default</A><Br>
+                </Center>
+                </Div>
+                        <Br>
                 <div class="row">
                     <div class="col-sm-7 col-md-5">
-                        Receive Property Status Updates:
+                        Receive Property Status Updates
                     </div>
 
                     <div class="form-group col-sm-5 col-md-7">
                         <toggle-switch checked="settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                        &nbsp;<a href ng-if="settings.notifications.on === true" ng-click="settings.notifications.toggle = !settings.notifications.toggle"><span class="fa fa-gear fa-2x" style="color: #A2A2A2"></span></a>
+                        &nbsp;&nbsp;&nbsp;<a href ng-if="settings.notifications.on === true" ng-click="settings.notifications.toggle = !settings.notifications.toggle"><span class="fa fa-gear fa-2x" style="color: #A2A2A2"></span></a>
                     </div>
                 </div>
 
                 <div ng-if="settings.notifications.on === true" ng-show="settings.notifications.toggle">
                     <div class="row">
-                        <div class="indent col-sm-7 col-md-5">
-                            How often:
+                        <div class="indent col-sm-7 col-md-5 valign5">
+                            How often
                             <i class="fa fa-lock"
-                               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                                popover-trigger="'mouseenter'"
                                popover-placement="top"
                                uib-popover="This setting has been locked by your company administrator."
@@ -103,16 +109,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="indent col-sm-7 col-md-5">
-                            Properties:
+                        <div class="indent col-sm-7 col-md-5 valign5">
+                            Properties
                             <i class="fa fa-question-circle"
-                               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                                popover-trigger="'mouseenter'"
                                popover-placement="top"
                                uib-popover="Choose which properites you want to receive updates for"
                             ></i>
                             <i class="fa fa-lock"
-                               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                                popover-trigger="'mouseenter'"
                                popover-placement="top"
                                uib-popover="This setting has been locked by your company administrator."
@@ -127,21 +133,21 @@
                     </div>
 
                     <div class="row">
-                        <div class="indent col-sm-7 col-md-5">
-                            Select columns:
+                        <div class="indent col-sm-7 col-md-5 valign5">
+                            Select columns
                         </div>
 
                         <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
-                            <filter-list options="columnsOptions" items="columnsItems"></filter-list>
+                            <filter-list options="columnsOptions" items="columnsItems.items"></filter-list>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="indent col-sm-7 col-md-5">
-                            Group comps:
+                        <div class="indent col-sm-7 col-md-5 valign5">
+                            Group comps
 
                             <i class="fa fa-question-circle"
-                               style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                                popover-trigger="'mouseenter'"
                                popover-placement="top"
                                uib-popover-html="'Turning Group Comps on will result in the comp set being combined into a single weighted average row labeled Comp Average. Setting to &quot;Auto&quot; will turn Group Comps on if you have 25 or more properties. <br><Br> Note: group comps cannot be turned off when more than 75 properties are selected. This is to avoid sending you very large emails that can crash your email software or get rejected by email services. To see a report of your whole portfolio, please visit the Reporting section'"
@@ -169,9 +175,9 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-7 col-md-5">Receive Property Update Reminders:
+                    <div class="col-sm-7 col-md-5">Receive Property Update Reminders
                         <i class="fa fa-question-circle"
-                           style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                           style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                            popover-trigger="'mouseenter'"
                            popover-placement="top"
                            uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
@@ -194,9 +200,9 @@
     <div ng-if="isSettings">
         <form class="full-page" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="settingsPanel">
             <div class="row">
-                <div class="col-sm-7 col-md-5">Show "Leased %" information:
+                <div class="col-sm-7 col-md-5">Show "Leased %" information
                     <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                       style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        popover-append-to-body="true"
@@ -210,10 +216,10 @@
 
             <div class="row">
                 <div class="col-sm-7 col-md-5">
-                    Show "Renewal %" information:
+                    Show "Renewal %" information
 
                     <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                       style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        uib-popover='Turning this option ON will result in "Renewal %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Renewal %" value when doing Property Surveys. Note: Data for Renewal % will only be shown if it exists for a property.'
@@ -226,9 +232,9 @@
 
             <div class="row">
                 <div class="col-sm-7 col-md-5">
-                    Show "ATR %" information:
+                    Show "ATR %" information
                     <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:16px;padding:5px 0px 0px 5px"
+                       style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        popover-append-to-body="true"
@@ -241,8 +247,8 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-7 col-md-5">
-                    Timezone:
+                <div class="col-sm-7 col-md-5 valign5">
+                    Timezone
                 </div>
                 <div class="form-group col-sm-5 col-md-7">
                     <select class="form-control input-sm" ng-options="item.name for item in timezones" ng-model="settings.tz" style="display:inline;width:200px">
@@ -257,9 +263,9 @@
         </form>
     </div>
     <div ng-if="isPassword">
-        <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password)" class="full-page">
+        <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password, myFormPassword)" class="full-page">
             <div class="row">
-                <div class="col-sm-4 col-md-3">Current Password</div>
+                <div class="col-sm-4 col-md-3 valign5">Current Password</div>
                 <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-lock"></i></div>
@@ -270,7 +276,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-4 col-md-3">New Password</div>
+                <div class="col-sm-4 col-md-3 valign5">New Password</div>
                 <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$invalid, 'has-success': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$valid}">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-lock"></i></div>
@@ -281,7 +287,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-4 col-md-3">Confirm Password</div>
+                <div class="col-sm-4 col-md-3 valign5">Confirm Password</div>
                 <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$invalid, 'has-success': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$valid}">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-lock"></i></div>

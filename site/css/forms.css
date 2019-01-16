@@ -11,6 +11,10 @@ form.full-page .indent {
     padding-left:30px;
 }
 
+form.full-page .valign5 {
+    margin-top:5px;
+}
+
 @media (max-width: 767px) {
     form.full-page .indent-col-2 {
         margin-left: 15px;
