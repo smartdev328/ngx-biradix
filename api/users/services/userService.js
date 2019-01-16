@@ -769,6 +769,31 @@ module.exports = {
                 concessionsDescription = "Off => On";
             }
 
+            let originalGroupComps = "Auto";
+            switch (usr.settings.notifications.groupComps) {
+                case true:
+                    originalGroupComps = "On";
+                    break;
+                case false:
+                    originalGroupComps = "Off";
+                    break;
+            }
+            let newGroupComps = "Auto";
+            switch (settings.notifications.groupComps) {
+                case true:
+                    newGroupComps = "On";
+                    break;
+                case false:
+                    newGroupComps = "Off";
+                    break;
+            }
+
+            if (originalGroupComps !== newGroupComps) {
+                if (notsDescription) {
+                    notsDescription += ", ";
+                }
+                notsDescription += "Group Comps: " + originalGroupComps + " => " + newGroupComps;
+            }
 
             usr.settings = settings
 
@@ -1137,6 +1162,7 @@ function defaultSettings(user, orgSettings) {
     user.settings.notifications.cron = user.settings.notifications.cron || orgSettings.how_often.default_value
     user.settings.notifications.props = user.settings.notifications.props || [];
     user.settings.notifications.last = user.settings.notifications.last || null;
+    user.settings.notifications.groupComps = user.settings.notifications.groupComps || undefined;
     user.settings.notifications.on = typeof user.settings.notifications.on == 'undefined' ? orgSettings.updates.default_value : user.settings.notifications.on;
 
     user.settings.reminders = user.settings.reminders || {};

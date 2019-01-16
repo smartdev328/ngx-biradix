@@ -587,7 +587,7 @@
                         {{row.management}}
                     </td>
                     <td ng-if="col.id == 'units'" style="text-align:right">
-                        {{row.totUnits | number : 0}}
+                        {{row.totUnits !== undefined && row.totUnits ? row.totUnits.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'occupancy'" style="text-align:right">
                         {{row.occupancy != "" && row.occupancy != null ? row.occupancy + "%" : "-"}}
@@ -602,19 +602,19 @@
                         {{row.atr_percent != "" ? row.atr_percent + "%" : "-"}}
                     </td>
                     <td ng-if="col.id == 'weekly'" style="text-align:right">
-                        {{row.weeklytraffic | number : 0}}
+                        {{row.weeklytraffic !== undefined ? row.weeklytraffic.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'weekly'" style="text-align:right">
-                        {{row.weeklyleases | number : 0}}
+                        {{row.weeklyleases !== undefined ? row.weeklyleases.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'sqft'" style="text-align:right">
-                        {{row.sqft | number : 0}}
+                        {{row.sqft !== undefined ? row.sqft.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'rent'" style="text-align:right">
-                        ${{row.rent | number : 0}}
+                        {{row.rent !== undefined ? "$" + row.rent.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'rentsqft'" style="text-align:right">
-                        ${{row.rentsqft | number : 2}}
+                        {{row.rentsqft !== undefined ? "$" + row.rentsqft.toFixed(2) : "-"}}
                     </td>
                     <td ng-if="col.id == 'rent0' && settings.bedrooms[0]" style="text-align:right">
                         {{row.rent0 !== undefined ? "$" + row.rent0.toFixed(0) : "-"}}
@@ -644,16 +644,16 @@
                         {{row.concessionsMonthly !== undefined ? "$" + row.concessionsMonthly.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'runrate'" style="text-align:right">
-                        ${{row.runrate | number : 0}}
+                        {{row.runrate !== undefined ? "$" + row.runrate.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'runratesqft'" style="text-align:right">
-                        ${{row.runratesqft | number : 2}}
+                        {{row.runratesqft !== undefined ? "$" + row.runratesqft.toFixed(2) : "-"}}
                     </td>
                     <td ng-if="col.id == 'concessions'" style="text-align:right">
-                        ${{row.concessions | number : 0}}
+                        {{row.concessions !== undefined ? "$" + row.concessions.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'ner'" style="text-align:right">
-                        ${{row.ner | number : 0}}
+                        {{row.ner !== undefined ? "$" + row.ner.toFixed(0) : "-"}}
                     </td>
                     <td ng-if="col.id == 'ner0' && settings.bedrooms[0]" style="text-align:right">
                         {{row.ner0 !== undefined ? "$" + row.ner0.toFixed(0) : "-"}}
@@ -700,7 +700,7 @@
                         <span ng-if="row.lastyearnerpercent === ''">&nbsp;&nbsp;</span>
                     </td>
                     <td ng-if="col.id == 'nersqft'" style="text-align:right">
-                        ${{row.nersqft | number : 2}}
+                        {{row.nersqft !== undefined && row.nersqft !== null && !isNaN(row.nersqft) ? "$" + row.nersqft.toFixed(2) : "-"}}
                     </td>
                     <td ng-if="col.id == 'nersqftvscompavg'" style="text-align:right">
                         <span ng-if="row.name === 'Averages' || row.name === 'Comp Averages'"></span>
@@ -726,7 +726,7 @@
                         <span ng-if="row.lastyearnersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
                     <td ng-if="col.id == 'last_updated'" style="text-align:right">
-                        <span ng-class="{'danger':row.tier == 'danger'}">{{row.date}}</span>
+                        <span ng-class="{'danger':row.tier == 'danger'}">{{row.date !== undefined ? row.date : "-"}}</span>
                     </td>
                     <td ng-repeat-end="true" ng-if="false"></td>
                 </tr>

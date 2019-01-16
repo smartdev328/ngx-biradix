@@ -47,6 +47,10 @@ module.exports = {
                 if (err) {
                     throw (err);
                 } else {
+
+                    if (email.stripBreaks) {
+                        html = html.replace(/\r?\n/g, "");
+                    }
                     LiquidService.parse(data, {message: html, logo: email.logo, width: email.width, logoHeight: email.logoHeight}, filters, function(result) {
                         newemail.html = result;
                         serviceRegistry.getEmailService().send(newemail).then((success) => {

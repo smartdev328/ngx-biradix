@@ -3,7 +3,7 @@ import * as moment from "moment-timezone";
 import {IUserLoggedIn} from "../../services/services/users/contracts/IUser";
 import {SFTP_ALLIANCE } from "../../../config/settings";
 import * as userService from "../../../api/users/services/userService";
-import {connect, uploadFile} from "../../ftp/services/ftpService";
+import {connect, disconnect, uploadFile} from "../../ftp/services/ftpService";
 import * as exportService from "../../../api/properties/services/exportService";
 
 const routes = express.Router();
@@ -16,6 +16,7 @@ routes.get("/", async (req, res) => {
     const report = Buffer.from(data, "utf8");
 
     await uploadFile(`/alliance/alliance_${moment().tz("America/Los_Angeles").format("MM_DD_YYYY")}.csv`, report);
+    await disconnect();
 
     return res.status(200).send("SUCCESS");
 });

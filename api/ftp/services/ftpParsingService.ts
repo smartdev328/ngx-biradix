@@ -84,6 +84,7 @@ export async function parseUnits(folder: string, date: string) {
     unitTypes.forEach((row) => {
         unitTypesObjects.push({
             yardiId: row[0],
+            yardiCode: row[1],
             yardiPropertyId: row[2],
             yardiFloorplanId: row[3],
             rent: parseInt(row[4], 10),

@@ -60,7 +60,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             ner: c.survey.ner,
                             rent: c.survey.rent,
                             rentsqft: c.survey.mersqft,
-                            nersqft: c.survey.nersqft,
+                            nersqft: c.survey.ner / c.survey.sqft,
                             runrate: c.survey.runrate,
                             runratesqft: c.survey.runratesqft,
                             totUnits: c.survey.totUnits,
@@ -169,7 +169,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             rent: c.survey.rent,
                             runrate: c.survey.runrate,
                             runratesqft: c.survey.runratesqft,
-                            nersqft: c.survey.nersqft,
+                            nersqft: c.survey.ner / c.survey.sqft,
                             totUnits: c.survey.totUnits,
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
@@ -182,6 +182,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     callbackp(null, report);
                     report = null;
                 } catch (ex) {
+                    console.error(ex);
                     callbackp(ex);
                 }
 
@@ -229,7 +230,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             rent: c.survey.rent,
                             runrate: c.survey.runrate,
                             runratesqft: c.survey.runratesqft,
-                            nersqft: c.survey.nersqft,
+                            nersqft: c.survey.ner / c.survey.sqft,
                             totUnits: c.survey.totUnits,
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
@@ -242,6 +243,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     callbackp(null, report);
                     report = null;
                 } catch (ex) {
+                    console.error(ex);
                     callbackp(ex);
                 }
 
@@ -291,7 +293,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                             rent: c.survey.rent,
                             runrate: c.survey.runrate,
                             runratesqft: c.survey.runratesqft,
-                            nersqft: c.survey.nersqft,
+                            nersqft: c.survey.ner / c.survey.sqft,
                             totUnits: c.survey.totUnits,
                             date: c.survey.date,
                             occupancy: c.survey.occupancy,
@@ -304,6 +306,7 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
                     callbackp(null, report);
                     report = null;
                 } catch (ex) {
+                    console.error(ex);
                     callbackp(ex);
                 }
 
@@ -342,10 +345,10 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
             }
 
             if (p.totUnits) {
-                calcTotalRow(all, p, totalrow, compNER, compNERSqft);
+                calcTotalRow(all, p, totalrow, compNER, compNERSqft, false);
 
                 if (i > 0) {
-                    calcTotalRow(all, p, totalrowComps, compNER, compNERSqft);
+                    calcTotalRow(all, p, totalrowComps, compNER, compNERSqft, true);
                 }
             }
         });
@@ -363,14 +366,22 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
         }
 
         if (data.options && data.options.compAverages) {
+            totalrowComps.isSummary = true;
             totalrowComps.isSubject = false;
             totalrowComps.nervscompavg = "";
             totalrowComps.nersqftvscompavg = "";
             report.push(totalrowComps);
         }
 
-        totalrow.isSubject = false;
-        report.push(totalrow);
+        if (!data.options || !data.options.groupComps) {
+            totalrow.isSubject = false;
+            totalrow.isSummary = true;
+            report.push(totalrow);
+        } else {
+            _.remove(report, (row) => {
+               return !row.isSubject && !row.isSummary;
+            });
+        }
 
         reply({err: err, report: report});
 
@@ -379,14 +390,26 @@ bus.handleQuery(settings.HISTORY_COMPARE_REPORT_QUEUE, function(data,reply) {
     });
 });
 
-var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft) {
+var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft, calcDateRange) {
+    if (calcDateRange) {
+        const d = (new Date(p.date)).getTime();
+        if (!totalrow.dateMin) {
+            totalrow.dateMin = d;
+            totalrow.tier = p.tier;
+        } else if (d < totalrow.dateMin) {
+            totalrow.dateMin = d;
+            totalrow.tier = p.tier;
+        }
+
+        if (!totalrow.dateMax) {
+            totalrow.dateMax = d;
+        } else if (d > totalrow.dateMax) {
+            totalrow.dateMax = d;
+        }
+    }
+
     totalrow.count = (totalrow.count || 0) + 1;
     totalrow.totUnits = (totalrow.totUnits || 0) + p.totUnits;
-
-    if (p.occupancy) {
-        totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits); // not weighted
-        totalrow.occupancyCount = (totalrow.occupancyCount || 0) + p.totUnits; // not weighted
-    }
 
     totalrow.sqft = (totalrow.sqft || 0) + (p.sqft * p.totUnits);
     totalrow.rent = (totalrow.rent || 0) + (p.rent * p.totUnits);
@@ -483,7 +506,12 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft) {
         totalrow.concessionsOneTime = (totalrow.concessionsOneTime || 0) + (p.concessionsOneTime * p.totUnits);
         totalrow.concessionsOneTimeUnits = (totalrow.concessionsOneTimeUnits || 0) + p.totUnits;
     }
-    
+
+    if (p.occupancy !== '') {
+        totalrow.occupancy = (totalrow.occupancy || 0) + (p.occupancy * p.totUnits); // not weighted
+        totalrow.occupancyUnits = (totalrow.occupancyUnits || 0) + p.totUnits; // not weighted
+    }
+
     if (p.leased !== '') {
         // not weighted
         totalrow.leased = (totalrow.leased || 0) + (p.leased * p.totUnits);
@@ -516,46 +544,52 @@ var calcTotalRow = function(all, p, totalrow, compNER, compNERSqft) {
     if (p.nersqft && lastweek && lastweek.nersqft) {
         p.lastweeknersqftpercent = Math.round((p.nersqft - lastweek.nersqft) / lastweek.nersqft * 100 * 10) / 10;
 
-        totalrow.lastweeknersqftpercent = (totalrow.lastweeknersqftpercent || 0) + (p.lastweeknersqftpercent * p.totUnits);
-        totalrow.lastweeknersqftTotalUnits = (totalrow.lastweeknersqftTotalUnits || 0) + p.totUnits;
+        totalrow.lastweeksqft = (totalrow.lastweeksqft || 0) + (lastweek.sqft * lastweek.totUnits);
+        totalrow.lastweeksqftTotalUnits = (totalrow.lastweeksqftTotalUnits || 0) + lastweek.totUnits;
     }
 
     if (p.nersqft && lastmonth && lastmonth.nersqft) {
         p.lastmonthnersqftpercent = Math.round((p.nersqft - lastmonth.nersqft) / lastmonth.nersqft * 100 * 10) / 10;
 
-        totalrow.lastmonthnersqftpercent = (totalrow.lastmonthnersqftpercent || 0) + (p.lastmonthnersqftpercent * p.totUnits);
-        totalrow.lastmonthnersqftTotalUnits = (totalrow.lastmonthnersqftTotalUnits || 0) + p.totUnits;
+        totalrow.lastmonthsqft = (totalrow.lastmonthsqft || 0) + (lastmonth.sqft * lastmonth.totUnits);
+        totalrow.lastmonthsqftTotalUnits = (totalrow.lastmonthsqftTotalUnits || 0) + lastmonth.totUnits;
     }
 
     if (p.nersqft && lastyear && lastyear.nersqft) {
         p.lastyearnersqftpercent = Math.round((p.nersqft - lastyear.nersqft) / lastyear.nersqft * 100 * 10) / 10;
 
-        totalrow.lastyearnersqftpercent = (totalrow.lastyearnersqftpercent || 0) + (p.lastyearnersqftpercent * p.totUnits);
-        totalrow.lastyearnersqftTotalUnits = (totalrow.lastyearnersqftTotalUnits || 0) + p.totUnits;
+        totalrow.lastyearsqft = (totalrow.lastyearsqft || 0) + (lastyear.sqft * lastyear.totUnits);
+        totalrow.lastyearsqftTotalUnits = (totalrow.lastyearsqftTotalUnits || 0) + lastyear.totUnits;
     }
+    
     if (p.ner && lastweek && lastweek.ner) {
         p.lastweeknerpercent = Math.round((p.ner - lastweek.ner) / lastweek.ner * 100 * 10) / 10;
 
-        totalrow.lastweeknerpercent = (totalrow.lastweeknerpercent || 0) + (p.lastweeknerpercent * p.totUnits);
-        totalrow.lastweeknerTotalUnits = (totalrow.lastweeknerTotalUnits || 0) + p.totUnits;
+        totalrow.lastweekner = (totalrow.lastweekner || 0) + (lastweek.ner * lastweek.totUnits);
+        totalrow.lastweeknerTotalUnits = (totalrow.lastweeknerTotalUnits || 0) + lastweek.totUnits;
     }
 
     if (p.ner && lastmonth && lastmonth.ner) {
         p.lastmonthnerpercent = Math.round((p.ner - lastmonth.ner) / lastmonth.ner * 100 * 10) / 10;
 
-        totalrow.lastmonthnerpercent = (totalrow.lastmonthnerpercent || 0) + (p.lastmonthnerpercent * p.totUnits);
-        totalrow.lastmonthnerTotalUnits = (totalrow.lastmonthnerTotalUnits || 0) + p.totUnits;
+        totalrow.lastmonthner = (totalrow.lastmonthner || 0) + (lastmonth.ner * lastmonth.totUnits);
+        totalrow.lastmonthnerTotalUnits = (totalrow.lastmonthnerTotalUnits || 0) + lastmonth.totUnits;
     }
 
     if (p.ner && lastyear && lastyear.ner) {
         p.lastyearnerpercent = Math.round((p.ner - lastyear.ner) / lastyear.ner * 100 * 10) / 10;
 
-        totalrow.lastyearnerpercent = (totalrow.lastyearnerpercent || 0) + (p.lastyearnerpercent * p.totUnits);
-        totalrow.lastyearnerTotalUnits = (totalrow.lastyearnerTotalUnits || 0) + p.totUnits;
+        totalrow.lastyearner = (totalrow.lastyearner || 0) + (lastyear.ner * lastyear.totUnits);
+        totalrow.lastyearnerTotalUnits = (totalrow.lastyearnerTotalUnits || 0) + lastyear.totUnits;
     }
 }
 
 var weightedAverageTotalRow = function(totalrow) {
+    if (totalrow.occupancyUnits && totalrow.occupancyUnits > 0) {
+        totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.occupancyUnits * 10) / 10;
+    } else {
+        totalrow.occupancy = "";
+    }
     if (totalrow.leasedUnits && totalrow.leasedUnits > 0) {
         totalrow.leased = Math.round(totalrow.leased / totalrow.leasedUnits * 10) / 10;
     } else {
@@ -574,45 +608,46 @@ var weightedAverageTotalRow = function(totalrow) {
     }
 
     if (totalrow.totUnits && totalrow.totUnits > 0) {
-        if (totalrow.occupancyCount) {
-            totalrow.occupancy = Math.round(totalrow.occupancy / totalrow.occupancyCount * 10) / 10; // not weighted
-        }
-        totalrow.rentsqft = Math.round(totalrow.rent / totalrow.sqft * 100) / 100;
-        totalrow.nersqft = Math.round(totalrow.ner / totalrow.sqft * 100) / 100;
-        totalrow.runratesqft = Math.round(totalrow.runrate / totalrow.sqft * 100) / 100;
+        totalrow.rentsqft = totalrow.rent / totalrow.sqft;
+        totalrow.nersqft = totalrow.ner / totalrow.sqft;
+        totalrow.runratesqft = totalrow.runrate / totalrow.sqft;
         totalrow.concessions = Math.round(totalrow.concessions / totalrow.totUnits);
         totalrow.weeklytraffic = Math.round(totalrow.weeklytraffic / totalrow.totUnits);
         totalrow.weeklyleases = Math.round(totalrow.weeklyleases / totalrow.totUnits);
 
-        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
-        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
-        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
-        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
-
-        if (totalrow.lastweeknersqftTotalUnits) {
-            totalrow.lastweeknersqftpercent = Math.round(totalrow.lastweeknersqftpercent / totalrow.lastweeknersqftTotalUnits * 10) / 10;
-        }
-
-        if (totalrow.lastmonthnersqftTotalUnits) {
-            totalrow.lastmonthnersqftpercent = Math.round(totalrow.lastmonthnersqftpercent / totalrow.lastmonthnersqftTotalUnits * 10) / 10;
-        }
-
-        if (totalrow.lastyearnersqftTotalUnits) {
-            totalrow.lastyearnersqftpercent = Math.round(totalrow.lastyearnersqftpercent / totalrow.lastyearnersqftTotalUnits * 10) / 10;
-        }
-
         if (totalrow.lastweeknerTotalUnits) {
-            totalrow.lastweeknerpercent = Math.round(totalrow.lastweeknerpercent / totalrow.lastweeknerTotalUnits * 10) / 10;
+            totalrow.lastweekner /= totalrow.lastweeknerTotalUnits;
+            totalrow.lastweeknerpercent = Math.round((totalrow.ner / totalrow.totUnits - totalrow.lastweekner) / totalrow.lastweekner * 100 * 10) / 10;
+        }
+
+        if (totalrow.lastweeksqftTotalUnits) {
+            totalrow.lastweeksqft /= totalrow.lastweeksqftTotalUnits;
+            totalrow.lastweeknersqft = totalrow.lastweekner / totalrow.lastweeksqft;
+            totalrow.lastweeknersqftpercent = Math.round((totalrow.nersqft - totalrow.lastweeknersqft) / totalrow.lastweeknersqft * 100 * 10) / 10;
         }
 
         if (totalrow.lastmonthnerTotalUnits) {
-            totalrow.lastmonthnerpercent = Math.round(totalrow.lastmonthnerpercent / totalrow.lastmonthnerTotalUnits * 10) / 10;
+            totalrow.lastmonthner /= totalrow.lastmonthnerTotalUnits;
+            totalrow.lastmonthnerpercent = Math.round((totalrow.ner / totalrow.totUnits - totalrow.lastmonthner) / totalrow.lastmonthner * 100 * 10) / 10;
+        }
+
+        if (totalrow.lastmonthsqftTotalUnits) {
+            totalrow.lastmonthsqft /= totalrow.lastmonthsqftTotalUnits;
+            totalrow.lastmonthnersqft = totalrow.lastmonthner / totalrow.lastmonthsqft;
+            totalrow.lastmonthnersqftpercent = Math.round((totalrow.nersqft - totalrow.lastmonthnersqft) / totalrow.lastmonthnersqft * 100 * 10) / 10;
         }
 
         if (totalrow.lastyearnerTotalUnits) {
-            totalrow.lastyearnerpercent = Math.round(totalrow.lastyearnerpercent / totalrow.lastyearnerTotalUnits * 10) / 10;
+            totalrow.lastyearner /= totalrow.lastyearnerTotalUnits;
+            totalrow.lastyearnerpercent = Math.round((totalrow.ner / totalrow.totUnits - totalrow.lastyearner) / totalrow.lastyearner * 100 * 10) / 10;
         }
 
+        if (totalrow.lastyearsqftTotalUnits) {
+            totalrow.lastyearsqft /= totalrow.lastyearsqftTotalUnits;
+            totalrow.lastyearnersqft = totalrow.lastyearner / totalrow.lastyearsqft;
+            totalrow.lastyearnersqftpercent = Math.round((totalrow.nersqft - totalrow.lastyearnersqft) / totalrow.lastyearnersqft * 100 * 10) / 10;
+        }
+        
         if (totalrow.rent0Units) {
             totalrow.rent0 = Math.round(totalrow.rent0 / totalrow.rent0Units * 100) / 100;
         }
@@ -662,7 +697,15 @@ var weightedAverageTotalRow = function(totalrow) {
         if (totalrow.concessionsOneTimeUnits) {
             totalrow.concessionsOneTime = Math.round(totalrow.concessionsOneTime / totalrow.concessionsOneTimeUnits * 100) / 100;
         }
-        
+
+        totalrow.sqft = Math.round(totalrow.sqft / totalrow.totUnits);
+        totalrow.rent = Math.round(totalrow.rent / totalrow.totUnits);
+        totalrow.runrate = Math.round(totalrow.runrate / totalrow.totUnits);
+        totalrow.ner = Math.round(totalrow.ner / totalrow.totUnits);
+        totalrow.rentsqft = Math.round(totalrow.rentsqft * 100) / 100;
+        totalrow.nersqft = Math.round(totalrow.nersqft * 100) / 100;
+        totalrow.runratesqft = Math.round(totalrow.runratesqft * 100) / 100;
+
         totalrow.totUnits = Math.round(totalrow.totUnits / totalrow.count * 10) / 10; // not weighted
     }
 }

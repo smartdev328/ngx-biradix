@@ -32,14 +32,32 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
         },
     }, function(err, all) {
         if (all.properties.length > 0) {
+            data.options = data.options || {};
+            const hasSort = data.options.orderBy;
+            data.options.groupComps = data.groupComps;
+            if (!hasSort) {
+                if (typeof data.options.groupComps === "undefined") {
+                    if (all.properties.length > 25) {
+                        data.options.groupComps = true;
+                    } else {
+                        data.options.groupComps = false;
+                    }
+                }
+
+                if (all.properties.length > 75) {
+                    data.options.groupComps = true;
+                }
+
+                if (data.options.groupComps) {
+                    data.options.compAverages = true;
+                }
+            }
             let final = [];
             async.eachLimit(all.properties, 20, function(id, callbackp){
 
                 const key = "nots-" + id;
 
-                const hasSort = data.options && data.options.orderBy;
-
-                redisService.get(key, function(err, result) {
+                  redisService.get(key, function(err, result) {
                     if (result && settings.HEROKU_APP == "biradixplatform-prod" && !hasSort) {
                         // console.log('Cache:', result);
                         final.push(result);
@@ -93,8 +111,16 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                         {
                             if (y.date) {
                                 //console.log(y.date);
-                                y.date = moment(y.date.toString()).tz(tz).format("MMM DD")
+                                y.date = moment(y.date.toString()).tz(tz).format("MMM DD");
                                 //console.log(tz,y.date);
+                            }
+
+                            if (y.dateMin) {
+                                if (moment(y.dateMin).tz(tz).format("MMM DD") === moment(y.dateMax).tz(tz).format("MMM DD")) {
+                                    y.date = moment(y.dateMin).tz(tz).format("MMM DD");
+                                } else {
+                                    y.date = moment(y.dateMin).tz(tz).format("MMM DD") + " - " + moment(y.dateMax).tz(tz).format("MMM DD");
+                                }
                             }
 
                             if (typeof y.lastmonthnersqftpercent == "undefined") {
@@ -133,6 +159,7 @@ bus.handleQuery(settings.NOTIFICATIONS_QUEUE, function(data,reply) {
                     });
 
                     var email = {
+                        stripBreaks: true,
                         category: "Property Status Update",
                         to: data.user.email,
                         //to: "eugene@biradix.com,alex@biradix.com",

@@ -8,7 +8,7 @@ import {
     parseProspectHistory, parseTenantHistory,
     parseUnits,
 } from "../services/ftpParsingService";
-import {connect} from "../services/ftpService";
+import {connect, disconnect} from "../services/ftpService";
 import {SFTP_YARDI} from "../../../config/settings";
 
 const routes = express.Router();
@@ -16,6 +16,7 @@ const routes = express.Router();
 routes.get("/dates", async (req, res) => {
     await connect(SFTP_YARDI);
     let dates: string[] = await parseDates("/pbbell");
+    await disconnect();
     dates = dates.map((date) => {
         return `<li><a href='/ftp/date/${date}'>${date}</a></li>`;
     });
@@ -30,7 +31,7 @@ routes.get("/date/:date", async (req, res) => {
     html += `<A href="/ftp/dates">&lt;- Back</A><Br><Br>`;
     await connect(SFTP_YARDI);
     let properties = await parseProperties("/pbbell", req.params.date);
-
+    await disconnect();
     properties = properties.map((property) => {
         return `<li><A href="/ftp/date/${req.params.date}/${property.yardiId}">${property.name}</A> [<b>${property.yardiId}</b>]<Br><div style="margin-left:23px"><i>${property.address} - ${property.city} ${property.state}, ${property.zip}</i></div></li>`;
     });
@@ -160,12 +161,15 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
     });
 
     const tenantHistory = await parseTenantHistory("/pbbell", req.params.date);
+    await disconnect();
 
     const propertyTenants = tenantHistory.filter((un) => {
         return [
             "Submit Application",
             "Application Denied",
-            "Cancel Move In",
+            "Application Cancelled",
+            "Application Canceled",
+            // "Cancel Move In",
             "Re-Apply",
             "Lease Signed",
         ].indexOf(un.event) > -1;
@@ -190,7 +194,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             ["Submit Application", "Lease Signed"].indexOf(un.event) > -1;
     });
 
-    // Only use Lease Signed for rents
+    // Only use Lease Signed for rents, remove it for leases
     _.remove(propertyTenants, (un) => {
         return un.event === "Lease Signed";
     });
@@ -212,6 +216,10 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
             }
         }
     });
+
+    if (property.leases < 0) {
+        property.leases = 0;
+    }
 
     propertyProspects = _.sortBy(propertyProspects, (p) => {
         return -p.utcDate;
@@ -516,7 +524,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
         </table>
         <Br>    
             <B>All Yardi Units</B><Br>
-                    ${renderYardiUnits(allUnits)}
+                    ${renderYardiUnits(allUnits, true)}
         </div>
 
         <br><Br>
@@ -774,7 +782,7 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
                         </tr>                                                
                     </Table>
                     <Br>
-                    ${renderYardiUnits(allfpUnits)}
+                    ${renderYardiUnits(allfpUnits, false)}
                     <Br>
                     <B>Lease Rent History</B> (${startLeaseDate.format()} to Event Date + ${leaseDateDaysValid} days):
                     <table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
@@ -848,15 +856,16 @@ routes.get("/date/:date/:yardiId", async (req, res) => {
 
 module.exports = routes;
 
-function renderYardiUnits(units) {
+function renderYardiUnits(units, showFloorPlanId) {
     let html = `<table border="1" cellpadding="2" cellspacing="0" style="border-color:#fff;">
             <tr>
                 <th>
                    Yardi Unit Id 
                 </th>
                 <th>
-                   Yardi Floorplan Id 
-                </th>
+                   Yardi Unit Code
+                </th>                
+                ${showFloorPlanId ? "<th>Yardi Floorplan Id</th>" : ""}
                 <th>
                    Rent 
                 </th>
@@ -879,8 +888,9 @@ function renderYardiUnits(units) {
                    ${fp.yardiId} 
                 </td>
                 <td>
-                   ${fp.yardiFloorplanId} 
-                </td>
+                   ${fp.yardiCode} 
+                </td> 
+                ${showFloorPlanId ? "<td>" + fp.yardiFloorplanId + "</td>" : ""}               
                  <td>
                    $${fp.rent.toFixed(0)} 
                 </td>

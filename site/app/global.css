@@ -273,6 +273,17 @@ td.center,th.center {text-align:center}
     background-color: #4ba6ff !important;
 }
 
+/* Style Warning Button Here*/
+/*.btn-warning {*/
+    /*background-color: #d58512;*/
+    /*border-color: #d58512;*/
+/*}*/
+
+/*.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .open>.dropdown-toggle.btn-warning {*/
+    /*background-color: #ec971f !important;*/
+    /*border-color: #eea236;*/
+/*}*/
+
 .modal-title {
     font-size: 20px;
     font-weight: bold;
@@ -469,4 +480,10 @@ daterange-picker.dashboard > div {
     font-size:14px !important;
     padding: 4px 5px !important;
     vertical-align:top;
+}
+
+#wrapper .btn-group.state-toggle .btn-default:focus {
+    background-color: #d4d4d4;
+    outline: 0;
+
 }

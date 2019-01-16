@@ -127,6 +127,8 @@ gulp.task("globalcss", function() {
         , "./site/app/login/loggedout.css"
         , "./site/css/navs.css"
         , "./site/css/grids.css"
+        , "./site/css/tabs.css"
+        , "./site/css/forms.css"
         , "./site/components/toggle/style.css"
         , "./site/components/filterlist/filterlist.css"
         , "./site/components/reports/reporting.css"

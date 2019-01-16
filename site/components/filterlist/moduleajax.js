@@ -9,7 +9,6 @@
                 tooltipdir: "=",
             },
             controller: function ($scope, $filter, $element) {
-                console.log($scope.tooltipdir);
                 $scope.version = version;
                 $scope.filters = {search: "", checkAll : true}
 
