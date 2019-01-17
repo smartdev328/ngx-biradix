@@ -1,13 +1,9 @@
 "use strict";
-const settings = require("./settings.js");
+
 const error = require("./error.js");
 const bodyParser = require("body-parser");
-const expressJwt = require("express-jwt");
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
-const redisService = require("../api/utilities/services/redisService");
-const newrelic = require("newrelic");
 
 module.exports = {
         init: function(app, domain) {
@@ -53,66 +49,6 @@ module.exports = {
                 }
             });
 
-            // protect /api using middleware, allow /api/v/users/login and create to allow to authenticate
-            app.use("/api", expressJwt(
-                {
-                    secret: settings.SECRET,
-                    credentialsRequired: true,
-                    getToken: function fromHeaderOrQuerystring(req) {
-                        let token = null;
-                        if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
-                            token = req.headers.authorization.split(" ")[1];
-                        } else if (req.query && req.query.token) {
-                            token = req.query.token;
-                        }
-                        return token;
-                    },
-                }
-            )
-            .unless({path:
-                [settings.API_PATH + "users/login",
-                    // settings.API_PATH + "users/create",
-                    settings.API_PATH + "users/resetPassword",
-                    settings.API_PATH + "users/recover",
-                    settings.API_PATH + "users/updatePasswordByToken",
-                    settings.API_PATH + "users/bounce",
-                    settings.API_PATH + "users/domain",
-                ],
-            }));
-
-            // protect /graphqli
-            app.use("/graphqli", expressJwt(
-                {
-                    secret: settings.SECRET,
-                    credentialsRequired: false,
-                    getToken: function fromHeaderOrQuerystring(req) {
-                        let token = null;
-                        if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
-                            token = req.headers.authorization.split(" ")[1];
-                        } else if (req.query && req.query.token) {
-                            token = req.query.token;
-                        }
-                        return token;
-                    },
-                }
-            ));
-
-            app.use("/graphql", expressJwt(
-                {
-                    secret: settings.SECRET,
-                    credentialsRequired: false,
-                    getToken: function fromHeaderOrQuerystring(req) {
-                        let token = null;
-                        if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
-                            token = req.headers.authorization.split(" ")[1];
-                        } else if (req.query && req.query.token) {
-                            token = req.query.token;
-                        }
-                        return token;
-                    },
-                }
-            ));
-
             // Middleware to populate operator context
             app.use(function(req, res, next) {
                 req.context = {ip: req.headers["x-forwarded-for"] || req.connection.remoteAddress, user_agent: req.headers["user-agent"]};
@@ -125,58 +61,12 @@ module.exports = {
                 next();
             });
 
-            // Middleware to insure session token is not hi-jacked by looking at user agent
-            app.use(function(req, res, next) {
-                if (req.user) {
-                    // Backwards compatibility;
-                    if (!req.user.id && typeof req.user == "string" && req.user.length == 32) {
-                        req.user = {data: req.user};
-                    }
-
-                    redisService.getByKey(req.user.data, function(err, result) {
-                        req.user = result;
-
-                        if (!req.user || !req.user.active) {
-                            return res.status(401).json("Unauthorized request");
-                        }
-
-                        newrelic.addCustomAttributes({
-                            "User": req.user.first + " " + req.user.last,
-                            "Email": req.user.email,
-                        });
-
-                        next();
-                    });
-                } else {
-                    next();
-                }
-            });
-
-            // Tokenize the full loggedin user back to a JWT token so it can be passed around to microservices
-            app.use(function(req, res, next) {
-                if (req.user) {
-                    const token = jwt.sign({data: req.user}, settings.SECRET, {expiresIn: 30 * 60});
-                    req.user_jwt = token;
-                    next();
-                } else {
-                    next();
-                }
-            });
-
             // Parse body into req for form submission
             app.use(bodyParser.json({limit: "50mb"}));
             app.use(bodyParser.urlencoded({
                 extended: true,
                 limit: "50mb",
             }));
-
-            // Override default Jwt unauthorized error
-            app.use(function(err, req, res, next) {
-                if (err.name === "UnauthorizedError") {
-                    return res.status(401).json("Unauthorized request");
-                }
-                next();
-            });
 
             // Add request context to domain for debugging
             app.use(function(req, res, next) {

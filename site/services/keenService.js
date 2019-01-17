@@ -2,7 +2,7 @@ angular.module("biradix.global").factory("$keenService", ["$http", "$cookies", f
     var fac = {};
 
     fac.record = function(event) {
-        return $http.put("/api/1.0/keen"+ "?bust=" + (new Date()).getTime(), event, {
+        return $http.put(gAPI + "/api/1.0/keen"+ "?bust=" + (new Date()).getTime(), event, {
             headers: {"Authorization": "Bearer " + $cookies.get("token")}}).success(function(response) {
             return response;
         }).error(function(response) {
@@ -11,7 +11,7 @@ angular.module("biradix.global").factory("$keenService", ["$http", "$cookies", f
     };
 
     fac.query = function(analysis, parameters) {
-        return $http.post("/api/1.0/keen"+ "?bust=" + (new Date()).getTime(), {analysis: analysis, parameters: parameters}, {
+        return $http.post(gAPI + "/api/1.0/keen"+ "?bust=" + (new Date()).getTime(), {analysis: analysis, parameters: parameters}, {
             headers: {"Authorization": "Bearer " + $cookies.get("token")}}).success(function(response) {
             return response;
         }).error(function(response) {

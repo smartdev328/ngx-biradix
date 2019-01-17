@@ -1,40 +1,19 @@
 {
   "name": "BI:Radix Platform 2",
   "env": {
-    "SEED_TEST": {
-      "value": "1"
-    },
-    "SEED_DEMO": {
-      "value": "1"
-    },
     "mode": {
       "value": "production"
     },
     "NODE_ENV": {
       "value": "production"
     },
-    "EXCEL_URL": {
-      "value": "https://biradixexcel-qa.herokuapp.com/excel"
-    },
     "NEW_RELIC_NAME": {
       "value": "REVIEW"
     },
-    "AWS_ACCESS_KEY_ID": {
-      "value": "AKIAIJYUKH672WP4XUXQ"
-    },
-    "AWS_SECRET_ACCESS_KEY": {
-      "value": "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"
-    },
-    "AWS_S3_BUCKET_IMAGES": {
-      "value": "biradix-nonprod-mediastore"
-    },
-    "AWS_S3_CDN_IMAGES": {
-      "value": "d138dweu4olq2b.cloudfront.net"
+    "API_URL": {
+      "value": "https://qa.biradix.com"
     }
   },
-//  "scripts": {
-//    "postdeploy": "curl https://api.ghostinspector.com/v1/suites/58d891f966fd7359f7af2aa4/?apiKey=07cd183a6be0326686341494aaa63ca12218de05&startUrl="
-//  },
   "formation": {
     "web": {
       "quantity": 1,
@@ -42,21 +21,12 @@
     }
   },
   "addons": [
-    "cloudamqp:lemur",
-    "mongolab:shared-single-small",
-    "sendgrid:starter",
-    "heroku-redis:hobby-dev",
     "raygun:intro",
     "logdna:quaco"
-//    "rabbitmq-bigwig:pipkin"
   ],
   "buildpacks": [
     {
       "url": "http://github.com/heroku/heroku-buildpack-nodejs.git"
     }
-//    ,
-//    {
-//      "url": "https://github.com/jontewks/puppeteer-heroku-buildpack"
-//    }
   ]
 }

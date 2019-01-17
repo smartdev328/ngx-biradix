@@ -14,7 +14,7 @@ angular.module("biradix.global").factory("$urlService", ["$http", "$cookies", fu
                 contentType: "application/json",
                 headers: {"Authorization": "Bearer " + $cookies.get("token")},
                 data: JSON.stringify(query),
-                url: "/graphql?bust=" + (new Date()).getTime(),
+                url: gAPI + "/graphql?bust=" + (new Date()).getTime(),
                 success: function(html) {
                     strReturn = html.data.StringShorten;
                 },

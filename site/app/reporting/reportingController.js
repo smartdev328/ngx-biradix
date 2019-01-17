@@ -808,7 +808,7 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = '/api/1.0/properties/reportsPdf?'
+            var url = gAPI + '/api/1.0/properties/reportsPdf?'
             url += "token=" + $cookies.get('token')
             url += "&key=" + key
 
@@ -831,7 +831,7 @@ define([
                         ngProgress.complete();
                         $("#export").prop("disabled", false);
 
-                        var url = "/api/1.0/properties/downloadPdf?"
+                        var url = gAPI + "/api/1.0/properties/downloadPdf?"
                         url += "token=" + $cookies.get("token")
                         url += "&id=" + $scope.progressId;
 
@@ -1013,7 +1013,7 @@ define([
 
                 var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanDetailed?"
+                var url = gAPI + "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanDetailed?"
                 url += "token=" + $cookies.get("token")
                 url += "&key=" + key;
 
@@ -1039,7 +1039,7 @@ define([
 
                 var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanSummary?"
+                var url = gAPI + "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanSummary?"
                 url += "token=" + $cookies.get("token")
                 url += "&key=" + key;
 
@@ -1082,7 +1082,7 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = "/api/1.0/reporting/excel/property_status?"
+            var url = gAPI + "/api/1.0/reporting/excel/property_status?"
             url += "token=" + $cookies.get("token")
             url += "&key=" + key;
 
@@ -1123,7 +1123,7 @@ define([
 
                 var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = "/api/1.0/reporting/excel/custom_portfolio?"
+                var url = gAPI + "/api/1.0/reporting/excel/custom_portfolio?"
                 url += "token=" + $cookies.get("token")
                 url += "&key=" + key;
 
@@ -1150,7 +1150,7 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?'
+            var url = gAPI + '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?'
             url += "token=" + $cookies.get('token')
             url += "&key=" + key;
 

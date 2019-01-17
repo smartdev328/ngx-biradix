@@ -274,7 +274,7 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = '/api/1.0/properties/' + $scope.property._id + '/excel?'
+            var url = gAPI + '/api/1.0/properties/' + $scope.property._id + '/excel?'
             url += "token=" + $cookies.get('token')
             url += "&key=" + key;
 

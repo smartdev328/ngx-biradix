@@ -2,7 +2,7 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
         var fac = {};
 
         fac.reports = function(compids, subjectid, reports, options) {
-            return $http.post("/api/1.0/reporting/" + subjectid + "?bust=" + (new Date()).getTime(), {
+            return $http.post(gAPI + "/api/1.0/reporting/" + subjectid + "?bust=" + (new Date()).getTime(), {
                 compids: compids,
                 reports: reports,
                 options: options,
@@ -15,7 +15,7 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
         }
 
         fac.reportsGroup = function(propertyids, reports, settings) {
-            return $http.post("/api/1.0/reporting/group"+ "?bust=" + (new Date()).getTime(), {
+            return $http.post(gAPI + "/api/1.0/reporting/group"+ "?bust=" + (new Date()).getTime(), {
                 propertyids: propertyids,
                 reports: reports,
                 settings: settings,
