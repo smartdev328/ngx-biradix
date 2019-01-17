@@ -9,16 +9,6 @@ const vendorscsshash = require("../dist/vendorscss-hash.json");
 const globaljshash = require("../dist/globaljs-hash.json");
 const globalcsshash = require("../dist/globalcss-hash.json");
 
-const OrgService = {
-    read: (callback) => {
-        callback(null, [{
-            isDefault: true,
-            subdomain: "platform",
-            logoBig: "biradix.png",
-            logoSmall: "biradix-small.png",
-        }]);
-    },
-}
 module.exports = (function() {
     let ui = new express.Router();
 
@@ -39,7 +29,7 @@ module.exports = (function() {
         req.headers = req.headers || {"user-agent": ""};
         let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
         let subdomain = req.hostname.split(".")[0].toLowerCase();
-        let local = (subdomain == "localhost" || phantom);
+        let local = (subdomain === "localhost" || phantom);
 
         if (req.headers["x-forwarded-proto"] !== "https"
             && !phantom
@@ -48,7 +38,7 @@ module.exports = (function() {
             return res.redirect("https://" + req.get("host") + req.originalUrl);
         }
 
-        request(process.env.API_URL + "/org/" + subdomain, function(err, response) {
+        request(settings.API_URL + "/org/" + subdomain, function(err, response) {
             let org = {};
             try {
                 org = JSON.parse(response.body);
@@ -77,7 +67,7 @@ module.exports = (function() {
                 maintenance: settings.MAINTENANCE_MODE,
                 raygun_key: settings.RAYGUN_APIKEY,
                 heroku_env: settings.NEW_RELIC_NAME,
-                api: process.env.API_URL,
+                api: settings.API_URL,
                 // nreum : newrelic.getBrowserTimingHeader()
             });
         });

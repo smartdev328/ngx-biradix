@@ -10,6 +10,10 @@ define([
             return $location.path("/maintenance")
         }
 
+        window.setTimeout(function() {
+            window.document.title = "Log In | BI:Radix";
+        }, 1500);
+
         $scope.reload = function() {
             window.location.href= '/';
         }

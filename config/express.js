@@ -1,5 +1,6 @@
 "use strict";
 
+const settings = require("./settings.js");
 const error = require("./error.js");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -15,7 +16,12 @@ module.exports = {
                 level: 9,
             }));
 
-            const cacheTime = 86400000*7; // 7 days
+            let cacheTime = 86400000*7; // 7 days
+
+            if (settings.MODE !== "production") {
+                cacheTime = 0;
+            }
+
             app.use(require("express").static(__dirname + "/../site/", {maxAge: cacheTime}));
             app.use("/bower_components", require("express").static(__dirname + "/../bower_components/", {maxAge: cacheTime}));
             app.use("/dist", require("express").static(__dirname + "/../dist/", {maxAge: cacheTime}));
@@ -80,10 +86,5 @@ module.exports = {
 
                 next();
             });
-            // throw new Error("Test");
-            // app.all("*", function(req, res, next) {
-            //    console.log(req.path, req.headers, req.user)
-            //    next();
-            // })
         },
 };

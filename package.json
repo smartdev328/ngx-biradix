@@ -1,12 +1,12 @@
 {
-  "name": "BIRadix",
-  "version": "2.22.0",
+  "name": "biradix",
+  "version": "2.22.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run ui",
     "postinstall": "bower install && npm run build",
-    "ui": "gulp vendorsjs vendorscss globaljs globalcss"
+    "build": "gulp vendorsjs vendorscss globaljs globalcss",
+    "dev": "gulp watch"
   },
   "repository": {
     "type": "git",
@@ -28,10 +28,12 @@
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^3.2.1",
     "gulp-uglify": "^2.1.2",
+    "gulp-watch": "^5.0.1",
     "heroku-client": "^2.2.2",
     "jsonwebtoken": "^7.4.3",
     "merge-stream": "^1.0.1",
-    "newrelic": "^2.9.1",
+    "newrelic": "2.9.1",
+    "nodemon": "^1.18.9",
     "raygun": "^0.9.1"
   },
   "private": true,

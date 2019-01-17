@@ -4,6 +4,7 @@ var hashsum = require("gulp-hashsum")
 var sass = require("gulp-sass");
 var merge = require("merge-stream");
 var gulp = require("gulp");
+const nodemon = require("nodemon");
 
 gulp.task("vendorsjs", function() {
     return gulp.src([
@@ -109,16 +110,9 @@ gulp.task("globaljs", function() {
     ])
         .pipe(concat("global.js"))
         .pipe(gulp.dest("./dist/"))
-        .pipe(hashsum({dest: "./dist",json:true, filename: "globaljs-hash.json"}));
+        .pipe(hashsum({dest: "./dist", json: true, filename: "globaljs-hash.json"}));
 });
 
-gulp.task("sass", function () {
-    return gulp.src([
-        "./site/components/gallery/styles.scss"
-        ])
-        .pipe(sass().on("error", sass.logError))
-        .pipe(gulp.dest("./dist/"));
-});
 
 gulp.task("globalcss", function() {
 
@@ -133,14 +127,36 @@ gulp.task("globalcss", function() {
         , "./site/components/filterlist/filterlist.css"
         , "./site/components/reports/reporting.css"
         , "./site/components/uploader/styles.css"
-    ]);;
+    ]);
 
     var sassStream = gulp.src([
-        "./site/components/gallery/styles.scss"
+        "./site/components/gallery/styles.scss",
     ]).pipe(sass().on("error", sass.logError));
 
     return merge(cssStream, sassStream)
         .pipe(concat("global.css"))
         .pipe(gulp.dest("./dist/"))
         .pipe(hashsum({dest: "./dist", json: true, filename: "globalcss-hash.json"}));
+});
+
+gulp.task("watch", function() {
+    gulp.run("vendorscss");
+    gulp.run("globalcss");
+    gulp.run("vendorsjs");
+    gulp.run("globaljs");
+    nodemon({
+        script: "workers/web.js",
+        watch: "dist",
+        env: {"NODE_ENV": "development"},
+    });
+    gulp.watch("site/**/*.css", function() {
+        // run styles upon changes
+        gulp.run("vendorscss");
+        gulp.run("globalcss");
+    });
+    gulp.watch("site/**/*.js", function() {
+        // run styles upon changes
+        gulp.run("vendorsjs");
+        gulp.run("globaljs");
+    });
 });
