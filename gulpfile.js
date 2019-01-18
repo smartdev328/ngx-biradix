@@ -5,6 +5,7 @@ var sass = require("gulp-sass");
 var merge = require("merge-stream");
 var gulp = require("gulp");
 const nodemon = require("nodemon");
+const livereload = require("gulp-livereload");
 
 gulp.task("vendorsjs", function() {
     return gulp.src([
@@ -31,7 +32,8 @@ gulp.task("vendorsjs", function() {
     ])
         .pipe(concat("vendors.js"))
         .pipe(gulp.dest("./dist/"))
-        .pipe(hashsum({dest: "./dist",json:true, filename: "vendorsjs-hash.json"}));
+        .pipe(hashsum({dest: "./dist",json:true, filename: "vendorsjs-hash.json"}))
+        .pipe(livereload());
 });
 
 gulp.task("vendorscss", function() {
@@ -46,7 +48,8 @@ gulp.task("vendorscss", function() {
         .pipe(concat("vendors.css"))
         .pipe(replace(/..\/fonts\//g,"/bower_components/font-awesome/fonts/"))
         .pipe(gulp.dest("./dist/"))
-        .pipe(hashsum({dest: "./dist",json:true, filename: "vendorscss-hash.json"}));
+        .pipe(hashsum({dest: "./dist", json: true, filename: "vendorscss-hash.json"}))
+        .pipe(livereload());
 });
 
 gulp.task("globaljs", function() {
@@ -110,9 +113,9 @@ gulp.task("globaljs", function() {
     ])
         .pipe(concat("global.js"))
         .pipe(gulp.dest("./dist/"))
-        .pipe(hashsum({dest: "./dist", json: true, filename: "globaljs-hash.json"}));
+        .pipe(hashsum({dest: "./dist", json: true, filename: "globaljs-hash.json"}))
+        .pipe(livereload());
 });
-
 
 gulp.task("globalcss", function() {
 
@@ -136,27 +139,25 @@ gulp.task("globalcss", function() {
     return merge(cssStream, sassStream)
         .pipe(concat("global.css"))
         .pipe(gulp.dest("./dist/"))
-        .pipe(hashsum({dest: "./dist", json: true, filename: "globalcss-hash.json"}));
+        .pipe(hashsum({dest: "./dist", json: true, filename: "globalcss-hash.json"}))
+        .pipe(livereload());
 });
 
 gulp.task("watch", function() {
+    livereload.listen();
     gulp.run("vendorscss");
     gulp.run("globalcss");
     gulp.run("vendorsjs");
     gulp.run("globaljs");
     nodemon({
         script: "workers/web.js",
-        watch: "dist",
+        // watch: "dist",
         env: {"NODE_ENV": "development"},
     });
-    gulp.watch("site/**/*.css", function() {
-        // run styles upon changes
-        gulp.run("vendorscss");
-        gulp.run("globalcss");
-    });
-    gulp.watch("site/**/*.js", function() {
-        // run styles upon changes
-        gulp.run("vendorsjs");
-        gulp.run("globaljs");
+    gulp.watch("site/**/*.css", ["globalcss", "vendorscss"]);
+    gulp.watch("site/**/*.js", ["globaljs", "vendorsjs"]);
+
+    gulp.watch("site/**/*.htm*", function(files) {
+        livereload.reload(files);
     });
 });

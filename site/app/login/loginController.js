@@ -5,7 +5,6 @@ define([
 ], function (app) {
 
     app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams) {
-
         if (maintenance === true && $location.path().indexOf('maintenance') == -1) {
             return $location.path("/maintenance")
         }
