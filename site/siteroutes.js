@@ -12,6 +12,11 @@ const globalcsshash = require("../dist/globalcss-hash.json");
 module.exports = (function() {
     let ui = new express.Router();
 
+    ui.get("/robots.txt", (req, res) => {
+        res.status(200).send("User-agent: *\n" +
+            "Disallow: /");
+    });
+
     ui.get("/i", function(req, res) {
         var url = "https://maps.googleapis.com/maps/api/staticmap?" + querystring.stringify(req.query);
         request.get(url).pipe(res);
