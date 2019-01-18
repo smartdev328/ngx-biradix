@@ -10,6 +10,7 @@ const globaljshash = require("../dist/globaljs-hash.json");
 const globalcsshash = require("../dist/globalcss-hash.json");
 
 module.exports = (function() {
+    console.log(`Loading with ${settings.API_URL} as api endpoint`);
     let ui = new express.Router();
 
     ui.get("/robots.txt", (req, res) => {
