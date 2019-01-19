@@ -14,7 +14,7 @@ angular.module("biradix.global").factory("$approvedListsService", ["$http", "$co
             variables: {"criteria": criteria},
         };
 
-        return $http.post("/graphql"+ "?bust=" + (new Date()).getTime(), query, {
+        return $http.post(gAPI + "/graphql"+ "?bust=" + (new Date()).getTime(), query, {
             headers: {}}).success(function(response) {
             return response;
         }).error(function(response) {
@@ -28,7 +28,7 @@ angular.module("biradix.global").factory("$approvedListsService", ["$http", "$co
             variables: {"approvedListItem": approvedListItem},
         };
 
-        return $http.post("/graphql"+ "?bust=" + (new Date()).getTime(), query, {
+        return $http.post(gAPI + "/graphql"+ "?bust=" + (new Date()).getTime(), query, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function(response) {
             return response;
         }).error(function(response) {
@@ -42,7 +42,7 @@ angular.module("biradix.global").factory("$approvedListsService", ["$http", "$co
             variables: {"value": value, "type": type},
         };
 
-        return $http.post("/graphql"+ "?bust=" + (new Date()).getTime(), query, {
+        return $http.post(gAPI + "/graphql"+ "?bust=" + (new Date()).getTime(), query, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function(response) {
             return response;
         }).error(function(response) {

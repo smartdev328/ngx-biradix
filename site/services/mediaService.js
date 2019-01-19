@@ -3,7 +3,7 @@ angular.module('biradix.global').factory('$mediaService', ['$http','$cookies', f
         var fac = {};
 
         fac.uploadImage = function (upload) {
-            return $http.post('/api/1.0/media/images'+ '?bust=' + (new Date()).getTime(), upload, {
+            return $http.post(gAPI + '/api/1.0/media/images'+ '?bust=' + (new Date()).getTime(), upload, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

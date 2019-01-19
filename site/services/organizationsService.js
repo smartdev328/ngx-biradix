@@ -6,7 +6,7 @@ define([
         var fac = {};
 
         fac.search = function () {
-            return $http.post('/api/1.0/organizations'+ '?bust=' + (new Date()).getTime(), {}, {
+            return $http.post(gAPI + '/api/1.0/organizations'+ '?bust=' + (new Date()).getTime(), {}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -15,7 +15,7 @@ define([
         }
 
         fac.updateDefaultSettings = function (org) {
-            return $http.put('/api/1.0/organizations/' + org._id + '/defaultSettings'+ '?bust=' + (new Date()).getTime(), org.settings, {
+            return $http.put(gAPI + '/api/1.0/organizations/' + org._id + '/defaultSettings'+ '?bust=' + (new Date()).getTime(), org.settings, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

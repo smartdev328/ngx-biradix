@@ -6,7 +6,7 @@ define([
         var fac = {};
 
         fac.deleteAmenity = function (amenityid) {
-            return $http.get('/api/1.0/propertyamenities/delete/' + amenityid+ '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/propertyamenities/delete/' + amenityid+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -15,7 +15,7 @@ define([
         }
 
         fac.mapAmenity = function (amenityid, newid) {
-            return $http.get('/api/1.0/propertyamenities/map/' + amenityid + '/' + newid + '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/propertyamenities/map/' + amenityid + '/' + newid + '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

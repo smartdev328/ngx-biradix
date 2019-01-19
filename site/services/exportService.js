@@ -12,7 +12,7 @@ define([
                 timezone = parseInt($cookies.get("timezone"));
             }
 
-            var url = '/api/1.0/properties/' + propertyId + '/pdf?'
+            var url = gAPI + '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
 
             var selectedEndDate = daterange.selectedEndDate.format();

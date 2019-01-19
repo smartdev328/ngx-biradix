@@ -65,7 +65,7 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
     };
 
     fac.upsert = function (report) {
-        return $http.post('/api/1.0/reporting/save/upsert'+ '?bust=' + (new Date()).getTime(), report, {
+        return $http.post(gAPI + '/api/1.0/reporting/save/upsert'+ '?bust=' + (new Date()).getTime(), report, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -74,7 +74,7 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
     }
 
     fac.update = function (report) {
-        return $http.post('/api/1.0/reporting/save/update'+ '?bust=' + (new Date()).getTime(), report, {
+        return $http.post(gAPI + '/api/1.0/reporting/save/update'+ '?bust=' + (new Date()).getTime(), report, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -83,7 +83,7 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
     }
 
     fac.read = function () {
-        return $http.get('/api/1.0/reporting/save'+ '?bust=' + (new Date()).getTime(), {
+        return $http.get(gAPI + '/api/1.0/reporting/save'+ '?bust=' + (new Date()).getTime(), {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -92,7 +92,7 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
     }
 
     fac.remove = function (reportId) {
-        return $http.delete('/api/1.0/reporting/save/'+ reportId + '?bust=' + (new Date()).getTime(), {
+        return $http.delete(gAPI + '/api/1.0/reporting/save/'+ reportId + '?bust=' + (new Date()).getTime(), {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {

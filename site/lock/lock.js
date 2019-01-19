@@ -24,7 +24,7 @@ if (!token) {
     parent.postMessage("redirect", document.referrer);
 } else {
     $.ajax({
-        url: '/api/1.0/users/me' + '?bust=' + (new Date()).getTime(),
+        url: gAPI + '/api/1.0/users/me' + '?bust=' + (new Date()).getTime(),
         type: 'GET',
         dataType: 'json',
         headers: {

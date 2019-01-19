@@ -2,7 +2,7 @@ angular.module('biradix.global').factory('$propertyUsersService', ['$http','$coo
         var fac = {};
 
         fac.getPropertyAssignedUsers = function (propertyid) {
-            return $http.get('/api/1.0/propertyusers/users/' + propertyid+ '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/propertyusers/users/' + propertyid+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -11,7 +11,7 @@ angular.module('biradix.global').factory('$propertyUsersService', ['$http','$coo
         }
 
         fac.getUserAssignedProperties = function (userid) {
-            return $http.get('/api/1.0/propertyusers/properties/' + userid+ '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/propertyusers/properties/' + userid+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -20,7 +20,7 @@ angular.module('biradix.global').factory('$propertyUsersService', ['$http','$coo
         }
 
         fac.setPropertiesForUser = function (userid, properties,rolesChanged) {
-            return $http.put('/api/1.0/propertyusers/properties/' + userid+ '?bust=' + (new Date()).getTime(), {properties: properties, rolesChanged: rolesChanged}, {
+            return $http.put(gAPI + '/api/1.0/propertyusers/properties/' + userid+ '?bust=' + (new Date()).getTime(), {properties: properties, rolesChanged: rolesChanged}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -29,7 +29,7 @@ angular.module('biradix.global').factory('$propertyUsersService', ['$http','$coo
         }
 
         fac.setUsersForProperty = function (propertyid, users) {
-            return $http.put('/api/1.0/propertyusers/users/' + propertyid+ '?bust=' + (new Date()).getTime(), users, {
+            return $http.put(gAPI + '/api/1.0/propertyusers/users/' + propertyid+ '?bust=' + (new Date()).getTime(), users, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -38,7 +38,7 @@ angular.module('biradix.global').factory('$propertyUsersService', ['$http','$coo
         }
 
         fac.link = function (propertyid, userid) {
-            return $http.get('/api/1.0/propertyusers/link/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/propertyusers/link/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -47,7 +47,7 @@ angular.module('biradix.global').factory('$propertyUsersService', ['$http','$coo
         }
 
         fac.unlink = function (propertyid, userid) {
-            return $http.get('/api/1.0/propertyusers/unlink/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/propertyusers/unlink/' + propertyid+ '/'+ userid+'?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

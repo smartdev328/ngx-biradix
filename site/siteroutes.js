@@ -1,8 +1,6 @@
 "use strict";
 const express = require("express");
-const _ = require("lodash");
 const packages = require("../package.json");
-const OrgService = require("../api/organizations/services/organizationService");
 const settings = require("../config/settings");
 const request = require("request");
 const querystring = require("querystring");
@@ -12,7 +10,13 @@ const globaljshash = require("../dist/globaljs-hash.json");
 const globalcsshash = require("../dist/globalcss-hash.json");
 
 module.exports = (function() {
+    console.log(`Loading with ${settings.API_URL} as api endpoint`);
     let ui = new express.Router();
+
+    ui.get("/robots.txt", (req, res) => {
+        res.status(200).send("User-agent: *\n" +
+            "Disallow: /");
+    });
 
     ui.get("/i", function(req, res) {
         var url = "https://maps.googleapis.com/maps/api/staticmap?" + querystring.stringify(req.query);
@@ -31,7 +35,7 @@ module.exports = (function() {
         req.headers = req.headers || {"user-agent": ""};
         let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
         let subdomain = req.hostname.split(".")[0].toLowerCase();
-        let local = (subdomain == "localhost" || phantom);
+        let local = (subdomain === "localhost" || phantom);
 
         if (req.headers["x-forwarded-proto"] !== "https"
             && !phantom
@@ -40,18 +44,15 @@ module.exports = (function() {
             return res.redirect("https://" + req.get("host") + req.originalUrl);
         }
 
-        OrgService.read(function(err, orgs) {
-            let org = _.find(orgs, function(org) {
-                return org.subdomain.toLowerCase() == subdomain;
-            });
-
-            if (!org) {
-                org = _.find(orgs, function(org) {
-                    return org.isDefault === true;
-                });
+        request(settings.API_URL + "/org/" + subdomain, function(err, response) {
+            let org = {};
+            try {
+                org = JSON.parse(response.body);
+            } catch (e) {
+                org = {};
             }
 
-            if (!org) {
+            if (!org.subdomain) {
                 return res.status(200).send("No data");
             }
 
@@ -65,12 +66,14 @@ module.exports = (function() {
             res.render("index", {hashes: hashes,
                 version: packages.version,
                 logoBig: org.logoBig,
-                logoSmall: org.logoSmall, local: local,
+                logoSmall: org.logoSmall,
+                local: local,
                 phantom: phantom,
                 dyno: process.env.DYNO,
                 maintenance: settings.MAINTENANCE_MODE,
                 raygun_key: settings.RAYGUN_APIKEY,
                 heroku_env: settings.NEW_RELIC_NAME,
+                api: settings.API_URL,
                 // nreum : newrelic.getBrowserTimingHeader()
             });
         });

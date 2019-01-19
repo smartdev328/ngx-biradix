@@ -2,7 +2,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         var fac = {};
 
         fac.updateUsersForSettingsApply = function(criteria) {
-            return $http.post('/api/1.0/users/updateUsersForSettingsApply'+ '?bust=' + (new Date()).getTime(), criteria, {
+            return $http.post(gAPI + '/api/1.0/users/updateUsersForSettingsApply'+ '?bust=' + (new Date()).getTime(), criteria, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -11,7 +11,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
         fac.getUsersForSettingsApply = function(criteria) {
-            return $http.post('/api/1.0/users/getUsersForSettingsApply'+ '?bust=' + (new Date()).getTime(), criteria, {
+            return $http.post(gAPI + '/api/1.0/users/getUsersForSettingsApply'+ '?bust=' + (new Date()).getTime(), criteria, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -20,7 +20,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
         fac.getRolesToAssign = function () {
-            return $http.get('/api/1.0/access/roles'+ '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/access/roles'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -29,7 +29,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
         fac.search = function (criteria) {
-            return $http.post('/api/1.0/users'+ '?bust=' + (new Date()).getTime(), criteria, {
+            return $http.post(gAPI + '/api/1.0/users'+ '?bust=' + (new Date()).getTime(), criteria, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -38,7 +38,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
     fac.setCustomPropertiesLimit = function (userId,customPropertiesLimit) {
-        return $http.put('/api/1.0/users/' + userId + '/customPropertiesLimit'+ '?bust=' + (new Date()).getTime(), { customPropertiesLimit: customPropertiesLimit}, {
+        return $http.put(gAPI + '/api/1.0/users/' + userId + '/customPropertiesLimit'+ '?bust=' + (new Date()).getTime(), { customPropertiesLimit: customPropertiesLimit}, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -47,7 +47,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
     }
 
         fac.setActive = function (active, userId) {
-            return $http.put('/api/1.0/users/' + userId + '/active'+ '?bust=' + (new Date()).getTime(), { active: active}, {
+            return $http.put(gAPI + '/api/1.0/users/' + userId + '/active'+ '?bust=' + (new Date()).getTime(), { active: active}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -56,7 +56,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
         fac.create = function (user) {
-            return $http.post('/api/1.0/users/create'+ '?bust=' + (new Date()).getTime(), user, {
+            return $http.post(gAPI + '/api/1.0/users/create'+ '?bust=' + (new Date()).getTime(), user, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -65,7 +65,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
         fac.createGuest = function (user) {
-            return $http.post('/api/1.0/users/createGuest'+ '?bust=' + (new Date()).getTime(), user, {
+            return $http.post(gAPI + '/api/1.0/users/createGuest'+ '?bust=' + (new Date()).getTime(), user, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -74,7 +74,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
         fac.update = function (user) {
-            return $http.put('/api/1.0/users/' + user._id+ '?bust=' + (new Date()).getTime(), user, {
+            return $http.put(gAPI + '/api/1.0/users/' + user._id+ '?bust=' + (new Date()).getTime(), user, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -83,7 +83,7 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
         }
 
         fac.updatePassword = function (passwords) {
-            return $http.post('/api/1.0/users/updatePassword'+ '?bust=' + (new Date()).getTime(), passwords, {
+            return $http.post(gAPI + '/api/1.0/users/updatePassword'+ '?bust=' + (new Date()).getTime(), passwords, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

@@ -9,7 +9,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 "}",
         };
 
-        return $http.post("/graphql"+ "?bust=" + (new Date()).getTime(), query, {
+        return $http.post(gAPI + "/graphql"+ "?bust=" + (new Date()).getTime(), query, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function(response) {
             return response;
         }).error(function(response) {
@@ -17,7 +17,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         });
     };
     fac.clone = function (id, comps) {
-        return $http.post('/api/1.0/properties/' + id + '/clone'+ '?bust=' + (new Date()).getTime(), {comps: comps}, {
+        return $http.post(gAPI + '/api/1.0/properties/' + id + '/clone'+ '?bust=' + (new Date()).getTime(), {comps: comps}, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -26,7 +26,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
     }
 
         fac.checkDupe = function (criteria) {
-            return $http.post('/api/1.0/properties/checkDupe?bust=' + (new Date()).getTime(), criteria,  {
+            return $http.post(gAPI + '/api/1.0/properties/checkDupe?bust=' + (new Date()).getTime(), criteria,  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -35,7 +35,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
     fac.checkDupeSubject = function (criteria) {
-        return $http.post('/api/1.0/properties/checkDupeSubject?bust=' + (new Date()).getTime(), criteria,  {
+        return $http.post(gAPI + '/api/1.0/properties/checkDupeSubject?bust=' + (new Date()).getTime(), criteria,  {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -43,7 +43,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         });
     }
         fac.notifications_test = function (properties,showLeases,notification_columns, groupComps) {
-            return $http.post('/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
+            return $http.post(gAPI + '/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
                 properties:properties,
                 showLeases: showLeases,
                 notification_columns: notification_columns,
@@ -62,7 +62,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 timezone = parseInt($cookies.get("timezone"));
             }
 
-            return $http.post('/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
+            return $http.post(gAPI + '/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
                 daterange: daterange,
                 offset: timezone,
                 show: show
@@ -75,7 +75,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.getSubjects = function (propertyid) {
-            return $http.get('/api/1.0/properties/' + propertyid+ '/subjects?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/properties/' + propertyid+ '/subjects?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -84,7 +84,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         };
 
     fac.getGuestComps = function (propertyid) {
-        return $http.get('/api/1.0/properties/' + propertyid+ '/guestComps?bust=' + (new Date()).getTime(), {
+        return $http.get(gAPI + '/api/1.0/properties/' + propertyid+ '/guestComps?bust=' + (new Date()).getTime(), {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -92,7 +92,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         });
     }
         fac.getAmenityCounts = function () {
-            return $http.get('/api/1.0/properties/getAmenityCounts?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/properties/getAmenityCounts?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -101,7 +101,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.emailGuest = function (propertyid, guestid, subjectid, subjectname) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/survey/guests/' + guestid + '/email?bust=' + (new Date()).getTime(), {subjectid: subjectid, subjectname: subjectname}, {
+            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/survey/guests/' + guestid + '/email?bust=' + (new Date()).getTime(), {subjectid: subjectid, subjectname: subjectname}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -110,7 +110,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.getSurvey = function (id, surveyid) {
-            return $http.get('/api/1.0/properties/' + id + '/survey/' + surveyid + '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/properties/' + id + '/survey/' + surveyid + '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -119,7 +119,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.getSurveyDates = function (id) {
-            return $http.get('/api/1.0/properties/' + id + '/surveys?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/properties/' + id + '/surveys?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -128,7 +128,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.full = function (id,summary,bedrooms,daterange, show) {
-            return $http.post('/api/1.0/properties/' + id + '/full'+ '?bust=' + (new Date()).getTime(), {
+            return $http.post(gAPI + '/api/1.0/properties/' + id + '/full'+ '?bust=' + (new Date()).getTime(), {
                 summary: summary,
                 bedrooms: bedrooms,
                 daterange:daterange,
@@ -143,7 +143,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.dashboard = function (id,summary,bedrooms,daterange, show) {
-            return $http.post('/api/1.0/properties/' + id + '/dashboard'+ '?bust=' + (new Date()).getTime(), {
+            return $http.post(gAPI + '/api/1.0/properties/' + id + '/dashboard'+ '?bust=' + (new Date()).getTime(), {
                 summary: summary,
                 bedrooms: bedrooms,
                 daterange:daterange,
@@ -158,7 +158,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.search = function (criteria) {
-            return $http.post('/api/1.0/properties'+ '?bust=' + (new Date()).getTime(), criteria, {
+            return $http.post(gAPI + '/api/1.0/properties'+ '?bust=' + (new Date()).getTime(), criteria, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -167,7 +167,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.create = function (property) {
-            return $http.put('/api/1.0/properties'+ '?bust=' + (new Date()).getTime(), property, {
+            return $http.put(gAPI + '/api/1.0/properties'+ '?bust=' + (new Date()).getTime(), property, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -176,7 +176,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
     fac.massUpdate = function (propertyIds, type, newValue, oldValue) {
-        return $http.post('/api/1.0/properties/massUpdate?bust=' + (new Date()).getTime(), {propertyIds: propertyIds, type: type, newValue: newValue, oldValue: oldValue}, {
+        return $http.post(gAPI + '/api/1.0/properties/massUpdate?bust=' + (new Date()).getTime(), {propertyIds: propertyIds, type: type, newValue: newValue, oldValue: oldValue}, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {
@@ -185,7 +185,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
     }
 
         fac.update = function (property) {
-            return $http.put('/api/1.0/properties/' + property._id+ '?bust=' + (new Date()).getTime(), property, {
+            return $http.put(gAPI + '/api/1.0/properties/' + property._id+ '?bust=' + (new Date()).getTime(), property, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -194,7 +194,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.setActive = function (active, userId) {
-            return $http.put('/api/1.0/properties/' + userId + '/active'+ '?bust=' + (new Date()).getTime(), { active: active}, {
+            return $http.put(gAPI + '/api/1.0/properties/' + userId + '/active'+ '?bust=' + (new Date()).getTime(), { active: active}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -204,7 +204,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
 
         fac.Approve = function (id) {
-            return $http.get('/api/1.0/properties/' + id + '/approve'+ '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/properties/' + id + '/approve'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -213,7 +213,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.lookups = function () {
-            return $http.get('/api/1.0/properties/lookups'+ '?bust=' + (new Date()).getTime(), {
+            return $http.get(gAPI + '/api/1.0/properties/lookups'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -222,7 +222,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.unlinkComp = function (propertyid, compid) {
-            return $http.delete('/api/1.0/properties/' + propertyid + '/comps/' + compid + '?bust=' + (new Date()).getTime(), {
+            return $http.delete(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid + '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -231,7 +231,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.saveCompLink = function (propertyid, compid, floorplans, excluded) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {floorplans: floorplans, excluded : excluded}, {
+            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {floorplans: floorplans, excluded : excluded}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -240,7 +240,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.linkComp = function (propertyid, compid) {
-            return $http.put('/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {}, {
+            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -249,7 +249,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.saveCompOrder = function (propertyid, compids, progressId) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/comps/saveOrder?bust=' + (new Date()).getTime(), {compids: compids, progressId: progressId}, {
+            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/comps/saveOrder?bust=' + (new Date()).getTime(), {compids: compids, progressId: progressId}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -258,7 +258,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.createSurvey = function (propertyid, survey) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), survey, {
+            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), survey, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -267,7 +267,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.getSurveyWarnings = function (propertyid, survey) {
-            return $http.post('/api/1.0/properties/' + propertyid + '/survey/warnings'+ '?bust=' + (new Date()).getTime(), survey, {
+            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/survey/warnings'+ '?bust=' + (new Date()).getTime(), survey, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -276,7 +276,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
         fac.updateSurvey = function (propertyid, surveyid, survey) {
-            return $http.put('/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime() , survey, {
+            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime() , survey, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -285,7 +285,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
         }
 
     fac.deleteSurvey = function (propertyid, surveyid) {
-        return $http.delete('/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime(), {
+        return $http.delete(gAPI + '/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime(), {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
             return response;
         }).error(function (response) {

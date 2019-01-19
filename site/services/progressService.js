@@ -2,7 +2,7 @@ angular.module('biradix.global').factory('$progressService', ['$http', function 
         var fac = {};
 
         fac.isComplete = function (progressId, callback) {
-            return $http.get('/progress/' + progressId+ '?bust=' + (new Date()).getTime()).success(function (response) {
+            return $http.get(gAPI + '/progress/' + progressId+ '?bust=' + (new Date()).getTime()).success(function (response) {
                 if (response.progressId) {
                     callback(true);
                 }
