@@ -9,5 +9,5 @@ module.exports = {
     HEROKU_APP: process.env.HEROKU_APP || "birdaixplatform-dev",
     PROJECT_DIR: __dirname,
     MAINTENANCE_MODE: (process.env.MAINTENANCE_MODE || "0") === "1",
-    API_URL: process.env.API_URL || "https://biradixapi-qa-integration.herokuapp.com",
+    API_URL: process.env.API_URL || "https://biradixapi-integration.herokuapp.com",
 };

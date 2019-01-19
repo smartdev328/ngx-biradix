@@ -23,7 +23,7 @@ angular.module("biradix.global").controller("rootController",
             $scope.env = "This is PR";
         }
         else
-        if (loc.indexOf('//biradixapi-qa-integration') > -1) {
+        if (loc.indexOf('//biradixapi-integration') > -1) {
             $scope.env = "This is INT";
         }
 
