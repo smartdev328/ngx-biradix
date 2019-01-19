@@ -10,7 +10,9 @@ Raygun.init(raygun_key);
 Raygun.setVersion(version);
 
 Raygun.onBeforeSend(function(payload) {
-    payload.Details.UserCustomData.fullStoryUrl = (FS.getCurrentSessionURL() || "").replace("%3A", ":");
+    if (FS && FS.getCurrentSessionURL) {
+        payload.Details.UserCustomData.fullStoryUrl = (FS.getCurrentSessionURL() || "").replace("%3A", ":");
+    }
     return payload;
 });
 

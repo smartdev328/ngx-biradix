@@ -9,21 +9,21 @@ angular.module("biradix.global").controller("rootController",
         }
 
         $scope.env = "";
-        var loc = window.location.href.toLowerCase();
+        var loc = gAPI.toLowerCase();
 
         if (loc.indexOf('//localhost') > -1) {
             $scope.env = "This is LOCAL";
         }
         else
-        if (loc.indexOf('//qa.biradix.com') > -1) {
+        if (loc.indexOf('//api-qa.biradix.com') > -1) {
             $scope.env = "This is QA";
         }
         else
-        if (loc.indexOf('//biradixplatform-qa-pr-') > -1) {
+        if (loc.indexOf('//biradixapi-qa-pr-') > -1) {
             $scope.env = "This is PR";
         }
         else
-        if (loc.indexOf('//biradixplatform-integration') > -1) {
+        if (loc.indexOf('//biradixapi-qa-integration') > -1) {
             $scope.env = "This is INT";
         }
 
