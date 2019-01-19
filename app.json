@@ -11,7 +11,7 @@
       "value": "REVIEW"
     },
     "API_URL": {
-      "value": "https://qa.biradix.com"
+      "value": "https://biradixapi-qa-integration.herokuapp.com"
     }
   },
   "formation": {
