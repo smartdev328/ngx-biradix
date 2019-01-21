@@ -315,9 +315,12 @@ define([
                 searchName: search,
                 skipAmenities: true,
                 hideCustom: true,
-                select: "name",
+                select: "name address city state",
                 sort: "name",
             }).then(function(response) {
+                response.data.properties.forEach(function(p) {
+                   p.name += " - " + p.address + ", " + p.city + ", " + p.state;
+                });
                 callback(response.data.properties);
             }, function(error) {
                 callback([]);
