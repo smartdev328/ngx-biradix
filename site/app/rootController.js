@@ -27,6 +27,7 @@ angular.module("biradix.global").controller("rootController",
             $scope.env = "This is INT";
         }
 
+        $rootScope.apiVersion = null;
         $rootScope.version = version;
         $rootScope.logoBig = logoBig + '?';
 
@@ -95,9 +96,15 @@ angular.module("biradix.global").controller("rootController",
                         $rootScope.me = usr;
                         $rootScope.reload = false;
 
-                        if ($rootScope.me.version.toString() !== version.toString()) {
+                        if (!$rootScope.apiVersion) {
+                            $rootScope.apiVersion = $rootScope.me.version.toString();
+                        }
+
+                        if ($rootScope.me.version.toString() !== $rootScope.apiVersion.toString()) {
                             $rootScope.reload = true;
                         }
+
+                        $rootScope.apiVersion = $rootScope.me.version.toString();
 
                         $window.setTimeout($rootScope.refreshToken, 60/refreshFactor * 1000); // start token refresh in 1 min
 
@@ -111,18 +118,24 @@ angular.module("biradix.global").controller("rootController",
                         $rootScope.logoff();
                     }
                     else if (status == 0 ) {
-                        $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
+                        $window.setTimeout($rootScope.refreshToken, 60/refreshFactor * 1000); // start token refresh in 1 min
                     }
                 });
             } else {
                 $rootScope.getMe(function() {
                     $rootScope.reload = false;
 
-                    if ($rootScope.me.version.toString() != version.toString()) {
+                    if (!$rootScope.apiVersion) {
+                        $rootScope.apiVersion = $rootScope.me.version.toString();
+                    }
+
+                    if ($rootScope.me.version.toString() !== $rootScope.apiVersion.toString()) {
                         $rootScope.reload = true;
                     }
 
-                    $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
+                    $rootScope.apiVersion = $rootScope.me.version.toString();
+
+                    $window.setTimeout($rootScope.refreshToken, 60/refreshFactor * 1000); // start token refresh in 1 min
                     if (callback) {
                         callback();
                     }
