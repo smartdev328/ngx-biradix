@@ -1,6 +1,6 @@
 /* General */
 *:focus {
-    outline:none;
+    outline:none!important;
 }
 body {
     background-color:#f5f5f5
@@ -569,5 +569,5 @@ daterange-picker.dashboard > div {
     .my-account.tab-container {
         padding:10px;
     }
-    
+
 }
