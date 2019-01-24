@@ -1,6 +1,6 @@
 /** my account **/
 
-.my-account.tab-container {
+.tab-container {
     padding:20px;
     border-top:1px solid #ddd;
 }
@@ -12,7 +12,7 @@
 
 @media (max-width: 767px) {
 
-    .my-account.tab-container {
+    .tab-container {
         padding:10px;
     }
 
