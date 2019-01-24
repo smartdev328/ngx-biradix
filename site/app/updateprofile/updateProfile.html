@@ -32,7 +32,7 @@
               </div>
               <div class="row">
                 <label class="col-xs-12 col-sm-4 col-md-3 valign5">Email Address
-                    <i class="fa fa-exclamation-triangle warning side-gear pull-left"
+                    <i class="fa fa-exclamation-triangle warning label-side-icon pull-left"
                        ng-if="me.bounceReason"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
@@ -67,7 +67,7 @@
             <div class="col-xs-12 col-sm-9 max-w-800">
               <div class="form-group row">
                 <label class="pl-10 pr-10 col-xs-8 col-sm-7 col-md-5">Receive Property Status Updates</label>
-                <div class="pl-10 pr-10 col-xs-4 col-sm-2 col-md-4">
+                <div class="pl-10 pr-10 col-xs-4">
                     <toggle-switch checked="settings.notifications.on" disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
                     &nbsp;&nbsp;&nbsp;<a href ng-if="settings.notifications.on === true" ng-click="settings.notifications.toggle = !settings.notifications.toggle"><span class="fa fa-gear fa-2x" style="color: #A2A2A2"></span></a>
                 </div>
@@ -76,7 +76,7 @@
                 <div class="row">
                   <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">
                     How Often
-                    <i class="fa fa-lock side-gear"
+                    <i class="fa fa-lock label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        uib-popover="This setting has been locked by your company administrator."
@@ -98,13 +98,13 @@
                 <div class="row">
                   <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">
                     Properties
-                    <i class="fa fa-question-circle side-gear"
+                    <i class="fa fa-question-circle label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        uib-popover="Choose which properites you want to receive updates for"
                        popover-append-to-body="true"
                     ></i>
-                    <i class="fa fa-lock side-gear"
+                    <i class="fa fa-lock label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        uib-popover="This setting has been locked by your company administrator."
@@ -126,7 +126,7 @@
                 <div class="row">
                   <label class="indent col-xs-6 pl-10 pr-10 col-sm-7 col-md-5 valign5">
                     Group Comps
-                    <i class="fa fa-question-circle side-gear"
+                    <i class="fa fa-question-circle label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        uib-popover-html="'Turning Group Comps on will result in the comp set being combined into a single weighted average row labeled Comp Average. Setting to &quot;Auto&quot; will turn Group Comps on if you have 25 or more properties. <br><Br> Note: group comps cannot be turned off when more than 75 properties are selected. This is to avoid sending you very large emails that can crash your email software or get rejected by email services. To see a report of your whole portfolio, please visit the Reporting section'"
@@ -161,7 +161,7 @@
               </div>
               <div class="row form-group">
                 <label class="pl-10 pr-10 col-xs-8 col-sm-7 col-md-5">Receive Property Update Reminders
-                  <i class="fa fa-question-circle side-gear"
+                  <i class="fa fa-question-circle label-side-icon"
                      popover-trigger="'mouseenter'"
                      popover-placement="top"
                      uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
@@ -189,7 +189,7 @@
           <div class="col-xs-12 col-sm-9 max-w-800">
             <div class="row">
               <label class="col-xs-9 pl-10 pr-10 col-sm-7 col-md-5">Show "Leased %" Information
-                <i class="fa fa-question-circle side-gear"
+                <i class="fa fa-question-circle label-side-icon"
                    popover-trigger="'mouseenter'"
                    popover-placement="top"
                    popover-append-to-body="true"
@@ -204,7 +204,7 @@
             <div class="row">
                 <label class="col-xs-9 pl-10 pr-10 col-sm-7 col-md-5">
                     Show "Renewal %" Information
-                    <i class="fa fa-question-circle side-gear"
+                    <i class="fa fa-question-circle label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        uib-popover='Turning this option ON will result in "Renewal %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Renewal %" value when doing Property Surveys. Note: Data for Renewal % will only be shown if it exists for a property.'
@@ -218,7 +218,7 @@
             <div class="row">
                 <label class="col-xs-9 pl-10 pr-10 col-sm-7 col-md-5">
                     Show "ATR %" Information
-                    <i class="fa fa-question-circle side-gear"
+                    <i class="fa fa-question-circle label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        popover-append-to-body="true"

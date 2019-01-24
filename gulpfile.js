@@ -122,10 +122,13 @@ gulp.task("globalcss", function() {
     var cssStream = gulp.src([
         , "./site/app/global.css"
         , "./site/app/login/loggedout.css"
+        , "./site/app/updateProfile/updateProfile.css"
         , "./site/css/navs.css"
         , "./site/css/grids.css"
         , "./site/css/tabs.css"
         , "./site/css/forms.css"
+        , "./site/css/icons.css"
+        , "./site/css/spacing.css"
         , "./site/components/toggle/style.css"
         , "./site/components/filterlist/filterlist.css"
         , "./site/components/reports/reporting.css"
