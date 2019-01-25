@@ -2,3 +2,24 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.my-account label {
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.my-account .form-group {
+	margin-bottom: 20px;
+}
+
+.my-account .indent-col-2 {
+	max-width: 320px;
+}
+
+@media (max-width: 767px) {
+
+  .my-account form.full-page .indent {
+  	padding-left: 20px;
+  }
+
+}
