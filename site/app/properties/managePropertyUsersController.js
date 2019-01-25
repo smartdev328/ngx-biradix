@@ -72,5 +72,32 @@ define([
 
             }
 
+            $scope.usersDD = {};
+            $scope.gotUsersDD = {};
+            $scope.getUserDD = function(user) {
+                var id = (user.id || user._id).toString();
+                if ($scope.usersDD[id]) {
+                    return $scope.usersDD[id];
+                }
+
+                if (!$scope.gotUsersDD[id]) {
+                    $userService.search({
+                        limit: 1,
+                        _id: id,
+                    }).then(function (response) {
+                        if (response.data && response.data.users && response.data.users[0]) {
+                            $scope.usersDD[id] = "Email: <b>" + response.data.users[0].email + "</b><Br>" +
+                                "Role: <b>" + response.data.users[0].roles[0].name + "</b><Br>";
+                        } else {
+                            $scope.usersDD[id] = "<B>N/A</B>";
+                        }
+                    });
+
+                    $scope.gotUsersDD[id] = true;
+                }
+
+                return "<center><img src='/images/squares.gif' class='squares'></center>";
+            };
+
         }]);
 });
