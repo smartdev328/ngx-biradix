@@ -132,7 +132,7 @@ gulp.task("globalcss", function() {
         , "./site/components/filterlist/filterlist.css"
         , "./site/components/reports/reporting.css"
         , "./site/components/uploader/styles.css"
-        , "./site/app/updateProfile/updateProfile.css"
+        , "./site/app/updateprofile/updateprofile.css"
     ]);
 
     var sassStream = gulp.src([
