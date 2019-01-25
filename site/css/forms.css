@@ -1,7 +1,3 @@
-form.full-page .row {
-    max-width: 768px;
-}
-
 form.full-page.larger .row {
     max-width: 1024px;
 }
@@ -16,7 +12,13 @@ form.full-page .valign5 {
 }
 
 @media (max-width: 767px) {
-    form.full-page .indent-col-2 {
-        margin-left: 15px;
-    }
-}
+
+  form.full-page .indent-col-2 {
+  	margin-left: 10px;
+  	max-width:310px;
+  }
+
+  form.full-page .valign5 {
+  	margin-top: 0;
+  }
+} 

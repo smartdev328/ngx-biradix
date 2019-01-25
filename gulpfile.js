@@ -126,10 +126,13 @@ gulp.task("globalcss", function() {
         , "./site/css/grids.css"
         , "./site/css/tabs.css"
         , "./site/css/forms.css"
+        , "./site/css/icons.css"
+        , "./site/css/spacing.css"
         , "./site/components/toggle/style.css"
         , "./site/components/filterlist/filterlist.css"
         , "./site/components/reports/reporting.css"
         , "./site/components/uploader/styles.css"
+        , "./site/app/updateprofile/updateProfile.css"
     ]);
 
     var sassStream = gulp.src([

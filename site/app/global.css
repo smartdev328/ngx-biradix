@@ -1,4 +1,7 @@
 /* General */
+*:focus {
+    outline:none!important;
+}
 body {
     background-color:#f5f5f5
 }
@@ -485,5 +488,23 @@ daterange-picker.dashboard > div {
 #wrapper .btn-group.state-toggle .btn-default:focus {
     background-color: #d4d4d4;
     outline: 0;
+}
+
+/** general **/
+
+.max-w-800 {
+    max-width: 800px;
+}
+
+@media (max-width: 767px) {
+
+    .text-right-m {
+        text-align: right;
+    }
+
+    .text-left-m {
+        text-align: left;
+    }
+    
 
 }
