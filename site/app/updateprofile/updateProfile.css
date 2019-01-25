@@ -1,18 +1,4 @@
-/** my account **/
-
-.tab-container {
-    padding:20px;
-}
-
 .my-account .col-xs-12 {
     padding-left: 10px;
     padding-right: 10px;
-}
-
-@media (max-width: 767px) {
-
-    .tab-container {
-        padding:10px;
-    }
-
 }

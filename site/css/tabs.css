@@ -2,7 +2,7 @@
     border:1px solid #ddd;
     background-color:white;
     border-top:0;
-    padding: 15px;
+    padding: 20px;
 }
 
 .tab-container h4 {
@@ -13,7 +13,6 @@
     border-bottom: 0;
     display: inline-block;
     vertical-align: bottom;
-    margin-bottom:-1px;
 }
 
 .nav-tabs>li {
@@ -67,9 +66,21 @@
 }
 
 @media (max-width: 767px) {
-  .nav-tabs>li>a {padding:0 10px;}
+
+    .nav-tabs>li>a {
+        padding:0 10px;
+    }
+
+    .tab-container {
+        padding:10px;
+    }
+
 }
 
 @media (max-width: 330px) {
-  .nav-tabs>li>a {font-size:12px;}
+
+    .nav-tabs>li>a {
+        font-size:12px;
+    }
+
 }
