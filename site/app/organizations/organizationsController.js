@@ -1,7 +1,6 @@
 'use strict';
 define([
     'app',
-    '../../services/organizationsService',
 ], function (app) {
 
     app.controller('organizationsController', ['$scope','$rootScope','$location','$organizationsService','ngProgress','$uibModal','toastr', function ($scope,$rootScope,$location,$organizationsService,ngProgress,$uibModal,toastr) {

@@ -1,6 +1,6 @@
 angular.module("biradix.global").controller("rootController",
-    ["$scope", "$location", "$rootScope", "$cookies", "$authService", "$propertyService", "$window", "$uibModal", "toastr", "ngProgress", "$timeout", "$sce", "$amenityService","$auditService",
-        function($scope, $location, $rootScope, $cookies, $authService, $propertyService, $window, $uibModal, toastr, ngProgress, $timeout, $sce, $amenityService,$auditService) {
+    ["$scope", "$location", "$rootScope", "$cookies", "$authService", "$propertyService", "$window", "$uibModal", "toastr", "ngProgress", "$timeout", "$sce", "$amenityService","$auditService","$organizationsService",
+        function($scope, $location, $rootScope, $cookies, $authService, $propertyService, $window, $uibModal, toastr, ngProgress, $timeout, $sce, $amenityService,$auditService,$organizationsService) {
         $scope.hasSessionStorage = true;
         try {
             window.sessionStorage;
@@ -29,7 +29,20 @@ angular.module("biradix.global").controller("rootController",
 
         $rootScope.apiVersion = null;
         $rootScope.version = version;
-        $rootScope.logoBig = logoBig + '?';
+
+        $scope.loadOrg = function() {
+            $scope.apiError = "";
+            $organizationsService.public(window.location.hostname.split(".")[0]).then(function (response) {
+                $scope.updateLogos(response.data);
+                $(".apiError").hide();
+            }, function(error) {
+                $scope.apiError = "There was an issue loading the website. Retrying...";
+                window.setTimeout($scope.loadOrg, 10000);
+                $(".apiError").show();
+            });
+        };
+
+        $scope.loadOrg();
 
         if ($cookies.get('token')) {
             $rootScope.loggedIn = true;
@@ -44,6 +57,17 @@ angular.module("biradix.global").controller("rootController",
         $rootScope.resetTimeout = function() {
             $rootScope.timeout = 0;
         }
+
+        $scope.updateLogos = function(org) {
+            $rootScope.logoBig = "/images/organizations/" + org.logoBig;
+            $rootScope.logoSmall = "/images/organizations/" + org.logoSmall;
+            $("#favicon").attr("href", "/images/organizations/" + org.logoSmall);
+            window.setTimeout(function() {
+                $(".loading").hide();
+                $(".loggedin").show();
+                $(".loggedout").show();
+            }, 1000);
+        };
 
         $rootScope.incrementTimeout = function() {
             if ($scope.$$childHead == null) {
@@ -256,13 +280,7 @@ angular.module("biradix.global").controller("rootController",
 
             }
 
-            $('.logoBig').each(function(l) {
-                this.src = "/images/organizations/" + org.logoBig + "?"
-            })
-
-            $('.logoSmall').each(function(l) {
-                this.src = "/images/organizations/" + org.logoSmall
-            })
+            $scope.updateLogos(org);
         }
 
         $rootScope.swaptoLoggedIn = function(redirect) {
@@ -282,9 +300,6 @@ angular.module("biradix.global").controller("rootController",
                     org_str: $rootScope.me.orgs[0].name
                 });
                 $rootScope.loggedIn = true;
-                $('.loading').hide();
-                $('.loggedout').hide();
-                $('.loggedin').show();
 
                 $('body').css("padding-top","0px")
 
@@ -332,9 +347,6 @@ angular.module("biradix.global").controller("rootController",
         }
 
         $rootScope.swaptoLoggedOut = function() {
-            $('.loading').hide();
-            $('.loggedout').show();
-            $('.loggedin').hide();
             $('body').css("padding-top","10px")
             $rootScope.loggedIn = false;
         }
