@@ -72,7 +72,7 @@ angular.module("biradix.global").controller("rootController",
                     $(".loggedin").hide();
                     $(".loggedout").show();
                 }
-            }, 1000);
+            }, 10);
         };
 
         $rootScope.incrementTimeout = function() {
