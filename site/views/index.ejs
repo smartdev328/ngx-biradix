@@ -45,7 +45,7 @@
     </div>
      <div class="apiError blink_me" style="display:none;text-align:center">{{apiError}}</div>
 
-    <div ng-if="logoBig && !loggedIn" style="display:none" class="loggedout hidden-print">
+    <div style="display:none" class="loggedout hidden-print">
         <div class="loggedout-main">
             <div class="loggedout-container clearfix">
                 <Center><a href="#/login"><img ng-src="{{logoBig}}" style="max-width:350px"></a><br /></Center>
@@ -57,7 +57,7 @@
         </div>
         <div class="small" style="width:50px;margin:10px auto" id="version_div">v{{version}}</div>
     </div>
-    <div ng-if="logoBig && loggedIn" style="display:none" class="loggedin hidden-print">
+    <div style="display:none" class="loggedin hidden-print">
         <div class="visible-print-block print-header" style="padding:10px 0px 0px 10px">
             <img src="/images/organizations/biradix.png">
             <hr>

@@ -64,8 +64,14 @@ angular.module("biradix.global").controller("rootController",
             $("#favicon").attr("href", "/images/organizations/" + org.logoSmall);
             window.setTimeout(function() {
                 $(".loading").hide();
-                $(".loggedin").show();
-                $(".loggedout").show();
+                if ($rootScope.loggedIn) {
+                    $(".loggedin").show();
+                    $(".loggedout").hide();
+                }
+                else {
+                    $(".loggedin").hide();
+                    $(".loggedout").show();
+                }
             }, 1000);
         };
 
