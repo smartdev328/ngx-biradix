@@ -7,7 +7,7 @@
     </script>
     <link rel="icon" id="favicon" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <script type="text/javascript">var gAPI = "<%=api%>"; var version="<%=version%>"; var phantom = <%=phantom%>; var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>"; var heroku_env="<%=heroku_env%>"</script>
+    <script type="text/javascript">var gAPI = "<%=api%>"; var version="<%=version%>"; var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>"; var heroku_env="<%=heroku_env%>"</script>
 
     <link href="/dist/vendors.css?v=<%=hashes.vendorscss%>" rel="stylesheet" type="text/css">
     <script src="/dist/vendors.js?v=<%=hashes.vendorsjs%>"></script>
@@ -16,9 +16,7 @@
     <script src="/dist/global.js?v=<%=hashes.globaljs%>"></script>
 
     <script data-main="app/main.js?bust=<%=version%>" src="libs/requirejs/require-2.3.3.min.js"></script>
-    <%if (!phantom) {%>
-        <script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU&v=3.exp&libraries=places"></script>
-    <%}%>
+    <script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU&v=3.exp&libraries=places"></script>
     <script>
         window['_fs_debug'] = false;
         window['_fs_host'] = 'fullstory.com';

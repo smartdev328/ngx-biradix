@@ -35,6 +35,7 @@ angular.module("biradix.global").controller("rootController",
             $organizationsService.public(window.location.hostname.split(".")[0]).then(function (response) {
                 $scope.updateLogos(response.data);
                 $(".apiError").hide();
+                $scope.ready();
             }, function(error) {
                 $scope.apiError = "There was an issue loading the website. Retrying...";
                 window.setTimeout($scope.loadOrg, 10000);
@@ -429,29 +430,30 @@ angular.module("biradix.global").controller("rootController",
             $location.path("/profile/" + item._id);
         }
 
-        // Decide if logged in or not.
-        if (!$rootScope.loggedIn) {
-            $rootScope.swaptoLoggedOut();
-        }
-        else {
-            $rootScope.swaptoLoggedIn(false);
-        }
-
-        // make sure in full screen right nav is always shown
-        var w = angular.element($window);
-        $('#mobile-nav').css("width",w.width() + "px")
-
-        w.bind('resize', function () {
-            if (w.width() > 767) {
-                $('#wrapper').removeClass('toggled');
-                $('#searchBar').hide();
-                $rootScope.$broadcast('size', w.width());
+        $scope.ready = function() {
+            // Decide if logged in or not.
+            if (!$rootScope.loggedIn) {
+                $rootScope.swaptoLoggedOut();
             } else {
-                $rootScope.$broadcast('size', w.width());
+                $rootScope.swaptoLoggedIn(false);
             }
 
-            $('#mobile-nav').css("width",w.width() + "px")
-        });
+            // make sure in full screen right nav is always shown
+            var w = angular.element($window);
+            $('#mobile-nav').css("width", w.width() + "px")
+
+            w.bind('resize', function () {
+                if (w.width() > 767) {
+                    $('#wrapper').removeClass('toggled');
+                    $('#searchBar').hide();
+                    $rootScope.$broadcast('size', w.width());
+                } else {
+                    $rootScope.$broadcast('size', w.width());
+                }
+
+                $('#mobile-nav').css("width",w.width() + "px")
+            });
+        }
 
         $rootScope.toggle = function() {
             $('#wrapper').toggleClass('toggled');
@@ -522,7 +524,6 @@ angular.module("biradix.global").controller("rootController",
             });
         }
 
-
         $scope.alerts = function() {
             if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.alertsAmenities();
@@ -591,7 +592,8 @@ angular.module("biradix.global").controller("rootController",
                 $scope.alertsAmenities();
             }, 120000);
         };
-            $scope.alertsAudits = function() {
+
+        $scope.alertsAudits = function() {
                 $auditService.search({
                     limit: 1,
                     approved: false,
