@@ -1,9 +1,26 @@
-<h2 class="mainheader">Contact Us
+<h2 class="mainheader">Support
     <hr>
 </h2>
-<div class="row">
-    <div class="col-lg-8 col-md-7">
-        <div class="panel panel-info" style="height:350px">
+<div class="row support-page">
+    <div class="col-xs-12 col-sm-6 col-lg-3">
+        <div class="panel panel-info full-height-panel-info">
+            <div class="panel-heading">Online</div>
+            <div class="panel-body">
+                <hr>
+                <a class="show mb-20" href="http://help.biradix.com" target="_blank" style="font-size:18px">Getting Started With<br/> BI:Radix</a>
+                <ul class="pl-20 mb-20">
+                    <li>Check out our helpful videos on how to use the platform</li>
+                    <li>Answers to Frequently Asked Questions</li>
+                    <li>Knowledge base to learn everything in between</li>
+                </ul>
+                <div class="pull-right">
+                    <a href="http://help.biradix.com" target="_blank">Read more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="panel panel-info full-height-panel-info">
             <div class="panel-heading">Fill Out the Form Below</div>
             <div class="panel-body">
                 <hr>
@@ -16,17 +33,11 @@
                     <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(msg)">
 
                         <div class="form-group" ng-class="{'has-success': myForm.subject.$dirty && myForm.subject.$valid}">
-                            <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-ellipsis-h"></i></div>
-                                <input autocomplete="on" type="text" name="subject" class="form-control" id="subject" placeholder="Enter subject" required ng-model="msg.subject">
-                            </div>
+                            <input autocomplete="on" type="text" name="subject" class="form-control" id="subject" placeholder="Enter subject" required ng-model="msg.subject">
                         </div>
 
                         <div class="form-group" ng-class="{'has-success': myForm.message.$dirty && myForm.message.$valid}">
-                            <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-edit"></i></div>
-                                <textarea autocomplete="on" name="message" class="form-control" id="message" placeholder="Enter message" required ng-model="msg.message" style="height: 100px"></textarea>
-                            </div>
+                            <textarea autocomplete="on" name="message" class="form-control" id="message" placeholder="Enter message" required ng-model="msg.message"></textarea>
                         </div>
 
                         <div style="margin:0px auto;width:75px">
@@ -37,21 +48,21 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-4 col-md-5">
-        <div class="panel panel-info" style="height:165px">
+    <div class="col-xs-12 col-sm-12 col-lg-3">
+        <div class="panel panel-info half-height-panel-info">
             <div class="panel-heading">Email</div>
-            <div class="panel-body" style="text-align: center">
+            <div class="panel-body">
                 <hr>
-                <a href="mailto:support@biradix.com" style="font-size:25px">support@biradix.com</a><Br>
+                <a href="mailto:support@biradix.com" style="font-size:18px">support@biradix.com</a><Br>
                 Don't forget to include the email address associated with your account.
             </div>
         </div>
 
-        <div class="panel panel-info" style="height:165px">
+        <div class="panel panel-info half-height-panel-info">
             <div class="panel-heading">Phone</div>
-            <div class="panel-body" style="text-align: center">
+            <div class="panel-body">
                 <hr>
-                <h2>(602) 892-4788</h2>
+                <h4>(602) 892-4788</h4>
                 Available Monday - Friday<br>
                 8:00am - 5:00pm PST
             </div>

@@ -133,6 +133,7 @@ gulp.task("globalcss", function() {
         , "./site/components/reports/reporting.css"
         , "./site/components/uploader/styles.css"
         , "./site/app/updateprofile/updateProfile.css"
+        , "./site/app/contact/contact.css"
     ]);
 
     var sassStream = gulp.src([
