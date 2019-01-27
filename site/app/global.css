@@ -489,7 +489,7 @@ daterange-picker.dashboard > div {
 }
 
 .blink_me {
-    animation: blinker 2s linear infinite;
+    animation: blinker 3s linear infinite;
 }
 
 @keyframes blinker {

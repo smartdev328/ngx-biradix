@@ -37,7 +37,7 @@ angular.module("biradix.global").controller("rootController",
                 $(".apiError").hide();
                 $scope.ready();
             }, function(error) {
-                $scope.apiError = "There was an issue loading the website. Retrying...";
+                $scope.apiError = "Pretend you didn't see this! We are having an issue connecting to... ourselves.<br> Please wait while we retry... or <A href='javascript:location.reload();'>click here</A> to refresh";
                 window.setTimeout($scope.loadOrg, 10000);
                 $(".apiError").show();
             });

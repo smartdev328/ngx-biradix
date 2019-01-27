@@ -41,7 +41,7 @@
     <div class="loading hidden-print" style="display:block;width:100px;margin:50px auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
-     <div class="apiError blink_me" style="display:none;text-align:center">{{apiError}}</div>
+     <div class="apiError blink_me" style="display:none;text-align:center" ng-bind-html="apiError | sanitize"></div>
 
     <div style="display:none" class="loggedout hidden-print">
         <div class="loggedout-main">
