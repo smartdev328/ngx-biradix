@@ -2,7 +2,6 @@
 define([
     'app',
     '../../services/cronService.js',
-    '../../services/organizationsService.js',
 ], function (app) {
      app.controller
         ('defaultSettingsController', ['$scope', '$uibModalInstance', 'organization', 'ngProgress', '$rootScope','toastr','$cronService','$organizationsService','$userService','$dialog', function ($scope, $uibModalInstance, organization, ngProgress, $rootScope, toastr,$cronService,$organizationsService,$userService,$dialog) {

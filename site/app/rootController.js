@@ -1,6 +1,6 @@
 angular.module("biradix.global").controller("rootController",
-    ["$scope", "$location", "$rootScope", "$cookies", "$authService", "$propertyService", "$window", "$uibModal", "toastr", "ngProgress", "$timeout", "$sce", "$amenityService","$auditService",
-        function($scope, $location, $rootScope, $cookies, $authService, $propertyService, $window, $uibModal, toastr, ngProgress, $timeout, $sce, $amenityService,$auditService) {
+    ["$scope", "$location", "$rootScope", "$cookies", "$authService", "$propertyService", "$window", "$uibModal", "toastr", "ngProgress", "$timeout", "$sce", "$amenityService","$auditService","$organizationsService",
+        function($scope, $location, $rootScope, $cookies, $authService, $propertyService, $window, $uibModal, toastr, ngProgress, $timeout, $sce, $amenityService,$auditService,$organizationsService) {
         $scope.hasSessionStorage = true;
         try {
             window.sessionStorage;
@@ -29,7 +29,21 @@ angular.module("biradix.global").controller("rootController",
 
         $rootScope.apiVersion = null;
         $rootScope.version = version;
-        $rootScope.logoBig = logoBig + '?';
+
+        $scope.loadOrg = function() {
+            $scope.apiError = "";
+            $organizationsService.public(window.location.hostname.split(".")[0]).then(function (response) {
+                $scope.updateLogos(response.data);
+                $(".apiError").hide();
+                $scope.ready();
+            }, function(error) {
+                $scope.apiError = "Pretend you didn't see this! We are having an issue connecting to... ourselves.<br> Please wait while we retry... or <A href='javascript:location.reload();'>click here</A> to refresh";
+                window.setTimeout($scope.loadOrg, 10000);
+                $(".apiError").show();
+            });
+        };
+
+        $scope.loadOrg();
 
         if ($cookies.get('token')) {
             $rootScope.loggedIn = true;
@@ -44,6 +58,23 @@ angular.module("biradix.global").controller("rootController",
         $rootScope.resetTimeout = function() {
             $rootScope.timeout = 0;
         }
+
+        $scope.updateLogos = function(org) {
+            $rootScope.logoBig = "/images/organizations/" + org.logoBig;
+            $rootScope.logoSmall = "/images/organizations/" + org.logoSmall;
+            $("#favicon").attr("href", "/images/organizations/" + org.logoSmall);
+            window.setTimeout(function() {
+                $(".loading").hide();
+                if ($rootScope.loggedIn) {
+                    $(".loggedin").show();
+                    $(".loggedout").hide();
+                }
+                else {
+                    $(".loggedin").hide();
+                    $(".loggedout").show();
+                }
+            }, 10);
+        };
 
         $rootScope.incrementTimeout = function() {
             if ($scope.$$childHead == null) {
@@ -256,13 +287,7 @@ angular.module("biradix.global").controller("rootController",
 
             }
 
-            $('.logoBig').each(function(l) {
-                this.src = "/images/organizations/" + org.logoBig + "?"
-            })
-
-            $('.logoSmall').each(function(l) {
-                this.src = "/images/organizations/" + org.logoSmall
-            })
+            $scope.updateLogos(org);
         }
 
         $rootScope.swaptoLoggedIn = function(redirect) {
@@ -282,9 +307,6 @@ angular.module("biradix.global").controller("rootController",
                     org_str: $rootScope.me.orgs[0].name
                 });
                 $rootScope.loggedIn = true;
-                $('.loading').hide();
-                $('.loggedout').hide();
-                $('.loggedin').show();
 
                 $('body').css("padding-top","0px")
 
@@ -332,9 +354,6 @@ angular.module("biradix.global").controller("rootController",
         }
 
         $rootScope.swaptoLoggedOut = function() {
-            $('.loading').hide();
-            $('.loggedout').show();
-            $('.loggedin').hide();
             $('body').css("padding-top","10px")
             $rootScope.loggedIn = false;
         }
@@ -411,29 +430,30 @@ angular.module("biradix.global").controller("rootController",
             $location.path("/profile/" + item._id);
         }
 
-        // Decide if logged in or not.
-        if (!$rootScope.loggedIn) {
-            $rootScope.swaptoLoggedOut();
-        }
-        else {
-            $rootScope.swaptoLoggedIn(false);
-        }
-
-        // make sure in full screen right nav is always shown
-        var w = angular.element($window);
-        $('#mobile-nav').css("width",w.width() + "px")
-
-        w.bind('resize', function () {
-            if (w.width() > 767) {
-                $('#wrapper').removeClass('toggled');
-                $('#searchBar').hide();
-                $rootScope.$broadcast('size', w.width());
+        $scope.ready = function() {
+            // Decide if logged in or not.
+            if (!$rootScope.loggedIn) {
+                $rootScope.swaptoLoggedOut();
             } else {
-                $rootScope.$broadcast('size', w.width());
+                $rootScope.swaptoLoggedIn(false);
             }
 
-            $('#mobile-nav').css("width",w.width() + "px")
-        });
+            // make sure in full screen right nav is always shown
+            var w = angular.element($window);
+            $('#mobile-nav').css("width", w.width() + "px")
+
+            w.bind('resize', function () {
+                if (w.width() > 767) {
+                    $('#wrapper').removeClass('toggled');
+                    $('#searchBar').hide();
+                    $rootScope.$broadcast('size', w.width());
+                } else {
+                    $rootScope.$broadcast('size', w.width());
+                }
+
+                $('#mobile-nav').css("width",w.width() + "px")
+            });
+        }
 
         $rootScope.toggle = function() {
             $('#wrapper').toggleClass('toggled');
@@ -504,7 +524,6 @@ angular.module("biradix.global").controller("rootController",
             });
         }
 
-
         $scope.alerts = function() {
             if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.alertsAmenities();
@@ -573,7 +592,8 @@ angular.module("biradix.global").controller("rootController",
                 $scope.alertsAmenities();
             }, 120000);
         };
-            $scope.alertsAudits = function() {
+
+        $scope.alertsAudits = function() {
                 $auditService.search({
                     limit: 1,
                     approved: false,

@@ -34,8 +34,6 @@ module.exports = (function() {
      ui.get("/", function(req, res) {
         req.headers = req.headers || {"user-agent": ""};
         let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
-        let subdomain = req.hostname.split(".")[0].toLowerCase();
-        let local = (subdomain === "localhost" || phantom);
 
         if (req.headers["x-forwarded-proto"] !== "https"
             && !phantom
@@ -43,18 +41,6 @@ module.exports = (function() {
         ) {
             return res.redirect("https://" + req.get("host") + req.originalUrl);
         }
-
-        request(settings.API_URL + "/org/" + subdomain, function(err, response) {
-            let org = {};
-            try {
-                org = JSON.parse(response.body);
-            } catch (e) {
-                org = {};
-            }
-
-            if (!org.subdomain) {
-                return res.status(200).send("No data");
-            }
 
             let hashes = {
                 vendorsjs: vendorsjshash["vendors.js"],
@@ -65,18 +51,12 @@ module.exports = (function() {
 
             res.render("index", {hashes: hashes,
                 version: packages.version,
-                logoBig: org.logoBig,
-                logoSmall: org.logoSmall,
-                local: local,
                 phantom: phantom,
-                dyno: process.env.DYNO,
                 maintenance: settings.MAINTENANCE_MODE,
                 raygun_key: settings.RAYGUN_APIKEY,
                 heroku_env: settings.NEW_RELIC_NAME,
                 api: settings.API_URL,
-                // nreum : newrelic.getBrowserTimingHeader()
             });
-        });
     });
 
     return ui;
