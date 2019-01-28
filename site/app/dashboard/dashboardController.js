@@ -335,6 +335,7 @@ define([
                     dashboardSettings: $scope.settings,
                     showProfile: $scope.showProfile,
                 },
+                referer: location.href
             };
 
             var key = $urlService.shorten(JSON.stringify(data));
