@@ -804,6 +804,7 @@ define([
                 propertyIds:  encodeURIComponent($scope.propertyIds),
                 showFile: showFile,
                 settings: $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds),
+                referer: location.href
             }
 
             var key = $urlService.shorten(JSON.stringify(data));

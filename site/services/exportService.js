@@ -33,7 +33,8 @@ define([
                 showFile: showFile,
                 orderBy: ($cookies.get("fp.o") || ''),
                 show: encodeURIComponent($cookies.get("fp.s") || ''),
-                showP: encodeURIComponent($cookies.get("pr.s") || '')
+                showP: encodeURIComponent($cookies.get("pr.s") || ''),
+                referer: location.href
             }
             
             return {base:url, data: data};
