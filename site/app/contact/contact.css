@@ -1,13 +1,14 @@
+.support-page .col-xs-12 {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 .support-page .half-height-panel-info {
 	height:150px;
 }
 
-.support-page .full-height-panel-info {
-	height:320px;
-}
-
 .support-page textarea {
-	resize: none;height: 135px;
+	resize: none;height: 70px;
 }
 
 .support-page h4 {
@@ -20,16 +21,4 @@
 		height:180px;
 	}
 
-	.support-page .full-height-panel-info {
-		height:380px;
-	}
-
-}
-
-@media (max-width: 767px) {
-
-    .support-page .half-height-panel-info, .support-page .full-height-panel-info {
-        height:auto;
-    }
-    
 }
