@@ -102,6 +102,7 @@ gulp.task("globaljs", function() {
 
         "./site/components/reports/communityAmenities.js",
         "./site/components/reports/locationAmenities.js",
+        "./site/components/reports/reputationReport.js",
         "./site/components/reports/feesDeposits.js",
         "./site/components/reports/propertyRankings.js",
         "./site/components/reports/propertyRankingsSummary.js",

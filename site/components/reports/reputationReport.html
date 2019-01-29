@@ -1,0 +1,40 @@
+<div class="break2 panel panel-info">
+    <div class="panel-heading">Reputation Report (beta)
+        <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
+    </div>
+    <div class="panel-body">
+        <hr>
+        <div class="maingrid wrapper panel" style="overflow-x:auto">
+            <div class="header" style="height:47px !important;"></div>
+            <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
+                <tbody>
+                <tr class="thead">
+                    <th style="height:45px;">
+                        Property
+                    </th>
+                    <th style="height:45px;">
+                        Address
+                    </th>
+                    <th style="height:45px;">
+                        <img src="/images/logos/yelp.png" style="height:35px">
+                    </th>
+                </tr>
+
+        <tr ng-repeat-start="row in report" ng-class="{subject: row.isSubject}">
+            <Td>
+                <span ng-if="$index > 0" style="padding-left:20px">{{$index}}.</span>
+                {{row.name}}
+            </Td>
+            <Td>
+                {{row.address}}
+            </Td>
+            <td>
+                {{row.yelp === undefined || row.yelp === null ? "-" : row.yelp}}
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-if="false"></tr>
+    </tbody>
+</table>
+        </div>
+    </div>
+</div>
