@@ -157,6 +157,18 @@ body {
 
 }
 
+#sidebar-wrapper::-webkit-scrollbar {
+    width: 5px;
+}
+
+#sidebar-wrapper::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
+
+#sidebar-wrapper::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+}
+
 
 @media(max-width:768px) {
     #wrapper #sidebar-wrapper {

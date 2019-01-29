@@ -7,301 +7,288 @@
     <li ng-class="{'active': isSettings}" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1"><a href="#/updateProfile?settings=1">Settings</a></li>
     <li ng-class="{'active': isPassword}"><a href="#/updateProfile?password=1">Password</a></li>
 </ul>
-<div class="tab-container">
-    <br>
+<div class="tab-container my-account">
     <div ng-if="isProfile">
         <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(user)" class="full-page">
-            <div class="row">
-                <div class="col-sm-4 col-md-3 valign5">First Name</div>
-                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4 col-md-3 valign5">Last Name</div>
-                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                        <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4 col-md-3 valign5">Email Address
-                    <i class="fa fa-exclamation-triangle warning" class="pull-left"
-                       style="color:orange;cursor:pointer;font-size:14px;padding:4px 0px 0px 5px"
+          <div class="row">
+            <div class="col-xs-12 col-sm-9 max-w-800">
+              <div class="row">
+                  <label class="col-xs-12 col-sm-4 col-md-3 valign5">First Name</label>
+                  <div class="form-group col-xs-12 col-sm-8 col-md-9" ng-class="{'has-error': myForm.first.$dirty && myForm.first.$invalid, 'has-success': myForm.first.$dirty && myForm.first.$valid}">
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                          <input autocomplete="off" type="text" name="first" class="form-control" id="first" placeholder="Enter first name" required ng-model="user.first">
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <label class="col-xs-12 col-sm-4 col-md-3 valign5">Last Name</label>
+                  <div class="form-group col-xs-12 col-sm-8 col-md-9" ng-class="{'has-error': myForm.last.$dirty && myForm.last.$invalid, 'has-success': myForm.last.$dirty && myForm.last.$valid}">
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                          <input autocomplete="off" type="text" name="last" class="form-control" id="last" placeholder="Enter last name" required ng-model="user.last">
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                <label class="col-xs-12 col-sm-4 col-md-3 valign5">Email Address
+                    <i class="fa fa-exclamation-triangle warning label-side-icon pull-left"
                        ng-if="me.bounceReason"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        popover-class="popover-small"
                        uib-popover-html="$root.bouncePopup(me)"
                     ></i>
-                </div>
-
-                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': (myForm.email.$dirty && myForm.email.$invalid) || me.bounceReason, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
+                </label>
+                <div class="form-group col-xs-12 col-sm-8 col-md-9" ng-class="{'has-error': (myForm.email.$dirty && myForm.email.$invalid) || me.bounceReason, 'has-success': myForm.email.$dirty && myForm.email.$valid}">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-at"></i></div>
                         <input autocomplete="on" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" required ng-model="user.email" ng-disabled="!canUpdateEmail">
                     </div>
                 </div>
             </div>
-
             <div class="row">
-                <div style="margin:0px auto;width:75px">
-                    <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
-                </div>
+              <div class="col-xs-12">
+                <hr class="mt-0">
+                  <button class="btn btn-primary btn-large contact-submit center-block" type="submit">Update</button>
+              </div>
             </div>
-        </form>
+          </div>
+        </div>
+      </form>
     </div>
     <div ng-if="isNotifications">
-          <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="notificationsPanel">
-            <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
-                <img src="/images/squares.gif" style="width:100px">
-            </div>
-
-            <form class="full-page larger" ng-show="notificationsLoaded">
-                <Div class="row" style="margin-top:-15px">
-                <Center>
-                    <A href ng-click="reset()" style="font-size:12px">Reset to default</A><Br>
-                </Center>
-                </Div>
-                        <Br>
+      <div ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="notificationsPanel">
+        <div ng-show="!notificationsLoaded" style="display:block;width:100px;margin:50px auto">
+            <img src="/images/squares.gif" style="width:100px">
+        </div>
+        <form class="full-page" ng-show="notificationsLoaded">
+          <div class="row">
+            <div class="col-xs-12 col-sm-9 max-w-800">
+              <div class="form-group row">
+                <label class="pl-10 pr-10 col-xs-8 col-sm-7 col-md-5">Receive Property Status Updates</label>
+                <div class="pl-10 pr-10 col-xs-4">
+                    <toggle-switch checked="settings.notifications.on" disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                    &nbsp;&nbsp;&nbsp;<a href ng-if="settings.notifications.on === true" ng-click="settings.notifications.toggle = !settings.notifications.toggle"><span class="fa fa-gear fa-2x" style="color: #A2A2A2"></span></a>
+                </div>
+              </div>
+              <div ng-if="settings.notifications.on === true" ng-show="settings.notifications.toggle">
                 <div class="row">
-                    <div class="col-sm-7 col-md-5">
-                        Receive Property Status Updates
-                    </div>
-
-                    <div class="form-group col-sm-5 col-md-7">
-                        <toggle-switch checked="settings.notifications.on"  disabled="!me.orgs[0].settings.updates.allow" popover="me.orgs[0].settings.updates.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                        &nbsp;&nbsp;&nbsp;<a href ng-if="settings.notifications.on === true" ng-click="settings.notifications.toggle = !settings.notifications.toggle"><span class="fa fa-gear fa-2x" style="color: #A2A2A2"></span></a>
-                    </div>
-                </div>
-
-                <div ng-if="settings.notifications.on === true" ng-show="settings.notifications.toggle">
-                    <div class="row">
-                        <div class="indent col-sm-7 col-md-5 valign5">
-                            How often
-                            <i class="fa fa-lock"
-                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
-                               popover-trigger="'mouseenter'"
-                               popover-placement="top"
-                               uib-popover="This setting has been locked by your company administrator."
-                               ng-if="!me.orgs[0].settings.how_often.allow"
-                            ></i>
-                        </div>
-
-                        <div class="form-group col-sm-5 col-md-7 indent-col-2">
-                            <div class="btn-group btn-group-sm state-toggle" role="group">
-                                <button ng-click="nots.howOften = 'Weekly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Weekly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Weekly</button>
-                                <button ng-click="nots.howOften = 'Monthly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Monthly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Monthly</button>
-                            </div> every
-                            <select ng-if="nots.howOften == 'Weekly'"
-                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:100px" ng-disabled="!me.orgs[0].settings.how_often.allow">
-                            </select>
-                            <select ng-if="nots.howOften == 'Monthly'"
-                                    class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:100px" ng-disabled="!me.orgs[0].settings.how_often.allow">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="indent col-sm-7 col-md-5 valign5">
-                            Properties
-                            <i class="fa fa-question-circle"
-                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
-                               popover-trigger="'mouseenter'"
-                               popover-placement="top"
-                               uib-popover="Choose which properites you want to receive updates for"
-                            ></i>
-                            <i class="fa fa-lock"
-                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
-                               popover-trigger="'mouseenter'"
-                               popover-placement="top"
-                               uib-popover="This setting has been locked by your company administrator."
-                               ng-if="!me.orgs[0].settings.updates.allow"
-                            ></i>
-                        </div>
-
-                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
-                            <Span ng-if="!me.orgs[0].settings.updates.allow">All</Span>
-                            <filter-list-ajax ng-if="me.orgs[0].settings.updates.allow" options="propertyOptions" model="propertyItems.items" search="autocompleteproperties"></filter-list-ajax>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="indent col-sm-7 col-md-5 valign5">
-                            Select columns
-                        </div>
-
-                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
-                            <filter-list options="columnsOptions" items="columnsItems.items"></filter-list>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="indent col-sm-7 col-md-5 valign5">
-                            Group comps
-
-                            <i class="fa fa-question-circle"
-                               style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
-                               popover-trigger="'mouseenter'"
-                               popover-placement="top"
-                               uib-popover-html="'Turning Group Comps on will result in the comp set being combined into a single weighted average row labeled Comp Average. Setting to &quot;Auto&quot; will turn Group Comps on if you have 25 or more properties. <br><Br> Note: group comps cannot be turned off when more than 75 properties are selected. This is to avoid sending you very large emails that can crash your email software or get rejected by email services. To see a report of your whole portfolio, please visit the Reporting section'"
-                            ></i>
-                        </div>
-
-                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
-                            <div class="btn-group btn-group-sm state-toggle" role="group">
-                                <button ng-click="settings.notifications.groupComps = false" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === false}">Off</button>
-                                <button ng-click="settings.notifications.groupComps = undefined" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === undefined}">Auto</button>
-                                <button ng-click="settings.notifications.groupComps = true" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === true}">On</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="indent col-sm-7 col-md-5">
-                            Send Status Update Now
-                        </div>
-
-                        <div class="form-group col-sm-5 col-md-7 indent-col-2" style="max-width:298px">
-                            <button class=" btn btn-warning btn-xs" style="font-style: italic;font-size:10px" type="button" ng-click="sendReport()">Send Now</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-7 col-md-5">Receive Property Update Reminders
-                        <i class="fa fa-question-circle"
-                           style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
-                           popover-trigger="'mouseenter'"
-                           popover-placement="top"
-                           uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
-                        ></i>
-                    </div>
-                    <div class="form-group col-sm-5 col-md-7">
-                        <toggle-switch checked="settings.reminders.on" disabled="!me.orgs[0].settings.reminders.allow" popover="me.orgs[0].settings.reminders.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <center>
-                        <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveNotifications()">Update</button>
-                    </center>
-                </div>
-            </form>
-          </div>
-    </div>
-    <div ng-if="isSettings">
-        <form class="full-page" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="settingsPanel">
-            <div class="row">
-                <div class="col-sm-7 col-md-5">Show "Leased %" information
-                    <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
+                  <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">
+                    How Often
+                    <i class="fa fa-lock label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
+                       uib-popover="This setting has been locked by your company administrator."
                        popover-append-to-body="true"
-                       uib-popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing Property Surveys. Note: Data for Leased % will only be shown if it exists for a property.'
+                       ng-if="!me.orgs[0].settings.how_often.allow"
                     ></i>
+                  </label>
+                  <div class="form-group col-xs-12 col-sm-5 col-md-7 indent-col-2">
+                    <div class="btn-group btn-group-sm state-toggle" role="group">
+                      <button ng-click="nots.howOften = 'Weekly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Weekly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Weekly</button>
+                      <button ng-click="nots.howOften = 'Monthly'" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': nots.howOften === 'Monthly'}" ng-disabled="!me.orgs[0].settings.how_often.allow">Monthly</button>
+                    </div><span class="ml-10 mr-10">every</span><select ng-if="nots.howOften == 'Weekly'"
+                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfWeek" ng-model="nots.dayOfWeek" style="display:inline;width:105px" ng-disabled="!me.orgs[0].settings.how_often.allow">
+                    </select><select ng-if="nots.howOften == 'Monthly'"
+                            class="form-control input-sm" ng-options="item.name for item in nots.daysOfMonth" ng-model="nots.dayOfMonth" style="display:inline;width:105px" ng-disabled="!me.orgs[0].settings.how_often.allow">
+                    </select>
+                  </div>
                 </div>
-                <div class="form-group col-sm-5 col-md-7">
-                    <toggle-switch checked="settings.showLeases" disabled="!me.orgs[0].settings.leased.allow" popover="me.orgs[0].settings.leased.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                <div class="row">
+                  <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">
+                    Properties
+                    <i class="fa fa-question-circle label-side-icon"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="top"
+                       uib-popover="Choose which properites you want to receive updates for"
+                       popover-append-to-body="true"
+                    ></i>
+                    <i class="fa fa-lock label-side-icon"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="top"
+                       uib-popover="This setting has been locked by your company administrator."
+                       popover-append-to-body="true"
+                       ng-if="!me.orgs[0].settings.updates.allow"
+                    ></i>
+                  </label>
+                  <div class="form-group col-xs-12 col-sm-5 col-md-7 indent-col-2">
+                      <span ng-if="!me.orgs[0].settings.updates.allow">All</span>
+                      <filter-list-ajax ng-if="me.orgs[0].settings.updates.allow" options="propertyOptions" model="propertyItems.items" search="autocompleteproperties"></filter-list-ajax>
+                  </div>
                 </div>
+                <div class="row">
+                  <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">Select Columns</label>
+                  <div class="form-group col-xs-12 col-sm-5 col-md-7 indent-col-2">
+                      <filter-list options="columnsOptions" items="columnsItems.items"></filter-list>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="indent col-xs-6 pl-10 pr-10 col-sm-7 col-md-5 valign5">
+                    Group Comps
+                    <i class="fa fa-question-circle label-side-icon"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="top"
+                       uib-popover-html="'Turning Group Comps on will result in the comp set being combined into a single weighted average row labeled Comp Average. Setting to &quot;Auto&quot; will turn Group Comps on if you have 25 or more properties. <br><Br> Note: group comps cannot be turned off when more than 75 properties are selected. This is to avoid sending you very large emails that can crash your email software or get rejected by email services. To see a report of your whole portfolio, please visit the Reporting section'"
+                       popover-append-to-body="true"
+                    ></i>
+                  </label>
+                  <div class="form-group col-xs-6 pl-10 pr-10 col-sm-5 col-md-7 indent-col-2 ml-0-m text-right-m">
+                    <div class="btn-group btn-group-sm state-toggle" role="group">
+                        <button ng-click="settings.notifications.groupComps = false" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === false}">Off</button>
+                        <button ng-click="settings.notifications.groupComps = undefined" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === undefined}">Auto</button>
+                        <button ng-click="settings.notifications.groupComps = true" type="button" ng-class="{'btn': true, 'btn-default': true, 'active': settings.notifications.groupComps === true}">On</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="indent col-xs-8 col-sm-7 col-md-5">Send Status Update Now</label>
+                  <div class="form-group col-xs-4 pl-10 pr-10 col-sm-5 col-md-7 indent-col-2 ml-0-m text-right-m">
+                    <button class=" btn btn-warning btn-xs" style="font-style: italic;font-size:10px" type="button" ng-click="sendReport()">Send Now</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="indent col-xs-8 col-sm-7 col-md-5">Reset To Defaults</label>
+                  <div class="form-group col-xs-4 pl-10 pr-10 col-sm-5 col-md-7 indent-col-2 ml-0-m text-right-m">
+                    <a href ng-click="reset()"><u>Reset</u></a>
+                  </div>
+                </div>
+                <div class="row visible-xs">
+                  <div class="col-xs-12">
+                    <hr class="mt-0">
+                  </div>
+                </div>
+              </div>
+              <div class="row form-group">
+                <label class="pl-10 pr-10 col-xs-8 col-sm-7 col-md-5">Receive Property Update Reminders
+                  <i class="fa fa-question-circle label-side-icon"
+                     popover-trigger="'mouseenter'"
+                     popover-placement="top"
+                     uib-popover="Reminders are sent once a week and only when a subject property hasn't been updated in 9 or more days"
+                     popover-append-to-body="true"
+                  ></i>
+                </label>
+                <div class="pl-10 pr-10 col-xs-4 col-sm-5 col-md-7">
+                    <toggle-switch checked="settings.reminders.on" disabled="!me.orgs[0].settings.reminders.allow" popover="me.orgs[0].settings.reminders.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <hr class="mt-0">
+                  <button class="btn btn-primary btn-large contact-submit center-block" type="button" ng-click="saveNotifications()">Update</button>
+                </div>
+              </div>
             </div>
-
+          </div>
+        </form>
+      </div>
+    </div>
+    <div ng-if="isSettings">
+      <form class="full-page" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1" id="settingsPanel">
+        <div class="row">
+          <div class="col-xs-12 col-sm-9 max-w-800">
             <div class="row">
-                <div class="col-sm-7 col-md-5">
-                    Show "Renewal %" information
-
-                    <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
+              <label class="col-xs-9 pl-10 pr-10 col-sm-7 col-md-5">Show "Leased %" Information
+                <i class="fa fa-question-circle label-side-icon"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="top"
+                   popover-append-to-body="true"
+                   uib-popover='Turning this option ON will result in "Leased %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Leased %" value when doing Property Surveys. Note: Data for Leased % will only be shown if it exists for a property.'
+                   popover-append-to-body="true"
+                ></i>
+              </label>
+              <div class="form-group col-xs-3 pl-10 pr-10 col-sm-5 col-md-7 text-right-m">
+                  <toggle-switch checked="settings.showLeases" disabled="!me.orgs[0].settings.leased.allow" popover="me.orgs[0].settings.leased.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+              </div>
+            </div>
+            <div class="row">
+                <label class="col-xs-9 pl-10 pr-10 col-sm-7 col-md-5">
+                    Show "Renewal %" Information
+                    <i class="fa fa-question-circle label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        uib-popover='Turning this option ON will result in "Renewal %" field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "Renewal %" value when doing Property Surveys. Note: Data for Renewal % will only be shown if it exists for a property.'
+                       popover-append-to-body="true"
                     ></i>
-                </div>
-                <div class="form-group col-sm-5 col-md-7">
+                </label>
+                <div class="form-group col-xs-3 pl-10 pr-10 col-sm-5 col-md-7 text-right-m">
                     <toggle-switch checked="settings.showRenewal" disabled="!me.orgs[0].settings.renewal.allow" popover="me.orgs[0].settings.renewal.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-sm-7 col-md-5">
-                    Show "ATR %" information
-                    <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:14px;padding:5px 0px 0px 5px"
+                <label class="col-xs-9 pl-10 pr-10 col-sm-7 col-md-5">
+                    Show "ATR %" Information
+                    <i class="fa fa-question-circle label-side-icon"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
                        popover-append-to-body="true"
                        uib-popover='Turning this option ON will result in Apartments to Rent ("ATR %") field being added to default views on the Dashboard and Property Profile pages. In addition, you will have the option to add "ATR" value when doing Property Surveys. Note: Data for ATR % will only be shown if it exists for a property.'
+                       popover-append-to-body="true"
                     ></i>
-                </div>
-                <div class="form-group col-sm-5 col-md-7">
-                    <toggle-switch checked="settings.showATR" disabled="!me.orgs[0].settings.atr.allow" popover="me.orgs[0].settings.atr.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-7 col-md-5 valign5">
-                    Timezone
-                </div>
-                <div class="form-group col-sm-5 col-md-7">
-                    <select class="form-control input-sm" ng-options="item.name for item in timezones" ng-model="settings.tz" style="display:inline;width:200px">
-                    </select>
+                </label>
+                <div class="form-group col-xs-3 pl-10 pr-10 col-sm-5 col-md-7 text-right-m">
+                  <toggle-switch checked="settings.showATR" disabled="!me.orgs[0].settings.atr.allow" popover="me.orgs[0].settings.atr.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
                 </div>
             </div>
             <div class="row">
-                <center>
-                    <button class=" btn btn-primary btn-large contact-submit" type="button" ng-click="saveSettings()">Update</button>
-                </center>
+              <label class="col-xs-4 pl-10 pr-10 col-sm-7 col-md-5 valign5">Timezone</label>
+              <div class="form-group col-xs-8 pl-10 pr-10 col-sm-5 col-md-7">
+                  <select class="form-control ml-0-m input-sm indent-col-2" ng-options="item.name for item in timezones" ng-model="settings.tz">
+                  </select>
+              </div>
             </div>
-        </form>
+            <div class="row">
+              <div class="col-xs-12">
+                <hr class="mt-0">
+                <button class="btn btn-primary btn-large contact-submit center-block" type="button" ng-click="saveSettings()">Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
     <div ng-if="isPassword">
-        <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password, myFormPassword)" class="full-page">
-            <div class="row">
-                <div class="col-sm-4 col-md-3 valign5">Current Password</div>
-                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
-                        <input autocomplete="off" type="password" name="currentpassword" class="form-control" id="currentpassword" placeholder="Current password" ng-model="password.currentpassword" required ng-minlength="8">
-                    </div>
-                    <div class="text-danger" ng-show="myFormPassword.currentpassword.$error.minlength"><small>8 characters minimum</small></div>
-                </div>
+    <form role="form" name="myFormPassword" id="myFormPassword" autocomplete="on" ng-submit="submitPassword(password, myFormPassword)" class="full-page">
+      <div class="row">
+        <div class="col-xs-12 col-sm-9 max-w-800">
+          <div class="row">
+            <label class="pl-10 pr-10 col-sm-4 col-md-3 valign5">Current Password</label>
+            <div class="form-group pl-10 pr-10 col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$invalid, 'has-success': myFormPassword.currentpassword.$dirty && myFormPassword.currentpassword.$valid}">
+              <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                  <input autocomplete="off" type="password" name="currentpassword" class="form-control" id="currentpassword" placeholder="Current password" ng-model="password.currentpassword" required ng-minlength="8">
+              </div>
+              <div class="text-danger" ng-show="myFormPassword.currentpassword.$error.minlength"><small>8 characters minimum</small></div>
             </div>
-
-            <div class="row">
-                <div class="col-sm-4 col-md-3 valign5">New Password</div>
-                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$invalid, 'has-success': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
-                        <input autocomplete="off" type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New password" ng-model="password.newpassword" required ng-minlength="8">
-                    </div>
-                    <div class="text-danger" ng-show="myFormPassword.newpassword.$error.minlength"><small>8 characters minimum</small></div>
-                </div>
+          </div>
+          <div class="row">
+            <label class="pl-10 pr-10 col-sm-4 col-md-3 valign5">New Password</label>
+            <div class="form-group pl-10 pr-10 col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$invalid, 'has-success': myFormPassword.newpassword.$dirty && myFormPassword.newpassword.$valid}">
+              <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                  <input autocomplete="off" type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New password" ng-model="password.newpassword" required ng-minlength="8">
+              </div>
+              <div class="text-danger" ng-show="myFormPassword.newpassword.$error.minlength"><small>8 characters minimum</small></div>
             </div>
-
-            <div class="row">
-                <div class="col-sm-4 col-md-3 valign5">Confirm Password</div>
-                <div class="form-group col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$invalid, 'has-success': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$valid}">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
-                        <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="password.confirmpassword" required ng-minlength="8">
-                    </div>
-                    <div class="text-danger" ng-show="myFormPassword.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
-                </div>
+          </div>
+          <div class="row">
+            <label class="pl-10 pr-10 col-sm-4 col-md-3 valign5">Confirm Password</label>
+            <div class="form-group pl-10 pr-10 col-sm-8 col-md-9" ng-class="{'has-error': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$invalid, 'has-success': myFormPassword.confirmpassword.$dirty && myFormPassword.confirmpassword.$valid}">
+              <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                  <input autocomplete="off" type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm password" ng-model="password.confirmpassword" required ng-minlength="8">
+              </div>
+              <div class="text-danger" ng-show="myFormPassword.confirmpassword.$error.minlength"><small>8 characters minimum</small></div>
             </div>
-
-            <div class="row">
-                <div style="margin:0px auto;width:75px">
-                    <button class=" btn btn-primary btn-large btn-block contact-submit" type="submit">Update</button>
-                </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <hr class="mt-0">
+              <button class="btn btn-primary btn-large contact-submit center-block" type="submit">Update</button>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
