@@ -15,8 +15,9 @@
                     <th style="height:45px;">
                         Address
                     </th>
-                    <th style="height:45px;">
-                        <img src="/images/logos/yelp.png" style="height:35px">
+                    <th style="height:45px;font-size:11px">
+                        <img src="/images/logos/yelp.png" style="height:20px"><BR>
+                        rating <i>(count)</i>
                     </th>
                 </tr>
 
@@ -29,7 +30,8 @@
                 {{row.address}}
             </Td>
             <td>
-                {{row.yelp === undefined || row.yelp === null ? "-" : row.yelp}}
+                {{row.yelp_rating === undefined || row.yelp_rating === null ? "-" : (row.yelp_rating)}}
+                <i>{{row.yelp_rating === undefined || row.yelp_rating === null ? "" : "(" +(row.yelp_count) + ")"}}</i>
             </td>
         </tr>
         <tr ng-repeat-end ng-if="false"></tr>
