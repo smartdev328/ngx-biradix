@@ -634,6 +634,31 @@ define([
             });
         }
 
+        $scope.PMSintegration = function(property) {
+            require([
+                '/app/properties/PMSintegrationController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/properties/PMSintegration.html?bust=' + version,
+                    controller: 'PMSintegrationController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        property: function () {
+                            return property;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    toastr.success("Users updated successfully");
+                }, function (from) {
+                    //Cancel
+                });
+            });
+        }
+
         $scope.manageUsers = function(property) {
 
             require([
