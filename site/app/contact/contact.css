@@ -3,22 +3,23 @@
 	padding-right: 10px;
 }
 
-.support-page .half-height-panel-info {
-	height:150px;
-}
-
 .support-page textarea {
-	resize: none;height: 70px;
+	resize: none;height: 90px;
 }
 
 .support-page h4 {
 	color:#337ab7;
+	margin: 0;
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1430px) {
+.help-link {
+	width:160px;
+}
 
-  	.support-page .half-height-panel-info {
-		height:180px;
+@media (max-width: 767px) {
+
+	.help-link {
+		margin:0 auto;
 	}
 
 }

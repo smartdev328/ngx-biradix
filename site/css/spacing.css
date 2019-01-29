@@ -5,7 +5,11 @@
 }
 
 .mb-20 {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
 }
 
 .ml-10 {
