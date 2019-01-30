@@ -19,6 +19,10 @@
                         <img src="/images/logos/yelp.png" style="height:20px"><BR>
                         rating <i>(count)</i>
                     </th>
+                    <th style="height:45px;font-size:11px">
+                        <img src="/images/logos/google.png" style="height:20px"><BR>
+                        rating <i>(count)</i>
+                    </th>                    
                 </tr>
 
         <tr ng-repeat-start="row in report" ng-class="{subject: row.isSubject}">
@@ -32,6 +36,10 @@
                 {{row.yelp_rating === undefined || row.yelp_rating === null ? "-" : (row.yelp_rating)}}
                 <i>{{row.yelp_rating === undefined || row.yelp_rating === null ? "" : "(" +(row.yelp_count) + ")"}}</i>
             </td>
+            <td>
+                {{row.google_rating === undefined || row.google_rating === null ? "-" : (row.google_rating)}}
+                <i>{{row.google_rating === undefined || row.google_rating === null ? "" : "(" +(row.google_count) + ")"}}</i>
+            </td>            
         </tr>
         <tr ng-repeat-end ng-if="false"></tr>
     </tbody>
