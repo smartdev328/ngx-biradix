@@ -1,3 +1,4 @@
+var phantom = navigator.userAgent.indexOf("PhantomJS") > -1
 requirejs.config({
     urlArgs: "bust=" + version,
     waitSeconds: 30,

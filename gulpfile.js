@@ -79,6 +79,7 @@ gulp.task("globaljs", function() {
         , "./site/services/urlService.js"
         , "./site/services/gridService.js"
         , "./site/services/userService.js"
+        , "./site/services/organizationsService.js"
         , "./site/services/propertyUsersService.js"
         , "./site/services/mediaService.js"
         , "./site/services/approvedListsService.js"

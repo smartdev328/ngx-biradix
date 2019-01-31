@@ -5,9 +5,9 @@
     <script type="text/javascript">
         window.renderable = false;
     </script>
-    <link rel="icon" type="image/png" href="/images/organizations/<%=logoSmall%>">
+    <link rel="icon" id="favicon" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <script type="text/javascript">var gAPI = "<%=api%>"; var version="<%=version%>"; var local=<%=local%>; var phantom = <%=phantom%>; var logoBig='<%=logoBig%>';var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>"; var heroku_env="<%=heroku_env%>"</script>
+    <script type="text/javascript">var gAPI = "<%=api%>"; var version="<%=version%>"; var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>"; var heroku_env="<%=heroku_env%>"</script>
 
     <link href="/dist/vendors.css?v=<%=hashes.vendorscss%>" rel="stylesheet" type="text/css">
     <script src="/dist/vendors.js?v=<%=hashes.vendorsjs%>"></script>
@@ -16,9 +16,7 @@
     <script src="/dist/global.js?v=<%=hashes.globaljs%>"></script>
 
     <script data-main="app/main.js?bust=<%=version%>" src="libs/requirejs/require-2.3.3.min.js"></script>
-    <%if (!phantom) {%>
-        <script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU&v=3.exp&libraries=places"></script>
-    <%}%>
+    <script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyDmWIi-fgJL9nzi9S2oX42grQxqzfLvaeU&v=3.exp&libraries=places"></script>
     <script>
         window['_fs_debug'] = false;
         window['_fs_host'] = 'fullstory.com';
@@ -43,10 +41,12 @@
     <div class="loading hidden-print" style="display:block;width:100px;margin:50px auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
+     <div class="apiError blink_me" style="display:none;text-align:center" ng-bind-html="apiError | sanitize"></div>
+
     <div style="display:none" class="loggedout hidden-print">
         <div class="loggedout-main">
             <div class="loggedout-container clearfix">
-                <Center><a href="#/login"><img ng-src="/images/organizations/{{logoBig}}" style="max-width:350px"></a><br /></Center>
+                <Center><a href="#/login"><img ng-src="{{logoBig}}" style="max-width:350px"></a><br /></Center>
                 <br>
                 <div style="display:block" class="routeContent">
                     <div ui-view="loggedOutView"></div>
@@ -63,8 +63,8 @@
         <nav class="navbar hidden-xs header-nav navbar-fixed-top">
             <div class="container-fluid" style="padding-top:5px">
                 <div class="navbar-header" style="padding:5px 0px 10px 0px">
-                    <a href="#/dashboard" class="hidden-sm"><img src="/images/organizations/<%=logoBig%>" class="logoBig" style="height:41px"></a>
-                    <a href="#/dashboard" class="visible-sm"><img src="/images/organizations/<%=logoSmall%>" class="logoSmall" style="height:41px"></a>
+                    <a href="#/dashboard" class="hidden-sm"><img ng-src="{{logoBig}}" class="logoBig" style="height:41px"></a>
+                    <a href="#/dashboard" class="visible-sm"><img ng-src="{{logoSmall}}" class="logoSmall" style="height:41px"></a>
                     <span ng-if="env" style="color:red;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;">{{env}}</span>
                 </div>
 
@@ -135,7 +135,7 @@
         <nav class="navbar visible-xs header-nav navbar-fixed-top hidden-print" style="margin-left:0px">
             <div class="container-fluid" id="mobile-nav"  style="margin-left:0px">
                 <div class="nav navbar-nav" style="padding:2px 0px 0px 10px;">
-                    <a href="#/dashboard" class="hidden-sm"><img src="/images/organizations/<%=logoBig%>" class="logoBig" style="height:41px"></a>
+                    <a href="#/dashboard" class="hidden-sm"><img ng-src="{{logoBig}}" class="logoBig" style="height:41px"></a>
                     <span ng-if="env" style="color:red;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;">{{env}}</span>
                     <button type="button" style="padding: 5px 10px 7px 10px;margin-right:10px;margin-top:2px" class="pull-right" ng-click="toggle()">
                         <i class="fa fa-bars"></i>
@@ -283,4 +283,3 @@
     </script>
 </body>
 </html>
-<!--<%=dyno%> -->
