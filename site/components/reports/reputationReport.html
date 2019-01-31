@@ -16,8 +16,7 @@
                         Address
                     </th>
                     <th style="height:45px;font-size:11px">
-                        <img src="/images/logos/yelp.png" style="height:20px"><BR>
-                        rating <i>(count)</i>
+                        <img src="/images/logos/yelp.png" style="height:30px"><BR>
                     </th>
                     <th style="height:45px;font-size:11px">
                         <img src="/images/logos/google.png" style="height:20px"><BR>
@@ -37,15 +36,15 @@
                 {{row.address}}
             </Td>
             <td>
-                {{row.yelp_rating === undefined || row.yelp_rating === null ? "-" : (row.yelp_rating)}}
-                <i>{{row.yelp_rating === undefined || row.yelp_rating === null ? "" : "(" +(row.yelp_count) + ")"}}</i>
+                <span ng-if="row.yelp_rating === undefined || row.yelp_rating === null">-</span>
+                <span ng-if="row.yelp_rating !== undefined && row.yelp_rating !== null"><img src="/images/logos/yelp_stars/{{row.yelp_rating}}.png"> {{row.yelp_count}} Reviews <A href="{{row.yelp_url}}" target="_blank" ng-if="row.yelp_url"><img src="/images/logos/yelp.png" style="height:20px;vertical-align: bottom"></A></span>
             </td>
             <td>
-                {{row.google_rating === undefined || row.google_rating === null ? "-" : (row.google_rating)}}
+                {{row.google_rating === undefined || row.google_rating === null ? "-" : (row.google_rating.toFixed(1))}}
                 <i>{{row.google_rating === undefined || row.google_rating === null ? "" : "(" +(row.google_count) + ")"}}</i>
             </td>
             <td>
-                {{row.facebook_rating === undefined || row.facebook_rating === null ? "-" : (row.facebook_rating)}}
+                {{row.facebook_rating === undefined || row.facebook_rating === null ? "-" : (row.facebook_rating.toFixed(1))}}
                 <i>{{row.facebook_rating === undefined || row.facebook_rating === null ? "" : "(" +(row.facebook_count) + ")"}}</i>
             </td>
         </tr>
