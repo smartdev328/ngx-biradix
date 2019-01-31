@@ -79,7 +79,7 @@
                             <li ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/properties"><i class="fa fa-building"></i> Manage Properties</a></li>
                             <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/history"><i class="fa fa-history"></i> Activity History</a></li>
                             <li ng-show="$root.me.permissions.indexOf('Admin') > -1"><a href="#/uploadSurveys"><i class="fa fa-wrench"></i> Admin</a></li>
-                            <li><a href="#/contactus"><i class="fa fa-question"></i> Support</a></li>
+                            <li><a href="#/contactus"><i class="fa fa-question"></i> Help</a></li>
                             <li><a href ng-click="logoff()"><i class="fa fa-power-off"></i> Log Off</a></li>
                         </ul>
                     </div>
@@ -249,7 +249,7 @@
                         <a href = "#/metrics" href ng-class="{'active': sideNav == 'Metrics', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Metrics</a>
                     </li>
                     <li>
-                        <a ng-class="{'active': sideNav == 'ContactUs'}" href="#/contactus" ng-click="turnOffIfMobile()"><i class="fa fa-question"></i> Support</a>
+                        <a ng-class="{'active': sideNav == 'ContactUs'}" href="#/contactus" ng-click="turnOffIfMobile()"><i class="fa fa-question"></i> Help</a>
                     </li>
                     <li>
                         <a href ng-click="logoff();turnOffIfMobile()"><i class="fa fa-power-off"></i> Log Off</a>
