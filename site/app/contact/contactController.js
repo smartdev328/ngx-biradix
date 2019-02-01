@@ -8,7 +8,7 @@ define([
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
             $rootScope.sideMenu = true;
-            $rootScope.sideNav = "ContactUs";
+            $rootScope.sideNav = "HelpContactUs";
 
             var me;
             $rootScope.$watch("me", function(x) {

@@ -1,62 +1,62 @@
-<h2 class="mainheader">Contact Us
+<h2 class="mainheader">Help
     <hr>
 </h2>
-<div class="row">
-    <div class="col-lg-8 col-md-7">
-        <div class="panel panel-info" style="height:350px">
-            <div class="panel-heading">Fill Out the Form Below</div>
-            <div class="panel-body">
-                <hr>
-
-                <div ng-show="done">
-                    <div class="alert alert-success" role="alert"><b>Thank you for your submission. Someone will contact you shortly.</b></div>
-
-                </div>
-                <div ng-show="!done">
-                    <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(msg)">
-
-                        <div class="form-group" ng-class="{'has-success': myForm.subject.$dirty && myForm.subject.$valid}">
-                            <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-ellipsis-h"></i></div>
-                                <input autocomplete="on" type="text" name="subject" class="form-control" id="subject" placeholder="Enter subject" required ng-model="msg.subject">
+<div class="row support-page">
+    <div class="col-xs-12">
+        <div class="panel panel-info">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8">
+                    <div class="panel-heading">Resources</div>
+                    <div class="panel-body mb-40">
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8">
+                                <p class="mb-20">Check out helpful videos on how to use the platform, see the answers to frequently asked questions, and dive into our knowledge base to learn everything in between.</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <a href="http://help.biradix.com" target="_blank" class="btn btn-primary btn-large help-link btn-block">Help Center</a>
                             </div>
                         </div>
+                    </div>
+                    <div class="panel-heading">Contact Us</div>
+                    <div class="panel-body">
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8">
+                                <div ng-show="done">
+                                    <div class="alert alert-success" role="alert"><b>Thank you for your submission. Someone will contact you shortly.</b></div>
+                                </div>
+                                <div ng-show="!done">
+                                    <form role="form" name="myForm" id="myForm" autocomplete="on" ng-submit="submit(msg)">
+                                        <div class="form-group" ng-class="{'has-success': myForm.subject.$dirty && myForm.subject.$valid}">
+                                            <input autocomplete="on" type="text" name="subject" class="form-control" id="subject" placeholder="Enter subject" required ng-model="msg.subject">
+                                        </div>
 
-                        <div class="form-group" ng-class="{'has-success': myForm.message.$dirty && myForm.message.$valid}">
-                            <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-edit"></i></div>
-                                <textarea autocomplete="on" name="message" class="form-control" id="message" placeholder="Enter message" required ng-model="msg.message" style="height: 100px"></textarea>
+                                        <div class="form-group" ng-class="{'has-success': myForm.message.$dirty && myForm.message.$valid}">
+                                            <textarea autocomplete="on" name="message" class="form-control" id="message" placeholder="Enter message" required ng-model="msg.message"></textarea>
+                                        </div>
+                                        <div style="margin:0px auto;width:75px">
+                                            <button class="btn btn-primary btn-large btn-block contact-submit mb-20" type="submit">Send</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="panel-body">
+                                    <a class="mb-10" href="mailto:support@biradix.com" style="font-size:18px">support@biradix.com</a>
+                                    <p>Don't forget to include the email address associated with your account.</p>
+                                </div>
+                                <div class="panel-body">
+                                    <h4>(602) 892-4788</h4>
+                                    <p>Available Monday - Friday<br>
+                                    8:00am - 5:00pm PST</p>
+                                </div>
                             </div>
                         </div>
-
-                        <div style="margin:0px auto;width:75px">
-                            <button class="btn btn-primary btn-large btn-block contact-submit" type="submit">Send</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-lg-4 col-md-5">
-        <div class="panel panel-info" style="height:165px">
-            <div class="panel-heading">Email</div>
-            <div class="panel-body" style="text-align: center">
-                <hr>
-                <a href="mailto:support@biradix.com" style="font-size:25px">support@biradix.com</a><Br>
-                Don't forget to include the email address associated with your account.
-            </div>
-        </div>
-
-        <div class="panel panel-info" style="height:165px">
-            <div class="panel-heading">Phone</div>
-            <div class="panel-body" style="text-align: center">
-                <hr>
-                <h2>(602) 892-4788</h2>
-                Available Monday - Friday<br>
-                8:00am - 5:00pm PST
-            </div>
-        </div>
-
     </div>
 </div>
 
