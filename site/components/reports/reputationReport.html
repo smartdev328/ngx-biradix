@@ -37,7 +37,12 @@
             </Td>
             <td>
                 <span ng-if="row.yelp_rating === undefined || row.yelp_rating === null">-</span>
-                <span ng-if="row.yelp_rating !== undefined && row.yelp_rating !== null"><img src="/images/logos/yelp_stars/{{row.yelp_rating}}.png"> {{row.yelp_count}} Reviews <A href="{{row.yelp_url}}" target="_blank" ng-if="row.yelp_url"><img src="/images/logos/yelp.png" style="height:20px;vertical-align: bottom"></A></span>
+                <span ng-if="row.yelp_rating !== undefined && row.yelp_rating !== null">
+                    <img ng-if="!row.yelp_url" src="/images/logos/yelp_stars/{{row.yelp_rating}}.png">
+                    <A href="{{row.yelp_url}}" target="_blank" ng-if="row.yelp_url"><img src="/images/logos/yelp_stars/{{row.yelp_rating}}.png"> </A>
+                    {{row.yelp_count}} Reviews
+                    </span>
+
             </td>
             <td>
                 {{row.google_rating === undefined || row.google_rating === null ? "-" : (row.google_rating.toFixed(1))}}
