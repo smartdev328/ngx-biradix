@@ -110,22 +110,21 @@
         >
             <span class="fa fa-table"></span> <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" onclick="event.stopPropagation();">
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.rownumber" ng-checked="show.rownumber" ng-click="columnsChanged=true"> Row Number</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.date" ng-checked="show.date" ng-click="columnsChanged=true"> Date Created</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name" ng-click="columnsChanged=true"> Name</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.address" ng-checked="show.address" ng-click="columnsChanged=true"> Address</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.city" ng-checked="show.city" ng-click="columnsChanged=true"> City</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.state" ng-checked="show.state" ng-click="columnsChanged=true"> State</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.zip" ng-checked="show.zip" ng-click="columnsChanged=true"> Zip</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.totalUnits" ng-checked="show.totalUnits" ng-click="columnsChanged=true"> Total Units</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy" ng-click="columnsChanged=true"> Occupancy %</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="columnsChanged=true"> Net Eff. Rent</label></div></li>
-            <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.lastUpdated" ng-checked="show.lastUpdated" ng-click="columnsChanged=true"> Last Survey</label></div></li>
-            <li class="dropdown-header" ng-if="$root.me.roles.indexOf('Site Admin') > -1">BI:Radix Admin</li>
-            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
-            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
-            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.owner" ng-click="columnsChanged=true"> Owner</label></div></li>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px" onclick="event.stopPropagation();">
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.rownumber" ng-checked="show.rownumber" ng-click="columnsChanged=true"> Row Number</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.date" ng-checked="show.date" ng-click="columnsChanged=true"> Date Created</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.name" ng-checked="show.name" ng-click="columnsChanged=true"> Name</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.address" ng-checked="show.address" ng-click="columnsChanged=true"> Address</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.city" ng-checked="show.city" ng-click="columnsChanged=true"> City</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.state" ng-checked="show.state" ng-click="columnsChanged=true"> State</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.zip" ng-checked="show.zip" ng-click="columnsChanged=true"> Zip</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.totalUnits" ng-checked="show.totalUnits" ng-click="columnsChanged=true"> Total Units</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.occupancy" ng-checked="show.occupancy" ng-click="columnsChanged=true"> Occupancy %</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.ner" ng-checked="show.ner" ng-click="columnsChanged=true"> Net Eff. Rent</label></div></li>
+            <li><div class="checkbox"><label><input type="checkbox" ng-model="show.lastUpdated" ng-checked="show.lastUpdated" ng-click="columnsChanged=true"> Last Survey</label></div></li>
+            <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
+            <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+            <li ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.owner" ng-click="columnsChanged=true"> Owner</label></div></li>
         </ul>
     </div>
 
