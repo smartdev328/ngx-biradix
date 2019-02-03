@@ -35,6 +35,7 @@ define([
                 $scope.reportItems.push({id: "property_report", name: "Market Survey Summary", selected:$stateParams.property == "1", group: "Individual Reports", type:"single", tooltip: "<b>Market Survey Summary</b> - <i>Report includes historic trends for key performance indicators including NER or NER/SQFT, Occupancy and Leased percentage in addition to property summaries for the subject property and each comps. The report allows users to benchmark the subject property vs. one or more comps and provides the ability to drill down by NER or NER/SQFT to the floor plan (bedroom) level for a customizable time-frame (ex: last 90 days.)</i>"});
                 $scope.reportItems.push({id: "property_rankings_summary", name: "Floor Plan Comparison", selected:$stateParams.property == "3", group: "Individual Reports", type:"single", tooltip: "<b>Floor Plan Comparison</b> - <i>Report lets the user quickly sort, rank and analyze the current performance of the subject property versus each of the comps at the property and floor plan level</i>"});
                 $scope.reportItems.push({id: "property_rankings", name: "Floor Plan Comparison (detailed)", selected:$stateParams.property == "4", group: "Individual Reports", type:"single", tooltip: "<b>Floor Plan Comparison (Detailed)</b> - <i>Similar to Floor Plan Comparison report, the \"detailed\" version includes the subject property and each comp and a detailed breakdown by individual floor plans as opposed to grouping by # of bedrooms.</i>"});
+                $scope.reportItems.push({id: "reputation", name: "Reputation (beta)", selected: false, group: "Individual Reports", type: "single", tooltip: "<b>Reputation Report</b> - <i>Report offers a quick and easy way to compare the review/reputation scores of the subject property and its comps on popular review sites such as Yelp, Google, and Facebook.</i>"});
 
                     $scope.reportItems.push({
                         id: "trends",
@@ -1320,11 +1321,11 @@ define([
                     {id: "concessions", name: "Total Concession", selected: $scope.liveSettings.customPortfolio.show.concessions, tooltip: $rootScope.tooltips["concessions"]},
                     {id: "ner", name: "NER", selected: $scope.liveSettings.customPortfolio.show.ner, tooltip: $rootScope.tooltips["ner"]},
                     {id: "ner0", name: "NER by # Bedrooms", selected: $scope.liveSettings.customPortfolio.show.ner0, tooltip: $rootScope.tooltips["ner0"]},
-                    {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.liveSettings.customPortfolio.show.nervscompavg, tooltip: $rootScope.tooltips["nervscompavg"]},
+                    {id: "nersqft", name: "NER / Sqft", selected: $scope.liveSettings.customPortfolio.show.nersqft, tooltip: $rootScope.tooltips["nersqft"]},
                     {id: "nerweek", name: "NER vs Last Week", selected: $scope.liveSettings.customPortfolio.show.nerweek, tooltip: $rootScope.tooltips["nerweek"]},
                     {id: "nermonth", name: "NER vs Last Month", selected: $scope.liveSettings.customPortfolio.show.nermonth, tooltip: $rootScope.tooltips["nermonth"]},
                     {id: "neryear", name: "NER vs Last Year", selected: $scope.liveSettings.customPortfolio.show.neryear, tooltip: $rootScope.tooltips["neryear"]},
-                    {id: "nersqft", name: "NER / Sqft", selected: $scope.liveSettings.customPortfolio.show.nersqft, tooltip: $rootScope.tooltips["nersqft"]},
+                    {id: "nervscompavg", name: "NER vs Comp Avg", selected: $scope.liveSettings.customPortfolio.show.nervscompavg, tooltip: $rootScope.tooltips["nervscompavg"]},
                     {id: "nersqftweek", name: "NER/Sqft vs Last Week", selected: $scope.liveSettings.customPortfolio.show.nersqftweek, tooltip: $rootScope.tooltips["nersqftweek"]},
                     {id: "nersqftmonth", name: "NER/Sqft vs Last Month", selected: $scope.liveSettings.customPortfolio.show.nersqftmonth, tooltip: $rootScope.tooltips["nersqftmonth"]},
                     {id: "nersqftyear", name: "NER/Sqft vs Last Year", selected: $scope.liveSettings.customPortfolio.show.nersqftyear, tooltip: $rootScope.tooltips["nersqftyear"]},
