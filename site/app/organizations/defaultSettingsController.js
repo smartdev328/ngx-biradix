@@ -152,10 +152,15 @@ define([
                     return;
                 }
 
-                var o2 = _.map(_.sortByAll(o, "id"), function(x) {return x.selected.toString()}).join(',')
-                var n2 = _.map(_.sortByAll(n, "id"), function(x) {return x.selected.toString()}).join(',')
+                var o2 = _.map(_.sortByAll(o, "id"), function(x) {
+                    return x && typeof x.selected !== "undefined" ? x.selected.toString() : "false";
+                }).join(",");
 
-                if (n2 != o2) {
+                var n2 = _.map(_.sortByAll(n, "id"), function(x) {
+                    return x && typeof x.selected !== "undefined" ? x.selected.toString() : "false";
+                }).join(",");
+
+                if (n2 !== o2) {
                     $scope.organization.settings.notification_columns.configured=true;
                 }
             }, true);
