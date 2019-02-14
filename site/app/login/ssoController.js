@@ -15,15 +15,20 @@ define([
         var domain = "https://" + host;
 
         if (host === location.hostname) {
-            $location.path("/login").search("e", $scope.email).search("r", $stateParams.r);
+            $location.path("/login").search("e", ($scope.email || "")).search("r", $stateParams.r);
         } else {
-            location.href = domain + "/#login?e=" + $scope.email + "&r=" + encodeURIComponent($stateParams.r);
+            location.href = domain + "/#login?e=" + ($scope.email || "") + "&r=" + encodeURIComponent($stateParams.r);
         }
     }
 
     if ($rootScope.loggedIn) {
-        return $scope.redirect($rootScope.me.orgs[0].subdomain + ".biradix.com");
+        $rootScope.$watch("me", function(x) {
+            if ($rootScope.me) {
+                $scope.redirect($rootScope.me.orgs[0].subdomain + ".biradix.com");
+            }
+        }, true);
     }
+
     $scope.submit = function() {
         $scope.localLoading = true;
 

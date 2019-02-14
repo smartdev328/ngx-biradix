@@ -93,7 +93,7 @@ define([
 
             data.users.forEach(function(a) {
                 u = {id: a._id, name: a.name};
-                if ($rootScope.me.permissions.indexOf("Admin") > -1) {
+                if ($rootScope.me && $rootScope.me.permissions.indexOf("Admin") > -1) {
                     a.roles.forEach(function(r) {
                         u2 = _.cloneDeep(u);
                         if (r.name == "Guest") {
@@ -140,7 +140,7 @@ define([
                     if (p.isCustom) {
                         p.group = " My Custom Properties";
                     } else {
-                        p.group = $rootScope.me.orgs[0].name + " Properties";
+                        p.group = ($rootScope.me ? $rootScope.me.orgs[0].name : "") + " Properties";
                     }
                 });
 
