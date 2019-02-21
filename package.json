@@ -1,6 +1,6 @@
 {
   "name": "biradix",
-  "version": "2.24.2",
+  "version": "2.24.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
+    "files-exist": "^1.1.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-hashsum": "^1.2.0",

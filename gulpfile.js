@@ -6,47 +6,51 @@ var merge = require("merge-stream");
 var gulp = require("gulp");
 const nodemon = require("nodemon");
 const livereload = require("gulp-livereload");
+const filesExist = require("files-exist");
 
 gulp.task("vendorsjs", function() {
-    return gulp.src([
-          "./bower_components/jquery/dist/jquery.min.js"
-        , "./bower_components/jquery-ui/jquery-ui.min.js"
-        , "./bower_components/bootstrap/dist/js/bootstrap.min.js"
-        , "./bower_components/angular/angular.min.js"
-        , "./bower_components/angular-cookies/angular-cookies.min.js"
-        , "./bower_components/angular-sanitize/angular-sanitize.min.js"
-        , "./bower_components/angular-ui-router/release/angular-ui-router.min.js"
-        , "./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"
-        , "./bower_components/lodash/lodash.min.js"
-        , "./bower_components/moment/min/moment.min.js"
-        , "./bower_components/highcharts-release/highcharts.js"
-        , "./bower_components/angular-ui-sortable/sortable.min.js"
-        , "./bower_components/raygun4js/dist/raygun.min.js"
-        , "./site/components/ngProgress/ngProgress.min.js"
-        , "./site/components/angular-toastr/angular-toastr.tpls.min.js"
-        , "./site/components/daterangepicker/daterangepicker.js"
-        , "./site/components/select/customSelect.js"
-        , "./site/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"
-        , "./node_modules/xlsx-style/dist/xlsx.core.min.js",
+    const files = [
+        "./bower_components/jquery/dist/jquery.min.js",
+        "./bower_components/jquery-ui/jquery-ui.min.js",
+        "./bower_components/bootstrap/dist/js/bootstrap.min.js",
+        "./bower_components/angular/angular.min.js",
+        "./bower_components/angular-cookies/angular-cookies.min.js",
+        "./bower_components/angular-sanitize/angular-sanitize.min.js",
+        "./bower_components/angular-ui-router/release/angular-ui-router.min.js",
+        "./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
+        "./bower_components/lodash/lodash.min.js",
+        "./bower_components/moment/min/moment.min.js",
+        "./bower_components/highcharts-release/highcharts.js",
+        "./bower_components/angular-ui-sortable/sortable.min.js",
+        "./bower_components/raygun4js/dist/raygun.min.js",
+        "./site/components/ngProgress/ngProgress.min.js",
+        "./site/components/angular-toastr/angular-toastr.tpls.min.js",
+        "./site/components/daterangepicker/daterangepicker.js",
+        "./site/components/select/customSelect.js",
+        "./site/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js",
+        "./node_modules/xlsx-style/dist/xlsx.core.min.js",
+    ];
 
-    ])
+    return gulp.src(filesExist(files))
         .pipe(concat("vendors.js"))
         .pipe(gulp.dest("./dist/"))
-        .pipe(hashsum({dest: "./dist",json:true, filename: "vendorsjs-hash.json"}))
+        .pipe(hashsum({dest: "./dist", json: true, filename: "vendorsjs-hash.json"}))
         .pipe(livereload());
 });
 
 gulp.task("vendorscss", function() {
-    return gulp.src([
-        "./bower_components/bootstrap/dist/css/bootstrap.min.css"
-        , "./bower_components/font-awesome/css/font-awesome.min.css"
-        , "./site/components/angular-toastr/angular-toastr.min.css"
-        , "./site/components/ngProgress/ngProgress.css"
-        , "./site/components/daterangepicker/daterangepicker-bs3.css"
-        , "./site/components/select/style.css"
-    ])
+    const files = [
+        "./bower_components/bootstrap/dist/css/bootstrap.min.css",
+        "./bower_components/font-awesome/css/font-awesome.min.css",
+        "./site/components/angular-toastr/angular-toastr.min.css",
+        "./site/components/ngProgress/ngProgress.css",
+        "./site/components/daterangepicker/daterangepicker-bs3.css",
+        "./site/components/select/style.css",
+    ];
+
+    return gulp.src(filesExist(files))
         .pipe(concat("vendors.css"))
-        .pipe(replace(/..\/fonts\//g,"/bower_components/font-awesome/fonts/"))
+        .pipe(replace(/..\/fonts\//g, "/bower_components/font-awesome/fonts/"))
         .pipe(gulp.dest("./dist/"))
         .pipe(hashsum({dest: "./dist", json: true, filename: "vendorscss-hash.json"}))
         .pipe(livereload());
@@ -54,51 +58,49 @@ gulp.task("vendorscss", function() {
 
 gulp.task("globaljs", function() {
     return gulp.src([
-          "./site/modules/module.global.js"
-        , "./site/components/timeseries/module.js"
-        , "./site/components/barchart/module.js"
-        , "./site/components/toggle/module.js"
-        , "./site/components/filterlist/module.js"
-        , "./site/components/filterlist/moduleajax.js"
-        , "./site/components/googleMap/module.js"
-        , "./site/components/daterangepicker/module.js"
-        , "./site/components/ngEnter/module.js"
-        , "./site/components/dialog/module.js"
-        , "./site/components/uploader/module.js"
-        , "./site/components/gallery/module.js"
+          "./site/modules/module.global.js",
+        "./site/components/timeseries/module.js",
+        "./site/components/barchart/module.js",
+        "./site/components/toggle/module.js",
+        "./site/components/filterlist/module.js",
+        "./site/components/filterlist/moduleajax.js",
+        "./site/components/googleMap/module.js",
+        "./site/components/daterangepicker/module.js",
+        "./site/components/ngEnter/module.js",
+        "./site/components/dialog/module.js",
+        "./site/components/uploader/module.js",
+        "./site/components/gallery/module.js",
 
-        , "./site/services/authService.js"
-        , "./site/services/propertyService.js"
-        , "./site/services/amenityService.js"
-        , "./site/services/keenService.js"
-        , "./site/services/cookieSettingsService.js"
-        , "./site/services/progressService.js"
-        , "./site/services/auditService.js"
-        , "./site/services/reportingService.js"
-        , "./site/services/saveReportService.js"
-        , "./site/services/urlService.js"
-        , "./site/services/gridService.js"
-        , "./site/services/userService.js"
-        , "./site/services/organizationsService.js"
-        , "./site/services/propertyUsersService.js"
-        , "./site/services/mediaService.js"
-        , "./site/services/approvedListsService.js"
+        "./site/services/authService.js",
+        "./site/services/propertyService.js",
+        "./site/services/amenityService.js",
+        "./site/services/keenService.js",
+        "./site/services/cookieSettingsService.js",
+        "./site/services/progressService.js",
+        "./site/services/auditService.js",
+        "./site/services/reportingService.js",
+        "./site/services/saveReportService.js",
+        "./site/services/urlService.js",
+        "./site/services/gridService.js",
+        "./site/services/userService.js",
+        "./site/services/organizationsService.js",
+        "./site/services/propertyUsersService.js",
+        "./site/services/mediaService.js",
+        "./site/services/approvedListsService.js",
 
-        , "./site/components/propertyProfile/coverPage.js"
-        , "./site/components/propertyProfile/profile.js"
+        "./site/components/propertyProfile/coverPage.js",
+        "./site/components/propertyProfile/profile.js",
+        "./site/components/propertyProfile/about.js",
+        "./site/components/propertyProfile/fees.js",
+        "./site/components/propertyProfile/amenities.js",
+        "./site/components/propertyProfile/floorplans.js",
+        "./site/components/propertyProfile/tableView.js",
+        "./site/components/propertyProfile/comps.js",
 
-        , "./site/components/propertyProfile/about.js"
-        , "./site/components/propertyProfile/fees.js"
-        , "./site/components/propertyProfile/amenities.js"
-        , "./site/components/propertyProfile/floorplans.js"
-        , "./site/components/propertyProfile/tableView.js"
-        , "./site/components/propertyProfile/comps.js"
+        "./site/components/jstimezonedetect/jstz.min.js",
 
-        , "./site/components/jstimezonedetect/jstz.min.js"
-
-        , "./site/app/rootController.js"
-        , "./site/app/marketSurvey/marketSurveyController.js",
-
+        "./site/app/rootController.js",
+        "./site/app/marketSurvey/marketSurveyController.js",
 
         "./site/components/reports/communityAmenities.js",
         "./site/components/reports/locationAmenities.js",
@@ -120,27 +122,30 @@ gulp.task("globaljs", function() {
 });
 
 gulp.task("globalcss", function() {
+    const cssFiles = [
+        "./site/app/global.css",
+        "./site/app/login/loggedout.css",
+        "./site/css/navs.css",
+        "./site/css/grids.css",
+        "./site/css/tabs.css",
+        "./site/css/forms.css",
+        "./site/css/icons.css",
+        "./site/css/spacing.css",
+        "./site/components/toggle/style.css",
+        "./site/components/filterlist/filterlist.css",
+        "./site/components/reports/reporting.css",
+        "./site/components/uploader/styles.css",
+        "./site/app/updateprofile/updateProfile.css",
+        "./site/app/contact/contact.css",
+    ];
 
-    var cssStream = gulp.src([
-        , "./site/app/global.css"
-        , "./site/app/login/loggedout.css"
-        , "./site/css/navs.css"
-        , "./site/css/grids.css"
-        , "./site/css/tabs.css"
-        , "./site/css/forms.css"
-        , "./site/css/icons.css"
-        , "./site/css/spacing.css"
-        , "./site/components/toggle/style.css"
-        , "./site/components/filterlist/filterlist.css"
-        , "./site/components/reports/reporting.css"
-        , "./site/components/uploader/styles.css"
-        , "./site/app/updateprofile/updateProfile.css"
-        , "./site/app/contact/contact.css"
-    ]);
+    const cssStream = gulp.src(filesExist(cssFiles));
 
-    var sassStream = gulp.src([
+    const sassFiles = [
         "./site/components/gallery/styles.scss",
-    ]).pipe(sass().on("error", sass.logError));
+    ];
+
+    const sassStream = gulp.src(filesExist(sassFiles)).pipe(sass().on("error", sass.logError));
 
     return merge(cssStream, sassStream)
         .pipe(concat("global.css"))

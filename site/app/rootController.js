@@ -12,19 +12,19 @@ angular.module("biradix.global").controller("rootController",
         var loc = gAPI.toLowerCase();
 
         if (loc.indexOf('//localhost') > -1) {
-            $scope.env = "This is LOCAL";
+            $scope.env = "This is API-LOCAL";
         }
         else
         if (loc.indexOf('//api-qa.biradix.com') > -1) {
-            $scope.env = "This is QA";
+            $scope.env = "This is API-QA";
         }
         else
         if (loc.indexOf('//biradixapi-qa-pr-') > -1) {
-            $scope.env = "This is PR";
+            $scope.env = "This is API-PR-" + loc.match("pr-([0-9]+).")[1];
         }
         else
         if (loc.indexOf('//biradixapi-integration') > -1) {
-            $scope.env = "This is INT";
+            $scope.env = "This is API-INT";
         }
 
         $rootScope.apiVersion = null;

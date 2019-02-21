@@ -162,7 +162,7 @@
                         <span ng-if="row.lastyearnersqftpercent === ''">&nbsp;&nbsp;</span>
                     </td>
                     <td ng-if="show.last_updated" style="text-align:right">
-                        <span ng-class="{'danger':row.tier == 'danger'}">{{row.date}}</span>
+                        <span ng-class="{'danger':row.tier === 'danger', 'warning': row.tier === 'warning'}">{{row.date}}</span>
                     </td>
                 </tr>
                 <tr ng-repeat-end ng-if="false"></tr>
