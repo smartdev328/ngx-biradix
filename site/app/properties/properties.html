@@ -297,7 +297,7 @@
                                                                                                                   uib-popover="Please contact support to increase your limit."
                             ><span class="fa fa-copy fa-fw"></span> Create Custom Copy</a></li>
                             <li class="dropdown-header" ng-if="me.permissions.indexOf('Admin') > -1">BI:Radix Admin</li>
-                            <li><a href ng-click="PMSintegration(row)" style="text-decoration:none"><span class="fa fa-cloud-download"></span> PMS Integration</a></li>
+                            <!--<li><a href ng-click="PMSintegration(row)" style="text-decoration:none"><span class="fa fa-cloud-download"></span> PMS Integration</a></li>-->
                             <li ng-if="!row.isCustom && me.permissions.indexOf('Properties/Deactivate') > -1 && !row.active"><a href ng-click="toggleActive(row)" style="text-decoration:none"><span class="fa fa-check fa-fw"></span> Activate</a></li>
                             <li ng-if="!row.isCustom && me.permissions.indexOf('Properties/Deactivate') > -1 && row.active"><a href ng-click="toggleActive(row)"  style="text-decoration:none"><span class="fa fa-minus fa-fw"></span> De-activate</a></li>
                             <li ng-if="me.permissions.indexOf('Admin') > -1"><a href="/#history?property={{row._id}}" target="_blank"><span class="fa fa-history fa-fw"></span> View Activity</a></li>
