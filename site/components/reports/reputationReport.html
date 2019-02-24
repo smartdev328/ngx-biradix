@@ -91,9 +91,9 @@
             </td>
             <td>
                 <div class="inline-block">
-                    <p ng-if="row.facebook_rating" class="facebook-ratings">{{row.facebook_rating}}</p>
+                    <p ng-if="!row.facebook_url && row.facebook_rating" class="facebook-ratings">{{row.facebook_rating}}</p>
+                    <A ng-if="row.facebook_url && row.facebook_rating" href="{{row.facebook_url}}" target="_blank"><p class="facebook-ratings">{{row.facebook_rating}}</p></A>
                 </div>
-                <!-- {{row.facebook_rating === undefined || row.facebook_rating === null ? "-" : (row.facebook_rating.toFixed(1))}} -->
                 <p class="inline-block" ng-if="row.facebook_rating" >{{row.facebook_rating === undefined || row.facebook_rating === null ? "" : row.facebook_count}} People</p>
             </td>
         </tr>
