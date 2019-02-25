@@ -37,7 +37,7 @@ angular.module("biradix.global").controller("rootController",
                 $(".apiError").hide();
                 $scope.ready();
             }, function(error) {
-                $scope.apiError = "Pretend you didn't see this! We are having an issue connecting to... ourselves.<br> Please wait while we retry... or <A href='javascript:location.reload();'>click here</A> to refresh";
+                $scope.apiError = "Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh";
                 window.setTimeout($scope.loadOrg, 10000);
                 $(".apiError").show();
             });
@@ -391,7 +391,7 @@ angular.module("biradix.global").controller("rootController",
 
             }, function (err) {
                 $rootScope.me.settings.hideUnlinked = !$rootScope.me.settings.hideUnlinked;
-                toastr.error('Unable to perform action. Please contact an administrator');
+                toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                 ngProgress.complete();
             });
 

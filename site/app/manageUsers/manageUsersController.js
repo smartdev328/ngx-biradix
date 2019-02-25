@@ -145,6 +145,7 @@ define([
                     $rootScope.logoff();
                     return;
                 }
+                $scope.apiError = true;
                 $scope.localLoading = true;
             });
         }

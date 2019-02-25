@@ -58,7 +58,7 @@ define([
             var newHash = d.selectedStartDate.format("MMDDYYYY") + d.selectedEndDate.format("MMDDYYYY")
             if(oldHash == newHash) return;
 
-            $cookieSettingsService.saveDaterange($scope.settings.daterange)
+            $cookieSettingsService.saveDaterange($scope.settings.daterange);
             $scope.loadProperty($scope.selectedProperty._id);
         }, true);
 
@@ -186,8 +186,8 @@ define([
                         return;
                     }
 
-                    toastr.error('Unable to access the system at this time. Please contact an administrator');
                     $scope.localLoading = true;
+                    $scope.apiError = true;
                 });
             }
         });

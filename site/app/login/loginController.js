@@ -57,7 +57,7 @@ define([
                     }
             },
             function(errors) {
-                toastr.error('Unable to access the system as this time. Please contact an administrator');
+                toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this alert. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                 $scope.localLoading = false;
             });
         }

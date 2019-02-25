@@ -479,7 +479,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         }
                     }, function (err) {
                         $("button.contact-submit").prop('disabled', false);
-                        toastr.error('Unable to perform action. Please contact an administrator');
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                         ngProgress.complete();
                     })
                 }
@@ -995,7 +995,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         }
                     }, function (err) {
                         $("button.contact-submit").prop('disabled', false);
-                        toastr.error('Unable to perform action. Please contact an administrator');
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                         ngProgress.complete();
                     });
                 } else {
@@ -1019,7 +1019,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
             var surveyError = function (err) {
                 $("button.contact-submit").prop('disabled', false);
-                toastr.error('Unable to perform action. Please contact an administrator');
+                toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                 ngProgress.complete();
             };
 

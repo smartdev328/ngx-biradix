@@ -3,10 +3,13 @@
 </h2>
 
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading || apiError" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div ng-show="localLoading">
+ <div ng-show="apiError" class="apiError blink_me" style="text-align:center">
+    <p>Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh"</p>
+ </div>
+<div ng-show="localLoading && !apiError">
 
     <div class="btn-group action_dropdown pull-left">
         <button type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Add User" ng-click="edit()">
@@ -127,45 +130,45 @@
 
     <div class="maingrid wrapper">
         <div class="header"></div>
-        <table class="table table-condensed table-striped table-hover">
+        <table class="table table-condensed table-striped hidden-arrows table-hover">
             <tbody>
             <tr class="thead">
                 <th ng-show="show.rownumber">#</th>
                 <th ng-show="show.date" class="sortable" ng-click="toggleSort('date')">
                     <div class="pull-left">Date</div>
-                    <div class="pull-right" ng-show="sort.date == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-right" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-right" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.date == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
                 </th>
                 <th ng-show="show.name" class="sortable" ng-click="toggleSort('name')">
                     <div class="pull-left">Name</div>
-                    <div class="pull-right" ng-show="sort.name == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-right" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-right" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.name == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.name === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.name === false"><i class="fa fa-sort-up"></i></div>
                 </th>
                 <th ng-show="show.email" class="sortable" ng-click="toggleSort('email')">
                     <div class="pull-left">Email</div>
-                    <div class="pull-right" ng-show="sort.email == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-right" ng-show="sort.email === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-right" ng-show="sort.email === false"><i class="fa fa-sort-up"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.email == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.email === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.email === false"><i class="fa fa-sort-up"></i></div>
                 </th>
                 <th ng-show="show.role" class="sortable" ng-click="toggleSort('role')">
                     <div class="pull-left">Role</div>
-                    <div class="pull-right" ng-show="sort.role == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-right" ng-show="sort.role === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-right" ng-show="sort.role === false"><i class="fa fa-sort-up"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.role == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.role === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.role === false"><i class="fa fa-sort-up"></i></div>
                 </th>
                 <th ng-show="show.company" class="sortable" ng-click="toggleSort('company')" style="min-width:92px">
                     <div class="pull-left">Company</div>
-                    <div class="pull-right" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-right" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-right" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
                 </th>
                 <th ng-show="show.customPropertiesLimit" class="sortable" ng-click="toggleSort('customPropertiesLimit')" style="min-width:92px">
                     <div class="pull-left">Custom Prop.</div>
-                    <div class="pull-right" ng-show="sort.customPropertiesLimit == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-right" ng-show="sort.customPropertiesLimit === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-right" ng-show="sort.customPropertiesLimit === false"><i class="fa fa-sort-up"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.customPropertiesLimit == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.customPropertiesLimit === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-left ml-10" ng-show="sort.customPropertiesLimit === false"><i class="fa fa-sort-up"></i></div>
                 </th>
                 <th ng-show="show.active" class="center">
                     Active

@@ -133,7 +133,7 @@ define([
                     $scope.savedReports = response.data.reports;
                 },
                 function (error) {
-                    toastr.error("Unable to load saved reports. Please contact the administrator.");
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                 });
         }
 

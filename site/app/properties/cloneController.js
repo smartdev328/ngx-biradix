@@ -32,7 +32,7 @@ define([
             },
             function() {
                 $("button.contact-submit").prop("disabled", false);
-                toastr.error("Unable to update property. Please contact the administrator.");
+                toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                 ngProgress.reset();
             });
         };

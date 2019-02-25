@@ -221,7 +221,7 @@ define([
                     $rootScope.logoff();
                     return;
                 }
-
+                $scope.apiError = true;
                 $scope.localLoading = true;
             })
         }
@@ -407,7 +407,7 @@ define([
                         ngProgress.reset();
                     },
                     function (error) {
-                        toastr.error("Unable to update property. Please contact the administrator.");
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                         ngProgress.reset();
                     });
 
@@ -438,7 +438,7 @@ define([
                         ngProgress.reset();
                     },
                     function (error) {
-                        toastr.error("Unable to update property. Please contact the administrator.");
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                         ngProgress.reset();
                     });
 
@@ -636,11 +636,11 @@ define([
 
         $scope.PMSintegration = function(property) {
             require([
-                '/app/properties/PMSintegrationController.js'
+                '/app/properties/pmsIntegrationController.js'
             ], function () {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/app/properties/PMSintegration.html?bust=' + version,
-                    controller: 'PMSintegrationController',
+                    templateUrl: '/app/properties/pmsIntegration.html?bust=' + version,
+                    controller: 'pmsIntegrationController',
                     size: "md",
                     keyboard: false,
                     backdrop: 'static',

@@ -35,13 +35,16 @@
         }
     }
 </style>
-<div ng-show="localLoading && initialLength == 0" style="text-align:center">
+<div ng-show="localLoading && initialLength == 0 && !apiError" style="text-align:center">
     <div class="alert alert-warning" role="alert"><b>This account does not currently have access to any properties. Please ask the account administrator to add properties.</b></div>
 
 </div>
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading || apiError" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
+ <div ng-show="apiError" class="apiError blink_me" style="text-align:center">
+    <p>Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh"</p>
+ </div>
 <div class="row" ng-show="localLoading && initialLength > 0">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
@@ -255,7 +258,7 @@
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <span class="pull-left">Competitors</span>
+                <span class="pull-left">Competitors</span> 
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
                     <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:245px;margin-top:5px">

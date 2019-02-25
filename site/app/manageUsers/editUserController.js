@@ -197,7 +197,7 @@ define([
                             }
                         },
                         function (error) {
-                            toastr.error("Unable to create. Please contact the administrator.");
+                            toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this alert. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
                             $scope.loading = false;
                         });
                 }
