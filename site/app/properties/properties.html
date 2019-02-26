@@ -151,78 +151,78 @@
             <th ng-show="show.rownumber">#</th>
             <th ng-show="show.date" class="sortable" ng-click="toggleSort('date')">
                 <div class="pull-left">Date</div>
-                <div class="pull-left ml-10" ng-show="sort.date == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-left" ng-show="sort.date == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-left" ng-show="sort.date === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-left" ng-show="sort.date === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.name" class="sortable" ng-click="toggleSort('name_lower')">
                 <div class="pull-left">Name</div>
-                <div class="pull-left ml-10" ng-show="sort.name_lower == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.name_lower === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.name_lower === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-left" ng-show="sort.name_lower == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-left" ng-show="sort.name_lower === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-left" ng-show="sort.name_lower === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.address" class="sortable" ng-click="toggleSort('address')">
                 <div class="pull-left">Address</div>
-                <div class="pull-left ml-10" ng-show="sort.address == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.address === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.address === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-left" ng-show="sort.address == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-left" ng-show="sort.address === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-left" ng-show="sort.address === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.city" class="sortable" ng-click="toggleSort('city')">
                 <div class="pull-left">City</div>
-                <div class="pull-left ml-10" ng-show="sort.city == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.city === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.city === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-left" ng-show="sort.city == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-left" ng-show="sort.city === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-left" ng-show="sort.city === false"><i class="fa fa-sort-up"></i></div>
             </th>
-            <th ng-show="show.state" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('state')">
+            <th ng-show="show.state" class="sortable" ng-click="toggleSort('state')">
                 <div class="pull-left">State</div>
-                <div class="pull-left ml-10" ng-show="sort.state == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.state === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.state === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-left" ng-show="sort.state == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-left" ng-show="sort.state === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-left" ng-show="sort.state === false"><i class="fa fa-sort-up"></i></div>
             </th>
             <th ng-show="show.zip" class="sortable" ng-click="toggleSort('zip')">
-                <div class="pull-left">Zip</div>
-                <div class="pull-left ml-10" ng-show="sort.zip == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.zip === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.zip === false"><i class="fa fa-sort-up"></i></div>
+                <div style="float:right;" ng-show="sort.zip == null"><i class="fa fa-sort"></i></div>
+                <div style="float:right;" ng-show="sort.zip === true"><i class="fa fa-sort-down"></i></div>
+                <div style="float:right;" ng-show="sort.zip === false"><i class="fa fa-sort-up"></i></div>
+                <div style="float:right;">Zip</div>
             </th>
-            <th ng-show="show.totalUnits" style="cursor:pointer;min-width:65px;width:65px" ng-click="toggleSort('totalUnits')">
-                <div class="pull-left">Units</div>
-                <div class="pull-left ml-10" ng-show="sort.totalUnits == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.totalUnits === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.totalUnits === false"><i class="fa fa-sort-up"></i></div>
+            <th ng-show="show.totalUnits" class="sortable" ng-click="toggleSort('totalUnits')">
+                <div style="float:right;" ng-show="sort.totalUnits == null"><i class="fa fa-sort"></i></div>
+                <div style="float:right;" ng-show="sort.totalUnits === true"><i class="fa fa-sort-down"></i></div>
+                <div style="float:right;" ng-show="sort.totalUnits === false"><i class="fa fa-sort-up"></i></div>
+                <div style="float:right;">Units</div>
             </th>
-            <th ng-show="show.occupancy" style="cursor:pointer;min-width:58px;width:58px" ng-click="toggleSort('occupancy')">
-                <div class="pull-left">Occ</div>
-                <div class="pull-left ml-10" ng-show="sort.occupancy == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
+            <th ng-show="show.occupancy" class="sortable" ng-click="toggleSort('occupancy')">
+                <div style="float:right;" ng-show="sort.occupancy == null"><i class="fa fa-sort"></i></div>
+                <div style="float:right;" ng-show="sort.occupancy === true"><i class="fa fa-sort-down"></i></div>
+                <div style="float:right;" ng-show="sort.occupancy === false"><i class="fa fa-sort-up"></i></div>
+                <div style="float:right;">Occ</div>
             </th>
-            <th ng-show="show.ner" style="cursor:pointer;min-width:60px;width:60px" ng-click="toggleSort('ner')">
-                <div class="pull-left">NER</div>
-                <div class="pull-left ml-10" ng-show="sort.ner == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
+            <th ng-show="show.ner" class="sortable" ng-click="toggleSort('ner')">
+                <div style="float:right;" ng-show="sort.ner == null"><i class="fa fa-sort"></i></div>
+                <div style="float:right;" ng-show="sort.ner === true"><i class="fa fa-sort-down"></i></div>
+                <div style="float:right;" ng-show="sort.ner === false"><i class="fa fa-sort-up"></i></div>
+                <div style="float:right;">NER</div>
             </th>
-                <th ng-show="show.lastUpdated" style="cursor:pointer;min-width:108px;width:108px" ng-click="toggleSort('lastUpdated')">
-                    <div class="pull-left">Last Survey</div>
-                    <div class="pull-left ml-10" ng-show="sort.lastUpdated == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-left ml-10" ng-show="sort.lastUpdated === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-left ml-10" ng-show="sort.lastUpdated === false"><i class="fa fa-sort-up"></i></div>
+                <th ng-show="show.lastUpdated" class="sortable" ng-click="toggleSort('lastUpdated')">
+                    <div style="float:right;" ng-show="sort.lastUpdated == null"><i class="fa fa-sort"></i></div>
+                    <div style="float:right;" ng-show="sort.lastUpdated === true"><i class="fa fa-sort-down"></i></div>
+                    <div style="float:right;" ng-show="sort.lastUpdated === false"><i class="fa fa-sort-up"></i></div>
+                    <div style="float:right;">Last Survey</div>
                 </th>
             <th ng-show="show.active" class="center">
                 Active
             </th>
-            <th ng-show="show.company" style="cursor:pointer;min-width:94px;width:94px" ng-click="toggleSort('company')">
+            <th ng-show="show.company" class="sortable" ng-click="toggleSort('company')">
                 <div class="pull-left">Company</div>
-                <div class="pull-left ml-10" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
-                <div class="pull-left ml-10" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
+                <div class="pull-left" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
+                <div class="pull-left" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
+                <div class="pull-left" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
-                <th ng-show="show.owner" style="cursor:pointer;min-width:75px;width:75px" ng-click="toggleSort('owner')">
+                <th ng-show="show.owner" class="sortable" ng-click="toggleSort('owner')">
                     <div class="pull-left">Owner</div>
-                    <div class="pull-left ml-10" ng-show="sort.owner == null"><i class="fa fa-sort"></i></div>
-                    <div class="pull-left ml-10" ng-show="sort.owner === true"><i class="fa fa-sort-down"></i></div>
-                    <div class="pull-left ml-10" ng-show="sort.owner === false"><i class="fa fa-sort-up"></i></div>
+                    <div class="pull-left" ng-show="sort.owner == null"><i class="fa fa-sort"></i></div>
+                    <div class="pull-left" ng-show="sort.owner === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="pull-left" ng-show="sort.owner === false"><i class="fa fa-sort-up"></i></div>
                 </th>
             <th ng-show="show.tools" class="center"></th>
         </tr>
@@ -263,11 +263,11 @@
             <td ng-show="show.address">{{row.address}}</td>
             <td ng-show="show.city">{{row.city}}</td>
             <td ng-show="show.state">{{row.state}}</td>
-            <td ng-show="show.zip">{{row.zip}}</td>
-            <td ng-show="show.totalUnits" style="text-align:center">{{row.totalUnits == null ? '-' : row.totalUnits}}</td>
-            <td ng-show="show.occupancy" style="text-align:right">{{row.survey.occupancy == null ? '-' :  row.survey.occupancy + '%'}}</td>
-            <td ng-show="show.ner" style="text-align:right">{{row.survey.ner == null ? '-' : '$' + row.survey.ner }}</td>
-            <td ng-show="show.lastUpdated" style="text-align:right">{{row.survey.date == null ? 'Never' : row.survey.date | date : 'shortDate' }}</td>
+            <td ng-show="show.zip" class="text-right"><span class="pr-8">{{row.zip}}</span></td>
+            <td ng-show="show.totalUnits" class="text-right"><span class="pr-8">{{row.totalUnits == null ? '-' : row.totalUnits}}</span></td>
+            <td ng-show="show.occupancy" class="text-right"><span class="pr-8">{{row.survey.occupancy == null ? '-' :  row.survey.occupancy + '%'}}</span></td>
+            <td ng-show="show.ner" class="text-right"><span class="pr-8">{{row.survey.ner == null ? '-' : '$' + row.survey.ner }}</span></td>
+            <td ng-show="show.lastUpdated" class="text-right"><span class="pr-8">{{row.survey.date == null ? 'Never' : row.survey.date | date : 'shortDate' }}</span></td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x" ng-show="row.active"></span>
                 <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ddd"></span>
@@ -366,11 +366,11 @@
             <td ng-show="show.address">{{comp.address}}</td>
             <td ng-show="show.city">{{comp.city}}</td>
             <td ng-show="show.state">{{comp.state}}</td>
-            <td ng-show="show.zip">{{comp.zip}}</td>
-            <td ng-show="show.totalUnits" style="text-align:center">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</td>
-            <td ng-show="show.occupancy" style="text-align:right">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</td>
-            <td ng-show="show.ner" style="text-align:right">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</td>
-            <td ng-show="show.lastUpdated" style="text-align:right">{{comp.survey.date == null ? 'Never' : comp.survey.date | date : 'shortDate' }}</td>
+            <td ng-show="show.zip" class="text-right"><span class="pr-8">{{row.zip}}</span></td>
+            <td ng-show="show.totalUnits" class="text-right"><span class="pr-8">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</span></td>
+            <td ng-show="show.occupancy" class="text-right"><span class="pr-8">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</span></td>
+            <td ng-show="show.ner" class="text-right"><span class="pr-8">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</span></td>
+            <td ng-show="show.lastUpdated" class="text-right"><span class="pr-8">{{comp.survey.date == null ? 'Never' : comp.survey.date | date : 'shortDate' }}</span></td>
             <td ng-show="show.active" class="center">
                 <span class="fa fa-check fa-2x" ng-show="comp.active"></span>
                 <span class="fa fa-times fa-2x" ng-show="!comp.active" style="color:#ddd"></span>
