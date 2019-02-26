@@ -647,6 +647,35 @@ define([
                 }
             }
 
+        $scope.yelpSearch = function() {
+            require([
+                "/app/propertyWizard/yelpSearchController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/yelpSearch.html?bust=" + version,
+                    controller: "yelpSearchController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        property: function() {
+                            return $scope.property;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function(yelp) {
+                    $scope.property.reputation = $scope.property.reputation || {};
+                    $scope.property.reputation.yelp = {
+                        id: yelp.id, url: yelp.url
+                    };
+                }, function() {
+                    // Cancel
+
+                });
+            });
+        };
+
         $scope.bulkFloorplans = function() {
             require([
                 "/app/propertyWizard/bulkFloorplansController.js",
@@ -906,7 +935,6 @@ define([
             $scope.gallery_options = {show: false, allowAdmin : true};
 
             $scope.upload = function() {
-
                 var modalInstance = $uibModal.open({
                     template: '<div class="modal-header">\n' +
                     '<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>\n' +

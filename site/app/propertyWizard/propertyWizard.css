@@ -1,0 +1,21 @@
+.propertyWizard .property-info .row {
+    margin-left:-15px;
+    margin-right:-15px;
+}
+
+.propertyWizard .property-info .col-sm-6, .property-info .col-sm-5, .property-info .col-md-4 {
+    margin-bottom:5px !important;
+}
+
+.propertyWizard .required {
+    color:red
+}
+
+.propertyWizard .nav.nav-pills>li>a {
+    padding: 10px 12px;
+}
+
+.propertyWizard .toggle-icon {
+    cursor:pointer;
+    font-size:14px;
+}
