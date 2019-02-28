@@ -59,10 +59,12 @@
                     <img src="/images/logos/google.png" style="height:20px;">
                 </td>
                 <td>
-                    -
+                    <a target="_blank" href="{{property.reputation.google.url}}" ng-if="property.reputation.google.id"><i class="fa fa-external-link"></i></a>
+                    <span ng-if="!property.reputation.google.id">-</span>
                 </td>
                 <td style="vertical-align: middle !important;"  nowrap>
-                    <i class="fa fa-search fa-fw" style="cursor: pointer" uib-tooltip="Search"></i>
+                    <i class="fa fa-search fa-fw" style="cursor: pointer" uib-tooltip="Search" ng-click="googleSearch()"></i>
+                    <i class="fa fa-minus fa-fw" style="cursor: pointer" uib-tooltip="Remove" ng-if="property.reputation.google.id" ng-click="property.reputation.google = undefined"></i>
                 </td>
             </tr>
             <tr>

@@ -82,7 +82,7 @@
 
             </td>
             <td>
-                {{row.google_rating === undefined || row.google_rating === null ? "-" : (row.google_rating.toFixed(1))}}
+                {{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}
                 <span class="google-stars" aria-label="Rated {{row.google_rating}} out of 5,">
                     <span ng-if="!row.google_url" style="width:{{ row.google_rating * 13 }}px;"></span>
                     <A ng-if="row.google_url" href="{{row.google_url}}" target="_blank"><span style="width:{{ row.google_rating * 13 }}px;"></span></A>

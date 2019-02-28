@@ -676,6 +676,35 @@ define([
             });
         };
 
+        $scope.googleSearch = function() {
+            require([
+                "/app/propertyWizard/googleSearchController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/googleSearch.html?bust=" + version,
+                    controller: "googleSearchController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        property: function() {
+                            return $scope.property;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function(google) {
+                    $scope.property.reputation = $scope.property.reputation || {};
+                    $scope.property.reputation.google = {
+                        id: google.id, url: google.url
+                    };
+                }, function() {
+                    // Cancel
+
+                });
+            });
+        };
+
         $scope.bulkFloorplans = function() {
             require([
                 "/app/propertyWizard/bulkFloorplansController.js",
