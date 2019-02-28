@@ -407,7 +407,7 @@ define([
                         ngProgress.reset();
                     },
                     function (error) {
-                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                         ngProgress.reset();
                     });
 
@@ -438,7 +438,7 @@ define([
                         ngProgress.reset();
                     },
                     function (error) {
-                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this screen. <br> Very sorry for the trouble. <a href='javascript:location.reload();'>click here</a> to refresh");
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                         ngProgress.reset();
                     });
 
