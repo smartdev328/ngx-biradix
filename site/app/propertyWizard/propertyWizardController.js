@@ -455,9 +455,11 @@ define([
                 }
 
                 if (place.address_components) {
-                    $scope.property.reputation = $scope.property.reputation || {};
-                    $scope.property.reputation.google = {
-                        id: place.place_id, url: "https://www.google.com/maps/place/?q=place_id:" + place.place_id
+                    if (place.place_id) {
+                        $scope.property.reputation = $scope.property.reputation || {};
+                        $scope.property.reputation.google = {
+                            id: place.place_id, url: "https://www.google.com/maps/place/?q=place_id:" + place.place_id
+                        };
                     }
                     var state = "";
                     $scope.property.address = "";
