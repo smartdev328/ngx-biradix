@@ -285,6 +285,7 @@ define([
 
                     }
 
+                    $scope.apiError = true;
                     $scope.localLoading = true;
                 });
             }

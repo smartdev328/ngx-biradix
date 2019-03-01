@@ -2,10 +2,13 @@
     <hr>
 </h2>
 
-<div ng-show="!localLoading || apiError" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
- <div ng-show="apiError" class="apiError text-center mb-40">
+<div ng-show="apiError" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/api-down-icon.png" style="width:100px">
+</div>
+ <div ng-show="apiError" class="apiError mb-40 text-center">
     <p>Pretend you didn't see this! Something went wrong and we can only show you this message. <br> Sorry for the trouble. Please try <a href='javascript:location.reload();'>refreshing</a> the page</p>
  </div>
 <div ng-show="localLoading && !apiError">

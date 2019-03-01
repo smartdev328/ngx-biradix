@@ -10,7 +10,7 @@
     <div class="col-sm-6 col-xs-12">
         <h3 class="mainheader">Dashboard</h3>
     </div>
-    <div class="col-sm-6 col-xs-12 hidden-print" ng-if="property">
+    <div class="col-sm-6 col-xs-12 hidden-print" ng-if="property" ng-show="!apiError">
         <div class="btn-group pull-right">
             <button uib-tooltip="Print/Export" type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" id = "export">
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
@@ -38,13 +38,16 @@
 <div ng-show="localLoading && initialLength == 0 && !apiError" style="text-align:center">
     <div class="alert alert-warning" role="alert"><b>This account does not currently have access to any properties. Please ask the account administrator to add properties.</b></div>
 </div>
-<div ng-show="!localLoading || apiError" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="apiError" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/api-down-icon.png" style="width:100px">
 </div>
  <div ng-show="apiError" class="apiError mb-40 text-center">
     <p>Pretend you didn't see this! Something went wrong and we can only show you this message. <br> Sorry for the trouble. Please try <a href='javascript:location.reload();'>refreshing</a> the page</p>
  </div>
-<div class="row" ng-show="localLoading && initialLength > 0">
+<div class="row" ng-show="localLoading && initialLength > 0 && !apiError">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
             <div class="panel-heading">
