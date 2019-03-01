@@ -1,0 +1,60 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Facebook Search</h2>
+        <hr>
+    </div>
+    <div class="modal-body container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <input type="text" placeholder="Property Name" class="form-control input-sm" ng-model="search.term">
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <input type="text" placeholder="Location" class="form-control input-sm" ng-model="search.location">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" style="text-align: center">
+                <br>
+                <button class="btn btn-primary" id="search_btn" ng-click="run()">Search</button>
+            </div>
+        </div>
+
+        <Br>
+        <div class="alert alert-warning ng-scope" role="alert" ng-if="results && results.length === 0"><b>No results found</b></div>
+
+        <table class="table table-condensed table-striped table-hover" ng-if="results && results.length > 0">
+            <tbody>
+            <tr class="thead">
+                <td>
+                    Name
+                </td>
+                <td>
+                    Address
+                </td>
+                <td>
+                    Link
+                </td>
+                <Td>
+
+                </Td>
+            </tr>
+            <tr ng-repeat="result in results">
+                <td>
+                    {{result.name}}
+                </td>
+                <td>
+                    {{result.address}}
+                </td>
+                <td>
+                    <a href="{{result.url}}" target="_blank"><i class="fa fa-external-link"></i></a>
+                </td>
+
+                <td>
+                    <a href ng-click="use(result)"><i class="fa fa-bullseye" uib-tooltip="Use this result"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

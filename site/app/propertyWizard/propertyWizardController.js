@@ -711,6 +711,35 @@ define([
             });
         };
 
+        $scope.facebookSearch = function() {
+            require([
+                "/app/propertyWizard/facebookSearchController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/facebookSearch.html?bust=" + version,
+                    controller: "facebookSearchController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        property: function() {
+                            return $scope.property;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function(facebook) {
+                    $scope.property.reputation = $scope.property.reputation || {};
+                    $scope.property.reputation.facebook = {
+                        id: facebook.id, url: facebook.url
+                    };
+                }, function() {
+                    // Cancel
+
+                });
+            });
+        };
+
         $scope.bulkFloorplans = function() {
             require([
                 "/app/propertyWizard/bulkFloorplansController.js",

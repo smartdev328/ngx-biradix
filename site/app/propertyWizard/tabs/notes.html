@@ -72,10 +72,12 @@
                     <img src="/images/logos/facebook.png" style="height:20px;">
                 </td>
                 <td>
-                    -
+                    <a target="_blank" href="{{property.reputation.facebook.url}}" ng-if="property.reputation.facebook.id"><i class="fa fa-external-link"></i></a>
+                    <span ng-if="!property.reputation.facebook.id">-</span>
                 </td>
                 <td style="vertical-align: middle !important;"  nowrap>
-                    <i class="fa fa-search fa-fw" style="cursor: pointer" uib-tooltip="Search"></i>
+                    <i class="fa fa-search fa-fw" style="cursor: pointer" uib-tooltip="Search" ng-click="facebookSearch()"></i>
+                    <i class="fa fa-minus fa-fw" style="cursor: pointer" uib-tooltip="Remove" ng-if="property.reputation.facebook.id" ng-click="property.reputation.facebook = undefined"></i>
                 </td>
             </tr>
             </tbody>
