@@ -10,7 +10,7 @@ define([
 
             $scope.search = {
                 term: property.name,
-                location: property.address + ", " + property.city + ", " + property.state.abbreviation + " " + property.zip
+                location: property.state ? property.address + ", " + property.city + ", " + property.state.abbreviation + " " + property.zip : ""
             };
 
             $scope.run = function() {
