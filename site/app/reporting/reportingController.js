@@ -133,6 +133,7 @@ define([
                     $scope.savedReports = response.data.reports;
                 },
                 function (error) {
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
                     toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
         }

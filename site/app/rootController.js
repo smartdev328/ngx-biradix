@@ -37,6 +37,7 @@ angular.module("biradix.global").controller("rootController",
                 $(".apiError").hide();
                 $scope.ready();
             }, function(error) {
+                Raygun.send(new Error("User saw API unavailable error alert/message/page"));
                 $scope.apiError = "Pretend you didn't see this! Something went wrong and we can only show you this message.<br/> Sorry for the trouble. Please try <a href='javascript:location.reload();'>refreshing</a> the page";
                 window.setTimeout($scope.loadOrg, 10000);
                 $(".apiError").show();
@@ -391,6 +392,7 @@ angular.module("biradix.global").controller("rootController",
 
             }, function (err) {
                 $rootScope.me.settings.hideUnlinked = !$rootScope.me.settings.hideUnlinked;
+                Raygun.send(new Error("User saw API unavailable error alert/message/page"));
                 toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 ngProgress.complete();
             });
