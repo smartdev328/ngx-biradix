@@ -10,10 +10,16 @@
 </h2>
 
 <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.splice($index, 1);"><div ng-bind-html="alert.msg | sanitize"></div></alert>
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div ng-show="localLoading">
+<div ng-show="apiError" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/api-down-icon.png" style="width:100px">
+</div>
+ <div ng-show="apiError" class="apiError mb-40 text-center">
+    <p>Pretend you didn't see this! Something went wrong and we can only show you this message. <br> Sorry for the trouble. Please try <a href='javascript:location.reload();'>refreshing</a> the page</p>
+ </div>
+<div ng-show="localLoading && !apiError">
 
     <div class="row">
         <div class="col-xs-6 col-md-3" style="height:55px">

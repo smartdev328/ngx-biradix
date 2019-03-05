@@ -2,7 +2,7 @@
     <div class="col-xs-7 col-sm-7">
         <h2 class="mainheader">Dashboard</h2>
     </div>
-    <div class="col-xs-5 col-sm-5 hidden-print">
+    <div class="col-xs-5 col-sm-5 hidden-print" ng-show="!apiError">
         <button uib-tooltip="Property Survey" type="button" style="margin-right:10px" class="btn btn-primary pull-right" data-toggle="dropdown" aria-expanded="false" ng-click="marketSurvey(selectedProperty._id)">
             <i class="fa fa-edit visible-xs-inline"></i> <span class="hidden-xs">Property Survey</span>
         </button>
@@ -20,14 +20,19 @@
         }
     }
 </style>
-<div ng-show="localLoading && myProperties.length == 0" style="text-align:center">
-    <div class="alert alert-warning" role="alert"><b>This account does not currently have access to any properties. Please contact <A href="#/helpcontactus">Contact Support</A> for more information.</b></div>
-
+<div ng-show="localLoading && myProperties.length == 0 && !apiError" style="text-align:center">
+    <div class="alert alert-warning" role="alert"><b>This account does not currently have access to any properties. Please ask the account administrator to add properties.</b></div>
 </div>
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+<div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div class="row" ng-show="localLoading && myProperties.length > 0">
+<div ng-show="apiError" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/api-down-icon.png" style="width:100px">
+</div>
+ <div ng-show="apiError" class="apiError mb-40 text-center">
+    <p>Pretend you didn't see this! Something went wrong and we can only show you this message. <br> Sorry for the trouble. Please try <a href='javascript:location.reload();'>refreshing</a> the page</p>
+ </div>
+<div class="row" ng-show="localLoading && myProperties.length > 0 && !apiError">
     <div class="col-md-4 col-sm-5 col-lg-3 left-print">
         <div class="panel panel-info">
             <div class="panel-heading">

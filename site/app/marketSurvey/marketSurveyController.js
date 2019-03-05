@@ -479,7 +479,8 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         }
                     }, function (err) {
                         $("button.contact-submit").prop('disabled', false);
-                        toastr.error('Unable to perform action. Please contact an administrator');
+                        Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                         ngProgress.complete();
                     })
                 }
@@ -995,7 +996,8 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         }
                     }, function (err) {
                         $("button.contact-submit").prop('disabled', false);
-                        toastr.error('Unable to perform action. Please contact an administrator');
+                        Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                         ngProgress.complete();
                     });
                 } else {
@@ -1019,7 +1021,8 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
             var surveyError = function (err) {
                 $("button.contact-submit").prop('disabled', false);
-                toastr.error('Unable to perform action. Please contact an administrator');
+                Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 ngProgress.complete();
             };
 

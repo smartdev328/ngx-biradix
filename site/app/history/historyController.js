@@ -119,6 +119,7 @@ define([
             }).then(function(response) {
                 callback($scope.formatUsers(response.data));
             }, function(error) {
+                $scope.apiError = true;
                 callback([]);
             });
         };

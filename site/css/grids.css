@@ -10,6 +10,10 @@
     border-bottom: 1px solid #ccc;
 }
 
+.maingrid > table .inline-block {
+    display:inline-block;
+}
+
 .maingrid > table .thead,
 .sortablegrid .thead
 {
