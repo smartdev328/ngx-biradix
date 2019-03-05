@@ -492,6 +492,22 @@ daterange-picker.dashboard > div {
 
 /** general **/
 
+.red-txt {
+    color:#a94442;
+}
+
+.red-txt:hover, .red-txt:active, .red-txt:focus {
+    color:#843534;
+}
+
+.light-blue-txt {
+    color:#1e90ff;
+}
+
+.light-blue-txt:hover, .light-blue-txt:active, .light-blue-txt:focus {
+    color:#0077ea;
+}
+
 .max-w-800 {
     max-width: 800px;
 }

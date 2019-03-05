@@ -25,59 +25,40 @@
     </div>
 </div>
 <br>
-<b class="panel-heading">Property Integrations (Advanced)</b> <i ng-class="{'toggle-icon': true, 'fa' : true,  'fa-plus-square-o': !integationsOpen, 'fa-minus-square-o' : integationsOpen}" ng-click="integationsOpen = !integationsOpen"></i><Br>
+<div class="mb-20">
+<b class="panel-heading">Property Integrations (Advanced)</b> <i ng-class="{'toggle-icon': true, 'fa' : true,  'fa-plus-square-o': !integationsOpen, 'fa-minus-square-o' : integationsOpen}" ng-click="integationsOpen = !integationsOpen"></i><br></div>
 <div class="row" ng-if="integationsOpen">
     <div class="col-xs-12">
-        <table class="table table-condensed table-striped table-hover">
+        <table class="table table-condensed mb-0">
             <tbody>
-            <tr class="thead">
-                <td>
-                    Provider
-                </td>
-                <td>
-                    Link
-                </td>
-                <td>
-
-                </td>
-            </tr>
             <tr>
                 <td>
                     <img src="/images/logos/yelp.png" style="height:30px;">
                 </td>
-                <td>
-                    <a target="_blank" href="{{property.reputation.yelp.url}}" ng-if="property.reputation.yelp.id"><i class="fa fa-external-link"></i></a>
-                    <span ng-if="!property.reputation.yelp.id">-</span>
-                </td>
-                <td style="vertical-align: middle !important;"  nowrap>
-                    <i class="fa fa-search fa-fw" style="cursor: pointer" uib-tooltip="Search" ng-click="yelpSearch()"></i>
-                    <i class="fa fa-minus fa-fw" style="cursor: pointer" uib-tooltip="Remove" ng-if="property.reputation.yelp.id" ng-click="property.reputation.yelp = undefined"></i>
+                <td class="text-right" style="vertical-align: middle !important;"  nowrap>
+                    <a href="" ng-click="yelpSearch()" ng-if="!property.reputation.yelp.id">Connect</a>
+                    <a class="mr-30 light-blue-txt" target="_blank" href="{{property.reputation.yelp.url}}" ng-if="property.reputation.yelp.id">View Listing</a>
+                    <a href="" class="red-txt" ng-if="property.reputation.yelp.id" ng-click="yelpDisconnect()">Disconnect</a>
                 </td>
             </tr>
             <tr>
                 <td>
                     <img src="/images/logos/google.png" style="height:20px;">
                 </td>
-                <td>
-                    <a target="_blank" href="{{property.reputation.google.url}}" ng-if="property.reputation.google.id"><i class="fa fa-external-link"></i></a>
-                    <span ng-if="!property.reputation.google.id">-</span>
-                </td>
-                <td style="vertical-align: middle !important;"  nowrap>
-                    <i class="fa fa-search fa-fw" style="cursor: pointer" uib-tooltip="Search" ng-click="googleSearch()"></i>
-                    <i class="fa fa-minus fa-fw" style="cursor: pointer" uib-tooltip="Remove" ng-if="property.reputation.google.id" ng-click="property.reputation.google = undefined"></i>
+                <td class="text-right" style="vertical-align: middle !important;"  nowrap>
+                    <a href="" ng-click="googleSearch()" ng-if="!property.reputation.google.id">Connect</a>
+                    <a class="mr-30 light-blue-txt" target="_blank" href="{{property.reputation.google.url}}" ng-if="property.reputation.google.id">View Listing</a>
+                    <a href="" class="red-txt" ng-if="property.reputation.google.id" ng-click="googleDisconnect()">Disconnect</a>
                 </td>
             </tr>
             <tr>
                 <td>
                     <img src="/images/logos/facebook.png" style="height:20px;">
                 </td>
-                <td>
-                    <a target="_blank" href="{{property.reputation.facebook.url}}" ng-if="property.reputation.facebook.id"><i class="fa fa-external-link"></i></a>
-                    <span ng-if="!property.reputation.facebook.id">-</span>
-                </td>
-                <td style="vertical-align: middle !important;"  nowrap>
-                    <i class="fa fa-search fa-fw" style="cursor: pointer" uib-tooltip="Search" ng-click="facebookSearch()"></i>
-                    <i class="fa fa-minus fa-fw" style="cursor: pointer" uib-tooltip="Remove" ng-if="property.reputation.facebook.id" ng-click="property.reputation.facebook = undefined"></i>
+                <td class="text-right" style="vertical-align: middle !important;"  nowrap>
+                    <a href="" ng-if="!property.reputation.facebook.id" ng-click="facebookSearch()">Connect</a>
+                    <a class="mr-30 light-blue-txt" target="_blank" href="{{property.reputation.facebook.url}}" ng-if="property.reputation.facebook.id">View Listing</a>
+                    <a href="" class="red-txt" ng-if="property.reputation.facebook.id" ng-click="facebookDisconnect()">Disconnect</a>
                 </td>
             </tr>
             </tbody>

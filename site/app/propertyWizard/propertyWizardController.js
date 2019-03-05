@@ -1067,6 +1067,28 @@ define([
                     $scope.mediaNext();
                 }
             }
+
+            $scope.yelpDisconnect = function() {
+                $dialog.confirm('You are about to disconnect <b>'+$scope.property.name+'</b> from Yelp. Are you sure you want to do that?', function () {
+                    $scope.property.reputation.yelp = undefined;
+                }, function () {
+                });
+            };
+
+            $scope.facebookDisconnect = function() {
+                $dialog.confirm('You are about to disconnect <b>'+$scope.property.name+'</b> from Facebook. Are you sure you want to do that?', function () {
+                    $scope.property.reputation.facebook = undefined;
+                }, function () {
+                });
+            };
+
+            $scope.googleDisconnect = function() {
+                $dialog.confirm('You are about to disconnect <b>'+$scope.property.name+'</b> from Google. Are you sure you want to do that?', function () {
+                    $scope.property.reputation.google = undefined;
+                }, function () {
+                });
+            };
+
         }]);
 
 });

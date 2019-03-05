@@ -9,6 +9,7 @@ define([
             ga("send", "pageview");
 
             $scope.search = {
+                property: property.name,
                 term: property.name,
                 location: property.state ? property.address + ", " + property.city + ", " + property.state.abbreviation + " " + property.zip : ""
             };
