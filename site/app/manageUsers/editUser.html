@@ -35,35 +35,47 @@
                     </div>
                 </div>
             </div>
-            <div ng-repeat="role in user.roles" ng-if="$index == 0 || user.roles[0].selectedRole.tags[0]== 'PO'">
-            <h3 style="margin-top:10px">Role
+            <div ng-repeat="role in user.roles" ng-if="$index == 0 || user.roles[0].selectedRole.tags[0] == 'PO'">
+                <h3 style="margin-top:10px">Role
 
-                <i class="fa fa-question-circle"
-                   style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   uib-popover-html="rolesTooltip()"
+                    <i class="fa fa-question-circle"
+                       style="cursor:pointer;font-size:14px;padding-left:2px;vertical-align:middle"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       uib-popover-html="rolesTooltip()"
 
-                ></i>
-            </h3>
+                    ></i>
+                </h3>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <select class="form-control input-sm" ng-change="getProps(role)" ng-model="role.selectedRole" ng-options="(item.org ? (item.org + ': ' +item.name) : item.name) for item in roles | filter: allowedRoles($index)"></select>
+                <div class="row" ng-if="me.permissions.indexOf('Admin') > -1">
+                    <div class="col-xs-12">
+                        <select class="form-control input-sm" ng-model="role.selectedOrg" ng-options="org.name for org in orgs"></select>
+                    </div>
                 </div>
-            </div>
 
-            <h3 style="margin-top:10px" ng-if="role.properties && role.properties.length > 0">Properties</h3>
+                <div class="row" ng-if="me.permissions.indexOf('Admin') === -1">
+                    <div class="col-xs-12">
+                        <select class="form-control input-sm" ng-change="getProps(role)" ng-model="role.selectedRole" ng-options="(item.org ? (item.org + ': ' +item.name) : item.name) for item in roles | filter: allowedRoles($index)"></select>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="me.permissions.indexOf('Admin') > -1" style="padding-top:10px">
+                    <div class="col-xs-12">
+                        <select class="form-control input-sm" ng-change="getProps(role)" ng-model="role.selectedRole" ng-options="item.name for item in role.filtered = (roles | filter: allowedRoles($index) | filter: allowedOrgs(role.selectedOrg))"></select>
+                    </div>
+                </div>
+
+                <h3 style="margin-top:10px" ng-if="role.properties && role.properties.length > 0">Properties</h3>
                 <div class="row" ng-if="!role.properties || role.properties.length == 0" style="height:30px">
 
                 </div>
-            <div class="row" ng-if="role.properties && role.properties.length > 0">
-                <div class="col-xs-12">
-                    <filter-list options="role.propertyOptions" items="role.properties" ng-if="!isGuest"></filter-list>
-                    <span ng-if="isGuest" ng-bind-html="listProperties(role.properties)"></span>
+                <div class="row" ng-if="role.properties && role.properties.length > 0">
+                    <div class="col-xs-12">
+                        <filter-list options="role.propertyOptions" items="role.properties" ng-if="!isGuest"></filter-list>
+                        <span ng-if="isGuest" ng-bind-html="listProperties(role.properties)"></span>
+                    </div>
                 </div>
-            </div>
                 <A href ng-click="user.roles.splice($index,1)" ng-if="$index > 0 && $root.me.permissions.indexOf('Admin') > -1"><i class="fa fa-trash" style="color:pink !important;"></i></A>
                 <A href ng-click="addRole()" ng-if="user.roles[0].selectedRole.tags[0]== 'PO' && $root.me.permissions.indexOf('Admin') > -1 && $index == user.roles.length - 1"><i class="fa fa-plus-circle" style="color:green !important;"></i></A>
                 <hr ng-if="$root.me.permissions.indexOf('Admin') > -1 && user.roles.length > 1 && $index < user.roles.length - 1 ">
