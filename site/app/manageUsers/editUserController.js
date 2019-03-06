@@ -15,7 +15,7 @@ define([
         ga("send", "pageview");
 
         $scope.cancel = function() {
-            $uibModalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss("cancel");
         };
 
         $scope.getOrg = function(role) {
@@ -37,14 +37,14 @@ define([
         $scope.originalRoles = [];
         $scope.orgs = [];
 
-        $scope.getDropdowns = function () {
+        $scope.getDropdowns = function() {
             $scope.loading = true;
             var orgExists;
 
             $userService.getRolesToAssign().then(function(response) {
                     $scope.roles = response.data;
 
-                    $scope.orgs = [{name: "Please select an org", id: ""}];
+                    $scope.orgs = [];
                     $scope.roles.forEach(function(r) {
                         orgExists = _.find($scope.orgs, function(o) {
                             return o.id.toString() === r.orgid.toString();
@@ -53,8 +53,14 @@ define([
                         if (!orgExists) {
                             $scope.orgs.push({id: r.orgid, name: r.org});
                         }
-                    })
-                    $scope.roles.unshift({name: 'Please select a role', _id: ""});
+                    });
+
+                    $scope.orgs = _.sortBy($scope.orgs, function(x) {
+                        return x.name;
+                    });
+                    $scope.orgs.unshift({name: "Please select an org", id: ""});
+
+                    $scope.roles.unshift({name: "Please select a role", _id: ""});
                     // Remove guests from non-admins
                     if ($rootScope.me.permissions.indexOf("Admin") === -1) {
                         _.remove($scope.roles, function(r) {
@@ -135,7 +141,7 @@ define([
         $scope.getProps = function(role, first) {
             $scope.loading = true;
             role.properties = [];
-            role.propertyOptions = {hideSearch: true, dropdown: true, dropdownDirection: 'left', searchLabel: "Properties" }
+            role.propertyOptions = {hideSearch: true, dropdown: true, dropdownDirection: "left", searchLabel: "Properties" }
 
             if (!role.selectedRole) {
                 role.selectedRole = role.filtered[0];
@@ -148,12 +154,12 @@ define([
             } else {
 
                 $scope.isGuest = $scope.user.roles[0].selectedRole.name == "Guest";
-                var criteria = {limit: 10000, permission: 'PropertyManage', select:"_id name orgid", active: true};
+                var criteria = {limit: 10000, permission: "PropertyManage", select:"_id name orgid", active: true};
 
                 if ($scope.isGuest) {
                     criteria.ids = $scope.user.roles[0].propertyids;
                     criteria.noorgid = true;
-                    criteria.permission = 'CompManage';
+                    criteria.permission = "CompManage";
                 } else {
                     criteria.orgid = role.selectedRole.orgid;
                 }
@@ -210,7 +216,7 @@ define([
 
             $scope.loading = true;
 
-            if ($rootScope.me.permissions.indexOf('Admin') > -1) {
+            if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.user.defaultRole = $scope.user.roleids[0];
             }
 
@@ -220,7 +226,7 @@ define([
 
                 $userService.create($scope.user).then(function (response) {
                         if (response.data.errors) {
-                            toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                            toastr.error(_.pluck(response.data.errors, "msg").join("<br>"));
                             $scope.loading = false;
                         }
                         else {
@@ -236,7 +242,7 @@ define([
             else {
                 $userService.update($scope.user).then(function (response) {
                         if (response.data.errors) {
-                            toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                            toastr.error(_.pluck(response.data.errors, "msg").join("<br>"));
                             $scope.loading = false;
                         }
                         else {
@@ -269,7 +275,7 @@ define([
                     return true
                 }
 
-                return item.tags[0] == 'PO';
+                return item.tags[0] == "PO";
             };
         };
 
