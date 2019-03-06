@@ -189,19 +189,27 @@ define([
             $scope.user.roleids = [];
             var selectedProperties = [];
             var err = false;
+
+            var done = false;
             $scope.user.roles.forEach(function(r) {
-                if (!r.selectedRole._id) {
-                    err = true;
+                if (!done) {
+                    if (!r.selectedRole._id) {
+                        err = true;
+                    }
+
+                    $scope.user.roleids.push(r.selectedRole._id);
+
+                    if (r.properties) {
+                        selectedProperties = selectedProperties.concat(_.pluck(_.filter(r.properties, function (x) {
+                            return x.selected == true;
+                        }), "id"));
+                    }
+
+                    if (r.selectedRole.tags[0] !== "PO") {
+                        done = true;
+                    }
                 }
-
-
-                $scope.user.roleids.push(r.selectedRole._id);
-
-                if (r.properties) {
-                    selectedProperties = selectedProperties.concat(_.pluck(_.filter(r.properties, function(x) {return x.selected == true}),"id"));
-                }
-
-            })
+            });
 
             $scope.user.roleids = _.uniq($scope.user.roleids);
             selectedProperties = _.uniq(selectedProperties);
