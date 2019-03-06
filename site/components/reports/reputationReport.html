@@ -1,4 +1,5 @@
 <style type="text/css">
+    .google-txt {color:#e7711b;}
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, 
     .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
         vertical-align: middle;
@@ -11,6 +12,7 @@
         height: 13px;
         width: 65px;
         background: url(https://www.google.com/images/nav_logo242.png) no-repeat -100px -260px;
+        margin: 0 5px;
     }
 
     .google-stars span {
@@ -35,6 +37,7 @@
     .inline-block {
         display: inline-block;
     }
+    /*#e7711b*/
 </style>
 <div class="break2 panel panel-info">
     <div class="panel-heading">Reputation Report (beta)
@@ -55,17 +58,17 @@
                         Address
                     </th>
                     <th style="height:45px;font-size:11px">
-                        <img src="/images/logos/yelp.png" style="height:30px;margin-bottom: 3px;">
+                        <img ng-src="/images/logos/yelp.png" style="height:30px;margin-bottom: 3px;">
                     </th>
                     <th style="height:45px;font-size:11px">
-                        <img src="/images/logos/google.png" style="height:20px;margin-top: 5px;">
+                        <img ng-src="/images/logos/google.png" style="height:20px;margin-top: 5px;">
                     </th>
                     <th style="height:45px;font-size:11px">
-                        <img src="/images/logos/facebook.png" style="height:20px;margin-top: 5px;">
+                        <img ng-src="/images/logos/facebook.png" style="height:20px;margin-top: 5px;">
                     </th>
                 </tr>
 
-        <tr ng-repeat-start="row in report" ng-class="{subject: row.isSubject}">
+        <tr ng-repeat-start="row in report">
             <Td>
                 {{row.name}}
             </Td>
@@ -76,25 +79,25 @@
                 <span ng-if="row.yelp_rating === undefined || row.yelp_rating === null">-</span>
                 <span ng-if="row.yelp_rating !== undefined && row.yelp_rating !== null">
                     <img ng-if="!row.yelp_url" ng-src="/images/logos/yelp_stars/{{row.yelp_rating}}.png">
-                    <A href="{{row.yelp_url}}" target="_blank" ng-if="row.yelp_url"><img ng-src="/images/logos/yelp_stars/{{row.yelp_rating}}.png"> </A>
-                    {{row.yelp_count}} Reviews
+                    <a href="{{row.yelp_url}}" target="_blank" ng-if="row.yelp_url"><img ng-src="/images/logos/yelp_stars/{{row.yelp_rating}}.png"> {{row.yelp_count}} Reviews</a>
                     </span>
 
             </td>
             <td>
-                {{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}
+                <a ng-if="row.google_url" href="{{row.google_url}}" target="_blank" style="font-size:13px;"><span class="google-txt">{{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}</span>
                 <span class="google-stars" aria-label="Rated {{row.google_rating}} out of 5,">
                     <span ng-if="!row.google_url" style="width:{{ row.google_rating * 13 }}px;"></span>
-                    <A ng-if="row.google_url" href="{{row.google_url}}" target="_blank"><span style="width:{{ row.google_rating * 13 }}px;"></span></A>
+                    <span style="width:{{ row.google_rating * 13 }}px;"></span>
                 </span>
-                {{row.google_rating === undefined || row.google_rating === null ? "" : "(" +(row.google_count) + ")"}}
+                {{row.google_rating === undefined || row.google_rating === null ? "" :(row.google_count)}} Google reviews</a>
             </td>
             <td>
+                <A ng-if="row.facebook_url && row.facebook_rating" href="{{row.facebook_url}}" target="_blank">
                 <div class="inline-block">
                     <p ng-if="!row.facebook_url && row.facebook_rating" class="facebook-ratings">{{row.facebook_rating}}</p>
-                    <A ng-if="row.facebook_url && row.facebook_rating" href="{{row.facebook_url}}" target="_blank"><p class="facebook-ratings">{{row.facebook_rating}}</p></A>
+                    <p class="facebook-ratings">{{row.facebook_rating}}</p>
                 </div>
-                <p class="inline-block" ng-if="row.facebook_rating" >{{row.facebook_rating === undefined || row.facebook_rating === null ? "" : row.facebook_count}} People</p>
+                <p class="inline-block" ng-if="row.facebook_rating" >{{row.facebook_rating === undefined || row.facebook_rating === null ? "" : row.facebook_count}} People</p></A>
             </td>
         </tr>
         <tr ng-repeat-end ng-if="false"></tr>

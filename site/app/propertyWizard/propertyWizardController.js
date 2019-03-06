@@ -1069,21 +1069,21 @@ define([
             }
 
             $scope.yelpDisconnect = function() {
-                $dialog.confirm('You are about to disconnect <b>'+$scope.property.name+'</b> from Yelp. Are you sure you want to do that?', function () {
+                $dialog.confirm('New: You are about to disconnect the Yelp reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
                     $scope.property.reputation.yelp = undefined;
                 }, function () {
                 });
             };
 
             $scope.facebookDisconnect = function() {
-                $dialog.confirm('You are about to disconnect <b>'+$scope.property.name+'</b> from Facebook. Are you sure you want to do that?', function () {
+                $dialog.confirm('New: You are about to disconnect the Facebook reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
                     $scope.property.reputation.facebook = undefined;
                 }, function () {
                 });
             };
 
             $scope.googleDisconnect = function() {
-                $dialog.confirm('You are about to disconnect <b>'+$scope.property.name+'</b> from Google. Are you sure you want to do that?', function () {
+                $dialog.confirm('New: You are about to disconnect the Google reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
                     $scope.property.reputation.google = undefined;
                 }, function () {
                 });
