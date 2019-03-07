@@ -9,6 +9,7 @@ define([
             ga("send", "pageview");
 
             $scope.search = {
+                yelpSelected: property.reputation.yelp,
                 property: property.name,
                 term: property.name,
                 location: property.state ? property.address + ", " + property.city + ", " + property.state.abbreviation + " " + property.zip : ""

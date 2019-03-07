@@ -12,7 +12,7 @@
             <div class="col-xs-12 col-sm-4">
                 <input type="text" placeholder="Property Name" class="form-control input-sm" ng-model="search.term">
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-8 col-sm-6">
                 <input type="text" placeholder="Location" class="form-control input-sm" ng-model="search.location">
             </div>
             <div class="col-xs-4 col-sm-2">
@@ -26,17 +26,23 @@
             <table class="table table-condensed table-striped">
                 <tbody>
                     <tr ng-repeat="result in results">
+                        <td style="width:20px;vertical-align: middle;">
+                            <input type="radio" name="googleSelected" id="{{result.id}}" ng-model="search.googleSelected" ng-value="result">
+                        </td>
                         <td style="font-size: 9pt;">
-                            <a class="grey-txt" href="{{result.url}}" target="_blank">{{result.name}}</a>
-                            <br/>
-                            <small>{{result.address}}</small>
+                            <label for="{{result.id}}" style="cursor:pointer;">
+                                <strong>{{result.name}}</strong>
+                                <br/>
+                                <small>{{result.address}}</small>
+                            </label>
                         </td>
                         <td class="text-right" style="vertical-align: middle;">
-                            <a href ng-click="use(result)">Select</a>
+                            <a href="{{result.url}}" target="_blank">View Listing <i class="fa fa-external-link"></i></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <button type="button" class="btn btn-success center-block" ng-click="use(search.googleSelected)">Done</button>
         </div>
     </div>
 </div>

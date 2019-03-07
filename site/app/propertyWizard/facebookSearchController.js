@@ -9,6 +9,7 @@ define([
             ga("send", "pageview");
 
             $scope.search = {
+                facebookSelected: property.reputation.facebook,
                 property: property.name,
                 term: property.name,
                 location: property.state ? property.address + ", " + property.city + ", " + property.state.abbreviation + " " + property.zip : ""
