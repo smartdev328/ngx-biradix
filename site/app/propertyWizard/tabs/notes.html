@@ -33,14 +33,14 @@
             <tbody>
             <tr>
                 <td>
-                    <img src="/images/logos/yelp.png" style="margin-right:25px;height:30px;"><a class="light-blue-txt" target="_blank" href="{{property.reputation.yelp.url}}" ng-if="property.reputation.yelp.id">View Linked Listing <i class="fa fa-external-link"></i></a>
+                    <img src="/images/logos/yelp.png" style="margin-right:25px;height:30px;"><a class="light-blue-txt" target="_blank" href="{{property.reputation.yelp.url}}" ng-if="property.reputation.yelp.id">View Linked Listing <i class="fa fa-external-link ml-5 fa-small"></i></a>
                 </td>
                 <td class="text-right" style="vertical-align: middle !important;"  nowrap>
                     <div class="btn-group action_dropdown">
                         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px"><span class="caret"></span></button>
                         <ul role="menu" ng-class="{'dropdown-menu': true, 'skinny': true, 'dropdown-menu-right' : true}">
                             <li><a href ng-click="yelpSearch()" ng-if="!property.reputation.yelp.id"><i class="fa fa-chain fa-fw"></i> Connect Listing</a></li>
-                            <li><a href ng-click="yelpSearch()" ng-if="property.reputation.yelp.id" ng-click=""><i class="fa fa-pencil"></i> Edit Linked Listing</a></li>
+                            <li><a href ng-click="yelpSearch()" ng-if="property.reputation.yelp.id"><i class="fa fa-pencil"></i> Edit Linked Listing</a></li>
                             <li><a href ng-if="property.reputation.yelp.id" ng-click="yelpDisconnect()"><i class="fa fa-chain-broken"></i> Disconnect Linked Listing</a></li>
                         </ul>
                     </div>
@@ -48,14 +48,14 @@
             </tr>
             <tr>
                 <td>
-                    <img src="/images/logos/google.png" style="margin-right:23px;height:20px;"><a class="light-blue-txt" target="_blank" href="{{property.reputation.google.url}}" ng-if="property.reputation.google.id">View Linked Listing <i class="fa fa-external-link"></i></a>
+                    <img src="/images/logos/google.png" style="margin-right:23px;height:20px;"><a class="light-blue-txt" target="_blank" href="{{property.reputation.google.url}}" ng-if="property.reputation.google.id">View Linked Listing <i class="fa fa-external-link ml-5 fa-small"></i></a>
                 </td>
                 <td class="text-right" style="vertical-align: middle !important;"  nowrap>
                     <div class="btn-group action_dropdown">
                         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px"><span class="caret"></span></button>
                         <ul role="menu" ng-class="{'dropdown-menu': true, 'skinny': true, 'dropdown-menu-right' : true}">
                             <li><a href ng-click="googleSearch()" ng-if="!property.reputation.google.id"><i class="fa fa-chain fa-fw"></i> Connect Listing</a></li>
-                            <li><a href ng-click="googleSearch()" ng-if="property.reputation.google.id" ng-click=""><i class="fa fa-pencil"></i> Edit Linked Listing</a></li>
+                            <li><a href ng-click="googleSearch()" ng-if="property.reputation.google.id"><i class="fa fa-pencil"></i> Edit Linked Listing</a></li>
                             <li><a href ng-if="property.reputation.google.id" ng-click="googleDisconnect()"><i class="fa fa-chain-broken"></i> Disconnect Linked Listing</a></li>
                         </ul>
                     </div>
@@ -63,14 +63,14 @@
             </tr>
             <tr>
                 <td>
-                    <img class="mr-30" src="/images/logos/facebook.png" style="height:20px;"><a class="light-blue-txt" target="_blank" href="{{property.reputation.facebook.url}}" ng-if="property.reputation.facebook.id">View Linked Listing <i class="fa fa-external-link"></i></a>
+                    <img class="mr-30" src="/images/logos/facebook.png" style="height:20px;"><a class="light-blue-txt" target="_blank" href="{{property.reputation.facebook.url}}" ng-if="property.reputation.facebook.id">View Linked Listing <i class="fa fa-external-link ml-5 fa-small"></i></a>
                 </td>
                 <td class="text-right" style="vertical-align: middle !important;"  nowrap>
                     <div class="btn-group action_dropdown">
                         <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px"><span class="caret"></span></button>
                         <ul role="menu" ng-class="{'dropdown-menu': true, 'skinny': true, 'dropdown-menu-right' : true}">
                             <li><a href ng-click="facebookSearch()" ng-if="!property.reputation.facebook.id"><i class="fa fa-chain fa-fw"></i> Connect Listing</a></li>
-                            <li><a href ng-click="facebookSearch()" ng-if="property.reputation.facebook.id" ng-click=""><i class="fa fa-pencil"></i> Edit Linked Listing</a></li>
+                            <li><a href ng-click="facebookSearch()" ng-if="property.reputation.facebook.id"><i class="fa fa-pencil"></i> Edit Linked Listing</a></li>
                             <li><a href ng-if="property.reputation.facebook.id" ng-click="facebookDisconnect()"><i class="fa fa-chain-broken"></i> Disconnect Linked Listing</a></li>
                         </ul>
                     </div>

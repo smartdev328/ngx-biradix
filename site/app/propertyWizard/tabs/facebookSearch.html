@@ -26,18 +26,18 @@
             <table class="table table-condensed table-striped">
                 <tbody>
                     <tr ng-repeat="result in results">
-                        <td style="width:20px;vertical-align: middle;">
+                        <td style="width:30px;vertical-align: middle;text-align: center;">
                             <input type="radio" name="facebookSelected" id="{{result.id}}" ng-model="search.facebookSelected" ng-value="result">
                         </td>
-                        <td style="font-size: 9pt;">
-                            <label for="{{result.id}}" style="cursor:pointer;">
-                                <strong>{{result.name}}</strong>
+                        <td style="padding:0;">
+                            <label for="{{result.id}}" style="cursor:pointer;margin:2px 0;">
+                                {{result.name}}
                                 <br/>
-                                <small>{{result.address}}</small>
+                                <b style="font-size: 12px;font-weight: 500;">{{result.address}}</b>
                             </label>
                         </td>
                         <td class="text-right" style="vertical-align: middle;">
-                            <a href="{{result.url}}" target="_blank">View Listing <i class="fa fa-external-link"></i></a>
+                            <a href="{{result.url}}" target="_blank">View Listing <i class="fa fa-external-link ml-5 fa-small"></i></a>
                         </td>
                     </tr>
                 </tbody>
