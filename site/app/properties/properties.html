@@ -377,7 +377,7 @@
             <td ng-show="show.address">{{comp.address}}</td>
             <td ng-show="show.city">{{comp.city}}</td>
             <td ng-show="show.state">{{comp.state}}</td>
-            <td ng-show="show.zip" class="text-right"><span class="pr-8">{{row.zip}}</span></td>
+            <td ng-show="show.zip"><span class="pr-8">{{row.zip}}</span></td>
             <td ng-show="show.totalUnits" class="text-right"><span class="pr-8">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</span></td>
             <td ng-show="show.occupancy" class="text-right"><span class="pr-8">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</span></td>
             <td ng-show="show.ner" class="text-right"><span class="pr-8">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</span></td>
