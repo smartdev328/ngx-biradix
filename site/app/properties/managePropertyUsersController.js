@@ -47,9 +47,9 @@ define([
                     var users = response.data.users;
 
 
-                    $userService.search({active: true, orgid: property.orgid, roleTypes:['RM','BM','PO'], ids: users}).then(function (response) {
+                    $userService.search({active: true, orgids: [property.orgid, property.orgid_owner], roleTypes:['RM','BM','PO'], ids: users}).then(function (response) {
                             response.data.users.forEach(function(u) {
-                                $scope.users.push({id: u._id, name: u.name});
+                                $scope.users.push({id: u._id, name: u.name, group: a.roles[0].org.name});
                             });
 
                             $scope.loading = false;
