@@ -21,7 +21,7 @@ define([
         $scope.defaultSort = "name_lower";
 
         $scope.search = {}
-        $scope.searchable = ["name", "address", "city", "state", "zip", "company"];
+        $scope.searchable = ["name", "address", "city", "state", "zip", "company", "company_owner"];
         $scope.search["active"] = true;
 
         $scope.options = {
@@ -47,6 +47,7 @@ define([
                 occupancy: false,
                 ner: false,
                 company: siteAdmin,
+                company_owner: siteAdmin,
                 tools: true,
                 owner: false,
                 lastUpdated: false,
@@ -96,13 +97,13 @@ define([
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
                 $propertyService.search({
-                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid needsSurvey survey.dateByOwner custom", ids: compids
+                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner needsSurvey survey.dateByOwner custom", ids: compids
                     , skipAmenities: true
                 }).then(function (response) {
                     $propertyService.search({
                         limit: 10000,
                         permission: 'PropertyManage',
-                        select: "_id orgid",
+                        select: "_id orgid orgid_owner",
                         ids: compids
                         , skipAmenities: true
                     }).then(function (responseOwned) {
@@ -165,7 +166,7 @@ define([
             $propertyService.search({
                 limit: 10000,
                 permission: "PropertyManage",
-                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid comps.id comps.excluded comps.orderNumber needsSurvey custom",
+                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner comps.id comps.excluded comps.orderNumber needsSurvey custom",
                 skipAmenities: true,
                 hideCustomComps: true,
             }).then(function(response) {
@@ -221,7 +222,7 @@ define([
                     $rootScope.logoff();
                     return;
                 }
-
+                $scope.apiError = true;
                 $scope.localLoading = true;
             })
         }
@@ -339,7 +340,10 @@ define([
                 header.push('Active')
             }
             if ($scope.show.company) {
-                header.push('Company')
+                header.push('Management Org.');
+            }
+            if ($scope.show.company_owner) {
+                header.push('Owner Org.')
             }
             content.push(header);
             $scope.filtered.forEach(function (r) {
@@ -377,6 +381,10 @@ define([
                 if ($scope.show.company) {
                     row.push(r['company'] || '')
                 }
+
+                if ($scope.show.company_owner) {
+                    row.push(r['company_owner'] || '');
+                }
                 content.push(row);
             })
 
@@ -407,7 +415,8 @@ define([
                         ngProgress.reset();
                     },
                     function (error) {
-                        toastr.error("Unable to update property. Please contact the administrator.");
+                        Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                         ngProgress.reset();
                     });
 
@@ -438,7 +447,8 @@ define([
                         ngProgress.reset();
                     },
                     function (error) {
-                        toastr.error("Unable to update property. Please contact the administrator.");
+                        Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                         ngProgress.reset();
                     });
 
@@ -636,11 +646,11 @@ define([
 
         $scope.PMSintegration = function(property) {
             require([
-                '/app/properties/PMSintegrationController.js'
+                '/app/properties/pmsIntegrationController.js'
             ], function () {
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/app/properties/PMSintegration.html?bust=' + version,
-                    controller: 'PMSintegrationController',
+                    templateUrl: '/app/properties/pmsIntegration.html?bust=' + version,
+                    controller: 'pmsIntegrationController',
                     size: "md",
                     keyboard: false,
                     backdrop: 'static',

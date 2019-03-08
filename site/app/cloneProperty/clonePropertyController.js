@@ -46,7 +46,7 @@ define([
                      },
                      function() {
                          $scope.localLoading = false;
-                         toastr.error("Unable to update property. Please contact the administrator.");
+                         toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                          ngProgress.reset();
                      });
              }, function() {

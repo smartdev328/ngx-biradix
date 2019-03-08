@@ -227,6 +227,7 @@ define([
                         return;
                     }
 
+                    $scope.apiError = true;
                     $scope.localLoading = true;
                 });
             }

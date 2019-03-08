@@ -102,8 +102,9 @@ define([
                     return;
                 }
 
-                toastr.error("Unable to access the system at this time. Please contact an administrator");
+                Raygun.send(new Error("User saw API unavailable error alert/message/page"));
                 $scope.localLoading = true;
+                $scope.apiError = true;
             });
         };
 

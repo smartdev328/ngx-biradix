@@ -23,16 +23,16 @@ define([
             $scope.autocompleteusers = function(search,callback) {
                 $userService.search({
                     limit: 100,
-                    active: true, orgid: property.orgid, roleTypes:['RM','BM','PO'],
-                    search:search
+                    active: true, orgids: [property.orgid, property.orgid_owner], roleTypes:['RM','BM','PO'],
+                    search: search
                 }).then(function (response) {
                     var u,u2;
                     var items = [];
 
 
                     response.data.users.forEach(function (a) {
-                        u = {id: a._id, name: a.name};
-                        items.push(u)
+                        u = {id: a._id, name: a.name, group: a.roles[0].org.name + " (" + (a.roles[0].org._id.toString() === property.orgid.toString() ? "Management" : "Owner") + ")"};
+                        items.push(u);
                     })
 
                     callback(items)
@@ -47,9 +47,9 @@ define([
                     var users = response.data.users;
 
 
-                    $userService.search({active: true, orgid: property.orgid, roleTypes:['RM','BM','PO'], ids: users}).then(function (response) {
+                    $userService.search({active: true, orgids: [property.orgid, property.orgid_owner], roleTypes:['RM','BM','PO'], ids: users}).then(function (response) {
                             response.data.users.forEach(function(u) {
-                                $scope.users.push({id: u._id, name: u.name});
+                                $scope.users.push({id: u._id, name: u.name, group: u.roles[0].org.name + " (" + (u.roles[0].org._id.toString() === property.orgid.toString() ? "Management" : "Owner") + ")"});
                             });
 
                             $scope.loading = false;

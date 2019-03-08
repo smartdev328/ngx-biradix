@@ -160,7 +160,8 @@ define([
 
                     $scope.compsData = {height: 300, printWidth: 800, decimalPlaces: $scope.widgets.comps.type.two ? 1 : 0, prefix: "", suffix: $scope.widgets.comps.type.two ? "%" : "", title: "", marker: true, data: series, min: min, max: max};
                 }, function(error) {
-                    toastr.error("Unable to perform action. Please contact an administrator");
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
             }
             $scope.runPropertySurveys = function() {
@@ -227,7 +228,8 @@ define([
 
                     $scope.surveyData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: "", title: "", marker: true, data: series, min: min, max: max};
                 }, function(error) {
-                    toastr.error("Unable to perform action. Please contact an administrator");
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
             };
             $scope.runSurveySwapRequested = function() {
@@ -294,7 +296,8 @@ define([
 
                     $scope.overallData = {height: 300, printWidth: 800, decimalPlaces: 0, prefix: "", suffix: "", title: "", marker: true, data: series, min: min, max: max};
                 }, function(error) {
-                    toastr.error("Unable to perform action. Please contact an administrator");
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
             };
 
@@ -332,7 +335,8 @@ define([
                         data: series,
                     };
                 }, function(error) {
-                    toastr.error("Unable to perform action. Please contact an administrator");
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
             };
 
@@ -544,7 +548,8 @@ define([
                     $scope.responseData = {height: 300, printWidth: 800, decimalPlaces: 0, title: "", marker: true, data: series, extremes: extremes, suffix: "", prefix: ""};
 
                 }, function(error) {
-                    toastr.error("Unable to perform action. Please contact an administrator");
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
             };
 

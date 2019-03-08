@@ -58,7 +58,7 @@ define([
             var newHash = d.selectedStartDate.format("MMDDYYYY") + d.selectedEndDate.format("MMDDYYYY")
             if(oldHash == newHash) return;
 
-            $cookieSettingsService.saveDaterange($scope.settings.daterange)
+            $cookieSettingsService.saveDaterange($scope.settings.daterange);
             $scope.loadProperty($scope.selectedProperty._id);
         }, true);
 
@@ -186,8 +186,9 @@ define([
                         return;
                     }
 
-                    toastr.error('Unable to access the system at this time. Please contact an administrator');
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
                     $scope.localLoading = true;
+                    $scope.apiError = true;
                 });
             }
         });
@@ -285,6 +286,8 @@ define([
 
                     }
 
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    $scope.apiError = true;
                     $scope.localLoading = true;
                 });
             }
