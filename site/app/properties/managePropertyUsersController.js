@@ -23,7 +23,7 @@ define([
             $scope.autocompleteusers = function(search,callback) {
                 $userService.search({
                     limit: 100,
-                    active: true, orgid: property.orgid, roleTypes:['RM','BM','PO'],
+                    active: true, orgid_both: property.orgid, roleTypes:['RM','BM','PO'],
                     search:search
                 }).then(function (response) {
                     var u,u2;
