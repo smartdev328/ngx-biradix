@@ -23,16 +23,16 @@ define([
             $scope.autocompleteusers = function(search,callback) {
                 $userService.search({
                     limit: 100,
-                    active: true, orgid_both: property.orgid, roleTypes:['RM','BM','PO'],
-                    search:search
+                    active: true, orgids: [property.orgid, property.orgid_owner], roleTypes:['RM','BM','PO'],
+                    search: search
                 }).then(function (response) {
                     var u,u2;
                     var items = [];
 
 
                     response.data.users.forEach(function (a) {
-                        u = {id: a._id, name: a.name};
-                        items.push(u)
+                        u = {id: a._id, name: a.name, group: a.roles[0].org.name};
+                        items.push(u);
                     })
 
                     callback(items)
