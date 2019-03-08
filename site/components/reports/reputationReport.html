@@ -37,7 +37,6 @@
     .inline-block {
         display: inline-block;
     }
-    /*#e7711b*/
 </style>
 <div class="break2 panel panel-info">
     <div class="panel-heading">Reputation Report (beta)
@@ -84,7 +83,7 @@
 
             </td>
             <td>
-                <a ng-if="row.google_url" href="{{row.google_url}}" target="_blank" style="font-size:13px;"><span class="google-txt">{{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}</span>
+                <a ng-if="row.google_url && row.google_rating" href="{{row.google_url}}" target="_blank" style="font-size:13px;"><span class="google-txt">{{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}</span>
                 <span class="google-stars" aria-label="Rated {{row.google_rating}} out of 5,">
                     <span ng-if="!row.google_url" style="width:{{ row.google_rating * 13 }}px;"></span>
                     <span style="width:{{ row.google_rating * 13 }}px;"></span>

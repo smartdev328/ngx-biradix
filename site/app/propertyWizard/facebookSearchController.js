@@ -9,7 +9,7 @@ define([
             ga("send", "pageview");
 
             $scope.search = {
-                facebookSelected: property.reputation.facebook,
+                selectedId: property.reputation && property.reputation.facebook ? property.reputation.facebook.id : "",
                 property: property.name,
                 term: property.name,
                 location: property.state ? property.address + ", " + property.city + ", " + property.state.abbreviation + " " + property.zip : ""
@@ -49,7 +49,10 @@ define([
                 $scope.run();
             }
 
-            $scope.use = function(result) {
+            $scope.use = function() {
+                var result = _.find($scope.results, function(x) {
+                   return x.id.toString() === $scope.search.selectedId.toString();
+                });
                 $uibModalInstance.close(result);
             };
 

@@ -27,7 +27,7 @@
                 <tbody>
                     <tr ng-repeat="result in results">
                         <td style="width:30px;vertical-align: middle;text-align: center;">
-                            <input type="radio" name="facebookSelected" id="{{result.id}}" ng-model="search.facebookSelected" ng-value="result">
+                            <input type="radio" name="facebookSelected" id="{{result.id}}" ng-model="search.selectedId" ng-value="result.id">
                         </td>
                         <td style="padding:0;">
                             <label for="{{result.id}}" style="cursor:pointer;margin:2px 0;">
@@ -42,7 +42,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-success center-block" ng-click="use(search.facebookSelected)">Done</button>
+            <button type="button" class="btn btn-success center-block" ng-click="use()">Done</button>
         </div>
     </div>
 </div>
