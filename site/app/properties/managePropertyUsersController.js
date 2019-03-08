@@ -31,7 +31,7 @@ define([
 
 
                     response.data.users.forEach(function (a) {
-                        u = {id: a._id, name: a.name, group: a.roles[0].org.name};
+                        u = {id: a._id, name: a.name, group: a.roles[0].org.name + " (" + (a.roles[0].org._id.toString() === property.orgid.toString() ? "Management" : "Owner") + ")"};
                         items.push(u);
                     })
 
@@ -49,7 +49,7 @@ define([
 
                     $userService.search({active: true, orgids: [property.orgid, property.orgid_owner], roleTypes:['RM','BM','PO'], ids: users}).then(function (response) {
                             response.data.users.forEach(function(u) {
-                                $scope.users.push({id: u._id, name: u.name, group: u.roles[0].org.name});
+                                $scope.users.push({id: u._id, name: u.name, group: u.roles[0].org.name + " (" + (a.roles[0].org._id.toString() === property.orgid.toString() ? "Management" : "Owner") + ")"});
                             });
 
                             $scope.loading = false;
