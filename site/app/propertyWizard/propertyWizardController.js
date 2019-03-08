@@ -457,6 +457,12 @@ define([
                 }
 
                 if (place.address_components) {
+                    if (place.place_id) {
+                        $scope.property.reputation = $scope.property.reputation || {};
+                        $scope.property.reputation.google = {
+                            id: place.place_id, url: "https://www.google.com/maps/place/?q=place_id:" + place.place_id
+                        };
+                    }
                     var state = "";
                     $scope.property.address = "";
                     place.address_components.forEach(function (c) {
@@ -648,6 +654,93 @@ define([
                         });
                 }
             }
+
+        $scope.yelpSearch = function() {
+            require([
+                "/app/propertyWizard/yelpSearchController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/yelpSearch.html?bust=" + version,
+                    controller: "yelpSearchController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        property: function() {
+                            return $scope.property;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function(yelp) {
+                    $scope.property.reputation = $scope.property.reputation || {};
+                    $scope.property.reputation.yelp = {
+                        id: yelp.id, url: yelp.url
+                    };
+                }, function() {
+                    // Cancel
+
+                });
+            });
+        };
+
+        $scope.googleSearch = function() {
+            require([
+                "/app/propertyWizard/googleSearchController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/googleSearch.html?bust=" + version,
+                    controller: "googleSearchController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        property: function() {
+                            return $scope.property;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function(google) {
+                    $scope.property.reputation = $scope.property.reputation || {};
+                    $scope.property.reputation.google = {
+                        id: google.id, url: google.url
+                    };
+                }, function() {
+                    // Cancel
+
+                });
+            });
+        };
+
+        $scope.facebookSearch = function() {
+            require([
+                "/app/propertyWizard/facebookSearchController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/propertyWizard/tabs/facebookSearch.html?bust=" + version,
+                    controller: "facebookSearchController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        property: function() {
+                            return $scope.property;
+                        },
+                    },
+                });
+
+                modalInstance.result.then(function(facebook) {
+                    $scope.property.reputation = $scope.property.reputation || {};
+                    $scope.property.reputation.facebook = {
+                        id: facebook.id, url: facebook.url
+                    };
+                }, function() {
+                    // Cancel
+
+                });
+            });
+        };
 
         $scope.bulkFloorplans = function() {
             require([
@@ -918,7 +1011,6 @@ define([
             $scope.gallery_options = {show: false, allowAdmin : true};
 
             $scope.upload = function() {
-
                 var modalInstance = $uibModal.open({
                     template: '<div class="modal-header">\n' +
                     '<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>\n' +
@@ -987,6 +1079,28 @@ define([
                     $scope.mediaNext();
                 }
             }
+
+            $scope.yelpDisconnect = function() {
+                $dialog.confirm('New: You are about to disconnect the Yelp reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
+                    $scope.property.reputation.yelp = undefined;
+                }, function () {
+                });
+            };
+
+            $scope.facebookDisconnect = function() {
+                $dialog.confirm('New: You are about to disconnect the Facebook reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
+                    $scope.property.reputation.facebook = undefined;
+                }, function () {
+                });
+            };
+
+            $scope.googleDisconnect = function() {
+                $dialog.confirm('New: You are about to disconnect the Google reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
+                    $scope.property.reputation.google = undefined;
+                }, function () {
+                });
+            };
+
         }]);
 
 });

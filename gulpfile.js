@@ -74,6 +74,7 @@ gulp.task("globaljs", function() {
         "./site/services/authService.js",
         "./site/services/propertyService.js",
         "./site/services/amenityService.js",
+        "./site/services/reputationService.js",
         "./site/services/keenService.js",
         "./site/services/cookieSettingsService.js",
         "./site/services/progressService.js",
@@ -137,6 +138,7 @@ gulp.task("globalcss", function() {
         "./site/components/uploader/styles.css",
         "./site/app/updateprofile/updateProfile.css",
         "./site/app/contact/contact.css",
+        "./site/app/propertyWizard/propertyWizard.css",
     ];
 
     const cssStream = gulp.src(filesExist(cssFiles));

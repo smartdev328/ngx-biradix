@@ -1,25 +1,7 @@
-<style>
-    .property-info .row {
-        margin-left:-15px;
-        margin-right:-15px;
-    }
-
-    .property-info .col-sm-6, .property-info .col-sm-5, .property-info .col-md-4 {
-        margin-bottom:5px !important;
-    }
-
-    .required {
-        color:red
-    }
-
-    .nav.nav-pills>li>a {
-        padding: 10px 12px;
-    }
-</style>
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
-<div ng-show="localLoading">
+<div ng-show="localLoading" class="propertyWizard">
     <div class="modal-header">
         <div class="triangle profile" ng-if="isCustom"
              popover-trigger="'mouseenter'"
