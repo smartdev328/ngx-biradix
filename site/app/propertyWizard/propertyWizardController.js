@@ -418,6 +418,7 @@ define([
                         $scope.property.state = $scope.getSelectedState($scope.property.state)
 
                         $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
+                        $scope.property.orgid_owner = $scope.getSelectedOrg($scope.property.orgid_owner)
 
                         $scope.property.floorplans = $scope.property.floorplans || [];
 
@@ -443,7 +444,8 @@ define([
                     });
                 } else {
                     $scope.localLoading = true;
-                    $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid)
+                    $scope.property.orgid = $scope.getSelectedOrg($scope.property.orgid);
+                    $scope.property.orgid_owner = $scope.getSelectedOrg($scope.property.orgid_owner)
 
                     $scope.startWatchingChanges();
                 }
@@ -828,6 +830,16 @@ define([
                     }
                 } else {
                     delete prop.orgid;
+                }
+
+                if (prop.orgid_owner) {
+                    if (prop.orgid_owner._id) {
+                        prop.orgid_owner = prop.orgid_owner._id;
+                    } else {
+                        delete prop.orgid_owner;
+                    }
+                } else {
+                    delete prop.orgid_owner;
                 }
 
                 //extract names for all amenities since the service wants names
