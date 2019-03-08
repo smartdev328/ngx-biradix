@@ -37,15 +37,18 @@
     .inline-block {
         display: inline-block;
     }
+    .maingrid.wrapper.panel {
+        overflow-x:auto;
+        margin-bottom: 0 !important;
+    }
 </style>
 <div class="break2 panel panel-info">
-    <div class="panel-heading">Reputation Report (beta)
+    <div class="panel-heading">Reputation Report
         <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
     </div>
-    <div class="alert alert-warning ng-scope" role="alert"><b>Please note this is a BETA report and we're still getting the kinks out. If you run into any issues, let us know at <a href="mailto:support@biradix.com">support@biradix.com</a> and we will make sure to look into it!</b></div>
     <div class="panel-body">
         <hr>
-        <div class="maingrid wrapper panel" style="overflow-x:auto">
+        <div class="maingrid wrapper panel">
             <div class="header" style="height:47px !important;"></div>
             <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
                 <tbody>
@@ -104,4 +107,7 @@
 </table>
         </div>
     </div>
+    <div class="alert alert-warning ng-scope" role="alert"><b>Are you seeing a mismatch between the property and the linked listing 
+    <a href popover-trigger="'mouseover'" popover-placement="top" popover-append-to-body="true" uib-popover-html="'If you notice that the linked reputation provider listing is incorrect you can update it! Click on your name in the upper right and go to <a href=\'#/properties\'>Manage Properties</a> <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Edit Property <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Other Tab. Expand \'Integrations (Advanced)\' and update the appropriate link.'"><i class="fa fa-question-circle" style="font-size:12px"></i></a>
+    </b></div>
 </div>
