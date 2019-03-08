@@ -130,7 +130,8 @@
             <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.lastUpdated" ng-checked="show.lastUpdated" ng-click="columnsChanged=true"> Last Survey</label></div></li>
             <li class="dropdown-header" ng-if="$root.me.roles.indexOf('Site Admin') > -1">BI:Radix Admin</li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
-            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
+            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Management Organization</label></div></li>
+            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company_owner" ng-checked="show.company_owner" ng-click="columnsChanged=true"> Owner Organization</label></div></li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.owner" ng-click="columnsChanged=true"> Owner</label></div></li>
         </ul>
     </div>
@@ -216,11 +217,17 @@
                 Active
             </th>
             <th ng-show="show.company" class="sortable" ng-click="toggleSort('company')">
-                <div class="inline-block">Company</div>
+                <div class="inline-block">Management Org.</div>
                 <div class="inline-block" ng-show="sort.company == null"><i class="fa fa-sort"></i></div>
                 <div class="inline-block" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
                 <div class="inline-block" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
+                <th ng-show="show.company" class="sortable" ng-click="toggleSort('company_owner')">
+                    <div class="inline-block">Owner Org.</div>
+                    <div class="inline-block" ng-show="sort.company_owner == null"><i class="fa fa-sort"></i></div>
+                    <div class="inline-block" ng-show="sort.company_owner === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="inline-block" ng-show="sort.company_owner === false"><i class="fa fa-sort-up"></i></div>
+                </th>
                 <th ng-show="show.owner" class="sortable" ng-click="toggleSort('owner')">
                     <div class="inline-block">Owner</div>
                     <div class="inline-block" ng-show="sort.owner == null"><i class="fa fa-sort"></i></div>
@@ -276,6 +283,7 @@
                 <span class="fa fa-times fa-2x" ng-show="!row.active" style="color:#ddd"></span>
             </td>
             <td ng-show="show.company">{{row.company || '-'}}</td>
+            <td ng-show="show.company_owner">{{row.company_owner || '-'}}</td>
             <td ng-show="show.owner">{{row.owner}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
@@ -369,7 +377,7 @@
             <td ng-show="show.address">{{comp.address}}</td>
             <td ng-show="show.city">{{comp.city}}</td>
             <td ng-show="show.state">{{comp.state}}</td>
-            <td ng-show="show.zip" class="text-right"><span class="pr-8">{{row.zip}}</span></td>
+            <td ng-show="show.zip"><span class="pr-8">{{row.zip}}</span></td>
             <td ng-show="show.totalUnits" class="text-right"><span class="pr-8">{{comp.totalUnits == null ? '-' : comp.totalUnits}}</span></td>
             <td ng-show="show.occupancy" class="text-right"><span class="pr-8">{{comp.survey.occupancy == null ? '-' : comp.survey.occupancy + '%'}}</span></td>
             <td ng-show="show.ner" class="text-right"><span class="pr-8">{{comp.survey.ner == null ? '-' : '$' + comp.survey.ner }}</span></td>
@@ -379,6 +387,7 @@
                 <span class="fa fa-times fa-2x" ng-show="!comp.active" style="color:#ddd"></span>
             </td>
             <td ng-show="show.company">{{comp.company || '-'}}</td>
+            <td ng-show="show.company_owner">{{comp.company_owner || '-'}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">

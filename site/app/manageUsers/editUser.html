@@ -50,7 +50,7 @@
 
                 <div class="row" ng-if="me.permissions.indexOf('Admin') > -1">
                     <div class="col-xs-12">
-                        <div  ng-model="role.selectedOrg" custom-select="org.name for org in orgs"></div>
+                        <div  ng-model="role.selectedOrg" custom-select="org.name for org in orgs | filter: $searchTerm"></div>
                     </div>
                 </div>
 

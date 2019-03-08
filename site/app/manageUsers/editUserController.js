@@ -161,7 +161,7 @@ define([
                     criteria.noorgid = true;
                     criteria.permission = "CompManage";
                 } else {
-                    criteria.orgid = role.selectedRole.orgid;
+                    criteria.orgid_both = role.selectedRole.orgid;
                 }
 
                 criteria.hideCustom = true;
