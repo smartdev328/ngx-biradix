@@ -93,7 +93,7 @@ define([
             $userService.search().then(function(response) {
                 $scope.data = response.data.users;
 
-                var hasRoles = !!$scope.roles;
+                var hasRoles = false;
                 if (!hasRoles) {
                     $scope.roles = [];
                 }
