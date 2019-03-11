@@ -50,6 +50,7 @@ define([
                 tools: true,
                 owner: false,
                 lastUpdated: false,
+                _id: false,
             };
         }
 
@@ -341,6 +342,9 @@ define([
             if ($scope.show.company) {
                 header.push('Company')
             }
+            if ($scope.show._id) {
+                header.push("PropertyID");
+            }
             content.push(header);
             $scope.filtered.forEach(function (r) {
                 var row = [];
@@ -376,6 +380,9 @@ define([
                 }
                 if ($scope.show.company) {
                     row.push(r['company'] || '')
+                }
+                if ($scope.show._id) {
+                    row.push(r["_id"] || "");
                 }
                 content.push(row);
             })
