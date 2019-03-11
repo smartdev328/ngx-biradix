@@ -1,0 +1,48 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Connect Reputation Provider: Google</h2>
+        <hr>
+    </div>
+    <div class="modal-body container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <p>Please search below to see the closest matching <b>Google</b> listings for <b>{{search.property}}</b> based on name and location. </p>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <input type="text" placeholder="Property Name" class="form-control input-sm" ng-model="search.term">
+            </div>
+            <div class="col-xs-8 col-sm-6">
+                <input type="text" placeholder="Location" class="form-control input-sm" ng-model="search.location">
+            </div>
+            <div class="col-xs-4 col-sm-2">
+                <button class="btn btn-primary" id="search_btn" ng-click="run()">Search</button>
+            </div>
+        </div>
+        <Br>
+        <div class="alert alert-warning ng-scope" role="alert" ng-if="results && results.length === 0"><b>No results found</b></div>
+        <div ng-if="results && results.length > 0">
+            <p><strong>Results</strong></p>
+            <table class="table table-condensed table-striped">
+                <tbody>
+                    <tr ng-repeat="result in results">
+                        <td style="width:30px;vertical-align: middle;text-align: center;">
+                            <input type="radio" name="googleSelected" id="{{result.id}}" ng-model="search.selectedId" ng-value="result.id">
+                        </td>
+                        <td style="padding:0;">
+                            <label for="{{result.id}}" style="cursor:pointer;margin:2px 0;">
+                                {{result.name}}
+                                <br/>
+                                <b style="font-size: 12px;font-weight: 500;">{{result.address}}</b>
+                            </label>
+                        </td>
+                        <td class="text-right" style="vertical-align: middle;">
+                            <a href="{{result.url}}" target="_blank">View Listing <i class="fa fa-external-link ml-3 fa-small"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-success center-block" ng-click="use()">Done</button>
+        </div>
+    </div>
+</div>
