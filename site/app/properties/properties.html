@@ -133,6 +133,7 @@
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Management Organization</label></div></li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company_owner" ng-checked="show.company_owner" ng-click="columnsChanged=true"> Owner Organization</label></div></li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.owner" ng-click="columnsChanged=true"> Owner</label></div></li>
+            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show._id" ng-checked="show._id" ng-click="columnsChanged=true"> PropertyID</label></div></li>
         </ul>
     </div>
 
@@ -222,7 +223,7 @@
                 <div class="inline-block" ng-show="sort.company === true"><i class="fa fa-sort-down"></i></div>
                 <div class="inline-block" ng-show="sort.company === false"><i class="fa fa-sort-up"></i></div>
             </th>
-                <th ng-show="show.company" class="sortable" ng-click="toggleSort('company_owner')">
+                <th ng-show="show.company_owner" class="sortable" ng-click="toggleSort('company_owner')">
                     <div class="inline-block">Owner Org.</div>
                     <div class="inline-block" ng-show="sort.company_owner == null"><i class="fa fa-sort"></i></div>
                     <div class="inline-block" ng-show="sort.company_owner === true"><i class="fa fa-sort-down"></i></div>
@@ -233,6 +234,12 @@
                     <div class="inline-block" ng-show="sort.owner == null"><i class="fa fa-sort"></i></div>
                     <div class="inline-block" ng-show="sort.owner === true"><i class="fa fa-sort-down"></i></div>
                     <div class="inline-block" ng-show="sort.owner === false"><i class="fa fa-sort-up"></i></div>
+                </th>
+                <th ng-show="show._id" class="sortable" ng-click="toggleSort('_id')">
+                    <div class="inline-block">PropertyID</div>
+                    <div class="inline-block" ng-show="sort._id == null"><i class="fa fa-sort"></i></div>
+                    <div class="inline-block" ng-show="sort._id === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="inline-block" ng-show="sort._id === false"><i class="fa fa-sort-up"></i></div>
                 </th>
             <th ng-show="show.tools" class="center"></th>
         </tr>
@@ -285,6 +292,7 @@
             <td ng-show="show.company">{{row.company || '-'}}</td>
             <td ng-show="show.company_owner">{{row.company_owner || '-'}}</td>
             <td ng-show="show.owner">{{row.owner}}</td>
+            <td ng-show="show._id">{{row._id}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">
@@ -388,6 +396,8 @@
             </td>
             <td ng-show="show.company">{{comp.company || '-'}}</td>
             <td ng-show="show.company_owner">{{comp.company_owner || '-'}}</td>
+            <td ng-show="show.owner">{{comp.owner || '-'}}</td>
+            <td ng-show="show._id">{{comp._id}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                     <div class="btn-group action_dropdown">

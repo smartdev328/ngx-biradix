@@ -51,6 +51,7 @@ define([
                 tools: true,
                 owner: false,
                 lastUpdated: false,
+                _id: false,
             };
         }
 
@@ -345,6 +346,9 @@ define([
             if ($scope.show.company_owner) {
                 header.push('Owner Org.')
             }
+            if ($scope.show._id) {
+                header.push("PropertyID");
+            }
             content.push(header);
             $scope.filtered.forEach(function (r) {
                 var row = [];
@@ -381,14 +385,17 @@ define([
                 if ($scope.show.company) {
                     row.push(r['company'] || '')
                 }
-
                 if ($scope.show.company_owner) {
                     row.push(r['company_owner'] || '');
                 }
-                content.push(row);
-            })
+                if ($scope.show._id) {
+                    row.push(r["_id"] || "");
+                }
 
-            $gridService.streamCsv('properties.csv', content)
+                content.push(row);
+            });
+
+            $gridService.streamCsv('properties.csv', content);
 
         }
 
