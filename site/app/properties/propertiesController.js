@@ -29,6 +29,7 @@ define([
             showActive: true,
             showCustom: true,
             showShared: true,
+            columnsChanged: false,
         };
 
         $scope.adjustToSize = function(size) {
@@ -56,7 +57,7 @@ define([
         }
 
         $scope.$on('size', function(e,size) {
-            if (!$scope.columnsChanged) {
+            if (!$scope.options.columnsChanged) {
                 $scope.adjustToSize(size);
             }
         });
