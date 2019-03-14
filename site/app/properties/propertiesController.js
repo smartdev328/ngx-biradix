@@ -29,6 +29,7 @@ define([
             showActive: true,
             showCustom: true,
             showShared: true,
+            columnsChanged: false,
         };
 
         $scope.adjustToSize = function(size) {
@@ -56,7 +57,7 @@ define([
         }
 
         $scope.$on('size', function(e,size) {
-            if (!$scope.columnsChanged) {
+            if (!$scope.options.columnsChanged) {
                 $scope.adjustToSize(size);
             }
         });
@@ -341,10 +342,13 @@ define([
                 header.push('Active')
             }
             if ($scope.show.company) {
-                header.push('Management Org.');
+                header.push('Manage Org.');
             }
             if ($scope.show.company_owner) {
                 header.push('Owner Org.')
+            }
+            if ($scope.show.owner) {
+                header.push('Custom Owner')
             }
             if ($scope.show._id) {
                 header.push("PropertyID");
@@ -387,6 +391,9 @@ define([
                 }
                 if ($scope.show.company_owner) {
                     row.push(r['company_owner'] || '');
+                }
+                if ($scope.show.owner) {
+                    row.push(r['owner'] || '')
                 }
                 if ($scope.show._id) {
                     row.push(r["_id"] || "");
