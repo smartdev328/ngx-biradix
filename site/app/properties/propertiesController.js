@@ -589,7 +589,7 @@ define([
         };
 
         $scope.addComp = function(subject) {
-            if (!subject.open) {
+            if (!subject.open && !(subject.comps[0].id == subject._id && subject.comps.length === 1)) {
                 $scope.toggleOpen(subject);
             }
 
