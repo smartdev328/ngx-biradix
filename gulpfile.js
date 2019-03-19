@@ -76,6 +76,7 @@ gulp.task("globaljs", function() {
         "./site/services/amenityService.js",
         "./site/services/reputationService.js",
         "./site/services/keenService.js",
+        "./site/services/importService.js",
         "./site/services/cookieSettingsService.js",
         "./site/services/progressService.js",
         "./site/services/auditService.js",

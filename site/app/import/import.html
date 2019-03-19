@@ -1,0 +1,44 @@
+<h2 class="mainheader">Configure PMS Imports
+    <hr>
+</h2>
+
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading">
+    <div class="maingrid wrapper">
+        <div class="header"></div>
+        <table class="table table-condensed table-striped hidden-arrows table-hover">
+            <tbody>
+            <tr class="thead">
+                <th >
+                    <div class="inline-block">Provider</div>
+                </th>
+                <th >
+                    <div class="inline-block">Org</div>
+                </th>
+                <th >
+                    <div class="inline-block">Identity</div>
+                </th>
+                <th class="center">
+                    <div class="inline-block">Active</div>
+                </th>
+            </tr>
+            <tr ng-repeat="row in results">
+                <td>
+                    {{row.provider}}
+                </td>
+                <td>
+                    {{row.org}}
+                </td>
+                <td>
+                    {{row.identity}}
+                </td>
+                <td class="center">
+                    <span class="fa fa-check fa-2x" ng-show="row.isActive"></span>
+                    <span class="fa fa-times fa-2x" ng-show="!row.isActive" style="color:#ccc"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</div>
