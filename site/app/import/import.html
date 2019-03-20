@@ -6,6 +6,12 @@
     <img src="/images/squares.gif" style="width:100px">
 </div>
 <div ng-show="localLoading">
+    <div class="btn-group action_dropdown pull-left">
+        <button type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Add User" ng-click="edit()">
+            <span class="fa fa-plus"></span> Add User
+        </button>
+    </div>
+    <Br clear="all"><Br>
     <div class="maingrid wrapper">
         <div class="header"></div>
         <table class="table table-condensed table-striped hidden-arrows table-hover">
@@ -23,6 +29,9 @@
                 <th class="center">
                     <div class="inline-block">Active</div>
                 </th>
+                <th>
+
+                </th>
             </tr>
             <tr ng-repeat="row in results">
                 <td>
@@ -37,6 +46,20 @@
                 <td class="center">
                     <span class="fa fa-check fa-2x" ng-show="row.isActive"></span>
                     <span class="fa fa-times fa-2x" ng-show="!row.isActive" style="color:#ccc"></span>
+                </td>
+                <td class="center">
+                    <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px" ng-show="row._id != me._id">
+                        <div class="btn-group action_dropdown">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" style="padding:2px 5px 0px 5px">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
+                                <li><a href ng-click="edit(row.id)"><span class="fa fa-fw fa-pencil"></span> Edit User</a></li>
+                                <li><a href ng-click="toggleActive(row)" ng-if="!row.isActive"><span class="fa fa-fw fa-check"></span> Activate</a></li>
+                                <li><a href ng-click="toggleActive(row)" ng-show="row.isActive"><span class="fa fa-fw fa-minus"></span> De-activate</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </td>
             </tr>
             </tbody>

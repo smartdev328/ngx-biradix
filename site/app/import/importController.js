@@ -37,13 +37,42 @@ define([
                             });
                         });
 
-                        console.log($scope.results);
                         $scope.localLoading = true;
                     },
                     function(error) {
                         $scope.localLoading = true;
-                        toastr.error("Error");
+                        toastr.error("Unable to update PMS Config. Please contact the administrator.");
                     });
+            });
+        };
+
+        $scope.toggleActive = function(row) {
+            var name = row.org + " (" + row.provider +")";
+            $dialog.confirm("Are you sure you want to set <b>" + name + "</b> as " + (!row.isActive ? "active" : "inactive") + "?", function() {
+                ngProgress.start();
+
+                $importService.setActive(!row.isActive, row.id).then(function(response) {
+                        row.isActive = !row.isActive;
+
+                        if (row.isActive) {
+                            toastr.success(name + " has been activated.");
+                        } else {
+                            toastr.warning(name + " has been de-activated. ");
+                        }
+
+                        ngProgress.reset();
+                    },
+                    function(error) {
+                        if (error.status === 400) {
+                            toastr.error(error.data);
+                        } else {
+                            toastr.error("Unable to update PMS Config. Please contact the administrator.");
+                        }
+
+                        ngProgress.reset();
+                    });
+            }, function() {
+
             });
         };
 
