@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">{{!edit ? 'Add' : 'Update'}} PMS Import</h2>
+    <hr>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-12">
+            Org:<Br>
+            <select ng-model="selectedOrg" class="form-control input-sm" ng-options="org.name for org in orgs"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            Provider:<Br>
+            <select ng-model="config.provider" class="form-control input-sm"><option value="YARDI" ng-selected="true">Yardi</option></select>
+        </div>
+    </div>
+    <div class="row" ng-if="config.provider === 'YARDI'">
+        <div class="col-xs-12">
+            Folder:<Br>
+            <input class="form-control input-sm" ng-model="config.identity">
+        </div>
+    </div>
+
+    <div style="margin:0px auto;width:75px">
+        <Br>
+        <button class=" btn btn-primary btn-large btn-block contact-submit" type="button" ng-click="save()">{{!edit ? 'Create' : 'Save'}}</button>
+    </div>
+</div>

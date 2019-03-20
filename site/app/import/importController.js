@@ -19,6 +19,9 @@ define([
 
             $organizationsService.search().then(function(response) {
                 $scope.orgs = response.data.organizations;
+                $scope.orgs = _.sortBy($scope.orgs, function(o) {
+                    return o.name;
+                });
                 $importService.read().then(function(response) {
                         $scope.data = response.data;
                         $scope.results = [];
@@ -76,6 +79,40 @@ define([
             });
         };
 
+        $scope.edit = function(config) {
+            require([
+                "/app/import/editImportController.js"
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/import/editImport.html?bust=" + version,
+                    controller: "editImportController",
+                    size: "sm",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        config: function() {
+                            return config;
+                        },
+                        orgs: function() {
+                            return $scope.orgs;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(newConfig) {
+                    var name = newConfig.org + " (" + newConfig.provider +")";
+                    if (!config) {
+                        toastr.success("<B>" + name + "</B> has been created successfully.", "", {timeOut: 10000});
+                    } else {
+                        toastr.success("<B>" + name + "</B> updated successfully.");
+                    }
+
+                    $scope.reload();
+                }, function() {
+
+                });
+            });
+        }
         $scope.reload();
     }]);
 });

@@ -8,7 +8,7 @@
 <div ng-show="localLoading">
     <div class="btn-group action_dropdown pull-left">
         <button type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Add User" ng-click="edit()">
-            <span class="fa fa-plus"></span> Add User
+            <span class="fa fa-plus"></span> Add Import
         </button>
     </div>
     <Br clear="all"><Br>
@@ -54,7 +54,7 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
-                                <li><a href ng-click="edit(row.id)"><span class="fa fa-fw fa-pencil"></span> Edit User</a></li>
+                                <li><a href ng-click="edit(row)"><span class="fa fa-fw fa-pencil"></span> Edit Import</a></li>
                                 <li><a href ng-click="toggleActive(row)" ng-if="!row.isActive"><span class="fa fa-fw fa-check"></span> Activate</a></li>
                                 <li><a href ng-click="toggleActive(row)" ng-show="row.isActive"><span class="fa fa-fw fa-minus"></span> De-activate</a></li>
                             </ul>
