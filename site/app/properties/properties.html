@@ -343,11 +343,11 @@
                 </div>
             </td>
         </tr>
-        <tr ng-repeat-end ng-if="row.open && row.compsLoaded && row.fullcomps.length > 0" ng-repeat="comp in row.fullcomps | orderBy : ['orderNumber','name']">
+        <tr ng-repeat-end ng-if="row.open && row.compsLoaded && row.fullcomps.length > 0" ng-repeat="comp in row.fullcomps | orderBy : ['orderNumber','name']" style="font-size:9pt;">
             <td></td>
             <td ng-show="show.rownumber"></td>
             <td ng-show="show.date">{{comp.date | date: 'shortDate'}}</td>
-            <td ng-show="show.name" ng-class="{'triangle' : comp.isCustom}">
+            <td class="pl-20" ng-show="show.name" ng-class="{'triangle' : comp.isCustom}">
                 <div class="triangle" ng-if="comp.isCustom"
                      popover-trigger="'mouseenter'"
                      popover-placement="top"
