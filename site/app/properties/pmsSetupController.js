@@ -65,7 +65,7 @@ define([
 
             $scope.connect = function() {
                 var pms = {
-                    imortId: $scope.imports[0].id,
+                    importId: $scope.imports[0].id,
                     importProvider: $scope.imports[0].provider,
                     yardi: {
                         propertyId: $scope.pms.selectedProperty.id,
@@ -82,5 +82,4 @@ define([
 
             $scope.reload();
         }]);
-
 });
