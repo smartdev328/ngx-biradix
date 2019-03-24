@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">PMS Integration: {{property.name}}</h2>
+    <hr>
+</div>
+<div class="modal-body">
+    <p class="mb-20" ng-if="!pmsData.isConnected">Use this wizard to Connect <b>{{property.name}}</b> to a PMS and enable importing data into New Property Surveys.</p>
+    <div ng-if="loading" style="display:block;width:100px;margin:20px auto">
+        <img src="/images/squares.gif" style="width:100px">
+    </div>
+    <div ng-if="!loading">
+        <form ng-if="imports.length === 1">
+            <div class="form-group">
+
+            </div>
+        </form>
+        <div class="alert alert-warning" role="alert" ng-if="imports.length === 0"><b>There are no PMS Integrations configured for your organization.</b></div>
+        <div class="alert alert-danger" role="alert" ng-if="imports.length > 1"><b>There are multiple PMS Integrations configured for your organization.</b></div>
+
+    </div>
+</div>
+<div ng-if="!loading" class="modal-footer" style="text-align: center">
+
+</div>

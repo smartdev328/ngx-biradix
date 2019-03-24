@@ -331,6 +331,8 @@
                                                                                                  popover-title="Connections"
                                                                                                  uib-popover-html="getPropertyDD(row._id)"
                             ><span class="fa fa-share-alt fa-fw"></span> Property Connections</a></li>
+                            <li ng-if="me.permissions.indexOf('Admin') > -1 && row.orgid"><a href ng-click="pmsSetup(row)"><span class="fa fa-cloud-download fa-fw"></span> PMS Integration</a></li>
+
                         </ul>
                     </div>
                 </div>
