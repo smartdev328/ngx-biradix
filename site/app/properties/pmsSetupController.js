@@ -2,8 +2,8 @@
 define([
     "app"
 ], function(app) {
-    app.controller("pmsSetupController", ["$scope", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "toastr", "$dialog", "$rootScope",
-        function($scope, $uibModalInstance, property, ngProgress, $propertyService, $importService, toastr, $dialog, $rootScope) {
+    app.controller("pmsSetupController", ["$scope", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "$importIntegrationService", "toastr", "$dialog", "$rootScope",
+        function($scope, $uibModalInstance, property, ngProgress, $propertyService, $importService, $importIntegrationService, toastr, $dialog, $rootScope) {
             ga("set", "title", "/pmsSetup");
             ga("set", "page", "/pmsSetup");
             ga("send", "pageview");
@@ -28,9 +28,12 @@ define([
                         });
 
                         if ($scope.imports.length === 1) {
-                            // TODO: Get latest properties for import
+                            $importIntegrationService.getLatestProperties($scope.imports[0].id).then(function(response) {
+                                $scope.properties = response.data;
+                                console.log($scope.properties);
+                                $scope.loaded = true;
+                            });
                         }
-                        $scope.loaded = true;
                     });
                 });
             };
