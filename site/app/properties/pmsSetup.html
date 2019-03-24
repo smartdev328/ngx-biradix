@@ -11,6 +11,8 @@
     <div ng-if="!loading">
         <form ng-if="imports.length === 1">
             <div class="form-group">
+                <label>What property do you want to connect to?<span class="required">*</span></label>
+                <div ng-model="pms.selectedProperty" custom-select="property.name for property in properties | filter: $searchTerm"></div>
 
             </div>
         </form>
@@ -20,5 +22,5 @@
     </div>
 </div>
 <div ng-if="!loading" class="modal-footer" style="text-align: center">
-
+    <button ng-if="pms.selectedProperty && !pms.config" class="btn btn-warning contact-submit" ng-click="connect()">Connect</button>
 </div>
