@@ -200,9 +200,16 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             }).error(function (response) {
                 return response;
             });
-        }
+        };
 
-
+    fac.updatePms = function (userId, pms) {
+        return $http.put(gAPI + "/api/1.0/properties/" + userId + "/pms"+ "?bust=" + (new Date()).getTime(), {pms: pms}, {
+            headers: {"Authorization": "Bearer " + $cookies.get("token")}}).success(function(response) {
+            return response;
+        }).error(function(response) {
+            return response;
+        });
+    };
         fac.Approve = function (id) {
             return $http.get(gAPI + '/api/1.0/properties/' + id + '/approve'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

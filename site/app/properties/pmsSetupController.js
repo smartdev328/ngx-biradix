@@ -25,7 +25,8 @@ define([
                     select: "_id floorplans orgid pms name",
                 }).then(function(response) {
                     $scope.property = response.data.properties[0]
-                    $scope.pms.config = property.pms;
+                    $scope.pms.config = $scope.property.pms;
+
                     // TODO: When this becomes client facing, we cannot return all integration client side
                     $importService.read().then(function(response) {
                         $scope.imports = _.filter(response.data, function(i) {
@@ -40,11 +41,25 @@ define([
                                     $scope.pms.selectedProperty = _.find($scope.properties, function(p) {
                                        return p.name === $scope.property.name;
                                     });
+                                } else {
+                                    // TODO: Need to make this extensible for multiple PMSes
+                                    $scope.pms.selectedProperty = _.find($scope.properties, function(p) {
+                                        return p.id === $scope.pms.config.yardi.propertyId;
+                                    });
                                 }
                                 $scope.loaded = true;
                             });
                         }
                     });
+                });
+            };
+
+            $scope.disconnect = function() {
+                $scope.loaded = false;
+                $propertyService.updatePms($scope.property._id, undefined).then(function(response) {
+                    toastr.warning($scope.property.name + " has been disconnected from the PMS");
+                    $scope.loaded = true;
+                    $scope.reload();
                 });
             };
 
@@ -57,7 +72,12 @@ define([
                         floorplans: []
                     }
                 };
-                console.log(pms);
+                $scope.loaded = false;
+                $propertyService.updatePms($scope.property._id, pms).then(function(response) {
+                    toastr.success($scope.property.name + " has been connected to the PMS");
+                    $scope.loaded = true;
+                    $scope.reload();
+                });
             };
 
             $scope.reload();

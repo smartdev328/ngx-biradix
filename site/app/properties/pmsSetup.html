@@ -12,8 +12,8 @@
         <form ng-if="imports.length === 1">
             <div class="form-group">
                 <label>What property do you want to connect to?<span class="required">*</span></label>
-                <div ng-model="pms.selectedProperty" custom-select="property.name for property in properties | filter: $searchTerm"></div>
-
+                <div ng-if="!pms.config" ng-model="pms.selectedProperty" custom-select="property.name for property in properties | filter: $searchTerm"></div>
+                <div ng-if="pms.config">Connected to: <b>{{pms.selectedProperty.name}}</b> - <A href ng-click="disconnect()">Disconnect</A></div>
             </div>
         </form>
         <div class="alert alert-warning" role="alert" ng-if="imports.length === 0"><b>There are no PMS Integrations configured for your organization.</b></div>
