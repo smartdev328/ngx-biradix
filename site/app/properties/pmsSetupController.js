@@ -11,6 +11,8 @@ define([
             $scope.pms = {
                 selectedProperty: null,
                 config: null,
+                floorplans: [],
+                unmappedFloorplans: [],
             };
             $scope.cancel = function() {
                 $uibModalInstance.dismiss("cancel");
@@ -47,7 +49,38 @@ define([
                                         return p.id === $scope.pms.config.yardi.propertyId;
                                     });
                                 }
-                                $scope.loaded = true;
+
+                                $scope.property.floorplans.forEach(function(fp) {
+                                    $scope.pms.floorplans.push({
+                                        id: fp.id,
+                                        name: "BI:Radix: " + fp.bedrooms + "x" + fp.bathrooms + " " + fp.description + ", Sqft: " + fp.sqft + ", Units: "+ fp.units,
+                                        bedrooms: fp.bedrooms,
+                                        bathrooms: fp.bathrooms,
+                                        description: fp.description,
+                                        sqft: fp.sqft,
+                                        units: fp.units
+                                    });
+                                });
+
+                                if ($scope.pms.selectedProperty) {
+                                    $importIntegrationService.getLatestFloorplans($scope.imports[0].id, $scope.pms.selectedProperty.id).then(function(response) {
+                                        response.data.forEach(function(fp) {
+                                            $scope.pms.unmappedFloorplans.push({
+                                                id: fp.id,
+                                                name: "Yardi: " + fp.bedrooms + "x" + fp.bathrooms + " " + fp.description + ", Sqft: " + fp.sqft + ", Units: "+ fp.units,
+                                                mappedId: null,
+                                                bedrooms: fp.bedrooms,
+                                                bathrooms: fp.bathrooms,
+                                                description: fp.description,
+                                                sqft: fp.sqft,
+                                                units: fp.units
+                                            });
+                                        });
+                                        $scope.loaded = true;
+                                    });
+                                } else {
+                                    $scope.loaded = true;
+                                }
                             });
                         }
                     });
@@ -77,6 +110,39 @@ define([
                     toastr.success($scope.property.name + " has been connected to the PMS");
                     $scope.loaded = true;
                     $scope.reload();
+                });
+            };
+
+            $scope.bestmatch = function() {
+                var current;
+                $scope.pms.unmappedFloorplans.forEach(function(fp) {
+                    current = _.filter( $scope.pms.floorplans, function(c) {
+                         return c.bedrooms.toString() === fp.bedrooms.toString() && c.bathrooms.toString() === fp.bathrooms.toString();
+                    });
+                    if (current.length === 1) {
+                        fp.mappedId = current[0].id;
+                    } else {
+                        current = _.filter(current, function(c) {
+                            return c.description.toString() === fp.description.toString();
+                        });
+                        if (current.length === 1) {
+                            fp.mappedId = current[0].id;
+                        } else {
+                            current = _.filter(current, function(c) {
+                                return c.sqft.toString() === fp.sqft.toString();
+                            });
+                            if (current.length === 1) {
+                                fp.mappedId = current[0].id;
+                            } else {
+                                current = _.filter(current, function(c) {
+                                    return c.units.toString() === fp.units.toString();
+                                });
+                                if (current.length === 1) {
+                                    fp.mappedId = current[0].id;
+                                }
+                            }
+                        }
+                    }
                 });
             };
 
