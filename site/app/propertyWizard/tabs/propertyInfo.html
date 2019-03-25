@@ -107,9 +107,28 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-6" ng-show="!isCustom && $root.me.permissions.indexOf('Org/Assign') > -1">
-            Company<br>
+    <div class="row" style="
+    font-size: 14px;
+    font-style: italic;
+    color: #777;
+    background-color: #d9edf7;
+    margin: 10px 0px 10px 0px;
+    padding: 5px 0px 5px 5px;
+"
+         ng-if="!isCustom && $root.me.permissions.indexOf('Org/Assign') > -1"
+    >
+    <span style="
+    ">BI:Radix Admin</span>
+    </div>
+
+    <div class="row" ng-if="!isCustom && $root.me.permissions.indexOf('Org/Assign') > -1">
+        <div class="col-sm-6">
+            Owner Organization<br>
+            <select class="form-control input-sm"  ng-options="company.name for company in lookups.orgs" ng-model="property.orgid_owner">
+            </select>
+        </div>
+        <div class="col-sm-6">
+            Management Organization<br>
             <select class="form-control input-sm"  ng-options="company.name for company in lookups.orgs" ng-model="property.orgid">
             </select>
         </div>

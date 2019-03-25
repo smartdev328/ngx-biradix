@@ -21,7 +21,7 @@ define([
         $scope.defaultSort = "name_lower";
 
         $scope.search = {}
-        $scope.searchable = ["name", "address", "city", "state", "zip", "company"];
+        $scope.searchable = ["name", "address", "city", "state", "zip", "company", "company_owner"];
         $scope.search["active"] = true;
 
         $scope.options = {
@@ -29,6 +29,7 @@ define([
             showActive: true,
             showCustom: true,
             showShared: true,
+            columnsChanged: false,
         };
 
         $scope.adjustToSize = function(size) {
@@ -47,14 +48,16 @@ define([
                 occupancy: false,
                 ner: false,
                 company: siteAdmin,
+                company_owner: siteAdmin,
                 tools: true,
                 owner: false,
                 lastUpdated: false,
+                _id: false,
             };
         }
 
         $scope.$on('size', function(e,size) {
-            if (!$scope.columnsChanged) {
+            if (!$scope.options.columnsChanged) {
                 $scope.adjustToSize(size);
             }
         });
@@ -96,13 +99,13 @@ define([
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
                 $propertyService.search({
-                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid needsSurvey survey.dateByOwner custom", ids: compids
+                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner needsSurvey survey.dateByOwner custom", ids: compids
                     , skipAmenities: true
                 }).then(function (response) {
                     $propertyService.search({
                         limit: 10000,
                         permission: 'PropertyManage',
-                        select: "_id orgid",
+                        select: "_id orgid orgid_owner",
                         ids: compids
                         , skipAmenities: true
                     }).then(function (responseOwned) {
@@ -165,7 +168,7 @@ define([
             $propertyService.search({
                 limit: 10000,
                 permission: "PropertyManage",
-                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid comps.id comps.excluded comps.orderNumber needsSurvey custom",
+                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner comps.id comps.excluded comps.orderNumber needsSurvey custom",
                 skipAmenities: true,
                 hideCustomComps: true,
             }).then(function(response) {
@@ -339,7 +342,16 @@ define([
                 header.push('Active')
             }
             if ($scope.show.company) {
-                header.push('Company')
+                header.push('Manage Org.');
+            }
+            if ($scope.show.company_owner) {
+                header.push('Owner Org.')
+            }
+            if ($scope.show.owner) {
+                header.push('Custom Owner')
+            }
+            if ($scope.show._id) {
+                header.push("PropertyID");
             }
             content.push(header);
             $scope.filtered.forEach(function (r) {
@@ -377,10 +389,20 @@ define([
                 if ($scope.show.company) {
                     row.push(r['company'] || '')
                 }
-                content.push(row);
-            })
+                if ($scope.show.company_owner) {
+                    row.push(r['company_owner'] || '');
+                }
+                if ($scope.show.owner) {
+                    row.push(r['owner'] || '')
+                }
+                if ($scope.show._id) {
+                    row.push(r["_id"] || "");
+                }
 
-            $gridService.streamCsv('properties.csv', content)
+                content.push(row);
+            });
+
+            $gridService.streamCsv('properties.csv', content);
 
         }
 
