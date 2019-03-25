@@ -175,8 +175,11 @@ define([
                 $scope.data = response.data.properties;
 
                 $scope.customCount = 0;
-
                 $scope.data.forEach(function(p) {
+                    $scope.compsExist = false;
+                    if(p.comps.length > 1) {
+                        $scope.compsExist = true;
+                    }
                     p.name_lower = p.name.toLowerCase();
                     p.isCustom = false;
                     if (p.custom && p.custom.owner && p.custom.owner.name) {
@@ -203,7 +206,7 @@ define([
                         }
                     }
 
-                    if ($scope.data.length < 6) {
+                    if ($scope.data.length < 6 && $scope.compsExist) {
                         $scope.toggleOpen(p);
                     }
                 })
@@ -589,7 +592,7 @@ define([
         };
 
         $scope.addComp = function(subject) {
-            if (!subject.open && !(subject.comps[0].id == subject._id && subject.comps.length === 1)) {
+            if (!subject.open && subject.comps.length > 1) {
                 $scope.toggleOpen(subject);
             }
 
