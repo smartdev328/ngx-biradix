@@ -357,7 +357,7 @@
                 ></div>
                 {{$index + 1}}. {{comp.name}}
                 <i class="fa fa-exclamation-triangle warning"
-                   style="cursor:pointer;font-size:14px;padding-left:1px;color:orange"
+                   style="cursor:pointer;font-size:12px;padding-left:1px;color:orange"
                    ng-if="comp.needsSurvey"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
@@ -365,7 +365,7 @@
                    uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
                 ></i>
                 <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:14px;padding-left:1px"
+                   style="cursor:pointer;font-size:12px;padding-left:1px"
                    ng-if="hasExcluded(row,comp)"
                    ng-click="editLink(row, comp)"
                    onclick="event.stopPropagation()"
