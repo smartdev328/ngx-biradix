@@ -28,6 +28,8 @@ define([
                 }).then(function(response) {
                     $scope.property = response.data.properties[0]
                     $scope.pms.config = $scope.property.pms;
+                    $scope.pms.floorplans = [];
+                    $scope.pms.unmappedFloorplans = [];
 
                     // TODO: When this becomes client facing, we cannot return all integration client side
                     $importService.read().then(function(response) {
