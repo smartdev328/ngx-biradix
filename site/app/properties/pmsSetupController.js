@@ -169,7 +169,7 @@ define([
             $scope.bestmatch = function() {
                 var current;
                 $scope.pms.unmappedFloorplans.forEach(function(fp) {
-                    if ((fp.bedrooms.toString() === "0" && fp.bathrooms.toString() === "0") || fp.untits.toString() === "0") {
+                    if ((fp.bedrooms.toString() === "0" && fp.bathrooms.toString() === "0") || fp.units.toString() === "0") {
                         $scope.pms.excludedFloorplans.push(fp);
                         fp.deleted = true;
                     } else {
