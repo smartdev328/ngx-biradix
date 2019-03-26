@@ -49,16 +49,16 @@
                 <div ng-repeat-start="floorplan in pms.floorplans"></div>
                 <div class="floorplan biradix">{{floorplan.name}}</div>
                 <ul ui-sortable="{connectWith: '.list'}" ng-model="floorplan.yardi" class="list">
-                    <div ng-repeat="mapped in floorplan.yardi | filter" class="floorplan mapped"><i class="fa fa-bars"></i> {{mapped.name}}</div>
+                    <div ng-repeat="mapped in floorplan.yardi | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan mapped"><i class="fa fa-bars"></i> {{mapped.name}}</div>
                 </ul>
                 <div ng-repeat-end ng-if="false"></div>
                 <h4>Unmapped Yardi Floor plans:</h4>
                 <ul ui-sortable="{connectWith: '.list'}" ng-model="pms.unmappedFloorplans" class="list">
-                    <div ng-repeat="floorplan in pms.unmappedFloorplans" class="floorplan unmapped"><i class="fa fa-bars"></i> {{floorplan.name}}</div>
+                    <div ng-repeat="floorplan in pms.unmappedFloorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan unmapped"><i class="fa fa-bars"></i> {{floorplan.name}}</div>
                 </ul>
                 <h4>Excluded Yardi Floor plans:</h4>
                 <ul ui-sortable="{connectWith: '.list'}" ng-model="pms.excludedFloorplans" class="list">
-                    <div ng-repeat="floorplan in pms.excludedFloorplans" class="floorplan unmapped"><i class="fa fa-bars"></i> {{floorplan.name}}</div>
+                    <div ng-repeat="floorplan in pms.excludedFloorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan unmapped"><i class="fa fa-bars"></i> {{floorplan.name}}</div>
                 </ul>
 
             </div>
@@ -69,6 +69,7 @@
     </div>
 </div>
 <div ng-if="!loading" class="modal-footer" style="text-align: center">
-    <button ng-if="pms.selectedProperty && !pms.config.importId" class="btn btn-warning contact-submit" ng-click="connect()">Connect</button>
+    <button ng-if="pms.selectedProperty && !pms.config.importId" class="btn btn-warning contact-submit" ng-click="connect(true)">Connect</button>
     <button ng-if="pms.config.importId" class="btn btn-warning contact-submit" ng-click="bestmatch()">Map Best Match</button>
+    <button ng-if="pms.config.importId" class="btn btn-success contact-submit" ng-click="connect(false)">Save Floor Plans</button>
 </div>

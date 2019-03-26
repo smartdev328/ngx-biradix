@@ -81,6 +81,33 @@ define([
                                                 units: fp.units
                                             });
                                         });
+
+                                        var yardi;
+                                        var biradix;
+                                        $scope.pms.config.yardi.floorplans.forEach(function(fp) {
+                                            yardi = _.find($scope.pms.unmappedFloorplans, function(ufp) {
+                                               return ufp.id === fp.yardiFloorplanId;
+                                            });
+
+                                            biradix = _.find($scope.pms.floorplans, function(ufp) {
+                                                return ufp.id === fp.floorplanId;
+                                            });
+
+                                            if (yardi) {
+                                                if (fp.floorplanId === "EXCLUDE") {
+                                                    $scope.pms.excludedFloorplans.push(yardi);
+                                                    yardi.deleted = true;
+                                                } else if (biradix) {
+                                                    yardi.deleted = true;
+                                                    biradix.yardi.push(yardi);
+                                                }
+                                            }
+                                        });
+
+                                        _.remove($scope.pms.unmappedFloorplans, function(x) {
+                                            return x.deleted;
+                                        });
+
                                         $scope.loaded = true;
                                     });
                                 } else {
@@ -101,7 +128,7 @@ define([
                 });
             };
 
-            $scope.connect = function() {
+            $scope.connect = function(isNew) {
                 var pms = {
                     importId: $scope.imports[0].id,
                     importProvider: $scope.imports[0].provider,
@@ -110,9 +137,30 @@ define([
                         floorplans: []
                     }
                 };
+                if (!isNew) {
+                    $scope.pms.floorplans.forEach(function(fp) {
+                        fp.yardi.forEach(function(y) {
+                            pms.yardi.floorplans.push({
+                                floorplanId: fp.id,
+                                yardiFloorplanId: y.id,
+                            });
+                        });
+                    });
+
+                    $scope.pms.excludedFloorplans.forEach(function(fp) {
+                        pms.yardi.floorplans.push({
+                            floorplanId: "EXCLUDE",
+                            yardiFloorplanId: fp.id,
+                        });
+                    });
+                }
                 $scope.loaded = false;
                 $propertyService.updatePms($scope.property._id, pms).then(function(response) {
-                    toastr.success($scope.property.name + " has been connected to the PMS");
+                    if (isNew) {
+                        toastr.success($scope.property.name + " has been connected to the PMS");
+                    } else {
+                        toastr.success($scope.property.name + " mapped floor plans have been updated");
+                    }
                     $scope.loaded = true;
                     $scope.reload();
                 });
@@ -121,7 +169,7 @@ define([
             $scope.bestmatch = function() {
                 var current;
                 $scope.pms.unmappedFloorplans.forEach(function(fp) {
-                    if (fp.bedrooms.toString() === "0" && fp.bathrooms.toString() === "0") {
+                    if ((fp.bedrooms.toString() === "0" && fp.bathrooms.toString() === "0") || fp.untits.toString() === "0") {
                         $scope.pms.excludedFloorplans.push(fp);
                         fp.deleted = true;
                     } else {
