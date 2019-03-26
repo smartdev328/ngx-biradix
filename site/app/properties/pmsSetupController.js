@@ -13,6 +13,7 @@ define([
                 config: null,
                 floorplans: [],
                 unmappedFloorplans: [],
+                excludedFloorplans: [],
             };
             $scope.cancel = function() {
                 $uibModalInstance.dismiss("cancel");
@@ -30,6 +31,7 @@ define([
                     $scope.pms.config = $scope.property.pms;
                     $scope.pms.floorplans = [];
                     $scope.pms.unmappedFloorplans = [];
+                    $scope.pms.excludedFloorplans = [];
 
                     // TODO: When this becomes client facing, we cannot return all integration client side
                     $importService.read().then(function(response) {
@@ -60,7 +62,8 @@ define([
                                         bathrooms: fp.bathrooms,
                                         description: fp.description,
                                         sqft: fp.sqft,
-                                        units: fp.units
+                                        units: fp.units,
+                                        yardi: []
                                     });
                                 });
 
@@ -118,33 +121,38 @@ define([
             $scope.bestmatch = function() {
                 var current;
                 $scope.pms.unmappedFloorplans.forEach(function(fp) {
-                    current = _.filter( $scope.pms.floorplans, function(c) {
-                         return c.bedrooms.toString() === fp.bedrooms.toString() && c.bathrooms.toString() === fp.bathrooms.toString();
-                    });
-                    if (current.length === 1) {
-                        fp.mappedId = current[0].id;
+                    if (fp.bedrooms.toString() === "0" && fp.bathrooms.toString() === "0") {
+                        $scope.pms.excludedFloorplans.push(fp);
+                        fp.deleted = true;
                     } else {
-                        current = _.filter(current, function(c) {
-                            return c.description.toString() === fp.description.toString();
+                        current = _.filter($scope.pms.floorplans, function (c) {
+                            return c.bedrooms.toString() === fp.bedrooms.toString() && c.bathrooms.toString() === fp.bathrooms.toString();
                         });
                         if (current.length === 1) {
-                            fp.mappedId = current[0].id;
+                            current[0].yardi.push(fp);
+                            fp.deleted = true;
                         } else {
-                            current = _.filter(current, function(c) {
+                            current = _.filter(current, function (c) {
                                 return c.sqft.toString() === fp.sqft.toString();
                             });
                             if (current.length === 1) {
-                                fp.mappedId = current[0].id;
+                                current[0].yardi.push(fp);
+                                fp.deleted = true;
                             } else {
-                                current = _.filter(current, function(c) {
+                                current = _.filter(current, function (c) {
                                     return c.units.toString() === fp.units.toString();
                                 });
                                 if (current.length === 1) {
-                                    fp.mappedId = current[0].id;
+                                    current[0].yardi.push(fp);
+                                    fp.deleted = true;
                                 }
                             }
                         }
                     }
+                });
+
+                _.remove($scope.pms.unmappedFloorplans, function(x) {
+                    return x.deleted;
                 });
             };
 
