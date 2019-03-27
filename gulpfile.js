@@ -73,6 +73,7 @@ gulp.task("globaljs", function() {
 
         "./site/services/authService.js",
         "./site/services/propertyService.js",
+        "./site/services/marketSurveyService.js",
         "./site/services/amenityService.js",
         "./site/services/reputationService.js",
         "./site/services/keenService.js",

@@ -1,5 +1,5 @@
-angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope","toastr", "$location", "$propertyService","$dialog", "surveyid", "$authService","$auditService","options","$userService","$propertyUsersService","$cookieSettingsService", "$keenService", function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService,$keenService) {
-
+angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService",
+    function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService) {
             $scope.editableSurveyId = surveyid;
             $scope.settings = {showNotes: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false};
             $scope.sort = "";
@@ -74,139 +74,12 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     me();
                     $scope.settings.showDetailed = $rootScope.me.settings.monthlyConcessions;
 
-                    $propertyService.search({
-                        limit: 1,
-                        permission: ["PropertyManage", "CompManage"],
-                        ids: [id],
-                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id survey.date orgid custom",
-                }).then(function(response) {
-                        $scope.property = response.data.properties[0]
-                        $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
-                        $scope.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
-                        $scope.hasPhone = $scope.property.phone && $scope.property.phone.length > 0;
-                        $scope.hasContact = $scope.hasName || $scope.hasEmail || $scope.hasPhone;
-
-                        $scope.survey = {
-                            floorplans: $scope.property.floorplans,
-                            location_amenities: $scope.property.location_amenities,
-                            community_amenities: $scope.property.community_amenities
+                    // Call survey get property
+                    $marketSurveyService.getPropertyWithSurvey(id, surveyid, $scope.settings, function(response) {
+                        for (var key in response) {
+                           $scope[key] = response[key];
                         }
-
-                        $scope.survey.floorplans.forEach(function (fp) {
-                            fp.rent = fp.rent || ""
-                            fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : "";
-                        })
-                        $scope.survey.atr = $scope.survey.atr || "";
-                        $scope.survey.leased = $scope.survey.leased || "";
-                        $scope.survey.renewal = $scope.survey.renewal || "";
-                        $scope.survey.occupancy = $scope.survey.occupancy || "";
-                        $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || "";
-                        $scope.survey.weeklyleases = $scope.survey.weeklyleases || "";
-
-                        if ($scope.property.survey && $scope.property.survey.date) {
-                            $scope.survey.survey_date = $scope.property.date;
-                        }
-
-                        if (!$scope.editableSurveyId && $scope.property.survey) {
-                            $scope.editableSurveyId = $scope.property.survey.id;
-                        }
-
-                        if ($scope.property.survey && $scope.editableSurveyId) {
-                            $propertyService.getSurvey(id, $scope.editableSurveyId).then(function (response) {
-                                var s = response.data.survey;
-                                if (s && s.length > 0) {
-                                    s = s[0];
-                                    $scope.survey.leased = s.leased != null && !isNaN(s.leased) ? s.leased : "";
-                                    $scope.survey.atr = s.atr != null && !isNaN(s.atr) ? s.atr : "";
-                                    $scope.survey.atr_percent = s.atr_percent != null && !isNaN(s.atr_percent) ? s.atr_percent : "";
-                                    $scope.survey.renewal = s.renewal != null && !isNaN(s.renewal) ? s.renewal : "";
-                                    $scope.survey.occupancy = s.occupancy != null && !isNaN(s.occupancy) ? s.occupancy : "";
-                                    $scope.survey.weeklytraffic = s.weeklytraffic
-                                    $scope.survey.weeklyleases = s.weeklyleases
-                                    $scope.survey.notes = s.notes;
-                                    $scope.survey.survey_date = s.date;
-                                    $scope.settings.showNotes = (s.notes || "") != "";
-
-                                    var removeFloorplans = [];
-
-                                    var bFloorplansChanged = false
-                                    var old;
-                                    $scope.survey.floorplans.forEach(function(fp, i) {
-                                        old = _.find(s.floorplans, function(ofp) {
-                                            return ofp.id.toString() == fp.id.toString();
-                                        });
-
-                                        if (old) {
-                                            fp.rent = old.rent;
-                                            fp.concessions = old.concessions;
-                                            fp.concessionsOneTime = old.concessionsOneTime;
-                                            fp.concessionsMonthly = old.concessionsMonthly;
-
-                                            if (surveyid) {
-                                                $scope.survey.floorplans[i] = _.cloneDeep(old);
-                                            }
-                                        }
-
-                                        if (typeof fp.concessionsOneTime != "undefined") {
-                                            $scope.settings.showDetailed = true;
-                                        }
-
-
-                                        if (!old) {
-                                            // Always Keep track of floorplan changes
-                                            bFloorplansChanged = true;
-
-                                            // If we are modifying a survey and there is a new floorplan, exclude it
-                                            if (surveyid) {
-                                                removeFloorplans.push(fp.id.toString());
-                                            }
-                                        }
-                                    })
-
-
-                                    var removed = _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
-
-                                    var n;
-                                    s.floorplans.forEach(function (fp) {
-                                        n = _.find($scope.survey.floorplans, function (nfp) {
-                                            return nfp.id.toString() == fp.id.toString()
-                                        })
-
-                                        if (!n) {
-                                            // Add missing floorplans from survey being edited
-                                            if (surveyid) {
-                                                $scope.survey.floorplans.push(fp);
-                                            }
-                                            // Always Keep track of floorplan changes
-                                            bFloorplansChanged = true;
-                                        }
-                                    })
-
-
-                                    //If Adding a new Survey and no changes in floorplans and there is already a survey today, edit that one
-                                    if (!surveyid && !bFloorplansChanged) {
-                                        //var hoursOld = ((new Date()).getTime() - (new Date(s.date)).getTime()) / 1000 / 60 / 60;
-                                        //if (hoursOld < 24) {
-                                        //    surveyid = s._id;
-                                        //}
-                                        var d1 = new Date();
-                                        var d2 = new Date(s.date);
-                                        if (d1.getDate() == d2.getDate() && d1.getMonth() == d2.getMonth() && d1.getYear() == d2.getYear()) {
-                                            surveyid = s._id;
-                                        }
-                                    }
-
-                                    if (surveyid) {
-                                        $scope.editMode = true;
-                                        $scope.editDate = s.date;
-                                    }
-                                }
-
-                                $scope.doneLoading();
-                            });
-                        } else {
-                            $scope.doneLoading();
-                        }
+                        $scope.doneLoading();
                     });
                 }
             });
