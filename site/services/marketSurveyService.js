@@ -132,13 +132,24 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             }
                         }
 
-                        callback(responseObj);
+                        getPMS(responseObj, callback);
                     });
                 } else {
-                    callback(responseObj);
+                    getPMS(responseObj, callback);
                 }
             });
         };       
 
+        var getPMS = function(responseObj, callback) {
+            if (responseObj.property.pms && responseObj.property.pms.importId && !responseObj.editMode) {
+                responseObj.pms = {};
+
+                callback(responseObj);
+            } else {
+                callback(responseObj);
+            }
+        };
+
         return fac;
     }]);
+

@@ -263,7 +263,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                 $scope.originalSurvey = _.cloneDeep($scope.survey);
 
-                if (!$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
+                if (!$scope.property.orgid && $rootScope.me.roles[0] !== "Guest") {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
                             $userService.search({ids: response.data.users, select: "first last email bounceReason bounceDate guestStats"}).then(function (response) {
                                     $scope.swap.guests = response.data.users;
@@ -274,7 +274,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                             u.lastCompleted = null;
 
                                             if (u.guestStats) {
-                                                var stats = _.find(u.guestStats, function(x) {return x.propertyid == $scope.property._id.toString()})
+                                                var stats = _.find(u.guestStats, function(x) {
+                                                    return x.propertyid == $scope.property._id.toString();
+                                                });
                                                 if (stats) {
                                                     u.lastEmailed = stats.lastEmailed;
                                                     u.lastCompleted = stats.lastCompleted;
@@ -285,8 +287,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                         $scope.swap.who = $cookieSettingsService.getSurveyGuestOption($scope.property._id);
                                         $scope.swap.selectedGuest = $scope.swap.guests[0];
                                         $scope.showGuests();
-                                    }
-                                     else {
+                                    } else {
                                         $scope.showSurvey();
                                     }
                                 },
@@ -310,7 +311,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.surveyWhoSelector = function() {
                 if (!$scope.swap.who) {
                     toastr.error("Please select an option.");
-                } else if ($scope.swap.who == 'manual') {
+                } else if ($scope.swap.who === "manual") {
                     $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'manual');
                     $scope.showSurvey();
                 } else {
@@ -367,14 +368,20 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.showSurvey = function() {
                 $scope.localLoading = true;
                 $scope.showGuests = false;
+
+                // Don't focus on fields in survey if we are PMSing
+                if ($scope.pms) {
+                    return;
+                }
+
                 window.setTimeout(function() {
-                    var first = $('.survey-values').find('input')[0];
+                    var first = $(".survey-values").find("input")[0];
                     first.focus();
                     first.select();
                 }, 300);
             }
 
-            $scope.isValid  = function(field, required, allowDecimal, min, max) {
+            $scope.isValid = function(field, required, allowDecimal, min, max) {
 
                 if (typeof field === "undefined") {
                     return false;

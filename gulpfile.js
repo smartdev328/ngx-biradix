@@ -142,6 +142,7 @@ gulp.task("globalcss", function() {
         "./site/app/updateprofile/updateProfile.css",
         "./site/app/contact/contact.css",
         "./site/app/propertyWizard/propertyWizard.css",
+        "./site/app/marketSurvey/marketSurvey.css",
     ];
 
     const cssStream = gulp.src(filesExist(cssFiles));
