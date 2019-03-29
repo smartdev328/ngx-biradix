@@ -1,6 +1,6 @@
-angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService",
-    function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService) {
-            $scope.editableSurveyId = surveyid;
+angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
+    function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
+            $scope.surveyid = surveyid;
             $scope.settings = {showNotes: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false};
             $scope.sort = "";
 
@@ -11,6 +11,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             ga("set", "title", "/marketSurvey");
             ga("set", "page", "/marketSurvey");
             ga("send", "pageview");
+
+        $marketSurveyPMSService.registerPMSFunctions($scope);
+
             $scope.swap = {};
 
             $scope.cancel = function () {
@@ -75,7 +78,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     $scope.settings.showDetailed = $rootScope.me.settings.monthlyConcessions;
 
                     // Call survey get property
-                    $marketSurveyService.getPropertyWithSurvey(id, surveyid, $scope.settings, function(response) {
+                    $marketSurveyService.getPropertyWithSurvey(id, $scope.surveyid, $scope.settings, function(response) {
                         for (var key in response) {
                            $scope[key] = response[key];
                         }
@@ -852,7 +855,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     isSuccess = false;
                 }
                 if (isSuccess) {
-                    if (surveyid) {
+                    if ($scope.surveyid) {
                         $scope.success();
                         return;
                     }
@@ -916,10 +919,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 else {
                     $scope.guestResponded();
                     $rootScope.$broadcast('data.reload');
-                    if (surveyid) {
+                    if ($scope.surveyid) {
                         toastr.success('Property Survey updated successfully.');
-                    }
-                    else {
+                    } else {
                         toastr.success('Property Survey created successfully.');
                     }
 
@@ -946,8 +948,8 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 $("button.contact-submit").prop("disabled", true);
                 ngProgress.start();
 
-                if (surveyid) {
-                    $propertyService.updateSurvey(id, surveyid, $scope.survey).then(surveySuccess, surveyError);
+                if ($scope.surveyid) {
+                    $propertyService.updateSurvey(id, $scope.surveyid, $scope.survey).then(surveySuccess, surveyError);
                 } else {
                     $propertyService.createSurvey(id, $scope.survey).then(surveySuccess, surveyError);
                 }
@@ -1003,7 +1005,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 $("button.contact-submit").prop("disabled", true);
 
                 $dialog.confirm("Are you sure you want to delete this Property Survey?", function() {
-                    $propertyService.deleteSurvey(id, surveyid).then(function(response) {
+                    $propertyService.deleteSurvey(id, $scope.surveyid).then(function(response) {
                             $("button.contact-submit").prop("disabled", false);
                             if (response.data.errors) {
                                 toastr.error(_.pluck(response.data.errors, "msg").join("<br>"));

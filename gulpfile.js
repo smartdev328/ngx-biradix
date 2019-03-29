@@ -74,6 +74,7 @@ gulp.task("globaljs", function() {
         "./site/services/authService.js",
         "./site/services/propertyService.js",
         "./site/services/marketSurveyService.js",
+        "./site/services/marketSurveyPMSService.js",
         "./site/services/amenityService.js",
         "./site/services/reputationService.js",
         "./site/services/keenService.js",
@@ -105,6 +106,7 @@ gulp.task("globaljs", function() {
 
         "./site/app/rootController.js",
         "./site/app/marketSurvey/marketSurveyController.js",
+        "./site/app/marketSurvey/marketSurveyOccupancyController.js",
 
         "./site/components/reports/communityAmenities.js",
         "./site/components/reports/locationAmenities.js",

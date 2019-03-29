@@ -38,12 +38,8 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                     responseObj.survey.survey_date = responseObj.property.date;
                 }
 
-                if (!responseObj.editableSurveyId && responseObj.property.survey) {
-                    responseObj.editableSurveyId = responseObj.property.survey.id;
-                }
-
-                if (responseObj.property.survey && responseObj.editableSurveyId) {
-                    $propertyService.getSurvey(id, responseObj.editableSurveyId).then(function(response) {
+                if (responseObj.property.survey && responseObj.property.survey.id) {
+                    $propertyService.getSurvey(id, responseObj.property.survey.id).then(function(response) {
                         var s = response.data.survey;
                         if (s && s.length > 0) {
                             s = s[0];
@@ -122,7 +118,9 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                                 var d1 = new Date();
                                 var d2 = new Date(s.date);
                                 if (d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getYear() === d2.getYear()) {
+                                    responseObj.surveyid = s._id;
                                     surveyid = s._id;
+                                    responseObj.forcedEdit = true;
                                 }
                             }
 
@@ -141,11 +139,20 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
         };       
 
         var getPMS = function(responseObj, callback) {
-            if (responseObj.property.pms && responseObj.property.pms.importId && !responseObj.editMode) {
+            if (responseObj.property.pms && responseObj.property.pms.importId && (!responseObj.editMode || responseObj.forcedEdit)) {
                 responseObj.pms = {};
 
                 $importIntegrationService.getLatestFullYardi(responseObj.property._id).then(function(response) {
+                    responseObj.orgiginalSurvey = _.cloneDeep(responseObj.survey);
                     responseObj.pms = response.data;
+                    responseObj.pms.show = !responseObj.forcedEdit;
+                    responseObj.pms.values = {
+                        occupancy: "YARDI",
+                        leased: "YARDI",
+                        atr: "YARDI",
+                        weeklytraffic: "YARDI",
+                        weeklyleases: "YARDI",
+                    };
                     callback(responseObj);
                 });
             } else {
