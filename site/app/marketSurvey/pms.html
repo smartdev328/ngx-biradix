@@ -27,8 +27,29 @@
 
             <Td>
                 <strong>BI:Radix</strong><Br>
-                <i>Last update: 2/1/18</i><Br>
+                <i>Last update: {{showDate(survey.survey_date)}}</i><Br>
             </Td>
+            <td>
+                <div ng-if="survey.occupancy !== ''"><input type="radio"> {{survey.occupancy | number: 1}}</div>
+                <div ng-if="survey.occupancy === ''">n/a</div>
+            </td>
+            <td>
+                <div ng-if="survey.leased !== ''"><input type="radio"> {{survey.leased | number: 2}}</div>
+                <div ng-if="survey.leased === ''">n/a</div>
+            </td>
+
+            <td>
+                <div ng-if="survey.atr !== ''"><input type="radio"> {{survey.atr | number: 2}}</div>
+                <div ng-if="survey.atr === ''">n/a</div>
+            </td>
+            <td>
+                <div ng-if="survey.weeklytraffic !== ''"><input type="radio"> {{survey.weeklytraffic | number: 2}}</div>
+                <div ng-if="survey.weeklytraffic === ''">n/a</div>
+            </td>
+            <td>
+                <div ng-if="survey.weeklyleases !== ''"><input type="radio"> {{survey.weeklyleases | number: 2}}</div>
+                <div ng-if="survey.weeklyleases === ''">n/a</div>
+            </td>
         </Tr>
         <Tr>
             <td class="center">
@@ -37,8 +58,23 @@
 
             <Td>
                 <strong>Yardi</strong><Br>
-                <i>Last update: 2/1/18</i><Br>
+                <i>Last update: {{showDate(pms.property.date)}}</i><Br>
             </Td>
+            <td>
+                <div><input type="radio"> {{pms.property.occupancy | number: 1}}</div>
+            </td>
+            <td>
+                <div><input type="radio"> {{pms.property.leased | number: 2}}</div>
+            </td>
+            <td>
+                <div><input type="radio"> {{pms.property.atr | number: 0}}</div>
+            </td>
+            <td>
+                <div><input type="radio"> {{pms.property.weeklytraffic | number: 0}}</div>
+            </td>
+            <td>
+                <div><input type="radio"> {{pms.property.weeklyleases | number: 0}}</div>
+            </td>
         </Tr>
     </tbody>
 </table>

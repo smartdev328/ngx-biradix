@@ -1,5 +1,5 @@
-angular.module("biradix.global").factory("$marketSurveyService", ["$propertyService",
-    function($propertyService) {
+angular.module("biradix.global").factory("$marketSurveyService", ["$propertyService", "$importIntegrationService",
+    function($propertyService, $importIntegrationService) {
         var fac = {};
 
         fac.getPropertyWithSurvey = function(id, surveyid, settings, callback) {
@@ -144,7 +144,10 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
             if (responseObj.property.pms && responseObj.property.pms.importId && !responseObj.editMode) {
                 responseObj.pms = {};
 
-                callback(responseObj);
+                $importIntegrationService.getLatestFullYardi(responseObj.property._id).then(function(response) {
+                    responseObj.pms = response.data;
+                    callback(responseObj);
+                });
             } else {
                 callback(responseObj);
             }

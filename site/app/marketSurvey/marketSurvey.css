@@ -131,3 +131,7 @@
 .market-survey .new-table tbody td {
     padding:5px;
 }
+
+.market-survey .new-table input[type=radio] {
+    vertical-align: sub;
+}
