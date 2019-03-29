@@ -34,6 +34,25 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                     scope.survey.weeklyleases = scope.pms.property.weeklyleases;
                 }
 
+                var fpid;
+                var surveyFp;
+                var originalSurveyFp;
+                for (fpid in scope.pms.values.rent) {
+                    surveyFp = _.find(scope.survey.floorplans, function(fp) {
+                        return fp.id.toString() === fpid.toString();
+                    });
+
+                    originalSurveyFp = _.find(scope.originalSurvey.floorplans, function(fp) {
+                        return fp.id.toString() === fpid.toString();
+                    });
+
+                    if (scope.pms.values.rent[fpid] === "BIRADIX") {
+                        surveyFp.rent = originalSurveyFp.rent;
+                    } else {
+                        surveyFp.rent = scope.pms.mappedFloorplans[fpid];
+                    }
+                }
+
                 scope.pms.show = false;
             };
 

@@ -152,7 +152,16 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                         atr: "YARDI",
                         weeklytraffic: "YARDI",
                         weeklyleases: "YARDI",
+                        rent: {}
                     };
+
+                    responseObj.pms.mappedFloorplans = {};
+
+                    responseObj.orgiginalSurvey.floorplans.forEach(function(fp) {
+                        responseObj.pms.values.rent[fp.id] = "YARDI";
+                        responseObj.pms.mappedFloorplans[fp.id] = 555;
+                    });
+
                     callback(responseObj);
                 });
             } else {

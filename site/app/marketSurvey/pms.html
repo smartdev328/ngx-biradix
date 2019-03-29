@@ -1,5 +1,6 @@
 <table class="new-table">
     <thead>
+    <tr>
         <th colspan="2">
 
         </th>
@@ -18,71 +19,121 @@
         <th>
             Leases/Week
         </th>
+    </tr>
     </thead>
     <tbody>
-        <Tr>
-            <td class="center">
-                <img src="/images/organizations/biradix-small.png" style="width:16px">
-            </td>
+    <Tr>
+        <td class="center">
+            <img src="/images/organizations/biradix-small.png" style="width:16px">
+        </td>
 
-            <Td>
-                <strong>BI:Radix</strong><Br>
-                <i>Last update: {{showDate(originalSurvey.survey_date)}}</i><Br>
-            </Td>
-            <td>
-                <div ng-if="originalSurvey.occupancy !== ''"><input type="radio" ng-model="pms.values.occupancy" value="BIRADIX"> {{originalSurvey.occupancy | number: 2}}</div>
-                <div ng-if="originalSurvey.occupancy === ''">n/a</div>
-            </td>
-            <td>
-                <div ng-if="originalSurvey.leased !== ''"><input type="radio" ng-model="pms.values.leased" value="BIRADIX"> {{originalSurvey.leased | number: 2}}</div>
-                <div ng-if="originalSurvey.leased === ''">n/a</div>
-            </td>
+        <Td>
+            <strong>BI:Radix</strong><Br>
+            <i>Last update: {{showDate(originalSurvey.survey_date)}}</i><Br>
+        </Td>
+        <td>
+            <div ng-if="originalSurvey.occupancy !== ''"><input type="radio" ng-model="pms.values.occupancy" value="BIRADIX"> {{originalSurvey.occupancy | number: 2}}</div>
+            <div ng-if="originalSurvey.occupancy === ''">n/a</div>
+        </td>
+        <td>
+            <div ng-if="originalSurvey.leased !== ''"><input type="radio" ng-model="pms.values.leased" value="BIRADIX"> {{originalSurvey.leased | number: 2}}</div>
+            <div ng-if="originalSurvey.leased === ''">n/a</div>
+        </td>
 
-            <td>
-                <div ng-if="originalSurvey.atr !== ''"><input type="radio" ng-model="pms.values.atr" value="BIRADIX"> {{originalSurvey.atr | number: 0}}</div>
-                <div ng-if="originalSurvey.atr === ''">n/a</div>
-            </td>
-            <td>
-                <div ng-if="originalSurvey.weeklytraffic !== ''"><input type="radio" ng-model="pms.values.weeklytraffic" value="BIRADIX"> {{originalSurvey.weeklytraffic | number: 0}}</div>
-                <div ng-if="originalSurvey.weeklytraffic === ''">n/a</div>
-            </td>
-            <td>
-                <div ng-if="originalSurvey.weeklyleases !== ''"><input type="radio" ng-model="pms.values.weeklyleases"> {{originalSurvey.weeklyleases | number: 0}}</div>
-                <div ng-if="originalSurvey.weeklyleases === ''">n/a</div>
-            </td>
-        </Tr>
-        <Tr>
-            <td class="center">
-                <img src="/images/organizations/yardi-small.png" style="width:12px">
-            </td>
+        <td>
+            <div ng-if="originalSurvey.atr !== ''"><input type="radio" ng-model="pms.values.atr" value="BIRADIX"> {{originalSurvey.atr | number: 0}}</div>
+            <div ng-if="originalSurvey.atr === ''">n/a</div>
+        </td>
+        <td>
+            <div ng-if="originalSurvey.weeklytraffic !== ''"><input type="radio" ng-model="pms.values.weeklytraffic" value="BIRADIX"> {{originalSurvey.weeklytraffic | number: 0}}</div>
+            <div ng-if="originalSurvey.weeklytraffic === ''">n/a</div>
+        </td>
+        <td>
+            <div ng-if="originalSurvey.weeklyleases !== ''"><input type="radio" ng-model="pms.values.weeklyleases"> {{originalSurvey.weeklyleases | number: 0}}</div>
+            <div ng-if="originalSurvey.weeklyleases === ''">n/a</div>
+        </td>
+    </Tr>
+    <Tr>
+        <td class="center">
+            <img src="/images/organizations/yardi-small.png" style="width:12px">
+        </td>
 
-            <Td>
-                <strong>Yardi</strong><Br>
-                <i>Last update: {{showDate(pms.dates.date)}}</i><Br>
-            </Td>
-            <td>
-                <div><input type="radio" ng-model="pms.values.occupancy" value="YARDI"> {{pms.property.occupancy | number: 2}}
-                    <i class="fa fa-question-circle link"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="top"
-                       uib-popover-html="'View occupancy % breakdown'"
-                       popover-append-to-body="true"
-                       ng-click="pmsOccupancy();"
-                    ></i></div>
-            </td>
-            <td>
-                <div><input type="radio" ng-model="pms.values.leased" value="YARDI"> {{pms.property.leased | number: 2}}</div>
-            </td>
-            <td>
-                <div><input type="radio" ng-model="pms.values.atr" value="YARDI"> {{pms.property.atr | number: 0}}</div>
-            </td>
-            <td>
-                <div><input type="radio" ng-model="pms.values.weeklytraffic" value="YARDI"> {{pms.property.weeklytraffic | number: 0}}</div>
-            </td>
-            <td>
-                <div><input type="radio" ng-model="pms.values.weeklyleases" value="YARDI"> {{pms.property.weeklyleases | number: 0}}</div>
-            </td>
-        </Tr>
+        <Td>
+            <strong>Yardi</strong><Br>
+            <i>Last update: {{showDate(pms.dates.date)}}</i><Br>
+        </Td>
+        <td>
+            <div><input type="radio" ng-model="pms.values.occupancy" value="YARDI"> {{pms.property.occupancy | number: 2}}
+                <i class="fa fa-question-circle link"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="top"
+                   uib-popover-html="'View occupancy % breakdown'"
+                   popover-append-to-body="true"
+                   ng-click="pmsOccupancy();"
+                ></i></div>
+        </td>
+        <td>
+            <div><input type="radio" ng-model="pms.values.leased" value="YARDI"> {{pms.property.leased | number: 2}}</div>
+        </td>
+        <td>
+            <div><input type="radio" ng-model="pms.values.atr" value="YARDI"> {{pms.property.atr | number: 0}}</div>
+        </td>
+        <td>
+            <div><input type="radio" ng-model="pms.values.weeklytraffic" value="YARDI"> {{pms.property.weeklytraffic | number: 0}}</div>
+        </td>
+        <td>
+            <div><input type="radio" ng-model="pms.values.weeklyleases" value="YARDI"> {{pms.property.weeklyleases | number: 0}}</div>
+        </td>
+    </Tr>
+    </tbody>
+</table>
+<table class="new-table">
+    <thead>
+    <Tr>
+        <th>
+            Type
+        </th>
+        <th>
+           Desc
+        </th>
+        <th>
+            Units
+        </th>
+        <th>
+            Sqft
+        </th>
+        <th>
+            <img src="/images/organizations/biradix-small.png" style="width:16px"> <strong>BI:Radix</strong><Br>
+            <i>Last update: {{showDate(originalSurvey.survey_date)}}</i><Br>
+        </th>
+        <th>
+            <img src="/images/organizations/yardi-small.png" style="width:12px">             <strong>Yardi</strong><Br>
+            <i>Last update: {{showDate(pms.dates.date)}}</i><Br>
+        </th>
+    </Tr>
+    </thead>
+    <tbody>
+    <Tr ng-repeat="row in originalSurvey.floorplans | orderBy : getOrder()">
+        <td>
+            {{row.bedrooms}}x{{row.bathrooms}}
+        </td>
+        <td>
+            {{row.description}}
+        </td>
+        <td>
+            {{row.units}}
+        </td>
+        <td>
+            {{row.sqft}}
+        </td>
+        <td>
+            <div ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX"> ${{row.rent | number: 0}}</div>
+            <div ng-if="row.rent === ''">n/a</div>
+        </td>
+        <td>
+            <div><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI"> ${{pms.mappedFloorplans[row.id] | number: 0}}</div>
+        </td>
+    </Tr>
     </tbody>
 </table>
 
