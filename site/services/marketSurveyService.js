@@ -146,12 +146,16 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
             if (responseObj.property.pms && responseObj.property.pms.importId && (!responseObj.editMode || responseObj.survey.pms)) {
                 responseObj.pms = {};
 
-                var pmsId = null;
+                var pmsId = "";
                 if (responseObj.survey.pms) {
                     pmsId = responseObj.survey.pms.id;
                 }
 
                 $importIntegrationService.getFullYardi(responseObj.property._id, pmsId).then(function(response) {
+                    if (!response.data.id) {
+                        delete responseObj.pms;
+                        return callback(responseObj);
+                    }
                     responseObj.pms = response.data;
                     responseObj.pms.show = !pmsId;
                     responseObj.pms.values = {
