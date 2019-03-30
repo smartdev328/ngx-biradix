@@ -242,6 +242,12 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     $scope.settings.showRenewal = true;
                 }
 
+                // If we are using PMS, show these fields
+                if ($scope.pms) {
+                    $scope.settings.showATR = true;
+                    $scope.settings.showLeases = true;
+                }
+
                 $scope.survey.totalUnits = 0;
                 $scope.totals.units = 0;
                 $scope.totals.sqft = 0;
@@ -263,8 +269,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 }
 
                 $scope.survey.floorplans = _.sortByAll($scope.survey.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'fid'])
-
-                $scope.originalSurvey = _.cloneDeep($scope.survey);
 
                 if (!$scope.property.orgid && $rootScope.me.roles[0] !== "Guest") {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
@@ -452,7 +456,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                                 $scope.validation.leased.warnings.change = "";
 
-                                if ($scope.originalSurvey && typeof $scope.originalSurvey.leased !== "undefined" && $scope.originalSurvey.leased >= 0 && $scope.survey.leased) {
+                                if ($scope.originalSurvey && typeof $scope.originalSurvey.leased !== "undefined" && $scope.originalSurvey.leased !== "" && $scope.originalSurvey.leased >= 0 && $scope.survey.leased) {
                                     var percent = 100;
 
                                     if ($scope.originalSurvey.leased > 0) {

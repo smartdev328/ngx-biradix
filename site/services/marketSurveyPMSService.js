@@ -50,8 +50,27 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                         surveyFp.rent = originalSurveyFp.rent;
                     } else {
                         surveyFp.rent = scope.pms.mappedFloorplans[fpid];
+                        if (scope.settings.showDetailed) {
+                            surveyFp.concessionsOneTime = surveyFp.concessionsOneTime || 0;
+                            surveyFp.concessionMonthly = surveyFp.concessionMonthly || 0;
+                        } else {
+                            surveyFp.concessions = surveyFp.concessions || 0;
+                        }
+                    }
+
+                    scope.updateDone(surveyFp, true, "rent");
+                    if (scope.settings.showDetailed) {
+                        scope.updateDone(surveyFp, true, "concessionsOneTime");
+                        scope.updateDone(surveyFp, true, "concessionsMonthly");
+                    } else {
+                        scope.updateDone(surveyFp, true, "concessions");
                     }
                 }
+
+                scope.updateDone("occupancy", true);
+                scope.updateDone("leased", true);
+                scope.updateDone("atr", true);
+                scope.updateDone("traffic", true);
 
                 scope.pms.show = false;
             };
@@ -72,7 +91,7 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                         backdrop: "static",
                         resolve: {
                             occupiedUnitCounts: function() {
-                                return scope.pms.unitCounts.occupied.counts;
+                                return scope.pms.unitCounts.occupied;
                             },
                             totalUnits: function() {
                                 return scope.pms.property.totalUnits;

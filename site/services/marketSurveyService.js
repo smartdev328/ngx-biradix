@@ -130,9 +130,12 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             }
                         }
 
+                        responseObj.originalSurvey = _.cloneDeep(responseObj.survey);
+
                         getPMS(responseObj, callback);
                     });
                 } else {
+                    responseObj.originalSurvey = _.cloneDeep(responseObj.survey);
                     getPMS(responseObj, callback);
                 }
             });
@@ -143,7 +146,6 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                 responseObj.pms = {};
 
                 $importIntegrationService.getLatestFullYardi(responseObj.property._id).then(function(response) {
-                    responseObj.orgiginalSurvey = _.cloneDeep(responseObj.survey);
                     responseObj.pms = response.data;
                     responseObj.pms.show = !responseObj.forcedEdit;
                     responseObj.pms.values = {
@@ -154,10 +156,9 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                         weeklyleases: "YARDI",
                         rent: {}
                     };
-
                     responseObj.pms.mappedFloorplans = {};
 
-                    responseObj.orgiginalSurvey.floorplans.forEach(function(fp) {
+                    responseObj.originalSurvey.floorplans.forEach(function(fp) {
                         responseObj.pms.values.rent[fp.id] = "YARDI";
                         responseObj.pms.mappedFloorplans[fp.id] = 555;
                     });

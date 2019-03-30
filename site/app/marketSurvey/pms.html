@@ -70,6 +70,7 @@
                    uib-popover-html="'View occupancy % breakdown'"
                    popover-append-to-body="true"
                    ng-click="pmsOccupancy();"
+                   ng-if="$root.me.permissions.indexOf('Admin') > -1"
                 ></i></div>
         </td>
         <td>
