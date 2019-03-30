@@ -952,6 +952,14 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 $("button.contact-submit").prop("disabled", true);
                 ngProgress.start();
 
+                if ($scope.pms) {
+                    $scope.survey.pms = {
+                        date: $scope.pms.dates.date,
+                        provider: "YARDI",
+                        id: $scope.pms.id
+                    };
+                }
+
                 if ($scope.surveyid) {
                     $propertyService.updateSurvey(id, $scope.surveyid, $scope.survey).then(surveySuccess, surveyError);
                 } else {

@@ -1,5 +1,5 @@
-angular.module("biradix.global").factory("$marketSurveyService", ["$propertyService", "$importIntegrationService",
-    function($propertyService, $importIntegrationService) {
+angular.module("biradix.global").factory("$marketSurveyService", ["$propertyService", "$importIntegrationService", "toastr",
+    function($propertyService, $importIntegrationService, toastr) {
         var fac = {};
 
         fac.getPropertyWithSurvey = function(id, surveyid, settings, callback) {
@@ -52,6 +52,7 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             responseObj.survey.weeklyleases = s.weeklyleases;
                             responseObj.survey.notes = s.notes;
                             responseObj.survey.survey_date = s.date;
+                            responseObj.survey.pms = s.pms;
                             settings.showNotes = (s.notes || "") !== "";
 
                             var removeFloorplans = [];
@@ -142,12 +143,17 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
         };       
 
         var getPMS = function(responseObj, callback) {
-            if (responseObj.property.pms && responseObj.property.pms.importId && (!responseObj.editMode || responseObj.forcedEdit)) {
+            if (responseObj.property.pms && responseObj.property.pms.importId && (!responseObj.editMode || responseObj.survey.pms)) {
                 responseObj.pms = {};
 
-                $importIntegrationService.getLatestFullYardi(responseObj.property._id).then(function(response) {
+                var pmsId = null;
+                if (responseObj.survey.pms) {
+                    pmsId = responseObj.survey.pms.id;
+                }
+
+                $importIntegrationService.getFullYardi(responseObj.property._id, pmsId).then(function(response) {
                     responseObj.pms = response.data;
-                    responseObj.pms.show = !responseObj.forcedEdit;
+                    responseObj.pms.show = !pmsId;
                     responseObj.pms.values = {
                         occupancy: "YARDI",
                         leased: "YARDI",
@@ -164,6 +170,9 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                     });
 
                     callback(responseObj);
+                }, function(error) {
+                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
             } else {
                 callback(responseObj);
