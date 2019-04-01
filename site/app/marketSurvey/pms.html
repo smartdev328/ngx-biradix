@@ -108,7 +108,8 @@
             <i>Last update: {{showDate(originalSurvey.survey_date)}}</i><Br>
         </th>
         <th>
-            <img src="/images/organizations/yardi-small.png" style="width:12px">             <strong>Yardi</strong><Br>
+            <img src="/images/organizations/yardi-small.png" style="width:12px">
+            <strong>Yardi</strong><Br>
             <i>Last update: {{showDate(pms.dates.date)}}</i><Br>
         </th>
     </Tr>
@@ -132,7 +133,8 @@
             <div ng-if="row.rent === ''">n/a</div>
         </td>
         <td>
-            <div><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI"> ${{pms.mappedFloorplans[row.id] | number: 0}}</div>
+            <div ng-if="pms.mappedFloorplans[row.id] !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI"> ${{pms.mappedFloorplans[row.id]  | number: 0}}</div>
+            <div ng-if="pms.mappedFloorplans[row.id] === ''">n/a</div>
         </td>
     </Tr>
     </tbody>

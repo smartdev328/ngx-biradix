@@ -151,7 +151,7 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                     pmsId = responseObj.survey.pms.id;
                 }
 
-                $importIntegrationService.getFullYardi(responseObj.property._id, pmsId).then(function(response) {
+                $importIntegrationService.getFullYardi(responseObj.property._id, pmsId, responseObj.property.pms.yardi.floorplans).then(function(response) {
                     if (!response.data.id) {
                         delete responseObj.pms;
                         return callback(responseObj);
@@ -168,9 +168,20 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                     };
                     responseObj.pms.mappedFloorplans = {};
 
+                    var pmsFp;
                     responseObj.originalSurvey.floorplans.forEach(function(fp) {
-                        responseObj.pms.values.rent[fp.id] = "YARDI";
-                        responseObj.pms.mappedFloorplans[fp.id] = 555;
+                        pmsFp = _.find(responseObj.pms.floorplans, function(x) {
+                            return x.biradixid === fp.id;
+                        });
+
+                        // If no floorplan is mapped to Yardi, default Biradix Rent
+                        if (pmsFp) {
+                            responseObj.pms.mappedFloorplans[fp.id] = pmsFp.rent;
+                            responseObj.pms.values.rent[fp.id] = "YARDI";
+                        } else {
+                            responseObj.pms.values.rent[fp.id] = "BIRADIX";
+                            responseObj.pms.mappedFloorplans[fp.id] = "";
+                        }
                     });
 
                     callback(responseObj);
