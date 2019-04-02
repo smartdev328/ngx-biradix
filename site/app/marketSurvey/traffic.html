@@ -1,0 +1,57 @@
+<Style>
+    .green {
+        background-color: lightgreen !important;
+    }
+</Style>
+<Div class="market-survey">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Traffic / Week Breakdown</h2>
+    </div>
+    <div ng-class="{'modal-body': true}">
+        <div class="green" style="width:20px; height:20px; border:1px solid #ccc;float:left">
+
+        </div>
+        <Div style="float:left;margin-left:10px;font-size:12px">
+            =  {{dates.startDate | date: 'short'}} to {{dates.endDate | date: 'short'}} Pacific
+        </Div>
+        <Br clear="all">
+        <Br>
+        <table class="new-table">
+            <thead>
+            <th>
+                Prospect Id
+            </th>
+            <th>
+                Event
+            </th>
+            <th>
+                Date
+            </th>
+            </thead>
+            <tbody>
+                <Tr ng-repeat="event in propertyProspects" ng-class="{'green' : event.isValid}">
+                    <td>
+                        {{event.id}}
+                    </td>
+                    <Td>
+                        {{event.eventType}}
+                    </Td>
+                    <Td>
+                        {{event.date | date: 'short'}} Pacific
+                    </Td>
+                </Tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row" style="padding:20px">
+        <div class="col-sm-2">
+
+        </div>
+        <div class="col-xs-10 col-sm-8" style="text-align: center">
+            <a class="btn btn-warning contact-submit" ng-click="cancel()">Done</a>
+        </div>
+
+    </div>
+</Div>

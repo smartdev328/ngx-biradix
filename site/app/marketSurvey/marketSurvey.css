@@ -147,3 +147,7 @@
 .market-survey .new-table .fa.link {
     cursor: pointer;
 }
+
+.market-survey .new-table .nowrap {
+    white-space: nowrap;
+}

@@ -62,7 +62,7 @@
             <strong>Yardi</strong><Br>
             <i>Last update: {{showDate(pms.dates.date)}}</i><Br>
         </Td>
-        <td>
+        <td class="nowrap">
             <div><input type="radio" ng-model="pms.values.occupancy" value="YARDI"> {{pms.property.occupancy | number: 2}}
                 <i class="fa fa-question-circle link"
                    popover-trigger="'mouseenter'"
@@ -73,16 +73,24 @@
                    ng-if="$root.me.permissions.indexOf('Admin') > -1"
                 ></i></div>
         </td>
-        <td>
+        <td class="nowrap">
             <div><input type="radio" ng-model="pms.values.leased" value="YARDI"> {{pms.property.leased | number: 2}}</div>
         </td>
-        <td>
+        <td class="nowrap">
             <div><input type="radio" ng-model="pms.values.atr" value="YARDI"> {{pms.property.atr | number: 0}}</div>
         </td>
-        <td>
-            <div><input type="radio" ng-model="pms.values.weeklytraffic" value="YARDI"> {{pms.property.weeklytraffic | number: 0}}</div>
+        <td class="nowrap">
+            <div><input type="radio" ng-model="pms.values.weeklytraffic" value="YARDI"> {{pms.property.weeklytraffic | number: 0}}
+            <i class="fa fa-question-circle link"
+               popover-trigger="'mouseenter'"
+               popover-placement="top"
+               uib-popover-html="'View weekly traffic'"
+               popover-append-to-body="true"
+               ng-click="pmsTraffic();"
+               ng-if="$root.me.permissions.indexOf('Admin') > -1"
+            ></i></div>
         </td>
-        <td>
+        <td class="nowrap">
             <div><input type="radio" ng-model="pms.values.weeklyleases" value="YARDI"> {{pms.property.weeklyleases | number: 0}}</div>
         </td>
     </Tr>

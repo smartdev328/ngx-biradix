@@ -77,27 +77,41 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
             };
 
             scope.pmsOccupancy = function() {
-                require([
-                    "/app/marketSurvey/marketSurveyOccupancyController.js"
-                ], function() {
-                    $uibModal.open({
-                        templateUrl: "/app/marketSurvey/occupancy.html?bust=" + version,
-                        controller: "marketSurveyOccupancyController",
-                        size: "md",
-                        keyboard: false,
-                        backdrop: "static",
-                        resolve: {
-                            occupiedUnitCounts: function() {
-                                return scope.pms.unitCounts.occupied;
-                            },
-                            totalUnits: function() {
-                                return scope.pms.property.totalUnits;
-                            },
-                            occupancy: function() {
-                                return scope.pms.property.occupancy;
-                            }
+                $uibModal.open({
+                    templateUrl: "/app/marketSurvey/occupancy.html?bust=" + version,
+                    controller: "marketSurveyOccupancyController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        occupiedUnitCounts: function() {
+                            return scope.pms.unitCounts.occupied;
+                        },
+                        totalUnits: function() {
+                            return scope.pms.property.totalUnits;
+                        },
+                        occupancy: function() {
+                            return scope.pms.property.occupancy;
                         }
-                    });
+                    }
+                });
+            };
+
+            scope.pmsTraffic = function() {
+                $uibModal.open({
+                    templateUrl: "/app/marketSurvey/traffic.html?bust=" + version,
+                    controller: "marketSurveyTrafficController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        propertyProspects: function() {
+                            return scope.pms.propertyProspects;
+                        },
+                        dates: function() {
+                            return scope.pms.dates;
+                        },
+                    }
                 });
             };
         };
