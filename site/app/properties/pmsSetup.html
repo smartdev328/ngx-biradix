@@ -46,7 +46,7 @@
 
             <div ng-if="pms.config.importId">
                 <h4>BI:Radix Floor plans:</h4>
-                <div ng-repeat-start="floorplan in pms.floorplans"></div>
+                <div ng-repeat-start="floorplan in pms.floorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']"></div>
                 <div class="floorplan biradix">{{floorplan.name}}</div>
                 <ul ui-sortable="{connectWith: '.list'}" ng-model="floorplan.yardi" class="list">
                     <div ng-repeat="mapped in floorplan.yardi | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan mapped"><i class="fa fa-bars"></i> {{mapped.name}}</div>
