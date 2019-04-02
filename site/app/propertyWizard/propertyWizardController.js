@@ -786,14 +786,14 @@ define([
             });
         };
 
-        $scope.selectFloorPlan = function(item) {
+        $scope.selectFloorPlan = function() {
+            var allChecked = false;
             if(_.size($scope.selectedFloorplans) === $scope.property.floorplans.length) {
-                var allChecked = _.every($scope.selectedFloorplans, function(i) {
+                allChecked = _.every($scope.selectedFloorplans, function(i) {
                     return i === true;
                 });
             }
-            $scope.allSelector = allChecked ? true : false;
-            $scope.showDeleteButton();
+            $scope.allSelector = allChecked;
         };
 
         $scope.showDeleteButton = function() {
