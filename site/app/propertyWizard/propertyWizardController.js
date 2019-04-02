@@ -773,6 +773,7 @@ define([
         };
 
         $scope.showCheckboxes = false;
+        $scope.showDeleteButton = false;
         $scope.selectedFloorplans = {};
 
         $scope.toggleCheckboxes = function() {
@@ -784,6 +785,7 @@ define([
             $scope.property.floorplans.forEach(function(f) {
                 $scope.selectedFloorplans[f.id] = $scope.allSelector;
             });
+            $scope.showDeleteButton = $scope.allSelector ? true : false;
         };
 
         $scope.selectFloorPlan = function() {
@@ -794,15 +796,10 @@ define([
                 });
             }
             $scope.allSelector = allChecked;
-        };
-
-        $scope.showDeleteButton = function() {
             var show = _.some($scope.selectedFloorplans, function(f) {
                 return f === true;
             });
-            if ($scope.showCheckboxes) {
-                return show;
-            }
+            $scope.showDeleteButton = $scope.showCheckboxes && show ? true : false;
         };
 
         $scope.removeBulkFloorplan = function() {

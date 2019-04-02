@@ -28,7 +28,7 @@ There are currently no floor plans set up for this property.
     <tbody>
     <tr class="thead">
         <th style="width:20px;">
-            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="allSelector" ng-click="selectAll()" />
+            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-model="allSelector" ng-true-value="true" ng-false-value="false" ng-click="selectAll()" />
         </th>
         <th>Type</th>
         <th>Desc.</th>
@@ -76,7 +76,7 @@ There are currently no floor plans set up for this property.
     <tfoot>
     <tr style="font-weight:bold">
         <td style="width:20px;">
-            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="allSelector" ng-click="selectAll()" />
+            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-model="allSelector" ng-true-value="true" ng-false-value="false" ng-click="selectAll()" />
         </td>
         <td colspan="2">Totals/Averages</td>
         <td style="text-align: center">{{property.totalUnits}}</td>
