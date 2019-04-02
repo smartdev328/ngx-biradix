@@ -810,7 +810,7 @@ define([
                 _.remove($scope.property.floorplans, function(fp) {
                    return $scope.selectedFloorplans[fp.id];
                 });
-                $scope.selectedFloorplans = {};
+                $scope.showDeleteButton = false;
                 $scope.calculateFloorplanTotals();
                 if (!$scope.property.floorplans.length) {
                     $scope.needsSurvey = true;
