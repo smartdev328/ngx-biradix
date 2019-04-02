@@ -176,11 +176,11 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
 
                         // If no floorplan is mapped to Yardi, default Biradix Rent
                         if (pmsFp) {
-                            responseObj.pms.mappedFloorplans[fp.id] = pmsFp.rent;
+                            responseObj.pms.mappedFloorplans[fp.id] = pmsFp;
                             responseObj.pms.values.rent[fp.id] = "YARDI";
                         } else {
                             responseObj.pms.values.rent[fp.id] = "BIRADIX";
-                            responseObj.pms.mappedFloorplans[fp.id] = "";
+                            responseObj.pms.mappedFloorplans[fp.id] = null;
                         }
                     });
 

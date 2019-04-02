@@ -156,6 +156,15 @@
         </td>
         <td>
             {{row.units}}
+
+            <span class="fa fa-exclamation-triangle warning label-side-icon"
+               ng-if="pms.mappedFloorplans[row.id].units !== row.units"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-class="popover-small"
+               uib-popover-html="'Unit count in BI:Radix not matching total units mapped from Yardi'"
+            ></span>
+
         </td>
         <td>
             {{row.sqft}}
@@ -165,8 +174,8 @@
             <div ng-if="row.rent === ''">n/a</div>
         </td>
         <td>
-            <div ng-if="pms.mappedFloorplans[row.id] !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI"> ${{pms.mappedFloorplans[row.id]  | number: 0}}</div>
-            <div ng-if="pms.mappedFloorplans[row.id] === ''">n/a</div>
+            <div ng-if="pms.mappedFloorplans[row.id] !== null"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</div>
+            <div ng-if="pms.mappedFloorplans[row.id] === null">n/a</div>
         </td>
     </Tr>
     </tbody>

@@ -49,7 +49,7 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                     if (scope.pms.values.rent[fpid] === "BIRADIX") {
                         surveyFp.rent = originalSurveyFp.rent;
                     } else {
-                        surveyFp.rent = scope.pms.mappedFloorplans[fpid];
+                        surveyFp.rent = scope.pms.mappedFloorplans[fpid].rent;
                     }
 
                     scope.updateDone(surveyFp, true, "rent");
