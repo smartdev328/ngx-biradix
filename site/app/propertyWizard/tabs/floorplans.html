@@ -28,7 +28,7 @@ There are currently no floor plans set up for this property.
     <tbody>
     <tr class="thead">
         <th style="width:20px;">
-            <input type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="allSelector" ng-click="selectFloorPlans('all')" />
+            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="allSelector" ng-click="selectAll()" />
         </th>
         <th>Type</th>
         <th>Desc.</th>
@@ -38,8 +38,8 @@ There are currently no floor plans set up for this property.
         <th></th>
     </tr>
     <tr ng-repeat="row in property.floorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']">
-        <td style="width:20px;">
-            <input type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="itemSelector" ng-click="selectFloorPlans(row)" />
+        <td style="width:23px;">
+            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="row.checked" ng-click="selectFloorPlan(row)" />
         </td>
         <td>
             {{row.bedrooms}}x{{row.bathrooms}}
@@ -76,7 +76,7 @@ There are currently no floor plans set up for this property.
     <tfoot>
     <tr style="font-weight:bold">
         <td style="width:20px;">
-            <input type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="allSelector" ng-click="selectFloorPlans('all')" />
+            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="allSelector" ng-click="selectAll()" />
         </td>
         <td colspan="2">Totals/Averages</td>
         <td style="text-align: center">{{property.totalUnits}}</td>

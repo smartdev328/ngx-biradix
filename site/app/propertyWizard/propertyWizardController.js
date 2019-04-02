@@ -773,56 +773,55 @@ define([
         };
 
         $scope.showCheckboxes = false;
-        $scope.selectedFloorPlans = [];
 
         $scope.toggleCheckboxes = function() {
             $scope.showCheckboxes = !$scope.showCheckboxes;
-        }
+        };
 
-        $scope.toggleSelectAll = function() {
-            if(!$scope.selectedFloorPlans.length) {
-                $scope.property.floorplans.forEach(function(f) {
-                    $scope.selectedFloorPlans.push(f);
-                });
-                $scope.allSelector = true;
-                $scope.itemSelector = true;
-            } else {
-                $scope.selectedFloorPlans = [];
-                $scope.allSelector = false;
-                $scope.itemSelector = false;
-            }
-        }
+        $scope.selectAll = function() {
+            $scope.allSelector = !$scope.allSelector;
+            $scope.property.floorplans.forEach(function(f) {
+                f.checked = $scope.allSelector;
+            });
+        };
 
-        $scope.selectFloorPlans = function(item) {
-            if(item == 'all') {
-                $scope.toggleSelectAll();
-            } else {
-                if ($scope.selectedFloorPlans.indexOf(item) > -1) {
-                    var i = $scope.selectedFloorPlans.indexOf(item);
-                    $scope.selectedFloorPlans.splice(i, 1);
-                    $scope.allSelector = false;
-                } else {
-                    $scope.selectedFloorPlans.push(item);
-                    if($scope.selectedFloorPlans.length == $scope.property.floorplans.length) {
-                        $scope.allSelector = true;
-                    }
+        $scope.selectFloorPlan = function(item) {
+            item.checked = item.checked ? false : true;
+            var allChecked = _.every($scope.property.floorplans, function(f) {
+                return f.checked === true;
+            });
+            $scope.allSelector = allChecked ? true : false;
+            $scope.showDeleteButton();
+        };
+
+        $scope.showDeleteButton = function() {
+            var show = _.some($scope.property.floorplans, function(f) {
+                if (f.checked) {
+                    return true;
                 }
+            });
+            if ($scope.showCheckboxes) {
+                return show;
             }
-        }
+        };
 
-            $scope.removeBulkFloorplan = function() {
-                $dialog.confirm('You are about to delete <b>' + $scope.selectedFloorPlans.length + '</b> Floor Plans from Property ' + $scope.property.name + '. Are you sure you want to do this?', function() {
-                    $scope.selectedFloorPlans.forEach(function(fp){
+        $scope.removeBulkFloorplan = function() {
+            var countSelected = _.countBy($scope.property.floorplans, function(f) {
+              return f.checked ? true : false;
+            });
+            $dialog.confirm("You are about to delete <b>" + countSelected.true + "</b> Floor Plans from Property <b>" + $scope.property.name + "</b>. Are you sure you want to do this?", function() {
+                $scope.property.floorplans.slice().reverse().forEach(function(fp) {
+                    if (fp.checked) {
                         var i = $scope.property.floorplans.indexOf(fp);
-                        $scope.property.floorplans.splice(i,1);
-                        $scope.calculateFloorplanTotals();
-                        $scope.selectedFloorPlans = [];
-                        if(!$scope.property.floorplans.length) {
-                            $scope.needsSurvey = true;
-                        }
-                    });
-                }, function() {});
-            }
+                        $scope.property.floorplans.splice(i, 1);
+                    }
+                });
+                $scope.calculateFloorplanTotals();
+                if (!$scope.property.floorplans.length) {
+                    $scope.needsSurvey = true;
+                }
+            }, function() {});
+        };
             
             $scope.addFloorplan = function(fp) {
                 var oldFp = _.cloneDeep(fp);
