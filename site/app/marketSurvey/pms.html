@@ -67,31 +67,55 @@
                 <i class="fa fa-question-circle link"
                    popover-trigger="'mouseenter'"
                    popover-placement="top"
-                   uib-popover-html="'View occupancy % breakdown'"
+                   uib-popover-html="'View Occupancy % breakdown'"
                    popover-append-to-body="true"
                    ng-click="pmsOccupancy();"
                    ng-if="$root.me.permissions.indexOf('Admin') > -1"
                 ></i></div>
         </td>
         <td class="nowrap">
-            <div><input type="radio" ng-model="pms.values.leased" value="YARDI"> {{pms.property.leased | number: 2}}</div>
+            <div><input type="radio" ng-model="pms.values.leased" value="YARDI"> {{pms.property.leased | number: 2}}
+                <i class="fa fa-question-circle link"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="top"
+                   uib-popover-html="'View Leased % breakdown'"
+                   popover-append-to-body="true"
+                   ng-click="pmsLeased();"
+                   ng-if="$root.me.permissions.indexOf('Admin') > -1"
+                ></i></div>
         </td>
         <td class="nowrap">
-            <div><input type="radio" ng-model="pms.values.atr" value="YARDI"> {{pms.property.atr | number: 0}}</div>
+            <div><input type="radio" ng-model="pms.values.atr" value="YARDI"> {{pms.property.atr | number: 0}}
+                <i class="fa fa-question-circle link"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="top"
+                   uib-popover-html="'ATR breakdown'"
+                   popover-append-to-body="true"
+                   ng-click="pmsATR();"
+                   ng-if="$root.me.permissions.indexOf('Admin') > -1"
+                ></i></div>
         </td>
         <td class="nowrap">
             <div><input type="radio" ng-model="pms.values.weeklytraffic" value="YARDI"> {{pms.property.weeklytraffic | number: 0}}
             <i class="fa fa-question-circle link"
                popover-trigger="'mouseenter'"
                popover-placement="top"
-               uib-popover-html="'View weekly traffic'"
+               uib-popover-html="'View Traffic / Week breakdown'"
                popover-append-to-body="true"
                ng-click="pmsTraffic();"
                ng-if="$root.me.permissions.indexOf('Admin') > -1"
             ></i></div>
         </td>
         <td class="nowrap">
-            <div><input type="radio" ng-model="pms.values.weeklyleases" value="YARDI"> {{pms.property.weeklyleases | number: 0}}</div>
+            <div><input type="radio" ng-model="pms.values.weeklyleases" value="YARDI"> {{pms.property.weeklyleases | number: 0}}
+                <i class="fa fa-question-circle link"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="top"
+                   uib-popover-html="'View Leases / Week breakdown'"
+                   popover-append-to-body="true"
+                   ng-click="pmsLeases();"
+                   ng-if="$root.me.permissions.indexOf('Admin') > -1"
+                ></i></div>
         </td>
     </Tr>
     </tbody>

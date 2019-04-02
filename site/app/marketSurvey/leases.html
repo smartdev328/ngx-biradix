@@ -6,7 +6,7 @@
 <Div class="market-survey">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title">Traffic / Week Breakdown</h2>
+        <h2 class="modal-title">Leases / Week Breakdown</h2>
     </div>
     <div ng-class="{'modal-body': true}">
         <div class="green" style="width:20px; height:20px; border:1px solid #ccc;float:left">
@@ -20,7 +20,19 @@
         <table class="new-table">
             <thead>
             <th>
-                Prospect Id
+                Tenant Id
+            </th>
+            <th>
+                Unit Id
+            </th>
+            <th>
+                Floor Plan Id
+            </th>
+            <th>
+                Excluded
+            </th>
+            <th>
+                Sign
             </th>
             <th>
                 Event
@@ -30,12 +42,24 @@
             </th>
             </thead>
             <tbody>
-                <Tr ng-repeat="event in propertyProspects" ng-class="{'green' : event.isValid}">
+                <Tr ng-repeat="event in leases" ng-class="{'green' : event.isValid}">
                     <td>
                         {{event.id}}
                     </td>
+                    <td>
+                        {{event.unitId}}
+                    </td>
+                    <td>
+                        {{event.floorplanId}}
+                    </td>
                     <Td>
-                        {{event.eventType}}
+                        {{event.isExcluded ? "Yes" : ""}}
+                    </Td>
+                    <Td>
+                        {{event.sign}}
+                    </Td>
+                    <Td>
+                        {{event.event}}
                     </Td>
                     <Td>
                         {{event.date | date: 'short'}} Pacific

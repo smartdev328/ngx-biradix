@@ -1,0 +1,154 @@
+<Div class="market-survey">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">ATR Breakdown</h2>
+    </div>
+    <div ng-class="{'modal-body': true}">
+        <table class="new-table">
+            <thead>
+            <th>
+
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Unit Count
+            </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        <i ng-if = "unitCounts.totalVacant.totalUnits > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !show.totalVacant, 'fa-minus-square-o' : show.totalVacant}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="show.totalVacant = !show.totalVacant"></i>
+                    </th>
+                    <th>
+                        Total Vacant:
+                    </th>
+                    <Th>
+                        +{{unitCounts.totalVacant.totalUnits}}
+                    </Th>
+                </tr>
+                <Tr ng-repeat="(key, value) in unitCounts.totalVacant.counts" ng-if="show.totalVacant" style="font-style:italic">
+                    <td>
+
+                    </td>
+                    <td style="padding-left:20px;">
+                        {{key}}:
+                    </td>
+                    <Td>
+                        +{{value}}
+                    </Td>
+                </Tr>
+                <tr>
+                    <th>
+                        <i ng-if = "unitCounts.lessVacant.totalUnits > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !show.lessVacant, 'fa-minus-square-o' : show.lessVacant}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="show.lessVacant = !show.lessVacant"></i>
+                    </th>
+                    <th>
+                        Less Vacant Rented:
+                    </th>
+                    <Th>
+                        -{{unitCounts.lessVacant.totalUnits}}
+                    </Th>
+                </tr>
+                <Tr ng-repeat="(key, value) in unitCounts.lessVacant.counts" ng-if="show.lessVacant" style="font-style:italic">
+                    <td>
+
+                    </td>
+                    <td style="padding-left:20px;">
+                        {{key}}:
+                    </td>
+                    <Td>
+                        -{{value}}
+                    </Td>
+                </Tr>
+                <tr>
+                    <th>
+                        <i ng-if = "unitCounts.lessNotice.totalUnits > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !show.lessNotice, 'fa-minus-square-o' : show.lessNotice}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="show.lessNotice = !show.lessNotice"></i>
+                    </th>
+                    <th>
+                        Less Notice Rented:
+                    </th>
+                    <Th>
+                        -{{unitCounts.lessNotice.totalUnits}}
+                    </Th>
+                </tr>
+                <Tr ng-repeat="(key, value) in unitCounts.lessNotice.counts" ng-if="show.lessNotice" style="font-style:italic">
+                    <td>
+
+                    </td>
+                    <td style="padding-left:20px;">
+                        {{key}}:
+                    </td>
+                    <Td>
+                        -{{value}}
+                    </Td>
+                </Tr>
+                <tr>
+                    <th>
+                        <i ng-if = "unitCounts.lessNonRevenue.totalUnits > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !show.lessNonRevenue, 'fa-minus-square-o' : show.lessNonRevenue}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="show.lessNonRevenue = !show.lessNonRevenue"></i>
+                    </th>
+                    <th>
+                        Less Non Revenue:
+                    </th>
+                    <Th>
+                        -{{unitCounts.lessNonRevenue.totalUnits}}
+                    </Th>
+                </tr>
+                <Tr ng-repeat="(key, value) in unitCounts.lessNonRevenue.counts" ng-if="show.lessNonRevenue" style="font-style:italic">
+                    <td>
+
+                    </td>
+                    <td style="padding-left:20px;">
+                        {{key}}:
+                    </td>
+                    <Td>
+                        -{{value}}
+                    </Td>
+                </Tr>
+                <tr>
+                    <th>
+                        <i ng-if = "unitCounts.allNotice.totalUnits > 0" ng-class="{'fa' : true,  'fa-plus-square-o': !show.allNotice, 'fa-minus-square-o' : show.allNotice}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="show.allNotice = !show.allNotice"></i>
+                    </th>
+                    <th>
+                        Plus All Notice:
+                    </th>
+                    <Th>
+                        +{{unitCounts.allNotice.totalUnits}}
+                    </Th>
+                </tr>
+                <Tr ng-repeat="(key, value) in unitCounts.allNotice.counts" ng-if="show.allNotice" style="font-style:italic">
+                    <td>
+
+                    </td>
+                    <td style="padding-left:20px;">
+                        {{key}}:
+                    </td>
+                    <Td>
+                        +{{value}}
+                    </Td>
+                </Tr>
+                <tr class="hr">
+                    <td>
+
+                    </td>
+                    <td>
+                        ATR:
+                    </td>
+                    <td>
+                        {{atr}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row" style="padding:20px">
+        <div class="col-sm-2">
+
+        </div>
+        <div class="col-xs-10 col-sm-8" style="text-align: center">
+            <a class="btn btn-warning contact-submit" ng-click="cancel()">Done</a>
+        </div>
+
+    </div>
+</Div>

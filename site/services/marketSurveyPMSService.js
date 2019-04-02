@@ -97,6 +97,45 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                 });
             };
 
+            scope.pmsLeased = function() {
+                $uibModal.open({
+                    templateUrl: "/app/marketSurvey/leased.html?bust=" + version,
+                    controller: "marketSurveyLeasedController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        leasedUnitCounts: function() {
+                            return scope.pms.unitCounts.leased;
+                        },
+                        totalUnits: function() {
+                            return scope.pms.property.totalUnits;
+                        },
+                        leased: function() {
+                            return scope.pms.property.leased;
+                        }
+                    }
+                });
+            };
+
+            scope.pmsATR = function() {
+                $uibModal.open({
+                    templateUrl: "/app/marketSurvey/atr.html?bust=" + version,
+                    controller: "marketSurveyATRController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        unitCounts: function() {
+                            return scope.pms.unitCounts;
+                        },
+                        atr: function() {
+                            return scope.pms.property.atr;
+                        }
+                    }
+                });
+            };
+
             scope.pmsTraffic = function() {
                 $uibModal.open({
                     templateUrl: "/app/marketSurvey/traffic.html?bust=" + version,
@@ -107,6 +146,24 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                     resolve: {
                         propertyProspects: function() {
                             return scope.pms.propertyProspects;
+                        },
+                        dates: function() {
+                            return scope.pms.dates;
+                        },
+                    }
+                });
+            };
+
+            scope.pmsLeases = function() {
+                $uibModal.open({
+                    templateUrl: "/app/marketSurvey/leases.html?bust=" + version,
+                    controller: "marketSurveyLeasesController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        leases: function() {
+                            return scope.pms.leases;
                         },
                         dates: function() {
                             return scope.pms.dates;

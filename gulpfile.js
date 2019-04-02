@@ -107,7 +107,10 @@ gulp.task("globaljs", function() {
         "./site/app/rootController.js",
         "./site/app/marketSurvey/marketSurveyController.js",
         "./site/app/marketSurvey/marketSurveyOccupancyController.js",
+        "./site/app/marketSurvey/marketSurveyLeasedController.js",
         "./site/app/marketSurvey/marketSurveyTrafficController.js",
+        "./site/app/marketSurvey/marketSurveyATRController.js",
+        "./site/app/marketSurvey/marketSurveyLeasesController.js",
 
         "./site/components/reports/communityAmenities.js",
         "./site/components/reports/locationAmenities.js",
