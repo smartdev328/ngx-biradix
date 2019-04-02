@@ -39,7 +39,7 @@ There are currently no floor plans set up for this property.
     </tr>
     <tr ng-repeat="row in property.floorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']">
         <td style="width:23px;">
-            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-checked="row.checked" ng-click="selectFloorPlan(row)" />
+            <input style="margin:0;" type="checkbox" name="checkbox" ng-show="showCheckboxes" ng-model="selectedFloorplans[row.id]" ng-true-value="true" ng-false-value="false" ng-click="selectFloorPlan(row)" />
         </td>
         <td>
             {{row.bedrooms}}x{{row.bathrooms}}

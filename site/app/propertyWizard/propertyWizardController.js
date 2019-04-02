@@ -773,6 +773,7 @@ define([
         };
 
         $scope.showCheckboxes = false;
+        $scope.selectedFloorplans = {};
 
         $scope.toggleCheckboxes = function() {
             $scope.showCheckboxes = !$scope.showCheckboxes;
@@ -781,24 +782,23 @@ define([
         $scope.selectAll = function() {
             $scope.allSelector = !$scope.allSelector;
             $scope.property.floorplans.forEach(function(f) {
-                f.checked = $scope.allSelector;
+                $scope.selectedFloorplans[f.id] = $scope.allSelector;
             });
         };
 
         $scope.selectFloorPlan = function(item) {
-            item.checked = item.checked ? false : true;
-            var allChecked = _.every($scope.property.floorplans, function(f) {
-                return f.checked === true;
-            });
+            if(_.size($scope.selectedFloorplans) === $scope.property.floorplans.length) {
+                var allChecked = _.every($scope.selectedFloorplans, function(i) {
+                    return i === true;
+                });
+            }
             $scope.allSelector = allChecked ? true : false;
             $scope.showDeleteButton();
         };
 
         $scope.showDeleteButton = function() {
-            var show = _.some($scope.property.floorplans, function(f) {
-                if (f.checked) {
-                    return true;
-                }
+            var show = _.some($scope.selectedFloorplans, function(f) {
+                return f === true;
             });
             if ($scope.showCheckboxes) {
                 return show;
@@ -806,16 +806,14 @@ define([
         };
 
         $scope.removeBulkFloorplan = function() {
-            var countSelected = _.countBy($scope.property.floorplans, function(f) {
-              return f.checked ? true : false;
+            var countSelected = _.countBy($scope.selectedFloorplans, function(f) {
+              return f ? true : false;
             });
             $dialog.confirm("You are about to delete <b>" + countSelected.true + "</b> Floor Plans from Property <b>" + $scope.property.name + "</b>. Are you sure you want to do this?", function() {
-                $scope.property.floorplans.slice().reverse().forEach(function(fp) {
-                    if (fp.checked) {
-                        var i = $scope.property.floorplans.indexOf(fp);
-                        $scope.property.floorplans.splice(i, 1);
-                    }
+                _.remove($scope.property.floorplans, function(fp) {
+                   return $scope.selectedFloorplans[fp.id];
                 });
+                $scope.selectedFloorplans = {};
                 $scope.calculateFloorplanTotals();
                 if (!$scope.property.floorplans.length) {
                     $scope.needsSurvey = true;
