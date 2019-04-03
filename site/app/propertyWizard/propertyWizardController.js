@@ -785,7 +785,7 @@ define([
             $scope.property.floorplans.forEach(function(f) {
                 $scope.selectedFloorplans[f.id] = $scope.allSelector;
             });
-            $scope.showDeleteButton = $scope.allSelector ? true : false;
+            $scope.showDeleteButton = $scope.allSelector;
         };
 
         $scope.selectFloorPlan = function() {
@@ -799,12 +799,12 @@ define([
             var show = _.some($scope.selectedFloorplans, function(f) {
                 return f === true;
             });
-            $scope.showDeleteButton = $scope.showCheckboxes && show ? true : false;
+            $scope.showDeleteButton = $scope.showCheckboxes && show;
         };
 
         $scope.removeBulkFloorplan = function() {
             var countSelected = _.countBy($scope.selectedFloorplans, function(f) {
-              return f ? true : false;
+              return !!f;
             });
             $dialog.confirm("You are about to delete <b>" + countSelected.true + "</b> Floor Plans from Property <b>" + $scope.property.name + "</b>. Are you sure you want to do this?", function() {
                 _.remove($scope.property.floorplans, function(fp) {
