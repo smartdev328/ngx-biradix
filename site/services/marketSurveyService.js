@@ -217,6 +217,27 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                         weeklyleases: "YARDI",
                         rent: {}
                     };
+
+                    if (responseObj.editMode && parseFloat(responseObj.pms.property.weeklyleases || 0).toFixed(3) !== parseFloat(responseObj.originalSurvey.weeklyleases || 0).toFixed(3)) {
+                        responseObj.pms.values.weeklyleases = "BIRADIX";
+                    }
+
+                    if (responseObj.editMode && parseFloat(responseObj.pms.property.weeklytraffic || 0).toFixed(3) !== parseFloat(responseObj.originalSurvey.weeklytraffic || 0).toFixed(3)) {
+                        responseObj.pms.values.weeklytraffic = "BIRADIX";
+                    }
+
+                    if (responseObj.editMode && parseFloat(responseObj.pms.property.atr || 0).toFixed(3) !== parseFloat(responseObj.originalSurvey.atr || 0).toFixed(3)) {
+                        responseObj.pms.values.atr = "BIRADIX";
+                    }
+
+                    if (responseObj.editMode && parseFloat(responseObj.pms.property.leased || 0).toFixed(3) !== parseFloat(responseObj.originalSurvey.leased || 0).toFixed(3)) {
+                        responseObj.pms.values.leased = "BIRADIX";
+                    }
+
+                    if (responseObj.editMode && parseFloat(responseObj.pms.property.occupancy || 0).toFixed(3) !== parseFloat(responseObj.originalSurvey.occupancy || 0).toFixed(3)) {
+                        responseObj.pms.values.occupancy = "BIRADIX";
+                    }
+
                     responseObj.pms.mappedFloorplans = {};
 
                     var pmsFp;
@@ -229,6 +250,10 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                         if (pmsFp) {
                             responseObj.pms.mappedFloorplans[fp.id] = pmsFp;
                             responseObj.pms.values.rent[fp.id] = "YARDI";
+
+                            if (responseObj.editMode && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
+                                responseObj.pms.values.rent[fp.id] = "BIRADIX";
+                            }
                         } else {
                             responseObj.pms.values.rent[fp.id] = "BIRADIX";
                             responseObj.pms.mappedFloorplans[fp.id] = null;
