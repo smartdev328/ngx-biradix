@@ -147,7 +147,7 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                 responseObj.pms = {};
 
                 var pmsId = "";
-                if (responseObj.survey.pms) {
+                if (responseObj.survey.pms && responseObj.editMode) {
                     pmsId = responseObj.survey.pms.id;
                 }
 

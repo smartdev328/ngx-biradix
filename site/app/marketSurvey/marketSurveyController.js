@@ -811,6 +811,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
 
             $scope.create = function() {
+                console.log($marketSurveyPMSService.getYardiDiff($scope));
                 var isSuccess = true;
                 var error = "";
 

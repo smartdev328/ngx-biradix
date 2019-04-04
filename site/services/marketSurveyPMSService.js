@@ -173,6 +173,20 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
             };
         };
 
+        fac.getYardiDiff = function(scope) {
+            var diff = [];
+
+            if (!scope.pms) {
+                return diff;
+            }
+
+            if (scope.pms.property.occupancy.toString() !== scope.survey.occupancy.toString()) {
+                diff.push({description: "Occupancy Difference Survey vs Yardi: " + (scope.survey.occupancy || 0).toFixed(2) + " vs " + scope.pms.property.occupancy.toFixed(2)});
+            }
+
+            return diff;
+        };
+
         return fac;
     }]);
 
