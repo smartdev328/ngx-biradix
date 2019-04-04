@@ -180,9 +180,45 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                 return diff;
             }
 
-            if (scope.pms.property.occupancy.toString() !== scope.survey.occupancy.toString()) {
-                diff.push({description: "Occupancy Difference Survey vs Yardi: " + (scope.survey.occupancy || 0).toFixed(2) + " vs " + scope.pms.property.occupancy.toFixed(2)});
+            if (parseFloat(scope.pms.property.occupancy || 0).toFixed(3) !== parseFloat(scope.survey.occupancy || 0).toFixed(3)) {
+                diff.push({description: "Occupancy % Difference Survey vs Yardi: " + (scope.survey.occupancy || 0).toFixed(2) + " vs " + scope.pms.property.occupancy.toFixed(2)});
             }
+
+            if (parseFloat(scope.pms.property.leased || 0).toFixed(3) !== parseFloat(scope.survey.leased || 0).toFixed(3)) {
+                diff.push({description: "Leased % Difference Survey vs Yardi: " + (scope.survey.leased || 0).toFixed(2) + " vs " + scope.pms.property.leased.toFixed(2)});
+            }
+
+            if (parseFloat(scope.pms.property.atr || 0).toFixed(3) !== parseFloat(scope.survey.atr || 0).toFixed(3)) {
+                diff.push({description: "Apartments to Rent Difference Survey vs Yardi: " + (scope.survey.atr || 0).toFixed(0) + " vs " + scope.pms.property.atr.toFixed(0)});
+            }
+
+            if (parseFloat(scope.pms.property.weeklyleases || 0).toFixed(3) !== parseFloat(scope.survey.weeklyleases || 0).toFixed(3)) {
+                diff.push({description: "Leases/Week Difference Survey vs Yardi: " + (scope.survey.weeklyleases || 0).toFixed(0) + " vs " + scope.pms.property.weeklyleases.toFixed(0)});
+            }
+
+            if (parseFloat(scope.pms.property.weeklytraffic || 0).toFixed(3) !== parseFloat(scope.survey.weeklytraffic || 0).toFixed(3)) {
+                diff.push({description: "Traffic/Week Difference Survey vs Yardi: " + (scope.survey.weeklytraffic || 0).toFixed(0) + " vs " + scope.pms.property.weeklytraffic.toFixed(0)});
+            }
+
+            var pmsFp;
+            var fpName;
+            scope.survey.floorplans.forEach((fp) => {
+                fpName = fp.bedrooms + "x" + fp.bathrooms;
+
+                if (fp.description && fp.description != "") {
+                    fpName += " " + fp.description;
+                } else {
+                    fpName += " - ";
+                }
+
+                fpName += " " + fp.sqft + " Sqft";
+                fpName += ", " + fp.units + " Units";
+
+                pmsFp = scope.pms.mappedFloorplans[fp.id];
+                if (pmsFp && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
+                    diff.push({description: fpName + " Difference Survey vs Yardi: " + (fp.rent || 0).toFixed(0) + " vs " + (pmsFp.rent || 0).toFixed(0)});
+                }
+            });
 
             return diff;
         };

@@ -264,8 +264,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.createSurvey = function (propertyid, survey) {
-            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), survey, {
+        fac.createSurvey = function (propertyid, survey, additionalDetails) {
+            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), {survey: survey, additionalDetails: additionalDetails}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -282,8 +282,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.updateSurvey = function (propertyid, surveyid, survey) {
-            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime() , survey, {
+        fac.updateSurvey = function (propertyid, surveyid, survey, additionalDetails) {
+            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime(), {survey: survey, additionalDetails: additionalDetails}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {

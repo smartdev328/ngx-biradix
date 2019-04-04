@@ -769,7 +769,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
 
             $scope.create = function() {
-                console.log($marketSurveyPMSService.getYardiDiff($scope));
                 var isSuccess = true;
                 var error = "";
 
@@ -919,10 +918,16 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     };
                 }
 
+                var diff = [];
+
+                if ($scope.pms) {
+                   diff = $marketSurveyPMSService.getYardiDiff($scope);
+                }
+
                 if ($scope.surveyid) {
-                    $propertyService.updateSurvey(id, $scope.surveyid, $scope.survey).then(surveySuccess, surveyError);
+                    $propertyService.updateSurvey(id, $scope.surveyid, $scope.survey, diff).then(surveySuccess, surveyError);
                 } else {
-                    $propertyService.createSurvey(id, $scope.survey).then(surveySuccess, surveyError);
+                    $propertyService.createSurvey(id, $scope.survey, diff).then(surveySuccess, surveyError);
                 }
             };
 
