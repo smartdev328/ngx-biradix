@@ -38,12 +38,17 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                     responseObj.survey.survey_date = responseObj.property.date;
                 }
 
-                if (responseObj.property.survey && responseObj.property.survey.id) {
-                    $propertyService.getSurvey(id, responseObj.property.survey.id).then(function(response) {
+                var editableSurveyId = surveyid;
+                if (!editableSurveyId && responseObj.property.survey) {
+                    editableSurveyId = responseObj.property.survey.id;
+                }
+
+                if (responseObj.property.survey && editableSurveyId) {
+                    $propertyService.getSurvey(id, editableSurveyId).then(function(response) {
                         var s = response.data.survey;
                         if (s && s.length > 0) {
                             s = s[0];
-                            responseObj.survey.leased = s.leased != null && !isNaN(s.leased) ? s.leased : "";
+                             responseObj.survey.leased = s.leased != null && !isNaN(s.leased) ? s.leased : "";
                             responseObj.survey.atr = s.atr != null && !isNaN(s.atr) ? s.atr : "";
                             responseObj.survey.atr_percent = s.atr_percent != null && !isNaN(s.atr_percent) ? s.atr_percent : "";
                             responseObj.survey.renewal = s.renewal != null && !isNaN(s.renewal) ? s.renewal : "";
