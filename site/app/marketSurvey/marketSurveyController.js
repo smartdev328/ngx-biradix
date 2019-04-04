@@ -66,8 +66,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 });
             }
 
-            $scope.totals = {units: 0, sqft: 0, rent: 0, concessions: 0, concessionsOneTime: 0, concessionsMonthly: 0};
-
             var me = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
                     $scope.settings.showLeases = $rootScope.me.settings.showLeases;
@@ -232,44 +230,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
     };
 
             $scope.doneLoading = function() {
-                if ($scope.survey.atr) {
-                    $scope.settings.showATR = true;
-                }
-                if ($scope.survey.leased) {
-                    $scope.settings.showLeases = true;
-                }
-                if ($scope.survey.renewal) {
-                    $scope.settings.showRenewal = true;
-                }
-
-                // If we are using PMS, show these fields
-                if ($scope.pms) {
-                    $scope.settings.showATR = true;
-                    $scope.settings.showLeases = true;
-                }
-
-                $scope.survey.totalUnits = 0;
-                $scope.totals.units = 0;
-                $scope.totals.sqft = 0;
-
-                $scope.survey.floorplans.forEach(function(fp) {
-                    delete fp.errors;
-                    delete fp.warnings;
-                    delete fp.updated;
-                    fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ? fp.concessionsOneTime : "";
-                    fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ? fp.concessionsMonthly : "";
-
-                    $scope.survey.totalUnits += fp.units;
-                    $scope.totals.units += fp.units;
-                    $scope.totals.sqft += (fp.sqft * fp.units);
-                });
-
-                if ($scope.totals.units) {
-                    $scope.totals.sqft /= $scope.totals.units;
-                }
-
-                $scope.survey.floorplans = _.sortByAll($scope.survey.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'fid'])
-
                 if (!$scope.property.orgid && $rootScope.me.roles[0] !== "Guest") {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
                             $userService.search({ids: response.data.users, select: "first last email bounceReason bounceDate guestStats"}).then(function (response) {
@@ -308,12 +268,10 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                             toastr.error("Unable to retrieve data. Please contact the administrator.");
                             $scope.loading = false;
                         });
-
                 } else {
                     $scope.showSurvey();
                 }
-
-            }
+            };
 
             $scope.surveyWhoSelector = function() {
                 if (!$scope.swap.who) {

@@ -4,6 +4,9 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
 
         fac.getPropertyWithSurvey = function(id, surveyid, settings, callback) {
             var responseObj = {};
+
+            responseObj.totals = {units: 0, sqft: 0, rent: 0, concessions: 0, concessionsOneTime: 0, concessionsMonthly: 0};
+
             $propertyService.search({
                 limit: 1,
                 permission: ["PropertyManage", "CompManage"],
@@ -136,16 +139,57 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             }
                         }
 
-                        responseObj.originalSurvey = _.cloneDeep(responseObj.survey);
-
+                        calcTotals(responseObj, settings);
                         getPMS(responseObj, callback);
                     });
                 } else {
-                    responseObj.originalSurvey = _.cloneDeep(responseObj.survey);
+                    calcTotals(responseObj, settings);
                     getPMS(responseObj, callback);
                 }
             });
-        };       
+        };
+
+        var calcTotals = function(responseObj, settings) {
+            if (responseObj.survey.atr) {
+                settings.showATR = true;
+            }
+            if (responseObj.survey.leased) {
+                settings.showLeases = true;
+            }
+            if (responseObj.survey.renewal) {
+                settings.showRenewal = true;
+            }
+
+            // If we are using PMS, show these fields
+            if (responseObj.pms) {
+                settings.showATR = true;
+                settings.showLeases = true;
+            }
+
+            responseObj.survey.totalUnits = 0;
+            responseObj.totals.units = 0;
+            responseObj.totals.sqft = 0;
+
+            responseObj.survey.floorplans.forEach(function(fp) {
+                delete fp.errors;
+                delete fp.warnings;
+                delete fp.updated;
+                fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ? fp.concessionsOneTime : "";
+                fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ? fp.concessionsMonthly : "";
+
+                responseObj.survey.totalUnits += fp.units;
+                responseObj.totals.units += fp.units;
+                responseObj.totals.sqft += (fp.sqft * fp.units);
+            });
+
+            if (responseObj.totals.units) {
+                responseObj.totals.sqft /= responseObj.totals.units;
+            }
+
+            responseObj.survey.floorplans = _.sortByAll(responseObj.survey.floorplans, ["bedrooms", "bathrooms", "sqft", "description", "units", "fid"]);
+
+            responseObj.originalSurvey = _.cloneDeep(responseObj.survey);
+        };
 
         var getPMS = function(responseObj, callback) {
             if (responseObj.property.pms && responseObj.property.pms.importId && (!responseObj.editMode || responseObj.survey.pms)) {
