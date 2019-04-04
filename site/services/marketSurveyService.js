@@ -149,6 +149,8 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                 var pmsId = "";
                 if (responseObj.survey.pms && responseObj.editMode) {
                     pmsId = responseObj.survey.pms.id;
+                } else {
+                    delete responseObj.survey.pms;
                 }
 
                 $importIntegrationService.getFullYardi(responseObj.property._id, pmsId, responseObj.property.pms.yardi.floorplans).then(function(response) {
