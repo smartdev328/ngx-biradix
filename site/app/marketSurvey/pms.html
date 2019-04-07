@@ -49,7 +49,7 @@
             <div ng-if="originalSurvey.weeklytraffic === ''">n/a</div>
         </td>
         <td>
-            <div ng-if="originalSurvey.weeklyleases !== ''"><input type="radio" ng-model="pms.values.weeklyleases"> {{originalSurvey.weeklyleases | number: 0}}</div>
+            <div ng-if="originalSurvey.weeklyleases !== ''"><input type="radio" ng-model="pms.values.weeklyleases" value="BIRADIX"> {{originalSurvey.weeklyleases | number: 0}}</div>
             <div ng-if="originalSurvey.weeklyleases === ''">n/a</div>
         </td>
     </Tr>

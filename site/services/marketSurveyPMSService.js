@@ -68,6 +68,7 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                 scope.updateDone("leased", true);
                 scope.updateDone("atr", true);
                 scope.updateDone("traffic", true);
+                scope.updateDone("leases", true);
 
                 scope.pms.show = false;
             };

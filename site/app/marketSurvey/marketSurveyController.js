@@ -922,6 +922,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                 if ($scope.pms) {
                    diff = $marketSurveyPMSService.getYardiDiff($scope);
+                   if (diff.length) {
+                       diff.unshift({separator: true});
+                   }
                 }
 
                 if ($scope.surveyid) {
