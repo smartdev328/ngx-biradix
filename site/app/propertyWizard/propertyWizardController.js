@@ -771,6 +771,52 @@ define([
                 });
             });
         };
+
+        $scope.showCheckboxes = false;
+        $scope.showDeleteButton = false;
+        $scope.selectedFloorplans = {};
+
+        $scope.toggleCheckboxes = function() {
+            $scope.showCheckboxes = !$scope.showCheckboxes;
+        };
+
+        $scope.selectAll = function() {
+            $scope.allSelector = !$scope.allSelector;
+            $scope.property.floorplans.forEach(function(f) {
+                $scope.selectedFloorplans[f.id] = $scope.allSelector;
+            });
+            $scope.showDeleteButton = $scope.allSelector;
+        };
+
+        $scope.selectFloorPlan = function() {
+            var allChecked = false;
+            if(_.size($scope.selectedFloorplans) === $scope.property.floorplans.length) {
+                allChecked = _.every($scope.selectedFloorplans, function(i) {
+                    return i === true;
+                });
+            }
+            $scope.allSelector = allChecked;
+            var show = _.some($scope.selectedFloorplans, function(f) {
+                return f === true;
+            });
+            $scope.showDeleteButton = $scope.showCheckboxes && show;
+        };
+
+        $scope.removeBulkFloorplan = function() {
+            var countSelected = _.countBy($scope.selectedFloorplans, function(f) {
+              return !!f;
+            });
+            $dialog.confirm("You are about to delete <b>" + countSelected.true + "</b> Floor Plans from Property <b>" + $scope.property.name + "</b>. Are you sure you want to do this?", function() {
+                _.remove($scope.property.floorplans, function(fp) {
+                   return $scope.selectedFloorplans[fp.id];
+                });
+                $scope.showDeleteButton = false;
+                $scope.calculateFloorplanTotals();
+                if (!$scope.property.floorplans.length) {
+                    $scope.needsSurvey = true;
+                }
+            }, function() {});
+        };
             
             $scope.addFloorplan = function(fp) {
                 var oldFp = _.cloneDeep(fp);

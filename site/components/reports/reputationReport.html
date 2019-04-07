@@ -1,5 +1,5 @@
-<style type="text/css">
-    .google-txt {color:#e7711b;}
+<style type="text/css" media="all">
+    .google-txt {color:#e7711b !important;}
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, 
     .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
         vertical-align: middle;
@@ -9,16 +9,16 @@
         overflow: hidden;
         top: 1px;
         position: relative;
-        height: 13px;
-        width: 65px;
-        background: url(https://www.google.com/images/nav_logo242.png) no-repeat -100px -260px;
+        height: 13px !important;
+        width: 65px !important;
+        background: url(https://www.google.com/images/nav_logo242.png) no-repeat -100px -260px !important;
         margin: 0 5px;
     }
 
     .google-stars span {
-        display: block;
-        background: url(https://www.google.com/images/nav_logo242.png) no-repeat -100px -275px;
-        height: 13px;
+        display: block !important;
+        background: url(https://www.google.com/images/nav_logo242.png) no-repeat -100px -275px !important;
+        height: 13px !important;
     }
 
     .facebook-ratings {
@@ -26,7 +26,7 @@
         font-size: 12px;
         height: 30px;
         width: 30px;
-        background-color: rgb(66, 103, 178);
+        background-color: rgb(66, 103, 178) !important;
         align-items: center;
         border: 2px white solid;
         border-radius: 50%;
@@ -41,6 +41,10 @@
         overflow-x:auto;
         margin-bottom: 0 !important;
     }
+</style>
+<style type="text/css" media="print">
+    a {color: #337ab7 !important;}
+    .facebook-ratings {color: #fff !important;}
 </style>
 <div class="break2 panel panel-info">
     <div class="panel-heading">Reputation Report
@@ -86,6 +90,7 @@
 
             </td>
             <td>
+                <span ng-if="row.google_rating === undefined || row.google_rating === null">-</span>
                 <a ng-if="row.google_url && row.google_rating" href="{{row.google_url}}" target="_blank" style="font-size:13px;"><span class="google-txt">{{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}</span>
                 <span class="google-stars" aria-label="Rated {{row.google_rating}} out of 5,">
                     <span ng-if="!row.google_url" style="width:{{ row.google_rating * 13 }}px;"></span>
@@ -94,6 +99,7 @@
                 {{row.google_rating === undefined || row.google_rating === null ? "" :(row.google_count)}} Google reviews</a>
             </td>
             <td>
+                <span ng-if="row.facebook_rating === undefined || row.facebook_rating === null">-</span>
                 <A ng-if="row.facebook_url && row.facebook_rating" href="{{row.facebook_url}}" target="_blank">
                 <div class="inline-block">
                     <p ng-if="!row.facebook_url && row.facebook_rating" class="facebook-ratings">{{row.facebook_rating}}</p>
@@ -107,6 +113,6 @@
 </table>
         </div>
     </div>
-    <p><em style="font-size: 12px;float: left;margin-top: 2px;">* Finding mismatches? You can update a property to point to the right listing</em>
+    <p class="hidden-print"><em style="font-size: 12px;float: left;margin-top: 2px;">* Finding mismatches? You can update a property to point to the right listing</em>
     <a class="ml-3" href popover-trigger="'mouseover'" popover-placement="top" popover-append-to-body="true" uib-popover-html="'If you notice that the linked reputation provider listing is incorrect you can update it! Click on your name in the upper right and go to <a href=\'#/properties\'>Manage Properties</a> <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Edit Property <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Other Tab. Expand \'Integrations (Advanced)\' and update the appropriate link.'"><i class="fa fa-question-circle"></i></a></p>
 </div>

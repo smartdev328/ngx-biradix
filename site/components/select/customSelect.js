@@ -40,10 +40,15 @@
 		return target;
 	}
 
+
+    function escapeRegExp(str) {
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
+
 	function formatSearch(value, search) {
 
 		if (search) {
-            var regex = new RegExp(search, "i");
+            var regex = new RegExp(escapeRegExp(search), "i");
             if (value.search(regex) != -1) {
                 value =  value.replace(regex, "<b>$&</b>");
             }
