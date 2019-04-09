@@ -180,7 +180,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
         $scope.totalRent = function() {
             $scope.totals.rent = 0;
             $scope.survey.floorplans.forEach(function(fp) {
-                $scope.totals.rent += (fp.rent * fp.units);
+                if(fp.rent){
+                    $scope.totals.rent += (fp.rent * fp.units);
+                }
             });
 
             if ($scope.totals.units) {

@@ -1,81 +1,36 @@
-<Style>
-    .green {
-        background-color: lightgreen !important;
-    }
-</Style>
-<Div class="market-survey">
+<div class="market-survey">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Leases / Week Breakdown</h2>
     </div>
-    <div ng-class="{'modal-body': true}">
-        <div class="green" style="width:20px; height:20px; border:1px solid #ccc;float:left">
-
-        </div>
-        <Div style="float:left;margin-left:5px;font-size:12px">
-            =  {{dates.startDate | date: 'short'}} to {{dates.endDate | date: 'short'}} Pacific
-        </Div>
-        <Br clear="all">
-        <Br>
-        <table class="new-table">
+    <div ng-class="{'modal-body pms': true}">
+        <div style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  <strong>{{dates.startDate | date: 'short'}}</strong> to <strong>{{dates.endDate | date: 'short'}}</strong> Pacific</p></div>
+        <table class="new-table border-table">
             <thead>
-            <th>
-                Tenant Id
-            </th>
-            <th>
-                Unit Id
-            </th>
-            <th>
-                Floor Plan Id
-            </th>
-            <th>
-                Excluded
-            </th>
-            <th>
-                Sign
-            </th>
-            <th>
-                Event
-            </th>
-            <th>
-                Date
-            </th>
+               <th>Tenant ID</th>
+               <th>Unit ID</th>
+                <th>Floor Plan ID</th>
+                <th>Excluded</th>
+                <th>Sign</th>
+                <th>Event</th>
+                <th>Date</th>
             </thead>
             <tbody>
-                <Tr ng-repeat="event in leases" ng-class="{'green' : event.isValid}">
-                    <td>
-                        {{event.id}}
-                    </td>
-                    <td>
-                        {{event.unitId}}
-                    </td>
-                    <td>
-                        {{event.floorplanId}}
-                    </td>
-                    <Td>
-                        {{event.isExcluded ? "Yes" : ""}}
-                    </Td>
-                    <Td>
-                        {{event.sign}}
-                    </Td>
-                    <Td>
-                        {{event.event}}
-                    </Td>
-                    <Td>
-                        {{event.date | date: 'short'}} Pacific
-                    </Td>
-                </Tr>
+                <tr ng-repeat="event in leases" ng-class="{'green-bg' : event.isValid}">
+                    <td>{{event.id}}</td>
+                    <td>{{event.unitId}}</td>
+                    <td>{{event.floorplanId}}</td>
+                    <td>{{event.isExcluded ? "Yes" : ""}}</td>
+                    <td>{{event.sign}}</td>
+                    <td>{{event.event}}</td>
+                    <td>{{event.date | date: 'short'}} Pacific</td>
+                </tr>
             </tbody>
         </table>
     </div>
-
     <div class="row" style="padding:20px">
-        <div class="col-sm-2">
-
+        <div class="col-xs-12 text-center">
+            <a class="btn btn-default contact-submit" ng-click="cancel()">Close</a>
         </div>
-        <div class="col-xs-10 col-sm-8" style="text-align: center">
-            <a class="btn btn-warning contact-submit" ng-click="cancel()">Done</a>
-        </div>
-
     </div>
-</Div>
+</div>
