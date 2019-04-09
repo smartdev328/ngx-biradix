@@ -48,6 +48,10 @@
     padding-right: 10px;
 }
 
+.pr-20 {
+    padding-right: 20px;
+}
+
 @media (max-width: 767px) {
 
     .ml-0-m {

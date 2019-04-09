@@ -29,7 +29,17 @@
         height: 28px
     }
 
+    .min-width-100-m {min-width: 100px;}
+
 }
+
+.grey-txt {
+    color:#888888;
+}
+
+label {
+    color:#888888;cursor: pointer;
+} 
 
 .market-survey .survey-value {
     max-width:60px;min-width:48px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
@@ -112,20 +122,25 @@
 }
 
 .market-survey .modal-body.pms {
-    padding: 5px 0 0 0;
+    padding: 14px 0 0 0;
 }
 
 .market-survey .new-table {
-    font-size:11px;
+    font-size:12px;
     width:100%
 }
 
-.market-survey .new-table thead {
+.market-survey .new-table thead, .market-survey .new-table tfoot {
     background-color: #eeeeee;
 }
 
-.market-survey .new-table thead th {
-    padding:5px;
+.market-survey .new-table thead th, .market-survey .new-table tfoot td {
+    max-width: 100px;
+    padding:10px 5px;
+}
+
+.market-survey .new-table thead th i {
+    font-weight: normal;
 }
 
 .market-survey .new-table tbody td {
@@ -141,7 +156,7 @@
 }
 
 .market-survey .new-table .fa {
-    font-size:11px;
+    font-size:12px;
 }
 
 .market-survey .new-table .fa.link {
@@ -150,4 +165,13 @@
 
 .market-survey .new-table .nowrap {
     white-space: nowrap;
+}
+
+.border-table tr {
+    border-bottom: 1px solid #cccccc;
+}
+
+.green-bg {
+    background-color:#30c827 !important;
+    color:#ffffff;
 }
