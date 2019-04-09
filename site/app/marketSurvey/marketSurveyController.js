@@ -347,13 +347,11 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
 
             $scope.isValid = function(field, required, allowDecimal, min, max) {
-
                 if (typeof field === "undefined") {
                     return false;
                 }
 
                 if (required) {
-
                     if (field === "" || field === null || isNaN(field)) {
                         return false;
                     }
@@ -367,8 +365,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     return false;
                 }
 
-
-                if (field != "" && field != null && !isNaN(field)) {
+                if (field !== "" && field != null && !isNaN(field)) {
                     if (typeof min !== "undefined" && parseFloat(field) < min) {
                         return false;
                     }
@@ -601,7 +598,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         fp.warnings = fp.warnings || {};
 
                         if (fpField == "rent") {
-                            if (!$scope.isValid(fp.rent, true, false)) {
+                            if (!$scope.isValid(fp.rent, true, false, 1, 100000)) {
                                 er = "Rent must be 1 or greater, no decimals or blank fields";
                             }
 
