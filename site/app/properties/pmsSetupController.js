@@ -57,7 +57,7 @@ define([
                                 $scope.property.floorplans.forEach(function(fp) {
                                     $scope.pms.floorplans.push({
                                         id: fp.id,
-                                        name: "BI:Radix: " + fp.bedrooms + "x" + fp.bathrooms + " " + fp.description + ", Sqft: " + fp.sqft + ", Units: "+ fp.units,
+                                        name: fp.bedrooms + "x" + fp.bathrooms + " " + fp.description + ", Sqft: " + fp.sqft + ", Units: "+ fp.units,
                                         bedrooms: fp.bedrooms,
                                         bathrooms: fp.bathrooms,
                                         description: fp.description,
@@ -72,7 +72,7 @@ define([
                                         response.data.forEach(function(fp) {
                                             $scope.pms.unmappedFloorplans.push({
                                                 id: fp.id,
-                                                name: "Yardi: " + fp.bedrooms + "x" + fp.bathrooms + " " + fp.description + ", Sqft: " + fp.sqft + ", Units: "+ fp.units,
+                                                name: fp.bedrooms + "x" + fp.bathrooms + " " + fp.description + ", Sqft: " + fp.sqft + ", Units: "+ fp.units,
                                                 mappedId: null,
                                                 bedrooms: fp.bedrooms,
                                                 bathrooms: fp.bathrooms,

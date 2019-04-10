@@ -135,7 +135,6 @@
 }
 
 .market-survey .new-table thead th, .market-survey .new-table tfoot td {
-    max-width: 100px;
     padding:10px 5px;
 }
 

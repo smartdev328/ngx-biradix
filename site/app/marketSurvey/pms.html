@@ -1,3 +1,4 @@
+<p style="margin:0 14px 14px;">We have imported the data from your PMS setup for <strong>{{property.name}}</strong>. Please go through the Floor Plans data below and select the preferred value for your Property Survey.</p>
 <div class="table-responsive">
 <table class="new-table">
   <thead>
@@ -20,19 +21,19 @@
       </td>
       <td class="min-width-100-m">
         <strong>BI:Radix</strong><br>
-        <i class="grey-txt">Last update: {{showDate(originalSurvey.survey_date)}}</i><br>
+        <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
       </td>
       <td>
-        <label for="occupancyB" ng-if="originalSurvey.occupancy !== ''"><input type="radio" ng-model="pms.values.occupancy" value="BIRADIX" id="occupancyB"> {{originalSurvey.occupancy | number: 2}}</label>
+        <label for="occupancyB" ng-if="originalSurvey.occupancy !== ''"><input type="radio" ng-model="pms.values.occupancy" value="BIRADIX" id="occupancyB"> {{originalSurvey.occupancy}}</label>
         <div ng-if="originalSurvey.occupancy === ''">-</div>
       </td>
       <td>
-        <label for="leasedB" ng-if="originalSurvey.leased !== ''"><input type="radio" ng-model="pms.values.leased" value="BIRADIX" id="leasedB"> {{originalSurvey.leased | number: 2}}</label>
+        <label for="leasedB" ng-if="originalSurvey.leased !== ''"><input type="radio" ng-model="pms.values.leased" value="BIRADIX" id="leasedB"> {{originalSurvey.leased}}</label>
         <div ng-if="originalSurvey.leased === ''">-</div>
       </td>
       <td>
         <label for="atrB" ng-if="originalSurvey.atr !== ''"><input type="radio" ng-model="pms.values.atr" value="BIRADIX" id="atrB"> {{originalSurvey.atr | number: 0}}</label>
-        <div ng-if="originalSurvey.atr === ''">-</div>
+        <div ng-if="originalSurvey.atr === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
       </td>
       <td>
         <label for="weeklytrafficB" ng-if="originalSurvey.weeklytraffic !== ''"><input type="radio" ng-model="pms.values.weeklytraffic" value="BIRADIX" id="weeklytrafficB"> {{originalSurvey.weeklytraffic | number: 0}}</label>
@@ -51,11 +52,11 @@
       </td>
       <td class="min-width-100-m">
         <strong>Yardi</strong><br>
-        <i class="grey-txt">Last update: {{showDate(pms.dates.date)}}</i><br>
+        <i class="grey-txt">Updated: {{showDate(pms.dates.date)}}</i><br>
       </td>
       <td class="nowrap">
         <label for="occupancyY"><input type="radio" ng-model="pms.values.occupancy" value="YARDI" id="occupancyY"> {{pms.property.occupancy | number: 2}}
-        <i class="fa fa-question-circle link"
+        <i class="fa fa-question-circle link ml-3"
         popover-trigger="'mouseenter'"
         popover-placement="top"
         uib-popover-html="'View Occupancy % breakdown'"
@@ -65,7 +66,7 @@
       </td>
       <td class="nowrap">
         <label for="leasedY"><input type="radio" ng-model="pms.values.leased" value="YARDI" id="leasedY"> {{pms.property.leased | number: 2}}
-        <i class="fa fa-question-circle link"
+        <i class="fa fa-question-circle link ml-3"
         popover-trigger="'mouseenter'"
         popover-placement="top"
         uib-popover-html="'View Leased % breakdown'"
@@ -76,7 +77,7 @@
       </td>
       <td class="nowrap">
         <label for="atrY"><input type="radio" ng-model="pms.values.atr" value="YARDI" id="atrY"> {{pms.property.atr | number: 0}}
-        <i class="fa fa-question-circle link"
+        <i class="fa fa-question-circle link ml-3"
         popover-trigger="'mouseenter'"
         popover-placement="top"
         uib-popover-html="'ATR breakdown'"
@@ -87,7 +88,7 @@
       </td>
       <td class="nowrap">
         <label for="weeklytrafficY"><input type="radio" ng-model="pms.values.weeklytraffic" value="YARDI" id="weeklytrafficY"> {{pms.property.weeklytraffic | number: 0}}
-        <i class="fa fa-question-circle link"
+        <i class="fa fa-question-circle link ml-3"
         popover-trigger="'mouseenter'"
         popover-placement="top"
         uib-popover-html="'View Traffic / Week breakdown'"
@@ -98,7 +99,7 @@
       </td>
       <td class="nowrap">
         <label for="weeklyleasesY"><input type="radio" ng-model="pms.values.weeklyleases" value="YARDI" id="weeklyleasesY"> {{pms.property.weeklyleases | number: 0}}
-        <i class="fa fa-question-circle link"
+        <i class="fa fa-question-circle link ml-3"
         popover-trigger="'mouseenter'"
         popover-placement="top"
         uib-popover-html="'View Leases / Week breakdown'"
@@ -122,11 +123,11 @@
       <th class="hidden-xs">Sq/Ft</th>
       <th>
         <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
-        <i class="grey-txt">Last update: {{showDate(originalSurvey.survey_date)}}</i><br>
+        <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
       </th>
       <th>
         <img src="/images/organizations/yardi-small.png" style="width:12px;margin-right: 5px;"><strong class="hidden-xs">Yardi</strong><br class="hidden-xs">
-        <i class="grey-txt">Last update: {{showDate(pms.dates.date)}}</i><br>
+        <i class="grey-txt">Updated: {{showDate(pms.dates.date)}}</i><br>
       </th>
       <th width="9"></th>
     </tr>
@@ -141,14 +142,16 @@
       </td>
       <td class="hidden-xs"><strong>{{row.description}}</strong></td>
       <td class="hidden-xs text-right">
-        <strong class="pr-20">{{row.units}}
-        <span class="fa fa-exclamation-triangle warning label-side-icon"
+        <div class="pr-20">
+        <strong class="clearfix">
+        <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 4px;"
            ng-if="pms.mappedFloorplans[row.id].units !== row.units"
            popover-trigger="'mouseenter'"
            popover-placement="right"
            popover-class="popover-small"
-           uib-popover-html="'Unit count in BI:Radix ({{row.units}}) not matching total units mapped from Yardi ({{pms.mappedFloorplans[row.id].units}})'"
-        ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" style="width:17px;height: 17px;float:right;"></span></strong>
+           uib-popover-html="'Unit count in BI:Radix <strong>({{row.units}})</strong> not matching total units mapped from Yardi <strong>({{pms.mappedFloorplans[row.id].units}})</strong>'"
+        ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" class="pull-right" style="width:17px;height: 17px;"></span>{{row.units}}</strong>
+        </div>
       </td>
       <td class="hidden-xs"><strong>{{row.sqft}}</strong></td>
       <td>
