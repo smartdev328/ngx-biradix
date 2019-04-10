@@ -25,7 +25,7 @@
         color: #fff;
     }
 
-    .red-txt {
+    .red-txt, .red-txt:hover {
         color:#d9534f;
     }
 
@@ -43,6 +43,12 @@
     }
     .w-45 {
         width: 45%;
+    }
+
+    .missmatch {
+        background:transparent;
+        border:none;
+        color: #d9534f;
     }
 
 </Style>
@@ -79,7 +85,12 @@
                     <div class="w-45 pull-left">
                         <div class="floorplan biradix">{{floorplan.name}}</div>
                     </div>
-                    <div class="w-10 pull-left text-center"><=></div>
+                    <div class="w-10 pull-left text-center">
+                        <button class="missmatch" ng-if="floorplan.units != floorplan.yardi[0].units" type="button" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Missmatch between units" tooltip-placement="top">
+                            <span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
+                        </button>
+                        <span ng-if="floorplan.units === floorplan.yardi[0].units" class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
+                    </div>
                     <div class="w-45 pull-left">
                         <ul ui-sortable="{connectWith: '.list'}" ng-model="floorplan.yardi" class="list">
                             <div ng-repeat="mapped in floorplan.yardi | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan mapped"><i class="fa fa-bars"></i> {{mapped.name}}</div>

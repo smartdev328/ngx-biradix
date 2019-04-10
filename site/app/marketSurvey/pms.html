@@ -1,5 +1,5 @@
 <p style="margin:0 14px 14px;">We have imported the data from your PMS setup for <strong>{{property.name}}</strong>. Please go through the Floor Plans data below and select the preferred value for your Property Survey.</p>
-<div class="table-responsive">
+<div class="table-responsive" style="margin-bottom: 10px;">
 <table class="new-table">
   <thead>
     <tr>
@@ -25,23 +25,23 @@
       </td>
       <td>
         <label for="occupancyB" ng-if="originalSurvey.occupancy !== ''"><input type="radio" ng-model="pms.values.occupancy" value="BIRADIX" id="occupancyB"> {{originalSurvey.occupancy}}</label>
-        <div ng-if="originalSurvey.occupancy === ''">-</div>
+        <div ng-if="originalSurvey.occupancy === ''"><input type="radio" disabled="disabled"> -</div>
       </td>
       <td>
         <label for="leasedB" ng-if="originalSurvey.leased !== ''"><input type="radio" ng-model="pms.values.leased" value="BIRADIX" id="leasedB"> {{originalSurvey.leased}}</label>
-        <div ng-if="originalSurvey.leased === ''">-</div>
+        <div ng-if="originalSurvey.leased === ''"><input type="radio" disabled="disabled"> -</div>
       </td>
       <td>
         <label for="atrB" ng-if="originalSurvey.atr !== ''"><input type="radio" ng-model="pms.values.atr" value="BIRADIX" id="atrB"> {{originalSurvey.atr | number: 0}}</label>
-        <div ng-if="originalSurvey.atr === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
+        <div ng-if="originalSurvey.atr === ''"><input type="radio" disabled="disabled"> -</div>
       </td>
       <td>
         <label for="weeklytrafficB" ng-if="originalSurvey.weeklytraffic !== ''"><input type="radio" ng-model="pms.values.weeklytraffic" value="BIRADIX" id="weeklytrafficB"> {{originalSurvey.weeklytraffic | number: 0}}</label>
-        <div ng-if="originalSurvey.weeklytraffic === ''">-</div>
+        <div ng-if="originalSurvey.weeklytraffic === ''"><input type="radio" disabled="disabled"> -</div>
       </td>
       <td>
         <label for="weeklyleasesB" ng-if="originalSurvey.weeklyleases !== ''"><input type="radio" ng-model="pms.values.weeklyleases" value="BIRADIX" id="weeklyleasesB"> {{originalSurvey.weeklyleases | number: 0}}</label>
-        <div ng-if="originalSurvey.weeklyleases === ''">-</div>
+        <div ng-if="originalSurvey.weeklyleases === ''"><input type="radio" disabled="disabled"> -</div>
       </td>
       <td width="9"></td>
     </tr>
@@ -121,6 +121,7 @@
       <th class="hidden-xs">Desc.</th>
       <th class="hidden-xs text-right"><span class="pr-20">Units<span style="width:17px;height: 17px;float:right;"></span></span></th>
       <th class="hidden-xs">Sq/Ft</th>
+      <th class="hidden-xs" width="10"></th>
       <th>
         <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
         <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
@@ -144,7 +145,7 @@
       <td class="hidden-xs text-right">
         <div class="pr-20">
         <strong class="clearfix">
-        <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 4px;"
+        <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 4px;margin:0;"
            ng-if="pms.mappedFloorplans[row.id].units !== row.units"
            popover-trigger="'mouseenter'"
            popover-placement="right"
@@ -154,13 +155,14 @@
         </div>
       </td>
       <td class="hidden-xs"><strong>{{row.sqft}}</strong></td>
+      <td class="hidden-xs" width="10"></td>
       <td>
         <label id="B-{{row.id}}" ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>
-        <div ng-if="row.rent === ''">-</div>
+        <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
       </td>
       <td>
         <label id="Y-{{row.id}}" ng-if="pms.mappedFloorplans[row.id] !== null"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
-        <div ng-if="pms.mappedFloorplans[row.id] === null">-</div>
+        <div ng-if="pms.mappedFloorplans[row.id] === null"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
       </td>
       <td width="9"></td>
     </tr>
