@@ -119,9 +119,8 @@
       <th width="9"></th>
       <th>Type</th>
       <th class="hidden-xs">Desc.</th>
-      <th class="hidden-xs text-right"><span class="pr-20">Units<span style="width:17px;height: 17px;float:right;"></span></span></th>
-      <th class="hidden-xs">Sq/Ft</th>
-      <th class="hidden-xs" width="10"></th>
+      <th class="hidden-xs text-right"><span>Units<span style="width:17px;height: 17px;float:right;"></span></span></th>
+      <th class="hidden-xs text-right"><span class="pr-20">Sq/Ft</span></th>
       <th>
         <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
         <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
@@ -133,7 +132,7 @@
       <th width="9"></th>
     </tr>
   </thead>
-  <tbody style="font-size: 14px;">
+  <tbody>
     <tr ng-repeat="row in originalSurvey.floorplans | orderBy : getOrder()">
       <td width="9"></td>
       <td>{{row.bedrooms}}x{{row.bathrooms}}
@@ -142,7 +141,7 @@
       </td>
       <td class="hidden-xs">{{row.description}}</td>
       <td class="hidden-xs text-right">
-        <div class="pr-20 clearfix">
+        <div class="clearfix">
         <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 3px;margin:0;"
            ng-if="pms.mappedFloorplans[row.id].units !== row.units"
            popover-trigger="'mouseenter'"
@@ -152,8 +151,7 @@
         ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" class="pull-right" style="width:17px;height: 17px;"></span>{{row.units}}
         </div>
       </td>
-      <td class="hidden-xs">{{row.sqft}}</td>
-      <td class="hidden-xs" width="10"></td>
+      <td class="hidden-xs text-right"><span class="pr-20">{{row.sqft}}</span></td>
       <td>
         <label id="B-{{row.id}}" ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>
         <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
