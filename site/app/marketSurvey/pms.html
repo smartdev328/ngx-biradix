@@ -1,4 +1,4 @@
-<p style="margin:0 14px 14px;">We have imported the data from your PMS setup for <strong>{{property.name}}</strong>. Please go through the Floor Plans data below and select the preferred value for your Property Survey.</p>
+<p style="margin:0 14px 14px;">We have imported PMS data for <strong>{{property.name}}</strong>. Select any fields where you want to use BI:Radix values instead - you can make additional changes on the next screen.</p>
 <div class="table-responsive" style="margin-bottom: 10px;">
 <table class="new-table">
   <thead>
@@ -133,28 +133,26 @@
       <th width="9"></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody style="font-size: 14px;">
     <tr ng-repeat="row in originalSurvey.floorplans | orderBy : getOrder()">
       <td width="9"></td>
-      <td>
-        <strong>{{row.bedrooms}}x{{row.bathrooms}}</strong>
+      <td>{{row.bedrooms}}x{{row.bathrooms}}
         <div class="visible-xs tiny"><strong>{{row.units}} Units</strong></div>
         <div class="visible-xs tiny"><strong>{{row.sqft}} Sqft</strong></div>
       </td>
-      <td class="hidden-xs"><strong>{{row.description}}</strong></td>
+      <td class="hidden-xs">{{row.description}}</td>
       <td class="hidden-xs text-right">
-        <div class="pr-20">
-        <strong class="clearfix">
-        <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 4px;margin:0;"
+        <div class="pr-20 clearfix">
+        <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 3px;margin:0;"
            ng-if="pms.mappedFloorplans[row.id].units !== row.units"
            popover-trigger="'mouseenter'"
            popover-placement="right"
            popover-class="popover-small"
            uib-popover-html="'Unit count in BI:Radix <strong>({{row.units}})</strong> not matching total units mapped from Yardi <strong>({{pms.mappedFloorplans[row.id].units}})</strong>'"
-        ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" class="pull-right" style="width:17px;height: 17px;"></span>{{row.units}}</strong>
+        ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" class="pull-right" style="width:17px;height: 17px;"></span>{{row.units}}
         </div>
       </td>
-      <td class="hidden-xs"><strong>{{row.sqft}}</strong></td>
+      <td class="hidden-xs">{{row.sqft}}</td>
       <td class="hidden-xs" width="10"></td>
       <td>
         <label id="B-{{row.id}}" ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>

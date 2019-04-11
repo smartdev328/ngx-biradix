@@ -100,6 +100,7 @@ define([
                                                 } else if (biradix) {
                                                     yardi.deleted = true;
                                                     biradix.yardi.push(yardi);
+                                                    biradix.yardi.totalUnits = _.reduce(biradix.yardi, function(total, f){ return total + f.units; }, 0);
                                                 }
                                             }
                                         });

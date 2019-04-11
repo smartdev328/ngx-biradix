@@ -38,7 +38,8 @@
 }
 
 .market-survey label {
-    color:#888888;cursor: pointer;
+    cursor: pointer;
+    font-weight: normal;
 } 
 
 .market-survey .survey-value {
