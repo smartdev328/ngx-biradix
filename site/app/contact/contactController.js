@@ -4,7 +4,7 @@ define([
     '../../services/contactService.js'
 ], function (app) {
      app.controller
-        ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', '$propertyService', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService,$propertyService) {
+        ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', '$propertyService', '$uibModal', '$uibModalStack', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService,$propertyService, $uibModal, $uibModalStack) {
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
             $rootScope.sideMenu = true;
@@ -15,13 +15,19 @@ define([
                 if ($rootScope.me) {
                     me = { first: $rootScope.me.first, last: $rootScope.me.last, email:  $rootScope.me.email }
                 }
-            })
+            });
 
             $scope.submit = function (msg) {
                 $('button.contact-submit').prop('disabled', true);
                 $scope.msg.name = me.first + ' ' + me.last;
-                $scope.msg.email = me.email;
                 ngProgress.start();
+                
+                if($scope.msg.firstName) {
+                    $scope.msg.subject = 'Webinar Training Spot';
+                    $scope.msg.date = $('#date').val();
+                } else {
+                    $scope.msg.email = me.email;
+                }
 
                 $propertyService.search({
                     limit: 20,
@@ -59,5 +65,34 @@ define([
                         });
                 });
             }
+
+            $scope.bookTraining = function () {
+                $uibModal.open({
+                    templateUrl: '/app/contact/bookTraining.html?bust=' + version,
+                    controller: 'contactController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+            }
+
+            $scope.cancel = function() {
+                $uibModalStack.dismissAll();
+            }
+
+            window.setTimeout(function() {
+                $('#date').daterangepicker({
+                    autoUpdateInput:false,
+                    singleDatePicker: true,
+                    isInvalidDate: function(date) {
+                      return (date.day() == 0 || date.day() == 1 || date.day() == 3 || date.day() == 5 || date.day() == 6);
+                    }
+                }, function(response) {
+                    $scope.selectedWeekDate = moment(response)._d.getDay();
+                    var dateSelected = moment(response).format('MM/DD/YY');
+                    $('#date').val(dateSelected);
+                });
+            }, 1500);
+
         }]);
 });
