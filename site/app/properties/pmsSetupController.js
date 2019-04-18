@@ -41,7 +41,7 @@ define([
                     $scope.pms.floorplans = [];
                     $scope.pms.unmappedFloorplans = [];
                     $scope.pms.excludedFloorplans = [];
-                    $scope.pms.config.pricingStrategy = $scope.pms.config.pricingStrategy || 1;
+                    $scope.pms.config.yardi.pricingStrategy = $scope.pms.config.yardi.pricingStrategy || 1;
                     $scope.pms.selectedPricing = _.find($scope.pricingStrategies, function(x) {
                         return x.value.toString() === $scope.pms.config.yardi.pricingStrategy.toString();
                     });
