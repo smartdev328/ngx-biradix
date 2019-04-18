@@ -20,14 +20,8 @@ define([
             $scope.submit = function (msg) {
                 $('button.contact-submit').prop('disabled', true);
                 $scope.msg.name = me.first + ' ' + me.last;
+                $scope.msg.email = me.email;
                 ngProgress.start();
-                
-                if($scope.msg.firstName) {
-                    $scope.msg.subject = 'Webinar Training Spot';
-                    $scope.msg.date = $('#date').val();
-                } else {
-                    $scope.msg.email = me.email;
-                }
 
                 $propertyService.search({
                     limit: 20,

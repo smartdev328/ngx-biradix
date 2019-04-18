@@ -7,25 +7,23 @@ requirejs.config({
     },
 });
 
-window.addEventListener('load', function() {
-    Raygun.init(raygun_key);
-    Raygun.setVersion(version);
+rg4js('apiKey', raygun_key);
+rg4js('setVersion', version);
 
-    Raygun.onBeforeSend(function(payload) {
-        if (FS && FS.getCurrentSessionURL) {
-            payload.Details.UserCustomData.fullStoryUrl = (FS.getCurrentSessionURL() || "").replace("%3A", ":");
-        }
-        return payload;
-    });
-
-
-    global_error = function(err,context) {
-        if (err) {
-            Raygun.send(err);
-            console.error(err.stack);
-        }
+rg4js('onBeforeSend', function (payload) {
+    if (FS && FS.getCurrentSessionURL) {
+        payload.Details.UserCustomData.fullStoryUrl = (FS.getCurrentSessionURL() || "").replace("%3A", ":");
     }
+    return payload;
 });
+
+
+global_error = function(err,context) {
+    if (err) {
+        rg4js('send', err);
+        console.error(err.stack);
+    }
+}
 
 requirejs.onError = function(err) {
     global_error(err, {location: location.href});
