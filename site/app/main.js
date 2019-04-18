@@ -7,14 +7,16 @@ requirejs.config({
     },
 });
 
-Raygun.init(raygun_key);
-Raygun.setVersion(version);
+window.addEventListener("load", function() {
+    Raygun.init(raygun_key);
+    Raygun.setVersion(version);
 
-Raygun.onBeforeSend(function(payload) {
-    if (FS && FS.getCurrentSessionURL) {
-        payload.Details.UserCustomData.fullStoryUrl = (FS.getCurrentSessionURL() || "").replace("%3A", ":");
-    }
-    return payload;
+    Raygun.onBeforeSend(function (payload) {
+        if (FS && FS.getCurrentSessionURL) {
+            payload.Details.UserCustomData.fullStoryUrl = (FS.getCurrentSessionURL() || "").replace("%3A", ":");
+        }
+        return payload;
+    });
 });
 
 global_error = function(err,context) {

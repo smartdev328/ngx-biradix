@@ -202,7 +202,7 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                     delete responseObj.survey.pms;
                 }
 
-                $importIntegrationService.getFullYardi(responseObj.property._id, pmsId, responseObj.property.pms.yardi.floorplans).then(function(response) {
+                $importIntegrationService.getFullYardi(responseObj.property._id, pmsId, responseObj.property.pms.yardi.floorplans, responseObj.property.pms.yardi.pricingStrategy).then(function(response) {
                     if (!response.data.id) {
                         delete responseObj.pms;
                         return callback(responseObj);
@@ -252,6 +252,10 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             responseObj.pms.values.rent[fp.id] = "YARDI";
 
                             if (responseObj.editMode && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
+                                responseObj.pms.values.rent[fp.id] = "BIRADIX";
+                            }
+
+                            if (!responseObj.editMode && pmsFp.priceWarning && fp.rent) {
                                 responseObj.pms.values.rent[fp.id] = "BIRADIX";
                             }
                         } else {

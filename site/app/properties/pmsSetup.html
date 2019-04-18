@@ -69,6 +69,16 @@
                 <label>What property do you want to connect to?<span class="required">*</span></label>
                 <div ng-if="!pms.config.importId" ng-model="pms.selectedProperty" custom-select="property.name for property in properties | filter: $searchTerm"></div>
                 <div ng-if="pms.config.importId">Connected to: <b>{{pms.selectedProperty.name}}</b> - <A class="red-txt" href ng-click="disconnect()">Disconnect</A></div>
+                <div ng-if="pms.config.importId">
+                    <div class="pull-left" style="padding-top:5px">
+                        Pricing:
+                    </div>
+                    <div class="pull-left">
+                        <select class="form-control input-sm" ng-model="pms.selectedPricing"
+                             ng-options="item.description for item in pricingStrategies">
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div ng-if="pms.config.importId">
@@ -87,10 +97,10 @@
                         <div class="floorplan biradix">{{floorplan.name}}</div>
                     </div>
                     <div class="w-10 pull-left text-center">
-                        <button class="missmatch" ng-if="floorplan.units != floorplan.yardi.totalUnits" type="button" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Missmatch between units" tooltip-placement="top">
+                        <button class="missmatch" ng-if="!unitsMatch(floorplan)" type="button" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Missmatch between units" tooltip-placement="top">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
-                        <i ng-if="floorplan.units === floorplan.yardi.totalUnits" class="fa fa-arrows-h" aria-hidden="true"></i>
+                        <i ng-if="unitsMatch(floorplan)" class="fa fa-arrows-h" aria-hidden="true"></i>
                     </div>
                     <div class="w-45 pull-left">
                         <ul ui-sortable="{connectWith: '.list'}" ng-model="floorplan.yardi" class="list">

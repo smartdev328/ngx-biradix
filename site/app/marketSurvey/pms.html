@@ -153,12 +153,19 @@
       </td>
       <td class="hidden-xs text-right"><span class="pr-20">{{row.sqft}}</span></td>
       <td>
-        <label id="B-{{row.id}}" ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>
+        <label ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>
         <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
       </td>
       <td>
-        <label id="Y-{{row.id}}" ng-if="pms.mappedFloorplans[row.id] !== null"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
+        <label ng-if="pms.mappedFloorplans[row.id] !== null"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
         <div ng-if="pms.mappedFloorplans[row.id] === null"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
+        <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
+              ng-if="pms.mappedFloorplans[row.id].priceWarning"
+              popover-trigger="'mouseenter'"
+              popover-placement="right"
+              popover-class="popover-small"
+              uib-popover-html="pms.mappedFloorplans[row.id].priceWarning"
+        ></span>
       </td>
       <td width="9"></td>
     </tr>

@@ -20,8 +20,8 @@ angular.module("biradix.global").factory("$importIntegrationService", ["$http", 
         });
     };
 
-    fac.getFullYardi = function(propertyId, pmsId, floorplans) {
-        return $http.post(gAPI + "/api/1.0/import/integrations/fullYardi/" + propertyId + "?bust=" + (new Date()).getTime(), {pmsId: pmsId, floorplans: floorplans}, {
+    fac.getFullYardi = function(propertyId, pmsId, floorplans, pricingStrategy) {
+        return $http.post(gAPI + "/api/1.0/import/integrations/fullYardi/" + propertyId + "?bust=" + (new Date()).getTime(), {pmsId: pmsId, floorplans: floorplans, pricingStrategy: pricingStrategy}, {
             headers: {"Authorization": "Bearer " + $cookies.get("token")}}).success(function(response) {
             return response;
         }).error(function(response) {

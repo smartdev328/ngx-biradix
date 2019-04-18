@@ -8,7 +8,16 @@ define([
             ga("set", "page", "/pmsSetup");
             ga("send", "pageview");
 
+            $scope.pricingStrategies = [
+                {value: 1, description: "(Rev Mgmt Rent) + (Rev Mgmt Amenities) - (Rev Mgmt Concessions/12)"},
+                {value: 2, description: "(Rev Mgmt Rent) + (Unit Amenities - excluding \"Rent\" Amenity)"},
+                {value: 3, description: "Unit Rent"},
+                {value: 4, description: "Total Unit Amenities"},
+                {value: 5, description: "(UnitType Rent) +  (Unit Amenities - excluding \"Rent\" Amenity)"},
+
+            ]
             $scope.pms = {
+                selectedPricing: null,
                 selectedProperty: null,
                 config: null,
                 floorplans: [],
@@ -32,6 +41,10 @@ define([
                     $scope.pms.floorplans = [];
                     $scope.pms.unmappedFloorplans = [];
                     $scope.pms.excludedFloorplans = [];
+                    $scope.pms.config.pricingStrategy = $scope.pms.config.pricingStrategy || 1;
+                    $scope.pms.selectedPricing = _.find($scope.pricingStrategies, function(x) {
+                        return x.value.toString() === $scope.pms.config.yardi.pricingStrategy.toString();
+                    });
 
                     // TODO: When this becomes client facing, we cannot return all integration client side
                     $importService.read().then(function(response) {
@@ -100,7 +113,6 @@ define([
                                                 } else if (biradix) {
                                                     yardi.deleted = true;
                                                     biradix.yardi.push(yardi);
-                                                    biradix.yardi.totalUnits = _.reduce(biradix.yardi, function(total, f){ return total + f.units; }, 0);
                                                 }
                                             }
                                         });
@@ -135,10 +147,13 @@ define([
                     importProvider: $scope.imports[0].provider,
                     yardi: {
                         propertyId: $scope.pms.selectedProperty.id,
-                        floorplans: []
-                    }
+                        floorplans: [],
+                        pricingStrategy: 1
+                    },
+
                 };
                 if (!isNew) {
+                    pms.yardi.pricingStrategy = $scope.pms.selectedPricing.value;
                     $scope.pms.floorplans.forEach(function(fp) {
                         fp.yardi.forEach(function(y) {
                             pms.yardi.floorplans.push({
@@ -202,6 +217,12 @@ define([
 
                 _.remove($scope.pms.unmappedFloorplans, function(x) {
                     return x.deleted;
+                });
+            };
+
+            $scope.unitsMatch = function(floorplan) {
+                return floorplan.units === _.sum(floorplan.yardi, function(x) {
+                    return x.units;
                 });
             };
 
