@@ -67,32 +67,18 @@ define([
             }
 
             $scope.bookTraining = function () {
-                $uibModal.open({
-                    templateUrl: '/app/contact/bookTraining.html?bust=' + version,
-                    controller: 'contactController',
-                    size: "md",
-                    keyboard: false,
-                    backdrop: 'static'
+                require([
+                    '/app/contact/bookTrainingController.js'
+                ], function () {
+                    $uibModal.open({
+                        templateUrl: '/app/contact/bookTraining.html?bust=' + version,
+                        controller: 'bookTrainingController',
+                        size: "md",
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
                 });
             }
-
-            $scope.cancel = function() {
-                $uibModalStack.dismissAll();
-            }
-
-            window.setTimeout(function() {
-                $('#date').daterangepicker({
-                    autoUpdateInput:false,
-                    singleDatePicker: true,
-                    isInvalidDate: function(date) {
-                      return (date.day() == 0 || date.day() == 1 || date.day() == 3 || date.day() == 5 || date.day() == 6);
-                    }
-                }, function(response) {
-                    $scope.selectedWeekDate = moment(response)._d.getDay();
-                    var dateSelected = moment(response).format('MM/DD/YY');
-                    $('#date').val(dateSelected);
-                });
-            }, 1500);
 
         }]);
 });
