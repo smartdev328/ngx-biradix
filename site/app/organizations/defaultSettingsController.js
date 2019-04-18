@@ -131,7 +131,7 @@ define([
 
                             }, function (err) {
                                 $('button.apply').prop('disabled', false);
-                                Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                                rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                                 toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                                 ngProgress.complete();
                             });
@@ -143,7 +143,7 @@ define([
 
                 }, function (err) {
                     $('button.apply').prop('disabled', false);
-                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                     toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                     ngProgress.complete();
                 });
