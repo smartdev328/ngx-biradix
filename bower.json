@@ -24,8 +24,7 @@
     "jquery": "2.1.4",
     "jquery-ui": "~1.12.1",
     "lodash": "3.10.0",
-    "moment": "2.18.1",
-    "raygun4js": "^2.8.5"
+    "moment": "2.18.1"
   },
   "resolutions": {
     "angular": "1.5.9"
