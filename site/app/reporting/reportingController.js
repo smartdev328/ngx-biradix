@@ -133,7 +133,7 @@ define([
                     $scope.savedReports = response.data.reports;
                 },
                 function (error) {
-                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                    rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                     toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 });
         }
@@ -394,7 +394,7 @@ define([
                 delete $scope.reportStarted;
                 $scope.reportLoading = false;
                 window.renderable = true;
-                Raygun.send(new Error("Report took longer then 90 seconds"));
+                rg4js('send', new Error("Report took longer then 90 seconds"));
                 return;
             }
 
