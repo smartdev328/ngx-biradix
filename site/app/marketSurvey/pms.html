@@ -120,7 +120,7 @@
       <th>Type</th>
       <th class="hidden-xs">Desc.</th>
       <th class="hidden-xs text-right"><span>Units<span style="width:17px;height: 17px;float:right;"></span></span></th>
-      <th class="hidden-xs text-right"><span class="pr-20">Sq/Ft</span></th>
+      <th class="hidden-xs text-right"><span class="pr-20">Sqft</span></th>
       <th>
         <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
         <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
@@ -162,7 +162,7 @@
         <i class="fa fa-question-circle link ml-3"
            popover-trigger="'mouseenter'"
            popover-placement="top"
-           uib-popover-html="'View Floor Plan Breakdown'"
+           uib-popover-html="'View Floor Plan Pricing Breakdown'"
            popover-append-to-body="true"
            ng-click="pmsFloorplan(pms.mappedFloorplans[row.id]);"
            ng-if="pms.mappedFloorplans[row.id] && $root.me.permissions.indexOf('Admin') > -1"
