@@ -96,6 +96,139 @@
             </tr>
             </tbody>
         </table>
+
+        <h4><i ng-class="{'fa' : true,  'fa-plus-square-o': !showUnits, 'fa-minus-square-o' : showUnits}" style="cursor:pointer;font-size:14px;padding-top:2px;margin:0px 15px" ng-click="showUnits = !showUnits"></i>Units</h4>
+        <div ng-if="showUnits" style="margin-left: 14px;"><span class="yellow-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  Available Units</p></div>
+        <table class="new-table border-table" ng-if="showUnits">
+            <thead>
+            <th>Id</th>
+            <th>Code</th>
+            <th>Unit<br>Type</th>
+            <th>Sqft</th>
+            <th>Rent</th>
+            <th>Amenities</th>
+            <th>Amenities<br> - 'Rent'</th>
+            <th>Available</th>
+            <th>Vacant</th>
+            <th>Ready</th>
+            <th>Status</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="u in floorplan.allUnits" ng-class="{'yellow-bg': u.isAvailable}" ng-style="{'text-decoration': u.isExcluded ? 'line-through' : 'inherit'}">
+                <td>
+                    {{u.id}}
+                </td>
+                <td>
+                    {{u.code}}
+                </td>
+                <td>
+                    {{u.floorplanId}}
+                </td>
+                <td>
+                    {{u.sqft}}
+                </td>
+                <td>
+                    {{u.rent | currency: "$" : 0 }}
+                </td>
+                <td>
+                    {{u.sumOfUnitAmenities | currency: "$" : 0 }}
+                </td>
+                <td>
+                    {{u.somOfUnitAmenitiesWithoutRent | currency: "$" : 0 }}
+                </td>
+                <td>
+                    <span ng-if="u.dateAvailable">{{u.dateAvailable | date: 'shortDate' }}</span>
+                </td>
+                <td>
+                    <span ng-if="u.dateVacant">{{u.dateVacant | date: 'shortDate' }}</span>
+                </td>
+                <td>
+                    <span ng-if="u.dateReady">{{u.dateReady | date: 'shortDate' }}</span>
+                </td>
+                <td>
+                    {{u.status}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <h4><i ng-class="{'fa' : true,  'fa-plus-square-o': !showRev, 'fa-minus-square-o' : showRev}" style="cursor:pointer;font-size:14px;padding-top:2px;margin:0px 15px" ng-click="showRev = !showRev"></i>Revenue Managed Units</h4>
+
+        <div ng-if="showRev" style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  Per unit - Most recent import date within 30 days AND unit is available in the next 60 days AND (Date Available >= Start Date) AND (Date Available is <= End Date)</p></div>
+        <div ng-if="showRev" style="margin-left: 14px;"><span class="orange-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  Per unit - Most recent import date within 30 days AND unit Start Date closest to date of file export. This would be current day if looking at Yardi data export from today</p></div>
+        <table class="new-table border-table" ng-if="showRev">
+            <thead>
+            <th>Id</th>
+            <th>Rent</th>
+            <th>Amenities</th>
+            <th>Concessions</th>
+            <th>Import</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Available</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="u in floorplan.allRevmanagedUnits" ng-class="{'green-bg': u.isGreen, 'orange-bg': u.isOrange}">
+                <td>
+                    {{u.id}}
+                </td>
+                <td>
+                    {{u.rent | currency: "$" : 0 }}
+                </td>
+                <td>
+                    {{u.amenities | currency: "$" : 0 }}
+                </td>
+                <td>
+                    {{u.concessions | currency: "$" : 0 }}
+                </td>
+
+                <td>
+                    <span ng-if="u.importDate">{{u.importDate | date: 'shortDate' }}</span>
+                </td>
+                <td>
+                    <span ng-if="u.startDate">{{u.startDate | date: 'shortDate' }}</span>
+                </td>
+                <td>
+                    <span ng-if="u.endDate">{{u.endDate | date: 'shortDate' }}</span>
+                </td>
+                <td>
+                    <span ng-if="u.availableDate">{{u.availableDate | date: 'shortDate' }}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h4><i ng-class="{'fa' : true,  'fa-plus-square-o': !showLease, 'fa-minus-square-o' : showLease}" style="cursor:pointer;font-size:14px;padding-top:2px;margin:0px 15px" ng-click="showLease = !showLease"></i>Lease Rent History</h4>
+
+        <div ng-if="showLease" style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">= Submit Application events with Date in the last 30 days and Lease From Date in the next 60 days from Date</p></div>
+        <table class="new-table border-table" ng-if="showLease">
+            <thead>
+            <th>Event</th>
+            <th>Tenant</th>
+            <th>Rent</th>
+            <th>Date</th>
+            <th>Lease From</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="u in floorplan.applications" ng-class="{'green-bg': u.isValidRent}">
+                <td>
+                    {{u.event}}
+                </td>
+                <td>
+                    {{u.id}}
+                </td>
+                <td>
+                    {{u.rent | currency: "$" : 0 }}
+                </td>
+                <td>
+                    <span ng-if="u.date">{{u.date | date: 'shortDate' }}</span>
+                </td>
+                <td>
+                    <span ng-if="u.leaseFromDate">{{u.leaseFromDate | date: 'shortDate' }}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
     <div class="row" style="padding:20px">
         <div class="col-xs-12 text-center">
