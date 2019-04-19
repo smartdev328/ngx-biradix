@@ -131,7 +131,7 @@
     width:100%
 }
 
-.market-survey .new-table thead, .market-survey .new-table tfoot {
+.market-survey .new-table thead, .market-survey .new-table tfoot, .market-survey .new-table .gray {
     background-color: #eeeeee;
 }
 

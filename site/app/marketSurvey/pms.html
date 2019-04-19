@@ -157,10 +157,18 @@
         <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
       </td>
       <td>
-        <label ng-if="pms.mappedFloorplans[row.id] !== null"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
-        <div ng-if="pms.mappedFloorplans[row.id] === null"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
+        <label ng-if="pms.mappedFloorplans[row.id]"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
+        <label ng-if="!pms.mappedFloorplans[row.id]"><input type="radio" value="BIRADIX" disabled="disabled"> -</label>
+        <i class="fa fa-question-circle link ml-3"
+           popover-trigger="'mouseenter'"
+           popover-placement="top"
+           uib-popover-html="'View Floor Plan Breakdown'"
+           popover-append-to-body="true"
+           ng-click="pmsFloorplan(pms.mappedFloorplans[row.id]);"
+           ng-if="pms.mappedFloorplans[row.id] && $root.me.permissions.indexOf('Admin') > -1"
+        ></i>
         <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
-              ng-if="pms.mappedFloorplans[row.id].priceWarning"
+              ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].priceWarning"
               popover-trigger="'mouseenter'"
               popover-placement="right"
               popover-class="popover-small"

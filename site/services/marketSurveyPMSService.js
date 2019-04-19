@@ -169,6 +169,21 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                     }
                 });
             };
+
+            scope.pmsFloorplan = function(floorplan) {
+                $uibModal.open({
+                    templateUrl: "/app/marketSurvey/floorplan.html?bust=" + version,
+                    controller: "marketSurveyFloorplanController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        floorplan: function() {
+                            return floorplan;
+                        }
+                    }
+                });
+            };
         };
 
         fac.getYardiDiff = function(scope) {

@@ -1,0 +1,105 @@
+<div class="market-survey">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Floorplan Breakdown</h2>
+    </div>
+    <div ng-class="{'modal-body pms': true}">
+        <h4><i ng-class="{'fa' : true,  'fa-plus-square-o': !showInfo, 'fa-minus-square-o' : showInfo}" style="cursor:pointer;font-size:14px;padding-top:2px;margin:0px 15px" ng-click="showInfo = !showInfo"></i>Floor Plan Info</h4>
+        <table class="new-table border-table" ng-if="showInfo">
+            <tbody>
+                <tr style="border-top:1px solid #ccc">
+                    <td class="gray">
+                        Rent:
+                    </td>
+                    <td>
+                        {{floorplan.rent | currency : "$" : 0}}
+                    </td>
+                </tr>
+                    <td class="gray">
+                        Total Units:
+                    </td>
+                    <td>
+                        {{floorplan.units}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="gray">
+                        Units Available:
+                    </td>
+                    <td>
+                        {{floorplan.areUnitsAvailable ? "Yes" : "None"}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="gray" nowrap>
+                        Lease Rent History:
+                    </td>
+                    <td>
+                        {{floorplan.hasLeaseRentHistory ? "Yes" : "None"}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="gray" nowrap>
+                        Unit Price Strategy:
+                    </td>
+                    <td>
+                        {{floorplan.rents.strategy}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="gray" nowrap>
+                        Unit Price Notes:
+                    </td>
+                    <td>
+                        {{floorplan.rents.notes}}
+                        <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
+                              ng-if="floorplan.priceWarning"
+                              popover-trigger="'mouseenter'"
+                              popover-placement="right"
+                              popover-class="popover-small"
+                              uib-popover-html="floorplan.priceWarning"
+                        ></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h4><i ng-class="{'fa' : true,  'fa-plus-square-o': !showTypes, 'fa-minus-square-o' : showTypes}" style="cursor:pointer;font-size:14px;padding-top:2px;margin:0px 15px" ng-click="showTypes = !showTypes"></i>Unit Type(s)</h4>
+        <table class="new-table border-table" ng-if="showTypes">
+            <thead>
+                <th>Type</th>
+                <th>Code</th>
+                <th>UniteType Id</th>
+                <th>Description</th>
+                <th>Sqft</th>
+                <th>UnitType Rent</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="fp in floorplan.yardiFlooplans">
+                <td>
+                    {{fp.bedrooms}}x{{fp.bathrooms}}
+                </td>
+                <td>
+                    {{fp.code}}
+                </td>
+                <td>
+                    {{fp.id}}
+                </td>
+                <td>
+                    {{fp.description}}
+                </td>
+                <td>
+                    {{fp.sqft}}
+                </td>
+                <td>
+                    {{fp.marketRent}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" style="padding:20px">
+        <div class="col-xs-12 text-center">
+            <a class="btn btn-default contact-submit" ng-click="cancel()">Close</a>
+        </div>
+    </div>
+</div>
