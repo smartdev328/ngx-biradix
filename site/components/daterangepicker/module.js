@@ -110,6 +110,8 @@ angular.module('biradix.global').directive('daterangeCalendar', function () {
             var todaysIsDisabled = $scope.daysDisabled.includes($scope.settings.selectedWeekDate);
             if(todaysIsDisabled) {
                 $scope.settings.currentDate = $scope.settings.placeholder;
+            } else {
+                $scope.settings.currentDate = moment($scope.settings.currentDate).format("MM/DD/YYYY");
             }
 
             $($element.find('div')).daterangepicker({
@@ -124,7 +126,6 @@ angular.module('biradix.global').directive('daterangeCalendar', function () {
                 $scope.settings.currentDate = start.format("MM/DD/YYYY");
             });
 
-            $scope.settings.currentDate = moment($scope.settings.currentDate).format("MM/DD/YYYY");
         },
         template: '<div style="width:100%;display:inline-block;background-color:white;border:1px solid #ccc; padding:6px 5px 6px 5px; border-radius: 2px;cursor:pointer;white-space:nowrap;font-weight:initial !important; font-size: 12px; color: initial !important;margin-top:0px;"><span class="pull-left" style="color:#337ab7">{{settings.currentDate}}</span><i class="fa fa-caret-down pull-right" style="padding-top:2px"></i></div>'
     };
