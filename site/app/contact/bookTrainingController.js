@@ -24,10 +24,18 @@ define([
                 $scope.currentDate = newVal;
             });
 
+            var me;
+            $rootScope.$watch("me", function(x) {
+                if ($rootScope.me) {
+                    me = { first: $rootScope.me.first, last: $rootScope.me.last, email:  $rootScope.me.email }
+                }
+            });
+
             $scope.submitBooking = function (msg) {
                 $('button.contact-submit').prop('disabled', true);
-                $scope.msg.subject = 'Webinar Training Spot';
-                $scope.msg.name = $scope.msg.firstName + ' ' + $scope.msg.lastName;
+                $scope.msg.name = me.first + ' ' + me.last;
+                $scope.msg.subject = 'Training Request';
+                $scope.msg.requesterName = $scope.msg.firstName + ' ' + $scope.msg.lastName;
                 $scope.msg.date = $scope.currentDate;
                 ngProgress.start();
 
