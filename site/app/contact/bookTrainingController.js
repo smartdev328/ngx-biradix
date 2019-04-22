@@ -34,6 +34,7 @@ define([
             $scope.submitBooking = function (msg) {
                 $('button.contact-submit').prop('disabled', true);
                 $scope.msg.name = me.first + ' ' + me.last;
+                $scope.msg.email = me.email;
                 $scope.msg.subject = 'Training Request';
                 $scope.msg.requesterName = $scope.msg.firstName + ' ' + $scope.msg.lastName;
                 $scope.msg.date = $scope.currentDate;

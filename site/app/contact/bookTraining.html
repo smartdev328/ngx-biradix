@@ -15,8 +15,8 @@
             <div class="form-group col-xs-12 col-sm-6" ng-class="{'has-success': myForm.lastName.$dirty && myForm.lastName.$valid}">
                 <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Last name" required ng-model="msg.lastName">
             </div>
-            <div class="form-group col-xs-12 col-sm-6" ng-class="{'has-success': myForm.email.$dirty && myForm.email.$valid}">
-                <input type="email" name="email" class="form-control" id="email" placeholder="E-mail" required ng-model="msg.email">
+            <div class="form-group col-xs-12 col-sm-6" ng-class="{'has-success': myForm.requesterEmail.$dirty && myForm.requesterEmail.$valid}">
+                <input type="email" name="requesterEmail" class="form-control" id="requesterEmail" placeholder="E-mail" required ng-model="msg.requesterEmail">
             </div>
             <div class="form-group col-xs-6 col-sm-4" ng-class="{'has-success': myForm.date.$dirty && myForm.date.$valid}">
                 <daterange-calendar settings="calendarSettings" days-disabled="[0,1,3,5,6]"></daterange-calendar>
