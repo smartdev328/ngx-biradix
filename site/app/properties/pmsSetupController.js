@@ -102,11 +102,11 @@ define([
                                         var biradix;
                                         $scope.pms.config.yardi.floorplans.forEach(function(fp) {
                                             yardi = _.find($scope.pms.unmappedFloorplans, function(ufp) {
-                                               return ufp.id === fp.yardiFloorplanId;
+                                               return ufp.id.toString() === fp.yardiFloorplanId.toString();
                                             });
 
                                             biradix = _.find($scope.pms.floorplans, function(ufp) {
-                                                return ufp.id === fp.floorplanId;
+                                                return ufp.id.toString() === fp.floorplanId.toString();
                                             });
 
                                             if (yardi) {
