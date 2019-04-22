@@ -41,10 +41,13 @@ define([
                     $scope.pms.floorplans = [];
                     $scope.pms.unmappedFloorplans = [];
                     $scope.pms.excludedFloorplans = [];
-                    $scope.pms.config.yardi.pricingStrategy = $scope.pms.config.yardi.pricingStrategy || 1;
-                    $scope.pms.selectedPricing = _.find($scope.pricingStrategies, function(x) {
-                        return x.value.toString() === $scope.pms.config.yardi.pricingStrategy.toString();
-                    });
+
+                    if ($scope.pms.config && $scope.pms.config.yardi) {
+                        $scope.pms.config.yardi.pricingStrategy = $scope.pms.config.yardi.pricingStrategy || 1;
+                        $scope.pms.selectedPricing = _.find($scope.pricingStrategies, function (x) {
+                            return x.value.toString() === $scope.pms.config.yardi.pricingStrategy.toString();
+                        });
+                    }
 
                     // TODO: When this becomes client facing, we cannot return all integration client side
                     $importService.read().then(function(response) {
