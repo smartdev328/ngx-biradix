@@ -17,6 +17,7 @@ rg4js('onBeforeSend', function (payload) {
     return payload;
 });
 
+
 global_error = function(err,context) {
     if (err) {
         rg4js('send', err);
