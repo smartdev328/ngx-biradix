@@ -218,7 +218,7 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
             scope.survey.floorplans.forEach((fp) => {
                 fpName = fp.bedrooms + "x" + fp.bathrooms;
 
-                if (fp.description && fp.description != "") {
+                if (fp.description && fp.description !== "") {
                     fpName += " " + fp.description;
                 } else {
                     fpName += " - ";
@@ -227,7 +227,7 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                 fpName += " " + fp.sqft + " Sqft";
                 fpName += ", " + fp.units + " Units";
 
-                pmsFp = scope.pms.mappedFloorplans[fp.id];
+                pmsFp = scope.pms.mappedFloorplans[fp.id.toString()];
                 if (pmsFp && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
                     diff.push({description: fpName + " Difference Survey vs Yardi: " + (fp.rent || 0).toFixed(0) + " vs " + (pmsFp.rent || 0).toFixed(0)});
                 }

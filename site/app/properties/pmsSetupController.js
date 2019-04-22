@@ -160,8 +160,8 @@ define([
                     $scope.pms.floorplans.forEach(function(fp) {
                         fp.yardi.forEach(function(y) {
                             pms.yardi.floorplans.push({
-                                floorplanId: fp.id,
-                                yardiFloorplanId: y.id,
+                                floorplanId: fp.id.toString(),
+                                yardiFloorplanId: y.id.toString(),
                             });
                         });
                     });
@@ -169,7 +169,7 @@ define([
                     $scope.pms.excludedFloorplans.forEach(function(fp) {
                         pms.yardi.floorplans.push({
                             floorplanId: "EXCLUDE",
-                            yardiFloorplanId: fp.id,
+                            yardiFloorplanId: fp.id.toString(),
                         });
                     });
                 }
