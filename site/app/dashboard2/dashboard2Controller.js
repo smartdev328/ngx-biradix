@@ -102,7 +102,7 @@ define([
                     return;
                 }
 
-                Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                 $scope.localLoading = true;
                 $scope.apiError = true;
             });
