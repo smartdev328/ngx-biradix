@@ -4,7 +4,7 @@ define([
     '../../services/contactService.js'
 ], function (app) {
      app.controller
-        ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', '$propertyService', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService,$propertyService) {
+        ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', '$propertyService', '$uibModal', '$uibModalStack', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService,$propertyService, $uibModal, $uibModalStack) {
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
             $rootScope.sideMenu = true;
@@ -15,7 +15,7 @@ define([
                 if ($rootScope.me) {
                     me = { first: $rootScope.me.first, last: $rootScope.me.last, email:  $rootScope.me.email }
                 }
-            })
+            });
 
             $scope.submit = function (msg) {
                 $('button.contact-submit').prop('disabled', true);
@@ -59,5 +59,20 @@ define([
                         });
                 });
             }
+
+            $scope.bookTraining = function () {
+                require([
+                    '/app/contact/bookTrainingController.js'
+                ], function () {
+                    $uibModal.open({
+                        templateUrl: '/app/contact/bookTraining.html?bust=' + version,
+                        controller: 'bookTrainingController',
+                        size: "md",
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                });
+            }
+
         }]);
 });
