@@ -215,7 +215,7 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
 
             var pmsFp;
             var fpName;
-            scope.survey.floorplans.forEach((fp) => {
+            scope.survey.floorplans.forEach(function(fp) {
                 fpName = fp.bedrooms + "x" + fp.bathrooms;
 
                 if (fp.description && fp.description !== "") {
