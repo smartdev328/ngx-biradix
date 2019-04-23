@@ -1,0 +1,36 @@
+<div class="market-survey">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Leases / Week Breakdown</h2>
+    </div>
+    <div ng-class="{'modal-body pms': true}">
+        <div style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  <strong>{{dates.startDate | date: 'short'}}</strong> to <strong>{{dates.endDate | date: 'short'}}</strong> Pacific</p></div>
+        <table class="new-table border-table">
+            <thead>
+               <th>Tenant ID</th>
+               <th>Unit ID</th>
+                <th>Floor Plan ID</th>
+                <th>Excluded</th>
+                <th>Sign</th>
+                <th>Event</th>
+                <th>Date</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="event in leases" ng-class="{'green-bg' : event.isValid}">
+                    <td>{{event.id}}</td>
+                    <td>{{event.unitId}}</td>
+                    <td>{{event.floorplanId}}</td>
+                    <td>{{event.isExcluded ? "Yes" : ""}}</td>
+                    <td>{{event.sign}}</td>
+                    <td>{{event.event}}</td>
+                    <td>{{event.date | date: 'short'}} Pacific</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" style="padding:20px">
+        <div class="col-xs-12 text-center">
+            <a class="btn btn-default contact-submit" ng-click="cancel()">Close</a>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
-angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope","toastr", "$location", "$propertyService","$dialog", "surveyid", "$authService","$auditService","options","$userService","$propertyUsersService","$cookieSettingsService", "$keenService", function ($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid,$authService,$auditService, options,$userService,$propertyUsersService,$cookieSettingsService,$keenService) {
-
-            $scope.editableSurveyId = surveyid;
+angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
+    function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
+            $scope.surveyid = surveyid;
             $scope.settings = {showNotes: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false};
             $scope.sort = "";
 
@@ -11,6 +11,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             ga("set", "title", "/marketSurvey");
             ga("set", "page", "/marketSurvey");
             ga("send", "pageview");
+
+        $marketSurveyPMSService.registerPMSFunctions($scope);
+
             $scope.swap = {};
 
             $scope.cancel = function () {
@@ -63,8 +66,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 });
             }
 
-            $scope.totals = {units: 0, sqft: 0, rent: 0, concessions: 0, concessionsOneTime: 0, concessionsMonthly: 0};
-
             var me = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
                     $scope.settings.showLeases = $rootScope.me.settings.showLeases;
@@ -74,139 +75,12 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     me();
                     $scope.settings.showDetailed = $rootScope.me.settings.monthlyConcessions;
 
-                    $propertyService.search({
-                        limit: 1,
-                        permission: ["PropertyManage", "CompManage"],
-                        ids: [id],
-                        select: "_id name floorplans contactName contactEmail phone location_amenities community_amenities survey.id survey.date orgid custom",
-                }).then(function(response) {
-                        $scope.property = response.data.properties[0]
-                        $scope.hasName = $scope.property.contactName && $scope.property.contactName.length > 0;
-                        $scope.hasEmail = $scope.property.contactEmail && $scope.property.contactEmail.length > 0;
-                        $scope.hasPhone = $scope.property.phone && $scope.property.phone.length > 0;
-                        $scope.hasContact = $scope.hasName || $scope.hasEmail || $scope.hasPhone;
-
-                        $scope.survey = {
-                            floorplans: $scope.property.floorplans,
-                            location_amenities: $scope.property.location_amenities,
-                            community_amenities: $scope.property.community_amenities
+                    // Call survey get property
+                    $marketSurveyService.getPropertyWithSurvey(id, $scope.surveyid, $scope.settings, function(response) {
+                        for (var key in response) {
+                           $scope[key] = response[key];
                         }
-
-                        $scope.survey.floorplans.forEach(function (fp) {
-                            fp.rent = fp.rent || ""
-                            fp.concessions = (fp.concessions || fp.concessions === 0) ?  fp.concessions : "";
-                        })
-                        $scope.survey.atr = $scope.survey.atr || "";
-                        $scope.survey.leased = $scope.survey.leased || "";
-                        $scope.survey.renewal = $scope.survey.renewal || "";
-                        $scope.survey.occupancy = $scope.survey.occupancy || "";
-                        $scope.survey.weeklytraffic = $scope.survey.weeklytraffic || "";
-                        $scope.survey.weeklyleases = $scope.survey.weeklyleases || "";
-
-                        if ($scope.property.survey && $scope.property.survey.date) {
-                            $scope.survey.survey_date = $scope.property.date;
-                        }
-
-                        if (!$scope.editableSurveyId && $scope.property.survey) {
-                            $scope.editableSurveyId = $scope.property.survey.id;
-                        }
-
-                        if ($scope.property.survey && $scope.editableSurveyId) {
-                            $propertyService.getSurvey(id, $scope.editableSurveyId).then(function (response) {
-                                var s = response.data.survey;
-                                if (s && s.length > 0) {
-                                    s = s[0];
-                                    $scope.survey.leased = s.leased != null && !isNaN(s.leased) ? s.leased : "";
-                                    $scope.survey.atr = s.atr != null && !isNaN(s.atr) ? s.atr : "";
-                                    $scope.survey.atr_percent = s.atr_percent != null && !isNaN(s.atr_percent) ? s.atr_percent : "";
-                                    $scope.survey.renewal = s.renewal != null && !isNaN(s.renewal) ? s.renewal : "";
-                                    $scope.survey.occupancy = s.occupancy != null && !isNaN(s.occupancy) ? s.occupancy : "";
-                                    $scope.survey.weeklytraffic = s.weeklytraffic
-                                    $scope.survey.weeklyleases = s.weeklyleases
-                                    $scope.survey.notes = s.notes;
-                                    $scope.survey.survey_date = s.date;
-                                    $scope.settings.showNotes = (s.notes || "") != "";
-
-                                    var removeFloorplans = [];
-
-                                    var bFloorplansChanged = false
-                                    var old;
-                                    $scope.survey.floorplans.forEach(function(fp, i) {
-                                        old = _.find(s.floorplans, function(ofp) {
-                                            return ofp.id.toString() == fp.id.toString();
-                                        });
-
-                                        if (old) {
-                                            fp.rent = old.rent;
-                                            fp.concessions = old.concessions;
-                                            fp.concessionsOneTime = old.concessionsOneTime;
-                                            fp.concessionsMonthly = old.concessionsMonthly;
-
-                                            if (surveyid) {
-                                                $scope.survey.floorplans[i] = _.cloneDeep(old);
-                                            }
-                                        }
-
-                                        if (typeof fp.concessionsOneTime != "undefined") {
-                                            $scope.settings.showDetailed = true;
-                                        }
-
-
-                                        if (!old) {
-                                            // Always Keep track of floorplan changes
-                                            bFloorplansChanged = true;
-
-                                            // If we are modifying a survey and there is a new floorplan, exclude it
-                                            if (surveyid) {
-                                                removeFloorplans.push(fp.id.toString());
-                                            }
-                                        }
-                                    })
-
-
-                                    var removed = _.remove($scope.survey.floorplans, function(x) {return removeFloorplans.indexOf(x.id.toString()) > -1})
-
-                                    var n;
-                                    s.floorplans.forEach(function (fp) {
-                                        n = _.find($scope.survey.floorplans, function (nfp) {
-                                            return nfp.id.toString() == fp.id.toString()
-                                        })
-
-                                        if (!n) {
-                                            // Add missing floorplans from survey being edited
-                                            if (surveyid) {
-                                                $scope.survey.floorplans.push(fp);
-                                            }
-                                            // Always Keep track of floorplan changes
-                                            bFloorplansChanged = true;
-                                        }
-                                    })
-
-
-                                    //If Adding a new Survey and no changes in floorplans and there is already a survey today, edit that one
-                                    if (!surveyid && !bFloorplansChanged) {
-                                        //var hoursOld = ((new Date()).getTime() - (new Date(s.date)).getTime()) / 1000 / 60 / 60;
-                                        //if (hoursOld < 24) {
-                                        //    surveyid = s._id;
-                                        //}
-                                        var d1 = new Date();
-                                        var d2 = new Date(s.date);
-                                        if (d1.getDate() == d2.getDate() && d1.getMonth() == d2.getMonth() && d1.getYear() == d2.getYear()) {
-                                            surveyid = s._id;
-                                        }
-                                    }
-
-                                    if (surveyid) {
-                                        $scope.editMode = true;
-                                        $scope.editDate = s.date;
-                                    }
-                                }
-
-                                $scope.doneLoading();
-                            });
-                        } else {
-                            $scope.doneLoading();
-                        }
+                        $scope.doneLoading();
                     });
                 }
             });
@@ -306,7 +180,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
         $scope.totalRent = function() {
             $scope.totals.rent = 0;
             $scope.survey.floorplans.forEach(function(fp) {
-                $scope.totals.rent += (fp.rent * fp.units);
+                if(fp.rent){
+                    $scope.totals.rent += (fp.rent * fp.units);
+                }
             });
 
             if ($scope.totals.units) {
@@ -356,41 +232,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
     };
 
             $scope.doneLoading = function() {
-                if ($scope.survey.atr) {
-                    $scope.settings.showATR = true;
-                }
-                if ($scope.survey.leased) {
-                    $scope.settings.showLeases = true;
-                }
-                if ($scope.survey.renewal) {
-                    $scope.settings.showRenewal = true;
-                }
-
-                $scope.survey.totalUnits = 0;
-                $scope.totals.units = 0;
-                $scope.totals.sqft = 0;
-
-                $scope.survey.floorplans.forEach(function(fp) {
-                    delete fp.errors;
-                    delete fp.warnings;
-                    delete fp.updated;
-                    fp.concessionsOneTime = (fp.concessionsOneTime || fp.concessionsOneTime === 0) ? fp.concessionsOneTime : "";
-                    fp.concessionsMonthly = (fp.concessionsMonthly || fp.concessionsMonthly === 0) ? fp.concessionsMonthly : "";
-
-                    $scope.survey.totalUnits += fp.units;
-                    $scope.totals.units += fp.units;
-                    $scope.totals.sqft += (fp.sqft * fp.units);
-                });
-
-                if ($scope.totals.units) {
-                    $scope.totals.sqft /= $scope.totals.units;
-                }
-
-                $scope.survey.floorplans = _.sortByAll($scope.survey.floorplans, ['bedrooms', 'bathrooms',  'sqft', 'description', 'units', 'fid'])
-
-                $scope.originalSurvey = _.cloneDeep($scope.survey);
-
-                if (!$scope.property.orgid && $rootScope.me.roles[0] != 'Guest') {
+                if (!$scope.property.orgid && $rootScope.me.roles[0] !== "Guest") {
                     $propertyUsersService.getPropertyAssignedUsers($scope.property._id).then(function (response) {
                             $userService.search({ids: response.data.users, select: "first last email bounceReason bounceDate guestStats"}).then(function (response) {
                                     $scope.swap.guests = response.data.users;
@@ -401,7 +243,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                             u.lastCompleted = null;
 
                                             if (u.guestStats) {
-                                                var stats = _.find(u.guestStats, function(x) {return x.propertyid == $scope.property._id.toString()})
+                                                var stats = _.find(u.guestStats, function(x) {
+                                                    return x.propertyid == $scope.property._id.toString();
+                                                });
                                                 if (stats) {
                                                     u.lastEmailed = stats.lastEmailed;
                                                     u.lastCompleted = stats.lastCompleted;
@@ -412,8 +256,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                         $scope.swap.who = $cookieSettingsService.getSurveyGuestOption($scope.property._id);
                                         $scope.swap.selectedGuest = $scope.swap.guests[0];
                                         $scope.showGuests();
-                                    }
-                                     else {
+                                    } else {
                                         $scope.showSurvey();
                                     }
                                 },
@@ -427,17 +270,15 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                             toastr.error("Unable to retrieve data. Please contact the administrator.");
                             $scope.loading = false;
                         });
-
                 } else {
                     $scope.showSurvey();
                 }
-
-            }
+            };
 
             $scope.surveyWhoSelector = function() {
                 if (!$scope.swap.who) {
                     toastr.error("Please select an option.");
-                } else if ($scope.swap.who == 'manual') {
+                } else if ($scope.swap.who === "manual") {
                     $cookieSettingsService.saveSurveyGuestOption($scope.property._id, 'manual');
                     $scope.showSurvey();
                 } else {
@@ -494,21 +335,25 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.showSurvey = function() {
                 $scope.localLoading = true;
                 $scope.showGuests = false;
+
+                // Don't focus on fields in survey if we are PMSing
+                if ($scope.pms) {
+                    return;
+                }
+
                 window.setTimeout(function() {
-                    var first = $('.survey-values').find('input')[0];
+                    var first = $(".survey-values").find("input")[0];
                     first.focus();
                     first.select();
                 }, 300);
             }
 
-            $scope.isValid  = function(field, required, allowDecimal, min, max) {
-
+            $scope.isValid = function(field, required, allowDecimal, min, max) {
                 if (typeof field === "undefined") {
                     return false;
                 }
 
                 if (required) {
-
                     if (field === "" || field === null || isNaN(field)) {
                         return false;
                     }
@@ -522,8 +367,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     return false;
                 }
 
-
-                if (field != "" && field != null && !isNaN(field)) {
+                if (field !== "" && field != null && !isNaN(field)) {
                     if (typeof min !== "undefined" && parseFloat(field) < min) {
                         return false;
                     }
@@ -569,7 +413,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
                                 $scope.validation.leased.warnings.change = "";
 
-                                if ($scope.originalSurvey && typeof $scope.originalSurvey.leased !== "undefined" && $scope.originalSurvey.leased >= 0 && $scope.survey.leased) {
+                                if ($scope.originalSurvey && typeof $scope.originalSurvey.leased !== "undefined" && $scope.originalSurvey.leased !== "" && $scope.originalSurvey.leased >= 0 && $scope.survey.leased) {
                                     var percent = 100;
 
                                     if ($scope.originalSurvey.leased > 0) {
@@ -756,7 +600,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         fp.warnings = fp.warnings || {};
 
                         if (fpField == "rent") {
-                            if (!$scope.isValid(fp.rent, true, false)) {
+                            if (!$scope.isValid(fp.rent, true, false, 1, 100000)) {
                                 er = "Rent must be 1 or greater, no decimals or blank fields";
                             }
 
@@ -972,7 +816,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     isSuccess = false;
                 }
                 if (isSuccess) {
-                    if (surveyid) {
+                    if ($scope.surveyid) {
                         $scope.success();
                         return;
                     }
@@ -1036,10 +880,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 else {
                     $scope.guestResponded();
                     $rootScope.$broadcast('data.reload');
-                    if (surveyid) {
+                    if ($scope.surveyid) {
                         toastr.success('Property Survey updated successfully.');
-                    }
-                    else {
+                    } else {
                         toastr.success('Property Survey created successfully.');
                     }
 
@@ -1066,10 +909,27 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 $("button.contact-submit").prop("disabled", true);
                 ngProgress.start();
 
-                if (surveyid) {
-                    $propertyService.updateSurvey(id, surveyid, $scope.survey).then(surveySuccess, surveyError);
+                if ($scope.pms) {
+                    $scope.survey.pms = {
+                        date: $scope.pms.dates.date,
+                        provider: "YARDI",
+                        id: $scope.pms.id
+                    };
+                }
+
+                var diff = [];
+
+                if ($scope.pms) {
+                   diff = $marketSurveyPMSService.getYardiDiff($scope);
+                   if (diff.length) {
+                       diff.unshift({separator: true});
+                   }
+                }
+
+                if ($scope.surveyid) {
+                    $propertyService.updateSurvey(id, $scope.surveyid, $scope.survey, diff).then(surveySuccess, surveyError);
                 } else {
-                    $propertyService.createSurvey(id, $scope.survey).then(surveySuccess, surveyError);
+                    $propertyService.createSurvey(id, $scope.survey, diff).then(surveySuccess, surveyError);
                 }
             };
 
@@ -1123,7 +983,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 $("button.contact-submit").prop("disabled", true);
 
                 $dialog.confirm("Are you sure you want to delete this Property Survey?", function() {
-                    $propertyService.deleteSurvey(id, surveyid).then(function(response) {
+                    $propertyService.deleteSurvey(id, $scope.surveyid).then(function(response) {
                             $("button.contact-submit").prop("disabled", false);
                             if (response.data.errors) {
                                 toastr.error(_.pluck(response.data.errors, "msg").join("<br>"));

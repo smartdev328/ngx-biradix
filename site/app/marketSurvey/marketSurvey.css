@@ -1,0 +1,187 @@
+@media all and (min-width: 0px) and (max-width: 767px) {
+    .market-survey .modal-body {
+        padding-left:3px !important;
+        padding-right:3px !important;
+    }
+
+    .market-survey .modal-dialog {
+        margin:0px !important;
+    }
+
+    .market-survey .occupancy .heading {
+        text-align: right;padding:0px 2px !important;
+    }
+
+    .market-survey .occupancy TD B {
+        font-size:11px;
+    }
+
+    .market-survey .tiny {
+        font-size:9px
+    }
+
+    .market-survey .col-spacer {
+        width:10px !important;
+    }
+
+    .market-survey .heading div,
+    .market-survey .moreinfo .moreinforow {
+        height: 28px
+    }
+
+    .min-width-100-m {min-width: 100px;}
+
+}
+
+.grey-txt {
+    color:#888888;
+}
+
+.market-survey label {
+    cursor: pointer;
+    font-weight: normal;
+} 
+
+.market-survey .survey-value {
+    max-width:60px;min-width:48px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
+}
+
+.market-survey .survey-values tr {
+    height:36px
+}
+
+.market-survey .survey-values.heading tr {
+    height:inherit !important;
+}
+
+.market-survey .occupancy .heading {
+    text-align: right;padding:0px 7px
+}
+
+.market-survey .survey-values .form-group {
+    margin-bottom: 0px;
+}
+
+
+.market-survey .survey-values .fa-undo {
+    padding-left: 5px;
+}
+
+.market-survey .survey-values TH {
+    font-size:13px !important;
+
+}
+
+.market-survey .col-spacer {
+    width:20px;
+}
+
+.market-survey .radio.disabled label {
+    opacity: .5;
+}
+
+.market-survey .market-survey .heading div,
+.market-survey .moreinfo .moreinforow {
+    height: 26px
+}
+
+.popover-inner UL {
+    margin-left:-30px;
+}
+
+.market-survey .popover-inner UL LI:before {
+    font-family: 'FontAwesome';
+    content: '\f071';
+    margin:0 1px 0 -15px;
+    color: red;
+}
+
+.market-survey .popover-inner UL LI {
+    list-style: none;
+    margin-top:10px
+}
+
+.market-survey .popover-inner UL LI span {
+    position: relative; left: 4px;
+    color: red;
+}
+
+.market-survey .popover-inner UL.warn LI:before,
+.market-survey .popover-inner UL.warn LI span {
+    color:orange;
+}
+.market-survey .has-error .form-control {
+    background-color:#FFF0F0;
+}
+
+.market-survey .has-warning .form-control {
+    background-color:#ffe5cb;
+    border: 1px solid #f90 !important;
+}
+.market-survey .modal-body {
+    padding: 0 14px 14px 14px;
+}
+
+.market-survey .modal-body.pms {
+    padding: 14px 0 0 0;
+}
+
+.market-survey .new-table {
+    font-size:12px;
+    width:100%
+}
+
+.market-survey .new-table thead, .market-survey .new-table tfoot, .market-survey .new-table .gray {
+    background-color: #eeeeee;
+}
+
+.market-survey .new-table thead th, .market-survey .new-table tfoot td {
+    padding:10px 5px;
+}
+
+.market-survey .new-table thead th i {
+    font-weight: normal;
+}
+
+.market-survey .new-table tbody td {
+    padding:5px;
+}
+
+.market-survey .new-table tbody tr.hr td {
+    border-top:1px solid #eee
+}
+
+.market-survey .new-table input[type=radio] {
+    vertical-align: sub;
+}
+
+.market-survey .new-table .fa {
+    font-size:12px;
+}
+
+.market-survey .new-table .fa.link {
+    cursor: pointer;
+}
+
+.market-survey .new-table .nowrap {
+    white-space: nowrap;
+}
+
+.border-table tr {
+    border-bottom: 1px solid #cccccc;
+}
+
+.green-bg {
+    background-color:#30c827 !important;
+    color:#ffffff;
+}
+
+.yellow-bg {
+    background-color:#FFFF66 !important;
+    color:#000;
+}
+
+.orange-bg {
+    background-color:orange !important;
+    color:#000;
+}

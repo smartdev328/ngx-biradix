@@ -766,5 +766,29 @@ define([
             return "<center><img src='/images/squares.gif' class='squares'></center>";
         };
 
+        $scope.pmsSetup = function(property) {
+            require([
+                "/app/properties/pmsSetupController.js"
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/properties/pmsSetup.html?bust=" + version,
+                    controller: "pmsSetupController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        property: function() {
+                            return property;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function() {
+                    toastr.success("Property updated successfully");
+                }, function(from) {
+                    // Cancel
+                });
+            });
+        };
     }]);
 });

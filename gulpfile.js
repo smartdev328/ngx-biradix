@@ -72,9 +72,13 @@ gulp.task("globaljs", function() {
 
         "./site/services/authService.js",
         "./site/services/propertyService.js",
+        "./site/services/marketSurveyService.js",
+        "./site/services/marketSurveyPMSService.js",
         "./site/services/amenityService.js",
         "./site/services/reputationService.js",
         "./site/services/keenService.js",
+        "./site/services/importService.js",
+        "./site/services/importIntegrationService.js",
         "./site/services/cookieSettingsService.js",
         "./site/services/progressService.js",
         "./site/services/auditService.js",
@@ -101,6 +105,12 @@ gulp.task("globaljs", function() {
 
         "./site/app/rootController.js",
         "./site/app/marketSurvey/marketSurveyController.js",
+        "./site/app/marketSurvey/marketSurveyOccupancyController.js",
+        "./site/app/marketSurvey/marketSurveyLeasedController.js",
+        "./site/app/marketSurvey/marketSurveyTrafficController.js",
+        "./site/app/marketSurvey/marketSurveyATRController.js",
+        "./site/app/marketSurvey/marketSurveyLeasesController.js",
+        "./site/app/marketSurvey/marketSurveyFloorplanController.js",
 
         "./site/components/reports/communityAmenities.js",
         "./site/components/reports/locationAmenities.js",
@@ -138,6 +148,7 @@ gulp.task("globalcss", function() {
         "./site/app/updateprofile/updateProfile.css",
         "./site/app/contact/contact.css",
         "./site/app/propertyWizard/propertyWizard.css",
+        "./site/app/marketSurvey/marketSurvey.css",
     ];
 
     const cssStream = gulp.src(filesExist(cssFiles));

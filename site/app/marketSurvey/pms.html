@@ -1,0 +1,186 @@
+<p style="margin:0 14px 14px;">We have imported PMS data for <strong>{{property.name}}</strong>. Select any fields where you want to use BI:Radix values instead - you can make additional changes on the next screen.</p>
+<div class="table-responsive" style="margin-bottom: 10px;">
+<table class="new-table">
+  <thead>
+    <tr>
+      <th width="9"></th>
+      <th colspan="2"></th>
+      <th>Occupancy %</th>
+      <th>Leased %</th>
+      <th>Apts. to Rent</th>
+      <th>Traffic/Week</th>
+      <th>Leases/Week</th>
+      <th width="9"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width="9"></td>
+      <td class="center">
+        <img src="/images/organizations/biradix-small.png" style="width:16px">
+      </td>
+      <td class="min-width-100-m">
+        <strong>BI:Radix</strong><br>
+        <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
+      </td>
+      <td>
+        <label for="occupancyB" ng-if="originalSurvey.occupancy !== ''"><input type="radio" ng-model="pms.values.occupancy" value="BIRADIX" id="occupancyB"> {{originalSurvey.occupancy}}</label>
+        <div ng-if="originalSurvey.occupancy === ''"><input type="radio" disabled="disabled"> -</div>
+      </td>
+      <td>
+        <label for="leasedB" ng-if="originalSurvey.leased !== ''"><input type="radio" ng-model="pms.values.leased" value="BIRADIX" id="leasedB"> {{originalSurvey.leased}}</label>
+        <div ng-if="originalSurvey.leased === ''"><input type="radio" disabled="disabled"> -</div>
+      </td>
+      <td>
+        <label for="atrB" ng-if="originalSurvey.atr !== ''"><input type="radio" ng-model="pms.values.atr" value="BIRADIX" id="atrB"> {{originalSurvey.atr | number: 0}}</label>
+        <div ng-if="originalSurvey.atr === ''"><input type="radio" disabled="disabled"> -</div>
+      </td>
+      <td>
+        <label for="weeklytrafficB" ng-if="originalSurvey.weeklytraffic !== ''"><input type="radio" ng-model="pms.values.weeklytraffic" value="BIRADIX" id="weeklytrafficB"> {{originalSurvey.weeklytraffic | number: 0}}</label>
+        <div ng-if="originalSurvey.weeklytraffic === ''"><input type="radio" disabled="disabled"> -</div>
+      </td>
+      <td>
+        <label for="weeklyleasesB" ng-if="originalSurvey.weeklyleases !== ''"><input type="radio" ng-model="pms.values.weeklyleases" value="BIRADIX" id="weeklyleasesB"> {{originalSurvey.weeklyleases | number: 0}}</label>
+        <div ng-if="originalSurvey.weeklyleases === ''"><input type="radio" disabled="disabled"> -</div>
+      </td>
+      <td width="9"></td>
+    </tr>
+    <tr>
+      <td width="9"></td>
+      <td class="center">
+        <img src="/images/organizations/yardi-small.png" style="width:12px">
+      </td>
+      <td class="min-width-100-m">
+        <strong>Yardi</strong><br>
+        <i class="grey-txt">Updated: {{showDate(pms.dates.date)}}</i><br>
+      </td>
+      <td class="nowrap">
+        <label for="occupancyY"><input type="radio" ng-model="pms.values.occupancy" value="YARDI" id="occupancyY"> {{pms.property.occupancy | number: 2}}
+        <i class="fa fa-question-circle link ml-3"
+        popover-trigger="'mouseenter'"
+        popover-placement="top"
+        uib-popover-html="'View Occupancy % breakdown'"
+        popover-append-to-body="true"
+        ng-click="pmsOccupancy();"
+        ng-if="$root.me.permissions.indexOf('Admin') > -1"></i></label>
+      </td>
+      <td class="nowrap">
+        <label for="leasedY"><input type="radio" ng-model="pms.values.leased" value="YARDI" id="leasedY"> {{pms.property.leased | number: 2}}
+        <i class="fa fa-question-circle link ml-3"
+        popover-trigger="'mouseenter'"
+        popover-placement="top"
+        uib-popover-html="'View Leased % breakdown'"
+        popover-append-to-body="true"
+        ng-click="pmsLeased();"
+        ng-if="$root.me.permissions.indexOf('Admin') > -1"
+        ></i></label>
+      </td>
+      <td class="nowrap">
+        <label for="atrY"><input type="radio" ng-model="pms.values.atr" value="YARDI" id="atrY"> {{pms.property.atr | number: 0}}
+        <i class="fa fa-question-circle link ml-3"
+        popover-trigger="'mouseenter'"
+        popover-placement="top"
+        uib-popover-html="'ATR breakdown'"
+        popover-append-to-body="true"
+        ng-click="pmsATR();"
+        ng-if="$root.me.permissions.indexOf('Admin') > -1"
+        ></i></label>
+      </td>
+      <td class="nowrap">
+        <label for="weeklytrafficY"><input type="radio" ng-model="pms.values.weeklytraffic" value="YARDI" id="weeklytrafficY"> {{pms.property.weeklytraffic | number: 0}}
+        <i class="fa fa-question-circle link ml-3"
+        popover-trigger="'mouseenter'"
+        popover-placement="top"
+        uib-popover-html="'View Traffic / Week breakdown'"
+        popover-append-to-body="true"
+        ng-click="pmsTraffic();"
+        ng-if="$root.me.permissions.indexOf('Admin') > -1"
+        ></i></label>
+      </td>
+      <td class="nowrap">
+        <label for="weeklyleasesY"><input type="radio" ng-model="pms.values.weeklyleases" value="YARDI" id="weeklyleasesY"> {{pms.property.weeklyleases | number: 0}}
+        <i class="fa fa-question-circle link ml-3"
+        popover-trigger="'mouseenter'"
+        popover-placement="top"
+        uib-popover-html="'View Leases / Week breakdown'"
+        popover-append-to-body="true"
+        ng-click="pmsLeases();"
+        ng-if="$root.me.permissions.indexOf('Admin') > -1"
+        ></i></label>
+      </td>
+      <td width="9"></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<table class="new-table border-table">
+  <thead>
+    <tr>
+      <th width="9"></th>
+      <th>Type</th>
+      <th class="hidden-xs">Desc.</th>
+      <th class="hidden-xs text-right"><span>Units<span style="width:17px;height: 17px;float:right;"></span></span></th>
+      <th class="hidden-xs text-right"><span class="pr-20">Sqft</span></th>
+      <th>
+        <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
+        <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
+      </th>
+      <th>
+        <img src="/images/organizations/yardi-small.png" style="width:12px;margin-right: 5px;"><strong class="hidden-xs">Yardi</strong><br class="hidden-xs">
+        <i class="grey-txt">Updated: {{showDate(pms.dates.date)}}</i><br>
+      </th>
+      <th width="9"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="row in originalSurvey.floorplans | orderBy : getOrder()">
+      <td width="9"></td>
+      <td>{{row.bedrooms}}x{{row.bathrooms}}
+        <div class="visible-xs tiny"><strong>{{row.units}} Units</strong></div>
+        <div class="visible-xs tiny"><strong>{{row.sqft}} Sqft</strong></div>
+      </td>
+      <td class="hidden-xs">{{row.description}}</td>
+      <td class="hidden-xs text-right">
+        <div class="clearfix">
+        <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 3px;margin:0;"
+           ng-if="pms.mappedFloorplans[row.id].units !== row.units"
+           popover-trigger="'mouseenter'"
+           popover-placement="right"
+           popover-class="popover-small"
+           uib-popover-html="'Unit count in BI:Radix <strong>({{row.units}})</strong> not matching total units mapped from Yardi <strong>({{pms.mappedFloorplans[row.id].units}})</strong>'"
+        ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" class="pull-right" style="width:17px;height: 17px;"></span>{{row.units}}
+        </div>
+      </td>
+      <td class="hidden-xs text-right"><span class="pr-20">{{row.sqft}}</span></td>
+      <td>
+        <label ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>
+        <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
+      </td>
+      <td>
+        <label ng-if="pms.mappedFloorplans[row.id]"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
+        <label ng-if="!pms.mappedFloorplans[row.id]"><input type="radio" value="BIRADIX" disabled="disabled"> -</label>
+        <i class="fa fa-question-circle link ml-3"
+           popover-trigger="'mouseenter'"
+           popover-placement="top"
+           uib-popover-html="'View Floor Plan Pricing Breakdown'"
+           popover-append-to-body="true"
+           ng-click="pmsFloorplan(pms.mappedFloorplans[row.id]);"
+           ng-if="pms.mappedFloorplans[row.id] && $root.me.permissions.indexOf('Admin') > -1"
+        ></i>
+        <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
+              ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].priceWarning"
+              popover-trigger="'mouseenter'"
+              popover-placement="right"
+              popover-class="popover-small"
+              uib-popover-html="pms.mappedFloorplans[row.id].priceWarning"
+        ></span>
+      </td>
+      <td width="9"></td>
+    </tr>
+  </tbody>
+</table>
+<div class="row" style="padding:20px">
+  <div class="col-xs-offset-2 col-xs-8 text-center">
+      <a class="btn btn-warning contact-submit" ng-click="pmsNext()">Next</a>
+  </div>
+</div>

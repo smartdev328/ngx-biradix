@@ -1,7 +1,6 @@
 <h2 class="mainheader">Manage Properties
     <hr>
 </h2>
-
 <div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
@@ -331,6 +330,8 @@
                                                                                                  popover-title="Connections"
                                                                                                  uib-popover-html="getPropertyDD(row._id)"
                             ><span class="fa fa-share-alt fa-fw"></span> Property Connections</a></li>
+                            <li ng-if="me.permissions.indexOf('Admin') > -1 && row.orgid"><a href ng-click="pmsSetup(row)"><span class="fa fa-cloud-download fa-fw"></span> PMS Integration</a></li>
+
                         </ul>
                     </div>
                 </div>

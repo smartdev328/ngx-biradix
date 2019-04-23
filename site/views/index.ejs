@@ -256,6 +256,9 @@
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href = "#/metrics" href ng-class="{'active': sideNav == 'Metrics', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Metrics</a>
                     </li>
+                    <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
+                        <a href = "#/import" href ng-class="{'active': sideNav == 'Import', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Configure PMS Import</a>
+                    </li>
                     <li>
                         <a ng-class="{'active': sideNav == 'HelpContactUs'}" href="#/helpcontactus" ng-click="turnOffIfMobile()"><i class="fa fa-question"></i> Help</a>
                     </li>

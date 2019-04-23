@@ -1,0 +1,51 @@
+<div class="market-survey">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Occupancy % Breakdown</h2>
+    </div>
+    <div ng-class="{'modal-body pms': true}">
+        <table class="new-table">
+            <thead>
+                <tr>
+                    <th width="9"></th>
+                    <th>Status</th>
+                    <th>Unit Count</th>
+                    <th width="9"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key, value) in occupiedUnitCounts.counts">
+                    <td width="9"></td>
+                    <td>{{key}}:</td>
+                    <td>{{value}}</td>
+                    <td width="9"></td>
+                </tr>
+                <tr class="hr">
+                    <td width="9"></td>
+                    <td>Occupied Units:</td>
+                    <td>{{occupiedUnitCounts.totalUnits}}</td>
+                    <td width="9"></td>
+                </tr>
+                <tr>
+                    <td width="9"></td>
+                    <td>Total Units:</td>
+                    <td>{{totalUnits}}</td>
+                    <td width="9"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td width="9"></td>
+                    <td><strong>Occupancy %:</strong></td>
+                    <td><strong>{{occupancy | number : 2}} %</strong></td>
+                    <td width="9"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="row" style="padding:20px">
+        <div class="col-xs-12 text-center">
+            <a class="btn btn-default contact-submit" ng-click="cancel()">Close</a>
+        </div>
+    </div>
+</div>

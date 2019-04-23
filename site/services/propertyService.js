@@ -200,9 +200,16 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             }).error(function (response) {
                 return response;
             });
-        }
+        };
 
-
+    fac.updatePms = function (userId, pms) {
+        return $http.put(gAPI + "/api/1.0/properties/" + userId + "/pms"+ "?bust=" + (new Date()).getTime(), {pms: pms}, {
+            headers: {"Authorization": "Bearer " + $cookies.get("token")}}).success(function(response) {
+            return response;
+        }).error(function(response) {
+            return response;
+        });
+    };
         fac.Approve = function (id) {
             return $http.get(gAPI + '/api/1.0/properties/' + id + '/approve'+ '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
@@ -257,8 +264,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.createSurvey = function (propertyid, survey) {
-            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), survey, {
+        fac.createSurvey = function (propertyid, survey, additionalDetails) {
+            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/survey'+ '?bust=' + (new Date()).getTime(), {survey: survey, additionalDetails: additionalDetails}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -275,8 +282,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.updateSurvey = function (propertyid, surveyid, survey) {
-            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime() , survey, {
+        fac.updateSurvey = function (propertyid, surveyid, survey, additionalDetails) {
+            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/survey/' + surveyid+ '?bust=' + (new Date()).getTime(), {survey: survey, additionalDetails: additionalDetails}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
