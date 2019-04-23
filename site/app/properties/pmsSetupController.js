@@ -83,7 +83,7 @@ define([
                                     });
                                 });
 
-                                if ($scope.pms.selectedProperty) {
+                                if ($scope.pms.selectedProperty && $scope.pms.config && $scope.pms.config.yardi) {
                                     $importIntegrationService.getLatestFloorplans($scope.imports[0].id, $scope.pms.selectedProperty.id).then(function(response) {
                                         response.data.forEach(function(fp) {
                                             $scope.pms.unmappedFloorplans.push({
