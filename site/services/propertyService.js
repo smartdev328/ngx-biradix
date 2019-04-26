@@ -770,40 +770,40 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 }
             })
 
-            resp.bedrooms = [{value: -1, text: 'Average'},{value: -2, text: 'All'}]
+            resp.bedrooms = [{value: -1, text: "Average"}, {value: -2, text: "All"}];
 
             if (resp.comps && resp.comps[0] && resp.comps[0].survey && resp.comps[0].survey.floorplans) {
-                var includedFps = _.filter(resp.comps[0].survey.floorplans, function (x) {
-                    return !x.excluded
+                var includedFps = _.filter(resp.comps[0].survey.floorplans, function(x) {
+                    return !x.excluded;
                 });
 
-                var bedrooms = _.groupBy(includedFps, function (x) {
-                    return x.bedrooms
+                var bedrooms = _.groupBy(includedFps, function(x) {
+                    return parseInt(x.bedrooms.toString(), 10);
                 });
 
                 for (var b in bedrooms) {
                     switch (parseInt(b)) {
                         case 0:
-                            resp.bedrooms.push({value: 0, text: 'Studios'})
+                            resp.bedrooms.push({value: 0, text: "Studios"})
                             break;
                         default:
-                            resp.bedrooms.push({value: b, text: b + ' Bdrs.'})
+                            resp.bedrooms.push({value: b, text: b + " Bdrs."})
                             break;
                     }
                 }
 
-                _.sortBy(resp.bedrooms, function (x) {
-                    return x.value
-                })
+                _.sortBy(resp.bedrooms, function(x) {
+                    return x.value;
+                });
             }
 
-            resp.bedroom = _.find(resp.bedrooms, function(x) {return x.value == selectedBedroom});
+            resp.bedroom = _.find(resp.bedrooms, function(x) {
+                return x.value.toString() === selectedBedroom.toString();
+            });
 
             if (!resp.bedroom) {
                 resp.bedroom = resp.bedrooms[0];
             }
-
-
 
             var scaleDecimals = 0;
             var scaleText = "Net Eff. Rent (" + resp.bedroom.text + ")";
