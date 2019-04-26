@@ -183,8 +183,15 @@ define([
             return ret;
         };
 
-        $scope.roleFilter = function (obj) {
-            return $scope.selectedRoles.indexOf(obj.role) > -1;
+        $scope.roleFilter = function(obj) {
+            var response = false;
+            obj.roles.forEach(function(role) {
+                if ($scope.selectedRoles.indexOf(role.name) > -1) {
+                    response = true;
+                }
+            });
+
+            return response;
         };
 
         $scope.toggleFilter = function (v) {
@@ -192,7 +199,7 @@ define([
             $gridService.toggle($scope.filters, v, false)
             var s = $scope.filters[v];
 
-            $scope.search = $scope.search || {}
+            $scope.search = $scope.search || {};
             if (s == null) {
                 delete $scope.search[v];
                 return;
@@ -203,7 +210,7 @@ define([
         }
         $scope.toggleSort = function (v) {
             $scope.resetPager();
-            $gridService.toggle($scope.sort, v, true)
+            $gridService.toggle($scope.sort, v, true);
 
             var s = $scope.sort[v];
 
