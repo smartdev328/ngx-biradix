@@ -4,62 +4,64 @@
 <div class="survey-values occupancy" style="width: 100%;">
   <div class="row">
     <div class="col-xs-6 col-sm-4 fix-height-60">
-        <b>Occupancy %</b>
-        <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.occupancy), 'has-warning': getWarnings(validation.occupancy) && !getErrors(validation.occupancy)}">
-            <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy" ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
-        </div>
-        <div class="moreinfo">
-            <a class="pull-left" href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-            <i ng-if="getWarnings(validation.occupancy) && !getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getWarnings(validation.occupancy)"
-            ></i>
-            <i ng-if="getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getErrors(validation.occupancy)"
-            ></i>
-        </div>
+      <b>Occupancy %</b>
+      <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.occupancy), 'has-warning': getWarnings(validation.occupancy) && !getErrors(validation.occupancy)}">
+          <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy" ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
+      </div>
+      <div class="moreinfo">
+          <a class="pull-left" href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+          <i ng-if="getWarnings(validation.occupancy) && !getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             uib-popover-html="getWarnings(validation.occupancy)"
+          ></i>
+          <i ng-if="getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             uib-popover-html="getErrors(validation.occupancy)"
+          ></i>
+      </div>
     </div>
     <div class="col-xs-6 col-sm-4 fix-height-60" ng-if="settings.showLeases">
-        <b>Leased %</b>
-        <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}">
-            <input type="number" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
-        </div>
-        <div class="moreinfo">
-            <a class="pull-left" href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-            <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getWarnings(validation.leased)"
-            ></i>
-            <i ng-if="getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getErrors(validation.leased)"
-            ></i>
-        </div>
+      <b>Leased %</b>
+      <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}">
+          <input type="number" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
+      </div>
+      <div class="moreinfo">
+          <a class="pull-left" href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+          <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             uib-popover-html="getWarnings(validation.leased)"
+          ></i>
+          <i ng-if="getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             uib-popover-html="getErrors(validation.leased)"
+          ></i>
+      </div>
     </div>
     <div class="col-xs-6 col-sm-4 fix-height-60" ng-if="settings.showRenewal">
-        <b>Renewal %</b>
-        <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}">
-            <input type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
-        </div>
-        <div class="moreinfo">
-            <a class="pull-left" href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-            <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getWarnings(validation.renewal)"
-            ></i>
-            <i ng-if="getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getErrors(validation.renewal)"
-            ></i>
-        </div>
+      <b>Renewal %</b>
+      <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}">
+          <input type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
+      </div>
+      <div class="moreinfo">
+          <a class="pull-left" href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+          <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             uib-popover-html="getWarnings(validation.renewal)"
+          ></i>
+          <i ng-if="getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             uib-popover-html="getErrors(validation.renewal)"
+          ></i>
+      </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col-xs-6 col-sm-4 fix-height-60" ng-if="settings.showATR">
         <div class="clearfix">
           <b class="hidden-xs">Apts. to Rent</b>
@@ -302,6 +304,7 @@
                 <td ng-if="settings.showDetailed" class="text-right">
                     ${{totalConcessionsMonthly() | number: 0}}
                 </td>
+                <td></td>
               </tr>
             </tfoot>
         </table>

@@ -87,6 +87,11 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         for (var key in response) {
                            $scope[key] = response[key];
                         }
+                        if(response.property.floorplans.length > 8) {
+                            $scope.allShown = false;
+                        } else {
+                            $scope.allShown = true;
+                        }
                         $scope.doneLoading();
                     });
                 }
@@ -1110,7 +1115,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
         
         }
 
-        $scope.allShown = false;
         $scope.showAllFP = function() {
             $scope.allShown = !$scope.allShown;
         }

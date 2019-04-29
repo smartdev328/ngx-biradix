@@ -253,6 +253,7 @@
 
 .propertySurvey .scrollableContent.allShown {
     height: auto;
+    overflow-y: hidden;
 }
 
 .propertySurvey .scrollableContent::-webkit-scrollbar {
