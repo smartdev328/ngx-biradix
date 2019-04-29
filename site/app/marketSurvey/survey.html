@@ -3,7 +3,7 @@
 </div>
 <div class="survey-values occupancy" style="width: 100%;">
   <div class="row">
-    <div class="col-xs-6 col-sm-4 fix-height-60">
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : settings.showLeases && settings.showRenewal}">
       <b>Occupancy %</b>
       <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.occupancy), 'has-warning': getWarnings(validation.occupancy) && !getErrors(validation.occupancy)}">
           <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy" ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
@@ -22,7 +22,7 @@
           ></i>
       </div>
     </div>
-    <div class="col-xs-6 col-sm-4 fix-height-60" ng-if="settings.showLeases">
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : settings.showRenewal}" ng-if="settings.showLeases">
       <b>Leased %</b>
       <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}">
           <input type="number" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
@@ -41,7 +41,7 @@
           ></i>
       </div>
     </div>
-    <div class="col-xs-6 col-sm-4 fix-height-60" ng-if="settings.showRenewal">
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : settings.showLeases}" ng-if="settings.showRenewal">
       <b>Renewal %</b>
       <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}">
           <input type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
@@ -91,7 +91,7 @@
             ></i>
         </div>
     </div>
-    <div class="col-xs-6 col-sm-4 fix-height-60">
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : settings.showATR}">
         <b class="hidden-xs">Traffic/Week</b>
         <b class="visible-xs">Traffic/Wk</b>
         <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.traffic), 'has-warning': getWarnings(validation.traffic) && !getErrors(validation.traffic)}">
@@ -111,7 +111,7 @@
             ></i>
         </div>
     </div>
-    <div class="col-xs-6 col-sm-4 fix-height-60">
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : settings.showATR}">
         <b class="hidden-xs">Leases/Week</b>
         <b class="visible-xs">Leases/Wk</b>
         <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leases), 'has-warning': getWarnings(validation.leases) && !getErrors(validation.leases)}">
