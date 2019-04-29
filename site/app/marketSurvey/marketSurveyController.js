@@ -1,7 +1,7 @@
 angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
     function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
             $scope.surveyid = surveyid;
-            $scope.settings = {showNotes: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false};
+            $scope.settings = {showNotes: false, showBulkConcessions: true, showDetailed: false, showLeases: false, showRenewal: false, showATR: false};
             $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
@@ -58,12 +58,19 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                             fp.concessions = fp.concessionsOneTime + fp.concessionsMonthly * 12;
                         }
                     });
+                    $scope.settings.showBulkConcessions = false;
                 }
 
                 $scope.survey.floorplans.forEach(function(fp) {
                     delete fp.errors;
                     delete fp.warnings;
                 });
+            }
+
+            $scope.toggleBulkConcessions = function() {
+                if(!$scope.settings.showDetailed) {
+                    $scope.settings.showBulkConcessions = false;
+                }
             }
 
             var me = $rootScope.$watch("me", function(x) {
@@ -1017,4 +1024,95 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 return moment(date).format("MM/DD/YYYY h:mm a");
             }
         };
+
+
+        $scope.bulkConcession = {
+            "checkall" : false,
+            "applyButtonActivated" : true,
+            "concessionsTimes" : "One-time",
+            "concessionValue" : "",
+            "leasedLength" : 12,
+            "concessionsTypeOff" : "dollars off",
+            "SelectedFloorPlan" : {}
+        }
+
+        $scope.bulkConcession.toggleAll = function() {
+            $scope.survey.floorplans.forEach(function(f) {
+                $scope.bulkConcession.SelectedFloorPlan[f.id] = $scope.bulkConcession.checkall;
+            });
+            $scope.bulkConcession.enableApplyButton();
+        }
+
+        $scope.bulkConcession.toggleSingle = function() {
+            $scope.bulkConcession.checkall = false;
+            if(_.size($scope.bulkConcession.SelectedFloorPlan) === $scope.survey.floorplans.length) {
+                $scope.bulkConcession.checkall = _.every($scope.bulkConcession.SelectedFloorPlan, function(i) {
+                    return i === true;
+                });
+            }
+            $scope.bulkConcession.enableApplyButton();
+        }
+
+        $scope.bulkConcession.enableApplyButton = function() {
+            if($scope.bulkConcession.concessionValue && !_.isEmpty($scope.bulkConcession.SelectedFloorPlan)) {
+                $scope.bulkConcession.applyButtonActivated = false;
+            } else {
+                $scope.bulkConcession.applyButtonActivated = true;
+            }
+        }
+
+        $scope.bulkConcession.applyButton = function() {
+
+            var selectedFPId = [];
+            for (var fp in $scope.bulkConcession.SelectedFloorPlan) {
+                if($scope.bulkConcession.SelectedFloorPlan[fp]) {
+                    selectedFPId.push(fp);
+                }
+            }
+
+            _.filter($scope.survey.floorplans, function(fp){ 
+                if(selectedFPId.includes(fp.id)) {
+
+                    $scope.checkUndoFp(fp, fp.concessions);
+                    $scope.getErrors(fp);
+                    $scope.getWarnings(fp);
+
+                    switch ($scope.bulkConcession.concessionsTypeOff) {
+                        case "dollars off":
+                            if($scope.bulkConcession.concessionsTimes == "One-time") {
+                                fp.concessionsOneTime = parseInt($scope.bulkConcession.concessionValue);
+                            } else {
+                                fp.concessionsMonthly = parseInt($scope.bulkConcession.concessionValue);
+                            }
+                            break;
+                        case "week(s) free":
+                            if($scope.bulkConcession.concessionsTimes == "One-time") {
+                                fp.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * fp.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                            } else {
+                                fp.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * fp.rent)/parseInt($scope.bulkConcession.leasedLength));
+                            }
+                            break;
+                        case "month(s) free":
+                            if($scope.bulkConcession.concessionsTimes == "One-time") {
+                                fp.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue) * fp.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                            } else {
+                                fp.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue) * fp.rent)/parseInt($scope.bulkConcession.leasedLength));
+                            }
+                            break;
+                    }
+
+                }; 
+            });
+
+            $scope.bulkConcession.checkall = false;
+            $scope.bulkConcession.concessionValue = "";
+            $scope.bulkConcession.SelectedFloorPlan = {};
+        
+        }
+
+        $scope.allShown = false;
+        $scope.showAllFP = function() {
+            $scope.allShown = !$scope.allShown;
+        }
+
     }]);

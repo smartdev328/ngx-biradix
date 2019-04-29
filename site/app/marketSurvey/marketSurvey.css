@@ -1,38 +1,3 @@
-@media all and (min-width: 0px) and (max-width: 767px) {
-    .market-survey .modal-body {
-        padding-left:3px !important;
-        padding-right:3px !important;
-    }
-
-    .market-survey .modal-dialog {
-        margin:0px !important;
-    }
-
-    .market-survey .occupancy .heading {
-        text-align: right;padding:0px 2px !important;
-    }
-
-    .market-survey .occupancy TD B {
-        font-size:11px;
-    }
-
-    .market-survey .tiny {
-        font-size:9px
-    }
-
-    .market-survey .col-spacer {
-        width:10px !important;
-    }
-
-    .market-survey .heading div,
-    .market-survey .moreinfo .moreinforow {
-        height: 28px
-    }
-
-    .min-width-100-m {min-width: 100px;}
-
-}
-
 .grey-txt {
     color:#888888;
 }
@@ -67,8 +32,8 @@
     padding-left: 5px;
 }
 
-.market-survey .survey-values TH {
-    font-size:13px !important;
+.market-survey .survey-values th {
+    font-size:12px !important;
 
 }
 
@@ -80,8 +45,7 @@
     opacity: .5;
 }
 
-.market-survey .market-survey .heading div,
-.market-survey .moreinfo .moreinforow {
+.market-survey .market-survey .heading div {
     height: 26px
 }
 
@@ -184,4 +148,163 @@
 .orange-bg {
     background-color:orange !important;
     color:#000;
+}
+
+.inputHolder {
+    display: inline-block;
+    width:calc(100% - 55px);
+    vertical-align: top;
+}
+
+.inputHolder input {
+    max-width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 10px;
+}
+
+.moreinfo {
+    display: inline-block;
+    width:50px;
+}
+
+.bulkConcessionModule {
+    background-color: #f8f8f8;
+    border:1px solid #eeeeee;
+    padding: 10px 14px;
+    margin: 0 -14px;
+    font-size: 12px;
+}
+
+.bulkConcessionModule select, .bulkConcessionModule p, .bulkConcessionModule input {
+    display: inline-block;vertical-align: top;
+}
+
+.bulkConcessionModule input[type='text'], .bulkConcessionModule select {
+    color: #888 !important;
+    height: 24px;
+}
+
+.bulkConcessionValue {
+    width: 40px;
+}
+
+.bulkConcessionModule input.range {
+  -webkit-appearance: none;
+  margin:6px;
+  width: 150px;
+  height: 4px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.bulkConcessionModule input.range:hover {
+  opacity: 1;
+}
+
+.bulkConcessionModule input.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #4460a9;
+  cursor: pointer;
+  border-radius:100%;
+}
+
+.bulkConcessionModule input.range::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.propertySurvey {
+    margin: 0 -14px;
+    font-size: 12px;
+}
+
+.propertySurvey table thead th {
+    vertical-align: top;
+}
+
+.propertySurvey table {
+    margin:0;
+}
+
+.propertySurvey .showAll {
+    color:#4460a9;
+    background-color: #f8f8f8;
+    border: 1px solid #cfcfcf;
+    display: block;
+    margin:0 auto;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.propertySurvey .scrollableContent {
+    display:block;
+    overflow-y: scroll;
+    height: 350px;
+    width: 100%;
+}
+
+.propertySurvey .scrollableContent.allShown {
+    height: auto;
+}
+
+.propertySurvey .scrollableContent::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+.propertySurvey .scrollableContent::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+.propertySurvey .scrollableContent::-webkit-scrollbar-thumb {
+  background-color: #4460a9;
+  outline: 1px solid slategrey;
+}
+
+.fix-height-60 {height: 60px;}
+
+@media all and (min-width: 0px) and (max-width: 767px) {
+    .market-survey .modal-body {
+        padding-left:3px !important;
+        padding-right:3px !important;
+    }
+
+    .market-survey .modal-dialog {
+        margin:0px !important;
+    }
+
+    .market-survey .occupancy .heading {
+        text-align: right;padding:0px 2px !important;
+    }
+
+    .market-survey .occupancy TD B {
+        font-size:11px;
+    }
+
+    .market-survey .tiny {
+        font-size:9px
+    }
+
+    .market-survey .col-spacer {
+        width:10px !important;
+    }
+
+    .market-survey .heading div {
+        height: 28px
+    }
+
+    .min-width-100-m {min-width: 100px;}
+
+
+    .propertySurvey, .bulkConcessionModule {
+        margin: 0;
+    }
+
 }
