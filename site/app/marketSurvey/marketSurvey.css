@@ -269,8 +269,9 @@
   outline: 1px solid slategrey;
 }
 
-.leased-length {
-    width: 140px;
+.leased-length strong {
+    width: 70px;
+    display: inline-block;
 }
 
 .fix-height-60 {height: 60px;}
