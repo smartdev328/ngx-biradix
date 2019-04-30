@@ -168,8 +168,8 @@
 }
 
 .bulkConcessionModule {
-    background-color: #f8f8f8;
-    border:1px solid #eeeeee;
+    background-color: #eee;
+    border: 1px solid #fff;
     padding: 10px 14px;
     margin: 0 -14px;
     font-size: 12px;
@@ -269,13 +269,13 @@
   outline: 1px solid slategrey;
 }
 
+.leased-length {
+    width: 140px;
+}
+
 .fix-height-60 {height: 60px;}
 
 @media all and (min-width: 0px) and (max-width: 767px) {
-    .market-survey .modal-body {
-        padding-left:3px !important;
-        padding-right:3px !important;
-    }
 
     .market-survey .modal-dialog {
         margin:0px !important;
@@ -302,10 +302,5 @@
     }
 
     .min-width-100-m {min-width: 100px;}
-
-
-    .propertySurvey, .bulkConcessionModule {
-        margin: 0;
-    }
 
 }

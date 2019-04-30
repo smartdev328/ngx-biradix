@@ -92,8 +92,22 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         } else {
                             $scope.allShown = true;
                         }
+
+                        if(($scope.settings.showLeases && !$scope.settings.showRenewal && !$scope.settings.showATR) || 
+                        (!$scope.settings.showLeases && $scope.settings.showRenewal && !$scope.settings.showATR) || 
+                        (!$scope.settings.showLeases && !$scope.settings.showRenewal && !$scope.settings.showATR)) {
+                            $scope.threeColumnsInput = false;
+                        } else {
+                            $scope.threeColumnsInput = true;
+                        }
+
                         $scope.doneLoading();
                     });
+
+                    if (!$scope.settings.showDetailed) {
+                        $scope.settings.showBulkConcessions = false;
+                    }
+
                 }
             });
 
@@ -1075,38 +1089,42 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 }
             }
 
-            _.filter($scope.survey.floorplans, function(fp){ 
+            var filteredList = _.filter($scope.survey.floorplans, function(fp) { 
                 if(selectedFPId.includes(fp.id)) {
+                    return fp;
+                }
+            });
 
-                    $scope.checkUndoFp(fp, fp.concessions);
-                    $scope.getErrors(fp);
-                    $scope.getWarnings(fp);
+            filteredList.forEach(function(item) {
 
-                    switch ($scope.bulkConcession.concessionsTypeOff) {
-                        case "dollars off":
-                            if($scope.bulkConcession.concessionsTimes == "One-time") {
-                                fp.concessionsOneTime = parseInt($scope.bulkConcession.concessionValue);
-                            } else {
-                                fp.concessionsMonthly = parseInt($scope.bulkConcession.concessionValue);
-                            }
-                            break;
-                        case "week(s) free":
-                            if($scope.bulkConcession.concessionsTimes == "One-time") {
-                                fp.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * fp.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
-                            } else {
-                                fp.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * fp.rent)/parseInt($scope.bulkConcession.leasedLength));
-                            }
-                            break;
-                        case "month(s) free":
-                            if($scope.bulkConcession.concessionsTimes == "One-time") {
-                                fp.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue) * fp.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
-                            } else {
-                                fp.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue) * fp.rent)/parseInt($scope.bulkConcession.leasedLength));
-                            }
-                            break;
-                    }
+                $scope.checkUndoFp(item, item.concessions);
+                $scope.getErrors(item);
+                $scope.getWarnings(item);
 
-                }; 
+                switch ($scope.bulkConcession.concessionsTypeOff) {
+                    case "dollars off":
+                        if($scope.bulkConcession.concessionsTimes == "One-time") {
+                            item.concessionsOneTime = parseInt($scope.bulkConcession.concessionValue);
+                        } else {
+                            item.concessionsMonthly = parseInt($scope.bulkConcession.concessionValue);
+                        }
+                        break;
+                    case "week(s) free":
+                        if($scope.bulkConcession.concessionsTimes == "One-time") {
+                            item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                        } else {
+                            item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength));
+                        }
+                        break;
+                    case "month(s) free":
+                        if($scope.bulkConcession.concessionsTimes == "One-time") {
+                            item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                        } else {
+                            item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength));
+                        }
+                        break;
+                }
+
             });
 
             $scope.bulkConcession.checkall = false;
