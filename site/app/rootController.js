@@ -487,10 +487,12 @@ angular.module("biradix.global").controller("rootController",
             a = b;
         }
 
-        $rootScope.csv_report = function(org, isGrouped) {
+        $rootScope.csv_report = function(org, isGrouped, showDateRange, timezone) {
             var url = gAPI + '/api/1.0/properties/csvreport/'+org+'?'
-            url += "token=" + $cookies.get('token')
-            url += "&group=" + (!!isGrouped)
+            url += "token=" + $cookies.get('token');
+            url += "&group=" + (!!isGrouped);
+            url += "&showDateRange=" + (!!showDateRange);
+            url += "&timezone=" + timezone;
             location.href = url;
         }
 
