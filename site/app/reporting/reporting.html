@@ -56,7 +56,7 @@
                 <li><a href ng-click="pdf('')"><i class="fa fa-print"></i> Print</a></li>
                 <li><a href ng-click="pdf(true)"><i class="fa fa-file-pdf-o" style="color:#ed110a"></i> Export PDF</a></li>
                 <li><a href ng-click="excel(false)" ng-if="property_report && !rankings && !rankingsSummary"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
-                <li><a href ng-click="excel(true)" ng-if="property_report && !rankings && !rankingsSummary && (me.orgs[0].subdomain === 'cortlandpartners')"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel (Cortland)</a></li>
+                <li><a href ng-click="excel(true)" ng-if="property_report && !rankings && !rankingsSummary && (me.orgs[0].subdomain === 'cortlandpartners' || me.permissions.indexOf('Admin') > -1)"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel (Cortland)</a></li>
                 <li><a href ng-click="excel_property_status(runSettings.propertyStatus)" ng-if="property_status && !custom_portfolio"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
                 <li><a href ng-click="excel_custom_portfolio(runSettings.customPortfolio)" ng-if="custom_portfolio && !property_status"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
                 <li><a href ng-click="excel_rankings_summary(runSettings.rankingsSummary)" ng-if="rankingsSummary && !rankings && !property_report"><i class="fa fa-file-excel-o" style="color:#32742a"></i> Export Excel</a></li>
