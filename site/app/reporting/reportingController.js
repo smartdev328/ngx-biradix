@@ -1135,7 +1135,7 @@ define([
                 location.href = url;
             };
 
-        $scope.excel = function() {
+        $scope.excel = function(cortland) {
             ngProgress.start();
 
             $('#export').prop('disabled', true);
@@ -1149,6 +1149,7 @@ define([
                 selectedRange: $scope.liveSettings.dashboardSettings.daterange.selectedRange,
                 progressId: $scope.progressId,
                 compids: $scope.compIds,
+                cortland: cortland,
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
