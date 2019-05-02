@@ -224,6 +224,7 @@
 .propertySurvey {
     margin: 0 -14px;
     font-size: 12px;
+    position: relative;
 }
 
 .propertySurvey table thead th {
@@ -244,27 +245,27 @@
     padding: 5px 0;
 }
 
-.propertySurvey .scrollableContent {
-    display:block;
-    overflow-y: scroll;
+.propertySurvey  table {
     height: 350px;
-    width: 100%;
 }
 
-.propertySurvey .scrollableContent.allShown {
+.propertySurvey.allShown table {
     height: auto;
     overflow-y: hidden;
 }
 
-.propertySurvey .scrollableContent::-webkit-scrollbar {
+.propertySurvey table tbody::-webkit-scrollbar {
     width: 8px;
+    position: absolute;
+    top: 45px;
+    right: 0;
 }
  
-.propertySurvey .scrollableContent::-webkit-scrollbar-track {
+.propertySurvey table tbody::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
  
-.propertySurvey .scrollableContent::-webkit-scrollbar-thumb {
+.propertySurvey table tbody::-webkit-scrollbar-thumb {
   background-color: #4460a9;
   outline: 1px solid slategrey;
 }
@@ -272,6 +273,11 @@
 .leased-length strong {
     width: 70px;
     display: inline-block;
+}
+
+.tfoot-cell {
+    float:left;
+    padding:5px;
 }
 
 .fix-height-60 {height: 60px;}

@@ -162,154 +162,151 @@
     </div>
   </div>
 </div>
-<div class="propertySurvey">
-    <div ng-class="{'scrollableContent': true, 'allShown': allShown}">
-        <table class="table table-condensed table-striped table-hover survey-values hidden-arrows sortablegrid">
-            <thead>
-                <tr class="thead">
-                    <th ng-show="settings.showBulkConcessions">
-                        <input type="checkbox" value="" ng-model="bulkConcession.checkall" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
-                    </th>
-                    <th class="sortable" ng-click="toggleSort('type',true)"><span class="hidden-xs">Type</span><span class="visible-xs-inline">Type</span>
-                        <i ng-show="sort.indexOf('type') == -1" class="fa fa-sort"></i>
-                        <i ng-show="sort == '-type'" class="fa fa-sort-down"></i>
-                        <i ng-show="sort == 'type'" class="fa fa-sort-up"></i>
-                    </th>
-                    <th class="hidden-xs sortable" ng-click="toggleSort('description',true)">
-                        Desc.
-                        <i ng-show="sort.indexOf('description') == -1" class="fa fa-sort"></i>
-                        <i ng-show="sort == '-description'" class="fa fa-sort-down"></i>
-                        <i ng-show="sort == 'description'" class="fa fa-sort-up"></i>
-                    </th>
-                    <th class="hidden-xs sortable" style="text-align: right" ng-click="toggleSort('units',true)"><span class="hidden-xs">Units</span><span class="visible-xs">#</span>
-                        <i ng-show="sort.indexOf('units') == -1" class="fa fa-sort"></i>
-                        <i ng-show="sort == '-units'" class="fa fa-sort-down"></i>
-                        <i ng-show="sort == 'units'" class="fa fa-sort-up"></i>
-                    </th>
-                    <th class="hidden-xs sortable" style="text-align: right" ng-click="toggleSort('sqft',true)">
-                        Sqft
-                        <i ng-show="sort.indexOf('sqft') == -1" class="fa fa-sort"></i>
-                        <i ng-show="sort == '-sqft'" class="fa fa-sort-down"></i>
-                        <i ng-show="sort == 'sqft'" class="fa fa-sort-up"></i>
-                    </th>
-                    <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-question-circle" style="font-size:12px"
-                         popover-trigger="'mouseenter'"
-                         popover-placement="left"
-                         uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
-                    ></i></th>
-                    <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
-                        popover-trigger="'mouseenter'"
-                        popover-placement="left"
-                        uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
-                    ></i><Br>
-                        <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
-                    <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
-                    ></i><Br>
-                        <div style="font-size:8pt;font-weight:normal;">(One-Time)</div></th>
+<div class="propertySurvey" ng-class="{'allShown': allShown}">
+  <table class="table table-condensed table-striped table-hover survey-values hidden-arrows sortablegrid" fixed-table toggles="settings">
+    <thead>
+      <tr class="thead">
+        <th ng-show="settings.showBulkConcessions">
+            <input type="checkbox" value="" ng-model="bulkConcession.checkall" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
+        </th>
+        <th class="sortable" ng-click="toggleSort('type',true)"><span class="hidden-xs">Type</span><span class="visible-xs-inline">Type</span>
+            <i ng-show="sort.indexOf('type') == -1" class="fa fa-sort"></i>
+            <i ng-show="sort == '-type'" class="fa fa-sort-down"></i>
+            <i ng-show="sort == 'type'" class="fa fa-sort-up"></i>
+        </th>
+        <th class="hidden-xs sortable description" ng-click="toggleSort('description',true)">
+            Desc.
+            <i ng-show="sort.indexOf('description') == -1" class="fa fa-sort"></i>
+            <i ng-show="sort == '-description'" class="fa fa-sort-down"></i>
+            <i ng-show="sort == 'description'" class="fa fa-sort-up"></i>
+        </th>
+        <th class="hidden-xs sortable" style="text-align: right" ng-click="toggleSort('units',true)"><span class="hidden-xs">Units</span><span class="visible-xs">#</span>
+            <i ng-show="sort.indexOf('units') == -1" class="fa fa-sort"></i>
+            <i ng-show="sort == '-units'" class="fa fa-sort-down"></i>
+            <i ng-show="sort == 'units'" class="fa fa-sort-up"></i>
+        </th>
+        <th class="hidden-xs sortable" style="text-align: right" ng-click="toggleSort('sqft',true)">
+            Sqft
+            <i ng-show="sort.indexOf('sqft') == -1" class="fa fa-sort"></i>
+            <i ng-show="sort == '-sqft'" class="fa fa-sort-down"></i>
+            <i ng-show="sort == 'sqft'" class="fa fa-sort-up"></i>
+        </th>
+        <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-question-circle" style="font-size:12px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
+        ></i></th>
+        <th ng-show="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
+            popover-trigger="'mouseenter'"
+            popover-placement="left"
+            uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
+        ></i><Br>
+            <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
+        <th ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
+           popover-trigger="'mouseenter'"
+           popover-placement="left"
+           uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
+        ></i><Br>
+            <div style="font-size:8pt;font-weight:normal;">(One-Time)</div></th>
 
-                    <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
-                    ></i><Br>
-                        <div style="font-size:8pt;font-weight:normal;">(Monthly)</div></th>
-                    <th style="width:55px"></th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="row in survey.floorplans | orderBy : getOrder(sort)">
-                  <td ng-if="settings.showBulkConcessions">
-                      <input type="checkbox" ng-model="bulkConcession.SelectedFloorPlan[row.id]" ng-true-value="true" ng-false-value="false" ng-change="bulkConcession.toggleSingle()" />
-                  </td>
-                  <td style="white-space: nowrap;">
-                      {{row.bedrooms}}x{{row.bathrooms}}
-                      <div class="visible-xs tiny">{{row.units}} Units</div>
-                      <div class="visible-xs tiny">{{row.sqft}} Sqft</div>
-                  </td>
-                  <td class="hidden-xs" style="word-break: break-all">
-                      {{row.description}}
-                  </td>
-                  <td class="hidden-xs pad" style="text-align: right">
-                      {{row.units}}
-                  </td>
-                  <td class="hidden-xs pad" style="text-align: right">
-                      {{row.sqft}}
-                  </td>
-                  <td style="white-space: nowrap;text-align:right;">
-                      <div ng-class="{'form-group': true, 'has-error': !!row.errors.rent || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                          $<input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
-                      </div>
-                  </td>
-                  <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
-                      <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessions || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                          $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()" ng-change="clear('concessions-' + row.id)" ng-keydown="pressed(row,'concessions-' + row.id, $event)" ng-blur="updateDone(row,true,'concessions')">
-                      </div>
-                  </td>
-                  <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
-                      <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsOneTime || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                          $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()" ng-change="clear('concessionsOneTime-' + row.id)" ng-keydown="pressed(row,'concessionsOneTime-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsOneTime')">
-                      </div>
-                  </td>
-                  <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
-                      <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsMonthly || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                          $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
-                      </div>
-                  </td>
-                  <td nowrap>
-                      &nbsp;<a href ng-click="undo(row)" ng-if="row.updated" class="pull-left"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                      <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-                         popover-trigger="'mouseenter'"
-                         popover-placement="left"
-                         uib-popover-html="getWarnings(row)"
-                      ></i>
-                      <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-                         popover-trigger="'mouseenter'"
-                         popover-placement="left"
-                         uib-popover-html="getErrors(row)"
-                      ></i>
-                  </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td ng-show="settings.showBulkConcessions">
-                    <input type="checkbox" ng-model="bulkConcession.checkall" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
-                </td>
-                <td class="visible-xs">
-                    Totals/Avgs:
-                    <div class="visible-xs tiny">{{totals.units}} Units</div>
-                    <div class="visible-xs tiny">{{totals.sqft | number: 0}} Sqft</div>
-                </td>
-                <td class="hidden-xs" colspan="2">
-                    Totals/Averages:
-                </td>
-                <td class="hidden-xs pad text-right">
-                    {{totals.units}}
-                </td>
-                <td class="hidden-xs pad text-right">
-                    {{totals.sqft | number: 0}}
-                </td>
-                <td class="text-right">
-                    ${{totalRent() | number: 0}}
-                </td>
-                <td ng-if="!settings.showDetailed" class="text-right">
-                    ${{totalConcessions() | number: 0}}
-                </td>
-                <td ng-if="settings.showDetailed" class="text-right">
-                    ${{totalConcessionsOneTime() | number: 0}}
-                </td>
-                <td ng-if="settings.showDetailed" class="text-right">
-                    ${{totalConcessionsMonthly() | number: 0}}
-                </td>
-                <td></td>
-              </tr>
-            </tfoot>
-        </table>
+        <th ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
+           popover-trigger="'mouseenter'"
+           popover-placement="left"
+           uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
+        ></i><Br>
+            <div style="font-size:8pt;font-weight:normal;">(Monthly)</div></th>
+        <th style="width: 55px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in survey.floorplans | orderBy : getOrder(sort)">
+          <td ng-show="settings.showBulkConcessions">
+              <input type="checkbox" ng-model="bulkConcession.SelectedFloorPlan[row.id]" ng-true-value="true" ng-false-value="false" ng-change="bulkConcession.toggleSingle()" />
+          </td>
+          <td style="white-space: nowrap;">
+              {{row.bedrooms}}x{{row.bathrooms}}
+              <div class="visible-xs tiny">{{row.units}} Units</div>
+              <div class="visible-xs tiny">{{row.sqft}} Sqft</div>
+          </td>
+          <td class="hidden-xs description" style="word-break: break-all">
+              {{row.description}}
+          </td>
+          <td class="hidden-xs pad" style="text-align: right">
+              {{row.units}}
+          </td>
+          <td class="hidden-xs pad" style="text-align: right">
+              {{row.sqft}}
+          </td>
+          <td style="white-space: nowrap;text-align:right;">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.rent || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                  $<input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
+              </div>
+          </td>
+          <td ng-show="!settings.showDetailed" style="white-space: nowrap;text-align:right">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessions || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                  $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()" ng-change="clear('concessions-' + row.id)" ng-keydown="pressed(row,'concessions-' + row.id, $event)" ng-blur="updateDone(row,true,'concessions')">
+              </div>
+          </td>
+          <td ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsOneTime || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                  $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()" ng-change="clear('concessionsOneTime-' + row.id)" ng-keydown="pressed(row,'concessionsOneTime-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsOneTime')">
+              </div>
+          </td>
+          <td ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsMonthly || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                  $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
+              </div>
+          </td>
+          <td nowrap>
+              &nbsp;<a href ng-click="undo(row)" ng-if="row.updated" class="pull-left"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+              <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+                 popover-trigger="'mouseenter'"
+                 popover-placement="left"
+                 uib-popover-html="getWarnings(row)"
+              ></i>
+              <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                 popover-trigger="'mouseenter'"
+                 popover-placement="left"
+                 uib-popover-html="getErrors(row)"
+              ></i>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" ng-hide="allShown" class="showAll" ng-click="showAllFP()">Show all</button>
+  <div class="tfoot clearfix mb-20">
+    <div class="tfoot-cell" ng-show="settings.showBulkConcessions">
+        <input type="checkbox" ng-model="bulkConcession.checkall" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
     </div>
-    <button type="button" ng-hide="allShown" class="showAll mb-20" ng-click="showAllFP()">Show all</button>
+    <div class="tfoot-cell description">
+      <span class="hidden-xs">Totals/Averages:</span>
+      <div class="visible-xs">
+        Totals/Avgs:
+        <div class="tiny">{{totals.units}} Units</div>
+        <div class="tiny">{{totals.sqft | number: 0}} Sqft</div>
+      </div>
+    </div>
+    <div class="tfoot-cell"></div>
+    <div class="hidden-xs pad tfoot-cell text-right" style="padding-right: 15px;">
+        {{totals.units}}
+    </div>
+    <div class="hidden-xs pad tfoot-cell text-right" style="padding-right: 15px;">
+        {{totals.sqft | number: 0}}
+    </div>
+    <div class="tfoot-cell text-right">
+        ${{totalRent() | number: 0}}
+    </div>
+    <div ng-show="!settings.showDetailed" class="tfoot-cell text-right">
+        ${{totalConcessions() | number: 0}}
+    </div>
+    <div ng-show="settings.showDetailed" class="tfoot-cell text-right">
+        ${{totalConcessionsOneTime() | number: 0}}
+    </div>
+    <div ng-show="settings.showDetailed" class="tfoot-cell text-right">
+        ${{totalConcessionsMonthly() | number: 0}}
+    </div>
+    <div></div>
+  </div>
 </div>
 <div class="row">
     <div class="col-xs-2 col-sm-2">
