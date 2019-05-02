@@ -216,7 +216,7 @@ define([
                         }
                     }
 
-                    if (!$scope.comp.survey || !$scope.comp.survey.date) {
+                    if (!$scope.comp.survey || !$scope.comp.survey.date && !$scope.property.strRangeEnd) {
                         toastr.error('No Property Surveys have been done for this property.');
                     }
 

@@ -29,7 +29,7 @@
             <i class="fa fa-lock"></i> <span class="hidden-xs">Property Survey</span>
         </button>
 
-        <daterange-picker daterange="settings.daterange" class="pull-right hidden-print dashboard" ng-if="settings" style="margin-right:10px"></daterange-picker>
+        <daterange-picker daterange="settings.daterange" class="pull-right hidden-print dashboard" ng-if="settings && me.roles[0] !== 'Guest'" style="margin-right:10px"></daterange-picker>
     </div>
 </div>
 <div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">

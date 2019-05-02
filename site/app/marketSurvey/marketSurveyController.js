@@ -101,11 +101,11 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                                 },
                                 responseTimeInMinutes: Math.round(((new Date()).getTime() - (new Date(request.lastEmailed)).getTime()) / 1000 / 60),
                                 user: {
-                                    id: request.sender.id || "",
-                                    name: request.sender.first + " " + request.sender.last,
+                                    id: request.sender && request.sender.id ? request.sender.id : "",
+                                    name: request.sender ? request.sender.first + " " + request.sender.last : "",
                                     organization: {
-                                        id: request.sender.organization ? request.sender.organization.id : "",
-                                        name: request.sender.organization ? request.sender.organization.name : "N/A",
+                                        id: request.sender && request.sender.organization ? request.sender.organization.id : "",
+                                        name: request.sender && request.sender.organization ? request.sender.organization.name : "N/A",
                                     },
                                 },
                                 survery_swap_contact: {
