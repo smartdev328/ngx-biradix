@@ -174,11 +174,13 @@
             <i ng-show="sort == '-type'" class="fa fa-sort-down"></i>
             <i ng-show="sort == 'type'" class="fa fa-sort-up"></i>
         </th>
-        <th class="hidden-xs sortable description" ng-click="toggleSort('description',true)">
+        <th class="sortable description" ng-click="toggleSort('description',true)">
+          <div class="hidden-xs">
             Desc.
             <i ng-show="sort.indexOf('description') == -1" class="fa fa-sort"></i>
             <i ng-show="sort == '-description'" class="fa fa-sort-down"></i>
             <i ng-show="sort == 'description'" class="fa fa-sort-up"></i>
+          </div>
         </th>
         <th class="hidden-xs sortable" style="text-align: right" ng-click="toggleSort('units',true)"><span class="hidden-xs">Units</span><span class="visible-xs">#</span>
             <i ng-show="sort.indexOf('units') == -1" class="fa fa-sort"></i>
@@ -215,7 +217,7 @@
            uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Monthly)</div></th>
-        <th style="width: 55px;"></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -228,8 +230,10 @@
               <div class="visible-xs tiny">{{row.units}} Units</div>
               <div class="visible-xs tiny">{{row.sqft}} Sqft</div>
           </td>
-          <td class="hidden-xs description" style="word-break: break-all">
+          <td class="description" style="word-break: break-all">
+            <div class="hidden-xs">
               {{row.description}}
+            </div>
           </td>
           <td class="hidden-xs pad" style="text-align: right">
               {{row.units}}
@@ -286,7 +290,7 @@
         <div class="tiny">{{totals.sqft | number: 0}} Sqft</div>
       </div>
     </div>
-    <div class="tfoot-cell"></div>
+    <div class="tfoot-cell hidden-xs"></div>
     <div class="hidden-xs pad tfoot-cell text-right" style="padding-right: 15px;">
         {{totals.units}}
     </div>

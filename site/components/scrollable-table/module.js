@@ -7,7 +7,7 @@ function fixedTable($timeout) {
         restrict: 'A',
         link: link,
         scope: {
-            toggles: '=',
+            toggles: '='
         }
     };
 
@@ -27,7 +27,11 @@ function fixedTable($timeout) {
             // wrap in $timeout to give table a chance to finish rendering
             $timeout(function () {
                 // set widths of columns
-                var columnWidthArray = [27,52,78,56,56,91,91,91,92,55];
+                if(window.innerWidth < 765) {
+                    var columnWidthArray = [26,50,0,0,0,86,86,89,90,55];
+                } else {
+                    var columnWidthArray = [27,52,78,56,56,91,91,91,92,55];
+                }
                 var headerArray = [];
                 var BodyArray = [];
                 var FooterArray = [];
