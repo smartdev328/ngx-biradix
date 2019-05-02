@@ -516,3 +516,12 @@ daterange-picker.dashboard > div {
 @keyframes blinker {
     50% { opacity: 0; }
 }
+
+.brand-green {
+    color: #32CD32;
+}
+
+.brand-green-bg {
+    background-color: #32CD32;
+}
+

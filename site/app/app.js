@@ -104,7 +104,8 @@ define([], function () {
             .state("organizations", AsyncRoute("/organizations", "organizations", "organizationsController", "organizations.html", "loggedInView",{loggedIn: true}))
 
             .state("metrics", AsyncRoute("/metrics", "metrics", "metricsController", "metrics.html", "loggedInView", {loggedIn: true}))
-            .state("import", AsyncRoute("/import", "import", "importController", "import.html", "loggedInView", {loggedIn: true}));
+            .state("import", AsyncRoute("/import", "import", "importController", "import.html", "loggedInView", {loggedIn: true}))
+            .state("perspectives", AsyncRoute("/perspectives", "perspectives", "perspectivesController", "perspectives.html", "loggedInView", {loggedIn: true}));
     });
 
     app.filter("sanitize2", ["$sanitize", function ($sanitize) {
