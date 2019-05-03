@@ -82,7 +82,8 @@ function fixedTable($timeout) {
                 angular.element(elem.querySelectorAll('tbody')).css({
                     'display': 'block',
                     'height': $attrs.tableHeight || 'inherit',
-                    'overflow': 'auto'
+                    'overflow-y': 'auto',
+                    'overflow-x': 'hidden'
                 });
 
             });

@@ -191,37 +191,73 @@
     width: 40px;
 }
 
-.bulkConcessionModule input.range {
+.bulkConcessionModule input[type=range] {
   -webkit-appearance: none;
   margin:6px;
   width: 120px;
-  height: 4px;
-  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]:focus {
   outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
 }
-
-.bulkConcessionModule input.range:hover {
-  opacity: 1;
+.bulkConcessionModule input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #d3d3d3;
 }
-
-.bulkConcessionModule input.range::-webkit-slider-thumb {
+.bulkConcessionModule input[type=range]::-webkit-slider-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 100%;
+  background: #4460a9;
+  cursor: pointer;
   -webkit-appearance: none;
-  appearance: none;
-  width: 12px;
-  height: 12px;
-  background: #4460a9;
-  cursor: pointer;
-  border-radius:100%;
+  margin-top: -4px;
 }
-
-.bulkConcessionModule input.range::-moz-range-thumb {
-  width: 12px;
+.bulkConcessionModule input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]::-moz-range-thumb {
   height: 12px;
+  width: 12px;
+  border-radius: 100%;
   background: #4460a9;
   cursor: pointer;
+  margin-top: 0;
+}
+.bulkConcessionModule input[type=range]::-ms-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.bulkConcessionModule input[type=range]::-ms-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 100%;
+  background: #4460a9;
+  cursor: pointer;
+  margin-top: 0;
+}
+.bulkConcessionModule input[type=range]::-ms-fill-lower {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]::-ms-fill-upper {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]:focus::-ms-fill-lower {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]:focus::-ms-fill-upper {
+  background: #d3d3d3;
 }
 
 .propertySurvey {
