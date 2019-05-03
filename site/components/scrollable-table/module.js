@@ -28,9 +28,9 @@ function fixedTable($timeout) {
             $timeout(function () {
                 // set widths of columns
                 if(window.innerWidth < 765) {
-                    var columnWidthArray = [26,50,0,0,0,86,86,89,90,55];
+                    var columnWidthArray = [26,50,0,0,0,86,86,89,90,50];
                 } else {
-                    var columnWidthArray = [27,52,78,56,56,91,91,91,92,55];
+                    var columnWidthArray = [27,52,78,56,56,91,91,91,92,50];
                 }
                 var headerArray = [];
                 var BodyArray = [];
@@ -58,7 +58,7 @@ function fixedTable($timeout) {
                     item.style.width = columnWidthArray[i] + 'px';
                 });
                 BodyArray.forEach(function(item, i){
-                    item.style.width = columnWidthArray[i] + 'px';
+                    item.style.minWidth = columnWidthArray[i] + 'px';
                 });
                 FooterArray.forEach(function(item, i){
                     item.style.width = columnWidthArray[i] + 'px';
@@ -66,13 +66,13 @@ function fixedTable($timeout) {
 
                 if(!$scope.toggles.showBulkConcessions) {
                     thDesc.style.width = parseInt(thDesc.style.width.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
-                    tdDesc.style.width = parseInt(tdDesc.style.width.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
+                    tdDesc.style.minWidth = parseInt(tdDesc.style.minWidth.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
                     tfDesc.style.width = parseInt(tfDesc.style.width.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
                 }
 
                 if(!$scope.toggles.showDetailed) {
                     thDesc.style.width = parseInt(thDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
-                    tdDesc.style.width = parseInt(tdDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
+                    tdDesc.style.minWidth = parseInt(tdDesc.style.minWidth.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
                     tfDesc.style.width = parseInt(tfDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
                 }
 

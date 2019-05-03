@@ -140,7 +140,7 @@
 <div ng-if="settings.showBulkConcessions" class="bulkConcessionModule">
   <div class="row">
     <div class="col-xs-12 col-sm-4">
-      <p>Apply Bulk Concessions <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" uib-popover="Use this section to apply concessions to multiple floor plans at once as well as help calculate annualized concessions"></i></p>
+      <p><strong>Apply Bulk Concessions <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" uib-popover="Use this section to apply concessions to multiple floor plans at once as well as help calculate annualized concessions"></i></strong></p>
     </div>
     <div class="col-xs-12 col-sm-8">
       <select ng-model="bulkConcession.concessionsTimes" ng-change="bulkConcession.enableApplyButton()">
@@ -280,7 +280,6 @@
   <button type="button" ng-hide="allShown" class="showAll" ng-click="showAllFP()">Show all</button>
   <div class="tfoot clearfix mb-20">
     <div class="tfoot-cell" ng-show="settings.showBulkConcessions">
-        <input type="checkbox" ng-model="bulkConcession.checkall" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
     </div>
     <div class="tfoot-cell description">
       <span class="hidden-xs">Totals/Averages:</span>
@@ -344,6 +343,12 @@
                                uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"
                             ></i>
                         </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <toggle-switch checked="settings.newVersion"></toggle-switch>
+                      </td>
+                      <td>New version <i class="fa fa-question-circle" style="font-size:12px"  popover-trigger="'mouseenter'" popover-placement="top-right" uib-popover="Return to the old design by turning off the new version"></i></td>
                     </tr>
                 </table>
             </div>
