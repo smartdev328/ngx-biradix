@@ -33,7 +33,7 @@ define([
                         }
                         ngProgress.complete();
                     }, function(response) {
-                        toastr.error('Unable to map amenity. Please contact an administrator');
+                        toastr.error('Unable to map amenity. Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.');
                         ngProgress.complete();
                     })
 

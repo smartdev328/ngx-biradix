@@ -69,7 +69,7 @@ define([
                         }
                     },
                     function(errors) {
-                        toastr.error('Unable to access the system at this time. Please contact an administrator');
+                        toastr.error('Unable to access the system at this time. Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.');
                         $('button.contact-submit').prop('disabled', false);
                         ngProgress.complete();
                     });
