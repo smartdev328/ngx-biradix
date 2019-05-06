@@ -46,6 +46,11 @@ define([
                         $scope.localLoading = true;
                         toastr.error("Unable to update PMS Config. Please contact the administrator.");
                     });
+            },
+            function(error) {
+                $scope.apiError = true;
+                $scope.localLoading = true;
+                toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
             });
         };
 

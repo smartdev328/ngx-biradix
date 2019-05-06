@@ -45,13 +45,13 @@ define([
                                 $scope.loading = false;
                         },
                         function (error) {
-                            toastr.error("Unable to retrieve data. Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
+                            toastr.error("Unable to retrieve data. Please contact an administrator.");
                             $scope.loading = false;
                         });
 
                     },
                     function (error) {
-                        toastr.error("Unable to retrieve data. Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
+                        toastr.error("Unable to retrieve data. Please contact an administrator.");
                         $scope.loading = false;
                     });
             }
@@ -104,14 +104,14 @@ define([
                                 }
                             },
                             function (error) {
-                                toastr.error("Unable to create. Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
+                                toastr.error("Unable to create. Please contact an administrator.");
                                 $scope.loading = false;
                             });
 
                         }
                     },
                     function (error) {
-                        toastr.error("Unable to create. Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
+                        toastr.error("Unable to create. Please contact an administrator.");
                         $scope.loading = false;
                     });
             }
@@ -129,7 +129,7 @@ define([
                             }
                         },
                         function (error) {
-                            toastr.error("Unable to remove. Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
+                            toastr.error("Unable to remove. Please contact an administrator.");
                             $scope.loading = false;
                         });
                 }, function() {
@@ -151,7 +151,7 @@ define([
                     }
                 }, function(err) {
                     rg4js('send', new Error("User saw API unavailable error alert/message/page"));
-                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
                     ngProgress.complete();
                 });
             };
