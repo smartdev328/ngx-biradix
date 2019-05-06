@@ -302,3 +302,10 @@ body {
     padding: .2em .6em;
     vertical-align: middle;
 }
+
+.page-container {
+    border:1px solid #ddd;
+    background-color:white;
+    padding: 20px;
+    margin-top:20px;
+}

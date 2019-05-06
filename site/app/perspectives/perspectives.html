@@ -1,6 +1,46 @@
-<h2 class="mainheader">Perspectives
-    <hr>
-</h2>
-<div class="perspectives">
+<div class="pespectives">
+    <h2 class="mainheader">Perspectives
+        <hr>
+    </h2>
+    <div class="flex-container">
+        <div><span class="fa fa-eye-slash fa-2x"></span></div>
+        <div class="pl-10">Use perspectives to customize views of your data. Select floor plans to consider within your views. Deselect floor plans you do not want factored in for any given perspective.</div>
+    </div>
 
+    <div ng-if="loading" style="display:block;width:100px;margin:50px auto">
+        <img src="/images/squares.gif" style="width:100px">
+    </div>
+
+    <div ng-if="!loading">
+        <div class="row mt-20">
+            <div class="col-md-3">
+                <B>Property</B><Br>
+                <div
+                     custom-select="f.name for f in searchAsync($searchTerm)"
+                     custom-select-options="{ 'async': true }"
+                     ng-model="selectedProperty" autofocus
+                ></div>
+            </div>
+            <div class="col-md-3">
+                <B>Perspective</B><Br>
+                <div
+                        custom-select="f.name for f in searchPerspectives($searchTerm)"
+                        custom-select-options="{ 'async': true }"
+                        ng-model="selectedPerspective" autofocus
+                ></div>
+            </div>
+            <div class="col-md-1 text-center mt-20">
+                OR
+            </div>
+            <div class="col-md-3 mt-20">
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Add User" ng-click="edit()">
+                    <span class="fa fa-plus"></span> Add Perspective
+                </button>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <div class="alert alert-warning" role="alert" ng-if="!selectedPerspective"><b>Please select a property and associated perspective to edit or click 'Add Perspective'</b></div>
+        </div>
+    </div>
 </div>

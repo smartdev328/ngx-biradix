@@ -16,6 +16,10 @@
     margin-bottom: 40px;
 }
 
+.mt-20 {
+    margin-top: 20px !important;
+}
+
 .ml-3 {
     margin-left: 3px;
 }

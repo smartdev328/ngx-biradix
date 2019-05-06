@@ -134,6 +134,7 @@ gulp.task("globaljs", function() {
 gulp.task("globalcss", function() {
     const cssFiles = [
         "./site/app/global.css",
+        "./site/css/flex.css",
         "./site/app/login/loggedout.css",
         "./site/css/navs.css",
         "./site/css/grids.css",
@@ -149,6 +150,7 @@ gulp.task("globalcss", function() {
         "./site/app/contact/contact.css",
         "./site/app/propertyWizard/propertyWizard.css",
         "./site/app/marketSurvey/marketSurvey.css",
+        "./site/app/perspectives/perspectives.css",
     ];
 
     const cssStream = gulp.src(filesExist(cssFiles));
