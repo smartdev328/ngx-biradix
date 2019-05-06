@@ -13,11 +13,13 @@
           <i ng-if="getWarnings(validation.occupancy) && !getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
              popover-trigger="'mouseenter'"
              popover-placement="left"
+             popover-append-to-body="true"
              uib-popover-html="getWarnings(validation.occupancy)"
           ></i>
           <i ng-if="getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
              popover-trigger="'mouseenter'"
              popover-placement="left"
+             popover-append-to-body="true"
              uib-popover-html="getErrors(validation.occupancy)"
           ></i>
       </div>
@@ -32,11 +34,13 @@
           <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
              popover-trigger="'mouseenter'"
              popover-placement="left"
+             popover-append-to-body="true"
              uib-popover-html="getWarnings(validation.leased)"
           ></i>
           <i ng-if="getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
              popover-trigger="'mouseenter'"
              popover-placement="left"
+             popover-append-to-body="true"
              uib-popover-html="getErrors(validation.leased)"
           ></i>
       </div>
@@ -51,11 +55,13 @@
           <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
              popover-trigger="'mouseenter'"
              popover-placement="left"
+             popover-append-to-body="true"
              uib-popover-html="getWarnings(validation.renewal)"
           ></i>
           <i ng-if="getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
              popover-trigger="'mouseenter'"
              popover-placement="left"
+             popover-append-to-body="true"
              uib-popover-html="getErrors(validation.renewal)"
           ></i>
       </div>
@@ -69,6 +75,7 @@
           <i class="fa fa-question-circle"
              popover-trigger="'mouseenter'"
              popover-placement="top"
+             popover-append-to-body="true"
              uib-popover="Apartments to Rent – How many units do you have for rent? Enter total number of Vacant Available and On-Notice units. Ex: 5 Vacant Available Units + 6 On-Notice Units = 11 ATR"
              popover-append-to-body="true"
              style="font-size:12px"
@@ -82,11 +89,13 @@
             <i ng-if="getWarnings(validation.atr) && !getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+               popover-append-to-body="true"
                uib-popover-html="getWarnings(validation.atr)"
             ></i>
             <i ng-if="getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+               popover-append-to-body="true"
                uib-popover-html="getErrors(validation.atr)"
             ></i>
         </div>
@@ -102,11 +111,13 @@
             <i ng-if="getWarnings(validation.traffic) && !getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+               popover-append-to-body="true"
                uib-popover-html="getWarnings(validation.traffic)"
             ></i>
             <i ng-if="getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+               popover-append-to-body="true"
                uib-popover-html="getErrors(validation.traffic)"
             ></i>
         </div>
@@ -122,11 +133,13 @@
             <i ng-if="getWarnings(validation.leases) && !getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+               popover-append-to-body="true"
                uib-popover-html="getWarnings(validation.leases)"
             ></i>
             <i ng-if="getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+               popover-append-to-body="true"
                uib-popover-html="getErrors(validation.leases)"
             ></i>
         </div>
@@ -140,7 +153,7 @@
 <div ng-if="settings.showBulkConcessions" class="bulkConcessionModule">
   <div class="row">
     <div class="col-xs-12 col-sm-4">
-      <p><strong>Apply Bulk Concessions <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" uib-popover="Use this section to apply concessions to multiple floor plans at once as well as help calculate annualized concessions"></i></strong></p>
+      <p><strong>Apply Bulk Concessions <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Use this section to apply concessions to multiple floor plans at once as well as help calculate annualized concessions"></i></strong></p>
     </div>
     <div class="col-xs-12 col-sm-8">
       <select ng-model="bulkConcession.concessionsTimes" ng-change="bulkConcession.enableApplyButton()">
@@ -153,7 +166,7 @@
           <option value="week(s) free">week(s) free</option>
           <option value="month(s) free">month(s) free</option>
       </select>
-      <i class="fa fa-question-circle" style="font-size:12px;margin-left: 3px;" popover-trigger="'mouseenter'" popover-placement="left" uib-popover="Monthly concessions in terms of weeks or months free will be annualized. For example, applying the concession of one month free to a floor plan with a $1200 rent would result in a calculated monthly concession value of $100. Also, note that weekly concessions are calculated at 4 weeks per month. For example, applying two weeks free to a floor plan with a $1200 rent would result in a calculated monthly concession value of $50 (Taking 50% of $1200 and then dividing it by 12)"></i>
+      <i class="fa fa-question-circle" style="font-size:12px;margin-left: 3px;" popover-trigger="'mouseenter'" popover-placement="left" popover-append-to-body="true" uib-popover="Monthly concessions in terms of weeks or months free will be annualized. For example, applying the concession of one month free to a floor plan with a $1200 rent would result in a calculated monthly concession value of $100. Also, note that weekly concessions are calculated at 4 weeks per month. For example, applying two weeks free to a floor plan with a $1200 rent would result in a calculated monthly concession value of $50 (Taking 50% of $1200 and then dividing it by 12)"></i>
       <button class="btn btn-warning btn-xs ml-10" style="font-size:10px" type="button" ng-disabled="bulkConcession.applyButtonActivated" ng-click="bulkConcession.applyButton()">Apply</button>
     </div>
     <div class="col-xs-12 col-sm-offset-4 col-sm-8 pt-10">
@@ -196,17 +209,20 @@
         <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-question-circle" style="font-size:12px"
              popover-trigger="'mouseenter'"
              popover-placement="left"
+             popover-append-to-body="true"
              uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
         ></i></th>
         <th ng-show="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
             popover-trigger="'mouseenter'"
             popover-placement="left"
+             popover-append-to-body="true"
             uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
         <th ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
            popover-trigger="'mouseenter'"
            popover-placement="left"
+             popover-append-to-body="true"
            uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(One-Time)</div></th>
@@ -214,6 +230,7 @@
         <th ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
            popover-trigger="'mouseenter'"
            popover-placement="left"
+             popover-append-to-body="true"
            uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Monthly)</div></th>
@@ -266,11 +283,13 @@
               <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                  popover-trigger="'mouseenter'"
                  popover-placement="left"
+                 popover-append-to-body="true"
                  uib-popover-html="getWarnings(row)"
               ></i>
               <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                  popover-trigger="'mouseenter'"
                  popover-placement="left"
+                 popover-append-to-body="true"
                  uib-popover-html="getErrors(row)"
               ></i>
           </td>
@@ -327,7 +346,7 @@
                         </td>
                         <td>
                             Bulk Concessions
-                            <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top-right" uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"></i>
+                            <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"></i>
                         </td>
                     </tr>
                     <tr>
@@ -339,7 +358,7 @@
                             Detailed Concessions
                             <i class="fa fa-question-circle"  style="font-size:12px"
                                popover-trigger="'mouseenter'"
-                               popover-placement="top-right"
+                               popover-placement="top" popover-append-to-body="true"
                                uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"
                             ></i>
                         </td>
@@ -348,7 +367,7 @@
                       <td>
                         <toggle-switch checked="settings.newVersion"></toggle-switch>
                       </td>
-                      <td>New version <i class="fa fa-question-circle" style="font-size:12px"  popover-trigger="'mouseenter'" popover-placement="top-right" uib-popover="Return to the old design by turning off the new version"></i></td>
+                      <td>New version <i class="fa fa-question-circle" style="font-size:12px"  popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Return to the old design by turning off the new version"></i></td>
                     </tr>
                 </table>
             </div>

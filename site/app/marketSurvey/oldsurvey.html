@@ -44,11 +44,13 @@
         <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-question-circle" style="font-size:12px"
                                                                  popover-trigger="'mouseenter'"
                                                                  popover-placement="left"
+             popover-append-to-body="true"
                                                                  uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
         ></i></th>
         <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
                                                                                                     popover-trigger="'mouseenter'"
                                                                                                     popover-placement="left"
+             popover-append-to-body="true"
                                                                                                     uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
@@ -56,6 +58,7 @@
         <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
                                                                                                    popover-trigger="'mouseenter'"
                                                                                                    popover-placement="left"
+             popover-append-to-body="true"
                                                                                                    uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(One-Time)</div></th>
@@ -63,6 +66,7 @@
         <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
                                                                                                    popover-trigger="'mouseenter'"
                                                                                                    popover-placement="left"
+             popover-append-to-body="true"
                                                                                                    uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Monthly)</div></th>
@@ -111,11 +115,13 @@
             <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+             popover-append-to-body="true"
                uib-popover-html="getWarnings(row)"
             ></i>
             <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                popover-trigger="'mouseenter'"
                popover-placement="left"
+             popover-append-to-body="true"
                uib-popover-html="getErrors(row)"
             ></i>
         </td>
@@ -188,11 +194,13 @@
                     <i ng-if="getWarnings(validation.occupancy) && !getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+                       popover-append-to-body="true"
                        uib-popover-html="getWarnings(validation.occupancy)"
                     ></i>
                     <i ng-if="getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+                       popover-append-to-body="true"
                        uib-popover-html="getErrors(validation.occupancy)"
                     ></i>
                 </div>
@@ -202,11 +210,13 @@
                     <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+                       popover-append-to-body="true"
                        uib-popover-html="getWarnings(validation.leased)"
                     ></i>
                     <i ng-if="getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+                       popover-append-to-body="true"
                        uib-popover-html="getErrors(validation.leased)"
                     ></i>
                 </div>
@@ -215,12 +225,14 @@
                     <a class="pull-left" href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
                     <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                        popover-trigger="'mouseenter'"
-                       popover-placement="left"
+                       popover-placement="left"                       
+                        popover-append-to-body="true"
                        uib-popover-html="getWarnings(validation.renewal)"
                     ></i>
                     <i ng-if="getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+                        popover-append-to-body="true"
                        uib-popover-html="getErrors(validation.renewal)"
                     ></i>
                 </div>
@@ -237,6 +249,7 @@
                     <i class="fa fa-question-circle"
                        popover-trigger="'mouseenter'"
                        popover-placement="top"
+                        popover-append-to-body="true"
                        uib-popover="Apartments to Rent – How many units do you have for rent? Enter total number of Vacant Available and On-Notice units. Ex: 5 Vacant Available Units + 6 On-Notice Units = 11 ATR"
                        popover-append-to-body="true"
                        style="font-size:12px"
@@ -275,11 +288,13 @@
                     <i ng-if="getWarnings(validation.atr) && !getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+             popover-append-to-body="true"
                        uib-popover-html="getWarnings(validation.atr)"
                     ></i>
                     <i ng-if="getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+             popover-append-to-body="true"
                        uib-popover-html="getErrors(validation.atr)"
                     ></i>
                 </div>
@@ -290,11 +305,13 @@
                     <i ng-if="getWarnings(validation.traffic) && !getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+             popover-append-to-body="true"
                        uib-popover-html="getWarnings(validation.traffic)"
                     ></i>
                     <i ng-if="getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+             popover-append-to-body="true"
                        uib-popover-html="getErrors(validation.traffic)"
                     ></i>
                 </div>
@@ -304,11 +321,13 @@
                     <i ng-if="getWarnings(validation.leases) && !getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+             popover-append-to-body="true"
                        uib-popover-html="getWarnings(validation.leases)"
                     ></i>
                     <i ng-if="getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
                        popover-trigger="'mouseenter'"
                        popover-placement="left"
+             popover-append-to-body="true"
                        uib-popover-html="getErrors(validation.leases)"
                     ></i>
                 </div>
@@ -326,7 +345,7 @@
 
 <div class="row">
     <div class="col-xs-4">
-        <toggle-switch checked="settings.newVersion"></toggle-switch>New version <i class="fa fa-question-circle" style="font-size:12px"  popover-trigger="'mouseenter'" popover-placement="top" uib-popover="Toggle to new version to be able to use the bulk concessions feature."></i>
+        <toggle-switch checked="settings.newVersion"></toggle-switch>New version <i class="fa fa-question-circle" style="font-size:12px"  popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Toggle to new version to be able to use the bulk concessions feature."></i>
     </div>
     <div class="col-xs-4 text-center">
         <a class="btn btn-default contact-submit" ng-click="pmsBack()" ng-if="pms">Back</a>
