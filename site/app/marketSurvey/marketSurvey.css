@@ -324,6 +324,11 @@
     height: 26px;
 }
 
+.newSurvey input[type='checkbox'] {
+  height: 14px;
+  width: 14px;
+}
+
 @media all and (min-width: 0px) and (max-width: 767px) {
     .oldSurvey .market-survey .modal-body {
         padding-left:3px !important;
