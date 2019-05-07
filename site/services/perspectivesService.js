@@ -33,7 +33,43 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                         }
                     });
                     response.data.properties = _.sortByAll(response.data.properties, ["orderNumber", "name"]);
+
+                    var temp;
+                    response.data.properties.forEach(function(p) {
+                        p.bedrooms = [];
+                        p.floorplans.forEach(function(fp) {
+                            temp = _.find(p.bedrooms, function(b) {
+                                return b.number === Math.floor(fp.bedrooms);
+                            });
+                            if (temp) {
+                                temp.floorplans = temp.floorplans || [];
+                                temp.floorplans.push(fp);
+                            } else {
+                                p.bedrooms.push({
+                                    number: Math.floor(fp.bedrooms),
+                                    floorplans: [fp]
+                                });
+                            }
+                        });
+                    });
                     callback(response.data.properties);
+                });
+            };
+
+            $scope.getPropertyById = function(id, callback) {
+                $propertyService.search({
+                    limit: 100,
+                    permission: ["PropertyManage"],
+                    active: true,
+                    ids: id ? [id] : undefined,
+                    skipAmenities: true,
+                    hideCustomComps: true,
+                    select: "name comps.id comps.orderNumber custom",
+                    sort: "name"
+                }).then(function(response) {
+                    callback(response.data.properties);
+                }, function(error) {
+                    callback([]);
                 });
             };
 

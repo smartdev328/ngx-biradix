@@ -39,7 +39,6 @@
             </div>
         </div>
 
-        {{selectedProperty}}
         <div class="page-container">
             <div class="alert alert-warning" role="alert" ng-if="model.mode === MODE.NONE"><b>Please select a property and associated perspective to edit or click 'Add Perspective'</b></div>
             <div ng-if="model.mode !== MODE.NONE">
@@ -55,9 +54,27 @@
                     </button>
                 </div>
                 <div class="clearfix"></div>
-                <hr>
                 <div ng-repeat="comp in comps">
-                    {{comp.name}}
+                    <hr>
+                    <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="comp.open = !comp.open"></i>
+                    <input type="checkbox">
+                    <img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center">
+                    <B>{{comp.name}}</B>
+                    <div ng-if="comp.open" class="ml-15">
+                        <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10">
+                            <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="bedroom.open = !bedroom.open"></i>
+                            <input type="checkbox">
+                            <b>{{bedroom.number}} Bedrooms</b>
+                            <div ng-if="bedroom.open" class="ml-15">
+                                <div ng-repeat-start="floorplan in bedroom.floorplans">
+                                    <input type="checkbox">
+                                    {{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units
+                                </div>
+                                <div ng-repeat-end ng-if="false"></div>
+                            </div>
+                        </div>
+                        <div ng-repeat-end ng-if="false"></div>
+                    </div>
                 </div>
             </div>
         </div>

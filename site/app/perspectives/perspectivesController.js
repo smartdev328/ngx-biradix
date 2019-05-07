@@ -30,7 +30,14 @@ define([
 
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
-                $scope.loading = false;
+                var id = $rootScope.me.settings.defaultPropertyId;
+                $scope.getPropertyById(id, function(properties) {
+                    if (properties && properties.length) {
+                        $scope.model.selectedProperty = properties[0];
+                    }
+                    $scope.loading = false;
+                });
+
                 me();
             }
         });
