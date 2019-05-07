@@ -18,7 +18,7 @@
                 <div
                      custom-select="f.name for f in searchAsync($searchTerm)"
                      custom-select-options="{ 'async': true }"
-                     ng-model="selectedProperty" autofocus
+                     ng-model="model.selectedProperty" autofocus
                 ></div>
             </div>
             <div class="col-md-3">
@@ -26,21 +26,40 @@
                 <div
                         custom-select="f.name for f in searchPerspectives($searchTerm)"
                         custom-select-options="{ 'async': true }"
-                        ng-model="selectedPerspective" autofocus
+                        ng-model="model.selectedPerspective" autofocus
                 ></div>
             </div>
-            <div class="col-md-1 text-center mt-20">
+            <div class="col-md-1 text-center mt-20" ng-if="model.selectedProperty">
                 OR
             </div>
-            <div class="col-md-3 mt-20">
-                <button type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Add User" ng-click="edit()">
+            <div class="col-md-3 mt-20" ng-if="model.selectedProperty">
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Add Perspective" ng-click="add()">
                     <span class="fa fa-plus"></span> Add Perspective
                 </button>
             </div>
         </div>
 
+        {{selectedProperty}}
         <div class="page-container">
-            <div class="alert alert-warning" role="alert" ng-if="!selectedPerspective"><b>Please select a property and associated perspective to edit or click 'Add Perspective'</b></div>
+            <div class="alert alert-warning" role="alert" ng-if="model.mode === MODE.NONE"><b>Please select a property and associated perspective to edit or click 'Add Perspective'</b></div>
+            <div ng-if="model.mode !== MODE.NONE">
+                <div class="pull-left mt-5">
+                    Name:
+                </div>
+                <div class="pull-left ml-10">
+                    <input class="form-control input-sm" ng-model="model.workablePerspective.name">
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="add()">
+                        Create
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+                <hr>
+                <div ng-repeat="comp in comps">
+                    {{comp.name}}
+                </div>
+            </div>
         </div>
     </div>
 </div>

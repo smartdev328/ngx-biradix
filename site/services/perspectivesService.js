@@ -2,6 +2,41 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
         var fac = {};
 
         fac.scopeFunctions = function($scope) {
+            $scope.loadComps = function(property, callback) {
+                var compIds = property.comps.map(function(c) {
+                    return c.id;
+                });
+
+                $propertyService.search({
+                    limit: 10000,
+                    permission: "PropertyView",
+                    active: true,
+                    select: "_id name floorplans",
+                    ids: compIds,
+                    sort: "name",
+                    skipAmenities: true
+                }).then(function(response) {
+                    var comp;
+                    response.data.properties.forEach(function(c) {
+                        comp = _.find(property.comps, function(x) {
+                            return x.id.toString() === c._id.toString();
+                        });
+
+                        c.orderNumber = 999;
+
+                        if (comp && typeof comp.orderNumber != "undefined") {
+                            c.orderNumber = comp.orderNumber;
+                        }
+
+                        if (comp.id.toString() === property._id.toString()) {
+                            c.orderNumber = -1;
+                        }
+                    });
+                    response.data.properties = _.sortByAll(response.data.properties, ["orderNumber", "name"]);
+                    callback(response.data.properties);
+                });
+            };
+
             $scope.autocompleteproperties = function(search, callback) {
                 $propertyService.search({
                     limit: 100,
@@ -10,7 +45,7 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                     searchName: search,
                     skipAmenities: true,
                     hideCustomComps: true,
-                    select: "name comps.id custom",
+                    select: "name comps.id comps.orderNumber custom",
                     sort: "name"
                 }).then(function(response) {
                     response.data.properties = _.sortBy(response.data.properties, function(x) {
