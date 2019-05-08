@@ -327,6 +327,9 @@
 .newSurvey input[type='checkbox'] {
   height: 14px;
   width: 14px;
+}
+
+.newSurvey .propertySurvey input[type='checkbox'] {
   position: relative;
 }
 
