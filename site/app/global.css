@@ -525,3 +525,6 @@ daterange-picker.dashboard > div {
     background-color: #32CD32;
 }
 
+label.normal {
+    font-weight: normal;
+}

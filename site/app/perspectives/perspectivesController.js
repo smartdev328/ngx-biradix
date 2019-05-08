@@ -53,10 +53,73 @@ define([
             if (newP) {
                 $scope.loading = true;
                 $scope.loadComps(newP, function(newComps) {
-                    $scope.comps = newComps;
+                    $scope.model.comps = newComps;
                     $scope.loading = false;
                 });
             }
         }, true);
+
+        $scope.propertyChecked = function(property) {
+            property.indeterminate = false;
+            property.bedrooms.forEach(function(b) {
+                b.checked = property.checked;
+                b.indeterminate = false;
+                $scope.bedroomChecked(b, false);
+            });
+            $scope.checkIndeterminate();
+        };
+
+        $scope.bedroomChecked = function(bedroom, checkIndeterminate) {
+            bedroom.floorplans.forEach(function(f) {
+                f.checked = bedroom.checked;
+            });
+            if (checkIndeterminate) {
+                $scope.checkIndeterminate();
+            }
+        };
+
+        $scope.checkIndeterminate = function() {
+            var bedroomOn;
+            var bedroomOff;
+            var compOn;
+            var compOff;
+            $scope.model.comps.forEach(function(p) {
+                compOff = false;
+                compOff = false;
+                p.bedrooms.forEach(function(b) {
+                    bedroomOn = false;
+                    bedroomOff = false;
+                    b.floorplans.forEach(function(f) {
+                        if (f.checked) {
+                            bedroomOn = true;
+                            compOn = true;
+                        } else {
+                            bedroomOff = true;
+                            compOff = true;
+                        }
+                    });
+
+                    b.indeterminate = false;
+                    if (bedroomOn && bedroomOff) {
+                        b.checked = false;
+                        b.indeterminate = true;
+                    } else if (bedroomOn) {
+                        b.checked = true;
+                    } else {
+                        b.checked = false;
+                    }
+                });
+                p.indeterminate = false;
+                if (compOn && compOff) {
+                    p.checked = false;
+                    p.indeterminate = true;
+                } else if (compOn) {
+                    p.checked = true;
+                } else {
+                    p.checked = false;
+                }
+            });
+
+        };
     }]);
 });

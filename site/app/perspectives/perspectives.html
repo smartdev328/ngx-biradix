@@ -54,21 +54,21 @@
                     </button>
                 </div>
                 <div class="clearfix"></div>
-                <div ng-repeat="comp in comps">
+                <div ng-repeat="comp in model.comps">
                     <hr>
                     <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="comp.open = !comp.open"></i>
-                    <input type="checkbox">
-                    <img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center">
-                    <B>{{comp.name}}</B>
+                    <input type="checkbox" ng-model="comp.checked" id="checkbox_property_{{comp._id}}" ng-change="propertyChecked(comp)" ui-indeterminate="comp.indeterminate">
+                    <label for="checkbox_property_{{comp._id}}"><img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center">
+                    <B>{{comp.name}}</B></label>
                     <div ng-if="comp.open" class="ml-15">
                         <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10">
                             <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="bedroom.open = !bedroom.open"></i>
-                            <input type="checkbox">
-                            <b>{{bedroom.number}} Bedrooms</b>
+                            <input type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate">
+                            <label for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
                             <div ng-if="bedroom.open" class="ml-15">
                                 <div ng-repeat-start="floorplan in bedroom.floorplans">
-                                    <input type="checkbox">
-                                    {{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units
+                                    <input type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()">
+                                    <label class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}">{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units</label>
                                 </div>
                                 <div ng-repeat-end ng-if="false"></div>
                             </div>

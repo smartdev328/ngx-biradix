@@ -36,8 +36,12 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
 
                     var temp;
                     response.data.properties.forEach(function(p) {
+                        p.open = true;
+                        p.checked = true;
+                        p.indeterminate = false;
                         p.bedrooms = [];
                         p.floorplans.forEach(function(fp) {
+                            fp.checked = true;
                             temp = _.find(p.bedrooms, function(b) {
                                 return b.number === Math.floor(fp.bedrooms);
                             });
@@ -46,6 +50,9 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                                 temp.floorplans.push(fp);
                             } else {
                                 p.bedrooms.push({
+                                    open: true,
+                                    checked: true,
+                                    indeterminate: false,
                                     number: Math.floor(fp.bedrooms),
                                     floorplans: [fp]
                                 });

@@ -55,6 +55,7 @@ define([], function () {
         , "biradix.global"
         , "AxelSoft"
         , "ui.sortable"
+        , "ui.indeterminate"
     ]);
 
     app.config(function ($controllerProvider, $provide, $compileProvider, $filterProvider, $stateProvider, $urlRouterProvider, toastrConfig) {
