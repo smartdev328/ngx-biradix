@@ -334,12 +334,19 @@
 }
 
 .newSurvey input[type='checkbox'].has-error:before {
-    content: '';
-    position: absolute;
-    border: 1px solid red;
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
+  content: '';
+  position: absolute;
+  border: 1px solid red;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.toggleVersionButton {
+  background: transparent;
+  border: none;
+  color:#337ab7;
+  padding: 5px 0 0;
 }
 
 @media all and (min-width: 0px) and (max-width: 767px) {
