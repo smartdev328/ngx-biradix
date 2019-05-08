@@ -50,24 +50,21 @@ define([
                     if (newP._id.toString() === "5cc72e97545c3400152a6352") {
                         newP.perspectives = [{
                             name: "3 bedrooms",
-                            comps: {
-                                "5cc72e97545c3400152a6352": {
-                                    floorplans: {
-                                        "d6337940-6aa0-11e9-86cc-e7305abbdc07": true
-                                    }
+                            excluded_floorplans: [
+                                {
+                                    propertyId: "5cc72e97545c3400152a6352",
+                                    floorplanId: "d6337940-6aa0-11e9-86cc-e7305abbdc07"
                                 },
-                                "5cc72e97545c3400152a6353": {
-                                    floorplans: {
-                                        "d6368682-6aa0-11e9-86cc-e7305abbdc07": true
-                                    }
+                                {
+                                    propertyId: "5cc72e97545c3400152a6353",
+                                    floorplanId: "d6368682-6aa0-11e9-86cc-e7305abbdc07"
                                 },
-                                "5cc72e97545c3400152a6359": {
-                                    floorplans: {
-                                        "d63e9cd1-6aa0-11e9-86cc-e7305abbdc07": true
-                                    }
-                                }
-                            }
-                          }];
+                                {
+                                    propertyId: "5cc72e97545c3400152a6359",
+                                    floorplanId: "d63e9cd1-6aa0-11e9-86cc-e7305abbdc07"
+                                },
+                            ]
+                        }];
                     } else {
                         newP.perspectives = [];
                     }
@@ -84,15 +81,12 @@ define([
                 var c;
                 var f;
                 $scope.model.comps.forEach(function(p) {
-                    c = newP.comps[p._id.toString()];
-
                     p.floorplans.forEach(function(fp) {
-                        if (c) {
-                            f = c.floorplans[fp.id];
-                            fp.checked = !!f;
-                        } else {
-                            fp.checked = false;
-                        }
+                        f = _.find(newP.excluded_floorplans, function(x) {
+                            return x.propertyId.toString() === p._id.toString() && x.floorplanId.toString() === fp.id.toString();
+                        });
+                        console.log(f);
+                        fp.checked = !f;
                     });
                 });
                 $scope.checkIndeterminate();
