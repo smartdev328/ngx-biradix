@@ -41,7 +41,7 @@ define([
             }
         },
             function(errors) {
-                toastr.error('Unable to access the system as this time. Please contact an administrator');
+                toastr.error('Unable to access the system as this time. Please contact an administrator.');
                 $scope.localLoading = false;
             });
         }

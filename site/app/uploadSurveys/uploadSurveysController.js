@@ -188,7 +188,7 @@ define([
                             }
 
                         }, function (response) {
-                            toastr.error('Unable to update property. Please contact an administrator');
+                            toastr.error('Unable to update property. Please contact an administrator.');
 
                             $scope.localLoading = true;
                         })

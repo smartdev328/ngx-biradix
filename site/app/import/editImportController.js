@@ -47,7 +47,7 @@ define([
                             if (error.status === 400) {
                                 toastr.error(error.data);
                             } else {
-                                toastr.error("Unable to create PMS Config. Please contact the administrator.");
+                                toastr.error("Unable to create PMS Config. Please contact an administrator.");
                             }
 
                             ngProgress.reset();
@@ -67,7 +67,7 @@ define([
                         if (error.status === 400) {
                             toastr.error(error.data);
                         } else {
-                            toastr.error("Unable to create PMS Config. Please contact the administrator.");
+                            toastr.error("Unable to create PMS Config. Please contact an administrator.");
                         }
 
                         ngProgress.reset();

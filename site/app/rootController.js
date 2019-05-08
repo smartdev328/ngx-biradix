@@ -39,7 +39,6 @@ angular.module("biradix.global").controller("rootController",
             }, function(error) {
                 rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                 $scope.apiError = "Pretend you didn't see this! Something went wrong and we can only show you this message.<br/> Sorry for the trouble. Please try <a href='javascript:location.reload();'>refreshing</a> the page";
-                window.setTimeout($scope.loadOrg, 10000);
                 $(".apiError").show();
             });
         };

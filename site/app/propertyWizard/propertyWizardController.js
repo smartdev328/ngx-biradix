@@ -648,7 +648,7 @@ define([
                             $('#add' + type + 'Amenity').prop("disabled",false);
                         }
                         , function(response) {
-                            toastr.error('Unable to create amenity. Please contact an administrator');
+                            toastr.error('Unable to create amenity. Please contact an administrator.');
                             ngProgress.complete();
                             $('#add' + type + 'Amenity').prop("disabled",false);
                         });
@@ -927,7 +927,7 @@ define([
                         ngProgress.complete();
                         $('#propertySave').prop("disabled",false);
                     }, function(response) {
-                        toastr.error('Unable to create property. Please contact an administrator');
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
                         ngProgress.complete();
                         $('#propertySave').prop("disabled",false);
 
@@ -948,7 +948,7 @@ define([
                         ngProgress.complete();
                         $('#propertySave').prop("disabled",false);
                     }, function(response) {
-                        toastr.error('Unable to update property. Please contact an administrator');
+                        toastr.error('Unable to update property. Please contact an administrator.');
                         ngProgress.complete();
                         $('#propertySave').prop("disabled",false);
 

@@ -61,7 +61,7 @@ define([
                 $propertyService.saveCompOrder(id, compids, $scope.progressId).then(function (response) {
                     window.setTimeout($scope.checkProgress, 500);
                 }, function(response) {
-                    toastr.error('Unable to save Comps. Please contact an administrator');
+                    toastr.error('Unable to save Comps. Please contact an administrator.');
                     ngProgress.complete();
                     $('.btn').prop("disabled", false);
 
