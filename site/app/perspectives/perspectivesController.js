@@ -19,7 +19,7 @@ define([
 
         $scope.model = {
             selectedPerspective: null,
-            workablePerspective: null,
+            name: "",
             selectedProperty: null,
             comps: null,
             mode: $scope.MODE.NONE
@@ -42,84 +42,67 @@ define([
             }
         });
 
-        $scope.add = function() {
-            $scope.model.mode = $scope.MODE.ADD;
-            $scope.model.workablePerspective = {
-                name: "",
-            };
-        };
-
         $scope.$watch("model.selectedProperty", function(newP, oldP) {
             if (newP) {
                 $scope.loading = true;
                 $scope.loadComps(newP, function(newComps) {
                     $scope.model.comps = newComps;
+                    if (newP._id.toString() === "5cc72e97545c3400152a6352") {
+                        newP.perspectives = [{
+                            name: "3 bedrooms",
+                            comps: {
+                                "5cc72e97545c3400152a6352": {
+                                    floorplans: {
+                                        "d6337940-6aa0-11e9-86cc-e7305abbdc07": true
+                                    }
+                                },
+                                "5cc72e97545c3400152a6353": {
+                                    floorplans: {
+                                        "d6368682-6aa0-11e9-86cc-e7305abbdc07": true
+                                    }
+                                },
+                                "5cc72e97545c3400152a6359": {
+                                    floorplans: {
+                                        "d63e9cd1-6aa0-11e9-86cc-e7305abbdc07": true
+                                    }
+                                }
+                            }
+                          }];
+                    } else {
+                        newP.perspectives = [];
+                    }
                     $scope.loading = false;
                 });
             }
         }, true);
 
-        $scope.propertyChecked = function(property) {
-            property.indeterminate = false;
-            property.bedrooms.forEach(function(b) {
-                b.checked = property.checked;
-                b.indeterminate = false;
-                $scope.bedroomChecked(b, false);
-            });
-            $scope.checkIndeterminate();
-        };
+        $scope.$watch("model.selectedPerspective", function(newP, oldP) {
+            if (newP) {
+                $scope.model.mode = $scope.MODE.EDIT;
+                $scope.resetView($scope.model.comps);
+                $scope.model.name = newP.name;
+                var c;
+                var f;
+                $scope.model.comps.forEach(function(p) {
+                    c = newP.comps[p._id.toString()];
 
-        $scope.bedroomChecked = function(bedroom, checkIndeterminate) {
-            bedroom.floorplans.forEach(function(f) {
-                f.checked = bedroom.checked;
-            });
-            if (checkIndeterminate) {
-                $scope.checkIndeterminate();
-            }
-        };
-
-        $scope.checkIndeterminate = function() {
-            var bedroomOn;
-            var bedroomOff;
-            var compOn;
-            var compOff;
-            $scope.model.comps.forEach(function(p) {
-                compOff = false;
-                compOff = false;
-                p.bedrooms.forEach(function(b) {
-                    bedroomOn = false;
-                    bedroomOff = false;
-                    b.floorplans.forEach(function(f) {
-                        if (f.checked) {
-                            bedroomOn = true;
-                            compOn = true;
+                    p.floorplans.forEach(function(fp) {
+                        if (c) {
+                            f = c.floorplans[fp.id];
+                            fp.checked = !!f;
                         } else {
-                            bedroomOff = true;
-                            compOff = true;
+                            fp.checked = false;
                         }
                     });
-
-                    b.indeterminate = false;
-                    if (bedroomOn && bedroomOff) {
-                        b.checked = false;
-                        b.indeterminate = true;
-                    } else if (bedroomOn) {
-                        b.checked = true;
-                    } else {
-                        b.checked = false;
-                    }
                 });
-                p.indeterminate = false;
-                if (compOn && compOff) {
-                    p.checked = false;
-                    p.indeterminate = true;
-                } else if (compOn) {
-                    p.checked = true;
-                } else {
-                    p.checked = false;
-                }
-            });
+                $scope.checkIndeterminate();
+            }
+        });
 
+        $scope.add = function() {
+            $scope.model.mode = $scope.MODE.ADD;
+            $scope.model.name = "";
+            $scope.resetView($scope.model.comps);
         };
     }]);
 });

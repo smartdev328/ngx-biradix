@@ -517,6 +517,10 @@ daterange-picker.dashboard > div {
     50% { opacity: 0; }
 }
 
+.brand-blue {
+    color: #1E90FF;
+}
+
 .brand-green {
     color: #32CD32;
 }

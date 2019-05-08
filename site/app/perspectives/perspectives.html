@@ -24,8 +24,7 @@
             <div class="col-md-3">
                 <B>Perspective</B><Br>
                 <div
-                        custom-select="f.name for f in searchPerspectives($searchTerm)"
-                        custom-select-options="{ 'async': true }"
+                        custom-select="f.name for f in model.selectedProperty.perspectives"
                         ng-model="model.selectedPerspective" autofocus
                 ></div>
             </div>
@@ -46,7 +45,7 @@
                     Name:
                 </div>
                 <div class="pull-left ml-10">
-                    <input class="form-control input-sm" ng-model="model.workablePerspective.name">
+                    <input class="form-control input-sm" ng-model="model.name">
                 </div>
                 <div class="pull-right">
                     <button type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="add()">
@@ -60,6 +59,7 @@
                     <input type="checkbox" ng-model="comp.checked" id="checkbox_property_{{comp._id}}" ng-change="propertyChecked(comp)" ui-indeterminate="comp.indeterminate">
                     <label for="checkbox_property_{{comp._id}}"><img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center">
                     <B>{{comp.name}}</B></label>
+                    <div class="pull-right brand-blue">{{comp.selectedFloorplans}}/{{comp.floorplans.length}} included</div>
                     <div ng-if="comp.open" class="ml-15">
                         <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10">
                             <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="bedroom.open = !bedroom.open"></i>

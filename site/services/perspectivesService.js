@@ -34,32 +34,38 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                     });
                     response.data.properties = _.sortByAll(response.data.properties, ["orderNumber", "name"]);
 
-                    var temp;
-                    response.data.properties.forEach(function(p) {
-                        p.open = true;
-                        p.checked = true;
-                        p.indeterminate = false;
-                        p.bedrooms = [];
-                        p.floorplans.forEach(function(fp) {
-                            fp.checked = true;
-                            temp = _.find(p.bedrooms, function(b) {
-                                return b.number === Math.floor(fp.bedrooms);
-                            });
-                            if (temp) {
-                                temp.floorplans = temp.floorplans || [];
-                                temp.floorplans.push(fp);
-                            } else {
-                                p.bedrooms.push({
-                                    open: true,
-                                    checked: true,
-                                    indeterminate: false,
-                                    number: Math.floor(fp.bedrooms),
-                                    floorplans: [fp]
-                                });
-                            }
-                        });
-                    });
+                    $scope.resetView(response.data.properties);
+
                     callback(response.data.properties);
+                });
+            };
+
+            $scope.resetView = function(properties) {
+                var temp;
+                properties.forEach(function(p) {
+                    p.open = true;
+                    p.checked = true;
+                    p.indeterminate = false;
+                    p.bedrooms = [];
+                    p.selectedFloorplans = p.floorplans.length;
+                    p.floorplans.forEach(function(fp) {
+                        fp.checked = true;
+                        temp = _.find(p.bedrooms, function(b) {
+                            return b.number === Math.floor(fp.bedrooms);
+                        });
+                        if (temp) {
+                            temp.floorplans = temp.floorplans || [];
+                            temp.floorplans.push(fp);
+                        } else {
+                            p.bedrooms.push({
+                                open: true,
+                                checked: true,
+                                indeterminate: false,
+                                number: Math.floor(fp.bedrooms),
+                                floorplans: [fp]
+                            });
+                        }
+                    });
                 });
             };
 
@@ -127,7 +133,71 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                 });
 
                 return deferred.promise;
-            };            
+            };
+
+            $scope.propertyChecked = function(property) {
+                property.indeterminate = false;
+                property.bedrooms.forEach(function(b) {
+                    b.checked = property.checked;
+                    b.indeterminate = false;
+                    $scope.bedroomChecked(b, false);
+                });
+                $scope.checkIndeterminate();
+            };
+
+            $scope.bedroomChecked = function(bedroom, checkIndeterminate) {
+                bedroom.floorplans.forEach(function(f) {
+                    f.checked = bedroom.checked;
+                });
+                if (checkIndeterminate) {
+                    $scope.checkIndeterminate();
+                }
+            };
+
+            $scope.checkIndeterminate = function() {
+                var bedroomOn;
+                var bedroomOff;
+                var compOn;
+                var compOff;
+                $scope.model.comps.forEach(function(p) {
+                    compOff = false;
+                    compOff = false;
+                    p.selectedFloorplans = 0;
+                    p.bedrooms.forEach(function(b) {
+                        bedroomOn = false;
+                        bedroomOff = false;
+                        b.floorplans.forEach(function(f) {
+                            if (f.checked) {
+                                bedroomOn = true;
+                                compOn = true;
+                                p.selectedFloorplans++;
+                            } else {
+                                bedroomOff = true;
+                                compOff = true;
+                            }
+                        });
+
+                        b.indeterminate = false;
+                        if (bedroomOn && bedroomOff) {
+                            b.checked = false;
+                            b.indeterminate = true;
+                        } else if (bedroomOn) {
+                            b.checked = true;
+                        } else {
+                            b.checked = false;
+                        }
+                    });
+                    p.indeterminate = false;
+                    if (compOn && compOff) {
+                        p.checked = false;
+                        p.indeterminate = true;
+                    } else if (compOn) {
+                        p.checked = true;
+                    } else {
+                        p.checked = false;
+                    }
+                });
+            };
         };
 
         return fac;
