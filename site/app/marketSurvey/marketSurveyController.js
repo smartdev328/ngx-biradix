@@ -1,7 +1,7 @@
 angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
     function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
             $scope.surveyid = surveyid;
-            $scope.settings = {showNotes: false, showBulkConcessions: true, showDetailed: false, showLeases: false, showRenewal: false, showATR: false, newVersion: true };
+            $scope.settings = {showNotes: false, showBulkConcessions: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false, newVersion: false };
             $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
