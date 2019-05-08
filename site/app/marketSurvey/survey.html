@@ -4,7 +4,7 @@
 <div class="survey-values occupancy" style="width: 100%;">
   <div class="row" style="margin-left: -15px;margin-right: -15px;">
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
-      <b>Occupancy %</b>
+      <b style="font-size: 13px;">Occupancy %</b>
       <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.occupancy), 'has-warning': getWarnings(validation.occupancy) && !getErrors(validation.occupancy)}">
           <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy" ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
       </div>
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}" ng-if="settings.showLeases">
-      <b>Leased %</b>
+      <b style="font-size: 13px;">Leased %</b>
       <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}">
           <input type="number" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
       </div>
@@ -46,7 +46,7 @@
       </div>
     </div>
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}" ng-if="settings.showRenewal">
-      <b>Renewal %</b>
+      <b style="font-size: 13px;">Renewal %</b>
       <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}">
           <input type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
       </div>
@@ -71,7 +71,7 @@
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}" ng-if="settings.showATR">
         <div class="clearfix">
           <b class="hidden-xs">Apts. to Rent</b>
-          <b class="visible-xs-inline">ATR</b>
+          <b style="font-size:13px;" class="visible-xs-inline">ATR</b>
           <i class="fa fa-question-circle"
              popover-trigger="'mouseenter'"
              popover-placement="top"
@@ -102,7 +102,7 @@
     </div>
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
         <b class="hidden-xs">Traffic/Week</b>
-        <b class="visible-xs">Traffic/Wk</b>
+        <b style="font-size:13px;" class="visible-xs">Traffic/Wk</b>
         <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.traffic), 'has-warning': getWarnings(validation.traffic) && !getErrors(validation.traffic)}">
             <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()" ng-change="clear('traffic')" ng-keydown="pressed('traffic','traffic', $event)" ng-blur="updateDone('traffic',true)">
         </div>
@@ -124,7 +124,7 @@
     </div>
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
         <b class="hidden-xs">Leases/Week</b>
-        <b class="visible-xs">Leases/Wk</b>
+        <b style="font-size:13px;" class="visible-xs">Leases/Wk</b>
         <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leases), 'has-warning': getWarnings(validation.leases) && !getErrors(validation.leases)}">
             <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()" ng-change="clear('leases')" ng-keydown="pressed('leases','leases', $event)" ng-blur="updateDone('leases',true)">
         </div>
@@ -153,25 +153,26 @@
 <div ng-if="settings.showBulkConcessions" class="bulkConcessionModule">
   <div class="row">
     <div class="col-xs-12 col-sm-4">
-      <p><strong>Apply Bulk Concessions <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Use this section to apply concessions to multiple floor plans at once as well as help calculate annualized concessions"></i></strong></p>
+      <p><strong>Bulk Concessions <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Use this section to apply concessions to multiple floor plans at once as well as help calculate annualized concessions"></i></strong></p>
     </div>
     <div class="col-xs-12 col-sm-8">
-      <select ng-model="bulkConcession.concessionsTimes" ng-change="bulkConcession.enableApplyButton()">
+      <select ng-model="bulkConcession.concessionsTimes">
           <option value="One-time">One-time</option>
           <option value="Monthly">Monthly</option>
       </select>
-      <input class="ml-10 bulkConcessionValue" type="text" ng-model="bulkConcession.concessionValue" ng-change="bulkConcession.enableApplyButton()">
-      <select class="ml-10" ng-model="bulkConcession.concessionsTypeOff" ng-change="bulkConcession.enableApplyButton()">
+      <input class="ml-10 bulkConcessionValue" type="text" ng-model="bulkConcession.concessionValue">
+      <select class="ml-10" ng-model="bulkConcession.concessionsTypeOff">
           <option value="dollars off">dollars off</option>
           <option value="week(s) free">week(s) free</option>
           <option value="month(s) free">month(s) free</option>
       </select>
       <i class="fa fa-question-circle" style="font-size:12px;margin-left: 3px;" popover-trigger="'mouseenter'" popover-placement="left" popover-append-to-body="true" uib-popover="Monthly concessions in terms of weeks or months free will be annualized. For example, applying the concession of one month free to a floor plan with a $1200 rent would result in a calculated monthly concession value of $100. Also, note that weekly concessions are calculated at 4 weeks per month. For example, applying two weeks free to a floor plan with a $1200 rent would result in a calculated monthly concession value of $50 (Taking 50% of $1200 and then dividing it by 12)"></i>
-      <button class="btn btn-warning btn-xs ml-10" style="font-size:10px" type="button" ng-disabled="bulkConcession.applyButtonActivated" ng-click="bulkConcession.applyButton()">Apply</button>
+      <button class="btn btn-warning btn-xs ml-10" style="font-size:10px" type="button" ng-click="bulkConcession.applyButton()">Apply</button>
+      <i ng-if="bulkConcession.applyError" class="fa fa-exclamation-triangle pull-right ng-scope" style="color:red;margin-top:3px" popover-trigger="'mouseenter'" popover-placement="left" popover-append-to-body="true" uib-popover-html="bulkConcession.applyError"></i>
     </div>
     <div class="col-xs-12 col-sm-offset-4 col-sm-8 pt-10">
       <p class="leased-length">Leased length <strong>({{bulkConcession.leasedLength}} months)</strong></p>
-      <input type="range" min="6" max="36" class="range" ng-model="bulkConcession.leasedLength" ng-change="bulkConcession.enableApplyButton()">
+      <input type="range" min="10" max="18" class="range" ng-model="bulkConcession.leasedLength">
     </div>
   </div>
 </div>
@@ -180,7 +181,7 @@
     <thead>
       <tr class="thead">
         <th ng-show="settings.showBulkConcessions">
-            <input type="checkbox" value="" ng-model="bulkConcession.checkall" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
+            <input type="checkbox" value="" ng-model="bulkConcession.checkall" ng-class="{'has-error' : bulkConcession.checkboxError}" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
         </th>
         <th class="sortable" ng-click="toggleSort('type',true)"><span class="hidden-xs">Type</span><span class="visible-xs-inline">Type</span>
             <i ng-show="sort.indexOf('type') == -1" class="fa fa-sort"></i>
@@ -240,7 +241,7 @@
     <tbody>
       <tr ng-repeat="row in survey.floorplans | orderBy : getOrder(sort)">
           <td ng-show="settings.showBulkConcessions">
-              <input type="checkbox" ng-model="bulkConcession.SelectedFloorPlan[row.id]" ng-true-value="true" ng-false-value="false" ng-change="bulkConcession.toggleSingle()" />
+              <input type="checkbox" ng-model="bulkConcession.SelectedFloorPlan[row.id]" ng-class="{'has-error' : bulkConcession.checkboxError}" ng-true-value="true" ng-false-value="false" ng-change="bulkConcession.toggleSingle()" />
           </td>
           <td style="white-space: nowrap;">
               {{row.bedrooms}}x{{row.bathrooms}}

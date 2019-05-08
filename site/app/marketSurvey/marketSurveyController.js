@@ -1,7 +1,7 @@
 angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
     function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
             $scope.surveyid = surveyid;
-            $scope.settings = {showNotes: false, showBulkConcessions: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false, newVersion: false };
+            $scope.settings = {showNotes: false, showBulkConcessions: true, showDetailed: false, showLeases: false, showRenewal: false, showATR: false, newVersion: true };
             $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
@@ -1047,19 +1047,19 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
         $scope.bulkConcession = {
             "checkall" : false,
-            "applyButtonActivated" : true,
             "concessionsTimes" : "One-time",
             "concessionValue" : "",
             "leasedLength" : 12,
             "concessionsTypeOff" : "dollars off",
-            "SelectedFloorPlan" : {}
+            "SelectedFloorPlan" : {},
+            "applyError": "",
+            "checkboxError": false
         }
 
         $scope.bulkConcession.toggleAll = function() {
             $scope.survey.floorplans.forEach(function(f) {
                 $scope.bulkConcession.SelectedFloorPlan[f.id] = $scope.bulkConcession.checkall;
             });
-            $scope.bulkConcession.enableApplyButton();
         }
 
         $scope.bulkConcession.toggleSingle = function() {
@@ -1069,18 +1069,14 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     return i === true;
                 });
             }
-            $scope.bulkConcession.enableApplyButton();
-        }
-
-        $scope.bulkConcession.enableApplyButton = function() {
-            if($scope.bulkConcession.concessionValue && !_.isEmpty($scope.bulkConcession.SelectedFloorPlan)) {
-                $scope.bulkConcession.applyButtonActivated = false;
-            } else {
-                $scope.bulkConcession.applyButtonActivated = true;
-            }
         }
 
         $scope.bulkConcession.applyButton = function() {
+
+            if(!$scope.bulkConcession.concessionValue) {
+                $scope.bulkConcession.applyError = "Please type a concession value.";
+                return;
+            }
 
             var selectedFPId = [];
             for (var fp in $scope.bulkConcession.SelectedFloorPlan) {
@@ -1094,6 +1090,12 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     return fp;
                 }
             });
+
+            if(!filteredList.length) {
+                $scope.bulkConcession.applyError = "Use the checkboxes to select the floor plans that you want to apply concessions to.";
+                $scope.bulkConcession.checkboxError = true;
+                return;
+            }
 
             filteredList.forEach(function(item) {
 
@@ -1126,6 +1128,9 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 }
 
             });
+
+            $scope.bulkConcession.applyError = "";
+            $scope.bulkConcession.checkboxError = false;
         
         }
 

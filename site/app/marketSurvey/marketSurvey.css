@@ -327,6 +327,16 @@
 .newSurvey input[type='checkbox'] {
   height: 14px;
   width: 14px;
+  position: relative;
+}
+
+.newSurvey input[type='checkbox'].has-error:before {
+    content: '';
+    position: absolute;
+    border: 1px solid red;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
 }
 
 @media all and (min-width: 0px) and (max-width: 767px) {
