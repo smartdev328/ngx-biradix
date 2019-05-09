@@ -1060,6 +1060,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.survey.floorplans.forEach(function(f) {
                 $scope.bulkConcession.SelectedFloorPlan[f.id] = $scope.bulkConcession.checkall;
             });
+            $scope.bulkConcession.checkboxError = false;
         }
 
         $scope.bulkConcession.toggleSingle = function() {
@@ -1069,6 +1070,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     return i === true;
                 });
             }
+            $scope.bulkConcession.checkboxError = false;
         }
 
         $scope.bulkConcession.applyButton = function() {

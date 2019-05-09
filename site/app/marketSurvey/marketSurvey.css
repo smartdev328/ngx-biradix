@@ -7,6 +7,10 @@
     font-weight: normal;
 } 
 
+.brand-green-bg {
+    background-color: #32CD32;
+}
+
 .market-survey .survey-value {
     max-width:60px;min-width:48px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
 }
@@ -189,6 +193,9 @@
 
 .bulkConcessionValue {
     width: 40px;
+    padding:0 5px;
+    color:#337ab7;
+    text-align: right;
 }
 
 .bulkConcessionModule input[type=range] {
@@ -333,13 +340,21 @@
   position: relative;
 }
 
-.newSurvey input[type='checkbox'].has-error:before {
+.newSurvey input[type='checkbox'].has-error:after {
   content: '';
   position: absolute;
+  background-color: #fff0f0;
   border: 1px solid red;
   width: 14px;
   height: 14px;
   border-radius: 3px;
+}
+
+.newSurvey .propertySurvey input[type=checkbox]:checked:after {
+  background-image: url('https://i.imgur.com/38xtIFD.png');
+  background-position: center center;
+  background-size: 10px;
+  background-repeat: no-repeat;
 }
 
 .toggleVersionButton {
