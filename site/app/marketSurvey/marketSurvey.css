@@ -350,13 +350,6 @@
   border-radius: 3px;
 }
 
-.newSurvey .propertySurvey input[type=checkbox]:checked:after {
-  background-image: url('../site/images/checkbox.png');
-  background-position: center center;
-  background-size: 10px;
-  background-repeat: no-repeat;
-}
-
 .toggleVersionButton {
   background: transparent;
   border: none;
