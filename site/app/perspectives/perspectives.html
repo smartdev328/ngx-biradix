@@ -41,33 +41,45 @@
         <div class="page-container">
             <div class="alert alert-warning" role="alert" ng-if="model.mode === MODE.NONE"><b>Please select a property and associated perspective to edit or click 'Add Perspective'</b></div>
             <div ng-if="model.mode !== MODE.NONE">
-                <div class="pull-left mt-5">
+                <div class="pull-left mt-5 brand-blue" ng-if="model.mode === MODE.VIEW" >
+                    <h4 class="mainheader">{{model.name}}</h4>
+                </div>
+                <div class="pull-left mt-5"ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD" >
                     Name:
                 </div>
-                <div class="pull-left ml-10">
+                <div class="pull-left ml-10"ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD"  >
                     <input class="form-control input-sm" ng-model="model.name">
                 </div>
                 <div class="pull-right">
-                    <button type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="add()">
+                    <button ng-if="model.mode === MODE.VIEW" type="button" class="btn btn-warning dropdown-toggle btn-sm" uib-tooltip="Edit" ng-click="model.mode = MODE.EDIT">
+                        Edit
+                    </button>
+                    <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="create()">
                         Create
+                    </button>
+                    <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="save()">
+                        Save
+                    </button>
+                    <button ng-if="model.mode === MODE.EDIT" class=" btn btn-danger btn-sm" type="button" ng-click="delete()" uib-tooltip="Delete">
+                        <i class="fa fa-trash" style="color:white"></i>
                     </button>
                 </div>
                 <div class="clearfix"></div>
                 <div ng-repeat="comp in model.comps">
                     <hr>
                     <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="comp.open = !comp.open"></i>
-                    <input type="checkbox" ng-model="comp.checked" id="checkbox_property_{{comp._id}}" ng-change="propertyChecked(comp)" ui-indeterminate="comp.indeterminate">
+                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="comp.checked" id="checkbox_property_{{comp._id}}" ng-change="propertyChecked(comp)" ui-indeterminate="comp.indeterminate">
                     <label for="checkbox_property_{{comp._id}}"><img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center">
                     <B>{{comp.name}}</B></label>
                     <div class="pull-right brand-blue">{{comp.selectedFloorplans}}/{{comp.floorplans.length}} included</div>
                     <div ng-if="comp.open" class="ml-15">
                         <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10">
                             <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="bedroom.open = !bedroom.open"></i>
-                            <input type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate">
+                            <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate">
                             <label for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
                             <div ng-if="bedroom.open" class="ml-15">
                                 <div ng-repeat-start="floorplan in bedroom.floorplans">
-                                    <input type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()">
+                                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()">
                                     <label class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}">{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units</label>
                                 </div>
                                 <div ng-repeat-end ng-if="false"></div>

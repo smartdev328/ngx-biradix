@@ -75,10 +75,9 @@ define([
 
         $scope.$watch("model.selectedPerspective", function(newP, oldP) {
             if (newP) {
-                $scope.model.mode = $scope.MODE.EDIT;
+                $scope.model.mode = $scope.MODE.VIEW;
                 $scope.resetView($scope.model.comps);
                 $scope.model.name = newP.name;
-                var c;
                 var f;
                 $scope.model.comps.forEach(function(p) {
                     p.floorplans.forEach(function(fp) {
