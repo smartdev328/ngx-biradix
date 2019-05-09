@@ -160,7 +160,7 @@
           <option value="One-time">One-time</option>
           <option value="Monthly">Monthly</option>
       </select>
-      <input class="ml-10 bulkConcessionValue" type="text" placeholder="{{ bulkConcession.concessionsTypeOff == 'dollars off' ? '$' : '' }}" ng-model="bulkConcession.concessionValue">
+      <input class="ml-10 bulkConcessionValue" type="text" ng-model="bulkConcession.concessionValue">
       <select class="ml-10" ng-model="bulkConcession.concessionsTypeOff">
           <option value="dollars off">dollars off</option>
           <option value="week(s) free">week(s) free</option>
