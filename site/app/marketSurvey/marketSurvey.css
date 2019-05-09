@@ -364,6 +364,8 @@
   padding: 5px 0 0;
 }
 
+.green-txt {color:#30c827;}
+
 @media all and (min-width: 0px) and (max-width: 767px) {
     .oldSurvey .market-survey .modal-body {
         padding-left:3px !important;
