@@ -144,7 +144,7 @@ define([
                     _.remove($scope.subjects, function(x) {return x._id.toString() == $scope.selectedProperty._id.toString()})
                     $scope.localLoading = true;
                 }, function(error) {
-                    toastr.error('Unable to access the system at this time. Please contact an administrator');
+                    toastr.error('Unable to access the system at this time. Please contact an administrator.');
                     $scope.localLoading = false;
                 })
 

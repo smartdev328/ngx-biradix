@@ -69,7 +69,7 @@ define([
                     }
                     ngProgress.complete();
                 }, function (response) {
-                    toastr.error('Unable to update settings. Please contact an administrator');
+                    toastr.error('Unable to update settings. Please contact an administrator.');
                     ngProgress.complete();
                 })
             }

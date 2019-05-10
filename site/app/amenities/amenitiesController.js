@@ -150,7 +150,7 @@ define([
                 }
 
             }, function(response) {
-                toastr.error('Unable to update amenity. Please contact an administrator');
+                toastr.error('Unable to update amenity. Please contact an administrator.');
 
             })
         }
@@ -179,7 +179,7 @@ define([
                 }
 
             }, function(response) {
-                toastr.error('Unable to update amenity. Please contact an administrator');
+                toastr.error('Unable to update amenity. Please contact an administrator.');
 
             })
         }
@@ -195,7 +195,7 @@ define([
                         $scope.reload();
                     }
                 }, function(response) {
-                    toastr.error('Unable to update amenity. Please contact an administrator');
+                    toastr.error('Unable to update amenity. Please contact an administrator.');
                 })
 
             });

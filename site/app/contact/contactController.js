@@ -53,7 +53,7 @@ define([
                             }
                         },
                         function(errors) {
-                            toastr.error('Unable to access the system at this time. Please contact an administrator');
+                            toastr.error('Unable to access the system at this time. Please contact an administrator.');
                             $('button.contact-submit').prop('disabled', false);
                             ngProgress.complete();
                         });

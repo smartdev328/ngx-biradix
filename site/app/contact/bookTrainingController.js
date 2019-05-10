@@ -69,10 +69,14 @@ define([
                         }
                     },
                     function(errors) {
-                        toastr.error('Unable to access the system at this time. Please contact an administrator');
+                        toastr.error('Unable to access the system at this time. Please contact an administrator.');
                         $('button.contact-submit').prop('disabled', false);
                         ngProgress.complete();
                     });
+                },
+                function(errors) {
+                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.");
+                    ngProgress.reset();
                 });
             }
 
