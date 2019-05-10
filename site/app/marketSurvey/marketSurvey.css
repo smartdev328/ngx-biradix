@@ -223,6 +223,8 @@
   color:#337ab7;
 }
 
+.bulkConcessionValue .borderLeft {border-left: 1px solid #cccccc !important;}
+
 .bulkConcessionValue input {
   padding: 2px 4px;
   text-align: right;

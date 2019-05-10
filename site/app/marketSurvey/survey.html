@@ -162,8 +162,8 @@
       </select>
       <div class="bulkConcessionValue">
         <div class="input-group">
-          <span class="input-group-addon">$</span>
-          <input type="text" class="form-control" ng-model="bulkConcession.concessionValue">
+          <span class="input-group-addon" ng-if="bulkConcession.concessionsTypeOff == 'dollars off'">$</span>
+          <input type="text" class="form-control" ng-class="{'borderLeft' : bulkConcession.concessionsTypeOff != 'dollars off'}" ng-model="bulkConcession.concessionValue">
         </div>
       </div>
       <select ng-model="bulkConcession.concessionsTypeOff">
