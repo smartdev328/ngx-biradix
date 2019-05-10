@@ -295,3 +295,17 @@ body {
     top:7px !important;
     left:-3px !important;
 }
+
+.nav-link-label {
+    margin-left:5px;
+    font-size: 65%;
+    padding: .2em .6em;
+    vertical-align: middle;
+}
+
+.page-container {
+    border:1px solid #ddd;
+    background-color:white;
+    padding: 20px;
+    margin-top:20px;
+}
