@@ -2,12 +2,12 @@
 <div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
     <img src="/images/squares.gif" style="width:100px">
 </div>
+<button class="toggleVersionButton" type="button" ng-if="!pms.show && !showGuests && !settings.newVersion" ng-click="settings.newVersion = true" popover-trigger="'mouseenter'" popover-placement="bottom" popover-append-to-body="true" uib-popover="Click to preview the redesign of our Property Survey page and let us know what you think of the changes as well as try out the new concessions calculator">Preview New Design <span class="label brand-green-bg nav-link-label">New!</span></button>
+<button class="toggleVersionButton" type="button" ng-if="!pms.show && !showGuests && settings.newVersion" ng-click="settings.newVersion = false" popover-trigger="'mouseenter'" popover-placement="bottom" popover-append-to-body="true" uib-popover="Click to return to the original design.">Switch to Original Design</button>
 <div style="overflow:hidden;" ng-show="localLoading && (survey.floorplans && survey.floorplans.length > 0)">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">Property Survey: {{property.name}}</h2>
-        <button class="toggleVersionButton" type="button" ng-if="!pms.show && !showGuests && !settings.newVersion" ng-click="settings.newVersion = true" popover-trigger="'mouseenter'" popover-placement="bottom" popover-append-to-body="true" uib-popover="Click to preview the redesign of our Property Survey page and let us know what you think of the changes as well as try out the new concessions calculator">Preview New Design <span class="label brand-green-bg nav-link-label">New!</span></button>
-        <button class="toggleVersionButton" type="button" ng-if="!pms.show && !showGuests && settings.newVersion" ng-click="settings.newVersion = false" popover-trigger="'mouseenter'" popover-placement="bottom" popover-append-to-body="true" uib-popover="Click to return to the original design.">Switch to Original Design</button>
     </div>
     <div ng-class="{'modal-body': true, 'pms': !!pms.show}">
         <div ng-if="!pms.show" ng-include="'/app/marketSurvey/contact.html?bust=' + version"></div>

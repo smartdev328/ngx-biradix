@@ -16,7 +16,7 @@
 }
 
 .market-survey .survey-value {
-  max-width:60px;min-width:48px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
+  max-width:60px;min-width:48px;height:26px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
 }
 .market-survey .propertySurvey .survey-value {
   max-width: 48px;
@@ -26,6 +26,7 @@
   border-radius:0;
   font-size: 12px;
   padding:2px 4px;
+  height:26px;
 }
 
 .market-survey .input-group .form-control:last-child {
@@ -198,7 +199,7 @@
     font-size: 12px;
 }
 
-.bulkConcessionModule select, .bulkConcessionModule p, .bulkConcessionModule input {
+.bulkConcessionModule select, .bulkConcessionModule p {
     display: inline-block;vertical-align: top;
 }
 
@@ -211,16 +212,31 @@
 }
 
 .bulkConcessionValue {
-    width: 40px;
-    padding:0 5px;
-    color:#337ab7;
-    text-align: right;
+  width: 70px;
+  padding:0 5px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.market-survey .bulkConcessionValue .input-group-addon {
+  height: 24px;
+  color:#337ab7;
+}
+
+.bulkConcessionValue input {
+  padding: 2px 4px;
+  text-align: right;
+  box-shadow: none;
+  border-radius: 0;
+  font-size:12px;
+  color:#337ab7;
 }
 
 .bulkConcessionModule input[type=range] {
   -webkit-appearance: none;
   margin:6px;
   width: 120px;
+  display: inline-block;
 }
 .bulkConcessionModule input[type=range]:focus {
   outline: none;
@@ -370,10 +386,12 @@
 }
 
 .toggleVersionButton {
-  background: transparent;
+  background: #f2f2f2;
+  width: 100%;
   border: none;
-  color:#337ab7;
-  padding: 5px 0 0;
+  color: #337ab7;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
 }
 
 @media all and (min-width: 0px) and (max-width: 767px) {

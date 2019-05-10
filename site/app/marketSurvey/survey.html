@@ -160,8 +160,13 @@
           <option value="One-time">One-time</option>
           <option value="Monthly">Monthly</option>
       </select>
-      <input class="ml-10 bulkConcessionValue" type="text" ng-model="bulkConcession.concessionValue">
-      <select class="ml-10" ng-model="bulkConcession.concessionsTypeOff">
+      <div class="bulkConcessionValue">
+        <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input type="text" class="form-control" ng-model="bulkConcession.concessionValue">
+        </div>
+      </div>
+      <select ng-model="bulkConcession.concessionsTypeOff">
           <option value="dollars off">dollars off</option>
           <option value="week(s) free">week(s) free</option>
           <option value="month(s) free">month(s) free</option>
