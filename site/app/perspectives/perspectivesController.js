@@ -50,7 +50,7 @@ define([
                     if (newP._id.toString() === "5cc72e97545c3400152a6352") {
                         newP.perspectives = [{
                             name: "3 bedrooms",
-                            excluded_floorplans: [
+                            excludedFloorplans: [
                                 {
                                     propertyId: "5cc72e97545c3400152a6352",
                                     floorplanId: "d6337940-6aa0-11e9-86cc-e7305abbdc07"
@@ -81,7 +81,7 @@ define([
                 var f;
                 $scope.model.comps.forEach(function(p) {
                     p.floorplans.forEach(function(fp) {
-                        f = _.find(newP.excluded_floorplans, function(x) {
+                        f = _.find(newP.excludedFloorplans, function(x) {
                             return x.propertyId.toString() === p._id.toString() && x.floorplanId.toString() === fp.id.toString();
                         });
                         console.log(f);
