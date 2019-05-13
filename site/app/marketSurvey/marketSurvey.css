@@ -236,7 +236,7 @@
   color:#337ab7;
 }
 
-.bulkConcessionValue .borderLeft {border-left: 1px solid #cccccc !important;}
+.market-survey .input-group .bulkConcessionValue .borderLeft {border-left: 1px solid #cccccc !important;}
 
 .bulkConcessionValue input {
   padding: 2px 4px;
@@ -417,6 +417,10 @@
 
     .market-survey .modal-dialog {
         margin:0px !important;
+    }
+
+    .bulkConcessionModule select {
+      min-width: 70px;
     }
 
     .market-survey .top-inputs .heading {

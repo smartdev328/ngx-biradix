@@ -193,7 +193,7 @@
             <i ng-show="sort == '-type'" class="fa fa-sort-down"></i>
             <i ng-show="sort == 'type'" class="fa fa-sort-up"></i>
         </th>
-        <th class="sortable description" ng-click="toggleSort('description',true)">
+        <th class="sortable description" style="padding:5px 0;" ng-click="toggleSort('description',true)">
           <div class="hidden-xs">
             Desc.
             <i ng-show="sort.indexOf('description') == -1" class="fa fa-sort"></i>
@@ -253,7 +253,7 @@
               <div class="visible-xs tiny">{{row.units}} Units</div>
               <div class="visible-xs tiny">{{row.sqft}} Sqft</div>
           </td>
-          <td class="description" style="word-break: break-all">
+          <td class="description" style="word-break: break-all;padding:5px 0;">
             <div class="hidden-xs">
               {{row.description}}
             </div>
