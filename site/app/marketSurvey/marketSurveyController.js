@@ -247,7 +247,11 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
     $scope.totalConcessionsMonthly = function() {
         $scope.totals.concessionMonthly = 0;
         $scope.survey.floorplans.forEach(function(fp) {
-            $scope.totals.concessionsMonthly += (fp.concessionsMonthly * fp.units);
+            if(fp.concessionsMonthly){
+                $scope.totals.concessionsMonthly += (fp.concessionsMonthly * fp.units);
+            } else {
+                $scope.getErrors(fp);
+            }
         });
 
         if ($scope.totals.units) {
@@ -772,7 +776,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
 
             $scope.next = function(fp, id) {
-                var all = $('.survey-values input');
+                var all = $(".survey-values input[type='number']");
 
                 if (all.length == 0) {
                     return;

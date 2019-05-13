@@ -28,9 +28,9 @@ function fixedTable($timeout) {
             $timeout(function () {
                 // set widths of columns
                 if(window.innerWidth < 765) {
-                    var columnWidthArray = [26,50,0,0,0,86,86,89,90,50];
+                    var columnWidthArray = [26,50,0,0,0,86,89,90,50];
                 } else {
-                    var columnWidthArray = [27,52,78,56,56,91,91,91,92,50];
+                    var columnWidthArray = [27,52,78,56,56,91,91,92,50];
                 }
                 var headerArray = [];
                 var BodyArray = [];

@@ -1,7 +1,7 @@
 <div class="alert alert-warning" ng-if="editMode">
     <b>Note:</b> You are modifying historical data of a Property Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
 </div>
-<div class="survey-values occupancy" style="width: 100%;">
+<div class="top-inputs" style="width: 100%;">
   <div class="row" style="margin-left: -15px;margin-right: -15px;">
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
       <b style="font-size: 13px;">Occupancy %</b>
@@ -218,14 +218,14 @@
              popover-append-to-body="true"
              uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
         ></i></th>
-        <th ng-show="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
+        <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
             popover-trigger="'mouseenter'"
             popover-placement="left"
              popover-append-to-body="true"
             uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
-        <th ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
+        <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
            popover-trigger="'mouseenter'"
            popover-placement="left"
              popover-append-to-body="true"
@@ -233,7 +233,7 @@
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(One-Time)</div></th>
 
-        <th ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
+        <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
            popover-trigger="'mouseenter'"
            popover-placement="left"
              popover-append-to-body="true"
@@ -272,7 +272,7 @@
                 </div>
               </div>
           </td>
-          <td ng-show="!settings.showDetailed" style="white-space: nowrap;text-align:right">
+          <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
               <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessions || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                 <div class="input-group pull-right">
                   <span class="input-group-addon">$</span>
@@ -280,7 +280,7 @@
                 </div>
               </div>
           </td>
-          <td ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">
+          <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
               <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsOneTime || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                 <div class="input-group pull-right">
                   <span class="input-group-addon">$</span>
@@ -288,7 +288,7 @@
                 </div>
               </div>
           </td>
-          <td ng-show="settings.showDetailed" style="white-space: nowrap;text-align:right">
+          <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
               <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsMonthly || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                 <div class="input-group pull-right">
                   <span class="input-group-addon">$</span>
@@ -336,13 +336,13 @@
     <div class="tfoot-cell text-right">
         ${{totalRent() | number: 0}}
     </div>
-    <div ng-show="!settings.showDetailed" class="tfoot-cell text-right">
+    <div ng-if="!settings.showDetailed" class="tfoot-cell text-right">
         ${{totalConcessions() | number: 0}}
     </div>
-    <div ng-show="settings.showDetailed" class="tfoot-cell text-right">
+    <div ng-if="settings.showDetailed" class="tfoot-cell text-right">
         ${{totalConcessionsOneTime() | number: 0}}
     </div>
-    <div ng-show="settings.showDetailed" class="tfoot-cell text-right">
+    <div ng-if="settings.showDetailed" class="tfoot-cell text-right">
         ${{totalConcessionsMonthly() | number: 0}}
     </div>
     <div></div>

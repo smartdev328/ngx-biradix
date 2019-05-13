@@ -29,10 +29,26 @@
   height:26px;
 }
 
+.market-survey .has-warning .input-group-addon {
+    border: 1px solid #f90;
+    border-right: 0;
+    background: #ffe5cb;
+}
+
+.market-survey .has-error .input-group-addon {
+    border: 1px solid #a94442;
+    border-right: 0;
+    background: #FFF0F0;
+}
+
 .market-survey .input-group .form-control:last-child {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
-  border-left: 0;
+  border-left: 0 !important;
+}
+
+.market-survey .top-inputs .heading {
+    text-align: right;padding:0px 7px
 }
 
 .market-survey .survey-values tr {
@@ -43,16 +59,12 @@
     height:inherit !important;
 }
 
-.market-survey .occupancy .heading {
-    text-align: right;padding:0px 7px
-}
-
 .market-survey .survey-values .form-group {
     margin-bottom: 0px;
 }
 
 
-.market-survey .survey-values .fa-undo {
+.market-survey .survey-values .fa-undo, .market-survey .top-inputs .fa-undo {
     padding-left: 5px;
 }
 
@@ -406,11 +418,11 @@
         margin:0px !important;
     }
 
-    .market-survey .occupancy .heading {
+    .market-survey .top-inputs .heading {
         text-align: right;padding:0px 2px !important;
     }
 
-    .market-survey .occupancy TD B {
+    .market-survey .top-inputs TD B {
         font-size:11px;
     }
 
