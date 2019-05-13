@@ -45,6 +45,7 @@
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
   border-left: 0 !important;
+  box-shadow: none !important;
 }
 
 .market-survey .top-inputs .heading {
