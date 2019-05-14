@@ -73,6 +73,12 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 }
             }
 
+            $scope.toggleNewView = function() {
+                $scope.settings.newVersion = !$scope.settings.newVersion;
+                $rootScope.me.settings.newVersion = $scope.settings.newVersion;
+                $authService.updateSettings($rootScope.me.settings);
+            }
+
             var me = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
                     $scope.settings.showLeases = $rootScope.me.settings.showLeases;
