@@ -1,7 +1,20 @@
-angular.module("biradix.global").factory("$perspectivesService", ["$http", "$cookies", "$q", "$propertyService", "$rootScope", function($http, $cookies, $q, $propertyService, $rootScope) {
+angular.module("biradix.global").factory("$perspectivesService", ["$http", "$cookies", "$q", "$propertyService", "$rootScope", "$httpHelperService", function($http, $cookies, $q, $propertyService, $rootScope, $httpHelperService) {
         var fac = {};
 
         fac.scopeFunctions = function($scope) {
+            $scope.selectPerspective = function(id) {
+                $scope.model.selectedProperty.perspectives =  $scope.model.selectedProperty.perspectives || [];
+                if ($scope.model.selectedProperty.perspectives.length > 0) {
+                    if (!id) {
+                        $scope.model.selectedPerspective = $scope.model.selectedProperty.perspectives[0];
+                    } else {
+                        $scope.model.selectedPerspective = _.find($scope.model.selectedProperty.perspectives, function(p) {
+                            return p.id.toString() === id.toString();
+                        });
+                    }
+                }
+            };
+
             $scope.loadComps = function(property, callback) {
                 var compIds = property.comps.map(function(c) {
                     return c.id;
@@ -77,7 +90,7 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                     ids: id ? [id] : undefined,
                     skipAmenities: true,
                     hideCustomComps: true,
-                    select: "name comps.id comps.orderNumber custom",
+                    select: "name comps.id comps.orderNumber custom perspectives",
                     sort: "name"
                 }).then(function(response) {
                     callback(response.data.properties);
@@ -154,6 +167,19 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                 }
             };
 
+            $scope.getExlcudedFloorplans = function() {
+                var excludedFloorplans = [];
+                $scope.model.comps.forEach(function(p) {
+                    p.floorplans.forEach(function(fp) {
+                        if (!fp.checked) {
+                            excludedFloorplans.push({propertyId: p._id.toString(), floorplanId: fp.id});
+                        }
+                    })
+                });
+
+                return excludedFloorplans;
+            }
+
             $scope.checkIndeterminate = function() {
                 var bedroomOn;
                 var bedroomOff;
@@ -198,6 +224,17 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                     }
                 });
             };
+        };
+
+        fac.create = function(propertyId, perspective) {
+            return $http.put(gAPI + '/api/1.0/properties/perspectives/' + propertyId + "?bust=" + (new Date()).getTime(), perspective, {
+                headers: $httpHelperService.authHeader()})
+                .success(function(response) {
+                    return response;
+                })
+                .error(function(response) {
+                    return response;
+            });
         };
 
         return fac;

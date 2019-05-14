@@ -51,16 +51,16 @@
                     <input class="form-control input-sm" ng-model="model.name">
                 </div>
                 <div class="pull-right">
-                    <button ng-if="model.mode === MODE.VIEW" type="button" class="btn btn-warning dropdown-toggle btn-sm" uib-tooltip="Edit" ng-click="model.mode = MODE.EDIT">
+                    <button ng-if="model.mode === MODE.VIEW" type="button" class="btn btn-warning dropdown-toggle btn-sm" uib-tooltip="Edit" ng-click="model.mode = MODE.EDIT" ng-disabled="processing">
                         Edit
                     </button>
-                    <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="create()">
+                    <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="create()" ng-disabled="processing">
                         Create
                     </button>
-                    <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="save()">
+                    <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="save()" ng-disabled="processing">
                         Save
                     </button>
-                    <button ng-if="model.mode === MODE.EDIT" class=" btn btn-danger btn-sm" type="button" ng-click="delete()" uib-tooltip="Delete">
+                    <button ng-if="model.mode === MODE.EDIT" class=" btn btn-danger btn-sm" type="button" ng-click="delete()" uib-tooltip="Delete" ng-disabled="processing">
                         <i class="fa fa-trash" style="color:white"></i>
                     </button>
                 </div>
