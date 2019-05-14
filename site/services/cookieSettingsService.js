@@ -142,5 +142,19 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
             $cookies.put('selectedRange', daterange.selectedRange, {expires : expireDate})
         }
 
+        fac.getNewVersion = function () {
+            try {
+                return JSON.parse($cookies.get('newVersion') || "false")
+            } catch(ex) {
+                return true;
+            }
+        }
+
+        fac.saveNewVersion = function(bool) {
+            var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 365);
+            $cookies.put('newVersion', bool, {expires : expireDate})
+        }
+
         return fac;
     }]);

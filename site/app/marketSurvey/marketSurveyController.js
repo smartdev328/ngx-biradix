@@ -8,6 +8,10 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 return $location.path("/login");
             }
 
+            if($cookieSettingsService.getNewVersion()) {
+                $scope.settings.newVersion = true;
+            }
+
             ga("set", "title", "/marketSurvey");
             ga("set", "page", "/marketSurvey");
             ga("send", "pageview");
@@ -75,8 +79,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
             $scope.toggleNewView = function() {
                 $scope.settings.newVersion = !$scope.settings.newVersion;
-                $rootScope.me.settings.newVersion = $scope.settings.newVersion;
-                $authService.updateSettings($rootScope.me.settings);
+                $cookieSettingsService.saveNewVersion($scope.settings.newVersion);
             }
 
             var me = $rootScope.$watch("me", function(x) {
