@@ -1,38 +1,3 @@
-@media all and (min-width: 0px) and (max-width: 767px) {
-    .market-survey .modal-body {
-        padding-left:3px !important;
-        padding-right:3px !important;
-    }
-
-    .market-survey .modal-dialog {
-        margin:0px !important;
-    }
-
-    .market-survey .occupancy .heading {
-        text-align: right;padding:0px 2px !important;
-    }
-
-    .market-survey .occupancy TD B {
-        font-size:11px;
-    }
-
-    .market-survey .tiny {
-        font-size:9px
-    }
-
-    .market-survey .col-spacer {
-        width:10px !important;
-    }
-
-    .market-survey .heading div,
-    .market-survey .moreinfo .moreinforow {
-        height: 28px
-    }
-
-    .min-width-100-m {min-width: 100px;}
-
-}
-
 .grey-txt {
     color:#888888;
 }
@@ -42,8 +7,49 @@
     font-weight: normal;
 } 
 
+.brand-green-bg {
+  background-color: #32CD32;
+  margin-left: 5px;
+  font-size: 60%;
+  padding: .2em .6em;
+  vertical-align: middle;
+}
+
 .market-survey .survey-value {
-    max-width:60px;min-width:48px;height:25px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
+  max-width:60px;min-width:48px;height:26px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
+}
+.market-survey .propertySurvey .survey-value {
+  max-width: 48px;
+}
+.market-survey .input-group-addon {
+  background-color:#ffffff;
+  border-radius:0;
+  font-size: 12px;
+  padding:2px 4px;
+  height:26px;
+}
+
+.market-survey .has-warning .input-group-addon {
+    border: 1px solid #f90;
+    border-right: 0;
+    background: #ffe5cb;
+}
+
+.market-survey .has-error .input-group-addon {
+    border: 1px solid #a94442;
+    border-right: 0;
+    background: #FFF0F0;
+}
+
+.market-survey .input-group .form-control:last-child {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-left: 0 !important;
+  box-shadow: none !important;
+}
+
+.market-survey .top-inputs .heading {
+    text-align: right;padding:0px 7px
 }
 
 .market-survey .survey-values tr {
@@ -54,21 +60,17 @@
     height:inherit !important;
 }
 
-.market-survey .occupancy .heading {
-    text-align: right;padding:0px 7px
-}
-
 .market-survey .survey-values .form-group {
     margin-bottom: 0px;
 }
 
 
-.market-survey .survey-values .fa-undo {
+.market-survey .survey-values .fa-undo, .market-survey .top-inputs .fa-undo {
     padding-left: 5px;
 }
 
-.market-survey .survey-values TH {
-    font-size:13px !important;
+.market-survey .survey-values th {
+    font-size:12px !important;
 
 }
 
@@ -80,8 +82,7 @@
     opacity: .5;
 }
 
-.market-survey .market-survey .heading div,
-.market-survey .moreinfo .moreinforow {
+.market-survey .market-survey .heading div {
     height: 26px
 }
 
@@ -184,4 +185,265 @@
 .orange-bg {
     background-color:orange !important;
     color:#000;
+}
+
+.inputHolder {
+    display: inline-block;
+    width:calc(100% - 55px);
+    vertical-align: top;
+}
+
+.inputHolder input {
+    max-width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 10px;
+}
+
+.moreinfo {
+    display: inline-block;
+    width:50px;
+}
+
+.bulkConcessionModule {
+    background-color: #eee;
+    border: 1px solid #fff;
+    padding: 10px 14px;
+    margin: 0 -14px;
+    font-size: 12px;
+}
+
+.bulkConcessionModule select, .bulkConcessionModule p {
+    display: inline-block;vertical-align: top;
+}
+
+.bulkConcessionModule input[type='text'], .bulkConcessionModule select {
+    height: 24px;
+}
+
+.bulkConcessionModule select {
+    min-width: 100px;
+}
+
+.bulkConcessionValue {
+  width: 70px;
+  padding:0 5px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.market-survey .bulkConcessionValue .input-group-addon {
+  height: 24px;
+  color:#337ab7;
+}
+
+.market-survey .input-group .bulkConcessionValue .borderLeft {border-left: 1px solid #cccccc !important;}
+
+.bulkConcessionValue input {
+  padding: 2px 4px;
+  text-align: right;
+  box-shadow: none;
+  border-radius: 0;
+  font-size:12px;
+  color:#337ab7;
+}
+
+.bulkConcessionModule input[type=range] {
+  -webkit-appearance: none;
+  margin:6px;
+  width: 120px;
+  display: inline-block;
+}
+.bulkConcessionModule input[type=range]:focus {
+  outline: none;
+}
+.bulkConcessionModule input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]::-webkit-slider-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 100%;
+  background: #4460a9;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -4px;
+}
+.bulkConcessionModule input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 100%;
+  background: #4460a9;
+  cursor: pointer;
+  margin-top: 0;
+}
+.bulkConcessionModule input[type=range]::-ms-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.bulkConcessionModule input[type=range]::-ms-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 100%;
+  background: #4460a9;
+  cursor: pointer;
+  margin-top: 0;
+}
+.bulkConcessionModule input[type=range]::-ms-fill-lower {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]::-ms-fill-upper {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]:focus::-ms-fill-lower {
+  background: #d3d3d3;
+}
+.bulkConcessionModule input[type=range]:focus::-ms-fill-upper {
+  background: #d3d3d3;
+}
+
+.propertySurvey {
+    margin: 0 -14px;
+    font-size: 12px;
+    position: relative;
+}
+
+.propertySurvey table thead th {
+    vertical-align: top;
+}
+
+.propertySurvey table {
+    margin:0;
+}
+
+.propertySurvey .showAll {
+    color:#4460a9;
+    background-color: #f8f8f8;
+    border: 1px solid #cfcfcf;
+    display: block;
+    margin:0 auto;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.propertySurvey  table {
+    height: 350px;
+}
+
+.propertySurvey.allShown table {
+    height: auto;
+    overflow-y: hidden;
+}
+
+.propertySurvey table tbody::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+.propertySurvey table tbody::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+.propertySurvey table tbody::-webkit-scrollbar-thumb {
+  background-color: #4460a9;
+  outline: 1px solid slategrey;
+}
+
+.leased-length strong {
+    width: 70px;
+    display: inline-block;
+}
+
+.tfoot-cell {
+    float:left;
+    padding:5px;
+    font-weight: bold;
+}
+
+.fix-height-60 {height: 60px;}
+
+.oldSurvey .market-survey .market-survey .heading div, 
+.oldSurvey .market-survey .moreinfo .moreinforow {
+    height: 26px;
+}
+
+.newSurvey input[type='checkbox'] {
+  height: 14px;
+  width: 14px;
+}
+
+.newSurvey .propertySurvey input[type='checkbox'] {
+  position: relative;
+}
+
+.newSurvey input[type='checkbox'].has-error:after {
+  content: '';
+  position: absolute;
+  background-color: #fff0f0;
+  border: 1px solid red;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.toggleVersionButton {
+  background: #f2f2f2;
+  width: 100%;
+  border: none;
+  color: #337ab7;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+@media all and (min-width: 0px) and (max-width: 767px) {
+    .oldSurvey .market-survey .modal-body {
+        padding-left:3px !important;
+        padding-right:3px !important;
+    }
+
+    .market-survey .modal-dialog {
+        margin:0px !important;
+    }
+
+    .bulkConcessionModule select {
+      min-width: 70px;
+    }
+
+    .market-survey .top-inputs .heading {
+        text-align: right;padding:0px 2px !important;
+    }
+
+    .market-survey .top-inputs TD B {
+        font-size:11px;
+    }
+
+    .market-survey .tiny {
+        font-size:9px
+    }
+
+    .market-survey .col-spacer {
+        width:10px !important;
+    }
+
+    .market-survey .heading div,
+    .oldSurvey .market-survey .moreinfo .moreinforow {
+        height: 28px
+    }
+
+    .min-width-100-m {min-width: 100px;}
+
 }
