@@ -1,11 +1,15 @@
 angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
     function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
             $scope.surveyid = surveyid;
-            $scope.settings = {showNotes: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false};
+            $scope.settings = {showNotes: false, showBulkConcessions: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false, newVersion: false };
             $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
                 return $location.path("/login");
+            }
+
+            if($cookieSettingsService.getNewVersion()) {
+                $scope.settings.newVersion = true;
             }
 
             ga("set", "title", "/marketSurvey");
@@ -58,12 +62,24 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                             fp.concessions = fp.concessionsOneTime + fp.concessionsMonthly * 12;
                         }
                     });
+                    $scope.settings.showBulkConcessions = false;
                 }
 
                 $scope.survey.floorplans.forEach(function(fp) {
                     delete fp.errors;
                     delete fp.warnings;
                 });
+            }
+
+            $scope.toggleBulkConcessions = function() {
+                if(!$scope.settings.showDetailed) {
+                    $scope.settings.showBulkConcessions = false;
+                }
+            }
+
+            $scope.toggleNewView = function() {
+                $scope.settings.newVersion = !$scope.settings.newVersion;
+                $cookieSettingsService.saveNewVersion($scope.settings.newVersion);
             }
 
             var me = $rootScope.$watch("me", function(x) {
@@ -80,8 +96,27 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                         for (var key in response) {
                            $scope[key] = response[key];
                         }
+                        if(response.property.floorplans.length > 8) {
+                            $scope.allShown = false;
+                        } else {
+                            $scope.allShown = true;
+                        }
+
+                        if(($scope.settings.showLeases && !$scope.settings.showRenewal && !$scope.settings.showATR) || 
+                        (!$scope.settings.showLeases && $scope.settings.showRenewal && !$scope.settings.showATR) || 
+                        (!$scope.settings.showLeases && !$scope.settings.showRenewal && !$scope.settings.showATR)) {
+                            $scope.threeColumnsInput = false;
+                        } else {
+                            $scope.threeColumnsInput = true;
+                        }
+
                         $scope.doneLoading();
                     });
+
+                    if (!$scope.settings.showDetailed) {
+                        $scope.settings.showBulkConcessions = false;
+                    }
+
                 }
             });
 
@@ -221,7 +256,11 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
     $scope.totalConcessionsMonthly = function() {
         $scope.totals.concessionMonthly = 0;
         $scope.survey.floorplans.forEach(function(fp) {
-            $scope.totals.concessionsMonthly += (fp.concessionsMonthly * fp.units);
+            if(fp.concessionsMonthly){
+                $scope.totals.concessionsMonthly += (fp.concessionsMonthly * fp.units);
+            } else {
+                $scope.getErrors(fp);
+            }
         });
 
         if ($scope.totals.units) {
@@ -746,7 +785,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
 
             $scope.next = function(fp, id) {
-                var all = $('.survey-values input');
+                var all = $(".survey-values input[type='number']");
 
                 if (all.length == 0) {
                     return;
@@ -1017,4 +1056,101 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 return moment(date).format("MM/DD/YYYY h:mm a");
             }
         };
+
+
+        $scope.bulkConcession = {
+            "checkall" : false,
+            "concessionsTimes" : "One-time",
+            "concessionValue" : "",
+            "leasedLength" : 12,
+            "concessionsTypeOff" : "dollars off",
+            "SelectedFloorPlan" : {},
+            "applyError": "",
+            "checkboxError": false
+        }
+
+        $scope.bulkConcession.toggleAll = function() {
+            $scope.survey.floorplans.forEach(function(f) {
+                $scope.bulkConcession.SelectedFloorPlan[f.id] = $scope.bulkConcession.checkall;
+            });
+            $scope.bulkConcession.checkboxError = false;
+        }
+
+        $scope.bulkConcession.toggleSingle = function() {
+            $scope.bulkConcession.checkall = false;
+            if(_.size($scope.bulkConcession.SelectedFloorPlan) === $scope.survey.floorplans.length) {
+                $scope.bulkConcession.checkall = _.every($scope.bulkConcession.SelectedFloorPlan, function(i) {
+                    return i === true;
+                });
+            }
+            $scope.bulkConcession.checkboxError = false;
+        }
+
+        $scope.bulkConcession.applyButton = function() {
+
+            if(!$scope.bulkConcession.concessionValue) {
+                $scope.bulkConcession.applyError = "Please type a concession value.";
+                return;
+            }
+
+            var selectedFPId = [];
+            for (var fp in $scope.bulkConcession.SelectedFloorPlan) {
+                if($scope.bulkConcession.SelectedFloorPlan[fp]) {
+                    selectedFPId.push(fp);
+                }
+            }
+
+            var filteredList = _.filter($scope.survey.floorplans, function(fp) { 
+                if(selectedFPId.includes(fp.id)) {
+                    return fp;
+                }
+            });
+
+            if(!filteredList.length) {
+                $scope.bulkConcession.applyError = "Use the checkboxes to select the floor plans that you want to apply concessions to.";
+                $scope.bulkConcession.checkboxError = true;
+                return;
+            }
+
+            filteredList.forEach(function(item) {
+
+                $scope.checkUndoFp(item, item.concessions);
+                $scope.getErrors(item);
+                $scope.getWarnings(item);
+
+                switch ($scope.bulkConcession.concessionsTypeOff) {
+                    case "dollars off":
+                        if($scope.bulkConcession.concessionsTimes == "One-time") {
+                            item.concessionsOneTime = parseInt($scope.bulkConcession.concessionValue);
+                        } else {
+                            item.concessionsMonthly = parseInt($scope.bulkConcession.concessionValue);
+                        }
+                        break;
+                    case "week(s) free":
+                        if($scope.bulkConcession.concessionsTimes == "One-time") {
+                            item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                        } else {
+                            item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength));
+                        }
+                        break;
+                    case "month(s) free":
+                        if($scope.bulkConcession.concessionsTimes == "One-time") {
+                            item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                        } else {
+                            item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength));
+                        }
+                        break;
+                }
+
+            });
+
+            $scope.bulkConcession.applyError = "";
+            $scope.bulkConcession.checkboxError = false;
+        
+        }
+
+        $scope.showAllFP = function() {
+            $scope.allShown = !$scope.allShown;
+        }
+
     }]);
