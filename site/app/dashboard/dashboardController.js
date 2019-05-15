@@ -427,9 +427,19 @@ define([
             $scope.legendUpdated = legend;
         }
 
-        document.addEventListener("click", function(){
-            $scope.filters = {searchDashboard : ""};
-            $scope.autocomplete($scope.filters.searchDashboard);
+        document.addEventListener("click", function(e){
+            var target = $(e.target);
+            if(!target.parents(".keepopen").length){
+                $scope.filters = {searchDashboard : ""};
+                $scope.autocomplete($scope.filters.searchDashboard);
+                return false;
+            }
+        });
+
+        $(document).on('click', '.dropdown .dropdown-menu', function (e) {
+            if(e.target.tagName != "A") {
+                e.stopPropagation();
+            }
         });
 
     }]);
