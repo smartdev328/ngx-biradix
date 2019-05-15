@@ -427,5 +427,10 @@ define([
             $scope.legendUpdated = legend;
         }
 
+        document.addEventListener("click", function(){
+            $scope.filters = {searchDashboard : ""};
+            $scope.autocomplete($scope.filters.searchDashboard);
+        });
+
     }]);
 });
