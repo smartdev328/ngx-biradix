@@ -2,7 +2,7 @@
 define([
     "app",
 ], function(app) {
-    app.controller("perspectivesController", ["$scope", "$rootScope", "$perspectivesService", "toastr", "$httpHelperService", "ngProgress", function($scope, $rootScope, $perspectivesService, toastr, $httpHelperService, ngProgress) {
+    app.controller("perspectivesController", ["$scope", "$rootScope", "$perspectivesService", "toastr", "$httpHelperService", "ngProgress", "$dialog", function($scope, $rootScope, $perspectivesService, toastr, $httpHelperService, ngProgress, $dialog) {
         window.setTimeout(function() {
             window.document.title = "My Account - Perspectives | BI:Radix";
         }, 1500);
@@ -54,6 +54,8 @@ define([
                     $scope.model.comps = newComps;
                     if ($scope.perspectiveToLoad) {
                         $scope.selectPerspective($scope.perspectiveToLoad); // TODO: Read settings for default perspective
+                    } else {
+                        $scope.model.selectedPerspective = null;
                     }
                     $scope.loading = false;
                 });
@@ -84,6 +86,25 @@ define([
             $scope.resetView($scope.model.comps);
         };
 
+        $scope.delete = function() {
+            $dialog.confirm("Are you sure you want to delete the <b>" + $scope.model.name + "</b> Perspective?", function () {
+                $scope.processing = true;
+                ngProgress.start();
+                $perspectivesService.delete($scope.model.selectedProperty._id, $scope.model.selectedPerspective.id).then(function(response) {
+                    toastr.warning($scope.model.name + " deleted successfully");
+                    $scope.processing = false;
+                    ngProgress.complete();
+                    $scope.loadPerspective($scope.model.selectedProperty._id, null);
+                    $scope.model.selectedPerspective = null;
+                    $scope.model.mode = $scope.MODE.NONE;
+                }).catch(function(err) {
+                    $httpHelperService.handleError(err);
+                    $scope.processing = false;
+                    ngProgress.complete();
+                });
+            });
+        };
+
         $scope.create = function() {
             $scope.processing = true;
             ngProgress.start();
@@ -96,6 +117,22 @@ define([
                 $scope.model.selectedProperty.perspectives = $scope.model.selectedProperty.perspectives || [];
                 $scope.model.selectedProperty.perspectives.push(perspective);
                 $scope.model.selectedPerspective = perspective;
+            }).catch(function(err) {
+                $httpHelperService.handleError(err);
+                $scope.processing = false;
+                ngProgress.complete();
+            });
+        }
+
+        $scope.update = function() {
+            $scope.processing = true;
+            ngProgress.start();
+            $perspectivesService.update($scope.model.selectedProperty._id, {id: $scope.model.selectedPerspective.id, name: $scope.model.name, excludedFloorplans: $scope.getExlcudedFloorplans()}).then(function(response) {
+                toastr.success($scope.model.name + " updated successfully");
+                $scope.processing = false;
+                ngProgress.complete();
+                $scope.loadPerspective($scope.model.selectedProperty._id, response.data.id);
+                $scope.model.mode = $scope.MODE.VIEW;
             }).catch(function(err) {
                 $httpHelperService.handleError(err);
                 $scope.processing = false;

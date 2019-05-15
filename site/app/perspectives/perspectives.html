@@ -57,7 +57,7 @@
                     <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="create()" ng-disabled="processing">
                         Create
                     </button>
-                    <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="save()" ng-disabled="processing">
+                    <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="update()" ng-disabled="processing">
                         Save
                     </button>
                     <button ng-if="model.mode === MODE.EDIT" class=" btn btn-danger btn-sm" type="button" ng-click="delete()" uib-tooltip="Delete" ng-disabled="processing">

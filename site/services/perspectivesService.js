@@ -3,10 +3,11 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
 
         fac.scopeFunctions = function($scope) {
             $scope.selectPerspective = function(id) {
+                console.log(id);
                 $scope.model.selectedProperty.perspectives =  $scope.model.selectedProperty.perspectives || [];
                 if ($scope.model.selectedProperty.perspectives.length > 0) {
                     if (!id) {
-                        $scope.model.selectedPerspective = $scope.model.selectedProperty.perspectives[0];
+                        $scope.model.selectedPerspective = null;
                     } else {
                         $scope.model.selectedPerspective = _.find($scope.model.selectedProperty.perspectives, function(p) {
                             return p.id.toString() === id.toString();
@@ -235,6 +236,27 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                 .error(function(response) {
                     return response;
             });
+        };
+
+        fac.update = function(propertyId, perspective) {
+            return $http.patch(gAPI + '/api/1.0/properties/perspectives/' + propertyId + "?bust=" + (new Date()).getTime(), perspective, {
+                headers: $httpHelperService.authHeader()})
+                .success(function(response) {
+                    return response;
+                })
+                .error(function(response) {
+                    return response;
+                });
+        };
+        fac.delete = function(propertyId, perspectiveId) {
+            return $http.delete(gAPI + '/api/1.0/properties/perspectives/' + propertyId + "/" + perspectiveId + "?bust=" + (new Date()).getTime(), {
+                headers: $httpHelperService.authHeader()})
+                .success(function(response) {
+                    return response;
+                })
+                .error(function(response) {
+                    return response;
+                });
         };
 
         return fac;
