@@ -25,10 +25,11 @@
       outline: 1px solid slategrey;
     }
     .no-result {
-        padding:5px;
-        font-size: 12px;
+        padding: 8px 8px 0;
+        font-size: 13px;
         font-style: italic;
-        color: #888888;
+        color: #333;
+        font-weight: lighter;
     }
     @media all and (min-width: 0px) and (max-width: 500px) {
         .bedrooms {
@@ -127,7 +128,7 @@
                                     </Td>
                                 </tr>
                                 <tr ng-if="sharedMyProperties.length == 0 && cutomMyProperties.length == 0">
-                                    <td colspan="2" class="no-result">No results for: {{filters.searchDashboard}}</td>
+                                    <td colspan="2" class="no-result">No results match "{{filters.searchDashboard}}"</td>
                                 </tr>
                             </Table>
                         </div>
