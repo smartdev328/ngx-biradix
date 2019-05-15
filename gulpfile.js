@@ -127,6 +127,8 @@ gulp.task("globaljs", function() {
         "./site/components/reports/trendsReport.js",
         "./site/components/reports/trendsTimeseries.js",
         "./site/components/reports/concession.js",
+
+        "./site/components/scrollable-table/module.js",
     ])
         .pipe(concat("global.js"))
         .pipe(gulp.dest("./dist/"))

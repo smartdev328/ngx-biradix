@@ -1,39 +1,210 @@
 <div class="alert alert-warning" ng-if="editMode">
     <b>Note:</b> You are modifying historical data of a Property Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
 </div>
-
-<toggle-switch checked="settings.showDetailed" click-fn="toggleConcessions()" style="margin-left:30px;"  disabled="!me.orgs[0].settings.detailed_concessions.allow" popover="me.orgs[0].settings.detailed_concessions.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>&nbsp;&nbsp;Detailed Concessions
-<i class="fa fa-question-circle"  style="font-size:12px"
-   popover-trigger="'mouseenter'"
-   popover-placement="bottom"
-   uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"
-></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<div class="visible-xs"></div>
-<span class="visible-xs-inline-block" style="width:30px;"></span><toggle-switch checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch>&nbsp;&nbsp;Property Survey Notes<br>
-<div style="margin-top:10px"></div>
-<div ng-if="settings.showNotes">
-    <textarea class="form-control" placeholder="Type Property Survey notes here" ng-model="survey.notes" ng-keydown="updateChanged()"></textarea><br>
+<div class="top-inputs" style="width: 100%;">
+  <div class="row" style="margin-left: -15px;margin-right: -15px;">
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
+      <b style="font-size: 13px;">Occupancy %</b>
+      <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.occupancy), 'has-warning': getWarnings(validation.occupancy) && !getErrors(validation.occupancy)}">
+          <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy" ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
+      </div>
+      <div class="moreinfo">
+          <a class="pull-left" href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+          <i ng-if="getWarnings(validation.occupancy) && !getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             popover-append-to-body="true"
+             uib-popover-html="getWarnings(validation.occupancy)"
+          ></i>
+          <i ng-if="getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             popover-append-to-body="true"
+             uib-popover-html="getErrors(validation.occupancy)"
+          ></i>
+      </div>
+    </div>
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}" ng-if="settings.showLeases">
+      <b style="font-size: 13px;">Leased %</b>
+      <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}">
+          <input type="number" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
+      </div>
+      <div class="moreinfo">
+          <a class="pull-left" href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+          <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             popover-append-to-body="true"
+             uib-popover-html="getWarnings(validation.leased)"
+          ></i>
+          <i ng-if="getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             popover-append-to-body="true"
+             uib-popover-html="getErrors(validation.leased)"
+          ></i>
+      </div>
+    </div>
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}" ng-if="settings.showRenewal">
+      <b style="font-size: 13px;">Renewal %</b>
+      <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}">
+          <input type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
+      </div>
+      <div class="moreinfo">
+          <a class="pull-left" href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+          <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             popover-append-to-body="true"
+             uib-popover-html="getWarnings(validation.renewal)"
+          ></i>
+          <i ng-if="getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             popover-append-to-body="true"
+             uib-popover-html="getErrors(validation.renewal)"
+          ></i>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-left: -15px;margin-right: -15px;">
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}" ng-if="settings.showATR">
+        <div class="clearfix">
+          <b style="font-size:13px;" class="hidden-xs">Apts. to Rent</b>
+          <b style="font-size:13px;" class="visible-xs-inline">ATR</b>
+          <i class="fa fa-question-circle"
+             popover-trigger="'mouseenter'"
+             popover-placement="top"
+             popover-append-to-body="true"
+             uib-popover="Apartments to Rent – How many units do you have for rent? Enter total number of Vacant Available and On-Notice units. Ex: 5 Vacant Available Units + 6 On-Notice Units = 11 ATR"
+             popover-append-to-body="true"
+             style="font-size:12px"
+          ></i>
+        </div>
+        <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.atr), 'has-warning': getWarnings(validation.atr) && !getErrors(validation.atr)}">
+            <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.atr" ng-enter="next('atr','atr')" id="atr" onclick="select()" ng-change="clear('atr')" ng-keydown="pressed('atr','atr', $event)" ng-blur="updateDone('atr',true)">
+        </div>
+        <div class="moreinfo">
+            <a class="pull-left" href ng-click="undo('atr')" ng-if="survey.atrupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+            <i ng-if="getWarnings(validation.atr) && !getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+               popover-trigger="'mouseenter'"
+               popover-placement="left"
+               popover-append-to-body="true"
+               uib-popover-html="getWarnings(validation.atr)"
+            ></i>
+            <i ng-if="getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+               popover-trigger="'mouseenter'"
+               popover-placement="left"
+               popover-append-to-body="true"
+               uib-popover-html="getErrors(validation.atr)"
+            ></i>
+        </div>
+    </div>
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
+        <b style="font-size:13px;" class="hidden-xs">Traffic/Week</b>
+        <b style="font-size:13px;" class="visible-xs">Traffic/Wk</b>
+        <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.traffic), 'has-warning': getWarnings(validation.traffic) && !getErrors(validation.traffic)}">
+            <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()" ng-change="clear('traffic')" ng-keydown="pressed('traffic','traffic', $event)" ng-blur="updateDone('traffic',true)">
+        </div>
+        <div class="moreinfo">
+            <a class="pull-left" href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+            <i ng-if="getWarnings(validation.traffic) && !getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+               popover-trigger="'mouseenter'"
+               popover-placement="left"
+               popover-append-to-body="true"
+               uib-popover-html="getWarnings(validation.traffic)"
+            ></i>
+            <i ng-if="getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+               popover-trigger="'mouseenter'"
+               popover-placement="left"
+               popover-append-to-body="true"
+               uib-popover-html="getErrors(validation.traffic)"
+            ></i>
+        </div>
+    </div>
+    <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
+        <b style="font-size:13px;" class="hidden-xs">Leases/Week</b>
+        <b style="font-size:13px;" class="visible-xs">Leases/Wk</b>
+        <div ng-class="{'form-group inputHolder': true, 'has-error': getErrors(validation.leases), 'has-warning': getWarnings(validation.leases) && !getErrors(validation.leases)}">
+            <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()" ng-change="clear('leases')" ng-keydown="pressed('leases','leases', $event)" ng-blur="updateDone('leases',true)">
+        </div>
+        <div class="moreinfo">
+            <a class="pull-left" href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+            <i ng-if="getWarnings(validation.leases) && !getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+               popover-trigger="'mouseenter'"
+               popover-placement="left"
+               popover-append-to-body="true"
+               uib-popover-html="getWarnings(validation.leases)"
+            ></i>
+            <i ng-if="getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+               popover-trigger="'mouseenter'"
+               popover-placement="left"
+               popover-append-to-body="true"
+               uib-popover-html="getErrors(validation.leases)"
+            ></i>
+        </div>
+    </div>
+  </div>
 </div>
-<table class="table table-condensed table-striped table-hover survey-values hidden-arrows sortablegrid" style="margin-bottom:10px">
-    <tbody>
-    <tr class="thead">
+<div ng-if="settings.showNotes">
+    <b>Notes</b>
+    <textarea class="form-control" ng-model="survey.notes" ng-keydown="updateChanged()"></textarea><br>
+</div>
+<div ng-if="settings.showBulkConcessions" class="bulkConcessionModule">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4">
+      <p><strong>Concessions Calculator <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Use this section to apply concessions to multiple floor plans at once as well as help calculate annualized concessions"></i></strong></p>
+    </div>
+    <div class="col-xs-12 col-sm-8">
+      <select ng-model="bulkConcession.concessionsTimes">
+          <option value="One-time">One-time</option>
+          <option value="Monthly">Monthly</option>
+      </select>
+      <div class="bulkConcessionValue">
+        <div class="input-group">
+          <span class="input-group-addon" ng-if="bulkConcession.concessionsTypeOff == 'dollars off'">$</span>
+          <input type="text" class="form-control" ng-class="{'borderLeft' : bulkConcession.concessionsTypeOff != 'dollars off'}" ng-model="bulkConcession.concessionValue">
+        </div>
+      </div>
+      <select ng-model="bulkConcession.concessionsTypeOff">
+          <option value="dollars off">dollars off</option>
+          <option value="week(s) free">week(s) free</option>
+          <option value="month(s) free">month(s) free</option>
+      </select>
+      <i class="fa fa-question-circle" style="font-size:12px;margin-left: 3px;" popover-trigger="'mouseenter'" popover-placement="left" popover-append-to-body="true" uib-popover="Concessions in terms of either 'Week(s)' or 'month(s)' free will be normalized for a 12 month lease term. For instance, a concession offered on a 15 month lease will be applied pro-rata for a 12 month lease. For example: 6 weeks free on a 15 month lease at $1,000 in rent ($1500 total concession), will be converted to $1,200 concession on a 12 month lease (or ~5 weeks free)."></i>
+      <button class="btn btn-warning btn-xs ml-10" style="font-size:10px" type="button" ng-click="bulkConcession.applyButton()">Apply</button>
+      <i ng-if="bulkConcession.applyError" class="fa fa-exclamation-triangle pull-right ng-scope" style="color:red;margin-top:3px" popover-trigger="'mouseenter'" popover-placement="left" popover-append-to-body="true" uib-popover-html="bulkConcession.applyError"></i>
+    </div>
+    <div class="col-xs-12 col-sm-offset-4 col-sm-8 pt-10">
+      <p class="leased-length">Leased length <strong>({{bulkConcession.leasedLength}} months)</strong></p>
+      <input type="range" min="10" max="18" class="range" ng-model="bulkConcession.leasedLength">
+    </div>
+  </div>
+</div>
+<div class="propertySurvey" ng-class="{'allShown': allShown}">
+  <table class="table table-condensed table-striped table-hover survey-values hidden-arrows sortablegrid" fixed-table toggles="settings">
+    <thead>
+      <tr class="thead">
+        <th ng-show="settings.showBulkConcessions">
+            <input type="checkbox" value="" ng-model="bulkConcession.checkall" ng-class="{'has-error' : bulkConcession.checkboxError}" ng-change="bulkConcession.toggleAll()" ng-true-value="true" ng-false-value="false" >
+        </th>
         <th class="sortable" ng-click="toggleSort('type',true)"><span class="hidden-xs">Type</span><span class="visible-xs-inline">Type</span>
             <i ng-show="sort.indexOf('type') == -1" class="fa fa-sort"></i>
             <i ng-show="sort == '-type'" class="fa fa-sort-down"></i>
             <i ng-show="sort == 'type'" class="fa fa-sort-up"></i>
         </th>
-        <th class="hidden-xs sortable" ng-click="toggleSort('description',true)">
+        <th class="sortable description" style="padding:5px 0;" ng-click="toggleSort('description',true)">
+          <div class="hidden-xs">
             Desc.
             <i ng-show="sort.indexOf('description') == -1" class="fa fa-sort"></i>
             <i ng-show="sort == '-description'" class="fa fa-sort-down"></i>
             <i ng-show="sort == 'description'" class="fa fa-sort-up"></i>
+          </div>
         </th>
         <th class="hidden-xs sortable" style="text-align: right" ng-click="toggleSort('units',true)"><span class="hidden-xs">Units</span><span class="visible-xs">#</span>
-
             <i ng-show="sort.indexOf('units') == -1" class="fa fa-sort"></i>
             <i ng-show="sort == '-units'" class="fa fa-sort-down"></i>
             <i ng-show="sort == 'units'" class="fa fa-sort-up"></i>
-
         </th>
         <th class="hidden-xs sortable" style="text-align: right" ng-click="toggleSort('sqft',true)">
             Sqft
@@ -42,290 +213,179 @@
             <i ng-show="sort == 'sqft'" class="fa fa-sort-up"></i>
         </th>
         <th style="white-space: nowrap;text-align:right">Rent <i class="fa fa-question-circle" style="font-size:12px"
-                                                                 popover-trigger="'mouseenter'"
-                                                                 popover-placement="left"
-                                                                 uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
+             popover-trigger="'mouseenter'"
+             popover-placement="left"
+             popover-append-to-body="true"
+             uib-popover="Enter the base (minimum) gross floor plan rent for a 12 month lease, before any concessions or discounts. If the floor plan does not have any units available, enter the expected market rent."
         ></i></th>
         <th ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
-                                                                                                    popover-trigger="'mouseenter'"
-                                                                                                    popover-placement="left"
-                                                                                                    uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
+            popover-trigger="'mouseenter'"
+            popover-placement="left"
+             popover-append-to-body="true"
+            uib-popover="Enter the total offered rent discount (one-time and recurring) over a 12 month lease term. Includes one-time concession, Look-and-Lease special, amortized concession, or any other rent discount offered over a 12 month lease term. Ex: $100 off per month, enter as $1,200 value, or $500 look-and-lease for signing a 12 month lease, enter as $500. If both concessions are offered, enter $1700 ($1200 + $500). For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Total)</div></th>
-
         <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
-                                                                                                   popover-trigger="'mouseenter'"
-                                                                                                   popover-placement="left"
-                                                                                                   uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
+           popover-trigger="'mouseenter'"
+           popover-placement="left"
+             popover-append-to-body="true"
+           uib-popover="Enter one-time (upfront) concessions or look-and-lease specials. Ex: Enter '500' if $500 discount is offered as a look-and-lease special. For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(One-Time)</div></th>
 
         <th ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">Concess. <i class="fa fa-question-circle"  style="font-size:12px"
-                                                                                                   popover-trigger="'mouseenter'"
-                                                                                                   popover-placement="left"
-                                                                                                   uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
+           popover-trigger="'mouseenter'"
+           popover-placement="left"
+             popover-append-to-body="true"
+           uib-popover="Enter monthly (recurring) concession. Ex: Enter '100' if $100 off per month is offered in concession. For any waived fees, please enter under Fees & Deposits."
         ></i><Br>
             <div style="font-size:8pt;font-weight:normal;">(Monthly)</div></th>
-        <th style="width:55px">
-
-        </th>
-    </tr>
-
-    <tr ng-repeat="row in survey.floorplans | orderBy : getOrder(sort)">
-        <td style="white-space: nowrap;">
-            {{row.bedrooms}}x{{row.bathrooms}}
-            <div class="visible-xs tiny">{{row.units}} Units</div>
-            <div class="visible-xs tiny">{{row.sqft}} Sqft</div>
-        </td>
-        <td class="hidden-xs" style="word-break: break-all">
-            {{row.description}}
-        </td>
-        <td class="hidden-xs pad" style="text-align: right">
-            {{row.units}}
-        </td>
-        <td class="hidden-xs pad" style="text-align: right">
-            {{row.sqft}}
-        </td>
-        <td style="white-space: nowrap;text-align:right;">
-            <div ng-class="{'form-group': true, 'has-error': !!row.errors.rent || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                $<input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in survey.floorplans | orderBy : getOrder(sort)">
+          <td ng-show="settings.showBulkConcessions">
+              <input type="checkbox" ng-model="bulkConcession.SelectedFloorPlan[row.id]" ng-class="{'has-error' : bulkConcession.checkboxError}" ng-true-value="true" ng-false-value="false" ng-change="bulkConcession.toggleSingle()" />
+          </td>
+          <td style="white-space: nowrap;">
+              {{row.bedrooms}}x{{row.bathrooms}}
+              <div class="visible-xs tiny">{{row.units}} Units</div>
+              <div class="visible-xs tiny">{{row.sqft}} Sqft</div>
+          </td>
+          <td class="description" style="word-break: break-all;padding:5px 0;">
+            <div class="hidden-xs">
+              {{row.description}}
             </div>
-        </td>
-        <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
-            <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessions || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()" ng-change="clear('concessions-' + row.id)" ng-keydown="pressed(row,'concessions-' + row.id, $event)" ng-blur="updateDone(row,true,'concessions')">
-            </div>
-        </td>
-        <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
-            <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsOneTime || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()" ng-change="clear('concessionsOneTime-' + row.id)" ng-keydown="pressed(row,'concessionsOneTime-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsOneTime')">
-            </div>
-        </td>
-        <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
-            <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsMonthly || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
-                $<input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
-            </div>
-        </td>
-        <td nowrap>
-            &nbsp;<a href ng-click="undo(row)" ng-if="row.updated" class="pull-left"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-            <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getWarnings(row)"
-            ></i>
-            <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-               popover-trigger="'mouseenter'"
-               popover-placement="left"
-               uib-popover-html="getErrors(row)"
-            ></i>
-        </td>
-    </tr>
-
+          </td>
+          <td class="hidden-xs pad" style="text-align: right">
+              {{row.units}}
+          </td>
+          <td class="hidden-xs pad" style="text-align: right">
+              {{row.sqft}}
+          </td>
+          <td style="white-space: nowrap;text-align:right;">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.rent || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                <div class="input-group pull-right">
+                  <span class="input-group-addon">$</span>
+                  <input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
+                </div>
+              </div>
+          </td>
+          <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessions || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                <div class="input-group pull-right">
+                  <span class="input-group-addon">$</span>
+                  <input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()" ng-change="clear('concessions-' + row.id)" ng-keydown="pressed(row,'concessions-' + row.id, $event)" ng-blur="updateDone(row,true,'concessions')">
+                </div>
+              </div>
+          </td>
+          <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsOneTime || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                <div class="input-group pull-right">
+                  <span class="input-group-addon">$</span>
+                  <input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()" ng-change="clear('concessionsOneTime-' + row.id)" ng-keydown="pressed(row,'concessionsOneTime-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsOneTime')">
+                </div>
+              </div>
+          </td>
+          <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
+              <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsMonthly || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
+                <div class="input-group pull-right">
+                  <span class="input-group-addon">$</span>
+                  <input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
+                </div>
+              </div>
+          </td>
+          <td nowrap>
+              &nbsp;<a href ng-click="undo(row)" ng-if="row.updated" class="pull-left"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
+              <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+                 popover-trigger="'mouseenter'"
+                 popover-placement="left"
+                 popover-append-to-body="true"
+                 uib-popover-html="getWarnings(row)"
+              ></i>
+              <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+                 popover-trigger="'mouseenter'"
+                 popover-placement="left"
+                 popover-append-to-body="true"
+                 uib-popover-html="getErrors(row)"
+              ></i>
+          </td>
+      </tr>
     </tbody>
-    <tfoot>
-    <tr style="font-weight: bold;">
-        <td class="visible-xs">
-            Totals/Avgs:
-            <div class="visible-xs tiny">{{totals.units}} Units</div>
-            <div class="visible-xs tiny">{{totals.sqft | number: 0}} Sqft</div>
-        </td>
-        <td class="hidden-xs" colspan="2">
-            Totals/Averages:
-        </td>
-        <td class="hidden-xs pad" style="text-align: right">
-            {{totals.units}}
-        </td>
-        <td class="hidden-xs pad" style="text-align: right">
-            {{totals.sqft | number: 0}}
-        </td>
-        <td style="text-align: right; padding-right: 10px">
-            ${{totalRent() | number: 0}}
-        </td>
-        <td ng-if="!settings.showDetailed" style="text-align: right; padding-right: 10px">
-            ${{totalConcessions() | number: 0}}
-        </td>
-        <td ng-if="settings.showDetailed" style="text-align: right; padding-right: 10px">
-            ${{totalConcessionsOneTime() | number: 0}}
-        </td>
-        <td ng-if="settings.showDetailed" style="text-align: right; padding-right: 10px">
-            ${{totalConcessionsMonthly() | number: 0}}
-        </td>
-        <td>
-        </td>
-    </tr>
-    </tfoot>
-</table>
-
-<Center>
-    <table class="survey-values occupancy">
-        <tbody>
-        <tr>
-            <td class="heading" valign="top">
-                <div style="margin-top: 3px;"><b>Occupancy %</b></div>
-                <Br ng-if="settings.showLeases">
-                <div style="margin-top: 5px;" ng-if="settings.showLeases"><b>Leased %</b></div>
-                <Br ng-if="settings.showRenewal">
-                <div style="margin-top: 4px;" ng-if="settings.showRenewal"><b>Renewal %</b></div>
-
-            </td>
-            <td style="text-align: right" valign="top">
-                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.occupancy), 'has-warning': getWarnings(validation.occupancy) && !getErrors(validation.occupancy)}">
-                    <input type="number" min = "0" max="100" class="form-control input-sm survey-value" ng-model="survey.occupancy"   ng-enter="next('occupancy','occupancy')" id="occupancy" onclick="select()" ng-change="clear('occupancy')" ng-keydown="pressed('occupancy','occupancy', $event)" ng-blur="updateDone('occupancy',true)">
-                </div>
-                <Br ng-if="settings.showLeases">
-                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.leased), 'has-warning': getWarnings(validation.leased) && !getErrors(validation.leased)}" ng-if="settings.showLeases">
-                    <input type="number" class="form-control input-sm survey-value" ng-model="survey.leased" ng-enter="next('leased','leased')" id="leased" onclick="select()" ng-change="clear('leased')" ng-keydown="pressed('leased','leased', $event)" ng-blur="updateDone('leased',true)">
-                </div>
-                <Br ng-if="settings.showRenewal">
-                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.renewal), 'has-warning': getWarnings(validation.renewal) && !getErrors(validation.renewal)}" ng-if="settings.showRenewal">
-                    <input type="number" class="form-control input-sm survey-value" ng-model="survey.renewal" ng-enter="next('renewal','renewal')" id="renewal" onclick="select()" ng-change="clear('renewal')" ng-keydown="pressed('renewal','renewal', $event)" ng-blur="updateDone('renewal',true)">
-                </div>
-            </td>
-
-            <td style="width:45px;" valign="top" class="moreinfo">
-                <div class="moreinforow">
-                    <a class="pull-left" href ng-click="undo('occupancy')" ng-if="survey.occupancyupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                    <i ng-if="getWarnings(validation.occupancy) && !getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getWarnings(validation.occupancy)"
-                    ></i>
-                    <i ng-if="getErrors(validation.occupancy)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getErrors(validation.occupancy)"
-                    ></i>
-                </div>
-                <Br ng-if="settings.showLeases">
-                <div ng-if="settings.showLeases" class="moreinforow">
-                    <a class="pull-left" href ng-click="undo('leased')" ng-if="survey.leasedupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                    <i ng-if="getWarnings(validation.leased) && !getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getWarnings(validation.leased)"
-                    ></i>
-                    <i ng-if="getErrors(validation.leased)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getErrors(validation.leased)"
-                    ></i>
-                </div>
-                <br ng-if="settings.showRenewal">
-                <div ng-if="settings.showRenewal" class="moreinforow">
-                    <a class="pull-left" href ng-click="undo('renewal')" ng-if="survey.renewalupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                    <i ng-if="getWarnings(validation.renewal) && !getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getWarnings(validation.renewal)"
-                    ></i>
-                    <i ng-if="getErrors(validation.renewal)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getErrors(validation.renewal)"
-                    ></i>
-                </div>
-            </td>
-
-            <td rowspan="100%" class="col-spacer">
-
-            </td>
-
-            <td class="heading" valign="top">
-                <div style="margin-top: 3px;" ng-if="settings.showATR">
-                    <b class="hidden-xs">Apts. to Rent</b>
-                    <b class="visible-xs-inline">ATR</b>
-                    <i class="fa fa-question-circle"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="top"
-                       uib-popover="Apartments to Rent – How many units do you have for rent? Enter total number of Vacant Available and On-Notice units. Ex: 5 Vacant Available Units + 6 On-Notice Units = 11 ATR"
-                       popover-append-to-body="true"
-                       style="font-size:12px"
-                    ></i>
-                </div>
-                <Br ng-if="settings.showATR">
-
-                <div style="margin-top: 5px;">
-                    <b class="hidden-xs">Traffic/Week</b>
-                    <b class="visible-xs">Traffic/Wk</b>
-                </div>
-                <Br>
-                <div style="margin-top: 4px;">
-                    <b class="hidden-xs">Leases/Week</b>
-                    <b class="visible-xs">Leases/Wk</b>
-                </div>
-            </td>
-
-            <td style="text-align: right"  valign="top">
-
-                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.atr), 'has-warning': getWarnings(validation.atr) && !getErrors(validation.atr)}" ng-if="settings.showATR">
-                    <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.atr" ng-enter="next('atr','atr')" id="atr" onclick="select()" ng-change="clear('atr')" ng-keydown="pressed('atr','atr', $event)" ng-blur="updateDone('atr',true)">
-                </div>
-                <Br ng-if="settings.showATR">
-                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.traffic), 'has-warning': getWarnings(validation.traffic) && !getErrors(validation.traffic)}">
-                    <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.weeklytraffic" input-mask="9{1,3}" ng-enter="next('traffic','traffic')" id="traffic" onclick="select()" ng-change="clear('traffic')" ng-keydown="pressed('traffic','traffic', $event)" ng-blur="updateDone('traffic',true)">
-                </div>
-                <br>
-                <div ng-class="{'form-group': true, 'has-error': getErrors(validation.leases), 'has-warning': getWarnings(validation.leases) && !getErrors(validation.leases)}">
-                    <input type="number" min="0" class="form-control input-sm survey-value" ng-model="survey.weeklyleases"  input-mask="9{1,3}" ng-enter="next('leases','leases')" id="leases" onclick="select()" ng-change="clear('leases')" ng-keydown="pressed('leases','leases', $event)" ng-blur="updateDone('leases',true)">
-                </div>
-            </td>
-            <td style="width:45px;"  valign="top" class="moreinfo">
-                <div ng-if="settings.showATR" class="moreinforow">
-                    <a class="pull-left" href ng-click="undo('atr')" ng-if="survey.atrupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                    <i ng-if="getWarnings(validation.atr) && !getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getWarnings(validation.atr)"
-                    ></i>
-                    <i ng-if="getErrors(validation.atr)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getErrors(validation.atr)"
-                    ></i>
-                </div>
-                <Br ng-if="settings.showATR">
-
-                <div class="moreinforow">
-                    <a class="pull-left" href ng-click="undo('traffic')" ng-if="survey.trafficupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                    <i ng-if="getWarnings(validation.traffic) && !getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getWarnings(validation.traffic)"
-                    ></i>
-                    <i ng-if="getErrors(validation.traffic)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getErrors(validation.traffic)"
-                    ></i>
-                </div>
-                <Br>
-                <div class="moreinforow">
-                    <a class="pull-left" href ng-click="undo('leases')" ng-if="survey.leasesupdated"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-                    <i ng-if="getWarnings(validation.leases) && !getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getWarnings(validation.leases)"
-                    ></i>
-                    <i ng-if="getErrors(validation.leases)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="left"
-                       uib-popover-html="getErrors(validation.leases)"
-                    ></i>
-                </div>
-            </td>
-        </tr>
-
-        </tbody>
-    </table>
-
-</Center>
-<Br>
-<div style="text-align: center">
-
+  </table>
+  <button type="button" ng-hide="allShown" class="showAll" ng-click="showAllFP()">Show all</button>
+  <div class="tfoot clearfix mb-20">
+    <div class="tfoot-cell" ng-show="settings.showBulkConcessions">
+    </div>
+    <div class="tfoot-cell description">
+      <span class="hidden-xs">Totals/Averages:</span>
+      <div class="visible-xs">
+        Totals/Avgs:
+        <div class="tiny">{{totals.units}} Units</div>
+        <div class="tiny">{{totals.sqft | number: 0}} Sqft</div>
+      </div>
+    </div>
+    <div class="tfoot-cell hidden-xs"></div>
+    <div class="hidden-xs pad tfoot-cell text-right" style="padding-right: 15px;">
+        {{totals.units}}
+    </div>
+    <div class="hidden-xs pad tfoot-cell text-right" style="padding-right: 15px;">
+        {{totals.sqft | number: 0}}
+    </div>
+    <div class="tfoot-cell text-right">
+        ${{totalRent() | number: 0}}
+    </div>
+    <div ng-if="!settings.showDetailed" class="tfoot-cell text-right">
+        ${{totalConcessions() | number: 0}}
+    </div>
+    <div ng-if="settings.showDetailed" class="tfoot-cell text-right">
+        ${{totalConcessionsOneTime() | number: 0}}
+    </div>
+    <div ng-if="settings.showDetailed" class="tfoot-cell text-right">
+        ${{totalConcessionsMonthly() | number: 0}}
+    </div>
+    <div></div>
+  </div>
 </div>
-
 <div class="row">
-    <div class="col-xs-offset-2 col-xs-8" style="text-align: center">
+    <div class="col-xs-2 col-sm-2">
+        <span class="dropup pull-left hidden-print">
+            <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
+            <div class="dropdown-menu dropup-menu-left" onclick="event.stopPropagation();" style="padding: 10px;width:250px;">
+                <table style="border-collapse: separate;border-spacing: 0px 5px;">
+                    <tr>
+                        <td><toggle-switch style="padding-right: 10px;" checked="settings.showNotes" click-fn="toggleNotes()"></toggle-switch></td>
+                        <td>Notes</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <toggle-switch style="padding-right: 10px;" checked="settings.showBulkConcessions"  disabled="!settings.showDetailed" popover="settings.showDetailed ? '' : 'Concessions Calculator can not be used without Detailed Concessions.'" click-fn="toggleBulkConcessions()"></toggle-switch>
+                        </td>
+                        <td>
+                            Concessions Calculator
+                            <i class="fa fa-question-circle" style="font-size:12px" popover-trigger="'mouseenter'" popover-placement="top" popover-append-to-body="true" uib-popover="Use Concessions Calculator feature to calculate annualized concessions as well as apply concessions to multiple floor plans"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <toggle-switch style="padding-right: 10px;" checked="settings.showDetailed" click-fn="toggleConcessions()" disabled="!me.orgs[0].settings.detailed_concessions.allow" popover="me.orgs[0].settings.detailed_concessions.allow ? '' : 'This setting has been locked by your company administrator.'"></toggle-switch>
+                            
+                        </td>
+                        <td>
+                            Detailed Concessions
+                            <i class="fa fa-question-circle"  style="font-size:12px"
+                               popover-trigger="'mouseenter'"
+                               popover-placement="top" popover-append-to-body="true"
+                               uib-popover="Turn on detailed concessions if you want to input one-time and monthly concessions separately rather than a single total value over 12 months"
+                            ></i>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </span>
+    </div>
+    <div class="col-xs-8 col-sm-8 text-center">
         <a class="btn btn-default contact-submit" ng-click="pmsBack()" ng-if="pms">Back</a>
         <a class="btn btn-success contact-submit" ng-click="create()">Save</a>
     </div>

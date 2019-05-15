@@ -170,8 +170,9 @@
         <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
               ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].priceWarning"
               popover-trigger="'mouseenter'"
-              popover-placement="right"
+              popover-placement="left"
               popover-class="popover-small"
+              popover-append-to-body="true"
               uib-popover-html="pms.mappedFloorplans[row.id].priceWarning"
         ></span>
       </td>
