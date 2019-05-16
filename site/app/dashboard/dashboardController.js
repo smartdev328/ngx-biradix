@@ -207,9 +207,11 @@ define([
 
         }
 
+        $scope.toggleDropdown = {};
+
         $scope.setProperty = function(property) {
             $scope.selectedProperty = property;
-
+            $scope.toggleDropdown.isOpen = false;
             $scope.changeProperty();
         }
 
@@ -427,20 +429,12 @@ define([
             $scope.legendUpdated = legend;
         }
 
-        document.addEventListener("click", function(e){
-            var target = $(e.target);
-            if(!target.parents(".keepopen").length){
+        $scope.dropdownToggled = function(open) {
+            if(open) {
                 $scope.filters = {searchDashboard : ""};
                 $scope.autocomplete($scope.filters.searchDashboard);
-                return false;
             }
-        });
-
-        $(document).on('click', '.dropdown .dropdown-menu', function (e) {
-            if(e.target.tagName != "A") {
-                e.stopPropagation();
-            }
-        });
+        };
 
     }]);
 });
