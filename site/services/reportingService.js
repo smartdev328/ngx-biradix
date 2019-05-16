@@ -37,6 +37,7 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
             settings.nerScale = $cookieSettingsService.getNerScale();
 
             settings.selectedBedroom = $cookieSettingsService.getBedrooms();
+            settings.selectedPerspective = $cookieSettingsService.getPerspective();
 
             settings.orderByComp = "number";
 

@@ -717,7 +717,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
 
 
-        fac.parseDashboard = function(dashboard, summary, showLeases, scale, selectedBedroom) {
+        fac.parseDashboard = function(dashboard, summary, showLeases, scale, selectedBedroom, selectedPerspective) {
 
             var resp = {};
 
@@ -803,6 +803,27 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             if (!resp.bedroom) {
                 resp.bedroom = resp.bedrooms[0];
+            }
+
+            selectedPerspective = selectedPerspective || "";
+            resp.perspectives = [{value: "", text: "All Data"}];
+
+            if (resp.property.perspectives) {
+                resp.property.perspectives.forEach(function(p) {
+                    resp.perspectives.push({value: p.id, text: p.name});
+                });
+            }
+
+            resp.perspectives.push({value: "-1", text: " + Add/Edit Perspective"});
+
+            resp.perspective = _.find(resp.perspectives, function(x) {
+                return x.value.toString() === selectedPerspective.toString();
+            });
+
+            if (!resp.perspective) {
+                resp.perspective = _.find(resp.perspectives, function(x) {
+                    return x.value.toString() === "";
+                });
             }
 
             var scaleDecimals = 0;

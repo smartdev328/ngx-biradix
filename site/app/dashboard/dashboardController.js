@@ -83,6 +83,20 @@ define([
             }
 
             $cookieSettingsService.saveBedrooms($scope.settings.selectedBedroom);
+
+            if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
+                $location.path("/perspectives");
+                return;
+            }
+
+            if ($scope.settings.perspective) {
+                $scope.settings.selectedPerspective = $scope.settings.perspective.value;
+            } else {
+                $scope.settings.selectedPerspective = "";
+            }
+
+            $cookieSettingsService.savePerspective($scope.settings.selectedPerspective);
+
             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true);
         }
 
@@ -235,7 +249,7 @@ define([
                         }
                     ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.settings.nerScale}
                 ).then(function(response) {
-                    var resp = $propertyService.parseDashboard(response.data, $scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom);
+                    var resp = $propertyService.parseDashboard(response.data, $scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom, $scope.settings.selectedPerspective);
 
                     if (!trendsOnly) {
                         $scope.property = resp.property;
@@ -247,6 +261,9 @@ define([
                         $scope.mapOptions = resp.mapOptions;
                         $scope.bedrooms = resp.bedrooms;
                         $scope.bedroom = resp.bedroom;
+
+                        $scope.settings.perspectives = resp.perspectives;
+                        $scope.settings.perspective = resp.perspective;
 
                         window.document.title = resp.property.name + " - Dashboard | BI:Radix";
                     }

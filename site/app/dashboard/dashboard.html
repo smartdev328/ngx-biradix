@@ -23,6 +23,14 @@
         </div>
 
         <daterange-picker ng-if="localLoading" daterange="settings.daterange" class="pull-right dashboard" style="margin-right:10px"></daterange-picker>
+
+        <select
+                class="input-sm form-control pull-right hidden-print bedrooms"
+                style="display:inline;width:95px;font-weight:normal;font-size:13px;margin-right:10px"
+                ng-options="p.text for p in settings.perspectives"
+                ng-model="settings.perspective"
+                ng-change="refreshGraphs()"
+        ></select>
     </div>
 </div>
 
@@ -174,26 +182,23 @@
                     <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px;margin-top:5px;">
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
                             <Tr>
+                                <Td style="font-size:12px" colspan="2">
+                                    &nbsp;Hide excluded is now Perspectives
+
+                                    <i class="fa fa-info-circle" style="font-size:12px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="top"
+                                       popover-append-to-body="true"
+                                       uib-popover="Perspectives allow you to configure and save different views of your data that you can toggle between from the Perspectives dropdown at the top of the dashboard. You can edit views by going to the Perspectives section in the main menu dropdown."
+                                    ></i>
+                                </Td>
+                            </Tr>
+                            <Tr>
                                 <td style="text-align: center">
                                     <toggle-switch checked="settings.summary"></toggle-switch>&nbsp;
                                 </td>
                                 <Td>
                                     &nbsp;Group Comps
-                                </Td>
-
-                            </Tr>
-                            <Tr>
-                                <td style="text-align: center">
-                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>&nbsp;
-                                </td>
-                                <Td>
-                                    &nbsp;Hide Excluded
-
-                                    <i class="fa fa-info-circle" style="font-size:12px"
-                                       popover-trigger="'mouseenter'"
-                                       popover-placement="top"
-                                       uib-popover="Turn this option off to calculate all floor plan data, including floor plans that have been manually excluded by the user from reporting and dashboard calculations."
-                                            ></i>
                                 </Td>
 
                             </Tr>
@@ -266,19 +271,16 @@
                     <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:245px;margin-top:5px">
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
                             <Tr>
-                                <td>
-                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>&nbsp;
-                                </td>
-                                <Td>
-                                    &nbsp;Hide Excluded
+                                <Td style="font-size:12px" colspan="2">
+                                    &nbsp;Hide excluded is now Perspectives
 
                                     <i class="fa fa-info-circle" style="font-size:12px"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
-                                       uib-popover="Turn this option off to calculate all floor plan data, including floor plans that have been manually excluded by the user from reporting and dashboard calculations."
-                                            ></i>
+                                       popover-append-to-body="true"
+                                       uib-popover="Perspectives allow you to configure and save different views of your data that you can toggle between from the Perspectives dropdown at the top of the dashboard. You can edit views by going to the Perspectives section in the main menu dropdown."
+                                    ></i>
                                 </Td>
-
                             </Tr>
 
                             <Tr>
