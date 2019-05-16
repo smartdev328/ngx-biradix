@@ -2,7 +2,7 @@
 define([
     "app",
 ], function(app) {
-    app.controller("perspectivesController", ["$scope", "$rootScope", "$perspectivesService", "toastr", "$httpHelperService", "ngProgress", "$dialog", function($scope, $rootScope, $perspectivesService, toastr, $httpHelperService, ngProgress, $dialog) {
+    app.controller("perspectivesController", ["$scope", "$rootScope", "$perspectivesService", "toastr", "$httpHelperService", "ngProgress", "$dialog", "$cookieSettingsService", function($scope, $rootScope, $perspectivesService, toastr, $httpHelperService, ngProgress, $dialog, $cookieSettingsService) {
         window.setTimeout(function() {
             window.document.title = "My Account - Perspectives | BI:Radix";
         }, 1500);
@@ -32,7 +32,7 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 var id = $rootScope.me.settings.defaultPropertyId;
-                $scope.loadPerspective(id, null);
+                $scope.loadPerspective(id, $cookieSettingsService.getPerspective());
                 me();
             }
         });
@@ -53,7 +53,7 @@ define([
                 $scope.loadComps(newP, function(newComps) {
                     $scope.model.comps = newComps;
                     if ($scope.perspectiveToLoad) {
-                        $scope.selectPerspective($scope.perspectiveToLoad); // TODO: Read settings for default perspective
+                        $scope.selectPerspective($scope.perspectiveToLoad);
                     } else {
                         $scope.model.selectedPerspective = null;
                     }
