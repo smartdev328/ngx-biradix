@@ -29,8 +29,14 @@
                 style="display:inline;width:95px;font-weight:normal;font-size:13px;margin-right:10px"
                 ng-options="p.text for p in settings.perspectives"
                 ng-model="settings.perspective"
-                ng-change="refreshGraphs()"
         ></select>
+        <span class="fa fa-eye-slash fa-2x pull-right" style="margin:3px 10px 0px 0px"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+
+        ></span>
     </div>
 </div>
 

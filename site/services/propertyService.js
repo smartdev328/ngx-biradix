@@ -142,13 +142,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.dashboard = function (id,summary,bedrooms,daterange, show) {
+        fac.dashboard = function (id,summary,bedrooms,daterange, show, perspective) {
             return $http.post(gAPI + '/api/1.0/properties/' + id + '/dashboard'+ '?bust=' + (new Date()).getTime(), {
                 summary: summary,
                 bedrooms: bedrooms,
                 daterange:daterange,
                 offset: moment().utcOffset(),
-                show: show
+                show: show,
+                perspective: perspective
             }, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
