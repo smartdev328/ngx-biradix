@@ -223,14 +223,22 @@
                         </table>
                     </div>
                 </span>
-                <i class="fa fa-chain-broken blue" class="pull-left"
+                <i class="fa fa-eye-slash" class="pull-left"
                    style="cursor:pointer;font-size:20px;padding:4px 0px 0px 8px"
-                   ng-if="points.excluded"
+                   ng-if="points.excludedList.length"
                    popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
+                   popover-placement="right-top"
+                   popover-class="popover-small-margin"
+                   uib-popover-html="showExcluded(property.appliedPerspective, points.excludedList)"
                         ></i>
-
+                <i class="fa fa-warning" class="pull-left"
+                   style="cursor:pointer;font-size:20px;padding:4px 0px 0px 0px; color:orange"
+                   ng-if="points.missingList.length"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right-top"
+                   popover-class="popover-small-margin"
+                   uib-popover-html="showMissing(points.missingList)"
+                ></i>
                 <select
                         class="input-sm form-control pull-right hidden-print bedrooms"
                         style="display:inline;width:95px;font-weight:normal;font-size:13px;"
@@ -243,9 +251,19 @@
 
                 <br clear="all">
 
-                <div style="font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
-
-
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
+                <Span ng-if="property.appliedPerspective"> | </Span>
+                </div>
+                <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;margin-left: 5px" ng-if="property.appliedPerspective && points.excludedList.length">Perspective Applied: <b>{{property.appliedPerspective}}</b>
+                    <i class="fa fa-question-circle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       uib-popover-html="'Some data has been recalculated by excluding floor plans from this perspective.'"
+                    ></i>
+                </div>
+                <br clear="all">
             </div>
             <div class="panel-body">
                 <hr>

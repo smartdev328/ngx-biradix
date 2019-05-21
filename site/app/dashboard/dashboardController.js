@@ -452,5 +452,28 @@ define([
             $scope.legendUpdated = legend;
         }
 
+        $scope.showExcluded = function(appliedPerspective, excludedList) {
+            var html = "<b>Perspective applied:</b> <Br>" + appliedPerspective + "<Br><BR>";
+
+            html += "<b>Removed floor plans:</b><br>";
+            html += "- " + _.take(excludedList, 10).join("<br>- ");
+            if (excludedList.length > 10) {
+                html += "<Br>- and " + (excludedList.length - 10) + " more floor plan(s)"
+            }
+
+            return html;
+        }
+
+         $scope.showMissing = function(excludedList) {
+             var html = "<b>Missing rent values:</b> <Br>This property is missing some rent values. Please add missing rent values to get accurate calculations<Br><BR>";
+
+             html += "<b>Affected floor plans:</b><br>";
+             html += "- " + _.take(excludedList, 10).join("<br>- ");
+             if (excludedList.length > 10) {
+                 html += "<Br>- and " + (excludedList.length - 10) + " more floor plan(s)"
+             }
+
+             return html;
+         }
     }]);
 });

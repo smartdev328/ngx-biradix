@@ -745,14 +745,6 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 }
             }
 
-            // resp.comps = _.sortBy(resp.comps, function (n) {
-            //
-            //     if (n._id.toString() == resp.property._id.toString()) {
-            //         return "-1";
-            //     }
-            //     return n.name;
-            // })
-
             resp.comps.forEach(function (c, i) {
                 if (c._id.toString() != resp.property._id.toString()) {
                     resp.mapOptions.points.push({
@@ -774,11 +766,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             resp.bedrooms = [{value: -1, text: "Average"}, {value: -2, text: "All"}];
 
             if (resp.comps && resp.comps[0] && resp.comps[0].survey && resp.comps[0].survey.floorplans) {
-                var includedFps = _.filter(resp.comps[0].survey.floorplans, function(x) {
-                    return !x.excluded;
-                });
-
-                var bedrooms = _.groupBy(includedFps, function(x) {
+                var bedrooms = _.groupBy(resp.comps[0].survey.floorplans, function(x) {
                     return parseInt(x.bedrooms.toString(), 10);
                 });
 
@@ -835,7 +823,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 scaleText = "Net Eff. Rent / Sqft (" + resp.bedroom.text + ")";
             }
 
-            resp.points = {excluded: dashboard.points.excluded};
+            resp.points = {excludedList: dashboard.points.excludedList, missingList: dashboard.points.missingList};
             var ner = fac.extractSeries(dashboard.points, ['ner'],[],[0],0,1000,scaleDecimals, resp.comps, summary, selectedBedroom, bedrooms);
             var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],[0],80,100,1, resp.comps, summary);
             var leased = fac.extractSeries(dashboard.points, ['leased'],[],[0],0,100,1, resp.comps, summary);
