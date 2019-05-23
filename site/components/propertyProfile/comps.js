@@ -8,9 +8,10 @@ angular.module('biradix.global').directive('propertyComps', function () {
                 canSurvey: '=',
                 roles: '=',
                 showTotals:'=',
-                skipcookie: '='
+                skipcookie: '=',
+                appliedPerspective: '='
             },
-            controller: function ($scope, $gridService, $cookies, $sce) {
+            controller: function ($scope, $rootScope, $gridService, $cookies, $sce) {
                 $scope.defaultSort = ""
 
                 if ($scope.show && typeof $scope.show == "string") {

@@ -229,7 +229,7 @@
             </th>
         </tr>
 
-        <tr ng-repeat-start="comp in comps | orderBy : orderBy">
+        <tr ng-repeat-start="comp in comps | orderBy : orderBy"  ng-style="{'color': comp.survey.noFloorplans ? '#B4B4B4' : 'inherit'}">
             <td style="text-align: center;vertical-align: middle;">
                 <i class="fa fa-clock-o danger"
                    style="color:red;cursor:pointer;font-size:14px;padding-left:2px"
@@ -277,13 +277,22 @@
                    uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
                 ></i>
 
-                <i class="fa fa-chain-broken blue"
+                <i class="fa fa-eye-slash blue"
                    style="cursor:pointer;font-size:14px;padding-left:2px"
-                   ng-if="comp.survey.excluded"
+                   ng-if="comp.survey.excludedList && comp.survey.excludedList.length"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
                    popover-append-to-body="true"
-                   uib-popover="This property has some floor plans that have been excluded from reporting and dashboard calculations. This is due to manually excluding floor plans or missing rent data."
+                   uib-popover-html="$root.showExcluded(appliedPerspective, comp.survey.excludedList)"
+                ></i>
+
+                <i class="fa fa-warning"
+                   style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
+                   ng-if="comp.survey.missingList && comp.survey.missingList.length"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   uib-popover-html="$root.showMissing(comp.survey.missingList)"
                 ></i>
 
                 <i class="fa fa-lock hidden-print"
@@ -382,7 +391,7 @@
 
             </td>
         </tr>
-        <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}">
+        <tr ng-if="comp.open" ng-repeat-start="row in comp.bedrooms | orderBy : orderBy | filter : {number: '!!'}" ng-style="{'color': row.noFloorplans ? '#B4B4B4' : 'inherit'}">
             <td style="text-align: center"></td>
             <td style="text-align: center" class="hidden-print hidden-report"></td>
             <td  style="text-align:right;; width:25px">
@@ -390,12 +399,22 @@
             </td>
             <td nowrap>
                 &nbsp;&nbsp;{{row.name}}
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:2px"
-                   ng-if="row.excluded"
+                <i class="fa fa-eye-slash blue"
+                   style="cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="row.excludedList && row.excludedList.length"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
-                   uib-popover="These bedrooms have some floor plans that have been excluded from reporting and dashboard calculations. This is due to manually excluding floor plans or missing rent data."
+                   popover-append-to-body="true"
+                   uib-popover-html="$root.showExcluded(appliedPerspective, row.excludedList)"
+                ></i>
+
+                <i class="fa fa-warning"
+                   style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
+                   ng-if="row.missingList && row.missingList.length"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   uib-popover-html="$root.showMissing(row.missingList)"
                 ></i>
             </td>
             <td style="text-align: right" ng-if="show.occupancy" class="pad">
@@ -452,7 +471,7 @@
 
             </td>
         </tr>
-        <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : row.bedrooms}">
+        <tr ng-repeat-end ng-if="row.open && comp.open" ng-repeat="fp in comp.survey.floorplans | orderBy : orderBy | filter : {bedrooms : row.bedrooms}" ng-style="{'color': fp.excluded || fp.missing ? '#B4B4B4' : 'inherit'}">
             <td style="text-align: center"></td>
             <td style="text-align: center"></td>
             <td  style="text-align:center; width:25px">
@@ -460,13 +479,13 @@
             </td>
             <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;{{fp.name}}
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:2px"
-                   ng-if="fp.excluded"
+                <i class="fa fa-warning"
+                   style="cursor:pointer;font-size:12px;padding-left:2px;color:orange"
+                   ng-if="fp.missing"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
                    popover-append-to-body="true"
-                   uib-popover="This floor plan has been excluded from reporting and dashboard calculations. This is due to manually excluding floor plans or missing rent data."
+                   uib-popover="This floor plan has been excluded from reporting and dashboard calculations due to missing rent data."
                 ></i>
             </td>
             <td style="text-align: right" ng-if="show.occupancy" class="pad">

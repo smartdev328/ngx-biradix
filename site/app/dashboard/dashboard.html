@@ -253,7 +253,7 @@
 
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
                 </div>
-                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd">|</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && points.excludedList.length">|</div>
                 <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;" ng-if="property.appliedPerspective && points.excludedList.length">Perspective Applied: <b>{{property.appliedPerspective}}</b>
                     <i class="fa fa-question-circle"
                        style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle"
@@ -346,12 +346,22 @@
                     </ul>
                 </div>
                 <Br clear="all">
-                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
-
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.strRangeEnd && property.hasExcluded">|</div>
+                    <div style="float:left;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.hasExcluded">Perspective Applied: <b>{{property.appliedPerspective}}</b>
+                    <i class="fa fa-question-circle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       uib-popover-html="'Some data has been recalculated by excluding floor plans from this perspective.'"
+                    ></i>
+                </div>
+                <br clear="all">
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>
-                <property-comps roles="roles" comps="comps" order-by="settings.orderByComp" show="settings.show" can-survey="me.permissions.indexOf('Properties') > -1" show-totals="settings.totals"></property-comps>
+                <property-comps roles="roles" comps="comps" order-by="settings.orderByComp" show="settings.show" can-survey="me.permissions.indexOf('Properties') > -1" show-totals="settings.totals" applied-perspective="property.appliedPerspective"></property-comps>
             </div>
         </div>
     </div>

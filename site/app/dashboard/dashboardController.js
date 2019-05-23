@@ -75,6 +75,11 @@ define([
 
          $scope.$watch('settings.perspective', function() {
              if (!$scope.localLoading) return;
+             if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
+                 $location.path("/perspectives");
+                 return;
+             }
+
              if ($scope.settings.perspective) {
                  $scope.settings.selectedPerspective = $scope.settings.perspective.value;
              } else {
@@ -97,11 +102,6 @@ define([
             }
 
             $cookieSettingsService.saveBedrooms($scope.settings.selectedBedroom);
-
-            if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
-                $location.path("/perspectives");
-                return;
-            }
 
             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true);
         }
@@ -450,30 +450,7 @@ define([
 
         $scope.cbLegendClicked = function(legend) {
             $scope.legendUpdated = legend;
-        }
+        };
 
-        $scope.showExcluded = function(appliedPerspective, excludedList) {
-            var html = "<b>Perspective applied:</b> <Br>" + appliedPerspective + "<Br><BR>";
-
-            html += "<b>Removed floor plans:</b><br>";
-            html += "- " + _.take(excludedList, 10).join("<br>- ");
-            if (excludedList.length > 10) {
-                html += "<Br>- and " + (excludedList.length - 10) + " more floor plan(s)"
-            }
-
-            return html;
-        }
-
-         $scope.showMissing = function(excludedList) {
-             var html = "<b>Missing rent values:</b> <Br>This property is missing some rent values. Please add missing rent values to get accurate calculations<Br><BR>";
-
-             html += "<b>Affected floor plans:</b><br>";
-             html += "- " + _.take(excludedList, 10).join("<br>- ");
-             if (excludedList.length > 10) {
-                 html += "<Br>- and " + (excludedList.length - 10) + " more floor plan(s)"
-             }
-
-             return html;
-         }
     }]);
 });
