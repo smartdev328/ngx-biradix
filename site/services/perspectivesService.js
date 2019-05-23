@@ -3,7 +3,6 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
 
         fac.scopeFunctions = function($scope) {
             $scope.selectPerspective = function(id) {
-                console.log(id);
                 $scope.model.selectedProperty.perspectives =  $scope.model.selectedProperty.perspectives || [];
                 if ($scope.model.selectedProperty.perspectives.length > 0) {
                     if (!id) {
@@ -108,7 +107,7 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                     searchName: search,
                     skipAmenities: true,
                     hideCustomComps: true,
-                    select: "name comps.id comps.orderNumber custom",
+                    select: "name comps.id comps.orderNumber custom perspectives",
                     sort: "name"
                 }).then(function(response) {
                     response.data.properties = _.sortBy(response.data.properties, function(x) {

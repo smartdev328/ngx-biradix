@@ -54,8 +54,10 @@ define([
                     $scope.model.comps = newComps;
                     if ($scope.perspectiveToLoad) {
                         $scope.selectPerspective($scope.perspectiveToLoad);
+                        delete $scope.perspectiveToLoad;
                     } else {
                         $scope.model.selectedPerspective = null;
+                        $scope.model.mode = $scope.MODE.NONE;
                     }
                     $scope.loading = false;
                 });
