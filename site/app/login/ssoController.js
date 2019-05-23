@@ -15,7 +15,7 @@ define([
         var domain = "https://" + host;
 
         if (host === location.hostname) {
-            $location.path("/login").search("e", encodeURIComponent($scope.email || "")).search("r", $stateParams.r);
+            $location.path("/login").search("e", $scope.email || "").search("r", $stateParams.r);
         } else {
             location.href = domain + "/#login?e=" + encodeURIComponent($scope.email || "") + "&r=" + encodeURIComponent($stateParams.r);
         }
