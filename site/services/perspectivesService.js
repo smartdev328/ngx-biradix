@@ -162,6 +162,7 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                 bedroom.floorplans.forEach(function(f) {
                     f.checked = bedroom.checked;
                 });
+
                 if (checkIndeterminate) {
                     $scope.checkIndeterminate();
                 }
@@ -186,7 +187,7 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                 var compOn;
                 var compOff;
                 $scope.model.comps.forEach(function(p) {
-                    compOff = false;
+                    compOn = false;
                     compOff = false;
                     p.selectedFloorplans = 0;
                     p.bedrooms.forEach(function(b) {
