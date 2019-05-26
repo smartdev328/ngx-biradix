@@ -78,9 +78,9 @@
                             <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate">
                             <label for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
                             <div ng-if="bedroom.open" class="ml-15">
-                                <div ng-repeat-start="floorplan in bedroom.floorplans">
+                                <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}">
                                     <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()">
-                                    <label class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}">{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units</label>
+                                    <label class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}">{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></label>
                                 </div>
                                 <div ng-repeat-end ng-if="false"></div>
                             </div>

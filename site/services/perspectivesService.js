@@ -19,37 +19,57 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                 var compIds = property.comps.map(function(c) {
                     return c.id;
                 });
+                $propertyService.getDeletedFloorplans(compIds).then(function(response) {
+                    var deletedFloorplans = response.data.deletedFloorplans;
 
-                $propertyService.search({
-                    limit: 10000,
-                    permission: "PropertyView",
-                    active: true,
-                    select: "_id name floorplans",
-                    ids: compIds,
-                    sort: "name",
-                    skipAmenities: true
-                }).then(function(response) {
-                    var comp;
-                    response.data.properties.forEach(function(c) {
-                        comp = _.find(property.comps, function(x) {
-                            return x.id.toString() === c._id.toString();
+                    $propertyService.search({
+                        limit: 10000,
+                        permission: "PropertyView",
+                        active: true,
+                        select: "_id name floorplans",
+                        ids: compIds,
+                        sort: "name",
+                        skipAmenities: true
+                    }).then(function (response) {
+                        var comp;
+                        response.data.properties.forEach(function (c) {
+                            comp = _.find(property.comps, function (x) {
+                                return x.id.toString() === c._id.toString();
+                            });
+
+                            c.orderNumber = 999;
+
+                            if (comp && typeof comp.orderNumber != "undefined") {
+                                c.orderNumber = comp.orderNumber;
+                            }
+
+                            if (comp.id.toString() === property._id.toString()) {
+                                c.orderNumber = -1;
+                            }
                         });
+                        response.data.properties = _.sortByAll(response.data.properties, ["orderNumber", "name"]);
 
-                        c.orderNumber = 999;
+                        var deletedFps;
+                        var tempFps;
+                        response.data.properties.forEach(function (p) {
+                            deletedFps = _.filter(deletedFloorplans, function(x) {
+                                return x.propertyId.toString() ===  p._id.toString();
+                            });
+                            tempFps = _.map(deletedFps, function (x) {
+                                var temp = x.floorplan;
+                                temp.deleted = true;
+                                temp.lastSeen = x.lastSeen;
+                                return temp;
+                            });
+                            p.floorplans = p.floorplans.concat(tempFps);
+                            p.floorplans = _.sortByOrder(p.floorplans, ["deleted", "bedrooms", "bathrooms", "sqft", "description", "units"], [false, true, true, true, true, true]);
 
-                        if (comp && typeof comp.orderNumber != "undefined") {
-                            c.orderNumber = comp.orderNumber;
-                        }
+                        })
 
-                        if (comp.id.toString() === property._id.toString()) {
-                            c.orderNumber = -1;
-                        }
+                        $scope.resetView(response.data.properties);
+
+                        callback(response.data.properties);
                     });
-                    response.data.properties = _.sortByAll(response.data.properties, ["orderNumber", "name"]);
-
-                    $scope.resetView(response.data.properties);
-
-                    callback(response.data.properties);
                 });
             };
 

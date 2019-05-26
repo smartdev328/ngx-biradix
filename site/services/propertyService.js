@@ -74,6 +74,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
+    fac.getDeletedFloorplans = function (propertyIds) {
+        return $http.post(gAPI + '/api/1.0/properties/deletedFloorplans?bust=' + (new Date()).getTime(), {propertyIds: propertyIds}, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    };
+
         fac.getSubjects = function (propertyid) {
             return $http.get(gAPI + '/api/1.0/properties/' + propertyid+ '/subjects?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
