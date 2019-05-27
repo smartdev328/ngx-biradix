@@ -712,7 +712,7 @@ angular.module("biradix.global").controller("rootController",
             };
 
             $rootScope.showMissing = function(excludedList) {
-                var html = "<b>Missing rent values:</b> <Br>This property is missing some rent values. Please add missing rent values to get accurate calculations<Br><BR>";
+                var html = "<b>Missing rent values:</b> <Br>Some property floor plans are missing rent values and are being excluded from calculations. Please complete a new property survey to get accurate calculations<Br><BR>";
 
                 html += "<b>Affected floor plans:</b><br>";
                 html += "- " + _.take(excludedList, 10).join("<br>- ");
