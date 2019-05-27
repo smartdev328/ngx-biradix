@@ -227,9 +227,11 @@ define([
 
         }
 
+        $scope.toggleDropdown = {};
+
         $scope.setProperty = function(property) {
             $scope.selectedProperty = property;
-
+            $scope.toggleDropdown.isOpen = false;
             $scope.changeProperty();
         }
 
@@ -450,6 +452,13 @@ define([
 
         $scope.cbLegendClicked = function(legend) {
             $scope.legendUpdated = legend;
+        };
+
+        $scope.dropdownToggled = function(open) {
+            if(open) {
+                $scope.filters = {searchDashboard : ""};
+                $scope.autocomplete($scope.filters.searchDashboard);
+            }
         };
 
     }]);
