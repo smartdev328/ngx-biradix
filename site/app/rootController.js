@@ -698,5 +698,29 @@ angular.module("biradix.global").controller("rootController",
             "nersqftvscompavg": "<b>Net Effective Rent/Sqft vs Comp Avg</b> - <i>Net Effective Rent / Sqft divided by Comp average Net Effective Rent / Sqft</i>",
             "last_updated": "<b>Last Updated</b> - <i>The date of the last survey completed for that property</i>",
         };
+
+            $rootScope.showExcluded = function(appliedPerspective, excludedList) {
+                var html = "<b>Perspective applied:</b> <Br>" + appliedPerspective + "<Br><BR>";
+
+                html += "<b>Removed floor plans:</b><br>";
+                html += "- " + _.take(excludedList, 10).join("<br>- ");
+                if (excludedList.length > 10) {
+                    html += "<Br>- and " + (excludedList.length - 10) + " more floor plan(s)"
+                }
+
+                return html;
+            };
+
+            $rootScope.showMissing = function(excludedList) {
+                var html = "<b>Missing rent values:</b> <Br>Some property floor plans are missing rent values and are being excluded from calculations. Please complete a new property survey to get accurate calculations<Br><BR>";
+
+                html += "<b>Affected floor plans:</b><br>";
+                html += "- " + _.take(excludedList, 10).join("<br>- ");
+                if (excludedList.length > 10) {
+                    html += "<Br>- and " + (excludedList.length - 10) + " more floor plan(s)"
+                }
+
+                return html;
+            }
     }]);
 
