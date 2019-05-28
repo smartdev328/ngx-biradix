@@ -40,7 +40,10 @@
         border-left: 6px solid transparent !important;
         margin-left:4px;
     }
-    .popover.popover-small-margin {margin-top: -5px !important}
+    .popover.popover-small-margin {
+        margin-top: -5px !important;
+        margin-left: 15px;
+    }
     @media all and (min-width: 0px) and (max-width: 500px) {
         .bedrooms {
             margin-right: -15px !important;
@@ -258,7 +261,7 @@
                     </div>
                 </span>
                 <i class="fa fa-eye-slash" class="pull-left"
-                   style="cursor:pointer;font-size:18px;padding:4px 0px 0px 8px;"
+                   style="cursor:pointer;font-size:18px;padding:3px 0px 0px 8px;vertical-align: top;"
                    ng-if="points.excludedList.length"
                    popover-trigger="'mouseenter'"
                    popover-placement="right-top"
@@ -266,7 +269,7 @@
                    uib-popover-html="showExcluded(property.appliedPerspective, points.excludedList)"
                         ></i>
                 <i class="fa fa-warning" class="pull-left"
-                   style="cursor:pointer;font-size:15px;padding:4px 0px 0px 5px; color:orange"
+                   style="cursor:pointer;font-size:15px;padding:5px 0px 0px 5px; color:orange;vertical-align: top;"
                    ng-if="points.missingList.length"
                    popover-trigger="'mouseenter'"
                    popover-placement="right-top"
