@@ -42,7 +42,12 @@
     }
     .popover.popover-small-margin {
         margin-top: -5px !important;
+    }
+    .popover.right {
         margin-left: 15px;
+    }
+    .popover.right>.arrow {
+        pointer-events: none;
     }
     @media all and (min-width: 0px) and (max-width: 500px) {
         .bedrooms {
@@ -294,7 +299,7 @@
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && points.excludedList.length">|</div>
                 <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;" ng-if="property.appliedPerspective && points.excludedList.length">Perspective Applied: <b>{{property.appliedPerspective}}</b>
                     <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        popover-append-to-body="true"
@@ -388,7 +393,7 @@
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.strRangeEnd && property.hasExcluded">|</div>
                     <div style="float:left;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.hasExcluded">Perspective Applied: <b>{{property.appliedPerspective}}</b>
                     <i class="fa fa-question-circle"
-                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        popover-append-to-body="true"
