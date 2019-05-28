@@ -6,19 +6,12 @@
     <div ng-class="{'modal-body pms': true}">
         <table class="new-table border-table">
             <tbody>
-                <tr style="border-top:1px solid #ccc">
+                </tr style="border-top:1px solid #ccc">
                     <td class="gray">
-                        Rent:
+                        Unit Type Info:
                     </td>
                     <td>
-                        {{floorplan.rent | currency : "$" : 0}}
-                    </td>
-                </tr>
-                    <td class="gray">
-                        Total Units:
-                    </td>
-                    <td>
-                        {{floorplan.units}}
+                        <p style="margin:0;" ng-repeat="fp in floorplan.yardiFlooplans">Type: {{fp.bedrooms}}x{{fp.bathrooms}}, Desc: {{fp.description}}, SqFt: {{fp.sqft}}</p>
                     </td>
                 </tr>
                 <tr>
@@ -58,6 +51,14 @@
                               popover-class="popover-small"
                               uib-popover-html="floorplan.priceWarning"
                         ></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="gray">
+                        Estimated Rent:
+                    </td>
+                    <td>
+                        {{floorplan.rent | currency : "$" : 0}}
                     </td>
                 </tr>
             </tbody>
