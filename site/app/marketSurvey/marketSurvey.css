@@ -29,6 +29,12 @@
   height:26px;
 }
 
+.market-survey .propertySurvey .input-group-addon {
+  line-height: 18px;
+  display: inline-block;
+  width: auto;
+}
+
 .market-survey .has-warning .input-group-addon {
     border: 1px solid #f90;
     border-right: 0;
@@ -46,6 +52,12 @@
   border-bottom-left-radius: 0 !important;
   border-left: 0 !important;
   box-shadow: none !important;
+}
+
+.market-survey .propertySurvey .input-group .form-control:last-child {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
 }
 
 .market-survey .top-inputs .heading {
