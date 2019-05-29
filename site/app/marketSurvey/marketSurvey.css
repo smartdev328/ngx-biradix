@@ -73,10 +73,8 @@
 }
 
 .market-survey .survey-values .form-group {
-  float:right;
     margin-bottom: 0px;
 }
-
 
 .market-survey .survey-values .fa-undo, .market-survey .top-inputs .fa-undo {
     padding-left: 5px;
@@ -411,6 +409,10 @@
   width: 14px;
   height: 14px;
   border-radius: 3px;
+}
+
+.market-survey .newSurvey .survey-values .form-group {
+  float:right;
 }
 
 .toggleVersionButton {
