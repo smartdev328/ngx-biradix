@@ -6,7 +6,7 @@
     <div ng-class="{'modal-body pms': true}">
         <table class="new-table border-table">
             <tbody>
-                </tr style="border-top:1px solid #ccc">
+                <tr style="border-top:1px solid #ccc">
                     <td class="gray">
                         Unit Type Info:
                     </td>
@@ -70,6 +70,7 @@
                 <th>Code</th>
                 <th>UniteType Id</th>
                 <th>Description</th>
+                <th>Units</th>
                 <th>Sqft</th>
                 <th>UnitType Rent</th>
             </thead>
@@ -88,10 +89,13 @@
                     {{fp.description}}
                 </td>
                 <td>
+                    {{fp.units}}
+                </td>
+                <td>
                     {{fp.sqft}}
                 </td>
                 <td>
-                    {{fp.marketRent}}
+                    ${{fp.marketRent}}
                 </td>
             </tr>
             </tbody>
