@@ -95,7 +95,7 @@
                     {{fp.sqft}}
                 </td>
                 <td>
-                    ${{fp.marketRent}}
+                    {{fp.marketRent | currency : "$" : 0}}
                 </td>
             </tr>
             </tbody>
