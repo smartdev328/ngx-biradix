@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">SSO Config: {{organization.name}}</h2>
+    <hr>
+</div>
+
+<div class="modal-body">
+    <div class="maingrid wrapper panel">
+        <div class="container" style="padding-top:5px;border-bottom:1px solid #e5e5e5;width:100%">
+            <ul class="nav nav-pills" role="tablist">
+                <li ng-repeat="tab in tabs" ng-class="{'active':$index == tabIndex}"><a href ng-click="changeTab($index)">{{tab.label}}</a></li>
+            </ul>
+        </div>
+        <div class="modal-body container-fluid">
+            <div ng-include="tabTemplate"></div>
+        </div>
+        <hr>
+        <div style="margin:0px auto;width:75px">
+            <button class=" btn btn-primary btn-large btn-block contact-submit" type="button" ng-click="">Save</button>
+        </div>
+    </div>
+</div>

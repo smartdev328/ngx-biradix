@@ -1,0 +1,15 @@
+<label for="redirect-url">Redirect URL</label>
+<div class="input-group">
+    <span class="input-group-addon" id="basic-addon3">https://{{organization.subdomain}}.biradix.com/</span>
+    <input type="text" class="form-control" id="redirect-url">
+</div>
+
+<label for="sso-system">SSO System</label>
+<select
+    class="form-control input-sm"
+    ng-model="SSOList.model"
+    ng-options="item.name for item in SSOList.data track by item.id"
+    ng-change="SSOList.change()"
+    id="sso-system"
+>
+</select>
