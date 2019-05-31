@@ -25,14 +25,14 @@ function fixedTable($timeout) {
             var modal = angular.element(document.querySelector(".market-survey"))[0].offsetWidth;
             if(window.innerWidth < 768) {
                 var firstColumn = 27;
-                var secondColumn = Math.round(modal*(16/100)) - 17;
-                var thirdColumn = Math.round(modal*(28/100)) - 20;
-                var fourthColumn = Math.round(modal*(28/100)) - 20;
-                var fifthColumn = Math.round(modal*(28/100)) - 20;
+                var secondColumn = Math.round(modal*(19/100)) - 18;
+                var thirdColumn = Math.round(modal*(27/100)) - 21;
+                var fourthColumn = Math.round(modal*(27/100)) - 21;
+                var fifthColumn = Math.round(modal*(27/100)) - 22;
                 var sixthColumn = 50;
                 columnWidthArray = [firstColumn,secondColumn,0,0,0,thirdColumn,fourthColumn,fifthColumn,sixthColumn];
             } else {
-                columnWidthArray = [27,50,74,53,53,88,88,88,50];
+                columnWidthArray = [27,50,73,52,52,87,87,87,50];
             }
 
             var headerArray = [];

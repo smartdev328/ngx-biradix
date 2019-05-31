@@ -329,7 +329,6 @@
 }
 
 .propertySurvey {
-    /*margin: 0 -14px;*/
     font-size: 12px;
     position: relative;
 }
@@ -425,6 +424,16 @@
 }
 
 @media all and (min-width: 0px) and (max-width: 767px) {
+
+  .propertySurvey {
+      margin: 0 -14px;
+  }
+
+  .market-survey .propertySurvey .survey-value {
+    max-width: 40px;
+    min-width: 40px;
+  }
+
     .oldSurvey .market-survey .modal-body {
         padding-left:3px !important;
         padding-right:3px !important;
