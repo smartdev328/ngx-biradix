@@ -103,19 +103,19 @@
                         <i ng-if="unitsMatch(floorplan)" class="fa fa-arrows-h" aria-hidden="true"></i>
                     </div>
                     <div class="w-45 pull-left">
-                        <ul ui-sortable="{connectWith: '.list'}" ng-model="floorplan.yardi" class="list">
-                            <div ng-repeat="mapped in floorplan.yardi | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan mapped"><i class="fa fa-bars"></i> {{mapped.name}}</div>
+                        <ul ui-sortable="sortableOptions" ng-model="floorplan.yardi" class="list">
+                            <li ng-repeat="mapped in floorplan.yardi track by mapped.id | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan mapped"><i class="fa fa-bars"></i>{{mapped.name}}</li>
                         </ul>
                     </div>
                 </div>
                 <div ng-repeat-end ng-if="false"></div>
                 <h4>Unmapped Yardi Floor plans:</h4>
-                <ul ui-sortable="{connectWith: '.list'}" ng-model="pms.unmappedFloorplans" class="list">
-                    <div ng-repeat="floorplan in pms.unmappedFloorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan unmapped"><i class="fa fa-bars"></i> {{floorplan.name}}</div>
+                <ul ui-sortable="sortableOptions" ng-model="pms.unmappedFloorplans" class="list">
+                    <li ng-repeat="floorplan in pms.unmappedFloorplans track by floorplan.id | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan unmapped"><i class="fa fa-bars"></i>{{floorplan.name}}</li>
                 </ul>
                 <h4>Excluded Yardi Floor plans:</h4>
-                <ul ui-sortable="{connectWith: '.list'}" ng-model="pms.excludedFloorplans" class="list">
-                    <div ng-repeat="floorplan in pms.excludedFloorplans | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan unmapped"><i class="fa fa-bars"></i> {{floorplan.name}}</div>
+                <ul ui-sortable="sortableOptions" ng-model="pms.excludedFloorplans" class="list">
+                    <li ng-repeat="floorplan in pms.excludedFloorplans track by floorplan.id | orderBy: ['bedrooms','bathrooms','sqft','description','units']" class="floorplan unmapped"><i class="fa fa-bars"></i> {{floorplan.name}}</li>
                 </ul>
 
             </div>

@@ -229,6 +229,10 @@ define([
                 });
             };
 
+            $scope.sortableOptions = {
+              connectWith: '.list'
+            };
+
             $scope.reload();
         }]);
 });
