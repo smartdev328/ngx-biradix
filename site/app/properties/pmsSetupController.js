@@ -2,8 +2,8 @@
 define([
     "app"
 ], function(app) {
-    app.controller("pmsSetupController", ["$scope", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "$importIntegrationService", "toastr", "$dialog", "$rootScope",
-        function($scope, $uibModalInstance, property, ngProgress, $propertyService, $importService, $importIntegrationService, toastr, $dialog, $rootScope) {
+    app.controller("pmsSetupController", ["$scope","orderByFilter", "$filter", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "$importIntegrationService", "toastr", "$dialog", "$rootScope",
+        function($scope,orderByFilter, $filter, $uibModalInstance, property, ngProgress, $propertyService, $importService, $importIntegrationService, toastr, $dialog, $rootScope) {
             ga("set", "title", "/pmsSetup");
             ga("set", "page", "/pmsSetup");
             ga("send", "pageview");
@@ -229,8 +229,19 @@ define([
                 });
             };
 
+            $scope.orderItems = function() {      
+                $scope.$watch('pms.floorplans', function (neValue) {
+                    neValue.forEach(function(y){
+                        y.yardi = orderByFilter(y.yardi, ['bedrooms','bathrooms','sqft','description','units']);
+                    });
+                });
+            }
+
             $scope.sortableOptions = {
-              connectWith: '.list'
+              connectWith: '.list',
+              update: function(e, ui) {
+                $scope.orderItems();
+              }
             };
 
             $scope.reload();
