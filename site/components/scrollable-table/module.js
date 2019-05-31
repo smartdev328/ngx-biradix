@@ -32,7 +32,7 @@ function fixedTable($timeout) {
                 var sixthColumn = 50;
                 columnWidthArray = [firstColumn,secondColumn,0,0,0,thirdColumn,fourthColumn,fifthColumn,sixthColumn];
             } else {
-                columnWidthArray = [27,52,78,56,56,91,91,92,50];
+                columnWidthArray = [27,50,74,53,53,88,88,88,50];
             }
 
             var headerArray = [];
@@ -41,6 +41,9 @@ function fixedTable($timeout) {
             var thDesc = elem.querySelector('thead tr:first-child th.description');
             var tdDesc = elem.querySelector('tbody tr:first-child td.description');
             var tfDesc = document.querySelector('.tfoot > .tfoot-cell.description');
+            var thLast = elem.querySelector('thead tr:first-child th:last-child');
+            var tdLast = elem.querySelector('tbody tr:first-child td:last-child');
+            var tfLast = document.querySelector('.tfoot > .tfoot-cell:last-child');
 
             columnWidthArray.forEach(function(width, i){
                 var thElems = elem.querySelector('thead tr:first-child th:nth-child(' + (i + 1) + ')');
@@ -77,6 +80,9 @@ function fixedTable($timeout) {
                 thDesc.style.width = parseInt(thDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
                 tdDesc.style.minWidth = parseInt(tdDesc.style.minWidth.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
                 tfDesc.style.width = parseInt(tfDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
+                thLast.style.width = columnWidthArray[8] + 'px';
+                tdLast.style.minWidth = columnWidthArray[8] + 'px';
+                tfLast.style.width = columnWidthArray[8] + 'px';
             }
         }
 

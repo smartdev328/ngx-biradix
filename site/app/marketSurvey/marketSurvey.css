@@ -29,6 +29,12 @@
   height:26px;
 }
 
+.market-survey .propertySurvey .input-group-addon {
+  line-height: 18px;
+  display: inline-block;
+  width: auto;
+}
+
 .market-survey .has-warning .input-group-addon {
     border: 1px solid #f90;
     border-right: 0;
@@ -48,6 +54,12 @@
   box-shadow: none !important;
 }
 
+.market-survey .propertySurvey .input-group .form-control:last-child {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
 .market-survey .top-inputs .heading {
     text-align: right;padding:0px 7px
 }
@@ -63,7 +75,6 @@
 .market-survey .survey-values .form-group {
     margin-bottom: 0px;
 }
-
 
 .market-survey .survey-values .fa-undo, .market-survey .top-inputs .fa-undo {
     padding-left: 5px;
@@ -318,7 +329,7 @@
 }
 
 .propertySurvey {
-    margin: 0 -14px;
+    /*margin: 0 -14px;*/
     font-size: 12px;
     position: relative;
 }
@@ -398,6 +409,10 @@
   width: 14px;
   height: 14px;
   border-radius: 3px;
+}
+
+.market-survey .newSurvey .survey-values .form-group {
+  float:right;
 }
 
 .toggleVersionButton {
