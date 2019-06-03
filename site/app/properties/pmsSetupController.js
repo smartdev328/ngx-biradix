@@ -2,8 +2,8 @@
 define([
     "app"
 ], function(app) {
-    app.controller("pmsSetupController", ["$scope","orderByFilter", "$filter", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "$importIntegrationService", "toastr", "$dialog", "$rootScope",
-        function($scope,orderByFilter, $filter, $uibModalInstance, property, ngProgress, $propertyService, $importService, $importIntegrationService, toastr, $dialog, $rootScope) {
+    app.controller("pmsSetupController", ["$scope", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "$importIntegrationService", "toastr", "$dialog", "$rootScope",
+        function($scope, $uibModalInstance, property, ngProgress, $propertyService, $importService, $importIntegrationService, toastr, $dialog, $rootScope) {
             ga("set", "title", "/pmsSetup");
             ga("set", "page", "/pmsSetup");
             ga("send", "pageview");
@@ -228,20 +228,23 @@ define([
                     return x.units;
                 });
             };
-
-            $scope.orderItems = function() {      
-                $scope.$watch('pms.floorplans', function (neValue) {
-                    neValue.forEach(function(y){
-                        y.yardi = orderByFilter(y.yardi, ['bedrooms','bathrooms','sqft','description','units']);
-                    });
+    
+            $scope.$watch('pms.floorplans', function (newValue) {
+                newValue.forEach(function(y){
+                    y.yardi = _.sortByAll(y.yardi, ['bedrooms', 'bathrooms', 'sqft', 'description', 'units']);
                 });
-            }
+            }, true);
+    
+            $scope.$watch('pms.unmappedFloorplans', function (newValue) {
+                $scope.pms.unmappedFloorplans = _.sortByAll(newValue, ['bedrooms', 'bathrooms', 'sqft', 'description', 'units']);
+            }, true);
+    
+            $scope.$watch('pms.excludedFloorplans', function (newValue) {
+                $scope.pms.excludedFloorplans = _.sortByAll(newValue, ['bedrooms', 'bathrooms', 'sqft', 'description', 'units']);
+            }, true);
 
             $scope.sortableOptions = {
-              connectWith: '.list',
-              update: function(e, ui) {
-                $scope.orderItems();
-              }
+              connectWith: '.list'
             };
 
             $scope.reload();
