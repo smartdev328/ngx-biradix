@@ -20,6 +20,10 @@
     margin-bottom: 40px;
 }
 
+.mt-0 {
+    margin-top: 0 !important;
+}
+
 .mt-10 {
     margin-top: 10px !important;
 }
@@ -40,6 +44,10 @@
     margin-left: 15px;
 }
 
+.ml-30 {
+    margin-left: 30px;
+}
+
 .mr-10 {
     margin-right: 10px;
 }
@@ -50,6 +58,10 @@
 
 .pt-10 {
     padding-top: 10px;
+}
+
+.pl-0 {
+    padding-left: 0;
 }
 
 .pl-10 {
