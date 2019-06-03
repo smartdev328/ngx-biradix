@@ -19,7 +19,6 @@ define([
                 ga('send', 'pageview');
 
                 $scope.organization = organization;
-                console.log(organization);
 
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
@@ -67,7 +66,6 @@ define([
                     ],
                     model: undefined,
                     change: function () {
-                        console.log($scope.SSOList.model);
                     },
                 };
 
@@ -81,7 +79,6 @@ define([
                                 selected: false,
                             };
                         });
-                        console.log(response);
                     });
                 };
                 $scope.userlistOptions = {
