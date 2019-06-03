@@ -8,17 +8,10 @@
             <tbody>
                 <tr style="border-top:1px solid #ccc">
                     <td class="gray">
-                        Rent:
+                        Unit Type Info:
                     </td>
                     <td>
-                        {{floorplan.rent | currency : "$" : 0}}
-                    </td>
-                </tr>
-                    <td class="gray">
-                        Total Units:
-                    </td>
-                    <td>
-                        {{floorplan.units}}
+                        <p style="margin:0;" ng-repeat="fp in floorplan.yardiFlooplans">Type: {{fp.bedrooms}}x{{fp.bathrooms}}, Desc: {{fp.description}}, Units: {{fp.units}}, SqFt: {{fp.sqft}}</p>
                     </td>
                 </tr>
                 <tr>
@@ -60,6 +53,14 @@
                         ></span>
                     </td>
                 </tr>
+                <tr>
+                    <td class="gray">
+                        Estimated Rent:
+                    </td>
+                    <td>
+                        {{floorplan.rent | currency : "$" : 0}}
+                    </td>
+                </tr>
             </tbody>
         </table>
         <h4><i ng-class="{'fa' : true,  'fa-plus-square-o': !showTypes, 'fa-minus-square-o' : showTypes}" style="cursor:pointer;font-size:14px;padding-top:2px;margin:0px 15px" ng-click="showTypes = !showTypes"></i>Unit Type(s)</h4>
@@ -69,6 +70,7 @@
                 <th>Code</th>
                 <th>UniteType Id</th>
                 <th>Description</th>
+                <th>Units</th>
                 <th>Sqft</th>
                 <th>UnitType Rent</th>
             </thead>
@@ -87,10 +89,13 @@
                     {{fp.description}}
                 </td>
                 <td>
+                    {{fp.units}}
+                </td>
+                <td>
                     {{fp.sqft}}
                 </td>
                 <td>
-                    {{fp.marketRent}}
+                    {{fp.marketRent | currency : "$" : 0}}
                 </td>
             </tr>
             </tbody>

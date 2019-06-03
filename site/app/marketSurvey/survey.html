@@ -162,8 +162,7 @@
       </select>
       <div class="bulkConcessionValue">
         <div class="input-group">
-          <span class="input-group-addon" ng-if="bulkConcession.concessionsTypeOff == 'dollars off'">$</span>
-          <input type="text" class="form-control" ng-class="{'borderLeft' : bulkConcession.concessionsTypeOff != 'dollars off'}" ng-model="bulkConcession.concessionValue">
+          <span class="input-group-addon" ng-if="bulkConcession.concessionsTypeOff == 'dollars off'">$</span><input type="text" class="form-control" ng-class="{'borderLeft' : bulkConcession.concessionsTypeOff != 'dollars off'}" ng-model="bulkConcession.concessionValue">
         </div>
       </div>
       <select ng-model="bulkConcession.concessionsTypeOff">
@@ -267,44 +266,40 @@
           <td style="white-space: nowrap;text-align:right;">
               <div ng-class="{'form-group': true, 'has-error': !!row.errors.rent || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                 <div class="input-group pull-right">
-                  <span class="input-group-addon">$</span>
-                  <input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
+                  <span class="input-group-addon">$</span><input type="number" min="1" class="form-control input-sm survey-value" ng-model="row.rent" input-mask="9{1,5}" ng-enter="next(row,'rent-' + row.id)" id="rent-{{row.id}}" onclick="select()" ng-change="clear('rent-' + row.id)" ng-keydown="pressed(row,'rent-' + row.id, $event)" ng-blur="updateDone(row,true,'rent')">
                 </div>
               </div>
           </td>
           <td ng-if="!settings.showDetailed" style="white-space: nowrap;text-align:right">
               <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessions || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                 <div class="input-group pull-right">
-                  <span class="input-group-addon">$</span>
-                  <input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()" ng-change="clear('concessions-' + row.id)" ng-keydown="pressed(row,'concessions-' + row.id, $event)" ng-blur="updateDone(row,true,'concessions')">
+                  <span class="input-group-addon">$</span><input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessions"  input-mask="9{1,5}" ng-enter="next(row,'concessions-' + row.id)" id="concessions-{{row.id}}" onclick="select()" ng-change="clear('concessions-' + row.id)" ng-keydown="pressed(row,'concessions-' + row.id, $event)" ng-blur="updateDone(row,true,'concessions')">
                 </div>
               </div>
           </td>
           <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
               <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsOneTime || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                 <div class="input-group pull-right">
-                  <span class="input-group-addon">$</span>
-                  <input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()" ng-change="clear('concessionsOneTime-' + row.id)" ng-keydown="pressed(row,'concessionsOneTime-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsOneTime')">
+                  <span class="input-group-addon">$</span><input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsOneTime"  input-mask="9{1,5}" ng-enter="next(row,'concessionsOneTime-' + row.id)" id="concessionsOneTime-{{row.id}}" onclick="select()" ng-change="clear('concessionsOneTime-' + row.id)" ng-keydown="pressed(row,'concessionsOneTime-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsOneTime')">
                 </div>
               </div>
           </td>
           <td ng-if="settings.showDetailed" style="white-space: nowrap;text-align:right">
               <div ng-class="{'form-group': true, 'has-error': !!row.errors.concessionsMonthly || !!row.errors.ner, 'has-warning': getWarnings(row) && !getErrors(row)}">
                 <div class="input-group pull-right">
-                  <span class="input-group-addon">$</span>
-                  <input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
+                  <span class="input-group-addon">$</span><input type="number" min="0" class="form-control input-sm survey-value" ng-model="row.concessionsMonthly"  input-mask="9{1,5}" ng-enter="next(row,'concessionsMonthly-' + row.id)" id="concessionsMonthly-{{row.id}}" onclick="select()" ng-change="clear('concessionsMonthly-' + row.id)" ng-keydown="pressed(row,'concessionsMonthly-' + row.id, $event)" ng-blur="updateDone(row,true,'concessionsMonthly')">
                 </div>
               </div>
           </td>
           <td nowrap>
               &nbsp;<a href ng-click="undo(row)" ng-if="row.updated" class="pull-left"><i class="fa fa-undo" uib-tooltip="Undo"></i></a>
-              <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px"
+              <i ng-if="getWarnings(row) && !getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:orange;margin-top:3px;margin-right: 3px;"
                  popover-trigger="'mouseenter'"
                  popover-placement="left"
                  popover-append-to-body="true"
                  uib-popover-html="getWarnings(row)"
               ></i>
-              <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px"
+              <i ng-if="getErrors(row)" class="fa fa-exclamation-triangle pull-right" style="color:red;margin-top:3px;margin-right: 3px;"
                  popover-trigger="'mouseenter'"
                  popover-placement="left"
                  popover-append-to-body="true"
