@@ -785,7 +785,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             }
 
             $scope.next = function(fp, id) {
-                var all = $(".survey-values input[type='number']");
+                var all = $(".survey-holders input[type='number']");
 
                 if (all.length == 0) {
                     return;
