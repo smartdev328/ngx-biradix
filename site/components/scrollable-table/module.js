@@ -22,7 +22,7 @@ function fixedTable($timeout) {
         });
 
         function calculateWidth() {
-            var modal = angular.element(document.querySelector(".market-survey"))[0].offsetWidth;
+            var modal = window.outerWidth - 20;
             if(window.innerWidth < 768) {
                 var firstColumn = 27;
                 var secondColumn = Math.round(modal*(19/100)) - 18;
