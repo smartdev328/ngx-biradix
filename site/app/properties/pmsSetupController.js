@@ -228,6 +228,24 @@ define([
                     return x.units;
                 });
             };
+    
+            $scope.$watch('pms.floorplans', function (newValue) {
+                newValue.forEach(function(y){
+                    y.yardi = _.sortByAll(y.yardi, ['bedrooms', 'bathrooms', 'sqft', 'description', 'units']);
+                });
+            }, true);
+    
+            $scope.$watch('pms.unmappedFloorplans', function (newValue) {
+                $scope.pms.unmappedFloorplans = _.sortByAll(newValue, ['bedrooms', 'bathrooms', 'sqft', 'description', 'units']);
+            }, true);
+    
+            $scope.$watch('pms.excludedFloorplans', function (newValue) {
+                $scope.pms.excludedFloorplans = _.sortByAll(newValue, ['bedrooms', 'bathrooms', 'sqft', 'description', 'units']);
+            }, true);
+
+            $scope.sortableOptions = {
+              connectWith: '.list'
+            };
 
             $scope.reload();
         }]);
