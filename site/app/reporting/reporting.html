@@ -353,6 +353,20 @@
 
                                     </div>
                                 </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.rankingSummaryPerspectives"
+                                            ng-model="temp.rankingSummaryPerspectiveSelected"
+                                    ></select>
+                                </div>
                             </div>
                         </div>
                         <div ng-if="rankings" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_open">

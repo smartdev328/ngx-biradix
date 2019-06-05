@@ -147,7 +147,7 @@ define([
                 , skipAmenities: true
                 , hideCustomComps: true
                 , hideCustom: ($scope.reportType == "multiple") // no custom properties for group reports
-                , select: "name comps.id custom"
+                , select: "name comps.id custom perspectives"
                 , sort: "name"
             }).then(function (response) {
 
@@ -208,7 +208,7 @@ define([
                 $propertyService.search({
                     limit: 10000,
                     permission: 'PropertyManage',
-                    select: "_id name comps.id comps.orderNumber custom",
+                    select: "_id name comps.id comps.orderNumber custom perspectives",
                     ids: $scope.propertyIds,
                     hideCustomComps: true,
                     sort: "name"
@@ -246,7 +246,7 @@ define([
                 permission: "PropertyManage",
                 hideCustomComps: true,
                 active: true,
-                select: "_id name comps.id comps.orderNumber custom",
+                select: "_id name comps.id comps.orderNumber custom perspectives",
                 skipAmenities: true,
             }).then(function(response) {
                 response.data.properties.forEach(function(p) {
@@ -554,6 +554,10 @@ define([
                 $scope.temp.showRankingsSummaryItems.forEach(function (f) {
                     $scope.liveSettings.rankingsSummary.show[f.id] = f.selected;
                 })
+
+                if ($scope.temp.rankingSummaryPerspectiveSelected) {
+                    $scope.liveSettings.rankingsSummary.perspective = $scope.temp.rankingSummaryPerspectiveSelected.value;
+                }
             }
 
             if ($scope.reportIds.indexOf("trends") > -1) {
@@ -664,7 +668,7 @@ define([
                 }
             }
             if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
-                options.property_rankings_summary = {orderBy: $scope.liveSettings.rankingsSummary.orderBy};
+                options.property_rankings_summary = {orderBy: $scope.liveSettings.rankingsSummary.orderBy, perspective: $scope.liveSettings.rankingsSummary.perspective};
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
@@ -911,6 +915,7 @@ define([
             if ($scope.selected.Property) {
                 $scope.propertyIds = [$scope.selected.Property._id];
                 $scope.changeProperty();
+                $scope.reportsChanged();
             }
         }, true);
 
@@ -1508,6 +1513,21 @@ define([
             var f = $scope.liveSettings.rankingsSummary.orderBy.replace("-","");
             $scope.temp.rankingSummarySortSelected = _.find($scope.temp.rankingSummarySortItems, function(x) {return x.id == f})
             $scope.temp.rankingSummarySortDir = $scope.liveSettings.rankingsSummary.orderBy[0] == "-" ? "desc" : "asc";
+
+            if ($scope.selected.Property) {
+                $scope.temp.rankingSummaryPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.rankingSummaryPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.rankingSummaryPerspectiveSelected = _.find($scope.temp.rankingSummaryPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.rankingsSummary.perspective;
+                });
+
+                if (!$scope.temp.rankingSummaryPerspectiveSelected) {
+                    $scope.temp.rankingSummaryPerspectiveSelected = $scope.temp.rankingSummaryPerspectives[0];
+                }
+            }
         }
 
         $scope.$watch("runSettings.rankingsSummary.orderBy", function(newValue,oldValue) {
