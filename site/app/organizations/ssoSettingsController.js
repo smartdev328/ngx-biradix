@@ -15,7 +15,8 @@ define([
             '$userService',
             '$organizationsService',
             'toastr',
-            function ($scope, $uibModalInstance, organization, ngProgress, $rootScope, $userService, $organizationsService, toastr) {
+            '$ssoService',
+            function ($scope, $uibModalInstance, organization, ngProgress, $rootScope, $userService, $organizationsService, toastr, $ssoService) {
                 ga('set', 'title', '/ssoSettings');
                 ga('set', 'page', '/ssoSettings');
                 ga('send', 'pageview');
@@ -67,19 +68,19 @@ define([
 
                 // load data
                 $scope.reload = function () {
-                    $organizationsService.search().then(function (response) {
-                        $scope.organization = response.data.organizations.find((function (item, index) {
-                            return item._id == organization._id;
-                        }));
+                    $ssoService.getOrganizationSSOSettings(organization._id).then(function (response) {
+                        $scope.organization = response.data.organization;
                         $scope.SSOList.model = $scope.SSOList.data.find(function (item) {
-                            return item.id == $scope.organization.auth;
+                            return item.id == $scope.organization.sso.system;
                         });
+                        $scope.SSOForNewUsers = $scope.organization.sso.default;
                     });
-                    $userService.search({orgid: organization._id}).then(function(response) {
+                    $ssoService.getUsers(organization._id).then(function(response) {
+                        console.log(response);
                         $scope.userlist = response.data.users.map(function (user) {
                             return {
                                 id: user._id,
-                                name: `${user.name} (${user.email})`,
+                                name: user.name + ' (' + user.email + ')',
                                 selected: user.sso,
                             };
                         });
@@ -95,31 +96,26 @@ define([
                 //call loading
                 $scope.reload();
 
+                $scope.changeSSOForNewUsers = function () {
+                    $scope.SSOForNewUsers = !$scope.SSOForNewUsers;
+                }
+
                 $scope.save = function () {
-                    switch ($scope.tabIndex) {
-                        case 0:
-                            $scope.organization = {
-                                ...$scope.organization,
-                                auth: ($scope.SSOList.model || {id: undefined}).id,
-                            }
-                            $organizationsService.updateSSOSettings($scope.organization).then(function (response) {
-                                toastr.success(`SSO ${$scope.organization.name} Settings Updated Successfully`);
-                                ngProgress.complete();
-                            });
-                            break;
-                        case 1:
-                            var users = $scope.userlist.map(function (item, index) {
-                                return {
-                                    _id: item.id,
-                                    sso: item.selected,
-                                };
-                            });
-                            $userService.updateSSOSettings(users).then(function (response) {
-                                toastr.success(`SSO ${$scope.organization.name} Users' Settings Updated Successfully`);
-                                ngProgress.complete();
-                            });
-                            break;
-                    }
+                    $ssoService.updateOrganizationSSOSettings(organization._id, {
+                        system: ($scope.SSOList.model || {id: undefined}).id,
+                        default: $scope.SSOForNewUsers,
+                    }).then(function (response) {
+                        var users = $scope.userlist.map(function (item, index) {
+                            return {
+                                _id: item.id,
+                                sso: item.selected,
+                            };
+                        });
+                        $ssoService.updateUsers(organization._id, users).then(function (response) {
+                            toastr.success('SSO ' + $scope.organization.name + 'Users\' Settings Updated Successfully');
+                            ngProgress.complete();
+                        });
+                    });
                 }
             }
         ]
