@@ -700,9 +700,9 @@ angular.module("biradix.global").controller("rootController",
         };
 
             $rootScope.showExcluded = function(appliedPerspective, excludedList) {
-                var html = "<b>Perspective applied:</b> <Br>" + appliedPerspective + "<Br><BR>";
+                var html = "<b>Perspective Applied:</b> <Br>" + appliedPerspective + "<Br><BR>";
 
-                html += "<b>Removed floor plans:</b><br>";
+                html += "<b>Excluded Floor Plans:</b><br>";
                 html += "- " + _.take(excludedList, 10).join("<br>- ");
                 if (excludedList.length > 10) {
                     html += "<Br>- and " + (excludedList.length - 10) + " more floor plan(s)"

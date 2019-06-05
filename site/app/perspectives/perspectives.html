@@ -18,19 +18,19 @@
                 <div
                      custom-select="f.name for f in searchAsync($searchTerm)"
                      custom-select-options="{ 'async': true }"
-                     ng-model="model.selectedProperty" autofocus
+                     ng-model="model.selectedProperty" autofocus ng-disabled="model.mode === MODE.EDIT"
                 ></div>
             </div>
             <div class="col-md-3">
                 <B>Perspective</B><Br>
                 <div
-                        custom-select="f.name for f in model.selectedProperty.perspectives"
-                        ng-model="model.selectedPerspective" autofocus
+                    custom-select="f.name for f in model.selectedProperty.perspectives"
+                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT"
                 ></div>
             </div>
             <div class="col-md-3 mt-20" ng-if="model.selectedProperty">
                 <span class="grey-color">OR</span>
-                <button type="button" class="btn btn-default dropdown-toggle btn-sm ml-30" uib-tooltip="Add Perspective" ng-click="add()">
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm ml-30" uib-tooltip="Add Perspective" ng-click="add()" ng-disabled="model.mode === MODE.EDIT">
                     <span class="fa fa-plus"></span> Add Perspective
                 </button>
             </div>
@@ -44,8 +44,11 @@
                         <div class="brand-blue" ng-if="model.mode === MODE.VIEW" >
                             <h4 class="mainheader mt-0">{{model.name}}</h4>
                         </div>
-                        <div class="pull-left mt-5" ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD" >
-                            <label>Name:</label><input class="form-control ml-10 input-sm" ng-model="model.name">
+                        <div class="form-inline" ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD" >
+                            <label>Name:</label><input class="form-control ml-10 min-w-50" ng-model="model.name">
+                            <button ng-if="model.mode === MODE.EDIT" class=" btn btn-danger btn-sm ml-10" type="button" ng-click="delete()" uib-tooltip="Delete" ng-disabled="processing">
+                                <i class="fa fa-trash" style="color:white"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 text-right">
@@ -55,29 +58,29 @@
                         <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="create()" ng-disabled="processing">
                             Create
                         </button>
-                        <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="update()" ng-disabled="processing">
-                            Save
+                        <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Cancle" ng-click="model.mode = MODE.VIEW" ng-disabled="processing">
+                            Cancle
                         </button>
-                        <button ng-if="model.mode === MODE.EDIT" class=" btn btn-danger btn-sm" type="button" ng-click="delete()" uib-tooltip="Delete" ng-disabled="processing">
-                            <i class="fa fa-trash" style="color:white"></i>
+                        <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success ml-10 dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="update()" ng-disabled="processing">
+                            Save
                         </button>
                     </div>
                 </div>
                 <div ng-repeat="comp in model.comps">
                     <hr>
-                    <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="comp.open = !comp.open"></i>
-                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="comp.checked" id="checkbox_property_{{comp._id}}" ng-change="propertyChecked(comp)" ui-indeterminate="comp.indeterminate">
+                    <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;vertical-align: middle;" ng-click="comp.open = !comp.open"></i>
+                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="comp.checked" id="checkbox_property_{{comp._id}}" ng-change="propertyChecked(comp)" ui-indeterminate="comp.indeterminate" style="margin: 0 4px;vertical-align: middle;">
                     <label for="checkbox_property_{{comp._id}}"><img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center">
                     <B>{{comp.name}}</B></label>
                     <div class="pull-right brand-purple" ng-if="comp.floorplans.length - comp.selectedFloorplans"><strong>{{comp.floorplans.length - comp.selectedFloorplans}} excluded</strong></div>
                     <div ng-if="comp.open" class="ml-15">
                         <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10">
-                            <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;padding-top:2px" ng-click="bedroom.open = !bedroom.open"></i>
-                            <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate">
+                            <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;vertical-align: middle;margin:0 4px;" ng-click="bedroom.open = !bedroom.open"></i>
+                            <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate" style="margin:0;vertical-align: middle;">
                             <label for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
                             <div ng-if="bedroom.open" class="ml-15">
                                 <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}">
-                                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()">
+                                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()" style="margin-top:0;margin-left:7px;vertical-align: middle;">
                                     <label class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}">{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></label>
                                 </div>
                                 <div ng-repeat-end ng-if="false"></div>

@@ -283,6 +283,7 @@
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
                    popover-append-to-body="true"
+                   popover-class="popover-small"
                    uib-popover-html="$root.showExcluded(appliedPerspective, comp.survey.excludedList)"
                 ></i>
 
@@ -405,6 +406,7 @@
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
                    popover-append-to-body="true"
+                   popover-class="popover-small"
                    uib-popover-html="$root.showExcluded(appliedPerspective, row.excludedList)"
                 ></i>
 
@@ -479,6 +481,15 @@
             </td>
             <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;{{fp.name}}
+                <i class="fa fa-eye-slash blue"
+                   style="cursor:pointer;font-size:14px;padding-left:2px"
+                   ng-if="fp.excluded"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   popover-class="popover-small"
+                   uib-popover-html="'<b>Perspective Applied:</b> <Br>' + appliedPerspective + '<Br><BR>This floor plan is not part of the perspective and has been excluded from calculations.'"
+                ></i>
                 <i class="fa fa-warning"
                    style="cursor:pointer;font-size:12px;padding-left:2px;color:orange"
                    ng-if="fp.missing"
