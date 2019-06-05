@@ -11,3 +11,6 @@
 .pespectives .min-w-50 {
 	min-width: 50%;
 }
+.red-txt, .red-txt:hover, .red-txt:focus {
+    color:#d9534f;
+}

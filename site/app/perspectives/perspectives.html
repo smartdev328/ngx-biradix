@@ -46,9 +46,9 @@
                         </div>
                         <div class="form-inline" ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD" >
                             <label>Name:</label><input class="form-control ml-10 min-w-50" ng-model="model.name">
-                            <button ng-if="model.mode === MODE.EDIT" class=" btn btn-danger btn-sm ml-10" type="button" ng-click="delete()" uib-tooltip="Delete" ng-disabled="processing">
-                                <i class="fa fa-trash" style="color:white"></i>
-                            </button>
+                            <a href="" ng-if="model.mode === MODE.EDIT" class="ml-10 red-txt" ng-click="delete()" uib-tooltip="Delete" ng-disabled="processing">
+                                Delete Perspective
+                            </a>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 text-right">
