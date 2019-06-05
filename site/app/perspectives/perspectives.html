@@ -34,6 +34,10 @@
                     <span class="fa fa-plus"></span> Add Perspective
                 </button>
             </div>
+            <div class="col-md-3 text-right mt-20" ng-show="hasHistory && model.mode === MODE.VIEW">
+                <input ng-disabled="model.mode === MODE.EDIT" type="checkbox" ng-model="showHistory" id="showHistorical">
+                <label class="normal" for="showHistorical">Show Historical</label>
+            </div>
         </div>
 
         <div class="page-container">
@@ -55,11 +59,11 @@
                         <button ng-if="model.mode === MODE.VIEW" type="button" class="btn btn-warning dropdown-toggle btn-sm" uib-tooltip="Edit" ng-click="model.mode = MODE.EDIT" ng-disabled="processing">
                             Edit
                         </button>
+                        <button ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD" type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Cancle" ng-click="model.mode = MODE.VIEW" ng-disabled="processing">
+                            Cancle
+                        </button>
                         <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="create()" ng-disabled="processing">
                             Create
-                        </button>
-                        <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Cancle" ng-click="model.mode = MODE.VIEW" ng-disabled="processing">
-                            Cancle
                         </button>
                         <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success ml-10 dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="update()" ng-disabled="processing">
                             Save
@@ -79,9 +83,9 @@
                             <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate" style="margin:0;vertical-align: middle;">
                             <label for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
                             <div ng-if="bedroom.open" class="ml-15">
-                                <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}">
+                                <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}" ng-show="floorplan.deleted && showHistory || !floorplan.deleted">
                                     <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()" style="margin-top:0;margin-left:7px;vertical-align: middle;">
-                                    <label class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}">{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></label>
+                                    <label class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}">{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px;font-weight: 700;">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></label>
                                 </div>
                                 <div ng-repeat-end ng-if="false"></div>
                             </div>

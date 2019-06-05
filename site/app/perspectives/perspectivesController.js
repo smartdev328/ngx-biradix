@@ -27,6 +27,8 @@ define([
 
         $scope.loading = true;
         $scope.processing = false;
+        $scope.hasHistory = false;
+        $scope.showHistory = true;
         $perspectivesService.scopeFunctions($scope);
 
         var me = $rootScope.$watch("me", function(x) {
@@ -60,6 +62,7 @@ define([
                         $scope.model.mode = $scope.MODE.NONE;
                     }
                     $scope.loading = false;
+                    $scope.hasHistory = false;
                 });
             }
         }, true);
@@ -76,6 +79,11 @@ define([
                             return x.propertyId.toString() === p._id.toString() && x.floorplanId.toString() === fp.id.toString();
                         });
                         fp.checked = !f;
+                        _.find(p.floorplans, function(fp){ 
+                            if(fp.deleted) {
+                                $scope.hasHistory = true;
+                            } 
+                        });
                     });
                 });
                 $scope.checkIndeterminate();
