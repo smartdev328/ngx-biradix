@@ -18,6 +18,7 @@ define([
             $scope.localLoading = false;
             $organizationsService.search({getCounts: true, active: true}).then(function (response) {
                 $scope.data = response.data.organizations;
+                console.log($scope.data);
                 $scope.localLoading = true;
             },
             function (error) {

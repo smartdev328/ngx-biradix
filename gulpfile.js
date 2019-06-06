@@ -144,6 +144,7 @@ gulp.task("globalcss", function() {
         "./site/css/forms.css",
         "./site/css/icons.css",
         "./site/css/spacing.css",
+        "./site/css/sso.css",
         "./site/components/toggle/style.css",
         "./site/components/filterlist/filterlist.css",
         "./site/components/reports/reporting.css",

@@ -76,7 +76,6 @@ define([
                         $scope.SSOForNewUsers = $scope.organization.sso.default;
                     });
                     $ssoService.getUsers(organization._id).then(function(response) {
-                        console.log(response);
                         $scope.userlist = response.data.users.map(function (user) {
                             return {
                                 id: user._id,
@@ -91,6 +90,7 @@ define([
                     availableLabel: 'Email-Password',
                     selectedLabel: 'SSO',
                     searchLabel: 'Email',
+                    hideSearch: true,
                 };
 
                 //call loading
