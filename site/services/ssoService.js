@@ -2,6 +2,25 @@
 angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', function ($http,$cookies) {
     var fac = {};
 
+    fac.updateOrgsIds = function (organizations) {
+        return new Promise(function (resolve, reject) {
+            fac.organizations = fac.organizations.map(function (localOrg) {
+                var remoteOrg = organizations.find(function (org) {
+                    return org.subdomain == localOrg.subdomain;
+                });
+                var index = fac.users.findIndex(function (org) {
+                    return org.orgid == localOrg._id;
+                });
+                if (index > -1) {
+                    fac.users[index].orgid = remoteOrg._id;
+                }
+                localOrg._id = remoteOrg._id;
+                return localOrg;
+            });
+            resolve();
+        });
+    }
+
     fac.getOrganizationSSOSettings = function (organizationid) {
         return new Promise(function (resolve, reject) {
             var response = {
@@ -37,7 +56,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
             });
             var response = {
                 data: {
-                    users: fac.users[index].users,
+                    users: index > -1 ? fac.users[index].users : [],
                 }
             };
             resolve(response);
@@ -66,6 +85,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
         {
             _id: "5cc72e94545c3400152a614a",
             name: "Alliance Residential",
+            subdomain: 'alliance',
             sso: {
                 default: true,
                 system: 'okta',
@@ -74,6 +94,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
         {
             _id: "5cc72e94545c3400152a6149",
             name: "BI:Radix",
+            subdomain: 'platform',
             sso: {
                 default: false,
                 system: undefined,
@@ -82,6 +103,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
         {
             _id: "5cc72e94545c3400152a614b",
             name: "Demo Residential",
+            subdomain: 'demo',
             sso: {
                 default: true,
                 system: 'okta',
@@ -90,6 +112,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
         {
             _id: "5cc72e94545c3400152a614d",
             name: "Greystar",
+            subdomain: 'greystar',
             sso: {
                 default: false,
                 system: undefined,
@@ -98,6 +121,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
         {
             _id: "5cc72e94545c3400152a614c",
             name: "Wood Residential",
+            subdomain: 'wood',
             sso: {
                 default: true,
                 system: 'azure',
