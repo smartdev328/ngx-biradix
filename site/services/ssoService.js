@@ -64,7 +64,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
 
     fac.organizations = [
         {
-            _id: "5ceeca4f1552455d9881bbe6",
+            _id: "5cc72e94545c3400152a614a",
             name: "Alliance Residential",
             sso: {
                 default: true,
@@ -72,7 +72,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
             }
         },
         {
-            _id: "5ceeca4f1552455d9881bbe8",
+            _id: "5cc72e94545c3400152a6149",
             name: "BI:Radix",
             sso: {
                 default: false,
@@ -80,7 +80,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
             }
         },
         {
-            _id: "5ceeca4f1552455d9881bbea",
+            _id: "5cc72e94545c3400152a614b",
             name: "Demo Residential",
             sso: {
                 default: true,
@@ -88,7 +88,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
             }
         },
         {
-            _id: "5ceeca4f1552455d9881bbe9",
+            _id: "5cc72e94545c3400152a614d",
             name: "Greystar",
             sso: {
                 default: false,
@@ -96,7 +96,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
             }
         },
         {
-            _id: "5ceeca4f1552455d9881bbe7",
+            _id: "5cc72e94545c3400152a614c",
             name: "Wood Residential",
             sso: {
                 default: true,
@@ -106,7 +106,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
     ];
     fac.users = [
         {
-            orgid: "5ceeca4f1552455d9881bbe6",
+            orgid: "5cc72e94545c3400152a614a",
             users: [
                 {
                     _id: "5ceeca4f1552455d9881bb01",
@@ -141,7 +141,7 @@ angular.module('biradix.global').factory('$ssoService', ['$http','$cookies', fun
             ],
         },
         {
-            orgid: "5ceeca4f1552455d9881bbe8",
+            orgid: "5cc72e94545c3400152a6149",
             users: [
                 {
                     _id: "5ceeca4f1552455d9881bb11",
