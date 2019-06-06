@@ -13,4 +13,5 @@
 }
 .red-txt, .red-txt:hover, .red-txt:focus {
     color:#d9534f;
+    text-decoration: underline;
 }
