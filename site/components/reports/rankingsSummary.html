@@ -115,12 +115,13 @@
         <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
             <div class="fp-header-div">
                 <h4>Entire Property
-                    <i class="fa fa-chain-broken blue"
-                       style="cursor:pointer;font-size:16px;padding-left:1px"
-                       ng-if="report.exclusionBySubject"
+                    <i class="fa fa-eye-slash blue"
+                       style="cursor:pointer;font-size:14px;padding-left:2px"
+                       ng-if="report.exclusionsEntireProperty && report.exclusionsEntireProperty.length"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
-                       uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
+                       popover-append-to-body="true"
+                       uib-popover-html="$root.showExcluded(report.appliedPerspective, report.exclusionsEntireProperty)"
                     ></i>
                 </h4>
             </div>
@@ -130,12 +131,13 @@
     <tr ng-repeat="fp in report.summary | orderBy : orderBy" ng-class="{'subject': fp.subject}">
         <td>
             {{fp.name}}
-            <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:12px;padding-left:1px"
-               ng-if="report.exclusions[fp.id]"
+            <i class="fa fa-eye-slash blue"
+               style="cursor:pointer;font-size:12px;padding-left:2px"
+               ng-if="report.exclusionsEntirePropertyBreakdown[fp.id] && report.exclusionsEntirePropertyBreakdown[fp.id].length"
                popover-trigger="'mouseenter'"
                popover-placement="right"
-               uib-popover="This property has floor plans that are being excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
+               popover-append-to-body="true"
+               uib-popover-html="$root.showExcluded(report.appliedPerspective, report.exclusionsEntirePropertyBreakdown[fp.id])"
             ></i>
         </td>
         <td class="center" ng-if="show.units">
@@ -228,12 +230,13 @@
             <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
                 <div class="fp-header-div">
                 <h4>{{bedroomsLabel(key)}}
-                    <i class="fa fa-chain-broken blue"
-                       style="cursor:pointer;font-size:16px;padding-left:1px"
-                       ng-if="report.exclusionsByBedrooms[key]"
+                    <i class="fa fa-eye-slash blue"
+                       style="cursor:pointer;font-size:12px;padding-left:2px"
+                       ng-if="report.exclusionsByBedrooms[key] && report.exclusionsByBedrooms[key].length"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
-                       uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
+                       popover-append-to-body="true"
+                       uib-popover-html="$root.showExcluded(report.appliedPerspective, report.exclusionsByBedrooms[key])"
                     ></i>
             </h4>
                 </div>
@@ -242,12 +245,13 @@
         <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-class="{'subject': fp.subject}">
             <td>
                 {{fp.name}}
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:1px"
-                   ng-if="value.excluded[fp.id]"
+                <i class="fa fa-eye-slash blue"
+                   style="cursor:pointer;font-size:12px;padding-left:2px"
+                   ng-if="value.excluded[fp.id] && value.excluded[fp.id]"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
-                   uib-popover="This property has floor plans that are being excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
+                   popover-append-to-body="true"
+                   uib-popover-html="$root.showExcluded(report.appliedPerspective, value.excluded[fp.id])"
                 ></i>
             </td>
             <td class="center" ng-if="show.units">
