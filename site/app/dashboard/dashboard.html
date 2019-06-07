@@ -270,20 +270,22 @@
                 </span>
                 <i class="fa fa-eye-slash" class="pull-left"
                    style="cursor:pointer;font-size:18px;padding:3px 0px 0px 8px;vertical-align: top;"
-                   ng-if="points.excludedList.length"
+                   ng-if="(points.excludedList | json) !== '{}'"
                    popover-trigger="'mouseenter'"
                    popover-placement="right-top"
                    popover-class="popover-small-margin"
-                   uib-popover-html="showExcluded(property.appliedPerspective, points.excludedList)"
+                   uib-popover-html="showExcluded(property.appliedPerspective)"
+                   ng-click="excludedFloorplans(property._id, property.appliedPerspective, points.excludedList)"
                         ></i>
                 <i class="fa fa-warning" class="pull-left"
                    style="cursor:pointer;font-size:15px;padding:5px 0px 0px 5px; color:orange;vertical-align: top;"
-                   ng-if="points.missingList.length"
+                   ng-if="(points.missingList | json) !== '{}'"
                    popover-trigger="'mouseenter'"
                    popover-placement="right-top"
                    popover-append-to-body="true"
                    popover-class="popover-small-margin"
-                   uib-popover-html="'Some property floor plans are missing rent values and are being excluded from calculations. Please complete a new property survey to get accurate calculations'"
+                   uib-popover-html="showExcluded(null)"
+                   ng-click="excludedFloorplans(property._id, null, points.missingList)"
                 ></i>
                 <select
                         class="input-sm form-control pull-right hidden-print bedrooms"
@@ -300,7 +302,7 @@
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
                 </div>
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && points.excludedList.length">|</div>
-                <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;" ng-if="property.appliedPerspective && points.excludedList.length">Perspective Applied: <b>{{property.appliedPerspective}}</b>
+                <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;" ng-if="property.appliedPerspective && points.excludedList.length">Perspective Applied: <b>{{property.appliedPerspective.name}}</b>
                     <i class="fa fa-question-circle"
                        style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
                        popover-trigger="'mouseenter'"
@@ -394,7 +396,7 @@
                 <Br clear="all">
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.strRangeEnd && property.hasExcluded">|</div>
-                    <div style="float:left;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.hasExcluded">Perspective Applied: <b>{{property.appliedPerspective}}</b>
+                    <div style="float:left;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.hasExcluded">Perspective Applied: <b>{{property.appliedPerspective.name}}</b>
                     <i class="fa fa-question-circle"
                        style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
                        popover-trigger="'mouseenter'"

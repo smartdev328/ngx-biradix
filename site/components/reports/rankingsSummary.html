@@ -1,7 +1,7 @@
 <div class="break2 panel panel-info">
     <div class="panel-heading">Floor Plan Comparison Report
         <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
-        <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="report.appliedPerspective">Perspective Applied: <b>{{report.appliedPerspective}}</b>
+        <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="report.appliedPerspective">Perspective Applied: <b>{{report.appliedPerspective.name}}</b>
             <i class="fa fa-question-circle"
                style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
                popover-trigger="'mouseenter'"

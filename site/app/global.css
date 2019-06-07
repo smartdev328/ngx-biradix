@@ -559,3 +559,7 @@ daterange-picker.dashboard > div {
 label.normal {
     font-weight: normal;
 }
+
+.fa.fa-warning.orange  {
+    color: orange !important;
+}
