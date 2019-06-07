@@ -6,7 +6,8 @@ angular.module("biradix.global").directive("excluded", function () {
             appliedPerspective: "=",
             propertyId: "=",
             key: "=",
-            excludedPopups: "="
+            excludedPopups: "=",
+            styles: "=",
         },
         controller: function ($scope, $element, $uibModal) {
             $scope.excludedPopups = $scope.excludedPopups || {};

@@ -277,25 +277,8 @@
                    uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
                 ></i>
 
-                <i class="fa fa-eye-slash blue"
-                   style="cursor:pointer;font-size:14px;padding-left:2px"
-                   ng-if="comp.survey.excludedList && comp.survey.excludedList.length"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   popover-class="popover-small"
-                   uib-popover-html="$root.showExcluded(appliedPerspective, comp.survey.excludedList)"
-                ></i>
-
-                <i class="fa fa-warning"
-                   style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
-                   ng-if="comp.survey.missingList && comp.survey.missingList.length"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   popover-class="popover-small"
-                   uib-popover-html="$root.showMissing(comp.survey.missingList)"
-                ></i>
+                <excluded excluded-list="comp.survey.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id" styles="'font-size:16px;padding-left:4px'"></excluded>
+                <excluded excluded-list="comp.survey.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id" styles="'font-size:14px;padding-left:4px'"></excluded>
 
                 <i class="fa fa-lock hidden-print"
                    style="cursor:pointer;font-size:14px;padding-left:2px"
@@ -401,25 +384,9 @@
             </td>
             <td nowrap>
                 &nbsp;&nbsp;{{row.name}}
-                <i class="fa fa-eye-slash blue"
-                   style="cursor:pointer;font-size:14px;padding-left:2px"
-                   ng-if="row.excludedList && row.excludedList.length"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   popover-class="popover-small"
-                   uib-popover-html="$root.showExcluded(appliedPerspective, row.excludedList)"
-                ></i>
 
-                <i class="fa fa-warning"
-                   style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
-                   ng-if="row.missingList && row.missingList.length"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   popover-class="popover-small"
-                   uib-popover-html="$root.showMissing(row.missingList)"
-                ></i>
+                <excluded excluded-list="row.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id + row.name" styles="'font-size:16px;padding-left:4px'"></excluded>
+                <excluded excluded-list="row.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id + row.name" styles="'font-size:14px;padding-left:4px'"></excluded>
             </td>
             <td style="text-align: right" ng-if="show.occupancy" class="pad">
                 -

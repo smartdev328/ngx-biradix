@@ -1,5 +1,5 @@
-<i class="fa fa-eye-slash pull-left"
-   style="cursor:pointer;font-size:18px;padding:3px 0px 0px 8px;vertical-align: top;"
+<i class="fa fa-eye-slash"
+   style="cursor:pointer;{{styles}}"
    ng-if="appliedPerspective && (excludedList | json) !== '{}'"
    popover-trigger="'outsideClick'"
    popover-placement="right-top"
@@ -10,8 +10,8 @@
    ng-mouseenter="openPopup($event)"
 ></i>
 
-<i class="fa fa-warning pull-left"
-   style="cursor:pointer;font-size:18px;padding:3px 0px 0px 8px;vertical-align: top;color:orange"
+<i class="fa fa-warning"
+   style="cursor:pointer;color:orange;{{styles}}"
    ng-if="!appliedPerspective && (excludedList | json) !== '{}'"
    popover-trigger="'outsideClick'"
    popover-placement="right-top"

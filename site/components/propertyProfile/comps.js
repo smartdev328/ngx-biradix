@@ -9,7 +9,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                 roles: '=',
                 showTotals:'=',
                 skipcookie: '=',
-                appliedPerspective: '='
+                appliedPerspective: '=',
+                excludedPopups: '='
             },
             controller: function ($scope, $rootScope, $gridService, $cookies, $sce) {
                 $scope.defaultSort = ""
@@ -36,6 +37,9 @@ angular.module('biradix.global').directive('propertyComps', function () {
 
                         var j,b;
                         $scope.comps.forEach(function(comp, i) {
+                            if (i === 0) {
+                                $scope.subjectId = comp._id.toString();
+                            }
                             comp.number = i;
                             comp.units = comp.survey.totUnits;
                             comp.unitPercent = 100;
