@@ -160,7 +160,7 @@ angular.module('biradix.global').directive('timeSeries', function () {
                                 shared: true,
                                 xDateFormat: "%b %d, %Y",
                                 formatter: function() {
-                                    var s = "<span> Week of " + moment(this.x).format("MM/DD/YYYY") + "</span><br/>";
+                                    var s = "<span> Week of " + moment(this.x).format("MMM DD,YYYY") + "</span><br/>";
 
                                     var series = this.points[0].series.chart.series;
 
