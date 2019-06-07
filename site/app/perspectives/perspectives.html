@@ -73,20 +73,24 @@
                     <label for="checkbox_property_{{comp._id}}"><img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center">
                     <B>{{comp.name}}</B></label>
                     <div class="pull-right brand-purple" ng-if="comp.floorplans.length - comp.selectedFloorplans"><strong>{{comp.floorplans.length - comp.selectedFloorplans}} excluded</strong></div>
-                    <div ng-if="comp.open" class="ml-15 row">
-                        <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10 col-xs-12 col-sm-3">
-                            <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;vertical-align: middle;margin:0 4px;" ng-click="bedroom.open = !bedroom.open"></i>
-                            <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate" style="margin:0;vertical-align: middle;">
-                            <label for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
-                            <div ng-if="bedroom.open" class="ml-15">
-                                <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}">
-                                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()" style="margin-top:0;margin-left:7px;vertical-align: middle;">
-                                    <label style="width: calc(100% - 25px);vertical-align: top;" class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}"><small>{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px;font-weight: 700;">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></small></label>
+                    <div ng-if="comp.open" class="ml-15">
+                        <div class="row">
+                            <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10 col-xs-12 col-sm-3 pl-10 pr-10">
+                                <div style="margin-bottom: 5px;">
+                                    <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;vertical-align: middle;margin:0 7px 0 3px;" ng-click="bedroom.open = !bedroom.open"></i>
+                                    <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate" style="margin:0;vertical-align: middle;">
+                                    <label style="margin-bottom: 0;vertical-align: middle;" for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
                                 </div>
-                                <div ng-repeat-end ng-if="false"></div>
+                                <div ng-if="bedroom.open" class="ml-15">
+                                    <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}">
+                                        <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()" style="margin-top:0;margin-left:9px;vertical-align: middle;">
+                                        <label style="width: calc(100% - 25px);vertical-align: top;" class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}"><small>{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px;font-weight: 700;">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></small></label>
+                                    </div>
+                                    <div ng-repeat-end ng-if="false"></div>
+                                </div>
                             </div>
+                            <div ng-repeat-end ng-if="false"></div>
                         </div>
-                        <div ng-repeat-end ng-if="false"></div>
                     </div>
                 </div>
             </div>
