@@ -1,0 +1,25 @@
+<i class="fa fa-eye-slash pull-left"
+   style="cursor:pointer;font-size:18px;padding:3px 0px 0px 8px;vertical-align: top;"
+   ng-if="appliedPerspective && (excludedList | json) !== '{}'"
+   popover-trigger="'outsideClick'"
+   popover-placement="right-top"
+   popover-class="popover-small-margin"
+   uib-popover-template="hintTemplate"
+   popover-append-to-body="true"
+   popover-is-open="isOpen"
+   ng-mouseenter="openPopup($event)"
+></i>
+
+<i class="fa fa-warning pull-left"
+   style="cursor:pointer;font-size:18px;padding:3px 0px 0px 8px;vertical-align: top;color:orange"
+   ng-if="!appliedPerspective && (excludedList | json) !== '{}'"
+   popover-trigger="'outsideClick'"
+   popover-placement="right-top"
+   popover-class="popover-small-margin"
+   uib-popover-template="hintTemplate"
+   popover-append-to-body="true"
+   popover-is-open="isOpen"
+   ng-mouseenter="openPopup($event)"
+></i>
+<!--   ng-click="$root.excludedFloorplans(propertyId, appliedPerspective, excludedList)"-->
+<!--"-->

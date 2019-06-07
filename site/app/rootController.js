@@ -699,21 +699,6 @@ angular.module("biradix.global").controller("rootController",
             "last_updated": "<b>Last Updated</b> - <i>The date of the last survey completed for that property</i>",
         };
 
-            $rootScope.showExcluded = function(appliedPerspective) {
-                var html = "";
-
-                if (appliedPerspective) {
-                    html += "<b>Perspective Applied:</b> <Br>" + appliedPerspective.name + "<Br><BR>";
-                    html += "Some floor plans are not part of the perspective and has been excluded from calculations.<Br><Br>";
-                    html += "Click the <i class=\"fa fa-eye-slash\"></i> icon to view excluded floor plans</a>"
-                } else {
-                    html += "Some property floor plans are missing rent values and are being excluded from calculations. Please complete a new property survey to get accurate calculations.<Br><Br>";
-                    html += "Click the <i class=\"fa fa-warning orange\"></i> icon to view floor plans with missing rent values</a>"
-                }
-
-                return html;
-            };
-
             $rootScope.excludedFloorplans = function (propertyId, appliedPerspective, excludedList) {
                 var modalInstance = $uibModal.open({
                     templateUrl: '/app/excluded/excluded.html?bust='+version,

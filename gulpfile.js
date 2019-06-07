@@ -70,6 +70,7 @@ gulp.task("globaljs", function() {
         "./site/components/dialog/module.js",
         "./site/components/uploader/module.js",
         "./site/components/gallery/module.js",
+        "./site/components/excluded/module.js",
 
         "./site/services/httpHelperService.js",
         "./site/services/authService.js",
