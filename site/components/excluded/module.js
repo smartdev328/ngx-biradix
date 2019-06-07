@@ -4,21 +4,32 @@ angular.module("biradix.global").directive("excluded", function () {
         scope: {
             excludedList: "=",
             appliedPerspective: "=",
-            propertyId: "="
+            propertyId: "=",
+            key: "=",
+            excludedPopups: "="
         },
         controller: function ($scope, $element, $rootScope) {
+            $scope.excludedPopups = $scope.excludedPopups || {};
+
             $scope.options = {
                 isOpen: false
             };
             $scope.hintTemplate = '/components/excluded/hint.html?bust=' + version;
 
+
+            $scope.$watch("options.isOpen", function(value) {
+                $scope.excludedPopups[$scope.key] = value;
+            }, true);
+
             $scope.close = function () {
                 $scope.options.isOpen = false;
-              };
+            };
 
             $scope.openPopup = function($event) {
-                if ($scope.options.isOpen) {
-                    return;
+                for(var k in $scope.excludedPopups) {
+                    if ($scope.excludedPopups[k]) {
+                        return;
+                    }
                 }
 
                 var el = angular.element($event.toElement);

@@ -10,6 +10,7 @@ define([
         $scope.filters = {searchDashboard : ""};
 
         $scope.localLoading = false;
+        $scope.excludedPopups = {};
 
         $scope.defaultShow = function() {
             $scope.settings.show = $reportingService.getDefaultDashboardCompColumns($rootScope.me,$(window).width());
