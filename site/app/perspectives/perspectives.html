@@ -55,14 +55,14 @@
                         <button ng-if="model.mode === MODE.VIEW" type="button" class="btn btn-warning dropdown-toggle btn-sm" uib-tooltip="Edit" ng-click="model.mode = MODE.EDIT" ng-disabled="processing">
                             Edit
                         </button>
-                        <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Cancel" ng-click="model.mode = MODE.VIEW" ng-disabled="processing">
-                            Cancel
-                        </button>
                         <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success dropdown-toggle btn-sm" uib-tooltip="Create" ng-click="create()" ng-disabled="processing">
                             Create
                         </button>
                         <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success ml-10 dropdown-toggle btn-sm" uib-tooltip="Save" ng-click="update()" ng-disabled="processing">
                             Save
+                        </button>
+                        <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Cancel" ng-click="model.mode = MODE.VIEW" ng-disabled="processing">
+                            Cancel
                         </button>
                     </div>
                 </div>
