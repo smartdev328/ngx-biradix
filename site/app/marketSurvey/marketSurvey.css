@@ -247,7 +247,7 @@
   color:#337ab7;
 }
 
-.market-survey .input-group .bulkConcessionValue .borderLeft {border-left: 1px solid #cccccc !important;}
+.market-survey .bulkConcessionValue .input-group .borderLeft {border-left: 1px solid #cccccc !important;}
 
 .bulkConcessionValue input {
   padding: 2px 4px;
