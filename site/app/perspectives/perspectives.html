@@ -84,7 +84,7 @@
                                 <div ng-if="bedroom.open" class="ml-15">
                                     <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}">
                                         <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-change="checkIndeterminate()" style="margin-top:0;margin-left:9px;vertical-align: middle;">
-                                        <label style="width: calc(100% - 25px);vertical-align: top;" class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}"><small>{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px;font-weight: 700;">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></small></label>
+                                        <label style="width: calc(100% - 30px);vertical-align: top;" class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}"><small>{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px;font-weight: 700;">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></small></label>
                                     </div>
                                     <div ng-repeat-end ng-if="false"></div>
                                 </div>
