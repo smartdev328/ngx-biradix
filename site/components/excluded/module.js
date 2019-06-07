@@ -8,7 +8,7 @@ angular.module("biradix.global").directive("excluded", function () {
             key: "=",
             excludedPopups: "="
         },
-        controller: function ($scope, $element, $rootScope) {
+        controller: function ($scope, $element, $uibModal) {
             $scope.excludedPopups = $scope.excludedPopups || {};
 
             $scope.options = {
@@ -36,6 +36,33 @@ angular.module("biradix.global").directive("excluded", function () {
 
                 el.triggerHandler("click");
             };
+
+            $scope.excludedFloorplans = function (propertyId, appliedPerspective, excludedList) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/excluded/excluded.html?bust='+version,
+                    controller: 'excludedController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        appliedPerspective: function () {
+                            return appliedPerspective;
+                        },
+                        propertyId: function () {
+                            return propertyId;
+                        },
+                        excludedList: function () {
+                            return excludedList;
+                        },
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                    //Send successfully
+                }, function () {
+                    //Cancel
+                });
+            }
         },
         templateUrl: '/components/excluded/excluded.html?bust=' + version
     };

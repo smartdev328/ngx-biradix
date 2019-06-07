@@ -699,32 +699,5 @@ angular.module("biradix.global").controller("rootController",
             "last_updated": "<b>Last Updated</b> - <i>The date of the last survey completed for that property</i>",
         };
 
-            $rootScope.excludedFloorplans = function (propertyId, appliedPerspective, excludedList) {
-                var modalInstance = $uibModal.open({
-                    templateUrl: '/app/excluded/excluded.html?bust='+version,
-                    controller: 'excludedController',
-                    size: "md",
-                    keyboard: false,
-                    backdrop: 'static',
-                    resolve: {
-                        appliedPerspective: function () {
-                            return appliedPerspective;
-                        },
-                        propertyId: function () {
-                            return propertyId;
-                        },
-                        excludedList: function () {
-                            return excludedList;
-                        },
-                    }
-                });
-
-                modalInstance.result.then(function () {
-                    //Send successfully
-                }, function () {
-                    //Cancel
-                });
-            }
-
     }]);
 
