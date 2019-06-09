@@ -915,8 +915,8 @@ define([
             if ($scope.selected.Property) {
                 $scope.propertyIds = [$scope.selected.Property._id];
                 $scope.changeProperty();
-                $scope.reportsChanged();
             }
+            $scope.reportsChanged();
         }, true);
 
 
