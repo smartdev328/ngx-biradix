@@ -11,7 +11,7 @@ angular.module("biradix.global").directive("excluded", function () {
         },
         controller: function ($scope, $element, $uibModal) {
             $scope.excludedPopups = $scope.excludedPopups || {};
-
+            $scope.excludedList = $scope.excludedList || {};
             $scope.options = {
                 isOpen: false
             };

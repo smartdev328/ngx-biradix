@@ -115,14 +115,8 @@
         <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
             <div class="fp-header-div">
                 <h4>Entire Property
-                    <i class="fa fa-eye-slash blue"
-                       style="cursor:pointer;font-size:14px;padding-left:2px"
-                       ng-if="report.exclusionsEntireProperty && report.exclusionsEntireProperty.length"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="right"
-                       popover-append-to-body="true"
-                       uib-popover-html="$root.showExcluded(report.appliedPerspective, report.exclusionsEntireProperty)"
-                    ></i>
+                    <excluded excluded-list="report.exclusionsEntireProperty" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-'" styles="'font-size:16px;padding-left:4px'"></excluded>
+                    <excluded excluded-list="report.exclusionsEntireProperty" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-'" styles="'font-size:14px;padding-left:4px'"></excluded>
                 </h4>
             </div>
         </td>
@@ -131,14 +125,9 @@
     <tr ng-repeat="fp in report.summary | orderBy : orderBy" ng-class="{'subject': fp.subject}">
         <td>
             {{fp.name}}
-            <i class="fa fa-eye-slash blue"
-               style="cursor:pointer;font-size:12px;padding-left:2px"
-               ng-if="report.exclusionsEntirePropertyBreakdown[fp.id] && report.exclusionsEntirePropertyBreakdown[fp.id].length"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               popover-append-to-body="true"
-               uib-popover-html="$root.showExcluded(report.appliedPerspective, report.exclusionsEntirePropertyBreakdown[fp.id])"
-            ></i>
+            <excluded excluded-list="report.exclusionsEntirePropertyBreakdown[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-' + fp.id" styles="'font-size:16px;padding-left:4px'"></excluded>
+            <excluded excluded-list="report.exclusionsEntirePropertyBreakdown[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-' + fp.id" styles="'font-size:14px;padding-left:4px'"></excluded>
+
         </td>
         <td class="center" ng-if="show.units">
             {{fp.units}}
@@ -230,14 +219,8 @@
             <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
                 <div class="fp-header-div">
                 <h4>{{bedroomsLabel(key)}}
-                    <i class="fa fa-eye-slash blue"
-                       style="cursor:pointer;font-size:12px;padding-left:2px"
-                       ng-if="report.exclusionsByBedrooms[key] && report.exclusionsByBedrooms[key].length"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="right"
-                       popover-append-to-body="true"
-                       uib-popover-html="$root.showExcluded(report.appliedPerspective, report.exclusionsByBedrooms[key])"
-                    ></i>
+                    <excluded excluded-list="report.exclusionsByBedrooms[key]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key" styles="'font-size:16px;padding-left:4px'"></excluded>
+                    <excluded excluded-list="report.exclusionsByBedrooms[key]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key" styles="'font-size:14px;padding-left:4px'"></excluded>
             </h4>
                 </div>
             </td>
@@ -245,14 +228,9 @@
         <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-class="{'subject': fp.subject}">
             <td>
                 {{fp.name}}
-                <i class="fa fa-eye-slash blue"
-                   style="cursor:pointer;font-size:12px;padding-left:2px"
-                   ng-if="value.excluded[fp.id] && value.excluded[fp.id]"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   uib-popover-html="$root.showExcluded(report.appliedPerspective, value.excluded[fp.id])"
-                ></i>
+
+                <excluded excluded-list="value.excluded[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key + fp.id" styles="'font-size:16px;padding-left:4px'"></excluded>
+                <excluded excluded-list="value.excluded[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key + fp.id" styles="'font-size:14px;padding-left:4px'"></excluded>
             </td>
             <td class="center" ng-if="show.units">
                 {{fp.units}}

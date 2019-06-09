@@ -104,13 +104,14 @@ td.center,th.center {text-align:center}
     }
 
 
-    .fa-exclamation-triangle.warning:before {
+    .fa-exclamation-triangle.warning:before,
+    .fa-warning:before{
         color: orange !important;
     }
 
-    .fa-chain-broken.blue:before {
+    .fa-chain-broken.blue:before,
+    .fa-eye-slash:before {
         color: #1E90FF !important;
-        font-weight: bold;
     }
 
     body {
