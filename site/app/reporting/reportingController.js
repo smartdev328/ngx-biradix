@@ -150,7 +150,6 @@ define([
                 , select: "name comps.id custom perspectives"
                 , sort: "name"
             }).then(function (response) {
-
                 response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
                 response.data.properties.forEach(function(p) {
                     p.isCustom = !!(p.custom && p.custom.owner);
@@ -275,7 +274,7 @@ define([
                             _id: id,
                             permission: "PropertyManage",
                             active: true,
-                            select: "_id name comps.id comps.orderNumber custom",
+                            select: "_id name comps.id comps.orderNumber custom perspectives",
                             skipAmenities: true,
                         }).then(function(response) {
                             if (response.data.properties.length == 0) {
