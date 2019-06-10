@@ -1063,7 +1063,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             "concessionsTimes" : "One-time",
             "concessionValue" : "",
             "leasedLength" : 12,
-            "concessionsTypeOff" : "dollars off",
+            "concessionsTypeOff" : "week(s) free", 
             "SelectedFloorPlan" : {},
             "applyError": "",
             "checkboxError": false
