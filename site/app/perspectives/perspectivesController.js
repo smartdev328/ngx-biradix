@@ -90,6 +90,22 @@ define([
             }
         });
 
+        $scope.changed = false;
+
+        $scope.cancel = function () {
+
+            if ($scope.changed) {
+                $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                    $scope.model.mode = $scope.MODE.VIEW;
+                }, function () {
+                });
+            }
+            else {
+                $scope.model.mode = $scope.MODE.VIEW;
+            }
+
+        };
+
         $scope.add = function() {
             $scope.model.mode = $scope.MODE.ADD;
             $scope.model.name = "";
