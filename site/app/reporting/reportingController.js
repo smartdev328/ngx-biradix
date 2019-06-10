@@ -543,6 +543,10 @@ define([
                 $scope.temp.showRankingsItems.forEach(function (f) {
                     $scope.liveSettings.rankings.show[f.id] = f.selected;
                 })
+
+                if ($scope.temp.rankingPerspectiveSelected) {
+                    $scope.liveSettings.rankings.perspective = $scope.temp.rankingPerspectiveSelected.value;
+                }
             }
 
             if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
@@ -671,7 +675,7 @@ define([
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
-                options.property_rankings = {orderBy: $scope.liveSettings.rankings.orderBy};
+                options.property_rankings = {orderBy: $scope.liveSettings.rankings.orderBy, perspective: $scope.liveSettings.rankings.perspective};
             }
 
             $reportingService.reports(
@@ -1603,6 +1607,21 @@ define([
 
             if (typeof $scope.liveSettings.trends.graphs == 'undefined') {
                 $scope.liveSettings.trends.graphs = true;
+            }
+
+            if ($scope.selected.Property) {
+                $scope.temp.rankingPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.rankingPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.rankingPerspectiveSelected = _.find($scope.temp.rankingPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.rankings.perspective;
+                });
+
+                if (!$scope.temp.rankingPerspectiveSelected) {
+                    $scope.temp.rankingPerspectiveSelected = $scope.temp.rankingPerspectives[0];
+                }
             }
         }
 
