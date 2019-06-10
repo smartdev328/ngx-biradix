@@ -176,7 +176,6 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                     $scope.bedroomChecked(b, false);
                 });
                 $scope.checkIndeterminate();
-                $scope.changed = true;
             };
 
             $scope.bedroomChecked = function(bedroom, checkIndeterminate) {
@@ -187,7 +186,6 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                 if (checkIndeterminate) {
                     $scope.checkIndeterminate();
                 }
-                $scope.changed = true;
             };
 
             $scope.getExlcudedFloorplans = function() {
@@ -246,7 +244,6 @@ angular.module("biradix.global").factory("$perspectivesService", ["$http", "$coo
                         p.checked = false;
                     }
                 });
-                $scope.changed = true;
             };
         };
 

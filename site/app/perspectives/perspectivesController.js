@@ -90,11 +90,15 @@ define([
             }
         });
 
-        $scope.changed = false;
+        $scope.model.changed = false;
+
+        $scope.model.changesMade = function() {
+            $scope.model.changed = true;
+        }
 
         $scope.cancel = function () {
 
-            if ($scope.changed) {
+            if ($scope.model.changed) {
                 $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
                     $scope.model.mode = $scope.MODE.VIEW;
                 }, function () {
