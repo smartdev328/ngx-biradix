@@ -96,10 +96,16 @@ define([
             $scope.model.changed = true;
         }
 
+        $scope.model.edit = function() {
+            $scope.model.mode = $scope.MODE.EDIT;
+            $scope.model.originalPerspective = _.cloneDeep($scope.model.selectedPerspective);
+        }
+
         $scope.cancel = function () {
 
             if ($scope.model.changed) {
                 $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                    $scope.model.selectedPerspective = $scope.model.originalPerspective;
                     $scope.model.mode = $scope.MODE.VIEW;
                 }, function () {
                 });
