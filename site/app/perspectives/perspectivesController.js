@@ -96,7 +96,7 @@ define([
             $scope.model.changed = true;
         }
 
-        $scope.model.edit = function() {
+        $scope.edit = function() {
             $scope.model.mode = $scope.MODE.EDIT;
             $scope.model.originalPerspective = _.cloneDeep($scope.model.selectedPerspective);
         }
