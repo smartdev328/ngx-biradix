@@ -73,7 +73,7 @@
                             <img ng-src="/images/logos/facebook.png" style="height:20px;margin-top: 5px;">
                         </th>
                     </tr>
-                    <tr ng-repeat-start="row in report">
+                    <tr ng-repeat-start="row in report.rows">
                         <td>{{row.name}}</td>
                         <td>{{row.address}}</td>
                         <td>
@@ -104,15 +104,15 @@
                     </tr>
                     <tr ng-repeat-end ng-if="false"></tr>
                     <tr>
-                        <td style="border-top:1px solid #ccc;" colspan="2"><strong><i>Average reputation</i></strong></td>
-                        <td style="border-top:1px solid #ccc;" ng-if="!reputation.yelpCount">-</td>
-                        <td style="border-top:1px solid #ccc;" ng-if="reputation.yelpCount"><img ng-src="/images/logos/yelp_stars/{{(reputation.yelpRating/reputation.yelpCount).toFixed(0)}}.png"> <strong style="margin-left: 3px;"><i>{{(reputation.yelpReview/reputation.yelpCount).toFixed(0)}} Reviews</i></strong></td>
-                        <td style="border-top:1px solid #ccc;" ng-if="!reputation.googleCount">-</td>
-                        <td style="border-top:1px solid #ccc;" ng-if="reputation.googleCount">
-                            <span class="google-txt">{{(reputation.googleRating/reputation.googleCount).toFixed(1)}}</span>
-                            <span style="margin-right: 10px;" class="google-stars" aria-label="Rated {{(reputation.googleRating/reputation.googleCount).toFixed(1)}} out of 5,">
-                                <span style="width:{{ (reputation.googleRating/reputation.googleCount).toFixed(1) * 13 }}px;"></span>
-                            </span><strong><i>{{(reputation.googleReview/reputation.googleCount).toFixed(0)}} Google reviews</i></strong></td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" colspan="2"><strong><i>Comp Averages</i></strong></td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="!report.averages.yelpCount">-</td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="report.averages.yelpCount"><img ng-src="/images/logos/yelp_stars/{{(report.averages.yelpRating/report.averages.yelpCount).toFixed(0)}}.png"> <strong style="margin-left: 3px;"><i>{{(report.averages.yelpReview/report.averages.yelpCount).toFixed(0)}} Reviews</i></strong></td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="!report.averages.googleCount">-</td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="report.averages.googleCount">
+                            <span class="google-txt">{{(report.averages.googleRating/report.averages.googleCount).toFixed(1)}}</span>
+                            <span style="margin-right: 10px;" class="google-stars" aria-label="Rated {{(report.averages.googleRating/report.averages.googleCount).toFixed(1)}} out of 5,">
+                                <span style="width:{{ (report.averages.googleRating/report.averages.googleCount).toFixed(1) * 13 }}px;"></span>
+                            </span><strong><i>{{(report.averages.googleReview/report.averages.googleCount).toFixed(0)}} Google reviews</i></strong></td>
                         <td style="border-top:1px solid #ccc;"><strong><i>-</i></strong></td>
                     </tr>
                 </tbody>
