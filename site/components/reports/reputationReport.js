@@ -7,7 +7,7 @@ angular.module("biradix.global").directive("reputationReport", function() {
             report: "=",
         },
         controller: function($scope) {
-
+            
         },
         templateUrl: "/components/reports/reputationReport.html?bust=" + version,
     };
