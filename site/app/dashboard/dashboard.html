@@ -236,6 +236,7 @@
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
                                        popover-append-to-body="true"
+                                       popover-class="popover-small"
                                        uib-popover="Perspectives allow you to configure and save different views of your data that you can toggle between from the Perspectives dropdown at the top of the dashboard. You can edit views by going to the Perspectives section in the main menu dropdown."
                                     ></i>
                                 </Td>
@@ -264,7 +265,7 @@
                         </table>
                     </div>
                 </span>
-                <excluded excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'font-size:18px;padding:3px 0px 0px 8px;vertical-align: top;'"></excluded>
+                <excluded excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'font-size:16px;padding:5px 0px 0px 5px;vertical-align: top;'"></excluded>
                 <excluded excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'font-size:16px;padding:5px 0px 0px 5px;vertical-align: top;'"></excluded>
                 <select
                         class="input-sm form-control pull-right hidden-print bedrooms"
@@ -349,7 +350,7 @@
                 </span>
 
                 <div id="compsDD" ng-class="{'btn-group' : true, action_dropdown : true, 'pull-right' : true, 'hover-only' : !isModalOpen('#compsDD')}" style="margin-right:-15px">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
+                    <button type="button" style="padding: 3px 10px;" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:220px;height:200px;overflow-y: auto" onclick="event.stopPropagation();">

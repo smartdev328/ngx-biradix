@@ -1,13 +1,14 @@
 <Div>
     <div ng-if="appliedPerspective">
         <b>Perspective Applied:</b><Br>
-        <a href="/#/perspectives?prId={{propertyId}}&pId={{appliedPerspective.id}}" target="_blank">{{appliedPerspective.name}}</a><Br><Br>
-        Some floor plans are not part of the perspective and has been excluded from calculations.<Br><Br>
-        <A href ng-click="excludedFloorplans(propertyId, appliedPerspective, excludedList);close();">More Info</A>
+        <a style="font-size: 12px;" class="mb-10 show" href="/#/perspectives?prId={{propertyId}}&pId={{appliedPerspective.id}}" target="_blank">{{appliedPerspective.name}}</a>
+        <p>Some floor plans are not part of the perspective and has been excluded from calculations.</p>
+        <a style="font-size: 12px;" href ng-click="excludedFloorplans(propertyId, appliedPerspective, excludedList);close();">More Info</a>
     </div>
 
     <div ng-if="!appliedPerspective">
-        Some property floor plans are missing rent values and are being excluded from calculations. Please complete a new property survey to get accurate calculations.<Br><Br>
-        <A href ng-click="excludedFloorplans(propertyId, appliedPerspective, excludedList);close();">More Info</A>
+        <b style="font-size: 12px;" class="mb-10 show">Missing Rent Data:</b>
+        Some property floor plans are missing rent data and are being excluded from calculations. Please complete a new property survey to get accurate calculations.<Br><Br>
+        <A style="font-size: 12px;" href ng-click="excludedFloorplans(propertyId, appliedPerspective, excludedList);close();">More Info</A>
     </div>
 </Div>

@@ -274,6 +274,7 @@
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
                    popover-append-to-body="true"
+                    popover-class="popover-small"
                    uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
                 ></i>
 
@@ -466,7 +467,7 @@
                    popover-placement="right"
                    popover-append-to-body="true"
                    popover-class="popover-small"
-                   uib-popover="This floor plan has been excluded from reporting and dashboard calculations due to missing rent data."
+                   uib-popover-html="'<b class=\'show mb-10\'>Missing Rent Data:</b>This floor plan has been excluded from reporting and dashboard calculations due to missing rent data.'"
                 ></i>
             </td>
             <td style="text-align: right" ng-if="show.occupancy" class="pad">
