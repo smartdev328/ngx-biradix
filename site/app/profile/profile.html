@@ -30,6 +30,16 @@
         </button>
 
         <daterange-picker daterange="settings.daterange" class="pull-right hidden-print dashboard" ng-if="settings && me.roles[0] !== 'Guest'" style="margin-right:10px"></daterange-picker>
+
+        <select
+                class="input-sm form-control pull-right hidden-print bedrooms"
+                style="display:inline;width:auto;max-width:165px;font-weight:normal;font-size:13px;margin-right:10px;padding:0 0 0 5px;"
+                ng-options="p.text group by p.group for p in settings.perspectives"
+                ng-model="settings.perspective"
+        ></select>
+        <span class="fa fa-eye-slash fa-2x pull-right" style="margin:3px 10px 0px 0px"
+              uib-tooltip="Perspectives"
+        ></span>
     </div>
 </div>
 <div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">

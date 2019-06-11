@@ -8,6 +8,8 @@ define([
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
 
+
+        $scope.propertyId = $stateParams.id;
         $scope.r = Math.round(Math.random()*1);
 
        $scope.defaultShow = function() {
@@ -42,10 +44,43 @@ define([
                 $scope.settings = $reportingService.getProfileSettings($(window).width());
                 $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 
-                $scope.loadProperty($scope.propertyId)
+                $scope.localLoading = false;
+                $propertyService.getSubjectPerspectives($scope.propertyId).then(function (response) {
+                    $scope.settings.perspectives = [{value: "", text: "All Data"}];
+
+                    response.data.properties.forEach(function(p) {
+                        p.perspectives.forEach(function(pr) {
+                            $scope.settings.perspectives.push({value: pr.id, text: pr.name, group: p.name, property_id: p._id.toString()});
+                        });
+                    });
+
+                    $scope.settings.perspectives.push({value: "-1", text: " + Add/Edit Perspective"});
+
+                    $scope.settings.perspective = _.find($scope.settings.perspectives, function(x) {
+                        return x.value.toString() === $scope.settings.selectedPerspective.toString();
+                    });
+
+                    if (!$scope.settings.perspective) {
+                        $scope.settings.perspective = $scope.settings.perspectives[0];
+                    }
+
+                    $scope.loadProperty($scope.propertyId);
+                }, function(err) {
+                    $scope.apiError = true;
+                });
             }
         });
 
+
+        $scope.$watch('settings.perspective', function() {
+            if (!$scope.localLoading) return;
+            if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
+                $location.path("/perspectives");
+                return;
+            }
+
+            $scope.loadProperty($scope.propertyId);
+        }, true);
 
         $scope.resetProfile = function() {
             $scope.defaultShowProfile();
@@ -92,8 +127,6 @@ define([
             $cookieSettingsService.saveNerScale($scope.settings.nerScale)
             $scope.refreshGraphs();
         }, true);
-
-        $scope.propertyId = $stateParams.id;
 
         $scope.refreshGraphs = function() {
             $scope.loadProperty($scope.propertyId, true);

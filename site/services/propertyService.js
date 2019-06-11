@@ -92,6 +92,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         };
 
+    fac.getSubjectPerspectives = function (compId) {
+        return $http.get(gAPI + '/api/1.0/properties/' + compId+ '/subjectPerspectives?bust=' + (new Date()).getTime(), {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
+
     fac.getGuestComps = function (propertyid) {
         return $http.get(gAPI + '/api/1.0/properties/' + propertyid+ '/guestComps?bust=' + (new Date()).getTime(), {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

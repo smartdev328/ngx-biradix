@@ -71,6 +71,7 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
             settings.daterange=$cookieSettingsService.getDaterange();
             settings.graphs=$cookieSettingsService.getGraphs();
             settings.nerScale= $cookieSettingsService.getNerScale();
+            settings.selectedPerspective = $cookieSettingsService.getPerspective();
 
             return settings;
 
