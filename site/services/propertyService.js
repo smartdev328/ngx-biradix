@@ -56,7 +56,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.profile = function (id,daterange,show) {
+        fac.profile = function (id, daterange, show, subjectId, perspective) {
             var timezone = moment().utcOffset();
             if ($cookies.get("timezone")) {
                 timezone = parseInt($cookies.get("timezone"));
@@ -65,7 +65,9 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return $http.post(gAPI + '/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
                 daterange: daterange,
                 offset: timezone,
-                show: show
+                show: show,
+                subjectId: subjectId,
+                perspective: perspective
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;

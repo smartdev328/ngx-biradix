@@ -50,7 +50,7 @@ define([
 
                     response.data.properties.forEach(function(p) {
                         p.perspectives.forEach(function(pr) {
-                            $scope.settings.perspectives.push({value: pr.id, text: pr.name, group: p.name, property_id: p._id.toString()});
+                            $scope.settings.perspectives.push({value: pr.id, text: pr.name, group: p.name, propertyId: p._id.toString()});
                         });
                     });
 
@@ -143,13 +143,17 @@ define([
                     $scope.trendsLoading = false;
                 }
 
-                $propertyService.profile(defaultPropertyId
-                    , {
+                $propertyService.profile(defaultPropertyId,
+                    {
                         daterange: $scope.settings.daterange.selectedRange,
                         start: $scope.settings.daterange.selectedStartDate,
                         end: $scope.settings.daterange.selectedEndDate
-                    }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale, atr: $rootScope.me.settings.showATR}
+                    },
+                    {
+                        occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale,
+                        atr: $rootScope.me.settings.showATR},
+                    $scope.settings.perspective ? $scope.settings.perspective.propertyId : $scope.propertyId,
+                    $scope.settings.perspective ? $scope.settings.perspective.value : null
                 ).then(function (response) {
 
                     var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
