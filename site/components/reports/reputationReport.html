@@ -1,4 +1,5 @@
 <style type="text/css" media="all">
+    .bold-txt {font-weight: bold;}
     .google-txt {color:#e7711b !important;}
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, 
     .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
@@ -73,9 +74,9 @@
                             <img ng-src="/images/logos/facebook.png" style="height:20px;margin-top: 5px;">
                         </th>
                     </tr>
-                    <tr ng-repeat-start="row in report.rows">
-                        <td>{{row.name}}</td>
-                        <td>{{row.address}}</td>
+                    <tr ng-repeat-start="(key, row) in report.rows">
+                        <td ng-class="{'bold-txt': key == 0 }">{{row.name}}</td>
+                        <td ng-class="{'bold-txt': key == 0 }">{{row.address}}</td>
                         <td>
                             <span ng-if="row.yelp_rating === undefined || row.yelp_rating === null">-</span>
                             <span ng-if="row.yelp_rating !== undefined && row.yelp_rating !== null">
@@ -120,5 +121,5 @@
         </div>
     </div>
     <p class="hidden-print"><em style="font-size: 12px;float: left;margin-top: 2px;">* Finding mismatches? You can update a property to point to the right listing</em>
-    <a class="ml-3" href popover-trigger="'mouseover'" popover-placement="top" popover-append-to-body="true" uib-popover-html="'If you notice that the linked reputation provider listing is incorrect you can update it! Click on your name in the upper right and go to <a href=\'#/properties\'>Manage Properties</a> <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Edit Property <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Other Tab. Expand \'Integrations (Advanced)\' and update the appropriate link.'"><i class="fa fa-question-circle"></i></a></p>
+    <i class="fa fa-question-circle ml-3" popover-trigger="'outsideClick'" ng-mouseenter="openPopup($event)" popover-placement="top" popover-append-to-body="true" uib-popover-html="'If you notice that the linked reputation provider listing is incorrect you can update it! Click on your name in the upper right and go to <a href=\'#/properties\'>Manage Properties</a> <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Edit Property <i class=\'fa fa-long-arrow-right\' aria-hidden=\'true\'></i> Other Tab. Expand \'Integrations (Advanced)\' and update the appropriate link.'"></i></p>
 </div>
