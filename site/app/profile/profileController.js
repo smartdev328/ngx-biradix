@@ -160,7 +160,6 @@ define([
                     $scope.settings.perspective ? $scope.settings.perspective.propertyId : $scope.propertyId,
                     $scope.settings.perspective ? $scope.settings.perspective.value : null
                 ).then(function (response) {
-
                     var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
 
                     $scope.columns = ['occupancy'];
@@ -203,7 +202,7 @@ define([
                         strRange: $scope.property.strRangeEnd ? $scope.property.strRangeStart + " - " + $scope.property.strRangeEnd : ""
                     };
 
-                    $scope.points = resp.points;
+                    $scope.settings.points = resp.points;
                     $scope.surveyData = resp.surveyData;
                     $scope.nerData = resp.nerData
                     $scope.occData = resp.occData;

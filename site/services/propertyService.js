@@ -634,7 +634,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 })
             })
 
-            resp.points = {excluded: profile.points.excluded};
+            resp.points = {excludedList: profile.points.excludedList, missingList: profile.points.missingList};
 
             var keys = ['ner'];
             var labels = ['Entire Property'];
@@ -735,8 +735,6 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             return resp;
         }
-
-
 
         fac.parseDashboard = function(dashboard, summary, showLeases, scale, selectedBedroom, selectedPerspective) {
 
