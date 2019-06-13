@@ -30,45 +30,11 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
 
         fac.search = function (criteria) {
             return $http.post(gAPI + '/api/1.0/users'+ '?bust=' + (new Date()).getTime(), criteria, {
-                //emulation
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                response.users = response.users.map(function (item, index) {
-                    return {
-                        ...item,
-                        ...fac.users.find(function (localItem, localIndex) {
-                            return localItem._id == item._id;
-                        })
-                    }
-                });
-                //end emulation
                 return response;
             }).error(function (response) {
                 return response;
             });
         }
-
-        //emulation
-        fac.users = [];
-        fac.updateSSOSettings = function (users) {
-
-            return new Promise(function (resolve, reject) {
-                users.forEach(function (localItem, localIndex) {
-                    var i = fac.users.findIndex(function (item, index) {
-                        return item._id == localItem._id;
-                    });
-                    if (i != -1) {
-                        fac.users[i] = {
-                            ...fac.users[i],
-                            ...localItem,
-                        }
-                    } else {
-                        fac.users.push(localItem);
-                    }
-                });
-                resolve(fac.users);
-            });
-        }
-        //end emulation
 
     fac.setCustomPropertiesLimit = function (userId,customPropertiesLimit) {
         return $http.put(gAPI + '/api/1.0/users/' + userId + '/customPropertiesLimit'+ '?bust=' + (new Date()).getTime(), { customPropertiesLimit: customPropertiesLimit}, {
