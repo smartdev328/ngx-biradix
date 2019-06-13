@@ -43,6 +43,9 @@
     .popover.popover-small-margin {
         margin-top: -5px !important;
     }
+    .popover.popover-negative-10-margin {
+        margin-top: -10px !important;
+    }
     .popover.right {
         margin-left: 15px;
     }
@@ -265,8 +268,8 @@
                         </table>
                     </div>
                 </span>
-                <excluded excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'font-size:16px;padding:5px 0px 0px 5px;vertical-align: top;'"></excluded>
-                <excluded excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'font-size:16px;padding:5px 0px 0px 5px;vertical-align: top;'"></excluded>
+                <excluded excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'font-size:16px;padding:5px 0px 0px 5px;vertical-align: top;'" classes="'popover-small-margin'"></excluded>
+                <excluded excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'font-size:14px;padding:7px 0px 0px 3px;vertical-align: top;'" classes="'popover-small-margin'"></excluded>
                 <select
                         class="input-sm form-control pull-right hidden-print bedrooms"
                         style="display:inline;width:95px;font-weight:normal;font-size:13px;"
@@ -288,6 +291,7 @@
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
                        popover-append-to-body="true"
+                        popover-class="popover-small"
                        uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
                     ></i>
                 </div>
