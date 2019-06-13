@@ -36,6 +36,8 @@ angular.module("biradix.global").directive("reputationReport", function() {
                 $scope.report.averages.yelpRatingAverage = 5;
             }
 
+            $scope.report.averages.googleRatingAverage = Math.round( $scope.report.averages.googleRatingAverage * 1e1 ) / 1e1;
+
         },
         templateUrl: "/components/reports/reputationReport.html?bust=" + version,
     };
