@@ -201,7 +201,7 @@
                 <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.strRangeEnd && comp.hasExcluded">|</div>
                 <div style="float:left;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.hasExcluded">Perspective Applied: <b>{{comp.appliedPerspective.name}}</b>
-                    <i class="fa fa-question-circle"
+                    <i class="fa fa-question-circle hidden-print"
                        style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"
@@ -297,7 +297,7 @@
                 <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.strRangeEnd && comp.hasExcluded">|</div>
                 <div style="float:left;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.hasExcluded">Perspective Applied: <b>{{comp.appliedPerspective.name}}</b>
-                    <i class="fa fa-question-circle"
+                    <i class="fa fa-question-circle hidden-print"
                        style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
                        popover-trigger="'mouseenter'"
                        popover-placement="right"

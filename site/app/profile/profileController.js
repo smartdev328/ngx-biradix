@@ -339,14 +339,14 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs);
+            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
 
             $window.setTimeout($scope.checkProgress, 500);
         };
 
 
         $scope.print = function() {
-            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs);
+            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs, $scope.settings.perspective.value);
         };
     }]);
 });

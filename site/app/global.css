@@ -564,3 +564,13 @@ label.normal {
 .fa.fa-warning.orange  {
     color: orange !important;
 }
+
+.missing-floorplan TD {
+    color: #B4B4B4;
+}
+
+@media print {
+    .missing-floorplan TD {
+        color: #B4B4B4 !important;
+    }
+}

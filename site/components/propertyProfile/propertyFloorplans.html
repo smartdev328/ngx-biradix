@@ -92,7 +92,7 @@
 
         </tr>
 
-        <tr ng-repeat="fp in comp.survey.floorplans | orderBy : [orderBy, 'bedrooms','bathrooms', 'sqft','description','units'] | filter : {bedrooms : i}"  ng-style="{'color': fp.excluded || fp.missing ? '#B4B4B4' : 'inherit'}">
+        <tr ng-repeat="fp in comp.survey.floorplans | orderBy : [orderBy, 'bedrooms','bathrooms', 'sqft','description','units'] | filter : {bedrooms : i}"  ng-class="{'missing-floorplan': fp.excluded || fp.missing}">
             <td style="text-align:center;">
                 {{fp.bedrooms}}x{{fp.bathrooms}}
             </td>
