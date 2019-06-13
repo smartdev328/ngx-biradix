@@ -6,7 +6,7 @@ define([
         var fac = {};
 
 
-        var getPdfUrl = function(showFile,propertyId,graphs, daterange, progressId) {
+        var getPdfUrl = function(showFile,propertyId,graphs, daterange, progressId, perspective) {
             var timezone = moment().utcOffset();
             if ($cookies.get("timezone")) {
                 timezone = parseInt($cookies.get("timezone"));
@@ -34,14 +34,16 @@ define([
                 orderBy: ($cookies.get("fp.o") || ''),
                 show: encodeURIComponent($cookies.get("fp.s") || ''),
                 showP: encodeURIComponent($cookies.get("pr.s") || ''),
-                referer: location.href
-            }
+                referer: location.href,
+                perspective: perspective
+            };
+            console.log(data);
             
             return {base:url, data: data};
         }
 
-        fac.print = function (propertyId, showFile, daterange, progressId, graphs) {
-            var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId);
+        fac.print = function (propertyId, showFile, daterange, progressId, graphs, perspective) {
+            var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId, perspective);
 
             //Has to be synchronous
             var key = $urlService.shorten(JSON.stringify(pdf.data));

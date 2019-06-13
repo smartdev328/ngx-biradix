@@ -7,7 +7,7 @@ define([
     app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
-
+        $scope.excludedPopups = {};
 
         $scope.propertyId = $stateParams.id;
         $scope.r = Math.round(Math.random()*1);
@@ -46,7 +46,7 @@ define([
 
                 $scope.localLoading = false;
                 $propertyService.getSubjectPerspectives($scope.propertyId).then(function (response) {
-                    $scope.settings.perspectives = [{value: "", text: "All Data"}];
+                    $scope.settings.perspectives = [{value: "", text: "All Data", propertyId: ""}];
 
                     response.data.properties.forEach(function(p) {
                         p.perspectives.forEach(function(pr) {
@@ -77,6 +77,11 @@ define([
             if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
                 $location.path("/perspectives");
                 return;
+            }
+
+            // if we pick a perspective from the default property, update the default perspective for dashboard like date
+            if ($rootScope.me.settings.defaultPropertyId.toString() === $scope.settings.perspective.propertyId.toString() || $scope.settings.perspective.propertyId.toString() === "") {
+                $cookieSettingsService.savePerspective($scope.settings.perspective.value);
             }
 
             $scope.loadProperty($scope.propertyId);
@@ -155,7 +160,6 @@ define([
                     $scope.settings.perspective ? $scope.settings.perspective.propertyId : $scope.propertyId,
                     $scope.settings.perspective ? $scope.settings.perspective.value : null
                 ).then(function (response) {
-
                     var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
 
                     $scope.columns = ['occupancy'];
@@ -198,7 +202,7 @@ define([
                         strRange: $scope.property.strRangeEnd ? $scope.property.strRangeStart + " - " + $scope.property.strRangeEnd : ""
                     };
 
-                    $scope.points = resp.points;
+                    $scope.settings.points = resp.points;
                     $scope.surveyData = resp.surveyData;
                     $scope.nerData = resp.nerData
                     $scope.occData = resp.occData;
@@ -335,14 +339,14 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs);
+            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
 
             $window.setTimeout($scope.checkProgress, 500);
         };
 
 
         $scope.print = function() {
-            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs);
+            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs, $scope.settings.perspective.value);
         };
     }]);
 });
