@@ -5,7 +5,9 @@ angular.module('biradix.global').directive('propertyFloorplans', function () {
                 comp: '=',
                 orderBy: '=',
                 show: '=',
-                skipcookie: '='
+                skipcookie: '=',
+                appliedPerspective: '=',
+                excludedPopups: '='
             },
             controller: function ($scope, $gridService, $cookies) {
 

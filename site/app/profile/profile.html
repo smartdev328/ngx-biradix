@@ -251,22 +251,19 @@
                 <span class="pull-left">Floor Plans</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
-                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:210px;margin-top:5px">
+                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px;margin-top:5px">
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
-                            <Tr>
-                                <td>
-                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>&nbsp;
-                                </td>
-                                <Td>
-                                    &nbsp;Hide Excluded
+                          <Tr>
+                                <Td style="font-size:12px" colspan="2">
+                                    &nbsp;Hide excluded is now Perspectives
 
                                     <i class="fa fa-info-circle" style="font-size:12px"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
-                                       uib-popover="Turn this option off to calculate all floor plan data, including floor plans that have been manually excluded by the user from reporting and dashboard calculations."
-                                            ></i>
+                                       popover-append-to-body="true"
+                                       uib-popover="Perspectives allow you to configure and save different views of your data that you can toggle between from the Perspectives dropdown at the top of the dashboard. You can edit views by going to the Perspectives section in the main menu dropdown."
+                                    ></i>
                                 </Td>
-
                             </Tr>
                         </table>
                     </div>
@@ -294,10 +291,22 @@
                 </div>
                 <Br clear="all">
                 <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.strRangeEnd && property.hasExcluded">|</div>
+                <div style="float:left;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.hasExcluded">Perspective Applied: <b>{{comp.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all" ng-if="comp.appliedPerspective && comp.hasExcluded">
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>
-                <property-floorplans comp="comp" order-by="settings.orderByFp" show="settings.show"></property-floorplans>
+                <property-floorplans comp="comp" order-by="settings.orderByFp" show="settings.show" applied-perspective="comp.appliedPerspective" excluded-popups="excludedPopups"></property-floorplans>
             </div>
         </div>
 

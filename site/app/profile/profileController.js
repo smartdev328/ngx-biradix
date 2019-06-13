@@ -7,7 +7,7 @@ define([
     app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
-
+        $scope.excludedPopups = {};
 
         $scope.propertyId = $stateParams.id;
         $scope.r = Math.round(Math.random()*1);
@@ -46,7 +46,7 @@ define([
 
                 $scope.localLoading = false;
                 $propertyService.getSubjectPerspectives($scope.propertyId).then(function (response) {
-                    $scope.settings.perspectives = [{value: "", text: "All Data"}];
+                    $scope.settings.perspectives = [{value: "", text: "All Data", propertyId: ""}];
 
                     response.data.properties.forEach(function(p) {
                         p.perspectives.forEach(function(pr) {
@@ -77,6 +77,11 @@ define([
             if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
                 $location.path("/perspectives");
                 return;
+            }
+
+            // if we pick a perspective from the default property, update the default perspective for dashboard like date
+            if ($rootScope.me.settings.defaultPropertyId.toString() === $scope.settings.perspective.propertyId.toString() || $scope.settings.perspective.propertyId.toString() === "") {
+                $cookieSettingsService.savePerspective($scope.settings.perspective.value);
             }
 
             $scope.loadProperty($scope.propertyId);
