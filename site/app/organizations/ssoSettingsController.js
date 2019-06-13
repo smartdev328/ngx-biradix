@@ -24,21 +24,27 @@ define([
 
                 // $ssoService.updateOrgsIds(organizations).then(function () {
                     // sso
-                    $scope.SSOList = {};
-                    $scope.SSOList.data = [
-                        {
-                            name: 'not use',
-                            id: undefined,
+                    $scope.SSOSettings = {
+                        provider: [
+                            {
+                                name: 'not use',
+                                id: undefined,
+                            },
+                            {
+                                name: 'Azure',
+                                id: 'azure',
+                            },
+                            {
+                                name: 'Okta',
+                                id: 'okta',
+                            },
+                        ],
+                        default: false,
+                        changeDefault: function () {
+                            $scope.SSOSettings.default = !$scope.SSOSettings.default;
                         },
-                        {
-                            name: 'Azure',
-                            id: 'azure',
-                        },
-                        {
-                            name: 'Okta',
-                            id: 'okta',
-                        },
-                    ];
+                    };
+                    $scope.SSOSettings.providerModel = $scope.SSOSettings.provider[0];
 
                     $scope.cancel = function () {
                         $uibModalInstance.dismiss('cancel');
@@ -97,10 +103,6 @@ define([
 
                     //call loading
                     $scope.reload();
-
-                    $scope.changeSSOForNewUsers = function () {
-                        $scope.SSOForNewUsers = !$scope.SSOForNewUsers;
-                    }
 
                     $scope.save = function () {
                         // $ssoService.updateOrganizationSSOSettings(organization._id, {

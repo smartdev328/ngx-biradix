@@ -1,9 +1,8 @@
 <label for="sso-system">SSO System</label>
 <select
     class="form-control input-sm"
-    ng-model="SSOList.model"
-    ng-options="item.name for item in SSOList.data track by item.id"
-    ng-change="SSOList.change()"
+    ng-model="SSOSettings.providerModel"
+    ng-options="item.name for item in SSOSettings.provider track by item.id"
     id="sso-system"
 >
 </select>
@@ -11,6 +10,6 @@
 <div class="row">
     <div class="col-xs-10">SSO auth method for new users</div>
     <div class="col-xs-2">
-        <toggle-switch checked="SSOForNewUsers" click-fn="changeSSOForNewUsers()"></toggle-switch>
+        <toggle-switch checked="SSOSettings.default" click-fn="SSOSettings.changeDefault"></toggle-switch>
     </div>
 </div>
