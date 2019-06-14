@@ -41,6 +41,7 @@ define([
             if ($rootScope.me) {
                 me();
                 $scope.settings = $reportingService.getProfileSettings($(window).width());
+                $scope.debug = $scope.settings.daterange;
 
                 $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 
