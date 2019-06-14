@@ -4,7 +4,7 @@ define([
     '../../services/exportService',
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
         $scope.excludedPopups = {};
@@ -41,8 +41,6 @@ define([
             if ($rootScope.me) {
                 me();
                 $scope.settings = $reportingService.getProfileSettings($(window).width());
-                $scope.debug = $scope.settings.daterange;
-
                 $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 
                 $scope.localLoading = false;
@@ -342,7 +340,9 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
+            var daterange = $saveReportService.fixDateRange($scope.settings.daterange);
+
+            $exportService.print($scope.property._id, true, daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
 
             $window.setTimeout($scope.checkProgress, 500);
         };
