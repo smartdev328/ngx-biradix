@@ -69,15 +69,33 @@ define([
                 }
                 $scope.changeTab(0);
 
+                $scope.ssoUserModel = {
+                    list: [],
+                    options: {
+                        availableLabel: 'Email-Password',
+                        selectedLabel: 'SSO',
+                        searchLabel: 'Email',
+                        hideSearch: true,
+                    }
+                }
                 // load data
-                $scope.reload = function () {};
+                $scope.reload = function () {
+                    //users
+                    $userService.search({orgid: organization._id}).then(function (response) {
+                        $scope.ssoUserModel.list = response.data.users.map(function (user) {
+                            var roles = user.roles.reduce(function (pV, cV) {
+                                return pV + cV.name + ' ,';
+                            }, '');
+                            roles = roles.length > 0 ? roles.substring(0, roles.length - 2) : roles;
+                            return {
+                                id: user._id,
+                                name: user.name,
+                                tooltip: 'Email: <b>' + user.email + '</b><br>Role: <b>' + roles + '</b>',
+                                selected: false,
+                            };
+                        })
+                    });
 
-                //users list prepare
-                $scope.userlistOptions = {
-                    availableLabel: 'Email-Password',
-                    selectedLabel: 'SSO',
-                    searchLabel: 'Email',
-                    hideSearch: true,
                 };
 
                 //call loading
