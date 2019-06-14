@@ -41,8 +41,6 @@ define([
             if ($rootScope.me) {
                 me();
                 $scope.settings = $reportingService.getProfileSettings($(window).width());
-                $scope.settings.daterange = $cookieSettingsService.defaultDateObject($scope.settings.daterange.selectedRange,$scope.settings.daterange.selectedStartDate,$scope.settings.daterange.selectedEndDate);
-                $scope.settings.daterange.reload = true;
 
                 $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 

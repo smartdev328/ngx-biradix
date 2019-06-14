@@ -15,11 +15,11 @@ define([
             var url = gAPI + '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
 
-            var selectedEndDate = daterange.selectedEndDate.format();
-            var selectedStartDate = daterange.selectedStartDate.format()
+            var selectedEndDate = daterange.selectedEndDate;
+            var selectedStartDate = daterange.selectedStartDate;
             if ($cookies.get("selectedEndDate")) {
-                selectedEndDate = moment($cookies.get("selectedEndDate")).format();
-                selectedStartDate = moment($cookies.get("selectedStartDate")).format();
+                selectedEndDate = moment($cookies.get("selectedEndDate"));
+                selectedStartDate = moment($cookies.get("selectedStartDate"));
             }
             
             var data = {
@@ -37,10 +37,9 @@ define([
                 referer: location.href,
                 perspective: perspective
             };
-            console.log(data);
-            
+
             return {base:url, data: data};
-        }
+        };
 
         fac.print = function (propertyId, showFile, daterange, progressId, graphs, perspective) {
             var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId, perspective);
