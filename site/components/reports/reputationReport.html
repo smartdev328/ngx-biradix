@@ -56,61 +56,67 @@
             <div class="header" style="height:47px !important;"></div>
             <table class="table table-condensed table-striped table-hover hidden-arrows" style="font-size:9pt">
                 <tbody>
-                <tr class="thead">
-                    <th style="height:45px;">
-                        Property
-                    </th>
-                    <th style="height:45px;">
-                        Address
-                    </th>
-                    <th style="height:45px;font-size:11px">
-                        <img ng-src="/images/logos/yelp.png" style="height:30px;margin-bottom: 3px;">
-                    </th>
-                    <th style="height:45px;font-size:11px">
-                        <img ng-src="/images/logos/google.png" style="height:20px;margin-top: 5px;">
-                    </th>
-                    <th style="height:45px;font-size:11px">
-                        <img ng-src="/images/logos/facebook.png" style="height:20px;margin-top: 5px;">
-                    </th>
-                </tr>
-
-        <tr ng-repeat-start="row in report">
-            <Td>
-                {{row.name}}
-            </Td>
-            <Td>
-                {{row.address}}
-            </Td>
-            <td>
-                <span ng-if="row.yelp_rating === undefined || row.yelp_rating === null">-</span>
-                <span ng-if="row.yelp_rating !== undefined && row.yelp_rating !== null">
-                    <img ng-if="!row.yelp_url" ng-src="/images/logos/yelp_stars/{{row.yelp_rating}}.png">
-                    <a href="{{row.yelp_url}}" target="_blank" ng-if="row.yelp_url"><img ng-src="/images/logos/yelp_stars/{{row.yelp_rating}}.png"> {{row.yelp_count}} Reviews</a>
-                    </span>
-
-            </td>
-            <td>
-                <span ng-if="row.google_rating === undefined || row.google_rating === null">-</span>
-                <a ng-if="row.google_url && row.google_rating" href="{{row.google_url}}" target="_blank" style="font-size:13px;"><span class="google-txt">{{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}</span>
-                <span class="google-stars" aria-label="Rated {{row.google_rating}} out of 5,">
-                    <span ng-if="!row.google_url" style="width:{{ row.google_rating * 13 }}px;"></span>
-                    <span style="width:{{ row.google_rating * 13 }}px;"></span>
-                </span>
-                {{row.google_rating === undefined || row.google_rating === null ? "" :(row.google_count)}} Google reviews</a>
-            </td>
-            <td>
-                <span ng-if="row.facebook_rating === undefined || row.facebook_rating === null">-</span>
-                <A ng-if="row.facebook_url && row.facebook_rating" href="{{row.facebook_url}}" target="_blank">
-                <div class="inline-block">
-                    <p ng-if="!row.facebook_url && row.facebook_rating" class="facebook-ratings">{{row.facebook_rating}}</p>
-                    <p class="facebook-ratings">{{row.facebook_rating}}</p>
-                </div>
-                <p class="inline-block" ng-if="row.facebook_rating" >{{row.facebook_rating === undefined || row.facebook_rating === null ? "" : row.facebook_count}} People</p></A>
-            </td>
-        </tr>
-        <tr ng-repeat-end ng-if="false"></tr>
-    </tbody>
-</table>
+                    <tr class="thead">
+                        <th style="height:45px;">
+                            Property
+                        </th>
+                        <th style="height:45px;">
+                            Address
+                        </th>
+                        <th style="height:45px;font-size:11px">
+                            <img ng-src="/images/logos/yelp.png" style="height:30px;margin-bottom: 3px;">
+                        </th>
+                        <th style="height:45px;font-size:11px">
+                            <img ng-src="/images/logos/google.png" style="height:20px;margin-top: 5px;">
+                        </th>
+                        <th style="height:45px;font-size:11px">
+                            <img ng-src="/images/logos/facebook.png" style="height:20px;margin-top: 5px;">
+                        </th>
+                    </tr>
+                    <tr ng-repeat-start="row in report.rows">
+                        <td>{{row.name}}</td>
+                        <td>{{row.address}}</td>
+                        <td>
+                            <span ng-if="row.yelp_rating === undefined || row.yelp_rating === null">-</span>
+                            <span ng-if="row.yelp_rating !== undefined && row.yelp_rating !== null">
+                                <img ng-if="!row.yelp_url" ng-src="/images/logos/yelp_stars/{{row.yelp_rating}}.png">
+                                <a href="{{row.yelp_url}}" target="_blank" ng-if="row.yelp_url"><img ng-src="/images/logos/yelp_stars/{{row.yelp_rating}}.png"> {{row.yelp_count}} Reviews</a>
+                            </span>
+                        </td>
+                        <td>
+                            <span ng-if="row.google_rating === undefined || row.google_rating === null">-</span>
+                            <a ng-if="row.google_url && row.google_rating" href="{{row.google_url}}" target="_blank" style="font-size:13px;"><span class="google-txt">{{row.google_rating === undefined || row.google_rating === null ? "" : (row.google_rating.toFixed(1))}}</span>
+                            <span class="google-stars" aria-label="Rated {{row.google_rating}} out of 5,">
+                                <span ng-if="!row.google_url" style="width:{{ row.google_rating * 13 }}px;"></span>
+                                <span style="width:{{ row.google_rating * 13 }}px;"></span>
+                            </span>
+                            {{row.google_rating === undefined || row.google_rating === null ? "" :(row.google_count)}} Google reviews</a>
+                        </td>
+                        <td>
+                            <span ng-if="row.facebook_rating === undefined || row.facebook_rating === null">-</span>
+                            <A ng-if="row.facebook_url && row.facebook_rating" href="{{row.facebook_url}}" target="_blank">
+                            <div class="inline-block">
+                                <p ng-if="!row.facebook_url && row.facebook_rating" class="facebook-ratings">{{row.facebook_rating}}</p>
+                                <p class="facebook-ratings">{{row.facebook_rating}}</p>
+                            </div>
+                            <p class="inline-block" ng-if="row.facebook_rating" >{{row.facebook_rating === undefined || row.facebook_rating === null ? "" : row.facebook_count}} People</p></A>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end ng-if="false"></tr>
+                    <tr>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" colspan="2"><strong><i>Comp Averages</i></strong></td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="!report.averages.yelpCount">-</td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="report.averages.yelpCount"><img ng-src="/images/logos/yelp_stars/{{report.averages.yelpRatingAverage.toFixed(0)}}.png"> <strong style="margin-left: 3px;"><i>{{report.averages.yelpReviewAverage.toFixed(0)}} Reviews</i></strong></td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="!report.averages.googleCount">-</td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="report.averages.googleCount">
+                            <span class="google-txt">{{report.averages.googleRatingAverage.toFixed(1)}}</span>
+                            <span style="margin-right: 10px;" class="google-stars" aria-label="Rated {{report.averages.googleRatingAverage.toFixed(1)}} out of 5,">
+                                <span style="width:{{ report.averages.googleRatingAverage.toFixed(1) * 13 }}px;"></span>
+                            </span><strong><i>{{report.averages.googleReviewAverage.toFixed(0)}} Google reviews</i></strong></td>
+                        <td style="border-top:1px solid #ccc;"><strong><i>-</i></strong></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <p class="hidden-print"><em style="font-size: 12px;float: left;margin-top: 2px;">* Finding mismatches? You can update a property to point to the right listing</em>

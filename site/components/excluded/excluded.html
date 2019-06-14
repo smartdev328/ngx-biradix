@@ -3,9 +3,10 @@
    ng-if="appliedPerspective && (excludedList | json) !== '{}'"
    popover-trigger="'outsideClick'"
    popover-placement="right-top"
-   popover-class="popover-small-margin popover-small"
+   popover-class="{{classes}} popover-small"
    uib-popover-template="hintTemplate"
    popover-append-to-body="true"
+   popover-animation="false"
    popover-is-open="options.isOpen"
    ng-mouseenter="openPopup($event)"
 ></i>
@@ -15,9 +16,10 @@
    ng-if="!appliedPerspective && (excludedList | json) !== '{}'"
    popover-trigger="'outsideClick'"
    popover-placement="right-top"
-   popover-class="popover-small-margin popover-small"
+   popover-class="{{classes}} popover-small"
    uib-popover-template="hintTemplate"
    popover-append-to-body="true"
+   popover-animation="false"
    popover-is-open="options.isOpen"
    ng-mouseenter="openPopup($event)"
 ></i>

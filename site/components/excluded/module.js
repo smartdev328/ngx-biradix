@@ -8,6 +8,7 @@ angular.module("biradix.global").directive("excluded", function () {
             key: "=",
             excludedPopups: "=",
             styles: "=",
+            classes: "="
         },
         controller: function ($scope, $element, $uibModal) {
             $scope.excludedPopups = $scope.excludedPopups || {};

@@ -268,6 +268,9 @@
             <td>
                 <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
 
+                <excluded excluded-list="comp.survey.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id" styles="'font-size:14px;padding-left:2px'" classes="'popover-negative-10-margin'"></excluded>
+                <excluded excluded-list="comp.survey.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id" styles="'font-size:14px;padding-left:4px'" classes="'popover-negative-10-margin'"></excluded>
+
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
                    ng-if="comp.needsSurvey"
@@ -277,9 +280,6 @@
                     popover-class="popover-small"
                    uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
                 ></i>
-
-                <excluded excluded-list="comp.survey.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id" styles="'font-size:16px;padding-left:4px'"></excluded>
-                <excluded excluded-list="comp.survey.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id" styles="'font-size:14px;padding-left:4px'"></excluded>
 
                 <i class="fa fa-lock hidden-print"
                    style="cursor:pointer;font-size:14px;padding-left:2px"
@@ -386,8 +386,8 @@
             <td nowrap>
                 &nbsp;&nbsp;{{row.name}}
 
-                <excluded excluded-list="row.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id + row.name" styles="'font-size:16px;padding-left:4px'"></excluded>
-                <excluded excluded-list="row.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id + row.name" styles="'font-size:14px;padding-left:4px'"></excluded>
+                <excluded excluded-list="row.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id + row.name" styles="'font-size:16px;padding-left:4px'" classes="'popover-negative-10-margin'"></excluded>
+                <excluded excluded-list="row.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id + row.name" styles="'font-size:14px;padding-left:4px'" classes="'popover-negative-10-margin'"></excluded>
             </td>
             <td style="text-align: right" ng-if="show.occupancy" class="pad">
                 -
