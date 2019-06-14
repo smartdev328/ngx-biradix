@@ -34,7 +34,7 @@ define([
         $scope.timezone = moment().utcOffset();
         if ($cookies.get("timezone")) {
             $scope.timezone = parseInt($cookies.get("timezone"));
-            // $scope.debug = $scope.timezone;
+            $scope.debug = $scope.timezone;
         }
 
         // make sure me is loaded befor you search initially
