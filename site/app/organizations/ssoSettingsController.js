@@ -84,7 +84,7 @@ define([
                     $userService.search({orgid: organization._id}).then(function (response) {
                         $scope.ssoUserModel.list = response.data.users.map(function (user) {
                             var roles = user.roles.reduce(function (pV, cV) {
-                                return pV + cV.name + ' ,';
+                                return pV + cV.name + ', ';
                             }, '');
                             roles = roles.length > 0 ? roles.substring(0, roles.length - 2) : roles;
                             return {
