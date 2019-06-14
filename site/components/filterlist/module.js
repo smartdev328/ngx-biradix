@@ -243,6 +243,13 @@
                     return response;
                 }
 
+                $scope.openPopup = function($event) {
+
+                    var el = angular.element($event.toElement);
+
+                    el.triggerHandler("click");
+                };
+
                 $scope.getPrevious = function($event, x) {
                     var j = 0;
                     var found;
