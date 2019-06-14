@@ -280,11 +280,11 @@
 
                 <span class="pull-right hidden-xs" style="font-weight:initial !important; font-size: 13px !important; color: initial !important;margin:5px 5px 0px 0px">Show:</span>
 
-                <br clear="all" ng-if="property.appliedPerspective && property.hasExcluded">
+                <br clear="all">
 
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
                 </div>
-                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && points.excludedList.length">|</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && (points.excludedList | json) !== '{}'">|</div>
                 <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;" ng-if="property.appliedPerspective && (points.excludedList | json) !== '{}'">Perspective Applied: <b>{{property.appliedPerspective.name}}</b>
                     <i class="fa fa-question-circle"
                        style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
@@ -390,7 +390,7 @@
                        uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
                     ></i>
                 </div>
-                <br clear="all" ng-if="property.appliedPerspective && property.hasExcluded">
+                <br clear="all" ng-if="property.strRangeEnd || (property.appliedPerspective && property.hasExcluded)">
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>
