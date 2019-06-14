@@ -20,6 +20,9 @@ angular.module("biradix.global").directive("reputationReport", function() {
                 if(parseFloat($scope.report.averages.yelpRatingAverage) <= 0.5) {
                     $scope.report.averages.yelpRatingAverage = 0;
                 }
+                if($scope.report.averages.yelpRatingAverage % 1 == 0) {
+                    $scope.report.averages.yelpRatingAverage = parseInt($scope.report.averages.yelpRatingAverage);
+                }
             }
 
             $scope.report.averages.googleRatingAverage = Math.round( $scope.report.averages.googleRatingAverage * 10 ) / 10;
