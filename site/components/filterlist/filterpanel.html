@@ -7,7 +7,7 @@
         <div ng-repeat="item in value"
              ng-class="{'triangle-parent':true,'filter-li':true,'highlighted':item.checked,'hasGroup':(key != 'undefined'), 'unselectable': true,'focused': item.focused, 'disabled' : item.disabled}"
              ng-click="clk($event,item)"
-             popover-trigger="'outsideClick'"
+             popover-trigger="'mouseenter'"
              popover-placement="{{tooltipdir || 'auto'}}"
              popover-append-to-body="true"
              uib-popover-html="tooltipfn ? tooltipfn(item) : item.tooltip"
@@ -15,7 +15,7 @@
              popover-class="filter-list-tooltip"
         >
             <div ng-if="item.isCustom" class="triangle"
-                 popover-trigger="'outsideClick'" 
+                 popover-trigger="'mouseenter'" 
                  popover-placement="auto"
                  popover-append-to-body="true"
                  uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
