@@ -9,7 +9,6 @@
              ng-click="clk($event,item)"
              popover-trigger="'outsideClick'"
              popover-placement="{{tooltipdir || 'auto'}}"
-             ng-mouseenter="openPopup($event)"
              popover-append-to-body="true"
              uib-popover-html="tooltipfn ? tooltipfn(item) : item.tooltip"
              popover-enable="item.tooltip || tooltipfn"
@@ -19,7 +18,6 @@
                  popover-trigger="'outsideClick'" 
                  popover-placement="auto"
                  popover-append-to-body="true"
-                 ng-mouseenter="openPopup($event)"
                  uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
             ></div>
             <input type="text" style="width:0px;height:18px;border:0;padding:0" value="{{::item.name}}">
