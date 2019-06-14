@@ -1,8 +1,8 @@
 <label for="sso-system">SSO System</label>
 <select
     class="form-control input-sm"
-    ng-model="SSOSettings.providerModel"
-    ng-options="item.name for item in SSOSettings.provider track by item.id"
+    ng-model="ssoOrganizationModel.providerModel"
+    ng-options="item.name for item in ssoOrganizationModel.provider track by item.id"
     id="sso-system"
 >
 </select>
@@ -10,6 +10,6 @@
 <div class="row">
     <div class="col-xs-10">SSO auth method for new users</div>
     <div class="col-xs-2">
-        <toggle-switch checked="SSOSettings.default" click-fn="SSOSettings.changeDefault"></toggle-switch>
+        <toggle-switch checked="ssoOrganizationModel.default"></toggle-switch>
     </div>
 </div>
