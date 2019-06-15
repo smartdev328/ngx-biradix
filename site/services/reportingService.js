@@ -1,6 +1,28 @@
 angular.module("biradix.global").factory("$reportingService", ["$http","$cookies","$cookieSettingsService", function ($http,$cookies,$cookieSettingsService) {
         var fac = {};
 
+        fac.getDateRangeLabel = function(daterange, offset) {
+            var d1 = daterange.selectedRange;
+            if (d1 === "Custom Range") {
+                var d1s, d1e;
+
+                if (daterange.selectedStartDate._isUTC) {
+                    d1s = moment(daterange.selectedStartDate._d).utcOffset(offset).format("MM/DD/YY");
+                } else {
+                    d1s = moment(daterange.selectedStartDate._d).utcOffset(offset).format("MM/DD/YY");
+                }
+
+                if (daterange.selectedEndDate._isUTC) {
+                    d1e = moment(daterange.selectedEndDate._d).utcOffset(offset).format("MM/DD/YY");
+                } else {
+                    d1e = moment(daterange.selectedEndDate._d).utcOffset(offset).format("MM/DD/YY");
+                }
+
+                d1 = d1s + "-" + d1e;
+            }
+            return d1;
+        };
+
         fac.reports = function(compids, subjectid, reports, options) {
             return $http.post(gAPI + "/api/1.0/reporting/" + subjectid + "?bust=" + (new Date()).getTime(), {
                 compids: compids,

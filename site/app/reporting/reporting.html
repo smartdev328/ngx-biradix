@@ -448,6 +448,21 @@
                                     Show Graphs:<br>
                                     <toggle-switch checked="liveSettings.trends.graphs"></toggle-switch>&nbsp;
                                 </div>
+                                <br clear="all" class="visible-md visible-lg">
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.trendsPerspectives"
+                                            ng-model="temp.trendsPerspectiveSelected"
+                                    ></select>
+                                </div>
                             </div>
                         </div>
                         <div ng-if="property_status" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.property_status_open">

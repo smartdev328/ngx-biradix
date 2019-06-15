@@ -4,8 +4,22 @@
     }
 </style>
 <div class="break2 panel panel-info">
-    <div class="panel-heading">Trend Analysis</div>
+    <div class="panel-heading">Trend Analysis
+        <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="report.date1.dashboard.property.appliedPerspective && ((report.date1.dashboard.points.excludedList | json) !== '{}' || (report.date2.dashboard.points.excludedList | json) !== '{}')">Perspective Applied: <b>{{report.date1.dashboard.property.appliedPerspective.name}}</b>
+            <i class="fa fa-question-circle"
+               style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-append-to-body="true"
+               popover-class="popover-small"
+               uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+            ></i>
+        </div>
+    </div>
     <div class="panel-body">
+        <div style="float:left" ng-if="(report.date1.dashboard.points.excludedList | json) !== '{}' || (report.date1.dashboard.points.missingList | json) !== '{}'">{{d1}}</div> <excluded style="float:left" excluded-list="report.date1.dashboard.points.excludedList" property-id="report.date1.dashboard.property._id" applied-perspective="report.date1.dashboard.property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'font-size:16px;margin-left:7px;'"></excluded><excluded style="float:left" excluded-list="report.date1.dashboard.points.missingList" property-id="report.date1.dashboard.property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-missing'" styles="'font-size:14px;margin-left: 7px;padding-top:2px;'"></excluded>
+        <div style="float:left;width:20px" ng-if="(report.date1.dashboard.points.excludedList | json) !== '{}'">&nbsp;</div>
+        <div style="float:left" ng-if="(report.date2.dashboard.points.excludedList | json) !== '{}' || (report.date2.dashboard.points.missingList | json) !== '{}'">{{d2}}</div> <excluded style="float:left" excluded-list="report.date2.dashboard.points.excludedList" property-id="report.date2.dashboard.property._id" applied-perspective="report.date2.dashboard.property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded-2'" styles="'font-size:16px;margin-left:7px;'"></excluded><excluded style="float:left" excluded-list="report.date2.dashboard.points.missingList" property-id="report.date2.dashboard.property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-missing-2'" styles="'font-size:14px;margin-left: 7px;padding-top:2px;'"></excluded>
         <div id="timeseries-container">
             <trends-time-series options="options.occupancy" offset="offset" settings="settings" report="report" ng-if="settings.show.occupancy" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>
             <trends-time-series options="options.leased" offset="offset" settings="settings" report="report" ng-if="settings.show.leased" cb-legend-clicked="cbLegendClicked(legend)" legend-updated="legendUpdated"></trends-time-series>

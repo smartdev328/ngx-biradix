@@ -567,6 +567,10 @@ define([
                 $scope.temp.showTrendsItems.forEach(function (f) {
                     $scope.liveSettings.trends.show[f.id] = f.selected;
                 })
+
+                if ($scope.temp.trendsPerspectiveSelected) {
+                    $scope.liveSettings.trends.perspective = $scope.temp.trendsPerspectiveSelected.value;
+                }
             }
 
         }
@@ -659,7 +663,8 @@ define([
                     },
                     offset: $scope.timezone,
                     show: $scope.cleanSettings.trends.show,
-                    graphs: $scope.cleanSettings.trends.graphs
+                    graphs: $scope.cleanSettings.trends.graphs,
+                    perspective: $scope.liveSettings.trends.perspective
                 };
 
                 if ($cookies.get("settings")) {
@@ -1531,7 +1536,7 @@ define([
                     $scope.temp.rankingSummaryPerspectiveSelected = $scope.temp.rankingSummaryPerspectives[0];
                 }
             }
-        }
+        };
 
         $scope.$watch("runSettings.rankingsSummary.orderBy", function(newValue,oldValue) {
             if (oldValue && newValue) {
@@ -1660,7 +1665,21 @@ define([
                     {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.trends.show.nersqft},
                 ];
 
-            }
+                if ($scope.selected.Property) {
+                    $scope.temp.trendsPerspectives = [{value: "", text: "All Data"}];
+                    ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                        $scope.temp.trendsPerspectives.push({value: p.id, text: p.name});
+                    });
+
+                    $scope.temp.trendsPerspectiveSelected = _.find($scope.temp.trendsPerspectives, function(x) {
+                        return x.value.toString() === $scope.liveSettings.trends.perspective;
+                    });
+
+                    if (!$scope.temp.trendsPerspectiveSelected) {
+                        $scope.temp.trendsPerspectiveSelected = $scope.temp.trendsPerspectives[0];
+                    }
+                }
+            };
 
             $scope.defaultTrendsDateRange1 = function(selectedRange, selectedStartDate, selectedEndDate) {
                 return {

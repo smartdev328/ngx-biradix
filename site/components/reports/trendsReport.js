@@ -6,8 +6,8 @@ angular.module('biradix.global').directive('trendsReport', function () {
                 settings: '=',
                 offset: "="
             },
-            controller: function ($scope,$element) {
-
+            controller: function ($scope, $element, $reportingService) {
+                $scope.excludedPopups = {};
                 // Highcharts.Pointer.prototype.reset = function () {
                 //     return undefined;
                 // };
@@ -19,6 +19,9 @@ angular.module('biradix.global').directive('trendsReport', function () {
                 $scope.$watch('report', function(a,b){
                     $scope.options = {};
                     if ($scope.report) {
+
+                        $scope.d1 = $reportingService.getDateRangeLabel($scope.settings.daterange1, $scope.offset);
+                        $scope.d2 = $reportingService.getDateRangeLabel($scope.settings.daterange2, $scope.offset);
 
                         var height = 300;
                         var printWidth = 1100;
