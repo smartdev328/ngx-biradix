@@ -699,5 +699,27 @@ angular.module("biradix.global").controller("rootController",
             "last_updated": "<b>Last Updated</b> - <i>The date of the last survey completed for that property</i>",
         };
 
+        $rootScope.$watch("globalConfirm", function (newValue) {
+            if (typeof newValue === "undefined") {
+                return;
+            }
+
+            if (newValue.toString() === "") {
+               $window.onbeforeunload = function() {}
+            } else {
+                $window.onbeforeunload = function(event) {
+                    return newValue
+                };
+            }
+        }, true);
+
+            $rootScope.$on('$locationChangeStart', function( event ) {
+            if (!$rootScope.globalConfirm) return;
+            var answer = confirm($rootScope.globalConfirm);
+            if (!answer) {
+                event.preventDefault();
+            }
+        });
+
     }]);
 

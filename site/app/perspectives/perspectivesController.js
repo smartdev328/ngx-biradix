@@ -92,14 +92,20 @@ define([
 
         $scope.model.changed = false;
 
-        $scope.model.changesMade = function() {
-            $scope.model.changed = true;
+        $scope.changesComplete = function() {
+            $scope.model.changed = false;
+            $rootScope.globalConfirm = "";
         }
+
+        $scope.changesMade = function() {
+            $scope.model.changed = true;
+            $rootScope.globalConfirm = "You have made changes that have not been saved. Are you sure you want to leave without saving?";
+        };
 
         $scope.edit = function() {
             $scope.model.mode = $scope.MODE.EDIT;
             $scope.model.originalPerspective = _.cloneDeep($scope.model.selectedPerspective);
-        }
+        };
 
         $scope.cancel = function () {
 
@@ -107,13 +113,14 @@ define([
                 $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
                     $scope.model.selectedPerspective = $scope.model.originalPerspective;
                     $scope.model.mode = $scope.MODE.VIEW;
+                    $scope.changesComplete();
                 }, function () {
                 });
             }
             else {
                 $scope.model.mode = $scope.MODE.VIEW;
+                $scope.changesComplete();
             }
-
         };
 
         $scope.add = function() {
@@ -153,6 +160,7 @@ define([
                 $scope.model.selectedProperty.perspectives = $scope.model.selectedProperty.perspectives || [];
                 $scope.model.selectedProperty.perspectives.push(perspective);
                 $scope.model.selectedPerspective = perspective;
+                $scope.changesComplete();
             }).catch(function(err) {
                 $httpHelperService.handleError(err);
                 $scope.processing = false;
@@ -169,6 +177,7 @@ define([
                 ngProgress.complete();
                 $scope.loadPerspective($scope.model.selectedProperty._id, response.data.id);
                 $scope.model.mode = $scope.MODE.VIEW;
+                $scope.changesComplete();
             }).catch(function(err) {
                 $httpHelperService.handleError(err);
                 $scope.processing = false;
