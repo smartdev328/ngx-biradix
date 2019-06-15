@@ -157,7 +157,7 @@
                 {{bedroom.totUnits == null ? "-" : bedroom.totUnits}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.unitPercent">
-                {{bedroom.totUnits == null ? "-" : (bedroom.totUnits / comp.totalUnits * 100 | number : 1) + "%"}}
+                {{bedroom.totUnits == null ? "-" : (bedroom.totUnits / comp.survey.totUnits * 100 | number : 1) + "%"}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.sqft">
                 {{bedroom.sqft == null ? "-" : bedroom.sqft}}
