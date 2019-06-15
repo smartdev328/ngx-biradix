@@ -140,6 +140,7 @@ define([
                     $scope.loadPerspective($scope.model.selectedProperty._id, null);
                     $scope.model.selectedPerspective = null;
                     $scope.model.mode = $scope.MODE.NONE;
+                    $scope.changesComplete();
                 }).catch(function(err) {
                     $httpHelperService.handleError(err);
                     $scope.processing = false;
