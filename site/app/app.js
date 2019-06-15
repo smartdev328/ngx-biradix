@@ -128,6 +128,7 @@ define([], function () {
             $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams, options) {
                 // Cancel all popups
                 $uibModalStack.dismissAll("cancel");
+                $rootScope.globalConfirm = "";
 
                 if ($rootScope.loggedIn && maintenance === true && toState.url.indexOf("maintenance") == -1) {
                     $rootScope.logoff();
