@@ -249,33 +249,6 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.unlinkComp = function (propertyid, compid) {
-            return $http.delete(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid + '?bust=' + (new Date()).getTime(), {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
-            });
-        }
-
-        fac.saveCompLink = function (propertyid, compid, floorplans, excluded) {
-            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {floorplans: floorplans, excluded : excluded}, {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
-            });
-        }
-
-        fac.linkComp = function (propertyid, compid) {
-            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {}, {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
-            });
-        }
-
         fac.saveCompOrder = function (propertyid, compids, progressId) {
             return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/comps/saveOrder?bust=' + (new Date()).getTime(), {compids: compids, progressId: progressId}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
