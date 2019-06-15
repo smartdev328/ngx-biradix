@@ -489,10 +489,10 @@
                 -
             </td>
             <td style="text-align: right" ng-if="show.units" class="pad">
-                {{fp.units}}
+                {{fp.units == null ? "-" : fp.units}}
             </td>
             <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-                {{fp.unitPercent | number : 1 }}%
+                {{fp.units == null ? "-" : (fp.unitPercent | number : 1) + "%"}}
             </td>
             <td style="text-align: right" ng-if="show.sqft" class="pad">
                 <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>
