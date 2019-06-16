@@ -36,6 +36,7 @@ define([
             $scope.timezone = parseInt($cookies.get("timezone"));
         }
 
+        // $scope.debug = JSON.stringify($cookies.getAll());
         // make sure me is loaded befor you search initially
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
