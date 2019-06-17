@@ -149,6 +149,7 @@ define([
 
                 var daterange = $saveReportService.fixDateRange($scope.settings.daterange);
 
+                $scope.debug = JSON.stringify(daterange);
                 $propertyService.profile(defaultPropertyId,
                     {
                         daterange: daterange.selectedRange,
