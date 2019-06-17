@@ -115,8 +115,8 @@
         <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
             <div class="fp-header-div">
                 <h4>Entire Property
-                    <excluded excluded-list="report.exclusionsEntireProperty" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-'" styles="'font-size:16px;padding-left:4px'" classes="'mt--10'"></excluded>
-                    <excluded excluded-list="report.missingEntireProperty" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-'" styles="'font-size:14px;padding-left:4px'" classes="'mt--10'"></excluded>
+                    <excluded excluded-list="report.exclusionsEntireProperty" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-'" classes="'mt--10'"></excluded>
+                    <excluded excluded-list="report.missingEntireProperty" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-'" classes="'mt--10'"></excluded>
                 </h4>
             </div>
         </td>
@@ -125,8 +125,8 @@
     <tr ng-repeat="fp in report.summary | orderBy : orderBy" ng-class="{'subject': fp.subject}">
         <td>
             {{fp.name}}
-            <excluded excluded-list="report.exclusionsEntirePropertyBreakdown[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-' + fp.id" styles="'font-size:16px;padding-left:4px'" classes="'mt--10'"></excluded>
-            <excluded excluded-list="report.missingEntirePropertyBreakdown[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-' + fp.id" styles="'font-size:14px;padding-left:4px'" classes="'mt--10'"></excluded>
+            <excluded excluded-list="report.exclusionsEntirePropertyBreakdown[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-' + fp.id" classes="'mt--10'"></excluded>
+            <excluded excluded-list="report.missingEntirePropertyBreakdown[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-' + fp.id" classes="'mt--10'"></excluded>
 
         </td>
         <td class="center" ng-if="show.units">
@@ -219,8 +219,8 @@
             <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
                 <div class="fp-header-div">
                 <h4>{{bedroomsLabel(key)}}
-                    <excluded excluded-list="report.exclusionsByBedrooms[key]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key" styles="'font-size:16px;padding-left:4px'" classes="'mt--10'"></excluded>
-                    <excluded excluded-list="report.missingByBedrooms[key]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key" styles="'font-size:14px;padding-left:4px'" classes="'mt--10'"></excluded>
+                    <excluded excluded-list="report.exclusionsByBedrooms[key]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key" classes="'mt--10'"></excluded>
+                    <excluded excluded-list="report.missingByBedrooms[key]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key" classes="'mt--10'"></excluded>
             </h4>
                 </div>
             </td>
@@ -229,8 +229,8 @@
             <td>
                 {{fp.name}}
 
-                <excluded excluded-list="value.excluded[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key + fp.id" styles="'font-size:16px;padding-left:4px'" classes="'mt--10'"></excluded>
-                <excluded excluded-list="value.missing[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key + fp.id" styles="'font-size:14px;padding-left:4px'" classes="'mt--10'"></excluded>
+                <excluded excluded-list="value.excluded[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key + fp.id" classes="'mt--10'"></excluded>
+                <excluded excluded-list="value.missing[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key + fp.id" classes="'mt--10'"></excluded>
             </td>
             <td class="center" ng-if="show.units">
                 {{fp.units}}

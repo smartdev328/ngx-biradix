@@ -2,8 +2,8 @@
 <div class="break2 panel panel-info">
     <div class="panel-heading">Floor Plan Comparison Report (detailed)
         <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
-        <excluded excluded-list="report.excluded" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'excluded-'" styles="'font-size:16px;padding-left:4px'" classes="'mt--10'"></excluded>
-        <excluded excluded-list="report.missing" property-id="subject._id" excluded-popups="excludedPopups" key="'missing-'" styles="'font-size:14px;padding-left:4px'" classes="'mt--10'"></excluded>
+        <excluded excluded-list="report.excluded" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'excluded-'" classes="'mt--10'"></excluded>
+        <excluded excluded-list="report.missing" property-id="subject._id" excluded-popups="excludedPopups" key="'missing-'" classes="'mt--10'"></excluded>
 
         <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="report.appliedPerspective">Perspective Applied: <b>{{report.appliedPerspective.name}}</b>
             <i class="fa fa-question-circle hidden-print    "
@@ -123,8 +123,8 @@
             <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
                 <div class="fp-header-div">
                 <h4>Floorplans: {{key}}
-                    <excluded excluded-list="report.exclusionsByBedrooms[key]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key" styles="'font-size:16px;padding-left:4px'" classes="'mt--10'"></excluded>
-                    <excluded excluded-list="report.missingByBedrooms[key]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key" styles="'font-size:14px;padding-left:4px'" classes="'mt--10'"></excluded>
+                    <excluded excluded-list="report.exclusionsByBedrooms[key]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key" classes="'mt--10'"></excluded>
+                    <excluded excluded-list="report.missingByBedrooms[key]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key" classes="'mt--10'"></excluded>
                 </h4>
                 </div>
             </td>
