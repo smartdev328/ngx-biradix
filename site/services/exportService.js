@@ -18,8 +18,8 @@ define([
             var data = {
                 Graphs: graphs,
                 Scale: $cookies.get('Scale') || "ner",
-                selectedStartDate: daterange.selectedEndDate,
-                selectedEndDate: daterange.selectedStartDate,
+                selectedStartDate: daterange.selectedStartDate,
+                selectedEndDate: daterange.selectedEndDate,
                 selectedRange: daterange.selectedRange,
                 timezone: timezone,
                 progressId: progressId,
