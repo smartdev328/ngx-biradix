@@ -149,8 +149,10 @@ define([
 
                 var daterange = $scope.settings.daterange;
 
-                if ($cookies.get("selectedEndDate")) {
-                    $scope.debug = $cookies.get("selectedEndDate") + ", " + daterange.selectedEndDate.format();
+                if (phantom) {
+                    daterange.selectedRange = $cookies.get("selectedRange");
+                    daterange.selectedStartDate = $cookies.get("selectedStartDate");
+                    daterange.selectedEndDate = $cookies.get("selectedEndDate");
                 }
 
                 $propertyService.profile(defaultPropertyId,
