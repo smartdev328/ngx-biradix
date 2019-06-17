@@ -15,18 +15,11 @@ define([
             var url = gAPI + '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
 
-            var selectedEndDate = daterange.selectedEndDate;
-            var selectedStartDate = daterange.selectedStartDate;
-            if ($cookies.get("selectedEndDate")) {
-                selectedEndDate = moment($cookies.get("selectedEndDate"));
-                selectedStartDate = moment($cookies.get("selectedStartDate"));
-            }
-            
             var data = {
                 Graphs: graphs,
                 Scale: $cookies.get('Scale') || "ner",
-                selectedStartDate: selectedStartDate,
-                selectedEndDate: selectedEndDate,
+                selectedStartDate: daterange.selectedEndDate,
+                selectedEndDate: daterange.selectedStartDate,
                 selectedRange: daterange.selectedRange,
                 timezone: timezone,
                 progressId: progressId,

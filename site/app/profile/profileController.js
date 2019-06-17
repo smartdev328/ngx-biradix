@@ -147,9 +147,12 @@ define([
                     $scope.trendsLoading = false;
                 }
 
-                var daterange = $saveReportService.fixDateRange($scope.settings.daterange);
+                var daterange = $scope.settings.daterange;
 
-                $scope.debug = JSON.stringify(daterange);
+                if ($cookies.get("selectedEndDate")) {
+                    $scope.debug = $cookies.get("selectedEndDate") + ", " + new Date($cookies.get("selectedEndDate"));
+                }
+
                 $propertyService.profile(defaultPropertyId,
                     {
                         daterange: daterange.selectedRange,
@@ -343,7 +346,7 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            var daterange = $saveReportService.fixDateRange($scope.settings.daterange);
+            var daterange = $scope.settings.daterange;
 
             $exportService.print($scope.property._id, true, daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
 
