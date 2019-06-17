@@ -38,10 +38,12 @@ define([
                             id: 'okta',
                         },
                     ],
-                    default: false,
+                    default: organization.ssoSettings.default,
                     providerModel: null,
                 };
-                $scope.ssoOrganizationModel.providerModel = $scope.ssoOrganizationModel.provider[0];
+                $scope.ssoOrganizationModel.providerModel = $scope.ssoOrganizationModel.provider.find(function (item) {
+                    return item.id == organization.ssoSettings.system;
+                });
 
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
