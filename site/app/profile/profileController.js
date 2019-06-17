@@ -36,7 +36,6 @@ define([
             $scope.timezone = parseInt($cookies.get("timezone"));
         }
 
-        $scope.debug = "TZ: " + $cookies.get("timezone") + ", End Date: " + $cookies.get('selectedEndDate');
         // make sure me is loaded befor you search initially
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
@@ -148,11 +147,13 @@ define([
                     $scope.trendsLoading = false;
                 }
 
+                var daterange = $saveReportService.fixDateRange($scope.settings.daterange);
+
                 $propertyService.profile(defaultPropertyId,
                     {
-                        daterange: $scope.settings.daterange.selectedRange,
-                        start: $scope.settings.daterange.selectedStartDate,
-                        end: $scope.settings.daterange.selectedEndDate
+                        daterange: daterange.selectedRange,
+                        start: daterange.selectedStartDate,
+                        end: daterange.selectedEndDate
                     },
                     {
                         occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale,
