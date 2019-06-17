@@ -1,5 +1,5 @@
 <i class="fa fa-eye-slash"
-   style="cursor:pointer;{{styles}}"
+   ng-attr-style="cursor:pointer;{{styles}}"
    ng-if="appliedPerspective && (excludedList | json) !== '{}'"
    popover-trigger="'outsideClick'"
    popover-placement="right-top"
@@ -12,7 +12,7 @@
 ></i>
 
 <i class="fa fa-warning"
-   style="cursor:pointer;color:orange;{{styles}}"
+   ng-attr-style="cursor:pointer;color:orange;{{styles}}"
    ng-if="!appliedPerspective && (excludedList | json) !== '{}'"
    popover-trigger="'outsideClick'"
    popover-placement="right-top"
