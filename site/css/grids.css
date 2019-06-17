@@ -133,6 +133,15 @@
     font-size:12px
 }
 
+.trendsModule .d-inline {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.popover.popover-small {
+    font-size: 12px;
+}
+
 @media print {
 
     table,th, tr, tfoot tr, tfoot tr td, thead tr, thead tr th {
