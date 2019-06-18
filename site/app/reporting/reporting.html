@@ -211,9 +211,23 @@
                                 </Div>
                             </uib-accordion-heading>
                             <div class="row" style="padding:10px">
-                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Date Range<br>
                                     <daterange-picker daterange="liveSettings.concession.daterange"></daterange-picker>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.concessionPerspectives"
+                                            ng-model="temp.concessionPerspectiveSelected"
+                                    ></select>
                                 </div>
                             </div>
                         </div>

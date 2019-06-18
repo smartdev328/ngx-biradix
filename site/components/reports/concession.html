@@ -25,6 +25,18 @@
 <div class="break2 panel panel-info concessions">
     <div class="panel-heading">Concessions Report
         <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
+        <excluded excluded-list="report.excludedList" property-id="report.propertyId" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'excluded-'" classes="'mt--10'"></excluded>
+        <excluded excluded-list="report.missingList" property-id="report.propertyId" excluded-popups="excludedPopups" key="'missing-'" classes="'mt--10'"></excluded>
+
+        <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="report.appliedPerspective">Perspective Applied: <b>{{report.appliedPerspective.name}}</b>
+            <i class="fa fa-question-circle hidden-print    "
+               style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-append-to-body="true"
+               uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+            ></i>
+        </div>
     </div>
     <div class="panel-body">
         <hr>

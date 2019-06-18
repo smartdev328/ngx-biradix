@@ -573,7 +573,12 @@ define([
                 }
             }
 
-        }
+            if ($scope.reportIds.indexOf("concession") > -1) {
+                if ($scope.temp.concessionPerspectiveSelected) {
+                    $scope.liveSettings.concession.perspective = $scope.temp.concessionPerspectiveSelected.value;
+                }
+            }
+        };
 
         $scope.UItoSettingsMultiple = function() {
             if (phantom) {
@@ -640,7 +645,8 @@ define([
                         start: $scope.cleanSettings.concession.daterange.selectedStartDate,
                         end: $scope.cleanSettings.concession.daterange.selectedEndDate
                     },
-                    offset: $scope.timezone
+                    offset: $scope.timezone,
+                    perspective: $scope.cleanSettings.concession.perspective
                 }
                 if ($cookies.get("settings")) {
                     options.concession.daterange.start = $scope.liveSettings.concession.daterange.selectedStartDate;
@@ -1988,6 +1994,21 @@ define([
         $scope.configureConcessionOptions = function() {
             if (!$scope.liveSettings.concession) {
                 $scope.resetConcessionSettings();
+            }
+
+            if ($scope.selected.Property) {
+                $scope.temp.concessionPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.concessionPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.concessionPerspectiveSelected = _.find($scope.temp.concessionPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.concession.perspective;
+                });
+
+                if (!$scope.temp.concessionPerspectiveSelected) {
+                    $scope.temp.concessionPerspectiveSelected = $scope.temp.concessionPerspectives[0];
+                }
             }
         }
 

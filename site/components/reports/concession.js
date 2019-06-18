@@ -6,7 +6,7 @@ angular.module('biradix.global').directive('concession', function () {
 
             },
             controller: function ($scope) {
-
+                $scope.excludedPopups = {};
 
             },
             templateUrl: '/components/reports/concession.html?bust=' + version
