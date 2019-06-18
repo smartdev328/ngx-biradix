@@ -258,6 +258,21 @@
                                     Property Info<br>
                                     <filter-list options="temp.showProfileOptions" items="temp.showProfileItems"></filter-list>
                                 </div>
+
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.marketPerspectives"
+                                            ng-model="temp.marketPerspectiveSelected"
+                                    ></select>
+                                </div>
                                 <br clear="all">
                                 <div class="col-xs-12" style="margin-top:15px">
                                     <b>Competitor Summary</b>

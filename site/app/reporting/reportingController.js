@@ -533,6 +533,8 @@ define([
                 } else {
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
                 }
+
+                $scope.liveSettings.dashboardSettings.selectedPerspective = $scope.temp.marketPerspectiveSelected.value;
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
@@ -630,6 +632,7 @@ define([
                     },
                     offset: $scope.timezone,
                     transaction_id: $scope.transaction_id,
+                    perspective: $scope.cleanSettings.dashboardSettings.selectedPerspective,
                 }
 
                 if ($cookies.get("settings")) {
@@ -1975,6 +1978,21 @@ define([
             }
 
             $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+
+            if ($scope.selected.Property) {
+                $scope.temp.marketPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.marketPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.marketPerspectiveSelected = _.find($scope.temp.marketPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.dashboardSettings.selectedPerspective;
+                });
+
+                if (!$scope.temp.marketPerspectiveSelected) {
+                    $scope.temp.marketPerspectiveSelected = $scope.temp.marketPerspectives[0];
+                }
+            }
         };
 
         $scope.resetPropertyReportSettings = function(rebind) {
