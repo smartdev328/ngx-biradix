@@ -103,7 +103,23 @@ define([
                 //call loading
                 $scope.reload();
 
-                $scope.save = function () {};
+                $scope.save = function () {
+                    organization.settings.sso.provider = $scope.ssoOrganizationModel.providerModel.id;
+                    organization.settings.sso.default = $scope.ssoOrganizationModel.default;
+                    ngProgress.start();
+                    $organizationsService.updateDefaultSettings(organization).then(function (response) {
+                        if (response.data.errors) {
+                            toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
+                        }
+                        else {
+                            toastr.success('SSO Settings Updated Successfully');
+                        }
+                        ngProgress.complete();
+                    }, function (response) {
+                        toastr.error('Unable to update sso settings. Please contact an administrator.');
+                        ngProgress.complete();
+                    });
+                };
             }
         ]
     )
