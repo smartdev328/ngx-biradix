@@ -38,11 +38,11 @@ define([
                             id: 'okta',
                         },
                     ],
-                    default: organization.ssoSettings.default,
+                    default: organization.settings.sso.default,
                     providerModel: null,
                 };
                 $scope.ssoOrganizationModel.providerModel = $scope.ssoOrganizationModel.provider.find(function (item) {
-                    return item.id == organization.ssoSettings.system;
+                    return item.id == organization.settings.sso.provider;
                 });
 
                 $scope.cancel = function () {
