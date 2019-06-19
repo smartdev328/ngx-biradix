@@ -76,7 +76,7 @@ define([
                                 id: user._id,
                                 name: user.name,
                                 tooltip: 'Email: <b>' + user.email + '</b><br>Role: <b>' + roles + '</b>',
-                                selected: false,
+                                selected: user.settings && user.settings.allowSSO,
                             };
                         })
                     });
