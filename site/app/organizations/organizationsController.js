@@ -51,9 +51,9 @@ define([
                 });
 
                 modalInstance.result.then(function (mapped) {
-
+                    $scope.reload();
                 }, function () {
-
+                    $scope.reload();
                 });
             });
         }
@@ -79,9 +79,9 @@ define([
                 });
 
                 modalInstance.result.then(function (mapped) {
-
+                    $scope.reload();
                 }, function () {
-
+                    $scope.reload();
                 });
             });
         }

@@ -16,8 +16,7 @@ define([
             '$userService',
             '$organizationsService',
             'toastr',
-            '$ssoService',
-            function ($scope, $uibModalInstance, organization, organizations, ngProgress, $rootScope, $userService, $organizationsService, toastr, $ssoService) {
+            function ($scope, $uibModalInstance, organization, organizations, ngProgress, $rootScope, $userService, $organizationsService, toastr) {
                 ga('set', 'title', '/ssoSettings');
                 ga('set', 'page', '/ssoSettings');
                 ga('send', 'pageview');
@@ -27,7 +26,7 @@ define([
                     provider: [
                         {
                             name: 'None',
-                            id: undefined,
+                            id: null,
                         },
                         {
                             name: 'Azure',
@@ -38,11 +37,11 @@ define([
                             id: 'okta',
                         },
                     ],
-                    default: organization.settings.sso.default,
+                    newUsers: organization.sso.newUsers,
                     providerModel: null,
                 };
                 $scope.ssoOrganizationModel.providerModel = $scope.ssoOrganizationModel.provider.find(function (item) {
-                    return item.id == organization.settings.sso.provider;
+                    return item.id === organization.sso.provider;
                 });
 
                 $scope.cancel = function () {
@@ -104,16 +103,13 @@ define([
                 $scope.reload();
 
                 $scope.save = function () {
-                    organization.settings.sso.provider = $scope.ssoOrganizationModel.providerModel.id;
-                    organization.settings.sso.default = $scope.ssoOrganizationModel.default;
+                    var sso = {
+                        newUsers: $scope.ssoOrganizationModel.newUsers,
+                        provider: $scope.ssoOrganizationModel.providerModel.id
+                    }
                     ngProgress.start();
-                    $organizationsService.updateDefaultSettings(organization).then(function (response) {
-                        if (response.data.errors) {
-                            toastr.error(_.pluck(response.data.errors, 'msg').join("<br>"));
-                        }
-                        else {
-                            toastr.success('SSO Settings Updated Successfully');
-                        }
+                    $organizationsService.updateSSO(organization._id, sso).then(function (response) {
+                        toastr.success('SSO Settings Updated Successfully');
                         ngProgress.complete();
                     }, function (response) {
                         toastr.error('Unable to update sso settings. Please contact an administrator.');
