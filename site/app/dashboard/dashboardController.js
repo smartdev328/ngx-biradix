@@ -434,8 +434,9 @@ define([
                 selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
                 selectedRange: $scope.settings.daterange.selectedRange,
                 progressId: $scope.progressId,
-                compids: null
-            }
+                compids: null,
+                perspective: $scope.settings.selectedPerspective
+            };
 
             var key = $urlService.shorten(JSON.stringify(data));
 

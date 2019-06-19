@@ -320,12 +320,13 @@ define([
                 selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
                 selectedRange: $scope.settings.daterange.selectedRange,
                 progressId: $scope.progressId,
-                compids: null
+                compids: null,
+                perspective: $scope.settings.selectedPerspective
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = gAPI + '/api/1.0/properties/' + $scope.property._id + '/excel?'
+            var url = gAPI + '/api/1.0/properties/' + ($scope.settings.perspective ? $scope.settings.perspective.propertyId : $scope.propertyId) + '/excel?'
             url += "token=" + $cookies.get('token')
             url += "&key=" + key;
 

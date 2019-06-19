@@ -1172,7 +1172,8 @@ define([
                 progressId: $scope.progressId,
                 compids: $scope.compIds,
                 cortland: cortland,
-            }
+                perspective: $scope.liveSettings.dashboardSettings.selectedPerspective,
+            };
 
             var key = $urlService.shorten(JSON.stringify(data));
 
