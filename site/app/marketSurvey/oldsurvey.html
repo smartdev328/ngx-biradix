@@ -14,7 +14,7 @@
 <div ng-if="settings.showNotes">
     <textarea class="form-control" placeholder="Type Property Survey notes here" ng-model="survey.notes" ng-keydown="updateChanged()"></textarea><br>
 </div>
-<table class="table table-condensed table-striped table-hover survey-values hidden-arrows sortablegrid" style="margin-bottom:10px">
+<table class="table table-condensed table-striped table-hover survey-values survey-holders hidden-arrows sortablegrid" style="margin-bottom:10px">
     <tbody>
     <tr class="thead">
         <th class="sortable" ng-click="toggleSort('type',true)"><span class="hidden-xs">Type</span><span class="visible-xs-inline">Type</span>
@@ -163,7 +163,7 @@
 </table>
 
 <Center>
-    <table class="survey-values top-inputs">
+    <table class="survey-values survey-holders top-inputs">
         <tbody>
         <tr>
             <td class="heading" valign="top">

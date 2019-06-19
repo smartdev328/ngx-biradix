@@ -1,7 +1,7 @@
 <div class="alert alert-warning" ng-if="editMode">
     <b>Note:</b> You are modifying historical data of a Property Survey taken on <b>{{editDate | date : 'shortDate'}}</b>
 </div>
-<div class="top-inputs" style="width: 100%;">
+<div class="survey-holders top-inputs" style="width: 100%;">
   <div class="row" style="margin-left: -15px;margin-right: -15px;">
     <div class="col-xs-6 fix-height-60" ng-class="{'col-sm-4' : threeColumnsInput}">
       <b style="font-size: 13px;">Occupancy %</b>
@@ -181,7 +181,7 @@
   </div>
 </div>
 <div class="propertySurvey" ng-class="{'allShown': allShown}">
-  <table class="table table-condensed table-striped table-hover survey-values hidden-arrows sortablegrid" fixed-table toggles="settings">
+  <table class="table table-condensed table-striped table-hover survey-values survey-holders hidden-arrows sortablegrid" fixed-table toggles="settings">
     <thead>
       <tr class="thead">
         <th ng-show="settings.showBulkConcessions">
