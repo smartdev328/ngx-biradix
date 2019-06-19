@@ -23,26 +23,10 @@ define([
 
                 // sso
                 $scope.ssoOrganizationModel = {
-                    provider: [
-                        {
-                            name: 'None',
-                            id: null,
-                        },
-                        {
-                            name: 'Azure',
-                            id: 'azure',
-                        },
-                        {
-                            name: 'Okta',
-                            id: 'okta',
-                        },
-                    ],
+                    provider: ['None', 'Azure','Okta'],
                     newUsers: organization.sso.newUsers,
-                    providerModel: null,
+                    providerModel: organization.sso.provider,
                 };
-                $scope.ssoOrganizationModel.providerModel = $scope.ssoOrganizationModel.provider.find(function (item) {
-                    return item.id === organization.sso.provider;
-                });
 
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
@@ -105,7 +89,7 @@ define([
                 $scope.save = function () {
                     var sso = {
                         newUsers: $scope.ssoOrganizationModel.newUsers,
-                        provider: $scope.ssoOrganizationModel.providerModel.id
+                        provider: $scope.ssoOrganizationModel.providerModel
                     }
                     ngProgress.start();
                     $organizationsService.updateSSO(organization._id, sso).then(function (response) {

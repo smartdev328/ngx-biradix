@@ -2,7 +2,7 @@
 <select
     class="form-control input-sm"
     ng-model="ssoOrganizationModel.providerModel"
-    ng-options="item.name for item in ssoOrganizationModel.provider track by item.id"
+    ng-options="item for item in ssoOrganizationModel.provider"
     id="sso-system"
 >
 </select>
