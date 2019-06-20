@@ -208,10 +208,10 @@
                     ></i>
         </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
-            {{comp.survey.totUnits}}
+            {{!comp.survey.totUnits ? "-" : comp.survey.totUnits}}
         </td>
         <td style="text-align: right" class="pad" ng-if="show.unitPercent">
-            100%
+            {{!comp.survey.totUnits ? "-" : "100%"}}
         </td>
         <td style="text-align: right" class="pad" ng-if="show.sqft">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>

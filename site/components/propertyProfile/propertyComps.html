@@ -322,10 +322,10 @@
                 {{comp.survey.weeklyleases == null ? "-" : comp.survey.weeklyleases}}
             </td>
             <td style="text-align: right" ng-if="show.units" class="pad">
-                {{comp.units}}
+                {{comp.units == null ? "-" : comp.units}}
             </td>
             <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-                100%
+                {{comp.units == null ? "-" : "100%"}}
             </td>
             <td style="text-align: right" ng-if="show.sqft" class="pad">
                 <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>
@@ -558,10 +558,10 @@
                 <span ng-if="totalSurveys > 0">{{totals.weeklyleases | number : 0}}</span>
             </td>
             <td style="text-align: right" ng-if="show.units" class="pad">
-                {{totals.totalUnits | number : 0}}
+                {{!totals.totalUnits ? "-" : (totals.totalUnits | number : 0)}}
             </td>
             <td style="text-align: right" ng-if="show.unitPercent" class="pad">
-                100%
+                {{!totals.totalUnits ? "-" : "100%"}}
             </td>
             <td style="text-align: right" ng-if="show.sqft" class="pad">
                 <span ng-if="totalSurveys == 0">-</span>
