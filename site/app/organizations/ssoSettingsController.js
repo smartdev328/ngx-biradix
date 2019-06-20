@@ -10,16 +10,17 @@ define([
             '$scope',
             '$uibModalInstance',
             'organization',
-            'organizations',
             'ngProgress',
             '$rootScope',
             '$userService',
             '$organizationsService',
             'toastr',
-            function ($scope, $uibModalInstance, organization, organizations, ngProgress, $rootScope, $userService, $organizationsService, toastr) {
+            function ($scope, $uibModalInstance, organization, ngProgress, $rootScope, $userService, $organizationsService, toastr) {
                 ga('set', 'title', '/ssoSettings');
                 ga('set', 'page', '/ssoSettings');
                 ga('send', 'pageview');
+
+                $scope.organization = organization;
 
                 // sso
                 $scope.ssoOrganizationModel = {
@@ -37,11 +38,11 @@ define([
                 // tabs
                 $scope.tabs = [
                     {
-                        label: 'SSO Parameters',
+                        label: 'Config',
                         template: 'ssoParameters.html',
                     },
                     {
-                        label: 'User Config',
+                        label: 'User Assignment',
                         template: 'userConfig.html',
                     },
                 ];
@@ -57,8 +58,8 @@ define([
                 $scope.ssoUserModel = {
                     list: [],
                     options: {
-                        availableLabel: 'Email-Password',
-                        selectedLabel: 'SSO',
+                        availableLabel: 'BI:Radix Email/Password',
+                        selectedLabel: 'Single Sign On',
                         searchLabel: 'Email',
                         hideSearch: true,
                     }

@@ -71,9 +71,6 @@ define([
                     resolve: {
                         organization: function () {
                             return organization;
-                        },
-                        organizations: function () {
-                            return $scope.data;
                         }
                     }
                 });

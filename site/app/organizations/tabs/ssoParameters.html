@@ -1,4 +1,4 @@
-<label for="sso-system">SSO System</label>
+<label for="sso-system">SSO Identity Provider</label>
 <select
     class="form-control input-sm"
     ng-model="ssoOrganizationModel.providerModel"
@@ -8,7 +8,7 @@
 </select>
 <br>
 <div class="row">
-    <div class="col-xs-10">SSO auth method for new users</div>
+    <div class="col-xs-10">New User Default Login is SSO</div>
     <div class="col-xs-2">
         <toggle-switch checked="ssoOrganizationModel.newUsers"></toggle-switch>
     </div>
