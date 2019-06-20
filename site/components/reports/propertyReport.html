@@ -33,10 +33,9 @@
         </div>
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
-        <div class="panel panel-info trendsModule">
+        <div class="panel panel-info inlineHolder">
             <div class="panel-heading">
-                <span class="d-inline">Trends</span>
-                <excluded class="d-inline" style="margin-left: 3px;" excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="d-inline" style="margin-left: 3px;" excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
+                <span class="d-inline">Trends</span><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
                 </div>
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && (points.excludedList | json) !== '{}'">|</div>
@@ -128,9 +127,8 @@
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
         <div class="panel panel-info">
-            <div class="panel-heading trendsModule">
-                <span class="d-inline">Trends</span>
-                <excluded class="d-inline" style="margin-left: 3px;" excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="d-inline" style="margin-left: 3px;" excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
+            <div class="panel-heading inlineHolder">
+                <span class="d-inline">Trends</span><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
                 </div>
                 <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && (points.excludedList | json) !== '{}'">|</div>
@@ -259,11 +257,9 @@
             </div>
         </div>
 
-        <div class="panel panel-info trendsModule">
+        <div class="panel panel-info inlineHolder">
             <div class="panel-heading">
-                <span class="d-inline">Trends</span>
-                <excluded class="d-inline" style="margin-left: 3px;" excluded-list="profile.points.excludedList" property-id="property._id" applied-perspective="profile.comp.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded>
-                <excluded class="d-inline" style="margin-left: 3px;" excluded-list="profile.points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
+                <span class="d-inline">Trends</span><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="profile.points.excludedList" property-id="property._id" applied-perspective="profile.comp.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="profile.points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
 
                 <br clear="all" ng-if="(profile.comps.appliedPerspective && comp.hasExcluded) || property.strRangeEnd">
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>

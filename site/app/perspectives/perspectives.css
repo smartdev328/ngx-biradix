@@ -15,3 +15,29 @@
     color:#d9534f;
     text-decoration: underline;
 }
+.inlineHolder .d-inline {
+    display: inline-block;
+    vertical-align: middle;
+    float: none !important;
+}
+.perspectiveIconHolder i {
+	cursor:pointer;
+	padding-left:4px;
+}
+.perspectiveIconHolder i.fa-eye-slash {
+	font-size:16px;
+}
+.perspectiveIconHolder i.fa-warning {
+	color:orange;
+	font-size:14px;
+	padding-top: 2px;
+}
+.perspectiveIconHolder.small i.fa-eye-slash {
+	font-size: 14px;
+}
+.perspectiveIconHolder.small i.fa-warning {
+	font-size: 12px;
+}
+.perspectiveIconHolder.d-inline i {
+    display: block;
+}

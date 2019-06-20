@@ -22,11 +22,9 @@
     }
 
 </style>
-<div class="break2 panel panel-info concessions">
-    <div class="panel-heading">Concessions Report
-        <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
-        <excluded excluded-list="report.excludedList" property-id="report.propertyId" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'excluded-'" classes="'mt--10'"></excluded>
-        <excluded excluded-list="report.missingList" property-id="report.propertyId" excluded-popups="excludedPopups" key="'missing-'" classes="'mt--10'"></excluded>
+<div class="break2 panel panel-info concessions inlineHolder">
+    <div class="panel-heading">
+        <span class="d-inline">Concessions Report</span><i ng-if="subject.isCustom" class="custom_property d-inline">(custom property)</i><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="report.excludedList" property-id="report.propertyId" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'excluded-'" classes="'mt--10'"></excluded><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="report.missingList" property-id="report.propertyId" excluded-popups="excludedPopups" key="'missing-'" classes="'mt--10'"></excluded>
 
         <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="report.appliedPerspective">Perspective Applied: <b>{{report.appliedPerspective.name}}</b>
             <i class="fa fa-question-circle hidden-print    "

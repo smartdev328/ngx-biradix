@@ -150,7 +150,7 @@
         </div>
 
 
-        <div class="panel panel-info trendsModule"  ng-if="$root.me.permissions.indexOf('Hide/ExtendedProfile') == -1">
+        <div class="panel panel-info inlineHolder"  ng-if="$root.me.permissions.indexOf('Hide/ExtendedProfile') == -1">
             <div class="panel-heading">
                 <span class="d-inline">Trends</span><span class="dropdown d-inline hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
@@ -191,7 +191,7 @@
                             </Tr>
                         </table>
                     </div>
-                </span><excluded class="d-inline" style="margin-left: 3px;" excluded-list="settings.points.excludedList" property-id="settings.perspective.propertyId" applied-perspective="comp.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="d-inline" style="margin-left: 3px;" excluded-list="settings.points.missingList" property-id="settings.perspective.propertyId" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
+                </span><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="settings.points.excludedList" property-id="settings.perspective.propertyId" applied-perspective="comp.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" classes="'mt--10'"></excluded><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="settings.points.missingList" property-id="settings.perspective.propertyId" excluded-popups="excludedPopups" key="'trends-missing'" classes="'mt--10'"></excluded>
 
                 <br clear="all">
                 <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>

@@ -268,8 +268,8 @@
             <td>
                 <A href="#/profile/{{comp._id}}">{{comp.name}}</A>
 
-                <excluded excluded-list="comp.survey.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id" classes="'mt--10'"></excluded>
-                <excluded excluded-list="comp.survey.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id" classes="'mt--10'"></excluded>
+                <excluded class="perspectiveIconHolder small" excluded-list="comp.survey.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id" classes="'mt--10'"></excluded>
+                <excluded class="perspectiveIconHolder small" excluded-list="comp.survey.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id" classes="'mt--10'"></excluded>
 
                 <i class="fa fa-exclamation-triangle warning"
                    style="cursor:pointer;font-size:14px;padding-left:2px;color:orange"
@@ -386,8 +386,8 @@
             <td nowrap>
                 &nbsp;&nbsp;{{row.name}}
 
-                <excluded excluded-list="row.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id + row.name" classes="'mt--10'"></excluded>
-                <excluded excluded-list="row.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id + row.name" classes="'mt--10'"></excluded>
+                <excluded class="perspectiveIconHolder small" excluded-list="row.excludedList" property-id="subjectId" applied-perspective="appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id + row.name" classes="'mt--10'"></excluded>
+                <excluded class="perspectiveIconHolder small" excluded-list="row.missingList" property-id="subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id + row.name" classes="'mt--10'"></excluded>
             </td>
             <td style="text-align: right" ng-if="show.occupancy" class="pad">
                 -
