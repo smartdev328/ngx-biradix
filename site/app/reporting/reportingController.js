@@ -126,7 +126,30 @@ define([
                     $scope.updateTrendsDaterange2($scope.liveSettings[key].daterange1.selectedRange);
                 }
             }
-        }
+        };
+
+        $scope.$watch("temp.customPortfolioPerspectives", function(n, o)  {
+            var groupsFound = {};
+            if (!$scope.temp.customPortfolioPerspectives) {
+                return;
+            }
+
+            var changed = false;
+            $scope.temp.customPortfolioPerspectives.forEach(function(i) {
+                if (i.selected) {
+                    if (!groupsFound[i.group]) {
+                        groupsFound[i.group] = true;
+                    } else {
+                        i.selected = false;
+                        changed = true;
+                    }
+                }
+            });
+
+            if (changed) {
+                toastr.warning("Multiple perspectives for the same property can't be run at the same time, please select only 1 perspective per property.");
+            }
+        }, true);
 
         $scope.loadSaved = function() {
             $saveReportService.read().then(function (response) {
