@@ -20,7 +20,7 @@ define([
         $scope.propertyOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
-
+        $scope.customProtfolioPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
         $scope.reportItems = []
 
         $scope.localLoading = false;
@@ -158,7 +158,7 @@ define([
                     if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
                         p.group = $rootScope.me.orgs[0].name + " Properties"
                     }
-                })
+                });
 
                 if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
                     response.data.properties.push({id:0, name: "N/A For This Report", group : " My Custom Properties", disabled: true  })
@@ -214,7 +214,6 @@ define([
                     ,
                     skipAmenities: true
                 }).then(function (response) {
-
                     response.data.properties.forEach(function(p) {
                         p.isCustom = !!(p.custom && p.custom.owner);
                     })
@@ -227,7 +226,6 @@ define([
                             item = {id: p._id, name: p.name};
                             $scope.propertyItems.items.push(item);
                         })
-
                         $scope.run();
                     }
                 });
@@ -926,7 +924,12 @@ define([
             $scope.reportsChanged();
             $scope.reportNamesChanged();
 
-        },true)
+        },true);
+
+        $scope.$watch('propertyItems.items', function() {
+            $scope.reportsChanged();
+
+        },true);
 
         $scope.$watch('selected.Property', function() {
             if ($scope.selected.Property) {
@@ -1418,7 +1421,16 @@ define([
                     return x.id === f;
                 });
                 $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
-            }
+
+                if ($scope.propertyItems) {
+                    $scope.temp.customPortfolioPerspectives = [];
+                    $scope.propertyItems.items.forEach(function(p) {
+                        p.perspectives.forEach(function(pr) {
+                            $scope.temp.customPortfolioPerspectives.push({id: pr.id, name: pr.name, group: p.name});
+                        });
+                    });
+                }
+            };
 
             $scope.sortableOptions = {
                 update: function() {
