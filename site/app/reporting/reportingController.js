@@ -622,6 +622,10 @@ define([
                 if ($scope.temp.customPortfolioSortSelected) {
                     $scope.liveSettings.customPortfolio.orderBy = ($scope.temp.customPortfolioSortDir == "desc" ? "-" : "") + $scope.temp.customPortfolioSortSelected.id;
                 }
+
+                $scope.liveSettings.customPortfolio.perspectives = _.map(_.filter($scope.temp.customPortfolioPerspectives, function(x) {
+                    return x.selected;
+                }), "id");
             }
         };
 
@@ -1446,10 +1450,15 @@ define([
                 $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
 
                 if ($scope.propertyItems) {
+                    console.log($scope.liveSettings.customPortfolio.perspectives)
                     $scope.temp.customPortfolioPerspectives = [];
+                    var selected;
                     $scope.propertyItems.items.forEach(function(p) {
                         p.perspectives.forEach(function(pr) {
-                            $scope.temp.customPortfolioPerspectives.push({id: pr.id, name: pr.name, group: p.name});
+                            selected = _.find($scope.liveSettings.customPortfolio.perspectives, function(x) {
+                                return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
+                            });
+                            $scope.temp.customPortfolioPerspectives.push({id: {propertyId: p.id, perspectiveId: pr.id}, name: pr.name, group: p.name, selected: !!selected});
                         });
                     });
                 }
