@@ -77,7 +77,7 @@ define([
                                 id: user._id,
                                 name: user.name,
                                 tooltip: 'Email: <b>' + user.email + '</b><br>Role: <b>' + roles + '</b>',
-                                selected: user.settings && user.settings.allowSSO,
+                                selected: user.allowSSO,
                             };
                         })
                     });
@@ -88,18 +88,36 @@ define([
                 $scope.reload();
 
                 $scope.save = function () {
-                    var sso = {
-                        newUsers: $scope.ssoOrganizationModel.newUsers,
-                        provider: $scope.ssoOrganizationModel.providerModel
+                    if($scope.tabIndex == 0) {
+                        var sso = {
+                            newUsers: $scope.ssoOrganizationModel.newUsers,
+                            provider: $scope.ssoOrganizationModel.providerModel
+                        }
+                        ngProgress.start();
+                        $organizationsService.updateSSO(organization._id, sso).then(function (response) {
+                            toastr.success('SSO Settings Updated Successfully');
+                            ngProgress.complete();
+                        }, function (response) {
+                            toastr.error('Unable to update SSO settings. Please contact an administrator.');
+                            ngProgress.complete();
+                        });
                     }
-                    ngProgress.start();
-                    $organizationsService.updateSSO(organization._id, sso).then(function (response) {
-                        toastr.success('SSO Settings Updated Successfully');
-                        ngProgress.complete();
-                    }, function (response) {
-                        toastr.error('Unable to update sso settings. Please contact an administrator.');
-                        ngProgress.complete();
-                    });
+                    if ($scope.tabIndex == 1) {
+                        var users = $scope.ssoUserModel.list.map(function (user) {
+                            return {
+                                _id: user.id,
+                                allowSSO: user.selected,
+                            };
+                        });
+                        ngProgress.start();
+                        $userService.updateSSO({users: users}).then(function (response) {
+                            toastr.success('SSO Settings Updated Successfully. ' + response.data.count + ' user(s) was updated.');
+                            ngProgress.complete();
+                        }, function (response) {
+                            toastr.error('Unable to update SSO settings. Please contact an administrator.');
+                            ngProgress.complete();
+                        });
+                    }
                 };
             }
         ]
