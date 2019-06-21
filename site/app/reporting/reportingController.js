@@ -136,14 +136,30 @@ define([
                     }
 
                     var changed = false;
+                    // find counts for each group after selection
                     $scope.temp.customPortfolioPerspectives.forEach(function (i) {
                         if (i.selected) {
-                            if (!groupsFound[i.group]) {
-                                groupsFound[i.group] = true;
-                            } else {
-                                i.selected = false;
-                                changed = true;
-                            }
+                            groupsFound[i.group] = (groupsFound[i.group] || 0) + 1;
+                        }
+                    });
+
+                    var newItem;
+
+                    Object.keys(groupsFound).forEach(function(gr) {
+                        if (groupsFound[gr] > 1) {
+                            // Find a first selected item from updated list that was not in the original list
+                            newItem = _.find(n, function(x) {
+                                return x.selected && x.group === gr && !_.find(o, function(y) {
+                                    return y.selected && y.group === gr && y.id.perspectiveId === x.id.perspectiveId;
+                                });
+                            });
+
+                            $scope.temp.customPortfolioPerspectives.forEach(function (i) {
+                                if (i.group === gr) {
+                                    i.selected = i.id.perspectiveId === newItem.id.perspectiveId;
+                                }
+                            });
+                            changed = true;
                         }
                     });
 
