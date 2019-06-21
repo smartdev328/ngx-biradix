@@ -712,8 +712,8 @@
                     </td>
                     <td ng-if="col.id == 'nersqftvscompavg'" style="text-align:right">
                         <span ng-if="row.name === 'Averages' || row.name === 'Comp Averages'"></span>
-                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nersqftvscompavg != ''">{{row.nersqftvscompavg | number : 2}}%</span>
-                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nersqftvscompavg == ''">-</span>
+                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nersqftvscompavg != '' && row.nersqftvscompavg != undefined">{{row.nersqftvscompavg | number : 2}}%</span>
+                        <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && (row.nersqftvscompavg == '' || row.nersqftvscompavg == undefined)">-</span>
                     </td>
                     <td ng-if="col.id == 'nersqftweek'" style="text-align:right">
                         <span ng-if="row.lastweeknersqftpercent > 0">{{row.lastweeknersqftpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>

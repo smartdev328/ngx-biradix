@@ -24,6 +24,10 @@ angular.module('biradix.global').directive('customPortfolio', function () {
                             perspectiveMap[row.appliedPerspective.id] = true;
                         }
                     });
+
+                    if (Object.keys(perspectiveMap).length > 5) {
+                        $scope.perspectives = "Multiple";
+                    }
                 });
             },
             templateUrl: '/components/reports/customPortfolio.html?bust=' + version
