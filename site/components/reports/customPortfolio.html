@@ -18,7 +18,18 @@
     }
 </style>
 <div class="break2 panel panel-info custom-portfolio" style="margin-bottom: 0px !important;">
-    <div class="panel-heading">Customizable Property Data</div>
+    <div class="panel-heading">Customizable Property Data
+        <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="perspectives">Perspective(s) Applied: <b>{{perspectives}}</b>
+            <i class="fa fa-question-circle"
+               style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-append-to-body="true"
+               popover-class="popover-small"
+               uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+            ></i>
+        </div>
+    </div>
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
@@ -550,13 +561,10 @@
                 <tr ng-repeat-start="row in block" ng-class="{'subject': row.isSubject,'subtotal' : row.name === 'Averages' || row.name === 'Comp Averages','subtotal-padding' : row.name === 'Averages', 'bold': row.name === 'Comp Averages', 'regular-border': row.name === 'Averages' && settings.compAverages}"
                 >
                     <td nowrap>
-                        {{row.name}}                 <i class="fa fa-chain-broken blue" class="pull-left"
-                                                        style="cursor:pointer;"
-                                                        ng-if="row.excluded"
-                                                        popover-trigger="'mouseenter'"
-                                                        popover-placement="right"
-                                                        uib-popover="This property has some floor plans that have been manually excluded from reporting calculations"
-                    ></i>
+                        {{row.name}}
+
+                        <excluded class="perspectiveIconHolder small" excluded-list="row.excludedList" property-id="row.subjectId" applied-perspective="row.appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id" classes="'mt--10'"></excluded>
+                        <excluded class="perspectiveIconHolder small" excluded-list="row.missingList" property-id="row.subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id" classes="'mt--10'"></excluded>
                     </td>
                     <td ng-repeat-start="col in settings.columnSortOrder" ng-if="false"></td>
                     <td ng-if="col.id == 'walkscore'" style="text-align: center">

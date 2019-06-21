@@ -1450,7 +1450,6 @@ define([
                 $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
 
                 if ($scope.propertyItems) {
-                    console.log($scope.liveSettings.customPortfolio.perspectives)
                     $scope.temp.customPortfolioPerspectives = [];
                     var selected;
                     $scope.propertyItems.items.forEach(function(p) {
