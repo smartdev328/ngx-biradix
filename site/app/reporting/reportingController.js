@@ -128,28 +128,30 @@ define([
             }
         };
 
-        $scope.$watch("temp.customPortfolioPerspectives", function(n, o)  {
-            var groupsFound = {};
-            if (!$scope.temp.customPortfolioPerspectives) {
-                return;
-            }
-
-            var changed = false;
-            $scope.temp.customPortfolioPerspectives.forEach(function(i) {
-                if (i.selected) {
-                    if (!groupsFound[i.group]) {
-                        groupsFound[i.group] = true;
-                    } else {
-                        i.selected = false;
-                        changed = true;
+            if (!phantom) {
+                $scope.$watch("temp.customPortfolioPerspectives", function (n, o) {
+                    var groupsFound = {};
+                    if (!$scope.temp.customPortfolioPerspectives) {
+                        return;
                     }
-                }
-            });
 
-            if (changed) {
-                toastr.warning("Multiple perspectives for the same property can't be run at the same time, please select only 1 perspective per property.");
+                    var changed = false;
+                    $scope.temp.customPortfolioPerspectives.forEach(function (i) {
+                        if (i.selected) {
+                            if (!groupsFound[i.group]) {
+                                groupsFound[i.group] = true;
+                            } else {
+                                i.selected = false;
+                                changed = true;
+                            }
+                        }
+                    });
+
+                    if (changed) {
+                        toastr.warning("Multiple perspectives for the same property can't be run at the same time, please select only 1 perspective per property.");
+                    }
+                }, true);
             }
-        }, true);
 
         $scope.loadSaved = function() {
             $saveReportService.read().then(function (response) {
@@ -497,6 +499,7 @@ define([
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
+
                 if ($scope.reports.custom_portfolio) {
                     var bedrooms = {};
                     $scope.reports.custom_portfolio.forEach(function(gr) {
@@ -511,6 +514,7 @@ define([
                     $scope.liveSettings.customPortfolio.bedrooms = bedrooms;
                     $scope.runSettings.customPortfolio.bedrooms = bedrooms;
                 }
+
 
                 $scope.description = '%where%, ' + $scope.propertyNames.length + ' Property(ies), ' + $scope.reportIds.length + ' Report Type(s)';
 
@@ -1449,15 +1453,21 @@ define([
                 });
                 $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
 
-                if ($scope.propertyItems) {
+                if ($scope.propertyItems && $scope.propertyItems.items && $scope.propertyItems.items.length) {
                     $scope.temp.customPortfolioPerspectives = [];
                     var selected;
-                    $scope.propertyItems.items.forEach(function(p) {
-                        p.perspectives.forEach(function(pr) {
-                            selected = _.find($scope.liveSettings.customPortfolio.perspectives, function(x) {
+                    $scope.propertyItems.items.forEach(function (p) {
+                        p.perspectives = p.perspectives || [];
+                        p.perspectives.forEach(function (pr) {
+                            selected = _.find($scope.liveSettings.customPortfolio.perspectives, function (x) {
                                 return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
                             });
-                            $scope.temp.customPortfolioPerspectives.push({id: {propertyId: p.id, perspectiveId: pr.id}, name: pr.name, group: p.name, selected: !!selected});
+                            $scope.temp.customPortfolioPerspectives.push({
+                                id: {
+                                    propertyId: p.id,
+                                    perspectiveId: pr.id
+                                }, name: pr.name, group: p.name, selected: !!selected
+                            });
                         });
                     });
                 }
