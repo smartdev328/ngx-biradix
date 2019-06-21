@@ -110,17 +110,27 @@ define([
         $scope.cancel = function () {
 
             if ($scope.model.changed) {
-                $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
-                    $scope.model.selectedPerspective = $scope.model.originalPerspective;
-                    $scope.model.mode = $scope.MODE.VIEW;
+                $dialog.confirm($rootScope.globalConfirm, function () {
+                    if($scope.model.selectedPerspective) {
+                        $scope.model.selectedPerspective = $scope.model.originalPerspective;
+                        $scope.model.mode = $scope.MODE.VIEW;
+                    } else {
+                        $scope.model.mode = $scope.MODE.NONE;
+                    }
                     $scope.changesComplete();
                 }, function () {
                 });
             }
             else {
-                $scope.model.mode = $scope.MODE.VIEW;
+                if($scope.model.selectedPerspective) {
+                    $scope.model.selectedPerspective = $scope.model.originalPerspective;
+                    $scope.model.mode = $scope.MODE.VIEW;
+                } else {
+                    $scope.model.mode = $scope.MODE.NONE;
+                }
                 $scope.changesComplete();
             }
+
         };
 
         $scope.add = function() {
