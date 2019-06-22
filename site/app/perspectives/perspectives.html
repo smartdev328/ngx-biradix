@@ -18,19 +18,19 @@
                 <div
                      custom-select="f.name for f in searchAsync($searchTerm)"
                      custom-select-options="{ 'async': true }"
-                     ng-model="model.selectedProperty" autofocus ng-disabled="model.mode === MODE.EDIT"
+                     ng-model="model.selectedProperty" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
                 ></div>
             </div>
             <div class="col-md-3">
                 <B>Perspective</B><Br>
                 <div
                     custom-select="f.name for f in model.selectedProperty.perspectives"
-                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT"
+                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
                 ></div>
             </div>
             <div class="col-md-3 mt-20" ng-if="model.selectedProperty">
                 <span class="grey-color">OR</span>
-                <button type="button" class="btn btn-default dropdown-toggle btn-sm ml-30" uib-tooltip="Add Perspective" ng-click="add()" ng-disabled="model.mode === MODE.EDIT">
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm ml-30" uib-tooltip="Add Perspective" ng-click="add()" ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD">
                     <span class="fa fa-plus"></span> Add Perspective
                 </button>
             </div>
