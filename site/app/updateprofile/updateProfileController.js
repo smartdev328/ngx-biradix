@@ -3,8 +3,9 @@ define([
     'app',
     '../../services/cronService.js',
 ], function (app) {
-     app.controller
-        ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService','$cronService', function ($scope, $authService, ngProgress, $rootScope, toastr, $location,$userService,$stateParams,$propertyService,$cronService) {
+    app.controller
+    ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService','$cronService', '$reportingService',
+        function ($scope, $authService, ngProgress, $rootScope, toastr, $location, $userService, $stateParams, $propertyService, $cronService, $reportingService) {
             window.setTimeout(function() {window.document.title = "My Account - Update Profile | BI:Radix";},1500);
 
             $rootScope.nav = "";
@@ -24,7 +25,7 @@ define([
                 $rootScope.sideNav = "UpdateProfile";
             }
 
-                $scope.timezones = [
+            $scope.timezones = [
                 {id: 'America/Los_Angeles', name: "Los Angeles (Pacific)"},
                 {id: 'America/Phoenix', name: "Phoenix (Arizona)"},
                 {id: 'America/Denver', name: "Denver (Mountain)"},
@@ -35,8 +36,41 @@ define([
 
             $scope.settings = {
                 tz: $scope.timezones[0]
-            }
+            };
 
+            $reportingService.multiSelectWatcher($scope, "settings.perspectiveItems");
+
+            $scope.$watch("settings.perspectiveItems", function(n, o) {
+                if (!$scope.settings.perspectiveItems || $scope.settings.perspectiveItems.length == 0) {
+                    return;
+                }
+                $scope.settings.perspectives = _.map(_.filter($scope.settings.perspectiveItems, function(x) {
+                    return x.selected;
+                }), "id");
+            });
+
+            $scope.$watch('propertyItems.items', function() {
+                $scope.settings.perspectiveItems = [];
+                if ($scope.propertyItems && $scope.propertyItems.items && $scope.propertyItems.items.length) {
+                    var selected;
+                    $scope.propertyItems.items.forEach(function (p) {
+                        p.perspectives = p.perspectives || [];
+                        p.perspectives.forEach(function (pr) {
+                            selected = _.find($scope.settings.perspectives, function (x) {
+                                return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
+                            });
+                            $scope.settings.perspectiveItems.push({
+                                id: {
+                                    propertyId: p.id,
+                                    perspectiveId: pr.id
+                                }, name: pr.name, group: p.name, selected: !!selected
+                            });
+                        });
+                    });
+
+                }
+
+            },true);
 
             var unbind = $rootScope.$watch("me", function(x) {
                 if ($rootScope.me) {
@@ -51,6 +85,8 @@ define([
                     $scope.settings.showRenewal = $rootScope.me.settings.showRenewal;
                     $scope.settings.notifications = {on: $rootScope.me.settings.notifications.on, groupComps: $rootScope.me.settings.notifications.groupComps, toggle: false}
                     $scope.settings.reminders = {on: $rootScope.me.settings.reminders.on}
+
+                    $scope.settings.perspectives = $rootScope.me.settings.perspectives;
 
                     $scope.user = { first: $rootScope.me.first, last:  $rootScope.me.last, email:  $rootScope.me.email }
 
@@ -74,6 +110,8 @@ define([
 
                     $scope.columnsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
 
+                    $scope.perspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
+
                     $scope.setNotificationColumns($rootScope.me.settings.notification_columns);
 
                     $scope.propertyItems = {items: []};
@@ -87,11 +125,13 @@ define([
                             active: true,
                             ids: $rootScope.me.settings.notifications.props
                             , skipAmenities: true
+                            , hideCustom : true
+                            , select: "name perspectives"
                         }).then(function (response) {
 
                             if (response.data.properties || response.data.properties.length > 0) {
                                 response.data.properties.forEach(function(p) {
-                                    $scope.propertyItems.items.push({id: p._id, name: p.name})
+                                    $scope.propertyItems.items.push({id: p._id, name: p.name, perspectives: p.perspectives})
                                 })
 
                             }
@@ -150,6 +190,7 @@ define([
                     search:search
                     , skipAmenities: true
                     , hideCustom : true
+                    , select: "name perspectives"
                 }).then(function (response) {
                     callback(response.data.properties)
                 }, function (error) {
@@ -232,6 +273,7 @@ define([
                         $rootScope.me.settings.notifications.props = _.pluck($scope.propertyItems.items,"id")
                     }
 
+                    $rootScope.me.settings.perspectives = $scope.settings.perspectives;
                     $rootScope.me.settings.notifications.cron = $cronService.getCron($scope.nots);
 
                     $rootScope.me.settings.notifications.on = $scope.settings.notifications.on;
@@ -325,6 +367,7 @@ define([
                 toastr.success("Notifications reset to company default. Please make sure to save your changes.");
 
             }
+
 
             $scope.sendReport = function() {
 
