@@ -505,6 +505,15 @@
                                     Columns<br>
                                     <filter-list options="temp.showPropertyStatusOptions" items="temp.showPropertyStatusItems"></filter-list>
                                 </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective(s)<Br>
+                                    <filter-list options="propertyStatusPerspectiveOptions" items="temp.propertyStatusPerspectives" tooltipdir="'right'"></filter-list>
+                                </div>
                             </div>
                         </div>
                         <div ng-if="custom_portfolio" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.custom_portfolio_open">

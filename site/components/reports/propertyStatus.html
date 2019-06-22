@@ -1,5 +1,16 @@
 <div class="break2 panel panel-info" style="margin-bottom: 0px !important;">
-    <div class="panel-heading">Property Status</div>
+    <div class="panel-heading">Property Status
+        <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="perspectives">Perspective(s) Applied: <b>{{perspectives}}</b>
+            <i class="fa fa-question-circle hidden-print"
+               style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-append-to-body="true"
+               popover-class="popover-small"
+               uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+            ></i>
+        </div>
+    </div>
     <div class="panel-body">
         <hr>
         <div class="maingrid wrapper panel" style="overflow-x:auto">
@@ -80,6 +91,9 @@
                     >
                     <td>
                         {{row.name}}
+                        <excluded class="perspectiveIconHolder small" excluded-list="row.excludedList" property-id="row.subjectId" applied-perspective="row.appliedPerspective" excluded-popups="excludedPopups" key="'comps-excluded-' + comp._id" classes="'mt--10'"></excluded>
+                        <excluded class="perspectiveIconHolder small" excluded-list="row.missingList" property-id="row.subjectId" excluded-popups="excludedPopups" key="'comps-missing-' + comp._id" classes="'mt--10'"></excluded>
+
                     </td>
                     <td ng-if="show.occupancy" style="text-align:right">
                         {{row.occupancy != "" && row.occupancy != null ? row.occupancy + "%" : "-"}}
@@ -91,34 +105,34 @@
                         {{row.atr_percent != "" ? row.atr_percent + "%" : "-"}}
                     </td>
                     <td ng-if="show.weekly" style="text-align:right">
-                        {{row.weeklytraffic | number : 0}}
+                        {{row.weeklytraffic == null ? "-" : (row.weeklytraffic | number : 0)}}
                     </td>
                     <td ng-if="show.weekly" style="text-align:right">
-                        {{row.weeklyleases | number : 0}}
+                        {{row.weeklyleases == null ? "-" : (row.weeklyleases | number : 0)}}
                     </td>
                     <td ng-if="show.units" style="text-align:right">
-                        {{row.totUnits | number : 0}}
+                        {{row.totUnits == null ? "-" : (row.totUnits | number : 0)}}
                     </td>
                     <td ng-if="show.sqft" style="text-align:right">
-                        {{row.sqft | number : 0}}
+                        {{row.sqft == null ? "-" : (row.sqft | number : 0)}}
                     </td>
                     <td ng-if="show.rent" style="text-align:right">
-                        ${{row.rent | number : 0}}
+                        {{row.rent == null ? "-" : (row.rent | currency : "$" : 0)}}
                     </td>
                     <td ng-if="show.concessions" style="text-align:right">
-                        ${{row.concessions | number : 0}}
+                        {{row.concessions == null ? "-" : (row.concessions | currency : "$" : 0)}}
                     </td>
                     <td ng-if="show.runrate" style="text-align:right">
-                        ${{row.runrate | number : 0}}
+                        {{row.runrate == null ? "-" : (row.runrate | currency : "$" : 0)}}
                     </td>
                     <td ng-if="show.runratesqft" style="text-align:right">
-                        ${{row.runratesqft | number : 2}}
+                        {{row.runratesqft == null ? "-" : (row.runratesqft | currency : "$" : 2)}}
                     </td>
                     <td ng-if="show.ner" style="text-align:right">
-                        ${{row.ner | number : 0}}
+                        {{row.ner == null ? "-" : (row.ner | currency : "$" : 0)}}
                     </td>
                     <td ng-if="show.nersqft" style="text-align:right">
-                        ${{row.nersqft | number : 2}}
+                        {{row.nersqft == null ? "-" : (row.nersqft | currency : "$" : 2)}}
                     </td>
                     <td ng-if="show.nerweek" style="text-align:right">
                         <span ng-if="row.lastweeknerpercent > 0">{{row.lastweeknerpercent}}% <i class="fa fa-long-arrow-up success" style="color:green"></i></span>

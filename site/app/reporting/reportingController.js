@@ -21,6 +21,8 @@ define([
         $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
         $scope.customProtfolioPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
+        $scope.propertyStatusPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
+
         $scope.reportItems = []
 
         $scope.localLoading = false;
@@ -129,44 +131,8 @@ define([
         };
 
             if (!phantom) {
-                $scope.$watch("temp.customPortfolioPerspectives", function (n, o) {
-                    var groupsFound = {};
-                    if (!$scope.temp.customPortfolioPerspectives) {
-                        return;
-                    }
-
-                    var changed = false;
-                    // find counts for each group after selection
-                    $scope.temp.customPortfolioPerspectives.forEach(function (i) {
-                        if (i.selected) {
-                            groupsFound[i.group] = (groupsFound[i.group] || 0) + 1;
-                        }
-                    });
-
-                    var newItem;
-
-                    Object.keys(groupsFound).forEach(function(gr) {
-                        if (groupsFound[gr] > 1) {
-                            // Find a first selected item from updated list that was not in the original list
-                            newItem = _.find(n, function(x) {
-                                return x.selected && x.group === gr && !_.find(o, function(y) {
-                                    return y.selected && y.group === gr && y.id.perspectiveId === x.id.perspectiveId;
-                                });
-                            });
-
-                            $scope.temp.customPortfolioPerspectives.forEach(function (i) {
-                                if (i.group === gr) {
-                                    i.selected = i.id.perspectiveId === newItem.id.perspectiveId;
-                                }
-                            });
-                            changed = true;
-                        }
-                    });
-
-                    if (changed) {
-                        toastr.warning("Multiple perspectives for the same property can't be run at the same time, please select only 1 perspective per property.");
-                    }
-                }, true);
+                $reportingService.multiSelectWatcher($scope, "temp.customPortfolioPerspectives");
+                $reportingService.multiSelectWatcher($scope, "temp.propertyStatusPerspectives");
             }
 
         $scope.loadSaved = function() {
@@ -632,6 +598,10 @@ define([
                 $scope.temp.showPropertyStatusItems.forEach(function (f) {
                     $scope.liveSettings.propertyStatus.show[f.id] = f.selected;
                 });
+
+                $scope.liveSettings.propertyStatus.perspectives = _.map(_.filter($scope.temp.propertyStatusPerspectives, function(x) {
+                    return x.selected;
+                }), "id");
             }
 
             if ($scope.reportIds.indexOf("custom_portfolio") > -1) {
@@ -1304,7 +1274,25 @@ define([
                 _.remove($scope.temp.showPropertyStatusItems, function(x) {return x.id == 'atr'})
             }
 
-        }
+            if ($scope.propertyItems && $scope.propertyItems.items && $scope.propertyItems.items.length) {
+                $scope.temp.propertyStatusPerspectives = [];
+                var selected;
+                $scope.propertyItems.items.forEach(function (p) {
+                    p.perspectives = p.perspectives || [];
+                    p.perspectives.forEach(function (pr) {
+                        selected = _.find($scope.liveSettings.propertyStatus.perspectives, function (x) {
+                            return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
+                        });
+                        $scope.temp.propertyStatusPerspectives.push({
+                            id: {
+                                propertyId: p.id,
+                                perspectiveId: pr.id
+                            }, name: pr.name, group: p.name, selected: !!selected
+                        });
+                    });
+                });
+            }
+        };
 
             ////////////////////// Custom Portfolio ////////////////////////////////
             $scope.resetCustomPortfolioSettings = function() {
