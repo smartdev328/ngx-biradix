@@ -463,5 +463,8 @@ define([
             }
         };
 
+         $scope.sortPersepctive = function( perspective ) {
+             return perspective.text.toLowerCase();
+         };
     }]);
 });

@@ -106,6 +106,10 @@ define([
             });
         }
 
+            $scope.sortPerspective = function( perspective ) {
+                return perspective.text.toLowerCase();
+            };
+
         $scope.fixDates = function() {
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {

@@ -30,6 +30,10 @@ define([
         $scope.processing = false;
         $perspectivesService.scopeFunctions($scope);
 
+        $scope.sortPersepctive = function( perspective ) {
+            return perspective.name.toLowerCase();
+        };
+
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 var id = $rootScope.me.settings.defaultPropertyId;

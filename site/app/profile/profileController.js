@@ -47,11 +47,15 @@ define([
                 $propertyService.getSubjectPerspectives($scope.propertyId).then(function (response) {
                     $scope.settings.perspectives = [{value: "", text: "All Data", propertyId: ""}];
 
+                    var perspectives = [];
                     response.data.properties.forEach(function(p) {
                         p.perspectives.forEach(function(pr) {
-                            $scope.settings.perspectives.push({value: pr.id, text: pr.name, group: p.name, propertyId: p._id.toString()});
+                            perspectives.push({value: pr.id, text: pr.name, group: p.name, propertyId: p._id.toString(), sort1: pr.name.toLowerCase(), sort2: p.name.toLowerCase()});
                         });
                     });
+
+                    perspectives = _.sortByAll(perspectives, "sort1", "sort2");
+                    $scope.settings.perspectives = $scope.settings.perspectives.concat(perspectives);
 
                     $scope.settings.perspectives.push({value: "-1", text: " + Add/Edit Perspective"});
 

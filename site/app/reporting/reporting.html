@@ -225,7 +225,7 @@
 
                                     <select
                                             class="input-sm form-control"
-                                            ng-options="item.text for item in temp.concessionPerspectives"
+                                            ng-options="item.text for item in temp.concessionPerspectives | orderBy: sortPerspective"
                                             ng-model="temp.concessionPerspectiveSelected"
                                     ></select>
                                 </div>
@@ -269,7 +269,7 @@
 
                                     <select
                                             class="input-sm form-control"
-                                            ng-options="item.text for item in temp.marketPerspectives"
+                                            ng-options="item.text for item in temp.marketPerspectives | orderBy: sortPerspective"
                                             ng-model="temp.marketPerspectiveSelected"
                                     ></select>
                                 </div>
@@ -392,7 +392,7 @@
 
                                     <select
                                             class="input-sm form-control"
-                                            ng-options="item.text for item in temp.rankingSummaryPerspectives"
+                                            ng-options="item.text for item in temp.rankingSummaryPerspectives | orderBy: sortPerspective"
                                             ng-model="temp.rankingSummaryPerspectiveSelected"
                                     ></select>
                                 </div>
@@ -435,7 +435,7 @@
 
                                     <select
                                             class="input-sm form-control"
-                                            ng-options="item.text for item in temp.rankingPerspectives"
+                                            ng-options="item.text for item in temp.rankingPerspectives | orderBy: sortPerspective"
                                             ng-model="temp.rankingPerspectiveSelected"
                                     ></select>
                                 </div>
@@ -488,7 +488,7 @@
 
                                     <select
                                             class="input-sm form-control"
-                                            ng-options="item.text for item in temp.trendsPerspectives"
+                                            ng-options="item.text for item in temp.trendsPerspectives | orderBy: sortPerspective"
                                             ng-model="temp.trendsPerspectiveSelected"
                                     ></select>
                                 </div>
