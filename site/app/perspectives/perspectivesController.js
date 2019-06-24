@@ -30,7 +30,7 @@ define([
         $scope.processing = false;
         $perspectivesService.scopeFunctions($scope);
 
-        $scope.sortPersepctive = function( perspective ) {
+        $scope.sortPerspective = function( perspective ) {
             return perspective.name.toLowerCase();
         };
 

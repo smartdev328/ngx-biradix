@@ -24,7 +24,7 @@
             <div class="col-md-3">
                 <B>Perspective</B><Br>
                 <div
-                    custom-select="f.name for f in model.selectedProperty.perspectives | orderBy: sortPersepctive"
+                    custom-select="f.name for f in model.selectedProperty.perspectives | orderBy: sortPerspective"
                     ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
                 ></div>
             </div>
