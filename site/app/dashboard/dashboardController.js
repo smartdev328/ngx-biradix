@@ -463,7 +463,7 @@ define([
             }
         };
 
-         $scope.sortPersepctive = function( perspective ) {
+         $scope.sortPerspective = function( perspective ) {
              return perspective.text.toLowerCase();
          };
     }]);

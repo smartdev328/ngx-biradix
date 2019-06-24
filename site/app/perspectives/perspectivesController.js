@@ -30,7 +30,7 @@ define([
         $scope.processing = false;
         $perspectivesService.scopeFunctions($scope);
 
-        $scope.sortPersepctive = function( perspective ) {
+        $scope.sortPerspective = function( perspective ) {
             return perspective.name.toLowerCase();
         };
 
@@ -170,11 +170,8 @@ define([
                 toastr.success($scope.model.name + " created successfully");
                 $scope.processing = false;
                 ngProgress.complete();
-                $scope.loadPerspective($scope.model.selectedProperty._id, response.data.id);
                 var perspective = response.data;
-                $scope.model.selectedProperty.perspectives = $scope.model.selectedProperty.perspectives || [];
-                $scope.model.selectedProperty.perspectives.push(perspective);
-                $scope.model.selectedPerspective = perspective;
+                $scope.loadPerspective($scope.model.selectedProperty._id, perspective.id);
                 $scope.changesComplete();
             }).catch(function(err) {
                 $httpHelperService.handleError(err);

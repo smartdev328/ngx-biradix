@@ -792,11 +792,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             selectedPerspective = selectedPerspective || "";
             resp.perspectives = [{value: "", text: "All Data"}];
 
+            var tempP = [];
             if (resp.property.perspectives) {
                 resp.property.perspectives.forEach(function(p) {
-                    resp.perspectives.push({value: p.id, text: p.name});
+                    tempP.push({value: p.id, text: p.name});
                 });
             }
+
+            tempP = _.sortByAll(tempP, "name");
+            resp.perspectives = resp.perspectives.concat(tempP);
 
             resp.perspectives.push({value: "-1", text: " + Add/Edit Perspective"});
 
