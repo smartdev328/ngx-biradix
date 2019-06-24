@@ -21,17 +21,16 @@
                      ng-model="model.selectedProperty" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
                 ></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" ng-if="model.selectedProperty.perspectives.length">
                 <B>Perspective</B><Br>
                 <div
                     custom-select="f.name for f in model.selectedProperty.perspectives | orderBy: sortPerspective"
-                    custom-select-options="{ 'displayText': !model.selectedProperty.perspectives || !model.selectedProperty.perspectives.length ? 'No Perspectives created' : 'Select...' }"
-                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD || !model.selectedProperty.perspectives || !model.selectedProperty.perspectives.length"
+                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
                 ></div>
             </div>
             <div class="col-md-3 mt-20" ng-if="model.selectedProperty">
-                <span class="grey-color">OR</span>
-                <button type="button" class="btn btn-default dropdown-toggle btn-sm ml-30" uib-tooltip="Add Perspective" ng-click="add()" ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD">
+                <span class="grey-color" ng-if="model.selectedProperty.perspectives.length">OR</span>
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm" ng-class="{'ml-30' : model.selectedProperty.perspectives.length}" uib-tooltip="Add Perspective" ng-click="add()" ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD">
                     <span class="fa fa-plus"></span> Add Perspective
                 </button>
             </div>
