@@ -25,7 +25,8 @@
                 <B>Perspective</B><Br>
                 <div
                     custom-select="f.name for f in model.selectedProperty.perspectives | orderBy: sortPerspective"
-                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
+                    custom-select-options="{ 'displayText': !model.selectedProperty.perspectives || !model.selectedProperty.perspectives.length ? 'No Perspectives created' : 'Select...' }"
+                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD || !model.selectedProperty.perspectives || !model.selectedProperty.perspectives.length"
                 ></div>
             </div>
             <div class="col-md-3 mt-20" ng-if="model.selectedProperty">
