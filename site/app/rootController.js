@@ -713,7 +713,8 @@ angular.module("biradix.global").controller("rootController",
             }
         }, true);
 
-            $rootScope.$on('$locationChangeStart', function( event ) {
+        $rootScope.$on('$locationChangeStart', function( event ) {
+            $rootScope.nav = "";
             if (!$rootScope.globalConfirm) return;
             var answer = confirm($rootScope.globalConfirm);
             if (!answer) {
