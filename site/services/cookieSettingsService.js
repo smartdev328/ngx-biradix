@@ -29,6 +29,19 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
             $cookies.put('SurveyGuestOption', JSON.stringify(SurveyGuestOption), {expires : expireDate})
         }
 
+    fac.getPerspective = function () {
+
+        var v = $cookies.get('Perspective') || "";
+
+        return v;
+
+    }
+
+    fac.savePerspective = function(perspective) {
+        var expireDate = new Date();
+        expireDate.setDate(expireDate.getDate() + 365);
+        $cookies.put('Perspective', perspective, {expires : expireDate})
+    }
 
         fac.getBedrooms = function () {
 

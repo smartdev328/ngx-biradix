@@ -20,6 +20,8 @@ define([
         $scope.propertyOptions = { hideSearch: false, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Properties", labelSelected: "Selected Properties", searchLabel: "Properties" }
         $scope.options = { hideSearch: true, dropdown: true, dropdownDirection : 'right', labelAvailable: "Available Comps", labelSelected: "Selected Comps", searchLabel: "Comps" }
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
+        $scope.customProtfolioPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
+        $scope.propertyStatusPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
 
         $scope.reportItems = []
 
@@ -104,6 +106,10 @@ define([
             });
         }
 
+            $scope.sortPerspective = function( perspective ) {
+                return perspective.text.toLowerCase();
+            };
+
         $scope.fixDates = function() {
             for (var key in $scope.liveSettings) {
                 if ($scope.liveSettings[key].daterange) {
@@ -126,7 +132,12 @@ define([
                     $scope.updateTrendsDaterange2($scope.liveSettings[key].daterange1.selectedRange);
                 }
             }
-        }
+        };
+
+            if (!phantom) {
+                $reportingService.multiSelectWatcher($scope, "temp.customPortfolioPerspectives");
+                $reportingService.multiSelectWatcher($scope, "temp.propertyStatusPerspectives");
+            }
 
         $scope.loadSaved = function() {
             $saveReportService.read().then(function (response) {
@@ -147,10 +158,9 @@ define([
                 , skipAmenities: true
                 , hideCustomComps: true
                 , hideCustom: ($scope.reportType == "multiple") // no custom properties for group reports
-                , select: "name comps.id custom"
+                , select: "name comps.id custom perspectives"
                 , sort: "name"
             }).then(function (response) {
-
                 response.data.properties = _.sortBy(response.data.properties, function(x) {return x.name});
                 response.data.properties.forEach(function(p) {
                     p.isCustom = !!(p.custom && p.custom.owner);
@@ -159,7 +169,7 @@ define([
                     if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
                         p.group = $rootScope.me.orgs[0].name + " Properties"
                     }
-                })
+                });
 
                 if ($rootScope.me.customPropertiesLimit > 0 && $scope.reportType == "multiple") {
                     response.data.properties.push({id:0, name: "N/A For This Report", group : " My Custom Properties", disabled: true  })
@@ -208,14 +218,13 @@ define([
                 $propertyService.search({
                     limit: 10000,
                     permission: 'PropertyManage',
-                    select: "_id name comps.id comps.orderNumber custom",
+                    select: "_id name comps.id comps.orderNumber custom perspectives",
                     ids: $scope.propertyIds,
                     hideCustomComps: true,
                     sort: "name"
                     ,
                     skipAmenities: true
                 }).then(function (response) {
-
                     response.data.properties.forEach(function(p) {
                         p.isCustom = !!(p.custom && p.custom.owner);
                     })
@@ -228,7 +237,6 @@ define([
                             item = {id: p._id, name: p.name};
                             $scope.propertyItems.items.push(item);
                         })
-
                         $scope.run();
                     }
                 });
@@ -246,7 +254,7 @@ define([
                 permission: "PropertyManage",
                 hideCustomComps: true,
                 active: true,
-                select: "_id name comps.id comps.orderNumber custom",
+                select: "_id name comps.id comps.orderNumber custom perspectives",
                 skipAmenities: true,
             }).then(function(response) {
                 response.data.properties.forEach(function(p) {
@@ -275,7 +283,7 @@ define([
                             _id: id,
                             permission: "PropertyManage",
                             active: true,
-                            select: "_id name comps.id comps.orderNumber custom",
+                            select: "_id name comps.id comps.orderNumber custom perspectives",
                             skipAmenities: true,
                         }).then(function(response) {
                             if (response.data.properties.length == 0) {
@@ -477,6 +485,7 @@ define([
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
 
+
                 if ($scope.reports.custom_portfolio) {
                     var bedrooms = {};
                     $scope.reports.custom_portfolio.forEach(function(gr) {
@@ -491,6 +500,7 @@ define([
                     $scope.liveSettings.customPortfolio.bedrooms = bedrooms;
                     $scope.runSettings.customPortfolio.bedrooms = bedrooms;
                 }
+
 
                 $scope.description = '%where%, ' + $scope.propertyNames.length + ' Property(ies), ' + $scope.reportIds.length + ' Report Type(s)';
 
@@ -534,6 +544,8 @@ define([
                 } else {
                     $scope.liveSettings.dashboardSettings.orderByComp = (($scope.temp.compSortDir == "desc" && $scope.temp.compSortSelected.id != "number") ? "-" : "") + $scope.temp.compSortSelected.id;
                 }
+
+                $scope.liveSettings.dashboardSettings.selectedPerspective = $scope.temp.marketPerspectiveSelected.value;
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
@@ -544,6 +556,10 @@ define([
                 $scope.temp.showRankingsItems.forEach(function (f) {
                     $scope.liveSettings.rankings.show[f.id] = f.selected;
                 })
+
+                if ($scope.temp.rankingPerspectiveSelected) {
+                    $scope.liveSettings.rankings.perspective = $scope.temp.rankingPerspectiveSelected.value;
+                }
             }
 
             if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
@@ -554,15 +570,28 @@ define([
                 $scope.temp.showRankingsSummaryItems.forEach(function (f) {
                     $scope.liveSettings.rankingsSummary.show[f.id] = f.selected;
                 })
+
+                if ($scope.temp.rankingSummaryPerspectiveSelected) {
+                    $scope.liveSettings.rankingsSummary.perspective = $scope.temp.rankingSummaryPerspectiveSelected.value;
+                }
             }
 
             if ($scope.reportIds.indexOf("trends") > -1) {
                 $scope.temp.showTrendsItems.forEach(function (f) {
                     $scope.liveSettings.trends.show[f.id] = f.selected;
                 })
+
+                if ($scope.temp.trendsPerspectiveSelected) {
+                    $scope.liveSettings.trends.perspective = $scope.temp.trendsPerspectiveSelected.value;
+                }
             }
 
-        }
+            if ($scope.reportIds.indexOf("concession") > -1) {
+                if ($scope.temp.concessionPerspectiveSelected) {
+                    $scope.liveSettings.concession.perspective = $scope.temp.concessionPerspectiveSelected.value;
+                }
+            }
+        };
 
         $scope.UItoSettingsMultiple = function() {
             if (phantom) {
@@ -573,6 +602,10 @@ define([
                 $scope.temp.showPropertyStatusItems.forEach(function (f) {
                     $scope.liveSettings.propertyStatus.show[f.id] = f.selected;
                 });
+
+                $scope.liveSettings.propertyStatus.perspectives = _.map(_.filter($scope.temp.propertyStatusPerspectives, function(x) {
+                    return x.selected;
+                }), "id");
             }
 
             if ($scope.reportIds.indexOf("custom_portfolio") > -1) {
@@ -583,6 +616,10 @@ define([
                 if ($scope.temp.customPortfolioSortSelected) {
                     $scope.liveSettings.customPortfolio.orderBy = ($scope.temp.customPortfolioSortDir == "desc" ? "-" : "") + $scope.temp.customPortfolioSortSelected.id;
                 }
+
+                $scope.liveSettings.customPortfolio.perspectives = _.map(_.filter($scope.temp.customPortfolioPerspectives, function(x) {
+                    return x.selected;
+                }), "id");
             }
         };
 
@@ -614,6 +651,7 @@ define([
                     },
                     offset: $scope.timezone,
                     transaction_id: $scope.transaction_id,
+                    perspective: $scope.cleanSettings.dashboardSettings.selectedPerspective,
                 }
 
                 if ($cookies.get("settings")) {
@@ -629,7 +667,8 @@ define([
                         start: $scope.cleanSettings.concession.daterange.selectedStartDate,
                         end: $scope.cleanSettings.concession.daterange.selectedEndDate
                     },
-                    offset: $scope.timezone
+                    offset: $scope.timezone,
+                    perspective: $scope.cleanSettings.concession.perspective
                 }
                 if ($cookies.get("settings")) {
                     options.concession.daterange.start = $scope.liveSettings.concession.daterange.selectedStartDate;
@@ -652,7 +691,8 @@ define([
                     },
                     offset: $scope.timezone,
                     show: $scope.cleanSettings.trends.show,
-                    graphs: $scope.cleanSettings.trends.graphs
+                    graphs: $scope.cleanSettings.trends.graphs,
+                    perspective: $scope.liveSettings.trends.perspective
                 };
 
                 if ($cookies.get("settings")) {
@@ -664,11 +704,11 @@ define([
                 }
             }
             if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
-                options.property_rankings_summary = {orderBy: $scope.liveSettings.rankingsSummary.orderBy};
+                options.property_rankings_summary = {orderBy: $scope.liveSettings.rankingsSummary.orderBy, perspective: $scope.liveSettings.rankingsSummary.perspective};
             }
 
             if ($scope.reportIds.indexOf("property_rankings") > -1) {
-                options.property_rankings = {orderBy: $scope.liveSettings.rankings.orderBy};
+                options.property_rankings = {orderBy: $scope.liveSettings.rankings.orderBy, perspective: $scope.liveSettings.rankings.perspective};
             }
 
             $reportingService.reports(
@@ -905,13 +945,19 @@ define([
             $scope.reportsChanged();
             $scope.reportNamesChanged();
 
-        },true)
+        },true);
+
+        $scope.$watch('propertyItems.items', function() {
+            $scope.reportsChanged();
+
+        },true);
 
         $scope.$watch('selected.Property', function() {
             if ($scope.selected.Property) {
                 $scope.propertyIds = [$scope.selected.Property._id];
                 $scope.changeProperty();
             }
+            $scope.reportsChanged();
         }, true);
 
 
@@ -1150,7 +1196,8 @@ define([
                 progressId: $scope.progressId,
                 compids: $scope.compIds,
                 cortland: cortland,
-            }
+                perspective: $scope.liveSettings.dashboardSettings.selectedPerspective,
+            };
 
             var key = $urlService.shorten(JSON.stringify(data));
 
@@ -1231,7 +1278,25 @@ define([
                 _.remove($scope.temp.showPropertyStatusItems, function(x) {return x.id == 'atr'})
             }
 
-        }
+            if ($scope.propertyItems && $scope.propertyItems.items && $scope.propertyItems.items.length) {
+                $scope.temp.propertyStatusPerspectives = [];
+                var selected;
+                $scope.propertyItems.items.forEach(function (p) {
+                    p.perspectives = p.perspectives || [];
+                    p.perspectives.forEach(function (pr) {
+                        selected = _.find($scope.liveSettings.propertyStatus.perspectives, function (x) {
+                            return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
+                        });
+                        $scope.temp.propertyStatusPerspectives.push({
+                            id: {
+                                propertyId: p.id,
+                                perspectiveId: pr.id
+                            }, name: pr.name, group: p.name, selected: !!selected
+                        });
+                    });
+                });
+            }
+        };
 
             ////////////////////// Custom Portfolio ////////////////////////////////
             $scope.resetCustomPortfolioSettings = function() {
@@ -1395,7 +1460,26 @@ define([
                     return x.id === f;
                 });
                 $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
-            }
+
+                if ($scope.propertyItems && $scope.propertyItems.items && $scope.propertyItems.items.length) {
+                    $scope.temp.customPortfolioPerspectives = [];
+                    var selected;
+                    $scope.propertyItems.items.forEach(function (p) {
+                        p.perspectives = p.perspectives || [];
+                        p.perspectives.forEach(function (pr) {
+                            selected = _.find($scope.liveSettings.customPortfolio.perspectives, function (x) {
+                                return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
+                            });
+                            $scope.temp.customPortfolioPerspectives.push({
+                                id: {
+                                    propertyId: p.id,
+                                    perspectiveId: pr.id
+                                }, name: pr.name, group: p.name, selected: !!selected
+                            });
+                        });
+                    });
+                }
+            };
 
             $scope.sortableOptions = {
                 update: function() {
@@ -1508,7 +1592,22 @@ define([
             var f = $scope.liveSettings.rankingsSummary.orderBy.replace("-","");
             $scope.temp.rankingSummarySortSelected = _.find($scope.temp.rankingSummarySortItems, function(x) {return x.id == f})
             $scope.temp.rankingSummarySortDir = $scope.liveSettings.rankingsSummary.orderBy[0] == "-" ? "desc" : "asc";
-        }
+
+            if ($scope.selected.Property) {
+                $scope.temp.rankingSummaryPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.rankingSummaryPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.rankingSummaryPerspectiveSelected = _.find($scope.temp.rankingSummaryPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.rankingsSummary.perspective;
+                });
+
+                if (!$scope.temp.rankingSummaryPerspectiveSelected) {
+                    $scope.temp.rankingSummaryPerspectiveSelected = $scope.temp.rankingSummaryPerspectives[0];
+                }
+            }
+        };
 
         $scope.$watch("runSettings.rankingsSummary.orderBy", function(newValue,oldValue) {
             if (oldValue && newValue) {
@@ -1585,6 +1684,21 @@ define([
             if (typeof $scope.liveSettings.trends.graphs == 'undefined') {
                 $scope.liveSettings.trends.graphs = true;
             }
+
+            if ($scope.selected.Property) {
+                $scope.temp.rankingPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.rankingPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.rankingPerspectiveSelected = _.find($scope.temp.rankingPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.rankings.perspective;
+                });
+
+                if (!$scope.temp.rankingPerspectiveSelected) {
+                    $scope.temp.rankingPerspectiveSelected = $scope.temp.rankingPerspectives[0];
+                }
+            }
         }
 
         $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
@@ -1622,7 +1736,21 @@ define([
                     {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.trends.show.nersqft},
                 ];
 
-            }
+                if ($scope.selected.Property) {
+                    $scope.temp.trendsPerspectives = [{value: "", text: "All Data"}];
+                    ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                        $scope.temp.trendsPerspectives.push({value: p.id, text: p.name});
+                    });
+
+                    $scope.temp.trendsPerspectiveSelected = _.find($scope.temp.trendsPerspectives, function(x) {
+                        return x.value.toString() === $scope.liveSettings.trends.perspective;
+                    });
+
+                    if (!$scope.temp.trendsPerspectiveSelected) {
+                        $scope.temp.trendsPerspectiveSelected = $scope.temp.trendsPerspectives[0];
+                    }
+                }
+            };
 
             $scope.defaultTrendsDateRange1 = function(selectedRange, selectedStartDate, selectedEndDate) {
                 return {
@@ -1912,6 +2040,21 @@ define([
             }
 
             $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+
+            if ($scope.selected.Property) {
+                $scope.temp.marketPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.marketPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.marketPerspectiveSelected = _.find($scope.temp.marketPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.dashboardSettings.selectedPerspective;
+                });
+
+                if (!$scope.temp.marketPerspectiveSelected) {
+                    $scope.temp.marketPerspectiveSelected = $scope.temp.marketPerspectives[0];
+                }
+            }
         };
 
         $scope.resetPropertyReportSettings = function(rebind) {
@@ -1931,6 +2074,21 @@ define([
         $scope.configureConcessionOptions = function() {
             if (!$scope.liveSettings.concession) {
                 $scope.resetConcessionSettings();
+            }
+
+            if ($scope.selected.Property) {
+                $scope.temp.concessionPerspectives = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp.concessionPerspectives.push({value: p.id, text: p.name});
+                });
+
+                $scope.temp.concessionPerspectiveSelected = _.find($scope.temp.concessionPerspectives, function(x) {
+                    return x.value.toString() === $scope.liveSettings.concession.perspective;
+                });
+
+                if (!$scope.temp.concessionPerspectiveSelected) {
+                    $scope.temp.concessionPerspectiveSelected = $scope.temp.concessionPerspectives[0];
+                }
             }
         }
 

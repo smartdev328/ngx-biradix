@@ -211,9 +211,23 @@
                                 </Div>
                             </uib-accordion-heading>
                             <div class="row" style="padding:10px">
-                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Date Range<br>
                                     <daterange-picker daterange="liveSettings.concession.daterange"></daterange-picker>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.concessionPerspectives | orderBy: sortPerspective"
+                                            ng-model="temp.concessionPerspectiveSelected"
+                                    ></select>
                                 </div>
                             </div>
                         </div>
@@ -243,6 +257,21 @@
                                 <div class="col-xs-12 col-sm-4 col-md-3">
                                     Property Info<br>
                                     <filter-list options="temp.showProfileOptions" items="temp.showProfileItems"></filter-list>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.marketPerspectives | orderBy: sortPerspective"
+                                            ng-model="temp.marketPerspectiveSelected"
+                                    ></select>
                                 </div>
                                 <br clear="all">
                                 <div class="col-xs-12" style="margin-top:15px">
@@ -353,6 +382,20 @@
 
                                     </div>
                                 </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.rankingSummaryPerspectives | orderBy: sortPerspective"
+                                            ng-model="temp.rankingSummaryPerspectiveSelected"
+                                    ></select>
+                                </div>
                             </div>
                         </div>
                         <div ng-if="rankings" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.rankings_open">
@@ -381,6 +424,20 @@
                                         <label><input type="radio" name="rankingSortDir" value="desc" ng-model="temp.rankingSortDir"> <i class="fa fa-sort-amount-desc"></i> <span style="font-size:11px">Desc</span></label>
 
                                     </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.rankingPerspectives | orderBy: sortPerspective"
+                                            ng-model="temp.rankingPerspectiveSelected"
+                                    ></select>
                                 </div>
                             </div>
                         </div>
@@ -420,6 +477,21 @@
                                     Show Graphs:<br>
                                     <toggle-switch checked="liveSettings.trends.graphs"></toggle-switch>&nbsp;
                                 </div>
+                                <br clear="all" class="visible-md visible-lg">
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective<Br>
+
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="item.text for item in temp.trendsPerspectives | orderBy: sortPerspective"
+                                            ng-model="temp.trendsPerspectiveSelected"
+                                    ></select>
+                                </div>
                             </div>
                         </div>
                         <div ng-if="property_status" uib-accordion-group class="panel-default"  style="margin-bottom:-3px" is-open="temp.property_status_open">
@@ -432,6 +504,15 @@
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
                                     Columns<br>
                                     <filter-list options="temp.showPropertyStatusOptions" items="temp.showPropertyStatusItems"></filter-list>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective(s)<Br>
+                                    <filter-list options="propertyStatusPerspectiveOptions" items="temp.propertyStatusPerspectives" tooltipdir="'right'"></filter-list>
                                 </div>
                             </div>
                         </div>
@@ -493,6 +574,17 @@
                                     ></i>
                                     <br>
                                     <toggle-switch checked="liveSettings.customPortfolio.compAverages"></toggle-switch>&nbsp;
+                                </div>
+                                <Br clear="all">
+
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+        <span class="fa fa-eye-slash"
+              popover-trigger="'mouseenter'"
+              popover-placement="top"
+              popover-append-to-body="true"
+              uib-popover="Perspectives"
+        ></span> Select Perspective(s)<Br>
+                                    <filter-list options="customProtfolioPerspectiveOptions" items="temp.customPortfolioPerspectives" tooltipdir="'right'"></filter-list>
                                 </div>
                             </div>
                         </div>

@@ -42,12 +42,16 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return response;
         });
     }
-        fac.notifications_test = function (properties,showLeases,notification_columns, groupComps) {
+        fac.notifications_test = function (properties,showLeases,notification_columns, groupComps, perspectives) {
             return $http.post(gAPI + '/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
                 properties:properties,
                 showLeases: showLeases,
                 notification_columns: notification_columns,
-                groupComps: groupComps
+                groupComps: groupComps,
+                options: {
+                    perspectives: perspectives
+                },
+
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
@@ -56,7 +60,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.profile = function (id,daterange,show) {
+        fac.profile = function (id, daterange, show, subjectId, perspective) {
             var timezone = moment().utcOffset();
             if ($cookies.get("timezone")) {
                 timezone = parseInt($cookies.get("timezone"));
@@ -65,7 +69,9 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return $http.post(gAPI + '/api/1.0/properties/' + id + '/profile'+ '?bust=' + (new Date()).getTime(), {
                 daterange: daterange,
                 offset: timezone,
-                show: show
+                show: show,
+                subjectId: subjectId,
+                perspective: perspective
             },  {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
@@ -73,6 +79,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 return response;
             });
         }
+
+    fac.getDeletedFloorplans = function (propertyIds) {
+        return $http.post(gAPI + '/api/1.0/properties/deletedFloorplans?bust=' + (new Date()).getTime(), {propertyIds: propertyIds}, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    };
 
         fac.getSubjects = function (propertyid) {
             return $http.get(gAPI + '/api/1.0/properties/' + propertyid+ '/subjects?bust=' + (new Date()).getTime(), {
@@ -82,6 +97,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 return response;
             });
         };
+
+    fac.getSubjectPerspectives = function (compId) {
+        return $http.get(gAPI + '/api/1.0/properties/' + compId+ '/subjectPerspectives?bust=' + (new Date()).getTime(), {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
 
     fac.getGuestComps = function (propertyid) {
         return $http.get(gAPI + '/api/1.0/properties/' + propertyid+ '/guestComps?bust=' + (new Date()).getTime(), {
@@ -142,13 +166,14 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
-        fac.dashboard = function (id,summary,bedrooms,daterange, show) {
+        fac.dashboard = function (id,summary,bedrooms,daterange, show, perspective) {
             return $http.post(gAPI + '/api/1.0/properties/' + id + '/dashboard'+ '?bust=' + (new Date()).getTime(), {
                 summary: summary,
                 bedrooms: bedrooms,
                 daterange:daterange,
                 offset: moment().utcOffset(),
-                show: show
+                show: show,
+                perspective: perspective
             }, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
@@ -221,33 +246,6 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
         fac.lookups = function () {
             return $http.get(gAPI + '/api/1.0/properties/lookups'+ '?bust=' + (new Date()).getTime(), {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
-            });
-        }
-
-        fac.unlinkComp = function (propertyid, compid) {
-            return $http.delete(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid + '?bust=' + (new Date()).getTime(), {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
-            });
-        }
-
-        fac.saveCompLink = function (propertyid, compid, floorplans, excluded) {
-            return $http.post(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {floorplans: floorplans, excluded : excluded}, {
-                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
-                return response;
-            }).error(function (response) {
-                return response;
-            });
-        }
-
-        fac.linkComp = function (propertyid, compid) {
-            return $http.put(gAPI + '/api/1.0/properties/' + propertyid + '/comps/' + compid+ '?bust=' + (new Date()).getTime(), {}, {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
                 return response;
             }).error(function (response) {
@@ -613,7 +611,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 })
             })
 
-            resp.points = {excluded: profile.points.excluded};
+            resp.points = {excludedList: profile.points.excludedList, missingList: profile.points.missingList};
 
             var keys = ['ner'];
             var labels = ['Entire Property'];
@@ -715,9 +713,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return resp;
         }
 
-
-
-        fac.parseDashboard = function(dashboard, summary, showLeases, scale, selectedBedroom) {
+        fac.parseDashboard = function(dashboard, summary, showLeases, scale, selectedBedroom, selectedPerspective) {
 
             var resp = {};
 
@@ -744,14 +740,6 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 }
             }
 
-            // resp.comps = _.sortBy(resp.comps, function (n) {
-            //
-            //     if (n._id.toString() == resp.property._id.toString()) {
-            //         return "-1";
-            //     }
-            //     return n.name;
-            // })
-
             resp.comps.forEach(function (c, i) {
                 if (c._id.toString() != resp.property._id.toString()) {
                     resp.mapOptions.points.push({
@@ -773,11 +761,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             resp.bedrooms = [{value: -1, text: "Average"}, {value: -2, text: "All"}];
 
             if (resp.comps && resp.comps[0] && resp.comps[0].survey && resp.comps[0].survey.floorplans) {
-                var includedFps = _.filter(resp.comps[0].survey.floorplans, function(x) {
-                    return !x.excluded;
-                });
-
-                var bedrooms = _.groupBy(includedFps, function(x) {
+                var bedrooms = _.groupBy(resp.comps[0].survey.floorplans, function(x) {
                     return parseInt(x.bedrooms.toString(), 10);
                 });
 
@@ -805,6 +789,27 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 resp.bedroom = resp.bedrooms[0];
             }
 
+            selectedPerspective = selectedPerspective || "";
+            resp.perspectives = [{value: "", text: "All Data"}];
+
+            if (resp.property.perspectives) {
+                resp.property.perspectives.forEach(function(p) {
+                    resp.perspectives.push({value: p.id, text: p.name});
+                });
+            }
+
+            resp.perspectives.push({value: "-1", text: " + Add/Edit Perspective"});
+
+            resp.perspective = _.find(resp.perspectives, function(x) {
+                return x.value.toString() === selectedPerspective.toString();
+            });
+
+            if (!resp.perspective) {
+                resp.perspective = _.find(resp.perspectives, function(x) {
+                    return x.value.toString() === "";
+                });
+            }
+
             var scaleDecimals = 0;
             var scaleText = "Net Eff. Rent (" + resp.bedroom.text + ")";
 
@@ -813,7 +818,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 scaleText = "Net Eff. Rent / Sqft (" + resp.bedroom.text + ")";
             }
 
-            resp.points = {excluded: dashboard.points.excluded};
+            resp.points = {excludedList: dashboard.points.excludedList, missingList: dashboard.points.missingList};
             var ner = fac.extractSeries(dashboard.points, ['ner'],[],[0],0,1000,scaleDecimals, resp.comps, summary, selectedBedroom, bedrooms);
             var occ = fac.extractSeries(dashboard.points, ['occupancy'],[],[0],80,100,1, resp.comps, summary);
             var leased = fac.extractSeries(dashboard.points, ['leased'],[],[0],0,100,1, resp.comps, summary);

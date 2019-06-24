@@ -10,6 +10,7 @@ define([
         $scope.filters = {searchDashboard : ""};
 
         $scope.localLoading = false;
+        $scope.excludedPopups = {};
 
         $scope.defaultShow = function() {
             $scope.settings.show = $reportingService.getDefaultDashboardCompColumns($rootScope.me,$(window).width());
@@ -73,7 +74,26 @@ define([
             $cookieSettingsService.saveTotals($scope.settings.totals)
         }, true);
 
-        $scope.refreshGraphs = function() {
+         $scope.$watch('settings.perspective', function() {
+             if (!$scope.localLoading) return;
+             if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
+                 $location.path("/perspectives");
+                 return;
+             }
+
+             if ($scope.settings.perspective) {
+                 $scope.settings.selectedPerspective = $scope.settings.perspective.value;
+             } else {
+                 $scope.settings.selectedPerspective = "";
+             }
+
+             $cookieSettingsService.savePerspective($scope.settings.selectedPerspective);
+
+             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, false);
+             }, true);
+
+
+         $scope.refreshGraphs = function() {
             if (!$scope.localLoading) return;
 
             if ($scope.bedroom) {
@@ -83,6 +103,7 @@ define([
             }
 
             $cookieSettingsService.saveBedrooms($scope.settings.selectedBedroom);
+
             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true);
         }
 
@@ -226,6 +247,7 @@ define([
                 } else {
                     $scope.trendsLoading = false;
                 }
+
                 $propertyService.dashboard(
                     defaultPropertyId
                     , $scope.settings.summary
@@ -236,8 +258,9 @@ define([
                         end: $scope.settings.daterange.selectedEndDate
                         }
                     ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.settings.nerScale}
+                    , $scope.settings.selectedPerspective
                 ).then(function(response) {
-                    var resp = $propertyService.parseDashboard(response.data, $scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom);
+                    var resp = $propertyService.parseDashboard(response.data, $scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom, $scope.settings.selectedPerspective);
 
                     if (!trendsOnly) {
                         $scope.property = resp.property;
@@ -249,6 +272,9 @@ define([
                         $scope.mapOptions = resp.mapOptions;
                         $scope.bedrooms = resp.bedrooms;
                         $scope.bedroom = resp.bedroom;
+
+                        $scope.settings.perspectives = resp.perspectives;
+                        $scope.settings.perspective = resp.perspective;
 
                         window.document.title = resp.property.name + " - Dashboard | BI:Radix";
                     }
@@ -408,8 +434,9 @@ define([
                 selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
                 selectedRange: $scope.settings.daterange.selectedRange,
                 progressId: $scope.progressId,
-                compids: null
-            }
+                compids: null,
+                perspective: $scope.settings.selectedPerspective
+            };
 
             var key = $urlService.shorten(JSON.stringify(data));
 
@@ -427,7 +454,7 @@ define([
 
         $scope.cbLegendClicked = function(legend) {
             $scope.legendUpdated = legend;
-        }
+        };
 
         $scope.dropdownToggled = function(open) {
             if(open) {
@@ -436,5 +463,8 @@ define([
             }
         };
 
+         $scope.sortPersepctive = function( perspective ) {
+             return perspective.text.toLowerCase();
+         };
     }]);
 });

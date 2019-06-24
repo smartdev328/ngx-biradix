@@ -1,0 +1,27 @@
+<div class="market-survey">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title mb-10">{{title}}</h2>
+        <hr>
+    </div>
+    <div class="modal-body mt-10">
+        <div ng-if="appliedPerspective">
+            <b>Perspective Applied:</b><br/><a class="mb-10 show" href="/#/perspectives?prId={{propertyId}}&pId={{appliedPerspective.id}}" target="_blank">{{appliedPerspective.name}}</a>
+            Some floor plans are not part of the perspective and has been excluded from calculations:
+        </div>
+        <div ng-if="!appliedPerspective">
+            Some property floor plans are missing rent data and are being excluded from calculations:
+        </div>
+        <div ng-repeat="(key, value) in excludedList" style="margin-top:20px">
+            <p><B>{{key}}</B></p>
+            <ul>
+                <li ng-repeat="fp in value">{{fp}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" style="padding:20px">
+        <div class="col-xs-12 text-center">
+            <a class="btn btn-default contact-submit" ng-click="cancel()">Close</a>
+        </div>
+    </div>
+</div>
