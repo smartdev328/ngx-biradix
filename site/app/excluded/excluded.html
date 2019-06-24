@@ -13,7 +13,7 @@
             Some property floor plans are missing rent data and are being excluded from calculations:
         </div>
         <div ng-repeat="(key, value) in excludedList" style="margin-top:20px">
-            <p><B>{{key}}</B></p>
+            <p><B>{{key}} <i>(excluded floor plans):</i></B></p>
             <ul>
                 <li ng-repeat="fp in value">{{fp}}</li>
             </ul>

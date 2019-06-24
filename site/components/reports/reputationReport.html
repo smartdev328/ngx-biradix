@@ -70,9 +70,9 @@
                         <th style="height:45px;font-size:11px">
                             <img ng-src="/images/logos/google.png" style="height:20px;margin-top: 5px;">
                         </th>
-                        <th style="height:45px;font-size:11px">
+                        <!-- <th style="height:45px;font-size:11px">
                             <img ng-src="/images/logos/facebook.png" style="height:20px;margin-top: 5px;">
-                        </th>
+                        </th> -->
                     </tr>
                     <tr ng-repeat-start="(key, row) in report.rows">
                         <td ng-class="{'bold-txt': key == 0 }">{{row.name}}</td>
@@ -93,7 +93,7 @@
                             </span>
                             {{row.google_rating === undefined || row.google_rating === null ? "" :(row.google_count)}} Google reviews</a>
                         </td>
-                        <td>
+                        <!-- <td>
                             <span ng-if="row.facebook_rating === undefined || row.facebook_rating === null">-</span>
                             <A ng-if="row.facebook_url && row.facebook_rating" href="{{row.facebook_url}}" target="_blank">
                             <div class="inline-block">
@@ -101,7 +101,7 @@
                                 <p class="facebook-ratings">{{row.facebook_rating}}</p>
                             </div>
                             <p class="inline-block" ng-if="row.facebook_rating" >{{row.facebook_rating === undefined || row.facebook_rating === null ? "" : row.facebook_count}} People</p></A>
-                        </td>
+                        </td> -->
                     </tr>
                     <tr ng-repeat-end ng-if="false"></tr>
                     <tr>
@@ -114,7 +114,7 @@
                             <span style="margin-right: 10px;" class="google-stars" aria-label="Rated {{report.averages.googleRatingAverage.toFixed(1)}} out of 5,">
                                 <span style="width:{{ report.averages.googleRatingAverage.toFixed(1) * 13 }}px;"></span>
                             </span><strong><i>{{report.averages.googleReviewAverage.toFixed(0)}} Google reviews</i></strong></td>
-                        <td style="border-top:1px solid #ccc;"><strong><i>-</i></strong></td>
+                        <!-- <td style="border-top:1px solid #ccc;"><strong><i>-</i></strong></td> -->
                     </tr>
                 </tbody>
             </table>
