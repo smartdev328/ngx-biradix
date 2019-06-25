@@ -558,12 +558,6 @@ define([
             $location.path('/dashboard');
         };
 
-        $scope.hasExcluded = function(subj, comp) {
-            var c = _.find(subj.comps, function(cm) {return cm.id.toString() == comp._id.toString()});
-
-            return c.excluded || false;
-        };
-        
         $scope.cloneCustom = function() {
             require([
                 "/app/cloneProperty/clonePropertyController.js"

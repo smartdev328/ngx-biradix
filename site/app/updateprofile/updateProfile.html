@@ -117,6 +117,21 @@
                       <filter-list-ajax ng-if="me.orgs[0].settings.updates.allow" options="propertyOptions" model="propertyItems.items" search="autocompleteproperties"></filter-list-ajax>
                   </div>
                 </div>
+                  <div class="row">
+                      <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">
+                          Perspectives
+                          <i class="fa fa-question-circle label-side-icon"
+                             popover-trigger="'mouseenter'"
+                             popover-placement="top"
+                             uib-popover="Choose which perspectives you want to apply"
+                             popover-append-to-body="true"
+                          ></i>
+                      </label>
+                      <div class="form-group col-xs-12 col-sm-5 col-md-7 indent-col-2">
+                          <filter-list options="perspectiveOptions" items="settings.perspectiveItems" tooltipdir="'right'"></filter-list>
+                          {{perspectives}}
+                      </div>
+                  </div>
                 <div class="row">
                   <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">Select Columns</label>
                   <div class="form-group col-xs-12 col-sm-5 col-md-7 indent-col-2">

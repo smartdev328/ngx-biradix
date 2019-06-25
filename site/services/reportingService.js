@@ -1,5 +1,28 @@
-angular.module("biradix.global").factory("$reportingService", ["$http","$cookies","$cookieSettingsService", function ($http,$cookies,$cookieSettingsService) {
+angular.module("biradix.global").factory("$reportingService", ["$http","$cookies","$cookieSettingsService", "toastr",
+    function ($http,$cookies,$cookieSettingsService,toastr) {
         var fac = {};
+
+        fac.getDateRangeLabel = function(daterange, offset) {
+            var d1 = daterange.selectedRange;
+            if (d1 === "Custom Range") {
+                var d1s, d1e;
+
+                if (daterange.selectedStartDate._isUTC) {
+                    d1s = moment(daterange.selectedStartDate._d).utcOffset(offset).format("MM/DD/YY");
+                } else {
+                    d1s = moment(daterange.selectedStartDate._d).utcOffset(offset).format("MM/DD/YY");
+                }
+
+                if (daterange.selectedEndDate._isUTC) {
+                    d1e = moment(daterange.selectedEndDate._d).utcOffset(offset).format("MM/DD/YY");
+                } else {
+                    d1e = moment(daterange.selectedEndDate._d).utcOffset(offset).format("MM/DD/YY");
+                }
+
+                d1 = d1s + "-" + d1e;
+            }
+            return d1;
+        };
 
         fac.reports = function(compids, subjectid, reports, options) {
             return $http.post(gAPI + "/api/1.0/reporting/" + subjectid + "?bust=" + (new Date()).getTime(), {
@@ -37,6 +60,7 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
             settings.nerScale = $cookieSettingsService.getNerScale();
 
             settings.selectedBedroom = $cookieSettingsService.getBedrooms();
+            settings.selectedPerspective = $cookieSettingsService.getPerspective();
 
             settings.orderByComp = "number";
 
@@ -70,6 +94,7 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
             settings.daterange=$cookieSettingsService.getDaterange();
             settings.graphs=$cookieSettingsService.getGraphs();
             settings.nerScale= $cookieSettingsService.getNerScale();
+            settings.selectedPerspective = $cookieSettingsService.getPerspective();
 
             return settings;
 
@@ -175,6 +200,47 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
 
             return columns;
         }
+
+        fac.multiSelectWatcher = function($scope, strListName) {
+            $scope.$watch(strListName, function (n, o) {
+                var list = eval("$scope." + strListName);
+                var groupsFound = {};
+                if (!list) {
+                    return;
+                }
+
+                var changed = false;
+                // find counts for each group after selection
+                list.forEach(function (i) {
+                    if (i.selected) {
+                        groupsFound[i.group] = (groupsFound[i.group] || 0) + 1;
+                    }
+                });
+                var newItem;
+
+                Object.keys(groupsFound).forEach(function(gr) {
+                    if (groupsFound[gr] > 1) {
+                        // Find a first selected item from updated list that was not in the original list
+                        newItem = _.find(n, function(x) {
+                            return x.selected && x.group === gr && !_.find(o, function(y) {
+                                return y.selected && y.group === gr && y.id.perspectiveId === x.id.perspectiveId;
+                            });
+                        });
+
+                        list.forEach(function (i) {
+                            if (i.group === gr) {
+                                i.selected = i.id.perspectiveId === newItem.id.perspectiveId;
+                            }
+                        });
+                        changed = true;
+                    }
+                });
+
+                if (changed) {
+                    toastr.warning("Multiple perspectives for the same property can't be run at the same time, please select only 1 perspective per property.");
+                }
+            }, true);
+        };
 
         return fac;
     }]);

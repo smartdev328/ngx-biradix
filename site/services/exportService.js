@@ -6,7 +6,7 @@ define([
         var fac = {};
 
 
-        var getPdfUrl = function(showFile,propertyId,graphs, daterange, progressId) {
+        var getPdfUrl = function(showFile,propertyId,graphs, daterange, progressId, perspective) {
             var timezone = moment().utcOffset();
             if ($cookies.get("timezone")) {
                 timezone = parseInt($cookies.get("timezone"));
@@ -15,18 +15,11 @@ define([
             var url = gAPI + '/api/1.0/properties/' + propertyId + '/pdf?'
             url += "token=" + $cookies.get('token');
 
-            var selectedEndDate = daterange.selectedEndDate.format();
-            var selectedStartDate = daterange.selectedStartDate.format()
-            if ($cookies.get("selectedEndDate")) {
-                selectedEndDate = moment($cookies.get("selectedEndDate")).format();
-                selectedStartDate = moment($cookies.get("selectedStartDate")).format();
-            }
-            
             var data = {
                 Graphs: graphs,
                 Scale: $cookies.get('Scale') || "ner",
-                selectedStartDate: selectedStartDate,
-                selectedEndDate: selectedEndDate,
+                selectedStartDate: daterange.selectedStartDate,
+                selectedEndDate: daterange.selectedEndDate,
                 selectedRange: daterange.selectedRange,
                 timezone: timezone,
                 progressId: progressId,
@@ -34,14 +27,15 @@ define([
                 orderBy: ($cookies.get("fp.o") || ''),
                 show: encodeURIComponent($cookies.get("fp.s") || ''),
                 showP: encodeURIComponent($cookies.get("pr.s") || ''),
-                referer: location.href
-            }
-            
+                referer: location.href,
+                perspective: perspective
+            };
+
             return {base:url, data: data};
         }
 
-        fac.print = function (propertyId, showFile, daterange, progressId, graphs) {
-            var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId);
+        fac.print = function (propertyId, showFile, daterange, progressId, graphs, perspective) {
+            var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId, perspective);
 
             //Has to be synchronous
             var key = $urlService.shorten(JSON.stringify(pdf.data));

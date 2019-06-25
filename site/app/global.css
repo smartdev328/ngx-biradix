@@ -104,13 +104,14 @@ td.center,th.center {text-align:center}
     }
 
 
-    .fa-exclamation-triangle.warning:before {
+    .fa-exclamation-triangle.warning:before,
+    .fa-warning:before{
         color: orange !important;
     }
 
-    .fa-chain-broken.blue:before {
+    .fa-chain-broken.blue:before,
+    .fa-eye-slash:before {
         color: #1E90FF !important;
-        font-weight: bold;
     }
 
     body {
@@ -357,7 +358,7 @@ select {
 }
 
 A.gear .fa-gear {
-    color:#a1a1a1;font-size:24px;padding:1px 0px 0px 7px; !important;
+    color:#a1a1a1;font-size:24px;padding:1px 0px 0px 7px !important;
 }
 
 A.gear:hover .fa-gear  {
@@ -542,4 +543,34 @@ daterange-picker.dashboard > div {
 
 @keyframes blinker {
     50% { opacity: 0; }
+}
+
+.brand-blue {
+    color: #1E90FF;
+}
+
+.brand-green {
+    color: #32CD32;
+}
+
+.brand-green-bg {
+    background-color: #32CD32;
+}
+
+label.normal {
+    font-weight: normal;
+}
+
+.fa.fa-warning.orange  {
+    color: orange !important;
+}
+
+.missing-floorplan TD {
+    color: #B4B4B4;
+}
+
+@media print {
+    .missing-floorplan TD {
+        color: #B4B4B4 !important;
+    }
 }

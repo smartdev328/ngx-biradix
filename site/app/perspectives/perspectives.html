@@ -1,0 +1,93 @@
+<div class="pespectives">
+    <h2 class="mainheader">Perspectives
+        <hr>
+    </h2>
+    <div class="flex-container">
+        <div><span class="fa fa-eye-slash fa-2x"></span></div>
+        <div class="pl-10">Use perspectives to customize views of your data. Select floor plans to consider within your views. Deselect floor plans you do not want factored in for any given perspective.</div>
+    </div>
+
+    <div ng-if="loading" style="display:block;width:100px;margin:50px auto">
+        <img src="/images/squares.gif" style="width:100px">
+    </div>
+
+    <div ng-if="!loading">
+        <div class="row mt-20">
+            <div class="col-md-3">
+                <B>Property</B><Br>
+                <div
+                     custom-select="f.name for f in searchAsync($searchTerm)"
+                     custom-select-options="{ 'async': true }"
+                     ng-model="model.selectedProperty" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
+                ></div>
+            </div>
+            <div class="col-md-3" ng-if="model.selectedProperty.perspectives.length">
+                <B>Perspective</B><Br>
+                <div
+                    custom-select="f.name for f in model.selectedProperty.perspectives | orderBy: sortPerspective"
+                    ng-model="model.selectedPerspective" autofocus ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD"
+                ></div>
+            </div>
+            <div class="col-md-3 mt-20" ng-if="model.selectedProperty">
+                <span class="grey-color" ng-if="model.selectedProperty.perspectives.length">OR</span>
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm" ng-class="{'ml-30' : model.selectedProperty.perspectives.length}" uib-tooltip="Add Perspective" ng-click="add()" ng-disabled="model.mode === MODE.EDIT || model.mode === MODE.ADD">
+                    <span class="fa fa-plus"></span> Add Perspective
+                </button>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <div class="alert alert-warning" role="alert" ng-if="model.mode === MODE.NONE"><b>Please select a property and associated perspective to edit or click 'Add Perspective'</b></div>
+            <div ng-if="model.mode !== MODE.NONE">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="brand-blue" ng-if="model.mode === MODE.VIEW" >
+                            <h4 class="mainheader mt-0">{{model.name}}</h4>
+                        </div>
+                        <div class="form-inline" ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD" >
+                            <label>Name:</label><input class="form-control ml-10 min-w-50" ng-model="model.name" ng-keypress="changesMade()">
+                            <a href="" ng-if="model.mode === MODE.EDIT" class="ml-10 red-txt" ng-click="delete()" uib-tooltip="Delete" ng-disabled="processing">
+                                Delete Perspective
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 text-right">
+                        <button ng-if="model.mode === MODE.VIEW" type="button" class="btn btn-warning dropdown-toggle btn-sm" uib-tooltip="Edit" ng-click="edit()" ng-disabled="processing">
+                            Edit
+                        </button>
+                        <button ng-if="model.mode === MODE.ADD" type="button" class="btn btn-success ml-10 dropdown-toggle btn-sm mr-10" uib-tooltip="Create" ng-click="create()" ng-disabled="processing">
+                            Create
+                        </button>
+                        <button ng-if="model.mode === MODE.EDIT" type="button" class="btn btn-success ml-10 dropdown-toggle btn-sm mr-10" uib-tooltip="Save" ng-click="update()" ng-disabled="processing">
+                            Save
+                        </button>
+                        <button ng-if="model.mode === MODE.EDIT || model.mode === MODE.ADD" type="button" class="btn btn-default dropdown-toggle btn-sm" uib-tooltip="Cancel" ng-click="cancel()" ng-disabled="processing">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+                <div ng-repeat="comp in model.comps">
+                    <hr>
+                    <i ng-class="{'fa' : true,  'fa-plus-square-o': !comp.open, 'fa-minus-square-o' : comp.open}" style="cursor:pointer;font-size:14px;vertical-align: middle;" ng-click="comp.open = !comp.open"></i><input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="comp.checked" id="checkbox_property_{{comp._id}}" ng-click="changesMade()" ng-change="propertyChecked(comp)" ui-indeterminate="comp.indeterminate" style="margin: 0 5px;vertical-align: middle;"><label for="checkbox_property_{{comp._id}}"><img ng-src="/components/googleMap/markers/{{$index == 0 ? '0' : '' + $index}}.png" style="cursor:pointer;width:15px;text-align: center;margin-right: 5px;"><B>{{comp.name}}</B></label>
+                    <div class="pull-right brand-purple" ng-if="comp.floorplans.length - comp.selectedFloorplans"><strong>{{comp.floorplans.length - comp.selectedFloorplans}} excluded</strong></div>
+                    <div ng-if="comp.open">
+                        <div class="row">
+                            <div ng-repeat-start="bedroom in comp.bedrooms" class="mt-10 col-xs-12 col-sm-3 pl-10 pr-10">
+                                <div style="margin-bottom: 5px;">
+                                    <i ng-class="{'fa' : true,  'fa-plus-square-o': !bedroom.open, 'fa-minus-square-o' : bedroom.open}" style="cursor:pointer;font-size:14px;vertical-align: middle;margin:0 8px 0 16px;" ng-click="bedroom.open = !bedroom.open"></i><input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="bedroom.checked" id="checkbox_property_{{comp._id}}_{{bedroom.number}}" ng-click="changesMade()" ng-change="bedroomChecked(bedroom, true)" ui-indeterminate="bedroom.indeterminate" style="margin:0 5px 0 0;vertical-align: middle;"><label style="margin-bottom: 0;vertical-align: middle;" for="checkbox_property_{{comp._id}}_{{bedroom.number}}"><b>{{bedroom.number}} Bedrooms</b></label>
+                                </div>
+                                <div ng-if="bedroom.open">
+                                    <div ng-repeat-start="floorplan in bedroom.floorplans" ng-style="{'font-style': floorplan.deleted ? 'italic' : 'inherit', 'color': floorplan.deleted ? '#B4B4B4' : 'inherit'}" class="ml-15">
+                                        <input ng-disabled="model.mode === MODE.VIEW" type="checkbox" ng-model="floorplan.checked" id="checkbox_property_{{comp._id}}_{{floorplan.id}}" ng-click="changesMade()" ng-change="checkIndeterminate()" style="margin-top:0;margin:0 5px 0 20px;vertical-align: middle;"><label style="width: calc(100% - 40px);vertical-align: top;" class="normal" for="checkbox_property_{{comp._id}}_{{floorplan.id}}"><small>{{floorplan.bedrooms}}x{{floorplan.bathrooms}} {{floorplan.description || "-"}} {{floorplan.sqft}} sqft, {{floorplan.units}} units <span ng-if="floorplan.lastSeen" style="font-size:11px;font-weight: 700;">(Last Seen: {{floorplan.lastSeen | date: 'shortDate'}})</span></small></label>
+                                    </div>
+                                    <div ng-repeat-end ng-if="false"></div>
+                                </div>
+                            </div>
+                            <div ng-repeat-end ng-if="false"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

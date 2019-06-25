@@ -36,6 +36,8 @@ angular.module('biradix.global').factory('$saveReportService', ['$http','$cookie
         return daterange;
     }
 
+    fac.fixDateRange = fix;
+
     fac.cleanSettings = function(settings, reportIds) {
         var copyOfSettings = _.cloneDeep(settings);
          for (var k in copyOfSettings) {

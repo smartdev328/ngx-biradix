@@ -1,0 +1,43 @@
+.pespectives .page-container .alert {
+    margin-bottom: 0;
+}
+.pespectives .grey-color {
+	color:#888888;
+	font-size: 13px;
+}
+.pespectives .brand-purple {
+	color: #4460a9;
+}
+.pespectives .min-w-50 {
+	min-width: 50%;
+}
+.red-txt, .red-txt:hover, .red-txt:focus {
+    color:#d9534f;
+    text-decoration: underline;
+}
+.inlineHolder .d-inline {
+    display: inline-block;
+    vertical-align: middle;
+    float: none !important;
+}
+.perspectiveIconHolder i {
+	cursor:pointer;
+	padding-left:4px;
+}
+.perspectiveIconHolder i.fa-eye-slash {
+	font-size:16px;
+}
+.perspectiveIconHolder i.fa-warning {
+	color:orange;
+	font-size:14px;
+	padding-top: 2px;
+}
+.perspectiveIconHolder.small i.fa-eye-slash {
+	font-size: 14px;
+}
+.perspectiveIconHolder.small i.fa-warning {
+	font-size: 12px;
+}
+.perspectiveIconHolder.d-inline i {
+    display: block;
+}

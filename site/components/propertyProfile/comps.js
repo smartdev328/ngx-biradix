@@ -8,9 +8,11 @@ angular.module('biradix.global').directive('propertyComps', function () {
                 canSurvey: '=',
                 roles: '=',
                 showTotals:'=',
-                skipcookie: '='
+                skipcookie: '=',
+                appliedPerspective: '=',
+                excludedPopups: '='
             },
-            controller: function ($scope, $gridService, $cookies, $sce) {
+            controller: function ($scope, $rootScope, $gridService, $cookies, $sce) {
                 $scope.defaultSort = ""
 
                 if ($scope.show && typeof $scope.show == "string") {
@@ -35,6 +37,9 @@ angular.module('biradix.global').directive('propertyComps', function () {
 
                         var j,b;
                         $scope.comps.forEach(function(comp, i) {
+                            if (i === 0) {
+                                $scope.subjectId = comp._id.toString();
+                            }
                             comp.number = i;
                             comp.units = comp.survey.totUnits;
                             comp.unitPercent = 100;
@@ -53,8 +58,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             comp.weeklytraffic = comp.survey.weeklytraffic == null ? -1 : comp.survey.weeklytraffic;
                             comp.weeklyleases = comp.survey.weeklyleases == null ? -1 : comp.survey.weeklyleases;
 
-                            $scope.totals.totalUnits += comp.survey.totUnits;
-                            if (comp.survey && comp.survey.rent) {
+                            if (comp.survey && comp.units) {
+                                $scope.totals.totalUnits += comp.units;
                                 $scope.totalSurveys += 1;
                                 $scope.totals.units = ($scope.totals.units || 0) +  comp.units;
                                 $scope.totals.sqft = ($scope.totals.sqft || 0) +  comp.survey.sqft * comp.units;
@@ -116,7 +121,8 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             }
                         });
 
-                        $scope.totals.totalUnits /= $scope.comps.length;
+                        console.log($scope.totals.totalUnits, $scope.totalSurveys);
+                        $scope.totals.totalUnits /= $scope.totalSurveys;
                         
                         if ($scope.totalSurveys > 0) {
                             $scope.totals.sqft = ($scope.totals.sqft || 0) / $scope.totals.units;

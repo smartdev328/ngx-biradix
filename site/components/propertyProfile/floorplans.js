@@ -5,7 +5,9 @@ angular.module('biradix.global').directive('propertyFloorplans', function () {
                 comp: '=',
                 orderBy: '=',
                 show: '=',
-                skipcookie: '='
+                skipcookie: '=',
+                appliedPerspective: '=',
+                excludedPopups: '='
             },
             controller: function ($scope, $gridService, $cookies) {
 
@@ -27,7 +29,13 @@ angular.module('biradix.global').directive('propertyFloorplans', function () {
                 $scope.$watch("comp", function() {
                     if ($scope.comp) {
                         $scope.comp.survey.floorplans.forEach(function(fp) {
-                            fp.unitPercent = fp.units / $scope.comp.survey.totUnits * 100;
+                            if (typeof fp.units === "undefined" || !$scope.comp.survey.totUnits) {
+                                fp.unitPercent = null;
+                                fp.units = null;
+                            } else {
+                                fp.unitPercent = fp.units / $scope.comp.survey.totUnits * 100;
+                            }
+
                         })
                     }
                 }, true)
