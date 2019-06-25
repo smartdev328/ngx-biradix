@@ -111,7 +111,7 @@ define([
                         });
                         ngProgress.start();
                         $userService.updateSSO({users: users}).then(function (response) {
-                            toastr.success('SSO Settings Updated Successfully. ' + response.data.count + ' user(s) was updated.');
+                            toastr.success('SSO Settings Updated Successfully. ' + response.data.count + ' user(s) were updated.');
                             ngProgress.complete();
                         }, function (response) {
                             toastr.error('Unable to update SSO settings. Please contact an administrator.');
