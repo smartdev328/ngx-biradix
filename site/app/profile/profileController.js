@@ -170,8 +170,7 @@ define([
                         atr: $rootScope.me.settings.showATR
                     },
                     $scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.propertyId : $scope.propertyId,
-                    $scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.value : null,
-
+                    $scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.value : null
                 ).then(function (response) {
                     var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
 
