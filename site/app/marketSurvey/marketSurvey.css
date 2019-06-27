@@ -423,6 +423,15 @@
   border-bottom: 1px solid #ccc;
 }
 
+.incorrectFloorplans {
+  background:transparent;
+  border:none;
+  padding:0;
+  margin-top: 15px;
+  color:#337ab7;
+  text-decoration: underline;
+}
+
 @media all and (min-width: 0px) and (max-width: 767px) {
 
   .propertySurvey {

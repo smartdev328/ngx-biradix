@@ -181,7 +181,7 @@
   </div>
 </div>
 <div class="propertySurvey" ng-class="{'allShown': allShown}">
-  <table class="table table-condensed table-striped table-hover survey-values survey-holders hidden-arrows sortablegrid" fixed-table toggles="settings">
+  <table id="floorPlansTable" class="table table-condensed table-striped table-hover survey-values survey-holders hidden-arrows sortablegrid" fixed-table toggles="settings">
     <thead>
       <tr class="thead">
         <th ng-show="settings.showBulkConcessions">
@@ -320,6 +320,8 @@
         <div class="tiny">{{totals.units}} Units</div>
         <div class="tiny">{{totals.sqft | number: 0}} Sqft</div>
       </div>
+      <br/>
+      <button ng-if="me.roles[0] == 'Guest'" class="incorrectFloorplans" type="button" ng-click="incorrectFloorplans()" uib-tooltip="Incorrect floorplans">Incorrect floorplans?</button>
     </div>
     <div class="tfoot-cell hidden-xs"></div>
     <div class="hidden-xs pad tfoot-cell text-right" style="padding-right: 15px;">

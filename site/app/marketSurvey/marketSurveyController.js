@@ -1,5 +1,5 @@
-angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
-    function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
+angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "$uibModal", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
+    function($scope, $uibModalInstance, $uibModal, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
             $scope.surveyid = surveyid;
             $scope.settings = {showNotes: false, showBulkConcessions: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false, newVersion: true };
             $scope.sort = "";
@@ -1151,6 +1151,20 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
         $scope.showAllFP = function() {
             $scope.allShown = !$scope.allShown;
+        }
+
+        $scope.incorrectFloorplans = function () {
+            require([
+                '/app/marketSurvey/marketSurveyIncorrectFloorplans.js'
+            ], function () {
+                $uibModal.open({
+                    templateUrl: '/app/marketSurvey/incorrectFloorplans.html?bust=' + version,
+                    controller: 'marketSurveyIncorrectFloorplans',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+            });
         }
 
     }]);
