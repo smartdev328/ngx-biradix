@@ -4,7 +4,7 @@
         <h2 class="modal-title">Traffic / Week Breakdown</h2>
     </div>
     <div ng-class="{'modal-body pms': true}">
-        <div style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  <strong>{{dates.startDate | date: 'short'}}</strong> to <strong>{{dates.endDate | date: 'short'}}</strong> Pacific</p></div>
+        <div style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  <strong>{{dates.startDate | date: 'short'}}</strong> to <strong>{{dates.endDate | date: 'short'}}</strong></p></div>
         <table class="new-table border-table">
             <thead>
                 <th width="9"></th>
@@ -18,7 +18,7 @@
                     <td width="9"></td>
                     <td>{{event.id}}</td>
                     <td>{{event.eventType}}</td>
-                    <td><strong>{{event.date | date: 'short'}}</strong> Pacific</td>
+                    <td><strong>{{event.date | date: 'short'}}</strong></td>
                     <td width="9"></td>
                 </tr>
             </tbody>
