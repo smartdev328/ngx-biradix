@@ -32,10 +32,10 @@ angular.module('biradix.global').directive('trendsReport', function () {
                         $scope.options.rentsqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'rentsqft', title: "Rent / Sqft", emptyMaxX: 1}
                         $scope.options.runrate = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'runrate', title: "Recurring Rent", emptyMaxX: 1000}
                         $scope.options.runratesqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'runratesqft', title: "Recurring Rent / Sqft", emptyMaxX: 1}
-                        $scope.options.occupancy = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 0, metric: 'occupancy', title: "Occupancy %", emptyMaxX: 100}
+                        $scope.options.occupancy = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'occupancy', title: "Occupancy %", emptyMaxX: 100}
 
-                        $scope.options.leased = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 0, metric: 'leased', title: "Leased %", emptyMaxX: 100}
-                        $scope.options.renewal = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 0, metric: 'renewal', title: "Renewal %", emptyMaxX: 100}
+                        $scope.options.leased = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'leased', title: "Leased %", emptyMaxX: 100}
+                        $scope.options.renewal = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'renewal', title: "Renewal %", emptyMaxX: 100}
                         $scope.options.traffic = {height:height, printWidth:printWidth, prefix: '', suffix: '', decimalPlaces: 0, metric: 'traffic', title: "Traffic / Week", emptyMaxX: 10}
                         $scope.options.leases = {height:height, printWidth:printWidth, prefix: '', suffix: '', decimalPlaces: 0, metric: 'leases', title: "Leases / Week", emptyMaxX: 10}
                         $scope.options.concessions = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'concessions', title: "Total Concessions", emptyMaxX: 1000}
