@@ -2,12 +2,14 @@
 define([
     "app",
 ], function(app) {
-    app.controller("marketSurveyIncorrectFloorplans", ["$scope", "$uibModalInstance", "$dialog", "toastr", function ($scope, $uibModalInstance, $dialog, toastr) {
+    app.controller("marketSurveyIncorrectFloorplans", ["$scope", "$uibModalInstance", "$propertyService", "$dialog", "toastr", function ($scope, $uibModalInstance, $propertyService, $dialog, toastr) {
         ga("set", "title", "/IncorrectFloorplans");
         ga("set", "page", "/IncorrectFloorplans");
         ga("send", "pageview");
 
-        $scope.incorrectFloorplansArray = [];
+        $scope.incorrectFloorplansArray = {
+            submitted: false
+        };
 
         $scope.cancel = function() {
             if ($scope.incorrectFloorplansArray.name) {
@@ -20,8 +22,24 @@ define([
             }
         };
 
+        $propertyService.search({
+            limit: 20,
+            permission: 'PropertyManage',
+            active: true,
+            select: "name"
+            , skipAmenities: true
+        }).then(function (response) {
+            $scope.property = response.data.properties;
+            $scope.property = $scope.property[0];
+        }, function(error) {
+        });
+
         $scope.done = function() {
-           console.log($scope.incorrectFloorplansArray);
+            $scope.incorrectFloorplansArray = {
+                submitted: true,
+                name: ""
+            }
+            console.log($scope.incorrectFloorplansArray);
         };
 
         $scope.processFile = function(upload) {
