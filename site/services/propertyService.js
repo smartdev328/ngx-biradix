@@ -692,7 +692,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 }
             }
 
-            resp.occData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, extremes: occ.extremes};
+            resp.occData = {height:250, printWidth:380, decimalPlaces: 1, prefix:'',suffix:'%',title: '', marker: false, data: occ.data, extremes: occ.extremes};
 
             if (count > 2) {
                 resp.occData.additionalMargin = 10;
@@ -833,8 +833,8 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             if (showLeases) {
                 printWidth = 380;
             }
-            resp.occData = {height:300, printWidth:printWidth, decimalPlaces: 0, prefix:'',suffix:'%',title: 'Occupancy', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
-            resp.leasedData = {height:300, printWidth:printWidth, decimalPlaces: 0, prefix:'',suffix:'%',title: 'Leased', marker: false, data: leased.data, min: (summary ? leased.min : leased.min), max: (summary ? leased.max : leased.max)};
+            resp.occData = {height:300, printWidth:printWidth, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Occupancy', marker: false, data: occ.data, min: (summary ? occ.min : 80), max: (summary ? occ.max : 100)};
+            resp.leasedData = {height:300, printWidth:printWidth, decimalPlaces: 1, prefix:'',suffix:'%',title: 'Leased', marker: false, data: leased.data, min: (summary ? leased.min : leased.min), max: (summary ? leased.max : leased.max)};
 
             return resp;
         }
