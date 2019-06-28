@@ -23,7 +23,12 @@
             <input class="form-control input-sm" ng-model="config.identity">
         </div>
     </div>
-
+    <div class="row" ng-if="config.provider === 'YARDI'">
+        <div class="col-xs-12">
+            Timezone:<Br>
+            <select ng-model="model.selectedTimeZone" class="form-control input-sm" ng-options="tz.name for tz in timezones"></select>
+        </div>
+    </div>
     <div style="margin:0px auto;width:75px">
         <Br>
         <button class=" btn btn-primary btn-large btn-block contact-submit" type="button" ng-click="save()">{{!edit ? 'Create' : 'Save'}}</button>

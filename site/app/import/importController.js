@@ -13,6 +13,7 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "Import";
 
+
         // /////////////////////////////
         $scope.reload = function() {
             $scope.localLoading = false;
@@ -36,7 +37,8 @@ define([
                                 org: org.name,
                                 provider: d.provider,
                                 isActive: d.isActive,
-                                identity: d.yardi.folder
+                                identity: d.yardi.folder,
+                                timeZone: d.timeZone
                             });
                         });
 

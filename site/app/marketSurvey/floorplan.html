@@ -137,13 +137,13 @@
                     {{u.sumOfUnitAmenities | currency: "$" : 0 }}
                 </td>
                 <td>
-                    <span ng-if="u.dateAvailable">{{u.dateAvailable | date: 'shortDate' }}</span>
+                    <span ng-if="u.dateAvailableString">{{u.dateAvailableString}}</span>
                 </td>
                 <td>
-                    <span ng-if="u.dateVacant">{{u.dateVacant | date: 'shortDate' }}</span>
+                    <span ng-if="u.dateVacantString">{{u.dateVacantString}}</span>
                 </td>
                 <td>
-                    <span ng-if="u.dateReady">{{u.dateReady | date: 'shortDate' }}</span>
+                    <span ng-if="u.dateReadyString">{{u.dateReadyString}}</span>
                 </td>
                 <td>
                     {{u.status}}
@@ -183,7 +183,7 @@
                 <td>
                     {{u.currentValue}}
                 </td>
-                <td>{{u.currentDate | date: 'shortDate' }}</td>
+                <td>{{u.currentDateString}}</td>
             </tr>
             </tbody>
         </table>
@@ -218,16 +218,16 @@
                 </td>
 
                 <td>
-                    <span ng-if="u.importDate">{{u.importDate | date: 'shortDate' }}</span>
+                    <span ng-if="u.importDateString">{{u.importDateString}}</span>
                 </td>
                 <td>
-                    <span ng-if="u.startDate">{{u.startDate | date: 'shortDate' }}</span>
+                    <span ng-if="u.startDateString">{{u.startDateString}}</span>
                 </td>
                 <td>
-                    <span ng-if="u.endDate">{{u.endDate | date: 'shortDate' }}</span>
+                    <span ng-if="u.endDateString">{{u.endDateString}}</span>
                 </td>
                 <td>
-                    <span ng-if="u.availableDate">{{u.availableDate | date: 'shortDate' }}</span>
+                    <span ng-if="u.availableDateString">{{u.availableDateString}}</span>
                 </td>
             </tr>
             </tbody>
@@ -256,10 +256,10 @@
                     {{u.rent | currency: "$" : 0 }}
                 </td>
                 <td>
-                    <span ng-if="u.date">{{u.date | date: 'shortDate' }}</span>
+                    <span ng-if="u.dateString">{{u.dateString}}</span>
                 </td>
                 <td>
-                    <span ng-if="u.leaseFromDate">{{u.leaseFromDate | date: 'shortDate' }}</span>
+                    <span ng-if="u.leaseFromDateString">{{u.leaseFromDateString}}</span>
                 </td>
             </tr>
             </tbody>
