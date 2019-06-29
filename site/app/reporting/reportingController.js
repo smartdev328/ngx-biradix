@@ -1338,13 +1338,7 @@ define([
                     nervscompavg: false,
                     nersqftvscompavg: false,
                     rent0: false,
-                    rent1: false,
-                    rent2: false,
-                    rent3: false,
                     ner0: false,
-                    ner1: false,
-                    ner2: false,
-                    ner3: false,
                 };
 
                 $scope.liveSettings.customPortfolio.compAverages = false;
@@ -1389,6 +1383,7 @@ define([
                     {id: "ner", name: "NER", selected: $scope.liveSettings.customPortfolio.show.ner, tooltip: $rootScope.tooltips["ner"]},
                     {id: "ner0", name: "NER by # Bedrooms", selected: $scope.liveSettings.customPortfolio.show.ner0, tooltip: $rootScope.tooltips["ner0"]},
                     {id: "nersqft", name: "NER / Sqft", selected: $scope.liveSettings.customPortfolio.show.nersqft, tooltip: $rootScope.tooltips["nersqft"]},
+                    {id: "nersqft0", name: "NER / Sqft by # Bedrooms", selected: $scope.liveSettings.customPortfolio.show.nersqft0, tooltip: $rootScope.tooltips["nersqft0"]},
                     {id: "nerweek", name: "NER vs Last Week", selected: $scope.liveSettings.customPortfolio.show.nerweek, tooltip: $rootScope.tooltips["nerweek"]},
                     {id: "nermonth", name: "NER vs Last Month", selected: $scope.liveSettings.customPortfolio.show.nermonth, tooltip: $rootScope.tooltips["nermonth"]},
                     {id: "neryear", name: "NER vs Last Year", selected: $scope.liveSettings.customPortfolio.show.neryear, tooltip: $rootScope.tooltips["neryear"]},
