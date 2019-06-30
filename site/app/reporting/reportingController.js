@@ -948,8 +948,8 @@ define([
         },true);
 
         $scope.$watch('propertyItems.items', function() {
-            $scope.reportsChanged();
-
+            $scope.temp.customPortfolioPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.customPortfolioPerspectives, $scope.liveSettings.customPortfolio.perspectives);
+            $scope.temp.propertyStatusPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.propertyStatusPerspectives, $scope.liveSettings.propertyStatus.perspectives);
         },true);
 
         $scope.$watch('selected.Property', function() {
@@ -957,9 +957,14 @@ define([
                 $scope.propertyIds = [$scope.selected.Property._id];
                 $scope.changeProperty();
             }
-            $scope.reportsChanged();
-        }, true);
 
+            $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective);
+            $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective);
+            $scope.singlePerspective("marketPerspectives", "marketPerspectiveSelected", $scope.liveSettings.dashboardSettings.selectedPerspective);
+            $scope.singlePerspective("concessionPerspectives", "concessionPerspectiveSelected", $scope.liveSettings.concession.perspective);
+            $scope.singlePerspective("rankingSummaryPerspectives", "rankingSummaryPerspectiveSelected", $scope.liveSettings.rankingsSummary.perspective);
+
+        }, true);
 
         $scope.reportNamesChanged = function() {
             $scope.reportNames = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"name");
@@ -1278,24 +1283,7 @@ define([
                 _.remove($scope.temp.showPropertyStatusItems, function(x) {return x.id == 'atr'})
             }
 
-            if ($scope.propertyItems && $scope.propertyItems.items && $scope.propertyItems.items.length) {
-                $scope.temp.propertyStatusPerspectives = [];
-                var selected;
-                $scope.propertyItems.items.forEach(function (p) {
-                    p.perspectives = p.perspectives || [];
-                    p.perspectives.forEach(function (pr) {
-                        selected = _.find($scope.liveSettings.propertyStatus.perspectives, function (x) {
-                            return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
-                        });
-                        $scope.temp.propertyStatusPerspectives.push({
-                            id: {
-                                propertyId: p.id,
-                                perspectiveId: pr.id
-                            }, name: pr.name, group: p.name, selected: !!selected
-                        });
-                    });
-                });
-            }
+            $scope.temp.propertyStatusPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.propertyStatusPerspectives, $scope.liveSettings.propertyStatus.perspectives);
         };
 
             ////////////////////// Custom Portfolio ////////////////////////////////
@@ -1456,24 +1444,8 @@ define([
                 });
                 $scope.temp.customPortfolioSortDir = $scope.liveSettings.customPortfolio.orderBy[0] === "-" ? "desc" : "asc";
 
-                if ($scope.propertyItems && $scope.propertyItems.items && $scope.propertyItems.items.length) {
-                    $scope.temp.customPortfolioPerspectives = [];
-                    var selected;
-                    $scope.propertyItems.items.forEach(function (p) {
-                        p.perspectives = p.perspectives || [];
-                        p.perspectives.forEach(function (pr) {
-                            selected = _.find($scope.liveSettings.customPortfolio.perspectives, function (x) {
-                                return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
-                            });
-                            $scope.temp.customPortfolioPerspectives.push({
-                                id: {
-                                    propertyId: p.id,
-                                    perspectiveId: pr.id
-                                }, name: pr.name, group: p.name, selected: !!selected
-                            });
-                        });
-                    });
-                }
+                $scope.temp.customPortfolioPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.customPortfolioPerspectives, $scope.liveSettings.customPortfolio.perspectives);
+
             };
 
             $scope.sortableOptions = {
@@ -1588,20 +1560,7 @@ define([
             $scope.temp.rankingSummarySortSelected = _.find($scope.temp.rankingSummarySortItems, function(x) {return x.id == f})
             $scope.temp.rankingSummarySortDir = $scope.liveSettings.rankingsSummary.orderBy[0] == "-" ? "desc" : "asc";
 
-            if ($scope.selected.Property) {
-                $scope.temp.rankingSummaryPerspectives = [{value: "", text: "All Data"}];
-                ($scope.selected.Property.perspectives || []).forEach(function(p) {
-                    $scope.temp.rankingSummaryPerspectives.push({value: p.id, text: p.name});
-                });
-
-                $scope.temp.rankingSummaryPerspectiveSelected = _.find($scope.temp.rankingSummaryPerspectives, function(x) {
-                    return x.value.toString() === $scope.liveSettings.rankingsSummary.perspective;
-                });
-
-                if (!$scope.temp.rankingSummaryPerspectiveSelected) {
-                    $scope.temp.rankingSummaryPerspectiveSelected = $scope.temp.rankingSummaryPerspectives[0];
-                }
-            }
+            $scope.singlePerspective("rankingSummaryPerspectives", "rankingSummaryPerspectiveSelected", $scope.liveSettings.rankingsSummary.perspective);
         };
 
         $scope.$watch("runSettings.rankingsSummary.orderBy", function(newValue,oldValue) {
@@ -1680,21 +1639,9 @@ define([
                 $scope.liveSettings.trends.graphs = true;
             }
 
-            if ($scope.selected.Property) {
-                $scope.temp.rankingPerspectives = [{value: "", text: "All Data"}];
-                ($scope.selected.Property.perspectives || []).forEach(function(p) {
-                    $scope.temp.rankingPerspectives.push({value: p.id, text: p.name});
-                });
+            $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective)
 
-                $scope.temp.rankingPerspectiveSelected = _.find($scope.temp.rankingPerspectives, function(x) {
-                    return x.value.toString() === $scope.liveSettings.rankings.perspective;
-                });
-
-                if (!$scope.temp.rankingPerspectiveSelected) {
-                    $scope.temp.rankingPerspectiveSelected = $scope.temp.rankingPerspectives[0];
-                }
-            }
-        }
+        };
 
         $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
             if (oldValue && newValue) {
@@ -1731,21 +1678,25 @@ define([
                     {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.trends.show.nersqft},
                 ];
 
-                if ($scope.selected.Property) {
-                    $scope.temp.trendsPerspectives = [{value: "", text: "All Data"}];
-                    ($scope.selected.Property.perspectives || []).forEach(function(p) {
-                        $scope.temp.trendsPerspectives.push({value: p.id, text: p.name});
-                    });
-
-                    $scope.temp.trendsPerspectiveSelected = _.find($scope.temp.trendsPerspectives, function(x) {
-                        return x.value.toString() === $scope.liveSettings.trends.perspective;
-                    });
-
-                    if (!$scope.temp.trendsPerspectiveSelected) {
-                        $scope.temp.trendsPerspectiveSelected = $scope.temp.trendsPerspectives[0];
-                    }
-                }
+                $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective)
             };
+
+        $scope.singlePerspective = function(strPerspectives, strSelectedPerspective, settingsPerspective) {
+            if ($scope.selected.Property) {
+                $scope.temp[strPerspectives] = [{value: "", text: "All Data"}];
+                ($scope.selected.Property.perspectives || []).forEach(function(p) {
+                    $scope.temp[strPerspectives].push({value: p.id, text: p.name});
+                });
+
+                $scope.temp[strSelectedPerspective] = _.find($scope.temp[strPerspectives], function(x) {
+                    return x.value.toString() === settingsPerspective;
+                });
+
+                if (!$scope.temp[strSelectedPerspective]) {
+                    $scope.temp[strSelectedPerspective] = $scope.temp[strPerspectives][0];
+                }
+            }
+        };
 
             $scope.defaultTrendsDateRange1 = function(selectedRange, selectedStartDate, selectedEndDate) {
                 return {
@@ -2036,20 +1987,7 @@ define([
 
             $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
 
-            if ($scope.selected.Property) {
-                $scope.temp.marketPerspectives = [{value: "", text: "All Data"}];
-                ($scope.selected.Property.perspectives || []).forEach(function(p) {
-                    $scope.temp.marketPerspectives.push({value: p.id, text: p.name});
-                });
-
-                $scope.temp.marketPerspectiveSelected = _.find($scope.temp.marketPerspectives, function(x) {
-                    return x.value.toString() === $scope.liveSettings.dashboardSettings.selectedPerspective;
-                });
-
-                if (!$scope.temp.marketPerspectiveSelected) {
-                    $scope.temp.marketPerspectiveSelected = $scope.temp.marketPerspectives[0];
-                }
-            }
+            $scope.singlePerspective("marketPerspectives", "marketPerspectiveSelected", $scope.liveSettings.dashboardSettings.selectedPerspective);
         };
 
         $scope.resetPropertyReportSettings = function(rebind) {
@@ -2071,21 +2009,8 @@ define([
                 $scope.resetConcessionSettings();
             }
 
-            if ($scope.selected.Property) {
-                $scope.temp.concessionPerspectives = [{value: "", text: "All Data"}];
-                ($scope.selected.Property.perspectives || []).forEach(function(p) {
-                    $scope.temp.concessionPerspectives.push({value: p.id, text: p.name});
-                });
-
-                $scope.temp.concessionPerspectiveSelected = _.find($scope.temp.concessionPerspectives, function(x) {
-                    return x.value.toString() === $scope.liveSettings.concession.perspective;
-                });
-
-                if (!$scope.temp.concessionPerspectiveSelected) {
-                    $scope.temp.concessionPerspectiveSelected = $scope.temp.concessionPerspectives[0];
-                }
-            }
-        }
+            $scope.singlePerspective("concessionPerspectives", "concessionPerspectiveSelected", $scope.liveSettings.concession.perspective);
+        };
 
         $scope.resetConcessionSettings = function() {
             $scope.liveSettings.concession = {

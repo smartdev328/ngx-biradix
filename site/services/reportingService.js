@@ -2,6 +2,28 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
     function ($http,$cookies,$cookieSettingsService,toastr) {
         var fac = {};
 
+        fac.multiSelectToPerspectives = function(propertyItems, outputPerspectives, inputPerspectives) {
+            outputPerspectives = [];
+            if (propertyItems && propertyItems.items && propertyItems.items.length) {
+                var selected;
+                propertyItems.items.forEach(function (p) {
+                    p.perspectives = p.perspectives || [];
+                    p.perspectives.forEach(function (pr) {
+                        selected = _.find(inputPerspectives, function (x) {
+                            return x.propertyId.toString() === p.id.toString() && x.perspectiveId.toString() === pr.id.toString();
+                        });
+                        outputPerspectives.push({
+                            id: {
+                                propertyId: p.id,
+                                perspectiveId: pr.id
+                            }, name: pr.name, group: p.name, selected: !!selected
+                        });
+                    });
+                });
+            }
+            return outputPerspectives;
+        };
+
         fac.getDateRangeLabel = function(daterange, offset) {
             var d1 = daterange.selectedRange;
             if (d1 === "Custom Range") {
