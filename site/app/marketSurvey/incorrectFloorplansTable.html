@@ -1,0 +1,71 @@
+<div>
+	<style>
+	    .file-input-wrapper {
+	        width: 300px;
+	        height: 40px;
+	        overflow: hidden;
+	        position: relative;
+	        margin:10px auto;
+
+	    }
+	    .file-input-wrapper > input[type="file"] {
+	        font-size: 200px;
+	        position: absolute;
+	        top: 0;
+	        right: 0;
+	        opacity: 0;
+	    }
+	    .file-input-wrapper > button {
+	        display: inline-block;
+	        width:300px;
+	    }
+	</style>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    		<h2 class="modal-title">Fix Incorrect Floorplans: {{selectedProperty.name}}</h2>
+        <hr>
+    </div>
+    <div class="modal-body market-survey text-left container-fluid">
+    	<table class="table">
+    		<thead>
+    			<tr>
+    				<td>Bedrooms</td>
+    				<td>Bathrooms</td>
+    				<td>Desc.</td>
+    				<td>Units</td>
+    				<td>Sqft</td>
+    				<td></td>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr ng-repeat="row in selectedProperty.floorplans track by $index">
+    				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bedrooms"></td>
+    				<td><input type="text" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bathrooms"></td>
+    				<td><input type="text" class="form-control input-sm survey-value survey-value-lg" ng-model="selectedProperty.floorplans[$index].description"></td>
+    				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft"></td>
+    				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].units"></td>
+    				<td>
+        				<button class=" btn btn-danger btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row"><i class="fa fa-trash" style="color:white"></i></button>
+        			</td>
+    			</tr>
+    		</tbody>
+    		<tfoot>
+    			<tr>
+    				<td colspan="6">
+    					<div class="row">
+					        <div class="col-xs-4">
+					        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back to Upload File</a>
+					        </div>
+    						<div class="col-xs-4 text-center">
+					        	<a class="btn btn-success" ng-click="done()">Submit</a>
+    						</div>
+    						<div class="col-xs-4 text-right">
+					    		<button class="btn btn-default" type="button" ng-click="addEmptyRow()">Add empty row</button>
+    						</div>
+    					</div>
+					</td>
+    			</tr>
+    		</tfoot>
+    	</table>
+    </div>
+</div>

@@ -1,15 +1,11 @@
 angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "$uibModal", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
     function($scope, $uibModalInstance, $uibModal, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
             $scope.surveyid = surveyid;
-            $scope.settings = {showNotes: false, showBulkConcessions: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false, newVersion: true };
+            $scope.settings = {showNotes: false, showBulkConcessions: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false };
             $scope.sort = "";
 
             if (!$rootScope.loggedIn) {
                 return $location.path("/login");
-            }
-
-            if($cookieSettingsService.getNewVersion()) {
-                $scope.settings.newVersion = true;
             }
 
             ga("set", "title", "/marketSurvey");
@@ -75,11 +71,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 if(!$scope.settings.showDetailed) {
                     $scope.settings.showBulkConcessions = false;
                 }
-            }
-
-            $scope.toggleNewView = function() {
-                $scope.settings.newVersion = !$scope.settings.newVersion;
-                $cookieSettingsService.saveNewVersion($scope.settings.newVersion);
             }
 
             var me = $rootScope.$watch("me", function(x) {

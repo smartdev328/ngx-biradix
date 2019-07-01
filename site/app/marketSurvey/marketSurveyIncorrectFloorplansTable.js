@@ -2,14 +2,10 @@
 define([
     "app",
 ], function(app) {
-    app.controller("marketSurveyIncorrectFloorplans", ["$scope", "$uibModal", "$rootScope", "$uibModalInstance", "$propertyService", "$dialog", "toastr", function ($scope, $uibModal, $rootScope, $uibModalInstance, $propertyService, $dialog, toastr) {
+    app.controller("marketSurveyIncorrectFloorplansTable", ["$scope", "$rootScope", "$uibModalInstance", "$propertyService", "$dialog", "toastr", function ($scope, $rootScope, $uibModalInstance, $propertyService, $dialog, toastr) {
         ga("set", "title", "/IncorrectFloorplans");
         ga("set", "page", "/IncorrectFloorplans");
         ga("send", "pageview");
-
-        $scope.incorrectFpArray = {
-            submitted: false
-        };
 
         $scope.cancel = function() {
             if (false) {
@@ -26,7 +22,7 @@ define([
             limit: 20,
             permission: 'PropertyManage',
             active: true,
-            select: "name",
+            select: "name floorplans",
             skipAmenities: true
         }).then(function (response) {
             $scope.myProperties = response.data.properties;
@@ -34,8 +30,7 @@ define([
 
             if (!$scope.myProperties || $scope.myProperties.length == 0) {
                 id = null;
-            }
-            else if (!id) {
+            } else if (!id) {
                 $scope.selectedProperty = $scope.myProperties[0];
             } else {
                 $scope.selectedProperty = _.find($scope.myProperties, function (x) {
@@ -53,25 +48,26 @@ define([
             $scope.apiError = true;
         });
 
-        $scope.done = function() {
-            $scope.incorrectFpArray = {
-                submitted: true
-            }
-        };
-
-        $scope.incorrectFloorplansTable = function () {
-            require([
-                '/app/marketSurvey/marketSurveyIncorrectFloorplansTable.js'
-            ], function () {
-                $uibModal.open({
-                    templateUrl: '/app/marketSurvey/incorrectFloorplansTable.html?bust=' + version,
-                    controller: 'marketSurveyIncorrectFloorplansTable',
-                    size: "md",
-                    keyboard: false,
-                    backdrop: 'static'
-                });
+        $scope.addEmptyRow = function() {
+            $scope.selectedProperty.floorplans.push({
+                bathrooms: "",
+                bedrooms: "",
+                description: "",
+                sqft: "",
+                units: ""
             });
         }
+
+        $scope.deleteRow = function(i) {
+            $scope.selectedProperty.floorplans.splice(i, 1);
+        }
+
+        $scope.done = function() {
+            $scope.incorrectFpArray = {
+                floorplans: $scope.selectedProperty
+            }
+            $uibModalInstance.dismiss("cancel");
+        };
 
     }]);
 });
