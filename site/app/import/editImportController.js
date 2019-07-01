@@ -5,14 +5,14 @@ define([
 ], function(app, async) {
     app.controller("editImportController", ["$scope", "$uibModalInstance", "config", "orgs", "$importService", "ngProgress", "toastr", "$rootScope",
         function($scope, $uibModalInstance, config, orgs, $importService, ngProgress, toastr, $rootScope) {
-            $scope.config = _.cloneDeep(config) || {provider: "YARDI", orgid: "", identity: ""};
+            $scope.config = _.cloneDeep(config) || {provider: "YARDI", orgid: "", identity: "", timeZone: "America/Los_Angeles"};
             $scope.edit = config;
             $scope.orgs = _.cloneDeep(orgs);
             $scope.orgs.unshift({_id: "", name: "Please Select"});
+            $scope.model = {
+                selectedTimeZone: null
+            };
 
-            $scope.selectedOrg = _.find($scope.orgs, function(o) {
-                return o._id.toString() === $scope.config.orgid;
-            });
 
             ga("set", "title", "/editImport");
             ga("set", "page", "/editImport");
@@ -22,10 +22,27 @@ define([
                 $uibModalInstance.dismiss("cancel");
             };
 
+            $scope.timezones = [
+                {id: 'America/Los_Angeles', name: "Los Angeles (Pacific)"},
+                {id: 'America/Phoenix', name: "Phoenix (Arizona)"},
+                {id: 'America/Denver', name: "Denver (Mountain)"},
+                {id: 'America/Chicago', name: "Chicago (Central)"},
+                {id: 'America/New_York', name: "New York (Eastern)"},
+            ];
+
+            $scope.selectedOrg = _.find($scope.orgs, function(o) {
+                return o._id.toString() === $scope.config.orgid;
+            });
+            $scope.model.selectedTimeZone = _.find($scope.timezones, function(o) {
+                return o.id.toString() === $scope.config.timeZone;
+            });
+
+
             $scope.save = function() {
                 var obj = {
                     provider: $scope.config.provider,
                     orgid: $scope.selectedOrg._id,
+                    timeZone: $scope.model.selectedTimeZone.id,
                     yardi: {
                         folder: $scope.config.identity
                     }
@@ -36,7 +53,6 @@ define([
                     obj.isActive = config.isActive;
 
                     ngProgress.start();
-
                     $importService.update(obj).then(function(response) {
                             var ret = _.cloneDeep(response.data);
                             ret.org = $scope.selectedOrg.name;

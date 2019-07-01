@@ -4,7 +4,7 @@
         <h2 class="modal-title">Leases / Week Breakdown</h2>
     </div>
     <div ng-class="{'modal-body pms': true}">
-        <div style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  <strong>{{dates.startDate | date: 'short'}}</strong> to <strong>{{dates.endDate | date: 'short'}}</strong> Pacific</p></div>
+        <div style="margin-left: 14px;"><span class="green-bg" style="width:8px;height:14px;float:left;margin-top: 2px;"></span><p style="float:left;margin-left:5px;font-size:12px">=  <strong>{{dates.startDateString}}</strong> to <strong>{{dates.endDateString}}</strong></p></div>
         <table class="new-table border-table">
             <thead>
                <th>Tenant ID</th>
@@ -21,7 +21,7 @@
                     <td>{{event.floorplanId}}</td>
                     <td>{{event.sign}}</td>
                     <td>{{event.event}}</td>
-                    <td>{{event.date | date: 'short'}} Pacific</td>
+                    <td>{{event.dateString}}</td>
                 </tr>
             </tbody>
         </table>
