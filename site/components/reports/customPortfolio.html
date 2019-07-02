@@ -500,6 +500,70 @@
                         <i ng-show="settings.orderBy == '-nersqft'" class="fa fa-sort-down"></i>
                         <i ng-show="settings.orderBy == 'nersqft'" class="fa fa-sort-up"></i>
                     </th>
+                    <th ng-if="col.id == 'nersqft0' && settings.bedrooms[0]" style="text-align: right">
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="auto"
+                                uib-popover-html="$root.tooltips['nersqft0']"
+                                popover-class="mt--5"
+                                popover-append-to-body="true"
+                        >NER/Sqft<Br>0 Bds.</span>
+                    </th>
+                    <th ng-if="col.id == 'nersqft0' && settings.bedrooms[1]" style="text-align: right">
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="auto"
+                                uib-popover-html="$root.tooltips['nersqft0']"
+                                popover-class="mt--5"
+                                popover-append-to-body="true"
+                        >NER/Sqft<Br>1 Bds.</span>
+                    </th>
+                    <th ng-if="col.id == 'nersqft0' && settings.bedrooms[2]" style="text-align: right">
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="auto"
+                                uib-popover-html="$root.tooltips['nersqft0']"
+                                popover-class="mt--5"
+                                popover-append-to-body="true"
+                        >NER/Sqft<Br>2 Bds.</span>
+                    </th>
+                    <th ng-if="col.id == 'nersqft0' && settings.bedrooms[3]" style="text-align: right">
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="auto"
+                                uib-popover-html="$root.tooltips['nersqft0']"
+                                popover-class="mt--5"
+                                popover-append-to-body="true"
+                        >NER/Sqft<Br>3 Bds.</span>
+                    </th>
+                    <th ng-if="col.id == 'nersqft0' && settings.bedrooms[4]" style="text-align: right">
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="auto"
+                                uib-popover-html="$root.tooltips['nersqft0']"
+                                popover-class="mt--5"
+                                popover-append-to-body="true"
+                        >NER/Sqft<Br>4 Bds.</span>
+                    </th>
+                    <th ng-if="col.id == 'nersqft0' && settings.bedrooms[5]" style="text-align: right">
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="auto"
+                                uib-popover-html="$root.tooltips['nersqft0']"
+                                popover-class="mt--5"
+                                popover-append-to-body="true"
+                        >NER/Sqft<Br>5 Bds.</span>
+                    </th>
+                    <th ng-if="col.id == 'nersqft0' && settings.bedrooms[6]" style="text-align: right">
+                        <span
+                                popover-trigger="'mouseenter'"
+                                popover-placement="auto"
+                                uib-popover-html="$root.tooltips['nersqft0']"
+                                popover-class="mt--5"
+                                popover-append-to-body="true"
+                        >NER/Sqft<Br>6 Bds.</span>
+                    </th>
+
                     <th ng-if="col.id == 'nersqftvscompavg'" style="text-align: right">
                         <span
                                 popover-trigger="'mouseenter'"
@@ -710,6 +774,28 @@
                     <td ng-if="col.id == 'nersqft'" style="text-align:right">
                         {{row.nersqft !== undefined && row.nersqft !== null && !isNaN(row.nersqft) ? "$" + row.nersqft.toFixed(2) : "-"}}
                     </td>
+                    <td ng-if="col.id == 'nersqft0' && settings.bedrooms[0]" style="text-align:right">
+                        {{row.nersqft0 !== undefined ? "$" + row.nersqft0.toFixed(2) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'nersqft0' && settings.bedrooms[1]" style="text-align:right">
+                        {{row.nersqft1 !== undefined ? "$" + row.nersqft1.toFixed(2) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'nersqft0' && settings.bedrooms[2]" style="text-align:right">
+                        {{row.nersqft2 !== undefined ? "$" + row.nersqft2.toFixed(2) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'nersqft0' && settings.bedrooms[3]" style="text-align:right">
+                        {{row.nersqft3 !== undefined ? "$" + row.nersqft3.toFixed(2) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'nersqft0' && settings.bedrooms[4]" style="text-align:right">
+                        {{row.nersqft4 !== undefined ? "$" + row.nersqft4.toFixed(2) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'nersqft0' && settings.bedrooms[5]" style="text-align:right">
+                        {{row.nersqft5 !== undefined ? "$" + row.nersqft5.toFixed(2) : "-"}}
+                    </td>
+                    <td ng-if="col.id == 'nersqft0' && settings.bedrooms[6]" style="text-align:right">
+                        {{row.nersqft6 !== undefined ? "$" + row.nersqft6.toFixed(2) : "-"}}
+                    </td>
+
                     <td ng-if="col.id == 'nersqftvscompavg'" style="text-align:right">
                         <span ng-if="row.name === 'Averages' || row.name === 'Comp Averages'"></span>
                         <span ng-if="row.name !== 'Averages' && row.name !== 'Comp Averages' && row.nersqftvscompavg != '' && row.nersqftvscompavg != undefined">{{row.nersqftvscompavg | number : 2}}%</span>
