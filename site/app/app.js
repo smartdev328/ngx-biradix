@@ -109,8 +109,6 @@ define([], function () {
         $stateProvider
             .state("login", AsyncRoute("/login?r&e", "login", "loginController", "login.html", "loggedOutView",{}))
             .state("sso", AsyncRoute("/sso?r", "login", "ssoController", "sso.html", "loggedOutView",{}))
-            .state("sso_redirected", AsyncPostRoute("/sso/redirected", "login", "ssoRedirectedController", "ssoRedirected.html", "loggedOutView",{}))
-            .state("loginmvp", AsyncRoute("/login-mvp?r&e", "loginmvp", "loginmvpController", "loginmvp.html", "loggedOutView",{}))
             .state("expired", AsyncRoute("/expired?name", "expired", "expiredController", "expired.html", "loggedOutView",{loggedIn: false}))
             .state("contact", AsyncRoute("/contact", "contactOff", "contactOffController", "contact.html", "loggedOutView",{loggedIn: false}))
             .state("contact_thank_you", AsyncRoute("/contact/thankyou", "contactOff",null,"thankyou.html", "loggedOutView",{loggedIn: false}))
