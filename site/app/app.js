@@ -44,36 +44,6 @@ function AsyncRoute (url, path, controller,view, outlet, data) {
     return r;
 }
 
-function AsyncPostRoute (url, path, controller,view, outlet, data) {
-
-    var views = {};
-    views[outlet] = {
-        templateUrl: "/app/" + path +"/" + view + "?bust=" + version,
-    };
-
-    if (controller) {
-        views[outlet].controller = controller;
-    }
-
-    var r =
-    {
-        url: url,
-        views: views ,
-        data: data
-    };
-
-    if (controller) {
-        r.resolve = {
-            post: function ($q) {
-                return resolve($q, path + "/" + controller)
-            }
-        }
-    }
-
-
-    return r;
-}
-
 define([], function () {
     var app = angular.module("Biradix", [
         , "ui.router"

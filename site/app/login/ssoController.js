@@ -44,7 +44,12 @@ define([
                         '&response_type=code' +
                         '&redirect_uri=' + encodeURIComponent(redirect_uri) +
                         '&response_mode=form_post' +
-                        '&state=' + $scope.email +
+                        '&state=' + JSON.stringify(
+                            {
+                                email: $scope.email,
+                                redirect_uri: redirect_uri
+                            }
+                        ) +
                         '&login_hint=' + $scope.email;
                 } else {
                     $scope.redirect(domainInfo.data.domain);

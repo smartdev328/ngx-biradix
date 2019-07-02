@@ -70,8 +70,11 @@ module.exports = (function() {
             globalcss: globalcsshash["global.css"],
         };
 
+        const params = JSON.parse(req.body.state);
+
         const url = settings.API_URL + '/api/1.0/users/sso/login?provider=azure' +
-            '&email=' + req.body.state +
+            '&email=' + params.email +
+            '&redirect_uri=' + params.redirect_uri +
             '&code=' + req.body.code;
         request.get(url, function (error, response, body) {
             console.log(body);
