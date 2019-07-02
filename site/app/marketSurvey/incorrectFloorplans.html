@@ -32,8 +32,9 @@
 	        <div style="text-align: center">
 	            <div class="file-input-wrapper">
 	                <button class="btn btn-primary" ng-if="!incorrectFpArray.name">Upload</button>
-	                <p ng-if="incorrectFpArray.name"><strong>Files attached:</strong> {{incorrectFpArray.name}} <i class="fa fa-trash" ng-click="incorrectFpArray.name = ''" style="color:red"></i></p>
-	                <input type="file" ng-if="!incorrectFpArray.name" id="fileUpload" multiple />
+	                <p ng-if="incorrectFpArray.name"><strong>Files attached:</strong> {{incorrectFpArray.name}} <i class="fa fa-trash" ng-click="removeFile()" style="color:red"></i></p>
+	                <input type="file" ng-if="!incorrectFpArray.name" id="fileUpload" multiple
+                       onchange="angular.element(this).scope().uploadFile(this)" />
 	            </div>
 	        </div>
 	        <textarea class="form-control mb-20" rows="5" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>

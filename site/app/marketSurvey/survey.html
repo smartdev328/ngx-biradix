@@ -321,7 +321,6 @@
         <div class="tiny">{{totals.sqft | number: 0}} Sqft</div>
       </div>
       <br/>
-      <button ng-if="me.roles[0] == 'Guest'" class="incorrectFloorplans" type="button" ng-click="incorrectFloorplans()" uib-tooltip="Incorrect floorplans">Incorrect floorplans?</button>
     </div>
     <div class="tfoot-cell hidden-xs"></div>
     <div class="hidden-xs pad tfoot-cell text-right" style="padding-right: 15px;">
@@ -346,7 +345,7 @@
   </div>
 </div>
 <div class="row">
-    <div class="col-xs-2 col-sm-2">
+    <div class="col-xs-4 col-sm-4">
         <span class="dropup pull-left hidden-print">
             <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
             <div class="dropdown-menu dropup-menu-left" onclick="event.stopPropagation();" style="padding: 10px;width:250px;">
@@ -381,12 +380,13 @@
                 </table>
             </div>
         </span>
+        <button ng-if="me.roles[0] == 'Guest'" class="incorrectFloorplans" type="button" ng-click="incorrectFloorplans()" uib-tooltip="Incorrect floorplans">Incorrect floorplans?</button>
     </div>
-    <div class="col-xs-8 col-sm-8 text-center">
+    <div class="col-xs-4 col-sm-4 text-center">
         <a class="btn btn-default contact-submit" ng-click="pmsBack()" ng-if="pms">Back</a>
         <a class="btn btn-success contact-submit" ng-click="create()">Save</a>
     </div>
-    <div class="col-xs-2 col-sm-2" ng-if="editMode && ($root.me.permissions.indexOf('Admin') > -1 || property.custom.owner)">
+    <div class="col-xs-4 col-sm-4" ng-if="editMode && ($root.me.permissions.indexOf('Admin') > -1 || property.custom.owner)">
         <button class=" btn btn-danger btn-large contact-submit pull-right" type="button" ng-click="delete()" uib-tooltip="Delete Survey"><i class="fa fa-trash" style="color:white"></i></button>
     </div>
 </div>

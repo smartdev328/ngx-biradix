@@ -12,7 +12,7 @@ define([
         };
 
         $scope.cancel = function() {
-            if (false) {
+            if ($scope.incorrectFpArray.name || $scope.incorrectFpArray.message) {
                 $dialog.confirm("You have uploaded floor plans that have not been saved. Are you sure you want to close without saving?", function () {
                     $uibModalInstance.dismiss("cancel");
                 }, function() {
@@ -26,7 +26,7 @@ define([
             limit: 20,
             permission: 'PropertyManage',
             active: true,
-            select: "name",
+            select: "name floorplans",
             skipAmenities: true
         }).then(function (response) {
             $scope.myProperties = response.data.properties;
@@ -54,9 +54,23 @@ define([
         });
 
         $scope.done = function() {
-            $scope.incorrectFpArray = {
-                submitted: true
-            }
+            $scope.incorrectFpArray.submitted = true;
+            console.log($scope.incorrectFpArray);
+        };
+
+        $scope.removeFile = function() {
+            $scope.incorrectFpArray.name = '';
+            $scope.incorrectFpArray.file = '';
+        }
+
+        $scope.uploadFile = function(upload) {
+            var file = upload.files[0];
+            $scope.incorrectFpArray.name = file.name;
+            var reader = new FileReader();
+            reader.onload = function(){
+                $scope.incorrectFpArray.file = reader.result;
+            };
+            reader.readAsDataURL(file);
         };
 
         $scope.incorrectFloorplansTable = function () {
@@ -68,7 +82,15 @@ define([
                     controller: 'marketSurveyIncorrectFloorplansTable',
                     size: "md",
                     keyboard: false,
-                    backdrop: 'static'
+                    backdrop: 'static',
+                    resolve: {
+                        incorrectFpArray: function () {
+                            return  $scope.incorrectFpArray;
+                        },
+                        selectedProperty: function () {
+                            return  $scope.selectedProperty;
+                        }
+                    }
                 });
             });
         }
