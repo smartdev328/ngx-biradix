@@ -9,7 +9,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                 legendUpdated: '=',
                 offset: "="
             },
-            controller: function ($scope, $element) {
+            controller: function ($scope, $element, $reportingService) {
 
 
                 $scope.$watch('legendUpdated', function (a, b) {
@@ -69,47 +69,8 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                     if ($scope.report) {
                         window.setTimeout(function() {
 
-                            var d1 = $scope.settings.daterange1.selectedRange;
-                            var d2 = $scope.settings.daterange2.selectedRange;
-
-                            if (d1 == "Custom Range") {
-                                var d1s, d1e;
-
-                                if ($scope.settings.daterange1.selectedStartDate._isUTC) {
-                                    d1s = moment($scope.settings.daterange1.selectedStartDate._d).utcOffset($scope.offset).format("MM/DD/YY");
-                                } else {
-                                    d1s = moment($scope.settings.daterange1.selectedStartDate._d).utcOffset($scope.offset).format("MM/DD/YY");
-                                }
-
-                                if ($scope.settings.daterange1.selectedEndDate._isUTC) {
-                                    d1e = moment($scope.settings.daterange1.selectedEndDate._d).utcOffset($scope.offset).format("MM/DD/YY");
-                                } else {
-                                    d1e = moment($scope.settings.daterange1.selectedEndDate._d).utcOffset($scope.offset).format("MM/DD/YY");
-                                }
-
-                                d1 = d1s + "-" + d1e;
-                            }
-
-                            if (d2 == "Custom Range") {
-                                var d2s, d2e;
-                                if (!$scope.settings.daterange2.selectedStartDate._d) {
-                                    d2s = moment($scope.settings.daterange2.selectedStartDate).utcOffset($scope.offset).format("MM/DD/YY");
-                                } else if ($scope.settings.daterange2.selectedStartDate._isUTC) {
-                                    d2s = moment($scope.settings.daterange2.selectedStartDate._d).utcOffset($scope.offset).format("MM/DD/YY");
-                                } else {
-                                    d2s = moment($scope.settings.daterange2.selectedStartDate._d).utcOffset($scope.offset).format("MM/DD/YY");
-                                }
-
-                                if (!$scope.settings.daterange2.selectedEndDate._d) {
-                                    d2e = moment($scope.settings.daterange2.selectedEndDate).utcOffset($scope.offset).format("MM/DD/YY");
-                                } else if ($scope.settings.daterange2.selectedEndDate._isUTC) {
-                                    d2e = moment($scope.settings.daterange2.selectedEndDate._d).utcOffset($scope.offset).format("MM/DD/YY");
-                                } else {
-                                    d2e = moment($scope.settings.daterange2.selectedEndDate._d).endOf("day").format("MM/DD/YY");
-                                }
-
-                                d2 = d2s + "-" + d2e;
-                            }
+                            var d1 = $reportingService.getDateRangeLabel($scope.settings.daterange1, $scope.offset);
+                            var d2 = $reportingService.getDateRangeLabel($scope.settings.daterange2, $scope.offset);
 
                             $scope.d1 = d1;
                             $scope.d2 = d2;

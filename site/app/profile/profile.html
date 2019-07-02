@@ -30,6 +30,16 @@
         </button>
 
         <daterange-picker daterange="settings.daterange" class="pull-right hidden-print dashboard" ng-if="settings && me.roles[0] !== 'Guest'" style="margin-right:10px"></daterange-picker>
+
+        <select
+                class="input-sm form-control pull-right hidden-print bedrooms"
+                style="display:inline;width:auto;max-width:165px;font-weight:normal;font-size:13px;margin-right:10px;padding:0 0 0 5px;"
+                ng-options="p.text group by p.group for p in settings.perspectives"
+                ng-model="settings.perspective"
+        ></select>
+        <span class="fa fa-eye-slash fa-2x pull-right" style="margin:3px 10px 0px 0px"
+              uib-tooltip="Perspectives"
+        ></span>
     </div>
 </div>
 <div ng-show="!localLoading && !apiError" style="display:block;width:100px;margin:50px auto">
@@ -92,7 +102,8 @@
                         </td>
                     </tr>
                     </table>
-                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>            </div>
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>
+            </div>
             <div class="panel-body">
                 <hr>
                 <property-profile property="comp" show="showProfile"></property-profile>
@@ -139,34 +150,30 @@
         </div>
 
 
-        <div class="panel panel-info"  ng-if="$root.me.permissions.indexOf('Hide/ExtendedProfile') == -1">
+        <div class="panel panel-info inlineHolder"  ng-if="$root.me.permissions.indexOf('Hide/ExtendedProfile') == -1">
             <div class="panel-heading">
-                <span class="pull-left">Trends</span>
-                <span class="dropdown pull-left hidden-print">
+                <span class="d-inline">Trends</span><span class="dropdown d-inline hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
                     <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px;margin-top:5px">
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
+                             <Tr>
+                                <Td style="font-size:12px" colspan="2">
+                                    &nbsp;Hide excluded is now Perspectives
+
+                                    <i class="fa fa-info-circle" style="font-size:12px"
+                                       popover-trigger="'mouseenter'"
+                                       popover-placement="top"
+                                       popover-append-to-body="true"
+                                       uib-popover="Perspectives allow you to configure and save different views of your data that you can toggle between from the Perspectives dropdown at the top of the dashboard. You can edit views by going to the Perspectives section in the main menu dropdown."
+                                    ></i>
+                                </Td>
+                            </Tr>
                             <Tr>
                                 <td>
                                     <toggle-switch checked="settings.graphs"></toggle-switch>&nbsp;
                                 </td>
                                 <Td>
                                     &nbsp;Show Graphs
-                                </Td>
-
-                            </Tr>
-                            <Tr>
-                                <td>
-                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>&nbsp;
-                                </td>
-                                <Td>
-                                    &nbsp;Hide Excluded
-
-                                    <i class="fa fa-info-circle" style="font-size:12px"
-                                       popover-trigger="'mouseenter'"
-                                       popover-placement="top"
-                                       uib-popover="Turn this option off to calculate all floor plan data, including floor plans that have been manually excluded by the user from reporting and dashboard calculations."
-                                            ></i>
                                 </Td>
 
                             </Tr>
@@ -184,19 +191,22 @@
                             </Tr>
                         </table>
                     </div>
-                </span>
-
-                <i class="fa fa-chain-broken blue" class="pull-left"
-                   style="cursor:pointer;font-size:20px;padding:4px 0px 0px 8px"
-                   ng-if="points.excluded"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
-                        ></i>
+                </span><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="settings.points.excludedList" property-id="settings.perspective.propertyId" applied-perspective="comp.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" classes="'mt--10'"></excluded><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="settings.points.missingList" property-id="settings.perspective.propertyId" excluded-popups="excludedPopups" key="'trends-missing'" classes="'mt--10'"></excluded>
 
                 <br clear="all">
-                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
-
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.strRangeEnd && comp.hasExcluded">|</div>
+                <div style="float:left;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.hasExcluded">Perspective Applied: <b>{{comp.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle hidden-print"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all" ng-if="property.strRangeEnd || (comp.appliedPerspective && comp.hasExcluded)">
             </div>
             <div class="panel-body">
                 <hr>
@@ -241,22 +251,19 @@
                 <span class="pull-left">Floor Plans</span>
                 <span class="dropdown pull-left hidden-print">
                     <a href class="dropdown-toggle gear" data-toggle="dropdown"><i class="fa fa-gear"></i></a>
-                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:210px;margin-top:5px">
+                    <div class="dropdown-menu dropdown-menu-left"  onclick="event.stopPropagation();" style="padding: 10px;width:250px;margin-top:5px">
                         <table style="border-collapse: separate;  border-spacing: 0px 5px;">
-                            <Tr>
-                                <td>
-                                    <toggle-switch checked="$root.me.settings.hideUnlinked" click-fn="toggleUnlniked()"></toggle-switch>&nbsp;
-                                </td>
-                                <Td>
-                                    &nbsp;Hide Excluded
+                          <Tr>
+                                <Td style="font-size:12px" colspan="2">
+                                    &nbsp;Hide excluded is now Perspectives
 
                                     <i class="fa fa-info-circle" style="font-size:12px"
                                        popover-trigger="'mouseenter'"
                                        popover-placement="top"
-                                       uib-popover="Turn this option off to calculate all floor plan data, including floor plans that have been manually excluded by the user from reporting and dashboard calculations."
-                                            ></i>
+                                       popover-append-to-body="true"
+                                       uib-popover="Perspectives allow you to configure and save different views of your data that you can toggle between from the Perspectives dropdown at the top of the dashboard. You can edit views by going to the Perspectives section in the main menu dropdown."
+                                    ></i>
                                 </Td>
-
                             </Tr>
                         </table>
                     </div>
@@ -264,7 +271,7 @@
                 </span>
 
                  <div id="floorplansDD" ng-class="{'btn-group' : true, action_dropdown : true, 'pull-right' : true, 'hover-only' : !isModalOpen('#floorplansDD')}" style="margin-right:-15px">
-                    <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
+                    <button type="button" style="padding: 3px 10px;" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Show/Hide Columns">
                         <span class="fa fa-table"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" style="padding-left:10px;width:220px;height:200px;overflow-y: auto" onclick="event.stopPropagation();">
@@ -283,11 +290,23 @@
                     </ul>
                 </div>
                 <Br clear="all">
-                <div style="font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="comp.strRangeEnd">As of {{comp.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.strRangeEnd && comp.hasExcluded">|</div>
+                <div style="float:left;font-weight: normal;font-size:13px;" ng-if="comp.appliedPerspective && comp.hasExcluded">Perspective Applied: <b>{{comp.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle hidden-print"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all" ng-if="property.strRangeEnd || (comp.appliedPerspective && comp.hasExcluded)">
             </div>
             <div class="panel-body">
                 <div style="height:25px"></div>
-                <property-floorplans comp="comp" order-by="settings.orderByFp" show="settings.show"></property-floorplans>
+                <property-floorplans comp="comp" order-by="settings.orderByFp" show="settings.show" applied-perspective="comp.appliedPerspective" excluded-popups="excludedPopups"></property-floorplans>
             </div>
         </div>
 

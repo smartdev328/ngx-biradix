@@ -1,6 +1,15 @@
 <div class="break2 panel panel-info">
     <div class="panel-heading">Floor Plan Comparison Report
         <i ng-if="subject.isCustom" class="custom_property">(custom property)</i>
+        <div style="font-weight: normal;font-size:13px; margin-top:5px;" ng-if="report.appliedPerspective">Perspective Applied: <b>{{report.appliedPerspective.name}}</b>
+            <i class="fa fa-question-circle hidden-print    "
+               style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+               popover-trigger="'mouseenter'"
+               popover-placement="right"
+               popover-append-to-body="true"
+               uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+            ></i>
+        </div>
     </div>
     <div class="panel-body">
         <hr>
@@ -104,30 +113,19 @@
     </tr>
     <tr>
         <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
-            <div class="fp-header-div">
-                <h4>Entire Property
-                    <i class="fa fa-chain-broken blue"
-                       style="cursor:pointer;font-size:16px;padding-left:1px"
-                       ng-if="report.exclusionBySubject"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="right"
-                       uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
-                    ></i>
+            <div class="fp-header-div inlineHolder">
+                <h4><span class="d-inline">Entire Property</span><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="report.exclusionsEntireProperty" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-'" classes="'mt--10'"></excluded><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="report.missingEntireProperty" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-'" classes="'mt--10'"></excluded>
                 </h4>
             </div>
         </td>
-    </tr>
+    </tr>   
 
     <tr ng-repeat="fp in report.summary | orderBy : orderBy" ng-class="{'subject': fp.subject}">
         <td>
             {{fp.name}}
-            <i class="fa fa-chain-broken blue"
-               style="cursor:pointer;font-size:12px;padding-left:1px"
-               ng-if="report.exclusions[fp.id]"
-               popover-trigger="'mouseenter'"
-               popover-placement="right"
-               uib-popover="This property has floor plans that are being excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
-            ></i>
+            <excluded class="perspectiveIconHolder small" excluded-list="report.exclusionsEntirePropertyBreakdown[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'entire-excluded-' + fp.id" classes="'mt--10'"></excluded>
+            <excluded class="perspectiveIconHolder small" excluded-list="report.missingEntirePropertyBreakdown[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'entire-missing-' + fp.id" classes="'mt--10'"></excluded>
+
         </td>
         <td class="center" ng-if="show.units">
             {{fp.units}}
@@ -217,15 +215,8 @@
         </tr>
         <tr>
             <td colspan="100%" style="background-color: white !important;color:#4460a9;" class="fp-header">
-                <div class="fp-header-div">
-                <h4>{{bedroomsLabel(key)}}
-                    <i class="fa fa-chain-broken blue"
-                       style="cursor:pointer;font-size:16px;padding-left:1px"
-                       ng-if="report.exclusionsByBedrooms[key]"
-                       popover-trigger="'mouseenter'"
-                       popover-placement="right"
-                       uib-popover="This group is not showing some floor plans that have been excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
-                    ></i>
+                <div class="fp-header-div inlineHolder">
+                <h4><span class="d-inline">{{bedroomsLabel(key)}}</span><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="report.exclusionsByBedrooms[key]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key" classes="'mt--10'"></excluded><excluded class="d-inline ml-3 perspectiveIconHolder" excluded-list="report.missingByBedrooms[key]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key" classes="'mt--10'"></excluded>
             </h4>
                 </div>
             </td>
@@ -233,13 +224,9 @@
         <tr ng-repeat="fp in value.floorplans | orderBy : orderBy" ng-class="{'subject': fp.subject}">
             <td>
                 {{fp.name}}
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:1px"
-                   ng-if="value.excluded[fp.id]"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   uib-popover="This property has floor plans that are being excluded from reporting calculations. This is due to manually excluding floor plans or missing rent data"
-                ></i>
+
+                <excluded class="perspectiveIconHolder small" excluded-list="value.excluded[fp.id]" property-id="subject._id" applied-perspective="report.appliedPerspective" excluded-popups="excludedPopups" key="'bedrooms-excluded-' + key + fp.id" classes="'mt--10'"></excluded>
+                <excluded class="perspectiveIconHolder small" excluded-list="value.missing[fp.id]" property-id="subject._id" excluded-popups="excludedPopups" key="'bedrooms-missing-' + key + fp.id" classes="'mt--10'"></excluded>
             </td>
             <td class="center" ng-if="show.units">
                 {{fp.units}}

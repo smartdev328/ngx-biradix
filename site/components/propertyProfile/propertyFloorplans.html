@@ -92,94 +92,94 @@
 
         </tr>
 
-        <tr ng-repeat="fp in comp.survey.floorplans | orderBy : [orderBy, 'bedrooms','bathrooms', 'sqft','description','units'] | filter : {bedrooms : i}">
+        <tr ng-repeat="fp in comp.survey.floorplans | orderBy : [orderBy, 'bedrooms','bathrooms', 'sqft','description','units'] | filter : {bedrooms : i}"  ng-class="{'missing-floorplan': fp.excluded || fp.missing}">
             <td style="text-align:center;">
                 {{fp.bedrooms}}x{{fp.bathrooms}}
             </td>
-            <td ng-if="show.description">
+            <td ng-if="show.description" class="perspectiveIconHolder small">
                 {{fp.description}}
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:1px"
+                <i class="fa fa-eye-slash blue"
                    ng-if="fp.excluded"
                    popover-trigger="'mouseenter'"
                    popover-placement="right"
                    popover-append-to-body="true"
-                   uib-popover="This floor plan has been excluded from reporting and dashboard calculations. This is due to manually excluding floor plans or missing rent data."
-                        ></i>
+                   popover-class="popover-small ml-15"
+                   uib-popover-html="'<b>Perspective Applied:</b> <Br>' + appliedPerspective.name + '<Br><BR>This floor plan is not part of the perspective and has been excluded from calculations.'"
+                ></i>
+                <i class="fa fa-warning"
+                   ng-if="fp.missing"
+                   popover-trigger="'mouseenter'"
+                   popover-placement="right"
+                   popover-append-to-body="true"
+                   popover-class="popover-small ml-15"
+                   uib-popover-html="'<b class=\'show mb-10\'>Missing Rent Data:</b>This floor plan has been excluded from reporting and dashboard calculations due to missing rent data.'"
+                ></i>
             </td>
             <td style="text-align: right" class="pad" ng-if="show.units">
-                {{fp.units}}
+                {{fp.units == null ? "-" : fp.units}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.unitPercent">
-                {{fp.unitPercent | number : 1 }}%
+                {{fp.units == null ? "-" : (fp.unitPercent | number : 1) + "%"}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.sqft">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.sqft == null ? "-" : fp.sqft}}</span>
+                {{fp.sqft == null ? "-" : fp.sqft}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.rent">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.rent == null ? "-" : "$" + fp.rent}}</span>
+                {{fp.rent == null ? "-" : "$" + fp.rent}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.mersqft">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.mersqft == null ? "-" : "$" + (fp.mersqft | number : 2)}}</span>
+                {{fp.mersqft == null ? "-" : "$" + (fp.mersqft | number : 2)}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.concessions">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.concessions == null ? "-" : "$" + fp.concessions}}</span>
+                {{fp.concessions == null ? "-" : "$" + fp.concessions}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.runrate">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runrate == null ? "-" : "$" + fp.runrate}}</span>
+                {{fp.runrate == null ? "-" : "$" + fp.runrate}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.runratesqft">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.runratesqft == null ? "-" : "$" + (fp.runratesqft | number : 2)}}</span>
+                {{fp.runratesqft == null ? "-" : "$" + (fp.runratesqft | number : 2)}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.ner">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.ner == null ? "-" : "$" + fp.ner}}</span>
+                {{fp.ner == null ? "-" : "$" + fp.ner}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.nersqft">
-                <span ng-style="{'font-style': fp.excluded ? 'italic' : ''}">{{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}</span>
+                {{fp.nersqft == null ? "-" : "$" + (fp.nersqft | number : 2)}}
             </td>
 
         </tr>
         <tr class="subtotal" style="background-color:white !important">
             <td colspan="{{show.description ? '2' : '1'}}">
-                <!--{{bedroomsLabel(i)}}-->
-                <!--<i class="fa fa-chain-broken blue"-->
-                   <!--style="cursor:pointer;font-size:12px;padding-left:1px"-->
-                   <!--ng-if="bedroom.excluded"-->
-                   <!--popover-trigger="'mouseenter'"-->
-                   <!--popover-placement="right"-->
-                   <!--popover-append-to-body="true"-->
-                   <!--uib-popover="These bedrooms have some floor plans that have been manually excluded from reporting and dashboard calculations."-->
-                        <!--&gt;</i>-->
+
             </td>
             <td style="text-align: right" class="pad" ng-if="show.units">
-                {{bedroom.totUnits}}
+                {{bedroom.totUnits == null ? "-" : bedroom.totUnits}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.unitPercent">
-                {{bedroom.totUnits / comp.totalUnits * 100 | number : 1 }}%
+                {{bedroom.totUnits == null ? "-" : (bedroom.totUnits / comp.survey.totUnits * 100 | number : 1) + "%"}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.sqft">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.sqft == null ? "-" : bedroom.sqft}}</span>
+                {{bedroom.sqft == null ? "-" : bedroom.sqft}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.rent">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.rent == null ? "-" : "$" + bedroom.rent}}</span>
+                {{bedroom.rent == null ? "-" : "$" + bedroom.rent}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.mersqft">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.mersqft == null ? "-" : "$" + (bedroom.mersqft | number : 2)}}</span>
+                {{bedroom.mersqft == null ? "-" : "$" + (bedroom.mersqft | number : 2)}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.concessions">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.concessions == null ? "-" : "$" + bedroom.concessions}}</span>
+                {{bedroom.concessions == null ? "-" : "$" + bedroom.concessions}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.runrate">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.runrate == null ? "-" : "$" + bedroom.runrate}}</span>
+                {{bedroom.runrate == null ? "-" : "$" + bedroom.runrate}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.runratesqft">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.runratesqft == null ? "-" : "$" + (bedroom.runratesqft | number : 2)}}</span>
+                {{bedroom.runratesqft == null ? "-" : "$" + (bedroom.runratesqft | number : 2)}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.ner">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.ner == null ? "-" : "$" + bedroom.ner}}</span>
+                {{bedroom.ner == null ? "-" : "$" + bedroom.ner}}
             </td>
             <td style="text-align: right" class="pad" ng-if="show.nersqft">
-                <span ng-style="{'font-style': bedroom.excluded ? 'italic' : ''}">{{bedroom.nersqft == null ? "-" : "$" + (bedroom.nersqft | number : 2)}}</span>
+                {{bedroom.nersqft == null ? "-" : "$" + (bedroom.nersqft | number : 2)}}
             </td>
 
         </tr>
@@ -208,10 +208,10 @@
                     ></i>
         </td>
         <td style="text-align: right" ng-if="show.units" class="pad">
-            {{comp.survey.totUnits}}
+            {{!comp.survey.totUnits ? "-" : comp.survey.totUnits}}
         </td>
         <td style="text-align: right" class="pad" ng-if="show.unitPercent">
-            100%
+            {{!comp.survey.totUnits ? "-" : "100%"}}
         </td>
         <td style="text-align: right" class="pad" ng-if="show.sqft">
             <span ng-style="{'font-style': comp.survey.excluded ? 'italic' : ''}">{{comp.survey.sqft == null ? "-" : comp.survey.sqft}}</span>

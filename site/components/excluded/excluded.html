@@ -1,0 +1,24 @@
+<i class="fa fa-eye-slash"
+   ng-if="appliedPerspective && (excludedList | json) !== '{}'"
+   popover-trigger="'outsideClick'"
+   popover-placement="right-top"
+   popover-class="{{classes}} ml-15 popover-small"
+   uib-popover-template="hintTemplate"
+   popover-append-to-body="true"
+   popover-animation="false"
+   popover-is-open="options.isOpen"
+   ng-mouseenter="openPopup($event)"
+></i>
+
+<i class="fa fa-warning"
+   ng-if="!appliedPerspective && (excludedList | json) !== '{}'"
+   popover-trigger="'outsideClick'"
+   popover-placement="right-top"
+   popover-class="{{classes}} ml-15 popover-small"
+   uib-popover-template="hintTemplate"
+   popover-append-to-body="true"
+   popover-animation="false"
+   popover-is-open="options.isOpen"
+   ng-mouseenter="openPopup($event)"
+></i>
+

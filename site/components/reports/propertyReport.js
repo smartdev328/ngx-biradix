@@ -11,7 +11,7 @@ angular.module('biradix.global').directive('propertyReport', function () {
                 bedroom: '=',
             },
             controller: function ($scope,$propertyService) {
-
+                $scope.excludedPopups = {};
                 var resp = $propertyService.parseDashboard($scope.report.dashboard,$scope.dashboardSettings.summary, $scope.me.settings.showLeases, $scope.dashboardSettings.nerScale, $scope.dashboardSettings.selectedBedroom);
 
                 $scope.property = resp.property;

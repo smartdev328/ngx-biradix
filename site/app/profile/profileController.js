@@ -4,10 +4,12 @@ define([
     '../../services/exportService',
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
+        $scope.excludedPopups = {};
 
+        $scope.propertyId = $stateParams.id;
         $scope.r = Math.round(Math.random()*1);
 
        $scope.defaultShow = function() {
@@ -32,7 +34,6 @@ define([
         $scope.timezone = moment().utcOffset();
         if ($cookies.get("timezone")) {
             $scope.timezone = parseInt($cookies.get("timezone"));
-            // $scope.debug = $scope.timezone;
         }
 
         // make sure me is loaded befor you search initially
@@ -42,10 +43,52 @@ define([
                 $scope.settings = $reportingService.getProfileSettings($(window).width());
                 $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 
-                $scope.loadProperty($scope.propertyId)
+                $scope.localLoading = false;
+                $propertyService.getSubjectPerspectives($scope.propertyId).then(function (response) {
+                    $scope.settings.perspectives = [{value: "", text: "All Data", propertyId: ""}];
+
+                    var perspectives = [];
+                    response.data.properties.forEach(function(p) {
+                        p.perspectives.forEach(function(pr) {
+                            perspectives.push({value: pr.id, text: pr.name, group: p.name, propertyId: p._id.toString(), sort1: pr.name.toLowerCase(), sort2: p.name.toLowerCase()});
+                        });
+                    });
+
+                    perspectives = _.sortByAll(perspectives, "sort1", "sort2");
+                    $scope.settings.perspectives = $scope.settings.perspectives.concat(perspectives);
+
+                    $scope.settings.perspectives.push({value: "-1", text: " + Add/Edit Perspective"});
+
+                    $scope.settings.perspective = _.find($scope.settings.perspectives, function(x) {
+                        return x.value.toString() === $scope.settings.selectedPerspective.toString();
+                    });
+
+                    if (!$scope.settings.perspective) {
+                        $scope.settings.perspective = $scope.settings.perspectives[0];
+                    }
+
+                    $scope.loadProperty($scope.propertyId);
+                }, function(err) {
+                    $scope.apiError = true;
+                });
             }
         });
 
+
+        $scope.$watch('settings.perspective', function() {
+            if (!$scope.localLoading) return;
+            if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
+                $location.path("/perspectives");
+                return;
+            }
+
+            // if we pick a perspective from the default property, update the default perspective for dashboard like date
+            if ($rootScope.me.settings.defaultPropertyId.toString() === $scope.settings.perspective.propertyId.toString() || $scope.settings.perspective.propertyId.toString() === "") {
+                $cookieSettingsService.savePerspective($scope.settings.perspective.value);
+            }
+
+            $scope.loadProperty($scope.propertyId);
+        }, true);
 
         $scope.resetProfile = function() {
             $scope.defaultShowProfile();
@@ -93,8 +136,6 @@ define([
             $scope.refreshGraphs();
         }, true);
 
-        $scope.propertyId = $stateParams.id;
-
         $scope.refreshGraphs = function() {
             $scope.loadProperty($scope.propertyId, true);
         }
@@ -110,15 +151,27 @@ define([
                     $scope.trendsLoading = false;
                 }
 
-                $propertyService.profile(defaultPropertyId
-                    , {
-                        daterange: $scope.settings.daterange.selectedRange,
-                        start: $scope.settings.daterange.selectedStartDate,
-                        end: $scope.settings.daterange.selectedEndDate
-                    }
-                    ,{occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale, atr: $rootScope.me.settings.showATR}
-                ).then(function (response) {
+                var daterange = $scope.settings.daterange;
 
+                if (phantom) {
+                    daterange.selectedRange = $cookies.get("selectedRange");
+                    daterange.selectedStartDate = $cookies.get("selectedStartDate");
+                    daterange.selectedEndDate = $cookies.get("selectedEndDate");
+                }
+
+                $propertyService.profile(defaultPropertyId,
+                    {
+                        daterange: daterange.selectedRange,
+                        start: daterange.selectedStartDate,
+                        end: daterange.selectedEndDate
+                    },
+                    {
+                        occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale,
+                        atr: $rootScope.me.settings.showATR
+                    },
+                    $scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.propertyId : $scope.propertyId,
+                    $scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.value : null
+                ).then(function (response) {
                     var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
 
                     $scope.columns = ['occupancy'];
@@ -161,7 +214,7 @@ define([
                         strRange: $scope.property.strRangeEnd ? $scope.property.strRangeStart + " - " + $scope.property.strRangeEnd : ""
                     };
 
-                    $scope.points = resp.points;
+                    $scope.settings.points = resp.points;
                     $scope.surveyData = resp.surveyData;
                     $scope.nerData = resp.nerData
                     $scope.occData = resp.occData;
@@ -270,12 +323,13 @@ define([
                 selectedEndDate: $scope.settings.daterange.selectedEndDate.format(),
                 selectedRange: $scope.settings.daterange.selectedRange,
                 progressId: $scope.progressId,
-                compids: null
+                compids: null,
+                perspective: $scope.settings.selectedPerspective
             }
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = gAPI + '/api/1.0/properties/' + $scope.property._id + '/excel?'
+            var url = gAPI + '/api/1.0/properties/' + ($scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.propertyId : $scope.property._id) + '/excel?'
             url += "token=" + $cookies.get('token')
             url += "&key=" + key;
 
@@ -298,14 +352,16 @@ define([
 
             $scope.progressId = _.random(1000000, 9999999);
 
-            $exportService.print($scope.property._id, true, $scope.settings.daterange, $scope.progressId, $scope.settings.graphs);
+            var daterange = $scope.settings.daterange;
+
+            $exportService.print($scope.property._id, true, daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
 
             $window.setTimeout($scope.checkProgress, 500);
         };
 
 
         $scope.print = function() {
-            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs);
+            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs, $scope.settings.perspective.value);
         };
     }]);
 });

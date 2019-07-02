@@ -10,7 +10,7 @@ angular.module('biradix.global').directive('rankingsReport', function () {
                 show: '='
             },
             controller: function ($scope,$gridService,$element) {
-
+                $scope.excludedPopups = {};
 
                 $scope.$watch("orderBy", function() {
                     var v = $scope.orderBy;

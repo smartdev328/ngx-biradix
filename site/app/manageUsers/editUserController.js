@@ -3,8 +3,8 @@ define([
     "app",
     "async",
 ], function(app, async) {
-    app.controller("editUserController", ["$scope", "$uibModalInstance", "userId", "$userService", "ngProgress", "$propertyService", "$propertyUsersService", "toastr", "$rootScope", //"$ssoService",
-        function($scope, $uibModalInstance, userId, $userService, ngProgress, $propertyService, $propertyUsersService, toastr, $rootScope) {//, $ssoService) {
+    app.controller("editUserController", ["$scope", "$uibModalInstance", "userId", "$userService", "ngProgress", "$propertyService", "$propertyUsersService", "toastr", "$rootScope",
+        function($scope, $uibModalInstance, userId, $userService, ngProgress, $propertyService, $propertyUsersService, toastr, $rootScope) {
         $scope.user = {roles:[{propertyids:[]}]};
 
         $scope.userId = userId;
@@ -36,20 +36,6 @@ define([
 
         $scope.originalRoles = [];
         $scope.orgs = [];
-
-        //authentication field
-        $scope.authentication = {};
-        $scope.authentication.data = [
-            {
-                id: true,
-                name: 'Single Sign On',
-            },
-            {
-                id: false,
-                name: 'Email-Password Pair',
-            },
-        ];
-        $scope.authentication.model = $scope.authentication.data[0];
 
         $scope.getDropdowns = function() {
             $scope.loading = true;

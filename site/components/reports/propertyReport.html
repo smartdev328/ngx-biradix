@@ -33,16 +33,24 @@
         </div>
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
-        <div class="panel panel-info">
-            <div class="panel-heading">Trends
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:14px;padding-left:2px"
-                   ng-if="points.excluded"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
-                ></i>
-                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
+        <div class="panel panel-info inlineHolder">
+            <div class="panel-heading">
+                <span class="d-inline">Trends</span><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
+                </div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && (points.excludedList | json) !== '{}'">|</div>
+                <br clear="all" ng-if="property.appliedPerspective">
+                <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;" ng-if="property.appliedPerspective && (points.excludedList | json) !== '{}'">Perspective Applied: <b>{{property.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle hidden-print"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all">
             </div>
             <div class="panel-body">
                 <hr>
@@ -64,11 +72,24 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 Competitors
-                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+                <br ng-if="(property.appliedPerspective && property.hasExcluded) || property.strRangeEnd" />
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.strRangeEnd && property.hasExcluded">|</div>
+                <div style="float:left;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.hasExcluded">Perspective Applied: <b>{{property.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all" ng-if="property.strRangeEnd || (property.appliedPerspective && property.hasExcluded)">
             </div>
             <div class="panel-body">
                 <hr>
-                <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals" skipcookie="true"></property-comps>
+                <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals" skipcookie="true" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups"></property-comps>
             </div>
         </div>
     </div>
@@ -106,15 +127,23 @@
     </div>
     <div class="col-md-8 col-sm-7 col-lg-9 right-print">
         <div class="panel panel-info">
-            <div class="panel-heading">Trends
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:14px;padding-left:2px"
-                   ng-if="points.excluded"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   uib-popover="This graph has some floor plans that have been manually excluded from reporting and dashboard calculations."
-                ></i>
-                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
+            <div class="panel-heading inlineHolder">
+                <span class="d-inline">Trends</span><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.excludedList" property-id="property._id" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic;margin-top:5px" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}
+                </div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px; margin-top:4px;" ng-if="property.appliedPerspective && property.strRangeEnd && (points.excludedList | json) !== '{}'">|</div>
+                <br clear="all" ng-if="property.appliedPerspective">
+                <div style="float:left;font-weight: normal;font-size:13px; margin-top:5px;" ng-if="property.appliedPerspective && (points.excludedList | json) !== '{}'">Perspective Applied: <b>{{property.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all">
             </div>
             <div class="panel-body">
                 <hr>
@@ -141,11 +170,24 @@
     <div class="col-xs-12">
         <div class="panel panel-info">
             <div class="panel-heading">Competitors
-                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+                <br ng-if="(property.appliedPerspective && property.hasExcluded) || property.strRangeEnd" />
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.strRangeEnd && property.hasExcluded">|</div>
+                <div style="float:left;font-weight: normal;font-size:13px;" ng-if="property.appliedPerspective && property.hasExcluded">Perspective Applied: <b>{{property.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all" ng-if="property.strRangeEnd || (property.appliedPerspective && property.hasExcluded)">
             </div>
             <div class="panel-body">
                 <hr>
-                <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals"></property-comps>
+                <property-comps comps="comps" order-by="dashboardSettings.orderByComp" show="dashboardSettings.show" show-totals="dashboardSettings.totals" applied-perspective="property.appliedPerspective" excluded-popups="excludedPopups"></property-comps>
             </div>
         </div>
     </div>
@@ -215,16 +257,24 @@
             </div>
         </div>
 
-        <div class="panel panel-info">
-            <div class="panel-heading">Trends
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:14px;padding-left:2px"
-                   ng-if="profile.points.excluded"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   uib-popover="Some floor plans are currently being excluded from Trends calculations. This is due to manually excluding floor plans or missing rent data."
-                ></i>
-                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">{{profile.property.strRangeStart}} - {{profile.property.strRangeEnd}}</div>
+        <div class="panel panel-info inlineHolder">
+            <div class="panel-heading">
+                <span class="d-inline">Trends</span><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="profile.points.excludedList" property-id="property._id" applied-perspective="profile.comp.appliedPerspective" excluded-popups="excludedPopups" key="'trends-excluded'" styles="'display:block;'" classes="'mt--10'"></excluded><excluded class="perspectiveIconHolder d-inline ml-3" excluded-list="profile.points.missingList" property-id="property._id" excluded-popups="excludedPopups" key="'trends-missing'" styles="'display: block;padding-top:2px;'" classes="'mt--10'"></excluded>
+
+                <br clear="all" ng-if="(profile.comps.appliedPerspective && comp.hasExcluded) || property.strRangeEnd">
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">{{property.strRangeStart}} - {{property.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="profile.comp.appliedPerspective && profile.comp.strRangeEnd && profile.comp.hasExcluded">|</div>
+                <div style="float:left;font-weight: normal;font-size:13px;" ng-if="profile.comps.appliedPerspective && comp.hasExcluded">Perspective Applied: <b>{{profile.comp.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle hidden-print"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all" ng-if="property.strRangeEnd || (profile.comp.appliedPerspective && profile.comp.hasExcluded)">
             </div>
             <div class="panel-body">
                 <hr>
@@ -255,11 +305,24 @@
 
         <div class="panel panel-info no-margin-print" astyle="margin-bottom: 0px !important;">
             <div class="panel-heading">Floor Plans
-                <div class="pull-right" style="font-weight: normal;font-size:13px; font-style: italic" ng-if="profile.property.strRangeEnd">As of {{profile.property.strRangeEnd}}</div>
+                <br ng-if="(profile.comp.appliedPerspective && profile.comp.hasExcluded) || property.strRangeEnd"/>
+                <div style="float:left;font-weight: normal;font-size:13px; font-style: italic" ng-if="property.strRangeEnd">As of {{property.strRangeEnd}}</div>
+                <div style="float:left;margin: 0px 5px;font-weight: normal;font-size:13px;" ng-if="profile.comp.appliedPerspective && profile.comp.strRangeEnd && profile.comp.hasExcluded">|</div>
+                <div style="float:left;font-weight: normal;font-size:13px;" ng-if="profile.comp.appliedPerspective && profile.comp.hasExcluded">Perspective Applied: <b>{{profile.comp.appliedPerspective.name}}</b>
+                    <i class="fa fa-question-circle hidden-print"
+                       style="cursor:pointer;font-size:12px;padding-left:2px;vertical-align:middle;margin-top: -3px;"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="right"
+                       popover-append-to-body="true"
+                       popover-class="popover-small"
+                       uib-popover-html="'Data views are calculated based on the floor plans included in the perspective.'"
+                    ></i>
+                </div>
+                <br clear="all" ng-if="property.strRangeEnd || (profile.comp.appliedPerspective && profile.comp.hasExcluded)">
             </div>
             <div class="panel-body">
                 <hr>
-                <property-floorplans comp="profile.comp" order-by="profileSettings.orderByFp" show="profileSettings.show" skipcookie="true"></property-floorplans>
+                <property-floorplans comp="profile.comp" order-by="profileSettings.orderByFp" show="profileSettings.show" skipcookie="true" applied-perspective="profile.comp.appliedPerspective" excluded-popups="excludedPopups"></property-floorplans>
             </div>
         </div>
 

@@ -264,17 +264,6 @@
                    popover-append-to-body="true"
                    uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
                 ></i>
-
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:14px;padding-left:1px"
-                   ng-if="hasExcluded(row,row)"
-                   ng-click="editLink(row, row)"
-                   onclick="event.stopPropagation()"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   uib-popover="This property has some floor plans that have been excluded from reporting and dashboard calculations. This is due to manually excluding floor plans or missing rent data."
-                        ></i>
             </td>
             <td ng-show="show.address">{{row.address}}</td>
             <td ng-show="show.city">{{row.city}}</td>
@@ -365,16 +354,7 @@
                    popover-append-to-body="true"
                    uib-popover="This property has recent changes to its floor plans that aren't visible. To see latest floor plans, please do a new property survey."
                 ></i>
-                <i class="fa fa-chain-broken blue"
-                   style="cursor:pointer;font-size:12px;padding-left:1px"
-                   ng-if="hasExcluded(row,comp)"
-                   ng-click="editLink(row, comp)"
-                   onclick="event.stopPropagation()"
-                   popover-trigger="'mouseenter'"
-                   popover-placement="right"
-                   popover-append-to-body="true"
-                   uib-popover="This property has some floor plans that have been excluded from reporting and dashboard calculations. This is due to manually excluding floor plans or missing rent data."
-                        ></i></td>
+            </td>
             <td ng-show="show.address">{{comp.address}}</td>
             <td ng-show="show.city">{{comp.city}}</td>
             <td ng-show="show.state">{{comp.state}}</td>

@@ -1,23 +1,11 @@
-<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
-    <img src="/images/squares.gif" style="width:100px">
-</div>
-<div ng-show="localLoading">
+<div>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title">Comped Floor Plans: {{subject.name}}</h2>
+        <h2 class="modal-title">Comped floor plans are now called <i class="fa fa-eye-slash"></i> Perspectives!</h2>
         <hr>
     </div>
     <div class="modal-body">
-        <div ng-if="subject._id == comp._id">
-            Please select individual floor plans for <b>{{subject.name}}</b> to use when comparing this property.<br />
-        </div>
-        <div ng-if="subject._id != comp._id">
-            Please select individual floor plans from <b>{{comp.name}}</b> to use as comps for <b>{{subject.name}}</b>.<br />
-        </div>
-        <Br>
-        <filter-list options="options" items="items"></filter-list>
+        Perspectives allow you to configure and save different views of your data, just like comped floor plans. Except now you can easily save as many Perspectives as you need so you can experience your data from all angles. Head over to the new Perspectives page by clicking on the top menu or sidebar to learn more.<Br>
+        <img src="/images/ManageProperties-FeatureDirection.png" style="max-width: 100%;padding-top:10px">
     </div>
-    <div class="modal-footer" style="text-align: center">
-        <button class="btn btn-success contact-submit" ng-click="save()">Save</button>
-     </div>
 </div>
