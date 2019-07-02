@@ -3,8 +3,8 @@ define([
     "app",
     "async",
 ], function(app, async) {
-    app.controller("editUserController", ["$scope", "$uibModalInstance", "userId", "$userService", "ngProgress", "$propertyService", "$propertyUsersService", "toastr", "$rootScope", "$ssoService",
-        function($scope, $uibModalInstance, userId, $userService, ngProgress, $propertyService, $propertyUsersService, toastr, $rootScope, $ssoService) {
+    app.controller("editUserController", ["$scope", "$uibModalInstance", "userId", "$userService", "ngProgress", "$propertyService", "$propertyUsersService", "toastr", "$rootScope", //"$ssoService",
+        function($scope, $uibModalInstance, userId, $userService, ngProgress, $propertyService, $propertyUsersService, toastr, $rootScope) {//, $ssoService) {
         $scope.user = {roles:[{propertyids:[]}]};
 
         $scope.userId = userId;

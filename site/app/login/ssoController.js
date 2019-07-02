@@ -34,7 +34,21 @@ define([
 
         $authService.getDomain($scope.email).then(function (domainInfo) {
             if (domainInfo && domainInfo.data && domainInfo.data.domain) {
-                $scope.redirect(domainInfo.data.domain);
+                // console.log(domainInfo.data);
+                if (domainInfo.data.allowSSO) {
+                    var redirect_uri = (window.location.origin.indexOf('localhost') > 0 ?
+                        window.location.origin :
+                        'https://' + domainInfo.data.domain) + '/sso/redirected';
+                    location.href = 'https://login.microsoftonline.com/ca5c5e0e-72dd-4420-8fcc-ade7747a1408/oauth2/authorize?' +
+                        'client_id=b1a90195-bec0-49fe-8b89-0465e09ce3a0' +
+                        '&response_type=code' +
+                        '&redirect_uri=' + encodeURIComponent(redirect_uri) +
+                        '&response_mode=form_post' +
+                        '&state=' + $scope.email +
+                        '&login_hint=' + $scope.email;
+                } else {
+                    $scope.redirect(domainInfo.data.domain);
+                }
             } else {
                 toastr.error("Unable to locate your email address.");
                 $scope.localLoading = false;

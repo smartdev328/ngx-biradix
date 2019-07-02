@@ -44,6 +44,36 @@ function AsyncRoute (url, path, controller,view, outlet, data) {
     return r;
 }
 
+function AsyncPostRoute (url, path, controller,view, outlet, data) {
+
+    var views = {};
+    views[outlet] = {
+        templateUrl: "/app/" + path +"/" + view + "?bust=" + version,
+    };
+
+    if (controller) {
+        views[outlet].controller = controller;
+    }
+
+    var r =
+    {
+        url: url,
+        views: views ,
+        data: data
+    };
+
+    if (controller) {
+        r.resolve = {
+            post: function ($q) {
+                return resolve($q, path + "/" + controller)
+            }
+        }
+    }
+
+
+    return r;
+}
+
 define([], function () {
     var app = angular.module("Biradix", [
         , "ui.router"
@@ -78,6 +108,7 @@ define([], function () {
         $stateProvider
             .state("login", AsyncRoute("/login?r&e", "login", "loginController", "login.html", "loggedOutView",{}))
             .state("sso", AsyncRoute("/sso?r", "login", "ssoController", "sso.html", "loggedOutView",{}))
+            .state("sso_redirected", AsyncPostRoute("/sso/redirected", "login", "ssoRedirectedController", "ssoRedirected.html", "loggedOutView",{}))
             .state("loginmvp", AsyncRoute("/login-mvp?r&e", "loginmvp", "loginmvpController", "loginmvp.html", "loggedOutView",{}))
             .state("expired", AsyncRoute("/expired?name", "expired", "expiredController", "expired.html", "loggedOutView",{loggedIn: false}))
             .state("contact", AsyncRoute("/contact", "contactOff", "contactOffController", "contact.html", "loggedOutView",{loggedIn: false}))
