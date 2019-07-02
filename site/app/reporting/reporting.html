@@ -478,19 +478,33 @@
                                     <toggle-switch checked="liveSettings.trends.graphs"></toggle-switch>&nbsp;
                                 </div>
                                 <br clear="all" class="visible-md visible-lg">
+                                <div class="col-xs-12 col-sm-4 col-md-3"style="margin:15px 0px">
+                                    Show Comp Average:<br>
+                                    <toggle-switch checked="liveSettings.trends.showCompAverage"></toggle-switch>&nbsp;
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3"style="margin:15px 0px">
+                                    Group Properties:<br>
+                                    <toggle-switch checked="liveSettings.trends.groupProperties"
+                                                   disabled="propertyItems.items.length > 25 || temp.trendsBedroom.value == -2"
+                                                   popover="propertyItems.items.length <= 25 && temp.trendsBedroom.value != -2 ? '' : (temp.trendsBedroom.value == -2 ? 'The \'All\' floor plan option is only available when \'Group Subject Properties\' is set to \'On\'': 'Trend Reports for more than 25 properties requires the Group Properties preference to be turned on.')"
+                                    ></toggle-switch>&nbsp;
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
+                                    Floor Plans<br>
+                                    <select
+                                            class="input-sm form-control"
+                                            ng-options="bedroom.text for bedroom in temp.bedrooms"
+                                            ng-model="temp.trendsBedroom"
+                                    ></select>
+                                </div>
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
         <span class="fa fa-eye-slash"
               popover-trigger="'mouseenter'"
               popover-placement="top"
               popover-append-to-body="true"
               uib-popover="Perspectives"
-        ></span> Select Perspective<Br>
-
-                                    <select
-                                            class="input-sm form-control"
-                                            ng-options="item.text for item in temp.trendsPerspectives | orderBy: sortPerspective"
-                                            ng-model="temp.trendsPerspectiveSelected"
-                                    ></select>
+        ></span> Select Perspective(s)<Br>
+                                    <filter-list options="trendsPerspectiveOptions" items="temp.trendsPerspectives" tooltipdir="'right'"></filter-list>
                                 </div>
                             </div>
                         </div>

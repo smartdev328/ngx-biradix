@@ -22,6 +22,7 @@ define([
         $scope.reportOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports" }
         $scope.customProtfolioPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
         $scope.propertyStatusPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
+        $scope.trendsPerspectiveOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Reports", labelSelected: "Selected Reports", searchLabel: "Reports", noneLabel: "All Data" }
 
         $scope.reportItems = []
 
@@ -43,8 +44,8 @@ define([
                         id: "trends",
                         name: "Trend Analysis",
                         selected: false,
-                        group: "Individual Reports",
-                        type: "single",
+                        group: "Portfolio Reports",
+                        type: "multiple",
                         tooltip: "<b>Trend Analysis</b> - <i>Report allows comparison of data (Rent, NER, NER/SQFT, Occupancy, Leased %, Traffic & Leases, etc.) over two different time periods (ex: last 30 days vs. previous 30 days), as well as benchmarking against competitor data.</i>",
                     });
                 $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Property Status</b> - <i>Report is intended to give a focused summary on the current state of your portfolio. It can be modified to include data points such as Traffic & Leases, NER, and NER/SQFT as well as NER changes vs. {Last Week, Last Month, Last Year, or Comp Average}.</i>"});
@@ -76,6 +77,16 @@ define([
                 me();
             }
         })
+
+            $scope.temp.bedrooms = [
+                {value: -1, text: 'Average'}
+                ,{value: -2, text: 'All'}
+                ,{value: 0, text: 'Studios'}
+                ,{value: 1, text: '1 Bdrs.'}
+                ,{value: 2, text: '2 Bdrs.'}
+                ,{value: 3, text: '3 Bdrs.'}
+                ,{value: 4, text: '4 Bdrs.'}
+            ];
 
         $scope.loadReport = function(report) {
 
@@ -137,6 +148,7 @@ define([
             if (!phantom) {
                 $reportingService.multiSelectWatcher($scope, "temp.customPortfolioPerspectives");
                 $reportingService.multiSelectWatcher($scope, "temp.propertyStatusPerspectives");
+                $reportingService.multiSelectWatcher($scope, "temp.trendsPerspectives");
             }
 
         $scope.loadSaved = function() {
@@ -576,16 +588,6 @@ define([
                 }
             }
 
-            if ($scope.reportIds.indexOf("trends") > -1) {
-                $scope.temp.showTrendsItems.forEach(function (f) {
-                    $scope.liveSettings.trends.show[f.id] = f.selected;
-                })
-
-                if ($scope.temp.trendsPerspectiveSelected) {
-                    $scope.liveSettings.trends.perspective = $scope.temp.trendsPerspectiveSelected.value;
-                }
-            }
-
             if ($scope.reportIds.indexOf("concession") > -1) {
                 if ($scope.temp.concessionPerspectiveSelected) {
                     $scope.liveSettings.concession.perspective = $scope.temp.concessionPerspectiveSelected.value;
@@ -604,6 +606,18 @@ define([
                 });
 
                 $scope.liveSettings.propertyStatus.perspectives = _.map(_.filter($scope.temp.propertyStatusPerspectives, function(x) {
+                    return x.selected;
+                }), "id");
+            }
+
+            if ($scope.reportIds.indexOf("trends") > -1) {
+                $scope.temp.showTrendsItems.forEach(function (f) {
+                    $scope.liveSettings.trends.show[f.id] = f.selected;
+                });
+
+                $scope.liveSettings.trends.selectedBedroom = $scope.temp.trendsBedroom.value;
+
+                $scope.liveSettings.trends.perspectives = _.map(_.filter($scope.temp.trendsPerspectives, function(x) {
                     return x.selected;
                 }), "id");
             }
@@ -946,10 +960,14 @@ define([
             $scope.reportNamesChanged();
 
         },true);
-
         $scope.$watch('propertyItems.items', function() {
             $scope.temp.customPortfolioPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.customPortfolioPerspectives, $scope.liveSettings.customPortfolio.perspectives);
             $scope.temp.propertyStatusPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.propertyStatusPerspectives, $scope.liveSettings.propertyStatus.perspectives);
+            $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
+
+            if ($scope.propertyItems.items.length > 25) {
+                $scope.liveSettings.trends.groupProperties = true;
+            }
         },true);
 
         $scope.$watch('selected.Property', function() {
@@ -958,7 +976,6 @@ define([
                 $scope.changeProperty();
             }
 
-            $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective);
             $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective);
             $scope.singlePerspective("marketPerspectives", "marketPerspectiveSelected", $scope.liveSettings.dashboardSettings.selectedPerspective);
             $scope.singlePerspective("concessionPerspectives", "concessionPerspectiveSelected", $scope.liveSettings.concession.perspective);
@@ -986,25 +1003,6 @@ define([
             $scope.configureCustomPortfolioOptions();
 
             var reportIds = _.pluck(_.filter($scope.reportItems,function(x) {return x.selected == true}),"id");
-
-            if (!$scope.property_report && reportIds.indexOf("property_report") > -1) {
-                $scope.temp.bedrooms = [
-                    {value: -1, text: 'Average'}
-                    ,{value: -2, text: 'All'}
-                    ,{value: 0, text: 'Studios'}
-                    ,{value: 1, text: '1 Bdrs.'}
-                    ,{value: 2, text: '2 Bdrs.'}
-                    ,{value: 3, text: '3 Bdrs.'}
-                    ,{value: 4, text: '4 Bdrs.'}
-                ]
-
-                $scope.temp.bedroom = _.find($scope.temp.bedrooms, function(x) {return x.value == $scope.liveSettings.dashboardSettings.selectedBedroom});
-
-                if (!$scope.temp.bedroom) {
-                    $scope.temp.bedroom = $scope.temp.bedrooms[0];
-                }
-            }
-
 
             $scope.property_status = reportIds.indexOf("property_status") > -1;
             $scope.custom_portfolio = reportIds.indexOf("custom_portfolio") > -1;
@@ -1647,8 +1645,7 @@ define([
                 $scope.liveSettings.trends.graphs = true;
             }
 
-            $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective)
-
+            $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
         };
 
         $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
@@ -1686,8 +1683,19 @@ define([
                     {id: "nersqft", name: "Net Effective Rent / Sqft", selected: $scope.liveSettings.trends.show.nersqft},
                 ];
 
+                $scope.temp.trendsBedroom = _.find($scope.temp.bedrooms, function(x) {return x.value.toString() === $scope.liveSettings.trends.selectedBedroom.toString()});
+
+                if (!$scope.temp.trendsBedroom) {
+                    $scope.temp.trendsBedroom = $scope.temp.bedrooms[0];
+                }
+
                 $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective)
             };
+        $scope.$watch("temp.trendsBedroom", function() {
+            if ($scope.temp.trendsBedroom.value === -2) {
+                $scope.liveSettings.trends.groupProperties = true;
+            }
+        });
 
         $scope.singlePerspective = function(strPerspectives, strSelectedPerspective, settingsPerspective) {
             if ($scope.selected.Property) {
@@ -1743,10 +1751,13 @@ define([
                 }
 
                 $scope.liveSettings.trends.graphs = true;
+                $scope.liveSettings.trends.groupProperties = true;
+                $scope.liveSettings.trends.showCompAverage = true;
 
                 $scope.liveSettings.trends.daterange1 = $scope.defaultTrendsDateRange1('Last 90 Days', null, null);
 
-                $scope.liveSettings.trends.daterange2 = {enabled: true}
+                $scope.liveSettings.trends.daterange2 = {enabled: false};
+                $scope.liveSettings.trends.selectedBedroom = -1;
                 $scope.updateTrendsDaterange2('Last 90 Days');
 
                 if (rebind) {
@@ -1994,6 +2005,12 @@ define([
             }
 
             $scope.temp.compSortDir = $scope.liveSettings.dashboardSettings.orderByComp[0] == "-" ? "desc" : "asc";
+
+            $scope.temp.bedroom = _.find($scope.temp.bedrooms, function(x) {return x.value.toString() === $scope.liveSettings.dashboardSettings.selectedBedroom.toString()});
+
+            if (!$scope.temp.bedroom) {
+                $scope.temp.bedroom = $scope.temp.bedrooms[0];
+            }
 
             $scope.singlePerspective("marketPerspectives", "marketPerspectiveSelected", $scope.liveSettings.dashboardSettings.selectedPerspective);
         };
