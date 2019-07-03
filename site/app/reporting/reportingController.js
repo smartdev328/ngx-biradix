@@ -489,6 +489,10 @@ define([
 
             $scope.runSettings = _.cloneDeep($scope.liveSettings);
 
+            if ($scope.reportIds.indexOf("trends") > -1) {
+                $scope.runSettings.trends.offset = $scope.timezone;
+            }
+
             $reportingService.reportsGroup($scope.propertyIds,$scope.reportIds, $saveReportService.cleanSettings($scope.runSettings, $scope.reportIds)).then(function(response) {
 
                 $scope.configurePropertyStatusOptions();
@@ -690,33 +694,6 @@ define([
                 }
             }
 
-            if ($scope.reportIds.indexOf("trends") > -1) {
-                options.trends = {
-                    daterange1: {
-                        daterange: $scope.cleanSettings.trends.daterange1.selectedRange,
-                        start: $scope.cleanSettings.trends.daterange1.selectedStartDate,
-                        end: $scope.cleanSettings.trends.daterange1.selectedEndDate
-                    },
-                    daterange2: {
-                        daterange: $scope.cleanSettings.trends.daterange2.selectedRange,
-                        start: $scope.cleanSettings.trends.daterange2.selectedStartDate,
-                        end: $scope.cleanSettings.trends.daterange2.selectedEndDate,
-                        enabled: $scope.cleanSettings.trends.daterange2.enabled
-                    },
-                    offset: $scope.timezone,
-                    show: $scope.cleanSettings.trends.show,
-                    graphs: $scope.cleanSettings.trends.graphs,
-                    perspective: $scope.liveSettings.trends.perspective
-                };
-
-                if ($cookies.get("settings")) {
-                    options.trends.daterange1.start = $scope.liveSettings.trends.daterange1.selectedStartDate;
-                    options.trends.daterange1.end = $scope.liveSettings.trends.daterange1.selectedEndDate;
-                    options.trends.daterange2.start = $scope.liveSettings.trends.daterange2.selectedStartDate;
-                    options.trends.daterange2.end = $scope.liveSettings.trends.daterange2.selectedEndDate;
-                    options.trends.daterange2.enabled = $scope.liveSettings.trends.daterange2.enabled;
-                }
-            }
             if ($scope.reportIds.indexOf("property_rankings_summary") > -1) {
                 options.property_rankings_summary = {orderBy: $scope.liveSettings.rankingsSummary.orderBy, perspective: $scope.liveSettings.rankingsSummary.perspective};
             }
