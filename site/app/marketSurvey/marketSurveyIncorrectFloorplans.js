@@ -2,7 +2,7 @@
 define([
     "app",
 ], function(app) {
-    app.controller("marketSurveyIncorrectFloorplans", ["$scope", "$uibModal", "$rootScope", "$uibModalInstance", "$propertyService", "$dialog", "toastr", function ($scope, $uibModal, $rootScope, $uibModalInstance, $propertyService, $dialog, toastr) {
+    app.controller("marketSurveyIncorrectFloorplans", ["$scope", "$uibModal", "$rootScope", "$uibModalInstance", "$propertyService", "$incorrectFpService", "$dialog", "toastr", "ngProgress", "$httpHelperService", function ($scope, $uibModal, $rootScope, $uibModalInstance, $propertyService, $incorrectFpService, $dialog, toastr, ngProgress, $httpHelperService) {
         ga("set", "title", "/IncorrectFloorplans");
         ga("set", "page", "/IncorrectFloorplans");
         ga("send", "pageview");
@@ -44,18 +44,21 @@ define([
             }
 
         }, function(error) {
-            if (error.status == 401) {
-                $rootScope.logoff();
-                return;
-            }
-
-            rg4js('send', new Error("User saw API unavailable error alert/message/page"));
+            $httpHelperService.handleError(error);
             $scope.apiError = true;
         });
 
         $scope.done = function() {
             $scope.incorrectFpArray.submitted = true;
-            console.log($scope.incorrectFpArray);
+
+            ngProgress.start();
+            $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {
+                // toastr.success($scope.model.name + " created successfully");
+                ngProgress.complete();
+            }).catch(function(err) {
+                $httpHelperService.handleError(err);
+                ngProgress.complete();
+            });
         };
 
         $scope.removeFile = function() {

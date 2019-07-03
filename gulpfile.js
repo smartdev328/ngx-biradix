@@ -95,6 +95,7 @@ gulp.task("globaljs", function() {
         "./site/services/mediaService.js",
         "./site/services/approvedListsService.js",
         "./site/services/perspectivesService.js",
+        "./site/services/incorrectFpService.js",
 
         "./site/components/propertyProfile/coverPage.js",
         "./site/components/propertyProfile/profile.js",
