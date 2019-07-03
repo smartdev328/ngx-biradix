@@ -38,7 +38,9 @@ define([
 
         $scope.done = function() {
             $scope.incorrectFpArray.floorplans = $scope.selectedProperty.floorplans;
+            $scope.incorrectFpArray.propertyName = $scope.selectedProperty.name;
             $scope.incorrectFpArray.submitted = true;
+            console.log($scope.incorrectFpArray);
 
             ngProgress.start();
             $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {

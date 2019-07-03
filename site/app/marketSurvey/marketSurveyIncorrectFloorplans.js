@@ -8,11 +8,12 @@ define([
         ga("send", "pageview");
 
         $scope.incorrectFpArray = {
-            submitted: false
+            submitted: false,
+            isUpload: false
         };
 
         $scope.cancel = function() {
-            if ($scope.incorrectFpArray.name || $scope.incorrectFpArray.message) {
+            if ($scope.incorrectFpArray.fileName || $scope.incorrectFpArray.message) {
                 $dialog.confirm("You have uploaded floor plans that have not been saved. Are you sure you want to close without saving?", function () {
                     $uibModalInstance.dismiss("cancel");
                 }, function() {
@@ -50,7 +51,8 @@ define([
 
         $scope.done = function() {
             $scope.incorrectFpArray.submitted = true;
-
+            $scope.incorrectFpArray.propertyName = $scope.selectedProperty.name;
+            console.log($scope.incorrectFpArray);
             ngProgress.start();
             $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {
                 // toastr.success($scope.model.name + " created successfully");
@@ -62,16 +64,17 @@ define([
         };
 
         $scope.removeFile = function() {
-            $scope.incorrectFpArray.name = '';
+            $scope.incorrectFpArray.fileName = '';
             $scope.incorrectFpArray.file = '';
         }
 
         $scope.uploadFile = function(upload) {
             var file = upload.files[0];
-            $scope.incorrectFpArray.name = file.name;
+            $scope.incorrectFpArray.fileName = file.name;
             var reader = new FileReader();
             reader.onload = function(){
-                $scope.incorrectFpArray.file = reader.result;
+                $scope.incorrectFpArray.fileContents = reader.result;
+                $scope.incorrectFpArray.isUpload = true;
             };
             reader.readAsDataURL(file);
         };

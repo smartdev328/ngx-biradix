@@ -2,7 +2,7 @@ angular.module("biradix.global").factory('$incorrectFpService', ['$http', "$http
     var fac = {};
 
     fac.send = function (propertyId, incorrectFp) {
-        return $http.put(gAPI + '/api/1.0/properties/incorrectFp/' + propertyId + "?bust=" + (new Date()).getTime(), incorrectFp, {
+        return $http.put(gAPI + '/api/1.0/properties/' + propertyId + '/incorrectFloorplans?bust=' + (new Date()).getTime(), incorrectFp, {
             headers: $httpHelperService.authHeader()})
             .success(function(response) {
                 return response;
