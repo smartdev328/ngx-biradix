@@ -8,22 +8,22 @@
                 <b>Date Range</b>
             </td>
             <Td>
-                <B>{{report.date1.dashboard.property.name}}</B><Br>
+                <B>Your Properties</B><Br>
             </Td>
-            <Td>
+            <Td ng-if="settings.showCompAverage">
                 <B>Comp Avg.</B><Br>
             </Td>
             <Td ng-if="report.date2">
                 <b>Date Range</b>
             </Td>
-            <Td ng-if="report.date2">
-                <B>{{report.date1.dashboard.property.name}}</B><Br>
+            <Td ng-if="settings.daterange2.enabled">
+                <B>Your Properties</B><Br>
             </Td>
-            <Td ng-if="report.date2">
+            <Td ng-if="settings.daterange2.enabled && settings.showCompAverage">
                 <B>Comp Avg.</B><Br>
             </Td>
         </tr>
-        <tr ng-repeat="date in report.dates" ng-if = "
+        <tr ng-repeat="date in report.points" ng-if = "
             date.points[options.metric].day1subject != null
             || date.points[options.metric].day1averages != null
             || date.points[options.metric].day2subject != null
@@ -35,16 +35,16 @@
             <td>
                 <div ng-if="date.points[options.metric].day1subject != null">{{options.prefix}}{{date.points[options.metric].day1subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </td>
-            <Td>
+            <Td ng-if="settings.showCompAverage">
                 <div ng-if="date.points[options.metric].day1averages != null">{{options.prefix}}{{date.points[options.metric].day1averages.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </Td>
-            <Td ng-if="report.date2">
+            <Td ng-if="settings.daterange2.enabled">
                 Week {{date.w}} - <i>{{date.day2date | date : 'shortDate'}}</i>
             </Td>
-            <Td ng-if="report.date2">
+            <Td ng-if="settings.daterange2.enabled">
                 <div ng-if="date.points[options.metric].day2subject != null">{{options.prefix}}{{date.points[options.metric].day2subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </Td>
-            <Td ng-if="report.date2">
+            <Td ng-if="settings.daterange2.enabled && settings.showCompAverage">
                 <div ng-if="date.points[options.metric].day2averages != null">{{options.prefix}}{{date.points[options.metric].day2averages.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </Td>
         </tr>
@@ -55,16 +55,16 @@
             <td>
                 <div ng-if="averages.day1subjectcount > 0">{{options.prefix}}{{averages.day1subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </td>
-            <Td>
+            <Td ng-if="settings.showCompAverage">
                 <div ng-if="averages.day1averagescount > 0">{{options.prefix}}{{averages.day1averages.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </Td>
-            <Td ng-if="report.date2">
+            <Td ng-if="settings.daterange2.enabled">
                 
             </Td>
-            <Td ng-if="report.date2">
+            <Td ng-if="settings.daterange2.enabled">
                 <div ng-if="averages.day2subjectcount > 0">{{options.prefix}}{{averages.day2subject.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </Td>
-            <Td ng-if="report.date2">
+            <Td ng-if="settings.daterange2.enabled && settings.showCompAverage">
                 <div ng-if="averages.day2averagescount > 0">{{options.prefix}}{{averages.day2averages.toFixed(options.decimalPlaces)}}{{options.suffix}}</div>
             </Td>
         </tr>
