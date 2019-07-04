@@ -75,10 +75,10 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             $scope.d1 = d1;
                             $scope.d2 = d2;
 
-                            var d1subject = {name: "(" + d1 + ") " + $scope.report.date1.dashboard.property.name, data:[], color: '#7CB5EC'};
+                            var d1subject = {name: "(" + d1 + ") " + "Your Properties", data:[], color: '#7CB5EC'};
                             var d1scomps = {name: "(" + d1 + ") " + 'Comps', data:[], color: "#434348"};
 
-                            var d2subject = {name: "(" + d2 + ") " + $scope.report.date1.dashboard.property.name, data:[],dashStyle: 'shortdash', color: '#7CB5EC'};
+                            var d2subject = {name: "(" + d2 + ") " + "Your Properties", data:[],dashStyle: 'shortdash', color: '#7CB5EC'};
                             var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'shortdash', color: "#434348"};
 
 
@@ -92,7 +92,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                 day2averages: 0,
                                 day2averagescount : 0,                                
                             }
-                            $scope.report.dates.forEach(function(d,i) {
+                            $scope.report.points.forEach(function(d,i) {
 
                                 if (typeof d.points[$scope.options.metric].day1subject != 'undefined') {
                                     d1subject.data.push({x:i,y: Math.round(d.points[$scope.options.metric].day1subject * 100) / 100, custom: d.day1date, week: d.w});
@@ -169,13 +169,17 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                 $scope.averages.day2averages /= $scope.averages.day2averagescount;
                             }                            
 
-                            var data = [d1subject,d1scomps];
-
-                            if ($scope.report.date2) {
-                                data.push(d2subject);
-                                data.push(d2scomps);
+                            var data = [d1subject];
+                            if ($scope.settings.showCompAverage) {
+                                data.push(d1scomps);
                             }
 
+                            if ($scope.settings.daterange2.enabled) {
+                                data.push(d2subject);
+                                if ($scope.settings.showCompAverage) {
+                                    data.push(d2scomps);
+                                }
+                            }
 
                             var el = $($element).find('.visible-print-block')
                             var el2 = $($element).find('.hidden-print-block')
