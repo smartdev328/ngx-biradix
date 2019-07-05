@@ -167,7 +167,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
 
                             if ($scope.averages.day2averagescount > 0) {
                                 $scope.averages.day2averages /= $scope.averages.day2averagescount;
-                            }                            
+                            }
 
                             var data = [d1subject];
                             if ($scope.settings.showCompAverage) {
