@@ -1671,8 +1671,15 @@ define([
         $scope.$watch("temp.trendsBedroom", function() {
             if ($scope.temp.trendsBedroom.value === -2) {
                 $scope.liveSettings.trends.groupProperties = true;
+                $scope.liveSettings.trends.graphs = true;
             }
         });
+
+            $scope.$watch("liveSettings.trends.groupProperties", function() {
+                if (!$scope.liveSettings.trends.groupProperties) {
+                    $scope.liveSettings.trends.graphs = true;
+                }
+            });
 
         $scope.singlePerspective = function(strPerspectives, strSelectedPerspective, settingsPerspective) {
             if ($scope.selected.Property) {

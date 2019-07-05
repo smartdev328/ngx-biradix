@@ -150,7 +150,6 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                 if (typeof d.points[$scope.options.metric].day2averages != 'undefined' && (typeof $scope.options.max == 'undefined' || d.points[$scope.options.metric].day1subject >  $scope.options.max)) {
                                     $scope.options.max = d.points[$scope.options.metric].day2averages;
                                 }
-
                             })
 
                             if ($scope.averages.day1subjectcount > 0) {
