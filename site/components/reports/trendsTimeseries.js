@@ -89,6 +89,18 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             var singleLineSubjects = $scope.getSingleLineSubjects(d1, d2);
                             var singleLineComps = $scope.getSingleLineComps(d1, d2);
                             var ungroupedSubjects = $scope.getUngroupedSubjects(d1, d2);
+                            var allFlooplanSubjects = [];
+                            var allFlooplanComps = [];
+
+                            if ($scope.settings.selectedBedroom === -2) {
+                                if ($scope.options.metric === 'ner') {
+                                    allFlooplanSubjects = $scope.getAllFloorplansSubjects(d1, d2, '');
+                                    allFlooplanComps = $scope.getAllFloorplansComps(d1, d2, '');
+                                } else if ($scope.options.metric === 'nersqft') {
+                                    allFlooplanSubjects = $scope.getAllFloorplansSubjects(d1, d2, '_nersqft');
+                                    allFlooplanComps = $scope.getAllFloorplansComps(d1, d2, '_nersqft');
+                                }
+                            }
 
                             $scope.calcAverages();
 
@@ -97,24 +109,41 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             if (!$scope.settings.groupProperties) {
                                 data = data.concat(ungroupedSubjects.d1subjects);
                             } else {
-                                data = data.concat([singleLineSubjects.d1subject]);
+                                if ($scope.settings.selectedBedroom === -2 && ($scope.options.metric === 'ner' || $scope.options.metric === 'nersqft')) {
+                                    data = data.concat(allFlooplanSubjects.d1subjects);
+                                } else {
+                                    data = data.concat([singleLineSubjects.d1subject]);
+                                }
                             }
 
                             if ($scope.settings.showCompAverage) {
-                                data.push(singleLineComps.d1scomps);
+                                if ($scope.settings.selectedBedroom === -2 && ($scope.options.metric === 'ner' || $scope.options.metric === 'nersqft')) {
+                                    data = data.concat(allFlooplanComps.d1averages);
+                                } else {
+                                    data = data.concat([singleLineComps.d1comp]);
+                                }
                             }
 
                             if ($scope.settings.daterange2.enabled) {
                                 if (!$scope.settings.groupProperties) {
                                     data = data.concat(ungroupedSubjects.d2subjects);
                                 } else {
-                                    data = data.concat([singleLineSubjects.d2subject]);
+                                    if ($scope.settings.selectedBedroom === -2 && ($scope.options.metric === 'ner' || $scope.options.metric === 'nersqft')) {
+                                        data = data.concat(allFlooplanSubjects.d2subjects);
+                                    } else {
+                                        data = data.concat([singleLineSubjects.d2subject]);
+                                    }
                                 }
                                 if ($scope.settings.showCompAverage) {
-                                    data.push(singleLineComps.d2scomps);
+                                    if ($scope.settings.showCompAverage) {
+                                        if ($scope.settings.selectedBedroom === -2 && ($scope.options.metric === 'ner' || $scope.options.metric === 'nersqft')) {
+                                            data = data.concat(allFlooplanComps.d2averages);
+                                        } else {
+                                            data = data.concat([singleLineComps.d2comp]);
+                                        }
+                                    }
                                 }
                             }
-
                             $scope.calcMinMax(data);
 
                             var el = $($element).find('.visible-print-block')
@@ -421,7 +450,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             $scope.averages.day2averages+=d.points[$scope.options.metric].day2averages;
                         }
                     });
-                    return {d1scomps: d1scomps, d2scomps: d2scomps};
+                    return {d1comp: d1scomps, d2comp: d2scomps};
                 };
 
                 $scope.getSingleLineSubjects = function(d1, d2) {
@@ -444,6 +473,90 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                     return {d1subject: d1subject, d2subject: d2subject}
                 };
 
+                $scope.getAllFloorplansSubjects = function(d1, d2, suffix) {
+                    var d1subjects = [];
+                    var d2subjects = [];
+                    var d1subject;
+                    var d2subject;
+                    $scope.report.points.forEach(function(d,i) {
+                        for (var b in $scope.report.bedrooms) {
+                            d1subject = d1subjects.find(function(s) {
+                                return s.b === b;
+                            });
+
+                            if (!d1subject) {
+                                d1subject = {name: "(" + d1 + ") " + "Your Properties: " + b + " Bdrs.", data:[], color: '', b: b};
+                                d1subjects.push(d1subject);
+                            }
+
+                            d2subject = d2subjects.find(function(s) {
+                                return s.b === b;
+                            });
+
+                            if (!d2subject) {
+                                d2subject = {name: "(" + d2 + ") " + "Your Properties: " + b + " Bdrs.", data:[], color: '', dashStyle: 'shortdash', b: b};
+                                d2subjects.push(d2subject);
+                            }
+
+                            if (d.points[b + suffix] && typeof d.points[b + suffix].day1subject != 'undefined') {
+                                d1subject.data.push({x:i,y: Math.round(d.points[b + suffix].day1subject * 100) / 100, custom: d.day1date, week: d.w});
+                                $scope.averages.day1subjectcount++;
+                                $scope.averages.day1subject+=d.points[b + suffix].day1subject;
+                            }
+
+                            if (d.points[b + suffix] && typeof d.points[b + suffix].day2subject != 'undefined') {
+                                d2subject.data.push({x:i,y: Math.round(d.points[b + suffix].day2subject * 100) / 100, custom: d.day2date, week: d.w});
+                                $scope.averages.day2subjectcount++;
+                                $scope.averages.day2subject+=d.points[b + suffix].day2subject;
+                            }
+                        }
+                    });
+
+                    return {d1subjects: d1subjects, d2subjects: d2subjects}
+                };
+
+                $scope.getAllFloorplansComps = function(d1, d2, suffix) {
+                    var d1averages = [];
+                    var d2averages = [];
+                    var d1average;
+                    var d2average;
+                    $scope.report.points.forEach(function(d,i) {
+                        for (var b in $scope.report.bedrooms) {
+                            d1average = d1averages.find(function(s) {
+                                return s.b === b;
+                            });
+
+                            if (!d1average) {
+                                d1average = {name: "(" + d1 + ") " + "Your Comps: " + b + " Bdrs.", data:[], color: '', b: b};
+                                d1averages.push(d1average);
+                            }
+
+                            d2average = d2averages.find(function(s) {
+                                return s.b === b;
+                            });
+
+                            if (!d2average) {
+                                d2average = {name: "(" + d2 + ") " + "Your Comps: " + b + " Bdrs.", data:[], color: '', dashStyle: 'shortdash', b: b};
+                                d2averages.push(d2average);
+                            }
+
+                            if (d.points[b + suffix] && typeof d.points[b + suffix].day1averages != 'undefined') {
+                                d1average.data.push({x:i,y: Math.round(d.points[b + suffix].day1averages * 100) / 100, custom: d.day1date, week: d.w});
+                                $scope.averages.day1averagescount++;
+                                $scope.averages.day1averages+=d.points[b + suffix].day1averages;
+                            }
+
+                            if (d.points[b + suffix] && typeof d.points[b + suffix].day2averages != 'undefined') {
+                                d2average.data.push({x:i,y: Math.round(d.points[b + suffix].day2averages * 100) / 100, custom: d.day2date, week: d.w});
+                                $scope.averages.day2averagescount++;
+                                $scope.averages.day2averages +=d.points[b + suffix].day2averages;
+                            }
+                        }
+                    });
+
+                    return {d1averages: d1averages, d2averages: d2averages}
+                };
+                
                 $scope.getUngroupedSubjects = function(d1, d2) {
                     var d1subjects = [];
                     var d2subjects = [];
