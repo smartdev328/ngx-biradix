@@ -88,20 +88,33 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
 
                             var singleLineSubjects = $scope.getSingleLineSubjects(d1, d2);
                             var singleLineComps = $scope.getSingleLineComps(d1, d2);
+                            var ungroupedSubjects = $scope.getUngroupedSubjects(d1, d2);
 
                             $scope.calcAverages();
 
-                            var data = [singleLineSubjects.d1subject];
+                            var data = [];
+
+                            if (!$scope.settings.groupProperties) {
+                                data = data.concat(ungroupedSubjects.d1subjects);
+                            } else {
+                                data = data.concat([singleLineSubjects.d1subject]);
+                            }
+
                             if ($scope.settings.showCompAverage) {
                                 data.push(singleLineComps.d1scomps);
                             }
 
                             if ($scope.settings.daterange2.enabled) {
-                                data.push(singleLineSubjects.d2subject);
+                                if (!$scope.settings.groupProperties) {
+                                    data = data.concat(ungroupedSubjects.d2subjects);
+                                } else {
+                                    data = data.concat([singleLineSubjects.d2subject]);
+                                }
                                 if ($scope.settings.showCompAverage) {
                                     data.push(singleLineComps.d2scomps);
                                 }
                             }
+
                             $scope.calcMinMax(data);
 
                             var el = $($element).find('.visible-print-block')
@@ -429,6 +442,50 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                         }
                     });
                     return {d1subject: d1subject, d2subject: d2subject}
+                };
+
+                $scope.getUngroupedSubjects = function(d1, d2) {
+                    var d1subjects = [];
+                    var d2subjects = [];
+                    var d1subject;
+                    var d2subject;
+                    var subject;
+                    $scope.report.points.forEach(function(d,i) {
+                        for (var subjectId in d.points[$scope.options.metric].subjects) {
+                            subject = d.points[$scope.options.metric].subjects[subjectId];
+                            d1subject = d1subjects.find(function(s) {
+                                return s.propertyId.toString() === subjectId.toString()
+                            });
+
+                            if (!d1subject) {
+                                d1subject = {name: "(" + d1 + ") " + subject.name, data:[], color: '', propertyId: subjectId.toString()};
+                                d1subjects.push(d1subject);
+                            }
+
+                            d2subject = d2subjects.find(function(s) {
+                                return s.propertyId.toString() === subjectId.toString()
+                            });
+
+                            if (!d2subject) {
+                                d2subject = {name: "(" + d2 + ") " + subject.name, data:[], color: '', dashStyle: 'shortdash', propertyId: subjectId.toString()};
+                                d2subjects.push(d2subject);
+                            }
+
+                                if (typeof subject.day1subject != 'undefined') {
+                                    d1subject.data.push({x:i,y: Math.round(subject.day1subject * 100) / 100, custom: d.day1date, week: d.w});
+                                    $scope.averages.day1subjectcount++;
+                                    $scope.averages.day1subject+=subject.day1subject;
+                                }
+
+                                if (typeof subject.day2subject != 'undefined') {
+                                    d2subject.data.push({x:i,y: Math.round(subject.day2subject * 100) / 100, custom: d.day2date, week: d.w});
+                                    $scope.averages.day2subjectcount++;
+                                    $scope.averages.day2subject+=subject.day2subject;
+                                }
+                        }
+                    });
+
+                    return {d1subjects: d1subjects, d2subjects: d2subjects}
                 }
             },
             template:
