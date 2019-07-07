@@ -434,9 +434,32 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                     });
                 };
 
+                $scope.getBedroomsSuffix = function() {
+                    var suffix = "";
+
+                    switch($scope.options.metric) {
+                        case "ner":
+                        case "nersqft":
+                        case "rent":
+                        case "rentsqft":
+                        case "runrate":
+                        case "runratesqft":
+                        case "concessions":
+                            if ($scope.settings.selectedBedroom === -1) {
+                                suffix = ": All Bdrs.";
+                            } else if ($scope.settings.selectedBedroom !== -2) {
+                                suffix = ": " + $scope.settings.selectedBedroom + " Bdrs.";
+                            }
+                            break;
+                    }
+                    return suffix;
+                }
+
                 $scope.getSingleLineComps = function(d1, d2) {
-                    var d1scomps = {name: "(" + d1 + ") " + 'Comps', data:[], color: "#434348"};
-                    var d2scomps = {name: "(" + d2 + ") " + 'Comps', data:[],dashStyle: 'shortdash', color: "#434348"};
+                    var suffix = $scope.getBedroomsSuffix();
+
+                    var d1scomps = {name: "(" + d1 + ") " + 'Comps' + suffix, data:[], color: "#434348"};
+                    var d2scomps = {name: "(" + d2 + ") " + 'Comps' + suffix, data:[],dashStyle: 'shortdash', color: "#434348"};
 
                     $scope.report.points.forEach(function(d,i) {
                         if (typeof d.points[$scope.options.metric].day1averages != 'undefined') {
@@ -454,8 +477,10 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                 };
 
                 $scope.getSingleLineSubjects = function(d1, d2) {
-                    var d1subject = {name: "(" + d1 + ") " + "Your Properties", data:[], color: '#7CB5EC'};
-                    var d2subject = {name: "(" + d2 + ") " + "Your Properties", data:[],dashStyle: 'shortdash', color: '#7CB5EC'};
+                    var suffix = $scope.getBedroomsSuffix();
+
+                    var d1subject = {name: "(" + d1 + ") " + "Your Properties"+ suffix, data:[], color: '#7CB5EC'};
+                    var d2subject = {name: "(" + d2 + ") " + "Your Properties"+ suffix, data:[],dashStyle: 'shortdash', color: '#7CB5EC'};
 
                     $scope.report.points.forEach(function(d,i) {
                         if (typeof d.points[$scope.options.metric].day1subject != 'undefined') {

@@ -477,7 +477,7 @@
                                     Show Graphs:<br>
                                     <toggle-switch checked="liveSettings.trends.graphs"
                                    disabled="!liveSettings.trends.groupProperties || temp.trendsBedroom.value == -2"
-                                   popover="liveSettings.trends.groupProperties && temp.trendsBedroom.value != -2 ? '' : (temp.trendsBedroom.value == -2 ? 'The table view is NOT available when the \'All\' floor plan option is set': 'The table view is NOT available when the \'Group Subject Properties\' is set to \'Off\'')"
+                                   popover="liveSettings.trends.groupProperties && temp.trendsBedroom.value != -2 ? '' : (temp.trendsBedroom.value == -2 ? 'The table view is not available when the \'All\' floor plan option is set': 'The table view is not available when the \'Group Subject Properties\' is set to \'Off\'')"
 
                                     ></toggle-switch>&nbsp;
                                 </div>
@@ -489,8 +489,8 @@
                                 <div class="col-xs-12 col-sm-4 col-md-3"style="margin:15px 0px">
                                     Group Subject Properties:<br>
                                     <toggle-switch checked="liveSettings.trends.groupProperties"
-                                                   disabled="propertyItems.items.length > 25 || temp.trendsBedroom.value == -2"
-                                                   popover="propertyItems.items.length <= 25 && temp.trendsBedroom.value != -2 ? '' : (temp.trendsBedroom.value == -2 ? 'The \'All\' floor plan option is only available when \'Group Subject Properties\' is set to \'On\'': 'Trend Reports for more than 25 properties requires the Group Properties preference to be turned on.')"
+                                                   disabled="propertyItems.items.length > 10 || temp.trendsBedroom.value == -2"
+                                                   popover="propertyItems.items.length <= 10 && temp.trendsBedroom.value != -2 ? '' : (temp.trendsBedroom.value == -2 ? 'The \'All\' floor plan option is only available when \'Group Subject Properties\' is set to \'On\'': 'Trend Reports for more than 10 properties requires the Group Properties preference to be turned on.')"
                                     ></toggle-switch>&nbsp;
                                 </div>
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">

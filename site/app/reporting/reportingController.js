@@ -942,7 +942,7 @@ define([
             $scope.temp.propertyStatusPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.propertyStatusPerspectives, $scope.liveSettings.propertyStatus.perspectives);
             $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
 
-            if ($scope.propertyItems.items.length > 25) {
+            if ($scope.propertyItems.items.length > 10) {
                 $scope.liveSettings.trends.groupProperties = true;
             }
         },true);
