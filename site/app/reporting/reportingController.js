@@ -940,10 +940,6 @@ define([
 
         $scope.$watch('propertyItems.items', function() {
 
-            if ($scope.propertyItems.items.length > 10) {
-                $scope.liveSettings.trends.groupProperties = true;
-            }
-
             if ($scope.liveSettings.customPortfolio) {
                 $scope.temp.customPortfolioPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.customPortfolioPerspectives, $scope.liveSettings.customPortfolio.perspectives);
             }
@@ -953,6 +949,10 @@ define([
 
             if ($scope.liveSettings.trends) {
                 $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
+
+                if ($scope.propertyItems.items.length > 10) {
+                    $scope.liveSettings.trends.groupProperties = true;
+                }
             }
 
         },true);
