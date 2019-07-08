@@ -1696,7 +1696,7 @@ define([
         });
 
             $scope.$watch("liveSettings.trends.groupProperties", function() {
-                if (!$scope.liveSettings.trends) {
+                if ($scope.liveSettings.trends) {
                     if (!$scope.liveSettings.trends.groupProperties) {
                         $scope.liveSettings.trends.graphs = true;
                     }
