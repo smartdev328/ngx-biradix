@@ -446,7 +446,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                         case "runratesqft":
                         case "concessions":
                             if ($scope.settings.selectedBedroom === -1) {
-                                suffix = ": All Bdrs.";
+                                suffix = "";
                             } else if ($scope.settings.selectedBedroom !== -2) {
                                 suffix = ": " + $scope.settings.selectedBedroom + " Bdrs.";
                             }

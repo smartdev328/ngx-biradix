@@ -474,12 +474,13 @@
                                 </div>
                                 <br clear="all" class="visible-sm">
                                 <div class="col-xs-12 col-sm-4 col-md-3"style="margin:15px 0px">
-                                    Show Graphs:<br>
-                                    <toggle-switch checked="liveSettings.trends.graphs"
-                                   disabled="!liveSettings.trends.groupProperties || temp.trendsBedroom.value == -2"
-                                   popover="liveSettings.trends.groupProperties && temp.trendsBedroom.value != -2 ? '' : (temp.trendsBedroom.value == -2 ? 'The table view is not available when the \'All\' floor plan option is set': 'The table view is not available when the \'Group Subject Properties\' is set to \'Off\'')"
-
-                                    ></toggle-switch>&nbsp;
+                                            <span class="fa fa-eye-slash"
+                                                  popover-trigger="'mouseenter'"
+                                                  popover-placement="top"
+                                                  popover-append-to-body="true"
+                                                  uib-popover="Perspectives"
+                                            ></span> Select Perspective(s)<Br>
+                                    <filter-list options="trendsPerspectiveOptions" items="temp.trendsPerspectives" tooltipdir="'right'"></filter-list>
                                 </div>
                                 <br clear="all" class="visible-md visible-lg">
                                 <div class="col-xs-12 col-sm-4 col-md-3"style="margin:15px 0px">
@@ -502,13 +503,12 @@
                                     ></select>
                                 </div>
                                 <div class="col-xs-12 col-sm-4 col-md-3" style="margin:15px 0px">
-        <span class="fa fa-eye-slash"
-              popover-trigger="'mouseenter'"
-              popover-placement="top"
-              popover-append-to-body="true"
-              uib-popover="Perspectives"
-        ></span> Select Perspective(s)<Br>
-                                    <filter-list options="trendsPerspectiveOptions" items="temp.trendsPerspectives" tooltipdir="'right'"></filter-list>
+                                    Show Graphs:<br>
+                                    <toggle-switch checked="liveSettings.trends.graphs"
+                                                   disabled="!liveSettings.trends.groupProperties || temp.trendsBedroom.value == -2"
+                                                   popover="liveSettings.trends.groupProperties && temp.trendsBedroom.value != -2 ? '' : (temp.trendsBedroom.value == -2 ? 'The table view is not available when the \'All\' floor plan option is set': 'The table view is not available when the \'Group Subject Properties\' is set to \'Off\'')"
+
+                                    ></toggle-switch>&nbsp;
                                 </div>
                             </div>
                         </div>
