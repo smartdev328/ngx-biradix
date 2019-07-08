@@ -588,6 +588,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                     var d1subject;
                     var d2subject;
                     var subject;
+                    var suffix = $scope.getBedroomsSuffix();
                     $scope.report.points.forEach(function(d,i) {
                         for (var subjectId in d.points[$scope.options.metric].subjects) {
                             subject = d.points[$scope.options.metric].subjects[subjectId];
@@ -596,7 +597,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d1subject) {
-                                d1subject = {name: "(" + d1 + ") " + subject.name, data:[], color: '', propertyId: subjectId.toString()};
+                                d1subject = {name: "(" + d1 + ") " + subject.name + suffix, data:[], color: '', propertyId: subjectId.toString()};
                                 d1subjects.push(d1subject);
                             }
 
@@ -605,7 +606,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d2subject) {
-                                d2subject = {name: "(" + d2 + ") " + subject.name, data:[], color: '', dashStyle: 'shortdash', propertyId: subjectId.toString()};
+                                d2subject = {name: "(" + d2 + ") " + subject.name + suffix, data:[], color: '', dashStyle: 'shortdash', propertyId: subjectId.toString()};
                                 d2subjects.push(d2subject);
                             }
 
