@@ -937,14 +937,24 @@ define([
             $scope.reportNamesChanged();
 
         },true);
+
         $scope.$watch('propertyItems.items', function() {
-            $scope.temp.customPortfolioPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.customPortfolioPerspectives, $scope.liveSettings.customPortfolio.perspectives);
-            $scope.temp.propertyStatusPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.propertyStatusPerspectives, $scope.liveSettings.propertyStatus.perspectives);
-            $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
 
             if ($scope.propertyItems.items.length > 10) {
                 $scope.liveSettings.trends.groupProperties = true;
             }
+
+            if ($scope.liveSettings.customPortfolio) {
+                $scope.temp.customPortfolioPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.customPortfolioPerspectives, $scope.liveSettings.customPortfolio.perspectives);
+            }
+            if ($scope.liveSettings.propertyStatus) {
+                $scope.temp.propertyStatusPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.propertyStatusPerspectives, $scope.liveSettings.propertyStatus.perspectives);
+            }
+
+            if ($scope.liveSettings.trends) {
+                $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
+            }
+
         },true);
 
         $scope.$watch('selected.Property', function() {
@@ -953,11 +963,21 @@ define([
                 $scope.changeProperty();
             }
 
-            $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective);
-            $scope.singlePerspective("marketPerspectives", "marketPerspectiveSelected", $scope.liveSettings.dashboardSettings.selectedPerspective);
-            $scope.singlePerspective("concessionPerspectives", "concessionPerspectiveSelected", $scope.liveSettings.concession.perspective);
-            $scope.singlePerspective("rankingSummaryPerspectives", "rankingSummaryPerspectiveSelected", $scope.liveSettings.rankingsSummary.perspective);
-
+            if ($scope.liveSettings.trends) {
+                $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective);
+            }
+            if ($scope.liveSettings.rankings) {
+                $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective);
+            }
+            if ($scope.liveSettings.dashboardSettings) {
+                $scope.singlePerspective("marketPerspectives", "marketPerspectiveSelected", $scope.liveSettings.dashboardSettings.selectedPerspective);
+            }
+            if ($scope.liveSettings.concession) {
+                $scope.singlePerspective("concessionPerspectives", "concessionPerspectiveSelected", $scope.liveSettings.concession.perspective);
+            }
+            if ($scope.liveSettings.rankingsSummary) {
+                $scope.singlePerspective("rankingSummaryPerspectives", "rankingSummaryPerspectiveSelected", $scope.liveSettings.rankingsSummary.perspective);
+            }
         }, true);
 
         $scope.reportNamesChanged = function() {
