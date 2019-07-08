@@ -1146,11 +1146,11 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
         $scope.incorrectFloorplans = function () {
             require([
-                '/app/marketSurvey/marketSurveyIncorrectFloorplans.js'
+                '/app/marketSurvey/marketSurveyIncorrectFloorplansController.js'
             ], function () {
                 $uibModal.open({
                     templateUrl: '/app/marketSurvey/incorrectFloorplans.html?bust=' + version,
-                    controller: 'marketSurveyIncorrectFloorplans',
+                    controller: 'marketSurveyIncorrectFloorplansController',
                     size: "md",
                     keyboard: false,
                     backdrop: 'static'

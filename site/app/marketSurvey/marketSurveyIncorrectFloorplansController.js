@@ -2,7 +2,7 @@
 define([
     "app",
 ], function(app) {
-    app.controller("marketSurveyIncorrectFloorplans", ["$scope", "$uibModal", "$rootScope", "$uibModalInstance", "$propertyService", "$incorrectFpService", "$dialog", "toastr", "ngProgress", "$httpHelperService", function ($scope, $uibModal, $rootScope, $uibModalInstance, $propertyService, $incorrectFpService, $dialog, toastr, ngProgress, $httpHelperService) {
+    app.controller("marketSurveyIncorrectFloorplansController", ["$scope", "$uibModal", "$rootScope", "$uibModalInstance", "$propertyService", "$incorrectFpService", "$dialog", "toastr", "ngProgress", "$httpHelperService", function ($scope, $uibModal, $rootScope, $uibModalInstance, $propertyService, $incorrectFpService, $dialog, toastr, ngProgress, $httpHelperService) {
         ga("set", "title", "/IncorrectFloorplans");
         ga("set", "page", "/IncorrectFloorplans");
         ga("send", "pageview");
@@ -55,10 +55,10 @@ define([
             console.log($scope.incorrectFpArray);
             ngProgress.start();
             $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {
-                // toastr.success($scope.model.name + " created successfully");
                 ngProgress.complete();
             }).catch(function(err) {
-                $httpHelperService.handleError(err);
+                rg4js('send', new Error("User saw API unavailable error alert/message/page"));
+                toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 ngProgress.complete();
             });
         };
@@ -81,11 +81,11 @@ define([
 
         $scope.incorrectFloorplansTable = function () {
             require([
-                '/app/marketSurvey/marketSurveyIncorrectFloorplansTable.js'
+                '/app/marketSurvey/marketSurveyIncorrectFloorplansTableController.js'
             ], function () {
                 $uibModal.open({
                     templateUrl: '/app/marketSurvey/incorrectFloorplansTable.html?bust=' + version,
-                    controller: 'marketSurveyIncorrectFloorplansTable',
+                    controller: 'marketSurveyIncorrectFloorplansTableController',
                     size: "md",
                     keyboard: false,
                     backdrop: 'static',
