@@ -53,7 +53,6 @@ define([
                 var expireDate = new Date();
                 expireDate.setDate(expireDate.getDate() + 365);
                 $cookies.put('email', $scope.email, {expires : expireDate});
-                $cookies.put('host', domainInfo.data.domain, {expires : expireDate});
                 if (domainInfo.data.allowSSO) {
                     var redirect_uri =  "https://" + domainInfo.data.domain;
 
@@ -75,6 +74,7 @@ define([
                         ) +
                         '&login_hint=' + $scope.email;
                 } else {
+                    $cookies.put('host', domainInfo.data.domain, {expires : expireDate});
                     $scope.redirect(domainInfo.data.domain);
                 }
             } else {
