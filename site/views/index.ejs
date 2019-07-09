@@ -214,7 +214,7 @@
                     <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1">
                         <a href = "#/updateProfile?settings=1" ng-class="{'active': sideNav == 'UpdateSettings', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Settings</a>
                     </li>
-                    <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1">
+                    <li ng-if="$root.me.permissions.indexOf('Hide/Account') == -1 && !$root.me.allowSSO">
                         <a href = "#/updateProfile?password=1" ng-class="{'active': sideNav == 'UpdatePassword', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Password</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Users') > -1">
