@@ -1689,7 +1689,7 @@ define([
                 $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective)
             };
         $scope.$watch("temp.trendsBedroom", function() {
-            if ($scope.temp.trendsBedroom.value === -2) {
+            if ($scope.temp && $scope.temp.trendsBedroom && $scope.temp.trendsBedroom.value === -2) {
                 $scope.liveSettings.trends.groupProperties = true;
                 $scope.liveSettings.trends.graphs = true;
             }
