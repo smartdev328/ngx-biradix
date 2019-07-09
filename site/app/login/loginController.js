@@ -52,11 +52,14 @@ define([
 
             $authService.login($scope.email, $scope.password).then(function (authinfo) {
                     if (authinfo.data.token == null) {
-                        toastr.error(authinfo.data[0].msg);
+
                         $scope.localLoading = false;
 
                         if (authinfo.data[0].sso) {
+                            toastr.error(authinfo.data[0].msg, "", {timeOut: 15000});
                             $location.path("/sso").search("n", 1);
+                        } else {
+                            toastr.error(authinfo.data[0].msg);
                         }
                     }
                     else {
