@@ -60,16 +60,6 @@ module.exports = (function() {
     });
 
     ui.post("/sso/redirected", function(req, res) {
-        req.headers = req.headers || {"user-agent": ""};
-        let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
-
-        let hashes = {
-            vendorsjs: vendorsjshash["vendors.js"],
-            vendorscss: vendorscsshash["vendors.css"],
-            globaljs: globaljshash["global.js"],
-            globalcss: globalcsshash["global.css"],
-        };
-
         const params = JSON.parse(req.body.state);
 
         const url = settings.API_URL + '/api/1.0/users/sso/login?provider=azure' +
@@ -77,18 +67,8 @@ module.exports = (function() {
             '&redirect_uri=' + params.redirect_uri +
             '&code=' + req.body.code;
         request.get(url, function (error, response, body) {
-            console.log(body);
-            console.log(error);
             if (error) {
-                res.render("index", {
-                    hashes: hashes,
-                    version: packages.version,
-                    phantom: phantom,
-                    maintenance: settings.MAINTENANCE_MODE,
-                    raygun_key: settings.RAYGUN_APIKEY,
-                    heroku_env: settings.NEW_RELIC_NAME,
-                    api: settings.API_URL,
-                });
+                res.redirect('/#/sso');
             } else {
                 res.cookie('token', JSON.parse(body).token);
                 res.cookie('tokenDate', new Date());

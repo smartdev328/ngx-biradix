@@ -316,7 +316,7 @@ angular.module("biradix.global").controller("rootController",
                 $timeout($rootScope.incrementTimeout, 1000);
 
                 var ar = location.hash.split("login?r=");
-                if (ar.length == 2 && $scope.hasSessionStorage) {
+                if (ar.length === 2 && $scope.hasSessionStorage) {
                     $window.sessionStorage.redirect = decodeURIComponent(ar[1]);
                 }
 
@@ -330,19 +330,22 @@ angular.module("biradix.global").controller("rootController",
                     }
 
                     //Make sure we dont redirect to /login
-                    if (x.indexOf('/login') == -1) {
-                        if (x.indexOf("?") == -1) {
+                    if (x.indexOf('/login') === -1) {
+                        if (x.indexOf("?") === -1) {
                             $location.path(x)
                         } else {
-                            var a = x.split('?')
+                            var a = x.split('?');
                             $location.path(a[0]).search(a[1]);
+                            $location.search("e", null);
                         }
                     } else {
+                        $location.search("e", null);
                         $location.path("/dashboard");
                     }
 
                 } else {
                     if (redirect !== false) {
+                        $location.search("e", null);
                         $location.path("/dashboard");
                     }
                 }

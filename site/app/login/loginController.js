@@ -4,8 +4,9 @@ define([
     '../../services/authService'
 ], function (app) {
 
-    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams) {
-        if (maintenance === true && $location.path().indexOf('maintenance') == -1) {
+    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', '$cookies',
+        function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams, $cookies) {
+        if (maintenance === true && $location.path().indexOf('maintenance') === -1) {
             return $location.path("/maintenance")
         }
 
@@ -35,6 +36,9 @@ define([
 
         if ($stateParams.e) {
             $scope.email = $stateParams.e;
+        } else {
+            return $location.path("/sso").search("r", $stateParams.r);
+
         }
 
         $scope.setRenderable = function() {
