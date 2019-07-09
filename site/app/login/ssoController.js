@@ -54,25 +54,30 @@ define([
                 expireDate.setDate(expireDate.getDate() + 365);
                 $cookies.put('email', $scope.email, {expires : expireDate});
                 if (domainInfo.data.allowSSO) {
-                    var redirect_uri =  "https://" + domainInfo.data.domain;
+                    var ui_domain = "https://" + domainInfo.data.domain;
 
                     if ($scope.noSubDomains()) {
-                        redirect_uri = location.origin;
+                        ui_domain = location.origin;
                     }
 
-                    redirect_uri += '/sso/redirected';
-                    location.href = 'https://login.microsoftonline.com/common/oauth2/authorize?' +
-                        'client_id=b1a90195-bec0-49fe-8b89-0465e09ce3a0' +
+                    var redirect_uri = gAPI + '/api/1.0/users/sso/azure';
+
+                    var url = 'https://login.microsoftonline.com/common/oauth2/authorize?' +
+                        'client_id=' +  domainInfo.data.azureClientId +
                         '&response_type=code' +
                         '&redirect_uri=' + encodeURIComponent(redirect_uri) +
                         '&response_mode=form_post' +
                         '&state=' + JSON.stringify(
                             {
                                 email: $scope.email,
-                                redirect_uri: redirect_uri
+                                redirect_uri: redirect_uri,
+                                ui_domain: ui_domain,
+                                r: $stateParams.r
                             }
                         ) +
                         '&login_hint=' + $scope.email;
+
+                        location.href = url;
                 } else {
                     $cookies.put('host', domainInfo.data.domain, {expires : expireDate});
                     $scope.redirect(domainInfo.data.domain);

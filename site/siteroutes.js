@@ -59,22 +59,10 @@ module.exports = (function() {
             });
     });
 
-    ui.post("/sso/redirected", function(req, res) {
-        const params = JSON.parse(req.body.state);
-
-        const url = settings.API_URL + '/api/1.0/users/sso/login?provider=azure' +
-            '&email=' + params.email +
-            '&redirect_uri=' + params.redirect_uri +
-            '&code=' + req.body.code;
-        request.get(url, function (error, response, body) {
-            if (error) {
-                res.redirect('/#/sso');
-            } else {
-                res.cookie('token', JSON.parse(body).token);
-                res.cookie('tokenDate', new Date());
-                res.redirect('/#/login');
-            }
-        });
+    ui.get("/sso", function(req, res) {
+        res.cookie('token', req.query.token);
+        res.cookie('tokenDate', new Date());
+        res.redirect('/#/login?r=' + encodeURIComponent(req.query.r));
    });
 
     return ui;
