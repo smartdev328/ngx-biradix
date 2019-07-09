@@ -54,6 +54,10 @@ define([
                     if (authinfo.data.token == null) {
                         toastr.error(authinfo.data[0].msg);
                         $scope.localLoading = false;
+
+                        if (authinfo.data[0].sso) {
+                            $location.path("/sso").search("n", 1);
+                        }
                     }
                     else {
                         ga('set', 'userId', authinfo.data.user._id.toString());
