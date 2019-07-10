@@ -52,7 +52,6 @@ define([
         $scope.done = function() {
             $scope.incorrectFpArray.submitted = true;
             $scope.incorrectFpArray.propertyName = $scope.selectedProperty.name;
-            console.log($scope.incorrectFpArray);
             ngProgress.start();
             $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {
                 ngProgress.complete();
@@ -73,7 +72,7 @@ define([
             $scope.incorrectFpArray.fileName = file.name;
             var reader = new FileReader();
             reader.onload = function(){
-                $scope.incorrectFpArray.fileContents = reader.result;
+                $scope.incorrectFpArray.fileContents = reader.result.split(',')[1];
                 $scope.incorrectFpArray.isUpload = true;
             };
             reader.readAsDataURL(file);

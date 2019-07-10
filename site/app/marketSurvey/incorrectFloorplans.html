@@ -43,7 +43,7 @@
 		        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back to Survey Swap</a>
 		        </div>
 		        <div class="col-xs-4 text-center">
-		            <button ng-click="done()" class="btn btn-success">Submit</button>
+		            <button ng-click="done()" class="btn btn-success" ng-disabled="!incorrectFpArray.fileName">Submit</button>
 		        </div>
 	        </div>
         </div>
