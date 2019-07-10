@@ -295,7 +295,7 @@ angular.module("biradix.global").controller("rootController",
                 var expireDate = new Date();
                 expireDate.setDate(expireDate.getDate() + 365);
                 $cookies.put('email', $rootScope.me.email, {expires : expireDate});
-                $cookies.remove("domain");
+                $cookies.remove("host");
 
                 rg4js('setUser', {
                   identifier: $rootScope.me.email,
