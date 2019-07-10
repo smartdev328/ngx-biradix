@@ -67,7 +67,7 @@ define([
                 // load data
                 $scope.reload = function () {
                     //users
-                    $userService.search({orgid: organization._id}).then(function (response) {
+                    $userService.search({orgid: organization._id, roleTypes: ['Admin', 'CM', 'RM', 'BM', 'PO']}).then(function (response) {
                         $scope.ssoUserModel.list = response.data.users.map(function (user) {
                             var roles = user.roles.reduce(function (pV, cV) {
                                 return pV + cV.name + ', ';
