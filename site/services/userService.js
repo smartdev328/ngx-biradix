@@ -91,5 +91,14 @@ angular.module('biradix.global').factory('$userService', ['$http','$cookies', fu
             });
         }
 
+        fac.updateSSO = function (users) {
+            return $http.put(gAPI + '/api/1.0/users/sso'+ '?bust=' + (new Date()).getTime(), users, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         return fac;
     }]);

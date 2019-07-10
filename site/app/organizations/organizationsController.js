@@ -51,9 +51,34 @@ define([
                 });
 
                 modalInstance.result.then(function (mapped) {
-
+                    $scope.reload();
                 }, function () {
+                    $scope.reload();
+                });
+            });
+        }
 
+        $scope.ssoconfig = function (organization) {
+            require([
+                '/app/organizations/ssoSettingsController.js'
+            ], function () {
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/app/organizations/ssoSettings.html?bust=' + version,
+                    controller: 'ssoSettingsController',
+                    size: 'md',
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        organization: function () {
+                            return organization;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (mapped) {
+                    $scope.reload();
+                }, function () {
+                    $scope.reload();
                 });
             });
         }

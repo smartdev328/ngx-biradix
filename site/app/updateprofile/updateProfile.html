@@ -5,7 +5,7 @@
     <li ng-class="{'active': isProfile}"><a href="#/updateProfile">Profile</a></li>
     <li ng-class="{'active': isNotifications}" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1"><a href="#/updateProfile?notifications=1">Notifications</a></li>
     <li ng-class="{'active': isSettings}" ng-if="$root.me.permissions.indexOf('Hide/Notifications') == -1"><a href="#/updateProfile?settings=1">Settings</a></li>
-    <li ng-class="{'active': isPassword}"><a href="#/updateProfile?password=1">Password</a></li>
+    <li ng-class="{'active': isPassword}" ng-if="!$root.me.allowSSO"><a href="#/updateProfile?password=1">Password</a></li>
 </ul>
 <div class="tab-container my-account">
     <div ng-if="isProfile">

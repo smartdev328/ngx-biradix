@@ -29,5 +29,14 @@ angular.module('biradix.global').factory('$organizationsService', ['$http','$coo
             });
         }
 
+    fac.updateSSO = function (id, sso) {
+        return $http.put(gAPI + '/api/1.0/organizations/' + id + '/sso'+ '?bust=' + (new Date()).getTime(), sso, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+            return response;
+        }).error(function (response) {
+            return response;
+        });
+    }
+
         return fac;
     }]);

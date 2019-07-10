@@ -31,7 +31,7 @@ module.exports = (function() {
         return res.redirect("/#/login?r=%2FupdateProfile%3Fnotifications=1");
     });
 
-     ui.get("/", function(req, res) {
+    ui.get("/", function(req, res) {
         req.headers = req.headers || {"user-agent": ""};
         let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
 
@@ -58,6 +58,12 @@ module.exports = (function() {
                 api: settings.API_URL,
             });
     });
+
+    ui.get("/sso", function(req, res) {
+        res.cookie('token', req.query.token);
+        res.cookie('tokenDate', new Date());
+        res.redirect('/#/login?r=' + encodeURIComponent(req.query.r));
+   });
 
     return ui;
 })();
