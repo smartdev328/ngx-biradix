@@ -16,7 +16,7 @@ define([
         return location.hostname.toLowerCase().indexOf("localhost") > -1
             || location.hostname.toLowerCase().indexOf("qa.biradix") > -1
             || location.hostname.toLowerCase().indexOf("demo.biradix") > -1
-            || location.hostname.toLowerCase().indexOf(".herokuapp");
+            || location.hostname.toLowerCase().indexOf(".herokuapp") > -1;
     };
 
     $scope.redirect = function(host) {
