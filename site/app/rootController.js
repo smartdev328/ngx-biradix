@@ -299,7 +299,7 @@ angular.module("biradix.global").controller("rootController",
                 if ($rootScope.me.allowSSO) {
                     $cookies.remove("host");
                 } else {
-                    $cookies.put('host', window.origin, {expires : expireDate});
+                    $cookies.put('host', location.hostname, {expires : expireDate});
                 }
 
                 rg4js('setUser', {
