@@ -50,11 +50,11 @@ define([
         });
 
         $scope.done = function() {
-            $scope.incorrectFpArray.submitted = true;
             $scope.incorrectFpArray.propertyName = $scope.selectedProperty.name;
             ngProgress.start();
             $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {
                 ngProgress.complete();
+                $scope.incorrectFpArray.submitted = true;
             }).catch(function(err) {
                 rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                 toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
