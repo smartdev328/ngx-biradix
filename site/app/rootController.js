@@ -292,6 +292,11 @@ angular.module("biradix.global").controller("rootController",
 
         $rootScope.swaptoLoggedIn = function(redirect) {
             $rootScope.getMe(function() {
+                var expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + 365);
+                $cookies.put('email', $rootScope.me.email, {expires : expireDate});
+                $cookies.remove("domain");
+
                 rg4js('setUser', {
                   identifier: $rootScope.me.email,
                   isAnonymous: false,
