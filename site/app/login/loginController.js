@@ -4,8 +4,9 @@ define([
     '../../services/authService'
 ], function (app) {
 
-    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams) {
-        if (maintenance === true && $location.path().indexOf('maintenance') == -1) {
+    app.controller('loginController', ['$scope','$rootScope','$location','toastr', '$authService','$window','$stateParams', '$cookies',
+        function ($scope,$rootScope,$location,toastr, $authService,$window,$stateParams, $cookies) {
+        if (maintenance === true && $location.path().indexOf('maintenance') === -1) {
             return $location.path("/maintenance")
         }
 
@@ -35,6 +36,9 @@ define([
 
         if ($stateParams.e) {
             $scope.email = $stateParams.e;
+        } else {
+            return $location.path("/sso").search("r", $stateParams.r);
+
         }
 
         $scope.setRenderable = function() {
@@ -48,8 +52,15 @@ define([
 
             $authService.login($scope.email, $scope.password).then(function (authinfo) {
                     if (authinfo.data.token == null) {
-                        toastr.error(authinfo.data[0].msg);
+
                         $scope.localLoading = false;
+
+                        if (authinfo.data[0].sso) {
+                            toastr.error(authinfo.data[0].msg, "", {timeOut: 15000});
+                            $location.path("/sso").search("n", 1);
+                        } else {
+                            toastr.error(authinfo.data[0].msg);
+                        }
                     }
                     else {
                         ga('set', 'userId', authinfo.data.user._id.toString());

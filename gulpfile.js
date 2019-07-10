@@ -95,7 +95,6 @@ gulp.task("globaljs", function() {
         "./site/services/mediaService.js",
         "./site/services/approvedListsService.js",
         "./site/services/perspectivesService.js",
-
         "./site/components/propertyProfile/coverPage.js",
         "./site/components/propertyProfile/profile.js",
         "./site/components/propertyProfile/about.js",
@@ -149,6 +148,7 @@ gulp.task("globalcss", function() {
         "./site/css/forms.css",
         "./site/css/icons.css",
         "./site/css/spacing.css",
+        "./site/css/sso.css",
         "./site/components/toggle/style.css",
         "./site/components/filterlist/filterlist.css",
         "./site/components/reports/reporting.css",
