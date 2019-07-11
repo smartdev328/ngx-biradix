@@ -32,6 +32,15 @@ define([
             });
         }
 
+        $scope.addEmptyRow();
+
+        $scope.incorrectFpArray.keyPress = function(row) {
+            incorrectFpArray.changed = true;
+            if(row) {
+                $scope.addEmptyRow();
+            }
+        }
+
         $scope.deleteRow = function(i) {
             $scope.selectedProperty.floorplans.splice(i, 1);
         }

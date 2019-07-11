@@ -19,6 +19,9 @@
 	        display: inline-block;
 	        width:300px;
 	    }
+        .lastRow button {
+            display: none;
+        }
 	</style>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
@@ -39,12 +42,12 @@
         			</tr>
         		</thead>
         		<tbody>
-        			<tr ng-repeat="row in selectedProperty.floorplans track by $index">
-        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bedrooms" ng-keypress="incorrectFpArray.changed = true"></td>
-        				<td><input type="text" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bathrooms" ng-keypress="incorrectFpArray.changed = true"></td>
-        				<td><input type="text" class="form-control input-sm survey-value survey-value-lg" ng-model="selectedProperty.floorplans[$index].description" ng-keypress="incorrectFpArray.changed = true"></td>
-        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft" ng-keypress="incorrectFpArray.changed = true"></td>
-        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].units" ng-keypress="incorrectFpArray.changed = true"></td>
+        			<tr ng-repeat="row in selectedProperty.floorplans track by $index" ng-class="{lastRow:$last}">
+        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bedrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="text" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bathrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="text" class="form-control input-sm survey-value survey-value-lg" ng-model="selectedProperty.floorplans[$index].description" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].units" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td>
             				<button style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row"><i class="fa fa-trash red-txt"></i></button>
             			</td>
@@ -59,9 +62,6 @@
 	        </div>
 			<div class="col-xs-4 text-center">
 	        	<button type="button" class="btn btn-success" ng-click="done()" ng-disabled="selectedProperty.floorplans.length == 0">Submit</button>
-			</div>
-			<div class="col-xs-4 text-right">
-	    		<button class="btn btn-default" type="button" ng-click="addEmptyRow()">Add Floor Plan</button>
 			</div>
 		</div>
     </div>
