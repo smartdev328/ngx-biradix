@@ -117,7 +117,7 @@ define([
                 if ($scope.selectedProperty.survey  && $scope.selectedProperty.survey.date) {
                     var surveyTime = (new Date($scope.selectedProperty.survey.date)).getTime();
                     surveyDaysAgo = (new Date().getTime() - surveyTime) / 1000 / 60 / 60 / 24;
-                    console.log($scope.selectedProperty.survey.date);
+                    // console.log($scope.selectedProperty.survey.date);
                     var guest = _.find($rootScope.me.guestStats, function(x) {
                        return x.propertyid.toString() === $scope.selectedProperty._id.toString();
                     });

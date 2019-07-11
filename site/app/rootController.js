@@ -302,6 +302,11 @@ angular.module("biradix.global").controller("rootController",
                     $cookies.put('host', location.hostname, {expires : expireDate});
                 }
 
+                if ($rootScope.me.roles[0] === 'Guest') {
+                    $cookies.remove("host");
+                    $cookies.remove("email");
+                }
+
                 rg4js('setUser', {
                   identifier: $rootScope.me.email,
                   isAnonymous: false,
