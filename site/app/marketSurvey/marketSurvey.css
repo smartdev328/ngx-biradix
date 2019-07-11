@@ -21,11 +21,11 @@
 .market-survey.text-left .survey-value {
   text-align: left;
 }
-.market-survey .survey-value-lg {
-  max-width:200px;
-}
 .market-survey .propertySurvey .survey-value {
   max-width: 48px;
+}
+.market-survey .propertySurvey .survey-value-lg {
+  max-width:200px;
 }
 .market-survey .input-group-addon {
   background-color:#ffffff;
@@ -347,7 +347,7 @@
     margin:0;
 }
 
-.propertySurvey .showAll {
+.showAllFpButton {
     color:#4460a9;
     background-color: #f8f8f8;
     border: 1px solid #cfcfcf;
@@ -357,24 +357,28 @@
     padding: 5px 0;
 }
 
-.propertySurvey  table {
+.propertySurvey  table, .incorrectFpTableHolder {
     height: 350px;
 }
 
-.propertySurvey.allShown table {
+.incorrectFpTableHolder {
+  overflow-y: scroll;
+}
+
+.propertySurvey.allShown table, .incorrectFpTableHolder.allShown {
     height: auto;
     overflow-y: hidden;
 }
 
-.propertySurvey table tbody::-webkit-scrollbar {
+.propertySurvey table tbody::-webkit-scrollbar, .incorrectFpTableHolder::-webkit-scrollbar {
     width: 5px;
 }
  
-.propertySurvey table tbody::-webkit-scrollbar-track {
+.propertySurvey table tbody::-webkit-scrollbar-track, .incorrectFpTableHolder::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
  
-.propertySurvey table tbody::-webkit-scrollbar-thumb {
+.propertySurvey table tbody::-webkit-scrollbar-thumb, .incorrectFpTableHolder::-webkit-scrollbar-thumb {
   background-color: #4460a9;
   outline: 1px solid slategrey;
 }
@@ -429,10 +433,10 @@
   border: none;
   display: inline-block;
   padding: 0;
-  margin: 4px 0 0 10px;
+  margin: 3px 0 0 10px;
   color: #337ab7;
   text-decoration: underline;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 @media all and (min-width: 0px) and (max-width: 767px) {

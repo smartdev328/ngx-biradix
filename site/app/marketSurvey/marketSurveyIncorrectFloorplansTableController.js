@@ -36,6 +36,10 @@ define([
             $scope.selectedProperty.floorplans.splice(i, 1);
         }
 
+        $scope.showAllFP = function() {
+            $scope.allShown = !$scope.allShown;
+        }
+
         $scope.done = function() {
             $scope.incorrectFpArray.floorplans = $scope.selectedProperty.floorplans;
             $scope.incorrectFpArray.propertyName = $scope.selectedProperty.name;

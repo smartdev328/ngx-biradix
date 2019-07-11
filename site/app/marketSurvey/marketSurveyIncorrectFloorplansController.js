@@ -69,13 +69,17 @@ define([
 
         $scope.uploadFile = function(upload) {
             var file = upload.files[0];
-            $scope.incorrectFpArray.fileName = file.name;
-            var reader = new FileReader();
-            reader.onload = function(){
-                $scope.incorrectFpArray.fileContents = reader.result.split(',')[1];
-                $scope.incorrectFpArray.isUpload = true;
-            };
-            reader.readAsDataURL(file);
+            if(file.size < 20480000) {
+                $scope.incorrectFpArray.fileName = file.name;
+                var reader = new FileReader();
+                reader.onload = function(){
+                    $scope.incorrectFpArray.fileContents = reader.result.split(',')[1];
+                    $scope.incorrectFpArray.isUpload = true;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                toastr.error("Please make sure the file you upload is less than 20MB.");
+            }
         };
 
         $scope.incorrectFloorplansTable = function () {
