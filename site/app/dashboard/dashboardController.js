@@ -74,8 +74,8 @@ define([
             $cookieSettingsService.saveTotals($scope.settings.totals)
         }, true);
 
-         $scope.$watch('settings.perspective', function() {
-             if (!$scope.localLoading) return;
+         $scope.$watch('settings.perspective', function(newP, oldP) {
+             if (!$scope.localLoading || !oldP) return;
              if ($scope.settings.perspective && $scope.settings.perspective.value === "-1") {
                  $location.path("/perspectives");
                  return;
