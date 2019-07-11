@@ -121,7 +121,6 @@ angular.module('biradix.global').directive('propertyComps', function () {
                             }
                         });
 
-                        console.log($scope.totals.totalUnits, $scope.totalSurveys);
                         $scope.totals.totalUnits /= $scope.totalSurveys;
                         
                         if ($scope.totalSurveys > 0) {
