@@ -169,5 +169,14 @@ define([], function () {
         };
     });
 
+    app.directive('autoFocus', ['$timeout', function($timeout) {
+        return {
+            restrict: 'A',
+            link : function($scope, $element) {
+                $element[0].focus();
+            }
+        }
+    }]);
+
     return app;
 });

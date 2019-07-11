@@ -6,7 +6,7 @@
     </div>
     <div class="form-group" ng-class="{'has-success': myForm.password.$dirty && myForm.password.$valid}">
         <label for="password">Password</label>
-        <input autocomplete="on" type="password" name="password" class="form-control" id="password" placeholder="Password" required ng-model="password">
+        <input autocomplete="on" type="password" name="password" class="form-control" id="password" placeholder="Password" required ng-model="password" auto-focus>
     </div>
     <button class="btn btn-primary btn-large btn-block" type="submit" ng-show="!localLoading">Log in</button>
     <div style="width:40px;margin:0px auto;padding-top:5px" ng-show="localLoading">
