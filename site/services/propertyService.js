@@ -568,15 +568,6 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             resp.comp.strRangeEnd = resp.property.strRangeEnd;
 
-            resp.property.hasFees = false;
-            if (resp.property.fees) {
-                for (var fee in resp.property.fees) {
-                    if ((resp.property.fees[fee] || "").length > 0) {
-                        resp.property.hasFees = true;
-                    }
-                }
-            }
-
             var am;
             resp.property.location_am = [];
             resp.property.location_amenities.forEach(function (la) {

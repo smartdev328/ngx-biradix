@@ -423,6 +423,8 @@ define([
                         $scope.property.floorplans = $scope.property.floorplans || [];
                         $scope.property.custom_fees = $scope.property.custom_fees || [];
 
+                        $scope.property.custom_fees = _.sortByAll($scope.property.custom_fees, "name");
+
                         $scope.calculateFloorplanTotals();
 
                         $scope.property.community_amenities.forEach(function(pa) {
