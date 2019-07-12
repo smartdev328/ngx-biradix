@@ -844,7 +844,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                 limit: 1,
                 permission: ["PropertyManage", "CompManage"],
                 _id: id,
-                select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid orgid_owner floorplans totalUnits community_amenities location_amenities media custom survey needsSurvey reputation"
+                select: "_id name address city state zip phone owner management constructionType yearBuilt yearRenovated phone contactName contactEmail website notes fees orgid orgid_owner floorplans totalUnits community_amenities location_amenities media custom survey needsSurvey reputation custom_fees"
             });
         }
 

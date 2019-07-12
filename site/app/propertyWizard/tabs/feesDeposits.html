@@ -21,4 +21,21 @@
 
         </div>
     </div>
+    <div class="row" ng-repeat="fee in property.custom_fees">
+        <div class="col-sm-1">
+
+        </div>
+        <div class="col-sm-5">
+            <div class="input-group">
+                <input type="text" class="form-control input-sm" ng-model="fee.name">
+                <div class="input-group-addon">:</div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control input-sm" ng-model="fee.value">
+        </div>
+        <div class="col-sm-1">
+
+        </div>
+    </div>
 </div>
