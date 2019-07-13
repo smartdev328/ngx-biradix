@@ -35,6 +35,22 @@ module.exports = (function() {
         return res.redirect("/#/login?r=%2FupdateProfile%3Fnotifications=1");
     });
 
+    ui.get('/p/:token', function (req, res) {
+        res.redirect('/#/password/reset/' + req.params.token);
+    })
+
+    ui.get('/g/:propertyid/:token', function (req, res) {
+        jwt.verify(req.params.token, settings.SECRET, function(err, decoded) {
+            if (err) {
+                res.redirect('/#/expired');
+            } else {
+                res.cookie('token', req.params.token);
+                res.cookie('tokenDate', "");
+                res.redirect('/#/dashboard2?id=' + req.params.propertyid)
+            }
+        });
+    })
+
     ui.get("/", function(req, res) {
         req.headers = req.headers || {"user-agent": ""};
         let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
@@ -64,9 +80,7 @@ module.exports = (function() {
     });
 
     ui.get("/sso", function(req, res) {
-        res.cookie('token', req.query.token);
-        res.cookie('tokenDate', new Date());
-        res.redirect('/#/login?r=' + encodeURIComponent(req.query.r));
+        res.redirect('/#/login?r=' + encodeURIComponent(req.query.r) + "&t=" + encodeURIComponent(req.query.token));
    });
 
     return ui;

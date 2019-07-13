@@ -10,6 +10,11 @@ define([
                 return $location.path("/maintenance")
             }
 
+            if ($stateParams.t) {
+                $cookies.put('token',$stateParams.t);
+                $cookies.put('tokenDate',new Date());
+                $rootScope.swaptoLoggedIn();
+            }
             window.setTimeout(function() {
                 window.document.title = "Log In | BI:Radix";
             }, 1500);
