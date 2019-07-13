@@ -15,6 +15,7 @@ define([
     $scope.noSubDomains = function() {
         return location.hostname.toLowerCase().indexOf("localhost") > -1
             || location.hostname.toLowerCase().indexOf("qa.biradix") > -1
+            || location.hostname.toLowerCase().indexOf("testingthis.biradix") > -1
             || location.hostname.toLowerCase().indexOf("demo.biradix") > -1
             || location.hostname.toLowerCase().indexOf(".herokuapp") > -1;
     };
