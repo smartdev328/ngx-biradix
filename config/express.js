@@ -60,16 +60,6 @@ module.exports = {
                 }
             });
 
-            // Middleware to populate operator context
-            app.use(function(req, res, next) {
-                if (req.headers["x-forwarded-proto"] !== "https") {
-                    req.basePath = "http://" + req.headers.host;
-                } else {
-                    req.basePath = "https://" + req.headers.host;
-                }
-                next();
-            });
-
             // Parse body into req for form submission
             app.use(bodyParser.json({limit: "50mb"}));
             app.use(bodyParser.urlencoded({
