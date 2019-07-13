@@ -62,8 +62,6 @@ module.exports = {
 
             // Middleware to populate operator context
             app.use(function(req, res, next) {
-                req.context = {ip: req.headers["x-forwarded-for"] || req.connection.remoteAddress, user_agent: req.headers["user-agent"]};
-
                 if (req.headers["x-forwarded-proto"] !== "https") {
                     req.basePath = "http://" + req.headers.host;
                 } else {
