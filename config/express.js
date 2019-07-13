@@ -36,7 +36,11 @@ module.exports = {
 
             app.use((req, res, next) => {
                 const host = req.headers.host.toString().toLowerCase();
-                if ((host.indexOf("localhost") > -1 || host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1) && req.originalUrl === "/" && req.headers["user-agent"] !== "PhantomJS") {
+                if ((host.indexOf("localhost") > -1 || host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1)
+                    && req.originalUrl === "/"
+                    && req.headers["user-agent"] !== "PhantomJS"
+                    && (req.headers.via || "").indexOf("cloudfront") === 0
+                ) {
                     const auth = {login: "testadmin@biradix.com", password: "temppass!",
                                 login2: "testdesign@biradix.com", password2: "design51!"};
 
