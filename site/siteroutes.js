@@ -14,7 +14,7 @@ module.exports = (function() {
     let ui = new express.Router();
 
     ui.get("/test", (req, res) => {
-        res.status(200).send("Test");
+        res.status(200).send("Host: " + req.headers.host.toString());
     });
 
     ui.get("/robots.txt", (req, res) => {
