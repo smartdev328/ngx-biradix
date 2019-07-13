@@ -80,7 +80,7 @@ module.exports = (function() {
     });
 
     ui.get("/sso", function(req, res) {
-        echo(req.query);
+        console.log(req.query);
         res.redirect('/#/login?r=' + encodeURIComponent(req.query.r) + "&t=" + encodeURIComponent(req.query.token));
    });
 
