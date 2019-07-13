@@ -13,6 +13,10 @@ module.exports = (function() {
     console.log(`Loading with ${settings.API_URL} as api endpoint`);
     let ui = new express.Router();
 
+    ui.get("/test", (req, res) => {
+        res.status(200).send("Test");
+    });
+
     ui.get("/robots.txt", (req, res) => {
         res.status(200).send("User-agent: *\n" +
             "Disallow: /");
