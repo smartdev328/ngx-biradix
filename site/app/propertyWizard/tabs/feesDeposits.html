@@ -27,7 +27,7 @@
         </div>
         <div class="col-sm-5">
             <div class="input-group">
-                <input type="text" class="form-control input-sm" ng-model="fee.name">
+                <input type="text" class="form-control input-sm" ng-model="fee.name"  uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'FEES')" typeahead-focus-first="false" typeahead-should-select="shouldSelect($event)">
                 <div class="input-group-addon">:</div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <input type="text" class="form-control input-sm" ng-model="fee.value">
         </div>
         <div class="col-sm-1">
-
+            <i ng-if="!$last" class="fa fa-trash delete" ng-click="property.custom_fees.splice($index, 1)" style="color:red; cursor: pointer"></i>
         </div>
     </div>
 </div>
