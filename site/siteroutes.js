@@ -80,8 +80,9 @@ module.exports = (function() {
     });
 
     ui.get("/sso", function(req, res) {
-        console.log(req.query);
-        res.redirect('/#/login?r=' + encodeURIComponent(req.query.r) + "&t=" + encodeURIComponent(req.query.token));
+        res.cookie('token', req.query.token);
+        res.cookie('tokenDate', new Date());
+        res.redirect('/#/login?r=' + encodeURIComponent(req.query.r) + "&t=");
    });
 
     return ui;

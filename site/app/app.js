@@ -77,7 +77,7 @@ define([], function () {
         $urlRouterProvider.otherwise("/login");
 
         $stateProvider
-            .state("login", AsyncRoute("/login?r&e&t", "login", "loginController", "login.html", "loggedOutView",{}))
+            .state("login", AsyncRoute("/login?r&e", "login", "loginController", "login.html", "loggedOutView",{}))
             .state("sso", AsyncRoute("/sso?r&n", "login", "ssoController", "sso.html", "loggedOutView",{}))
             .state("expired", AsyncRoute("/expired?name", "expired", "expiredController", "expired.html", "loggedOutView",{loggedIn: false}))
             .state("contact", AsyncRoute("/contact?e", "contactOff", "contactOffController", "contact.html", "loggedOutView",{loggedIn: false}))
