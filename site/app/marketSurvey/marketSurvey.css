@@ -357,28 +357,24 @@
     padding: 5px 0;
 }
 
-.propertySurvey  table, .incorrectFpTableHolder {
+.propertySurvey  table {
     height: 350px;
 }
 
-.incorrectFpTableHolder {
-  overflow-y: scroll;
-}
-
-.propertySurvey.allShown table, .incorrectFpTableHolder.allShown {
+.propertySurvey.allShown table {
     height: auto;
     overflow-y: hidden;
 }
 
-.propertySurvey table tbody::-webkit-scrollbar, .incorrectFpTableHolder::-webkit-scrollbar {
+.propertySurvey table tbody::-webkit-scrollbar {
     width: 5px;
 }
  
-.propertySurvey table tbody::-webkit-scrollbar-track, .incorrectFpTableHolder::-webkit-scrollbar-track {
+.propertySurvey table tbody::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
  
-.propertySurvey table tbody::-webkit-scrollbar-thumb, .incorrectFpTableHolder::-webkit-scrollbar-thumb {
+.propertySurvey table tbody::-webkit-scrollbar-thumb {
   background-color: #4460a9;
   outline: 1px solid slategrey;
 }
@@ -433,10 +429,10 @@
   border: none;
   display: inline-block;
   padding: 0;
-  margin: 3px 0 0 10px;
+  margin: 3px 0 0 8px;
   color: #337ab7;
   text-decoration: underline;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 @media all and (min-width: 0px) and (max-width: 767px) {
@@ -447,6 +443,11 @@
 
   .market-survey .propertySurvey .survey-value {
     max-width: 40px;
+    min-width: 40px;
+  }
+
+  .market-survey .propertySurvey.incorrectFpTableHolder .survey-value {
+    max-width: 200px;
     min-width: 40px;
   }
 

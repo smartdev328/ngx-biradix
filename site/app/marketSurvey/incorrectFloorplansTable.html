@@ -25,20 +25,22 @@
 	</style>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-    		<h2 class="modal-title">Update {{selectedProperty.name}} floor plan information below and click "Submit"</h2>
+    		<h2 class="modal-title">Fix Incorrect Floorplans: {{selectedProperty.name}}</h2>
         <hr>
     </div>
     <div class="modal-body market-survey text-left container-fluid">
+        <p>Update {{selectedProperty.name}} floor plan information below and click "Submit"</p>
+        <textarea class="form-control mb-20" rows="2" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>
         <div class="propertySurvey incorrectFpTableHolder" ng-class="{'allShown': allShown}">
-        	<table class="table">
+        	<table class="table" fixed-table-no-footer>
         		<thead style="background: #f9f9f9;">
         			<tr>
-        				<td>Bedrooms</td>
-        				<td>Bathrooms</td>
-        				<td>Desc.</td>
-        				<td>Units</td>
-        				<td>Sqft</td>
-        				<td></td>
+                        <th><span class="visible-xs" style="min-width: 40px;">Bed.</span><span class="hidden-xs">Bedrooms</span></th>
+        				<th><span class="visible-xs" style="min-width: 40px;">Bath.</span><span class="hidden-xs">Bathrooms</span></th>
+        				<th>Desc.</th>
+        				<th>Units</th>
+        				<th>Sqft</th>
+        				<th></th>
         			</tr>
         		</thead>
         		<tbody>

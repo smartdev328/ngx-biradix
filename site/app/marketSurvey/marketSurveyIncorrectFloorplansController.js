@@ -68,8 +68,10 @@ define([
         }
 
         $scope.uploadFile = function(upload) {
+            var allowedTypes = ["xlsx","docx","pdf","csv","txt"];
             var file = upload.files[0];
-            if(file.size < 20480000) {
+            var fileType = file.name.split('.').pop().toLowerCase();
+            if(file.size < 20480000 && allowedTypes.includes(fileType)) {
                 $scope.incorrectFpArray.fileName = file.name;
                 var reader = new FileReader();
                 reader.onload = function(){
@@ -78,7 +80,7 @@ define([
                 };
                 reader.readAsDataURL(file);
             } else {
-                toastr.error("Please make sure the file you upload is less than 20MB.");
+                toastr.error("File should be less than 20 MB in size and in Excel, Word, PDF, CSV, or TXT format.");
             }
         };
 

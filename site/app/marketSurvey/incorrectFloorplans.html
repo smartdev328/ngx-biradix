@@ -31,13 +31,13 @@
 			<p>You can let us know of the changes needed in two ways:</p>
 			<ul style="padding-left: 15px;">
 				<li>Use our <a href="" ng-click="incorrectFloorplansTable()">Edit Floor Plans wizard</a></li>
-				<li>Upload any report that contains the property floor plan information <i>(Bedrooms, Bathrooms, Unit count, Sq Ft)</i></li>
+				<li>Upload any report that contains the property floor plan information <i>(Bedrooms, Bathrooms, Unit count, Sqft)</i></li>
 			</ul>
 	        <div style="text-align: center">
 	            <div class="file-input-wrapper">
 	                <button class="btn btn-primary" ng-if="!incorrectFpArray.fileName">Upload</button>
 	                <p ng-if="incorrectFpArray.fileName"><strong>Files attached:</strong> {{incorrectFpArray.fileName}} <i class="fa fa-trash" ng-click="removeFile()" style="color:red"></i></p>
-	                <input type="file" ng-if="!incorrectFpArray.fileName" id="fileUpload" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .pdf, text/plain" onchange="angular.element(this).scope().uploadFile(this)" />
+	                <input type="file" ng-if="!incorrectFpArray.fileName" id="fileUpload" onchange="angular.element(this).scope().uploadFile(this)" />
 	            </div>
 	        </div>
 	        <textarea class="form-control mb-20" rows="5" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>
@@ -53,6 +53,9 @@
         <div ng-if="incorrectFpArray.submitted">
         	<p>Thank you for letting us know about the potentially incorrect floor plans!</p>
         	<p>We will review everything submitted and get back to you quickly. Our typical response time is less than a day.</p>
+        	<div class="text-center">
+			    <button ng-click="cancel()" class="btn btn-success">Done</button>
+        	</div>
         </div>
     </div>
 </div>
