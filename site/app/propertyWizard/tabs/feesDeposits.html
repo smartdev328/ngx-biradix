@@ -1,41 +1,26 @@
-<div class="alert alert-info" role="alert">
-    <i class="fa fa-lightbulb-o fa-2x" style="color:orange"></i> <b>Tip: Review and update Fees and Deposits frequently...</b>
-    <a href
-       popover-trigger="'mouseenter'"
-       popover-placement="bottom"
-       popover-title="Tip: Review and update Fees and Deposits frequently."
-       uib-popover="Competitors often lower or waive Fees and Deposits as a tool to entice prospective residents to sign a lease. This might play a role in decision making of a prospect, especially if lower move-in costs are important to them.">read more</a>
-</div>
+<p><b>Tip:</b> Review and update Fees and Deposits frequently...<i class="fa fa-question-circle" style="margin-left: 4px;" popover-trigger="'mouseenter'" popover-placement="bottom" popover-append-to-body="true" uib-popover-html="'Competitors often lower or waive Fees and Deposits as a tool to entice prospective residents to sign a lease. This might play a role in decision making of a prospect, especially if lower move-in costs are important to them.'"></i></p>
 <div class="property-info">
-    <div class="row" ng-repeat="(key,value) in lookups.fees">
-        <div class="col-sm-1">
-
-        </div>
-        <div class="col-sm-5">
-            {{value}}:
-        </div>
-        <div class="col-sm-5">
-            <input type="text" class="form-control input-sm" ng-model="property.fees[key]">
-        </div>
-        <div class="col-sm-1">
-
-        </div>
-    </div>
-    <div class="row" ng-repeat="fee in property.custom_fees">
-        <div class="col-sm-1">
-
-        </div>
-        <div class="col-sm-5">
-            <div class="input-group">
-                <input type="text" class="form-control input-sm" ng-model="fee.name"  uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'FEES')" typeahead-focus-first="false" typeahead-should-select="shouldSelect($event)">
-                <div class="input-group-addon">:</div>
-            </div>
-        </div>
-        <div class="col-sm-5">
-            <input type="text" class="form-control input-sm" ng-model="fee.value">
-        </div>
-        <div class="col-sm-1">
-            <i ng-if="!$last" class="fa fa-trash delete" ng-click="property.custom_fees.splice($index, 1)" style="color:red; cursor: pointer"></i>
+    <hr style="margin:10px 0;">
+    <div class="row">
+        <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+            <table class="table noBorderTable">
+                <tr ng-repeat="(key,value) in lookups.fees">
+                    <td>{{value}}:</td>
+                    <td><input type="text" class="form-control input-sm" ng-model="property.fees[key]"></td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="fee in property.custom_fees">
+                    <td>
+                        <input type="text" class="form-control input-sm" ng-model="fee.name"  uib-typeahead="item.value for item in autocompleteApprovedList($viewValue, 'FEES')" typeahead-focus-first="false" typeahead-should-select="shouldSelect($event)" placeholder="Add Custom Fee & Deposits">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control input-sm" ng-model="fee.value" placeholder="Description or Amount">
+                    </td>
+                    <td style="min-width: 40px; text-align: center;">
+                        <i ng-if="!$last" class="fa fa-trash delete" ng-click="property.custom_fees.splice($index, 1)" style="color:red; cursor: pointer;margin-top: 7px;"></i>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
