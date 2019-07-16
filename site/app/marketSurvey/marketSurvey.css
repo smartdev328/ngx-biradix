@@ -426,12 +426,12 @@
 
 .incorrectFloorplans {
   background: transparent;
-  display: inline-block;
-  padding: 5px;
   color: #337ab7;
+  padding: 0;
+  margin: 6px 0;
   text-decoration: underline;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: none;
 }
 
 @media all and (min-width: 0px) and (max-width: 767px) {
