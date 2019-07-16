@@ -25,11 +25,11 @@
 	</style>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-    		<h2 class="modal-title">Fix Incorrect Floorplans: {{selectedProperty.name}}</h2>
+    		<h2 class="modal-title">Fix Incorrect Floor Plans: {{selectedProperty.name}}</h2>
         <hr>
     </div>
     <div class="modal-body market-survey text-left container-fluid">
-        <p>Update {{selectedProperty.name}} floor plan information below and click "Submit"</p>
+        <p>Update <b>{{selectedProperty.name}}</b> floor plan information below and click "Submit"</p>
         <textarea class="form-control mb-20" rows="2" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>
         <div class="propertySurvey incorrectFpTableHolder" ng-class="{'allShown': allShown}">
         	<table class="table" fixed-table-no-footer>
@@ -51,7 +51,8 @@
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].units" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td>
-            				<button style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row"><i class="fa fa-trash red-txt"></i></button>
+                            <span ng-if="$last" class="label brand-green-bg nav-link-label" style="margin-top: 6px;display: inline-block;margin-left: 2px;">New!</span>
+            				<button style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row" tooltip-append-to-body="true"><i class="fa fa-trash red-txt"></i></button>
             			</td>
         			</tr>
         		</tbody>
@@ -60,7 +61,7 @@
         <button type="button" ng-hide="allShown" class="showAllFpButton mb-20" ng-click="showAllFP()">Show all</button>
 		<div class="row" style="margin-left: -15px;margin-right: -15px;">
 	        <div class="col-xs-4" style="margin-top: 7px;">
-	        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back to Upload File</a>
+	        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back</a>
 	        </div>
 			<div class="col-xs-4 text-center">
 	        	<button type="button" class="btn btn-success" ng-click="done()" ng-disabled="selectedProperty.floorplans.length == 0">Submit</button>

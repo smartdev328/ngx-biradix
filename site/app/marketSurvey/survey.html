@@ -380,11 +380,13 @@
                 </table>
             </div>
         </span>
-        <button ng-if="me.roles[0] == 'Guest'" class="incorrectFloorplans" type="button" ng-click="incorrectFloorplans()" uib-tooltip="Incorrect floorplans">Incorrect floor plans?</button>
     </div>
     <div class="col-xs-4 col-sm-4 text-center">
         <a class="btn btn-default contact-submit" ng-click="pmsBack()" ng-if="pms">Back</a>
         <a class="btn btn-success contact-submit" ng-click="create()">Save</a>
+    </div>
+    <div class="col-xs-4 col-sm-4 text-right">
+        <button ng-if="me.roles[0] == 'Guest'" class="incorrectFloorplans" type="button" ng-click="incorrectFloorplans()" uib-tooltip="Incorrect Floor Plans" tooltip-append-to-body="true"><span class="fa fa-pencil fa-fw"></span></button>
     </div>
     <div class="col-xs-4 col-sm-4" ng-if="editMode && ($root.me.permissions.indexOf('Admin') > -1 || property.custom.owner)">
         <button class=" btn btn-danger btn-large contact-submit pull-right" type="button" ng-click="delete()" uib-tooltip="Delete Survey"><i class="fa fa-trash" style="color:white"></i></button>
