@@ -365,7 +365,18 @@ angular.module("biradix.global").controller("rootController",
                     }
                 }
 
+                // Pass custom dimension data to GA
+                var organization = $rootScope.me.orgs[0] && $rootScope.me.orgs[0].name || '';
+                var role = $rootScope.me.roles && $rootScope.me.roles[0] || '';
+                var userId = $rootScope.me._id || '';
+                var userName = ($rootScope.me.first || '') + ' ' + ($rootScope.me.last || '');
 
+                ga('set', {
+                    'dimension1': organization,
+                    'dimension2': role,
+                    'dimension3': userId,
+                    'dimension4': userName,
+                });
             });
 
         }
