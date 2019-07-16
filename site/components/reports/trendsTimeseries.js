@@ -187,8 +187,16 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                 title: {
                                     text: $scope.options.title,
                                     align: 'left',
-                                    margin: 0,
+                                    margin: 10,
                                     x: 55
+                                },
+                                subtitle: {
+                                    text: d1 + ($scope.settings.daterange2.enabled ? " vs " + d2 : ""),
+                                    align: 'right',
+                                    verticalAlign: 'top',
+                                    style: {
+                                        fontStyle: 'italic'
+                                    }
                                 },
                                 xAxis: {
                                     crosshair: false,
@@ -458,8 +466,8 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                 $scope.getSingleLineComps = function(d1, d2) {
                     var suffix = $scope.getBedroomsSuffix();
 
-                    var d1scomps = {name: "(" + d1 + ") " + 'Comps' + suffix, data:[], color: "#434348"};
-                    var d2scomps = {name: "(" + d2 + ") " + 'Comps' + suffix, data:[],dashStyle: 'shortdash', color: "#434348"};
+                    var d1scomps = {name: 'Comps' + suffix, data:[], color: "#434348"};
+                    var d2scomps = {name: "(Previous) " + 'Comps' + suffix, data:[],dashStyle: 'shortdash', color: "#434348"};
 
                     $scope.report.points.forEach(function(d,i) {
                         if (typeof d.points[$scope.options.metric].day1averages != 'undefined') {
@@ -479,8 +487,8 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                 $scope.getSingleLineSubjects = function(d1, d2) {
                     var suffix = $scope.getBedroomsSuffix();
 
-                    var d1subject = {name: "(" + d1 + ") " + "Your Properties"+ suffix, data:[], color: '#7CB5EC'};
-                    var d2subject = {name: "(" + d2 + ") " + "Your Properties"+ suffix, data:[],dashStyle: 'shortdash', color: '#7CB5EC'};
+                    var d1subject = {name: "Your Properties"+ suffix, data:[], color: '#7CB5EC'};
+                    var d2subject = {name: "(Previous) " + "Your Properties"+ suffix, data:[],dashStyle: 'shortdash', color: '#7CB5EC'};
 
                     $scope.report.points.forEach(function(d,i) {
                         if (typeof d.points[$scope.options.metric].day1subject != 'undefined') {
@@ -510,7 +518,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d1subject) {
-                                d1subject = {name: "(" + d1 + ") " + "Your Properties: " + b + " Bdrs.", data:[], color: '', b: b};
+                                d1subject = {name: "Your Properties: " + b + " Bdrs.", data:[], color: '', b: b};
                                 d1subjects.push(d1subject);
                             }
 
@@ -519,7 +527,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d2subject) {
-                                d2subject = {name: "(" + d2 + ") " + "Your Properties: " + b + " Bdrs.", data:[], color: '', dashStyle: 'shortdash', b: b};
+                                d2subject = {name: "(Previous) " + "Your Properties: " + b + " Bdrs.", data:[], color: '', dashStyle: 'shortdash', b: b};
                                 d2subjects.push(d2subject);
                             }
 
@@ -552,7 +560,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d1average) {
-                                d1average = {name: "(" + d1 + ") " + "Your Comps: " + b + " Bdrs.", data:[], color: '', b: b};
+                                d1average = {name: "Your Comps: " + b + " Bdrs.", data:[], color: '', b: b};
                                 d1averages.push(d1average);
                             }
 
@@ -561,7 +569,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d2average) {
-                                d2average = {name: "(" + d2 + ") " + "Your Comps: " + b + " Bdrs.", data:[], color: '', dashStyle: 'shortdash', b: b};
+                                d2average = {name: "(Previous) " + "Your Comps: " + b + " Bdrs.", data:[], color: '', dashStyle: 'shortdash', b: b};
                                 d2averages.push(d2average);
                             }
 
