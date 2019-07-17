@@ -14,7 +14,7 @@
 	        right: 0;
 	        opacity: 0;
 	    }
-	    .file-input-wrapper > button {
+	    .file-input-wrapper > div > button {
 	        display: inline-block;
 	        width:300px;
 	    }
@@ -32,10 +32,12 @@
 				<li>Use our <a href="" ng-click="incorrectFloorplansTable()">Edit floor plans wizard</a></li>
 				<li>Upload any report that contains the property floor plan information <i>(Bedrooms, Bathrooms, Unit count, Sqft)</i></li>
 			</ul>
-	        <div style="text-align: center">
+	        <div>
 	            <div class="file-input-wrapper">
-	                <button class="btn btn-primary" ng-if="!incorrectFpArray.fileName">Upload</button>
-	                <p ng-if="incorrectFpArray.fileName"><strong>Files attached:</strong> {{incorrectFpArray.fileName}} <i class="fa fa-trash" ng-click="removeFile()" style="color:red"></i></p>
+	            	<div style="text-align: center">
+	                	<button class="btn btn-primary" ng-if="!incorrectFpArray.fileName">Upload</button>
+	                </div>
+	                <p ng-if="incorrectFpArray.fileName"><strong>File Upload:</strong> {{incorrectFpArray.fileName}} <i class="fa fa-trash" ng-click="removeFile()" style="color:red"></i></p>
 	                <input type="file" ng-if="!incorrectFpArray.fileName" id="fileUpload" onchange="angular.element(this).scope().uploadFile(this)" />
 	            </div>
 	        </div>

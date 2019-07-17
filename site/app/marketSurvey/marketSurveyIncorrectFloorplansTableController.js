@@ -52,12 +52,13 @@ define([
         $scope.done = function() {
             $scope.incorrectFpArray.floorplans = $scope.selectedProperty.floorplans;
             $scope.incorrectFpArray.propertyName = $scope.selectedProperty.name;
-            $scope.incorrectFpArray.submitted = true;
+            $scope.incorrectFpArray.changed = false;
+            $scope.incorrectFpArray.message = false;
 
             ngProgress.start();
             $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {
                 ngProgress.complete();
-                $scope.incorrectFpArray.changed = false;
+                $scope.incorrectFpArray.submitted = true;
             }).catch(function(err) {
                 rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                 toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");

@@ -13,7 +13,7 @@ define([
         };
 
         $scope.cancel = function() {
-            if ($scope.incorrectFpArray.fileName || $scope.incorrectFpArray.message) {
+            if ($scope.incorrectFpArray.changed || $scope.incorrectFpArray.message) {
                 $dialog.confirm("You have uploaded floor plans that have not been saved. Are you sure you want to close without saving?", function () {
                     $uibModalInstance.dismiss("cancel");
                 }, function() {
@@ -51,6 +51,8 @@ define([
 
         $scope.done = function() {
             $scope.incorrectFpArray.propertyName = $scope.selectedProperty.name;
+            $scope.incorrectFpArray.changed = false;
+            $scope.incorrectFpArray.message = false;
             ngProgress.start();
             $incorrectFpService.send($scope.selectedProperty._id, $scope.incorrectFpArray).then(function(response) {
                 ngProgress.complete();
@@ -77,6 +79,7 @@ define([
                 reader.onload = function(){
                     $scope.incorrectFpArray.fileContents = reader.result.split(',')[1];
                     $scope.incorrectFpArray.isUpload = true;
+                    $scope.incorrectFpArray.changed = true;
                 };
                 reader.readAsDataURL(file);
             } else {

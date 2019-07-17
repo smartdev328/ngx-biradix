@@ -19,9 +19,6 @@
 	        display: inline-block;
 	        width:300px;
 	    }
-        .lastRow button {
-            display: none;
-        }
 	</style>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
@@ -44,15 +41,15 @@
         			</tr>
         		</thead>
         		<tbody>
-        			<tr ng-repeat="row in selectedProperty.floorplans track by $index" ng-class="{lastRow:$last}">
+        			<tr ng-repeat="row in selectedProperty.floorplans track by $index">
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bedrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="text" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bathrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="text" class="form-control input-sm survey-value survey-value-lg" ng-model="selectedProperty.floorplans[$index].description" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].units" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td>
-                            <span ng-if="$last" class="label brand-green-bg nav-link-label" style="margin-top: 6px;display: inline-block;margin-left: 2px;">New!</span>
-            				<button style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row" tooltip-append-to-body="true"><i class="fa fa-trash red-txt"></i></button>
+                            <button ng-if="$last" style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="addEmptyRow()" uib-tooltip="Add Row" tooltip-append-to-body="true"><i class="fa fa-plus"></i></button>
+            				<button ng-if="!$last" style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row" tooltip-append-to-body="true"><i class="fa fa-trash red-txt"></i></button>
             			</td>
         			</tr>
         		</tbody>
