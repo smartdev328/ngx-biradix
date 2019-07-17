@@ -67,6 +67,7 @@ define([
         $scope.removeFile = function() {
             $scope.incorrectFpArray.fileName = '';
             $scope.incorrectFpArray.file = '';
+            $scope.incorrectFpArray.isUpload = false;
         }
 
         $scope.uploadFile = function(upload) {
