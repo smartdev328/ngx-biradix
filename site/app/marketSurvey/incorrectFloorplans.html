@@ -1,6 +1,8 @@
 <div>
 	<style>
 	    .file-input-wrapper {
+	    	height: 60px;
+	    	overflow: hidden;
 	        position: relative;
 	        margin:10px auto;
 
@@ -42,7 +44,7 @@
 	        <textarea class="form-control mb-20" rows="5" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>
 	        <div class="row">
 		        <div class="col-xs-4">
-		        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back to Survey Swap</a>
+		        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back to SurveySwap</a>
 		        </div>
 		        <div class="col-xs-4 text-center">
 		            <button ng-click="done()" class="btn btn-success" ng-disabled="!incorrectFpArray.fileName && !incorrectFpArray.message">Submit</button>
