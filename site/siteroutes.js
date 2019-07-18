@@ -8,6 +8,7 @@ const vendorsjshash = require("../dist/vendorsjs-hash.json");
 const vendorscsshash = require("../dist/vendorscss-hash.json");
 const globaljshash = require("../dist/globaljs-hash.json");
 const globalcsshash = require("../dist/globalcss-hash.json");
+const jwt = require("jsonwebtoken");
 
 module.exports = (function() {
     console.log(`Loading with ${settings.API_URL} as api endpoint`);
