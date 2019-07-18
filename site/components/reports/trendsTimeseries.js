@@ -185,19 +185,20 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                     }
                                 },
                                 title: {
-                                    text: $scope.options.title,
+                                    text: $scope.options.title + " <i style='color:#888888;font-size:14px'> - " + d1 + ($scope.settings.daterange2.enabled ? " vs " + d2 : "</i>"),
                                     align: 'left',
-                                    margin: 10,
-                                    x: 55
+                                    margin: 15,
+                                    x: 55,
+                                    useHTML: true
                                 },
-                                subtitle: {
-                                    text: d1 + ($scope.settings.daterange2.enabled ? " vs " + d2 : ""),
-                                    align: 'right',
-                                    verticalAlign: 'top',
-                                    style: {
-                                        fontStyle: 'italic'
-                                    }
-                                },
+                                // subtitle: {
+                                //     text: d1 + ($scope.settings.daterange2.enabled ? " vs " + d2 : ""),
+                                //     align: 'left',
+                                //     x: 55,
+                                //     style: {
+                                //         fontStyle: 'italic'
+                                //     }
+                                // },
                                 xAxis: {
                                     crosshair: false,
                                     allowDecimals: false,
@@ -605,7 +606,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d1subject) {
-                                d1subject = {name: "(" + d1 + ") " + subject.name + suffix, data:[], color: '', propertyId: subjectId.toString()};
+                                d1subject = {name: subject.name + suffix, data:[], color: '', propertyId: subjectId.toString()};
                                 d1subjects.push(d1subject);
                             }
 
@@ -614,7 +615,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                             });
 
                             if (!d2subject) {
-                                d2subject = {name: "(" + d2 + ") " + subject.name + suffix, data:[], color: '', dashStyle: 'shortdash', propertyId: subjectId.toString()};
+                                d2subject = {name: "(Previous) " + subject.name + suffix, data:[], color: '', dashStyle: 'shortdash', propertyId: subjectId.toString()};
                                 d2subjects.push(d2subject);
                             }
 
