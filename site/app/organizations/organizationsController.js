@@ -2,8 +2,11 @@
 define([
     'app',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller('organizationsController', ['$scope','$rootScope','$location','$organizationsService','ngProgress','$uibModal','toastr', function ($scope,$rootScope,$location,$organizationsService,ngProgress,$uibModal,toastr) {
+        var timeStart = performance.now();
+
         window.setTimeout(function() {window.document.title = "Organizations | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -19,6 +22,20 @@ define([
             $organizationsService.search({getCounts: true, active: true}).then(function (response) {
                 $scope.data = response.data.organizations;
                 $scope.localLoading = true;
+
+                var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+                var metrics = pageViewType === 'InitialPageView' && {
+                    'metric3': 1,
+                    'metric4': pageTime,
+                } || {
+                    'metric5': 1,
+                    'metric6': pageTime,
+                }
+        
+                ga('send', 'event', pageViewType, 'Organizations', metrics);
+        
+                pageViewType = 'PageView';
             },
             function (error) {
                 if (error.status == 401) {

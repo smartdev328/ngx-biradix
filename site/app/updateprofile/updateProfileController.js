@@ -3,9 +3,13 @@ define([
     'app',
     '../../services/cronService.js',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller
     ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService','$cronService', '$reportingService',
         function ($scope, $authService, ngProgress, $rootScope, toastr, $location, $userService, $stateParams, $propertyService, $cronService, $reportingService) {
+            var timeStart = performance.now();
+
             window.setTimeout(function() {window.document.title = "My Account - Update Profile | BI:Radix";},1500);
 
             $rootScope.nav = "";
@@ -394,6 +398,20 @@ define([
                 $propertyService.notifications_test(properties,$scope.settings.showLeases,notification_columns, $scope.settings.notifications.groupComps, $scope.settings.perspectives);
                 toastr.success('Your request for a notifications report has been submitted. Please allow up to 5 minutes to receive your report.');
             }
+
+            var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+            var metrics = pageViewType === 'InitialPageView' && {
+                'metric3': 1,
+                'metric4': pageTime,
+            } || {
+                'metric5': 1,
+                'metric6': pageTime,
+            }
+    
+            ga('send', 'event', pageViewType, 'Update Profile', metrics);
+    
+            pageViewType = 'PageView';
         }]);
 
 });

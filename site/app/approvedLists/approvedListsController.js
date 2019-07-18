@@ -3,7 +3,11 @@ define([
     'app',
     '../../filters/skip/filter',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller('approvedListsController', ['$scope','$rootScope','$location','$approvedListsService','ngProgress','$dialog','$uibModal','$gridService','toastr', function ($scope,$rootScope,$location,$approvedListsService,ngProgress,$dialog,$uibModal,$gridService,toastr) {
+        var timeStart = performance.now();
+
         window.setTimeout(function() {window.document.title = "Approved Lists | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -33,6 +37,20 @@ define([
             }).then(function (response) {
                 $scope.data = response.data.data.ApprovedList;
                     $scope.localLoading = true;
+
+                    var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+                    var metrics = pageViewType === 'InitialPageView' && {
+                        'metric3': 1,
+                        'metric4': pageTime,
+                    } || {
+                        'metric5': 1,
+                        'metric6': pageTime,
+                    }
+            
+                    ga('send', 'event', pageViewType, 'Approved Lists', metrics);
+            
+                    pageViewType = 'PageView';
             },
             function (error) {
                    $scope.localLoading = true;

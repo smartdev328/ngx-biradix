@@ -1,8 +1,12 @@
 define([
     "app",
 ], function(app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("metricsController", ["$scope", "$rootScope", "$location", "$keenService", "ngProgress", "$uibModal", "toastr", "$cookieSettingsService", "$organizationsService",
         function($scope, $rootScope, $location, $keenService, ngProgress, $uibModal, toastr, $cookieSettingsService, $organizationsService) {
+            var timeStart = performance.now();
+
             window.setTimeout(function() {
                 window.document.title = "Metrics | BI:Radix";
             }, 1500);
@@ -580,5 +584,19 @@ define([
 
                 $scope.runAll();
             }, true);
+
+            var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+            var metrics = pageViewType === 'InitialPageView' && {
+                'metric3': 1,
+                'metric4': pageTime,
+            } || {
+                'metric5': 1,
+                'metric6': pageTime,
+            }
+    
+            ga('send', 'event', pageViewType, 'Metrics', metrics);
+    
+            pageViewType = 'PageView';
         }]);
 });

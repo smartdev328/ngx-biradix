@@ -3,11 +3,15 @@ define([
     "app",
     "async",
 ], function(app, async) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("historyController"
         , ["$scope", "$rootScope", "$location", "ngProgress", "$dialog", "$auditService", "toastr", "$stateParams", "$propertyService", "$userService",
             function($scope, $rootScope, $location, ngProgress, $dialog, $auditService, toastr, $stateParams, $propertyService, $userService) {
-        window.setTimeout(function() {
-            window.document.title = "Activity History | BI:Radix";
+            var timeStart = performance.now();
+
+            window.setTimeout(function() {
+                window.document.title = "Activity History | BI:Radix";
             }, 1500);
 
         $rootScope.nav = "";
@@ -215,6 +219,20 @@ define([
 
                     $scope.pager = response.data.pager;
                     $scope.localLoading = true;
+
+                    var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+                    var metrics = pageViewType === 'InitialPageView' && {
+                        'metric3': 1,
+                        'metric4': pageTime,
+                    } || {
+                        'metric5': 1,
+                        'metric6': pageTime,
+                    }
+            
+                    ga('send', 'event', pageViewType, 'History', metrics);
+            
+                    pageViewType = 'PageView';
                 },
                 function(error) {
                     if (error.status == 401) {

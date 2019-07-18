@@ -4,8 +4,11 @@ define([
     '../../services/propertyAmenityService',
     '../../filters/skip/filter',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService','$propertyAmenityService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService,$propertyAmenityService) {
+        var timeStart = performance.now();
+
         window.setTimeout(function() {window.document.title = "Amenities | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -44,6 +47,20 @@ define([
                         })
 
                     $scope.localLoading = true;
+
+                    var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+                    var metrics = pageViewType === 'InitialPageView' && {
+                        'metric3': 1,
+                        'metric4': pageTime,
+                    } || {
+                        'metric5': 1,
+                        'metric6': pageTime,
+                    }
+            
+                    ga('send', 'event', pageViewType, 'Amenities', metrics);
+            
+                    pageViewType = 'PageView';
                 },
                 function (error) {
                     if (error.status == 401) {

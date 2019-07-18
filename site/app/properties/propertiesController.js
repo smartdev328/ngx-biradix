@@ -3,8 +3,11 @@ define([
     "app",
     "../../filters/skip/filter",
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller("propertiesController", ["$scope","$rootScope","$location","$propertyService","ngProgress","$uibModal","$authService","$dialog","toastr","$gridService", function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr,$gridService) {
+        var timeStart = performance.now();
+
         window.setTimeout(function() {window.document.title = "Manage Properties | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -218,6 +221,20 @@ define([
                 }
 
                 $scope.localLoading = true;
+
+                var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+                var metrics = pageViewType === 'InitialPageView' && {
+                    'metric3': 1,
+                    'metric4': pageTime,
+                } || {
+                    'metric5': 1,
+                    'metric6': pageTime,
+                }
+        
+                ga('send', 'event', pageViewType, 'Properties', metrics);
+        
+                pageViewType = 'PageView';
 
                 if (callback) {
                     callback();

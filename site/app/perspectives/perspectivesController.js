@@ -2,8 +2,12 @@
 define([
     "app",
 ], function(app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("perspectivesController", ["$scope", "$rootScope", "$perspectivesService", "toastr", "$httpHelperService", "ngProgress", "$dialog", "$cookieSettingsService", "$stateParams",
         function($scope, $rootScope, $perspectivesService, toastr, $httpHelperService, ngProgress, $dialog, $cookieSettingsService, $stateParams) {
+        var timeStart = performance.now();
+        
         window.setTimeout(function() {
             window.document.title = "My Account - Perspectives | BI:Radix";
         }, 1500);
@@ -56,6 +60,20 @@ define([
                     $scope.perspectiveToLoad = perspectiveId;
                 }
                 $scope.loading = false;
+
+                var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+                var metrics = pageViewType === 'InitialPageView' && {
+                    'metric3': 1,
+                    'metric4': pageTime,
+                } || {
+                    'metric5': 1,
+                    'metric6': pageTime,
+                }
+        
+                ga('send', 'event', pageViewType, 'Perspectives', metrics);
+        
+                pageViewType = 'PageView';
             });
         };
 

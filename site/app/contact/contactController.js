@@ -3,8 +3,12 @@ define([
     'app',
     '../../services/contactService.js'
 ], function (app) {
+    var pageViewType = 'InitialPageView';
+
      app.controller
         ('contactController', ['$scope', 'ngProgress', '$rootScope','toastr', '$location', '$contactService', '$propertyService', '$uibModal', '$uibModalStack', function ($scope, ngProgress, $rootScope, toastr, $location, $contactService,$propertyService, $uibModal, $uibModalStack) {
+            var timeStart = performance.now();
+
             window.setTimeout(function() {window.document.title = "Contact Us | BI:Radix";},1500);
 
             $rootScope.sideMenu = true;
@@ -74,5 +78,18 @@ define([
                 });
             }
 
+            var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+            var metrics = pageViewType === 'InitialPageView' && {
+                'metric3': 1,
+                'metric4': pageTime,
+            } || {
+                'metric5': 1,
+                'metric6': pageTime,
+            }
+    
+            ga('send', 'event', pageViewType, 'Help', metrics);
+    
+            pageViewType = 'PageView';
         }]);
 });

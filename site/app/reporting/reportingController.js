@@ -2,9 +2,12 @@
 define([
     'app'
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q'
         , function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService,$q) {
+        var timeStart = performance.now();
+        
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -258,6 +261,20 @@ define([
                 window.document.title = "Reporting | BI:Radix";
             }, 1500);
             $scope.localLoading = true;
+
+            var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+            var metrics = pageViewType === 'InitialPageView' && {
+                'metric3': 1,
+                'metric4': pageTime,
+            } || {
+                'metric5': 1,
+                'metric6': pageTime,
+            }
+
+            ga('send', 'event', pageViewType, 'Reporting', metrics);
+
+            pageViewType = 'PageView';
         }
 
         $scope.loadSingle = function(callback) {

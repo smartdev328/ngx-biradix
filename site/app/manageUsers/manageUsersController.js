@@ -3,8 +3,12 @@ define([
     "app",
     "../../filters/skip/filter",
 ], function(app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("manageUsersController", ["$scope", "$rootScope", "$location", "$userService", "$authService", "ngProgress", "$dialog", "$uibModal", "$gridService", "toastr",
     function($scope, $rootScope, $location, $userService, $authService, ngProgress, $dialog, $uibModal, $gridService, toastr) {
+        var timeStart = performance.now();
+        
         window.setTimeout(function() {
             window.document.title = "Manage Users | BI:Radix";
             }, 1500);
@@ -139,6 +143,20 @@ define([
 
 
                 $scope.localLoading = true;
+
+                var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+
+                var metrics = pageViewType === 'InitialPageView' && {
+                    'metric3': 1,
+                    'metric4': pageTime,
+                } || {
+                    'metric5': 1,
+                    'metric6': pageTime,
+                }
+        
+                ga('send', 'event', pageViewType, 'Manage Users', metrics);
+        
+                pageViewType = 'PageView';
             },
             function(error) {
                 if (error.status == 401) {
