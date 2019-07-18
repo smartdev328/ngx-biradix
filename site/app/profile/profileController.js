@@ -4,7 +4,7 @@ define([
     '../../services/exportService',
 ], function (app) {
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', '$uibModal', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService,$uibModal) {
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
         $scope.excludedPopups = {};
@@ -307,6 +307,29 @@ define([
                 }
             })
 
+        }
+
+        $scope.email = function() {
+            require([
+                "/app/profile/profileShareController.js",
+            ], function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: "/app/profile/profileShare.html?bust="+version,
+                    controller: "profileShareController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+
+                    },
+                });
+
+                modalInstance.result.then(function(comp) {
+                    // Send successfully
+                }, function() {
+                    // Cancel
+                });
+            });
         }
 
         $scope.excel = function() {

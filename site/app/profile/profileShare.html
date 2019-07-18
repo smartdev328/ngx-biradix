@@ -1,0 +1,31 @@
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading" class="propertyWizard">
+    <div class="modal-header">
+        <div class="triangle profile" ng-if="isCustom"
+                popover-trigger="'mouseenter'"
+                popover-placement="bottom"
+                popover-append-to-body="true"
+                uib-popover="This is a custom property - these properties are personal properties created by and only visible to you"
+                style="left:0px;top:0px;height:20px"
+        ></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">{{getTitle()}}</h2>
+    </div>
+    <div class="container" style="padding-top:5px;border-bottom:1px solid #e5e5e5;width:100%">
+        <ul class="nav nav-pills" role="tablist">
+            <li ng-repeat="step in steps" ng-class="{'active':$index == stepIndex}"><a href ng-click="changeStep($index)">{{step.label}}</a></li>
+        </ul>
+    </div>
+    <div class="modal-body container-fluid">
+        <div ng-include="stepTemplate"></div>
+    </div>
+    <div class="modal-footer" style="text-align: left">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12" style="display:flex;justify-content: center">
+                <button class="btn btn-success" id="propertySave" ng-click="save()">{{!id ? 'Done' : 'Done'}}</button>
+            </div>
+        </div>
+    </div>
+</div>
