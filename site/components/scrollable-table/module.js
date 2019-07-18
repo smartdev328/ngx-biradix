@@ -113,3 +113,72 @@ function fixedTable($timeout) {
         }
     }
 }
+
+angular.module('biradix.global').directive('fixedTableNoFooter', ['$timeout', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: link,
+        scope: {
+            toggles: '='
+        }
+    };
+
+    function link($scope, $elem, $attrs, $ctrl) {
+        var elem = $elem[0];
+        var columnWidthArray;
+
+        transformTable();
+
+        function calculateWidth() {
+            var modal = window.outerWidth;
+            if(window.innerWidth < 768) {
+                var firstColumn = Math.round(modal*(10/100));
+                var secondColumn = Math.round(modal*(10/100));
+                var thirdColumn = Math.round(modal*(30/100));
+                var fourthColumn = Math.round(modal*(10/100));
+                var fifthColumn = Math.round(modal*(10/100));
+                var sixthColumn = Math.round(modal*(10/100));
+                columnWidthArray = [firstColumn,secondColumn,thirdColumn,fourthColumn,fifthColumn,sixthColumn];
+            } else {
+                columnWidthArray = [80,80,200,80,80,44];
+            }
+
+            columnWidthArray.forEach(function(width, i){
+                var thElems = elem.querySelector('thead tr th:nth-child(' + (i + 1) + ')');
+                var tdElems = elem.querySelector('tbody tr:first-child td:nth-child(' + (i + 1) + ')');
+                if (thElems) {
+                    thElems.style.width = columnWidthArray[i] + 'px';
+                }
+                if (tdElems) {
+                    tdElems.style.width = columnWidthArray[i] + 'px';
+                }
+            });
+        }
+
+        function transformTable() {
+            // reset display styles so column widths are correct when measured below
+            angular.element(elem.querySelectorAll('thead, tbody')).css('display', '');
+
+            // wrap in $timeout to give table a chance to finish rendering
+            $timeout(function () {
+
+                angular.element(window).bind('resize', function(){
+                    calculateWidth();
+                });
+
+                calculateWidth();
+
+                // set css styles on thead and tbody
+                angular.element(elem.querySelectorAll('thead')).css('display', 'block');
+
+                angular.element(elem.querySelectorAll('tbody')).css({
+                    'display': 'block',
+                    'height': $attrs.tableHeight || 'inherit',
+                    'overflow-y': 'auto',
+                    'overflow-x': 'hidden'
+                });
+
+            });
+        }
+    }
+}]);
