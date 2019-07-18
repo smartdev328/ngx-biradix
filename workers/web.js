@@ -1,5 +1,4 @@
 require("newrelic");
-const jwt = require("jsonwebtoken");
 const settings = require("../config/settings");
 const errors = require("../config/error");
 
