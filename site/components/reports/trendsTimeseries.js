@@ -185,7 +185,7 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                     }
                                 },
                                 title: {
-                                    text: $scope.options.title + " <i style='color:#888888;font-size:14px'> - " + d1 + ($scope.settings.daterange2.enabled ? " vs " + d2 : "</i>"),
+                                    text: $scope.options.title + " <i style='color:#888888;font-size:14px;font-weight:bold'> - " + d1 + ($scope.settings.daterange2.enabled ? " vs " + d2 : "</i>"),
                                     align: 'left',
                                     margin: 15,
                                     x: 55,
