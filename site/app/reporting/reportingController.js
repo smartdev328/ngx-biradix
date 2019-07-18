@@ -497,6 +497,7 @@ define([
 
                 $scope.configurePropertyStatusOptions();
                 $scope.configureCustomPortfolioOptions();
+                $scope.configureTrendsOptions();
 
                 $scope.reportLoading = false;
                 $scope.reports = response.data;
@@ -528,7 +529,7 @@ define([
 
                 window.setTimeout(function() {
                     window.renderable = true;
-                }, 200);
+                }, 800);
             });
 
         }
