@@ -1,0 +1,68 @@
+<div>
+	<style>
+	    .file-input-wrapper {
+	        width: 300px;
+	        height: 40px;
+	        overflow: hidden;
+	        position: relative;
+	        margin:10px auto;
+
+	    }
+	    .file-input-wrapper > input[type="file"] {
+	        font-size: 200px;
+	        position: absolute;
+	        top: 0;
+	        right: 0;
+	        opacity: 0;
+	    }
+	    .file-input-wrapper > button {
+	        display: inline-block;
+	        width:300px;
+	    }
+	</style>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    		<h2 class="modal-title">Fix Incorrect Floor Plans: {{selectedProperty.name}}</h2>
+        <hr>
+    </div>
+    <div class="modal-body market-survey text-left container-fluid">
+        <p>Update <b>{{selectedProperty.name}}</b> floor plan information below and click "Submit"</p>
+        <textarea class="form-control mb-20" rows="2" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>
+        <div class="propertySurvey incorrectFpTableHolder" ng-class="{'allShown': allShown}">
+        	<table class="table" fixed-table-no-footer>
+        		<thead style="background: #f9f9f9;">
+        			<tr>
+                        <th><span class="visible-xs" style="min-width: 40px;">Bed.</span><span class="hidden-xs">Bedrooms</span></th>
+        				<th><span class="visible-xs" style="min-width: 40px;">Bath.</span><span class="hidden-xs">Bathrooms</span></th>
+        				<th>Desc.</th>
+        				<th>Units</th>
+        				<th>Sqft</th>
+        				<th></th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<tr ng-repeat="row in selectedProperty.floorplans track by $index">
+        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bedrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="text" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bathrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="text" class="form-control input-sm survey-value survey-value-lg" ng-model="selectedProperty.floorplans[$index].description" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].units" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+        				<td>
+                            <button ng-if="$last" style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="addEmptyRow()" uib-tooltip="Add Row" tooltip-append-to-body="true"><i class="fa fa-plus"></i></button>
+            				<button ng-if="!$last" style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row" tooltip-append-to-body="true"><i class="fa fa-trash red-txt"></i></button>
+            			</td>
+        			</tr>
+        		</tbody>
+            </table>
+        </div>
+        <button type="button" ng-hide="allShown" class="showAllFpButton mb-20" ng-click="showAllFP()">Show all</button>
+		<div class="row" style="margin-left: -15px;margin-right: -15px;">
+	        <div class="col-xs-4" style="margin-top: 7px;">
+	        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back</a>
+	        </div>
+			<div class="col-xs-4 text-center">
+	        	<button type="button" class="btn btn-success" ng-click="done()" ng-disabled="selectedProperty.floorplans.length == 0">Submit</button>
+			</div>
+		</div>
+    </div>
+</div>
