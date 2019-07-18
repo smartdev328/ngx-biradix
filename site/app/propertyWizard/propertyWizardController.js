@@ -421,12 +421,15 @@ define([
                         $scope.property.orgid_owner = $scope.getSelectedOrg($scope.property.orgid_owner)
 
                         $scope.property.floorplans = $scope.property.floorplans || [];
+                        $scope.property.custom_fees = $scope.property.custom_fees || [];
+
+                        $scope.property.custom_fees = _.sortByAll($scope.property.custom_fees, "name");
 
                         $scope.calculateFloorplanTotals();
 
                         $scope.property.community_amenities.forEach(function(pa) {
                             var am = _.find($scope.communityItems, function(a) {
-                                return a.id.toString() == pa.toString()});
+                                return a.id.toString() === pa.toString()});
                             if (am) {
                                 am.selected = true;
                             }
@@ -1147,6 +1150,20 @@ define([
                 });
             };
 
+            $scope.$watch("property.custom_fees", function(newFees, oldFees) {
+                if (!newFees) {
+                    return
+                }
+
+                var hasBlankName = _.find(newFees, function(x) {
+                    return !x.name;
+                });
+
+                if (!hasBlankName) {
+                    $scope.property.custom_fees.push({name: "", value: ""});
+                }
+
+            }, true);
         }]);
 
 });

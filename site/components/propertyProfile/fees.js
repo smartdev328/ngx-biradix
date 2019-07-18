@@ -3,18 +3,8 @@ angular.module('biradix.global').directive('propertyFees', function () {
             restrict: 'E',
             scope: {
                 fees: '=',
-                lookups: '='
-            },
+             },
             controller: function ($scope) {
-
-
-                $scope.$watch("fees", function() {
-                    $scope.final = [];
-                    for (var key in $scope.fees) {
-                        $scope.final.push({display: $scope.lookups[key], value: $scope.fees[key]} );
-                    }
-
-                }, true)
 
 
             },

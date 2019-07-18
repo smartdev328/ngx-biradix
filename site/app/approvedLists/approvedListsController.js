@@ -15,13 +15,13 @@ define([
         //Grid Options
         $scope.data = [];
         $scope.limits = [10,50,100,500]
-        $scope.types = ["OWNER", "MANAGER"];
+        $scope.types = ["OWNER", "MANAGER", "FEES"];
         $scope.type = "OWNER";
         $scope.limit = 50;
         $scope.search = {}
         $scope.searchable = ['name', 'type'];
 
-        $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management"};
+        $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management", "FEES": "Custom Fees & Deposits"};
 
         // /////////////////////////////
         $scope.reload = function () {

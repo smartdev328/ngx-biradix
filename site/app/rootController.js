@@ -562,6 +562,7 @@ angular.module("biradix.global").controller("rootController",
                 $scope.alertsAudits();
                 $scope.alertsApprovedLists("OWNER", "owner", "Property:Owners");
                 $scope.alertsApprovedLists("MANAGER", "management", "Property:Management");
+                $scope.alertsApprovedLists("FEES", "fees", "Custom Fees & Deposits");
             }
         };
 
