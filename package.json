@@ -21,17 +21,16 @@
     "npm": "6.9.0"
   },
   "dependencies": {
-    "@angular/animations": "~8.0.1",
+    "@angular/animations": "^8.0.3",
+    "@angular/cdk": "^8.1.1",
     "@angular/common": "~8.0.1",
     "@angular/compiler": "~8.0.1",
     "@angular/core": "~8.0.1",
     "@angular/forms": "~8.0.1",
+    "@angular/material": "^8.1.1",
     "@angular/platform-browser": "~8.0.1",
     "@angular/platform-browser-dynamic": "~8.0.1",
     "@angular/router": "~8.0.1",
-    "rxjs": "~6.4.0",
-    "tslib": "^1.9.0",
-    "zone.js": "~0.9.1",
     "body-parser": "^1.18.3",
     "bower": "^1.8.4",
     "compression": "^1.7.3",
@@ -54,7 +53,10 @@
     "newrelic": "5.6.4",
     "nodemon": "^1.18.9",
     "raygun": "^0.9.1",
-    "xlsx-style": "^0.8.13"
+    "rxjs": "~6.4.0",
+    "tslib": "^1.9.0",
+    "xlsx-style": "^0.8.13",
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.800.0",

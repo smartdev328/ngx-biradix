@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from "@angular/material";
 
 @NgModule({
   imports: [
@@ -11,7 +12,9 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    BrowserAnimationsModule,
+    MatProgressSpinnerModule
   ],
   declarations: [ ],
   exports: [
@@ -20,6 +23,8 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
+    BrowserAnimationsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class SharedModule {
