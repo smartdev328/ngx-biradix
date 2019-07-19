@@ -4,7 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatProgressSpinnerModule} from "@angular/material";
+import {
+  MatIconModule, MatListModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatToolbarModule
+} from "@angular/material";
 
 @NgModule({
   imports: [
@@ -14,7 +20,12 @@ import {MatProgressSpinnerModule} from "@angular/material";
     HttpClientModule,
     RouterModule,
     BrowserAnimationsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatMenuModule,
+    MatListModule
   ],
   declarations: [ ],
   exports: [
@@ -24,7 +35,12 @@ import {MatProgressSpinnerModule} from "@angular/material";
     HttpClientModule,
     RouterModule,
     BrowserAnimationsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatMenuModule,
+    MatListModule
   ]
 })
 export class SharedModule {

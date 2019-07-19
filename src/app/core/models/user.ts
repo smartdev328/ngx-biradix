@@ -1,6 +1,6 @@
 import {IOrganization} from "./organization";
 
-export interface IUser {
+export interface ILoggedInUser {
   _id: boolean;
   passwordUpdated: boolean;
   active: boolean;
