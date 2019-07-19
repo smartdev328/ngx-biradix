@@ -27,6 +27,15 @@ module.exports = {
             app.use("/dist", require("express").static(__dirname + "/../dist/", {maxAge: cacheTime}));
             app.use("/node_modules", require("express").static(__dirname + "/../node_modules/", {maxAge: cacheTime}));
 
+            app.use("/static",require('express').static(__dirname + '/../dist/biradix-platform/'
+            ,{
+              maxAge: cacheTime, setHeaders: (res, path) => {
+                if (path.indexOf('index.html') > -1) {
+                  res.setHeader('Cache-Control', 'public, max-age=0')
+                }
+              }
+            }));
+
             app.use(error.getClient().expressHandler);
 
             app.use(cookieParser());

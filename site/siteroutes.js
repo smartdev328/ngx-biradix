@@ -9,6 +9,7 @@ const vendorscsshash = require("../dist/vendorscss-hash.json");
 const globaljshash = require("../dist/globaljs-hash.json");
 const globalcsshash = require("../dist/globalcss-hash.json");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 module.exports = (function() {
     console.log(`Loading with ${settings.API_URL} as api endpoint`);
@@ -79,6 +80,17 @@ module.exports = (function() {
                 api: settings.API_URL,
             });
     });
+
+  ui.get('/v2(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?', function (req, res) {
+    if (req.headers["x-forwarded-proto"] !== "https"
+      && req.get("host").indexOf(".com") > -1
+    ) {
+      return res.redirect("https://" + req.get("host") + req.originalUrl);
+    }
+
+
+    res.sendFile(path.join(__dirname + '/../dist/biradix-platform/index.html'));
+  });
 
     ui.get("/sso", function(req, res) {
         res.cookie('token', req.query.token);

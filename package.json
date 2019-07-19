@@ -1,20 +1,37 @@
 {
-  "name": "biradix",
-  "version": "2.25.17",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "postinstall": "bower install && npm run build",
-    "build": "gulp vendorsjs vendorscss globaljs globalcss",
-    "dev": "gulp watch"
-  },
+  "name": "biradix-platform",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/EugenePerson/biradix-platform.git"
+    "url": "https://github.com/BI-Radix/biradix-platform.git"
   },
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "postinstall": "bower install && npm run build",
+    "ng": "ng",
+    "start": "ng serve --deploy-url=",
+    "build": "gulp vendorsjs vendorscss globaljs globalcss && ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "dev": "gulp watch"
+  },
+  "private": true,
+  "engines": {
+    "node": "10.16.0",
+    "npm": "6.9.0"
+  },
   "dependencies": {
+    "@angular/animations": "~8.0.1",
+    "@angular/common": "~8.0.1",
+    "@angular/compiler": "~8.0.1",
+    "@angular/core": "~8.0.1",
+    "@angular/forms": "~8.0.1",
+    "@angular/platform-browser": "~8.0.1",
+    "@angular/platform-browser-dynamic": "~8.0.1",
+    "@angular/router": "~8.0.1",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.9.0",
+    "zone.js": "~0.9.1",
     "body-parser": "^1.18.3",
     "bower": "^1.8.4",
     "compression": "^1.7.3",
@@ -39,12 +56,26 @@
     "raygun": "^0.9.1",
     "xlsx-style": "^0.8.13"
   },
-  "private": true,
-  "engines": {
-    "node": "10.16.0",
-    "npm": "6.9.0"
-  },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.800.0",
+    "@angular/cli": "~8.0.4",
+    "@angular/compiler-cli": "~8.0.1",
+    "@angular/language-service": "~8.0.1",
+    "@types/node": "~8.9.4",
+    "@types/jasmine": "~3.3.8",
+    "@types/jasminewd2": "~2.0.3",
+    "codelyzer": "^5.0.0",
+    "jasmine-core": "~3.4.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~4.1.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
+    "protractor": "~5.4.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~5.15.0",
+    "typescript": "~3.4.3",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1"
   }
