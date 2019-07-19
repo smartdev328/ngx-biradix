@@ -7,7 +7,9 @@ define([
 
     app.controller("manageUsersController", ["$scope", "$rootScope", "$location", "$userService", "$authService", "ngProgress", "$dialog", "$uibModal", "$gridService", "toastr",
     function($scope, $rootScope, $location, $userService, $authService, ngProgress, $dialog, $uibModal, $gridService, toastr) {
-        var timeStart = performance.now();
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
         
         window.setTimeout(function() {
             window.document.title = "Manage Users | BI:Radix";
@@ -144,19 +146,21 @@ define([
 
                 $scope.localLoading = true;
 
-                var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+                if (ga && pageViewType && timeStart && performance && performance.now) {
+                    var pageTime = Math.ceil((performance.now() - timeStart));
 
-                var metrics = pageViewType === 'InitialPageView' && {
-                    'metric3': 1,
-                    'metric4': pageTime,
-                } || {
-                    'metric5': 1,
-                    'metric6': pageTime,
+                    var metrics = pageViewType === 'InitialPageView' && {
+                        'metric1': 1,
+                        'metric2': pageTime,
+                    } || {
+                        'metric3': 1,
+                        'metric4': pageTime,
+                    }
+            
+                    ga('send', 'event', pageViewType, 'Manage Users', metrics);
+            
+                    pageViewType = 'PageView';
                 }
-        
-                ga('send', 'event', pageViewType, 'Manage Users', metrics);
-        
-                pageViewType = 'PageView';
             },
             function(error) {
                 if (error.status == 401) {

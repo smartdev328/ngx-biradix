@@ -6,7 +6,9 @@ define([
     var pageViewType = 'InitialPageView';
 
     app.controller('approvedListsController', ['$scope','$rootScope','$location','$approvedListsService','ngProgress','$dialog','$uibModal','$gridService','toastr', function ($scope,$rootScope,$location,$approvedListsService,ngProgress,$dialog,$uibModal,$gridService,toastr) {
-        var timeStart = performance.now();
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
 
         window.setTimeout(function() {window.document.title = "Approved Lists | BI:Radix";},1500);
 
@@ -36,21 +38,23 @@ define([
                 "searchableOnly": false,
             }).then(function (response) {
                 $scope.data = response.data.data.ApprovedList;
-                    $scope.localLoading = true;
+                $scope.localLoading = true;
 
-                    var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+                if (ga && pageViewType && timeStart && performance && performance.now) {
+                    var pageTime = Math.ceil((performance.now() - timeStart));
 
                     var metrics = pageViewType === 'InitialPageView' && {
+                        'metric1': 1,
+                        'metric2': pageTime,
+                    } || {
                         'metric3': 1,
                         'metric4': pageTime,
-                    } || {
-                        'metric5': 1,
-                        'metric6': pageTime,
                     }
             
                     ga('send', 'event', pageViewType, 'Approved Lists', metrics);
             
                     pageViewType = 'PageView';
+                }
             },
             function (error) {
                    $scope.localLoading = true;

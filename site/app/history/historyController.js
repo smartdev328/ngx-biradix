@@ -8,11 +8,13 @@ define([
     app.controller("historyController"
         , ["$scope", "$rootScope", "$location", "ngProgress", "$dialog", "$auditService", "toastr", "$stateParams", "$propertyService", "$userService",
             function($scope, $rootScope, $location, ngProgress, $dialog, $auditService, toastr, $stateParams, $propertyService, $userService) {
+        if (performance && performance.now) {
             var timeStart = performance.now();
+        }
 
-            window.setTimeout(function() {
-                window.document.title = "Activity History | BI:Radix";
-            }, 1500);
+        window.setTimeout(function() {
+            window.document.title = "Activity History | BI:Radix";
+        }, 1500);
 
         $rootScope.nav = "";
         $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: parseInt($stateParams.rows) || 50};
@@ -220,19 +222,21 @@ define([
                     $scope.pager = response.data.pager;
                     $scope.localLoading = true;
 
-                    var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                        var pageTime = Math.ceil((performance.now() - timeStart));
 
-                    var metrics = pageViewType === 'InitialPageView' && {
-                        'metric3': 1,
-                        'metric4': pageTime,
-                    } || {
-                        'metric5': 1,
-                        'metric6': pageTime,
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+                
+                        ga('send', 'event', pageViewType, 'History', metrics);
+                
+                        pageViewType = 'PageView';
                     }
-            
-                    ga('send', 'event', pageViewType, 'History', metrics);
-            
-                    pageViewType = 'PageView';
                 },
                 function(error) {
                     if (error.status == 401) {

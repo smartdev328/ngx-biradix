@@ -6,7 +6,9 @@ define([
 
     app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q'
         , function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService,$q) {
-        var timeStart = performance.now();
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
         
         $scope.selected = {};
         $scope.reportIds = [];
@@ -262,19 +264,21 @@ define([
             }, 1500);
             $scope.localLoading = true;
 
-            var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+            if (ga && pageViewType && timeStart && performance && performance.now) {
+                var pageTime = Math.ceil((performance.now() - timeStart));
 
-            var metrics = pageViewType === 'InitialPageView' && {
-                'metric3': 1,
-                'metric4': pageTime,
-            } || {
-                'metric5': 1,
-                'metric6': pageTime,
+                var metrics = pageViewType === 'InitialPageView' && {
+                    'metric1': 1,
+                    'metric2': pageTime,
+                } || {
+                    'metric3': 1,
+                    'metric4': pageTime,
+                }
+
+                ga('send', 'event', pageViewType, 'Reporting', metrics);
+
+                pageViewType = 'PageView';
             }
-
-            ga('send', 'event', pageViewType, 'Reporting', metrics);
-
-            pageViewType = 'PageView';
         }
 
         $scope.loadSingle = function(callback) {

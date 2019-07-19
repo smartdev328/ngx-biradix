@@ -7,7 +7,9 @@ define([
     var pageViewType = 'InitialPageView';
 
     app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService','$propertyAmenityService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService,$propertyAmenityService) {
-        var timeStart = performance.now();
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
 
         window.setTimeout(function() {window.document.title = "Amenities | BI:Radix";},1500);
 
@@ -42,25 +44,27 @@ define([
 
                 $propertyService.getAmenityCounts().then(function (response) {
 
-                        $scope.data.forEach(function(a) {
-                            a.properties = response.data.counts[a._id] || 0;
-                        })
+                    $scope.data.forEach(function(a) {
+                        a.properties = response.data.counts[a._id] || 0;
+                    })
 
                     $scope.localLoading = true;
 
-                    var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                        var pageTime = Math.ceil((performance.now() - timeStart));
 
-                    var metrics = pageViewType === 'InitialPageView' && {
-                        'metric3': 1,
-                        'metric4': pageTime,
-                    } || {
-                        'metric5': 1,
-                        'metric6': pageTime,
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+                
+                        ga('send', 'event', pageViewType, 'Amenities', metrics);
+                
+                        pageViewType = 'PageView';
                     }
-            
-                    ga('send', 'event', pageViewType, 'Amenities', metrics);
-            
-                    pageViewType = 'PageView';
                 },
                 function (error) {
                     if (error.status == 401) {

@@ -6,7 +6,9 @@ define([
 
     app.controller("importController", ["$scope", "$rootScope", "$location", "$importService", "$organizationsService", "ngProgress", "$dialog", "$uibModal", "toastr",
         function($scope, $rootScope, $location, $importService, $organizationsService, ngProgress, $dialog, $uibModal, toastr) {
-        var timeStart = performance.now();
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
 
         window.setTimeout(function() {
             window.document.title = "Configure PMS Import | BI:Radix";
@@ -48,19 +50,21 @@ define([
 
                         $scope.localLoading = true;
 
-                        var pageTime = Math.ceil((performance.now() - timeStart) / 1000);
+                        if (ga && pageViewType && timeStart && performance && performance.now) {
+                            var pageTime = Math.ceil((performance.now() - timeStart));
 
-                        var metrics = pageViewType === 'InitialPageView' && {
-                            'metric3': 1,
-                            'metric4': pageTime,
-                        } || {
-                            'metric5': 1,
-                            'metric6': pageTime,
+                            var metrics = pageViewType === 'InitialPageView' && {
+                                'metric1': 1,
+                                'metric2': pageTime,
+                            } || {
+                                'metric3': 1,
+                                'metric4': pageTime,
+                            }
+                    
+                            ga('send', 'event', pageViewType, 'Import', metrics);
+                    
+                            pageViewType = 'PageView';
                         }
-                
-                        ga('send', 'event', pageViewType, 'Import', metrics);
-                
-                        pageViewType = 'PageView';
                     },
                     function(error) {
                         $scope.localLoading = true;
