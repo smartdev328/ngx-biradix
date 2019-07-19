@@ -1,11 +1,11 @@
-import { Component} from '@angular/core';
-import {ILoggedInUser} from "../../core/models";
-import { environment } from './../../../environments/environment'
+import {Component, ViewEncapsulation} from '@angular/core';
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-secure',
   templateUrl: './secure.component.html',
-  styleUrls: ['./secure.component.scss']
+  styleUrls: ['./secure.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SecureComponent  {
   public me: any = {first: "Alex"};

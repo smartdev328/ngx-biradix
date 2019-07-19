@@ -9,7 +9,8 @@ import {
   MatMenuModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatButtonModule
 } from "@angular/material";
 
 @NgModule({
@@ -40,7 +41,8 @@ import {
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    MatButtonModule
   ]
 })
 export class SharedModule {

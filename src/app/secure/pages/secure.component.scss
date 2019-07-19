@@ -1,0 +1,30 @@
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+.responsive-nav, .wrapper {
+  height:calc(100vh - 64px);
+}
+
+.responsive-nav mat-nav-list{
+  width:175px;
+}
+.responsive-nav .mat-button {
+  width:100%;
+  text-align: left;
+  font-size:13px;
+}
+
+.responsive-nav .user {
+  font-size:14px;
+}
+
+.full-width {
+  width: 100%;
+  max-width: 360px;
+}
+@media (max-width: 599px) {
+  .responsive-nav, .wrapper {
+    height:calc(100vh - 56px);
+  }
+}
