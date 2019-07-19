@@ -55,7 +55,8 @@ module.exports = (function() {
 
     ui.get("/", function(req, res) {
         req.headers = req.headers || {"user-agent": ""};
-        let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
+        const phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
+        const localhost = req.get("host").toString().toLowerCase().indexOf("localhost") > -1;
 
         if (req.headers["x-forwarded-proto"] !== "https"
             && !phantom
@@ -78,6 +79,7 @@ module.exports = (function() {
                 raygun_key: settings.RAYGUN_APIKEY,
                 heroku_env: settings.NEW_RELIC_NAME,
                 api: settings.API_URL,
+                v2: localhost ? "http://localhost:2003/v2/" : "/v2/"
             });
     });
 

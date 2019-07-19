@@ -8,6 +8,7 @@ angular.module("biradix.global").controller("rootController",
             $scope.hasSessionStorage = false;
         }
 
+        $rootScope.v2Base = gV2;
         $scope.env = "";
         var loc = gAPI.toLowerCase();
 

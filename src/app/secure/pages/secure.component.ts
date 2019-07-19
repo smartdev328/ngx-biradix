@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment'
   encapsulation: ViewEncapsulation.None
 })
 export class SecureComponent  {
-  public me: any = {first: "Alex"};
+  public me: any = {first: "Alex", roles: ["Site Admin"]};
   public logo: string = environment.baseUrl + "images/organizations/biradix.png";
   public baseUrl = environment.baseUrl;
 
