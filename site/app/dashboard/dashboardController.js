@@ -293,7 +293,7 @@ define([
                     $scope.trendsLoading = true;
 
                     if (ga && pageViewType && timeStart && performance && performance.now) {
-                        var pageTime = Math.ceil((performance.now() - timeStart));
+                        var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {
                             'metric1': 1,
