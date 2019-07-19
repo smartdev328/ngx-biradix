@@ -65,6 +65,11 @@
     border-left: 0;
 }
 
+.noBorderTable.table>tbody>tr>td {
+    border:0;
+    padding:4px;
+}
+
 @media (max-width: 767px) {
 
     .nav-tabs>li>a {

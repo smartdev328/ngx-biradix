@@ -18,8 +18,14 @@
 .market-survey .survey-value {
   max-width:60px;min-width:48px;height:26px;display: inline;padding-left:2px;padding-right:5px;text-align:right;padding-top:5px
 }
+.market-survey.text-left .survey-value {
+  text-align: left;
+}
 .market-survey .propertySurvey .survey-value {
   max-width: 48px;
+}
+.market-survey .propertySurvey .survey-value-lg {
+  max-width:200px;
 }
 .market-survey .input-group-addon {
   background-color:#ffffff;
@@ -341,7 +347,7 @@
     margin:0;
 }
 
-.propertySurvey .showAll {
+.showAllFpButton {
     color:#4460a9;
     background-color: #f8f8f8;
     border: 1px solid #cfcfcf;
@@ -386,11 +392,6 @@
 
 .fix-height-60 {height: 60px;}
 
-.oldSurvey .market-survey .market-survey .heading div, 
-.oldSurvey .market-survey .moreinfo .moreinforow {
-    height: 26px;
-}
-
 .newSurvey input[type='checkbox'] {
   height: 14px;
   width: 14px;
@@ -423,6 +424,16 @@
   border-bottom: 1px solid #ccc;
 }
 
+.incorrectFloorplans {
+  background: transparent;
+  color: #337ab7;
+  padding: 0;
+  margin: 6px 0;
+  text-decoration: underline;
+  font-size: 14px;
+  border: none;
+}
+
 @media all and (min-width: 0px) and (max-width: 767px) {
 
   .propertySurvey {
@@ -434,10 +445,10 @@
     min-width: 40px;
   }
 
-    .oldSurvey .market-survey .modal-body {
-        padding-left:3px !important;
-        padding-right:3px !important;
-    }
+  .market-survey .propertySurvey.incorrectFpTableHolder .survey-value {
+    max-width: 200px;
+    min-width: 40px;
+  }
 
     .market-survey .modal-dialog {
         margin:0px !important;
@@ -463,8 +474,7 @@
         width:10px !important;
     }
 
-    .market-survey .heading div,
-    .oldSurvey .market-survey .moreinfo .moreinforow {
+    .market-survey .heading div {
         height: 28px
     }
 
