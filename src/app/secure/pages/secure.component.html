@@ -2,15 +2,15 @@
   <mat-spinner style="margin:100px auto;"></mat-spinner>
 </div>
 <div class="wrapper" *ngIf="me">
-  <mat-toolbar color="secondary">
+  <mat-toolbar class="main-nav">
     <mat-toolbar-row>
       <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
         <mat-icon>menu</mat-icon>
       </button>
-      <span><a [href]="baseUrl" style="color:white"><img [src]="logo" height="40" style="vertical-align: bottom"/></a></span>
+      <span><a [href]="baseUrl + '#/dashboard'" style="color:white"><img [src]="logo" height="40" style="vertical-align: bottom"/></a></span>
       <span class="menu-spacer"></span>
       <div fxShow="true" fxHide.lt-md>
-        <a [href]="baseUrl" mat-button>Dashboard</a>
+        <a [href]="baseUrl + '#/dashboard'" mat-button>Dashboard</a>
         <a [href]="baseUrl + '#/reporting'" mat-button>Reporting</a>
         <button mat-button [matMenuTriggerFor]="menu">{{me.first}} <mat-icon>arrow_drop_down</mat-icon></button>
         <mat-menu #menu="matMenu">
@@ -23,7 +23,7 @@
   <mat-sidenav-container fxFlexFill class="responsive-nav">
     <mat-sidenav #sidenav>
       <mat-nav-list>
-        <a [href]="baseUrl" mat-button [routerLinkActive]="['mat-primary']" (click)="sidenav.toggle()"><mat-icon>insert_chart_outlined</mat-icon> Dashboard</a><Br>
+        <a [href]="baseUrl + '#/dashboard'" mat-button [routerLinkActive]="['mat-primary']" (click)="sidenav.toggle()"><mat-icon>insert_chart_outlined</mat-icon> Dashboard</a><Br>
         <a (click)="logoff();sidenav.toggle()" mat-button><mat-icon>power_settings_new</mat-icon> Log Off</a><Br>
       </mat-nav-list>
     </mat-sidenav>

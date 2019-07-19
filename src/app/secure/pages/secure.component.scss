@@ -2,6 +2,9 @@
   flex: 1 1 auto;
 }
 
+.responsive-nav .mat-sidenav {
+  background-color: #4460A9;
+}
 .responsive-nav, .wrapper {
   height:calc(100vh - 64px);
 }
@@ -13,11 +16,9 @@
   width:100%;
   text-align: left;
   font-size:13px;
+  color:white;
 }
 
-.responsive-nav .user {
-  font-size:14px;
-}
 
 .full-width {
   width: 100%;
@@ -27,4 +28,10 @@
   .responsive-nav, .wrapper {
     height:calc(100vh - 56px);
   }
+}
+
+
+.main-nav.mat-toolbar {
+  background-color:white;
+  border-bottom: 1px solid #ccc;
 }
