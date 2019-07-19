@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "bower install",
     "ng": "ng",
-    "build": "gulp vendorsjs vendorscss globaljs globalcss && ng build",
+    "build": "gulp vendorsjs vendorscss globaljs globalcss && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
