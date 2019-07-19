@@ -6,14 +6,14 @@
     "url": "https://github.com/BI-Radix/biradix-platform.git"
   },
   "scripts": {
-    "postinstall": "bower install && npm run build",
+    "postinstall": "bower install",
     "ng": "ng",
-    "start": "ng serve --deploy-url=",
     "build": "gulp vendorsjs vendorscss globaljs globalcss && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "dev-new": "ng serve --deploy-url="
   },
   "private": true,
   "engines": {
