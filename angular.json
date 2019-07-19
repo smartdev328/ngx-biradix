@@ -65,7 +65,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "biradix-platform:build",
-            "port": 2200
+            "port": 2003
           },
           "configurations": {
             "production": {
