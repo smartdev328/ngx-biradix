@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {HttpService} from "./http.service";
-import {ILoggedInUser} from "../models";
+import {ILoggedInUser, IloggedInUserWithToken} from "../models";
 import {BehaviorSubject} from "rxjs";
 import {environment} from "../../../environments/environment";
 
@@ -12,6 +12,30 @@ export class AuthService {
   constructor(private http: HttpClient, private httpService: HttpService){
   }
 
+  async refreshToken(): Promise<ILoggedInUser> {
+    const apiUrl = this.httpService.apiUrl;
+    const authHeader = this.httpService.getAuthHeader();
+
+    // No need to call the server if there is no cookie set
+    if (!authHeader.Authorization) {
+      this.self.next(null);
+      return;
+    }
+
+    try {
+      const userWithToken = await this.http.get<IloggedInUserWithToken>(apiUrl + "/api/1.0/users/refreshToken?bust" + (new Date()).getTime(), {headers: authHeader}).toPromise();
+      this.self.next(userWithToken.user);
+      this.httpService.setAuthCookie(userWithToken.token);
+    } catch(err) {
+
+      if (err.status === 401) {
+        this.self.next(null);
+      }
+      // do nothing else here on error.
+    }
+    return this.self.getValue();
+  }
+
   async getSelf(): Promise<ILoggedInUser> {
     const apiUrl = this.httpService.apiUrl;
     const authHeader = this.httpService.getAuthHeader();
@@ -20,6 +44,13 @@ export class AuthService {
     if (!authHeader.Authorization) {
       this.self.next(null);
       return;
+    }
+
+    const tokenDate = this.httpService.getAuthCookieDate();
+    const minutesOldTokenDate = ((new Date()).getTime() - tokenDate.getTime()) / 1000 / 60;
+
+    if (minutesOldTokenDate > 50) {
+      return this.refreshToken();
     }
 
     try {

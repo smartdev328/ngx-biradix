@@ -25,6 +25,18 @@ export class HttpService {
     return this.apiUrl;
   }
 
+  setAuthCookie(token: string) {
+    let expires = (new Date());
+    expires.setTime(expires.getTime() + (60*60*1000));
+    this.cookieService.set('token', token, expires, '/');
+    this.cookieService.set('tokenDate', (new Date()).toString(), expires, '/');
+  }
+
+  getAuthCookieDate() {
+    const date = new Date(this.cookieService.get("tokenDate"));
+    return date;
+  }
+
   deleteAuthCookies() {
     this.cookieService.delete("token", "/", location.hostname);
     this.cookieService.delete("tokenDate", "/", location.hostname);

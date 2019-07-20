@@ -17,3 +17,8 @@ export interface ILoggedInUser {
   permissions: string[];
   orgs: IOrganization[];
 }
+
+export interface IloggedInUserWithToken {
+  user: ILoggedInUser;
+  token: string;
+}

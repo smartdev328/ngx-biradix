@@ -13,6 +13,7 @@ import {
   MatButtonModule
 } from "@angular/material";
 import {LoaderComponent} from "./components";
+import {UserIdleModule} from "angular-user-idle";
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import {LoaderComponent} from "./components";
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
   ],
   declarations: [ LoaderComponent ],
   exports: [
@@ -44,7 +46,8 @@ import {LoaderComponent} from "./components";
     MatMenuModule,
     MatListModule,
     MatButtonModule,
-    LoaderComponent
+    LoaderComponent,
+    UserIdleModule
   ]
 })
 export class SharedModule {
