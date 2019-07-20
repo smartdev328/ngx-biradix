@@ -1,9 +1,11 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
+import {HttpService} from './services';
 
 @NgModule({
   imports: [
   ],
   providers: [
+    HttpService
   ],
   declarations: []
 })

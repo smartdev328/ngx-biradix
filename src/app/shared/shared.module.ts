@@ -12,6 +12,7 @@ import {
   MatToolbarModule,
   MatButtonModule
 } from "@angular/material";
+import {LoaderComponent} from "./components";
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import {
     MatMenuModule,
     MatListModule
   ],
-  declarations: [ ],
+  declarations: [ LoaderComponent ],
   exports: [
     CommonModule,
     FormsModule,
@@ -42,7 +43,8 @@ import {
     MatSidenavModule,
     MatMenuModule,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    LoaderComponent
   ]
 })
 export class SharedModule {

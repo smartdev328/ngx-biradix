@@ -15,8 +15,8 @@ module.exports = (function() {
     console.log(`Loading with ${settings.API_URL} as api endpoint`);
     let ui = new express.Router();
 
-    ui.get("/test", (req, res) => {
-        res.status(200).send("Host: " + JSON.stringify(req.headers));
+    ui.get("/apiUrl", (req, res) => {
+        res.status(200).send({apiUrl: settings.API_URL});
     });
 
     ui.get("/robots.txt", (req, res) => {
