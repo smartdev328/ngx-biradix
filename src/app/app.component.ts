@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {HttpService} from "./core/services";
+import {AuthService, HttpService} from "./core/services";
 
 @Component({
   selector: 'app-root',
@@ -8,13 +8,13 @@ import {HttpService} from "./core/services";
 })
 export class AppComponent {
   loaded: boolean = false;
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private authService: AuthService) {
   }
 
   async ngOnInit() {
     // get api url form the web service. we have to do this because its controlled with server env variables which can change without a re-build
     await this.httpService.lookupApiUrl();
-    const apiUrl: string = this.httpService.getApiUrl();
+    await this.authService.getSelf();
     this.loaded = true;
   }
 }

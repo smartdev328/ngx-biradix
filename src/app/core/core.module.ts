@@ -1,11 +1,16 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import {HttpService} from './services';
+import {AuthService, HttpService} from './services';
+import {CookieService} from "ngx-cookie-service";
+import {SecureAuthGuard} from "./guards";
 
 @NgModule({
   imports: [
   ],
   providers: [
-    HttpService
+    SecureAuthGuard,
+    CookieService,
+    HttpService,
+    AuthService
   ],
   declarations: []
 })
