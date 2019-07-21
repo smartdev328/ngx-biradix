@@ -48,3 +48,11 @@
   font-size:135%;
   width:35px !important;
 }
+
+.mat-option.autoCompleteOption {
+  line-height: inherit;
+}
+
+.mat-autocomplete-panel {
+  max-width: none !important;
+}

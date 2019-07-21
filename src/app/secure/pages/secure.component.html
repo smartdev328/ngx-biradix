@@ -9,7 +9,12 @@
         <a [href]="baseUrl + '#/reporting'" mat-button class="top-nav">Reporting</a>
         <mat-form-field>
             <mat-icon matPrefix>search</mat-icon>
-            <input matInput placeholder="Search Properties">
+            <input matInput placeholder="Search Properties" [matAutocomplete]="auto" [formControl]="autoCompleteControl">
+            <mat-autocomplete #auto="matAutocomplete" [panelWidth]="'100%'" [displayWith]="autoCompleteDisplay" autoActiveFirstOption (optionSelected)='autoCompleteSelected($event.option.value)'>
+              <mat-option *ngFor="let property of propertyAutoComplete$ | async" [value]="property" class="autoCompleteOption">
+                <small [innerHTML]="property.summary"></small>
+              </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
         <button mat-button [matMenuTriggerFor]="menu">{{me.first}} <mat-icon>arrow_drop_down</mat-icon></button>
         <mat-menu #menu="matMenu">

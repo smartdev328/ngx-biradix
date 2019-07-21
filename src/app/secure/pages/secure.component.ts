@@ -1,10 +1,13 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import { environment } from '../../../environments/environment'
 import {ILoggedInUser} from "../../core/models";
-import {AuthService} from "../../core/services";
+import {AuthService, PropertyService} from "../../core/services";
 import {UserIdleService} from "angular-user-idle";
 import {MediaChange, MediaObserver} from "@angular/flex-layout";
-import {Subscription} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
+import {IProperty} from "../../core/models/property";
+import {FormControl} from "@angular/forms";
+import {debounceTime, startWith, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-secure',
@@ -20,11 +23,14 @@ export class SecureComponent  {
   private verifyUserInterval = null;
   private mediaWatcher: Subscription;
   public mediaAlias = "";
+  public propertyAutoComplete$: Observable<IProperty> = null;
+  public autoCompleteControl = new FormControl();
 
-  constructor(private authService: AuthService, private userIdle: UserIdleService, private mediaObserver: MediaObserver) {
+  constructor(private authService: AuthService, private userIdle: UserIdleService, private mediaObserver: MediaObserver, private propertyService: PropertyService) {
   }
 
   ngOnInit() {
+    this.autoCompleteLogic();
     this.layoutLogic();
     this.selfLogic();
     this.idleLogic();
@@ -32,6 +38,34 @@ export class SecureComponent  {
 
   logoff() {
     this.logOffLogic(false);
+  }
+
+  autoCompleteLogic() {
+    this.propertyAutoComplete$ = this.autoCompleteControl.valueChanges.pipe(
+      startWith(''),
+      // delay emits
+      debounceTime(300),
+      // use switch map so as to cancel previous subscribed events, before creating new once
+      switchMap(value => {
+        if (value !== '') {
+          // lookup from github
+          return this.propertyService.search({search: value, limit: 10, skipAmenities: true, hideCustom: true, active: true, hideCustomComps: true});
+        } else {
+          // if no value is present, return null
+          return of(null);
+        }
+      })
+    );
+  }
+
+  autoCompleteSelected(value: IProperty) {
+    if (value) {
+      location.href= this.baseUrl + "#/profile/" + value._id;
+    }
+  }
+
+  autoCompleteDisplay(property?: IProperty): string | undefined {
+    return property ? property.name : undefined;
   }
 
   closeSideNavLogic(sidenav) {
