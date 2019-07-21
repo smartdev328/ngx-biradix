@@ -10,7 +10,7 @@ import {
   MatProgressSpinnerModule,
   MatSidenavModule,
   MatToolbarModule,
-  MatButtonModule, MatInputModule
+  MatButtonModule, MatInputModule, MatCardModule
 } from "@angular/material";
 import {LoaderComponent} from "./components";
 import {UserIdleModule} from "angular-user-idle";
@@ -32,7 +32,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     MatListModule,
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     FlexLayoutModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule
 
   ],
   declarations: [ LoaderComponent ],
@@ -53,7 +54,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     LoaderComponent,
     UserIdleModule,
     FlexLayoutModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule
   ]
 })
 export class SharedModule {
