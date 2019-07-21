@@ -38,8 +38,13 @@ export class HttpService {
   }
 
   deleteAuthCookies() {
-    this.cookieService.delete("token", "/", location.hostname);
-    this.cookieService.delete("tokenDate", "/", location.hostname);
+    if (location.hostname.indexOf("localhost") > -1) {
+      this.cookieService.delete("token", "/", location.hostname);
+      this.cookieService.delete("tokenDate", "/", location.hostname);
+    } else {
+      this.cookieService.delete("token");
+      this.cookieService.delete("tokenDate");
+    }
   }
 
   getAuthHeader() {
