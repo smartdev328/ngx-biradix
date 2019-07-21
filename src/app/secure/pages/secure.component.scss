@@ -19,6 +19,9 @@
   color:white;
 }
 
+.main-nav .mat-button  {
+  font-weight: bold;
+}
 
 .full-width {
   width: 100%;
@@ -34,4 +37,14 @@
 .main-nav.mat-toolbar {
   background-color:white;
   border-bottom: 1px solid #ccc;
+}
+
+.main-nav .mat-form-field {
+  font-size:15px;
+  color: rgba(0,0,0,.54);
+}
+
+.main-nav .mat-form-field .mat-icon {
+  font-size:135%;
+  width:35px !important;
 }
