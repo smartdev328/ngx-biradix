@@ -38,8 +38,6 @@ export class HttpService {
   }
 
   deleteAuthCookies() {
-    let host = location.hostname;
-    console.log(host);
     this.cookieService.set('token', "", (new Date()).getTime() - 1, '/');
     this.cookieService.set('tokenDate', "", (new Date()).getTime() - 1, '/');
   }
