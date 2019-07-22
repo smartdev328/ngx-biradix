@@ -89,6 +89,7 @@ define([
         };
 
         $scope.incorrectFloorplansTable = function () {
+            $scope.removeFile();
             require([
                 '/app/marketSurvey/marketSurveyIncorrectFloorplansTableController.js'
             ], function () {
