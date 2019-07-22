@@ -10,7 +10,7 @@ define([
 
         $scope.localLoading = true;
 
-        $scope.cancel = function () {
+        $scope.close = function () {
             $uibModalInstance.dismiss('cancel');
         };
     }]);
