@@ -40,7 +40,7 @@
         				<th></th>
         			</tr>
         		</thead>
-        		<tbody>
+        		<tbody id="scrollableTable">
         			<tr ng-repeat="row in selectedProperty.floorplans track by $index">
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bedrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="text" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bathrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>

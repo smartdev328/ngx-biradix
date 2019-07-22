@@ -38,7 +38,7 @@
 	                	<button class="btn btn-primary" ng-if="!incorrectFpArray.fileName">Upload</button>
 	                </div>
 	                <p ng-if="incorrectFpArray.fileName"><br/><strong style="display: block;">File Upload:</strong> - {{incorrectFpArray.fileName}} <i class="fa fa-trash" ng-click="removeFile()" style="color:red"></i></p>
-	                <input type="file" ng-if="!incorrectFpArray.fileName" id="fileUpload" onchange="angular.element(this).scope().uploadFile(this)" />
+	                <input type="file" ng-if="!incorrectFpArray.fileName" id="fileUpload" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .pdf, text/plain" onchange="angular.element(this).scope().uploadFile(this)" />
 	            </div>
 	        </div>
 	        <textarea class="form-control mb-20" rows="5" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>
