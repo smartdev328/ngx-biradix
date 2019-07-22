@@ -2,8 +2,13 @@
 define([
     'app'
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
      app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$http", function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$http) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -286,6 +291,22 @@ define([
 
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
+
+                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                        var pageTime = performance.now() - timeStart;
+
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+
+                        ga('send', 'event', pageViewType, 'Dashboard', metrics);
+
+                        pageViewType = 'PageView';
+                    }
 
                     if ($stateParams.s == "1" && !$scope.surveyPopped) {
                         $rootScope.marketSurvey(defaultPropertyId, null, {trackReminders: true});

@@ -1,6 +1,6 @@
 {
   "name": "biradix",
-  "version": "2.25.15",
+  "version": "2.25.20",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "jsonwebtoken": "^7.4.3",
     "merge-stream": "^1.0.1",
     "moment-timezone": "^0.5.25",
-    "newrelic": "5.6.2",
+    "newrelic": "5.6.4",
     "nodemon": "^1.18.9",
     "raygun": "^0.9.1",
     "xlsx-style": "^0.8.13"
