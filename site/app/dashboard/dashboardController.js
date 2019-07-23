@@ -201,7 +201,7 @@ define([
                         if ($stateParams.id) {
                             $scope.changeProperty();
                         } else {
-                            $scope.loadProperty($scope.selectedProperty._id);
+                            $scope.loadProperty($scope.selectedProperty._id, null, true);
                         }
                     } else {
                         $scope.localLoading = true;
@@ -223,9 +223,9 @@ define([
             $location.path("/profile/" + $scope.property._id);
         }
 
-        $scope.changeProperty = function(skipGa) {
+        $scope.changeProperty = function() {
             $scope.selectedBedroom = -1;
-            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, null, skipGa);
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null);
             $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty ? $scope.selectedProperty._id : null;
             $authService.updateSettings($rootScope.me.settings).then(function() {
                 $rootScope.refreshToken(true, function() {});
@@ -242,10 +242,10 @@ define([
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.changeProperty(true);
+            $scope.changeProperty();
         });
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly, skipGa) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, fireGa) {
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -292,7 +292,7 @@ define([
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
 
-                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {

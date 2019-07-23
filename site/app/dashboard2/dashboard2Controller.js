@@ -25,7 +25,7 @@ define([
                 me();
 
                 $scope.defaultShowProfile();
-                $scope.reload()
+                $scope.reload(true)
 
             }
         });
@@ -49,11 +49,11 @@ define([
 
         $scope.$on('data.reload', function(event, args) {
             $rootScope.refreshToken(true, function() {
-                $scope.reload(true);
+                $scope.reload();
             });
         });
 
-        $scope.reload = function(skipGa) {
+        $scope.reload = function(fireGa) {
             $scope.localLoading = false;
 
             $propertyService.search({
@@ -101,7 +101,7 @@ define([
                 } else {
                     $scope.localLoading = true;
 
-                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {

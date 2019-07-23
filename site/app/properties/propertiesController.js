@@ -168,7 +168,7 @@ define([
 
         };
 
-        $scope.reload = function(skipGa, callback) {
+        $scope.reload = function(fireGa, callback) {
             $scope.localLoading = false;
             $propertyService.search({
                 limit: 10000,
@@ -224,7 +224,7 @@ define([
 
                 $scope.localLoading = true;
 
-                if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                     var pageTime = performance.now() - timeStart;
 
                     var metrics = pageViewType === 'InitialPageView' && {
@@ -260,7 +260,7 @@ define([
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
                 $scope.adjustToSize($(window).width());
-                $scope.reload();
+                $scope.reload(true);
                 me();
             }
         })
@@ -479,7 +479,7 @@ define([
                             } else {
                                 toastr.warning(property.name + " has been deleted. ");
                             }
-                            $scope.reload(true);
+                            $scope.reload();
                         }
 
                         ngProgress.reset();
@@ -550,7 +550,7 @@ define([
 
                 modalInstance.result.then(function(comp) {
                     // Send successfully
-                    $scope.reload(true, function() {
+                    $scope.reload(function() {
                         // after we reload, we need to update the reference to our subject since it got new data from ajax
 
                         subject = _.find($scope.data, function(x) {
@@ -597,7 +597,7 @@ define([
                         return;
                     }
 
-                    $scope.reload(true, function() {
+                    $scope.reload(function() {
                         toastr.success("Custom property copied successfully");
                     });
                 }, function() {
@@ -629,7 +629,7 @@ define([
 
                 modalInstance.result.then(function () {
                     //Send successfully
-                    $scope.reload(true, function() {
+                    $scope.reload(function() {
                         //after we reload, we need to update the reference to our subject since it got new data from ajax
 
                         subject = _.find($scope.data, function(x) {
@@ -746,7 +746,7 @@ define([
 
                 modalInstance.result.then(function () {
                     toastr.success("Custom property copied successfully");
-                    $scope.reload(true);
+                    $scope.reload();
                 }, function (from) {
                     //Cancel
                 });

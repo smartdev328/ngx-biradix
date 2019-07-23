@@ -27,7 +27,7 @@ define([
                 siteAdmin = $rootScope.me.roles.indexOf("Site Admin") > -1;
                 $scope.adjustToSize($(window).width());
 
-                $scope.reload();
+                $scope.reload(true);
 
                 me();
             }
@@ -94,7 +94,7 @@ define([
             $scope.resetPager();
         };
 
-        $scope.reload = function(skipGa) {
+        $scope.reload = function(fireGa) {
             $scope.localLoading = false;
             $userService.search().then(function(response) {
                 $scope.data = response.data.users;
@@ -146,7 +146,7 @@ define([
 
                 $scope.localLoading = true;
 
-                if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                     var pageTime = performance.now() - timeStart;
 
                     var metrics = pageViewType === 'InitialPageView' && {
@@ -369,7 +369,7 @@ define([
                         toastr.success("<B>" + newUser.first + " " + newUser.last + "</B> updated successfully.");
                     }
 
-                    $scope.reload(true);
+                    $scope.reload();
                 }, function() {
 
                 });
