@@ -347,11 +347,6 @@ define([
         }
 
         $scope.email = function() {
-            id && console.log('id', id)
-            isComp && console.log('isComp', isComp)
-            isCustom && console.log('isCustom', isCustom)
-            subjectid && console.log('subjectid', subjectid)
-
             require([
                 "/app/profile/profileShareController.js",
             ], function() {
@@ -362,18 +357,9 @@ define([
                     keyboard: false,
                     backdrop: "static",
                     resolve: {
-                        // id: function() {
-                        //     return id;
-                        // },
-                        // isComp: function() {
-                        //     return isComp;
-                        // },
-                        // subjectid: function() {
-                        //     return subjectid;
-                        // },
-                        // isCustom: function() {
-                        //     return isCustom;
-                        // },
+                        propertyName: function() {
+                            return $scope.property.name;
+                        },
                     },
                 });
 
