@@ -65,7 +65,7 @@ define([
             if(oldHash == newHash) return;
 
             $cookieSettingsService.saveDaterange($scope.settings.daterange);
-            $scope.loadProperty($scope.selectedProperty._id);
+            $scope.loadProperty($scope.selectedProperty._id, null, true);
         }, true);
 
         $scope.$watch('settings.summary', function() {
@@ -94,7 +94,7 @@ define([
 
              $cookieSettingsService.savePerspective($scope.settings.selectedPerspective);
 
-             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, false);
+             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, false, true);
              }, true);
 
 
@@ -109,7 +109,7 @@ define([
 
             $cookieSettingsService.saveBedrooms($scope.settings.selectedBedroom);
 
-            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true);
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true, true);
         }
 
         $scope.first = true;
@@ -192,14 +192,14 @@ define([
                         // if you lost access to your saved property, update your settings
                         if (!$scope.selectedProperty ) {
                             $scope.selectedProperty = $scope.myProperties[0];
-                            $scope.changeProperty();
+                            $scope.changeProperty(true);
                             return;
                         }
                     }
 
                     if ($scope.selectedProperty) {
                         if ($stateParams.id) {
-                            $scope.changeProperty();
+                            $scope.changeProperty(true);
                         } else {
                             $scope.loadProperty($scope.selectedProperty._id);
                         }
@@ -238,7 +238,7 @@ define([
         $scope.setProperty = function(property) {
             $scope.selectedProperty = property;
             $scope.toggleDropdown.isOpen = false;
-            $scope.changeProperty();
+            $scope.changeProperty(true);
         }
 
         $scope.$on('data.reload', function(event, args) {
