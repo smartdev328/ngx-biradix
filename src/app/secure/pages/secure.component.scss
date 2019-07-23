@@ -10,7 +10,7 @@
 }
 
 .responsive-nav mat-nav-list{
-  width:175px;
+  width:250px;
 }
 .responsive-nav .mat-button {
   width:100%;
@@ -64,4 +64,14 @@
 
 .responsive-nav .level2 {
   padding-left:40px
+}
+
+.green-badge {
+  background-color: #32CD32;
+  margin-left: 5px;
+  font-size: 60%;
+  padding: .2em .6em;
+  vertical-align: middle;
+  border-radius: 2px;
+  color:white;
 }

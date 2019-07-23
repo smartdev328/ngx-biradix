@@ -20,6 +20,10 @@
         <mat-menu #menu="matMenu">
           <a mat-menu-item *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'"><mat-icon>person</mat-icon> <span>My Account</span></a>
           <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'"><mat-icon>group</mat-icon> <span>Manage Users</span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/properties'"><mat-icon>place</mat-icon> <span>Manage Properties</span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/perspectives'"><mat-icon>label_off</mat-icon> <span>Perspectives <span class="green-badge">New!</span></span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.HISTORY)" [href]="baseUrl + '#/history'"><mat-icon>history</mat-icon> <span>Activity History</span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/uploadSurveys'"><mat-icon>build</mat-icon> <span>Admin</span></a>
           <a mat-menu-item routerLink="/secure/help" [routerLinkActive]="['mat-button', 'mat-primary']"><mat-icon>help_outline</mat-icon> <span>Help</span></a>
           <a mat-menu-item (click)="logoff();"><mat-icon>power_settings_new</mat-icon> <span>Log Off</span></a>
         </mat-menu>
@@ -40,6 +44,18 @@
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile?settings=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Settings</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT) && !me.allowSSO" [href]="baseUrl + '#/updateProfile?password=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Password</a>
         <a *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>group</mat-icon> Manage Users</a>
+        <a *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/properties'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>place</mat-icon> Manage Properties</a>
+        <a *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/perspectives'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>label_off</mat-icon> Perspectives <span class="green-badge">New!</span></a>
+        <a *ngIf="hasPermission(PERMISSIONS.HISTORY)" [href]="baseUrl + '#/history'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>history</mat-icon> Activity History</a>
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/uploadSurveys'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>build</mat-icon> Admin</a>
+
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/amenities'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Amenities</a>
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/approvedLists'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Approved Lists</a>
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/organizations'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Organizations</a>
+
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/metrics'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Metrics</a>
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/import'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Configure PMS Import</a>
+
         <a routerLink="/secure/help" mat-button [routerLinkActive]="['nav-highlighted']" (click)="closeSideNavLogic(sidenav)"><mat-icon>help_outline</mat-icon> Help</a>
         <a (click)="logoff();closeSideNavLogic(sidenav)" mat-button><mat-icon>power_settings_new</mat-icon> Log Off</a>
       </mat-nav-list>
