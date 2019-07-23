@@ -5,8 +5,8 @@
       <span fxHide.lt-sm fxHide.gt-sm><a [href]="baseUrl + '#/dashboard'" style="color:white"><img [src]="logoSmall" height="41" style="vertical-align: bottom"/></a></span>
       <span class="menu-spacer"></span>
       <div fxHide.lt-sm>
-        <a [href]="baseUrl + '#/dashboard'" mat-button class="top-nav">Dashboard</a>
-        <a [href]="baseUrl + '#/reporting'" mat-button class="top-nav">Reporting</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button class="top-nav">Dashboard</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button class="top-nav">Reporting</a>
         <mat-form-field>
             <mat-icon matPrefix>search</mat-icon>
             <input matInput placeholder="Search Properties" [matAutocomplete]="auto" [formControl]="autoCompleteControl">
@@ -18,6 +18,8 @@
         </mat-form-field>
         <button mat-button [matMenuTriggerFor]="menu">{{me.first}} <mat-icon>arrow_drop_down</mat-icon></button>
         <mat-menu #menu="matMenu">
+          <a mat-menu-item *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'"><mat-icon>person</mat-icon> <span>My Account</span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'"><mat-icon>group</mat-icon> <span>Manage Users</span></a>
           <a mat-menu-item routerLink="/secure/help" [routerLinkActive]="['mat-button', 'mat-primary']"><mat-icon>help_outline</mat-icon> <span>Help</span></a>
           <a mat-menu-item (click)="logoff();"><mat-icon>power_settings_new</mat-icon> <span>Log Off</span></a>
         </mat-menu>
@@ -30,9 +32,16 @@
   <mat-sidenav-container fxFlexFill class="responsive-nav">
     <mat-sidenav #sidenav mode="side" [opened]="mediaAlias !== 'xs'">
       <mat-nav-list>
-        <a [href]="baseUrl + '#/dashboard'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>insert_chart_outlined</mat-icon> Dashboard</a><Br>
-        <a routerLink="/secure/help" mat-button [routerLinkActive]="" (click)="closeSideNavLogic(sidenav)"><mat-icon>help_outline</mat-icon> Help</a><Br>
-        <a (click)="logoff();closeSideNavLogic(sidenav)" mat-button><mat-icon>power_settings_new</mat-icon> Log Off</a><Br>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>table_chart</mat-icon> Dashboard</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>show_chart</mat-icon> Reporting</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>person</mat-icon> My Account</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Profile</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile?notifications=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Notifications</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile?settings=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Settings</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT) && !me.allowSSO" [href]="baseUrl + '#/updateProfile?password=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Password</a>
+        <a *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>group</mat-icon> Manage Users</a>
+        <a routerLink="/secure/help" mat-button [routerLinkActive]="['nav-highlighted']" (click)="closeSideNavLogic(sidenav)"><mat-icon>help_outline</mat-icon> Help</a>
+        <a (click)="logoff();closeSideNavLogic(sidenav)" mat-button><mat-icon>power_settings_new</mat-icon> Log Off</a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

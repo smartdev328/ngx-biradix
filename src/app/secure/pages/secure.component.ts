@@ -8,6 +8,7 @@ import {Observable, of, Subscription} from "rxjs";
 import {IProperty} from "../../core/models/property";
 import {FormControl} from "@angular/forms";
 import {debounceTime, startWith, switchMap} from "rxjs/operators";
+import {PERMISSIONS} from "../../core/models/permissions";
 
 @Component({
   selector: 'app-secure',
@@ -25,6 +26,7 @@ export class SecureComponent  {
   public mediaAlias = "";
   public propertyAutoComplete$: Observable<IProperty> = null;
   public autoCompleteControl = new FormControl();
+  readonly PERMISSIONS: typeof PERMISSIONS = PERMISSIONS;
 
   constructor(private authService: AuthService, private userIdle: UserIdleService, private mediaObserver: MediaObserver, private propertyService: PropertyService) {
   }
@@ -38,6 +40,14 @@ export class SecureComponent  {
 
   logoff() {
     this.logOffLogic(false);
+  }
+
+  hasPermission(permission: PERMISSIONS) {
+    if (!this.me) {
+      return false;
+    }
+
+    return this.me.permissions.indexOf(permission) > -1;
   }
 
   autoCompleteLogic() {
