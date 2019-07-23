@@ -72,7 +72,7 @@ define([
                         $scope.settings.perspective = $scope.settings.perspectives[0];
                     }
 
-                    $scope.loadProperty($scope.propertyId);
+                    $scope.loadProperty($scope.propertyId, null, true);
                 }, function(err) {
                     $scope.apiError = true;
                 });
@@ -92,7 +92,7 @@ define([
                 $cookieSettingsService.savePerspective($scope.settings.perspective.value);
             }
 
-            $scope.loadProperty($scope.propertyId, null, true);
+            $scope.loadProperty($scope.propertyId);
         }, true);
 
         $scope.resetProfile = function() {
@@ -124,7 +124,7 @@ define([
             if (!$scope.localLoading) return;
             if (JSON.stringify(old) === JSON.stringify(d)) return;
             $cookieSettingsService.saveDaterange($scope.settings.daterange)
-            $scope.loadProperty($scope.propertyId, null, true);
+            $scope.loadProperty($scope.propertyId);
         }, true);
 
         $scope.$watch('settings.graphs', function() {
@@ -142,11 +142,11 @@ define([
         }, true);
 
         $scope.refreshGraphs = function() {
-            $scope.loadProperty($scope.propertyId, true, true);
+            $scope.loadProperty($scope.propertyId, true);
         }
 
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly, skipGa) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, fireGa) {
 
             if (defaultPropertyId) {
 
@@ -247,7 +247,7 @@ define([
                                 $scope.localLoading = true;
                                 $scope.trendsLoading = true;
 
-                                if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                                     var pageTime = performance.now() - timeStart;
             
                                     var metrics = pageViewType === 'InitialPageView' && {
@@ -274,7 +274,7 @@ define([
                         $scope.localLoading = true;
                         $scope.trendsLoading = true;
 
-                        if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                             var pageTime = performance.now() - timeStart;
     
                             var metrics = pageViewType === 'InitialPageView' && {
@@ -328,7 +328,7 @@ define([
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.loadProperty($scope.propertyId, null, true)
+            $scope.loadProperty($scope.propertyId);
         });
 
         $scope.checkProgress = function() {

@@ -21,7 +21,7 @@ define([
 
 
         // /////////////////////////////
-        $scope.reload = function(skipGa) {
+        $scope.reload = function(fireGa) {
             $scope.localLoading = false;
 
             $organizationsService.search().then(function(response) {
@@ -50,7 +50,7 @@ define([
 
                         $scope.localLoading = true;
 
-                        if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                             var pageTime = performance.now() - timeStart;
 
                             var metrics = pageViewType === 'InitialPageView' && {
@@ -136,12 +136,12 @@ define([
                         toastr.success("<B>" + name + "</B> updated successfully.");
                     }
 
-                    $scope.reload(true);
+                    $scope.reload();
                 }, function() {
 
                 });
             });
         }
-        $scope.reload();
+        $scope.reload(true);
     }]);
 });

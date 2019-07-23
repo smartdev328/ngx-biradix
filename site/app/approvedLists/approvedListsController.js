@@ -30,7 +30,7 @@ define([
         $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management", "FEES": "Custom Fees & Deposits"};
 
         // /////////////////////////////
-        $scope.reload = function (skipGa) {
+        $scope.reload = function (fireGa) {
             $scope.localLoading = false;
             $approvedListsService.read({
                 "type": $scope.type,
@@ -40,7 +40,7 @@ define([
                 $scope.data = response.data.data.ApprovedList;
                 $scope.localLoading = true;
 
-                if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                     var pageTime = performance.now() - timeStart;
 
                     var metrics = pageViewType === 'InitialPageView' && {
@@ -69,7 +69,7 @@ define([
                         toastr.error(response.data.errors[0].message);
                         return;
                     }
-                    $scope.reload(true);
+                    $scope.reload();
                     toastr.success(row.value + " deleted successfully");
                 }, function(error) {
                     toastr.error(error.data.errors[0].message);
@@ -79,7 +79,7 @@ define([
         $scope.resetPager = function () {
             $scope.currentPage = 1;
         }
-        $scope.reload();
+        $scope.reload(true);
 
         $scope.pageStart = function () {
             if (!$scope.filtered || $scope.filtered.length == 0) return 0;

@@ -65,7 +65,7 @@ define([
             if(oldHash == newHash) return;
 
             $cookieSettingsService.saveDaterange($scope.settings.daterange);
-            $scope.loadProperty($scope.selectedProperty._id, null, true);
+            $scope.loadProperty($scope.selectedProperty._id);
         }, true);
 
         $scope.$watch('settings.summary', function() {
@@ -94,7 +94,7 @@ define([
 
              $cookieSettingsService.savePerspective($scope.settings.selectedPerspective);
 
-             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, false, true);
+             $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, false);
              }, true);
 
 
@@ -109,7 +109,7 @@ define([
 
             $cookieSettingsService.saveBedrooms($scope.settings.selectedBedroom);
 
-            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true, true);
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, true);
         }
 
         $scope.first = true;
@@ -192,16 +192,16 @@ define([
                         // if you lost access to your saved property, update your settings
                         if (!$scope.selectedProperty ) {
                             $scope.selectedProperty = $scope.myProperties[0];
-                            $scope.changeProperty(true);
+                            $scope.changeProperty();
                             return;
                         }
                     }
 
                     if ($scope.selectedProperty) {
                         if ($stateParams.id) {
-                            $scope.changeProperty(true);
+                            $scope.changeProperty();
                         } else {
-                            $scope.loadProperty($scope.selectedProperty._id);
+                            $scope.loadProperty($scope.selectedProperty._id, null, true);
                         }
                     } else {
                         $scope.localLoading = true;
@@ -223,9 +223,9 @@ define([
             $location.path("/profile/" + $scope.property._id);
         }
 
-        $scope.changeProperty = function(skipGa) {
+        $scope.changeProperty = function() {
             $scope.selectedBedroom = -1;
-            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, null, skipGa);
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null);
             $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty ? $scope.selectedProperty._id : null;
             $authService.updateSettings($rootScope.me.settings).then(function() {
                 $rootScope.refreshToken(true, function() {});
@@ -238,14 +238,14 @@ define([
         $scope.setProperty = function(property) {
             $scope.selectedProperty = property;
             $scope.toggleDropdown.isOpen = false;
-            $scope.changeProperty(true);
+            $scope.changeProperty();
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.changeProperty(true);
+            $scope.changeProperty();
         });
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly, skipGa) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, fireGa) {
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -292,7 +292,7 @@ define([
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
 
-                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {

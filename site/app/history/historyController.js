@@ -157,7 +157,7 @@ define([
             });
         };
 
-        $scope.reload = function(skipGa) {
+        $scope.reload = function(fireGa) {
             $scope.options.checked = {};
             $scope.options.checkAll = false;
 
@@ -222,7 +222,7 @@ define([
                     $scope.pager = response.data.pager;
                     $scope.localLoading = true;
 
-                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {
@@ -277,7 +277,7 @@ define([
                         }
 
                         if (!$stateParams.property && !$stateParams.user) {
-                            $scope.reload();
+                            $scope.reload(true);
                         } else if ($stateParams.property) {
                             $propertyService.search({
                                 limit: 1,
@@ -290,7 +290,7 @@ define([
                                     $scope.propertyItems.push({id: $stateParams.property, name: response.data.properties[0].name});
                                 }
 
-                                $scope.reload();
+                                $scope.reload(true);
                             }, function(error) {
                                 $scope.reload();
                             });
@@ -300,7 +300,7 @@ define([
                                 _id: $stateParams.user,
                             }).then(function(response) {
                                 $scope.userItems = $scope.formatUsers(response.data);
-                                $scope.reload();
+                                $scope.reload(true);
                             }, function(error) {
                                 $scope.reload();
                             });
@@ -423,7 +423,7 @@ define([
                     }, function(err) {
                         toastr.success(successes + " undo(s) performed successfully.");
                         window.setTimeout(function() {
-                            $scope.reload(true);
+                            $scope.reload();
                             $scope.localLoading = true;
                         }, 1000);
                     }
@@ -493,7 +493,7 @@ define([
                         } else {
                             toastr.success("Undo action performed successfully.");
                             window.setTimeout(function() {
-                                $scope.reload(true);
+                                $scope.reload();
                             }, 1000);
                         }
                     },
@@ -514,12 +514,12 @@ define([
 
         $scope.resetPager = function() {
             $scope.pager.offset = 0;
-            $scope.reload(true);
+            $scope.reload();
         };
 
         $scope.pagerChanged = function() {
             $scope.pager.offset = (($scope.pager.currentPage || 1) - 1) * parseInt($scope.pager.itemsPerPage);
-            $scope.reload(true);
+            $scope.reload();
         };
 
         $scope.pageStart = function() {
