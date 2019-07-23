@@ -38,7 +38,9 @@ define([
             }
         }
 
-        $scope.addEmptyRow();
+        if($scope.selectedProperty.floorplans[$scope.selectedProperty.floorplans.length - 1].bedrooms) {
+            $scope.addEmptyRow();
+        }
 
         $scope.incorrectFpArray.keyPress = function(row) {
             incorrectFpArray.changed = true;

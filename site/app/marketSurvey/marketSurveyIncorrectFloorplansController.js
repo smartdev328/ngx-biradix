@@ -89,26 +89,52 @@ define([
         };
 
         $scope.incorrectFloorplansTable = function () {
-            $scope.removeFile();
-            require([
-                '/app/marketSurvey/marketSurveyIncorrectFloorplansTableController.js'
-            ], function () {
-                $uibModal.open({
-                    templateUrl: '/app/marketSurvey/incorrectFloorplansTable.html?bust=' + version,
-                    controller: 'marketSurveyIncorrectFloorplansTableController',
-                    size: "md",
-                    keyboard: false,
-                    backdrop: 'static',
-                    resolve: {
-                        incorrectFpArray: function () {
-                            return  $scope.incorrectFpArray;
-                        },
-                        selectedProperty: function () {
-                            return  $scope.selectedProperty;
-                        }
-                    }
+
+            if ($scope.incorrectFpArray.isUpload) {
+                $dialog.confirm("We see you have uploaded a file. Switching to Edit Floor Plans wizard will remove this file.. Do you wish to continue?", function () {
+                    $scope.removeFile();
+                    require([
+                        '/app/marketSurvey/marketSurveyIncorrectFloorplansTableController.js'
+                    ], function () {
+                        $uibModal.open({
+                            templateUrl: '/app/marketSurvey/incorrectFloorplansTable.html?bust=' + version,
+                            controller: 'marketSurveyIncorrectFloorplansTableController',
+                            size: "md",
+                            keyboard: false,
+                            backdrop: 'static',
+                            resolve: {
+                                incorrectFpArray: function () {
+                                    return  $scope.incorrectFpArray;
+                                },
+                                selectedProperty: function () {
+                                    return  $scope.selectedProperty;
+                                }
+                            }
+                        });
+                    });
+                }, function() {
                 });
-            });
+            } else {
+                require([
+                    '/app/marketSurvey/marketSurveyIncorrectFloorplansTableController.js'
+                ], function () {
+                    $uibModal.open({
+                        templateUrl: '/app/marketSurvey/incorrectFloorplansTable.html?bust=' + version,
+                        controller: 'marketSurveyIncorrectFloorplansTableController',
+                        size: "md",
+                        keyboard: false,
+                        backdrop: 'static',
+                        resolve: {
+                            incorrectFpArray: function () {
+                                return  $scope.incorrectFpArray;
+                            },
+                            selectedProperty: function () {
+                                return  $scope.selectedProperty;
+                            }
+                        }
+                    });
+                });
+            }
         }
 
     }]);
