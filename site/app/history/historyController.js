@@ -157,7 +157,7 @@ define([
             });
         };
 
-        $scope.reload = function() {
+        $scope.reload = function(skipGa) {
             $scope.options.checked = {};
             $scope.options.checkAll = false;
 
@@ -222,7 +222,7 @@ define([
                     $scope.pager = response.data.pager;
                     $scope.localLoading = true;
 
-                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {
@@ -423,7 +423,7 @@ define([
                     }, function(err) {
                         toastr.success(successes + " undo(s) performed successfully.");
                         window.setTimeout(function() {
-                            $scope.reload();
+                            $scope.reload(true);
                             $scope.localLoading = true;
                         }, 1000);
                     }
@@ -493,7 +493,7 @@ define([
                         } else {
                             toastr.success("Undo action performed successfully.");
                             window.setTimeout(function() {
-                                $scope.reload();
+                                $scope.reload(true);
                             }, 1000);
                         }
                     },
@@ -514,12 +514,12 @@ define([
 
         $scope.resetPager = function() {
             $scope.pager.offset = 0;
-            $scope.reload();
+            $scope.reload(true);
         };
 
         $scope.pagerChanged = function() {
             $scope.pager.offset = (($scope.pager.currentPage || 1) - 1) * parseInt($scope.pager.itemsPerPage);
-            $scope.reload();
+            $scope.reload(true);
         };
 
         $scope.pageStart = function() {

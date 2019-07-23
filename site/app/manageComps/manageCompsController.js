@@ -222,6 +222,7 @@ define([
             }
 
             $scope.create = function() {
+                console.log('ping')
                 if ($scope.comps.length >= $scope.MAX_COMPS) {
                     toastr.error("There are a maximum of 20 comps that can be added to a subject property");
                     return;
