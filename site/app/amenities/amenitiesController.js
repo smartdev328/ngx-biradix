@@ -31,7 +31,7 @@ define([
 
 
         // /////////////////////////////
-        $scope.reload = function () {
+        $scope.reload = function (skipGa) {
             $scope.localLoading = false;
             $amenityService.search({getCounts: true, active: true}).then(function (response) {
                 $scope.data = response.data.amenities;
@@ -50,7 +50,7 @@ define([
 
                     $scope.localLoading = true;
 
-                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {
@@ -213,7 +213,7 @@ define([
                     }
                     else {
                         toastr.success(row.name + ' deleted successfully');
-                        $scope.reload();
+                        $scope.reload(true);
                     }
                 }, function(response) {
                     toastr.error('Unable to update amenity. Please contact an administrator.');
@@ -245,7 +245,7 @@ define([
                 modalInstance.result.then(function (mapped) {
 
                     toastr.success(amenity.name + " mapped to" + mapped.name  + " successfully.");
-                    $scope.reload()
+                    $scope.reload(true)
                 }, function () {
 
                 });

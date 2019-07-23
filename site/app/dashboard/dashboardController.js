@@ -223,9 +223,9 @@ define([
             $location.path("/profile/" + $scope.property._id);
         }
 
-        $scope.changeProperty = function() {
+        $scope.changeProperty = function(skipGa) {
             $scope.selectedBedroom = -1;
-            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null);
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, null, skipGa);
             $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty ? $scope.selectedProperty._id : null;
             $authService.updateSettings($rootScope.me.settings).then(function() {
                 $rootScope.refreshToken(true, function() {});
@@ -242,10 +242,10 @@ define([
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.changeProperty();
+            $scope.changeProperty(true);
         });
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, skipGa) {
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -292,7 +292,7 @@ define([
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
 
-                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {
