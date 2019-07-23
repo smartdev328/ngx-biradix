@@ -1,0 +1,62 @@
+<div>
+	<style>
+	    .file-input-wrapper {
+	    	height: 60px;
+	    	overflow: hidden;
+	        position: relative;
+	        margin:10px auto;
+
+	    }
+	    .file-input-wrapper > input[type="file"] {
+	        font-size: 200px;
+	        position: absolute;
+	        top: 0;
+	        right: 0;
+	        opacity: 0;
+	    }
+	    .file-input-wrapper > div > button {
+	        display: inline-block;
+	        width:300px;
+	    }
+	</style>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    		<h2 class="modal-title">Update Incorrect Floor Plans: {{selectedProperty.name}}</h2>
+        <hr>
+    </div>
+    <div class="modal-body container-fluid">
+    	<div ng-if="!incorrectFpArray.submitted">
+			<p>Our goal is to present you with an accurate picture of your property. If you see inaccuracies please let us know and we will quickly make the correction and let you know when they are done.</p>
+			<p>You can let us know of the changes needed in two ways:</p>
+			<ul style="padding-left: 15px;">
+				<li>Use our <a href="" ng-click="incorrectFloorplansTable()">Edit floor plans wizard</a></li>
+				<li>Upload any report that contains the property floor plan information <i>(Bedrooms, Bathrooms, Unit count, Sqft)</i></li>
+			</ul>
+	        <div>
+	            <div class="file-input-wrapper">
+	            	<div style="text-align: center">
+	                	<button class="btn btn-primary" ng-if="!incorrectFpArray.fileName">Upload</button>
+	                </div>
+	                <p ng-if="incorrectFpArray.fileName"><br/><strong style="display: block;">File Upload:</strong> - {{incorrectFpArray.fileName}} <i class="fa fa-trash" ng-click="removeFile()" style="color:red"></i></p>
+	                <input type="file" ng-if="!incorrectFpArray.fileName" id="fileUpload" onchange="angular.element(this).scope().uploadFile(this)" />
+	            </div>
+	        </div>
+	        <textarea class="form-control mb-20" rows="5" ng-model="incorrectFpArray.message" placeholder="Message (Optional)"></textarea>
+	        <div class="row">
+		        <div class="col-xs-4">
+		        	<a href="" data-dismiss="modal" aria-label="Close" ng-click="cancel()">Back to SurveySwap</a>
+		        </div>
+		        <div class="col-xs-4 text-center">
+		            <button ng-click="done()" class="btn btn-success" ng-disabled="!incorrectFpArray.fileName && !incorrectFpArray.message">Submit</button>
+		        </div>
+	        </div>
+        </div>
+        <div ng-if="incorrectFpArray.submitted">
+        	<p>Thank you for letting us know about the potentially incorrect floor plans!</p>
+        	<p>We will review everything submitted and get back to you quickly. Our typical response time is less than a day.</p>
+        	<div class="text-center">
+			    <button ng-click="cancel()" class="btn btn-success">Done</button>
+        	</div>
+        </div>
+    </div>
+</div>

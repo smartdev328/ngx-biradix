@@ -2,8 +2,13 @@
 define([
     'app'
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
      app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$http", function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$http) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -218,9 +223,9 @@ define([
             $location.path("/profile/" + $scope.property._id);
         }
 
-        $scope.changeProperty = function() {
+        $scope.changeProperty = function(skipGa) {
             $scope.selectedBedroom = -1;
-            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null);
+            $scope.loadProperty($scope.selectedProperty ? $scope.selectedProperty._id : null, null, skipGa);
             $rootScope.me.settings.defaultPropertyId = $scope.selectedProperty ? $scope.selectedProperty._id : null;
             $authService.updateSettings($rootScope.me.settings).then(function() {
                 $rootScope.refreshToken(true, function() {});
@@ -237,10 +242,10 @@ define([
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.changeProperty();
+            $scope.changeProperty(true);
         });
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, skipGa) {
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -286,6 +291,22 @@ define([
 
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
+
+                    if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        var pageTime = performance.now() - timeStart;
+
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+
+                        ga('send', 'event', pageViewType, 'Dashboard', metrics);
+
+                        pageViewType = 'PageView';
+                    }
 
                     if ($stateParams.s == "1" && !$scope.surveyPopped) {
                         $rootScope.marketSurvey(defaultPropertyId, null, {trackReminders: true});

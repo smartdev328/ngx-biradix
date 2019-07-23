@@ -3,8 +3,13 @@ define([
     'app',
     '../../services/exportService',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
         $scope.excludedPopups = {};
@@ -87,7 +92,7 @@ define([
                 $cookieSettingsService.savePerspective($scope.settings.perspective.value);
             }
 
-            $scope.loadProperty($scope.propertyId);
+            $scope.loadProperty($scope.propertyId, null, true);
         }, true);
 
         $scope.resetProfile = function() {
@@ -119,7 +124,7 @@ define([
             if (!$scope.localLoading) return;
             if (JSON.stringify(old) === JSON.stringify(d)) return;
             $cookieSettingsService.saveDaterange($scope.settings.daterange)
-            $scope.loadProperty($scope.propertyId);
+            $scope.loadProperty($scope.propertyId, null, true);
         }, true);
 
         $scope.$watch('settings.graphs', function() {
@@ -137,11 +142,11 @@ define([
         }, true);
 
         $scope.refreshGraphs = function() {
-            $scope.loadProperty($scope.propertyId, true);
+            $scope.loadProperty($scope.propertyId, true, true);
         }
 
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, skipGa) {
 
             if (defaultPropertyId) {
 
@@ -242,6 +247,22 @@ define([
                                 $scope.localLoading = true;
                                 $scope.trendsLoading = true;
 
+                                if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                                    var pageTime = performance.now() - timeStart;
+            
+                                    var metrics = pageViewType === 'InitialPageView' && {
+                                        'metric1': 1,
+                                        'metric2': pageTime,
+                                    } || {
+                                        'metric3': 1,
+                                        'metric4': pageTime,
+                                    }
+            
+                                    ga('send', 'event', pageViewType, 'Profile', metrics);
+            
+                                    pageViewType = 'PageView';
+                                }
+
                                 $scope.setRenderable();
                             }
                         }, function(error) {
@@ -252,6 +273,22 @@ define([
                     } else {
                         $scope.localLoading = true;
                         $scope.trendsLoading = true;
+
+                        if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                            var pageTime = performance.now() - timeStart;
+    
+                            var metrics = pageViewType === 'InitialPageView' && {
+                                'metric1': 1,
+                                'metric2': pageTime,
+                            } || {
+                                'metric3': 1,
+                                'metric4': pageTime,
+                            }
+    
+                            ga('send', 'event', pageViewType, 'Profile', metrics);
+    
+                            pageViewType = 'PageView';
+                        }
 
                         $scope.setRenderable();
 
@@ -291,7 +328,7 @@ define([
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.loadProperty($scope.propertyId)
+            $scope.loadProperty($scope.propertyId, null, true)
         });
 
         $scope.checkProgress = function() {

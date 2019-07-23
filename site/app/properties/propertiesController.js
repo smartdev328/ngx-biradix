@@ -3,8 +3,13 @@ define([
     "app",
     "../../filters/skip/filter",
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller("propertiesController", ["$scope","$rootScope","$location","$propertyService","ngProgress","$uibModal","$authService","$dialog","toastr","$gridService", function ($scope,$rootScope,$location,$propertyService,ngProgress,$uibModal,$authService,$dialog,toastr,$gridService) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         window.setTimeout(function() {window.document.title = "Manage Properties | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -163,7 +168,7 @@ define([
 
         };
 
-        $scope.reload = function(callback) {
+        $scope.reload = function(skipGa, callback) {
             $scope.localLoading = false;
             $propertyService.search({
                 limit: 10000,
@@ -218,6 +223,22 @@ define([
                 }
 
                 $scope.localLoading = true;
+
+                if (!skipGa && ga && pageViewType && timeStart && performance && performance.now) {
+                    var pageTime = performance.now() - timeStart;
+
+                    var metrics = pageViewType === 'InitialPageView' && {
+                        'metric1': 1,
+                        'metric2': pageTime,
+                    } || {
+                        'metric3': 1,
+                        'metric4': pageTime,
+                    }
+            
+                    ga('send', 'event', pageViewType, 'Properties', metrics);
+            
+                    pageViewType = 'PageView';
+                }
 
                 if (callback) {
                     callback();
@@ -458,7 +479,7 @@ define([
                             } else {
                                 toastr.warning(property.name + " has been deleted. ");
                             }
-                            $scope.reload();
+                            $scope.reload(true);
                         }
 
                         ngProgress.reset();
@@ -529,7 +550,7 @@ define([
 
                 modalInstance.result.then(function(comp) {
                     // Send successfully
-                    $scope.reload(function() {
+                    $scope.reload(true, function() {
                         // after we reload, we need to update the reference to our subject since it got new data from ajax
 
                         subject = _.find($scope.data, function(x) {
@@ -576,7 +597,7 @@ define([
                         return;
                     }
 
-                    $scope.reload(function() {
+                    $scope.reload(true, function() {
                         toastr.success("Custom property copied successfully");
                     });
                 }, function() {
@@ -608,7 +629,7 @@ define([
 
                 modalInstance.result.then(function () {
                     //Send successfully
-                    $scope.reload(function() {
+                    $scope.reload(true, function() {
                         //after we reload, we need to update the reference to our subject since it got new data from ajax
 
                         subject = _.find($scope.data, function(x) {
@@ -725,7 +746,7 @@ define([
 
                 modalInstance.result.then(function () {
                     toastr.success("Custom property copied successfully");
-                    $scope.reload();
+                    $scope.reload(true);
                 }, function (from) {
                     //Cancel
                 });

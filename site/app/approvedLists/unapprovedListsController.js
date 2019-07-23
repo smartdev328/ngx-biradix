@@ -13,9 +13,9 @@ define([
         $rootScope.sideNav = "";
 
         $scope.data = [];
-        $scope.types = ["OWNER", "MANAGER"];
+        $scope.types = ["OWNER", "MANAGER", "FEES"];
         $scope.type = $stateParams.type || "OWNER";
-        $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management"};
+        $scope.typeMap = {"OWNER": "Property:Owner", "MANAGER": "Property:Management", "FEES": "Custom Fees & Deposits"};
 
         // /////////////////////////////
         $scope.reload = function() {
