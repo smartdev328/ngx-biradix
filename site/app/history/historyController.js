@@ -157,7 +157,7 @@ define([
             });
         };
 
-        $scope.reload = function() {
+        $scope.reload = function(fireGa) {
             $scope.options.checked = {};
             $scope.options.checkAll = false;
 
@@ -222,7 +222,7 @@ define([
                     $scope.pager = response.data.pager;
                     $scope.localLoading = true;
 
-                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {
@@ -277,7 +277,7 @@ define([
                         }
 
                         if (!$stateParams.property && !$stateParams.user) {
-                            $scope.reload();
+                            $scope.reload(true);
                         } else if ($stateParams.property) {
                             $propertyService.search({
                                 limit: 1,
@@ -290,7 +290,7 @@ define([
                                     $scope.propertyItems.push({id: $stateParams.property, name: response.data.properties[0].name});
                                 }
 
-                                $scope.reload();
+                                $scope.reload(true);
                             }, function(error) {
                                 $scope.reload();
                             });
@@ -300,7 +300,7 @@ define([
                                 _id: $stateParams.user,
                             }).then(function(response) {
                                 $scope.userItems = $scope.formatUsers(response.data);
-                                $scope.reload();
+                                $scope.reload(true);
                             }, function(error) {
                                 $scope.reload();
                             });

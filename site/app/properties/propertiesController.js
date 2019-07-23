@@ -168,7 +168,7 @@ define([
 
         };
 
-        $scope.reload = function(callback) {
+        $scope.reload = function(fireGa, callback) {
             $scope.localLoading = false;
             $propertyService.search({
                 limit: 10000,
@@ -224,7 +224,7 @@ define([
 
                 $scope.localLoading = true;
 
-                if (ga && pageViewType && timeStart && performance && performance.now) {
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                     var pageTime = performance.now() - timeStart;
 
                     var metrics = pageViewType === 'InitialPageView' && {
@@ -260,7 +260,7 @@ define([
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
                 $scope.adjustToSize($(window).width());
-                $scope.reload();
+                $scope.reload(true);
                 me();
             }
         })

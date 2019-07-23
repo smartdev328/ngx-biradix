@@ -3,8 +3,13 @@ define([
     'app',
     '../../services/exportService',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', '$uibModal', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService,$uibModal) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         $rootScope.nav = ''
         $rootScope.sideMenu = false;
         $scope.excludedPopups = {};
@@ -67,7 +72,7 @@ define([
                         $scope.settings.perspective = $scope.settings.perspectives[0];
                     }
 
-                    $scope.loadProperty($scope.propertyId);
+                    $scope.loadProperty($scope.propertyId, null, true);
                 }, function(err) {
                     $scope.apiError = true;
                 });
@@ -141,7 +146,7 @@ define([
         }
 
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, fireGa) {
 
             if (defaultPropertyId) {
 
@@ -242,6 +247,22 @@ define([
                                 $scope.localLoading = true;
                                 $scope.trendsLoading = true;
 
+                                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                                    var pageTime = performance.now() - timeStart;
+            
+                                    var metrics = pageViewType === 'InitialPageView' && {
+                                        'metric1': 1,
+                                        'metric2': pageTime,
+                                    } || {
+                                        'metric3': 1,
+                                        'metric4': pageTime,
+                                    }
+            
+                                    ga('send', 'event', pageViewType, 'Profile', metrics);
+            
+                                    pageViewType = 'PageView';
+                                }
+
                                 $scope.setRenderable();
                             }
                         }, function(error) {
@@ -252,6 +273,22 @@ define([
                     } else {
                         $scope.localLoading = true;
                         $scope.trendsLoading = true;
+
+                        if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                            var pageTime = performance.now() - timeStart;
+    
+                            var metrics = pageViewType === 'InitialPageView' && {
+                                'metric1': 1,
+                                'metric2': pageTime,
+                            } || {
+                                'metric3': 1,
+                                'metric4': pageTime,
+                            }
+    
+                            ga('send', 'event', pageViewType, 'Profile', metrics);
+    
+                            pageViewType = 'PageView';
+                        }
 
                         $scope.setRenderable();
 
@@ -291,7 +328,7 @@ define([
         }
 
         $scope.$on('data.reload', function(event, args) {
-            $scope.loadProperty($scope.propertyId)
+            $scope.loadProperty($scope.propertyId);
         });
 
         $scope.checkProgress = function() {

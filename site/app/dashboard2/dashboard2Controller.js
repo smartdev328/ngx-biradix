@@ -2,8 +2,13 @@
 define([
     'app',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller('dashboard2Controller', ['$scope','$rootScope','$location','$propertyService', '$authService','ngProgress','toastr','$stateParams','$reportingService', function ($scope,$rootScope,$location,$propertyService,$authService,ngProgress,toastr,$stateParams,$reportingService) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -20,7 +25,7 @@ define([
                 me();
 
                 $scope.defaultShowProfile();
-                $scope.reload()
+                $scope.reload(true)
 
             }
         });
@@ -48,7 +53,7 @@ define([
             });
         });
 
-        $scope.reload = function() {
+        $scope.reload = function(fireGa) {
             $scope.localLoading = false;
 
             $propertyService.search({
@@ -95,6 +100,22 @@ define([
                     }
                 } else {
                     $scope.localLoading = true;
+
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        var pageTime = performance.now() - timeStart;
+
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+
+                        ga('send', 'event', pageViewType, 'Dashboard2', metrics);
+
+                        pageViewType = 'PageView';
+                    }
                 }
             }, function(error) {
                 if (error.status == 401) {
