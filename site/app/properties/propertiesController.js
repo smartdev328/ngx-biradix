@@ -168,7 +168,7 @@ define([
 
         };
 
-        $scope.reload = function(fireGa, callback) {
+        $scope.reload = function(callback, fireGa) {
             $scope.localLoading = false;
             $propertyService.search({
                 limit: 10000,
@@ -260,7 +260,7 @@ define([
                 siteAdmin = $rootScope.me.roles.indexOf('Site Admin') > -1;
 
                 $scope.adjustToSize($(window).width());
-                $scope.reload(true);
+                $scope.reload(null, true);
                 me();
             }
         })
