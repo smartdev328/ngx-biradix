@@ -201,7 +201,7 @@ define([
                         if ($stateParams.id) {
                             $scope.changeProperty();
                         } else {
-                            $scope.loadProperty($scope.selectedProperty._id);
+                            $scope.loadProperty($scope.selectedProperty._id, null, true);
                         }
                     } else {
                         $scope.localLoading = true;
@@ -245,7 +245,7 @@ define([
             $scope.changeProperty();
         });
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, fireGa) {
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -292,7 +292,7 @@ define([
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
 
-                    if (ga && pageViewType && timeStart && performance && performance.now) {
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {

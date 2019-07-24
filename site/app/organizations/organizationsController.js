@@ -19,13 +19,13 @@ define([
 
 
         // /////////////////////////////
-        $scope.reload = function () {
+        $scope.reload = function (fireGa) {
             $scope.localLoading = false;
             $organizationsService.search({getCounts: true, active: true}).then(function (response) {
                 $scope.data = response.data.organizations;
                 $scope.localLoading = true;
 
-                if (ga && pageViewType && timeStart && performance && performance.now) {
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                     var pageTime = performance.now() - timeStart;
 
                     var metrics = pageViewType === 'InitialPageView' && {
@@ -51,7 +51,7 @@ define([
         }
 
 
-        $scope.reload();
+        $scope.reload(true);
 
         $scope.settings = function (organization) {
             require([

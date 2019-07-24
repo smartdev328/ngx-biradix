@@ -599,7 +599,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                             } else {
                                 var er = "";
                                 if (!$scope.isValid($scope.survey.weeklyleases, true, false)) {
-                                    er = "Leases/Week must be 0 or greater, no decimals";
+                                    er = "Leases/Week cannot be blank or a decimal value";
                                 }
 
                                 $scope.validation.leases.errors.zero = er;
