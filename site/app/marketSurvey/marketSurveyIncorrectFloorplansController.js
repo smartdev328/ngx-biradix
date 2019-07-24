@@ -91,7 +91,7 @@ define([
         $scope.incorrectFloorplansTable = function () {
 
             if ($scope.incorrectFpArray.isUpload) {
-                $dialog.confirm("We see you have uploaded a file. Switching to Edit Floor Plans wizard will remove this file.. Do you wish to continue?", function () {
+                $dialog.confirm("We see you have uploaded a file. Switching to Edit Floor Plans wizard will remove this file. Do you wish to continue?", function () {
                     $scope.removeFile();
                     require([
                         '/app/marketSurvey/marketSurveyIncorrectFloorplansTableController.js'

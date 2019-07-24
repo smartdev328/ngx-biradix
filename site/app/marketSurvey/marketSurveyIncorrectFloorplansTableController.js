@@ -27,8 +27,8 @@ define([
                 bathrooms: "",
                 bedrooms: "",
                 description: "",
-                sqft: "",
-                units: ""
+                units: "",
+                sqft: ""
             });
             var element = document.getElementById("scrollableTable");
             if(element) {
