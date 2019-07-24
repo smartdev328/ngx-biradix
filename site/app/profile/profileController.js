@@ -357,6 +357,13 @@ define([
                     keyboard: false,
                     backdrop: "static",
                     resolve: {
+                        options: function() {
+                            return {
+                                labelAvailable: "Available",
+                                labelSelected: "Selected",
+                                minwidth: "100%",
+                            };
+                        },
                         propertyName: function() {
                             return $scope.property.name;
                         },

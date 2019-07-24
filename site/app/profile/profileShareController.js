@@ -2,12 +2,13 @@
 define([
     'app',
 ], function(app) {
-    app.controller('profileShareController', ['$scope', '$rootScope', '$location', '$uibModal', '$uibModalInstance', 'propertyName',
-    function($scope, $rootScope, $location, $uibModal, $uibModalInstance, propertyName) {
+    app.controller('profileShareController', ['$scope', '$rootScope', '$location', '$uibModalInstance', 'options', 'propertyName',
+    function($scope, $rootScope, $location, $uibModalInstance, options, propertyName) {
         if (!$rootScope.loggedIn) {
             $location.path('/login');
         }
 
+        $scope.options = options;
         $scope.propertyName = propertyName;
 
         $scope.localLoading = true;
