@@ -4,7 +4,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f0f0f0}
 a {
-  color: #039be5;
+  color: #337ab7;
   /*font-size: 90%;*/
   text-decoration: none;
 }
@@ -24,3 +24,17 @@ a {
 .mat-h2 mat-icon {
   vertical-align: sub;
 }
+
+.mat-card-header-text {
+  margin: 0 !important;
+}
+
+
+.mat-raised-button.mat-primary {
+  background-color: #1E90FF;
+}
+
+.mat-card-header {
+   border-bottom: 1px solid #eeeeee;
+   margin-bottom: 15px;
+ }

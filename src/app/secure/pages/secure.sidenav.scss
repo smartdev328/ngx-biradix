@@ -1,8 +1,8 @@
 .responsive-nav .mat-sidenav {
   background-color: #4460A9;
 }
-.responsive-nav, .wrapper {
-  height:calc(100vh - 64px);
+.wrapper {
+  height:calc(100vh - 65px);
 }
 
 .responsive-nav mat-nav-list{
@@ -36,10 +36,3 @@
 .responsive-nav .mat-icon {
   font-size:22px
 }
-
-@media (max-width: 599px) {
-  .responsive-nav, .wrapper {
-    height:calc(100vh - 56px);
-  }
-}
-

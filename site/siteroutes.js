@@ -10,6 +10,7 @@ const globaljshash = require("../dist/globaljs-hash.json");
 const globalcsshash = require("../dist/globalcss-hash.json");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+const fs = require('fs')
 
 module.exports = (function() {
     console.log(`Loading with ${settings.API_URL} as api endpoint`);
@@ -82,6 +83,15 @@ module.exports = (function() {
                 v2: localhost ? "http://localhost:2003/v2/" : "/v2/"
             });
     });
+
+  ui.get('/version.json', function (req, res) {
+    const filePath = path.join(__dirname + '/../dist/biradix-platform/hash.json');
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(200).send("");
+    }
+  });
 
   ui.get('/v2(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?', function (req, res) {
     if (req.headers["x-forwarded-proto"] !== "https"

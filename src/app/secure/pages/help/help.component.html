@@ -2,11 +2,13 @@
   <mat-card-header>
     <mat-card-title>Resources</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <p>
-      Check out helpful videos on how to use the platform, see the answers to frequently asked questions, and dive into our knowledge base to learn everything in between.
-    </p>
-    <a href="https://help.biradix.com" target="_blank" mat-raised-button color="primary">Help Center</a>
+  <mat-card-content fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex="50%">
+      <p>Check out helpful videos on how to use the platform, see the answers to frequently asked questions, and dive into our knowledge base to learn everything in between.</p>
+    </div>
+    <div fxFlex="50%">
+      <a href="https://help.biradix.com" target="_blank" mat-raised-button color="primary" class="help-link">Help Center</a>
+    </div>
   </mat-card-content>
 </mat-card>
 <br>
@@ -14,11 +16,15 @@
   <mat-card-header>
     <mat-card-title>Live Training</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <p>
-      There are two regular web-based training sessions each week (except holidays), Tuesdays at 11am MST and Thursdays at 10am MST. Reserve your spot by clicking on "Book Training". Training is usually an hour long and covers the entire BI:Radix platform.
-    </p>
-    <button mat-raised-button color="primary">Book Training</button>
+  <mat-card-content fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex="50%">
+      <p>
+        There are two regular web-based training sessions each week (except holidays), Tuesdays at 11am MST and Thursdays at 10am MST. Reserve your spot by clicking on "Book Training". Training is usually an hour long and covers the entire BI:Radix platform.
+      </p>
+    </div>
+    <div fxFlex="50%">
+      <button mat-raised-button color="primary" class="help-link">Book Training</button>
+    </div>
   </mat-card-content>
 </mat-card>
 <br>
@@ -26,24 +32,28 @@
   <mat-card-header>
     <mat-card-title>Contact Us</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <p>
-      <mat-form-field>
-        <input matInput placeholder="Subject">
-      </mat-form-field>
-      <Br>
-      <mat-form-field>
-        <textarea matInput placeholder="Message"></textarea>
-      </mat-form-field>
-    </p>
-    <div fxLayoutAlign="center">
-      <button mat-raised-button color="primary">Send</button>
+  <mat-card-content fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex="50%">
+      <p>
+        <mat-form-field>
+          <input matInput placeholder="Subject">
+        </mat-form-field>
+        <Br>
+        <mat-form-field>
+          <textarea matInput placeholder="Message"></textarea>
+        </mat-form-field>
+      </p>
+      <div fxLayoutAlign="center">
+        <button mat-raised-button color="primary">Send</button>
+      </div>
     </div>
+    <div fxFlex="50%">
       <a style="font-size:17px" href="mailto:support@biradix.com">support@biradix.com</a><Br>
       Don't forget to include the email address associated with your account.<Br>
       <Br>
-    <span style="font-size:17px;color:#039be5">(602) 892-4788</span><br>
+      <span style="font-size:17px;color:#337ab7">(602) 892-4788</span><br>
       Available Monday - Friday<Br>
       8:00am - 5:00pm PST<Br>
+    </div>
   </mat-card-content>
 </mat-card>

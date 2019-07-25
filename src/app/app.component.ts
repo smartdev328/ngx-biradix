@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AuthService, HttpService} from "./core/services";
+import {AuthService, HttpService, VersionService} from "./core/services";
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import {AuthService, HttpService} from "./core/services";
 })
 export class AppComponent {
   loaded: boolean = false;
-  constructor(private httpService: HttpService, private authService: AuthService) {
+  constructor(private httpService: HttpService, private authService: AuthService, private versionService: VersionService) {
   }
 
   async ngOnInit() {
@@ -16,5 +16,20 @@ export class AppComponent {
     await this.httpService.lookupApiUrl();
     await this.authService.getSelf();
     this.loaded = true;
+
+    // Subscribe to the needs refresh observer
+    this.versionService.needsRefresh.subscribe((isReady: boolean) => {
+      if (isReady) {
+        window.location.reload();
+      }
+    });
+
+    // Check every minute if we need to refresh;
+    setInterval(()=> {
+      this.versionService.checkHash();
+    }, 1000 * 60);
+
+
+
   }
 }
