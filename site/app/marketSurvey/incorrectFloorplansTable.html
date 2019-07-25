@@ -40,13 +40,13 @@
         				<th></th>
         			</tr>
         		</thead>
-        		<tbody>
+        		<tbody id="scrollableTable">
         			<tr ng-repeat="row in selectedProperty.floorplans track by $index">
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bedrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="text" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].bathrooms" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="text" class="form-control input-sm survey-value survey-value-lg" ng-model="selectedProperty.floorplans[$index].description" ng-keypress="incorrectFpArray.keyPress($last)"></td>
-        				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].units" ng-keypress="incorrectFpArray.keyPress($last)"></td>
+                        <td><input type="number" class="form-control input-sm survey-value" ng-model="selectedProperty.floorplans[$index].sqft" ng-keypress="incorrectFpArray.keyPress($last)"></td>
         				<td>
                             <button ng-if="$last" style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="addEmptyRow()" uib-tooltip="Add Row" tooltip-append-to-body="true"><i class="fa fa-plus"></i></button>
             				<button ng-if="!$last" style="padding: 3px 10px;background-color: transparent;" class="btn btn-sm contact-submit pull-right" type="button" ng-click="deleteRow($index)" uib-tooltip="Delete Row" tooltip-append-to-body="true"><i class="fa fa-trash red-txt"></i></button>

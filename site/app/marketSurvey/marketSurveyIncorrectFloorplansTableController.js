@@ -27,12 +27,20 @@ define([
                 bathrooms: "",
                 bedrooms: "",
                 description: "",
-                sqft: "",
-                units: ""
+                units: "",
+                sqft: ""
             });
+            var element = document.getElementById("scrollableTable");
+            if(element) {
+                setTimeout(function(){
+                    element.scrollTop = element.scrollHeight;
+                },20);
+            }
         }
 
-        $scope.addEmptyRow();
+        if($scope.selectedProperty.floorplans[$scope.selectedProperty.floorplans.length - 1].bedrooms) {
+            $scope.addEmptyRow();
+        }
 
         $scope.incorrectFpArray.keyPress = function(row) {
             incorrectFpArray.changed = true;
@@ -59,12 +67,12 @@ define([
                 ngProgress.complete();
                 $scope.incorrectFpArray.submitted = true;
                 $scope.incorrectFpArray.message = "";
+                $uibModalInstance.dismiss("cancel");
             }).catch(function(err) {
                 rg4js('send', new Error("User saw API unavailable error alert/message/page"));
                 toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
                 ngProgress.complete();
             });
-            $uibModalInstance.dismiss("cancel");
         };
 
     }]);
