@@ -1,54 +1,3 @@
-.menu-spacer {
-  flex: 1 1 auto;
-}
-
-.responsive-nav .mat-sidenav {
-  background-color: #4460A9;
-}
-.responsive-nav, .wrapper {
-  height:calc(100vh - 64px);
-}
-
-.responsive-nav mat-nav-list{
-  width:250px;
-}
-.responsive-nav .mat-button {
-  width:100%;
-  text-align: left;
-  font-size:13px;
-  color:white;
-}
-
-.main-nav .mat-button  {
-  font-weight: bold;
-}
-
-.full-width {
-  width: 100%;
-  max-width: 360px;
-}
-@media (max-width: 599px) {
-  .responsive-nav, .wrapper {
-    height:calc(100vh - 56px);
-  }
-}
-
-
-.main-nav.mat-toolbar {
-  background-color:white;
-  border-bottom: 1px solid #ccc;
-}
-
-.main-nav .mat-form-field {
-  font-size:15px;
-  color: rgba(0,0,0,.54);
-}
-
-.main-nav .mat-form-field .mat-icon {
-  font-size:135%;
-  width:35px !important;
-}
-
 .mat-option.autoCompleteOption {
   line-height: inherit;
 }
@@ -57,14 +6,10 @@
   max-width: none !important;
 }
 
-.responsive-nav .nav-highlighted {
-  background-color: white;
-  color:#4460A9;
+.mat-menu-content .mat-icon {
+  font-size:22px
 }
 
-.responsive-nav .level2 {
-  padding-left:40px
-}
 
 .green-badge {
   background-color: #32CD32;

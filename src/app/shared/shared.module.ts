@@ -15,6 +15,22 @@ import {
 import {LoaderComponent} from "./components";
 import {UserIdleModule} from "angular-user-idle";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {HighlightPipe} from "./pipes/highlight.pipe";
+import {MdePopoverModule} from "@material-extended/mde";
+
+export const MaterialModules = [
+  MatProgressSpinnerModule,
+  MatIconModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatMenuModule,
+  MatListModule,
+  MatInputModule,
+  MatCardModule,
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatButtonModule,
+];
 
 @NgModule({
   imports: [
@@ -24,21 +40,12 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     HttpClientModule,
     RouterModule,
     BrowserAnimationsModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatMenuModule,
-    MatListModule,
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     FlexLayoutModule,
-    MatInputModule,
-    MatCardModule,
-    MatAutocompleteModule,
-    MatBadgeModule
-
+    MdePopoverModule,
+    ...MaterialModules
   ],
-  declarations: [ LoaderComponent ],
+  declarations: [ LoaderComponent, HighlightPipe ],
   exports: [
     CommonModule,
     FormsModule,
@@ -46,20 +53,12 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     HttpClientModule,
     RouterModule,
     BrowserAnimationsModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatMenuModule,
-    MatListModule,
-    MatButtonModule,
     LoaderComponent,
     UserIdleModule,
     FlexLayoutModule,
-    MatInputModule,
-    MatCardModule,
-    MatAutocompleteModule,
-    MatBadgeModule
+    HighlightPipe,
+    MdePopoverModule,
+    ...MaterialModules
   ]
 })
 export class SharedModule {

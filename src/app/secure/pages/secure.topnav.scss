@@ -1,0 +1,26 @@
+.main-nav.mat-toolbar {
+  background-color:white;
+  border-bottom: 1px solid #ccc;
+}
+
+.main-nav .mat-form-field {
+  font-size:15px;
+  color: rgba(0,0,0,.54);
+}
+
+.main-nav .mat-form-field .mat-icon {
+  font-size:135%;
+  width:35px !important;
+}
+
+.main-nav .mat-button  {
+  font-weight: bold;
+}
+
+.main-nav .menu-spacer {
+  flex: 1 1 auto;
+}
+
+.main-nav .env {
+  color:red;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;
+}

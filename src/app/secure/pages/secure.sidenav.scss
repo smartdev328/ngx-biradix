@@ -1,0 +1,45 @@
+.responsive-nav .mat-sidenav {
+  background-color: #4460A9;
+}
+.responsive-nav, .wrapper {
+  height:calc(100vh - 64px);
+}
+
+.responsive-nav mat-nav-list{
+  width:250px;
+}
+.responsive-nav .mat-button {
+  width:100%;
+  text-align: left;
+  font-size:13px;
+  color:white;
+}
+
+.responsive-nav .nav-highlighted {
+  background-color: white;
+  color:#4460A9;
+}
+
+.responsive-nav .mat-button:hover {
+  background-color: white;
+  color:#4460A9;
+}
+
+.responsive-nav .level2 {
+  padding-left:40px
+}
+
+.responsive-nav .mat-button {
+  border-bottom: 1px solid #7E91C2;
+}
+
+.responsive-nav .mat-icon {
+  font-size:22px
+}
+
+@media (max-width: 599px) {
+  .responsive-nav, .wrapper {
+    height:calc(100vh - 56px);
+  }
+}
+

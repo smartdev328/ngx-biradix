@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import { environment } from '../../../environments/environment'
 import {ILoggedInUser} from "../../core/models";
-import {AuthService, PropertyService} from "../../core/services";
+import {AuthService, HttpService, PropertyService} from "../../core/services";
 import {UserIdleService} from "angular-user-idle";
 import {MediaChange, MediaObserver} from "@angular/flex-layout";
 import {Observable, of, Subscription} from "rxjs";
@@ -13,7 +13,7 @@ import {PERMISSIONS} from "../../core/models/permissions";
 @Component({
   selector: 'app-secure',
   templateUrl: './secure.component.html',
-  styleUrls: ['./secure.component.scss'],
+  styleUrls: ['./secure.component.scss', './secure.topnav.scss', './secure.sidenav.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class SecureComponent  {
@@ -26,9 +26,11 @@ export class SecureComponent  {
   public mediaAlias = "";
   public propertyAutoComplete$: Observable<IProperty> = null;
   public autoCompleteControl = new FormControl();
+  public autoCompleteSearch: string;
+  public env: string = '';
   readonly PERMISSIONS: typeof PERMISSIONS = PERMISSIONS;
 
-  constructor(private authService: AuthService, private userIdle: UserIdleService, private mediaObserver: MediaObserver, private propertyService: PropertyService) {
+  constructor(private authService: AuthService, private userIdle: UserIdleService, private mediaObserver: MediaObserver, private propertyService: PropertyService, private httpService: HttpService) {
   }
 
   ngOnInit() {
@@ -36,6 +38,7 @@ export class SecureComponent  {
     this.layoutLogic();
     this.selfLogic();
     this.idleLogic();
+    this.enviornmentLogic();
   }
 
   logoff() {
@@ -57,6 +60,7 @@ export class SecureComponent  {
       debounceTime(300),
       // use switch map so as to cancel previous subscribed events, before creating new once
       switchMap(value => {
+        this.autoCompleteSearch = value;
         if (value !== '') {
           // lookup from github
           return this.propertyService.search({search: value, limit: 10, skipAmenities: true, hideCustom: true, active: true, hideCustomComps: true});
@@ -138,5 +142,25 @@ export class SecureComponent  {
     }
     clearInterval(this.verifyUserInterval);
     this.authService.logoff();
+  }
+
+  enviornmentLogic() {
+    const loc = this.httpService.apiUrl.toLowerCase();
+
+    if (loc.indexOf('//localhost') > -1) {
+      this.env = "This is API-LOCAL";
+    }
+    else
+    if (loc.indexOf('//api-qa.biradix.com') > -1) {
+      this.env = "This is API-QA";
+    }
+    else
+    if (loc.indexOf('//biradixapi-qa-pr-') > -1) {
+      this.env = "This is API-PR-" + loc.match("pr-([0-9]+).")[1];
+    }
+    else
+    if (loc.indexOf('//biradixapi-integration') > -1) {
+      this.env = "This is API-INT";
+    }
   }
 }

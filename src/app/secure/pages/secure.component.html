@@ -1,8 +1,9 @@
 <div class="wrapper" *ngIf="me">
-  <mat-toolbar class="main-nav">
+  <mat-toolbar class="main-nav" #mainToolbar>
     <mat-toolbar-row>
       <span fxHide.sm><a [href]="baseUrl + '#/dashboard'" style="color:white"><img [src]="logoBig" height="41" style="vertical-align: bottom"/></a></span>
       <span fxHide.lt-sm fxHide.gt-sm><a [href]="baseUrl + '#/dashboard'" style="color:white"><img [src]="logoSmall" height="41" style="vertical-align: bottom"/></a></span>
+      <span *ngIf="env" class="env">{{env}}</span>
       <span class="menu-spacer"></span>
       <div fxHide.lt-sm>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button class="top-nav">Dashboard</a>
@@ -12,10 +13,11 @@
             <input matInput placeholder="Search Properties" [matAutocomplete]="auto" [formControl]="autoCompleteControl">
             <mat-autocomplete #auto="matAutocomplete" [panelWidth]="'100%'" [displayWith]="autoCompleteDisplay" autoActiveFirstOption (optionSelected)='autoCompleteSelected($event.option.value)'>
               <mat-option *ngFor="let property of propertyAutoComplete$ | async" [value]="property" class="autoCompleteOption">
-                <small [innerHTML]="property.summary"></small>
+                <small [innerHTML]="property.summary | highlight: autoCompleteSearch"></small>
               </mat-option>
             </mat-autocomplete>
         </mat-form-field>
+
         <button mat-button [matMenuTriggerFor]="menu">{{me.first}} <mat-icon>arrow_drop_down</mat-icon></button>
         <mat-menu #menu="matMenu">
           <a mat-menu-item *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'"><mat-icon>person</mat-icon> <span>My Account</span></a>
@@ -28,13 +30,33 @@
           <a mat-menu-item (click)="logoff();"><mat-icon>power_settings_new</mat-icon> <span>Log Off</span></a>
         </mat-menu>
       </div>
+      <button mat-button  [mdePopoverTriggerFor]="searchPopover" [mdePopoverTargetAt]="mainToolbar" mdePopoverTriggerOn="click" fxHide.gt-xs>
+        <mat-icon>search</mat-icon>
+      </button>
+
       <button mat-icon-button (click)="sidenav.toggle()" fxHide.gt-xs>
         <mat-icon>menu</mat-icon>
       </button>
+
+      <mde-popover #searchPopover="mdePopover" [mdePopoverOverlapTrigger]="false" [mdePopoverCloseOnClick]="false" mdePopoverArrowColor="#FFFFFF">
+        <mat-card fxHide.gt-xs>
+          <mat-card-content style="width:90vw">
+            <input matInput placeholder="Search Properties" [matAutocomplete]="auto" [formControl]="autoCompleteControl">
+            <mat-autocomplete #auto="matAutocomplete" [panelWidth]="'100%'" [displayWith]="autoCompleteDisplay" autoActiveFirstOption (optionSelected)='autoCompleteSelected($event.option.value)'>
+              <mat-option *ngFor="let property of propertyAutoComplete$ | async" [value]="property" class="autoCompleteOption">
+                <small [innerHTML]="property.summary | highlight: autoCompleteSearch"></small>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-card-content>
+        </mat-card>
+
+
+      </mde-popover>
+
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-sidenav-container fxFlexFill class="responsive-nav">
-    <mat-sidenav #sidenav mode="side" [opened]="mediaAlias !== 'xs'">
+    <mat-sidenav #sidenav [mode]="mediaAlias !== 'xs' ? 'side' : 'push'" [opened]="mediaAlias !== 'xs'">
       <mat-nav-list>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>table_chart</mat-icon> Dashboard</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>show_chart</mat-icon> Reporting</a>
