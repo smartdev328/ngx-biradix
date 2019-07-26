@@ -1,4 +1,3 @@
-var pageViewType = 'InitialPageView';
 angular.module("biradix.global").controller("marketSurveyController", ["$scope", "$uibModalInstance", "$uibModal", "id", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "surveyid", "$authService", "$auditService", "options", "$userService", "$propertyUsersService", "$cookieSettingsService", "$keenService", "$marketSurveyService", "$marketSurveyPMSService",
     function($scope, $uibModalInstance, $uibModal, id, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, surveyid, $authService, $auditService, options, $userService, $propertyUsersService, $cookieSettingsService, $keenService, $marketSurveyService, $marketSurveyPMSService) {
             $scope.surveyid = surveyid;
@@ -13,11 +12,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             ga("set", "page", "/marketSurvey");
             ga("send", "pageview");
 
-            if (performance && performance.now) {
-                var timeStart = performance.now();
-            }
-
-        $marketSurveyPMSService.registerPMSFunctions($scope);
+            $marketSurveyPMSService.registerPMSFunctions($scope);
 
             $scope.swap = {};
 
@@ -1161,22 +1156,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                     backdrop: 'static'
                 });
             });
-
-            if (ga && pageViewType && timeStart && performance && performance.now) {
-                var pageTime = performance.now() - timeStart;
-
-                var metrics = pageViewType === 'InitialPageView' && {
-                    'metric1': 1,
-                    'metric2': pageTime,
-                } || {
-                    'metric3': 1,
-                    'metric4': pageTime,
-                }
-
-                ga('send', 'event', pageViewType, 'marketSurvey', metrics);
-
-                pageViewType = 'PageView';
-            }
         }
 
     }]);

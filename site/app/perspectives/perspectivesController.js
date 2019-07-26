@@ -50,12 +50,12 @@ define([
                 if ($stateParams.pId) {
                     pId = $stateParams.pId;
                 }
-                $scope.loadPerspective(id, pId);
+                $scope.loadPerspective(id, pId, true);
                 me();
             }
         });
 
-        $scope.loadPerspective = function(propertyId, perspectiveId) {
+        $scope.loadPerspective = function(propertyId, perspectiveId, fireGa) {
             $scope.getPropertyById(propertyId, function(properties) {
                 if (properties && properties.length) {
                     $scope.model.selectedProperty = properties[0];
@@ -63,7 +63,7 @@ define([
                 }
                 $scope.loading = false;
 
-                if (ga && pageViewType && timeStart && performance && performance.now) {
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
                     var pageTime = performance.now() - timeStart;
 
                     var metrics = pageViewType === 'InitialPageView' && {
