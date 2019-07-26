@@ -13,4 +13,7 @@ export interface ILoggedInContact extends IContact{
 
 export interface IBookTrainingContact extends ILoggedInContact{
   date: Date;
+  requesterName: string;
+  requesterEmail: string;
+  someoneElse: boolean;
 }

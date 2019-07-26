@@ -23,7 +23,7 @@
       </p>
     </div>
     <div fxFlex="50%">
-      <button mat-raised-button color="primary" class="help-link">Book Training</button>
+      <button mat-raised-button color="primary" class="help-link" (click)="bookTraining()">Book Training</button>
     </div>
   </mat-card-content>
 </mat-card>
@@ -44,7 +44,11 @@
           </mat-form-field>
           <Br>
           <mat-form-field>
-            <textarea matInput placeholder="Message" [formControl]="form.controls.message"></textarea>
+            <textarea matInput placeholder="Message" [formControl]="form.controls.message"
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="2"
+                      cdkAutosizeMaxRows="5"
+            ></textarea>
             <mat-error *ngIf="form.controls.message.hasError('required')">
               Message is <strong>required</strong>
             </mat-error>

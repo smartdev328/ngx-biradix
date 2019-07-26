@@ -1,0 +1,64 @@
+<div fxLayout>
+  <h1 mat-dialog-title>Reserve Training Spot</h1>
+  <span class="fill-space"></span>
+  <span><button mat-button (click)="cancel()" style="min-width:inherit">&times;</button></span>
+</div>
+<div mat-dialog-content>
+  <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px grid" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex="50%">
+      <mat-form-field>
+        <input matInput placeholder="First name" [formControl]="form.controls.first">
+        <mat-error *ngIf="form.controls.first.hasError('required')">
+          First name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxFlex="50%">
+      <mat-form-field>
+        <input matInput placeholder="Last name" [formControl]="form.controls.last">
+        <mat-error *ngIf="form.controls.last.hasError('required')">
+          Last name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px grid" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex="50%">
+      <mat-form-field>
+        <input matInput placeholder="Email address" [formControl]="form.controls.email">
+        <mat-error *ngIf="form.controls.email.hasError('required')">
+          Email address is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="form.controls.email.hasError('email')">
+          Email address is <strong>invalid</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="50%">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Date of training" [formControl]="form.controls.date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.controls.date.hasError('required')">
+         Date is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div fxLayout="row">
+      <mat-form-field fxFlex="fill">
+        <textarea matInput placeholder="Note" [formControl]="form.controls.note"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="2"
+                  cdkAutosizeMaxRows="5"
+        ></textarea>
+        <mat-error *ngIf="form.controls.note.hasError('required')">
+          Note is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+  </div>
+
+  <a href="https://help.biradix.com" target="_blank" mat-raised-button color="primary" class="help-link">Help Center</a>
+</div>

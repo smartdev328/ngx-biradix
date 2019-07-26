@@ -4,7 +4,7 @@
       <span fxHide.sm><a [href]="baseUrl + '#/dashboard'" style="color:white"><img [src]="logoBig" height="41" style="vertical-align: bottom"/></a></span>
       <span fxHide.lt-sm fxHide.gt-sm><a [href]="baseUrl + '#/dashboard'" style="color:white"><img [src]="logoSmall" height="41" style="vertical-align: bottom"/></a></span>
       <span *ngIf="env" class="env">{{env}}</span>
-      <span class="menu-spacer"></span>
+      <span class="fill-space"></span>
       <div fxHide.lt-sm>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button class="top-nav">Dashboard</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button class="top-nav">Reporting</a>

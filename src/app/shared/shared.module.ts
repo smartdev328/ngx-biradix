@@ -17,7 +17,7 @@ import {
   MatAutocompleteModule,
   MatBadgeModule,
   MatSnackBarModule,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS
+  MAT_SNACK_BAR_DEFAULT_OPTIONS, MatDialogModule, MatDatepickerModule, MatNativeDateModule
 } from "@angular/material";
 import {LoaderComponent} from "./components";
 import {UserIdleModule} from "angular-user-idle";
@@ -40,7 +40,10 @@ export const MaterialModules = [
   MatAutocompleteModule,
   MatBadgeModule,
   MatButtonModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatDialogModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 ];
 
 @NgModule({

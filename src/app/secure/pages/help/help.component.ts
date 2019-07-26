@@ -4,8 +4,9 @@ import {AuthService, ContactService, PropertyService} from "../../../core/servic
 import {ILoggedInUser} from "../../../core/models";
 import {IProperty} from "../../../core/models/property";
 import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
-import {MatSnackBar} from "@angular/material";
+import {MatDialog, MatSnackBar} from "@angular/material";
 import {ILegacyResponse} from "../../../core/models/common";
+import {HelpTrainingComponent} from "./help.training.component";
 
 @Component({
   templateUrl: './help.component.html',
@@ -22,8 +23,18 @@ export class HelpComponent  {
     ])
   });
 
-  constructor(private authService: AuthService, private propertyService: PropertyService, private contactService: ContactService, private snackBar: MatSnackBar) {
+  constructor(private authService: AuthService, private propertyService: PropertyService, private contactService: ContactService, private snackBar: MatSnackBar, public dialog: MatDialog) {
 
+  }
+
+  bookTraining() {
+    const dialogRef = this.dialog.open(HelpTrainingComponent, {
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 
   async send() {
