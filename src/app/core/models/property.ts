@@ -11,4 +11,6 @@ export interface IPropertySearchCriteria {
   limit: number;
   hideCustomComps?: boolean;
   hideCustom?: boolean;
+  permission?: string[];
+  select?: string;
 }

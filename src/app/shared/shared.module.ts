@@ -1,16 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatIconModule, MatListModule,
+  MatIconModule,
+  MatListModule,
   MatMenuModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
   MatToolbarModule,
-  MatButtonModule, MatInputModule, MatCardModule, MatAutocompleteModule, MatBadgeModule
+  MatButtonModule,
+  MatInputModule,
+  MatCardModule,
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatSnackBarModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from "@angular/material";
 import {LoaderComponent} from "./components";
 import {UserIdleModule} from "angular-user-idle";
@@ -33,6 +40,7 @@ export const MaterialModules = [
   MatAutocompleteModule,
   MatBadgeModule,
   MatButtonModule,
+  MatSnackBarModule
 ];
 
 @NgModule({
@@ -64,6 +72,9 @@ export const MaterialModules = [
     MdePopoverModule,
     FontAwesomeModule,
     ...MaterialModules
+  ],
+  providers: [
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 5000, horizontalPosition: 'right', verticalPosition: 'top'}},
   ]
 })
 export class SharedModule {

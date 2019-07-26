@@ -10,7 +10,7 @@ export class PropertyService {
   async search (criteria: IPropertySearchCriteria) : Promise<IProperty[]> {
     const apiUrl = this.httpService.apiUrl;
     const authHeader = this.httpService.getAuthHeader();
-    const searchResponse: any = await this.http.post(apiUrl + "/api/1.0/properties?bust" + (new Date()).getTime(), criteria, {headers: authHeader}).toPromise();
+    const searchResponse: any = await this.http.post(apiUrl + "/api/1.0/properties?bust=" + (new Date()).getTime(), criteria, {headers: authHeader}).toPromise();
     return searchResponse.properties;
   }
 }

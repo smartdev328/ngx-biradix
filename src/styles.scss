@@ -10,15 +10,33 @@ a {
 }
 
 .snack-bar-error {
-  background-color:#f44336;
+  background-image: none !important;
+  background-color: #ffe1e1;
+  border: 1px solid #f33 !important;
+  color: #f33;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: pre-wrap;
 }
 
 .snack-bar-success {
-  background-color:rgb(76, 175, 80)
+  background-image: none !important;
+  background-color: #e8f8ed;
+  border: 1px solid #70b760 !important;
+  color: #70b760;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: pre-wrap;
 }
 
 .snack-bar-warning {
-  background-color:rgb(255, 152, 0)
+  background-image: none !important;
+  background-color: #ffe5cb;
+  border: 1px solid #f90 !important;
+  color: #f90;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: pre-wrap
 }
 
 .mat-h2 mat-icon {

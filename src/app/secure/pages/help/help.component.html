@@ -34,18 +34,28 @@
   </mat-card-header>
   <mat-card-content fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
     <div fxFlex="50%">
-      <p>
-        <mat-form-field>
-          <input matInput placeholder="Subject">
-        </mat-form-field>
-        <Br>
-        <mat-form-field>
-          <textarea matInput placeholder="Message"></textarea>
-        </mat-form-field>
-      </p>
-      <div fxLayoutAlign="center">
-        <button mat-raised-button color="primary">Send</button>
-      </div>
+        <form [formGroup]="form" (ngSubmit)="send()">
+        <p>
+          <mat-form-field>
+            <input matInput placeholder="Subject" [formControl]="form.controls.subject">
+            <mat-error *ngIf="form.controls.subject.hasError('required')">
+              Subject is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <Br>
+          <mat-form-field>
+            <textarea matInput placeholder="Message" [formControl]="form.controls.message"></textarea>
+            <mat-error *ngIf="form.controls.message.hasError('required')">
+              Message is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </p>
+        <div fxLayoutAlign="center">
+          <button mat-raised-button color="primary" [disabled]="sending">
+            <mat-icon *ngIf="sending"><mat-spinner color="primary" diameter="20"></mat-spinner></mat-icon>
+            Send</button>
+        </div>
+      </form>
     </div>
     <div fxFlex="50%">
       <a style="font-size:17px" href="mailto:support@biradix.com">support@biradix.com</a><Br>

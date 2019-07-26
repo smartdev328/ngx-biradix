@@ -23,7 +23,7 @@ export class AuthService {
     }
 
     try {
-      const userWithToken = await this.http.get<IloggedInUserWithToken>(apiUrl + "/api/1.0/users/refreshToken?bust" + (new Date()).getTime(), {headers: authHeader}).toPromise();
+      const userWithToken = await this.http.get<IloggedInUserWithToken>(apiUrl + "/api/1.0/users/refreshToken?bust=" + (new Date()).getTime(), {headers: authHeader}).toPromise();
       this.self.next(userWithToken.user);
       this.httpService.setAuthCookie(userWithToken.token);
     } catch(err) {
@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     try {
-      this.self.next(await this.http.get<ILoggedInUser>(apiUrl + "/api/1.0/users/me?bust" + (new Date()).getTime(), {headers: authHeader}).toPromise());
+      this.self.next(await this.http.get<ILoggedInUser>(apiUrl + "/api/1.0/users/me?bust=" + (new Date()).getTime(), {headers: authHeader}).toPromise());
     } catch(err) {
 
       if (err.status === 401) {
