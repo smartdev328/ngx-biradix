@@ -1,53 +1,59 @@
 <div fxLayout>
   <h1 mat-dialog-title>Reserve Training Spot</h1>
   <span class="fill-space"></span>
-  <span><button mat-button (click)="cancel()" style="min-width:inherit">&times;</button></span>
+  <div><button mat-button (click)="cancel()" style="min-width:inherit">&times;</button></div>
 </div>
 <div mat-dialog-content>
-  <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px grid" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
-    <div fxFlex="50%">
-      <mat-form-field>
-        <input matInput placeholder="First name" [formControl]="form.controls.first">
-        <mat-error *ngIf="form.controls.first.hasError('required')">
-          First name is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
+  <form [formGroup]="form" (ngSubmit)="send()">
+    <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+      <div fxFlex="50%">
+        <mat-form-field fxFlex="fill">
+          <input matInput placeholder="First name" [formControl]="form.controls.first">
+          <mat-error *ngIf="form.controls.first.hasError('required')">
+            First name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50%">
+        <mat-form-field fxFlex="fill">
+          <input matInput placeholder="Last name" [formControl]="form.controls.last">
+          <mat-error *ngIf="form.controls.last.hasError('required')">
+            Last name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
-    <div fxFlex="50%">
-      <mat-form-field>
-        <input matInput placeholder="Last name" [formControl]="form.controls.last">
-        <mat-error *ngIf="form.controls.last.hasError('required')">
-          Last name is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px grid" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
-    <div fxFlex="50%">
-      <mat-form-field>
-        <input matInput placeholder="Email address" [formControl]="form.controls.email">
-        <mat-error *ngIf="form.controls.email.hasError('required')">
-          Email address is <strong>required</strong>
-        </mat-error>
-        <mat-error *ngIf="form.controls.email.hasError('email')">
-          Email address is <strong>invalid</strong>
-        </mat-error>
-      </mat-form-field>
+    <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+      <div fxFlex="50%">
+        <mat-form-field fxFlex="fill">
+          <input matInput placeholder="Email address" [formControl]="form.controls.email">
+          <mat-error *ngIf="form.controls.email.hasError('required')">
+            Email address is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.controls.email.hasError('email')">
+            Email address is <strong>invalid</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50%">
+        <mat-form-field fxFlex="fill">
+          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" placeholder="Date of training" [formControl]="form.controls.date" disabled>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker disabled="false"></mat-datepicker>
+          <mat-error *ngIf="form.controls.date.hasError('required')">
+            Date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div fxFlex="50%">
-      <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Date of training" [formControl]="form.controls.date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="form.controls.date.hasError('required')">
-         Date is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
+    <div fxLayout="row" *ngIf="form.controls.date.value">
+      Training Time: &nbsp;
+      <strong *ngIf="form.controls.date.value.getDay() === 2">11:00 AM MST</strong>
+      <strong *ngIf="form.controls.date.value.getDay() === 4">10:00 AM MST</strong>
     </div>
-  </div>
-
-  <div fxLayout="row">
+    <div fxLayout="row">
       <mat-form-field fxFlex="fill">
         <textarea matInput placeholder="Note" [formControl]="form.controls.note"
                   cdkTextareaAutosize
@@ -58,7 +64,20 @@
           Note is <strong>required</strong>
         </mat-error>
       </mat-form-field>
-  </div>
+    </div>
 
-  <a href="https://help.biradix.com" target="_blank" mat-raised-button color="primary" class="help-link">Help Center</a>
+    <div fxLayout fxLayoutGap="10px" fxLayout.xs="column" fxLayout.sm="column"  fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+      <div>
+        <mat-checkbox [formControl]="form.controls.someoneElse">An account needs to be created for this person in BI:Radix</mat-checkbox>
+      </div>
+      <span class="fill-space" fxHide.lt-md></span>
+      <div>
+        <div fxHide.gt-sm style="height:20px"></div>
+        <button mat-raised-button color="primary" [disabled]="sending">
+          <mat-icon *ngIf="sending"><mat-spinner color="primary" diameter="20"></mat-spinner></mat-icon>
+          Book Training</button>
+      </div>
+    </div>
+
+  </form>
 </div>
