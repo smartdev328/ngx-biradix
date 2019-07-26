@@ -65,13 +65,14 @@ export class HelpComponent  {
       role: me.roles[0],
       company: me.orgs[0].name,
     };
-    this.sending = false;
 
     const response: ILegacyResponse = await this.contactService.send(contact);
 
     if (!response) {
       return;
     }
+
+    this.sending = false;
 
     if (response.success) {
       // Reset data

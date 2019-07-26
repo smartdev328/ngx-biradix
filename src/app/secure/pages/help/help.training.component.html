@@ -38,7 +38,7 @@
 
       <div fxFlex="50%">
         <mat-form-field fxFlex="fill">
-          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" placeholder="Date of training" [formControl]="form.controls.date" disabled>
+          <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" placeholder="Date of training" [formControl]="form.controls.date" (click)="picker.open()">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker disabled="false"></mat-datepicker>
           <mat-error *ngIf="form.controls.date.hasError('required')">
