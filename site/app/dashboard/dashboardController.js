@@ -293,12 +293,15 @@ define([
                     $scope.trendsLoading = true;
 
                     if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        var dateRange = $scope.settings && $scope.settings.daterange && $scope.settings.daterange.selectedRange || null;
                         var pageTime = performance.now() - timeStart;
 
                         var metrics = pageViewType === 'InitialPageView' && {
+                            'dimension5': dateRange,
                             'metric1': 1,
                             'metric2': pageTime,
                         } || {
+                            'dimension5': dateRange,
                             'metric3': 1,
                             'metric4': pageTime,
                         }
