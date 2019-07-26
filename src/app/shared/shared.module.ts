@@ -17,6 +17,9 @@ import {UserIdleModule} from "angular-user-idle";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {HighlightPipe} from "./pipes/highlight.pipe";
 import {MdePopoverModule} from "@material-extended/mde";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {faBuilding, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 
 export const MaterialModules = [
   MatProgressSpinnerModule,
@@ -43,6 +46,7 @@ export const MaterialModules = [
     UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120}),
     FlexLayoutModule,
     MdePopoverModule,
+    FontAwesomeModule,
     ...MaterialModules
   ],
   declarations: [ LoaderComponent, HighlightPipe ],
@@ -58,8 +62,14 @@ export const MaterialModules = [
     FlexLayoutModule,
     HighlightPipe,
     MdePopoverModule,
+    FontAwesomeModule,
     ...MaterialModules
   ]
 })
 export class SharedModule {
+  constructor() {
+    // Add an icon to the library for convenient access in other components
+    library.add(faEyeSlash);
+    library.add(faBuilding);
+  }
 }
