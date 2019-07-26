@@ -55,8 +55,8 @@
   <mat-sidenav-container fxFlexFill class="responsive-nav">
     <mat-sidenav #sidenav [mode]="mediaAlias !== 'xs' ? 'side' : 'push'" [opened]="mediaAlias !== 'xs'">
       <mat-nav-list>
-        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>table_chart</mat-icon> Dashboard</a>
-        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>show_chart</mat-icon> Reporting</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" fxHide.gt-xs><mat-icon>table_chart</mat-icon> Dashboard</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" fxHide.gt-xs><mat-icon>show_chart</mat-icon> Reporting</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>person</mat-icon> My Account</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Profile</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile?notifications=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Notifications</a>
