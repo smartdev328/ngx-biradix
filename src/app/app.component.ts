@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {AuthService, HttpService, VersionService} from "./core/services";
+import {AuthService, HttpService, SiteService} from "./core/services";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,10 @@ import {AuthService, HttpService, VersionService} from "./core/services";
 })
 export class AppComponent {
   loaded: boolean = false;
-  constructor(private httpService: HttpService, private authService: AuthService, private versionService: VersionService) {
+  down: boolean = false;
+  staticPath: string = environment.deployUrl;
+
+  constructor(private httpService: HttpService, private authService: AuthService, private siteService: SiteService) {
   }
 
   async ngOnInit() {
@@ -18,7 +22,7 @@ export class AppComponent {
     this.loaded = true;
 
     // Subscribe to the needs refresh observer
-    this.versionService.needsRefresh.subscribe((isReady: boolean) => {
+    this.siteService.needsRefresh.subscribe((isReady: boolean) => {
       if (isReady) {
         window.location.reload();
       }
@@ -26,10 +30,16 @@ export class AppComponent {
 
     // Check every minute if we need to refresh;
     setInterval(()=> {
-      this.versionService.checkHash();
+      this.siteService.checkHash();
     }, 1000 * 60);
 
 
+    // Subscribe to the api down observer
+    this.siteService.apiDown.subscribe((isDown: boolean) => {
+      if (isDown) {
+       this.down = true;
+      }
+    });
 
   }
 }

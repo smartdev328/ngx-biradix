@@ -1,6 +1,16 @@
-<div *ngIf="!loaded">
+<div *ngIf="down">
+  <Br>
+  <div fxLayoutAlign="center">
+    <img src="{{staticPath}}assets/images/api-down-icon.png" width="100"/>
+  </div>
+  <Br>
+  <div fxLayoutAlign="center">
+    <p>Pretend you didn't see this! Something went wrong and we can only show you this message. <br> Sorry for the trouble. Please try <a href='javascript:location.reload();'>refreshing</a> the page</p>
+  </div>
+</div>
+<div *ngIf="!loaded && !down">
   <app-loader></app-loader>
 </div>
-<div *ngIf="loaded">
+<div *ngIf="loaded && !down">
   <router-outlet></router-outlet>
 </div>
